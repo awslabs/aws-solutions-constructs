@@ -1,0 +1,83 @@
+{
+  "name": "@aws-solutions-konstruk/aws-lambda-elasticsearch-kibana",
+  "version": "0.8.0",
+  "description": "CDK Constructs for AWS Lambda to AWS Elasticsearch with Kibana integration",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/awslabs/aws-solutions-konstruk.git",
+    "directory": "source/patterns/@aws-solutions-konstruk/aws-lambda-elasticsearch-kibana"
+  },
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com",
+    "organization": true
+  },
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc -b .",
+    "lint": "eslint -c ../eslintrc.yml --ext=.js,.ts . && tslint --project .",
+    "lint-fix": "eslint -c ../eslintrc.yml --ext=.js,.ts --fix .",
+    "test": "jest --coverage",
+    "clean": "tsc -b --clean",
+    "watch": "tsc -b -w",
+    "integ": "cdk-integ",
+    "integ-no-clean": "cdk-integ --no-clean",
+    "integ-assert": "cdk-integ-assert",
+    "jsii": "jsii",
+    "jsii-pacmak": "jsii-pacmak",
+    "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
+    "snapshot-update": "npm run jsii && npm test -- -u && npm run integ-assert"
+  },
+  "jsii": {
+    "outdir": "dist",
+    "targets": {
+      "java": {
+        "package": "software.amazon.konstruk.services.lambdaelasticsearchkibana",
+        "maven": {
+          "groupId": "software.amazon.konstruk",
+          "artifactId": "lambdaelasticsearchkibana"
+        }
+      },
+      "dotnet": {
+        "namespace": "Amazon.Konstruk.AWS.LambdaElasticsearchKibana",
+        "packageId": "Amazon.Konstruk.AWS.LambdaElasticsearchKibana",
+        "signAssembly": true,
+        "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
+      },
+      "python": {
+        "distName": "aws-solutions-konstruk.aws-lambda-elasticsearch-kibana",
+        "module": "aws_solutions_konstruk.aws_lambda_elasticsearch_kibana"
+      }
+    }
+  },
+  "dependencies": {
+    "@aws-cdk/aws-lambda": "~1.25.0",
+    "@aws-cdk/core": "~1.25.0",
+    "@aws-cdk/aws-cognito": "~1.25.0",
+    "@aws-cdk/aws-elasticsearch": "~1.25.0",
+    "@aws-cdk/aws-iam": "~1.25.0",
+    "@aws-cdk/aws-cloudwatch": "~1.25.0",
+    "@aws-solutions-konstruk/core": "~0.8.0"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "~1.25.0",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^10.3.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ]
+  },
+  "peerDependencies": {
+    "@aws-cdk/aws-lambda": "~1.25.0",
+    "@aws-cdk/core": "~1.25.0",
+    "@aws-cdk/aws-cognito": "~1.25.0",
+    "@aws-cdk/aws-elasticsearch": "~1.25.0",
+    "@aws-solutions-konstruk/core": "~0.8.0",
+    "@aws-cdk/aws-iam": "~1.25.0",
+    "@aws-cdk/aws-cloudwatch": "~1.25.0"
+  }
+}

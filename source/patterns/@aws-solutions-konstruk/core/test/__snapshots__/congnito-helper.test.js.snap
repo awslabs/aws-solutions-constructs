@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot test buildUserPool default params 1`] = `
+Object {
+  "Resources": Object {
+    "CognitoUserPool53E37E69": Object {
+      "Properties": Object {
+        "LambdaConfig": Object {},
+        "UserPoolAddOns": Object {
+          "AdvancedSecurityMode": "ENFORCED",
+        },
+      },
+      "Type": "AWS::Cognito::UserPool",
+    },
+  },
+}
+`;
+
+exports[`snapshot test buildUserPoolClient default params 1`] = `
+Object {
+  "Resources": Object {
+    "CognitoUserPool53E37E69": Object {
+      "Properties": Object {
+        "LambdaConfig": Object {},
+        "UserPoolAddOns": Object {
+          "AdvancedSecurityMode": "ENFORCED",
+        },
+      },
+      "Type": "AWS::Cognito::UserPool",
+    },
+    "CognitoUserPoolClient5AB59AE4": Object {
+      "Properties": Object {
+        "UserPoolId": Object {
+          "Ref": "CognitoUserPool53E37E69",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolClient",
+    },
+  },
+}
+`;

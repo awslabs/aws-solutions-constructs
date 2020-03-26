@@ -1,0 +1,590 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot test default params 1`] = `
+Object {
+  "Parameters": Object {
+    "AssetParameters67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682dbArtifactHash322F5E2F": Object {
+      "Description": "Artifact hash for asset \\"67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682db\\"",
+      "Type": "String",
+    },
+    "AssetParameters67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682dbS3BucketBAF5BF3A": Object {
+      "Description": "S3 bucket for asset \\"67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682db\\"",
+      "Type": "String",
+    },
+    "AssetParameters67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682dbS3VersionKeyADB3CCA3": Object {
+      "Description": "S3 key for asset version \\"67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682db\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "AutomatedSnapshotFailureTooHighAlarmA7918D4F": Object {
+      "Properties": Object {
+        "AlarmDescription": "An automated snapshot failed. This failure is often the result of a red cluster health status.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "AutomatedSnapshotFailure",
+        "Namespace": "AWS/ES",
+        "Period": 60,
+        "Statistic": "Maximum",
+        "Threshold": 1,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "CPUUtilizationTooHighAlarmA395C469": Object {
+      "Properties": Object {
+        "AlarmDescription": "100% CPU utilization is not uncommon, but sustained high usage is problematic. Consider using larger instance types or adding instances.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 3,
+        "MetricName": "CPUUtilization",
+        "Namespace": "AWS/ES",
+        "Period": 900,
+        "Statistic": "Average",
+        "Threshold": 80,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "CognitoAuthorizedRole14E74FE0": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRoleWithWebIdentity",
+              "Condition": Object {
+                "ForAnyValue:StringLike": Object {
+                  "cognito-identity.amazonaws.com:amr": "authenticated",
+                },
+                "StringEquals": Object {
+                  "cognito-identity.amazonaws.com:aud": Object {
+                    "Ref": "CognitoIdentityPool",
+                  },
+                },
+              },
+              "Effect": "Allow",
+              "Principal": Object {
+                "Federated": "cognito-identity.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": "es:ESHttp*",
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        "arn:aws:es:",
+                        Object {
+                          "Ref": "AWS::Region",
+                        },
+                        ":",
+                        Object {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":domain/test-domain/*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "CognitoAccessPolicy",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "CognitoIdentityPool": Object {
+      "Properties": Object {
+        "AllowUnauthenticatedIdentities": false,
+        "CognitoIdentityProviders": Array [
+          Object {
+            "ClientId": Object {
+              "Ref": "CognitoUserPoolClient5AB59AE4",
+            },
+            "ProviderName": Object {
+              "Fn::GetAtt": Array [
+                "CognitoUserPool53E37E69",
+                "ProviderName",
+              ],
+            },
+            "ServerSideTokenCheck": true,
+          },
+        ],
+      },
+      "Type": "AWS::Cognito::IdentityPool",
+    },
+    "CognitoKibanaConfigureRole62CCE76A": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "es.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "CognitoKibanaConfigureRolePolicy76F46A5E": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "cognito-idp:DescribeUserPool",
+                "cognito-idp:CreateUserPoolClient",
+                "cognito-idp:DeleteUserPoolClient",
+                "cognito-idp:DescribeUserPoolClient",
+                "cognito-idp:AdminInitiateAuth",
+                "cognito-idp:AdminUserGlobalSignOut",
+                "cognito-idp:ListUserPoolClients",
+                "cognito-identity:DescribeIdentityPool",
+                "cognito-identity:UpdateIdentityPool",
+                "cognito-identity:SetIdentityPoolRoles",
+                "cognito-identity:GetIdentityPoolRoles",
+                "es:UpdateElasticsearchDomainConfig",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "CognitoUserPool53E37E69",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:aws:cognito-identity:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      ":",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":identitypool/",
+                      Object {
+                        "Ref": "CognitoIdentityPool",
+                      },
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:aws:es:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      ":",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":domain/test-domain",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": "iam:PassRole",
+              "Condition": Object {
+                "StringLike": Object {
+                  "iam:PassedToService": "cognito-identity.amazonaws.com",
+                },
+              },
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "CognitoKibanaConfigureRole62CCE76A",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "CognitoKibanaConfigureRolePolicy76F46A5E",
+        "Roles": Array [
+          Object {
+            "Ref": "CognitoKibanaConfigureRole62CCE76A",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "CognitoUserPool53E37E69": Object {
+      "Properties": Object {
+        "LambdaConfig": Object {},
+        "UserPoolAddOns": Object {
+          "AdvancedSecurityMode": "ENFORCED",
+        },
+      },
+      "Type": "AWS::Cognito::UserPool",
+    },
+    "CognitoUserPoolClient5AB59AE4": Object {
+      "Properties": Object {
+        "UserPoolId": Object {
+          "Ref": "CognitoUserPool53E37E69",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolClient",
+    },
+    "ElasticsearchDomain": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W28",
+              "reason": "The ES Domain is passed dynamically as as parameter and explicitly specified to ensure that IAM policies are configured to lockdown access to this specific ES instance only",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "AccessPolicies": Object {
+          "Statement": Array [
+            Object {
+              "Action": "es:ESHttp*",
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Array [
+                  Object {
+                    "Fn::GetAtt": Array [
+                      "CognitoAuthorizedRole14E74FE0",
+                      "Arn",
+                    ],
+                  },
+                  Object {
+                    "Fn::GetAtt": Array [
+                      "LambdaFunctionServiceRole0C4CDE0B",
+                      "Arn",
+                    ],
+                  },
+                ],
+              },
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:es:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":domain/test-domain/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "CognitoOptions": Object {
+          "Enabled": true,
+          "IdentityPoolId": Object {
+            "Ref": "CognitoIdentityPool",
+          },
+          "RoleArn": Object {
+            "Fn::GetAtt": Array [
+              "CognitoKibanaConfigureRole62CCE76A",
+              "Arn",
+            ],
+          },
+          "UserPoolId": Object {
+            "Ref": "CognitoUserPool53E37E69",
+          },
+        },
+        "DomainName": "test-domain",
+        "EBSOptions": Object {
+          "EBSEnabled": true,
+          "VolumeSize": 10,
+        },
+        "ElasticsearchClusterConfig": Object {
+          "DedicatedMasterCount": 3,
+          "DedicatedMasterEnabled": true,
+          "InstanceCount": 3,
+          "ZoneAwarenessConfig": Object {
+            "AvailabilityZoneCount": 3,
+          },
+          "ZoneAwarenessEnabled": true,
+        },
+        "ElasticsearchVersion": "6.3",
+        "EncryptionAtRestOptions": Object {
+          "Enabled": true,
+        },
+        "NodeToNodeEncryptionOptions": Object {
+          "Enabled": true,
+        },
+        "SnapshotOptions": Object {
+          "AutomatedSnapshotStartHour": 1,
+        },
+      },
+      "Type": "AWS::Elasticsearch::Domain",
+    },
+    "FreeStorageSpaceTooLowAlarm3410CBE2": Object {
+      "Properties": Object {
+        "AlarmDescription": "A node in your cluster is down to 20 GiB of free storage space.",
+        "ComparisonOperator": "LessThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "FreeStorageSpace",
+        "Namespace": "AWS/ES",
+        "Period": 60,
+        "Statistic": "Minimum",
+        "Threshold": 2000,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "IdentityPoolRoleMapping": Object {
+      "Properties": Object {
+        "IdentityPoolId": Object {
+          "Ref": "CognitoIdentityPool",
+        },
+        "Roles": Object {
+          "authenticated": Object {
+            "Fn::GetAtt": Array [
+              "CognitoAuthorizedRole14E74FE0",
+              "Arn",
+            ],
+          },
+        },
+      },
+      "Type": "AWS::Cognito::IdentityPoolRoleAttachment",
+    },
+    "IndexWritesBlockedTooHighAlarm5F7E9A55": Object {
+      "Properties": Object {
+        "AlarmDescription": "Your cluster is blocking write requests.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "ClusterIndexWritesBlocked",
+        "Namespace": "AWS/ES",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 1,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "JVMMemoryPressureTooHighAlarm303EEA7C": Object {
+      "Properties": Object {
+        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "JVMMemoryPressure",
+        "Namespace": "AWS/ES",
+        "Period": 900,
+        "Statistic": "Average",
+        "Threshold": 80,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "LambdaFunctionBF21E41F": Object {
+      "DependsOn": Array [
+        "LambdaFunctionServiceRole0C4CDE0B",
+      ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParameters67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682dbS3BucketBAF5BF3A",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682dbS3VersionKeyADB3CCA3",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682dbS3VersionKeyADB3CCA3",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "DOMAIN_ENDPOINT": Object {
+              "Fn::GetAtt": Array [
+                "ElasticsearchDomain",
+                "DomainEndpoint",
+              ],
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "LambdaFunctionServiceRole0C4CDE0B",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs10.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "LambdaFunctionServiceRole0C4CDE0B": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": Array [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        "arn:aws:logs:",
+                        Object {
+                          "Ref": "AWS::Region",
+                        },
+                        ":",
+                        Object {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":log-group:/aws/lambda/*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "MasterCPUUtilizationTooHighAlarm1CE1084B": Object {
+      "Properties": Object {
+        "AlarmDescription": "Average CPU utilization over last 45 minutes too high. Consider using larger instance types for your dedicated master nodes.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 3,
+        "MetricName": "MasterCPUUtilization",
+        "Namespace": "AWS/ES",
+        "Period": 900,
+        "Statistic": "Average",
+        "Threshold": 50,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "MasterJVMMemoryPressureTooHighAlarmBB15F770": Object {
+      "Properties": Object {
+        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "MasterJVMMemoryPressure",
+        "Namespace": "AWS/ES",
+        "Period": 900,
+        "Statistic": "Average",
+        "Threshold": 50,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "StatusRedAlarm4CE918C2": Object {
+      "Properties": Object {
+        "AlarmDescription": "At least one primary shard and its replicas are not allocated to a node. ",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "ClusterStatus.red",
+        "Namespace": "AWS/ES",
+        "Period": 60,
+        "Statistic": "Maximum",
+        "Threshold": 1,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "StatusYellowAlarm2B20F083": Object {
+      "Properties": Object {
+        "AlarmDescription": "At least one replica shard is not allocated to a node.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "ClusterStatus.yellow",
+        "Namespace": "AWS/ES",
+        "Period": 60,
+        "Statistic": "Maximum",
+        "Threshold": 1,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "UserPoolDomain": Object {
+      "DependsOn": Array [
+        "CognitoUserPool53E37E69",
+      ],
+      "Properties": Object {
+        "Domain": "test-domain",
+        "UserPoolId": Object {
+          "Ref": "CognitoUserPool53E37E69",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolDomain",
+    },
+  },
+}
+`;

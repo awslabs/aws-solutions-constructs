@@ -1,0 +1,82 @@
+# aws-cloudfront-apigateway module
+<!--BEGIN STABILITY BANNER-->
+
+---
+
+![Stability: Experimental](https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge)
+
+> **This is a _developer preview_ (public beta) module.**
+>
+> All classes are under active development and subject to non-backward compatible changes or removal in any
+> future version. These are not subject to the [Semantic Versioning](https://semver.org/) model.
+> This means that while you may use them, you may need to update your source code when upgrading to a newer version of this package.
+
+---
+<!--END STABILITY BANNER-->
+
+| **API Reference**:| <span style="font-weight: normal">http://docs.awssolutionsbuilder.com/aws-solutions-konstruk/latest/api/aws-cloudfront-apigateway/</span>|
+|:-------------|:-------------|
+<div style="height:8px"></div>
+
+| **Language**     | **Package**        |
+|:-------------|-----------------|
+|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png){: style="height:16px;width:16px"} Python|`aws_solutions_konstruk.aws_cloudfront_apigateway`|
+|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png){: style="height:16px;width:16px"} Typescript|`@aws-solutions-konstruk/aws-cloudfront-apigateway`|
+
+This AWS Solutions Konstruk implements an AWS Cloudfront fronting an Amazon API Gateway REST API.
+
+Here is a minimal deployable pattern definition:
+
+``` javascript
+const { defaults } = require('@aws-solutions-konstruk/core');
+const { CloudFrontToApiGateway } = require('@aws-solutions-konstruk/aws-cloudfront-apigateway');
+
+const stack = new Stack();
+
+const lambdaProps: lambda.FunctionProps = {
+    code: lambda.Code.asset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler'
+};
+
+const func = defaults.deployLambdaFunction(stack, lambdaProps);
+
+const _api = defaults.RegionalApiGateway(stack, func);
+
+new CloudFrontToApiGateway(stack, 'test-cloudfront-apigateway', {
+    existingApiGatewayObj: _api
+});
+
+```
+
+## Initializer
+
+``` text
+new CloudFrontToApiGateway(scope: Construct, id: string, props: CloudFrontToApiGatewayProps);
+```
+
+_Parameters_
+
+* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
+* id `string`
+* props [`CloudFrontToApiGatewayProps`](#pattern-construct-props)
+
+## Pattern Construct Props
+
+| **Name**     | **Type**        | **Description** |
+|:-------------|:----------------|-----------------|
+|existingApiGatewayObj|[`api.RestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.RestApi.html)|The regional API Gateway that will be fronted with the CloudFront|
+|cloudFrontDistributionProps?|[`cloudfront.CloudFrontWebDistributionProps | any`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudfront.CloudFrontWebDistributionProps.html)|Optional user provided props to override the default props for Cloudfront Distribution|
+
+## Pattern Properties
+
+| **Name**     | **Type**        | **Description** |
+|:-------------|:----------------|-----------------|
+|cloudFrontWebDistribution()|[`cloudfront.CloudFrontWebDistribution`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudfront.CloudFrontWebDistribution.html)|Retruns an instance of cloudfront.CloudFrontWebDistribution created by the construct|
+|restApi()|[`api.RestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.RestApi.html)|Returns an instance of the API Gateway REST API created by the pattern.|
+
+## Architecture
+![Architecture Diagram](architecture.png)
+
+***
+&copy; Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.

@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot test kinesisfirehose default params 1`] = `
+Object {
+  "Resources": Object {
+    "KinesisFirehose": Object {
+      "Properties": Object {
+        "ExtendedS3DestinationConfiguration": Object {
+          "BucketARN": "bucket_arn",
+          "BufferingHints": Object {
+            "IntervalInSeconds": 300,
+            "SizeInMBs": 5,
+          },
+          "CloudWatchLoggingOptions": Object {
+            "Enabled": true,
+            "LogGroupName": "log_group",
+            "LogStreamName": "log_stream",
+          },
+          "CompressionFormat": "GZIP",
+          "RoleARN": "role_arn",
+        },
+      },
+      "Type": "AWS::KinesisFirehose::DeliveryStream",
+    },
+  },
+}
+`;
