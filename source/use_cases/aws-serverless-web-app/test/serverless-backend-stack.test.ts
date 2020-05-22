@@ -65,11 +65,11 @@ test('check lambda permissions', () => {
           },
           ":",
           {
-            Ref: "RestApi0C43BF4B"
+            Ref: "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0"
           },
           "/",
           {
-            Ref: "RestApiDeploymentStageprod3855DE66"
+            Ref: "CognitoToApiGatewayToLambdaLambdaRestApiDeploymentStageprod743A20E1"
           },
           "/*/"
         ]

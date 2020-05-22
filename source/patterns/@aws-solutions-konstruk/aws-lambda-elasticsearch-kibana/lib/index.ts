@@ -77,7 +77,7 @@ export class LambdaToElasticSearchAndKibana extends Construct {
   constructor(scope: Construct, id: string, props: LambdaToElasticSearchAndKibanaProps) {
     super(scope, id);
 
-    this.fn = defaults.buildLambdaFunction(scope, {
+    this.fn = defaults.buildLambdaFunction(this, {
       deployLambda: props.deployLambda,
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps
@@ -86,17 +86,17 @@ export class LambdaToElasticSearchAndKibana extends Construct {
     // Find the lambda service Role ARN
     const lambdaFunctionRoleARN = this.fn.role?.roleArn;
 
-    this.userpool = defaults.buildUserPool(scope);
-    this.userpoolclient = defaults.buildUserPoolClient(scope, this.userpool);
-    this.identitypool = defaults.buildIdentityPool(scope, this.userpool, this.userpoolclient);
+    this.userpool = defaults.buildUserPool(this);
+    this.userpoolclient = defaults.buildUserPoolClient(this, this.userpool);
+    this.identitypool = defaults.buildIdentityPool(this, this.userpool, this.userpoolclient);
 
-    const cognitoAuthorizedRole: Role = defaults.setupCognitoForElasticSearch(scope, props.domainName, {
+    const cognitoAuthorizedRole: Role = defaults.setupCognitoForElasticSearch(this, props.domainName, {
       userpool: this.userpool,
       identitypool: this.identitypool,
       userpoolclient: this.userpoolclient
     });
 
-    this.elasticsearch = defaults.buildElasticSearch(scope, props.domainName, {
+    this.elasticsearch = defaults.buildElasticSearch(this, props.domainName, {
         userpool: this.userpool,
         identitypool: this.identitypool,
         cognitoAuthorizedRoleARN: cognitoAuthorizedRole.roleArn,
@@ -106,11 +106,11 @@ export class LambdaToElasticSearchAndKibana extends Construct {
     this.fn.addEnvironment('DOMAIN_ENDPOINT', this.elasticsearch.attrDomainEndpoint);
 
     // Deploy best practices CW Alarms for ES
-    this.cwAlarms = defaults.buildElasticSearchCWAlarms(scope);
+    this.cwAlarms = defaults.buildElasticSearchCWAlarms(this);
   }
 
   /**
-   * @summary Retruns an instance of lambda.Function created by the construct.
+   * @summary Returns an instance of lambda.Function created by the construct.
    * @returns {lambda.Function} Instance of Function created by the construct
    * @since 0.8.0
    * @access public
@@ -120,7 +120,7 @@ export class LambdaToElasticSearchAndKibana extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of cognito.UserPool created by the construct.
+   * @summary Returns an instance of cognito.UserPool created by the construct.
    * @returns {cognito.UserPool} Instance of UserPool created by the construct
    * @since 0.8.0
    * @access public
@@ -130,7 +130,7 @@ export class LambdaToElasticSearchAndKibana extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of cognito.UserPoolClient created by the construct.
+   * @summary Returns an instance of cognito.UserPoolClient created by the construct.
    * @returns {cognito.UserPoolClient} Instance of UserPoolClient created by the construct
    * @since 0.8.0
    * @access public
@@ -140,7 +140,7 @@ export class LambdaToElasticSearchAndKibana extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of cognito.CfnIdentityPool created by the construct.
+   * @summary Returns an instance of cognito.CfnIdentityPool created by the construct.
    * @returns {cognito.CfnIdentityPool} Instance of CfnIdentityPool created by the construct
    * @since 0.8.0
    * @access public
@@ -150,7 +150,7 @@ export class LambdaToElasticSearchAndKibana extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of elasticsearch.CfnDomain created by the construct.
+   * @summary Returns an instance of elasticsearch.CfnDomain created by the construct.
    * @returns {elasticsearch.CfnDomain} Instance of CfnDomain created by the construct
    * @since 0.8.0
    * @access public
@@ -160,7 +160,7 @@ export class LambdaToElasticSearchAndKibana extends Construct {
   }
 
   /**
-   * @summary Retruns a list of cloudwatch.Alarm created by the construct.
+   * @summary Returns a list of cloudwatch.Alarm created by the construct.
    * @returns {cloudwatch.Alarm[]} List of cloudwatch.Alarm  created by the construct
    * @since 0.8.0
    * @access public

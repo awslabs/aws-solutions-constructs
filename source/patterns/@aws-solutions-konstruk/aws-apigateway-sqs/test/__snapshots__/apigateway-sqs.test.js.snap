@@ -31,7 +31,12 @@ Object {
     },
   },
   "Resources": Object {
-    "EncryptionKey1B843E66": Object {
+    "apigatewaysqsApiAccessLogGroup4D14D1D7": Object {
+      "DeletionPolicy": "Retain",
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "apigatewaysqsEncryptionKey4A698F7C": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
         "EnableKeyRotation": true,
@@ -99,11 +104,6 @@ Object {
         },
       },
       "Type": "AWS::KMS::Key",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "apigatewaysqsApiAccessLogGroup4D14D1D7": Object {
-      "DeletionPolicy": "Retain",
-      "Type": "AWS::Logs::LogGroup",
       "UpdateReplacePolicy": "Retain",
     },
     "apigatewaysqsLambdaRestApiAccount8FA59342": Object {
@@ -186,7 +186,7 @@ Object {
       },
       "Type": "AWS::ApiGateway::RestApi",
     },
-    "apigatewaysqsRestApiDeployment823C310Bb49e111d67a99651ecb38dc4ffc69e8b": Object {
+    "apigatewaysqsRestApiDeployment823C310Bb3eb8381f81a14298ee8e133d94084e4": Object {
       "DependsOn": Array [
         "apigatewaysqsRestApiGET13C64342",
         "apigatewaysqsRestApimessageDELETE46195B92",
@@ -220,10 +220,10 @@ Object {
               "Arn",
             ],
           },
-          "Format": "$context.identity.sourceIp $context.identity.caller $context.identity.user [$context.requestTime] \\"$context.httpMethod $context.resourcePath $context.protocol\\" $context.status $context.responseLength $context.requestId",
+          "Format": "{\\"requestId\\":\\"$context.requestId\\",\\"ip\\":\\"$context.identity.sourceIp\\",\\"user\\":\\"$context.identity.user\\",\\"caller\\":\\"$context.identity.caller\\",\\"requestTime\\":\\"$context.requestTime\\",\\"httpMethod\\":\\"$context.httpMethod\\",\\"resourcePath\\":\\"$context.resourcePath\\",\\"status\\":\\"$context.status\\",\\"protocol\\":\\"$context.protocol\\",\\"responseLength\\":\\"$context.responseLength\\"}",
         },
         "DeploymentId": Object {
-          "Ref": "apigatewaysqsRestApiDeployment823C310Bb49e111d67a99651ecb38dc4ffc69e8b",
+          "Ref": "apigatewaysqsRestApiDeployment823C310Bb3eb8381f81a14298ee8e133d94084e4",
         },
         "MethodSettings": Array [
           Object {
@@ -291,7 +291,7 @@ Object {
                 "/",
                 Object {
                   "Fn::GetAtt": Array [
-                    "queue276F7297",
+                    "apigatewaysqsqueueE186B895",
                     "QueueName",
                   ],
                 },
@@ -376,7 +376,7 @@ Object {
                 "/",
                 Object {
                   "Fn::GetAtt": Array [
-                    "queue276F7297",
+                    "apigatewaysqsqueueE186B895",
                     "QueueName",
                   ],
                 },
@@ -492,7 +492,7 @@ Object {
                 "/",
                 Object {
                   "Fn::GetAtt": Array [
-                    "queue276F7297",
+                    "apigatewaysqsqueueE186B895",
                     "QueueName",
                   ],
                 },
@@ -554,7 +554,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "EncryptionKey1B843E66",
+                  "apigatewaysqsEncryptionKey4A698F7C",
                   "Arn",
                 ],
               },
@@ -564,7 +564,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "queue276F7297",
+                  "apigatewaysqsqueueE186B895",
                   "Arn",
                 ],
               },
@@ -574,7 +574,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "queue276F7297",
+                  "apigatewaysqsqueueE186B895",
                   "Arn",
                 ],
               },
@@ -584,7 +584,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "queue276F7297",
+                  "apigatewaysqsqueueE186B895",
                   "Arn",
                 ],
               },
@@ -601,29 +601,29 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
-    "deadLetterQueue3F848E28": Object {
+    "apigatewaysqsdeadLetterQueue25B510FA": Object {
       "Properties": Object {
         "KmsMasterKeyId": Object {
           "Fn::GetAtt": Array [
-            "EncryptionKey1B843E66",
+            "apigatewaysqsEncryptionKey4A698F7C",
             "Arn",
           ],
         },
       },
       "Type": "AWS::SQS::Queue",
     },
-    "queue276F7297": Object {
+    "apigatewaysqsqueueE186B895": Object {
       "Properties": Object {
         "KmsMasterKeyId": Object {
           "Fn::GetAtt": Array [
-            "EncryptionKey1B843E66",
+            "apigatewaysqsEncryptionKey4A698F7C",
             "Arn",
           ],
         },
         "RedrivePolicy": Object {
           "deadLetterTargetArn": Object {
             "Fn::GetAtt": Array [
-              "deadLetterQueue3F848E28",
+              "apigatewaysqsdeadLetterQueue25B510FA",
               "Arn",
             ],
           },
@@ -667,7 +667,12 @@ Object {
     },
   },
   "Resources": Object {
-    "EncryptionKey1B843E66": Object {
+    "apigatewaysqsApiAccessLogGroup4D14D1D7": Object {
+      "DeletionPolicy": "Retain",
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "apigatewaysqsEncryptionKey4A698F7C": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
         "EnableKeyRotation": true,
@@ -735,11 +740,6 @@ Object {
         },
       },
       "Type": "AWS::KMS::Key",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "apigatewaysqsApiAccessLogGroup4D14D1D7": Object {
-      "DeletionPolicy": "Retain",
-      "Type": "AWS::Logs::LogGroup",
       "UpdateReplacePolicy": "Retain",
     },
     "apigatewaysqsLambdaRestApiAccount8FA59342": Object {
@@ -822,7 +822,7 @@ Object {
       },
       "Type": "AWS::ApiGateway::RestApi",
     },
-    "apigatewaysqsRestApiDeployment823C310Bb49e111d67a99651ecb38dc4ffc69e8b": Object {
+    "apigatewaysqsRestApiDeployment823C310Bb3eb8381f81a14298ee8e133d94084e4": Object {
       "DependsOn": Array [
         "apigatewaysqsRestApiGET13C64342",
         "apigatewaysqsRestApimessageDELETE46195B92",
@@ -856,10 +856,10 @@ Object {
               "Arn",
             ],
           },
-          "Format": "$context.identity.sourceIp $context.identity.caller $context.identity.user [$context.requestTime] \\"$context.httpMethod $context.resourcePath $context.protocol\\" $context.status $context.responseLength $context.requestId",
+          "Format": "{\\"requestId\\":\\"$context.requestId\\",\\"ip\\":\\"$context.identity.sourceIp\\",\\"user\\":\\"$context.identity.user\\",\\"caller\\":\\"$context.identity.caller\\",\\"requestTime\\":\\"$context.requestTime\\",\\"httpMethod\\":\\"$context.httpMethod\\",\\"resourcePath\\":\\"$context.resourcePath\\",\\"status\\":\\"$context.status\\",\\"protocol\\":\\"$context.protocol\\",\\"responseLength\\":\\"$context.responseLength\\"}",
         },
         "DeploymentId": Object {
-          "Ref": "apigatewaysqsRestApiDeployment823C310Bb49e111d67a99651ecb38dc4ffc69e8b",
+          "Ref": "apigatewaysqsRestApiDeployment823C310Bb3eb8381f81a14298ee8e133d94084e4",
         },
         "MethodSettings": Array [
           Object {
@@ -927,7 +927,7 @@ Object {
                 "/",
                 Object {
                   "Fn::GetAtt": Array [
-                    "queue276F7297",
+                    "apigatewaysqsqueueE186B895",
                     "QueueName",
                   ],
                 },
@@ -1012,7 +1012,7 @@ Object {
                 "/",
                 Object {
                   "Fn::GetAtt": Array [
-                    "queue276F7297",
+                    "apigatewaysqsqueueE186B895",
                     "QueueName",
                   ],
                 },
@@ -1128,7 +1128,7 @@ Object {
                 "/",
                 Object {
                   "Fn::GetAtt": Array [
-                    "queue276F7297",
+                    "apigatewaysqsqueueE186B895",
                     "QueueName",
                   ],
                 },
@@ -1190,7 +1190,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "EncryptionKey1B843E66",
+                  "apigatewaysqsEncryptionKey4A698F7C",
                   "Arn",
                 ],
               },
@@ -1200,7 +1200,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "queue276F7297",
+                  "apigatewaysqsqueueE186B895",
                   "Arn",
                 ],
               },
@@ -1210,7 +1210,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "queue276F7297",
+                  "apigatewaysqsqueueE186B895",
                   "Arn",
                 ],
               },
@@ -1220,7 +1220,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "queue276F7297",
+                  "apigatewaysqsqueueE186B895",
                   "Arn",
                 ],
               },
@@ -1237,29 +1237,29 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
-    "deadLetterQueue3F848E28": Object {
+    "apigatewaysqsdeadLetterQueue25B510FA": Object {
       "Properties": Object {
         "KmsMasterKeyId": Object {
           "Fn::GetAtt": Array [
-            "EncryptionKey1B843E66",
+            "apigatewaysqsEncryptionKey4A698F7C",
             "Arn",
           ],
         },
       },
       "Type": "AWS::SQS::Queue",
     },
-    "queue276F7297": Object {
+    "apigatewaysqsqueueE186B895": Object {
       "Properties": Object {
         "KmsMasterKeyId": Object {
           "Fn::GetAtt": Array [
-            "EncryptionKey1B843E66",
+            "apigatewaysqsEncryptionKey4A698F7C",
             "Arn",
           ],
         },
         "RedrivePolicy": Object {
           "deadLetterTargetArn": Object {
             "Fn::GetAtt": Array [
-              "deadLetterQueue3F848E28",
+              "apigatewaysqsdeadLetterQueue25B510FA",
               "Arn",
             ],
           },
@@ -1303,7 +1303,12 @@ Object {
     },
   },
   "Resources": Object {
-    "EncryptionKey1B843E66": Object {
+    "apigatewaysqsApiAccessLogGroup4D14D1D7": Object {
+      "DeletionPolicy": "Retain",
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "apigatewaysqsEncryptionKey4A698F7C": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
         "EnableKeyRotation": true,
@@ -1371,11 +1376,6 @@ Object {
         },
       },
       "Type": "AWS::KMS::Key",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "apigatewaysqsApiAccessLogGroup4D14D1D7": Object {
-      "DeletionPolicy": "Retain",
-      "Type": "AWS::Logs::LogGroup",
       "UpdateReplacePolicy": "Retain",
     },
     "apigatewaysqsLambdaRestApiAccount8FA59342": Object {
@@ -1458,7 +1458,7 @@ Object {
       },
       "Type": "AWS::ApiGateway::RestApi",
     },
-    "apigatewaysqsRestApiDeployment823C310B94660621187ecc4f60bbf8643bc7537d": Object {
+    "apigatewaysqsRestApiDeployment823C310B81c8c99dceff06c656282a644dc22b99": Object {
       "DependsOn": Array [
         "apigatewaysqsRestApiGET13C64342",
         "apigatewaysqsRestApimessageC2D606D3",
@@ -1490,10 +1490,10 @@ Object {
               "Arn",
             ],
           },
-          "Format": "$context.identity.sourceIp $context.identity.caller $context.identity.user [$context.requestTime] \\"$context.httpMethod $context.resourcePath $context.protocol\\" $context.status $context.responseLength $context.requestId",
+          "Format": "{\\"requestId\\":\\"$context.requestId\\",\\"ip\\":\\"$context.identity.sourceIp\\",\\"user\\":\\"$context.identity.user\\",\\"caller\\":\\"$context.identity.caller\\",\\"requestTime\\":\\"$context.requestTime\\",\\"httpMethod\\":\\"$context.httpMethod\\",\\"resourcePath\\":\\"$context.resourcePath\\",\\"status\\":\\"$context.status\\",\\"protocol\\":\\"$context.protocol\\",\\"responseLength\\":\\"$context.responseLength\\"}",
         },
         "DeploymentId": Object {
-          "Ref": "apigatewaysqsRestApiDeployment823C310B94660621187ecc4f60bbf8643bc7537d",
+          "Ref": "apigatewaysqsRestApiDeployment823C310B81c8c99dceff06c656282a644dc22b99",
         },
         "MethodSettings": Array [
           Object {
@@ -1561,7 +1561,7 @@ Object {
                 "/",
                 Object {
                   "Fn::GetAtt": Array [
-                    "queue276F7297",
+                    "apigatewaysqsqueueE186B895",
                     "QueueName",
                   ],
                 },
@@ -1657,7 +1657,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "EncryptionKey1B843E66",
+                  "apigatewaysqsEncryptionKey4A698F7C",
                   "Arn",
                 ],
               },
@@ -1667,7 +1667,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "queue276F7297",
+                  "apigatewaysqsqueueE186B895",
                   "Arn",
                 ],
               },
@@ -1684,29 +1684,29 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
-    "deadLetterQueue3F848E28": Object {
+    "apigatewaysqsdeadLetterQueue25B510FA": Object {
       "Properties": Object {
         "KmsMasterKeyId": Object {
           "Fn::GetAtt": Array [
-            "EncryptionKey1B843E66",
+            "apigatewaysqsEncryptionKey4A698F7C",
             "Arn",
           ],
         },
       },
       "Type": "AWS::SQS::Queue",
     },
-    "queue276F7297": Object {
+    "apigatewaysqsqueueE186B895": Object {
       "Properties": Object {
         "KmsMasterKeyId": Object {
           "Fn::GetAtt": Array [
-            "EncryptionKey1B843E66",
+            "apigatewaysqsEncryptionKey4A698F7C",
             "Arn",
           ],
         },
         "RedrivePolicy": Object {
           "deadLetterTargetArn": Object {
             "Fn::GetAtt": Array [
-              "deadLetterQueue3F848E28",
+              "apigatewaysqsdeadLetterQueue25B510FA",
               "Arn",
             ],
           },

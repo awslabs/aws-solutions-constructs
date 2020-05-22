@@ -54,7 +54,14 @@ export interface CloudFrontToApiGatewayToLambdaProps {
    *
    * @default - Default props are used
    */
-  readonly cloudFrontDistributionProps?: cloudfront.CloudFrontWebDistributionProps
+  readonly cloudFrontDistributionProps?: cloudfront.CloudFrontWebDistributionProps | any,
+  /**
+   * Optional user provided props to turn on/off the automatic injection of best practice HTTP
+   * security headers in all resonses from cloudfront
+   *
+   * @default - true
+   */
+  readonly insertHttpSecurityHeaders?: boolean;
 }
 
 export class CloudFrontToApiGatewayToLambda extends Construct {
@@ -73,7 +80,7 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
   constructor(scope: Construct, id: string, props: CloudFrontToApiGatewayToLambdaProps) {
     super(scope, id);
 
-    this.fn = defaults.buildLambdaFunction(scope, {
+    this.fn = defaults.buildLambdaFunction(this, {
       deployLambda: props.deployLambda,
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps
@@ -83,14 +90,15 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
 
     const apiCloudfront: CloudFrontToApiGateway = new CloudFrontToApiGateway(this, 'CloudFrontToApiGateway', {
       existingApiGatewayObj: this.api,
-      cloudFrontDistributionProps: props.cloudFrontDistributionProps
+      cloudFrontDistributionProps: props.cloudFrontDistributionProps,
+      insertHttpSecurityHeaders: props.insertHttpSecurityHeaders
     });
 
     this.cloudfront = apiCloudfront.cloudFrontWebDistribution();
   }
 
   /**
-   * @summary Retruns an instance of cloudfront.CloudFrontWebDistribution created by the construct.
+   * @summary Returns an instance of cloudfront.CloudFrontWebDistribution created by the construct.
    * @returns {cloudfront.CloudFrontWebDistribution} Instance of CloudFrontWebDistribution created by the construct
    * @since 0.8.0
    * @access public
@@ -100,7 +108,7 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of api.RestApi created by the construct.
+   * @summary Returns an instance of api.RestApi created by the construct.
    * @returns {api.RestApi} Instance of RestApi created by the construct
    * @since 0.8.0
    * @access public
@@ -110,7 +118,7 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of lambda.Function created by the construct.
+   * @summary Returns an instance of lambda.Function created by the construct.
    * @returns {lambda.Function} Instance of Function created by the construct
    * @since 0.8.0
    * @access public

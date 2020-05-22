@@ -70,7 +70,7 @@ test('check lambda function properties for deploy: true', () => {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": [
-        "LambdaFunctionServiceRole0C4CDE0B",
+        "testlambdadynamodbstackLambdaFunctionServiceRole758347A1",
         "Arn"
       ]
     },
@@ -290,7 +290,7 @@ test('check deploy = true and no prop', () => {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": [
-        "LambdaFunctionServiceRole0C4CDE0B",
+        "testiotlambdastackLambdaFunctionServiceRoleF72A85A9",
         "Arn"
       ]
     },

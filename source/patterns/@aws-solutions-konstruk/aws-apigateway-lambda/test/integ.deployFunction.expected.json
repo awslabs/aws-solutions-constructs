@@ -1,15 +1,7 @@
 {
   "Description": "Integration Test for aws-apigateway-lambda",
   "Resources": {
-    "testapigatewaylambdaApiAccessLogGroupEB3253A2": {
-      "Type": "AWS::Logs::LogGroup",
-      "Properties": {
-        "RetentionInDays": 731
-      },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
-    },
-    "LambdaFunctionServiceRole0C4CDE0B": {
+    "testapigatewaylambdaLambdaFunctionServiceRole5CD2E9F7": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -60,7 +52,7 @@
         ]
       }
     },
-    "LambdaFunctionBF21E41F": {
+    "testapigatewaylambdaLambdaFunction18FF222F": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -104,7 +96,7 @@
         "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
-            "LambdaFunctionServiceRole0C4CDE0B",
+            "testapigatewaylambdaLambdaFunctionServiceRole5CD2E9F7",
             "Arn"
           ]
         },
@@ -116,7 +108,7 @@
         }
       },
       "DependsOn": [
-        "LambdaFunctionServiceRole0C4CDE0B"
+        "testapigatewaylambdaLambdaFunctionServiceRole5CD2E9F7"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -129,7 +121,12 @@
         }
       }
     },
-    "RestApi0C43BF4B": {
+    "testapigatewaylambdaApiAccessLogGroupEB3253A2": {
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "testapigatewaylambdaLambdaRestApiE957E944": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
         "EndpointConfiguration": {
@@ -137,38 +134,38 @@
             "EDGE"
           ]
         },
-        "Name": "RestApi"
+        "Name": "LambdaRestApi"
       }
     },
-    "RestApiDeployment180EC503c4d635ab14db0b242903e058a000f3f8": {
+    "testapigatewaylambdaLambdaRestApiDeployment85334BB3a1765c45928980e423727978265730d1": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
-          "Ref": "RestApi0C43BF4B"
+          "Ref": "testapigatewaylambdaLambdaRestApiE957E944"
         },
         "Description": "Automatically created by the RestApi construct"
       },
       "DependsOn": [
-        "RestApiproxyANY1786B242",
-        "RestApiproxyC95856DD",
-        "RestApiANYA7C1DC94"
+        "testapigatewaylambdaLambdaRestApiproxyANYF6150927",
+        "testapigatewaylambdaLambdaRestApiproxy2C2C544E",
+        "testapigatewaylambdaLambdaRestApiANY1FACA749"
       ],
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
             {
               "id": "W45",
-              "reason": "ApiGateway does have access logging configured as part of AWS::ApiGateway::Stage."
+              "reason": "ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checkes for it in AWS::ApiGateway::Deployment resource"
             }
           ]
         }
       }
     },
-    "RestApiDeploymentStageprod3855DE66": {
+    "testapigatewaylambdaLambdaRestApiDeploymentStageprod4EBF7247": {
       "Type": "AWS::ApiGateway::Stage",
       "Properties": {
         "RestApiId": {
-          "Ref": "RestApi0C43BF4B"
+          "Ref": "testapigatewaylambdaLambdaRestApiE957E944"
         },
         "AccessLogSetting": {
           "DestinationArn": {
@@ -177,10 +174,10 @@
               "Arn"
             ]
           },
-          "Format": "$context.identity.sourceIp $context.identity.caller $context.identity.user [$context.requestTime] \"$context.httpMethod $context.resourcePath $context.protocol\" $context.status $context.responseLength $context.requestId"
+          "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "RestApiDeployment180EC503c4d635ab14db0b242903e058a000f3f8"
+          "Ref": "testapigatewaylambdaLambdaRestApiDeployment85334BB3a1765c45928980e423727978265730d1"
         },
         "MethodSettings": [
           {
@@ -193,28 +190,28 @@
         "StageName": "prod"
       }
     },
-    "RestApiproxyC95856DD": {
+    "testapigatewaylambdaLambdaRestApiproxy2C2C544E": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
           "Fn::GetAtt": [
-            "RestApi0C43BF4B",
+            "testapigatewaylambdaLambdaRestApiE957E944",
             "RootResourceId"
           ]
         },
         "PathPart": "{proxy+}",
         "RestApiId": {
-          "Ref": "RestApi0C43BF4B"
+          "Ref": "testapigatewaylambdaLambdaRestApiE957E944"
         }
       }
     },
-    "RestApiproxyANYApiPermissiontestapigatewaylambdaRestApi54300087ANYproxy2DB4C4FC": {
+    "testapigatewaylambdaLambdaRestApiproxyANYApiPermissiontestapigatewaylambdaLambdaRestApiF9D18CB1ANYproxy7C4BA4BF": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "LambdaFunctionBF21E41F",
+            "testapigatewaylambdaLambdaFunction18FF222F",
             "Arn"
           ]
         },
@@ -237,11 +234,11 @@
               },
               ":",
               {
-                "Ref": "RestApi0C43BF4B"
+                "Ref": "testapigatewaylambdaLambdaRestApiE957E944"
               },
               "/",
               {
-                "Ref": "RestApiDeploymentStageprod3855DE66"
+                "Ref": "testapigatewaylambdaLambdaRestApiDeploymentStageprod4EBF7247"
               },
               "/*/{proxy+}"
             ]
@@ -249,13 +246,13 @@
         }
       }
     },
-    "RestApiproxyANYApiPermissionTesttestapigatewaylambdaRestApi54300087ANYproxy9A552081": {
+    "testapigatewaylambdaLambdaRestApiproxyANYApiPermissionTesttestapigatewaylambdaLambdaRestApiF9D18CB1ANYproxy645DE979": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "LambdaFunctionBF21E41F",
+            "testapigatewaylambdaLambdaFunction18FF222F",
             "Arn"
           ]
         },
@@ -278,7 +275,7 @@
               },
               ":",
               {
-                "Ref": "RestApi0C43BF4B"
+                "Ref": "testapigatewaylambdaLambdaRestApiE957E944"
               },
               "/test-invoke-stage/*/{proxy+}"
             ]
@@ -286,15 +283,15 @@
         }
       }
     },
-    "RestApiproxyANY1786B242": {
+    "testapigatewaylambdaLambdaRestApiproxyANYF6150927": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "ANY",
         "ResourceId": {
-          "Ref": "RestApiproxyC95856DD"
+          "Ref": "testapigatewaylambdaLambdaRestApiproxy2C2C544E"
         },
         "RestApiId": {
-          "Ref": "RestApi0C43BF4B"
+          "Ref": "testapigatewaylambdaLambdaRestApiE957E944"
         },
         "AuthorizationType": "AWS_IAM",
         "Integration": {
@@ -315,7 +312,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "LambdaFunctionBF21E41F",
+                    "testapigatewaylambdaLambdaFunction18FF222F",
                     "Arn"
                   ]
                 },
@@ -326,13 +323,13 @@
         }
       }
     },
-    "RestApiANYApiPermissiontestapigatewaylambdaRestApi54300087ANY87811EBD": {
+    "testapigatewaylambdaLambdaRestApiANYApiPermissiontestapigatewaylambdaLambdaRestApiF9D18CB1ANY2122E1BB": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "LambdaFunctionBF21E41F",
+            "testapigatewaylambdaLambdaFunction18FF222F",
             "Arn"
           ]
         },
@@ -355,11 +352,11 @@
               },
               ":",
               {
-                "Ref": "RestApi0C43BF4B"
+                "Ref": "testapigatewaylambdaLambdaRestApiE957E944"
               },
               "/",
               {
-                "Ref": "RestApiDeploymentStageprod3855DE66"
+                "Ref": "testapigatewaylambdaLambdaRestApiDeploymentStageprod4EBF7247"
               },
               "/*/"
             ]
@@ -367,13 +364,13 @@
         }
       }
     },
-    "RestApiANYApiPermissionTesttestapigatewaylambdaRestApi54300087ANY855753FC": {
+    "testapigatewaylambdaLambdaRestApiANYApiPermissionTesttestapigatewaylambdaLambdaRestApiF9D18CB1ANY647E8305": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "LambdaFunctionBF21E41F",
+            "testapigatewaylambdaLambdaFunction18FF222F",
             "Arn"
           ]
         },
@@ -396,7 +393,7 @@
               },
               ":",
               {
-                "Ref": "RestApi0C43BF4B"
+                "Ref": "testapigatewaylambdaLambdaRestApiE957E944"
               },
               "/test-invoke-stage/*/"
             ]
@@ -404,18 +401,18 @@
         }
       }
     },
-    "RestApiANYA7C1DC94": {
+    "testapigatewaylambdaLambdaRestApiANY1FACA749": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "ANY",
         "ResourceId": {
           "Fn::GetAtt": [
-            "RestApi0C43BF4B",
+            "testapigatewaylambdaLambdaRestApiE957E944",
             "RootResourceId"
           ]
         },
         "RestApiId": {
-          "Ref": "RestApi0C43BF4B"
+          "Ref": "testapigatewaylambdaLambdaRestApiE957E944"
         },
         "AuthorizationType": "AWS_IAM",
         "Integration": {
@@ -436,7 +433,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "LambdaFunctionBF21E41F",
+                    "testapigatewaylambdaLambdaFunction18FF222F",
                     "Arn"
                   ]
                 },
@@ -447,28 +444,23 @@
         }
       }
     },
-    "RestApiUsagePlan6E1C537A": {
+    "testapigatewaylambdaLambdaRestApiUsagePlan658131E3": {
       "Type": "AWS::ApiGateway::UsagePlan",
       "Properties": {
         "ApiStages": [
           {
             "ApiId": {
-              "Ref": "RestApi0C43BF4B"
+              "Ref": "testapigatewaylambdaLambdaRestApiE957E944"
             },
             "Stage": {
-              "Ref": "RestApiDeploymentStageprod3855DE66"
+              "Ref": "testapigatewaylambdaLambdaRestApiDeploymentStageprod4EBF7247"
             },
             "Throttle": {}
           }
         ]
       }
     },
-    "ApiAccessLogGroupCEA70788": {
-      "Type": "AWS::Logs::LogGroup",
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
-    },
-    "LambdaRestApiCloudWatchRoleF339D4E6": {
+    "testapigatewaylambdaLambdaRestApiCloudWatchRole6D45E039": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -523,19 +515,47 @@
         ]
       }
     },
-    "LambdaRestApiAccount": {
+    "testapigatewaylambdaLambdaRestApiAccount0D88B6B8": {
       "Type": "AWS::ApiGateway::Account",
       "Properties": {
         "CloudWatchRoleArn": {
           "Fn::GetAtt": [
-            "LambdaRestApiCloudWatchRoleF339D4E6",
+            "testapigatewaylambdaLambdaRestApiCloudWatchRole6D45E039",
             "Arn"
           ]
         }
       },
       "DependsOn": [
-        "RestApi0C43BF4B"
+        "testapigatewaylambdaLambdaRestApiE957E944"
       ]
+    }
+  },
+  "Outputs": {
+    "testapigatewaylambdaLambdaRestApiEndpoint2EF0B753": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "testapigatewaylambdaLambdaRestApiE957E944"
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region"
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix"
+            },
+            "/",
+            {
+              "Ref": "testapigatewaylambdaLambdaRestApiDeploymentStageprod4EBF7247"
+            },
+            "/"
+          ]
+        ]
+      }
     }
   },
   "Parameters": {
@@ -550,34 +570,6 @@
     "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420ArtifactHashA71E92AD": {
       "Type": "String",
       "Description": "Artifact hash for asset \"8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420\""
-    }
-  },
-  "Outputs": {
-    "RestApiEndpoint0551178A": {
-      "Value": {
-        "Fn::Join": [
-          "",
-          [
-            "https://",
-            {
-              "Ref": "RestApi0C43BF4B"
-            },
-            ".execute-api.",
-            {
-              "Ref": "AWS::Region"
-            },
-            ".",
-            {
-              "Ref": "AWS::URLSuffix"
-            },
-            "/",
-            {
-              "Ref": "RestApiDeploymentStageprod3855DE66"
-            },
-            "/"
-          ]
-        ]
-      }
     }
   }
 }

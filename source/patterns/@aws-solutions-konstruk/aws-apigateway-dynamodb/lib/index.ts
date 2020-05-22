@@ -19,7 +19,7 @@ import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import { overrideProps } from '@aws-solutions-konstruk/core';
 
 /**
- * @summary The properties for the ApiGatewayToSqs class.
+ * @summary The properties for the ApiGatewayToDynamoDB class.
  */
 export interface ApiGatewayToDynamoDBProps {
   /**
@@ -87,7 +87,7 @@ export class ApiGatewayToDynamoDB extends Construct {
   private apiGateway: api.RestApi;
 
   /**
-   * @summary Constructs a new instance of the ApiGatewayToSqs class.
+   * @summary Constructs a new instance of the ApiGatewayToDynamoDB class.
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {CloudFrontToApiGatewayToLambdaProps} props - user provided props for the construct.
@@ -215,7 +215,7 @@ export class ApiGatewayToDynamoDB extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of dynamodb.Table created by the construct.
+   * @summary Returns an instance of dynamodb.Table created by the construct.
    * @returns {dynamodb.Table} Instance of dynamodb.Table created by the construct
    * @since 0.8.0
    * @access public

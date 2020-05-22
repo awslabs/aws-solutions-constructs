@@ -105,6 +105,99 @@ test('check existing bucket', () => {
 
 });
 
+test('test cloudfront with custom domain names', () => {
+  const stack = new cdk.Stack();
+
+  const props: CloudFrontToS3Props = {
+    deployBucket: true,
+    cloudFrontDistributionProps: {
+      aliasConfiguration: {
+        acmCertRef: '/acm/mycertificate',
+        names: ['mydomains']
+      }
+    }
+  };
+
+  new CloudFrontToS3(stack, 'test-cloudfront-s3', props);
+
+  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+        Aliases: [
+            "mydomains"
+        ],
+        DefaultCacheBehavior: {
+          AllowedMethods: [
+            "GET",
+            "HEAD"
+          ],
+          CachedMethods: [
+            "GET",
+            "HEAD"
+          ],
+          Compress: true,
+          ForwardedValues: {
+            Cookies: {
+              Forward: "none"
+            },
+            QueryString: false
+          },
+          LambdaFunctionAssociations: [
+            {
+              EventType: "origin-response",
+              LambdaFunctionARN: {
+                Ref: "testcloudfronts3SetHttpSecurityHeadersVersionF1C744BB"
+              }
+            }
+          ],
+          TargetOriginId: "origin1",
+          ViewerProtocolPolicy: "redirect-to-https"
+        },
+        DefaultRootObject: "index.html",
+        Enabled: true,
+        HttpVersion: "http2",
+        IPV6Enabled: true,
+        Logging: {
+          Bucket: {
+            "Fn::GetAtt": [
+              "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
+              "RegionalDomainName"
+            ]
+          },
+          IncludeCookies: false
+        },
+        Origins: [
+          {
+            DomainName: {
+              "Fn::GetAtt": [
+                "testcloudfronts3S3BucketE0C5F76E",
+                "RegionalDomainName"
+              ]
+            },
+            Id: "origin1",
+            S3OriginConfig: {
+                OriginAccessIdentity: {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "origin-access-identity/cloudfront/",
+                      {
+                        Ref: "testcloudfronts3CloudFrontOriginAccessIdentity2C681839"
+                      }
+                    ]
+                  ]
+                }
+            }
+          }
+        ],
+        PriceClass: "PriceClass_100",
+        ViewerCertificate: {
+          AcmCertificateArn: "/acm/mycertificate",
+          SslSupportMethod: "sni-only"
+        }
+      }
+  });
+});
+
 test('check exception for Missing existingObj from props for deploy = false', () => {
   const stack = new cdk.Stack();
 

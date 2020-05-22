@@ -12,6 +12,7 @@
  */
 
 import * as deepmerge from 'deepmerge';
+import { flagOverriddenDefaults } from './override-warning-service';
 
 function isObject(val: object) {
     return val != null && typeof val === 'object'
@@ -58,17 +59,21 @@ function overwriteMerge(target: any[], source: any[]) {
 }
 
 export function overrideProps(DefaultProps: object, userProps: object, concatArray: boolean = false): any {
-    // Override the sensible defaults with user provided props
-
-    if (concatArray) {
-      return deepmerge(DefaultProps, userProps, {
-          arrayMerge: combineMerge,
-          isMergeableObject: isPlainObject
-      });
-    } else {
-      return deepmerge(DefaultProps, userProps, {
-        arrayMerge: overwriteMerge,
-        isMergeableObject: isPlainObject
-      });
-    }
+  // Notify the user via console output if defaults are overridden
+  const overrideWarningsEnabled = (process.env.overrideWarningsEnabled !== 'false');
+  if (overrideWarningsEnabled) {
+    flagOverriddenDefaults(DefaultProps, userProps);
+  }
+  // Override the sensible defaults with user provided props
+  if (concatArray) {
+    return deepmerge(DefaultProps, userProps, {
+      arrayMerge: combineMerge,
+      isMergeableObject: isPlainObject
+    });
+  } else {
+    return deepmerge(DefaultProps, userProps, {
+      arrayMerge: overwriteMerge,
+      isMergeableObject: isPlainObject
+    });
+  }
 }

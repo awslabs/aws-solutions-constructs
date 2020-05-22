@@ -38,7 +38,7 @@ export function buildKinesisStream(scope: cdk.Construct, props?: BuildKinesisStr
     props = (props === undefined) ? {} : props;
     // Setup the stream properties
     let kinesisStreamProps;
-    if (props.hasOwnProperty('kinesisStreamProps')) {
+    if (props.kinesisStreamProps) {
         // If property overrides have been provided, incorporate them and deploy
         kinesisStreamProps = overrideProps(DefaultStreamProps, props.kinesisStreamProps);
     } else {

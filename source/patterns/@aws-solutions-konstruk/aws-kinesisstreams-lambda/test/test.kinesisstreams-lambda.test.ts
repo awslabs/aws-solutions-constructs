@@ -20,23 +20,17 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------
-// Pattern deployment
+// Pattern minimal deployment
 // --------------------------------------------------------------
-test('Pattern deployment', () => {
+test('Pattern minimal deployment', () => {
     // Initial setup
     const stack = new Stack();
     const props: KinesisStreamsToLambdaProps = {
-        encryptionKeyProps: {},
-        kinesisStreamProps: {},
         deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
             code: lambda.Code.asset(`${__dirname}/lambda`)
-        },
-        eventSourceProps: {
-            startingPosition: StartingPosition.TRIM_HORIZON,
-            batchSize: 1
         }
     };
     new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);

@@ -3,14 +3,14 @@
 exports[`snapshot test CognitoToApiGatewayToLambda default params 1`] = `
 Object {
   "Outputs": Object {
-    "RestApiEndpoint0551178A": Object {
+    "testcognitoapigatewaylambdaLambdaRestApiEndpointBF0175D7": Object {
       "Value": Object {
         "Fn::Join": Array [
           "",
           Array [
             "https://",
             Object {
-              "Ref": "RestApi0C43BF4B",
+              "Ref": "testcognitoapigatewaylambdaLambdaRestApi2E272431",
             },
             ".execute-api.",
             Object {
@@ -22,7 +22,7 @@ Object {
             },
             "/",
             Object {
-              "Ref": "RestApiDeploymentStageprod3855DE66",
+              "Ref": "testcognitoapigatewaylambdaLambdaRestApiDeploymentStageprod850C17D1",
             },
             "/",
           ],
@@ -45,50 +45,117 @@ Object {
     },
   },
   "Resources": Object {
-    "ApiAccessLogGroupCEA70788": Object {
+    "testcognitoapigatewaylambdaApiAccessLogGroup9D0D0917": Object {
       "DeletionPolicy": "Retain",
       "Type": "AWS::Logs::LogGroup",
       "UpdateReplacePolicy": "Retain",
     },
-    "CognitoAuthorizer": Object {
+    "testcognitoapigatewaylambdaCognitoAuthorizer170CACC9": Object {
       "Properties": Object {
         "IdentitySource": "method.request.header.Authorization",
         "Name": "authorizer",
         "ProviderARNs": Array [
           Object {
             "Fn::GetAtt": Array [
-              "CognitoUserPool53E37E69",
+              "testcognitoapigatewaylambdaCognitoUserPoolD5E74489",
               "Arn",
             ],
           },
         ],
         "RestApiId": Object {
-          "Ref": "RestApi0C43BF4B",
+          "Ref": "testcognitoapigatewaylambdaLambdaRestApi2E272431",
         },
         "Type": "COGNITO_USER_POOLS",
       },
       "Type": "AWS::ApiGateway::Authorizer",
     },
-    "CognitoUserPool53E37E69": Object {
-      "Properties": Object {
-        "LambdaConfig": Object {},
-        "UserPoolAddOns": Object {
-          "AdvancedSecurityMode": "ENFORCED",
-        },
-      },
-      "Type": "AWS::Cognito::UserPool",
-    },
-    "CognitoUserPoolClient5AB59AE4": Object {
+    "testcognitoapigatewaylambdaCognitoUserPoolClientDA118627": Object {
       "Properties": Object {
         "UserPoolId": Object {
-          "Ref": "CognitoUserPool53E37E69",
+          "Ref": "testcognitoapigatewaylambdaCognitoUserPoolD5E74489",
         },
       },
       "Type": "AWS::Cognito::UserPoolClient",
     },
-    "LambdaFunctionBF21E41F": Object {
+    "testcognitoapigatewaylambdaCognitoUserPoolD5E74489": Object {
+      "Properties": Object {
+        "AdminCreateUserConfig": Object {
+          "AllowAdminCreateUserOnly": true,
+        },
+        "EmailVerificationMessage": "The verification code to your new account is {####}",
+        "EmailVerificationSubject": "Verify your new account",
+        "SmsConfiguration": Object {
+          "ExternalId": "testcognitoapigatewaylambdaCognitoUserPoolF2D785A1",
+          "SnsCallerArn": Object {
+            "Fn::GetAtt": Array [
+              "testcognitoapigatewaylambdaCognitoUserPoolsmsRoleB297EE96",
+              "Arn",
+            ],
+          },
+        },
+        "SmsVerificationMessage": "The verification code to your new account is {####}",
+        "UserPoolAddOns": Object {
+          "AdvancedSecurityMode": "ENFORCED",
+        },
+        "VerificationMessageTemplate": Object {
+          "DefaultEmailOption": "CONFIRM_WITH_CODE",
+          "EmailMessage": "The verification code to your new account is {####}",
+          "EmailSubject": "Verify your new account",
+          "SmsMessage": "The verification code to your new account is {####}",
+        },
+      },
+      "Type": "AWS::Cognito::UserPool",
+    },
+    "testcognitoapigatewaylambdaCognitoUserPoolsmsRoleB297EE96": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W11",
+              "reason": "Allowing * resource on permissions policy since its used by Cognito to send SMS messages via sns:Publish",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Condition": Object {
+                "StringEquals": Object {
+                  "sts:ExternalId": "testcognitoapigatewaylambdaCognitoUserPoolF2D785A1",
+                },
+              },
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "cognito-idp.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": "sns:Publish",
+                  "Effect": "Allow",
+                  "Resource": "*",
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "sns-publish",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testcognitoapigatewaylambdaLambdaFunction0C8EAC23": Object {
       "DependsOn": Array [
-        "LambdaFunctionServiceRole0C4CDE0B",
+        "testcognitoapigatewaylambdaLambdaFunctionServiceRole943D8510",
       ],
       "Metadata": Object {
         "cfn_nag": Object {
@@ -147,7 +214,7 @@ Object {
         "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "LambdaFunctionServiceRole0C4CDE0B",
+            "testcognitoapigatewaylambdaLambdaFunctionServiceRole943D8510",
             "Arn",
           ],
         },
@@ -155,7 +222,7 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "LambdaFunctionServiceRole0C4CDE0B": Object {
+    "testcognitoapigatewaylambdaLambdaFunctionServiceRole943D8510": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -206,21 +273,156 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "LambdaRestApiAccount": Object {
+    "testcognitoapigatewaylambdaLambdaRestApi2E272431": Object {
+      "Properties": Object {
+        "EndpointConfiguration": Object {
+          "Types": Array [
+            "EDGE",
+          ],
+        },
+        "Name": "LambdaRestApi",
+      },
+      "Type": "AWS::ApiGateway::RestApi",
+    },
+    "testcognitoapigatewaylambdaLambdaRestApiANY1BCFE40A": Object {
+      "Properties": Object {
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": Object {
+          "Ref": "testcognitoapigatewaylambdaCognitoAuthorizer170CACC9",
+        },
+        "HttpMethod": "ANY",
+        "Integration": Object {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                Object {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testcognitoapigatewaylambdaLambdaFunction0C8EAC23",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": Object {
+          "Fn::GetAtt": Array [
+            "testcognitoapigatewaylambdaLambdaRestApi2E272431",
+            "RootResourceId",
+          ],
+        },
+        "RestApiId": Object {
+          "Ref": "testcognitoapigatewaylambdaLambdaRestApi2E272431",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "testcognitoapigatewaylambdaLambdaRestApiANYApiPermissionTesttestcognitoapigatewaylambdaLambdaRestApi7DADE73DANY38E57350": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "testcognitoapigatewaylambdaLambdaFunction0C8EAC23",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "testcognitoapigatewaylambdaLambdaRestApi2E272431",
+              },
+              "/test-invoke-stage/*/",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "testcognitoapigatewaylambdaLambdaRestApiANYApiPermissiontestcognitoapigatewaylambdaLambdaRestApi7DADE73DANYCE72E572": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "testcognitoapigatewaylambdaLambdaFunction0C8EAC23",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "testcognitoapigatewaylambdaLambdaRestApi2E272431",
+              },
+              "/",
+              Object {
+                "Ref": "testcognitoapigatewaylambdaLambdaRestApiDeploymentStageprod850C17D1",
+              },
+              "/*/",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "testcognitoapigatewaylambdaLambdaRestApiAccountD303BB82": Object {
       "DependsOn": Array [
-        "RestApi0C43BF4B",
+        "testcognitoapigatewaylambdaLambdaRestApi2E272431",
       ],
       "Properties": Object {
         "CloudWatchRoleArn": Object {
           "Fn::GetAtt": Array [
-            "LambdaRestApiCloudWatchRoleF339D4E6",
+            "testcognitoapigatewaylambdaLambdaRestApiCloudWatchRole0AC7FF3B",
             "Arn",
           ],
         },
       },
       "Type": "AWS::ApiGateway::Account",
     },
-    "LambdaRestApiCloudWatchRoleF339D4E6": Object {
+    "testcognitoapigatewaylambdaLambdaRestApiCloudWatchRole0AC7FF3B": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -275,146 +477,11 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "RestApi0C43BF4B": Object {
-      "Properties": Object {
-        "EndpointConfiguration": Object {
-          "Types": Array [
-            "EDGE",
-          ],
-        },
-        "Name": "RestApi",
-      },
-      "Type": "AWS::ApiGateway::RestApi",
-    },
-    "RestApiANYA7C1DC94": Object {
-      "Properties": Object {
-        "AuthorizationType": "COGNITO_USER_POOLS",
-        "AuthorizerId": Object {
-          "Ref": "CognitoAuthorizer",
-        },
-        "HttpMethod": "ANY",
-        "Integration": Object {
-          "IntegrationHttpMethod": "POST",
-          "Type": "AWS_PROXY",
-          "Uri": Object {
-            "Fn::Join": Array [
-              "",
-              Array [
-                "arn:",
-                Object {
-                  "Ref": "AWS::Partition",
-                },
-                ":apigateway:",
-                Object {
-                  "Ref": "AWS::Region",
-                },
-                ":lambda:path/2015-03-31/functions/",
-                Object {
-                  "Fn::GetAtt": Array [
-                    "LambdaFunctionBF21E41F",
-                    "Arn",
-                  ],
-                },
-                "/invocations",
-              ],
-            ],
-          },
-        },
-        "ResourceId": Object {
-          "Fn::GetAtt": Array [
-            "RestApi0C43BF4B",
-            "RootResourceId",
-          ],
-        },
-        "RestApiId": Object {
-          "Ref": "RestApi0C43BF4B",
-        },
-      },
-      "Type": "AWS::ApiGateway::Method",
-    },
-    "RestApiANYApiPermissionRestApiANY3A99B4EE": Object {
-      "Properties": Object {
-        "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
-            "LambdaFunctionBF21E41F",
-            "Arn",
-          ],
-        },
-        "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
-            "",
-            Array [
-              "arn:",
-              Object {
-                "Ref": "AWS::Partition",
-              },
-              ":execute-api:",
-              Object {
-                "Ref": "AWS::Region",
-              },
-              ":",
-              Object {
-                "Ref": "AWS::AccountId",
-              },
-              ":",
-              Object {
-                "Ref": "RestApi0C43BF4B",
-              },
-              "/",
-              Object {
-                "Ref": "RestApiDeploymentStageprod3855DE66",
-              },
-              "/*/",
-            ],
-          ],
-        },
-      },
-      "Type": "AWS::Lambda::Permission",
-    },
-    "RestApiANYApiPermissionTestRestApiANY79BD91F2": Object {
-      "Properties": Object {
-        "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
-            "LambdaFunctionBF21E41F",
-            "Arn",
-          ],
-        },
-        "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
-            "",
-            Array [
-              "arn:",
-              Object {
-                "Ref": "AWS::Partition",
-              },
-              ":execute-api:",
-              Object {
-                "Ref": "AWS::Region",
-              },
-              ":",
-              Object {
-                "Ref": "AWS::AccountId",
-              },
-              ":",
-              Object {
-                "Ref": "RestApi0C43BF4B",
-              },
-              "/test-invoke-stage/*/",
-            ],
-          ],
-        },
-      },
-      "Type": "AWS::Lambda::Permission",
-    },
-    "RestApiDeployment180EC503c4d635ab14db0b242903e058a000f3f8": Object {
+    "testcognitoapigatewaylambdaLambdaRestApiDeployment96AFD8CA5d8e3257747e529ac6f9e48e8d20548e": Object {
       "DependsOn": Array [
-        "RestApiproxyANY1786B242",
-        "RestApiproxyC95856DD",
-        "RestApiANYA7C1DC94",
+        "testcognitoapigatewaylambdaLambdaRestApiproxyANY18BA6246",
+        "testcognitoapigatewaylambdaLambdaRestApiproxy23E1DA20",
+        "testcognitoapigatewaylambdaLambdaRestApiANY1BCFE40A",
       ],
       "Metadata": Object {
         "cfn_nag": Object {
@@ -429,24 +496,24 @@ Object {
       "Properties": Object {
         "Description": "Automatically created by the RestApi construct",
         "RestApiId": Object {
-          "Ref": "RestApi0C43BF4B",
+          "Ref": "testcognitoapigatewaylambdaLambdaRestApi2E272431",
         },
       },
       "Type": "AWS::ApiGateway::Deployment",
     },
-    "RestApiDeploymentStageprod3855DE66": Object {
+    "testcognitoapigatewaylambdaLambdaRestApiDeploymentStageprod850C17D1": Object {
       "Properties": Object {
         "AccessLogSetting": Object {
           "DestinationArn": Object {
             "Fn::GetAtt": Array [
-              "ApiAccessLogGroupCEA70788",
+              "testcognitoapigatewaylambdaApiAccessLogGroup9D0D0917",
               "Arn",
             ],
           },
-          "Format": "$context.identity.sourceIp $context.identity.caller $context.identity.user [$context.requestTime] \\"$context.httpMethod $context.resourcePath $context.protocol\\" $context.status $context.responseLength $context.requestId",
+          "Format": "{\\"requestId\\":\\"$context.requestId\\",\\"ip\\":\\"$context.identity.sourceIp\\",\\"user\\":\\"$context.identity.user\\",\\"caller\\":\\"$context.identity.caller\\",\\"requestTime\\":\\"$context.requestTime\\",\\"httpMethod\\":\\"$context.httpMethod\\",\\"resourcePath\\":\\"$context.resourcePath\\",\\"status\\":\\"$context.status\\",\\"protocol\\":\\"$context.protocol\\",\\"responseLength\\":\\"$context.responseLength\\"}",
         },
         "DeploymentId": Object {
-          "Ref": "RestApiDeployment180EC503c4d635ab14db0b242903e058a000f3f8",
+          "Ref": "testcognitoapigatewaylambdaLambdaRestApiDeployment96AFD8CA5d8e3257747e529ac6f9e48e8d20548e",
         },
         "MethodSettings": Array [
           Object {
@@ -457,21 +524,21 @@ Object {
           },
         ],
         "RestApiId": Object {
-          "Ref": "RestApi0C43BF4B",
+          "Ref": "testcognitoapigatewaylambdaLambdaRestApi2E272431",
         },
         "StageName": "prod",
       },
       "Type": "AWS::ApiGateway::Stage",
     },
-    "RestApiUsagePlan6E1C537A": Object {
+    "testcognitoapigatewaylambdaLambdaRestApiUsagePlan75371896": Object {
       "Properties": Object {
         "ApiStages": Array [
           Object {
             "ApiId": Object {
-              "Ref": "RestApi0C43BF4B",
+              "Ref": "testcognitoapigatewaylambdaLambdaRestApi2E272431",
             },
             "Stage": Object {
-              "Ref": "RestApiDeploymentStageprod3855DE66",
+              "Ref": "testcognitoapigatewaylambdaLambdaRestApiDeploymentStageprod850C17D1",
             },
             "Throttle": Object {},
           },
@@ -479,11 +546,26 @@ Object {
       },
       "Type": "AWS::ApiGateway::UsagePlan",
     },
-    "RestApiproxyANY1786B242": Object {
+    "testcognitoapigatewaylambdaLambdaRestApiproxy23E1DA20": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Fn::GetAtt": Array [
+            "testcognitoapigatewaylambdaLambdaRestApi2E272431",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "{proxy+}",
+        "RestApiId": Object {
+          "Ref": "testcognitoapigatewaylambdaLambdaRestApi2E272431",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "testcognitoapigatewaylambdaLambdaRestApiproxyANY18BA6246": Object {
       "Properties": Object {
         "AuthorizationType": "COGNITO_USER_POOLS",
         "AuthorizerId": Object {
-          "Ref": "CognitoAuthorizer",
+          "Ref": "testcognitoapigatewaylambdaCognitoAuthorizer170CACC9",
         },
         "HttpMethod": "ANY",
         "Integration": Object {
@@ -504,7 +586,7 @@ Object {
                 ":lambda:path/2015-03-31/functions/",
                 Object {
                   "Fn::GetAtt": Array [
-                    "LambdaFunctionBF21E41F",
+                    "testcognitoapigatewaylambdaLambdaFunction0C8EAC23",
                     "Arn",
                   ],
                 },
@@ -514,20 +596,20 @@ Object {
           },
         },
         "ResourceId": Object {
-          "Ref": "RestApiproxyC95856DD",
+          "Ref": "testcognitoapigatewaylambdaLambdaRestApiproxy23E1DA20",
         },
         "RestApiId": Object {
-          "Ref": "RestApi0C43BF4B",
+          "Ref": "testcognitoapigatewaylambdaLambdaRestApi2E272431",
         },
       },
       "Type": "AWS::ApiGateway::Method",
     },
-    "RestApiproxyANYApiPermissionRestApiANYproxy9C9912F9": Object {
+    "testcognitoapigatewaylambdaLambdaRestApiproxyANYApiPermissionTesttestcognitoapigatewaylambdaLambdaRestApi7DADE73DANYproxyE7ABD170": Object {
       "Properties": Object {
         "Action": "lambda:InvokeFunction",
         "FunctionName": Object {
           "Fn::GetAtt": Array [
-            "LambdaFunctionBF21E41F",
+            "testcognitoapigatewaylambdaLambdaFunction0C8EAC23",
             "Arn",
           ],
         },
@@ -550,48 +632,7 @@ Object {
               },
               ":",
               Object {
-                "Ref": "RestApi0C43BF4B",
-              },
-              "/",
-              Object {
-                "Ref": "RestApiDeploymentStageprod3855DE66",
-              },
-              "/*/{proxy+}",
-            ],
-          ],
-        },
-      },
-      "Type": "AWS::Lambda::Permission",
-    },
-    "RestApiproxyANYApiPermissionTestRestApiANYproxyCB7BC56D": Object {
-      "Properties": Object {
-        "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
-            "LambdaFunctionBF21E41F",
-            "Arn",
-          ],
-        },
-        "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
-            "",
-            Array [
-              "arn:",
-              Object {
-                "Ref": "AWS::Partition",
-              },
-              ":execute-api:",
-              Object {
-                "Ref": "AWS::Region",
-              },
-              ":",
-              Object {
-                "Ref": "AWS::AccountId",
-              },
-              ":",
-              Object {
-                "Ref": "RestApi0C43BF4B",
+                "Ref": "testcognitoapigatewaylambdaLambdaRestApi2E272431",
               },
               "/test-invoke-stage/*/{proxy+}",
             ],
@@ -600,20 +641,46 @@ Object {
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "RestApiproxyC95856DD": Object {
+    "testcognitoapigatewaylambdaLambdaRestApiproxyANYApiPermissiontestcognitoapigatewaylambdaLambdaRestApi7DADE73DANYproxyE8E57826": Object {
       "Properties": Object {
-        "ParentId": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
           "Fn::GetAtt": Array [
-            "RestApi0C43BF4B",
-            "RootResourceId",
+            "testcognitoapigatewaylambdaLambdaFunction0C8EAC23",
+            "Arn",
           ],
         },
-        "PathPart": "{proxy+}",
-        "RestApiId": Object {
-          "Ref": "RestApi0C43BF4B",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "testcognitoapigatewaylambdaLambdaRestApi2E272431",
+              },
+              "/",
+              Object {
+                "Ref": "testcognitoapigatewaylambdaLambdaRestApiDeploymentStageprod850C17D1",
+              },
+              "/*/{proxy+}",
+            ],
+          ],
         },
       },
-      "Type": "AWS::ApiGateway::Resource",
+      "Type": "AWS::Lambda::Permission",
     },
   },
 }

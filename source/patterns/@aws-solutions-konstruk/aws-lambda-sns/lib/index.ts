@@ -84,7 +84,7 @@ export class LambdaToSns extends Construct {
         super(scope, id);
 
         // Setup the Lambda function
-        this.fn = defaults.buildLambdaFunction(scope, {
+        this.fn = defaults.buildLambdaFunction(this, {
             deployLambda: props.deployLambda,
             existingLambdaObj: props.existingLambdaObj,
             lambdaFunctionProps: props.lambdaFunctionProps

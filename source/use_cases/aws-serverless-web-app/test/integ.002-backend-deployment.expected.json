@@ -1,6 +1,6 @@
 {
   "Resources": {
-    "LambdaFunctionServiceRole0C4CDE0B": {
+    "CognitoToApiGatewayToLambdaLambdaFunctionServiceRole921AB2D6": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -51,7 +51,7 @@
         ]
       }
     },
-    "LambdaFunctionServiceRoleDefaultPolicy126C8897": {
+    "CognitoToApiGatewayToLambdaLambdaFunctionServiceRoleDefaultPolicyCC3D84AE": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -85,15 +85,15 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "LambdaFunctionServiceRoleDefaultPolicy126C8897",
+        "PolicyName": "CognitoToApiGatewayToLambdaLambdaFunctionServiceRoleDefaultPolicyCC3D84AE",
         "Roles": [
           {
-            "Ref": "LambdaFunctionServiceRole0C4CDE0B"
+            "Ref": "CognitoToApiGatewayToLambdaLambdaFunctionServiceRole921AB2D6"
           }
         ]
       }
     },
-    "LambdaFunctionBF21E41F": {
+    "CognitoToApiGatewayToLambdaLambdaFunction555D0B9C": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -137,7 +137,7 @@
         "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
-            "LambdaFunctionServiceRole0C4CDE0B",
+            "CognitoToApiGatewayToLambdaLambdaFunctionServiceRole921AB2D6",
             "Arn"
           ]
         },
@@ -152,8 +152,8 @@
         }
       },
       "DependsOn": [
-        "LambdaFunctionServiceRoleDefaultPolicy126C8897",
-        "LambdaFunctionServiceRole0C4CDE0B"
+        "CognitoToApiGatewayToLambdaLambdaFunctionServiceRoleDefaultPolicyCC3D84AE",
+        "CognitoToApiGatewayToLambdaLambdaFunctionServiceRole921AB2D6"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -166,7 +166,12 @@
         }
       }
     },
-    "RestApi0C43BF4B": {
+    "CognitoToApiGatewayToLambdaApiAccessLogGroup43A4A269": {
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
         "EndpointConfiguration": {
@@ -174,23 +179,23 @@
             "EDGE"
           ]
         },
-        "Name": "RestApi"
+        "Name": "LambdaRestApi"
       }
     },
-    "RestApiDeployment180EC5030503bead3cacf3da667720719058e886": {
+    "CognitoToApiGatewayToLambdaLambdaRestApiDeployment1E6D5E6682fe19d2bcf96aadbe65fec49213c15c": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
-          "Ref": "RestApi0C43BF4B"
+          "Ref": "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0"
         },
         "Description": "Automatically created by the RestApi construct"
       },
       "DependsOn": [
-        "RestApiproxyANY1786B242",
-        "RestApiproxyOPTIONS32C4B154",
-        "RestApiproxyC95856DD",
-        "RestApiANYA7C1DC94",
-        "RestApiOPTIONS6AA64D2D"
+        "CognitoToApiGatewayToLambdaLambdaRestApiproxyANY2839789B",
+        "CognitoToApiGatewayToLambdaLambdaRestApiproxyOPTIONS63FED6E8",
+        "CognitoToApiGatewayToLambdaLambdaRestApiproxy008E09BA",
+        "CognitoToApiGatewayToLambdaLambdaRestApiANY53FD6161",
+        "CognitoToApiGatewayToLambdaLambdaRestApiOPTIONS84242119"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -203,23 +208,23 @@
         }
       }
     },
-    "RestApiDeploymentStageprod3855DE66": {
+    "CognitoToApiGatewayToLambdaLambdaRestApiDeploymentStageprod743A20E1": {
       "Type": "AWS::ApiGateway::Stage",
       "Properties": {
         "RestApiId": {
-          "Ref": "RestApi0C43BF4B"
+          "Ref": "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0"
         },
         "AccessLogSetting": {
           "DestinationArn": {
             "Fn::GetAtt": [
-              "ApiAccessLogGroupCEA70788",
+              "CognitoToApiGatewayToLambdaApiAccessLogGroup43A4A269",
               "Arn"
             ]
           },
-          "Format": "$context.identity.sourceIp $context.identity.caller $context.identity.user [$context.requestTime] \"$context.httpMethod $context.resourcePath $context.protocol\" $context.status $context.responseLength $context.requestId"
+          "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "RestApiDeployment180EC5030503bead3cacf3da667720719058e886"
+          "Ref": "CognitoToApiGatewayToLambdaLambdaRestApiDeployment1E6D5E6682fe19d2bcf96aadbe65fec49213c15c"
         },
         "MethodSettings": [
           {
@@ -232,18 +237,18 @@
         "StageName": "prod"
       }
     },
-    "RestApiOPTIONS6AA64D2D": {
+    "CognitoToApiGatewayToLambdaLambdaRestApiOPTIONS84242119": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "OPTIONS",
         "ResourceId": {
           "Fn::GetAtt": [
-            "RestApi0C43BF4B",
+            "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0",
             "RootResourceId"
           ]
         },
         "RestApiId": {
-          "Ref": "RestApi0C43BF4B"
+          "Ref": "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0"
         },
         "AuthorizationType": "NONE",
         "Integration": {
@@ -274,30 +279,30 @@
         ]
       }
     },
-    "RestApiproxyC95856DD": {
+    "CognitoToApiGatewayToLambdaLambdaRestApiproxy008E09BA": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
           "Fn::GetAtt": [
-            "RestApi0C43BF4B",
+            "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0",
             "RootResourceId"
           ]
         },
         "PathPart": "{proxy+}",
         "RestApiId": {
-          "Ref": "RestApi0C43BF4B"
+          "Ref": "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0"
         }
       }
     },
-    "RestApiproxyOPTIONS32C4B154": {
+    "CognitoToApiGatewayToLambdaLambdaRestApiproxyOPTIONS63FED6E8": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "OPTIONS",
         "ResourceId": {
-          "Ref": "RestApiproxyC95856DD"
+          "Ref": "CognitoToApiGatewayToLambdaLambdaRestApiproxy008E09BA"
         },
         "RestApiId": {
-          "Ref": "RestApi0C43BF4B"
+          "Ref": "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0"
         },
         "AuthorizationType": "NONE",
         "Integration": {
@@ -328,13 +333,13 @@
         ]
       }
     },
-    "RestApiproxyANYApiPermissionServerlessBackendStackRestApi00D08F58ANYproxy20E632AA": {
+    "CognitoToApiGatewayToLambdaLambdaRestApiproxyANYApiPermissionServerlessBackendStackCognitoToApiGatewayToLambdaLambdaRestApi6BF82CD7ANYproxy694ECA33": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "LambdaFunctionBF21E41F",
+            "CognitoToApiGatewayToLambdaLambdaFunction555D0B9C",
             "Arn"
           ]
         },
@@ -357,11 +362,11 @@
               },
               ":",
               {
-                "Ref": "RestApi0C43BF4B"
+                "Ref": "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0"
               },
               "/",
               {
-                "Ref": "RestApiDeploymentStageprod3855DE66"
+                "Ref": "CognitoToApiGatewayToLambdaLambdaRestApiDeploymentStageprod743A20E1"
               },
               "/*/{proxy+}"
             ]
@@ -369,13 +374,13 @@
         }
       }
     },
-    "RestApiproxyANYApiPermissionTestServerlessBackendStackRestApi00D08F58ANYproxyF3BB47AD": {
+    "CognitoToApiGatewayToLambdaLambdaRestApiproxyANYApiPermissionTestServerlessBackendStackCognitoToApiGatewayToLambdaLambdaRestApi6BF82CD7ANYproxy29080D5A": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "LambdaFunctionBF21E41F",
+            "CognitoToApiGatewayToLambdaLambdaFunction555D0B9C",
             "Arn"
           ]
         },
@@ -398,7 +403,7 @@
               },
               ":",
               {
-                "Ref": "RestApi0C43BF4B"
+                "Ref": "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0"
               },
               "/test-invoke-stage/*/{proxy+}"
             ]
@@ -406,19 +411,19 @@
         }
       }
     },
-    "RestApiproxyANY1786B242": {
+    "CognitoToApiGatewayToLambdaLambdaRestApiproxyANY2839789B": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "ANY",
         "ResourceId": {
-          "Ref": "RestApiproxyC95856DD"
+          "Ref": "CognitoToApiGatewayToLambdaLambdaRestApiproxy008E09BA"
         },
         "RestApiId": {
-          "Ref": "RestApi0C43BF4B"
+          "Ref": "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0"
         },
         "AuthorizationType": "COGNITO_USER_POOLS",
         "AuthorizerId": {
-          "Ref": "CognitoAuthorizer"
+          "Ref": "CognitoToApiGatewayToLambdaCognitoAuthorizerAF023B99"
         },
         "Integration": {
           "IntegrationHttpMethod": "POST",
@@ -438,7 +443,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "LambdaFunctionBF21E41F",
+                    "CognitoToApiGatewayToLambdaLambdaFunction555D0B9C",
                     "Arn"
                   ]
                 },
@@ -449,13 +454,13 @@
         }
       }
     },
-    "RestApiANYApiPermissionServerlessBackendStackRestApi00D08F58ANYEEE63A3B": {
+    "CognitoToApiGatewayToLambdaLambdaRestApiANYApiPermissionServerlessBackendStackCognitoToApiGatewayToLambdaLambdaRestApi6BF82CD7ANYAD0464C2": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "LambdaFunctionBF21E41F",
+            "CognitoToApiGatewayToLambdaLambdaFunction555D0B9C",
             "Arn"
           ]
         },
@@ -478,11 +483,11 @@
               },
               ":",
               {
-                "Ref": "RestApi0C43BF4B"
+                "Ref": "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0"
               },
               "/",
               {
-                "Ref": "RestApiDeploymentStageprod3855DE66"
+                "Ref": "CognitoToApiGatewayToLambdaLambdaRestApiDeploymentStageprod743A20E1"
               },
               "/*/"
             ]
@@ -490,13 +495,13 @@
         }
       }
     },
-    "RestApiANYApiPermissionTestServerlessBackendStackRestApi00D08F58ANY9F8B1D52": {
+    "CognitoToApiGatewayToLambdaLambdaRestApiANYApiPermissionTestServerlessBackendStackCognitoToApiGatewayToLambdaLambdaRestApi6BF82CD7ANYC531DE60": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "LambdaFunctionBF21E41F",
+            "CognitoToApiGatewayToLambdaLambdaFunction555D0B9C",
             "Arn"
           ]
         },
@@ -519,7 +524,7 @@
               },
               ":",
               {
-                "Ref": "RestApi0C43BF4B"
+                "Ref": "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0"
               },
               "/test-invoke-stage/*/"
             ]
@@ -527,22 +532,22 @@
         }
       }
     },
-    "RestApiANYA7C1DC94": {
+    "CognitoToApiGatewayToLambdaLambdaRestApiANY53FD6161": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "ANY",
         "ResourceId": {
           "Fn::GetAtt": [
-            "RestApi0C43BF4B",
+            "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0",
             "RootResourceId"
           ]
         },
         "RestApiId": {
-          "Ref": "RestApi0C43BF4B"
+          "Ref": "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0"
         },
         "AuthorizationType": "COGNITO_USER_POOLS",
         "AuthorizerId": {
-          "Ref": "CognitoAuthorizer"
+          "Ref": "CognitoToApiGatewayToLambdaCognitoAuthorizerAF023B99"
         },
         "Integration": {
           "IntegrationHttpMethod": "POST",
@@ -562,7 +567,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "LambdaFunctionBF21E41F",
+                    "CognitoToApiGatewayToLambdaLambdaFunction555D0B9C",
                     "Arn"
                   ]
                 },
@@ -573,28 +578,23 @@
         }
       }
     },
-    "RestApiUsagePlan6E1C537A": {
+    "CognitoToApiGatewayToLambdaLambdaRestApiUsagePlanBC5A9D9D": {
       "Type": "AWS::ApiGateway::UsagePlan",
       "Properties": {
         "ApiStages": [
           {
             "ApiId": {
-              "Ref": "RestApi0C43BF4B"
+              "Ref": "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0"
             },
             "Stage": {
-              "Ref": "RestApiDeploymentStageprod3855DE66"
+              "Ref": "CognitoToApiGatewayToLambdaLambdaRestApiDeploymentStageprod743A20E1"
             },
             "Throttle": {}
           }
         ]
       }
     },
-    "ApiAccessLogGroupCEA70788": {
-      "Type": "AWS::Logs::LogGroup",
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
-    },
-    "LambdaRestApiCloudWatchRoleF339D4E6": {
+    "CognitoToApiGatewayToLambdaLambdaRestApiCloudWatchRoleD7E52FBB": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -649,46 +649,110 @@
         ]
       }
     },
-    "LambdaRestApiAccount": {
+    "CognitoToApiGatewayToLambdaLambdaRestApiAccountD1F8AA14": {
       "Type": "AWS::ApiGateway::Account",
       "Properties": {
         "CloudWatchRoleArn": {
           "Fn::GetAtt": [
-            "LambdaRestApiCloudWatchRoleF339D4E6",
+            "CognitoToApiGatewayToLambdaLambdaRestApiCloudWatchRoleD7E52FBB",
             "Arn"
           ]
         }
       },
       "DependsOn": [
-        "RestApi0C43BF4B"
+        "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0"
       ]
     },
-    "CognitoUserPool53E37E69": {
-      "Type": "AWS::Cognito::UserPool",
+    "CognitoToApiGatewayToLambdaCognitoUserPoolsmsRole62C22F60": {
+      "Type": "AWS::IAM::Role",
       "Properties": {
-        "AutoVerifiedAttributes": [
-          "email"
-        ],
-        "LambdaConfig": {},
-        "UserPoolAddOns": {
-          "AdvancedSecurityMode": "ENFORCED"
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Condition": {
+                "StringEquals": {
+                  "sts:ExternalId": "ServerlessBackendStackCognitoToApiGatewayToLambdaCognitoUserPool0C465C62"
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "cognito-idp.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
         },
-        "UserPoolName": "WileRydes"
-      }
-    },
-    "CognitoUserPoolClient5AB59AE4": {
-      "Type": "AWS::Cognito::UserPoolClient",
-      "Properties": {
-        "UserPoolId": {
-          "Ref": "CognitoUserPool53E37E69"
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": "sns:Publish",
+                  "Effect": "Allow",
+                  "Resource": "*"
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "sns-publish"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W11",
+              "reason": "Allowing * resource on permissions policy since its used by Cognito to send SMS messages via sns:Publish"
+            }
+          ]
         }
       }
     },
-    "CognitoAuthorizer": {
+    "CognitoToApiGatewayToLambdaCognitoUserPool6EE989F1": {
+      "Type": "AWS::Cognito::UserPool",
+      "Properties": {
+        "AdminCreateUserConfig": {
+          "AllowAdminCreateUserOnly": true
+        },
+        "EmailVerificationMessage": "The verification code to your new account is {####}",
+        "EmailVerificationSubject": "Verify your new account",
+        "SmsConfiguration": {
+          "ExternalId": "ServerlessBackendStackCognitoToApiGatewayToLambdaCognitoUserPool0C465C62",
+          "SnsCallerArn": {
+            "Fn::GetAtt": [
+              "CognitoToApiGatewayToLambdaCognitoUserPoolsmsRole62C22F60",
+              "Arn"
+            ]
+          }
+        },
+        "SmsVerificationMessage": "The verification code to your new account is {####}",
+        "UserPoolAddOns": {
+          "AdvancedSecurityMode": "ENFORCED"
+        },
+        "UserPoolName": "WileRydes",
+        "VerificationMessageTemplate": {
+          "DefaultEmailOption": "CONFIRM_WITH_CODE",
+          "EmailMessage": "The verification code to your new account is {####}",
+          "EmailSubject": "Verify your new account",
+          "SmsMessage": "The verification code to your new account is {####}"
+        }
+      }
+    },
+    "CognitoToApiGatewayToLambdaCognitoUserPoolClientC6919938": {
+      "Type": "AWS::Cognito::UserPoolClient",
+      "Properties": {
+        "UserPoolId": {
+          "Ref": "CognitoToApiGatewayToLambdaCognitoUserPool6EE989F1"
+        }
+      }
+    },
+    "CognitoToApiGatewayToLambdaCognitoAuthorizerAF023B99": {
       "Type": "AWS::ApiGateway::Authorizer",
       "Properties": {
         "RestApiId": {
-          "Ref": "RestApi0C43BF4B"
+          "Ref": "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0"
         },
         "Type": "COGNITO_USER_POOLS",
         "IdentitySource": "method.request.header.Authorization",
@@ -696,7 +760,7 @@
         "ProviderARNs": [
           {
             "Fn::GetAtt": [
-              "CognitoUserPool53E37E69",
+              "CognitoToApiGatewayToLambdaCognitoUserPool6EE989F1",
               "Arn"
             ]
           }
@@ -888,7 +952,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": {
-            "Ref": "AssetParametersf587c683163dea7b70b883fe8f803ffe0622a40e05b3766e08ffa9ed25caabc9S3Bucket6B4B2C9B"
+            "Ref": "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061S3Bucket0A1029B1"
           },
           "S3Key": {
             "Fn::Join": [
@@ -901,7 +965,7 @@
                       "Fn::Split": [
                         "||",
                         {
-                          "Ref": "AssetParametersf587c683163dea7b70b883fe8f803ffe0622a40e05b3766e08ffa9ed25caabc9S3VersionKey8971BB19"
+                          "Ref": "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061S3VersionKeyFB75FDAC"
                         }
                       ]
                     }
@@ -914,7 +978,7 @@
                       "Fn::Split": [
                         "||",
                         {
-                          "Ref": "AssetParametersf587c683163dea7b70b883fe8f803ffe0622a40e05b3766e08ffa9ed25caabc9S3VersionKey8971BB19"
+                          "Ref": "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061S3VersionKeyFB75FDAC"
                         }
                       ]
                     }
@@ -959,10 +1023,10 @@
           ]
         },
         "UserPool": {
-          "Ref": "CognitoUserPool53E37E69"
+          "Ref": "CognitoToApiGatewayToLambdaCognitoUserPool6EE989F1"
         },
         "Client": {
-          "Ref": "CognitoUserPoolClient5AB59AE4"
+          "Ref": "CognitoToApiGatewayToLambdaCognitoUserPoolClientC6919938"
         },
         "Region": {
           "Ref": "AWS::Region"
@@ -976,7 +1040,7 @@
             [
               "https://",
               {
-                "Ref": "RestApi0C43BF4B"
+                "Ref": "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0"
               },
               ".execute-api.",
               {
@@ -988,7 +1052,7 @@
               },
               "/",
               {
-                "Ref": "RestApiDeploymentStageprod3855DE66"
+                "Ref": "CognitoToApiGatewayToLambdaLambdaRestApiDeploymentStageprod743A20E1"
               },
               "/"
             ]
@@ -1023,6 +1087,34 @@
       "DeletionPolicy": "Retain"
     }
   },
+  "Outputs": {
+    "CognitoToApiGatewayToLambdaLambdaRestApiEndpoint02EBBDD6": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0"
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region"
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix"
+            },
+            "/",
+            {
+              "Ref": "CognitoToApiGatewayToLambdaLambdaRestApiDeploymentStageprod743A20E1"
+            },
+            "/"
+          ]
+        ]
+      }
+    }
+  },
   "Parameters": {
     "AssetParameters9a9c398189879e9ca9700ba0658086063d8ee7ccd068043c722c28478c6c4360S3Bucket20EEB389": {
       "Type": "String",
@@ -1048,45 +1140,17 @@
       "Type": "String",
       "Description": "Artifact hash for asset \"3aa519f176d0d52023f4992f8ada07849f844467dcb0d4dfb94bb3b350a1d791\""
     },
-    "AssetParametersf587c683163dea7b70b883fe8f803ffe0622a40e05b3766e08ffa9ed25caabc9S3Bucket6B4B2C9B": {
+    "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061S3Bucket0A1029B1": {
       "Type": "String",
-      "Description": "S3 bucket for asset \"f587c683163dea7b70b883fe8f803ffe0622a40e05b3766e08ffa9ed25caabc9\""
+      "Description": "S3 bucket for asset \"4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061\""
     },
-    "AssetParametersf587c683163dea7b70b883fe8f803ffe0622a40e05b3766e08ffa9ed25caabc9S3VersionKey8971BB19": {
+    "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061S3VersionKeyFB75FDAC": {
       "Type": "String",
-      "Description": "S3 key for asset version \"f587c683163dea7b70b883fe8f803ffe0622a40e05b3766e08ffa9ed25caabc9\""
+      "Description": "S3 key for asset version \"4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061\""
     },
-    "AssetParametersf587c683163dea7b70b883fe8f803ffe0622a40e05b3766e08ffa9ed25caabc9ArtifactHash72EE40C1": {
+    "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061ArtifactHash40CCFA64": {
       "Type": "String",
-      "Description": "Artifact hash for asset \"f587c683163dea7b70b883fe8f803ffe0622a40e05b3766e08ffa9ed25caabc9\""
-    }
-  },
-  "Outputs": {
-    "RestApiEndpoint0551178A": {
-      "Value": {
-        "Fn::Join": [
-          "",
-          [
-            "https://",
-            {
-              "Ref": "RestApi0C43BF4B"
-            },
-            ".execute-api.",
-            {
-              "Ref": "AWS::Region"
-            },
-            ".",
-            {
-              "Ref": "AWS::URLSuffix"
-            },
-            "/",
-            {
-              "Ref": "RestApiDeploymentStageprod3855DE66"
-            },
-            "/"
-          ]
-        ]
-      }
+      "Description": "Artifact hash for asset \"4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061\""
     }
   }
 }

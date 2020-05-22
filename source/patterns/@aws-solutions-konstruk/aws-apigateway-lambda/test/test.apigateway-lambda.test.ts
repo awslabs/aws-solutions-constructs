@@ -136,3 +136,33 @@ test('Error on deployLambda=true and lambdaFunctionProps=undefined', () => {
     // Assertion 1
     expect(app).toThrowError();
 });
+
+// --------------------------------------------------------------
+// Pattern deployment with two ApiGatewayToLambda constructs
+// --------------------------------------------------------------
+test('Pattern deployment with two ApiGatewayToLambda constructs', () => {
+    // Initial Setup
+    const stack = new Stack();
+    const props1: ApiGatewayToLambdaProps = {
+        deployLambda: true,
+        lambdaFunctionProps: {
+            runtime: lambda.Runtime.NODEJS_10_X,
+            handler: 'index.handler',
+            code: lambda.Code.asset(`${__dirname}/lambda`)
+        }
+    };
+    new ApiGatewayToLambda(stack, 'pattern1', props1);
+
+    const props2: ApiGatewayToLambdaProps = {
+        deployLambda: true,
+        lambdaFunctionProps: {
+            runtime: lambda.Runtime.NODEJS_10_X,
+            handler: 'index.handler',
+            code: lambda.Code.asset(`${__dirname}/lambda`)
+        }
+    };
+    new ApiGatewayToLambda(stack, 'pattern2', props2);
+
+    // Assertion 1
+    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});

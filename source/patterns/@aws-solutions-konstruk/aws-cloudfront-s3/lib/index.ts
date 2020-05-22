@@ -46,7 +46,14 @@ export interface CloudFrontToS3Props {
    *
    * @default - Default props are used
    */
-  readonly cloudFrontDistributionProps?: cloudfront.CloudFrontWebDistributionProps;
+  readonly cloudFrontDistributionProps?: cloudfront.CloudFrontWebDistributionProps | any,
+  /**
+   * Optional user provided props to turn on/off the automatic injection of best practice HTTP
+   * security headers in all resonses from cloudfront
+   *
+   * @default - true
+   */
+  readonly insertHttpSecurityHeaders?: boolean;
 }
 
 export class CloudFrontToS3 extends Construct {
@@ -70,11 +77,12 @@ export class CloudFrontToS3 extends Construct {
             bucketProps: props.bucketProps
         });
 
-        this.cloudfront = defaults.CloudFrontDistributionForS3(this, this.s3Bucket, props.cloudFrontDistributionProps);
+        this.cloudfront = defaults.CloudFrontDistributionForS3(this, this.s3Bucket,
+            props.cloudFrontDistributionProps, props.insertHttpSecurityHeaders);
     }
 
     /**
-     * @summary Retruns an instance of cloudfront.CloudFrontWebDistribution created by the construct
+     * @summary Returns an instance of cloudfront.CloudFrontWebDistribution created by the construct
      * @returns {cloudfront.CloudFrontWebDistribution} Instance of CloudFrontWebDistribution created by the construct
      * @since 0.8.0
      * @access public
@@ -84,7 +92,7 @@ export class CloudFrontToS3 extends Construct {
     }
 
     /**
-     * @summary Retruns an instance of s3.Bucket created by the construct.
+     * @summary Returns an instance of s3.Bucket created by the construct.
      * @returns {s3.Bucket} Instance of Bucket created by the construct
      * @since 0.8.0
      * @access public

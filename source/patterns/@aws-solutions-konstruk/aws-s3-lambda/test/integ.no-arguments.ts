@@ -18,7 +18,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 const app = new App();
 
 // Empty arguments
-const stack = new Stack(app, 'test-s3-lambda-stack');
+const stack = new Stack(app, 'test-s3-lambda-new-bucket-stack');
 
 const props: S3ToLambdaProps = {
     deployLambda: true,

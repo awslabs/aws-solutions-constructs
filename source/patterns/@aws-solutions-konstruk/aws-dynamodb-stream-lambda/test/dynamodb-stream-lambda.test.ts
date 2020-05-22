@@ -49,7 +49,7 @@ test('check lambda EventSourceMapping', () => {
       ]
     },
     FunctionName: {
-      Ref: "LambdaFunctionBF21E41F"
+      Ref: "testlambdadynamodbstackLambdaFunction5DDB3E8D"
     },
     BatchSize: 100,
     StartingPosition: "TRIM_HORIZON"
@@ -81,7 +81,7 @@ test('check DynamoEventSourceProps override', () => {
       ]
     },
     FunctionName: {
-      Ref: "LambdaFunctionBF21E41F"
+      Ref: "testlambdadynamodbstackLambdaFunction5DDB3E8D"
     },
     BatchSize: 55,
     StartingPosition: "LATEST"
@@ -130,10 +130,10 @@ test('check lambda permission to read dynamodb stream', () => {
       ],
       Version: "2012-10-17"
     },
-    PolicyName: "LambdaFunctionServiceRoleDefaultPolicy126C8897",
+    PolicyName: "testlambdadynamodbstackLambdaFunctionServiceRoleDefaultPolicy547FB7F4",
     Roles: [
       {
-        Ref: "LambdaFunctionServiceRole0C4CDE0B"
+        Ref: "testlambdadynamodbstackLambdaFunctionServiceRole758347A1"
       }
     ]
   });

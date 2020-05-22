@@ -53,7 +53,7 @@ test('check lambda function properties', () => {
       Handler: "index.handler",
       Role: {
         "Fn::GetAtt": [
-          "testiotlambdadynamodbstackLambdaFunctionServiceRoleA709DBA2",
+          "testiotlambdadynamodbstackIotToLambdaLambdaFunctionServiceRoleC57F7FDA",
           "Arn"
         ]
       },
@@ -78,7 +78,7 @@ test('check lambda function permission', () => {
       Action: "lambda:InvokeFunction",
       FunctionName: {
         "Fn::GetAtt": [
-          "testiotlambdadynamodbstackLambdaFunctionF1BF28BF",
+          "testiotlambdadynamodbstackIotToLambdaLambdaFunctionDFEAF894",
           "Arn"
         ]
       },
@@ -159,7 +159,7 @@ test('check iot topic rule properties', () => {
             Lambda: {
               FunctionArn: {
                 "Fn::GetAtt": [
-                  "testiotlambdadynamodbstackLambdaFunctionF1BF28BF",
+                  "testiotlambdadynamodbstackIotToLambdaLambdaFunctionDFEAF894",
                   "Arn"
                 ]
               }

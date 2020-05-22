@@ -20,7 +20,7 @@ import * as defaults from '@aws-solutions-konstruk/core';
 const app = new App();
 
 // Empty arguments
-const stack = new Stack(app, 'test-s3-lambda-stack');
+const stack = new Stack(app, 'test-s3-lambda-existing-bucket-stack');
 
 const myBucket: s3.Bucket = defaults.buildS3Bucket(stack, {});
 

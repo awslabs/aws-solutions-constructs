@@ -17,71 +17,6 @@ Object {
     },
   },
   "Resources": Object {
-    "EncryptionKey1B843E66": Object {
-      "DeletionPolicy": "Retain",
-      "Properties": Object {
-        "EnableKeyRotation": true,
-        "KeyPolicy": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "kms:Create*",
-                "kms:Describe*",
-                "kms:Enable*",
-                "kms:List*",
-                "kms:Put*",
-                "kms:Update*",
-                "kms:Revoke*",
-                "kms:Disable*",
-                "kms:Get*",
-                "kms:Delete*",
-                "kms:ScheduleKeyDeletion",
-                "kms:CancelKeyDeletion",
-                "kms:GenerateDataKey",
-                "kms:TagResource",
-                "kms:UntagResource",
-              ],
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":iam::",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":root",
-                    ],
-                  ],
-                },
-              },
-              "Resource": "*",
-            },
-            Object {
-              "Action": "kms:Decrypt",
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::GetAtt": Array [
-                    "ExistingLambdaFunctionServiceRole7CC6DE65",
-                    "Arn",
-                  ],
-                },
-              },
-              "Resource": "*",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::KMS::Key",
-      "UpdateReplacePolicy": "Retain",
-    },
     "ExistingLambdaFunctionF606C520": Object {
       "DependsOn": Array [
         "ExistingLambdaFunctionServiceRoleDefaultPolicy2431D213",
@@ -183,7 +118,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "queue276F7297",
+                  "testapigatewaylambdaqueue1FFAE03C",
                   "Arn",
                 ],
               },
@@ -193,7 +128,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "EncryptionKey1B843E66",
+                  "testapigatewaylambdaEncryptionKey06FC467F",
                   "Arn",
                 ],
               },
@@ -210,11 +145,11 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
-    "ExistingLambdaFunctionSqsEventSourcequeue85681C04": Object {
+    "ExistingLambdaFunctionSqsEventSourcetestapigatewaylambdaqueueFD30FF33BE4927D4": Object {
       "Properties": Object {
         "EventSourceArn": Object {
           "Fn::GetAtt": Array [
-            "queue276F7297",
+            "testapigatewaylambdaqueue1FFAE03C",
             "Arn",
           ],
         },
@@ -224,39 +159,7 @@ Object {
       },
       "Type": "AWS::Lambda::EventSourceMapping",
     },
-    "queue276F7297": Object {
-      "Properties": Object {
-        "KmsMasterKeyId": Object {
-          "Fn::GetAtt": Array [
-            "EncryptionKey1B843E66",
-            "Arn",
-          ],
-        },
-      },
-      "Type": "AWS::SQS::Queue",
-    },
-  },
-}
-`;
-
-exports[`Pattern deployment w/ new Lambda function and default props 1`] = `
-Object {
-  "Parameters": Object {
-    "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420ArtifactHashA71E92AD": Object {
-      "Description": "Artifact hash for asset \\"8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420\\"",
-      "Type": "String",
-    },
-    "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420S3Bucket749AC458": Object {
-      "Description": "S3 bucket for asset \\"8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420\\"",
-      "Type": "String",
-    },
-    "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420S3VersionKeyFF5CC16D": Object {
-      "Description": "S3 key for asset version \\"8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420\\"",
-      "Type": "String",
-    },
-  },
-  "Resources": Object {
-    "EncryptionKey1B843E66": Object {
+    "testapigatewaylambdaEncryptionKey06FC467F": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
         "EnableKeyRotation": true,
@@ -307,7 +210,7 @@ Object {
               "Principal": Object {
                 "AWS": Object {
                   "Fn::GetAtt": Array [
-                    "LambdaFunctionServiceRole0C4CDE0B",
+                    "ExistingLambdaFunctionServiceRole7CC6DE65",
                     "Arn",
                   ],
                 },
@@ -321,10 +224,107 @@ Object {
       "Type": "AWS::KMS::Key",
       "UpdateReplacePolicy": "Retain",
     },
-    "LambdaFunctionBF21E41F": Object {
+    "testapigatewaylambdaqueue1FFAE03C": Object {
+      "Properties": Object {
+        "KmsMasterKeyId": Object {
+          "Fn::GetAtt": Array [
+            "testapigatewaylambdaEncryptionKey06FC467F",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::SQS::Queue",
+    },
+  },
+}
+`;
+
+exports[`Pattern deployment w/ new Lambda function and default props 1`] = `
+Object {
+  "Parameters": Object {
+    "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420ArtifactHashA71E92AD": Object {
+      "Description": "Artifact hash for asset \\"8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420\\"",
+      "Type": "String",
+    },
+    "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420S3Bucket749AC458": Object {
+      "Description": "S3 bucket for asset \\"8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420\\"",
+      "Type": "String",
+    },
+    "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420S3VersionKeyFF5CC16D": Object {
+      "Description": "S3 key for asset version \\"8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "testsqslambdaEncryptionKey317A2F03": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "EnableKeyRotation": true,
+        "KeyPolicy": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion",
+                "kms:GenerateDataKey",
+                "kms:TagResource",
+                "kms:UntagResource",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+            },
+            Object {
+              "Action": "kms:Decrypt",
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::GetAtt": Array [
+                    "testsqslambdaLambdaFunctionServiceRoleF623B438",
+                    "Arn",
+                  ],
+                },
+              },
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testsqslambdaLambdaFunction58720146": Object {
       "DependsOn": Array [
-        "LambdaFunctionServiceRoleDefaultPolicy126C8897",
-        "LambdaFunctionServiceRole0C4CDE0B",
+        "testsqslambdaLambdaFunctionServiceRoleDefaultPolicy380B065C",
+        "testsqslambdaLambdaFunctionServiceRoleF623B438",
       ],
       "Metadata": Object {
         "cfn_nag": Object {
@@ -383,7 +383,7 @@ Object {
         "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "LambdaFunctionServiceRole0C4CDE0B",
+            "testsqslambdaLambdaFunctionServiceRoleF623B438",
             "Arn",
           ],
         },
@@ -391,7 +391,49 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "LambdaFunctionServiceRole0C4CDE0B": Object {
+    "testsqslambdaLambdaFunctionServiceRoleDefaultPolicy380B065C": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "sqs:ReceiveMessage",
+                "sqs:ChangeMessageVisibility",
+                "sqs:GetQueueUrl",
+                "sqs:DeleteMessage",
+                "sqs:GetQueueAttributes",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testsqslambdaqueue601203B8",
+                  "Arn",
+                ],
+              },
+            },
+            Object {
+              "Action": "kms:Decrypt",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testsqslambdaEncryptionKey317A2F03",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testsqslambdaLambdaFunctionServiceRoleDefaultPolicy380B065C",
+        "Roles": Array [
+          Object {
+            "Ref": "testsqslambdaLambdaFunctionServiceRoleF623B438",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "testsqslambdaLambdaFunctionServiceRoleF623B438": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -442,85 +484,43 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "LambdaFunctionServiceRoleDefaultPolicy126C8897": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "sqs:ReceiveMessage",
-                "sqs:ChangeMessageVisibility",
-                "sqs:GetQueueUrl",
-                "sqs:DeleteMessage",
-                "sqs:GetQueueAttributes",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "queue276F7297",
-                  "Arn",
-                ],
-              },
-            },
-            Object {
-              "Action": "kms:Decrypt",
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "EncryptionKey1B843E66",
-                  "Arn",
-                ],
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "LambdaFunctionServiceRoleDefaultPolicy126C8897",
-        "Roles": Array [
-          Object {
-            "Ref": "LambdaFunctionServiceRole0C4CDE0B",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "LambdaFunctionSqsEventSourcequeue7A15E0AF": Object {
+    "testsqslambdaLambdaFunctionSqsEventSourcetestsqslambdaqueue583E2E6CB891E0FC": Object {
       "Properties": Object {
         "EventSourceArn": Object {
           "Fn::GetAtt": Array [
-            "queue276F7297",
+            "testsqslambdaqueue601203B8",
             "Arn",
           ],
         },
         "FunctionName": Object {
-          "Ref": "LambdaFunctionBF21E41F",
+          "Ref": "testsqslambdaLambdaFunction58720146",
         },
       },
       "Type": "AWS::Lambda::EventSourceMapping",
     },
-    "deadLetterQueue3F848E28": Object {
+    "testsqslambdadeadLetterQueue85BDB0A3": Object {
       "Properties": Object {
         "KmsMasterKeyId": Object {
           "Fn::GetAtt": Array [
-            "EncryptionKey1B843E66",
+            "testsqslambdaEncryptionKey317A2F03",
             "Arn",
           ],
         },
       },
       "Type": "AWS::SQS::Queue",
     },
-    "queue276F7297": Object {
+    "testsqslambdaqueue601203B8": Object {
       "Properties": Object {
         "KmsMasterKeyId": Object {
           "Fn::GetAtt": Array [
-            "EncryptionKey1B843E66",
+            "testsqslambdaEncryptionKey317A2F03",
             "Arn",
           ],
         },
         "RedrivePolicy": Object {
           "deadLetterTargetArn": Object {
             "Fn::GetAtt": Array [
-              "deadLetterQueue3F848E28",
+              "testsqslambdadeadLetterQueue85BDB0A3",
               "Arn",
             ],
           },

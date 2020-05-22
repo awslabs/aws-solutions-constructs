@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-konstruk/aws-sns-lambda",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "CDK Constructs for AWS SNS to AWS Lambda integration",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -53,16 +53,17 @@
     }
   },
   "dependencies": {
-    "@aws-cdk/aws-sns": "~1.25.0",
-    "@aws-cdk/aws-lambda": "~1.25.0",
-    "@aws-cdk/aws-lambda-event-sources": "~1.25.0",
-    "@aws-cdk/aws-iam": "~1.25.0",
-    "@aws-cdk/aws-kms": "~1.25.0",
-    "@aws-cdk/core": "~1.25.0",
-    "@aws-solutions-konstruk/core": "~0.8.0"
+    "@aws-cdk/aws-sns": "~1.40.0",
+    "@aws-cdk/aws-lambda": "~1.40.0",
+    "@aws-cdk/aws-lambda-event-sources": "~1.40.0",
+    "@aws-cdk/aws-iam": "~1.40.0",
+    "@aws-cdk/aws-kms": "~1.40.0",
+    "@aws-cdk/core": "~1.40.0",
+    "@aws-solutions-konstruk/core": "~0.8.1",
+    "constructs": "^3.0.2"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "~1.25.0",
+    "@aws-cdk/assert": "~1.40.0",
     "@types/jest": "^24.0.23",
     "@types/node": "^10.3.0"
   },
@@ -72,12 +73,13 @@
     ]
   },
   "peerDependencies": {
-    "@aws-cdk/aws-sns": "~1.25.0",
-    "@aws-cdk/aws-lambda": "~1.25.0",
-    "@aws-cdk/aws-lambda-event-sources": "~1.25.0",
-    "@aws-cdk/aws-iam": "~1.25.0",
-    "@aws-cdk/core": "~1.25.0",
-    "@aws-solutions-konstruk/core": "~0.8.0",
-    "@aws-cdk/aws-kms": "~1.25.0"
+    "@aws-cdk/aws-sns": "~1.40.0",
+    "@aws-cdk/aws-lambda": "~1.40.0",
+    "@aws-cdk/aws-lambda-event-sources": "~1.40.0",
+    "@aws-cdk/aws-iam": "~1.40.0",
+    "@aws-cdk/core": "~1.40.0",
+    "@aws-solutions-konstruk/core": "~0.8.1",
+    "@aws-cdk/aws-kms": "~1.40.0",
+    "constructs": "^3.0.2"
   }
 }

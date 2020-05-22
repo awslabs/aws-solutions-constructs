@@ -1,28 +1,6 @@
 {
   "Resources": {
-    "testiotlambdadynamodbstackIotToLambdaIotTopic74F5E3BB": {
-      "Type": "AWS::IoT::TopicRule",
-      "Properties": {
-        "TopicRulePayload": {
-          "Actions": [
-            {
-              "Lambda": {
-                "FunctionArn": {
-                  "Fn::GetAtt": [
-                    "testiotlambdadynamodbstackLambdaFunctionF1BF28BF",
-                    "Arn"
-                  ]
-                }
-              }
-            }
-          ],
-          "Description": "Processing of DTC messages from the AWS Connected Vehicle Solution.",
-          "RuleDisabled": false,
-          "Sql": "SELECT * FROM 'connectedcar/dtc/#'"
-        }
-      }
-    },
-    "testiotlambdadynamodbstackLambdaFunctionServiceRoleA709DBA2": {
+    "testiotlambdadynamodbstackIotToLambdaLambdaFunctionServiceRoleC57F7FDA": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -73,7 +51,7 @@
         ]
       }
     },
-    "testiotlambdadynamodbstackLambdaFunctionServiceRoleDefaultPolicyAE674B0C": {
+    "testiotlambdadynamodbstackIotToLambdaLambdaFunctionServiceRoleDefaultPolicyB43AD823": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -107,15 +85,15 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testiotlambdadynamodbstackLambdaFunctionServiceRoleDefaultPolicyAE674B0C",
+        "PolicyName": "testiotlambdadynamodbstackIotToLambdaLambdaFunctionServiceRoleDefaultPolicyB43AD823",
         "Roles": [
           {
-            "Ref": "testiotlambdadynamodbstackLambdaFunctionServiceRoleA709DBA2"
+            "Ref": "testiotlambdadynamodbstackIotToLambdaLambdaFunctionServiceRoleC57F7FDA"
           }
         ]
       }
     },
-    "testiotlambdadynamodbstackLambdaFunctionF1BF28BF": {
+    "testiotlambdadynamodbstackIotToLambdaLambdaFunctionDFEAF894": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -159,7 +137,7 @@
         "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
-            "testiotlambdadynamodbstackLambdaFunctionServiceRoleA709DBA2",
+            "testiotlambdadynamodbstackIotToLambdaLambdaFunctionServiceRoleC57F7FDA",
             "Arn"
           ]
         },
@@ -174,8 +152,8 @@
         }
       },
       "DependsOn": [
-        "testiotlambdadynamodbstackLambdaFunctionServiceRoleDefaultPolicyAE674B0C",
-        "testiotlambdadynamodbstackLambdaFunctionServiceRoleA709DBA2"
+        "testiotlambdadynamodbstackIotToLambdaLambdaFunctionServiceRoleDefaultPolicyB43AD823",
+        "testiotlambdadynamodbstackIotToLambdaLambdaFunctionServiceRoleC57F7FDA"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -188,13 +166,13 @@
         }
       }
     },
-    "testiotlambdadynamodbstackLambdaFunctionLambdaInvokePermissionC33462B4": {
+    "testiotlambdadynamodbstackIotToLambdaLambdaFunctionLambdaInvokePermissionBD47A3C8": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "testiotlambdadynamodbstackLambdaFunctionF1BF28BF",
+            "testiotlambdadynamodbstackIotToLambdaLambdaFunctionDFEAF894",
             "Arn"
           ]
         },
@@ -204,6 +182,28 @@
             "testiotlambdadynamodbstackIotToLambdaIotTopic74F5E3BB",
             "Arn"
           ]
+        }
+      }
+    },
+    "testiotlambdadynamodbstackIotToLambdaIotTopic74F5E3BB": {
+      "Type": "AWS::IoT::TopicRule",
+      "Properties": {
+        "TopicRulePayload": {
+          "Actions": [
+            {
+              "Lambda": {
+                "FunctionArn": {
+                  "Fn::GetAtt": [
+                    "testiotlambdadynamodbstackIotToLambdaLambdaFunctionDFEAF894",
+                    "Arn"
+                  ]
+                }
+              }
+            }
+          ],
+          "Description": "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+          "RuleDisabled": false,
+          "Sql": "SELECT * FROM 'connectedcar/dtc/#'"
         }
       }
     },

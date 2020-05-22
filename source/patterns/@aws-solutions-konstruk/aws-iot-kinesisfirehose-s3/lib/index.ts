@@ -115,7 +115,7 @@ export class IotToKinesisFirehoseToS3 extends Construct {
     }
 
     /**
-     * @summary Retruns an instance of kinesisfirehose.CfnDeliveryStream created by the construct.
+     * @summary Returns an instance of kinesisfirehose.CfnDeliveryStream created by the construct.
      * @returns {kinesisfirehose.CfnDeliveryStream} Instance of CfnDeliveryStream created by the construct
      * @since 0.8.0
      * @access public
@@ -125,7 +125,7 @@ export class IotToKinesisFirehoseToS3 extends Construct {
     }
 
     /**
-     * @summary Retruns an instance of s3.Bucket created by the construct.
+     * @summary Returns an instance of s3.Bucket created by the construct.
      * @returns {s3.Bucket} Instance of s3.Bucket created by the construct
      * @since 0.8.0
      * @access public
@@ -135,7 +135,7 @@ export class IotToKinesisFirehoseToS3 extends Construct {
     }
 
     /**
-     * @summary Retruns an instance of iot.CfnTopicRule created by the construct.
+     * @summary Returns an instance of iot.CfnTopicRule created by the construct.
      * @returns {iot.CfnTopicRule} Instance of CfnTopicRule created by the construct
      * @since 0.8.0
      * @access public

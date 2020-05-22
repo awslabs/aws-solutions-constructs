@@ -102,12 +102,12 @@ export class ApiGatewayToSqs extends Construct {
         super(scope, id);
 
         // Setup the encryption key
-        this.encryptionKey = defaults.buildEncryptionKey(scope, props.encryptionKeyProps);
+        this.encryptionKey = defaults.buildEncryptionKey(this, props.encryptionKeyProps);
 
         // Setup the dead letter queue, if applicable
         let dlqi: sqs.DeadLetterQueue | undefined;
         if (!props.deployDeadLetterQueue || props.deployDeadLetterQueue === true) {
-            const dlq: sqs.Queue = defaults.buildQueue(scope, 'deadLetterQueue', {
+            const dlq: sqs.Queue = defaults.buildQueue(this, 'deadLetterQueue', {
                 encryptionKey: this.encryptionKey,
                 queueProps: props.queueProps
             });
@@ -118,7 +118,7 @@ export class ApiGatewayToSqs extends Construct {
         }
 
         // Setup the queue
-        this.queue = defaults.buildQueue(scope, 'queue', {
+        this.queue = defaults.buildQueue(this, 'queue', {
             encryptionKey: this.encryptionKey,
             queueProps: props.queueProps,
             deadLetterQueue: dlqi

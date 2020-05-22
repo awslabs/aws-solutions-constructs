@@ -31,11 +31,7 @@ test('Pattern deployment w/ new Lambda function and default props', () => {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
             code: lambda.Code.asset(`${__dirname}/lambda`)
-        },
-        deployDeadLetterQueue: true,
-        maxReceiveCount: 15,
-        queueProps: {},
-        encryptionKeyProps: {},
+        }
     };
     new SqsToLambda(stack, 'test-sqs-lambda', props);
     // Assertion 1

@@ -59,15 +59,15 @@ export interface SqsToLambdaProps {
     /**
      * Whether to deploy a secondary queue to be used as a dead letter queue.
      *
-     * @default - required field.
+     * @default - true.
      */
-    readonly deployDeadLetterQueue: boolean,
+    readonly deployDeadLetterQueue?: boolean,
     /**
      * The number of times a message can be unsuccesfully dequeued before being moved to the dead-letter queue.
      *
-     * @default - required field.
+     * @default - required field if deployDeadLetterQueue=true.
      */
-    readonly maxReceiveCount: number
+    readonly maxReceiveCount?: number
 }
 
 /**
@@ -91,10 +91,10 @@ export class SqsToLambda extends Construct {
         super(scope, id);
 
         // Setup the encryption key
-        this.encryptionKey = defaults.buildEncryptionKey(scope, props.encryptionKeyProps);
+        this.encryptionKey = defaults.buildEncryptionKey(this, props.encryptionKeyProps);
 
         // Setup the Lambda function
-        this.fn = defaults.buildLambdaFunction(scope, {
+        this.fn = defaults.buildLambdaFunction(this, {
             deployLambda: props.deployLambda,
             existingLambdaObj: props.existingLambdaObj,
             lambdaFunctionProps: props.lambdaFunctionProps
@@ -102,8 +102,8 @@ export class SqsToLambda extends Construct {
 
         // Setup the dead letter queue, if applicable
         let dlqi: sqs.DeadLetterQueue | undefined;
-        if (props.deployDeadLetterQueue) {
-            const dlq: sqs.Queue = defaults.buildQueue(scope, 'deadLetterQueue', {
+        if (props.deployDeadLetterQueue || props.deployDeadLetterQueue === undefined) {
+            const dlq: sqs.Queue = defaults.buildQueue(this, 'deadLetterQueue', {
                 encryptionKey: this.encryptionKey,
                 queueProps: props.queueProps
             });
@@ -114,7 +114,7 @@ export class SqsToLambda extends Construct {
         }
 
         // Setup the queue
-        this.queue = defaults.buildQueue(scope, 'queue', {
+        this.queue = defaults.buildQueue(this, 'queue', {
             encryptionKey: this.encryptionKey,
             queueProps: props.queueProps,
             deadLetterQueue: dlqi

@@ -96,7 +96,7 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
       dynamoTableProps: props.dynamoTableProps
     };
 
-    this.dynamoDBStreamToLambda = new DynamoDBStreamToLambda(scope, 'DynamoDBStreamToLambda', _props1);
+    this.dynamoDBStreamToLambda = new DynamoDBStreamToLambda(this, 'DynamoDBStreamToLambda', _props1);
 
     this.fn = this.dynamoDBStreamToLambda.lambdaFunction();
 
@@ -107,11 +107,11 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
       esDomainProps: props.esDomainProps
     };
 
-    this.lambdaToElasticSearchAndKibana = new LambdaToElasticSearchAndKibana(scope, 'LambdaToElasticSearch', _props2);
+    this.lambdaToElasticSearchAndKibana = new LambdaToElasticSearchAndKibana(this, 'LambdaToElasticSearch', _props2);
   }
 
   /**
-   * @summary Retruns an instance of dynamodb.Table created by the construct.
+   * @summary Returns an instance of dynamodb.Table created by the construct.
    * @returns {dynamodb.Table} Instance of dynamodb.Table created by the construct
    * @since 0.8.0
    * @access public
@@ -121,7 +121,7 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of lambda.Function created by the construct.
+   * @summary Returns an instance of lambda.Function created by the construct.
    * @returns {lambda.Function} Instance of lambda.Function created by the construct
    * @since 0.8.0
    * @access public
@@ -131,7 +131,7 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of cognito.UserPool created by the construct.
+   * @summary Returns an instance of cognito.UserPool created by the construct.
    * @returns {cognito.UserPool} Instance of UserPool created by the construct
    * @since 0.8.0
    * @access public
@@ -141,7 +141,7 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of cognito.UserPoolClient created by the construct.
+   * @summary Returns an instance of cognito.UserPoolClient created by the construct.
    * @returns {cognito.UserPoolClient} Instance of UserPoolClient created by the construct
    * @since 0.8.0
    * @access public
@@ -151,7 +151,7 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of cognito.CfnIdentityPool created by the construct.
+   * @summary Returns an instance of cognito.CfnIdentityPool created by the construct.
    * @returns {cognito.CfnIdentityPool} Instance of CfnIdentityPool created by the construct
    * @since 0.8.0
    * @access public
@@ -161,7 +161,7 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of elasticsearch.CfnDomain created by the construct.
+   * @summary Returns an instance of elasticsearch.CfnDomain created by the construct.
    * @returns {elasticsearch.CfnDomain} Instance of CfnDomain created by the construct
    * @since 0.8.0
    * @access public
@@ -171,7 +171,7 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
   }
 
   /**
-   * @summary Retruns a list of cloudwatch.Alarm created by the construct.
+   * @summary Returns a list of cloudwatch.Alarm created by the construct.
    * @returns {cloudwatch.Alarm[]} List of cloudwatch.Alarm  created by the construct
    * @since 0.8.0
    * @access public

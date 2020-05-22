@@ -25,13 +25,20 @@ export interface CloudFrontToApiGatewayProps {
    *
    * @default - None
    */
-  readonly existingApiGatewayObj: api.RestApi
+  readonly existingApiGatewayObj: api.RestApi,
   /**
    * Optional user provided props to override the default props
    *
    * @default - Default props are used
    */
-  readonly cloudFrontDistributionProps?: cloudfront.CloudFrontWebDistributionProps | any;
+  readonly cloudFrontDistributionProps?: cloudfront.CloudFrontWebDistributionProps | any,
+  /**
+   * Optional user provided props to turn on/off the automatic injection of best practice HTTP
+   * security headers in all resonses from cloudfront
+   *
+   * @default - true
+   */
+  readonly insertHttpSecurityHeaders?: boolean;
 }
 
 export class CloudFrontToApiGateway extends Construct {
@@ -52,11 +59,11 @@ export class CloudFrontToApiGateway extends Construct {
     this.api = props.existingApiGatewayObj;
 
     this.cloudfront = defaults.CloudFrontDistributionForApiGateway(this, props.existingApiGatewayObj,
-      props.cloudFrontDistributionProps);
+      props.cloudFrontDistributionProps, props.insertHttpSecurityHeaders);
   }
 
   /**
-   * @summary Retruns an instance of cloudfront.CloudFrontWebDistribution created by the construct.
+   * @summary Returns an instance of cloudfront.CloudFrontWebDistribution created by the construct.
    * @returns {cloudfront.CloudFrontWebDistribution} Instance of CloudFrontWebDistribution created by the construct
    * @since 0.8.0
    * @access public
@@ -66,7 +73,7 @@ export class CloudFrontToApiGateway extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of api.RestApi created by the construct.
+   * @summary Returns an instance of api.RestApi created by the construct.
    * @returns {api.RestApi} Instance of RestApi created by the construct
    * @since 0.8.0
    * @access public

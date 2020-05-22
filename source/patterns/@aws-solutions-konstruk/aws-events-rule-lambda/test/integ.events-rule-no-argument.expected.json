@@ -1,24 +1,6 @@
 {
   "Resources": {
-    "testeventsrulelambdaEventsRule82B36872": {
-      "Type": "AWS::Events::Rule",
-      "Properties": {
-        "ScheduleExpression": "rate(5 minutes)",
-        "State": "ENABLED",
-        "Targets": [
-          {
-            "Arn": {
-              "Fn::GetAtt": [
-                "LambdaFunctionBF21E41F",
-                "Arn"
-              ]
-            },
-            "Id": "Target0"
-          }
-        ]
-      }
-    },
-    "LambdaFunctionServiceRole0C4CDE0B": {
+    "testeventsrulelambdaLambdaFunctionServiceRole61DEA405": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -69,7 +51,7 @@
         ]
       }
     },
-    "LambdaFunctionBF21E41F": {
+    "testeventsrulelambdaLambdaFunction1A3B9577": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -113,7 +95,7 @@
         "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
-            "LambdaFunctionServiceRole0C4CDE0B",
+            "testeventsrulelambdaLambdaFunctionServiceRole61DEA405",
             "Arn"
           ]
         },
@@ -125,7 +107,7 @@
         }
       },
       "DependsOn": [
-        "LambdaFunctionServiceRole0C4CDE0B"
+        "testeventsrulelambdaLambdaFunctionServiceRole61DEA405"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -138,13 +120,13 @@
         }
       }
     },
-    "LambdaFunctionLambdaInvokePermissionC135C9F1": {
+    "testeventsrulelambdaLambdaFunctionLambdaInvokePermission803B9778": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "LambdaFunctionBF21E41F",
+            "testeventsrulelambdaLambdaFunction1A3B9577",
             "Arn"
           ]
         },
@@ -155,6 +137,24 @@
             "Arn"
           ]
         }
+      }
+    },
+    "testeventsrulelambdaEventsRule82B36872": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "ScheduleExpression": "rate(5 minutes)",
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::GetAtt": [
+                "testeventsrulelambdaLambdaFunction1A3B9577",
+                "Arn"
+              ]
+            },
+            "Id": "Target0"
+          }
+        ]
       }
     }
   },

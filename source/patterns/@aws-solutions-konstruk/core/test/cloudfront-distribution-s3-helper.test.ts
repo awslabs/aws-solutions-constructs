@@ -17,6 +17,7 @@ import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import { CloudFrontDistributionForS3 } from '../lib/cloudfront-distribution-helper';
 import { buildS3Bucket } from '../lib/s3-bucket-helper';
 import '@aws-cdk/assert/jest';
+import { Bucket } from '@aws-cdk/aws-s3';
 
 test('cloudfront distribution with default params', () => {
   const stack = new Stack();
@@ -158,6 +159,263 @@ test('test cloudfront check bucket policy', () => {
         Version: "2012-10-17"
       }
     });
+});
+
+test('test cloudfront with no security headers ', () => {
+  const stack = new Stack();
+  const sourceBucket = buildS3Bucket(stack, {
+    deployBucket: true
+  });
+
+  CloudFrontDistributionForS3(stack, sourceBucket, {}, false);
+
+  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+      DefaultCacheBehavior: {
+        AllowedMethods: [
+          "GET",
+          "HEAD"
+        ],
+        CachedMethods: [
+          "GET",
+          "HEAD"
+        ],
+        Compress: true,
+        ForwardedValues: {
+          Cookies: {
+            Forward: "none"
+          },
+          QueryString: false
+        },
+        TargetOriginId: "origin1",
+        ViewerProtocolPolicy: "redirect-to-https"
+      },
+      DefaultRootObject: "index.html",
+      Enabled: true,
+      HttpVersion: "http2",
+      IPV6Enabled: true,
+      Logging: {
+        Bucket: {
+          "Fn::GetAtt": [
+            "CloudfrontLoggingBucket3C3EFAA7",
+            "RegionalDomainName"
+          ]
+        },
+        IncludeCookies: false
+      },
+      Origins: [
+        {
+          DomainName: {
+            "Fn::GetAtt": [
+              "S3Bucket07682993",
+              "RegionalDomainName"
+            ]
+          },
+          Id: "origin1",
+          S3OriginConfig: {
+              OriginAccessIdentity: {
+                "Fn::Join": [
+                  "",
+                  [
+                    "origin-access-identity/cloudfront/",
+                    {
+                      Ref: "CloudFrontOriginAccessIdentity"
+                    }
+                  ]
+                ]
+              }
+          }
+        }
+      ],
+      PriceClass: "PriceClass_100",
+      ViewerCertificate: {
+        CloudFrontDefaultCertificate: true
+      }
+    }
+  });
+});
+
+test('test cloudfront override cloudfront custom domain names ', () => {
+  const stack = new Stack();
+  const sourceBucket = buildS3Bucket(stack, {
+    deployBucket: true
+  });
+
+  const myprops = {
+    aliasConfiguration: {
+      acmCertRef: '/acm/mycertificate',
+      names: ['mydomains']
+    }
+  };
+
+  CloudFrontDistributionForS3(stack, sourceBucket, myprops);
+
+  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+        Aliases: [
+            "mydomains"
+        ],
+        DefaultCacheBehavior: {
+          AllowedMethods: [
+            "GET",
+            "HEAD"
+          ],
+          CachedMethods: [
+            "GET",
+            "HEAD"
+          ],
+          Compress: true,
+          ForwardedValues: {
+            Cookies: {
+              Forward: "none"
+            },
+            QueryString: false
+          },
+          LambdaFunctionAssociations: [
+            {
+              EventType: "origin-response",
+              LambdaFunctionARN: {
+                Ref: "SetHttpSecurityHeadersVersion660E2F72"
+              }
+            }
+          ],
+          TargetOriginId: "origin1",
+          ViewerProtocolPolicy: "redirect-to-https"
+        },
+        DefaultRootObject: "index.html",
+        Enabled: true,
+        HttpVersion: "http2",
+        IPV6Enabled: true,
+        Logging: {
+          Bucket: {
+            "Fn::GetAtt": [
+              "CloudfrontLoggingBucket3C3EFAA7",
+              "RegionalDomainName"
+            ]
+          },
+          IncludeCookies: false
+        },
+        Origins: [
+          {
+            DomainName: {
+              "Fn::GetAtt": [
+                "S3Bucket07682993",
+                "RegionalDomainName"
+              ]
+            },
+            Id: "origin1",
+            S3OriginConfig: {
+                OriginAccessIdentity: {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "origin-access-identity/cloudfront/",
+                      {
+                        Ref: "CloudFrontOriginAccessIdentity"
+                      }
+                    ]
+                  ]
+                }
+            }
+          }
+        ],
+        PriceClass: "PriceClass_100",
+        ViewerCertificate: {
+          AcmCertificateArn: "/acm/mycertificate",
+          SslSupportMethod: "sni-only"
+        }
+      }
+  });
+});
+
+test('test cloudfront override cloudfront logging bucket ', () => {
+  const stack = new Stack();
+  const sourceBucket = buildS3Bucket(stack, {
+    deployBucket: true
+  });
+  const loggingBucket = new Bucket(stack, 'loggingbucket');
+
+  const myprops = {
+    loggingConfig: {
+      bucket: loggingBucket,
+      includeCookies: true
+    }
+  };
+
+  CloudFrontDistributionForS3(stack, sourceBucket, myprops);
+
+  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+        DefaultCacheBehavior: {
+          AllowedMethods: [
+            "GET",
+            "HEAD"
+          ],
+          CachedMethods: [
+            "GET",
+            "HEAD"
+          ],
+          Compress: true,
+          ForwardedValues: {
+            Cookies: {
+              Forward: "none"
+            },
+            QueryString: false
+          },
+          LambdaFunctionAssociations: [
+            {
+              EventType: "origin-response",
+              LambdaFunctionARN: {
+                Ref: "SetHttpSecurityHeadersVersion660E2F72"
+              }
+            }
+          ],
+          TargetOriginId: "origin1",
+          ViewerProtocolPolicy: "redirect-to-https"
+        },
+        DefaultRootObject: "index.html",
+        Enabled: true,
+        HttpVersion: "http2",
+        IPV6Enabled: true,
+        Logging: {
+          Bucket: {
+            "Fn::GetAtt": [
+              "loggingbucket6D73BD53",
+              "RegionalDomainName"
+            ]
+          },
+          IncludeCookies    : true
+        },
+        Origins: [
+          {
+            DomainName: {
+              "Fn::GetAtt": [
+                "S3Bucket07682993",
+                "RegionalDomainName"
+              ]
+            },
+            Id: "origin1",
+            S3OriginConfig: {
+                OriginAccessIdentity: {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "origin-access-identity/cloudfront/",
+                      {
+                        Ref: "CloudFrontOriginAccessIdentity"
+                      }
+                    ]
+                  ]
+                }
+            }
+          }
+        ],
+        PriceClass: "PriceClass_100",
+        ViewerCertificate: {
+          CloudFrontDefaultCertificate: true
+        }
+      }
+  });
 });
 
 test('test cloudfront override properties', () => {

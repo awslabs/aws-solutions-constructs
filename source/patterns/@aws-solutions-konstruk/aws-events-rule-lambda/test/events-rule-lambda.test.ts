@@ -49,7 +49,7 @@ test('check lambda function properties for deploy: true', () => {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": [
-        "LambdaFunctionServiceRole0C4CDE0B",
+        "testeventsrulelambdaLambdaFunctionServiceRole61DEA405",
         "Arn"
       ]
     },
@@ -71,7 +71,7 @@ test('check lambda function permission for deploy: true', () => {
     Action: "lambda:InvokeFunction",
     FunctionName: {
       "Fn::GetAtt": [
-        "LambdaFunctionBF21E41F",
+        "testeventsrulelambdaLambdaFunction1A3B9577",
         "Arn"
       ]
     },
@@ -152,7 +152,7 @@ test('check events rule properties for deploy: true', () => {
       {
         Arn: {
           "Fn::GetAtt": [
-            "LambdaFunctionBF21E41F",
+            "testeventsrulelambdaLambdaFunction1A3B9577",
             "Arn"
           ]
         },

@@ -37,13 +37,12 @@ test('Test override for buildUserPool', () => {
 
   const userpoolProps: cognito.UserPoolProps = {
     userPoolName: 'test',
-    signInType: cognito.SignInType.EMAIL_OR_PHONE
+    signInAliases: { username: false, email: true, phone: true }
   };
 
   defaults.buildUserPool(stack, userpoolProps);
 
   expect(stack).toHaveResource('AWS::Cognito::UserPool', {
-    LambdaConfig: {},
     UsernameAttributes: [
       "email",
       "phone_number"

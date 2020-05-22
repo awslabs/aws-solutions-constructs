@@ -139,7 +139,7 @@ Object {
       },
       "Type": "AWS::ApiGateway::RestApi",
     },
-    "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F377bb1a1fb193e128da423ded28aa899d": Object {
+    "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F3c3e5f83088fae14392dcefa7a52bda00": Object {
       "DependsOn": Array [
         "testapigatewaydynamodbdefaultRestApiidGET94B6F433",
         "testapigatewaydynamodbdefaultRestApiidFD6A9E91",
@@ -171,10 +171,10 @@ Object {
               "Arn",
             ],
           },
-          "Format": "$context.identity.sourceIp $context.identity.caller $context.identity.user [$context.requestTime] \\"$context.httpMethod $context.resourcePath $context.protocol\\" $context.status $context.responseLength $context.requestId",
+          "Format": "{\\"requestId\\":\\"$context.requestId\\",\\"ip\\":\\"$context.identity.sourceIp\\",\\"user\\":\\"$context.identity.user\\",\\"caller\\":\\"$context.identity.caller\\",\\"requestTime\\":\\"$context.requestTime\\",\\"httpMethod\\":\\"$context.httpMethod\\",\\"resourcePath\\":\\"$context.resourcePath\\",\\"status\\":\\"$context.status\\",\\"protocol\\":\\"$context.protocol\\",\\"responseLength\\":\\"$context.responseLength\\"}",
         },
         "DeploymentId": Object {
-          "Ref": "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F377bb1a1fb193e128da423ded28aa899d",
+          "Ref": "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F3c3e5f83088fae14392dcefa7a52bda00",
         },
         "MethodSettings": Array [
           Object {

@@ -66,7 +66,7 @@ export class EventsRuleToLambda extends Construct {
   constructor(scope: Construct, id: string, props: EventsRuleToLambdaProps) {
     super(scope, id);
 
-    this.fn = defaults.buildLambdaFunction(scope, {
+    this.fn = defaults.buildLambdaFunction(this, {
       deployLambda: props.deployLambda,
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps
@@ -91,7 +91,7 @@ export class EventsRuleToLambda extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of events.Rule created by the construct.
+   * @summary Returns an instance of events.Rule created by the construct.
    * @returns {events.Rule} Instance of events.Rule created by the construct
    * @since 0.8.0
    * @access public
@@ -101,7 +101,7 @@ export class EventsRuleToLambda extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of lambda.Function created by the construct.
+   * @summary Returns an instance of lambda.Function created by the construct.
    * @returns {lambda.Function} Instance of lambda.Function created by the construct
    * @since 0.8.0
    * @access public

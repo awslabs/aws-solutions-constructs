@@ -66,7 +66,7 @@ export class IotToLambda extends Construct {
   constructor(scope: Construct, id: string, props: IotToLambdaProps) {
     super(scope, id);
 
-    this.fn = defaults.buildLambdaFunction(scope, {
+    this.fn = defaults.buildLambdaFunction(this, {
       deployLambda: props.deployLambda,
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps
@@ -89,7 +89,7 @@ export class IotToLambda extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of iot.CfnTopicRule created by the construct.
+   * @summary Returns an instance of iot.CfnTopicRule created by the construct.
    * @returns {iot.CfnTopicRule} Instance of CfnTopicRule created by the construct
    * @since 0.8.0
    * @access public
@@ -99,7 +99,7 @@ export class IotToLambda extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of lambda.Function created by the construct.
+   * @summary Returns an instance of lambda.Function created by the construct.
    * @returns {lambda.Function} Instance of lambda.Function created by the construct
    * @since 0.8.0
    * @access public

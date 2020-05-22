@@ -60,9 +60,15 @@ export function buildLambdaFunction(scope: cdk.Construct, props: BuildLambdaFunc
   }
 }
 
-export function deployLambdaFunction(scope: cdk.Construct, lambdaFunctionProps: lambda.FunctionProps): lambda.Function {
+export function deployLambdaFunction(scope: cdk.Construct,
+                                     lambdaFunctionProps: lambda.FunctionProps,
+                                     functionId?: string): lambda.Function {
+
+  const _functionId = functionId ? functionId : 'LambdaFunction';
+  const _functionRoleId = _functionId + 'ServiceRole';
+
   // Setup the IAM Role for Lambda Service
-  const lambdaServiceRole = new iam.Role(scope, 'LambdaFunctionServiceRole', {
+  const lambdaServiceRole = new iam.Role(scope, _functionRoleId, {
     assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
     inlinePolicies: {
       LambdaFunctionServiceRolePolicy: new iam.PolicyDocument({
@@ -86,7 +92,7 @@ export function deployLambdaFunction(scope: cdk.Construct, lambdaFunctionProps: 
       _lambdaFunctionProps = overrideProps(DefaultLambdaFunctionPropsForNodeJS(lambdaServiceRole), lambdaFunctionProps);
   }
 
-  const lambdafunction = new lambda.Function(scope, 'LambdaFunction', _lambdaFunctionProps);
+  const lambdafunction = new lambda.Function(scope, _functionId, _lambdaFunctionProps);
 
   const cfnLambdafunction = lambdafunction.node.findChild('Resource') as lambda.CfnFunction;
 

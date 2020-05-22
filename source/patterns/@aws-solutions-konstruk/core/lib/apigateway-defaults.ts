@@ -13,57 +13,66 @@
 
 import * as api from '@aws-cdk/aws-apigateway';
 import * as lambda from '@aws-cdk/aws-lambda';
+import { LogGroup } from '@aws-cdk/aws-logs';
 
-export function DefaultGlobalLambdaRestApiProps(_existingLambdaObj: lambda.Function) {
-    const defaultGatewayProps: api.LambdaRestApiProps = {
-        handler: _existingLambdaObj,
-        options: {
-            endpointTypes: [api.EndpointType.EDGE],
-            cloudWatchRole: false,
-            // Configure API Gateway Execution logging
-            deployOptions: {
-                loggingLevel: api.MethodLoggingLevel.INFO,
-                dataTraceEnabled: true
-            },
-            defaultMethodOptions: {
-                authorizationType: api.AuthorizationType.IAM
-            }
-        }
-    };
-    return defaultGatewayProps;
-}
-
-export function DefaultRegionalLambdaRestApiProps(_existingLambdaObj: lambda.Function) {
-    const defaultGatewayProps: api.LambdaRestApiProps = {
-        handler: _existingLambdaObj,
-        options: {
-            endpointTypes: [api.EndpointType.REGIONAL],
-            cloudWatchRole: false,
-            // Configure API Gateway Execution logging
-            deployOptions: {
-                loggingLevel: api.MethodLoggingLevel.INFO,
-                dataTraceEnabled: true
-            },
-            defaultMethodOptions: {
-                authorizationType: api.AuthorizationType.IAM
-            }
-        }
-    };
-    return defaultGatewayProps;
-}
-
-export function DefaultGlobalApiProps() {
-    const defaultGatewayProps: api.RestApiProps = {
-        endpointTypes: [api.EndpointType.EDGE],
+/**
+ * Private function to configure an api.RestApiProps
+ * @param scope - the construct to which the RestApi should be attached to.
+ * @param _endpointType - endpoint type for Api Gateway e.g. Regional, Global, Private
+ * @param _logGroup - CW Log group for Api Gateway access logging
+ */
+function DefaultRestApiProps(_endpointType: api.EndpointType[], _logGroup: LogGroup): api.RestApiProps {
+    return {
+        endpointTypes: _endpointType,
         cloudWatchRole: false,
-        // Configure API Gateway Execution logging
+        // Configure API Gateway Access logging
         deployOptions: {
+            accessLogDestination: new api.LogGroupLogDestination(_logGroup),
+            accessLogFormat: api.AccessLogFormat.jsonWithStandardFields(),
             loggingLevel: api.MethodLoggingLevel.INFO,
             dataTraceEnabled: true
         },
         defaultMethodOptions: {
             authorizationType: api.AuthorizationType.IAM
         }
+
+    } as api.RestApiProps;
+}
+
+/**
+ * Provides the default set of properties for Edge/Global Lambda backed RestApi
+ * @param scope - the construct to which the RestApi should be attached to.
+ * @param _endpointType - endpoint type for Api Gateway e.g. Regional, Global, Private
+ * @param _logGroup - CW Log group for Api Gateway access logging
+ */
+export function DefaultGlobalLambdaRestApiProps(_existingLambdaObj: lambda.Function, _logGroup: LogGroup) {
+    const defaultGatewayProps: api.LambdaRestApiProps = {
+        handler: _existingLambdaObj,
+        options: DefaultRestApiProps([api.EndpointType.EDGE], _logGroup)
     };
     return defaultGatewayProps;
+}
+
+/**
+ * Provides the default set of properties for Regional Lambda backed RestApi
+ * @param scope - the construct to which the RestApi should be attached to.
+ * @param _endpointType - endpoint type for Api Gateway e.g. Regional, Global, Private
+ * @param _logGroup - CW Log group for Api Gateway access logging
+ */
+export function DefaultRegionalLambdaRestApiProps(_existingLambdaObj: lambda.Function, _logGroup: LogGroup) {
+    const defaultGatewayProps: api.LambdaRestApiProps = {
+        handler: _existingLambdaObj,
+        options: DefaultRestApiProps([api.EndpointType.REGIONAL], _logGroup)
+    };
+    return defaultGatewayProps;
+}
+
+/**
+ * Provides the default set of properties for Edge/Global RestApi
+ * @param scope - the construct to which the RestApi should be attached to.
+ * @param _endpointType - endpoint type for Api Gateway e.g. Regional, Global, Private
+ * @param _logGroup - CW Log group for Api Gateway access logging
+ */
+export function DefaultGlobalRestApiProps(_logGroup: LogGroup) {
+    return DefaultRestApiProps([api.EndpointType.EDGE], _logGroup);
 }

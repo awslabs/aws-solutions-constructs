@@ -1,6 +1,6 @@
 {
   "name": "aws-solutions-konstruk",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "AWS Solutions Konstruk Library",
   "repository": {
     "type": "git",
@@ -23,10 +23,10 @@
     "eslint-plugin-license-header": "^0.2.0",
     "fs-extra": "^8.1.0",
     "jest": "^24.9.0",
-    "jsii": "~0.22.0",
-    "jsii-pacmak": "~0.22.0",    
+    "jsii": "^1.4.1",
+    "jsii-pacmak": "^1.4.1",
     "tslint": "^5.20.1",
-    "typescript": "~3.8.2"
+    "typescript": "~3.8.3"
   },
   "devDependencies": {
     "lerna": "^3.18.4"
@@ -38,7 +38,15 @@
     ],
     "nohoist": [
       "**/deepmerge",
-      "**/deepmerge/**"
+      "**/deepmerge/**",
+      "**/npmlog",
+      "**/npmlog/**",
+      "**/@types/npmlog",
+      "**/@types/npmlog/**",
+      "**/deep-diff",
+      "**/deep-diff/**",
+      "**/@types/deep-diff",
+      "**/@types/deep-diff/**"
     ]
   }  
 }

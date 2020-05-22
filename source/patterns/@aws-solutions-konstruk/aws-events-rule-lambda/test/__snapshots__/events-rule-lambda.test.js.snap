@@ -17,9 +17,27 @@ Object {
     },
   },
   "Resources": Object {
-    "LambdaFunctionBF21E41F": Object {
+    "testeventsrulelambdaEventsRule82B36872": Object {
+      "Properties": Object {
+        "ScheduleExpression": "rate(5 minutes)",
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "testeventsrulelambdaLambdaFunction1A3B9577",
+                "Arn",
+              ],
+            },
+            "Id": "Target0",
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "testeventsrulelambdaLambdaFunction1A3B9577": Object {
       "DependsOn": Array [
-        "LambdaFunctionServiceRole0C4CDE0B",
+        "testeventsrulelambdaLambdaFunctionServiceRole61DEA405",
       ],
       "Metadata": Object {
         "cfn_nag": Object {
@@ -78,7 +96,7 @@ Object {
         "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "LambdaFunctionServiceRole0C4CDE0B",
+            "testeventsrulelambdaLambdaFunctionServiceRole61DEA405",
             "Arn",
           ],
         },
@@ -86,12 +104,12 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "LambdaFunctionLambdaInvokePermissionC135C9F1": Object {
+    "testeventsrulelambdaLambdaFunctionLambdaInvokePermission803B9778": Object {
       "Properties": Object {
         "Action": "lambda:InvokeFunction",
         "FunctionName": Object {
           "Fn::GetAtt": Array [
-            "LambdaFunctionBF21E41F",
+            "testeventsrulelambdaLambdaFunction1A3B9577",
             "Arn",
           ],
         },
@@ -105,7 +123,7 @@ Object {
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "LambdaFunctionServiceRole0C4CDE0B": Object {
+    "testeventsrulelambdaLambdaFunctionServiceRole61DEA405": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -155,24 +173,6 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Role",
-    },
-    "testeventsrulelambdaEventsRule82B36872": Object {
-      "Properties": Object {
-        "ScheduleExpression": "rate(5 minutes)",
-        "State": "ENABLED",
-        "Targets": Array [
-          Object {
-            "Arn": Object {
-              "Fn::GetAtt": Array [
-                "LambdaFunctionBF21E41F",
-                "Arn",
-              ],
-            },
-            "Id": "Target0",
-          },
-        ],
-      },
-      "Type": "AWS::Events::Rule",
     },
   },
 }

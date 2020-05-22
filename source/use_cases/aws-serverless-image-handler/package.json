@@ -1,6 +1,6 @@
 {
   "name": "@aws-konstruk/aws-serverless-image-handler",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Use case pattern for deploying a serverless image handler API.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -53,18 +53,18 @@
     }
   },
   "dependencies": {
-    "@aws-cdk/aws-apigateway": "~1.25.0",
-    "@aws-cdk/aws-cloudfront": "~1.25.0",
-    "@aws-cdk/aws-iam": "~1.25.0",
-    "@aws-cdk/aws-lambda": "~1.25.0",
-    "@aws-cdk/aws-s3": "~1.25.0",
-    "@aws-cdk/core": "~1.25.0",
-    "@aws-solutions-konstruk/aws-cloudfront-apigateway-lambda": "~0.8.0",
-    "@aws-solutions-konstruk/aws-lambda-s3": "~0.8.0",
-    "@aws-solutions-konstruk/core": "~0.8.0"
+    "@aws-cdk/aws-apigateway": "~1.40.0",
+    "@aws-cdk/aws-cloudfront": "~1.40.0",
+    "@aws-cdk/aws-iam": "~1.40.0",
+    "@aws-cdk/aws-lambda": "~1.40.0",
+    "@aws-cdk/aws-s3": "~1.40.0",
+    "@aws-cdk/core": "~1.40.0",
+    "@aws-solutions-konstruk/aws-cloudfront-apigateway-lambda": "~0.8.1",
+    "@aws-solutions-konstruk/aws-lambda-s3": "~0.8.1",
+    "@aws-solutions-konstruk/core": "~0.8.1"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "~1.25.0",
+    "@aws-cdk/assert": "~1.40.0",
     "@types/jest": "^24.0.23",
     "@types/node": "^10.3.0"
   },
@@ -74,14 +74,14 @@
     ]
   },
   "peerDependencies": {
-    "@aws-solutions-konstruk/aws-cloudfront-apigateway-lambda": "~0.8.0",
-    "@aws-solutions-konstruk/aws-lambda-s3": "~0.8.0",
-    "@aws-cdk/core": "~1.25.0",
-    "@aws-cdk/aws-lambda": "~1.25.0",
-    "@aws-cdk/aws-apigateway": "~1.25.0",
-    "@aws-cdk/aws-cloudfront": "~1.25.0",
-    "@aws-cdk/aws-s3": "~1.25.0",
-    "@aws-solutions-konstruk/core": "~0.8.0",
-    "@aws-cdk/aws-iam": "~1.25.0"
+    "@aws-solutions-konstruk/aws-cloudfront-apigateway-lambda": "~0.8.1",
+    "@aws-solutions-konstruk/aws-lambda-s3": "~0.8.1",
+    "@aws-cdk/core": "~1.40.0",
+    "@aws-cdk/aws-lambda": "~1.40.0",
+    "@aws-cdk/aws-apigateway": "~1.40.0",
+    "@aws-cdk/aws-cloudfront": "~1.40.0",
+    "@aws-cdk/aws-s3": "~1.40.0",
+    "@aws-solutions-konstruk/core": "~0.8.1",
+    "@aws-cdk/aws-iam": "~1.40.0"
   }
 }

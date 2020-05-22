@@ -24,6 +24,11 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
+    "testapigatewaydynamodbApiAccessLogGroup3F457756": {
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
     "testapigatewaydynamodbRestApi80489300": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
@@ -35,7 +40,7 @@
         "Name": "RestApi"
       }
     },
-    "testapigatewaydynamodbRestApiDeployment1898674B2ca5fe4ea0afc42b42d1b0c68ddb65ce": {
+    "testapigatewaydynamodbRestApiDeployment1898674Bf06c85f4d2c4a0739d5158ea0dd6288a": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -74,10 +79,10 @@
               "Arn"
             ]
           },
-          "Format": "$context.identity.sourceIp $context.identity.caller $context.identity.user [$context.requestTime] \"$context.httpMethod $context.resourcePath $context.protocol\" $context.status $context.responseLength $context.requestId"
+          "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "testapigatewaydynamodbRestApiDeployment1898674B2ca5fe4ea0afc42b42d1b0c68ddb65ce"
+          "Ref": "testapigatewaydynamodbRestApiDeployment1898674Bf06c85f4d2c4a0739d5158ea0dd6288a"
         },
         "MethodSettings": [
           {
@@ -455,11 +460,6 @@
           }
         ]
       }
-    },
-    "testapigatewaydynamodbApiAccessLogGroup3F457756": {
-      "Type": "AWS::Logs::LogGroup",
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
     },
     "testapigatewaydynamodbLambdaRestApiCloudWatchRoleD176CA9E": {
       "Type": "AWS::IAM::Role",

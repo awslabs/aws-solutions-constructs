@@ -13,8 +13,8 @@
 
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as s3 from '@aws-cdk/aws-s3';
-import * as iam from '@aws-cdk/aws-iam';
 import { Construct, Stack } from '@aws-cdk/core';
+import * as iam from '@aws-cdk/aws-iam';
 import * as defaults from '@aws-solutions-konstruk/core';
 import { S3EventSourceProps, S3EventSource } from '@aws-cdk/aws-lambda-event-sources';
 
@@ -77,7 +77,7 @@ export class S3ToLambda extends Construct {
   private fn: lambda.Function;
   private bucket: s3.Bucket;
   /**
-   * @summary Constructs a new instance of the IotToLambda class.
+   * @summary Constructs a new instance of the S3ToLambda class.
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {S3ToLambdaProps} props - user provided props for the construct
@@ -87,13 +87,13 @@ export class S3ToLambda extends Construct {
   constructor(scope: Construct, id: string, props: S3ToLambdaProps) {
     super(scope, id);
 
-    this.fn = defaults.buildLambdaFunction(scope, {
+    this.fn = defaults.buildLambdaFunction(this, {
       deployLambda: props.deployLambda,
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps
     });
 
-    this.bucket = defaults.buildS3Bucket(scope, {
+    this.bucket = defaults.buildS3Bucket(this, {
       deployBucket: props.deployBucket,
       existingBucketObj: props.existingBucketObj,
       bucketProps: props.bucketProps
@@ -103,10 +103,10 @@ export class S3ToLambda extends Construct {
     this.fn.addEventSource(new S3EventSource(this.bucket,
       defaults.S3EventSourceProps(props.s3EventSourceProps)));
 
-    this.addCfnNagSuppress(scope);
+    this.addCfnNagSuppress();
   }
 
-  private addCfnNagSuppress(scope: Construct) {
+  private addCfnNagSuppress() {
     // Extract the CfnBucket from the s3Bucket
     const s3BucketResource = this.bucket.node.findChild('Resource') as s3.CfnBucket;
 
@@ -119,7 +119,7 @@ export class S3ToLambda extends Construct {
         }
     };
 
-    const root = Stack.of(scope);
+    const root = Stack.of(this);
     const logicalId = 'BucketNotificationsHandler050a0587b7544547bf325f094a3db834';
     const notificationsResourceHandler = root.node.tryFindChild(logicalId) as lambda.Function;
     const notificationsResourceHandlerRoleRole = notificationsResourceHandler.node.findChild('Role') as iam.Role;

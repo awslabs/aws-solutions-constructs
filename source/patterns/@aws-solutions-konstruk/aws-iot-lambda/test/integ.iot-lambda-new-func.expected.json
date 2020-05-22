@@ -1,28 +1,6 @@
 {
   "Resources": {
-    "testiotlambdaintegrationIotTopic18B6A735": {
-      "Type": "AWS::IoT::TopicRule",
-      "Properties": {
-        "TopicRulePayload": {
-          "Actions": [
-            {
-              "Lambda": {
-                "FunctionArn": {
-                  "Fn::GetAtt": [
-                    "LambdaFunctionBF21E41F",
-                    "Arn"
-                  ]
-                }
-              }
-            }
-          ],
-          "Description": "Processing of DTC messages from the AWS Connected Vehicle Solution.",
-          "RuleDisabled": false,
-          "Sql": "SELECT * FROM 'connectedcar/dtc/#'"
-        }
-      }
-    },
-    "LambdaFunctionServiceRole0C4CDE0B": {
+    "testiotlambdaintegrationLambdaFunctionServiceRole27C3EE41": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -73,7 +51,7 @@
         ]
       }
     },
-    "LambdaFunctionBF21E41F": {
+    "testiotlambdaintegrationLambdaFunctionC5329DBA": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -117,7 +95,7 @@
         "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
-            "LambdaFunctionServiceRole0C4CDE0B",
+            "testiotlambdaintegrationLambdaFunctionServiceRole27C3EE41",
             "Arn"
           ]
         },
@@ -129,7 +107,7 @@
         }
       },
       "DependsOn": [
-        "LambdaFunctionServiceRole0C4CDE0B"
+        "testiotlambdaintegrationLambdaFunctionServiceRole27C3EE41"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -142,13 +120,13 @@
         }
       }
     },
-    "LambdaFunctionLambdaInvokePermissionC135C9F1": {
+    "testiotlambdaintegrationLambdaFunctionLambdaInvokePermissionC89CDD23": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "LambdaFunctionBF21E41F",
+            "testiotlambdaintegrationLambdaFunctionC5329DBA",
             "Arn"
           ]
         },
@@ -158,6 +136,28 @@
             "testiotlambdaintegrationIotTopic18B6A735",
             "Arn"
           ]
+        }
+      }
+    },
+    "testiotlambdaintegrationIotTopic18B6A735": {
+      "Type": "AWS::IoT::TopicRule",
+      "Properties": {
+        "TopicRulePayload": {
+          "Actions": [
+            {
+              "Lambda": {
+                "FunctionArn": {
+                  "Fn::GetAtt": [
+                    "testiotlambdaintegrationLambdaFunctionC5329DBA",
+                    "Arn"
+                  ]
+                }
+              }
+            }
+          ],
+          "Description": "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+          "RuleDisabled": false,
+          "Sql": "SELECT * FROM 'connectedcar/dtc/#'"
         }
       }
     }

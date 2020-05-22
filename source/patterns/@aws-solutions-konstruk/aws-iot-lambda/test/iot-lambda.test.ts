@@ -78,7 +78,7 @@ test('check lambda function properties for deploy: true', () => {
       Handler: "index.handler",
       Role: {
         "Fn::GetAtt": [
-          "LambdaFunctionServiceRole0C4CDE0B",
+          "testiotlambdaintegrationLambdaFunctionServiceRole27C3EE41",
           "Arn"
         ]
       },
@@ -95,7 +95,7 @@ test('check lambda function permission for deploy: true', () => {
         Action: "lambda:InvokeFunction",
         FunctionName: {
           "Fn::GetAtt": [
-            "LambdaFunctionBF21E41F",
+            "testiotlambdaintegrationLambdaFunctionC5329DBA",
             "Arn"
           ]
         },
@@ -176,7 +176,7 @@ test('check iot topic rule properties for deploy: true', () => {
               Lambda: {
                 FunctionArn: {
                   "Fn::GetAtt": [
-                    "LambdaFunctionBF21E41F",
+                    "testiotlambdaintegrationLambdaFunctionC5329DBA",
                     "Arn"
                   ]
                 }

@@ -88,7 +88,7 @@ export class IotToLambdaToDynamoDB extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of iot.CfnTopicRule created by the construct.
+   * @summary Returns an instance of iot.CfnTopicRule created by the construct.
    * @returns {iot.CfnTopicRule} Instance of CfnTopicRule created by the construct
    * @since 0.8.0
    * @access public
@@ -98,7 +98,7 @@ export class IotToLambdaToDynamoDB extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of lambda.Function created by the construct.
+   * @summary Returns an instance of lambda.Function created by the construct.
    * @returns {lambda.Function} Instance of lambda.Function created by the construct
    * @since 0.8.0
    * @access public
@@ -108,7 +108,7 @@ export class IotToLambdaToDynamoDB extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of dynamodb.Table created by the construct.
+   * @summary Returns an instance of dynamodb.Table created by the construct.
    * @returns {dynamodb.Table} Instance of dynamodb.Table created by the construct
    * @since 0.8.0
    * @access public

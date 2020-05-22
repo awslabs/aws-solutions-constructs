@@ -25,7 +25,7 @@ Object {
               "Lambda": Object {
                 "FunctionArn": Object {
                   "Fn::GetAtt": Array [
-                    "testiotlambdadynamodbstackLambdaFunctionF1BF28BF",
+                    "testiotlambdadynamodbstackIotToLambdaLambdaFunctionDFEAF894",
                     "Arn",
                   ],
                 },
@@ -39,10 +39,10 @@ Object {
       },
       "Type": "AWS::IoT::TopicRule",
     },
-    "testiotlambdadynamodbstackLambdaFunctionF1BF28BF": Object {
+    "testiotlambdadynamodbstackIotToLambdaLambdaFunctionDFEAF894": Object {
       "DependsOn": Array [
-        "testiotlambdadynamodbstackLambdaFunctionServiceRoleDefaultPolicyAE674B0C",
-        "testiotlambdadynamodbstackLambdaFunctionServiceRoleA709DBA2",
+        "testiotlambdadynamodbstackIotToLambdaLambdaFunctionServiceRoleDefaultPolicyB43AD823",
+        "testiotlambdadynamodbstackIotToLambdaLambdaFunctionServiceRoleC57F7FDA",
       ],
       "Metadata": Object {
         "cfn_nag": Object {
@@ -104,7 +104,7 @@ Object {
         "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "testiotlambdadynamodbstackLambdaFunctionServiceRoleA709DBA2",
+            "testiotlambdadynamodbstackIotToLambdaLambdaFunctionServiceRoleC57F7FDA",
             "Arn",
           ],
         },
@@ -112,12 +112,12 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "testiotlambdadynamodbstackLambdaFunctionLambdaInvokePermissionC33462B4": Object {
+    "testiotlambdadynamodbstackIotToLambdaLambdaFunctionLambdaInvokePermissionBD47A3C8": Object {
       "Properties": Object {
         "Action": "lambda:InvokeFunction",
         "FunctionName": Object {
           "Fn::GetAtt": Array [
-            "testiotlambdadynamodbstackLambdaFunctionF1BF28BF",
+            "testiotlambdadynamodbstackIotToLambdaLambdaFunctionDFEAF894",
             "Arn",
           ],
         },
@@ -131,7 +131,7 @@ Object {
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "testiotlambdadynamodbstackLambdaFunctionServiceRoleA709DBA2": Object {
+    "testiotlambdadynamodbstackIotToLambdaLambdaFunctionServiceRoleC57F7FDA": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -182,7 +182,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "testiotlambdadynamodbstackLambdaFunctionServiceRoleDefaultPolicyAE674B0C": Object {
+    "testiotlambdadynamodbstackIotToLambdaLambdaFunctionServiceRoleDefaultPolicyB43AD823": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -215,10 +215,10 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "testiotlambdadynamodbstackLambdaFunctionServiceRoleDefaultPolicyAE674B0C",
+        "PolicyName": "testiotlambdadynamodbstackIotToLambdaLambdaFunctionServiceRoleDefaultPolicyB43AD823",
         "Roles": Array [
           Object {
-            "Ref": "testiotlambdadynamodbstackLambdaFunctionServiceRoleA709DBA2",
+            "Ref": "testiotlambdadynamodbstackIotToLambdaLambdaFunctionServiceRoleC57F7FDA",
           },
         ],
       },

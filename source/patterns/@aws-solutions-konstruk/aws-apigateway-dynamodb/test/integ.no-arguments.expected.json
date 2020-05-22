@@ -24,6 +24,11 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
+    "testapigatewaydynamodbdefaultApiAccessLogGroup0192183A": {
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
     "testapigatewaydynamodbdefaultRestApi9102FDF9": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
@@ -35,7 +40,7 @@
         "Name": "RestApi"
       }
     },
-    "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F377bb1a1fb193e128da423ded28aa899d": {
+    "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F3c3e5f83088fae14392dcefa7a52bda00": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -71,10 +76,10 @@
               "Arn"
             ]
           },
-          "Format": "$context.identity.sourceIp $context.identity.caller $context.identity.user [$context.requestTime] \"$context.httpMethod $context.resourcePath $context.protocol\" $context.status $context.responseLength $context.requestId"
+          "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F377bb1a1fb193e128da423ded28aa899d"
+          "Ref": "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F3c3e5f83088fae14392dcefa7a52bda00"
         },
         "MethodSettings": [
           {
@@ -200,11 +205,6 @@
           }
         ]
       }
-    },
-    "testapigatewaydynamodbdefaultApiAccessLogGroup0192183A": {
-      "Type": "AWS::Logs::LogGroup",
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
     },
     "testapigatewaydynamodbdefaultLambdaRestApiCloudWatchRoleEF1FBFD7": {
       "Type": "AWS::IAM::Role",

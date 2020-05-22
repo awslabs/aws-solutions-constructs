@@ -12,7 +12,7 @@
  */
 
 import { SynthUtils } from '@aws-cdk/assert';
-import { Stack } from '@aws-cdk/core';
+import { Stack, Duration } from '@aws-cdk/core';
 import * as kinesis from '@aws-cdk/aws-kinesis';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
@@ -30,7 +30,7 @@ test('test kinesisstream override RetentionPeriodHours', () => {
     const defaultProps = defaults.DefaultStreamProps;
 
     const inProps: kinesis.StreamProps = {
-        retentionPeriodHours: 48
+        retentionPeriod: Duration.hours(48)
     };
 
     const outProps = overrideProps(defaultProps, inProps);

@@ -68,7 +68,7 @@ test('check lambda function properties for deploy: true', () => {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": [
-        "LambdaFunctionServiceRole0C4CDE0B",
+        "testcloudfrontapigatewaylambdaLambdaFunctionServiceRoleCB74590F",
         "Arn"
       ]
     },
@@ -174,6 +174,6 @@ test('override api gateway properties', () => {
         "REGIONAL"
       ]
     },
-    Name: "RestApi"
+    Name: "LambdaRestApi"
   });
 });

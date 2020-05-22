@@ -71,13 +71,14 @@ export interface BuildDeadLetterQueueProps {
    *
    * @default - Default props are used
    */
-  readonly maxReceiveCount: number
+  readonly maxReceiveCount?: number
 }
 
 export function buildDeadLetterQueue(props: BuildDeadLetterQueueProps): sqs.DeadLetterQueue {
+    const mrc = (props.maxReceiveCount) ? props.maxReceiveCount : defaults.defaultMaxReceiveCount;
     // Setup the queue interface and return
     const dlq: sqs.DeadLetterQueue = {
-        maxReceiveCount: props.maxReceiveCount,
+        maxReceiveCount: mrc,
         queue: props.deadLetterQueue
     };
     return dlq;

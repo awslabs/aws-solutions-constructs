@@ -1,6 +1,112 @@
 {
   "Description": "Integration Test for aws-apigateway-sqs",
   "Resources": {
+    "testapigatewaysqsEncryptionKeyFD2F56B1": {
+      "Type": "AWS::KMS::Key",
+      "Properties": {
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion",
+                "kms:GenerateDataKey",
+                "kms:TagResource",
+                "kms:UntagResource"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              },
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::GetAtt": [
+                    "testapigatewaysqsapigatewayrole07110CD6",
+                    "Arn"
+                  ]
+                }
+              },
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "EnableKeyRotation": true
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "testapigatewaysqsdeadLetterQueueAA4F6060": {
+      "Type": "AWS::SQS::Queue",
+      "Properties": {
+        "KmsMasterKeyId": {
+          "Fn::GetAtt": [
+            "testapigatewaysqsEncryptionKeyFD2F56B1",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "testapigatewaysqsqueue8EDC3CAF": {
+      "Type": "AWS::SQS::Queue",
+      "Properties": {
+        "KmsMasterKeyId": {
+          "Fn::GetAtt": [
+            "testapigatewaysqsEncryptionKeyFD2F56B1",
+            "Arn"
+          ]
+        },
+        "RedrivePolicy": {
+          "deadLetterTargetArn": {
+            "Fn::GetAtt": [
+              "testapigatewaysqsdeadLetterQueueAA4F6060",
+              "Arn"
+            ]
+          },
+          "maxReceiveCount": 3
+        }
+      }
+    },
+    "testapigatewaysqsApiAccessLogGroup37AB0350": {
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
     "testapigatewaysqsRestApi557C7EDC": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
@@ -12,7 +118,7 @@
         "Name": "RestApi"
       }
     },
-    "testapigatewaysqsRestApiDeploymentCA19D372c3b49be7d97efd65e90b7b5084cd80d8": {
+    "testapigatewaysqsRestApiDeploymentCA19D3723284170350125cf6cf25e30c33a57efd": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -50,10 +156,10 @@
               "Arn"
             ]
           },
-          "Format": "$context.identity.sourceIp $context.identity.caller $context.identity.user [$context.requestTime] \"$context.httpMethod $context.resourcePath $context.protocol\" $context.status $context.responseLength $context.requestId"
+          "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "testapigatewaysqsRestApiDeploymentCA19D372c3b49be7d97efd65e90b7b5084cd80d8"
+          "Ref": "testapigatewaysqsRestApiDeploymentCA19D3723284170350125cf6cf25e30c33a57efd"
         },
         "MethodSettings": [
           {
@@ -139,7 +245,7 @@
                 "/",
                 {
                   "Fn::GetAtt": [
-                    "queue276F7297",
+                    "testapigatewaysqsqueue8EDC3CAF",
                     "QueueName"
                   ]
                 }
@@ -224,7 +330,7 @@
                 "/",
                 {
                   "Fn::GetAtt": [
-                    "queue276F7297",
+                    "testapigatewaysqsqueue8EDC3CAF",
                     "QueueName"
                   ]
                 }
@@ -309,7 +415,7 @@
                 "/",
                 {
                   "Fn::GetAtt": [
-                    "queue276F7297",
+                    "testapigatewaysqsqueue8EDC3CAF",
                     "QueueName"
                   ]
                 }
@@ -348,11 +454,6 @@
           }
         ]
       }
-    },
-    "testapigatewaysqsApiAccessLogGroup37AB0350": {
-      "Type": "AWS::Logs::LogGroup",
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
     },
     "testapigatewaysqsLambdaRestApiCloudWatchRoleF10D0F78": {
       "Type": "AWS::IAM::Role",
@@ -455,7 +556,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "EncryptionKey1B843E66",
+                  "testapigatewaysqsEncryptionKeyFD2F56B1",
                   "Arn"
                 ]
               }
@@ -465,7 +566,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "queue276F7297",
+                  "testapigatewaysqsqueue8EDC3CAF",
                   "Arn"
                 ]
               }
@@ -475,7 +576,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "queue276F7297",
+                  "testapigatewaysqsqueue8EDC3CAF",
                   "Arn"
                 ]
               }
@@ -485,7 +586,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "queue276F7297",
+                  "testapigatewaysqsqueue8EDC3CAF",
                   "Arn"
                 ]
               }
@@ -499,107 +600,6 @@
             "Ref": "testapigatewaysqsapigatewayrole07110CD6"
           }
         ]
-      }
-    },
-    "EncryptionKey1B843E66": {
-      "Type": "AWS::KMS::Key",
-      "Properties": {
-        "KeyPolicy": {
-          "Statement": [
-            {
-              "Action": [
-                "kms:Create*",
-                "kms:Describe*",
-                "kms:Enable*",
-                "kms:List*",
-                "kms:Put*",
-                "kms:Update*",
-                "kms:Revoke*",
-                "kms:Disable*",
-                "kms:Get*",
-                "kms:Delete*",
-                "kms:ScheduleKeyDeletion",
-                "kms:CancelKeyDeletion",
-                "kms:GenerateDataKey",
-                "kms:TagResource",
-                "kms:UntagResource"
-              ],
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":iam::",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":root"
-                    ]
-                  ]
-                }
-              },
-              "Resource": "*"
-            },
-            {
-              "Action": [
-                "kms:Decrypt",
-                "kms:Encrypt",
-                "kms:ReEncrypt*",
-                "kms:GenerateDataKey*"
-              ],
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": {
-                  "Fn::GetAtt": [
-                    "testapigatewaysqsapigatewayrole07110CD6",
-                    "Arn"
-                  ]
-                }
-              },
-              "Resource": "*"
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "EnableKeyRotation": true
-      },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
-    },
-    "deadLetterQueue3F848E28": {
-      "Type": "AWS::SQS::Queue",
-      "Properties": {
-        "KmsMasterKeyId": {
-          "Fn::GetAtt": [
-            "EncryptionKey1B843E66",
-            "Arn"
-          ]
-        }
-      }
-    },
-    "queue276F7297": {
-      "Type": "AWS::SQS::Queue",
-      "Properties": {
-        "KmsMasterKeyId": {
-          "Fn::GetAtt": [
-            "EncryptionKey1B843E66",
-            "Arn"
-          ]
-        },
-        "RedrivePolicy": {
-          "deadLetterTargetArn": {
-            "Fn::GetAtt": [
-              "deadLetterQueue3F848E28",
-              "Arn"
-            ]
-          },
-          "maxReceiveCount": 3
-        }
       }
     }
   },

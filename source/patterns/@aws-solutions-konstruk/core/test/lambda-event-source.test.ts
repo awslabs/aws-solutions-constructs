@@ -14,6 +14,7 @@
 import * as defaults from '../index';
 import { DynamoEventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
 import * as lambda from '@aws-cdk/aws-lambda';
+import * as s3 from '@aws-cdk/aws-s3';
 import '@aws-cdk/assert/jest';
 
 test('test DynamoEventSourceProps', () => {
@@ -35,5 +36,32 @@ test('test DynamoEventSourceProps override', () => {
   expect(props).toEqual({
     batchSize: 1,
     startingPosition: "LATEST"
+  });
+});
+
+test('test KinesisEventSourceProps', () => {
+  const streamArn = 'xyz';
+  const props = defaults.DefaultKinesisEventSourceProps(streamArn);
+  expect(props).toEqual({
+      eventSourceArn: "xyz"
+  });
+});
+
+test('test S3EventSourceProps w/ default props', () => {
+  const props = defaults.S3EventSourceProps();
+  expect(props).toEqual({
+    events: ["s3:ObjectCreated:*"]
+  });
+});
+
+test('test S3EventSourceProps w/ user props', () => {
+  const s3EventSourceProps = {
+    events: [
+      s3.EventType.OBJECT_CREATED_POST
+    ]
+  };
+  const props = defaults.S3EventSourceProps(s3EventSourceProps);
+  expect(props).toEqual({
+    events: ["s3:ObjectCreated:Post"]
   });
 });

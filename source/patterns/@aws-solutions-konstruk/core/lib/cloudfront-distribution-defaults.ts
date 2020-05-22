@@ -14,14 +14,18 @@
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as api from '@aws-cdk/aws-apigateway';
+import * as lambda from '@aws-cdk/aws-lambda';
 import * as cdk from '@aws-cdk/core';
 
 export function DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint: api.RestApi,
-                                                                   loggingBucket?: s3.Bucket): cloudfront.CloudFrontWebDistributionProps {
+                                                                   loggingBucket: s3.Bucket,
+                                                                   setHttpSecurityHeaders: boolean,
+                                                                   edgeLambda?: lambda.Version): cloudfront.CloudFrontWebDistributionProps {
+
     const apiEndPointUrlWithoutProtocol = cdk.Fn.select(1, cdk.Fn.split("://", apiEndPoint.url));
     const apiEndPointDomainName = cdk.Fn.select(0, cdk.Fn.split("/", apiEndPointUrlWithoutProtocol));
 
-    if (loggingBucket) {
+    if (setHttpSecurityHeaders) {
         return {
             originConfigs: [{
                 customOriginSource: {
@@ -29,6 +33,12 @@ export function DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint: 
                 },
                 behaviors: [{
                     isDefaultBehavior: true,
+                    lambdaFunctionAssociations: [
+                        {
+                            eventType: cloudfront.LambdaEdgeEventType.ORIGIN_RESPONSE,
+                            lambdaFunction: edgeLambda
+                        }
+                    ]
                 }]
             }],
             loggingConfig: {
@@ -44,27 +54,55 @@ export function DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint: 
                 behaviors: [{
                     isDefaultBehavior: true,
                 }]
-            }]
+            }],
+            loggingConfig: {
+                bucket: loggingBucket
+            }
         } as cloudfront.CloudFrontWebDistributionProps;
     }
 }
 
 export function DefaultCloudFrontWebDistributionForS3Props(sourceBucket: s3.Bucket, loggingBucket: s3.Bucket,
-                                                           _originAccessIdentity: cloudfront.IOriginAccessIdentity):
+                                                           _originAccessIdentity: cloudfront.IOriginAccessIdentity,
+                                                           setHttpSecurityHeaders: boolean,
+                                                           edgeLambda?: lambda.Version):
                                                            cloudfront.CloudFrontWebDistributionProps {
-    const cfDistributionProps: cloudfront.CloudFrontWebDistributionProps = {
-        originConfigs: [ {
-            s3OriginSource: {
-                s3BucketSource: sourceBucket,
-                originAccessIdentity: _originAccessIdentity
-            },
-            behaviors: [ {
+
+    if (setHttpSecurityHeaders) {
+        return {
+            originConfigs: [{
+                s3OriginSource: {
+                    s3BucketSource: sourceBucket,
+                    originAccessIdentity: _originAccessIdentity
+                },
+                behaviors: [{
                     isDefaultBehavior: true,
-                } ]
-        } ],
-        loggingConfig: {
-            bucket: loggingBucket
-        }
-    } as cloudfront.CloudFrontWebDistributionProps;
-    return cfDistributionProps;
+                    lambdaFunctionAssociations: [
+                        {
+                            eventType: cloudfront.LambdaEdgeEventType.ORIGIN_RESPONSE,
+                            lambdaFunction: edgeLambda
+                        }
+                    ]
+                }]
+            }],
+            loggingConfig: {
+                bucket: loggingBucket
+            }
+        } as cloudfront.CloudFrontWebDistributionProps;
+    } else {
+        return {
+            originConfigs: [ {
+                s3OriginSource: {
+                    s3BucketSource: sourceBucket,
+                    originAccessIdentity: _originAccessIdentity
+                },
+                behaviors: [ {
+                        isDefaultBehavior: true,
+                    } ]
+            } ],
+            loggingConfig: {
+                bucket: loggingBucket
+            }
+        } as cloudfront.CloudFrontWebDistributionProps;
+    }
 }

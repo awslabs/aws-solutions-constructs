@@ -30,6 +30,62 @@ function deployRegionalApiGateway(stack: Stack) {
   return defaults.RegionalLambdaRestApi(stack, fn);
 }
 
+function setupRestApi(stack: Stack, apiProps?: any): void {
+  const restApi = defaults.GlobalRestApi(stack, apiProps);
+  // Setup the API Gateway resource
+  const apiGatewayResource = restApi.root.addResource('api-gateway-resource');
+  // Setup the API Gateway Integration
+  const apiGatewayIntegration = new api.AwsIntegration({
+    service: "sqs",
+    integrationHttpMethod: "POST",
+    options: {
+        passthroughBehavior: api.PassthroughBehavior.NEVER,
+        requestParameters: {
+            "integration.request.header.Content-Type": "'application/x-www-form-urlencoded'"
+        },
+        requestTemplates: {
+            "application/x-www-form-urlencoded": "Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")&MessageAttribute.1.Name=queryParam1&MessageAttribute.1.Value.StringValue=$input.params(\"query_param_1\")&MessageAttribute.1.Value.DataType=String"
+        },
+        integrationResponses: [
+            {
+                statusCode: "200",
+                responseTemplates: {
+                    "text/html": "Success"
+                }
+            },
+            {
+                statusCode: "500",
+                responseTemplates: {
+                    "text/html": "Error"
+                },
+                selectionPattern: "500"
+            }
+        ]
+    },
+    path: '12345678' + "/" + 'thisqueuequeueName'
+  });
+  // Setup the API Gateway method(s)
+  apiGatewayResource.addMethod('POST', apiGatewayIntegration, {
+      requestParameters: {
+          "method.request.querystring.query_param_1": true
+      },
+      methodResponses: [
+          {
+              statusCode: "200",
+              responseParameters: {
+                  "method.response.header.Content-Type": true
+              }
+          },
+          {
+              statusCode: "500",
+              responseParameters: {
+                  "method.response.header.Content-Type": true
+              },
+          }
+      ]
+  });
+}
+
 test('snapshot test RegionalApiGateway default params', () => {
   const stack = new Stack();
   deployRegionalApiGateway(stack);
@@ -62,7 +118,7 @@ test('Test override for RegionalApiGateway', () => {
           "REGIONAL"
         ]
       },
-      Name: "RestApi"
+      Name: "LambdaRestApi"
     }
   }, ResourcePart.CompleteDefinition);
 });
@@ -160,58 +216,24 @@ test('Test default RestApi deployment w/ ApiGatewayProps', () => {
   });
 });
 
-function setupRestApi(stack: Stack, apiProps?: any): void {
-  const restApi = defaults.GlobalRestApi(stack, apiProps);
-  // Setup the API Gateway resource
-  const apiGatewayResource = restApi.root.addResource('api-gateway-resource');
-  // Setup the API Gateway Integration
-  const apiGatewayIntegration = new api.AwsIntegration({
-    service: "sqs",
-    integrationHttpMethod: "POST",
-    options: {
-        passthroughBehavior: api.PassthroughBehavior.NEVER,
-        requestParameters: {
-            "integration.request.header.Content-Type": "'application/x-www-form-urlencoded'"
-        },
-        requestTemplates: {
-            "application/x-www-form-urlencoded": "Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")&MessageAttribute.1.Name=queryParam1&MessageAttribute.1.Value.StringValue=$input.params(\"query_param_1\")&MessageAttribute.1.Value.DataType=String"
-        },
-        integrationResponses: [
-            {
-                statusCode: "200",
-                responseTemplates: {
-                    "text/html": "Success"
-                }
-            },
-            {
-                statusCode: "500",
-                responseTemplates: {
-                    "text/html": "Error"
-                },
-                selectionPattern: "500"
-            }
+test('Test default RestApi deployment for Cloudwatch loggroup', () => {
+  const stack = new Stack();
+  deployRegionalApiGateway(stack);
+
+  expect(stack).toHaveResource('AWS::Logs::LogGroup', {
+    UpdateReplacePolicy: "Retain",
+    DeletionPolicy: "Retain"
+  }, ResourcePart.CompleteDefinition);
+
+  expect(stack).toHaveResource('AWS::ApiGateway::Stage', {
+    AccessLogSetting: {
+      DestinationArn: {
+        "Fn::GetAtt": [
+          "ApiAccessLogGroupCEA70788",
+          "Arn"
         ]
-    },
-    path: '12345678' + "/" + 'thisqueuequeueName'
-  });
-  // Setup the API Gateway method(s)
-  apiGatewayResource.addMethod('POST', apiGatewayIntegration, {
-      requestParameters: {
-          "method.request.querystring.query_param_1": true
       },
-      methodResponses: [
-          {
-              statusCode: "200",
-              responseParameters: {
-                  "method.response.header.Content-Type": true
-              }
-          },
-          {
-              statusCode: "500",
-              responseParameters: {
-                  "method.response.header.Content-Type": true
-              },
-          }
-      ]
+      Format: "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}",
+    },
   });
-}
+});

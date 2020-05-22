@@ -16,7 +16,6 @@ import * as api from '@aws-cdk/aws-apigateway';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as defaults from '@aws-solutions-konstruk/core';
 import { Construct } from '@aws-cdk/core';
-import { LogGroup } from '@aws-cdk/aws-logs';
 
 /**
  * The properties for the ApiGatewayToLambda class.
@@ -71,33 +70,14 @@ export class ApiGatewayToLambda extends Construct {
         super(scope, id);
 
         // Setup the Lambda function
-        this.fn = defaults.buildLambdaFunction(scope, {
+        this.fn = defaults.buildLambdaFunction(this, {
             deployLambda: props.deployLambda,
             existingLambdaObj: props.existingLambdaObj,
             lambdaFunctionProps: props.lambdaFunctionProps
         });
 
         // Setup the API Gateway
-        this.api = defaults.GlobalLambdaRestApi(scope, this.fn, props.apiGatewayProps);
-
-        // Setup the log group
-        const logGroup = new LogGroup(this, 'ApiAccessLogGroup');
-
-        // Configure API Gateway Access logging
-        const stage: api.CfnStage = this.api.deploymentStage.node.findChild('Resource') as api.CfnStage;
-        stage.accessLogSetting = {
-            destinationArn: logGroup.logGroupArn,
-            format: "$context.identity.sourceIp $context.identity.caller $context.identity.user [$context.requestTime] \"$context.httpMethod $context.resourcePath $context.protocol\" $context.status $context.responseLength $context.requestId"
-        };
-        const deployment: api.CfnDeployment = this.api.latestDeployment?.node.findChild('Resource') as api.CfnDeployment;
-        deployment.cfnOptions.metadata = {
-            cfn_nag: {
-                rules_to_suppress: [{
-                    id: 'W45',
-                    reason: `ApiGateway does have access logging configured as part of AWS::ApiGateway::Stage.`
-                }]
-            }
-        };
+        this.api = defaults.GlobalLambdaRestApi(this, this.fn, props.apiGatewayProps);
     }
 
     /**

@@ -31,7 +31,7 @@ export function buildEncryptionKey(scope: cdk.Construct, props?: BuildEncryption
     props = (props === undefined) ? {} : props;
     // Setup the key properties
     let encryptionKeyProps;
-    if (props.hasOwnProperty('encryptionKeyProps')) {
+    if (props.encryptionKeyProps) {
         // If property overrides have been provided, incorporate them and deploy
         encryptionKeyProps = overrideProps(DefaultEncryptionProps, props.encryptionKeyProps);
     } else {

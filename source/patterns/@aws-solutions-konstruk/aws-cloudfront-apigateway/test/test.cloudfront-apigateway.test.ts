@@ -74,7 +74,7 @@ test('test cloudfront DomainName', () => {
                               [
                                 "https://",
                                 {
-                                  Ref: "RestApi0C43BF4B"
+                                  Ref: "LambdaRestApi95870433"
                                 },
                                 ".execute-api.",
                                 {
@@ -86,7 +86,7 @@ test('test cloudfront DomainName', () => {
                                 },
                                 "/",
                                 {
-                                  Ref: "RestApiDeploymentStageprod3855DE66"
+                                  Ref: "LambdaRestApiDeploymentStageprodB1F3862A"
                                 },
                                 "/"
                               ]

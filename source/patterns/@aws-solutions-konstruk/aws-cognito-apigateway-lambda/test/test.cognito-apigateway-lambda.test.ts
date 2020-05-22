@@ -48,7 +48,7 @@ test('override cognito properties', () => {
 
   const cognitoUserPoolProps: cognito.UserPoolProps = {
     userPoolName: 'test',
-    autoVerifiedAttributes: [cognito.UserPoolAttribute.EMAIL]
+    userVerification: {}
   };
 
   new CognitoToApiGatewayToLambda(stack, 'test-cognito-apigateway-lambda', {
@@ -59,14 +59,31 @@ test('override cognito properties', () => {
 
   expect(stack).toHaveResource('AWS::Cognito::UserPool',
   {
-    AutoVerifiedAttributes: [
-      "email"
-    ],
-    LambdaConfig: {},
+    AdminCreateUserConfig: {
+      AllowAdminCreateUserOnly: true
+    },
+    EmailVerificationMessage: "The verification code to your new account is {####}",
+    EmailVerificationSubject: "Verify your new account",
+    SmsConfiguration: {
+      ExternalId: "testcognitoapigatewaylambdaCognitoUserPoolF2D785A1",
+      SnsCallerArn: {
+        "Fn::GetAtt": [
+          "testcognitoapigatewaylambdaCognitoUserPoolsmsRoleB297EE96",
+          "Arn"
+        ]
+      }
+    },
+    SmsVerificationMessage: "The verification code to your new account is {####}",
     UserPoolAddOns: {
       AdvancedSecurityMode: "ENFORCED"
     },
-    UserPoolName: "test"
+    UserPoolName: "test",
+    VerificationMessageTemplate: {
+      DefaultEmailOption: "CONFIRM_WITH_CODE",
+      EmailMessage: "The verification code to your new account is {####}",
+      EmailSubject: "Verify your new account",
+      SmsMessage: "The verification code to your new account is {####}"
+    }
   });
 });
 

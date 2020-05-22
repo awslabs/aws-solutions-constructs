@@ -41,21 +41,31 @@ Object {
       "Description": "S3 key for asset version \\"1726e5810ad30312b951166bf153fa8cbc793db9019a7fa8f3440a20d21f3d36\\"",
       "Type": "String",
     },
-    "AssetParametersf587c683163dea7b70b883fe8f803ffe0622a40e05b3766e08ffa9ed25caabc9ArtifactHash72EE40C1": Object {
-      "Description": "Artifact hash for asset \\"f587c683163dea7b70b883fe8f803ffe0622a40e05b3766e08ffa9ed25caabc9\\"",
+    "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061ArtifactHash40CCFA64": Object {
+      "Description": "Artifact hash for asset \\"4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061\\"",
       "Type": "String",
     },
-    "AssetParametersf587c683163dea7b70b883fe8f803ffe0622a40e05b3766e08ffa9ed25caabc9S3Bucket6B4B2C9B": Object {
-      "Description": "S3 bucket for asset \\"f587c683163dea7b70b883fe8f803ffe0622a40e05b3766e08ffa9ed25caabc9\\"",
+    "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061S3Bucket0A1029B1": Object {
+      "Description": "S3 bucket for asset \\"4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061\\"",
       "Type": "String",
     },
-    "AssetParametersf587c683163dea7b70b883fe8f803ffe0622a40e05b3766e08ffa9ed25caabc9S3VersionKey8971BB19": Object {
-      "Description": "S3 key for asset version \\"f587c683163dea7b70b883fe8f803ffe0622a40e05b3766e08ffa9ed25caabc9\\"",
+    "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061S3VersionKeyFB75FDAC": Object {
+      "Description": "S3 key for asset version \\"4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061\\"",
       "Type": "String",
     },
   },
   "Resources": Object {
     "CloudFrontToS3CloudFrontDistributionCFDistribution7EEEEF4E": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W70",
+              "reason": "Since the distribution uses the CloudFront domain name, CloudFront automatically sets the security policy to TLSv1 regardless of the value of MinimumProtocolVersion",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "DistributionConfig": Object {
           "DefaultCacheBehavior": Object {
@@ -74,6 +84,14 @@ Object {
               },
               "QueryString": false,
             },
+            "LambdaFunctionAssociations": Array [
+              Object {
+                "EventType": "origin-response",
+                "LambdaFunctionARN": Object {
+                  "Ref": "CloudFrontToS3SetHttpSecurityHeadersVersion699208AE",
+                },
+              },
+            ],
             "TargetOriginId": "origin1",
             "ViewerProtocolPolicy": "redirect-to-https",
           },
@@ -336,6 +354,101 @@ Object {
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
     },
+    "CloudFrontToS3SetHttpSecurityHeaders9E6088E2": Object {
+      "DependsOn": Array [
+        "CloudFrontToS3SetHttpSecurityHeadersServiceRole6BABDE10",
+      ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "Code": Object {
+          "ZipFile": "exports.handler = (event, context, callback) => {           const response = event.Records[0].cf.response;           const headers = response.headers;           headers['x-xss-protection'] = [             {               key: 'X-XSS-Protection',               value: '1; mode=block'             }           ];           headers['x-frame-options'] = [             {               key: 'X-Frame-Options',               value: 'DENY'             }           ];           headers['x-content-type-options'] = [             {               key: 'X-Content-Type-Options',               value: 'nosniff'             }           ];           headers['strict-transport-security'] = [             {               key: 'Strict-Transport-Security',               value: 'max-age=63072000; includeSubdomains; preload'             }           ];           headers['referrer-policy'] = [             {               key: 'Referrer-Policy',               value: 'same-origin'             }           ];           headers['content-security-policy'] = [             {               key: 'Content-Security-Policy',               value: \\"default-src 'none'; base-uri 'self'; img-src 'self'; script-src 'self'; style-src 'self' https:; object-src 'none'; frame-ancestors 'none'; font-src 'self' https:; form-action 'self'; manifest-src 'self'; connect-src 'self'\\"              }           ];           callback(null, response);         };",
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "CloudFrontToS3SetHttpSecurityHeadersServiceRole6BABDE10",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs12.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "CloudFrontToS3SetHttpSecurityHeadersServiceRole6BABDE10": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "edgelambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": Array [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        "arn:aws:logs:",
+                        Object {
+                          "Ref": "AWS::Region",
+                        },
+                        ":",
+                        Object {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":log-group:/aws/lambda/*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "CloudFrontToS3SetHttpSecurityHeadersVersion699208AE": Object {
+      "Properties": Object {
+        "FunctionName": Object {
+          "Ref": "CloudFrontToS3SetHttpSecurityHeaders9E6088E2",
+        },
+      },
+      "Type": "AWS::Lambda::Version",
+    },
     "CustomResource": Object {
       "DeletionPolicy": "Delete",
       "Properties": Object {
@@ -362,7 +475,7 @@ Object {
       "Properties": Object {
         "Code": Object {
           "S3Bucket": Object {
-            "Ref": "AssetParametersf587c683163dea7b70b883fe8f803ffe0622a40e05b3766e08ffa9ed25caabc9S3Bucket6B4B2C9B",
+            "Ref": "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061S3Bucket0A1029B1",
           },
           "S3Key": Object {
             "Fn::Join": Array [
@@ -375,7 +488,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParametersf587c683163dea7b70b883fe8f803ffe0622a40e05b3766e08ffa9ed25caabc9S3VersionKey8971BB19",
+                          "Ref": "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061S3VersionKeyFB75FDAC",
                         },
                       ],
                     },
@@ -388,7 +501,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParametersf587c683163dea7b70b883fe8f803ffe0622a40e05b3766e08ffa9ed25caabc9S3VersionKey8971BB19",
+                          "Ref": "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061S3VersionKeyFB75FDAC",
                         },
                       ],
                     },

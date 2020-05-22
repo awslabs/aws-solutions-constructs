@@ -17,12 +17,64 @@ Object {
     },
   },
   "Resources": Object {
-    "LambdaFunctionAllowInvoketestsnslambdaSnsTopicEB0543A084BF6FA6": Object {
+    "testsnslambdaEncryptionKeyDDDF040B": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "EnableKeyRotation": true,
+        "KeyPolicy": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion",
+                "kms:GenerateDataKey",
+                "kms:TagResource",
+                "kms:UntagResource",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testsnslambdaLambdaFunctionAllowInvoketestsnslambdaSnsTopicEB0543A09281910D": Object {
       "Properties": Object {
         "Action": "lambda:InvokeFunction",
         "FunctionName": Object {
           "Fn::GetAtt": Array [
-            "LambdaFunctionBF21E41F",
+            "testsnslambdaLambdaFunctionEE9A249B",
             "Arn",
           ],
         },
@@ -33,9 +85,9 @@ Object {
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "LambdaFunctionBF21E41F": Object {
+    "testsnslambdaLambdaFunctionEE9A249B": Object {
       "DependsOn": Array [
-        "LambdaFunctionServiceRole0C4CDE0B",
+        "testsnslambdaLambdaFunctionServiceRole23794781",
       ],
       "Metadata": Object {
         "cfn_nag": Object {
@@ -94,7 +146,7 @@ Object {
         "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "LambdaFunctionServiceRole0C4CDE0B",
+            "testsnslambdaLambdaFunctionServiceRole23794781",
             "Arn",
           ],
         },
@@ -102,7 +154,7 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "LambdaFunctionServiceRole0C4CDE0B": Object {
+    "testsnslambdaLambdaFunctionServiceRole23794781": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -153,11 +205,11 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "LambdaFunctionSnsTopic70134CE0": Object {
+    "testsnslambdaLambdaFunctionSnsTopic9C14F333": Object {
       "Properties": Object {
         "Endpoint": Object {
           "Fn::GetAtt": Array [
-            "LambdaFunctionBF21E41F",
+            "testsnslambdaLambdaFunctionEE9A249B",
             "Arn",
           ],
         },
@@ -167,58 +219,6 @@ Object {
         },
       },
       "Type": "AWS::SNS::Subscription",
-    },
-    "testsnslambdaEncryptionKeyDDDF040B": Object {
-      "DeletionPolicy": "Retain",
-      "Properties": Object {
-        "EnableKeyRotation": true,
-        "KeyPolicy": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "kms:Create*",
-                "kms:Describe*",
-                "kms:Enable*",
-                "kms:List*",
-                "kms:Put*",
-                "kms:Update*",
-                "kms:Revoke*",
-                "kms:Disable*",
-                "kms:Get*",
-                "kms:Delete*",
-                "kms:ScheduleKeyDeletion",
-                "kms:CancelKeyDeletion",
-                "kms:GenerateDataKey",
-                "kms:TagResource",
-                "kms:UntagResource",
-              ],
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":iam::",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":root",
-                    ],
-                  ],
-                },
-              },
-              "Resource": "*",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::KMS::Key",
-      "UpdateReplacePolicy": "Retain",
     },
     "testsnslambdaSnsTopic52CA159E": Object {
       "Properties": Object {

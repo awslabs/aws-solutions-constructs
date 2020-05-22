@@ -1,7 +1,132 @@
 {
   "Description": "Integration Test for aws-cloudfront-apigateway-lambda",
   "Resources": {
-    "testcloudfrontapigatewaylambdaRestApi96B9C695": {
+    "testcloudfrontapigatewaylambdaLambdaFunctionServiceRoleCB74590F": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:aws:logs:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":log-group:/aws/lambda/*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy"
+          }
+        ]
+      }
+    },
+    "testcloudfrontapigatewaylambdaLambdaFunction17A55E65": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cS3Bucket1F467BCC"
+          },
+          "S3Key": {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Fn::Select": [
+                    0,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cS3VersionKey9E4F7872"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Fn::Select": [
+                    1,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cS3VersionKey9E4F7872"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            ]
+          }
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testcloudfrontapigatewaylambdaLambdaFunctionServiceRoleCB74590F",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs10.x",
+        "Environment": {
+          "Variables": {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+          }
+        }
+      },
+      "DependsOn": [
+        "testcloudfrontapigatewaylambdaLambdaFunctionServiceRoleCB74590F"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions."
+            }
+          ]
+        }
+      }
+    },
+    "testcloudfrontapigatewaylambdaApiAccessLogGroup97EB2E40": {
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "testcloudfrontapigatewaylambdaLambdaRestApi6A4CBD44": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
         "EndpointConfiguration": {
@@ -9,21 +134,21 @@
             "REGIONAL"
           ]
         },
-        "Name": "RestApi"
+        "Name": "LambdaRestApi"
       }
     },
-    "testcloudfrontapigatewaylambdaRestApiDeployment3AAD18356ddf1e04746630aef78bc65a8edbab85": {
+    "testcloudfrontapigatewaylambdaLambdaRestApiDeployment0C4661C03abb023c303d9e3ff2b4d984cd5d60ab": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
-          "Ref": "testcloudfrontapigatewaylambdaRestApi96B9C695"
+          "Ref": "testcloudfrontapigatewaylambdaLambdaRestApi6A4CBD44"
         },
         "Description": "Automatically created by the RestApi construct"
       },
       "DependsOn": [
-        "testcloudfrontapigatewaylambdaRestApiproxyANY21F2417C",
-        "testcloudfrontapigatewaylambdaRestApiproxyBFEB2E30",
-        "testcloudfrontapigatewaylambdaRestApiANY293F8177"
+        "testcloudfrontapigatewaylambdaLambdaRestApiproxyANYAE500A13",
+        "testcloudfrontapigatewaylambdaLambdaRestApiproxyBC09D86F",
+        "testcloudfrontapigatewaylambdaLambdaRestApiANYBC435DFD"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -36,11 +161,11 @@
         }
       }
     },
-    "testcloudfrontapigatewaylambdaRestApiDeploymentStageprod9373DCA0": {
+    "testcloudfrontapigatewaylambdaLambdaRestApiDeploymentStageprod4617A7B7": {
       "Type": "AWS::ApiGateway::Stage",
       "Properties": {
         "RestApiId": {
-          "Ref": "testcloudfrontapigatewaylambdaRestApi96B9C695"
+          "Ref": "testcloudfrontapigatewaylambdaLambdaRestApi6A4CBD44"
         },
         "AccessLogSetting": {
           "DestinationArn": {
@@ -49,10 +174,10 @@
               "Arn"
             ]
           },
-          "Format": "$context.identity.sourceIp $context.identity.caller $context.identity.user [$context.requestTime] \"$context.httpMethod $context.resourcePath $context.protocol\" $context.status $context.responseLength $context.requestId"
+          "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "testcloudfrontapigatewaylambdaRestApiDeployment3AAD18356ddf1e04746630aef78bc65a8edbab85"
+          "Ref": "testcloudfrontapigatewaylambdaLambdaRestApiDeployment0C4661C03abb023c303d9e3ff2b4d984cd5d60ab"
         },
         "MethodSettings": [
           {
@@ -65,28 +190,28 @@
         "StageName": "prod"
       }
     },
-    "testcloudfrontapigatewaylambdaRestApiproxyBFEB2E30": {
+    "testcloudfrontapigatewaylambdaLambdaRestApiproxyBC09D86F": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
           "Fn::GetAtt": [
-            "testcloudfrontapigatewaylambdaRestApi96B9C695",
+            "testcloudfrontapigatewaylambdaLambdaRestApi6A4CBD44",
             "RootResourceId"
           ]
         },
         "PathPart": "{proxy+}",
         "RestApiId": {
-          "Ref": "testcloudfrontapigatewaylambdaRestApi96B9C695"
+          "Ref": "testcloudfrontapigatewaylambdaLambdaRestApi6A4CBD44"
         }
       }
     },
-    "testcloudfrontapigatewaylambdaRestApiproxyANYApiPermissiontestcloudfrontapigatewaylambdastacktestcloudfrontapigatewaylambdaRestApiEFF71B39ANYproxy384A83AC": {
+    "testcloudfrontapigatewaylambdaLambdaRestApiproxyANYApiPermissiontestcloudfrontapigatewaylambdastacktestcloudfrontapigatewaylambdaLambdaRestApi6591E8BAANYproxyE560AC8B": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "LambdaFunctionBF21E41F",
+            "testcloudfrontapigatewaylambdaLambdaFunction17A55E65",
             "Arn"
           ]
         },
@@ -109,11 +234,11 @@
               },
               ":",
               {
-                "Ref": "testcloudfrontapigatewaylambdaRestApi96B9C695"
+                "Ref": "testcloudfrontapigatewaylambdaLambdaRestApi6A4CBD44"
               },
               "/",
               {
-                "Ref": "testcloudfrontapigatewaylambdaRestApiDeploymentStageprod9373DCA0"
+                "Ref": "testcloudfrontapigatewaylambdaLambdaRestApiDeploymentStageprod4617A7B7"
               },
               "/*/{proxy+}"
             ]
@@ -121,13 +246,13 @@
         }
       }
     },
-    "testcloudfrontapigatewaylambdaRestApiproxyANYApiPermissionTesttestcloudfrontapigatewaylambdastacktestcloudfrontapigatewaylambdaRestApiEFF71B39ANYproxy616372B7": {
+    "testcloudfrontapigatewaylambdaLambdaRestApiproxyANYApiPermissionTesttestcloudfrontapigatewaylambdastacktestcloudfrontapigatewaylambdaLambdaRestApi6591E8BAANYproxyB2A6E1F1": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "LambdaFunctionBF21E41F",
+            "testcloudfrontapigatewaylambdaLambdaFunction17A55E65",
             "Arn"
           ]
         },
@@ -150,7 +275,7 @@
               },
               ":",
               {
-                "Ref": "testcloudfrontapigatewaylambdaRestApi96B9C695"
+                "Ref": "testcloudfrontapigatewaylambdaLambdaRestApi6A4CBD44"
               },
               "/test-invoke-stage/*/{proxy+}"
             ]
@@ -158,15 +283,15 @@
         }
       }
     },
-    "testcloudfrontapigatewaylambdaRestApiproxyANY21F2417C": {
+    "testcloudfrontapigatewaylambdaLambdaRestApiproxyANYAE500A13": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "ANY",
         "ResourceId": {
-          "Ref": "testcloudfrontapigatewaylambdaRestApiproxyBFEB2E30"
+          "Ref": "testcloudfrontapigatewaylambdaLambdaRestApiproxyBC09D86F"
         },
         "RestApiId": {
-          "Ref": "testcloudfrontapigatewaylambdaRestApi96B9C695"
+          "Ref": "testcloudfrontapigatewaylambdaLambdaRestApi6A4CBD44"
         },
         "AuthorizationType": "AWS_IAM",
         "Integration": {
@@ -187,7 +312,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "LambdaFunctionBF21E41F",
+                    "testcloudfrontapigatewaylambdaLambdaFunction17A55E65",
                     "Arn"
                   ]
                 },
@@ -198,13 +323,13 @@
         }
       }
     },
-    "testcloudfrontapigatewaylambdaRestApiANYApiPermissiontestcloudfrontapigatewaylambdastacktestcloudfrontapigatewaylambdaRestApiEFF71B39ANY25A0D653": {
+    "testcloudfrontapigatewaylambdaLambdaRestApiANYApiPermissiontestcloudfrontapigatewaylambdastacktestcloudfrontapigatewaylambdaLambdaRestApi6591E8BAANY0C6B5F8F": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "LambdaFunctionBF21E41F",
+            "testcloudfrontapigatewaylambdaLambdaFunction17A55E65",
             "Arn"
           ]
         },
@@ -227,11 +352,11 @@
               },
               ":",
               {
-                "Ref": "testcloudfrontapigatewaylambdaRestApi96B9C695"
+                "Ref": "testcloudfrontapigatewaylambdaLambdaRestApi6A4CBD44"
               },
               "/",
               {
-                "Ref": "testcloudfrontapigatewaylambdaRestApiDeploymentStageprod9373DCA0"
+                "Ref": "testcloudfrontapigatewaylambdaLambdaRestApiDeploymentStageprod4617A7B7"
               },
               "/*/"
             ]
@@ -239,13 +364,13 @@
         }
       }
     },
-    "testcloudfrontapigatewaylambdaRestApiANYApiPermissionTesttestcloudfrontapigatewaylambdastacktestcloudfrontapigatewaylambdaRestApiEFF71B39ANYAEAD59C3": {
+    "testcloudfrontapigatewaylambdaLambdaRestApiANYApiPermissionTesttestcloudfrontapigatewaylambdastacktestcloudfrontapigatewaylambdaLambdaRestApi6591E8BAANY093347BF": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "LambdaFunctionBF21E41F",
+            "testcloudfrontapigatewaylambdaLambdaFunction17A55E65",
             "Arn"
           ]
         },
@@ -268,7 +393,7 @@
               },
               ":",
               {
-                "Ref": "testcloudfrontapigatewaylambdaRestApi96B9C695"
+                "Ref": "testcloudfrontapigatewaylambdaLambdaRestApi6A4CBD44"
               },
               "/test-invoke-stage/*/"
             ]
@@ -276,18 +401,18 @@
         }
       }
     },
-    "testcloudfrontapigatewaylambdaRestApiANY293F8177": {
+    "testcloudfrontapigatewaylambdaLambdaRestApiANYBC435DFD": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "ANY",
         "ResourceId": {
           "Fn::GetAtt": [
-            "testcloudfrontapigatewaylambdaRestApi96B9C695",
+            "testcloudfrontapigatewaylambdaLambdaRestApi6A4CBD44",
             "RootResourceId"
           ]
         },
         "RestApiId": {
-          "Ref": "testcloudfrontapigatewaylambdaRestApi96B9C695"
+          "Ref": "testcloudfrontapigatewaylambdaLambdaRestApi6A4CBD44"
         },
         "AuthorizationType": "AWS_IAM",
         "Integration": {
@@ -308,7 +433,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "LambdaFunctionBF21E41F",
+                    "testcloudfrontapigatewaylambdaLambdaFunction17A55E65",
                     "Arn"
                   ]
                 },
@@ -319,26 +444,21 @@
         }
       }
     },
-    "testcloudfrontapigatewaylambdaRestApiUsagePlan283916E7": {
+    "testcloudfrontapigatewaylambdaLambdaRestApiUsagePlan59548A66": {
       "Type": "AWS::ApiGateway::UsagePlan",
       "Properties": {
         "ApiStages": [
           {
             "ApiId": {
-              "Ref": "testcloudfrontapigatewaylambdaRestApi96B9C695"
+              "Ref": "testcloudfrontapigatewaylambdaLambdaRestApi6A4CBD44"
             },
             "Stage": {
-              "Ref": "testcloudfrontapigatewaylambdaRestApiDeploymentStageprod9373DCA0"
+              "Ref": "testcloudfrontapigatewaylambdaLambdaRestApiDeploymentStageprod4617A7B7"
             },
             "Throttle": {}
           }
         ]
       }
-    },
-    "testcloudfrontapigatewaylambdaApiAccessLogGroup97EB2E40": {
-      "Type": "AWS::Logs::LogGroup",
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
     },
     "testcloudfrontapigatewaylambdaLambdaRestApiCloudWatchRole7A327F48": {
       "Type": "AWS::IAM::Role",
@@ -406,8 +526,103 @@
         }
       },
       "DependsOn": [
-        "testcloudfrontapigatewaylambdaRestApi96B9C695"
+        "testcloudfrontapigatewaylambdaLambdaRestApi6A4CBD44"
       ]
+    },
+    "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRoleCA39BFFF": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "edgelambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:aws:logs:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":log-group:/aws/lambda/*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy"
+          }
+        ]
+      }
+    },
+    "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeaders6945414A": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "exports.handler = (event, context, callback) => {           const response = event.Records[0].cf.response;           const headers = response.headers;           headers['x-xss-protection'] = [             {               key: 'X-XSS-Protection',               value: '1; mode=block'             }           ];           headers['x-frame-options'] = [             {               key: 'X-Frame-Options',               value: 'DENY'             }           ];           headers['x-content-type-options'] = [             {               key: 'X-Content-Type-Options',               value: 'nosniff'             }           ];           headers['strict-transport-security'] = [             {               key: 'Strict-Transport-Security',               value: 'max-age=63072000; includeSubdomains; preload'             }           ];           headers['referrer-policy'] = [             {               key: 'Referrer-Policy',               value: 'same-origin'             }           ];           headers['content-security-policy'] = [             {               key: 'Content-Security-Policy',               value: \"default-src 'none'; base-uri 'self'; img-src 'self'; script-src 'self'; style-src 'self' https:; object-src 'none'; frame-ancestors 'none'; font-src 'self' https:; form-action 'self'; manifest-src 'self'; connect-src 'self'\"              }           ];           callback(null, response);         };"
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRoleCA39BFFF",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs12.x"
+      },
+      "DependsOn": [
+        "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRoleCA39BFFF"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions."
+            }
+          ]
+        }
+      }
+    },
+    "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeadersVersion1946ABC2": {
+      "Type": "AWS::Lambda::Version",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeaders6945414A"
+        }
+      }
     },
     "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucket7F467421": {
       "Type": "AWS::S3::Bucket",
@@ -469,6 +684,14 @@
               },
               "QueryString": false
             },
+            "LambdaFunctionAssociations": [
+              {
+                "EventType": "origin-response",
+                "LambdaFunctionARN": {
+                  "Ref": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeadersVersion1946ABC2"
+                }
+              }
+            ],
             "TargetOriginId": "origin1",
             "ViewerProtocolPolicy": "redirect-to-https"
           },
@@ -515,7 +738,7 @@
                                   [
                                     "https://",
                                     {
-                                      "Ref": "testcloudfrontapigatewaylambdaRestApi96B9C695"
+                                      "Ref": "testcloudfrontapigatewaylambdaLambdaRestApi6A4CBD44"
                                     },
                                     ".execute-api.",
                                     {
@@ -527,7 +750,7 @@
                                     },
                                     "/",
                                     {
-                                      "Ref": "testcloudfrontapigatewaylambdaRestApiDeploymentStageprod9373DCA0"
+                                      "Ref": "testcloudfrontapigatewaylambdaLambdaRestApiDeploymentStageprod4617A7B7"
                                     },
                                     "/"
                                   ]
@@ -549,123 +772,13 @@
             "CloudFrontDefaultCertificate": true
           }
         }
-      }
-    },
-    "LambdaFunctionServiceRole0C4CDE0B": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "lambda.amazonaws.com"
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "Policies": [
-          {
-            "PolicyDocument": {
-              "Statement": [
-                {
-                  "Action": [
-                    "logs:CreateLogGroup",
-                    "logs:CreateLogStream",
-                    "logs:PutLogEvents"
-                  ],
-                  "Effect": "Allow",
-                  "Resource": {
-                    "Fn::Join": [
-                      "",
-                      [
-                        "arn:aws:logs:",
-                        {
-                          "Ref": "AWS::Region"
-                        },
-                        ":",
-                        {
-                          "Ref": "AWS::AccountId"
-                        },
-                        ":log-group:/aws/lambda/*"
-                      ]
-                    ]
-                  }
-                }
-              ],
-              "Version": "2012-10-17"
-            },
-            "PolicyName": "LambdaFunctionServiceRolePolicy"
-          }
-        ]
-      }
-    },
-    "LambdaFunctionBF21E41F": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Code": {
-          "S3Bucket": {
-            "Ref": "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cS3Bucket1F467BCC"
-          },
-          "S3Key": {
-            "Fn::Join": [
-              "",
-              [
-                {
-                  "Fn::Select": [
-                    0,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cS3VersionKey9E4F7872"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "Fn::Select": [
-                    1,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cS3VersionKey9E4F7872"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            ]
-          }
-        },
-        "Handler": "index.handler",
-        "Role": {
-          "Fn::GetAtt": [
-            "LambdaFunctionServiceRole0C4CDE0B",
-            "Arn"
-          ]
-        },
-        "Runtime": "nodejs10.x",
-        "Environment": {
-          "Variables": {
-            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
-          }
-        }
       },
-      "DependsOn": [
-        "LambdaFunctionServiceRole0C4CDE0B"
-      ],
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
             {
-              "id": "W58",
-              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions."
+              "id": "W70",
+              "reason": "Since the distribution uses the CloudFront domain name, CloudFront automatically sets the security policy to TLSv1 regardless of the value of MinimumProtocolVersion"
             }
           ]
         }
@@ -673,14 +786,14 @@
     }
   },
   "Outputs": {
-    "testcloudfrontapigatewaylambdaRestApiEndpoint0A6CB43E": {
+    "testcloudfrontapigatewaylambdaLambdaRestApiEndpoint83FD8F0F": {
       "Value": {
         "Fn::Join": [
           "",
           [
             "https://",
             {
-              "Ref": "testcloudfrontapigatewaylambdaRestApi96B9C695"
+              "Ref": "testcloudfrontapigatewaylambdaLambdaRestApi6A4CBD44"
             },
             ".execute-api.",
             {
@@ -692,7 +805,7 @@
             },
             "/",
             {
-              "Ref": "testcloudfrontapigatewaylambdaRestApiDeploymentStageprod9373DCA0"
+              "Ref": "testcloudfrontapigatewaylambdaLambdaRestApiDeploymentStageprod4617A7B7"
             },
             "/"
           ]

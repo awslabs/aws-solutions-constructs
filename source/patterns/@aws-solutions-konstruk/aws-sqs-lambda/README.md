@@ -36,9 +36,7 @@ new SqsToLambda(stack, 'SqsToLambdaPattern', {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',
         code: lambda.Code.asset(`${__dirname}/lambda`)
-    },
-    deployDeadLetterQueue: true,
-    maxReceiveCount: 15
+    }
 });
 
 ```
@@ -64,8 +62,8 @@ _Parameters_
 |lambdaFunctionProps?|[`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.FunctionProps.html)|Optional user-provided props to override the default props for the Lambda function.|
 |queueProps?|[`sqs.QueueProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sqs.QueueProps.html)|Optional user-provided props to override the default props for the SQS queue.|
 |encryptionKeyProps?|[`kms.KeyProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kms.KeyProps.html)|Optional user-provided props to override the default props for the KMS encryption key.|
-|deployDeadLetterQueue|`boolean`|Whether to create a secondary queue to be used as a dead letter queue.|
-|maxReceiveCount|`number`|The number of times a message can be unsuccesfully dequeued before being moved to the dead letter queue.|
+|deployDeadLetterQueue?|`boolean`|Whether to create a secondary queue to be used as a dead letter queue. Defaults to true.|
+|maxReceiveCount?|`number`|The number of times a message can be unsuccesfully dequeued before being moved to the dead letter queue. Defaults to 15.|
 
 ## Pattern Properties
 

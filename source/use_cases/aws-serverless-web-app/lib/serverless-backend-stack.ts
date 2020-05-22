@@ -18,7 +18,6 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import { Provider } from '@aws-cdk/custom-resources';
 import { CustomResource } from '@aws-cdk/aws-cloudformation';
 import { PolicyStatement } from '@aws-cdk/aws-iam';
-import { UserPoolAttribute } from '@aws-cdk/aws-cognito';
 import { Cors } from '@aws-cdk/aws-apigateway';
 import { AttributeType } from '@aws-cdk/aws-dynamodb';
 
@@ -37,7 +36,7 @@ export class ServerlessBackendStack extends Stack {
       },
       cognitoUserPoolProps: {
         userPoolName: 'WileRydes',
-        autoVerifiedAttributes: [UserPoolAttribute.EMAIL]
+        userVerification: {}
       },
       apiGatewayProps: {
         defaultCorsPreflightOptions: {

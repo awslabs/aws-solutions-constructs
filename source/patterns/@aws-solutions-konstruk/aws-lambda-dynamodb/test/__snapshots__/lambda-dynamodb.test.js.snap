@@ -17,10 +17,33 @@ Object {
     },
   },
   "Resources": Object {
-    "LambdaFunctionBF21E41F": Object {
+    "testlambdadynamodbstackDynamoTable8138E93B": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "AttributeDefinitions": Array [
+          Object {
+            "AttributeName": "id",
+            "AttributeType": "S",
+          },
+        ],
+        "BillingMode": "PAY_PER_REQUEST",
+        "KeySchema": Array [
+          Object {
+            "AttributeName": "id",
+            "KeyType": "HASH",
+          },
+        ],
+        "SSESpecification": Object {
+          "SSEEnabled": true,
+        },
+      },
+      "Type": "AWS::DynamoDB::Table",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testlambdadynamodbstackLambdaFunction5DDB3E8D": Object {
       "DependsOn": Array [
-        "LambdaFunctionServiceRoleDefaultPolicy126C8897",
-        "LambdaFunctionServiceRole0C4CDE0B",
+        "testlambdadynamodbstackLambdaFunctionServiceRoleDefaultPolicy547FB7F4",
+        "testlambdadynamodbstackLambdaFunctionServiceRole758347A1",
       ],
       "Metadata": Object {
         "cfn_nag": Object {
@@ -82,7 +105,7 @@ Object {
         "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "LambdaFunctionServiceRole0C4CDE0B",
+            "testlambdadynamodbstackLambdaFunctionServiceRole758347A1",
             "Arn",
           ],
         },
@@ -90,7 +113,7 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "LambdaFunctionServiceRole0C4CDE0B": Object {
+    "testlambdadynamodbstackLambdaFunctionServiceRole758347A1": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -141,7 +164,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "LambdaFunctionServiceRoleDefaultPolicy126C8897": Object {
+    "testlambdadynamodbstackLambdaFunctionServiceRoleDefaultPolicy547FB7F4": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -174,37 +197,14 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "LambdaFunctionServiceRoleDefaultPolicy126C8897",
+        "PolicyName": "testlambdadynamodbstackLambdaFunctionServiceRoleDefaultPolicy547FB7F4",
         "Roles": Array [
           Object {
-            "Ref": "LambdaFunctionServiceRole0C4CDE0B",
+            "Ref": "testlambdadynamodbstackLambdaFunctionServiceRole758347A1",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
-    },
-    "testlambdadynamodbstackDynamoTable8138E93B": Object {
-      "DeletionPolicy": "Retain",
-      "Properties": Object {
-        "AttributeDefinitions": Array [
-          Object {
-            "AttributeName": "id",
-            "AttributeType": "S",
-          },
-        ],
-        "BillingMode": "PAY_PER_REQUEST",
-        "KeySchema": Array [
-          Object {
-            "AttributeName": "id",
-            "KeyType": "HASH",
-          },
-        ],
-        "SSESpecification": Object {
-          "SSEEnabled": true,
-        },
-      },
-      "Type": "AWS::DynamoDB::Table",
-      "UpdateReplacePolicy": "Retain",
     },
   },
 }

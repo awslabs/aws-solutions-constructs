@@ -68,7 +68,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "queue276F7297",
+                  "testsqslambdaqueue601203B8",
                   "Arn"
                 ]
               }
@@ -78,7 +78,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "EncryptionKey1B843E66",
+                  "testsqslambdaEncryptionKey317A2F03",
                   "Arn"
                 ]
               }
@@ -164,12 +164,12 @@
         }
       }
     },
-    "LambdaFunctionSqsEventSourcetestsqslambdaqueue583E2E6C926C265C": {
+    "LambdaFunctionSqsEventSourcetestsqslambdaqueue0C6435537BE28DB1": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
         "EventSourceArn": {
           "Fn::GetAtt": [
-            "queue276F7297",
+            "testsqslambdaqueue601203B8",
             "Arn"
           ]
         },
@@ -178,7 +178,7 @@
         }
       }
     },
-    "EncryptionKey1B843E66": {
+    "testsqslambdaEncryptionKey317A2F03": {
       "Type": "AWS::KMS::Key",
       "Properties": {
         "KeyPolicy": {
@@ -243,30 +243,30 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "deadLetterQueue3F848E28": {
+    "testsqslambdadeadLetterQueue85BDB0A3": {
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": {
           "Fn::GetAtt": [
-            "EncryptionKey1B843E66",
+            "testsqslambdaEncryptionKey317A2F03",
             "Arn"
           ]
         }
       }
     },
-    "queue276F7297": {
+    "testsqslambdaqueue601203B8": {
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": {
           "Fn::GetAtt": [
-            "EncryptionKey1B843E66",
+            "testsqslambdaEncryptionKey317A2F03",
             "Arn"
           ]
         },
         "RedrivePolicy": {
           "deadLetterTargetArn": {
             "Fn::GetAtt": [
-              "deadLetterQueue3F848E28",
+              "testsqslambdadeadLetterQueue85BDB0A3",
               "Arn"
             ]
           },

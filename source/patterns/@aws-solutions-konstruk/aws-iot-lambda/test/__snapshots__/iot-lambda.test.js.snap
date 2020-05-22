@@ -17,9 +17,31 @@ Object {
     },
   },
   "Resources": Object {
-    "LambdaFunctionBF21E41F": Object {
+    "testiotlambdaintegrationIotTopic18B6A735": Object {
+      "Properties": Object {
+        "TopicRulePayload": Object {
+          "Actions": Array [
+            Object {
+              "Lambda": Object {
+                "FunctionArn": Object {
+                  "Fn::GetAtt": Array [
+                    "testiotlambdaintegrationLambdaFunctionC5329DBA",
+                    "Arn",
+                  ],
+                },
+              },
+            },
+          ],
+          "Description": "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+          "RuleDisabled": false,
+          "Sql": "SELECT * FROM 'connectedcar/dtc/#'",
+        },
+      },
+      "Type": "AWS::IoT::TopicRule",
+    },
+    "testiotlambdaintegrationLambdaFunctionC5329DBA": Object {
       "DependsOn": Array [
-        "LambdaFunctionServiceRole0C4CDE0B",
+        "testiotlambdaintegrationLambdaFunctionServiceRole27C3EE41",
       ],
       "Metadata": Object {
         "cfn_nag": Object {
@@ -78,7 +100,7 @@ Object {
         "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "LambdaFunctionServiceRole0C4CDE0B",
+            "testiotlambdaintegrationLambdaFunctionServiceRole27C3EE41",
             "Arn",
           ],
         },
@@ -86,12 +108,12 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "LambdaFunctionLambdaInvokePermissionC135C9F1": Object {
+    "testiotlambdaintegrationLambdaFunctionLambdaInvokePermissionC89CDD23": Object {
       "Properties": Object {
         "Action": "lambda:InvokeFunction",
         "FunctionName": Object {
           "Fn::GetAtt": Array [
-            "LambdaFunctionBF21E41F",
+            "testiotlambdaintegrationLambdaFunctionC5329DBA",
             "Arn",
           ],
         },
@@ -105,7 +127,7 @@ Object {
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "LambdaFunctionServiceRole0C4CDE0B": Object {
+    "testiotlambdaintegrationLambdaFunctionServiceRole27C3EE41": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -155,28 +177,6 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Role",
-    },
-    "testiotlambdaintegrationIotTopic18B6A735": Object {
-      "Properties": Object {
-        "TopicRulePayload": Object {
-          "Actions": Array [
-            Object {
-              "Lambda": Object {
-                "FunctionArn": Object {
-                  "Fn::GetAtt": Array [
-                    "LambdaFunctionBF21E41F",
-                    "Arn",
-                  ],
-                },
-              },
-            },
-          ],
-          "Description": "Processing of DTC messages from the AWS Connected Vehicle Solution.",
-          "RuleDisabled": false,
-          "Sql": "SELECT * FROM 'connectedcar/dtc/#'",
-        },
-      },
-      "Type": "AWS::IoT::TopicRule",
     },
   },
 }

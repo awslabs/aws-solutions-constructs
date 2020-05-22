@@ -49,7 +49,7 @@ test('check domain names', () => {
   expect(stack).toHaveResource('AWS::Cognito::UserPoolDomain', {
     Domain: "test-domain",
     UserPoolId: {
-      Ref: "CognitoUserPool53E37E69"
+      Ref: "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoUserPoolF99F93E5"
     }
   });
 

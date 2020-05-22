@@ -15,4 +15,4 @@ import * as cdk from '@aws-cdk/core';
 import { S3StaticWebsiteStack } from '../lib/s3-static-site-stack';
 
 const app = new cdk.App();
-new S3StaticWebsiteStack(app, 'S3StaticWebsiteStack');
+new S3StaticWebsiteStack(app, 'StaticWebsiteStack');

@@ -100,7 +100,7 @@
               ],
               "LambdaFunctionArn": {
                 "Fn::GetAtt": [
-                  "LambdaFunctionBF21E41F",
+                  "tests3lambdaLambdaFunctionB56B7023",
                   "Arn"
                 ]
               }
@@ -109,10 +109,10 @@
         }
       },
       "DependsOn": [
-        "LambdaFunctionAllowBucketNotificationsFromtests3lambdastackS3BucketAA5BB5A99E8B1157"
+        "tests3lambdaLambdaFunctionAllowBucketNotificationsFromtests3lambdaexistingbucketstackS3BucketA1F8245606EA6713"
       ]
     },
-    "LambdaFunctionServiceRole0C4CDE0B": {
+    "tests3lambdaLambdaFunctionServiceRoleA74F4427": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -163,7 +163,7 @@
         ]
       }
     },
-    "LambdaFunctionBF21E41F": {
+    "tests3lambdaLambdaFunctionB56B7023": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -207,7 +207,7 @@
         "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
-            "LambdaFunctionServiceRole0C4CDE0B",
+            "tests3lambdaLambdaFunctionServiceRoleA74F4427",
             "Arn"
           ]
         },
@@ -219,7 +219,7 @@
         }
       },
       "DependsOn": [
-        "LambdaFunctionServiceRole0C4CDE0B"
+        "tests3lambdaLambdaFunctionServiceRoleA74F4427"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -232,13 +232,13 @@
         }
       }
     },
-    "LambdaFunctionAllowBucketNotificationsFromtests3lambdastackS3BucketAA5BB5A99E8B1157": {
+    "tests3lambdaLambdaFunctionAllowBucketNotificationsFromtests3lambdaexistingbucketstackS3BucketA1F8245606EA6713": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "LambdaFunctionBF21E41F",
+            "tests3lambdaLambdaFunctionB56B7023",
             "Arn"
           ]
         },
@@ -321,7 +321,7 @@
       "Properties": {
         "Description": "AWS CloudFormation handler for \"Custom::S3BucketNotifications\" resources (@aws-cdk/aws-s3)",
         "Code": {
-          "ZipFile": "exports.handler = (event, context) => {\n    // eslint-disable-next-line @typescript-eslint/no-require-imports, import/no-extraneous-dependencies\n    const s3 = new (require('aws-sdk').S3)();\n    // eslint-disable-next-line @typescript-eslint/no-require-imports\n    const https = require(\"https\");\n    // eslint-disable-next-line @typescript-eslint/no-require-imports\n    const url = require(\"url\");\n    log(JSON.stringify(event, undefined, 2));\n    const props = event.ResourceProperties;\n    if (event.RequestType === 'Delete') {\n        props.NotificationConfiguration = {}; // this is how you clean out notifications\n    }\n    const req = {\n        Bucket: props.BucketName,\n        NotificationConfiguration: props.NotificationConfiguration\n    };\n    return s3.putBucketNotificationConfiguration(req, (err, data) => {\n        log({ err, data });\n        if (err) {\n            return submitResponse(\"FAILED\", err.message + `\\nMore information in CloudWatch Log Stream: ${context.logStreamName}`);\n        }\n        else {\n            return submitResponse(\"SUCCESS\");\n        }\n    });\n    function log(obj) {\n        console.error(event.RequestId, event.StackId, event.LogicalResourceId, obj);\n    }\n    // tslint:disable-next-line:max-line-length\n    // adapted from https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-lambda-function-code.html#cfn-lambda-function-code-cfnresponsemodule\n    // to allow sending an error messge as a reason.\n    function submitResponse(responseStatus, reason) {\n        const responseBody = JSON.stringify({\n            Status: responseStatus,\n            Reason: reason || \"See the details in CloudWatch Log Stream: \" + context.logStreamName,\n            PhysicalResourceId: event.PhysicalResourceId || event.LogicalResourceId,\n            StackId: event.StackId,\n            RequestId: event.RequestId,\n            LogicalResourceId: event.LogicalResourceId,\n            NoEcho: false,\n        });\n        log({ responseBody });\n        const parsedUrl = url.parse(event.ResponseURL);\n        const options = {\n            hostname: parsedUrl.hostname,\n            port: 443,\n            path: parsedUrl.path,\n            method: \"PUT\",\n            headers: {\n                \"content-type\": \"\",\n                \"content-length\": responseBody.length\n            }\n        };\n        const request = https.request(options, (r) => {\n            log({ statusCode: r.statusCode, statusMessage: r.statusMessage });\n            context.done();\n        });\n        request.on(\"error\", (error) => {\n            log({ sendError: error });\n            context.done();\n        });\n        request.write(responseBody);\n        request.end();\n    }\n};"
+          "ZipFile": "exports.handler = (event, context) => {\n    // eslint-disable-next-line @typescript-eslint/no-require-imports, import/no-extraneous-dependencies\n    const s3 = new (require('aws-sdk').S3)();\n    // eslint-disable-next-line @typescript-eslint/no-require-imports\n    const https = require('https');\n    // eslint-disable-next-line @typescript-eslint/no-require-imports\n    const url = require('url');\n    log(JSON.stringify(event, undefined, 2));\n    const props = event.ResourceProperties;\n    if (event.RequestType === 'Delete') {\n        props.NotificationConfiguration = {}; // this is how you clean out notifications\n    }\n    const req = {\n        Bucket: props.BucketName,\n        NotificationConfiguration: props.NotificationConfiguration,\n    };\n    return s3.putBucketNotificationConfiguration(req, (err, data) => {\n        log({ err, data });\n        if (err) {\n            return submitResponse('FAILED', err.message + `\\nMore information in CloudWatch Log Stream: ${context.logStreamName}`);\n        }\n        else {\n            return submitResponse('SUCCESS');\n        }\n    });\n    function log(obj) {\n        console.error(event.RequestId, event.StackId, event.LogicalResourceId, obj);\n    }\n    // tslint:disable-next-line:max-line-length\n    // adapted from https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-lambda-function-code.html#cfn-lambda-function-code-cfnresponsemodule\n    // to allow sending an error messge as a reason.\n    function submitResponse(responseStatus, reason) {\n        const responseBody = JSON.stringify({\n            Status: responseStatus,\n            Reason: reason || 'See the details in CloudWatch Log Stream: ' + context.logStreamName,\n            PhysicalResourceId: event.PhysicalResourceId || event.LogicalResourceId,\n            StackId: event.StackId,\n            RequestId: event.RequestId,\n            LogicalResourceId: event.LogicalResourceId,\n            NoEcho: false,\n        });\n        log({ responseBody });\n        const parsedUrl = url.parse(event.ResponseURL);\n        const options = {\n            hostname: parsedUrl.hostname,\n            port: 443,\n            path: parsedUrl.path,\n            method: 'PUT',\n            headers: {\n                'content-type': '',\n                'content-length': responseBody.length,\n            },\n        };\n        const request = https.request(options, (r) => {\n            log({ statusCode: r.statusCode, statusMessage: r.statusMessage });\n            context.done();\n        });\n        request.on('error', (error) => {\n            log({ sendError: error });\n            context.done();\n        });\n        request.write(responseBody);\n        request.end();\n    }\n};"
         },
         "Handler": "index.handler",
         "Role": {

@@ -86,27 +86,27 @@ export class KinesisStreamsToLambda extends Construct {
         super(scope, id);
 
         // Setup the encryption key
-        this.encryptionKey = defaults.buildEncryptionKey(scope, {
+        this.encryptionKey = defaults.buildEncryptionKey(this, {
             encryptionKeyProps: props.encryptionKeyProps
         });
 
         // Setup the Kinesis Stream
-        this.kinesisStream = defaults.buildKinesisStream(scope, {
+        this.kinesisStream = defaults.buildKinesisStream(this, {
             encryptionKey: this.encryptionKey,
             kinesisStreamProps: props.kinesisStreamProps
         });
 
         // Setup the Lambda function
-        this.fn = defaults.buildLambdaFunction(scope, {
+        this.fn = defaults.buildLambdaFunction(this, {
             deployLambda: props.deployLambda,
             existingLambdaObj: props.existingLambdaObj,
             lambdaFunctionProps: props.lambdaFunctionProps
         });
 
         // Add the Lambda event source mapping
-        const eventSourceProps = overrideProps(defaults.DefaultKinesisEventSourceProps, props.eventSourceProps);
-        eventSourceProps.eventSourceArn = this.kinesisStream.streamArn;
-        eventSourceProps.functionName = this.fn.functionName;
+        const eventSourceProps = (props.eventSourceProps) ?
+            overrideProps(defaults.DefaultKinesisEventSourceProps(this.kinesisStream.streamArn), props.eventSourceProps) :
+            defaults.DefaultKinesisEventSourceProps(this.kinesisStream.streamArn);
         this.fn.addEventSourceMapping('LambdaKinesisEventSourceMapping', eventSourceProps);
 
         // Add permissions for the Lambda function to access Kinesis

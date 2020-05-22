@@ -132,14 +132,14 @@ export class KinesisFirehoseToS3 extends Construct {
     }
 
     /**
-     * Retruns an instance of kinesisfirehose.CfnDeliveryStream created by the construct
+     * Returns an instance of kinesisfirehose.CfnDeliveryStream created by the construct
      */
     public kinesisFirehose(): kinesisfirehose.CfnDeliveryStream {
         return this.firehose;
     }
 
     /**
-     * Retruns an instance of s3.Bucket created by the construct
+     * Returns an instance of s3.Bucket created by the construct
      */
     public bucket(): s3.Bucket {
         return this.s3Bucket;

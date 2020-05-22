@@ -79,16 +79,16 @@ export class CognitoToApiGatewayToLambda extends Construct {
   constructor(scope: Construct, id: string, props: CognitoToApiGatewayToLambdaProps) {
     super(scope, id);
 
-    this.fn = defaults.buildLambdaFunction(scope, {
+    this.fn = defaults.buildLambdaFunction(this, {
       deployLambda: props.deployLambda,
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps
     });
-    this.api = defaults.GlobalLambdaRestApi(scope, this.fn, props.apiGatewayProps);
-    this.userpool = defaults.buildUserPool(scope, props.cognitoUserPoolProps);
-    this.userpoolclient = defaults.buildUserPoolClient(scope, this.userpool, props.cognitoUserPoolClientProps);
+    this.api = defaults.GlobalLambdaRestApi(this, this.fn, props.apiGatewayProps);
+    this.userpool = defaults.buildUserPool(this, props.cognitoUserPoolProps);
+    this.userpoolclient = defaults.buildUserPoolClient(this, this.userpool, props.cognitoUserPoolClientProps);
 
-    const cfnAuthorizer = new api.CfnAuthorizer(scope, 'CognitoAuthorizer', {
+    const cfnAuthorizer = new api.CfnAuthorizer(this, 'CognitoAuthorizer', {
       restApiId: this.api.restApiId,
       type: 'COGNITO_USER_POOLS',
       providerArns: [this.userpool.userPoolArn],
@@ -109,7 +109,7 @@ export class CognitoToApiGatewayToLambda extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of api.RestApi created by the construct.
+   * @summary Returns an instance of api.RestApi created by the construct.
    * @returns {api.RestApi} Instance of RestApi created by the construct
    * @since 0.8.0
    * @access public
@@ -119,7 +119,7 @@ export class CognitoToApiGatewayToLambda extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of lambda.Function created by the construct.
+   * @summary Returns an instance of lambda.Function created by the construct.
    * @returns {lambda.Function} Instance of Function created by the construct
    * @since 0.8.0
    * @access public
@@ -129,7 +129,7 @@ export class CognitoToApiGatewayToLambda extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of cognito.UserPool created by the construct.
+   * @summary Returns an instance of cognito.UserPool created by the construct.
    * @returns {cognito.UserPool} Instance of UserPool created by the construct
    * @since 0.8.0
    * @access public
@@ -139,7 +139,7 @@ export class CognitoToApiGatewayToLambda extends Construct {
   }
 
   /**
-   * @summary Retruns an instance of cognito.UserPoolClient created by the construct.
+   * @summary Returns an instance of cognito.UserPoolClient created by the construct.
    * @returns {cognito.UserPoolClient} Instance of UserPoolClient created by the construct
    * @since 0.8.0
    * @access public

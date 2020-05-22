@@ -46,6 +46,16 @@ Object {
   },
   "Resources": Object {
     "CloudFrontDistributionCFDistribution599ADCC4": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W70",
+              "reason": "Since the distribution uses the CloudFront domain name, CloudFront automatically sets the security policy to TLSv1 regardless of the value of MinimumProtocolVersion",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "DistributionConfig": Object {
           "DefaultCacheBehavior": Object {
@@ -64,6 +74,14 @@ Object {
               },
               "QueryString": false,
             },
+            "LambdaFunctionAssociations": Array [
+              Object {
+                "EventType": "origin-response",
+                "LambdaFunctionARN": Object {
+                  "Ref": "SetHttpSecurityHeadersVersion660E2F72",
+                },
+              },
+            ],
             "TargetOriginId": "origin1",
             "ViewerProtocolPolicy": "redirect-to-https",
           },
@@ -444,7 +462,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "RestApiDeployment180EC503d2c6df3c8dc8b7193b98c1a0bff4e677": Object {
+    "RestApiDeployment180EC5037625dd9448e05124ef5f1cc2b6c3180a": Object {
       "DependsOn": Array [
         "RestApiproxyANY1786B242",
         "RestApiproxyC95856DD",
@@ -461,7 +479,7 @@ Object {
     "RestApiDeploymentStageprod3855DE66": Object {
       "Properties": Object {
         "DeploymentId": Object {
-          "Ref": "RestApiDeployment180EC503d2c6df3c8dc8b7193b98c1a0bff4e677",
+          "Ref": "RestApiDeployment180EC5037625dd9448e05124ef5f1cc2b6c3180a",
         },
         "RestApiId": Object {
           "Ref": "RestApi0C43BF4B",
@@ -602,6 +620,101 @@ Object {
         },
       },
       "Type": "AWS::ApiGateway::Resource",
+    },
+    "SetHttpSecurityHeadersEE936115": Object {
+      "DependsOn": Array [
+        "SetHttpSecurityHeadersServiceRoleAF063E32",
+      ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "Code": Object {
+          "ZipFile": "exports.handler = (event, context, callback) => {           const response = event.Records[0].cf.response;           const headers = response.headers;           headers['x-xss-protection'] = [             {               key: 'X-XSS-Protection',               value: '1; mode=block'             }           ];           headers['x-frame-options'] = [             {               key: 'X-Frame-Options',               value: 'DENY'             }           ];           headers['x-content-type-options'] = [             {               key: 'X-Content-Type-Options',               value: 'nosniff'             }           ];           headers['strict-transport-security'] = [             {               key: 'Strict-Transport-Security',               value: 'max-age=63072000; includeSubdomains; preload'             }           ];           headers['referrer-policy'] = [             {               key: 'Referrer-Policy',               value: 'same-origin'             }           ];           headers['content-security-policy'] = [             {               key: 'Content-Security-Policy',               value: \\"default-src 'none'; base-uri 'self'; img-src 'self'; script-src 'self'; style-src 'self' https:; object-src 'none'; frame-ancestors 'none'; font-src 'self' https:; form-action 'self'; manifest-src 'self'; connect-src 'self'\\"              }           ];           callback(null, response);         };",
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "SetHttpSecurityHeadersServiceRoleAF063E32",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs12.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "SetHttpSecurityHeadersServiceRoleAF063E32": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "edgelambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": Array [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        "arn:aws:logs:",
+                        Object {
+                          "Ref": "AWS::Region",
+                        },
+                        ":",
+                        Object {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":log-group:/aws/lambda/*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "SetHttpSecurityHeadersVersion660E2F72": Object {
+      "Properties": Object {
+        "FunctionName": Object {
+          "Ref": "SetHttpSecurityHeadersEE936115",
+        },
+      },
+      "Type": "AWS::Lambda::Version",
     },
   },
 }

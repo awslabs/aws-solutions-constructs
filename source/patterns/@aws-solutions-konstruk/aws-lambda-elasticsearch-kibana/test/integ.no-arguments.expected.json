@@ -1,6 +1,6 @@
 {
   "Resources": {
-    "LambdaFunctionServiceRole0C4CDE0B": {
+    "testlambdaelasticsearchkibanaLambdaFunctionServiceRole3AFFEAA2": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -51,7 +51,7 @@
         ]
       }
     },
-    "LambdaFunctionBF21E41F": {
+    "testlambdaelasticsearchkibanaLambdaFunction601D26D3": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -95,7 +95,7 @@
         "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
-            "LambdaFunctionServiceRole0C4CDE0B",
+            "testlambdaelasticsearchkibanaLambdaFunctionServiceRole3AFFEAA2",
             "Arn"
           ]
         },
@@ -105,7 +105,7 @@
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "DOMAIN_ENDPOINT": {
               "Fn::GetAtt": [
-                "ElasticsearchDomain",
+                "testlambdaelasticsearchkibanaElasticsearchDomain50D5F86E",
                 "DomainEndpoint"
               ]
             }
@@ -113,7 +113,7 @@
         }
       },
       "DependsOn": [
-        "LambdaFunctionServiceRole0C4CDE0B"
+        "testlambdaelasticsearchkibanaLambdaFunctionServiceRole3AFFEAA2"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -126,35 +126,102 @@
         }
       }
     },
-    "CognitoUserPool53E37E69": {
-      "Type": "AWS::Cognito::UserPool",
+    "testlambdaelasticsearchkibanaCognitoUserPoolsmsRoleA9BE07AD": {
+      "Type": "AWS::IAM::Role",
       "Properties": {
-        "LambdaConfig": {},
-        "UserPoolAddOns": {
-          "AdvancedSecurityMode": "ENFORCED"
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Condition": {
+                "StringEquals": {
+                  "sts:ExternalId": "testlambdaelasticsearchkibanastacktestlambdaelasticsearchkibanaCognitoUserPoolB641EEBB"
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "cognito-idp.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": "sns:Publish",
+                  "Effect": "Allow",
+                  "Resource": "*"
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "sns-publish"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W11",
+              "reason": "Allowing * resource on permissions policy since its used by Cognito to send SMS messages via sns:Publish"
+            }
+          ]
         }
       }
     },
-    "CognitoUserPoolClient5AB59AE4": {
+    "testlambdaelasticsearchkibanaCognitoUserPool9537802B": {
+      "Type": "AWS::Cognito::UserPool",
+      "Properties": {
+        "AdminCreateUserConfig": {
+          "AllowAdminCreateUserOnly": true
+        },
+        "EmailVerificationMessage": "The verification code to your new account is {####}",
+        "EmailVerificationSubject": "Verify your new account",
+        "SmsConfiguration": {
+          "ExternalId": "testlambdaelasticsearchkibanastacktestlambdaelasticsearchkibanaCognitoUserPoolB641EEBB",
+          "SnsCallerArn": {
+            "Fn::GetAtt": [
+              "testlambdaelasticsearchkibanaCognitoUserPoolsmsRoleA9BE07AD",
+              "Arn"
+            ]
+          }
+        },
+        "SmsVerificationMessage": "The verification code to your new account is {####}",
+        "UserPoolAddOns": {
+          "AdvancedSecurityMode": "ENFORCED"
+        },
+        "VerificationMessageTemplate": {
+          "DefaultEmailOption": "CONFIRM_WITH_CODE",
+          "EmailMessage": "The verification code to your new account is {####}",
+          "EmailSubject": "Verify your new account",
+          "SmsMessage": "The verification code to your new account is {####}"
+        }
+      }
+    },
+    "testlambdaelasticsearchkibanaCognitoUserPoolClient8F70A2AA": {
       "Type": "AWS::Cognito::UserPoolClient",
       "Properties": {
         "UserPoolId": {
-          "Ref": "CognitoUserPool53E37E69"
+          "Ref": "testlambdaelasticsearchkibanaCognitoUserPool9537802B"
         }
       }
     },
-    "CognitoIdentityPool": {
+    "testlambdaelasticsearchkibanaCognitoIdentityPoolC48068F0": {
       "Type": "AWS::Cognito::IdentityPool",
       "Properties": {
         "AllowUnauthenticatedIdentities": false,
         "CognitoIdentityProviders": [
           {
             "ClientId": {
-              "Ref": "CognitoUserPoolClient5AB59AE4"
+              "Ref": "testlambdaelasticsearchkibanaCognitoUserPoolClient8F70A2AA"
             },
             "ProviderName": {
               "Fn::GetAtt": [
-                "CognitoUserPool53E37E69",
+                "testlambdaelasticsearchkibanaCognitoUserPool9537802B",
                 "ProviderName"
               ]
             },
@@ -163,19 +230,19 @@
         ]
       }
     },
-    "UserPoolDomain": {
+    "testlambdaelasticsearchkibanaUserPoolDomainB9BDF063": {
       "Type": "AWS::Cognito::UserPoolDomain",
       "Properties": {
         "Domain": "test-domain1",
         "UserPoolId": {
-          "Ref": "CognitoUserPool53E37E69"
+          "Ref": "testlambdaelasticsearchkibanaCognitoUserPool9537802B"
         }
       },
       "DependsOn": [
-        "CognitoUserPool53E37E69"
+        "testlambdaelasticsearchkibanaCognitoUserPool9537802B"
       ]
     },
-    "CognitoAuthorizedRole14E74FE0": {
+    "testlambdaelasticsearchkibanaCognitoAuthorizedRole88FAFCFA": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -185,7 +252,7 @@
               "Condition": {
                 "StringEquals": {
                   "cognito-identity.amazonaws.com:aud": {
-                    "Ref": "CognitoIdentityPool"
+                    "Ref": "testlambdaelasticsearchkibanaCognitoIdentityPoolC48068F0"
                   }
                 },
                 "ForAnyValue:StringLike": {
@@ -232,23 +299,23 @@
         ]
       }
     },
-    "IdentityPoolRoleMapping": {
+    "testlambdaelasticsearchkibanaIdentityPoolRoleMappingBD0A239B": {
       "Type": "AWS::Cognito::IdentityPoolRoleAttachment",
       "Properties": {
         "IdentityPoolId": {
-          "Ref": "CognitoIdentityPool"
+          "Ref": "testlambdaelasticsearchkibanaCognitoIdentityPoolC48068F0"
         },
         "Roles": {
           "authenticated": {
             "Fn::GetAtt": [
-              "CognitoAuthorizedRole14E74FE0",
+              "testlambdaelasticsearchkibanaCognitoAuthorizedRole88FAFCFA",
               "Arn"
             ]
           }
         }
       }
     },
-    "CognitoKibanaConfigureRole62CCE76A": {
+    "testlambdaelasticsearchkibanaCognitoKibanaConfigureRole8F40C1A1": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -265,7 +332,7 @@
         }
       }
     },
-    "CognitoKibanaConfigureRolePolicy76F46A5E": {
+    "testlambdaelasticsearchkibanaCognitoKibanaConfigureRolePolicyB7090E91": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -289,7 +356,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "CognitoUserPool53E37E69",
+                    "testlambdaelasticsearchkibanaCognitoUserPool9537802B",
                     "Arn"
                   ]
                 },
@@ -307,7 +374,7 @@
                       },
                       ":identitypool/",
                       {
-                        "Ref": "CognitoIdentityPool"
+                        "Ref": "testlambdaelasticsearchkibanaCognitoIdentityPoolC48068F0"
                       }
                     ]
                   ]
@@ -340,7 +407,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "CognitoKibanaConfigureRole62CCE76A",
+                  "testlambdaelasticsearchkibanaCognitoKibanaConfigureRole8F40C1A1",
                   "Arn"
                 ]
               }
@@ -348,15 +415,15 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "CognitoKibanaConfigureRolePolicy76F46A5E",
+        "PolicyName": "testlambdaelasticsearchkibanaCognitoKibanaConfigureRolePolicyB7090E91",
         "Roles": [
           {
-            "Ref": "CognitoKibanaConfigureRole62CCE76A"
+            "Ref": "testlambdaelasticsearchkibanaCognitoKibanaConfigureRole8F40C1A1"
           }
         ]
       }
     },
-    "ElasticsearchDomain": {
+    "testlambdaelasticsearchkibanaElasticsearchDomain50D5F86E": {
       "Type": "AWS::Elasticsearch::Domain",
       "Properties": {
         "AccessPolicies": {
@@ -368,13 +435,13 @@
                 "AWS": [
                   {
                     "Fn::GetAtt": [
-                      "CognitoAuthorizedRole14E74FE0",
+                      "testlambdaelasticsearchkibanaCognitoAuthorizedRole88FAFCFA",
                       "Arn"
                     ]
                   },
                   {
                     "Fn::GetAtt": [
-                      "LambdaFunctionServiceRole0C4CDE0B",
+                      "testlambdaelasticsearchkibanaLambdaFunctionServiceRole3AFFEAA2",
                       "Arn"
                     ]
                   }
@@ -403,16 +470,16 @@
         "CognitoOptions": {
           "Enabled": true,
           "IdentityPoolId": {
-            "Ref": "CognitoIdentityPool"
+            "Ref": "testlambdaelasticsearchkibanaCognitoIdentityPoolC48068F0"
           },
           "RoleArn": {
             "Fn::GetAtt": [
-              "CognitoKibanaConfigureRole62CCE76A",
+              "testlambdaelasticsearchkibanaCognitoKibanaConfigureRole8F40C1A1",
               "Arn"
             ]
           },
           "UserPoolId": {
-            "Ref": "CognitoUserPool53E37E69"
+            "Ref": "testlambdaelasticsearchkibanaCognitoUserPool9537802B"
           }
         },
         "DomainName": "test-domain1",
@@ -451,7 +518,7 @@
         }
       }
     },
-    "StatusRedAlarm4CE918C2": {
+    "testlambdaelasticsearchkibanaStatusRedAlarmCFCDB629": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -464,7 +531,7 @@
         "Threshold": 1
       }
     },
-    "StatusYellowAlarm2B20F083": {
+    "testlambdaelasticsearchkibanaStatusYellowAlarm24B9D1CB": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -477,7 +544,7 @@
         "Threshold": 1
       }
     },
-    "FreeStorageSpaceTooLowAlarm3410CBE2": {
+    "testlambdaelasticsearchkibanaFreeStorageSpaceTooLowAlarm0B4D4E35": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "LessThanOrEqualToThreshold",
@@ -490,7 +557,7 @@
         "Threshold": 2000
       }
     },
-    "IndexWritesBlockedTooHighAlarm5F7E9A55": {
+    "testlambdaelasticsearchkibanaIndexWritesBlockedTooHighAlarmB8C0E99C": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -503,7 +570,7 @@
         "Threshold": 1
       }
     },
-    "AutomatedSnapshotFailureTooHighAlarmA7918D4F": {
+    "testlambdaelasticsearchkibanaAutomatedSnapshotFailureTooHighAlarm75F2676B": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -516,7 +583,7 @@
         "Threshold": 1
       }
     },
-    "CPUUtilizationTooHighAlarmA395C469": {
+    "testlambdaelasticsearchkibanaCPUUtilizationTooHighAlarmF16BA5D9": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -529,7 +596,7 @@
         "Threshold": 80
       }
     },
-    "JVMMemoryPressureTooHighAlarm303EEA7C": {
+    "testlambdaelasticsearchkibanaJVMMemoryPressureTooHighAlarm18224533": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -542,7 +609,7 @@
         "Threshold": 80
       }
     },
-    "MasterCPUUtilizationTooHighAlarm1CE1084B": {
+    "testlambdaelasticsearchkibanaMasterCPUUtilizationTooHighAlarmE5E5999F": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -555,7 +622,7 @@
         "Threshold": 50
       }
     },
-    "MasterJVMMemoryPressureTooHighAlarmBB15F770": {
+    "testlambdaelasticsearchkibanaMasterJVMMemoryPressureTooHighAlarm297FF1BE": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",

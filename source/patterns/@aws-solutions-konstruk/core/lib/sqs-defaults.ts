@@ -21,3 +21,6 @@ export function DefaultQueueProps(_encryptionMasterKey?: kms.Key) {
     };
     return _DefaultQueueProps;
 }
+
+// Default value for the max receive count of a dead letter queue
+export const defaultMaxReceiveCount = 15;

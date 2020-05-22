@@ -17,7 +17,7 @@ Object {
     },
   },
   "Resources": Object {
-    "AutomatedSnapshotFailureTooHighAlarmA7918D4F": Object {
+    "testlambdaelasticsearchstackAutomatedSnapshotFailureTooHighAlarmE1525DBA": Object {
       "Properties": Object {
         "AlarmDescription": "An automated snapshot failed. This failure is often the result of a red cluster health status.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -30,7 +30,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "CPUUtilizationTooHighAlarmA395C469": Object {
+    "testlambdaelasticsearchstackCPUUtilizationTooHighAlarm25C597E5": Object {
       "Properties": Object {
         "AlarmDescription": "100% CPU utilization is not uncommon, but sustained high usage is problematic. Consider using larger instance types or adding instances.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -43,7 +43,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "CognitoAuthorizedRole14E74FE0": Object {
+    "testlambdaelasticsearchstackCognitoAuthorizedRole48A260E1": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -55,7 +55,7 @@ Object {
                 },
                 "StringEquals": Object {
                   "cognito-identity.amazonaws.com:aud": Object {
-                    "Ref": "CognitoIdentityPool",
+                    "Ref": "testlambdaelasticsearchstackCognitoIdentityPool7A260383",
                   },
                 },
               },
@@ -100,17 +100,17 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "CognitoIdentityPool": Object {
+    "testlambdaelasticsearchstackCognitoIdentityPool7A260383": Object {
       "Properties": Object {
         "AllowUnauthenticatedIdentities": false,
         "CognitoIdentityProviders": Array [
           Object {
             "ClientId": Object {
-              "Ref": "CognitoUserPoolClient5AB59AE4",
+              "Ref": "testlambdaelasticsearchstackCognitoUserPoolClient6610371B",
             },
             "ProviderName": Object {
               "Fn::GetAtt": Array [
-                "CognitoUserPool53E37E69",
+                "testlambdaelasticsearchstackCognitoUserPool05D1387E",
                 "ProviderName",
               ],
             },
@@ -120,7 +120,7 @@ Object {
       },
       "Type": "AWS::Cognito::IdentityPool",
     },
-    "CognitoKibanaConfigureRole62CCE76A": Object {
+    "testlambdaelasticsearchstackCognitoKibanaConfigureRole72380E63": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -137,7 +137,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "CognitoKibanaConfigureRolePolicy76F46A5E": Object {
+    "testlambdaelasticsearchstackCognitoKibanaConfigureRolePolicyE3A46E8D": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -160,7 +160,7 @@ Object {
               "Resource": Array [
                 Object {
                   "Fn::GetAtt": Array [
-                    "CognitoUserPool53E37E69",
+                    "testlambdaelasticsearchstackCognitoUserPool05D1387E",
                     "Arn",
                   ],
                 },
@@ -178,7 +178,7 @@ Object {
                       },
                       ":identitypool/",
                       Object {
-                        "Ref": "CognitoIdentityPool",
+                        "Ref": "testlambdaelasticsearchstackCognitoIdentityPool7A260383",
                       },
                     ],
                   ],
@@ -211,7 +211,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "CognitoKibanaConfigureRole62CCE76A",
+                  "testlambdaelasticsearchstackCognitoKibanaConfigureRole72380E63",
                   "Arn",
                 ],
               },
@@ -219,33 +219,100 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "CognitoKibanaConfigureRolePolicy76F46A5E",
+        "PolicyName": "testlambdaelasticsearchstackCognitoKibanaConfigureRolePolicyE3A46E8D",
         "Roles": Array [
           Object {
-            "Ref": "CognitoKibanaConfigureRole62CCE76A",
+            "Ref": "testlambdaelasticsearchstackCognitoKibanaConfigureRole72380E63",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
     },
-    "CognitoUserPool53E37E69": Object {
+    "testlambdaelasticsearchstackCognitoUserPool05D1387E": Object {
       "Properties": Object {
-        "LambdaConfig": Object {},
+        "AdminCreateUserConfig": Object {
+          "AllowAdminCreateUserOnly": true,
+        },
+        "EmailVerificationMessage": "The verification code to your new account is {####}",
+        "EmailVerificationSubject": "Verify your new account",
+        "SmsConfiguration": Object {
+          "ExternalId": "testlambdaelasticsearchstackCognitoUserPoolE85DABFF",
+          "SnsCallerArn": Object {
+            "Fn::GetAtt": Array [
+              "testlambdaelasticsearchstackCognitoUserPoolsmsRoleDEC8C9B4",
+              "Arn",
+            ],
+          },
+        },
+        "SmsVerificationMessage": "The verification code to your new account is {####}",
         "UserPoolAddOns": Object {
           "AdvancedSecurityMode": "ENFORCED",
+        },
+        "VerificationMessageTemplate": Object {
+          "DefaultEmailOption": "CONFIRM_WITH_CODE",
+          "EmailMessage": "The verification code to your new account is {####}",
+          "EmailSubject": "Verify your new account",
+          "SmsMessage": "The verification code to your new account is {####}",
         },
       },
       "Type": "AWS::Cognito::UserPool",
     },
-    "CognitoUserPoolClient5AB59AE4": Object {
+    "testlambdaelasticsearchstackCognitoUserPoolClient6610371B": Object {
       "Properties": Object {
         "UserPoolId": Object {
-          "Ref": "CognitoUserPool53E37E69",
+          "Ref": "testlambdaelasticsearchstackCognitoUserPool05D1387E",
         },
       },
       "Type": "AWS::Cognito::UserPoolClient",
     },
-    "ElasticsearchDomain": Object {
+    "testlambdaelasticsearchstackCognitoUserPoolsmsRoleDEC8C9B4": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W11",
+              "reason": "Allowing * resource on permissions policy since its used by Cognito to send SMS messages via sns:Publish",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Condition": Object {
+                "StringEquals": Object {
+                  "sts:ExternalId": "testlambdaelasticsearchstackCognitoUserPoolE85DABFF",
+                },
+              },
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "cognito-idp.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": "sns:Publish",
+                  "Effect": "Allow",
+                  "Resource": "*",
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "sns-publish",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testlambdaelasticsearchstackElasticsearchDomain2DE7011B": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -266,13 +333,13 @@ Object {
                 "AWS": Array [
                   Object {
                     "Fn::GetAtt": Array [
-                      "CognitoAuthorizedRole14E74FE0",
+                      "testlambdaelasticsearchstackCognitoAuthorizedRole48A260E1",
                       "Arn",
                     ],
                   },
                   Object {
                     "Fn::GetAtt": Array [
-                      "LambdaFunctionServiceRole0C4CDE0B",
+                      "testlambdaelasticsearchstackLambdaFunctionServiceRoleEB1E3355",
                       "Arn",
                     ],
                   },
@@ -301,16 +368,16 @@ Object {
         "CognitoOptions": Object {
           "Enabled": true,
           "IdentityPoolId": Object {
-            "Ref": "CognitoIdentityPool",
+            "Ref": "testlambdaelasticsearchstackCognitoIdentityPool7A260383",
           },
           "RoleArn": Object {
             "Fn::GetAtt": Array [
-              "CognitoKibanaConfigureRole62CCE76A",
+              "testlambdaelasticsearchstackCognitoKibanaConfigureRole72380E63",
               "Arn",
             ],
           },
           "UserPoolId": Object {
-            "Ref": "CognitoUserPool53E37E69",
+            "Ref": "testlambdaelasticsearchstackCognitoUserPool05D1387E",
           },
         },
         "DomainName": "test-domain",
@@ -340,7 +407,7 @@ Object {
       },
       "Type": "AWS::Elasticsearch::Domain",
     },
-    "FreeStorageSpaceTooLowAlarm3410CBE2": Object {
+    "testlambdaelasticsearchstackFreeStorageSpaceTooLowAlarmB0688A0C": Object {
       "Properties": Object {
         "AlarmDescription": "A node in your cluster is down to 20 GiB of free storage space.",
         "ComparisonOperator": "LessThanOrEqualToThreshold",
@@ -353,15 +420,15 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "IdentityPoolRoleMapping": Object {
+    "testlambdaelasticsearchstackIdentityPoolRoleMapping1553C88A": Object {
       "Properties": Object {
         "IdentityPoolId": Object {
-          "Ref": "CognitoIdentityPool",
+          "Ref": "testlambdaelasticsearchstackCognitoIdentityPool7A260383",
         },
         "Roles": Object {
           "authenticated": Object {
             "Fn::GetAtt": Array [
-              "CognitoAuthorizedRole14E74FE0",
+              "testlambdaelasticsearchstackCognitoAuthorizedRole48A260E1",
               "Arn",
             ],
           },
@@ -369,7 +436,7 @@ Object {
       },
       "Type": "AWS::Cognito::IdentityPoolRoleAttachment",
     },
-    "IndexWritesBlockedTooHighAlarm5F7E9A55": Object {
+    "testlambdaelasticsearchstackIndexWritesBlockedTooHighAlarm204AB403": Object {
       "Properties": Object {
         "AlarmDescription": "Your cluster is blocking write requests.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -382,7 +449,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "JVMMemoryPressureTooHighAlarm303EEA7C": Object {
+    "testlambdaelasticsearchstackJVMMemoryPressureTooHighAlarmFB8617D3": Object {
       "Properties": Object {
         "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -395,9 +462,9 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "LambdaFunctionBF21E41F": Object {
+    "testlambdaelasticsearchstackLambdaFunction5CA5683F": Object {
       "DependsOn": Array [
-        "LambdaFunctionServiceRole0C4CDE0B",
+        "testlambdaelasticsearchstackLambdaFunctionServiceRoleEB1E3355",
       ],
       "Metadata": Object {
         "cfn_nag": Object {
@@ -453,7 +520,7 @@ Object {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "DOMAIN_ENDPOINT": Object {
               "Fn::GetAtt": Array [
-                "ElasticsearchDomain",
+                "testlambdaelasticsearchstackElasticsearchDomain2DE7011B",
                 "DomainEndpoint",
               ],
             },
@@ -462,7 +529,7 @@ Object {
         "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "LambdaFunctionServiceRole0C4CDE0B",
+            "testlambdaelasticsearchstackLambdaFunctionServiceRoleEB1E3355",
             "Arn",
           ],
         },
@@ -470,7 +537,7 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "LambdaFunctionServiceRole0C4CDE0B": Object {
+    "testlambdaelasticsearchstackLambdaFunctionServiceRoleEB1E3355": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -521,7 +588,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "MasterCPUUtilizationTooHighAlarm1CE1084B": Object {
+    "testlambdaelasticsearchstackMasterCPUUtilizationTooHighAlarm9F5EF826": Object {
       "Properties": Object {
         "AlarmDescription": "Average CPU utilization over last 45 minutes too high. Consider using larger instance types for your dedicated master nodes.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -534,7 +601,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "MasterJVMMemoryPressureTooHighAlarmBB15F770": Object {
+    "testlambdaelasticsearchstackMasterJVMMemoryPressureTooHighAlarmECFF41A2": Object {
       "Properties": Object {
         "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -547,7 +614,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "StatusRedAlarm4CE918C2": Object {
+    "testlambdaelasticsearchstackStatusRedAlarmD3149716": Object {
       "Properties": Object {
         "AlarmDescription": "At least one primary shard and its replicas are not allocated to a node. ",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -560,7 +627,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "StatusYellowAlarm2B20F083": Object {
+    "testlambdaelasticsearchstackStatusYellowAlarm75AD016C": Object {
       "Properties": Object {
         "AlarmDescription": "At least one replica shard is not allocated to a node.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -573,14 +640,14 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "UserPoolDomain": Object {
+    "testlambdaelasticsearchstackUserPoolDomainD67735BF": Object {
       "DependsOn": Array [
-        "CognitoUserPool53E37E69",
+        "testlambdaelasticsearchstackCognitoUserPool05D1387E",
       ],
       "Properties": Object {
         "Domain": "test-domain",
         "UserPoolId": Object {
-          "Ref": "CognitoUserPool53E37E69",
+          "Ref": "testlambdaelasticsearchstackCognitoUserPool05D1387E",
         },
       },
       "Type": "AWS::Cognito::UserPoolDomain",

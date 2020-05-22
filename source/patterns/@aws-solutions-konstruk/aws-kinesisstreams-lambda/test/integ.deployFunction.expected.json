@@ -1,52 +1,7 @@
 {
   "Description": "Integration Test for aws-kinesisstreams-lambda",
   "Resources": {
-    "testkslambdaLambdaFunctionPolicyDC40446F": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "kinesis:GetRecords",
-                "kinesis:GetShardIterator",
-                "kinesis:DescribeStream"
-              ],
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "KinesisStream46752A3E",
-                  "Arn"
-                ]
-              }
-            },
-            {
-              "Action": "kinesis:ListStreams",
-              "Effect": "Allow",
-              "Resource": "*"
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "testkslambdaLambdaFunctionPolicyDC40446F",
-        "Roles": [
-          {
-            "Ref": "LambdaFunctionServiceRole0C4CDE0B"
-          }
-        ]
-      },
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W12",
-              "reason": "The kinesis:ListStreams action requires a wildcard resource."
-            }
-          ]
-        }
-      }
-    },
-    "EncryptionKey1B843E66": {
+    "testkslambdaEncryptionKey4161DDEB": {
       "Type": "AWS::KMS::Key",
       "Properties": {
         "KeyPolicy": {
@@ -96,7 +51,7 @@
               "Principal": {
                 "AWS": {
                   "Fn::GetAtt": [
-                    "LambdaFunctionServiceRole0C4CDE0B",
+                    "testkslambdaLambdaFunctionServiceRole329F6464",
                     "Arn"
                   ]
                 }
@@ -111,7 +66,7 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "KinesisStream46752A3E": {
+    "testkslambdaKinesisStreamE607D575": {
       "Type": "AWS::Kinesis::Stream",
       "Properties": {
         "ShardCount": 1,
@@ -120,14 +75,14 @@
           "EncryptionType": "KMS",
           "KeyId": {
             "Fn::GetAtt": [
-              "EncryptionKey1B843E66",
+              "testkslambdaEncryptionKey4161DDEB",
               "Arn"
             ]
           }
         }
       }
     },
-    "LambdaFunctionServiceRole0C4CDE0B": {
+    "testkslambdaLambdaFunctionServiceRole329F6464": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -178,21 +133,23 @@
         ]
       }
     },
-    "LambdaFunctionServiceRoleDefaultPolicy126C8897": {
+    "testkslambdaLambdaFunctionServiceRoleDefaultPolicy06A105D0": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
           "Statement": [
             {
               "Action": [
-                "kinesis:DescribeStream",
+                "kinesis:DescribeStreamSummary",
                 "kinesis:GetRecords",
-                "kinesis:GetShardIterator"
+                "kinesis:GetShardIterator",
+                "kinesis:ListShards",
+                "kinesis:SubscribeToShard"
               ],
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "KinesisStream46752A3E",
+                  "testkslambdaKinesisStreamE607D575",
                   "Arn"
                 ]
               }
@@ -202,7 +159,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "EncryptionKey1B843E66",
+                  "testkslambdaEncryptionKey4161DDEB",
                   "Arn"
                 ]
               }
@@ -210,15 +167,15 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "LambdaFunctionServiceRoleDefaultPolicy126C8897",
+        "PolicyName": "testkslambdaLambdaFunctionServiceRoleDefaultPolicy06A105D0",
         "Roles": [
           {
-            "Ref": "LambdaFunctionServiceRole0C4CDE0B"
+            "Ref": "testkslambdaLambdaFunctionServiceRole329F6464"
           }
         ]
       }
     },
-    "LambdaFunctionBF21E41F": {
+    "testkslambdaLambdaFunction995A7276": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -262,7 +219,7 @@
         "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
-            "LambdaFunctionServiceRole0C4CDE0B",
+            "testkslambdaLambdaFunctionServiceRole329F6464",
             "Arn"
           ]
         },
@@ -274,8 +231,8 @@
         }
       },
       "DependsOn": [
-        "LambdaFunctionServiceRoleDefaultPolicy126C8897",
-        "LambdaFunctionServiceRole0C4CDE0B"
+        "testkslambdaLambdaFunctionServiceRoleDefaultPolicy06A105D0",
+        "testkslambdaLambdaFunctionServiceRole329F6464"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -288,20 +245,65 @@
         }
       }
     },
-    "LambdaFunctionLambdaKinesisEventSourceMappingE4E81D45": {
+    "testkslambdaLambdaFunctionLambdaKinesisEventSourceMapping70D66039": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
         "EventSourceArn": {
           "Fn::GetAtt": [
-            "KinesisStream46752A3E",
+            "testkslambdaKinesisStreamE607D575",
             "Arn"
           ]
         },
         "FunctionName": {
-          "Ref": "LambdaFunctionBF21E41F"
+          "Ref": "testkslambdaLambdaFunction995A7276"
         },
         "BatchSize": 1,
         "StartingPosition": "TRIM_HORIZON"
+      }
+    },
+    "testkslambdaLambdaFunctionPolicyDC40446F": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "kinesis:GetRecords",
+                "kinesis:GetShardIterator",
+                "kinesis:DescribeStream"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testkslambdaKinesisStreamE607D575",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "kinesis:ListStreams",
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testkslambdaLambdaFunctionPolicyDC40446F",
+        "Roles": [
+          {
+            "Ref": "testkslambdaLambdaFunctionServiceRole329F6464"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "The kinesis:ListStreams action requires a wildcard resource."
+            }
+          ]
+        }
       }
     }
   },

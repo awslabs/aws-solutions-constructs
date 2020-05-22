@@ -38,9 +38,9 @@ Object {
     // eslint-disable-next-line @typescript-eslint/no-require-imports, import/no-extraneous-dependencies
     const s3 = new (require('aws-sdk').S3)();
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const https = require(\\"https\\");
+    const https = require('https');
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const url = require(\\"url\\");
+    const url = require('url');
     log(JSON.stringify(event, undefined, 2));
     const props = event.ResourceProperties;
     if (event.RequestType === 'Delete') {
@@ -48,15 +48,15 @@ Object {
     }
     const req = {
         Bucket: props.BucketName,
-        NotificationConfiguration: props.NotificationConfiguration
+        NotificationConfiguration: props.NotificationConfiguration,
     };
     return s3.putBucketNotificationConfiguration(req, (err, data) => {
         log({ err, data });
         if (err) {
-            return submitResponse(\\"FAILED\\", err.message + \`\\\\nMore information in CloudWatch Log Stream: \${context.logStreamName}\`);
+            return submitResponse('FAILED', err.message + \`\\\\nMore information in CloudWatch Log Stream: \${context.logStreamName}\`);
         }
         else {
-            return submitResponse(\\"SUCCESS\\");
+            return submitResponse('SUCCESS');
         }
     });
     function log(obj) {
@@ -68,7 +68,7 @@ Object {
     function submitResponse(responseStatus, reason) {
         const responseBody = JSON.stringify({
             Status: responseStatus,
-            Reason: reason || \\"See the details in CloudWatch Log Stream: \\" + context.logStreamName,
+            Reason: reason || 'See the details in CloudWatch Log Stream: ' + context.logStreamName,
             PhysicalResourceId: event.PhysicalResourceId || event.LogicalResourceId,
             StackId: event.StackId,
             RequestId: event.RequestId,
@@ -81,17 +81,17 @@ Object {
             hostname: parsedUrl.hostname,
             port: 443,
             path: parsedUrl.path,
-            method: \\"PUT\\",
+            method: 'PUT',
             headers: {
-                \\"content-type\\": \\"\\",
-                \\"content-length\\": responseBody.length
-            }
+                'content-type': '',
+                'content-length': responseBody.length,
+            },
         };
         const request = https.request(options, (r) => {
             log({ statusCode: r.statusCode, statusMessage: r.statusMessage });
             context.done();
         });
-        request.on(\\"error\\", (error) => {
+        request.on('error', (error) => {
             log({ sendError: error });
             context.done();
         });
@@ -175,12 +175,12 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
-    "LambdaFunctionAllowBucketNotificationsFromS3Bucket25B4F189": Object {
+    "tests3lambdaLambdaFunctionAllowBucketNotificationsFromtests3lambdaS3Bucket9453157137836A69": Object {
       "Properties": Object {
         "Action": "lambda:InvokeFunction",
         "FunctionName": Object {
           "Fn::GetAtt": Array [
-            "LambdaFunctionBF21E41F",
+            "tests3lambdaLambdaFunctionB56B7023",
             "Arn",
           ],
         },
@@ -190,16 +190,16 @@ Object {
         },
         "SourceArn": Object {
           "Fn::GetAtt": Array [
-            "S3Bucket07682993",
+            "tests3lambdaS3BucketBE7C1B8E",
             "Arn",
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "LambdaFunctionBF21E41F": Object {
+    "tests3lambdaLambdaFunctionB56B7023": Object {
       "DependsOn": Array [
-        "LambdaFunctionServiceRole0C4CDE0B",
+        "tests3lambdaLambdaFunctionServiceRoleA74F4427",
       ],
       "Metadata": Object {
         "cfn_nag": Object {
@@ -258,7 +258,7 @@ Object {
         "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "LambdaFunctionServiceRole0C4CDE0B",
+            "tests3lambdaLambdaFunctionServiceRoleA74F4427",
             "Arn",
           ],
         },
@@ -266,7 +266,7 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "LambdaFunctionServiceRole0C4CDE0B": Object {
+    "tests3lambdaLambdaFunctionServiceRoleA74F4427": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -317,7 +317,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "S3Bucket07682993": Object {
+    "tests3lambdaS3BucketBE7C1B8E": Object {
       "DeletionPolicy": "Retain",
       "Metadata": Object {
         "cfn_nag": Object {
@@ -341,7 +341,7 @@ Object {
         },
         "LoggingConfiguration": Object {
           "DestinationBucketName": Object {
-            "Ref": "S3LoggingBucket800A2B27",
+            "Ref": "tests3lambdaS3LoggingBucket0C3BBFDC",
           },
         },
         "PublicAccessBlockConfiguration": Object {
@@ -357,13 +357,13 @@ Object {
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
     },
-    "S3BucketNotifications58B5AD06": Object {
+    "tests3lambdaS3BucketNotifications1943E9B3": Object {
       "DependsOn": Array [
-        "LambdaFunctionAllowBucketNotificationsFromS3Bucket25B4F189",
+        "tests3lambdaLambdaFunctionAllowBucketNotificationsFromtests3lambdaS3Bucket9453157137836A69",
       ],
       "Properties": Object {
         "BucketName": Object {
-          "Ref": "S3Bucket07682993",
+          "Ref": "tests3lambdaS3BucketBE7C1B8E",
         },
         "NotificationConfiguration": Object {
           "LambdaFunctionConfigurations": Array [
@@ -373,7 +373,7 @@ Object {
               ],
               "LambdaFunctionArn": Object {
                 "Fn::GetAtt": Array [
-                  "LambdaFunctionBF21E41F",
+                  "tests3lambdaLambdaFunctionB56B7023",
                   "Arn",
                 ],
               },
@@ -389,7 +389,7 @@ Object {
       },
       "Type": "Custom::S3BucketNotifications",
     },
-    "S3LoggingBucket800A2B27": Object {
+    "tests3lambdaS3LoggingBucket0C3BBFDC": Object {
       "DeletionPolicy": "Retain",
       "Metadata": Object {
         "cfn_nag": Object {
