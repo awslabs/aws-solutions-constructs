@@ -1,0 +1,122 @@
+{
+  "name": "@aws-solutions-constructs/core",
+  "version": "1.46.0",
+  "description": "Core CDK Construct for patterns library",
+  "main": "index.js",
+  "types": "index.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/awslabs/aws-solutions-constructs.git",
+    "directory": "source/patterns/@aws-solutions-constructs/core"
+  },
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com",
+    "organization": true
+  },
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc -b .",
+    "lint": "eslint -c ../eslintrc.yml --ext=.js,.ts . && tslint --project .",
+    "lint-fix": "eslint -c ../eslintrc.yml --ext=.js,.ts --fix .",
+    "test": "jest --coverage",
+    "clean": "tsc -b --clean",
+    "watch": "tsc -b -w",
+    "integ": "cdk-integ",
+    "integ-assert": "cdk-integ-assert",
+    "jsii": "jsii",
+    "jsii-pacmak": "jsii-pacmak",
+    "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
+    "snapshot-update": "npm test -- -u"
+  },
+  "jsii": {
+    "outdir": "dist",
+    "targets": {
+      "java": {
+        "package": "software.amazon.awsconstructs.services.core",
+        "maven": {
+          "groupId": "software.amazon.awsconstructs",
+          "artifactId": "core"
+        }
+      },
+      "dotnet": {
+        "namespace": "Amazon.Constructs",
+        "packageId": "Amazon.Constructs",
+        "signAssembly": true,
+        "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
+      },
+      "python": {
+        "distName": "aws-solutions-constructs.core",
+        "module": "aws_solutions_constructs.core"
+      }
+    }
+  },
+  "dependencies": {
+    "@aws-cdk/aws-cloudfront": "~1.46.0",
+    "@aws-cdk/aws-dynamodb": "~1.46.0",
+    "@aws-cdk/aws-iot": "~1.46.0",
+    "@aws-cdk/aws-kinesis": "~1.46.0",
+    "@aws-cdk/aws-kinesisanalytics": "~1.46.0",
+    "@aws-cdk/aws-kinesisfirehose": "~1.46.0",
+    "@aws-cdk/aws-lambda": "~1.46.0",
+    "@aws-cdk/aws-lambda-event-sources": "~1.46.0",
+    "@aws-cdk/aws-logs": "~1.46.0",
+    "@aws-cdk/aws-s3": "~1.46.0",
+    "@aws-cdk/aws-sns": "~1.46.0",
+    "@aws-cdk/aws-sqs": "~1.46.0",
+    "@aws-cdk/core": "~1.46.0",
+    "@aws-cdk/aws-iam": "~1.46.0",
+    "@aws-cdk/aws-apigateway": "~1.46.0",
+    "@aws-cdk/aws-kms": "~1.46.0",
+    "@aws-cdk/aws-events": "~1.46.0",
+    "@aws-cdk/aws-cognito": "~1.46.0",
+    "@aws-cdk/aws-elasticsearch": "~1.46.0",
+    "@aws-cdk/aws-cloudwatch": "~1.46.0",
+    "@aws-cdk/aws-stepfunctions": "~1.46.0",
+    "@types/deep-diff": "^1.0.0",
+    "@types/npmlog": "^4.1.2",
+    "deep-diff": "^1.0.2",
+    "deepmerge": "^4.0.0",
+    "npmlog": "^4.1.2"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "~1.46.0",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^10.3.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ]
+  },
+  "bundledDependencies": [
+    "deepmerge",
+    "npmlog",
+    "@types/npmlog",
+    "deep-diff",
+    "@types/deep-diff"
+  ],
+  "peerDependencies": {
+    "@aws-cdk/aws-cloudfront": "~1.46.0",
+    "@aws-cdk/aws-dynamodb": "~1.46.0",
+    "@aws-cdk/aws-iot": "~1.46.0",
+    "@aws-cdk/aws-kinesis": "~1.46.0",
+    "@aws-cdk/aws-kinesisanalytics": "~1.46.0",
+    "@aws-cdk/aws-kinesisfirehose": "~1.46.0",
+    "@aws-cdk/aws-lambda": "~1.46.0",
+    "@aws-cdk/aws-lambda-event-sources": "~1.46.0",
+    "@aws-cdk/aws-logs": "~1.46.0",
+    "@aws-cdk/aws-s3": "~1.46.0",
+    "@aws-cdk/aws-sns": "~1.46.0",
+    "@aws-cdk/aws-sqs": "~1.46.0",
+    "@aws-cdk/core": "~1.46.0",
+    "@aws-cdk/aws-iam": "~1.46.0",
+    "@aws-cdk/aws-apigateway": "~1.46.0",
+    "@aws-cdk/aws-kms": "~1.46.0",
+    "@aws-cdk/aws-events": "~1.46.0",
+    "@aws-cdk/aws-cognito": "~1.46.0",
+    "@aws-cdk/aws-elasticsearch": "~1.46.0",
+    "@aws-cdk/aws-cloudwatch": "~1.46.0",
+    "@aws-cdk/aws-stepfunctions": "~1.46.0"
+  }
+}

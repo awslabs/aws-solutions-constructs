@@ -11,7 +11,7 @@ information to effectively respond to your bug report or contribution.
 
 We welcome you to use the GitHub issue tracker to report bugs or suggest features.
 
-When filing an issue, please check [existing open](https://github.com/awslabs/aws-solutions-konstruk/issues), or [recently closed](https://github.com/awslabs/aws-solutions-konstruk/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aclosed%20), issues to make sure somebody else hasn't already
+When filing an issue, please check [existing open](https://github.com/awslabs/aws-solutions-constructs/issues), or [recently closed](https://github.com/awslabs/aws-solutions-constructs/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aclosed%20), issues to make sure somebody else hasn't already
 reported the issue. Please try to include as much information as you can. Details like these are incredibly useful:
 
 * A reproducible test case or series of steps
@@ -21,28 +21,171 @@ reported the issue. Please try to include as much information as you can. Detail
 
 
 ## Contributing via Pull Requests
-Contributions via pull requests are much appreciated. Before sending us a pull request, please ensure that:
 
-1. You are working against the latest source on the *master* branch.
-2. You check existing open, and recently merged, pull requests to make sure someone else hasn't addressed the problem already.
-3. You open an issue to discuss any significant work - we would hate for your time to be wasted.
+### Pull Request Checklist
 
-To send us a pull request, please:
+* [ ] Testing
+  - Unit test added (prefer not to modify an existing test, otherwise, it's probably a breaking change)
+  - Integration test added (if adding a new pattern or making a significant update to an existing pattern)
+* [ ] Docs
+  - __README__: README and/or documentation topic updated
+  - __Design__: For significant features, design document added to `design` folder
+* [ ] Title and Description
+  - __Change type__: title prefixed with **fix**, **feat** and module name in parens, which will appear in changelog
+  - __Title__: use lower-case and doesn't end with a period
+  - __Breaking?__: last paragraph: "BREAKING CHANGE: <describe what changed + link for details>"
+  - __Issues__: Indicate issues fixed via: "**Fixes #xxx**" or "**Closes #xxx**"
 
-1. Fork the repository.
-2. Modify the source; please focus on the specific change you are contributing. If you also reformat all the code, it will be hard for us to focus on your change.
-3. Ensure local tests pass.
-4. Commit to your fork using clear commit messages.
-5. Send us a pull request, answering any default questions in the pull request interface.
-6. Pay attention to any automated CI failures reported in the pull request, and stay involved in the conversation.
+---
+
+### Step 1: Open Issue
+
+If there isn't one already, open an issue describing what you intend to contribute. It's useful to communicate in
+advance, because sometimes, someone is already working in this space, so maybe it's worth collaborating with them
+instead of duplicating the efforts.
+
+### Step 2: Design (optional)
+
+In some cases, it is useful to seek for feedback by iterating on a design document. This is useful
+when you plan a big change or feature, or you want advice on what would be the best path forward.
+
+Sometimes, the GitHub issue is sufficient for such discussions, and can be sufficient to get
+clarity on what you plan to do. Sometimes, a design document would work better, so people can provide
+iterative feedback.
+
+In such cases, use the GitHub issue description to collect **requirements** and
+**use cases** for your feature.
+
+Then, create a design document in markdown format under the `design/` directory
+and request feedback through a pull request. 
+
+Once the design is finalized, you can re-purpose this PR for the implementation,
+or open a new PR to that end.
+
+### Step 3: Work your Magic
+
+Work your magic. Here are some guidelines:
+
+* Coding style (abbreviated):
+  * In general, follow the style of the code around you
+  * 2 space indentation
+  * 120 characters wide
+  * ATX style headings in markdown (e.g. `## H2 heading`)
+* Every change requires a unit test
+* If you change APIs, make sure to update the module's README file
+* Try to maintain a single feature/bugfix per pull request. It's okay to introduce a little bit of housekeeping
+   changes along the way, but try to avoid conflating multiple features. Eventually all these are going to go into a
+   single commit, so you can use that to frame your scope.
+* If your change introduces a new construct, take a look at the our
+  [aws-apigateway-lambd Construct](https://github.com/awslabs/aws-solutions-constructs/tree/master/source/patterns/%40aws-solutions-constructs/aws-apigateway-lambda) for an explanation of the L3 patterns we use.
+  Feel free to start your contribution by copy&pasting files from that project,
+  and then edit and rename them as appropriate -
+  it might be easier to get started that way.
+
+#### Integration Tests
+
+Integration tests perform a few functions in the CDK code base -
+1. Acts as a regression detector. It does this by running `cdk synth` on the integration test and comparing it against
+   the `*.expected.json` file. This highlights how a change affects the synthesized stacks.
+2. Allows for a way to verify if the stacks are still valid CloudFormation templates, as part of an intrusive change.
+   This is done by running `yarn integ` which will run `cdk deploy` across all of the integration tests in that package.
+   Remember to set up AWS credentials before doing this.
+3. (Optionally) Acts as a way to validate that constructs set up the CloudFormation resources as expected. A successful
+   CloudFormation deployment does not mean that the resources are set up correctly.
+
+If you are working on a new feature that is using previously unused CloudFormation resource types, or involves
+configuring resource types across services, you need to write integration tests that use these resource types or
+features.
+
+To the extent possible, include a section (like below) in the integration test file that specifies how the successfully
+deployed stack can be verified for correctness. Correctness here implies that the resources have been set up correctly.
+The steps here are usually AWS CLI commands but they need not be.
+
+```ts
+/*
+ * Stack verification steps:
+ * * <step-1>
+ * * <step-2>
+ */
+```
+
+Examples:
+* [integ.deployFunction.ts](https://github.com/awslabs/aws-solutions-constructs/blob/master/source/patterns/%40aws-solutions-constructs/aws-apigateway-lambda/test/integ.deployFunction.ts)
+* [integ.existingFunction.ts](https://github.com/awslabs/aws-solutions-constructs/blob/master/source/patterns/%40aws-solutions-constructs/aws-apigateway-lambda/test/integ.existingFunction.ts)
+
+### Step 4: Commit
+
+Create a commit with the proposed changes:
+
+* Commit title and message (and PR title and description) must adhere to [conventionalcommits](https://www.conventionalcommits.org).
+  * The title must begin with `feat(module): title`, `fix(module): title`, `refactor(module): title` or
+    `chore(module): title`.
+  * Title should be lowercase.
+  * No period at the end of the title.
+
+* Commit message should describe _motivation_. Think about your code reviewers and what information they need in
+  order to understand what you did. If it's a big commit (hopefully not), try to provide some good entry points so
+  it will be easier to follow.
+
+* Commit message should indicate which issues are fixed: `fixes #<issue>` or `closes #<issue>`.
+
+* Shout out to collaborators.
+
+* If not obvious (i.e. from unit tests), describe how you verified that your change works.
+
+* If this commit includes breaking changes, they must be listed at the end in the following format (notice how multiple breaking changes should be formatted):
+
+```
+BREAKING CHANGE: Description of what broke and how to achieve this behavior now
+* **module-name:** Another breaking change
+* **module-name:** Yet another breaking change
+```
+
+### Step 5: Pull Request
+
+* Push to a GitHub fork or to a branch (naming convention: `<user>/<feature-bug-name>`)
+* Submit a Pull Requests on GitHub.
+* Please follow the PR checklist written below. We trust our contributors to self-check, and this helps that process!
+* Discuss review comments and iterate until you get at least one “Approve”. When iterating, push new commits to the
+  same branch. Usually all these are going to be squashed when you merge to master. The commit messages should be hints
+  for you when you finalize your merge commit message.
+* Make sure to update the PR title/description if things change. The PR title/description are going to be used as the
+  commit title/message and will appear in the CHANGELOG, so maintain them all the way throughout the process.
+
+
+
+### Step 6: Merge
+
+* Make sure your PR builds successfully (we have CodeBuild setup to automatically build all PRs)
+* Once approved and tested, a maintainer will squash-merge to master and will use your PR title/description as the
+  commit message.
 
 GitHub provides additional document on [forking a repository](https://help.github.com/articles/fork-a-repo/) and
 [creating a pull request](https://help.github.com/articles/creating-a-pull-request/).
 
+## Building Pattern(s)
 
-## Finding contributions to work on
-Looking at the existing issues is a great way to find something to contribute on. As our projects, by default, use the default GitHub issue labels ((enhancement/bug/duplicate/help wanted/invalid/question/wontfix), looking at any ['help wanted'](https://github.com/awslabs/aws-solutions-konstruk/labels/help%20wanted) issues is a great place to start.
+### Full Build
 
+```console
+$ cd <root-of-aws-solutions-constructs-repo>
+$ docker run --rm --net=host -it -v $PWD:$PWD -w $PWD jsii/superchain
+docker$ cd deployment
+docker$ ./build-patterns.sh
+docker$ exit
+```
+
+### Partial Build
+
+First run a clean Full Build before doing the partial build.
+
+```console
+$ cd <root-of-aws-solutions-constructs-repo>
+$ docker run --rm --net=host -it -v $PWD:$PWD -w $PWD jsii/superchain
+docker$ cd source/patterns/@aws-solutions-constructs/my-module
+docker$ npm run build+lint+test
+docker$ exit
+```
 
 ## Code of Conduct
 This project has adopted the [Amazon Open Source Code of Conduct](https://aws.github.io/code-of-conduct).
@@ -56,6 +199,6 @@ If you discover a potential security issue in this project we ask that you notif
 
 ## Licensing
 
-See the [LICENSE](https://github.com/awslabs/aws-solutions-konstruk/blob/master/LICENSE) file for our project's licensing. We will ask you to confirm the licensing of your contribution.
+See the [LICENSE](https://github.com/awslabs/aws-solutions-constructs/blob/master/LICENSE) file for our project's licensing. We will ask you to confirm the licensing of your contribution.
 
 We may ask you to sign a [Contributor License Agreement (CLA)](http://en.wikipedia.org/wiki/Contributor_License_Agreement) for larger changes.

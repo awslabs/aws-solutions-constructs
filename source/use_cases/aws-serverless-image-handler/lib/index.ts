@@ -12,15 +12,15 @@
  */
 
 // Imports
-import * as defaults from '@aws-solutions-konstruk/core';
+import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
 import * as cloudFront from '@aws-cdk/aws-cloudfront';
 import * as apiGateway from '@aws-cdk/aws-apigateway';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as iam from '@aws-cdk/aws-iam';
 import * as s3 from '@aws-cdk/aws-s3';
-import { CloudFrontToApiGatewayToLambda } from '@aws-solutions-konstruk/aws-cloudfront-apigateway-lambda';
-import { LambdaToS3 } from '@aws-solutions-konstruk/aws-lambda-s3';
+import { CloudFrontToApiGatewayToLambda } from '@aws-solutions-constructs/aws-cloudfront-apigateway-lambda';
+import { LambdaToS3 } from '@aws-solutions-constructs/aws-lambda-s3';
 
 /**
  * The properties for the ServerlessImageHandler class.
@@ -151,7 +151,7 @@ export class ServerlessImageHandler extends Construct {
             deployLambda: true,
             lambdaFunctionProps: functionProps
         });
-        const existingLambdaFn = this.cloudFrontApiGatewayLambda.lambdaFunction();
+        const existingLambdaFn = this.cloudFrontApiGatewayLambda.lambdaFunction;
 
         // Build the LambdaToS3 pattern
         this.lambdaS3 = new LambdaToS3(this, 'ExistingLambdaS3', {
@@ -196,9 +196,9 @@ export class ServerlessImageHandler extends Construct {
 
         // Add the SOURCE_BUCKETS environment variable to the Lambda function
         const bucketsArr = (props.sourceBuckets !== "") ? props.sourceBuckets.split(',') : [];
-        bucketsArr.push(this.lambdaS3.s3Bucket().bucketName);
+        bucketsArr.push(this.lambdaS3.s3Bucket.bucketName);
         const bucketsStr = bucketsArr.toString().replace(/\s+/g, '');
-        this.cloudFrontApiGatewayLambda.lambdaFunction().addEnvironment("SOURCE_BUCKETS", bucketsStr);
+        this.cloudFrontApiGatewayLambda.lambdaFunction.addEnvironment("SOURCE_BUCKETS", bucketsStr);
     }
 
     /**
@@ -208,7 +208,7 @@ export class ServerlessImageHandler extends Construct {
      * @access public
      */
     public cloudFrontDistribution(): cloudFront.CloudFrontWebDistribution {
-        return this.cloudFrontApiGatewayLambda.cloudFrontWebDistribution();
+        return this.cloudFrontApiGatewayLambda.cloudFrontWebDistribution;
     }
 
     /**
@@ -218,7 +218,7 @@ export class ServerlessImageHandler extends Construct {
      * @access public
      */
     public apiGateway(): apiGateway.RestApi {
-        return this.cloudFrontApiGatewayLambda.restApi();
+        return this.cloudFrontApiGatewayLambda.apiGateway;
     }
 
     /**
@@ -228,7 +228,7 @@ export class ServerlessImageHandler extends Construct {
      * @access public
      */
     public lambdaFunction(): lambda.Function {
-        return this.cloudFrontApiGatewayLambda.lambdaFunction();
+        return this.cloudFrontApiGatewayLambda.lambdaFunction;
     }
 
     /**
@@ -238,6 +238,6 @@ export class ServerlessImageHandler extends Construct {
      * @access public
      */
     public s3Bucket(): s3.Bucket {
-        return this.lambdaS3.s3Bucket();
+        return this.lambdaS3.s3Bucket;
     }
 }

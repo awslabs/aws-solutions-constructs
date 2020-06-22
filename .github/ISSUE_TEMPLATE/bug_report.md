@@ -33,7 +33,7 @@ what is the error message you are seeing?
 
   - **CDK CLI Version      :**
   - **CDK Framework Version:**
-  - **Konstruk Version     :**
+  - **AWS Solutions Constructs Version     :**
   - **OS                   :**
   - **Language             :**
 

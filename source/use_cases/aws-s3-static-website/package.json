@@ -1,12 +1,12 @@
 {
-  "name": "@aws-solutions-konstruk/aws-s3-static-website",
-  "version": "0.8.1",
+  "name": "@aws-solutions-constructs/aws-s3-static-website",
+  "version": "1.46.0",
   "description": "Use case pattern for deploying a S3 static website.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/awslabs/aws-solutions-konstruk.git",
+    "url": "https://github.com/awslabs/aws-solutions-constructs.git",
     "directory": "source/use_cases/aws-s3-static-website"
   },
   "author": {
@@ -28,19 +28,19 @@
     "build+lint+test": "npm run build && npm run lint && npm test && npm run integ-assert"
   },
   "dependencies": {
-    "@aws-solutions-konstruk/aws-cloudfront-s3": "~0.8.1",
-    "@aws-cdk/core": "~1.40.0",
-    "@aws-cdk/aws-lambda": "~1.40.0",
-    "@aws-cdk/aws-cloudfront": "~1.40.0",
-    "@aws-cdk/aws-s3": "~1.40.0",
-    "@aws-cdk/custom-resources": "~1.40.0",
-    "@aws-cdk/aws-cloudformation": "~1.40.0",
-    "@aws-cdk/aws-iam": "~1.40.0",
-    "@aws-solutions-konstruk/core": "~0.8.1",
+    "@aws-solutions-constructs/aws-cloudfront-s3": "~1.46.0",
+    "@aws-cdk/core": "~1.46.0",
+    "@aws-cdk/aws-lambda": "~1.46.0",
+    "@aws-cdk/aws-cloudfront": "~1.46.0",
+    "@aws-cdk/aws-s3": "~1.46.0",
+    "@aws-cdk/custom-resources": "~1.46.0",
+    "@aws-cdk/aws-cloudformation": "~1.46.0",
+    "@aws-cdk/aws-iam": "~1.46.0",
+    "@aws-solutions-constructs/core": "~1.46.0",
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "~1.40.0",
+    "@aws-cdk/assert": "~1.46.0",
     "@types/jest": "^24.0.23",
     "@types/node": "^10.3.0"
   },

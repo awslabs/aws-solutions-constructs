@@ -7,7 +7,7 @@ one or more Amazon S3 buckets within the deployment account.
 Here is a minimal deployable pattern definition:
 
 ```
-const { ServerlessImageHandler } = require('@aws-konstruk/aws-serverless-image-handler');
+const { ServerlessImageHandler } = require('@aws-solutions-constructs/aws-serverless-image-handler');
 
 new ServerlessImageHandler(stack, 'ServerlessImageHandlerPattern', {
     deployLambda: true,

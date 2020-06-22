@@ -1,0 +1,83 @@
+{
+  "name": "@aws-solutions-constructs/aws-kinesisstreams-lambda",
+  "version": "1.46.0",
+  "description": "CDK constructs for defining an interaction between an Amazon Kinesis Data Stream and an AWS Lambda function.",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/awslabs/aws-solutions-constructs.git",
+    "directory": "source/patterns/@aws-solutions-constructs/aws-kinesisstreams-lambda"
+  },
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com",
+    "organization": true
+  },
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc -b .",
+    "lint": "eslint -c ../eslintrc.yml --ext=.js,.ts . && tslint --project .",
+    "lint-fix": "eslint -c ../eslintrc.yml --ext=.js,.ts --fix .",
+    "test": "jest --coverage",
+    "clean": "tsc -b --clean",
+    "watch": "tsc -b -w",
+    "integ": "cdk-integ",
+    "integ-no-clean": "cdk-integ --no-clean",
+    "integ-assert": "cdk-integ-assert",
+    "jsii": "jsii",
+    "jsii-pacmak": "jsii-pacmak",
+    "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
+    "snapshot-update": "npm run jsii && npm test -- -u && npm run integ-assert"
+  },
+  "jsii": {
+    "outdir": "dist",
+    "targets": {
+      "java": {
+        "package": "software.amazon.awsconstructs.services.kinesisstreamslambda",
+        "maven": {
+          "groupId": "software.amazon.awsconstructs",
+          "artifactId": "kinesisstreamslambda"
+        }
+      },
+      "dotnet": {
+        "namespace": "Amazon.Constructs.AWS.KinesisStreamsLambda",
+        "packageId": "Amazon.Constructs.AWS.KinesisStreamsLambda",
+        "signAssembly": true,
+        "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
+      },
+      "python": {
+        "distName": "aws-solutions-constructs.aws-kinesis-streams-lambda",
+        "module": "aws_solutions_constructs.aws_kinesis_streams_lambda"
+      }
+    }
+  },
+  "dependencies": {
+    "@aws-cdk/aws-iam": "~1.46.0",
+    "@aws-cdk/aws-kinesis": "~1.46.0",
+    "@aws-cdk/aws-kms": "~1.46.0",
+    "@aws-cdk/aws-lambda": "~1.46.0",
+    "@aws-cdk/core": "~1.46.0",
+    "@aws-solutions-constructs/core": "~1.46.0",
+    "constructs": "^3.0.2"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "~1.46.0",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^10.3.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ]
+  },
+  "peerDependencies": {
+    "@aws-cdk/aws-iam": "~1.46.0",
+    "@aws-cdk/aws-kinesis": "~1.46.0",
+    "@aws-cdk/aws-kms": "~1.46.0",
+    "@aws-cdk/aws-lambda": "~1.46.0",
+    "@aws-cdk/core": "~1.46.0",
+    "@aws-solutions-constructs/core": "~1.46.0",
+    "constructs": "^3.0.2"
+  }
+}

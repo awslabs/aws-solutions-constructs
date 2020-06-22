@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import { CognitoToApiGatewayToLambda } from '@aws-solutions-konstruk/aws-cognito-apigateway-lambda';
-import { LambdaToDynamoDB } from '@aws-solutions-konstruk/aws-lambda-dynamodb';
+import { CognitoToApiGatewayToLambda } from '@aws-solutions-constructs/aws-cognito-apigateway-lambda';
+import { LambdaToDynamoDB } from '@aws-solutions-constructs/aws-lambda-dynamodb';
 import { Construct, Stack, StackProps, Duration, Fn } from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
 import { Provider } from '@aws-cdk/custom-resources';
@@ -27,7 +27,7 @@ export class ServerlessBackendStack extends Stack {
 
     const websiteBucketName: string = Fn.importValue('websiteBucket');
 
-    const konstruk = new CognitoToApiGatewayToLambda(this, 'CognitoToApiGatewayToLambda', {
+    const construct = new CognitoToApiGatewayToLambda(this, 'CognitoToApiGatewayToLambda', {
       deployLambda: true,
       lambdaFunctionProps: {
         code: lambda.Code.asset(`${__dirname}/lambda/business-logic`),
@@ -68,17 +68,17 @@ export class ServerlessBackendStack extends Stack {
     new CustomResource(this, 'CustomResource', {
       provider: customResourceProvider,
       properties: {
-        UserPool: konstruk.userPool().userPoolId,
-        Client: konstruk.userPoolClient().userPoolClientId,
+        UserPool: construct.userPool.userPoolId,
+        Client: construct.userPoolClient.userPoolClientId,
         Region: Stack.of(this).region,
         Bucket: websiteBucketName,
-        RestApi: konstruk.restApi().url
+        RestApi: construct.apiGateway.url
       }
     });
 
     new LambdaToDynamoDB(this, 'LambdaToDynamoDB', {
       deployLambda: false,
-      existingLambdaObj: konstruk.lambdaFunction(),
+      existingLambdaObj: construct.lambdaFunction,
       dynamoTableProps: {
         tableName: 'Rides',
         partitionKey: {

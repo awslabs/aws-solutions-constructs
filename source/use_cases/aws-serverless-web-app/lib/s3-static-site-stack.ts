@@ -12,7 +12,7 @@
  */
 
 import { Construct, Stack, StackProps, Duration, CfnOutput } from '@aws-cdk/core';
-import { CloudFrontToS3 } from '@aws-solutions-konstruk/aws-cloudfront-s3';
+import { CloudFrontToS3 } from '@aws-solutions-constructs/aws-cloudfront-s3';
 import * as lambda from '@aws-cdk/aws-lambda';
 import { Provider } from '@aws-cdk/custom-resources';
 import { CustomResource } from '@aws-cdk/aws-cloudformation';
@@ -25,10 +25,10 @@ export class S3StaticWebsiteStack extends Stack {
     const sourceBucket: string = 'wildrydes-us-east-1';
     const sourcePrefix: string = 'WebApplication/1_StaticWebHosting/website/';
 
-    const konstruk = new CloudFrontToS3(this, 'CloudFrontToS3', {
+    const construct = new CloudFrontToS3(this, 'CloudFrontToS3', {
       deployBucket: true
     });
-    const targetBucket: string = konstruk.bucket().bucketName;
+    const targetBucket: string = construct.s3Bucket.bucketName;
 
     const lambdaFunc = new lambda.Function(this, 'staticContentHandler', {
       runtime: lambda.Runtime.PYTHON_3_8,
@@ -71,7 +71,7 @@ export class S3StaticWebsiteStack extends Stack {
     });
 
     new CfnOutput(this, 'websiteURL', {
-      value: 'https://' + konstruk.cloudFrontWebDistribution().domainName
+      value: 'https://' + construct.cloudFrontWebDistribution.domainName
     });
 
     new CfnOutput(this, 'websiteBucket', {

@@ -1,0 +1,100 @@
+# aws-cloudfront-apigateway-lambda module
+<!--BEGIN STABILITY BANNER-->
+
+---
+
+![Stability: Experimental](https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge)
+
+> All classes are under active development and subject to non-backward compatible changes or removal in any
+> future version. These are not subject to the [Semantic Versioning](https://semver.org/) model.
+> This means that while you may use them, you may need to update your source code when upgrading to a newer version of this package.
+
+---
+<!--END STABILITY BANNER-->
+
+| **Reference Documentation**:| <span style="font-weight: normal">https://docs.aws.amazon.com/solutions/latest/constructs/</span>|
+|:-------------|:-------------|
+<div style="height:8px"></div>
+
+| **Language**     | **Package**        |
+|:-------------|-----------------|
+|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_cloudfront_apigateway_lambda`|
+|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-cloudfront-apigateway-lambda`|
+|![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.cloudfrontapigatewaylambda`|
+
+This AWS Solutions Construct implements an AWS CloudFront fronting an Amazon API Gateway Lambda backed REST API.
+
+Here is a minimal deployable pattern definition:
+
+``` javascript
+import * as defaults from '@aws-solutions-constructs/core';
+import { CloudFrontToApiGatewayToLambda } from '@aws-solutions-constructs/aws-cloudfront-apigateway-lambda';
+
+const stack = new Stack();
+
+const lambdaProps: lambda.FunctionProps = {
+    code: lambda.Code.asset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler'
+};
+
+new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
+    lambdaFunctionProps: lambdaProps,
+    deployLambda: true
+});
+```
+
+## Initializer
+
+``` text
+new CloudFrontToApiGatewayToLambda(scope: Construct, id: string, props: CloudFrontToApiGatewayToLambdaProps);
+```
+
+_Parameters_
+
+* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
+* id `string`
+* props [`CloudFrontToApiGatewayToLambdaProps`](#pattern-construct-props)
+
+## Pattern Construct Props
+
+| **Name**     | **Type**        | **Description** |
+|:-------------|:----------------|-----------------|
+|deployLambda|`boolean`|Whether to create a new Lambda function or use an existing Lambda function|
+|existingLambdaObj?|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)|Existing instance of Lambda Function object|
+|lambdaFunctionProps?|[`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.FunctionProps.html)|Optional user provided props to override the default props for Lambda function|
+|apiGatewayProps?|[`api.LambdaRestApiProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.LambdaRestApiProps.html)|Optional user provided props to override the default props for API Gateway|
+|cloudFrontDistributionProps?|[`cloudfront.CloudFrontWebDistributionProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudfront.CloudFrontWebDistributionProps.html)|Optional user provided props to override the default props for CloudFront Distribution|
+|insertHttpSecurityHeaders?|`boolean`|Optional user provided props to turn on/off the automatic injection of best practice HTTP security headers in all responses from CloudFront|
+
+## Pattern Properties
+
+| **Name**     | **Type**        | **Description** |
+|:-------------|:----------------|-----------------|
+|cloudFrontWebDistribution|[`cloudfront.CloudFrontWebDistribution`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudfront.CloudFrontWebDistribution.html)|Returns an instance of cloudfront.CloudFrontWebDistribution created by the construct|
+|lambdaFunction|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)|Returns an instance of the Lambda function created by the pattern.|
+|apiGateway|[`api.RestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.RestApi.html)|Returns an instance of the API Gateway REST API created by the pattern.|
+
+## Default settings
+
+Out of the box implementation of the Construct without any override will set the following defaults:
+
+### Amazon CloudFront
+* Configure Access logging for CloudFront WebDistribution
+* Enable automatic injection of best practice HTTP security headers in all responses from CloudFront WebDistribution
+
+### Amazon API Gateway
+* Deploy a regional API endpoint
+* Enable CloudWatch logging for API Gateway
+* Configure least privilege access IAM role for API Gateway
+* Set the default authorizationType for all API methods to IAM
+
+### AWS Lambda Function
+* Configure least privilege access IAM role for Lambda function
+* Enable reusing connections with Keep-Alive for NodeJs Lambda function
+
+## Architecture
+![Architecture Diagram](architecture.png)
+
+***
+&copy; Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.

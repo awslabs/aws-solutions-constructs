@@ -1,13 +1,13 @@
 {
-  "name": "@aws-konstruk/aws-serverless-image-handler",
-  "version": "0.8.1",
+  "name": "@aws-solutions-constructs/aws-serverless-image-handler",
+  "version": "1.46.0",
   "description": "Use case pattern for deploying a serverless image handler API.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/awslabs/aws-konstruk.git",
-    "directory": "source/patterns/@aws-konstruk/aws-serverless-image-handler"
+    "url": "https://github.com/awslabs/aws-solutions-constructs.git",
+    "directory": "source/patterns/@aws-solutions-constructs/aws-serverless-image-handler"
   },
   "author": {
     "name": "Amazon Web Services",
@@ -34,37 +34,37 @@
     "outdir": "dist",
     "targets": {
       "java": {
-        "package": "software.amazon.konstruk.services.serverlessimagehandler",
+        "package": "software.amazon.awsconstructs.services.serverlessimagehandler",
         "maven": {
-          "groupId": "software.amazon.konstruk",
+          "groupId": "software.amazon.awsconstructs",
           "artifactId": "serverlessimagehandler"
         }
       },
       "dotnet": {
-        "namespace": "Amazon.Konstruk.AWS.ServerlessImageHandler",
-        "packageId": "Amazon.Konstruk.AWS.ServerlessImageHandler",
+        "namespace": "Amazon.Constructs.AWS.ServerlessImageHandler",
+        "packageId": "Amazon.Constructs.AWS.ServerlessImageHandler",
         "signAssembly": true,
         "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
       },
       "python": {
-        "distName": "aws-konstruk.aws-serverless-image-handler",
-        "module": "aws_konstruk.aws_serverless_image_handler"
+        "distName": "aws-solutions-constructs.aws-serverless-image-handler",
+        "module": "aws_solutions_constructs.aws_serverless_image_handler"
       }
     }
   },
   "dependencies": {
-    "@aws-cdk/aws-apigateway": "~1.40.0",
-    "@aws-cdk/aws-cloudfront": "~1.40.0",
-    "@aws-cdk/aws-iam": "~1.40.0",
-    "@aws-cdk/aws-lambda": "~1.40.0",
-    "@aws-cdk/aws-s3": "~1.40.0",
-    "@aws-cdk/core": "~1.40.0",
-    "@aws-solutions-konstruk/aws-cloudfront-apigateway-lambda": "~0.8.1",
-    "@aws-solutions-konstruk/aws-lambda-s3": "~0.8.1",
-    "@aws-solutions-konstruk/core": "~0.8.1"
+    "@aws-cdk/aws-apigateway": "~1.46.0",
+    "@aws-cdk/aws-cloudfront": "~1.46.0",
+    "@aws-cdk/aws-iam": "~1.46.0",
+    "@aws-cdk/aws-lambda": "~1.46.0",
+    "@aws-cdk/aws-s3": "~1.46.0",
+    "@aws-cdk/core": "~1.46.0",
+    "@aws-solutions-constructs/aws-cloudfront-apigateway-lambda": "~1.46.0",
+    "@aws-solutions-constructs/aws-lambda-s3": "~1.46.0",
+    "@aws-solutions-constructs/core": "~1.46.0"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "~1.40.0",
+    "@aws-cdk/assert": "~1.46.0",
     "@types/jest": "^24.0.23",
     "@types/node": "^10.3.0"
   },
@@ -74,14 +74,14 @@
     ]
   },
   "peerDependencies": {
-    "@aws-solutions-konstruk/aws-cloudfront-apigateway-lambda": "~0.8.1",
-    "@aws-solutions-konstruk/aws-lambda-s3": "~0.8.1",
-    "@aws-cdk/core": "~1.40.0",
-    "@aws-cdk/aws-lambda": "~1.40.0",
-    "@aws-cdk/aws-apigateway": "~1.40.0",
-    "@aws-cdk/aws-cloudfront": "~1.40.0",
-    "@aws-cdk/aws-s3": "~1.40.0",
-    "@aws-solutions-konstruk/core": "~0.8.1",
-    "@aws-cdk/aws-iam": "~1.40.0"
+    "@aws-solutions-constructs/aws-cloudfront-apigateway-lambda": "~1.46.0",
+    "@aws-solutions-constructs/aws-lambda-s3": "~1.46.0",
+    "@aws-cdk/core": "~1.46.0",
+    "@aws-cdk/aws-lambda": "~1.46.0",
+    "@aws-cdk/aws-apigateway": "~1.46.0",
+    "@aws-cdk/aws-cloudfront": "~1.46.0",
+    "@aws-cdk/aws-s3": "~1.46.0",
+    "@aws-solutions-constructs/core": "~1.46.0",
+    "@aws-cdk/aws-iam": "~1.46.0"
   }
 }

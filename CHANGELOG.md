@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.46.0] - 2020-06-22
+
+General Availability of the AWS Solutions Constructs!! 🎉🎉🥂🥂🍾🍾
+
+### Added
+- aws-events-rule-step-function pattern added
+- aws-s3-step-function pattern added
+- Upgraded all patterns to CDK v1.46.0
+- Renamed the Github repo and NPM, PyPi & Maven namespaces to AWS Solutions Constructs
+
+### Changed
+- Changed the default encryption setting for Amazon SQS & Amazon Kinesis to use AWS Managed KMS Key
+- Updated READMEs for all patterns to include Default settings section
+- For all patterns, converted the getter methods to properties; used for retrieving the underlying AWS Resource object(s) created by the Solutions Constructs
+
 ## [0.8.1-beta] - 2020-05-21
 ### Changed
 - Upgraded to CDK v1.40.0
@@ -14,27 +29,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.8.0-beta] - 2020-03-31
 ### Added
 - Initial public beta release
-- aws-apigateway-dynamodb module added
-- aws-apigateway-lambda module added
-- aws-apigateway-sqs module added
-- aws-cloudfront-apigateway-lambda module added
-- aws-cloudfront-apigateway module added
-- aws-cloudfront-s3 module added
-- aws-cognito-apigateway-lambda module added
-- aws-dynamodb-stream-lambda-elasticsearch-kibana module added
-- aws-dynamodb-stream-lambda module added
-- aws-events-rule-lambda module added
-- aws-iot-kinesisfirehose-s3 module added
-- aws-iot-lambda-dynamodb module added
-- aws-iot-lambda module added
-- aws-kinesisfirehose-s3-and-kinesisanalytics module added
-- aws-kinesisfirehose-s3 module added
-- aws-kinesisstreams-lambda module added
-- aws-lambda-dynamodb module added
-- aws-lambda-elasticsearch-kibana module added
-- aws-lambda-s3 module added
-- aws-lambda-sns module added
-- aws-s3-lambda module added
-- aws-sns-lambda module added
-- aws-sqs-lambda module added
-- core module added
+- aws-apigateway-dynamodb pattern added
+- aws-apigateway-lambda pattern added
+- aws-apigateway-sqs pattern added
+- aws-cloudfront-apigateway-lambda pattern added
+- aws-cloudfront-apigateway pattern added
+- aws-cloudfront-s3 pattern added
+- aws-cognito-apigateway-lambda pattern added
+- aws-dynamodb-stream-lambda-elasticsearch-kibana pattern added
+- aws-dynamodb-stream-lambda pattern added
+- aws-events-rule-lambda pattern added
+- aws-iot-kinesisfirehose-s3 pattern added
+- aws-iot-lambda-dynamodb pattern added
+- aws-iot-lambda pattern added
+- aws-kinesisfirehose-s3-and-kinesisanalytics pattern added
+- aws-kinesisfirehose-s3 pattern added
+- aws-kinesisstreams-lambda pattern added
+- aws-lambda-dynamodb pattern added
+- aws-lambda-elasticsearch-kibana pattern added
+- aws-lambda-s3 pattern added
+- aws-lambda-sns pattern added
+- aws-s3-lambda pattern added
+- aws-sns-lambda pattern added
+- aws-sqs-lambda pattern added
+- core pattern added

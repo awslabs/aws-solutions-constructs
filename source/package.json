@@ -1,10 +1,10 @@
 {
-  "name": "aws-solutions-konstruk",
-  "version": "0.8.1",
-  "description": "AWS Solutions Konstruk Library",
+  "name": "aws-solutions-constructs",
+  "version": "1.46.0",
+  "description": "AWS Solutions Constructs Library",
   "repository": {
     "type": "git",
-    "url": "https://github.com/awslabs/aws-solutions-konstruk.git",
+    "url": "https://github.com/awslabs/aws-solutions-constructs.git",
     "directory": "source"
   },
   "license": "Apache-2.0",
@@ -23,18 +23,17 @@
     "eslint-plugin-license-header": "^0.2.0",
     "fs-extra": "^8.1.0",
     "jest": "^24.9.0",
-    "jsii": "^1.4.1",
-    "jsii-pacmak": "^1.4.1",
+    "jsii": "^1.7.0",
+    "jsii-pacmak": "^1.7.0",
     "tslint": "^5.20.1",
-    "typescript": "~3.8.3"
+    "typescript": "~3.9.5"
   },
   "devDependencies": {
-    "lerna": "^3.18.4"
+    "lerna": "^3.22.1"
   },
   "workspaces": {
     "packages": [
-      "./patterns/@aws-solutions-konstruk/*",
-      "./use_cases/*"
+      "./patterns/@aws-solutions-constructs/*"
     ],
     "nohoist": [
       "**/deepmerge",

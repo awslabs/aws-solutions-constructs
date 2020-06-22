@@ -1,0 +1,83 @@
+{
+  "name": "@aws-solutions-constructs/aws-sqs-lambda",
+  "version": "1.46.0",
+  "description": "CDK constructs for defining an interaction between an Amazon SQS queue and an AWS Lambda function.",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/awslabs/aws-solutions-constructs.git",
+    "directory": "source/patterns/@aws-solutions-constructs/aws-sqs-lambda"
+  },
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com",
+    "organization": true
+  },
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc -b .",
+    "lint": "eslint -c ../eslintrc.yml --ext=.js,.ts . && tslint --project .",
+    "lint-fix": "eslint -c ../eslintrc.yml --ext=.js,.ts --fix .",
+    "test": "jest --coverage",
+    "clean": "tsc -b --clean",
+    "watch": "tsc -b -w",
+    "integ": "cdk-integ",
+    "integ-assert": "cdk-integ-assert",
+    "integ-no-clean": "cdk-integ --no-clean",
+    "jsii": "jsii",
+    "jsii-pacmak": "jsii-pacmak",
+    "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
+    "snapshot-update": "npm run jsii && npm test -- -u && npm run integ-assert"
+  },
+  "jsii": {
+    "outdir": "dist",
+    "targets": {
+      "java": {
+        "package": "software.amazon.awsconstructs.services.sqslambda",
+        "maven": {
+          "groupId": "software.amazon.awsconstructs",
+          "artifactId": "sqslambda"
+        }
+      },
+      "dotnet": {
+        "namespace": "Amazon.Constructs.AWS.SqsLambda",
+        "packageId": "Amazon.Constructs.AWS.SqsLambda",
+        "signAssembly": true,
+        "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
+      },
+      "python": {
+        "distName": "aws-solutions-constructs.aws-sqs-lambda",
+        "module": "aws_solutions_constructs.aws_sqs_lambda"
+      }
+    }
+  },
+  "dependencies": {
+    "@aws-cdk/aws-lambda": "~1.46.0",
+    "@aws-cdk/aws-lambda-event-sources": "~1.46.0",
+    "@aws-cdk/aws-sqs": "~1.46.0",
+    "@aws-cdk/aws-kms": "~1.46.0",
+    "@aws-cdk/core": "~1.46.0",
+    "@aws-solutions-constructs/core": "~1.46.0",
+    "constructs": "^3.0.2"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "~1.46.0",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^10.3.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ]
+  },
+  "peerDependencies": {
+    "@aws-cdk/aws-lambda": "~1.46.0",
+    "@aws-cdk/aws-lambda-event-sources": "~1.46.0",
+    "@aws-cdk/aws-sqs": "~1.46.0",
+    "@aws-cdk/aws-kms": "~1.46.0",
+    "@aws-cdk/core": "~1.46.0",
+    "@aws-solutions-constructs/core": "~1.46.0",
+    "constructs": "^3.0.2"
+  }
+}
