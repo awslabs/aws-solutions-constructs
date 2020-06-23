@@ -15,6 +15,7 @@ import { SynthUtils } from '@aws-cdk/assert';
 import { LambdaToDynamoDB, LambdaToDynamoDBProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
+import { AttributeType, Table } from '@aws-cdk/aws-dynamodb';
 import * as cdk from "@aws-cdk/core";
 import '@aws-cdk/assert/jest';
 
@@ -22,9 +23,9 @@ function deployNewFunc(stack: cdk.Stack) {
   const props: LambdaToDynamoDBProps = {
     deployLambda: true,
     lambdaFunctionProps: {
-          code: lambda.Code.asset(`${__dirname}/lambda`),
-          runtime: lambda.Runtime.NODEJS_10_X,
-          handler: 'index.handler'
+      code: lambda.Code.asset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler'
     },
   };
 
@@ -46,10 +47,27 @@ function useExistingFunc(stack: cdk.Stack) {
       readCapacity: 3,
       writeCapacity: 3,
       partitionKey: {
-          name: 'id',
-          type: dynamodb.AttributeType.STRING
+        name: 'id',
+        type: dynamodb.AttributeType.STRING
       }
-    },
+    }
+  };
+
+  return new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', props);
+}
+
+function useExistingTable(stack: cdk.Stack) {
+  const lambdaFunctionProps: lambda.FunctionProps = {
+    runtime: lambda.Runtime.PYTHON_3_6,
+    handler: 'index.handler',
+    code: lambda.Code.asset(`${__dirname}/lambda`)
+  };
+  const existingTableObj = new Table(stack, 'table', {partitionKey: {type: AttributeType.STRING, name: 'pk'}});
+
+  const props: LambdaToDynamoDBProps = {
+    deployLambda: true,
+    lambdaFunctionProps,
+    existingTableObj
   };
 
   return new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', props);
@@ -79,7 +97,7 @@ test('check lambda function properties for deploy: true', () => {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
         DDB_TABLE_NAME: {
-        Ref: "testlambdadynamodbstackDynamoTable8138E93B"
+          Ref: "testlambdadynamodbstackDynamoTable8138E93B"
         }
       }
     }
@@ -208,14 +226,14 @@ test('check lambda function properties for deploy: false', () => {
   useExistingFunc(stack);
 
   expect(stack).toHaveResource('AWS::Lambda::Function', {
-      Handler: "index.handler",
-      Role: {
-        "Fn::GetAtt": [
-          "MyExistingFunctionServiceRoleF9E14BFD",
-          "Arn"
-        ]
-      },
-      Runtime: "python3.6"
+    Handler: "index.handler",
+    Role: {
+      "Fn::GetAtt": [
+        "MyExistingFunctionServiceRoleF9E14BFD",
+        "Arn"
+      ]
+    },
+    Runtime: "python3.6"
   });
 });
 test('check iot lambda function role for deploy: false', () => {
@@ -263,6 +281,7 @@ test('check properties', () => {
 test('check exception for Missing existingObj from props for deploy = false', () => {
   const stack = new cdk.Stack();
 
+
   const props: LambdaToDynamoDBProps = {
     deployLambda: true
   };
@@ -302,6 +321,31 @@ test('check deploy = true and no prop', () => {
           Ref: "testiotlambdastackDynamoTable76858356"
         }
       }
+    }
+  });
+});
+
+test('check table properties for when existingTableObj is provided', () => {
+  const stack = new cdk.Stack();
+
+  useExistingTable(stack);
+
+  expect(stack).toHaveResource('AWS::DynamoDB::Table', {
+    "KeySchema": [
+      {
+        "AttributeName": "pk",
+        "KeyType": "HASH"
+      }
+    ],
+    "AttributeDefinitions": [
+      {
+        "AttributeName": "pk",
+        "AttributeType": "S"
+      }
+    ],
+    "ProvisionedThroughput": {
+      "ReadCapacityUnits": 5,
+      "WriteCapacityUnits": 5
     }
   });
 });

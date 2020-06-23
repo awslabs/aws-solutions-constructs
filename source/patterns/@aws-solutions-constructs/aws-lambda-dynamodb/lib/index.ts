@@ -43,6 +43,13 @@ export interface LambdaToDynamoDBProps {
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps,
   /**
+   * Existing instance of dynamodb table object.
+   * If this is set then the dynamoTableProps is ignore.
+   *
+   * @default - None
+   */
+  readonly existingTableObj?: dynamodb.Table,
+  /**
    * Optional user provided props to override the default props
    *
    * @default - Default props are used
@@ -71,13 +78,19 @@ export class LambdaToDynamoDB extends Construct {
       lambdaFunctionProps: props.lambdaFunctionProps
     });
 
-    // Set the default props for DynamoDB table
-    if (props.dynamoTableProps) {
-      const dynamoTableProps = overrideProps(defaults.DefaultTableProps, props.dynamoTableProps);
-      this.dynamoTable = new dynamodb.Table(this, 'DynamoTable', dynamoTableProps);
+
+    if (!props.existingTableObj) {
+      // Set the default props for DynamoDB table
+      if (props.dynamoTableProps) {
+        const dynamoTableProps = overrideProps(defaults.DefaultTableProps, props.dynamoTableProps);
+        this.dynamoTable = new dynamodb.Table(this, 'DynamoTable', dynamoTableProps);
+      } else {
+        this.dynamoTable = new dynamodb.Table(this, 'DynamoTable', defaults.DefaultTableProps);
+      }
     } else {
-      this.dynamoTable = new dynamodb.Table(this, 'DynamoTable', defaults.DefaultTableProps);
+      this.dynamoTable = props.existingTableObj;
     }
+
 
     this.lambdaFunction.addEnvironment('DDB_TABLE_NAME', this.dynamoTable.tableName);
 
