@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.47.0] - 2020-06-25
+
+### Added
+- Upgraded all patterns to CDK v1.47.0
+
+### Changed
+- Adding ability to provide a dynamodb table ([#8](https://github.com/awslabs/aws-solutions-constructs/pull/8))
+- Fix bug in s3BucketWithLogging function ([#9](https://github.com/awslabs/aws-solutions-constructs/pull/9))
+
 ## [1.46.0] - 2020-06-22
 
 General Availability of the AWS Solutions Constructs!! 🎉🎉🥂🥂🍾🍾

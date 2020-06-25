@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
+import { SynthUtils, expect as expectCDK, haveResource } from '@aws-cdk/assert';
 import { Stack } from '@aws-cdk/core';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as defaults from '../index';
@@ -155,4 +155,190 @@ test('test TableWithStreamProps override stream view type', () => {
       StreamViewType: "NEW_IMAGE"
     }
   });
+});
+
+test('test buildDynamoDBTable with existingTableObj', () => {
+  const stack = new Stack();
+
+  const tableProps: dynamodb.TableProps = {
+    billingMode: dynamodb.BillingMode.PROVISIONED,
+    partitionKey: {
+      name: 'table_id',
+      type: dynamodb.AttributeType.STRING
+    }
+  };
+
+  const existingTableObj = new dynamodb.Table(stack, 'DynamoTable', tableProps);
+
+  defaults.buildDynamoDBTable(stack, {
+    existingTableObj
+  });
+
+  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+    KeySchema: [
+      {
+        AttributeName: "table_id",
+        KeyType: "HASH"
+      }
+    ]
+  }));
+
+  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+    ProvisionedThroughput: {
+      ReadCapacityUnits: 5,
+      WriteCapacityUnits: 5
+    }
+  }));
+});
+
+test('test buildDynamoDBTable without any arguments', () => {
+  const stack = new Stack();
+
+  defaults.buildDynamoDBTable(stack, {});
+
+  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+    KeySchema: [
+      {
+        AttributeName: "id",
+        KeyType: "HASH"
+      }
+    ]
+  }));
+
+  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+    BillingMode: "PAY_PER_REQUEST"
+  }));
+
+  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+    SSESpecification: {
+      SSEEnabled: true
+    }
+  }));
+});
+
+test('test buildDynamoDBTable with TableProps', () => {
+  const stack = new Stack();
+
+  const dynamoTableProps: dynamodb.TableProps = {
+    billingMode: dynamodb.BillingMode.PROVISIONED,
+    partitionKey: {
+      name: 'table_id',
+      type: dynamodb.AttributeType.STRING
+    }
+  };
+
+  defaults.buildDynamoDBTable(stack, {
+    dynamoTableProps
+  });
+
+  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+    KeySchema: [
+      {
+        AttributeName: "table_id",
+        KeyType: "HASH"
+      }
+    ]
+  }));
+
+  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+    ProvisionedThroughput: {
+      ReadCapacityUnits: 5,
+      WriteCapacityUnits: 5
+    }
+  }));
+});
+
+test('test buildDynamoDBTableWithStream with TableProps', () => {
+  const stack = new Stack();
+
+  const dynamoTableProps: dynamodb.TableProps = {
+    partitionKey: {
+      name: 'table_id',
+      type: dynamodb.AttributeType.STRING
+    },
+    stream: dynamodb.StreamViewType.NEW_IMAGE
+  };
+
+  defaults.buildDynamoDBTableWithStream(stack, {
+    dynamoTableProps
+  });
+
+  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+    KeySchema: [
+      {
+        AttributeName: "table_id",
+        KeyType: "HASH"
+      }
+    ]
+  }));
+
+  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+    StreamSpecification: {
+      StreamViewType: "NEW_IMAGE"
+    }
+  }));
+});
+
+test('test buildDynamoDBTableWithStream without any arguments', () => {
+  const stack = new Stack();
+
+  defaults.buildDynamoDBTableWithStream(stack, {});
+
+  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+    KeySchema: [
+      {
+        AttributeName: "id",
+        KeyType: "HASH"
+      }
+    ]
+  }));
+
+  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+    BillingMode: "PAY_PER_REQUEST"
+  }));
+
+  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+    SSESpecification: {
+      SSEEnabled: true
+    }
+  }));
+
+  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+    StreamSpecification: {
+      StreamViewType: "NEW_AND_OLD_IMAGES"
+    }
+  }));
+});
+
+test('test buildDynamoDBTableWithStream with existingTableObj', () => {
+  const stack = new Stack();
+
+  const tableProps: dynamodb.TableProps = {
+    partitionKey: {
+      name: 'table_id',
+      type: dynamodb.AttributeType.STRING
+    },
+    stream: dynamodb.StreamViewType.NEW_IMAGE
+  };
+
+  const existingTableObj = new dynamodb.Table(stack, 'DynamoTable', tableProps);
+
+  defaults.buildDynamoDBTableWithStream(stack, {
+    existingTableObj
+  });
+
+  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+    KeySchema: [
+      {
+        AttributeName: "table_id",
+        KeyType: "HASH"
+      }
+    ]
+  }));
+
+  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+    StreamSpecification: {
+      StreamViewType: "NEW_IMAGE"
+    }
+  }));
 });

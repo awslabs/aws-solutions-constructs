@@ -15,7 +15,6 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
-import { overrideProps } from '@aws-solutions-constructs/core';
 
 /**
  * @summary The properties for the LambdaToDynamoDB Construct
@@ -47,7 +46,13 @@ export interface LambdaToDynamoDBProps {
    *
    * @default - Default props are used
    */
-  readonly dynamoTableProps?: dynamodb.TableProps
+  readonly dynamoTableProps?: dynamodb.TableProps,
+  /**
+   * Existing instance of DynamoDB table object, If this is set then the dynamoTableProps is ignored
+   *
+   * @default - None
+   */
+  readonly existingTableObj?: dynamodb.Table
 }
 
 export class LambdaToDynamoDB extends Construct {
@@ -71,13 +76,10 @@ export class LambdaToDynamoDB extends Construct {
       lambdaFunctionProps: props.lambdaFunctionProps
     });
 
-    // Set the default props for DynamoDB table
-    if (props.dynamoTableProps) {
-      const dynamoTableProps = overrideProps(defaults.DefaultTableProps, props.dynamoTableProps);
-      this.dynamoTable = new dynamodb.Table(this, 'DynamoTable', dynamoTableProps);
-    } else {
-      this.dynamoTable = new dynamodb.Table(this, 'DynamoTable', defaults.DefaultTableProps);
-    }
+    this.dynamoTable = defaults.buildDynamoDBTable(this, {
+      dynamoTableProps: props.dynamoTableProps,
+      existingTableObj: props.existingTableObj
+    });
 
     this.lambdaFunction.addEnvironment('DDB_TABLE_NAME', this.dynamoTable.tableName);
 

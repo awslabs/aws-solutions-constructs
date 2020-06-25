@@ -42,3 +42,4 @@ export * from './lib/elasticsearch-defaults';
 export * from './lib/elasticsearch-helper';
 export * from './lib/step-function-defaults';
 export * from './lib/step-function-helper';
+export * from './lib/dynamodb-table-helper';

@@ -67,7 +67,7 @@ function s3BucketWithLogging(scope: cdk.Construct, s3BucketProps?: s3.BucketProp
     const _loggingBucketId = bucketId ? bucketId + 'S3LoggingBucket' : 'S3LoggingBucket';
 
     if (s3BucketProps?.serverAccessLogsBucket) {
-        bucketprops = DefaultS3Props;
+        bucketprops = DefaultS3Props();
     } else {
         // Create the Logging Bucket
         const loggingBucket: s3.Bucket = new s3.Bucket(scope, _loggingBucketId, DefaultS3Props());

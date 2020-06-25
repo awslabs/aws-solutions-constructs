@@ -53,6 +53,12 @@ export interface DynamoDBStreamToLambdaToElasticSearchAndKibanaProps {
    */
   readonly dynamoTableProps?: dynamodb.TableProps,
   /**
+   * Existing instance of DynamoDB table object, If this is set then the dynamoTableProps is ignored
+   *
+   * @default - None
+   */
+  readonly existingTableObj?: dynamodb.Table,
+  /**
    * Optional user provided props to override the default props
    *
    * @default - Default props are used
@@ -99,7 +105,8 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps,
       dynamoEventSourceProps: props.dynamoEventSourceProps,
-      dynamoTableProps: props.dynamoTableProps
+      dynamoTableProps: props.dynamoTableProps,
+      existingTableObj: props.existingTableObj
     };
 
     this.dynamoDBStreamToLambda = new DynamoDBStreamToLambda(this, 'DynamoDBStreamToLambda', _props1);

@@ -16,7 +16,6 @@ import { DynamoEventSourceProps, DynamoEventSource } from '@aws-cdk/aws-lambda-e
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
-import { overrideProps } from '@aws-solutions-constructs/core';
 
 /**
  * @summary The properties for the DynamoDBStreamToLambda Construct
@@ -50,6 +49,12 @@ export interface DynamoDBStreamToLambdaProps {
    */
   readonly dynamoTableProps?: dynamodb.TableProps,
   /**
+   * Existing instance of DynamoDB table object, If this is set then the dynamoTableProps is ignored
+   *
+   * @default - None
+   */
+  readonly existingTableObj?: dynamodb.Table,
+  /**
    * Optional user provided props to override the default props
    *
    * @default - Default props are used
@@ -78,13 +83,10 @@ export class DynamoDBStreamToLambda extends Construct {
       lambdaFunctionProps: props.lambdaFunctionProps
     });
 
-    // Set the default props for DynamoDB table
-    if (props.dynamoTableProps) {
-      const dynamoTableProps = overrideProps(defaults.DefaultTableWithStreamProps, props.dynamoTableProps);
-      this.dynamoTable = new dynamodb.Table(this, 'DynamoTable', dynamoTableProps);
-    } else {
-      this.dynamoTable = new dynamodb.Table(this, 'DynamoTable', defaults.DefaultTableWithStreamProps);
-    }
+    this.dynamoTable = defaults.buildDynamoDBTableWithStream(this, {
+      dynamoTableProps: props.dynamoTableProps,
+      existingTableObj: props.existingTableObj
+    });
 
     // Grant DynamoDB Stream read perimssion for lambda function
     this.dynamoTable.grantStreamRead(this.lambdaFunction.grantPrincipal);
