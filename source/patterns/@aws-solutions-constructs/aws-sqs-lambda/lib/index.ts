@@ -54,7 +54,7 @@ export interface SqsToLambdaProps {
      *
      * @default - Default props are used
      */
-    readonly dlQueueProps?: sqs.QueueProps | any
+    readonly dLQueueProps?: sqs.QueueProps | any
     /**
      * Whether to deploy a secondary queue to be used as a dead letter queue.
      *
@@ -98,7 +98,7 @@ export class SqsToLambda extends Construct {
         let dlqi: sqs.DeadLetterQueue | undefined;
         if (props.deployDeadLetterQueue || props.deployDeadLetterQueue === undefined) {
             const dlq: sqs.Queue = defaults.buildQueue(this, 'deadLetterQueue', {
-                queueProps: props.dlQueueProps
+                queueProps: props.dLQueueProps
             });
             dlqi = defaults.buildDeadLetterQueue({
                 deadLetterQueue: dlq,
