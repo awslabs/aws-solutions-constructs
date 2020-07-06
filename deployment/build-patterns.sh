@@ -25,7 +25,3 @@ yarn install --frozen-lockfile
 echo "============================================================================================="
 echo "building..."
 time lerna run $bail --stream $runtarget || fail
-
-echo "============================================================================================="
-echo "packaging..."
-time lerna run $bail --stream jsii-pacmak || fail

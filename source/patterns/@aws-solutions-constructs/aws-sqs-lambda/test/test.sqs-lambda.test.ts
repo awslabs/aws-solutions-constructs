@@ -104,7 +104,7 @@ test('Test getter methods', () => {
             handler: 'index.handler',
             code: lambda.Code.asset(`${__dirname}/lambda`)
         },
-        deployDeadLetterQueue: false,
+        deployDeadLetterQueue: true,
         maxReceiveCount: 0,
         queueProps: {}
     };
@@ -113,6 +113,8 @@ test('Test getter methods', () => {
     expect(app.lambdaFunction !== null);
     // Assertion 2
     expect(app.sqsQueue !== null);
+    // Assertion 3
+    expect(app.deadLetterQueue !== null);
 });
 
 // --------------------------------------------------------------

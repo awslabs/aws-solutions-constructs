@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.48.0] - 2020-07-06
+
+### Added
+- Upgraded all patterns to CDK v1.48.0
+- aws-lambda-step-function pattern added
+
+### Changed
+- Fix for aws-sqs-lambda pattern bug when using FIFO queue ([#13](https://github.com/awslabs/aws-solutions-constructs/pull/13))
+- Minor updates to CONTRIBUTING.md and deployment/build-patterns.sh
+
 ## [1.47.0] - 2020-06-25
 
 ### Added

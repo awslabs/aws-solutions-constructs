@@ -42,13 +42,19 @@ export interface SqsToLambdaProps {
      *
      * @default - Default properties are used.
      */
-    readonly lambdaFunctionProps?: lambda.FunctionProps | any
+    readonly lambdaFunctionProps?: lambda.FunctionProps
     /**
      * Optional user provided properties
      *
      * @default - Default props are used
      */
-    readonly queueProps?: sqs.QueueProps | any
+    readonly queueProps?: sqs.QueueProps,
+    /**
+     * Optional user provided properties for the dead letter queue
+     *
+     * @default - Default props are used
+     */
+    readonly deadLetterQueueProps?: sqs.QueueProps,
     /**
      * Whether to deploy a secondary queue to be used as a dead letter queue.
      *
@@ -68,6 +74,7 @@ export interface SqsToLambdaProps {
  */
 export class SqsToLambda extends Construct {
     public readonly sqsQueue: sqs.Queue;
+    public readonly deadLetterQueue: sqs.DeadLetterQueue | undefined;
     public readonly lambdaFunction: lambda.Function;
 
     /**
@@ -89,12 +96,11 @@ export class SqsToLambda extends Construct {
         });
 
         // Setup the dead letter queue, if applicable
-        let dlqi: sqs.DeadLetterQueue | undefined;
         if (props.deployDeadLetterQueue || props.deployDeadLetterQueue === undefined) {
             const dlq: sqs.Queue = defaults.buildQueue(this, 'deadLetterQueue', {
-                queueProps: props.queueProps
+                queueProps: props.deadLetterQueueProps
             });
-            dlqi = defaults.buildDeadLetterQueue({
+            this.deadLetterQueue = defaults.buildDeadLetterQueue({
                 deadLetterQueue: dlq,
                 maxReceiveCount: props.maxReceiveCount
             });
@@ -103,7 +109,7 @@ export class SqsToLambda extends Construct {
         // Setup the queue
         this.sqsQueue = defaults.buildQueue(this, 'queue', {
             queueProps: props.queueProps,
-            deadLetterQueue: dlqi
+            deadLetterQueue: this.deadLetterQueue
         });
 
         // Setup the event source mapping

@@ -1,13 +1,13 @@
 {
-  "name": "@aws-solutions-constructs/aws-sqs-lambda",
+  "name": "@aws-solutions-constructs/aws-lambda-step-function",
   "version": "1.48.0",
-  "description": "CDK constructs for defining an interaction between an Amazon SQS queue and an AWS Lambda function.",
+  "description": "CDK constructs for defining an interaction between an AWS Lambda function and an AWS Step Function.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/awslabs/aws-solutions-constructs.git",
-    "directory": "source/patterns/@aws-solutions-constructs/aws-sqs-lambda"
+    "directory": "source/patterns/@aws-solutions-constructs/aws-lambda-step-function"
   },
   "author": {
     "name": "Amazon Web Services",
@@ -34,29 +34,28 @@
     "outdir": "dist",
     "targets": {
       "java": {
-        "package": "software.amazon.awsconstructs.services.sqslambda",
+        "package": "software.amazon.awsconstructs.services.lambdastepfunction",
         "maven": {
           "groupId": "software.amazon.awsconstructs",
-          "artifactId": "sqslambda"
+          "artifactId": "lambdastepfunction"
         }
       },
       "dotnet": {
-        "namespace": "Amazon.Constructs.AWS.SqsLambda",
-        "packageId": "Amazon.Constructs.AWS.SqsLambda",
+        "namespace": "Amazon.Constructs.AWS.LambdaStepFunction",
+        "packageId": "Amazon.Constructs.AWS.LambdaStepFunction",
         "signAssembly": true,
         "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
       },
       "python": {
-        "distName": "aws-solutions-constructs.aws-sqs-lambda",
-        "module": "aws_solutions_constructs.aws_sqs_lambda"
+        "distName": "aws-solutions-constructs.aws-lambda-step-function",
+        "module": "aws_solutions_constructs.aws_lambda_step_function"
       }
     }
   },
   "dependencies": {
+    "@aws-cdk/aws-cloudwatch": "~1.48.0",
     "@aws-cdk/aws-lambda": "~1.48.0",
-    "@aws-cdk/aws-lambda-event-sources": "~1.48.0",
-    "@aws-cdk/aws-sqs": "~1.48.0",
-    "@aws-cdk/aws-kms": "~1.48.0",
+    "@aws-cdk/aws-stepfunctions": "~1.48.0",
     "@aws-cdk/core": "~1.48.0",
     "@aws-solutions-constructs/core": "~1.48.0",
     "constructs": "^3.0.2"
@@ -64,7 +63,8 @@
   "devDependencies": {
     "@aws-cdk/assert": "~1.48.0",
     "@types/jest": "^24.0.23",
-    "@types/node": "^10.3.0"
+    "@types/node": "^10.3.0",
+    "eslint-plugin-import": "^2.22.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -72,10 +72,9 @@
     ]
   },
   "peerDependencies": {
+    "@aws-cdk/aws-cloudwatch": "~1.48.0",
     "@aws-cdk/aws-lambda": "~1.48.0",
-    "@aws-cdk/aws-lambda-event-sources": "~1.48.0",
-    "@aws-cdk/aws-sqs": "~1.48.0",
-    "@aws-cdk/aws-kms": "~1.48.0",
+    "@aws-cdk/aws-stepfunctions": "~1.48.0",
     "@aws-cdk/core": "~1.48.0",
     "@aws-solutions-constructs/core": "~1.48.0",
     "constructs": "^3.0.2"

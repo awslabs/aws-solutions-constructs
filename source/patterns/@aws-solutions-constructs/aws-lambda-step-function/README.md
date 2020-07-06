@@ -1,4 +1,4 @@
-# aws-lambda-s3 module
+# aws-lambda-step-function module
 <!--BEGIN STABILITY BANNER-->
 
 ---
@@ -18,23 +18,26 @@
 
 | **Language**     | **Package**        |
 |:-------------|-----------------|
-|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_lambda_s3`|
-|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-lambda-s3`|
-|![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.lambdas3`|
+|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_lambda_step_function`|
+|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-lambda-step-function`|
+|![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.lambdastepfunction`|
 
-This AWS Solutions Construct implements an AWS Lambda function connected to an Amazon S3 bucket.
+This AWS Solutions Construct implements an AWS Lambda function connected to an AWS Step Function.
 
 Here is a minimal deployable pattern definition:
 
 ``` javascript
-const { LambdaToS3 } = require('@aws-solutions-constructs/aws-lambda-s3');
+const { LambdaToStepFunction } = require('@aws-solutions-constructs/aws-lambda-step-function');
 
-new LambdaToS3(stack, 'LambdaToS3Pattern', {
+new LambdaToStepFunction(stack, 'LambdaToStepFunctionPattern', {
     deployLambda: true,
     lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
+        runtime: lambda.Runtime.NODEJS_12_X,
         handler: 'index.handler',
         code: lambda.Code.asset(`${__dirname}/lambda`)
+    },
+    stateMachineProps: {
+      definition: startState
     }
 });
 
@@ -43,14 +46,14 @@ new LambdaToS3(stack, 'LambdaToS3Pattern', {
 ## Initializer
 
 ``` text
-new LambdaToS3(scope: Construct, id: string, props: LambdaToS3Props);
+new LambdaToStepFunction(scope: Construct, id: string, props: LambdaToStepFunctionProps);
 ```
 
 _Parameters_
 
 * scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
 * id `string`
-* props [`LambdaToS3Props`](#pattern-construct-props)
+* props [`LambdaToStepFunctionProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 
@@ -59,17 +62,15 @@ _Parameters_
 |deployLambda|`boolean`|Whether to create a new Lambda function or use an existing Lambda function.|
 |existingLambdaObj?|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)|An optional, existing Lambda function.|
 |lambdaFunctionProps?|[`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.FunctionProps.html)|Optional user-provided props to override the default props for the Lambda function.|
-|deployBucket?|`boolean`|Whether to create a S3 Bucket or use an existing S3 Bucket|
-|existingBucketObj?|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html)|Existing instance of S3 Bucket object|
-|bucketProps?|[`s3.BucketProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html)|Optional user provided props to override the default props for S3 Bucket|
-|bucketPermissions?|`string[]`|Optional bucket permissions to grant to the Lambda function. One or more of the following may be specified: `Delete`, `Put`, `Read`, `ReadWrite`, `Write`.|
+|stateMachineProps|[`sfn.StateMachineProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-stepfunctions.StateMachineProps.html)|User provided props for the sfn.StateMachine.|
 
 ## Pattern Properties
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
 |lambdaFunction|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)|Returns an instance of the Lambda function created by the pattern.|
-|s3Bucket|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html)|Returns an instance of the S3 bucket created by the pattern.|
+|stateMachine|[`sfn.StateMachine`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-stepfunctions.StateMachine.html)|Returns an instance of StateMachine created by the construct.|
+|cloudwatchAlarms|[`cloudwatch.Alarm[]`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudwatch.Alarm.html)|Returns a list of alarms created by the construct.
 
 ## Default settings
 
@@ -79,12 +80,9 @@ Out of the box implementation of the Construct without any override will set the
 * Configure least privilege access IAM role for Lambda function
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
 
-### Amazon S3 Bucket
-* Configure Access logging for S3 Bucket
-* Enable server-side encryption for S3 Bucket using AWS managed KMS Key
-* Turn on the versioning for S3 Bucket
-* Don't allow public access for S3 Bucket
-* Retain the S3 Bucket when deleting the CloudFormation stack
+### AWS Step Function
+* Enable CloudWatch logging for API Gateway
+* Deploy best practices CloudWatch Alarms for the Step Function
 
 ## Architecture
 ![Architecture Diagram](architecture.png)

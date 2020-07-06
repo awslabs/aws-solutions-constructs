@@ -182,7 +182,9 @@ First run a clean Full Build before doing the partial build.
 ```console
 $ cd <root-of-aws-solutions-constructs-repo>
 $ docker run --rm --net=host -it -v $PWD:$PWD -w $PWD jsii/superchain
-docker$ cd source/patterns/@aws-solutions-constructs/my-module
+docker$ cd source
+docker$ export PATH=$(npm bin):$PATH
+docker$ cd patterns/@aws-solutions-constructs/my-module
 docker$ npm run build+lint+test
 docker$ exit
 ```
