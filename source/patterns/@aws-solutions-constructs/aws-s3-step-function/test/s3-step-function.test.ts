@@ -64,7 +64,6 @@ test('override eventRuleProps', () => {
     stateMachineProps: {
       definition: startState
     },
-    deployBucket: false,
     existingBucketObj: mybucket,
     eventRuleProps: {
       eventPattern: {

@@ -13,19 +13,14 @@
 
 // Imports
 import { App, Stack } from "@aws-cdk/core";
-import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
+import { CloudFrontToS3 } from "../lib";
 
 // Setup
 const app = new App();
 const stack = new Stack(app, 'test-cloudfront-s3-stack');
 stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3';
 
-// Definitions
-const props: CloudFrontToS3Props = {
-    deployBucket: true
-};
-
-new CloudFrontToS3(stack, 'test-cloudfront-s3', props);
+new CloudFrontToS3(stack, 'test-cloudfront-s3', {});
 
 // Synth
 app.synth();

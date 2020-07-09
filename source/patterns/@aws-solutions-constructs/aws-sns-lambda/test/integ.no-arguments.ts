@@ -23,7 +23,6 @@ stack.templateOptions.description = 'Integration Test for aws-sns-lambda';
 
 // Definitions
 const props: SnsToLambdaProps = {
-    deployLambda: true,
     lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_12_X,
         handler: 'index.handler',

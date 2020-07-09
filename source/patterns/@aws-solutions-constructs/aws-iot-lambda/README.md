@@ -30,7 +30,6 @@ Here is a minimal deployable pattern definition:
 const { IotToLambdaProps, IotToLambda } = require('@aws-solutions-constructs/aws-iot-lambda');
 
 const props: IotToLambdaProps = {
-    deployLambda: true,
     lambdaFunctionProps: {
         code: lambda.Code.asset(`${__dirname}/lambda`),
         runtime: lambda.Runtime.NODEJS_10_X,
@@ -65,9 +64,8 @@ _Parameters_
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
-|deployLambda|`boolean`|Whether to create a new lambda function or use an existing lambda function|
-|existingLambdaObj?|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)|Existing instance of Lambda Function object|
-|lambdaFunctionProps?|[`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.FunctionProps.html)|Optional user provided props to override the default props for lambda.Function|
+|existingLambdaObj?|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)|Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.|
+|lambdaFunctionProps?|[`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.FunctionProps.html)|User provided props to override the default props for the Lambda function.|
 |iotTopicRuleProps?|[`iot.CfnTopicRuleProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iot.CfnTopicRuleProps.html)|User provided CfnTopicRuleProps to override the defaults|
 
 ## Pattern Properties

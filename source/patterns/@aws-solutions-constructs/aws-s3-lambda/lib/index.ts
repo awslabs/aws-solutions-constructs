@@ -23,43 +23,25 @@ import { S3EventSourceProps, S3EventSource } from '@aws-cdk/aws-lambda-event-sou
  */
 export interface S3ToLambdaProps {
   /**
-   * Whether to create a new lambda function or use an existing lambda function.
-   * If set to false, you must provide a lambda function object as `existingObj`
-   *
-   * @default - true
-   */
-  readonly deployLambda: boolean,
-  /**
-   * Existing instance of Lambda Function object.
-   * If `deploy` is set to false only then this property is required
+   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
    *
    * @default - None
    */
   readonly existingLambdaObj?: lambda.Function,
   /**
-   * Optional user provided props to override the default props.
-   * If `deploy` is set to true only then this property is required
+   * User provided props to override the default props for the Lambda function.
    *
    * @default - Default props are used
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps,
   /**
-   * Whether to create a S3 Bucket or use an existing S3 Bucket.
-   * If set to false, you must provide S3 Bucket as `existingBucketObj`
-   *
-   * @default - true
-   */
-  readonly deployBucket?: boolean,
-  /**
-   * Existing instance of S3 Bucket object.
-   * If `deployBucket` is set to false only then this property is required
+   * Existing instance of S3 Bucket object, if this is set then the bucketProps is ignored.
    *
    * @default - None
    */
   readonly existingBucketObj?: s3.Bucket,
   /**
-   * Optional user provided props to override the default props.
-   * If `deploy` is set to true only then this property is required
+   * User provided props to override the default props for the S3 Bucket.
    *
    * @default - Default props are used
    */
@@ -87,13 +69,11 @@ export class S3ToLambda extends Construct {
     super(scope, id);
 
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
-      deployLambda: props.deployLambda,
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps
     });
 
     this.s3Bucket = defaults.buildS3Bucket(this, {
-      deployBucket: props.deployBucket,
       existingBucketObj: props.existingBucketObj,
       bucketProps: props.bucketProps
     });

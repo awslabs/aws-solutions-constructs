@@ -22,7 +22,6 @@ stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3';
 
 // Definitions
 const props: CloudFrontToS3Props = {
-    deployBucket: true,
     insertHttpSecurityHeaders: false
 };
 

@@ -28,7 +28,6 @@ export class ServerlessBackendStack extends Stack {
     const websiteBucketName: string = Fn.importValue('websiteBucket');
 
     const construct = new CognitoToApiGatewayToLambda(this, 'CognitoToApiGatewayToLambda', {
-      deployLambda: true,
       lambdaFunctionProps: {
         code: lambda.Code.asset(`${__dirname}/lambda/business-logic`),
         runtime: lambda.Runtime.NODEJS_12_X,
@@ -77,7 +76,6 @@ export class ServerlessBackendStack extends Stack {
     });
 
     new LambdaToDynamoDB(this, 'LambdaToDynamoDB', {
-      deployLambda: false,
       existingLambdaObj: construct.lambdaFunction,
       dynamoTableProps: {
         tableName: 'Rides',

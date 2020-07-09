@@ -23,22 +23,13 @@ import { Construct } from '@aws-cdk/core';
  */
 export interface LambdaToSnsProps {
     /**
-     * Whether to create a new Lambda function or use an existing Lambda function.
-     * If set to false, you must provide an existing function for the `existingLambdaObj` property.
-     *
-     * @default - true
-     */
-    readonly deployLambda: boolean,
-    /**
-     * Existing instance of Lambda Function object.
-     * If `deploy` is set to false only then this property is required
+     * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
      *
      * @default - None
      */
     readonly existingLambdaObj?: lambda.Function,
     /**
-     * Optional user provided properties to override the default properties for the Lambda function.
-     * If `deploy` is set to true only then this property is required.
+     * User provided props to override the default props for the Lambda function.
      *
      * @default - Default properties are used.
      */
@@ -84,7 +75,6 @@ export class LambdaToSns extends Construct {
 
         // Setup the Lambda function
         this.lambdaFunction = defaults.buildLambdaFunction(this, {
-            deployLambda: props.deployLambda,
             existingLambdaObj: props.existingLambdaObj,
             lambdaFunctionProps: props.lambdaFunctionProps
         });

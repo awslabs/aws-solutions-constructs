@@ -42,7 +42,6 @@ The default properties set by the Core library can be overridden by user provide
   const stack = new cdk.Stack();
 
   const props: CloudFrontToS3Props = {
-    deployBucket: true,
     bucketProps: {
       blockPublicAccess: {
         blockPublicAcls: false,

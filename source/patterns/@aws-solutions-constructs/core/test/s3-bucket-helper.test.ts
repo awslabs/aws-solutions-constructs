@@ -11,16 +11,16 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
+import { SynthUtils, expect as expectCDK, haveResource } from '@aws-cdk/assert';
 import { Stack } from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as defaults from '../index';
+import '@aws-cdk/assert/jest';
+import { Bucket } from '@aws-cdk/aws-s3';
 
 test('s3 bucket with default params', () => {
   const stack = new Stack();
-  defaults.buildS3Bucket(stack, {
-    deployBucket: true
-  });
+  defaults.buildS3Bucket(stack, {});
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
@@ -30,7 +30,6 @@ test('s3 bucket with default params and bucket names', () => {
       bucketName: 'my-bucket'
   };
   defaults.buildS3Bucket(stack, {
-    deployBucket: true,
     bucketProps: s3BucketProps
   });
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
@@ -40,7 +39,6 @@ test('s3 bucket with existingBucketObj', () => {
   const stack = new Stack();
 
   defaults.buildS3Bucket(stack, {
-    deployBucket: false,
     existingBucketObj: new s3.Bucket(stack, 'my-bucket', {})
   });
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
@@ -50,10 +48,57 @@ test('check exception for Missing existingBucketObj from props for deploy = fals
   const stack = new Stack();
 
   try {
-    defaults.buildS3Bucket(stack, {
-      deployBucket: false
-    });
+    defaults.buildS3Bucket(stack, {});
   } catch (e) {
     expect(e).toBeInstanceOf(Error);
   }
+});
+
+test('s3 bucket with bucketId', () => {
+  const stack = new Stack();
+
+  defaults.buildS3Bucket(stack, {}, 'my');
+
+  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+    LoggingConfiguration: {
+      DestinationBucketName: {
+        Ref: "myS3LoggingBucketDE461344"
+      }
+    },
+  }));
+});
+
+test('s3 bucket with bucketProps', () => {
+  const stack = new Stack();
+
+  defaults.buildS3Bucket(stack, {
+    bucketProps: {
+      bucketName: 'mybucket'
+    }
+  });
+
+  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+    BucketName: "mybucket"
+  }));
+});
+
+test('s3 bucket with existingBucketObj with access logging configured', () => {
+    const stack = new Stack();
+    const mybucket = new Bucket(stack, 'mybucket', {
+      serverAccessLogsBucket: new Bucket(stack, 'myaccesslogbucket', {})
+    });
+
+    defaults.buildS3Bucket(stack, {
+      bucketProps: {
+        serverAccessLogsBucket: mybucket
+      }
+    });
+
+    expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+      LoggingConfiguration: {
+        DestinationBucketName: {
+          Ref: "mybucket160F8132"
+        }
+      },
+    }));
 });

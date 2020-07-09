@@ -19,7 +19,6 @@ import '@aws-cdk/assert/jest';
 
 function deployStack(stack: cdk.Stack) {
   const props: IotToLambdaToDynamoDBProps = {
-    deployLambda: true,
     lambdaFunctionProps: {
       code: lambda.Code.asset(`${__dirname}/lambda`),
       runtime: lambda.Runtime.NODEJS_10_X,
@@ -254,7 +253,6 @@ test('check exception for Missing existingObj from props for deploy = false', ()
   const stack = new cdk.Stack();
 
   const props: IotToLambdaToDynamoDBProps = {
-      deployLambda: false,
       iotTopicRuleProps: {
         topicRulePayload: {
             ruleDisabled: false,

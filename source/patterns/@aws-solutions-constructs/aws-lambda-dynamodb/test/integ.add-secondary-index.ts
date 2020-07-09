@@ -22,7 +22,6 @@ const app = new App();
 const stack = new Stack(app, 'test-lambda-dynamodb-stack');
 
 const construct: LambdaToDynamoDB = new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', {
-    deployLambda: true,
     lambdaFunctionProps: {
         code: lambda.Code.asset(`${__dirname}/lambda`),
         runtime: lambda.Runtime.NODEJS_10_X,

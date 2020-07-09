@@ -19,7 +19,6 @@ import '@aws-cdk/assert/jest';
 
 function deployNewFunc(stack: cdk.Stack) {
   const props: SnsToLambdaProps = {
-    deployLambda: true,
     lambdaFunctionProps: {
         code: lambda.Code.asset(`${__dirname}/lambda`),
         runtime: lambda.Runtime.NODEJS_12_X,

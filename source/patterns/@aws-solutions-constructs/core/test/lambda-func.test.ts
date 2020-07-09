@@ -187,7 +187,6 @@ test('test buildLambdaFunction with deploy = true', () => {
   };
 
   defaults.buildLambdaFunction(stack, {
-    deployLambda: true,
     lambdaFunctionProps: inProps
   });
 
@@ -215,7 +214,6 @@ test('test buildLambdaFunction with deploy = false', () => {
   const fn = defaults.deployLambdaFunction(stack, inProps);
 
   defaults.buildLambdaFunction(stack, {
-    deployLambda: false,
     existingLambdaObj: fn
   });
 
@@ -229,4 +227,14 @@ test('test buildLambdaFunction with deploy = false', () => {
     },
     Runtime: "python3.6"
   });
+});
+
+test('test exception', () => {
+  const stack = new Stack();
+
+  try {
+    defaults.buildLambdaFunction(stack, {});
+  } catch (e) {
+    expect(e).toBeInstanceOf(Error);
+  }
 });

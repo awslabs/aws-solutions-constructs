@@ -18,11 +18,7 @@ import * as s3 from '@aws-cdk/aws-s3';
 import '@aws-cdk/assert/jest';
 
 function deploy(stack: cdk.Stack) {
-  const props: CloudFrontToS3Props = {
-    deployBucket: true
-  };
-
-  return new CloudFrontToS3(stack, 'test-cloudfront-s3', props);
+  return new CloudFrontToS3(stack, 'test-cloudfront-s3', {});
 }
 
 test('snapshot test CloudFrontToS3 default params', () => {
@@ -62,7 +58,6 @@ test('test s3Bucket override publicAccessBlockConfiguration', () => {
   const stack = new cdk.Stack();
 
   const props: CloudFrontToS3Props = {
-    deployBucket: true,
     bucketProps: {
       blockPublicAccess: {
         blockPublicAcls: false,
@@ -93,7 +88,6 @@ test('check existing bucket', () => {
   });
 
   const props: CloudFrontToS3Props = {
-    deployBucket: false,
     existingBucketObj: existingBucket
   };
 
@@ -109,7 +103,6 @@ test('test cloudfront with custom domain names', () => {
   const stack = new cdk.Stack();
 
   const props: CloudFrontToS3Props = {
-    deployBucket: true,
     cloudFrontDistributionProps: {
       aliasConfiguration: {
         acmCertRef: '/acm/mycertificate',
@@ -201,12 +194,8 @@ test('test cloudfront with custom domain names', () => {
 test('check exception for Missing existingObj from props for deploy = false', () => {
   const stack = new cdk.Stack();
 
-  const props: CloudFrontToS3Props = {
-    deployBucket: false
-  };
-
   try {
-    new CloudFrontToS3(stack, 'test-cloudfront-s3', props);
+    new CloudFrontToS3(stack, 'test-cloudfront-s3', {});
   } catch (e) {
     expect(e).toBeInstanceOf(Error);
   }

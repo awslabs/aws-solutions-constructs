@@ -20,7 +20,6 @@ const app = new App();
 const stack = new Stack(app, 'test-iot-lambda-dynamodb-stack');
 
 const props: IotToLambdaToDynamoDBProps = {
-    deployLambda: true,
     lambdaFunctionProps: {
         code: lambda.Code.asset(`${__dirname}/lambda`),
         runtime: lambda.Runtime.NODEJS_10_X,

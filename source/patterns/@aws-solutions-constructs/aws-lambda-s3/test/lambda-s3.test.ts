@@ -26,7 +26,6 @@ test('Test minimal deployment with new Lambda function', () => {
     const stack = new Stack();
     // Helper declaration
     new LambdaToS3(stack, 'lambda-to-s3-stack', {
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
@@ -45,7 +44,6 @@ test('Test deployment w/ s3:Delete only', () => {
     const stack = new Stack();
     // Helper declaration
     new LambdaToS3(stack, 'lambda-to-s3-stack', {
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
@@ -65,7 +63,6 @@ test('Test deployment w/ s3:Put only', () => {
     const stack = new Stack();
     // Helper declaration
     new LambdaToS3(stack, 'lambda-to-s3-stack', {
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
@@ -85,7 +82,6 @@ test('Test deployment w/ s3:Read only', () => {
     const stack = new Stack();
     // Helper declaration
     new LambdaToS3(stack, 'lambda-to-s3-stack', {
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
@@ -105,7 +101,6 @@ test('Test deployment w/ s3:ReadWrite only', () => {
     const stack = new Stack();
     // Helper declaration
     new LambdaToS3(stack, 'lambda-to-s3-stack', {
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
@@ -125,7 +120,6 @@ test('Test deployment w/ s3:Write only', () => {
     const stack = new Stack();
     // Helper declaration
     new LambdaToS3(stack, 'lambda-to-s3-stack', {
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
@@ -145,7 +139,6 @@ test('Test deployment w/ s3 multiple permissions', () => {
     const stack = new Stack();
     // Helper declaration
     new LambdaToS3(stack, 'lambda-to-s3-stack', {
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
@@ -165,7 +158,6 @@ test('Test the properties', () => {
     const stack = new Stack();
     // Helper declaration
     const pattern = new LambdaToS3(stack, 'lambda-to-s3-stack', {
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
@@ -189,7 +181,6 @@ test('Test the bucketProps override', () => {
     const stack = new Stack();
     // Helper declaration
     new LambdaToS3(stack, 'lambda-to-s3-stack', {
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',

@@ -26,7 +26,6 @@ test('Pattern minimal deployment', () => {
     // Initial setup
     const stack = new Stack();
     const props: KinesisStreamsToLambdaProps = {
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
@@ -46,7 +45,6 @@ test('Test properties', () => {
     const stack = new Stack();
     const props: KinesisStreamsToLambdaProps = {
         kinesisStreamProps: {},
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',

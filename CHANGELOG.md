@@ -4,22 +4,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.49.0] - 2020-07-09
+
+### Changed
+- Upgraded all patterns to CDK v1.49.0
+- BREAKING CHANGE: Removed `deployLambda` and `deployBucket` from all patterns Construct Props
+- Added `tablePermissions` to aws-lambda-dynamodb & aws-iot-lambda-dynamodb for fine-grained table permissions to grant to the lambda function
+
 ## [1.48.0] - 2020-07-06
 
 ### Added
-- Upgraded all patterns to CDK v1.48.0
 - aws-lambda-step-function pattern added
 
 ### Changed
+- Upgraded all patterns to CDK v1.48.0
 - Fix for aws-sqs-lambda pattern bug when using FIFO queue ([#13](https://github.com/awslabs/aws-solutions-constructs/pull/13))
 - Minor updates to CONTRIBUTING.md and deployment/build-patterns.sh
 
 ## [1.47.0] - 2020-06-25
 
-### Added
-- Upgraded all patterns to CDK v1.47.0
-
 ### Changed
+- Upgraded all patterns to CDK v1.47.0
 - Adding ability to provide a dynamodb table ([#8](https://github.com/awslabs/aws-solutions-constructs/pull/8))
 - Fix bug in s3BucketWithLogging function ([#9](https://github.com/awslabs/aws-solutions-constructs/pull/9))
 
@@ -30,10 +35,10 @@ General Availability of the AWS Solutions Constructs!! 🎉🎉🥂🥂🍾🍾
 ### Added
 - aws-events-rule-step-function pattern added
 - aws-s3-step-function pattern added
-- Upgraded all patterns to CDK v1.46.0
 - Renamed the Github repo and NPM, PyPi & Maven namespaces to AWS Solutions Constructs
 
 ### Changed
+- Upgraded all patterns to CDK v1.46.0
 - Changed the default encryption setting for Amazon SQS & Amazon Kinesis to use AWS Managed KMS Key
 - Updated READMEs for all patterns to include Default settings section
 - For all patterns, converted the getter methods to properties; used for retrieving the underlying AWS Resource object(s) created by the Solutions Constructs

@@ -29,7 +29,6 @@ test('Test deployment with new Lambda function', () => {
     // Helper declaration
     const startState = new stepfunctions.Pass(stack, 'StartState');
     new LambdaToStepFunction(stack, 'lambda-to-step-function-stack', {
-      deployLambda: true,
       lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',
@@ -73,7 +72,6 @@ test('Test deployment with existing Lambda function', () => {
   const fn = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
   // Add the pattern
   new LambdaToStepFunction(stack, 'test-lambda-step-function-stack', {
-    deployLambda: false,
     existingLambdaObj: fn,
     stateMachineProps: {
       definition: startState
@@ -110,7 +108,6 @@ test('Test invocation permissions', () => {
   const fn = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
   // Add the pattern
   new LambdaToStepFunction(stack, 'test-lambda-step-function-stack', {
-    deployLambda: false,
     existingLambdaObj: fn,
     stateMachineProps: {
       definition: startState
@@ -138,7 +135,6 @@ test('Test the properties', () => {
     // Helper declaration
     const startState = new stepfunctions.Pass(stack, 'StartState');
     const pattern = new LambdaToStepFunction(stack, 'lambda-to-step-function-stack', {
-      deployLambda: true,
       lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',

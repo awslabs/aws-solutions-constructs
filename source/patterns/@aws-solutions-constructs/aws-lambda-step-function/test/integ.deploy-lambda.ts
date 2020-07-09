@@ -26,7 +26,6 @@ const startState = new stepfunctions.Pass(stack, 'StartState');
 
 // Setup the pattern props
 const props: LambdaToStepFunctionProps = {
-    deployLambda: true,
     lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',

@@ -170,7 +170,6 @@ test('test s3Bucket override serverAccessLogsBucket', () => {
   const myS3Props: s3.BucketProps = defaults.DefaultS3Props(myLoggingBucket);
 
   defaults.buildS3Bucket(stack, {
-    deployBucket: true,
     bucketProps: myS3Props
   });
 

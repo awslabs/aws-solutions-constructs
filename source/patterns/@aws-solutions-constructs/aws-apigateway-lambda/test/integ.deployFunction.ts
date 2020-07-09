@@ -23,7 +23,6 @@ stack.templateOptions.description = 'Integration Test for aws-apigateway-lambda'
 
 // Definitions
 const props: ApiGatewayToLambdaProps = {
-    deployLambda: true,
     lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',

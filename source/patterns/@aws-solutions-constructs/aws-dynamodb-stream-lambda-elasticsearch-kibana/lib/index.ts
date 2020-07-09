@@ -26,22 +26,13 @@ import { Construct } from '@aws-cdk/core';
  */
 export interface DynamoDBStreamToLambdaToElasticSearchAndKibanaProps {
   /**
-   * Whether to create a new lambda function or use an existing lambda function.
-   * If set to false, you must provide a lambda function object as `existingObj`
-   *
-   * @default - true
-   */
-  readonly deployLambda: boolean,
-  /**
-   * Existing instance of Lambda Function object.
-   * If `deploy` is set to false only then this property is required
+   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
    *
    * @default - None
    */
   readonly existingLambdaObj?: lambda.Function,
   /**
-   * Optional user provided props to override the default props.
-   * If `deploy` is set to true only then this property is required
+   * User provided props to override the default props for the Lambda function.
    *
    * @default - Default props are used
    */
@@ -101,7 +92,6 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
     super(scope, id);
 
     const _props1: DynamoDBStreamToLambdaProps = {
-      deployLambda: props.deployLambda,
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps,
       dynamoEventSourceProps: props.dynamoEventSourceProps,
@@ -114,7 +104,6 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
     this.lambdaFunction = this.dynamoDBStreamToLambda.lambdaFunction;
 
     const _props2: LambdaToElasticSearchAndKibanaProps = {
-      deployLambda: false,
       existingLambdaObj: this.lambdaFunction,
       domainName: props.domainName,
       esDomainProps: props.esDomainProps

@@ -27,7 +27,6 @@ test('Test deployment with new Lambda function', () => {
     const stack = new Stack();
     // Helper declaration
     new LambdaToSns(stack, 'lambda-to-sns-stack', {
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
@@ -61,7 +60,6 @@ test('Test deployment with existing Lambda function', () => {
     const stack = new Stack();
     // Helper declaration
     new LambdaToSns(stack, 'lambda-to-sns-stack', {
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
@@ -99,7 +97,6 @@ test('Test deployment with imported encryption key', () => {
     });
     // Helper declaration
     new LambdaToSns(stack, 'lambda-to-sns-stack', {
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
@@ -135,7 +132,6 @@ test('Test the properties', () => {
     const stack = new Stack();
     // Helper declaration
     const pattern = new LambdaToSns(stack, 'lambda-to-sns-stack', {
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',

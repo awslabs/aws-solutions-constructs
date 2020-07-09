@@ -25,7 +25,6 @@ test('Pattern deployment with new Lambda function', () => {
     // Initial Setup
     const stack = new Stack();
     const props: ApiGatewayToLambdaProps = {
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
@@ -49,7 +48,6 @@ test('Pattern deployment with existing Lambda function', () => {
         code: lambda.Code.asset(`${__dirname}/lambda`)
     });
     const props: ApiGatewayToLambdaProps = {
-        deployLambda: false,
         existingLambdaObj: fn
     };
     new ApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
@@ -58,14 +56,12 @@ test('Pattern deployment with existing Lambda function', () => {
 });
 
 // --------------------------------------------------------------
-// Test for error with deployLambda=false and
-// existingLambdaObj=undefined (not supplied by user).
+// Test for error with existingLambdaObj=undefined (not supplied by user).
 // --------------------------------------------------------------
-test('Error on deployLambda=false and existingLambdaObj=undefined', () => {
+test('Error on existingLambdaObj=undefined', () => {
     // Initial Setup
     const stack = new Stack();
     const props: ApiGatewayToLambdaProps = {
-        deployLambda: false
     };
     const app = () => {
         new ApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
@@ -75,13 +71,12 @@ test('Error on deployLambda=false and existingLambdaObj=undefined', () => {
 });
 
 // --------------------------------------------------------------
-// Test deployLambda=true with lambdaFunctionProps.
+// Test with lambdaFunctionProps.
 // --------------------------------------------------------------
-test('Test deployLambda=true with lambdaFunctionProps', () => {
+test('Test with lambdaFunctionProps', () => {
   // Initial Setup
   const stack = new Stack();
   const props: ApiGatewayToLambdaProps = {
-      deployLambda: true,
       lambdaFunctionProps: {
           runtime: lambda.Runtime.NODEJS_10_X,
           handler: 'index.handler',
@@ -106,7 +101,6 @@ test('Test properties', () => {
     // Initial Setup
     const stack = new Stack();
     const props: ApiGatewayToLambdaProps = {
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
@@ -121,14 +115,12 @@ test('Test properties', () => {
 });
 
 // --------------------------------------------------------------
-// Test for error with deployLambda=true and
-// lambdaFunctionProps=undefined (not supplied by user).
+// Test for error with lambdaFunctionProps=undefined (not supplied by user).
 // --------------------------------------------------------------
-test('Error on deployLambda=true and lambdaFunctionProps=undefined', () => {
+test('Error on lambdaFunctionProps=undefined', () => {
     // Initial Setup
     const stack = new Stack();
     const props: ApiGatewayToLambdaProps = {
-        deployLambda: true
     };
     const app = () => {
         new ApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
@@ -144,7 +136,6 @@ test('Pattern deployment with two ApiGatewayToLambda constructs', () => {
     // Initial Setup
     const stack = new Stack();
     const props1: ApiGatewayToLambdaProps = {
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
@@ -154,7 +145,6 @@ test('Pattern deployment with two ApiGatewayToLambda constructs', () => {
     new ApiGatewayToLambda(stack, 'pattern1', props1);
 
     const props2: ApiGatewayToLambdaProps = {
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',

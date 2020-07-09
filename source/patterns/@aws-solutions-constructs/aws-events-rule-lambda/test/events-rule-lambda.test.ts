@@ -20,7 +20,6 @@ import * as cdk from '@aws-cdk/core';
 
 function deployNewFunc(stack: cdk.Stack) {
   const props: EventsRuleToLambdaProps = {
-    deployLambda: true,
     lambdaFunctionProps: {
         code: lambda.Code.asset(`${__dirname}/lambda`),
         runtime: lambda.Runtime.NODEJS_12_X,
@@ -171,11 +170,10 @@ test('check properties', () => {
   expect(construct.lambdaFunction !== null);
 });
 
-test('check exception for Missing existingObj from props for deploy = false', () => {
+test('check exception for Missing existingObj from props', () => {
   const stack = new cdk.Stack();
 
   const props: EventsRuleToLambdaProps = {
-    deployLambda: false,
     eventRuleProps: {
       schedule: events.Schedule.rate(cdk.Duration.minutes(5))
     }

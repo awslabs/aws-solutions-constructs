@@ -37,13 +37,11 @@ s3BucketResource.cfnOptions.metadata = {
 };
 
 const props: S3ToLambdaProps = {
-  deployLambda: true,
   lambdaFunctionProps: {
       code: lambda.Code.asset(`${__dirname}/lambda`),
       runtime: lambda.Runtime.NODEJS_12_X,
       handler: 'index.handler'
   },
-  deployBucket: false,
   existingBucketObj: myBucket
 };
 

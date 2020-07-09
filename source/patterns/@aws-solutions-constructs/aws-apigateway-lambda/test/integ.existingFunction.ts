@@ -33,7 +33,6 @@ const func = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 
 // Api gateway setup
 const props: ApiGatewayToLambdaProps = {
-    deployLambda: false,
     existingLambdaObj: func
 };
 

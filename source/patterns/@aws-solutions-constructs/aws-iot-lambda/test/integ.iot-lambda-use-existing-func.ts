@@ -31,7 +31,6 @@ const func = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 
 // Definitions
 const props: IotToLambdaProps = {
-    deployLambda: false,
     existingLambdaObj: func,
     iotTopicRuleProps: {
         topicRulePayload: {

@@ -22,43 +22,25 @@ import { Construct } from '@aws-cdk/core';
  */
 export interface LambdaToS3Props {
     /**
-     * Whether to create a new Lambda function or use an existing Lambda function.
-     * If set to false, you must provide an existing function for the `existingLambdaObj` property.
-     *
-     * @default - true
-     */
-    readonly deployLambda: boolean,
-    /**
-     * Existing instance of Lambda Function object.
-     * If `deploy` is set to false only then this property is required
+     * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
      *
      * @default - None
      */
     readonly existingLambdaObj?: lambda.Function,
     /**
-     * Optional user provided properties to override the default properties for the Lambda function.
-     * If `deploy` is set to true only then this property is required.
+     * User provided props to override the default props for the Lambda function.
      *
      * @default - Default properties are used.
      */
-    readonly lambdaFunctionProps?: lambda.FunctionProps | any
+    readonly lambdaFunctionProps?: lambda.FunctionProps
     /**
-     * Whether to create a S3 Bucket or use an existing S3 Bucket.
-     * If set to false, you must provide S3 Bucket as `existingBucketObj`
-     *
-     * @default - true
-     */
-    readonly deployBucket?: boolean,
-    /**
-     * Existing instance of S3 Bucket object.
-     * If `deployBucket` is set to false only then this property is required
+     * Existing instance of S3 Bucket object, if this is set then the bucketProps is ignored.
      *
      * @default - None
      */
     readonly existingBucketObj?: s3.Bucket,
     /**
-     * Optional user provided props to override the default props.
-     * If `deploy` is set to true only then this property is required
+     * User provided props to override the default props for the S3 Bucket.
      *
      * @default - Default props are used
      */
@@ -92,14 +74,12 @@ export class LambdaToS3 extends Construct {
 
         // Setup the Lambda function
         this.lambdaFunction = defaults.buildLambdaFunction(this, {
-            deployLambda: props.deployLambda,
             existingLambdaObj: props.existingLambdaObj,
             lambdaFunctionProps: props.lambdaFunctionProps
         });
 
         // Setup the S3 bucket
         this.s3Bucket = defaults.buildS3Bucket(this, {
-            deployBucket: props.deployBucket,
             existingBucketObj: props.existingBucketObj,
             bucketProps: props.bucketProps
         });
@@ -108,7 +88,7 @@ export class LambdaToS3 extends Construct {
         this.lambdaFunction.addEnvironment('S3_BUCKET_NAME', this.s3Bucket.bucketName);
 
         // Add the requested or default bucket permissions
-        if (props.hasOwnProperty('bucketPermissions') && props.bucketPermissions) {
+        if (props.bucketPermissions) {
             if (props.bucketPermissions.includes('Delete')) {
                 this.s3Bucket.grantDelete(this.lambdaFunction.grantPrincipal);
             }

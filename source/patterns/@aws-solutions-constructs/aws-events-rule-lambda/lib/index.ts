@@ -23,22 +23,13 @@ import { overrideProps } from '@aws-solutions-constructs/core';
  */
 export interface EventsRuleToLambdaProps {
   /**
-   * Whether to create a new lambda function or use an existing lambda function.
-   * If set to false, you must provide a lambda function object as `existingObj`
-   *
-   * @default - true
-   */
-  readonly deployLambda: boolean,
-  /**
-   * Existing instance of Lambda Function object.
-   * If `deploy` is set to false only then this property is required
+   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
    *
    * @default - None
    */
   readonly existingLambdaObj?: lambda.Function,
   /**
-   * Optional user provided props to override the default props.
-   * If `deploy` is set to true only then this property is required
+   * User provided props to override the default props for the Lambda function.
    *
    * @default - Default props are used
    */
@@ -67,7 +58,6 @@ export class EventsRuleToLambda extends Construct {
     super(scope, id);
 
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
-      deployLambda: props.deployLambda,
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps
     });

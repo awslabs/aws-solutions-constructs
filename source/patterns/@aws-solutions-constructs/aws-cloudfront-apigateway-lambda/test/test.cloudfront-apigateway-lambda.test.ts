@@ -25,7 +25,6 @@ function deployNewFunc(stack: cdk.Stack) {
   };
 
   return new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
-    deployLambda: true,
     lambdaFunctionProps
   });
 }
@@ -38,7 +37,6 @@ function useExistingFunc(stack: cdk.Stack) {
   };
 
   return new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
-    deployLambda: false,
     existingLambdaObj: new lambda.Function(stack, 'MyExistingFunction', lambdaFunctionProps)
   });
 }
@@ -116,11 +114,10 @@ test('check lambda function role for deploy: false', () => {
   });
 });
 
-test('check exception for Missing existingObj from props for deploy = false', () => {
+test('check exception for Missing existingObj from props', () => {
   const stack = new cdk.Stack();
 
   const props: CloudFrontToApiGatewayToLambdaProps = {
-    deployLambda: false
   };
 
   try {
@@ -130,11 +127,10 @@ test('check exception for Missing existingObj from props for deploy = false', ()
   }
 });
 
-test('check deploy = true and no prop', () => {
+test('check no prop', () => {
   const stack = new cdk.Stack();
 
   const props: CloudFrontToApiGatewayToLambdaProps = {
-    deployLambda: true
   };
 
   try {
@@ -156,7 +152,6 @@ test('override api gateway properties', () => {
   const fn: lambda.Function = new lambda.Function(stack, 'MyExistingFunction', lambdaFunctionProps);
 
   new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
-    deployLambda: false,
     existingLambdaObj: fn,
     apiGatewayProps: {
       handler: fn,

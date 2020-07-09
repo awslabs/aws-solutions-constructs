@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
+import { SynthUtils, expect as expectCDK, haveResource } from '@aws-cdk/assert';
 import { LambdaToDynamoDB, LambdaToDynamoDBProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
@@ -20,7 +20,6 @@ import '@aws-cdk/assert/jest';
 
 function deployNewFunc(stack: cdk.Stack) {
   const props: LambdaToDynamoDBProps = {
-    deployLambda: true,
     lambdaFunctionProps: {
           code: lambda.Code.asset(`${__dirname}/lambda`),
           runtime: lambda.Runtime.NODEJS_10_X,
@@ -39,7 +38,6 @@ function useExistingFunc(stack: cdk.Stack) {
   };
 
   const props: LambdaToDynamoDBProps = {
-    deployLambda: false,
     existingLambdaObj: new lambda.Function(stack, 'MyExistingFunction', lambdaFunctionProps),
     dynamoTableProps: {
       billingMode: dynamodb.BillingMode.PROVISIONED,
@@ -85,6 +83,7 @@ test('check lambda function properties for deploy: true', () => {
     }
   });
 });
+
 test('check dynamo table properties for deploy: true', () => {
   const stack = new cdk.Stack();
 
@@ -109,6 +108,7 @@ test('check dynamo table properties for deploy: true', () => {
     }
   });
 });
+
 test('check iot lambda function role for deploy: true', () => {
   const stack = new cdk.Stack();
 
@@ -163,7 +163,8 @@ test('check iot lambda function role for deploy: true', () => {
     ]
   });
 });
-test('check lambda function policy for deploy: true', () => {
+
+test('check lambda function policy default table permissions', () => {
   const stack = new cdk.Stack();
 
   deployNewFunc(stack);
@@ -202,6 +203,7 @@ test('check lambda function policy for deploy: true', () => {
     }
   });
 });
+
 test('check lambda function properties for deploy: false', () => {
   const stack = new cdk.Stack();
 
@@ -218,7 +220,8 @@ test('check lambda function properties for deploy: false', () => {
       Runtime: "python3.6"
   });
 });
-test('check iot lambda function role for deploy: false', () => {
+
+test('check lambda function role for existing function', () => {
   const stack = new cdk.Stack();
 
   useExistingFunc(stack);
@@ -252,6 +255,7 @@ test('check iot lambda function role for deploy: false', () => {
     ]
   });
 });
+
 test('check properties', () => {
   const stack = new cdk.Stack();
 
@@ -260,11 +264,11 @@ test('check properties', () => {
   expect(construct.lambdaFunction !== null);
   expect(construct.dynamoTable !== null);
 });
-test('check exception for Missing existingObj from props for deploy = false', () => {
+
+test('check exception for Missing existingObj from props', () => {
   const stack = new cdk.Stack();
 
   const props: LambdaToDynamoDBProps = {
-    deployLambda: true
   };
 
   try {
@@ -273,11 +277,11 @@ test('check exception for Missing existingObj from props for deploy = false', ()
     expect(e).toBeInstanceOf(Error);
   }
 });
-test('check deploy = true and no prop', () => {
+
+test('check for no prop', () => {
   const stack = new cdk.Stack();
 
   const props: LambdaToDynamoDBProps = {
-    deployLambda: true,
     lambdaFunctionProps: {
       code: lambda.Code.asset(`${__dirname}/lambda`),
       runtime: lambda.Runtime.NODEJS_10_X,
@@ -304,4 +308,183 @@ test('check deploy = true and no prop', () => {
       }
     }
   });
+});
+
+test('check lambda function policy ReadOnly table permissions', () => {
+  const stack = new cdk.Stack();
+
+  const props: LambdaToDynamoDBProps = {
+    lambdaFunctionProps: {
+          code: lambda.Code.asset(`${__dirname}/lambda`),
+          runtime: lambda.Runtime.NODEJS_10_X,
+          handler: 'index.handler'
+    },
+    tablePermissions: 'Read'
+  };
+
+  new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', props);
+
+  expectCDK(stack).to(haveResource('AWS::IAM::Policy', {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: [
+            "dynamodb:BatchGetItem",
+            "dynamodb:GetRecords",
+            "dynamodb:GetShardIterator",
+            "dynamodb:Query",
+            "dynamodb:GetItem",
+            "dynamodb:Scan"
+          ],
+          Effect: "Allow",
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                "testlambdadynamodbstackDynamoTable8138E93B",
+                "Arn"
+              ]
+            },
+            {
+              Ref: "AWS::NoValue"
+            }
+          ]
+        }
+      ],
+      Version: "2012-10-17"
+    }
+  }));
+
+});
+
+test('check lambda function policy WriteOnly table permissions', () => {
+  const stack = new cdk.Stack();
+
+  const props: LambdaToDynamoDBProps = {
+    lambdaFunctionProps: {
+          code: lambda.Code.asset(`${__dirname}/lambda`),
+          runtime: lambda.Runtime.NODEJS_10_X,
+          handler: 'index.handler'
+    },
+    tablePermissions: 'Write'
+  };
+
+  new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', props);
+
+  expectCDK(stack).to(haveResource('AWS::IAM::Policy', {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: [
+            "dynamodb:BatchWriteItem",
+            "dynamodb:PutItem",
+            "dynamodb:UpdateItem",
+            "dynamodb:DeleteItem"
+          ],
+          Effect: "Allow",
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                "testlambdadynamodbstackDynamoTable8138E93B",
+                "Arn"
+              ]
+            },
+            {
+              Ref: "AWS::NoValue"
+            }
+          ]
+        }
+      ],
+      Version: "2012-10-17"
+    }
+  }));
+
+});
+
+test('check lambda function policy ReadWrite table permissions', () => {
+  const stack = new cdk.Stack();
+
+  const props: LambdaToDynamoDBProps = {
+    lambdaFunctionProps: {
+          code: lambda.Code.asset(`${__dirname}/lambda`),
+          runtime: lambda.Runtime.NODEJS_10_X,
+          handler: 'index.handler'
+    },
+    tablePermissions: 'ReadWrite'
+  };
+
+  new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', props);
+
+  expectCDK(stack).to(haveResource('AWS::IAM::Policy', {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: [
+            "dynamodb:BatchGetItem",
+            "dynamodb:GetRecords",
+            "dynamodb:GetShardIterator",
+            "dynamodb:Query",
+            "dynamodb:GetItem",
+            "dynamodb:Scan",
+            "dynamodb:BatchWriteItem",
+            "dynamodb:PutItem",
+            "dynamodb:UpdateItem",
+            "dynamodb:DeleteItem"
+          ],
+          Effect: "Allow",
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                "testlambdadynamodbstackDynamoTable8138E93B",
+                "Arn"
+              ]
+            },
+            {
+              Ref: "AWS::NoValue"
+            }
+          ]
+        }
+      ],
+      Version: "2012-10-17"
+    }
+  }));
+
+});
+
+test('check lambda function policy All table permissions', () => {
+  const stack = new cdk.Stack();
+
+  const props: LambdaToDynamoDBProps = {
+    lambdaFunctionProps: {
+          code: lambda.Code.asset(`${__dirname}/lambda`),
+          runtime: lambda.Runtime.NODEJS_10_X,
+          handler: 'index.handler'
+    },
+    tablePermissions: 'All'
+  };
+
+  new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', props);
+
+  expectCDK(stack).to(haveResource('AWS::IAM::Policy', {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: "dynamodb:*",
+          Effect: "Allow",
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                "testlambdadynamodbstackDynamoTable8138E93B",
+                "Arn"
+              ]
+            },
+            {
+              Ref: "AWS::NoValue"
+            }
+          ]
+        }
+      ],
+      Version: "2012-10-17"
+    }
+  }));
+
 });

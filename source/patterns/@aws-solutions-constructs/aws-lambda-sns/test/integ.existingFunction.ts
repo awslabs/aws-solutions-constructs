@@ -32,7 +32,6 @@ const lambdaFunctionProps = {
 const func = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 
 const props: LambdaToSnsProps = {
-    deployLambda: false,
     existingLambdaObj: func
 };
 

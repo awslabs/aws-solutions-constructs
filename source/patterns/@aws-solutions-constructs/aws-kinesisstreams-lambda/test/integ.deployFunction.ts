@@ -23,7 +23,6 @@ stack.templateOptions.description = 'Integration Test for aws-kinesisstreams-lam
 
 // Definitions
 const props: KinesisStreamsToLambdaProps = {
-    deployLambda: true,
     kinesisStreamProps: {},
     eventSourceProps: {
         startingPosition: lambda.StartingPosition.TRIM_HORIZON,

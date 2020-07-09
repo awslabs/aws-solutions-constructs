@@ -37,22 +37,13 @@ export interface IotToKinesisFirehoseToS3Props {
      */
     readonly kinesisFirehoseProps?: kinesisfirehose.CfnDeliveryStreamProps | any;
     /**
-     * Whether to create a S3 Bucket or use an existing S3 Bucket.
-     * If set to false, you must provide S3 Bucket as `existingBucketObj`
-     *
-     * @default - true
-     */
-    readonly deployBucket?: boolean,
-    /**
-     * Existing instance of S3 Bucket object.
-     * If `deployBucket` is set to false only then this property is required
+     * Existing instance of S3 Bucket object, if this is set then the bucketProps is ignored.
      *
      * @default - None
      */
     readonly existingBucketObj?: s3.Bucket,
     /**
-     * Optional user provided props to override the default props.
-     * If `deploy` is set to true only then this property is required
+     * User provided props to override the default props for the S3 Bucket.
      *
      * @default - Default props are used
      */
@@ -79,7 +70,6 @@ export class IotToKinesisFirehoseToS3 extends Construct {
 
         const firehoseToS3 = new KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {
             kinesisFirehoseProps: props.kinesisFirehoseProps,
-            deployBucket: props.deployBucket,
             existingBucketObj: props.existingBucketObj,
             bucketProps: props.bucketProps
         });

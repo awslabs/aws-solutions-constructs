@@ -19,7 +19,6 @@ import '@aws-cdk/assert/jest';
 
 function deployNewFunc(stack: cdk.Stack) {
   const props: IotToLambdaProps = {
-    deployLambda: true,
     lambdaFunctionProps: {
       code: lambda.Code.asset(`${__dirname}/lambda`),
       runtime: lambda.Runtime.NODEJS_10_X,
@@ -47,7 +46,6 @@ function useExistingFunc(stack: cdk.Stack) {
   };
 
   const props: IotToLambdaProps = {
-      deployLambda: false,
       existingLambdaObj: new lambda.Function(stack, 'MyExistingFunction', lambdaFunctionProps),
       iotTopicRuleProps: {
         topicRulePayload: {
@@ -277,7 +275,6 @@ test('check exception for Missing existingObj from props for deploy = false', ()
   const stack = new cdk.Stack();
 
   const props: IotToLambdaProps = {
-    deployLambda: false,
     iotTopicRuleProps: {
       topicRulePayload: {
           ruleDisabled: false,
@@ -299,7 +296,6 @@ test('check deploy = true and no prop', () => {
   const stack = new cdk.Stack();
 
   const props: IotToLambdaProps = {
-    deployLambda: true,
     iotTopicRuleProps: {
       topicRulePayload: {
           ruleDisabled: false,

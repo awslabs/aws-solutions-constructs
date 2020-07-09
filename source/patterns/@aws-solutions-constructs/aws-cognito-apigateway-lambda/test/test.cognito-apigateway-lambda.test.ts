@@ -26,7 +26,6 @@ function deployNewFunc(stack: cdk.Stack) {
   };
 
   return   new CognitoToApiGatewayToLambda(stack, 'test-cognito-apigateway-lambda', {
-    deployLambda: true,
     lambdaFunctionProps
   });
 }
@@ -52,7 +51,6 @@ test('override cognito properties', () => {
   };
 
   new CognitoToApiGatewayToLambda(stack, 'test-cognito-apigateway-lambda', {
-    deployLambda: true,
     lambdaFunctionProps,
     cognitoUserPoolProps
   });
@@ -87,11 +85,10 @@ test('override cognito properties', () => {
   });
 });
 
-test('check exception for Missing existingObj from props for deploy = false', () => {
+test('check exception for Missing existingObj from props', () => {
   const stack = new cdk.Stack();
 
   const props: CognitoToApiGatewayToLambdaProps = {
-    deployLambda: false
   };
 
   try {

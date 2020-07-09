@@ -19,22 +19,13 @@ import { overrideProps } from './utils';
 
 export interface BuildLambdaFunctionProps {
   /**
-   * Whether to create a new Lambda function or use an existing Lambda function.
-   * If set to false, you must provide a lambda function object as `existingLambdaObj`
-   *
-   * @default - true
-   */
-  readonly deployLambda: boolean,
-  /**
-   * Existing instance of Lambda Function object.
-   * If `deploy` is set to false only then this property is required
+   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored
    *
    * @default - None
    */
   readonly existingLambdaObj?: lambda.Function,
   /**
-   * Optional user provided props to override the default props for the Lambda function.
-   * If `deploy` is set to true only then this property is required
+   * User provided props to override the default props for the Lambda function.
    *
    * @default - Default props are used
    */
@@ -43,20 +34,14 @@ export interface BuildLambdaFunctionProps {
 
 export function buildLambdaFunction(scope: cdk.Construct, props: BuildLambdaFunctionProps): lambda.Function {
   // Conditional lambda function creation
-  // If deployLambda == false
-  if (props.hasOwnProperty('deployLambda') && props.deployLambda === false) {
-    if (props.existingLambdaObj) {
-      return props.existingLambdaObj;
-    } else {
-      throw Error('Missing existingObj from props for deployLambda = false');
-    }
-    // If deployLambda == true
-  } else {
+  if (!props.existingLambdaObj) {
     if (props.lambdaFunctionProps) {
       return deployLambdaFunction(scope, props.lambdaFunctionProps);
     } else {
-      throw Error('Missing lambdaFunctionProps from props for deployLambda = true');
+      throw Error('Either existingLambdaObj or lambdaFunctionProps is required');
     }
+  } else {
+    return props.existingLambdaObj;
   }
 }
 

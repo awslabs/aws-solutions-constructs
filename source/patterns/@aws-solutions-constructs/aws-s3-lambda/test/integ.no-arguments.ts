@@ -21,7 +21,6 @@ const app = new App();
 const stack = new Stack(app, 'test-s3-lambda-new-bucket-stack');
 
 const props: S3ToLambdaProps = {
-    deployLambda: true,
     lambdaFunctionProps: {
         code: lambda.Code.asset(`${__dirname}/lambda`),
         runtime: lambda.Runtime.NODEJS_12_X,

@@ -28,7 +28,6 @@ const lambdaFunctionProps = {
 const func = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 
 new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', {
-    deployLambda: false,
     existingLambdaObj: func
 });
 

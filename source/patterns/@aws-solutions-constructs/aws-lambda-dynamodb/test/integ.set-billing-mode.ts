@@ -31,7 +31,6 @@ new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', {
             type: dynamodb.AttributeType.STRING
         }
     },
-    deployLambda: true,
     lambdaFunctionProps: {
         code: lambda.Code.asset(`${__dirname}/lambda`),
         runtime: lambda.Runtime.NODEJS_10_X,

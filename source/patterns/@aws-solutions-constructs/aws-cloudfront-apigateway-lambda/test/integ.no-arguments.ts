@@ -29,7 +29,6 @@ const lambdaProps: lambda.FunctionProps = {
 
 new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
     lambdaFunctionProps: lambdaProps,
-    deployLambda: true
 });
 
 // Synth

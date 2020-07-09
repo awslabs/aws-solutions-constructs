@@ -21,22 +21,13 @@ import { Construct } from '@aws-cdk/core';
  */
 export interface LambdaToDynamoDBProps {
   /**
-   * Whether to create a new lambda function or use an existing lambda function.
-   * If set to false, you must provide a lambda function object as `existingObj`
-   *
-   * @default - true
-   */
-  readonly deployLambda: boolean,
-  /**
-   * Existing instance of Lambda Function object.
-   * If `deploy` is set to false only then this property is required
+   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
    *
    * @default - None
    */
   readonly existingLambdaObj?: lambda.Function,
   /**
-   * Optional user provided props to override the default props.
-   * If `deploy` is set to true only then this property is required
+   * User provided props to override the default props for the Lambda function.
    *
    * @default - Default props are used
    */
@@ -52,7 +43,14 @@ export interface LambdaToDynamoDBProps {
    *
    * @default - None
    */
-  readonly existingTableObj?: dynamodb.Table
+  readonly existingTableObj?: dynamodb.Table,
+  /**
+   * Optional table permissions to grant to the Lambda function.
+   * One of the following may be specified: "All", "Read", "ReadWrite", "Write".
+   *
+   * @default - Read/write access is given to the Lambda function if no value is specified.
+   */
+  readonly tablePermissions?: string
 }
 
 export class LambdaToDynamoDB extends Construct {
@@ -71,7 +69,6 @@ export class LambdaToDynamoDB extends Construct {
     super(scope, id);
 
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
-      deployLambda: props.deployLambda,
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps
     });
@@ -83,7 +80,21 @@ export class LambdaToDynamoDB extends Construct {
 
     this.lambdaFunction.addEnvironment('DDB_TABLE_NAME', this.dynamoTable.tableName);
 
+    // Add the requested or default table permissions
+    if (props.tablePermissions) {
+      const _permissions = props.tablePermissions.toUpperCase();
+      if (_permissions === 'ALL') {
+          this.dynamoTable.grantFullAccess(this.lambdaFunction.grantPrincipal);
+      } else if (_permissions  ===  'READ') {
+          this.dynamoTable.grantReadData(this.lambdaFunction.grantPrincipal);
+      } else if (_permissions  ===  'READWRITE') {
+          this.dynamoTable.grantReadWriteData(this.lambdaFunction.grantPrincipal);
+      } else if (_permissions  ===  'WRITE') {
+          this.dynamoTable.grantWriteData(this.lambdaFunction.grantPrincipal);
+      }
+  } else {
     this.dynamoTable.grantReadWriteData(this.lambdaFunction.grantPrincipal);
+  }
 
     // Conditional metadata for cfn_nag
     if (props.dynamoTableProps?.billingMode === dynamodb.BillingMode.PROVISIONED) {

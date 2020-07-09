@@ -26,7 +26,6 @@ test('Pattern deployment w/ new Lambda function and default props', () => {
     // Initial Setup
     const stack = new Stack();
     const props: SqsToLambdaProps = {
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
@@ -46,7 +45,6 @@ test('Pattern deployment w/ new Lambda function and overridden props', () => {
     // Initial Setup
     const stack = new Stack();
     const props: SqsToLambdaProps = {
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
@@ -80,7 +78,6 @@ test('Pattern deployment w/ Existing Lambda Function', () => {
         code: lambda.Code.asset(`${__dirname}/lambda`)
     });
     const props: SqsToLambdaProps = {
-        deployLambda: false,
         existingLambdaObj: fn,
         deployDeadLetterQueue: false,
         maxReceiveCount: 0,
@@ -98,7 +95,6 @@ test('Test getter methods', () => {
     // Initial Setup
     const stack = new Stack();
     const props: SqsToLambdaProps = {
-        deployLambda: true,
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
@@ -124,7 +120,6 @@ test('Test error handling for existing Lambda function', () => {
     // Initial Setup
     const stack = new Stack();
     const props: SqsToLambdaProps = {
-        deployLambda: false,
         existingLambdaObj: undefined,
         deployDeadLetterQueue: false,
         maxReceiveCount: 0,
@@ -144,7 +139,6 @@ test('Test error handling for new Lambda function w/o required properties', () =
     // Initial Setup
     const stack = new Stack();
     const props: SqsToLambdaProps = {
-        deployLambda: true,
         deployDeadLetterQueue: false,
         maxReceiveCount: 0,
         queueProps: {}

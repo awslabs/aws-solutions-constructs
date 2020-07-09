@@ -148,14 +148,12 @@ export class ServerlessImageHandler extends Construct {
         this.cloudFrontApiGatewayLambda = new CloudFrontToApiGatewayToLambda(this, 'CloudFrontApiGatewayLambda', {
             cloudFrontDistributionProps: (this.customProps.cloudFrontDistributionProps) ? this.customProps.cloudFrontDistributionProps : undefined,
             apiGatewayProps: apiProps,
-            deployLambda: true,
             lambdaFunctionProps: functionProps
         });
         const existingLambdaFn = this.cloudFrontApiGatewayLambda.lambdaFunction;
 
         // Build the LambdaToS3 pattern
         this.lambdaS3 = new LambdaToS3(this, 'ExistingLambdaS3', {
-            deployLambda: false,
             existingLambdaObj: existingLambdaFn,
             bucketProps: this.customProps.bucketProps,
             bucketPermissions: (this.customProps.bucketPermissions) ? this.customProps.bucketPermissions : undefined

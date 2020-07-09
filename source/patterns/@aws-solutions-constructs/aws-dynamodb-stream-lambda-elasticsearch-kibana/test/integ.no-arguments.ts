@@ -21,7 +21,6 @@ const app = new App();
 const stack = new Stack(app, 'test-dynamodb-stream-lambda-elasticsearch-kibana-stack');
 
 const props: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps = {
-    deployLambda: true,
     lambdaFunctionProps: {
         code: lambda.Code.asset(`${__dirname}/lambda`),
         runtime: lambda.Runtime.NODEJS_12_X,

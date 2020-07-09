@@ -25,9 +25,7 @@ export class S3StaticWebsiteStack extends Stack {
     const sourceBucket: string = 'wildrydes-us-east-1';
     const sourcePrefix: string = 'WebApplication/1_StaticWebHosting/website/';
 
-    const construct = new CloudFrontToS3(this, 'CloudFrontToS3', {
-      deployBucket: true
-    });
+    const construct = new CloudFrontToS3(this, 'CloudFrontToS3', {});
     const targetBucket: string = construct.s3Bucket.bucketName;
 
     const lambdaFunc = new lambda.Function(this, 'copyObjHandler', {

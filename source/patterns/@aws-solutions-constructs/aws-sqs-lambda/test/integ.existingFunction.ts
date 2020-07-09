@@ -32,7 +32,6 @@ const lambdaFunctionProps = {
 const func = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 
 const props: SqsToLambdaProps = {
-    deployLambda: false,
     existingLambdaObj: func,
     queueProps: {},
     deployDeadLetterQueue: true,

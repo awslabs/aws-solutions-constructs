@@ -28,7 +28,6 @@ const lambdaProps: lambda.FunctionProps = {
 
 new CognitoToApiGatewayToLambda(stack, 'test-cognito-apigateway-lambda', {
     lambdaFunctionProps: lambdaProps,
-    deployLambda: true
 });
 
 // Synth

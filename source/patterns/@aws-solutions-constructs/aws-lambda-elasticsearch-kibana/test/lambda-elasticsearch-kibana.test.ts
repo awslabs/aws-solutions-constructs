@@ -19,7 +19,6 @@ import '@aws-cdk/assert/jest';
 
 function deployNewFunc(stack: cdk.Stack) {
   const props: LambdaToElasticSearchAndKibanaProps = {
-    deployLambda: true,
     lambdaFunctionProps: {
           code: lambda.Code.asset(`${__dirname}/lambda`),
           runtime: lambda.Runtime.NODEJS_10_X,
@@ -72,7 +71,6 @@ test('check exception for Missing existingObj from props for deploy = false', ()
   const stack = new cdk.Stack();
 
   const props: LambdaToElasticSearchAndKibanaProps = {
-    deployLambda: true,
     domainName: 'test-domain'
   };
 

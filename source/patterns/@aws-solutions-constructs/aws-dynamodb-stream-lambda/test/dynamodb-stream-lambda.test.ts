@@ -20,7 +20,6 @@ import '@aws-cdk/assert/jest';
 
 function deployNewFunc(stack: cdk.Stack) {
   const props: DynamoDBStreamToLambdaProps = {
-    deployLambda: true,
     lambdaFunctionProps: {
           code: lambda.Code.asset(`${__dirname}/lambda`),
           runtime: lambda.Runtime.NODEJS_12_X,
@@ -59,7 +58,6 @@ test('check lambda EventSourceMapping', () => {
 test('check DynamoEventSourceProps override', () => {
   const stack = new cdk.Stack();
   const props: DynamoDBStreamToLambdaProps = {
-    deployLambda: true,
     lambdaFunctionProps: {
       code: lambda.Code.asset(`${__dirname}/lambda`),
       runtime: lambda.Runtime.NODEJS_12_X,
@@ -142,7 +140,6 @@ test('check lambda permission to read dynamodb stream', () => {
 test('check dynamodb table stream override', () => {
   const stack = new cdk.Stack();
   const props: DynamoDBStreamToLambdaProps = {
-    deployLambda: true,
     lambdaFunctionProps: {
       code: lambda.Code.asset(`${__dirname}/lambda`),
       runtime: lambda.Runtime.NODEJS_12_X,
@@ -191,11 +188,10 @@ test('check getter methods', () => {
   expect(construct.dynamoTable !== null);
 });
 
-test('check exception for Missing existingObj from props for deploy = false', () => {
+test('check exception for Missing existingObj from props', () => {
   const stack = new cdk.Stack();
 
   const props: DynamoDBStreamToLambdaProps = {
-    deployLambda: true
   };
 
   try {
