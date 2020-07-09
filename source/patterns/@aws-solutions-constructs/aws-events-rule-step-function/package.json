@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-events-rule-step-function",
-  "version": "1.49.0",
+  "version": "1.50.0",
   "description": "CDK Constructs for deploying AWS Events Rule that invokes AWS Step Function",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -53,18 +53,18 @@
     }
   },
   "dependencies": {
-    "@aws-cdk/aws-stepfunctions": "~1.49.0",
-    "@aws-cdk/aws-stepfunctions-tasks": "~1.49.0",
-    "@aws-cdk/core": "~1.49.0",
-    "@aws-cdk/aws-events": "~1.49.0",
-    "@aws-cdk/aws-iam": "~1.49.0",
-    "@aws-cdk/aws-lambda": "~1.49.0",
-    "@aws-cdk/aws-cloudwatch": "~1.49.0",
-    "@aws-solutions-constructs/core": "~1.49.0",
+    "@aws-cdk/aws-stepfunctions": "~1.50.0",
+    "@aws-cdk/aws-stepfunctions-tasks": "~1.50.0",
+    "@aws-cdk/core": "~1.50.0",
+    "@aws-cdk/aws-events": "~1.50.0",
+    "@aws-cdk/aws-iam": "~1.50.0",
+    "@aws-cdk/aws-lambda": "~1.50.0",
+    "@aws-cdk/aws-cloudwatch": "~1.50.0",
+    "@aws-solutions-constructs/core": "~1.50.0",
     "constructs": "^3.0.2"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "~1.49.0",
+    "@aws-cdk/assert": "~1.50.0",
     "@types/jest": "^24.0.23",
     "@types/node": "^10.3.0"
   },
@@ -74,14 +74,14 @@
     ]
   },
   "peerDependencies": {
-    "@aws-cdk/aws-stepfunctions": "~1.49.0",
-    "@aws-cdk/core": "~1.49.0",
-    "@aws-cdk/aws-events": "~1.49.0",
-    "@aws-cdk/aws-iam": "~1.49.0",
-    "@aws-solutions-constructs/core": "~1.49.0",
+    "@aws-cdk/aws-stepfunctions": "~1.50.0",
+    "@aws-cdk/core": "~1.50.0",
+    "@aws-cdk/aws-events": "~1.50.0",
+    "@aws-cdk/aws-iam": "~1.50.0",
+    "@aws-solutions-constructs/core": "~1.50.0",
     "constructs": "^3.0.2",
-    "@aws-cdk/aws-lambda": "~1.49.0",
-    "@aws-cdk/aws-cloudwatch": "~1.49.0",
-    "@aws-cdk/aws-stepfunctions-tasks": "~1.49.0"
+    "@aws-cdk/aws-lambda": "~1.50.0",
+    "@aws-cdk/aws-cloudwatch": "~1.50.0",
+    "@aws-cdk/aws-stepfunctions-tasks": "~1.50.0"
   }
 }
