@@ -58,6 +58,8 @@ Object {
           },
           "Origins": Array [
             Object {
+              "ConnectionAttempts": 3,
+              "ConnectionTimeout": 10,
               "DomainName": Object {
                 "Fn::GetAtt": Array [
                   "S3Bucket07682993",

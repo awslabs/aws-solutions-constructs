@@ -58,6 +58,8 @@ Object {
           },
           "Origins": Array [
             Object {
+              "ConnectionAttempts": 3,
+              "ConnectionTimeout": 10,
               "DomainName": Object {
                 "Fn::GetAtt": Array [
                   "testcloudfronts3S3BucketE0C5F76E",

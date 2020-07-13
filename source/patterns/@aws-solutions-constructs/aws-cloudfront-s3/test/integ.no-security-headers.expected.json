@@ -253,6 +253,8 @@
           },
           "Origins": [
             {
+              "ConnectionAttempts": 3,
+              "ConnectionTimeout": 10,
               "DomainName": {
                 "Fn::GetAtt": [
                   "testcloudfronts3nosecurityheadersS3Bucket4D06173D",
