@@ -41,7 +41,7 @@ test('Test deployment w/ custom properties', () => {
     // Helper declaration
     defaults.buildQueue(stack, 'primary-queue', {
         queueProps: {
-            description: "custom-queue-props",
+            queueName: "custom-queue-props",
             encryption: sqs.QueueEncryption.KMS,
             encryptionMasterKey: encKey
         }
@@ -66,7 +66,7 @@ test('Test dead letter queue deployment/configuration', () => {
     // Helper declaration
     defaults.buildQueue(stack, 'primary-queue', {
         queueProps: {
-            description: "not-the-dead-letter-queue-props",
+            queueName: "not-the-dead-letter-queue-props",
             encryption: sqs.QueueEncryption.KMS,
             encryptionMasterKey: encKey
         },
@@ -74,4 +74,49 @@ test('Test dead letter queue deployment/configuration', () => {
     });
     // Assertion 1
     expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+// --------------------------------------------------------------
+// Test dead letter queue deployment/configuration w/o mrc
+// --------------------------------------------------------------
+test('Test dead letter queue deployment/configuration w/o mrc', () => {
+  // Stack
+  const stack = new Stack();
+  // Helper setup
+  const encKey = defaults.buildEncryptionKey(stack);
+  const dlq = defaults.buildQueue(stack, 'dead-letter-queue');
+  const dlqi = defaults.buildDeadLetterQueue({
+      deadLetterQueue: dlq
+  });
+  // Helper declaration
+  defaults.buildQueue(stack, 'primary-queue', {
+      queueProps: {
+          queueName: "not-the-dead-letter-queue-props",
+          encryption: sqs.QueueEncryption.KMS,
+          encryptionMasterKey: encKey
+      },
+      deadLetterQueue: dlqi
+  });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+// --------------------------------------------------------------
+// Test existingQueueObj
+// --------------------------------------------------------------
+test('Test existingQueueObj', () => {
+  // Stack
+  const stack = new Stack();
+  // Helper setup
+  const existingQueue = defaults.buildQueue(stack, 'existing-queue', {
+    queueProps: {
+      queueName: 'existing-queue'
+    }
+  });
+  // Helper declaration
+  defaults.buildQueue(stack, 'primary-queue', {
+      existingQueueObj: existingQueue
+  });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });

@@ -19,11 +19,17 @@ import { overrideProps } from './utils';
 
 export interface BuildQueueProps {
     /**
+     * Existing instance of SQS queue object, if this is set then the queueProps is ignored.
+     *
+     * @default - None.
+     */
+    readonly existingQueueObj?: sqs.Queue,
+    /**
      * Optional user provided props to override the default props for the primary queue.
      *
      * @default - Default props are used.
      */
-    readonly queueProps?: sqs.QueueProps | any
+    readonly queueProps?: sqs.QueueProps
     /**
      * Optional dead letter queue to pass bad requests to after the max receive count is reached.
      *
@@ -33,23 +39,38 @@ export interface BuildQueueProps {
 }
 
 export function buildQueue(scope: cdk.Construct, id: string, props?: BuildQueueProps): sqs.Queue {
-    // If props is undefined, define it
-    props = (props === undefined) ? {} : props;
-    // Setup the queue
-    let queueProps;
-    if (props.queueProps) {
-        // If property overrides have been provided, incorporate them and deploy
-        queueProps = overrideProps(defaults.DefaultQueueProps(), props.queueProps);
-    } else {
-        // If no property overrides, deploy using the default configuration
-        queueProps = defaults.DefaultQueueProps();
-    }
-    // Determine whether a DLQ property should be added
-    if (props.deadLetterQueue) {
-        queueProps.deadLetterQueue = props.deadLetterQueue;
-    }
-    // Return the queue
-    return new sqs.Queue(scope, id, queueProps);
+  // If props is undefined, define it
+  props = (props === undefined) ? {} : props;
+  // Conditional queue creation
+  // If an existingQueueObj is not specified
+  if (!props.existingQueueObj) {
+    // Deploy the queue
+    return deployQueue(scope, id, props.queueProps, props.deadLetterQueue);
+  // If an existingQueueObj is specified, return that object as the queue to be used
+  } else {
+    return props.existingQueueObj;
+  }
+}
+
+export function deployQueue(scope: cdk.Construct,
+                            id: string,
+                            queuePropsParam?: sqs.QueueProps,
+                            deadLetterQueueParam?: sqs.DeadLetterQueue): sqs.Queue {
+  // Setup the queue
+  let queueProps;
+  if (queuePropsParam) {
+    // If property overrides have been provided, incorporate them and deploy
+    queueProps = overrideProps(defaults.DefaultQueueProps(), queuePropsParam);
+  } else {
+    // If no property overrides, deploy using the default configuration
+    queueProps = defaults.DefaultQueueProps();
+  }
+  // Determine whether a DLQ property should be added
+  if (deadLetterQueueParam) {
+    queueProps.deadLetterQueue = deadLetterQueueParam;
+  }
+  // Return the queue
+  return new sqs.Queue(scope, id, queueProps);
 }
 
 export interface BuildDeadLetterQueueProps {
@@ -60,7 +81,7 @@ export interface BuildDeadLetterQueueProps {
    */
   readonly deadLetterQueue: sqs.Queue
   /**
-   * The number of times a message can be unsuccessfully dequeued before being moved to the dead-letter queue.
+   * The number of times a message can be unsuccessfully dequeued before being moved to the dead letter queue.
    *
    * @default - Default props are used
    */
@@ -69,10 +90,11 @@ export interface BuildDeadLetterQueueProps {
 
 export function buildDeadLetterQueue(props: BuildDeadLetterQueueProps): sqs.DeadLetterQueue {
     const mrc = (props.maxReceiveCount) ? props.maxReceiveCount : defaults.defaultMaxReceiveCount;
-    // Setup the queue interface and return
+    // Setup the queue interface
     const dlq: sqs.DeadLetterQueue = {
         maxReceiveCount: mrc,
         queue: props.deadLetterQueue
     };
+    // Return the dead letter queue
     return dlq;
 }

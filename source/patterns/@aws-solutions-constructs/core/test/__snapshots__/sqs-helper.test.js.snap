@@ -69,6 +69,7 @@ Object {
             "Arn",
           ],
         },
+        "QueueName": "not-the-dead-letter-queue-props",
         "RedrivePolicy": Object {
           "deadLetterTargetArn": Object {
             "Fn::GetAtt": Array [
@@ -77,6 +78,92 @@ Object {
             ],
           },
           "maxReceiveCount": 3,
+        },
+      },
+      "Type": "AWS::SQS::Queue",
+    },
+  },
+}
+`;
+
+exports[`Test dead letter queue deployment/configuration w/o mrc 1`] = `
+Object {
+  "Resources": Object {
+    "EncryptionKey1B843E66": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "EnableKeyRotation": true,
+        "KeyPolicy": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion",
+                "kms:GenerateDataKey",
+                "kms:TagResource",
+                "kms:UntagResource",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "deadletterqueueD1EEB012": Object {
+      "Properties": Object {
+        "KmsMasterKeyId": "alias/aws/sqs",
+      },
+      "Type": "AWS::SQS::Queue",
+    },
+    "primaryqueue045A5712": Object {
+      "Properties": Object {
+        "KmsMasterKeyId": Object {
+          "Fn::GetAtt": Array [
+            "EncryptionKey1B843E66",
+            "Arn",
+          ],
+        },
+        "QueueName": "not-the-dead-letter-queue-props",
+        "RedrivePolicy": Object {
+          "deadLetterTargetArn": Object {
+            "Fn::GetAtt": Array [
+              "deadletterqueueD1EEB012",
+              "Arn",
+            ],
+          },
+          "maxReceiveCount": 15,
         },
       },
       "Type": "AWS::SQS::Queue",
@@ -148,6 +235,21 @@ Object {
             "Arn",
           ],
         },
+        "QueueName": "custom-queue-props",
+      },
+      "Type": "AWS::SQS::Queue",
+    },
+  },
+}
+`;
+
+exports[`Test existingQueueObj 1`] = `
+Object {
+  "Resources": Object {
+    "existingqueue03D57A53": Object {
+      "Properties": Object {
+        "KmsMasterKeyId": "alias/aws/sqs",
+        "QueueName": "existing-queue",
       },
       "Type": "AWS::SQS::Queue",
     },

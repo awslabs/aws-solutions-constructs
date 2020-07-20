@@ -12,16 +12,15 @@
  */
 
 // Imports
-import * as sqs from '@aws-cdk/aws-sqs';
-import * as lambda from '@aws-cdk/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
+import * as lambda from '@aws-cdk/aws-lambda';
+import * as sqs from '@aws-cdk/aws-sqs';
 import { Construct } from '@aws-cdk/core';
-import { SqsEventSource } from '@aws-cdk/aws-lambda-event-sources';
 
 /**
- * @summary The properties for the SqsToLambda class.
+ * @summary The properties for the LambdaToSqs class.
  */
-export interface SqsToLambdaProps {
+export interface LambdaToSqsProps {
     /**
      * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
      *
@@ -41,11 +40,17 @@ export interface SqsToLambdaProps {
      */
     readonly existingQueueObj?: sqs.Queue,
     /**
-     * Optional user provided properties
+     * Optional user-provided props to override the default props for the SQS queue.
      *
      * @default - Default props are used
      */
     readonly queueProps?: sqs.QueueProps,
+    /**
+     * Whether to grant additional permissions to the Lambda function enabling it to purge the SQS queue.
+     *
+     * @default - "false", disabled by default.
+     */
+    readonly enableQueuePurging?: boolean,
     /**
      * Optional user provided properties for the dead letter queue
      *
@@ -67,22 +72,22 @@ export interface SqsToLambdaProps {
 }
 
 /**
- * @summary The SqsToLambda class.
+ * @summary The LambdaToSqs class.
  */
-export class SqsToLambda extends Construct {
+export class LambdaToSqs extends Construct {
+    public readonly lambdaFunction: lambda.Function;
     public readonly sqsQueue: sqs.Queue;
     public readonly deadLetterQueue: sqs.DeadLetterQueue | undefined;
-    public readonly lambdaFunction: lambda.Function;
 
     /**
-     * @summary Constructs a new instance of the SqsToLambda class.
+     * @summary Constructs a new instance of the LambdaToSqs class.
      * @param {cdk.App} scope - represents the scope for all the resources.
      * @param {string} id - this is a a scope-unique id.
-     * @param {CloudFrontToApiGatewayToLambdaProps} props - user provided props for the construct.
-     * @since 0.8.0
+     * @param {LambdaToSqsProps} props - user provided props for the construct.
+     * @since 1.49.0
      * @access public
      */
-    constructor(scope: Construct, id: string, props: SqsToLambdaProps) {
+    constructor(scope: Construct, id: string, props: LambdaToSqsProps) {
         super(scope, id);
 
         // Setup the Lambda function
@@ -91,15 +96,15 @@ export class SqsToLambda extends Construct {
             lambdaFunctionProps: props.lambdaFunctionProps
         });
 
-        // Setup the dead letter queue, if applicable
+        // Setup a dead letter queue, if applicable
         if (props.deployDeadLetterQueue || props.deployDeadLetterQueue === undefined) {
-            const dlq: sqs.Queue = defaults.buildQueue(this, 'deadLetterQueue', {
-                queueProps: props.deadLetterQueueProps
-            });
-            this.deadLetterQueue = defaults.buildDeadLetterQueue({
-                deadLetterQueue: dlq,
-                maxReceiveCount: props.maxReceiveCount
-            });
+          const dlq: sqs.Queue = defaults.buildQueue(this, 'deadLetterQueue', {
+              queueProps: props.deadLetterQueueProps
+          });
+          this.deadLetterQueue = defaults.buildDeadLetterQueue({
+              deadLetterQueue: dlq,
+              maxReceiveCount: props.maxReceiveCount
+          });
         }
 
         // Setup the queue
@@ -109,7 +114,15 @@ export class SqsToLambda extends Construct {
             deadLetterQueue: this.deadLetterQueue
         });
 
-        // Setup the event source mapping
-        this.lambdaFunction.addEventSource(new SqsEventSource(this.sqsQueue));
+        // Configure environment variables
+        this.lambdaFunction.addEnvironment('SQS_QUEUE_URL', this.sqsQueue.queueUrl);
+
+        // Enable queue purging permissions for the Lambda function, if enabled
+        if (props.enableQueuePurging) {
+            this.sqsQueue.grantPurge(this.lambdaFunction);
+        }
+
+        // Enable message send permissions for the Lambda function by default
+        this.sqsQueue.grantSendMessages(this.lambdaFunction);
     }
 }
