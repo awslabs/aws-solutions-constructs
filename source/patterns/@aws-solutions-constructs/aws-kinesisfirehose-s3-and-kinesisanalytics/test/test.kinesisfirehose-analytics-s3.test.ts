@@ -65,12 +65,6 @@ test('Test properties', () => {
     // Initial Setup
     const stack = new Stack();
     const props: KinesisFirehoseToAnalyticsAndS3Props = {
-        kinesisFirehoseProps: {
-            deploy: true,
-            props: {
-                deliveryStreamName: "myDeliveryStream"
-            }
-        },
         kinesisAnalyticsProps: {
             inputs: [{
                 inputSchema: {
@@ -96,5 +90,8 @@ test('Test properties', () => {
     // Assertions
     expect(app.kinesisAnalytics !== null);
     expect(app.kinesisFirehose !== null);
+    expect(app.kinesisFirehoseRole !== null);
+    expect(app.kinesisFirehoseLogGroup !== null);
     expect(app.s3Bucket !== null);
+    expect(app.s3LoggingBucket !== null);
 });

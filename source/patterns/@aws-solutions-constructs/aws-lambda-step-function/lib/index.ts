@@ -17,6 +17,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as sfn from '@aws-cdk/aws-stepfunctions';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
+import { LogGroup } from '@aws-cdk/aws-logs';
 
 /**
  * @summary Properties for the LambdaToStepFunction class.
@@ -48,6 +49,7 @@ export interface LambdaToStepFunctionProps {
 export class LambdaToStepFunction extends Construct {
     public readonly lambdaFunction: lambda.Function;
     public readonly stateMachine: sfn.StateMachine;
+    public readonly stateMachineLogGroup: LogGroup;
     public readonly cloudwatchAlarms: cloudwatch.Alarm[];
 
     /**
@@ -62,7 +64,7 @@ export class LambdaToStepFunction extends Construct {
       super(scope, id);
 
       // Setup the state machine
-      this.stateMachine = defaults.buildStateMachine(this, props.stateMachineProps);
+      [this.stateMachine, this.stateMachineLogGroup] = defaults.buildStateMachine(this, props.stateMachineProps);
 
       // Setup the Lambda function
       this.lambdaFunction = defaults.buildLambdaFunction(this, {

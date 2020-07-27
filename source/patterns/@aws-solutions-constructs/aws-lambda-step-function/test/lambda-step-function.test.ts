@@ -156,4 +156,5 @@ test('Test the properties', () => {
     // Assertion 3
     const cwAlarm = pattern.cloudwatchAlarms;
     expect(cwAlarm !== null);
+    expect(pattern.stateMachineLogGroup !== null);
 });

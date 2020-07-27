@@ -26,7 +26,7 @@ import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
  * @param scope - the construct to which the StateMachine should be attached to.
  * @param stateMachineProps - user-specified properties to override the default properties.
  */
-export function buildStateMachine(scope: cdk.Construct, stateMachineProps: sfn.StateMachineProps): sfn.StateMachine {
+export function buildStateMachine(scope: cdk.Construct, stateMachineProps: sfn.StateMachineProps): [sfn.StateMachine, LogGroup] {
 
     let logGroup: LogGroup;
 
@@ -75,7 +75,7 @@ export function buildStateMachine(scope: cdk.Construct, stateMachineProps: sfn.S
       resources: [`arn:aws:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:*`]
     }));
 
-    return _sm;
+    return [_sm, logGroup];
 }
 
 export function buildStepFunctionCWAlarms(scope: cdk.Construct, sm: sfn.StateMachine): cloudwatch.Alarm[] {

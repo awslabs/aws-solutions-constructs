@@ -13,6 +13,7 @@
 
 import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
 import * as lambda from '@aws-cdk/aws-lambda';
+import * as iam from '@aws-cdk/aws-iam';
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
@@ -54,6 +55,7 @@ export class LambdaToElasticSearchAndKibana extends Construct {
   public readonly identityPool: cognito.CfnIdentityPool;
   public readonly userPoolClient: cognito.UserPoolClient;
   public readonly elasticsearchDomain: elasticsearch.CfnDomain;
+  public readonly elasticsearchRole: iam.Role;
   public readonly lambdaFunction: lambda.Function;
   public readonly cloudwatchAlarms: cloudwatch.Alarm[];
 
@@ -86,7 +88,7 @@ export class LambdaToElasticSearchAndKibana extends Construct {
       userpoolclient: this.userPoolClient
     });
 
-    this.elasticsearchDomain = defaults.buildElasticSearch(this, props.domainName, {
+    [this.elasticsearchDomain, this.elasticsearchRole] = defaults.buildElasticSearch(this, props.domainName, {
         userpool: this.userPool,
         identitypool: this.identityPool,
         cognitoAuthorizedRoleARN: cognitoAuthorizedRole.roleArn,

@@ -77,7 +77,7 @@ export interface LambdaToSqsProps {
 export class LambdaToSqs extends Construct {
     public readonly lambdaFunction: lambda.Function;
     public readonly sqsQueue: sqs.Queue;
-    public readonly deadLetterQueue: sqs.DeadLetterQueue | undefined;
+    public readonly deadLetterQueue?: sqs.DeadLetterQueue;
 
     /**
      * @summary Constructs a new instance of the LambdaToSqs class.

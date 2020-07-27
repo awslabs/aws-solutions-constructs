@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.53.0] - 2020-07-27
+
+### Added
+- aws-lambda-sqs-lambda pattern added
+
+### Changed
+- Upgraded all patterns to CDK v1.53.0
+- Expose all cdk objects created by the construct as pattern properties
+
 ## [1.52.0] - 2020-07-20
 
 ### Added

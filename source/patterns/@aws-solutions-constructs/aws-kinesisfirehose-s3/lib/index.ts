@@ -47,7 +47,9 @@ export interface KinesisFirehoseToS3Props {
 export class KinesisFirehoseToS3 extends Construct {
     public readonly kinesisFirehose: kinesisfirehose.CfnDeliveryStream;
     public readonly kinesisFirehoseRole: iam.Role;
+    public readonly kinesisFirehoseLogGroup: logs.LogGroup;
     public readonly s3Bucket: s3.Bucket;
+    public readonly s3LoggingBucket?: s3.Bucket;
 
     /**
      * Constructs a new instance of the IotToLambda class.
@@ -56,7 +58,7 @@ export class KinesisFirehoseToS3 extends Construct {
         super(scope, id);
 
         // Setup S3 Bucket
-        this.s3Bucket = defaults.buildS3Bucket(this, {
+        [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
             existingBucketObj: props.existingBucketObj,
             bucketProps: props.bucketProps
         });
@@ -74,8 +76,8 @@ export class KinesisFirehoseToS3 extends Construct {
         };
 
         // Setup Cloudwatch Log group & stream for Kinesis Firehose
-        const cwLogGroup: logs.LogGroup = new logs.LogGroup(this, 'firehose-log-group', defaults.DefaultLogGroupProps());
-        const cwLogStream: logs.LogStream = cwLogGroup.addStream('firehose-log-stream');
+        this.kinesisFirehoseLogGroup = new logs.LogGroup(this, 'firehose-log-group', defaults.DefaultLogGroupProps());
+        const cwLogStream: logs.LogStream = this.kinesisFirehoseLogGroup.addStream('firehose-log-stream');
 
         // Setup the IAM Role for Kinesis Firehose
         this.kinesisFirehoseRole = new iam.Role(this, 'KinesisFirehoseRole', {
@@ -99,7 +101,7 @@ export class KinesisFirehoseToS3 extends Construct {
                 actions: [
                     'logs:PutLogEvents'
                 ],
-                resources: [`arn:aws:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:log-group:${cwLogGroup.logGroupName}:log-stream:${cwLogStream.logStreamName}`]
+                resources: [`arn:aws:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:log-group:${this.kinesisFirehoseLogGroup.logGroupName}:log-stream:${cwLogStream.logStreamName}`]
             })
         ]});
 
@@ -109,7 +111,7 @@ export class KinesisFirehoseToS3 extends Construct {
         // Setup the default Kinesis Firehose props
         const defaultKinesisFirehoseProps: kinesisfirehose.CfnDeliveryStreamProps =
             defaults.DefaultCfnDeliveryStreamProps(this.s3Bucket.bucketArn, this.kinesisFirehoseRole.roleArn,
-            cwLogGroup.logGroupName, cwLogStream.logStreamName);
+            this.kinesisFirehoseLogGroup.logGroupName, cwLogStream.logStreamName);
 
         // Override with the input props
         if (props.kinesisFirehoseProps) {

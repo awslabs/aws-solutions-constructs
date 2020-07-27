@@ -17,6 +17,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import { overrideProps } from '@aws-solutions-constructs/core';
+import { LogGroup } from '@aws-cdk/aws-logs';
 
 /**
  * @summary The properties for the ApiGatewayToDynamoDB class.
@@ -33,7 +34,7 @@ export interface ApiGatewayToDynamoDBProps {
    *
    * @default - Default properties are used.
    */
-  readonly apiGatewayProps?: api.RestApiProps | any,
+  readonly apiGatewayProps?: api.RestApiProps,
 
   /**
    * Whether to deploy API Gateway Method for Create operation on DynamoDB table.
@@ -85,7 +86,8 @@ export class ApiGatewayToDynamoDB extends Construct {
   public readonly dynamoTable: dynamodb.Table;
   public readonly apiGatewayRole: iam.Role;
   public readonly apiGateway: api.RestApi;
-
+  public readonly apiGatewayCloudWatchRole: iam.Role;
+  public readonly apiGatewayLogGroup: LogGroup;
   /**
    * @summary Constructs a new instance of the ApiGatewayToDynamoDB class.
    * @param {cdk.App} scope - represents the scope for all the resources.
@@ -109,7 +111,7 @@ export class ApiGatewayToDynamoDB extends Construct {
     }
 
     // Setup the API Gateway
-    this.apiGateway = defaults.GlobalRestApi(this);
+    [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] = defaults.GlobalRestApi(this, props.apiGatewayProps);
 
     // Setup the API Gateway role
     this.apiGatewayRole = new iam.Role(this, 'api-gateway-role', {
@@ -123,30 +125,30 @@ export class ApiGatewayToDynamoDB extends Construct {
     // Create
     if (props.allowCreateOperation && props.allowCreateOperation === true && props.createRequestTemplate) {
       const createRequestTemplate = props.createRequestTemplate.replace("${Table}", this.dynamoTable.tableName);
-      this.addActiontoPlicy("dynamodb:PutItem");
+      this.addActionToPolicy("dynamodb:PutItem");
       this.addMethod(this.apiGateway.root, createRequestTemplate, "PutItem", "POST");
     }
     // Read
     if (!props.allowReadOperation || props.allowReadOperation === true) {
       const getRequestTemplate = "{\r\n\"TableName\": \"" + this.dynamoTable.tableName + "\",\r\n \"KeyConditionExpression\": \"" + partitionKeyName + " = :v1\",\r\n    \"ExpressionAttributeValues\": {\r\n        \":v1\": {\r\n            \"S\": \"$input.params('" + partitionKeyName + "')\"\r\n        }\r\n    }\r\n}";
-      this.addActiontoPlicy("dynamodb:Query");
+      this.addActionToPolicy("dynamodb:Query");
       this.addMethod(apiGatewayResource, getRequestTemplate, "Query", "GET");
     }
     // Update
     if (props.allowUpdateOperation && props.allowUpdateOperation === true && props.updateRequestTemplate) {
       const updateRequestTemplate = props.updateRequestTemplate.replace("${Table}", this.dynamoTable.tableName);
-      this.addActiontoPlicy("dynamodb:UpdateItem");
+      this.addActionToPolicy("dynamodb:UpdateItem");
       this.addMethod(apiGatewayResource, updateRequestTemplate, "UpdateItem", "PUT");
     }
     // Delete
     if (props.allowDeleteOperation && props.allowDeleteOperation === true) {
       const deleteRequestTemplate = "{\r\n  \"TableName\": \"" + this.dynamoTable.tableName + "\",\r\n  \"Key\": {\r\n    \"" + partitionKeyName + "\": {\r\n      \"S\": \"$input.params('" + partitionKeyName + "')\"\r\n    }\r\n  },\r\n  \"ConditionExpression\": \"attribute_not_exists(Replies)\",\r\n  \"ReturnValues\": \"ALL_OLD\"\r\n}";
-      this.addActiontoPlicy("dynamodb:DeleteItem");
+      this.addActionToPolicy("dynamodb:DeleteItem");
       this.addMethod(apiGatewayResource, deleteRequestTemplate, "DeleteItem", "DELETE");
     }
   }
 
-  private addActiontoPlicy(action: string) {
+  private addActionToPolicy(action: string) {
     this.apiGatewayRole.addToPolicy(new iam.PolicyStatement({
       resources: [
         this.dynamoTable.tableArn

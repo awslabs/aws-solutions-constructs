@@ -60,6 +60,7 @@ export interface LambdaToS3Props {
 export class LambdaToS3 extends Construct {
     public readonly lambdaFunction: lambda.Function;
     public readonly s3Bucket: s3.Bucket;
+    public readonly s3LoggingBucket?: s3.Bucket;
 
     /**
      * @summary Constructs a new instance of the LambdaToS3 class.
@@ -79,7 +80,7 @@ export class LambdaToS3 extends Construct {
         });
 
         // Setup the S3 bucket
-        this.s3Bucket = defaults.buildS3Bucket(this, {
+        [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
             existingBucketObj: props.existingBucketObj,
             bucketProps: props.bucketProps
         });

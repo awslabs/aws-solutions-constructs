@@ -112,6 +112,8 @@ test('Test properties', () => {
     expect(app.lambdaFunction !== null);
     // Assertion 2
     expect(app.apiGateway !== null);
+    expect(app.apiGatewayCloudWatchRole !== null);
+    expect(app.apiGatewayLogGroup !== null);
 });
 
 // --------------------------------------------------------------

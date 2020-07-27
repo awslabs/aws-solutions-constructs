@@ -144,4 +144,5 @@ test('Test the properties', () => {
     // Assertion 2
     const topic = pattern.snsTopic;
     expect(topic !== null);
+    expect(pattern.encryptionKey != null);
 });

@@ -16,6 +16,8 @@ import * as kinesisFirehose from '@aws-cdk/aws-kinesisfirehose';
 import * as kinesisAnalytics from '@aws-cdk/aws-kinesisanalytics';
 import { KinesisFirehoseToS3, KinesisFirehoseToS3Props } from '@aws-solutions-constructs/aws-kinesisfirehose-s3';
 import * as s3 from '@aws-cdk/aws-s3';
+import * as logs from '@aws-cdk/aws-logs';
+import * as iam from '@aws-cdk/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
 
@@ -28,13 +30,13 @@ export interface KinesisFirehoseToAnalyticsAndS3Props {
      *
      * @default - Default props are used.
      */
-    readonly kinesisFirehoseProps?: kinesisFirehose.CfnDeliveryStreamProps | any;
+    readonly kinesisFirehoseProps?: kinesisFirehose.CfnDeliveryStreamProps,
     /**
      * Optional user-provided props to override the default props for the Kinesis Analytics application.
      *
      * @default - Default props are used.
      */
-    readonly kinesisAnalyticsProps?: kinesisAnalytics.CfnApplicationProps | any;
+    readonly kinesisAnalyticsProps?: kinesisAnalytics.CfnApplicationProps,
     /**
      * Existing instance of S3 Bucket object, if this is set then the bucketProps is ignored.
      *
@@ -55,7 +57,10 @@ export interface KinesisFirehoseToAnalyticsAndS3Props {
 export class KinesisFirehoseToAnalyticsAndS3 extends Construct {
     public readonly kinesisAnalytics: kinesisAnalytics.CfnApplication;
     public readonly kinesisFirehose: kinesisFirehose.CfnDeliveryStream;
+    public readonly kinesisFirehoseRole: iam.Role;
+    public readonly kinesisFirehoseLogGroup: logs.LogGroup;
     public readonly s3Bucket: s3.Bucket;
+    public readonly s3LoggingBucket?: s3.Bucket;
 
     /**
      * @summary Constructs a new instance of the KinesisFirehoseToAnalyticsAndS3 class.
@@ -85,6 +90,9 @@ export class KinesisFirehoseToAnalyticsAndS3 extends Construct {
         });
 
         this.kinesisFirehose = kfs.kinesisFirehose;
+        this.kinesisFirehoseLogGroup = kfs.kinesisFirehoseLogGroup;
+        this.kinesisFirehoseRole = kfs.kinesisFirehoseRole;
         this.s3Bucket = kfs.s3Bucket;
+        this.s3LoggingBucket = kfs.s3LoggingBucket;
     }
 }

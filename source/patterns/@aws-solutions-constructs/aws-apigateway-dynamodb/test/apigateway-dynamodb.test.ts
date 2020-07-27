@@ -33,6 +33,8 @@ test('check properties', () => {
     expect(construct.dynamoTable !== null);
     expect(construct.apiGateway !== null);
     expect(construct.apiGatewayRole !== null);
+    expect(construct.apiGatewayCloudWatchRole !== null);
+    expect(construct.apiGatewayLogGroup !== null);
 });
 
 test('check allow CRUD operations', () => {
@@ -188,6 +190,21 @@ test('check using custom partition key for dynamodb', () => {
 
     expect(stack).toHaveResource("AWS::ApiGateway::Resource", {
         PathPart: "{page_id}",
+    });
+
+});
+
+test('override apiGatewayProps for api gateway', () => {
+    const stack = new Stack();
+    const apiGatewayToDynamoDBProps: ApiGatewayToDynamoDBProps = {
+        apiGatewayProps: {
+            description: 'This is a sample description for api gateway'
+        }
+    };
+    new ApiGatewayToDynamoDB(stack, 'test-api-gateway-dynamodb', apiGatewayToDynamoDBProps);
+
+    expect(stack).toHaveResource("AWS::ApiGateway::RestApi", {
+        Description: "This is a sample description for api gateway"
     });
 
 });

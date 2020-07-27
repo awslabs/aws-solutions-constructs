@@ -1,0 +1,373 @@
+{
+  "Description": "Integration Test for aws-lambda-sqs-lambda",
+  "Resources": {
+    "LambdaFunctionServiceRole0C4CDE0B": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:aws:logs:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":log-group:/aws/lambda/*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy"
+          }
+        ]
+      }
+    },
+    "LambdaFunctionServiceRoleDefaultPolicy126C8897": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "sqs:ReceiveMessage",
+                "sqs:ChangeMessageVisibility",
+                "sqs:GetQueueUrl",
+                "sqs:DeleteMessage",
+                "sqs:GetQueueAttributes"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testlambdasqslambdalambdatosqsqueueF2ED40D2",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "LambdaFunctionServiceRoleDefaultPolicy126C8897",
+        "Roles": [
+          {
+            "Ref": "LambdaFunctionServiceRole0C4CDE0B"
+          }
+        ]
+      }
+    },
+    "LambdaFunctionBF21E41F": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "AssetParametersff5def7864b956d3f78b30d40479bf3f254cf58be622c9f3559c4b5915fafa9fS3BucketFA87CD7B"
+          },
+          "S3Key": {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Fn::Select": [
+                    0,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParametersff5def7864b956d3f78b30d40479bf3f254cf58be622c9f3559c4b5915fafa9fS3VersionKey9E5641A9"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Fn::Select": [
+                    1,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParametersff5def7864b956d3f78b30d40479bf3f254cf58be622c9f3559c4b5915fafa9fS3VersionKey9E5641A9"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            ]
+          }
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaFunctionServiceRole0C4CDE0B",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs10.x",
+        "Environment": {
+          "Variables": {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+          }
+        }
+      },
+      "DependsOn": [
+        "LambdaFunctionServiceRoleDefaultPolicy126C8897",
+        "LambdaFunctionServiceRole0C4CDE0B"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions."
+            }
+          ]
+        }
+      }
+    },
+    "LambdaFunctionSqsEventSourcetestlambdasqslambdalambdatosqsqueue88452CA32861DD29": {
+      "Type": "AWS::Lambda::EventSourceMapping",
+      "Properties": {
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "testlambdasqslambdalambdatosqsqueueF2ED40D2",
+            "Arn"
+          ]
+        },
+        "FunctionName": {
+          "Ref": "LambdaFunctionBF21E41F"
+        }
+      }
+    },
+    "testlambdasqslambdalambdatosqsLambdaFunctionServiceRoleAE4A8DCD": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:aws:logs:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":log-group:/aws/lambda/*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy"
+          }
+        ]
+      }
+    },
+    "testlambdasqslambdalambdatosqsLambdaFunctionServiceRoleDefaultPolicyA63E8A47": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testlambdasqslambdalambdatosqsqueueF2ED40D2",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testlambdasqslambdalambdatosqsLambdaFunctionServiceRoleDefaultPolicyA63E8A47",
+        "Roles": [
+          {
+            "Ref": "testlambdasqslambdalambdatosqsLambdaFunctionServiceRoleAE4A8DCD"
+          }
+        ]
+      }
+    },
+    "testlambdasqslambdalambdatosqsLambdaFunction8CCC2F0B": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "AssetParameters12e86b91cfa54b90f7340bb07d9ad6f4fc16982bfaa0212c9bdc2ab5e7885384S3BucketED6CBBC3"
+          },
+          "S3Key": {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Fn::Select": [
+                    0,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParameters12e86b91cfa54b90f7340bb07d9ad6f4fc16982bfaa0212c9bdc2ab5e7885384S3VersionKeyD468D502"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Fn::Select": [
+                    1,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParameters12e86b91cfa54b90f7340bb07d9ad6f4fc16982bfaa0212c9bdc2ab5e7885384S3VersionKeyD468D502"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            ]
+          }
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testlambdasqslambdalambdatosqsLambdaFunctionServiceRoleAE4A8DCD",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs10.x",
+        "Environment": {
+          "Variables": {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "SQS_QUEUE_URL": {
+              "Ref": "testlambdasqslambdalambdatosqsqueueF2ED40D2"
+            }
+          }
+        }
+      },
+      "DependsOn": [
+        "testlambdasqslambdalambdatosqsLambdaFunctionServiceRoleDefaultPolicyA63E8A47",
+        "testlambdasqslambdalambdatosqsLambdaFunctionServiceRoleAE4A8DCD"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions."
+            }
+          ]
+        }
+      }
+    },
+    "testlambdasqslambdalambdatosqsdeadLetterQueue016B6E58": {
+      "Type": "AWS::SQS::Queue",
+      "Properties": {
+        "KmsMasterKeyId": "alias/aws/sqs"
+      }
+    },
+    "testlambdasqslambdalambdatosqsqueueF2ED40D2": {
+      "Type": "AWS::SQS::Queue",
+      "Properties": {
+        "KmsMasterKeyId": "alias/aws/sqs",
+        "RedrivePolicy": {
+          "deadLetterTargetArn": {
+            "Fn::GetAtt": [
+              "testlambdasqslambdalambdatosqsdeadLetterQueue016B6E58",
+              "Arn"
+            ]
+          },
+          "maxReceiveCount": 15
+        }
+      }
+    }
+  },
+  "Parameters": {
+    "AssetParametersff5def7864b956d3f78b30d40479bf3f254cf58be622c9f3559c4b5915fafa9fS3BucketFA87CD7B": {
+      "Type": "String",
+      "Description": "S3 bucket for asset \"ff5def7864b956d3f78b30d40479bf3f254cf58be622c9f3559c4b5915fafa9f\""
+    },
+    "AssetParametersff5def7864b956d3f78b30d40479bf3f254cf58be622c9f3559c4b5915fafa9fS3VersionKey9E5641A9": {
+      "Type": "String",
+      "Description": "S3 key for asset version \"ff5def7864b956d3f78b30d40479bf3f254cf58be622c9f3559c4b5915fafa9f\""
+    },
+    "AssetParametersff5def7864b956d3f78b30d40479bf3f254cf58be622c9f3559c4b5915fafa9fArtifactHashBC656546": {
+      "Type": "String",
+      "Description": "Artifact hash for asset \"ff5def7864b956d3f78b30d40479bf3f254cf58be622c9f3559c4b5915fafa9f\""
+    },
+    "AssetParameters12e86b91cfa54b90f7340bb07d9ad6f4fc16982bfaa0212c9bdc2ab5e7885384S3BucketED6CBBC3": {
+      "Type": "String",
+      "Description": "S3 bucket for asset \"12e86b91cfa54b90f7340bb07d9ad6f4fc16982bfaa0212c9bdc2ab5e7885384\""
+    },
+    "AssetParameters12e86b91cfa54b90f7340bb07d9ad6f4fc16982bfaa0212c9bdc2ab5e7885384S3VersionKeyD468D502": {
+      "Type": "String",
+      "Description": "S3 key for asset version \"12e86b91cfa54b90f7340bb07d9ad6f4fc16982bfaa0212c9bdc2ab5e7885384\""
+    },
+    "AssetParameters12e86b91cfa54b90f7340bb07d9ad6f4fc16982bfaa0212c9bdc2ab5e7885384ArtifactHashE6BDEF1E": {
+      "Type": "String",
+      "Description": "Artifact hash for asset \"12e86b91cfa54b90f7340bb07d9ad6f4fc16982bfaa0212c9bdc2ab5e7885384\""
+    }
+  }
+}

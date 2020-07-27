@@ -139,4 +139,9 @@ test('check properties', () => {
   expect(construct.stateMachine !== null);
   expect(construct.s3Bucket !== null);
   expect(construct.cloudwatchAlarms !== null);
+  expect(construct.stateMachineLogGroup !== null);
+  expect(construct.s3LoggingBucket !== null);
+  expect(construct.cloudtrail !== null);
+  expect(construct.cloudtrailBucket !== null);
+  expect(construct.cloudtrailLoggingBucket !== null);
 });

@@ -104,4 +104,7 @@ test('Test properties', () => {
     expect(pattern.sqsQueue !== null);
     // Assertion 3
     expect(pattern.apiGatewayRole !== null);
+    expect(pattern.apiGatewayCloudWatchRole !== null);
+    expect(pattern.apiGatewayLogGroup !== null);
+    expect(pattern.deadLetterQueue !== null);
 });

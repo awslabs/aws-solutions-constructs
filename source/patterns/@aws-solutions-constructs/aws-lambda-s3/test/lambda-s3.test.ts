@@ -171,6 +171,7 @@ test('Test the properties', () => {
     // Assertion 2
     const bucket = pattern.s3Bucket;
     expect(bucket !== null);
+    expect(pattern.s3LoggingBucket !== null);
 });
 
 // --------------------------------------------------------------

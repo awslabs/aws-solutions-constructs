@@ -107,4 +107,7 @@ test('check properties', () => {
   expect(construct.userPoolClient !== null);
   expect(construct.apiGateway !== null);
   expect(construct.lambdaFunction !== null);
+  expect(construct.apiGatewayCloudWatchRole !== null);
+  expect(construct.apiGatewayLogGroup !== null);
+  expect(construct.apiGatewayAuthorizer !== null);
 });

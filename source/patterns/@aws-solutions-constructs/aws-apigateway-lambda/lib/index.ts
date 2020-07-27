@@ -14,6 +14,8 @@
 // Imports
 import * as api from '@aws-cdk/aws-apigateway';
 import * as lambda from '@aws-cdk/aws-lambda';
+import * as iam from '@aws-cdk/aws-iam';
+import { LogGroup } from '@aws-cdk/aws-logs';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
 
@@ -32,7 +34,7 @@ export interface ApiGatewayToLambdaProps {
      *
      * @default - Default props are used.
      */
-    readonly lambdaFunctionProps?: lambda.FunctionProps | any
+    readonly lambdaFunctionProps?: lambda.FunctionProps,
     /**
      * Optional user-provided props to override the default props for the API.
      *
@@ -46,6 +48,8 @@ export interface ApiGatewayToLambdaProps {
  */
 export class ApiGatewayToLambda extends Construct {
     public readonly apiGateway: api.RestApi;
+    public readonly apiGatewayCloudWatchRole: iam.Role;
+    public readonly apiGatewayLogGroup: LogGroup;
     public readonly lambdaFunction: lambda.Function;
 
     /**
@@ -66,6 +70,7 @@ export class ApiGatewayToLambda extends Construct {
         });
 
         // Setup the API Gateway
-        this.apiGateway = defaults.GlobalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps);
+        [this.apiGateway, this.apiGatewayCloudWatchRole,
+            this.apiGatewayLogGroup] = defaults.GlobalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps);
     }
 }

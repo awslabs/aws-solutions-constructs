@@ -63,7 +63,7 @@ function createCloudfrontLoggingBucket(scope: cdk.Construct): s3.Bucket {
 // Lambda@Edge function to insert the HTTP Security Headers into the response coming from the origin servers
 // and before it is sent to the client
 function defaultLambdaEdgeFunction(scope: cdk.Construct): lambda.Function {
-    const edgeLambdaFunc: lambda.Function = deployLambdaFunction(scope, {
+    const edgeLambdaFunc = deployLambdaFunction(scope, {
         code: new lambda.InlineCode("exports.handler = (event, context, callback) => { \
           const response = event.Records[0].cf.response; \
           const headers = response.headers; \
@@ -119,11 +119,13 @@ function defaultLambdaEdgeFunction(scope: cdk.Construct): lambda.Function {
 export function CloudFrontDistributionForApiGateway(scope: cdk.Construct,
                                                     apiEndPoint: api.RestApi,
                                                     cloudFrontDistributionProps?: cloudfront.CloudFrontWebDistributionProps | any,
-                                                    httpSecurityHeaders?: boolean): cloudfront.CloudFrontWebDistribution {
+                                                    httpSecurityHeaders?: boolean): [cloudfront.CloudFrontWebDistribution,
+                                                    lambda.Version?, s3.Bucket?] {
 
     const _httpSecurityHeaders = httpSecurityHeaders ? httpSecurityHeaders : true;
     let defaultprops: cloudfront.CloudFrontWebDistributionProps;
     let edgeLambdaVersion;
+    let loggingBucket;
 
     if (_httpSecurityHeaders) {
         edgeLambdaVersion = new lambda.Version(scope, "SetHttpSecurityHeadersVersion", {
@@ -136,7 +138,7 @@ export function CloudFrontDistributionForApiGateway(scope: cdk.Construct,
             cloudFrontDistributionProps.loggingConfig.bucket, _httpSecurityHeaders,
             edgeLambdaVersion);
     } else {
-        const loggingBucket = createCloudfrontLoggingBucket(scope);
+        loggingBucket = createCloudfrontLoggingBucket(scope);
         defaultprops = DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint,
             loggingBucket, _httpSecurityHeaders,
             edgeLambdaVersion);
@@ -147,13 +149,14 @@ export function CloudFrontDistributionForApiGateway(scope: cdk.Construct,
     const cfDistribution: cloudfront.CloudFrontWebDistribution = new cloudfront.CloudFrontWebDistribution(scope, 'CloudFrontDistribution', cfprops);
     updateSecurityPolicy(cfDistribution);
 
-    return cfDistribution;
+    return [cfDistribution, edgeLambdaVersion, loggingBucket];
 }
 
 export function CloudFrontDistributionForS3(scope: cdk.Construct,
                                             sourceBucket: s3.Bucket,
                                             cloudFrontDistributionProps?: cloudfront.CloudFrontWebDistributionProps | any,
-                                            httpSecurityHeaders?: boolean): cloudfront.CloudFrontWebDistribution {
+                                            httpSecurityHeaders?: boolean): [cloudfront.CloudFrontWebDistribution,
+                                            lambda.Version?, s3.Bucket?] {
 
     // Create CloudFront Origin Access Identity User
     const cfnOrigAccessId = new cloudfront.CfnCloudFrontOriginAccessIdentity(scope, 'CloudFrontOriginAccessIdentity', {
@@ -170,6 +173,7 @@ export function CloudFrontDistributionForS3(scope: cdk.Construct,
 
     let defaultprops: cloudfront.CloudFrontWebDistributionProps;
     let edgeLambdaVersion;
+    let loggingBucket;
     const _httpSecurityHeaders = (httpSecurityHeaders !== undefined && httpSecurityHeaders === false) ? false : true;
 
     if (_httpSecurityHeaders) {
@@ -183,7 +187,7 @@ export function CloudFrontDistributionForS3(scope: cdk.Construct,
             cloudFrontDistributionProps.loggingConfig.bucket, oaiImported, _httpSecurityHeaders,
             edgeLambdaVersion);
     } else {
-        const loggingBucket = createCloudfrontLoggingBucket(scope);
+        loggingBucket = createCloudfrontLoggingBucket(scope);
         defaultprops = DefaultCloudFrontWebDistributionForS3Props(sourceBucket, loggingBucket,
             oaiImported, _httpSecurityHeaders,
             edgeLambdaVersion);
@@ -212,5 +216,5 @@ export function CloudFrontDistributionForS3(scope: cdk.Construct,
             }]
         }
     };
-    return cfDistribution;
+    return [cfDistribution, edgeLambdaVersion, loggingBucket];
 }

@@ -95,4 +95,5 @@ test('check properties', () => {
   expect(construct.cloudwatchAlarms !== null);
   expect(construct.stateMachine !== null);
   expect(construct.eventsRule !== null);
+  expect(construct.stateMachineLogGroup !== null);
 });

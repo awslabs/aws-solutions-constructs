@@ -33,13 +33,13 @@ export interface SnsToLambdaProps {
    *
    * @default - Default properties are used.
    */
-  readonly lambdaFunctionProps?: lambda.FunctionProps | any
+  readonly lambdaFunctionProps?: lambda.FunctionProps,
   /**
    * Optional user provided properties to override the default properties for the SNS topic.
    *
    * @default - Default properties are used.
    */
-  readonly topicProps?: sns.TopicProps | any
+  readonly topicProps?: sns.TopicProps,
   /**
    * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
    * the encryptionKey property for this construct.
@@ -61,6 +61,7 @@ export interface SnsToLambdaProps {
 export class SnsToLambda extends Construct {
   public readonly lambdaFunction: lambda.Function;
   public readonly snsTopic: sns.Topic;
+  public readonly encryptionKey: kms.Key;
 
   /**
    * @summary Constructs a new instance of the LambdaToSns class.
@@ -80,7 +81,7 @@ export class SnsToLambda extends Construct {
     });
 
     // Setup the SNS topic
-    this.snsTopic = defaults.buildTopic(this, {
+    [this.snsTopic, this.encryptionKey] = defaults.buildTopic(this, {
         enableEncryption: props.enableEncryption,
         encryptionKey: props.encryptionKey
     });

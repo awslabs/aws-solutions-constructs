@@ -13,6 +13,7 @@
 
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
+import * as iam from '@aws-cdk/aws-iam';
 import { DynamoEventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
 import { DynamoDBStreamToLambdaProps, DynamoDBStreamToLambda } from '@aws-solutions-constructs/aws-dynamodb-stream-lambda';
 import { LambdaToElasticSearchAndKibanaProps, LambdaToElasticSearchAndKibana } from '@aws-solutions-constructs/aws-lambda-elasticsearch-kibana';
@@ -78,6 +79,7 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
   public readonly userPoolClient: cognito.UserPoolClient;
   public readonly identityPool: cognito.CfnIdentityPool;
   public readonly elasticsearchDomain: elasticsearch.CfnDomain;
+  public readonly elasticsearchRole: iam.Role;
   public readonly cloudwatchAlarms: cloudwatch.Alarm[];
 
   /**
@@ -116,6 +118,7 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
     this.userPoolClient = this.lambdaToElasticSearchAndKibana.userPoolClient;
     this.identityPool = this.lambdaToElasticSearchAndKibana.identityPool;
     this.elasticsearchDomain = this.lambdaToElasticSearchAndKibana.elasticsearchDomain;
+    this.elasticsearchRole = this.lambdaToElasticSearchAndKibana.elasticsearchRole;
     this.cloudwatchAlarms = this.lambdaToElasticSearchAndKibana.cloudwatchAlarms;
   }
 }

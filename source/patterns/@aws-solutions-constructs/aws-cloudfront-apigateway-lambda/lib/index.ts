@@ -14,6 +14,9 @@
 import * as api from '@aws-cdk/aws-apigateway';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
+import { LogGroup } from '@aws-cdk/aws-logs';
+import * as s3 from '@aws-cdk/aws-s3';
+import * as iam from '@aws-cdk/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
 import { CloudFrontToApiGateway } from '@aws-solutions-constructs/aws-cloudfront-apigateway';
@@ -57,7 +60,11 @@ export interface CloudFrontToApiGatewayToLambdaProps {
 
 export class CloudFrontToApiGatewayToLambda extends Construct {
   public readonly cloudFrontWebDistribution: cloudfront.CloudFrontWebDistribution;
+  public readonly edgeLambdaFunctionVersion?: lambda.Version;
+  public readonly cloudFrontLoggingBucket?: s3.Bucket;
   public readonly apiGateway: api.RestApi;
+  public readonly apiGatewayCloudWatchRole: iam.Role;
+  public readonly apiGatewayLogGroup: LogGroup;
   public readonly lambdaFunction: lambda.Function;
 
   /**
@@ -76,7 +83,8 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
       lambdaFunctionProps: props.lambdaFunctionProps
     });
 
-    this.apiGateway = defaults.RegionalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps);
+    [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] =
+      defaults.RegionalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps);
 
     const apiCloudfront: CloudFrontToApiGateway = new CloudFrontToApiGateway(this, 'CloudFrontToApiGateway', {
       existingApiGatewayObj: this.apiGateway,
@@ -85,5 +93,7 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
     });
 
     this.cloudFrontWebDistribution = apiCloudfront.cloudFrontWebDistribution;
+    this.edgeLambdaFunctionVersion = apiCloudfront.edgeLambdaFunctionVersion;
+    this.cloudFrontLoggingBucket = apiCloudfront.cloudFrontLoggingBucket;
   }
 }

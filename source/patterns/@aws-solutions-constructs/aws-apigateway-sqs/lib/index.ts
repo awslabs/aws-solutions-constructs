@@ -18,6 +18,7 @@ import * as iam from '@aws-cdk/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
 import * as cdk from '@aws-cdk/core';
+import { LogGroup } from '@aws-cdk/aws-logs';
 
 /**
  * @summary The properties for the ApiGatewayToSqs class.
@@ -34,7 +35,7 @@ export interface ApiGatewayToSqsProps {
      *
      * @default - Default props are used
      */
-    readonly queueProps?: sqs.QueueProps | any
+    readonly queueProps?: sqs.QueueProps,
     /**
      * Whether to deploy a secondary queue to be used as a dead letter queue.
      *
@@ -79,7 +80,10 @@ export interface ApiGatewayToSqsProps {
 export class ApiGatewayToSqs extends Construct {
     public readonly apiGateway: api.RestApi;
     public readonly apiGatewayRole: iam.Role;
+    public readonly apiGatewayCloudWatchRole: iam.Role;
+    public readonly apiGatewayLogGroup: LogGroup;
     public readonly sqsQueue: sqs.Queue;
+    public readonly deadLetterQueue?: sqs.DeadLetterQueue;
 
     /**
      * @summary Constructs a new instance of the ApiGatewayToSqs class.
@@ -93,12 +97,11 @@ export class ApiGatewayToSqs extends Construct {
         super(scope, id);
 
         // Setup the dead letter queue, if applicable
-        let dlqi: sqs.DeadLetterQueue | undefined;
         if (!props.deployDeadLetterQueue || props.deployDeadLetterQueue === true) {
             const dlq: sqs.Queue = defaults.buildQueue(this, 'deadLetterQueue', {
                 queueProps: props.queueProps
             });
-            dlqi = defaults.buildDeadLetterQueue({
+            this.deadLetterQueue = defaults.buildDeadLetterQueue({
                 deadLetterQueue: dlq,
                 maxReceiveCount: (props.maxReceiveCount) ? props.maxReceiveCount : 3
             });
@@ -107,11 +110,11 @@ export class ApiGatewayToSqs extends Construct {
         // Setup the queue
         this.sqsQueue = defaults.buildQueue(this, 'queue', {
             queueProps: props.queueProps,
-            deadLetterQueue: dlqi
+            deadLetterQueue: this.deadLetterQueue
         });
 
         // Setup the API Gateway
-        this.apiGateway = defaults.GlobalRestApi(this);
+        [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] = defaults.GlobalRestApi(this);
 
         // Setup the API Gateway role
         this.apiGatewayRole = new iam.Role(this, 'api-gateway-role', {

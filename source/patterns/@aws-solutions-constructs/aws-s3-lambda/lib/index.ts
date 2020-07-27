@@ -57,6 +57,8 @@ export interface S3ToLambdaProps {
 export class S3ToLambda extends Construct {
   public readonly lambdaFunction: lambda.Function;
   public readonly s3Bucket: s3.Bucket;
+  public readonly s3LoggingBucket?: s3.Bucket;
+
   /**
    * @summary Constructs a new instance of the S3ToLambda class.
    * @param {cdk.App} scope - represents the scope for all the resources.
@@ -73,7 +75,7 @@ export class S3ToLambda extends Construct {
       lambdaFunctionProps: props.lambdaFunctionProps
     });
 
-    this.s3Bucket = defaults.buildS3Bucket(this, {
+    [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
       existingBucketObj: props.existingBucketObj,
       bucketProps: props.bucketProps
     });

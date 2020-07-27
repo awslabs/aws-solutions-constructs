@@ -34,13 +34,13 @@ export interface KinesisStreamsToLambdaProps {
      *
      * @default - Default props are used.
      */
-    readonly lambdaFunctionProps?: lambda.FunctionProps | any
+    readonly lambdaFunctionProps?: lambda.FunctionProps,
     /**
      * Optional user-provided props to override the default props for the Kinesis stream.
      *
      * @default - Default props are used.
      */
-    readonly kinesisStreamProps?: kinesis.StreamProps | any
+    readonly kinesisStreamProps?: kinesis.StreamProps,
     /**
      * Optional user-provided props to override the default props for the Lambda event source mapping.
      *

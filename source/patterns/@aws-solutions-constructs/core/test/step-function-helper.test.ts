@@ -156,7 +156,7 @@ test('Count State Machine CW Alarms', () => {
   // Step function definition
   const startState = new sfn.Pass(stack, 'StartState');
   // Build state machine
-  const sm = defaults.buildStateMachine(stack, {
+  const [sm] = defaults.buildStateMachine(stack, {
       definition: startState
   });
   const cwList = defaults.buildStepFunctionCWAlarms(stack, sm);

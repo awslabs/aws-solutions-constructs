@@ -23,7 +23,7 @@ export interface BuildEncryptionKeyProps {
      *
      * @default - Default props are used.
      */
-    readonly encryptionKeyProps?: kms.KeyProps | any
+    readonly encryptionKeyProps?: kms.KeyProps
 }
 
 export function buildEncryptionKey(scope: cdk.Construct, props?: BuildEncryptionKeyProps): kms.Key {

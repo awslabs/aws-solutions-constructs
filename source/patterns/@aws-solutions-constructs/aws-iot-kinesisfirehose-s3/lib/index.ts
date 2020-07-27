@@ -15,6 +15,7 @@ import * as kinesisfirehose from '@aws-cdk/aws-kinesisfirehose';
 import * as iot from '@aws-cdk/aws-iot';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as iam from '@aws-cdk/aws-iam';
+import * as logs from '@aws-cdk/aws-logs';
 import { Construct } from '@aws-cdk/core';
 import * as defaults from '@aws-solutions-constructs/core';
 import { overrideProps } from '@aws-solutions-constructs/core';
@@ -53,9 +54,11 @@ export interface IotToKinesisFirehoseToS3Props {
 export class IotToKinesisFirehoseToS3 extends Construct {
     public readonly iotTopicRule: iot.CfnTopicRule;
     public readonly kinesisFirehose: kinesisfirehose.CfnDeliveryStream;
-    public readonly s3Bucket: s3.Bucket;
-    public readonly iotActionsRole: iam.Role;
+    public readonly kinesisFirehoseLogGroup: logs.LogGroup;
     public readonly kinesisFirehoseRole: iam.Role;
+    public readonly s3Bucket: s3.Bucket;
+    public readonly s3LoggingBucket?: s3.Bucket;
+    public readonly iotActionsRole: iam.Role;
 
     /**
      * @summary Constructs a new instance of the IotToKinesisFirehoseToS3 class.
@@ -106,5 +109,7 @@ export class IotToKinesisFirehoseToS3 extends Construct {
         this.iotTopicRule = new iot.CfnTopicRule(this, 'IotTopic', iotTopicProps);
 
         this.kinesisFirehoseRole = firehoseToS3.kinesisFirehoseRole;
+        this.s3LoggingBucket = firehoseToS3.s3LoggingBucket;
+        this.kinesisFirehoseLogGroup = firehoseToS3.kinesisFirehoseLogGroup;
     }
 }

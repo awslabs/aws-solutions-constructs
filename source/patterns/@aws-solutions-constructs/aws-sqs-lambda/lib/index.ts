@@ -71,7 +71,7 @@ export interface SqsToLambdaProps {
  */
 export class SqsToLambda extends Construct {
     public readonly sqsQueue: sqs.Queue;
-    public readonly deadLetterQueue: sqs.DeadLetterQueue | undefined;
+    public readonly deadLetterQueue?: sqs.DeadLetterQueue;
     public readonly lambdaFunction: lambda.Function;
 
     /**

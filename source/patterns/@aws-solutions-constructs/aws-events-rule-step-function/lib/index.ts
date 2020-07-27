@@ -18,6 +18,7 @@ import * as iam from '@aws-cdk/aws-iam';
 import { Construct } from '@aws-cdk/core';
 import { overrideProps } from '@aws-solutions-constructs/core';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+import { LogGroup } from '@aws-cdk/aws-logs';
 
 /**
  * @summary The properties for the EventsRuleToStepFunction Construct
@@ -39,6 +40,7 @@ export interface EventsRuleToStepFunctionProps {
 
 export class EventsRuleToStepFunction extends Construct {
   public readonly stateMachine: sfn.StateMachine;
+  public readonly stateMachineLogGroup: LogGroup;
   public readonly eventsRule: events.Rule;
   public readonly cloudwatchAlarms: cloudwatch.Alarm[];
 
@@ -53,7 +55,7 @@ export class EventsRuleToStepFunction extends Construct {
   constructor(scope: Construct, id: string, props: EventsRuleToStepFunctionProps) {
     super(scope, id);
 
-    this.stateMachine = defaults.buildStateMachine(this, props.stateMachineProps);
+    [this.stateMachine, this.stateMachineLogGroup] = defaults.buildStateMachine(this, props.stateMachineProps);
 
     // Create an IAM role for Events to start the State Machine
     const eventsRole = new iam.Role(this, 'EventsRuleRole', {

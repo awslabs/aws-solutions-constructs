@@ -124,4 +124,6 @@ test('check properties', () => {
   expect(construct.s3Bucket !== null);
   expect(construct.iotActionsRole !== null);
   expect(construct.kinesisFirehoseRole !== null);
+  expect(construct.kinesisFirehoseLogGroup !== null);
+  expect(construct.s3LoggingBucket !== null);
 });

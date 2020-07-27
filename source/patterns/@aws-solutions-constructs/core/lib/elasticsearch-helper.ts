@@ -19,7 +19,7 @@ import * as cdk from '@aws-cdk/core';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 
 export function buildElasticSearch(scope: cdk.Construct, domainName: string,
-                                   options: CfnDomainOptions, cfnDomainProps?: elasticsearch.CfnDomainProps): elasticsearch.CfnDomain {
+                                   options: CfnDomainOptions, cfnDomainProps?: elasticsearch.CfnDomainProps): [elasticsearch.CfnDomain, iam.Role] {
 
   // Setup the IAM Role & policy for ES to configure Cognito User pool and Identity pool
   const cognitoKibanaConfigureRole = new iam.Role(scope, 'CognitoKibanaConfigureRole', {
@@ -81,7 +81,7 @@ export function buildElasticSearch(scope: cdk.Construct, domainName: string,
     }
   };
 
-  return esDomain;
+  return [esDomain, cognitoKibanaConfigureRole];
 }
 
 export function buildElasticSearchCWAlarms(scope: cdk.Construct): cloudwatch.Alarm[] {

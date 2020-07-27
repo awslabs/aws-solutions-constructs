@@ -31,7 +31,7 @@ export interface BuildS3BucketProps {
   readonly bucketProps?: s3.BucketProps
 }
 
-export function buildS3Bucket(scope: cdk.Construct, props: BuildS3BucketProps, bucketId?: string): s3.Bucket {
+export function buildS3Bucket(scope: cdk.Construct, props: BuildS3BucketProps, bucketId?: string): [s3.Bucket, s3.Bucket?] {
     // Conditional s3 Bucket creation
     if (!props.existingBucketObj) {
         if (props.bucketProps) {
@@ -40,14 +40,15 @@ export function buildS3Bucket(scope: cdk.Construct, props: BuildS3BucketProps, b
             return s3BucketWithLogging(scope, DefaultS3Props(), bucketId);
         }
     } else {
-        return props.existingBucketObj;
+        return [props.existingBucketObj];
     }
 }
 
-function s3BucketWithLogging(scope: cdk.Construct, s3BucketProps?: s3.BucketProps, bucketId?: string): s3.Bucket {
+function s3BucketWithLogging(scope: cdk.Construct, s3BucketProps?: s3.BucketProps, bucketId?: string): [s3.Bucket, s3.Bucket?] {
 
     // Create the Application Bucket
     let bucketprops;
+    let loggingBucket;
     const _bucketId = bucketId ? bucketId + 'S3Bucket' : 'S3Bucket';
     const _loggingBucketId = bucketId ? bucketId + 'S3LoggingBucket' : 'S3LoggingBucket';
 
@@ -55,7 +56,7 @@ function s3BucketWithLogging(scope: cdk.Construct, s3BucketProps?: s3.BucketProp
         bucketprops = DefaultS3Props();
     } else {
         // Create the Logging Bucket
-        const loggingBucket: s3.Bucket = new s3.Bucket(scope, _loggingBucketId, DefaultS3Props());
+        loggingBucket = new s3.Bucket(scope, _loggingBucketId, DefaultS3Props());
 
         // Extract the CfnBucket from the loggingBucket
         const loggingBucketResource = loggingBucket.node.findChild('Resource') as s3.CfnBucket;
@@ -81,5 +82,5 @@ function s3BucketWithLogging(scope: cdk.Construct, s3BucketProps?: s3.BucketProp
     }
     const s3Bucket: s3.Bucket = new s3.Bucket(scope, _bucketId, bucketprops);
 
-    return s3Bucket;
+    return [s3Bucket, loggingBucket];
 }

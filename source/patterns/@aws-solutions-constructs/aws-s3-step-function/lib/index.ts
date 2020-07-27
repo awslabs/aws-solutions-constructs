@@ -19,6 +19,7 @@ import { Construct } from '@aws-cdk/core';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import * as cloudtrail from '@aws-cdk/aws-cloudtrail';
 import * as events from '@aws-cdk/aws-events';
+import { LogGroup } from '@aws-cdk/aws-logs';
 
 /**
  * @summary The properties for the S3ToStepFunction Construct
@@ -58,9 +59,13 @@ export interface S3ToStepFunctionProps {
 
 export class S3ToStepFunction extends Construct {
   public readonly stateMachine: sfn.StateMachine;
+  public readonly stateMachineLogGroup: LogGroup;
   public readonly s3Bucket: s3.Bucket;
+  public readonly s3LoggingBucket?: s3.Bucket;
   public readonly cloudwatchAlarms: cloudwatch.Alarm[];
-  public readonly cloudtrail: cloudtrail.Trail | undefined;
+  public readonly cloudtrail?: cloudtrail.Trail;
+  public readonly cloudtrailBucket?: s3.Bucket;
+  public readonly cloudtrailLoggingBucket?: s3.Bucket;
 
   /**
    * @summary Constructs a new instance of the S3ToStepFunction class.
@@ -73,7 +78,7 @@ export class S3ToStepFunction extends Construct {
   constructor(scope: Construct, id: string, props: S3ToStepFunctionProps) {
     super(scope, id);
 
-    this.s3Bucket = defaults.buildS3Bucket(this, {
+    [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
       existingBucketObj: props.existingBucketObj,
       bucketProps: props.bucketProps
     });
@@ -81,12 +86,12 @@ export class S3ToStepFunction extends Construct {
     this.addCfnNagSuppress(this.s3Bucket);
 
     if (!props.hasOwnProperty('deployCloudTrail') || props.deployCloudTrail === true) {
-      const trailBucket = defaults.buildS3Bucket(this, {}, 'CloudTrail');
+      [this.cloudtrailBucket, this.cloudtrailLoggingBucket] = defaults.buildS3Bucket(this, {}, 'CloudTrail');
 
-      this.addCfnNagSuppress(trailBucket);
+      this.addCfnNagSuppress(this.cloudtrailBucket);
 
       this.cloudtrail = new cloudtrail.Trail(this, 'S3EventsTrail', {
-        bucket: trailBucket
+        bucket: this.cloudtrailBucket
       });
 
       this.cloudtrail.addS3EventSelector([{
@@ -129,6 +134,7 @@ export class S3ToStepFunction extends Construct {
     });
 
     this.stateMachine = eventsRuleToStepFunction.stateMachine;
+    this.stateMachineLogGroup = eventsRuleToStepFunction.stateMachineLogGroup;
     this.cloudwatchAlarms = eventsRuleToStepFunction.cloudwatchAlarms;
   }
 

@@ -42,4 +42,5 @@ test('check properties', () => {
 
   expect(construct.lambdaFunction !== null);
   expect(construct.snsTopic !== null);
+  expect(construct.encryptionKey !== null);
 });

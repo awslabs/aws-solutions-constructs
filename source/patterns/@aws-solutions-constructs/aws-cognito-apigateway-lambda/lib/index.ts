@@ -14,6 +14,8 @@
 import * as api from '@aws-cdk/aws-apigateway';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as cognito from '@aws-cdk/aws-cognito';
+import { LogGroup } from '@aws-cdk/aws-logs';
+import * as iam from '@aws-cdk/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
 
@@ -57,6 +59,9 @@ export class CognitoToApiGatewayToLambda extends Construct {
   public readonly userPool: cognito.UserPool;
   public readonly userPoolClient: cognito.UserPoolClient;
   public readonly apiGateway: api.RestApi;
+  public readonly apiGatewayCloudWatchRole: iam.Role;
+  public readonly apiGatewayLogGroup: LogGroup;
+  public readonly apiGatewayAuthorizer: api.CfnAuthorizer;
   public readonly lambdaFunction: lambda.Function;
 
   /**
@@ -74,11 +79,12 @@ export class CognitoToApiGatewayToLambda extends Construct {
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps
     });
-    this.apiGateway = defaults.GlobalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps);
+    [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] =
+      defaults.GlobalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps);
     this.userPool = defaults.buildUserPool(this, props.cognitoUserPoolProps);
     this.userPoolClient = defaults.buildUserPoolClient(this, this.userPool, props.cognitoUserPoolClientProps);
 
-    const cfnAuthorizer = new api.CfnAuthorizer(this, 'CognitoAuthorizer', {
+    this.apiGatewayAuthorizer = new api.CfnAuthorizer(this, 'CognitoAuthorizer', {
       restApiId: this.apiGateway.restApiId,
       type: 'COGNITO_USER_POOLS',
       providerArns: [this.userPool.userPoolArn],
@@ -93,7 +99,7 @@ export class CognitoToApiGatewayToLambda extends Construct {
         child.addPropertyOverride('AuthorizationType', 'NONE');
       } else {
         child.addPropertyOverride('AuthorizationType', 'COGNITO_USER_POOLS');
-        child.addPropertyOverride('AuthorizerId', { Ref: cfnAuthorizer.logicalId });
+        child.addPropertyOverride('AuthorizerId', { Ref: this.apiGatewayAuthorizer.logicalId });
       }
     });
   }

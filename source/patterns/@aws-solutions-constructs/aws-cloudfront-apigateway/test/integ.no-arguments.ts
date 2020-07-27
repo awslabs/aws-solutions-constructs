@@ -30,7 +30,7 @@ const inProps: lambda.FunctionProps = {
 
 const func = defaults.deployLambdaFunction(stack, inProps);
 
-const _api = defaults.RegionalLambdaRestApi(stack, func);
+const [_api] = defaults.RegionalLambdaRestApi(stack, func);
 
 new CloudFrontToApiGateway(stack, 'test-cloudfront-apigateway', {
     existingApiGatewayObj: _api

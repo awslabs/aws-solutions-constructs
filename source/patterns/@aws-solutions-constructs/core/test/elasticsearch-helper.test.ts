@@ -16,9 +16,10 @@ import { Stack } from '@aws-cdk/core';
 import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
 import * as defaults from '../index';
 import '@aws-cdk/assert/jest';
+import * as iam from '@aws-cdk/aws-iam';
 
 function deployES(stack: Stack, domainName: string, cfnDomainProps?: elasticsearch.CfnDomainProps,
-                  lambdaRoleARN?: string): elasticsearch.CfnDomain {
+                  lambdaRoleARN?: string): [elasticsearch.CfnDomain, iam.Role] {
   const userpool = defaults.buildUserPool(stack);
   const userpoolclient = defaults.buildUserPoolClient(stack, userpool, {
     userPoolClientName: 'test',

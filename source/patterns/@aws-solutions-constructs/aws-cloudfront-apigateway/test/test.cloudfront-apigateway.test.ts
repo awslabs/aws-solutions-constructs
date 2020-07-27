@@ -27,7 +27,7 @@ function deploy(stack: cdk.Stack) {
 
   const func = defaults.deployLambdaFunction(stack, inProps);
 
-  const _api = defaults.RegionalLambdaRestApi(stack, func);
+  const [_api] = defaults.RegionalLambdaRestApi(stack, func);
 
   return new CloudFrontToApiGateway(stack, 'test-cloudfront-apigateway', {
     existingApiGatewayObj: _api
@@ -47,6 +47,8 @@ test('check getter methods', () => {
 
   expect(construct.cloudFrontWebDistribution !== null);
   expect(construct.apiGateway !== null);
+  expect(construct.edgeLambdaFunctionVersion !== null);
+  expect(construct.cloudFrontLoggingBucket !== null);
 });
 
 test('test cloudfront DomainName', () => {

@@ -202,7 +202,7 @@ test('test buildLambdaFunction with deploy = true', () => {
   });
 });
 
-test('test buildLambdaFunction with deploy = false', () => {
+test('test buildLambdaFunction with FunctionProps', () => {
   const stack = new Stack();
 
   const inProps: lambda.FunctionProps = {
@@ -211,11 +211,7 @@ test('test buildLambdaFunction with deploy = false', () => {
     handler: 'index.handler'
   };
 
-  const fn = defaults.deployLambdaFunction(stack, inProps);
-
-  defaults.buildLambdaFunction(stack, {
-    existingLambdaObj: fn
-  });
+  defaults.deployLambdaFunction(stack, inProps);
 
   expect(stack).toHaveResource('AWS::Lambda::Function', {
     Handler: "index.handler",

@@ -31,7 +31,7 @@ function deployRegionalApiGateway(stack: Stack) {
 }
 
 function setupRestApi(stack: Stack, apiProps?: any): void {
-  const restApi = defaults.GlobalRestApi(stack, apiProps);
+  const [restApi] = defaults.GlobalRestApi(stack, apiProps);
   // Setup the API Gateway resource
   const apiGatewayResource = restApi.root.addResource('api-gateway-resource');
   // Setup the API Gateway Integration

@@ -22,7 +22,7 @@ const app = new App();
 // Empty arguments
 const stack = new Stack(app, 'test-s3-lambda-existing-bucket-stack');
 
-const myBucket: s3.Bucket = defaults.buildS3Bucket(stack, {});
+const [myBucket] = defaults.buildS3Bucket(stack, {});
 
 // Extract the CfnBucket from the s3Bucket
 const s3BucketResource = myBucket.node.findChild('Resource') as s3.CfnBucket;

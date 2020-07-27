@@ -25,7 +25,7 @@ export interface BuildTopicProps {
      *
      * @default - Default props are used.
      */
-    readonly topicProps?: sns.TopicProps | any
+    readonly topicProps?: sns.TopicProps
     /**
      * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
      * the encryptionKey property for this construct.
@@ -41,12 +41,12 @@ export interface BuildTopicProps {
     readonly encryptionKey?: kms.Key
 }
 
-export function buildTopic(scope: cdk.Construct, props?: BuildTopicProps): sns.Topic {
+export function buildTopic(scope: cdk.Construct, props?: BuildTopicProps): [sns.Topic, kms.Key] {
     // If props is undefined, define it
     props = (props === undefined) ? {} : props;
     // Setup the topic properties
     let snsTopicProps;
-    if (props.hasOwnProperty('topicProps')) {
+    if (props.topicProps) {
         // If property overrides have been provided, incorporate them and deploy
         snsTopicProps = overrideProps(DefaultSnsTopicProps, props.topicProps);
     } else {
@@ -62,5 +62,5 @@ export function buildTopic(scope: cdk.Construct, props?: BuildTopicProps): sns.T
         }
     }
     // Create the stream and return
-    return new sns.Topic(scope, 'SnsTopic', snsTopicProps);
+    return [new sns.Topic(scope, 'SnsTopic', snsTopicProps), snsTopicProps.masterKey];
 }

@@ -26,7 +26,7 @@ import { overrideProps } from './utils';
  * @param scope - the construct to which the access logging capabilities should be attached to.
  * @param _api - an existing api.RestApi or api.LambdaRestApi.
  */
-function configureCloudwatchRoleForApi(scope: cdk.Construct, _api: api.RestApi): void {
+function configureCloudwatchRoleForApi(scope: cdk.Construct, _api: api.RestApi): iam.Role {
     // Setup the IAM Role for API Gateway CloudWatch access
     const restApiCloudwatchRole = new iam.Role(scope, 'LambdaRestApiCloudWatchRole', {
         assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
@@ -64,6 +64,9 @@ function configureCloudwatchRoleForApi(scope: cdk.Construct, _api: api.RestApi):
             }]
         }
     };
+
+    // Return the CW Role
+    return restApiCloudwatchRole;
 }
 
 /**
@@ -73,7 +76,7 @@ function configureCloudwatchRoleForApi(scope: cdk.Construct, _api: api.RestApi):
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 function configureLambdaRestApi(scope: cdk.Construct, defaultApiGatewayProps: api.LambdaRestApiProps,
-                                apiGatewayProps?: api.LambdaRestApiProps): api.RestApi {
+                                apiGatewayProps?: api.LambdaRestApiProps): [api.RestApi, iam.Role] {
     // Define the API object
     let _api: api.RestApi;
     if (apiGatewayProps) {
@@ -85,7 +88,7 @@ function configureLambdaRestApi(scope: cdk.Construct, defaultApiGatewayProps: ap
         _api = new api.LambdaRestApi(scope, 'LambdaRestApi', defaultApiGatewayProps);
     }
     // Configure API access logging
-    configureCloudwatchRoleForApi(scope, _api);
+    const cwRole = configureCloudwatchRoleForApi(scope, _api);
 
     // Configure Usage Plan
     _api.addUsagePlan('UsagePlan', {
@@ -95,8 +98,8 @@ function configureLambdaRestApi(scope: cdk.Construct, defaultApiGatewayProps: ap
         }]
     });
 
-    // Return the API object
-    return _api;
+    // Return the API and CW Role
+    return [_api, cwRole];
 }
 
 /**
@@ -106,7 +109,7 @@ function configureLambdaRestApi(scope: cdk.Construct, defaultApiGatewayProps: ap
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 function configureRestApi(scope: cdk.Construct, defaultApiGatewayProps: api.RestApiProps,
-                          apiGatewayProps?: api.RestApiProps): api.RestApi {
+                          apiGatewayProps?: api.RestApiProps): [api.RestApi, iam.Role] {
     // Define the API
     let _api: api.RestApi;
     if (apiGatewayProps) {
@@ -118,7 +121,7 @@ function configureRestApi(scope: cdk.Construct, defaultApiGatewayProps: api.Rest
         _api = new api.RestApi(scope, 'RestApi', defaultApiGatewayProps);
     }
     // Configure API access logging
-    configureCloudwatchRoleForApi(scope, _api);
+    const cwRole = configureCloudwatchRoleForApi(scope, _api);
 
     // Configure Usage Plan
     _api.addUsagePlan('UsagePlan', {
@@ -128,8 +131,8 @@ function configureRestApi(scope: cdk.Construct, defaultApiGatewayProps: api.Rest
         }]
     });
 
-    // Return the API
-    return _api;
+    // Return the API and CW Role
+    return [_api, cwRole];
 }
 
 /**
@@ -139,13 +142,14 @@ function configureRestApi(scope: cdk.Construct, defaultApiGatewayProps: api.Rest
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 export function GlobalLambdaRestApi(scope: cdk.Construct, _existingLambdaObj: lambda.Function,
-                                    apiGatewayProps?: api.LambdaRestApiProps): api.RestApi {
+                                    apiGatewayProps?: api.LambdaRestApiProps): [api.RestApi, iam.Role, logs.LogGroup] {
 
     // Configure log group for API Gateway AccessLogging
     const logGroup = new logs.LogGroup(scope, 'ApiAccessLogGroup', DefaultLogGroupProps());
 
     const defaultProps = apiDefaults.DefaultGlobalLambdaRestApiProps(_existingLambdaObj, logGroup);
-    return configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
+    const [restApi, apiCWRole] = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
+    return [restApi, apiCWRole, logGroup ];
 }
 
 /**
@@ -155,12 +159,13 @@ export function GlobalLambdaRestApi(scope: cdk.Construct, _existingLambdaObj: la
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 export function RegionalLambdaRestApi(scope: cdk.Construct, _existingLambdaObj: lambda.Function,
-                                      apiGatewayProps?: api.LambdaRestApiProps): api.RestApi {
+                                      apiGatewayProps?: api.LambdaRestApiProps): [api.RestApi, iam.Role, logs.LogGroup] {
     // Configure log group for API Gateway AccessLogging
     const logGroup = new logs.LogGroup(scope, 'ApiAccessLogGroup', DefaultLogGroupProps());
 
     const defaultProps = apiDefaults.DefaultRegionalLambdaRestApiProps(_existingLambdaObj, logGroup);
-    return configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
+    const [restApi, apiCWRole] = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
+    return [restApi, apiCWRole, logGroup ];
 }
 
 /**
@@ -168,10 +173,11 @@ export function RegionalLambdaRestApi(scope: cdk.Construct, _existingLambdaObj: 
  * @param scope - the construct to which the RestApi should be attached to.
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
-export function GlobalRestApi(scope: cdk.Construct, apiGatewayProps?: api.RestApiProps): api.RestApi {
+export function GlobalRestApi(scope: cdk.Construct, apiGatewayProps?: api.RestApiProps): [api.RestApi, iam.Role, logs.LogGroup] {
     // Configure log group for API Gateway AccessLogging
     const logGroup = new logs.LogGroup(scope, 'ApiAccessLogGroup', DefaultLogGroupProps());
 
     const defaultProps = apiDefaults.DefaultGlobalRestApiProps(logGroup);
-    return configureRestApi(scope, defaultProps, apiGatewayProps);
+    const [restApi, apiCWRole] = configureRestApi(scope, defaultProps, apiGatewayProps);
+    return [restApi, apiCWRole, logGroup ];
 }

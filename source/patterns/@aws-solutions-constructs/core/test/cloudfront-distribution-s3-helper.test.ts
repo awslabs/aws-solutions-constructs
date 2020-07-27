@@ -21,14 +21,14 @@ import { Bucket } from '@aws-cdk/aws-s3';
 
 test('cloudfront distribution with default params', () => {
   const stack = new Stack();
-  const sourceBucket = buildS3Bucket(stack, {});
+  const [sourceBucket] = buildS3Bucket(stack, {});
   CloudFrontDistributionForS3(stack, sourceBucket);
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 test('check bucket policy metadata', () => {
   const stack = new Stack();
-  const sourceBucket = buildS3Bucket(stack, {});
+  const [sourceBucket] = buildS3Bucket(stack, {});
   CloudFrontDistributionForS3(stack, sourceBucket);
   expect(stack).toHaveResource('AWS::S3::BucketPolicy', {
     Metadata: {
@@ -46,7 +46,7 @@ test('check bucket policy metadata', () => {
 
 test('check bucket metadata', () => {
   const stack = new Stack();
-  const sourceBucket = buildS3Bucket(stack, {});
+  const [sourceBucket] = buildS3Bucket(stack, {});
   CloudFrontDistributionForS3(stack, sourceBucket);
   expect(stack).toHaveResource('AWS::S3::Bucket', {
     Metadata: {
@@ -68,7 +68,7 @@ test('check bucket metadata', () => {
 
 test('test cloudfront check bucket policy', () => {
     const stack = new Stack();
-    const sourceBucket = buildS3Bucket(stack, {});
+    const [sourceBucket] = buildS3Bucket(stack, {});
     CloudFrontDistributionForS3(stack, sourceBucket);
 
     expect(stack).toHaveResourceLike("AWS::S3::BucketPolicy", {
@@ -155,7 +155,7 @@ test('test cloudfront check bucket policy', () => {
 
 test('test cloudfront with no security headers ', () => {
   const stack = new Stack();
-  const sourceBucket = buildS3Bucket(stack, {});
+  const [sourceBucket] = buildS3Bucket(stack, {});
 
   CloudFrontDistributionForS3(stack, sourceBucket, {}, false);
 
@@ -227,7 +227,7 @@ test('test cloudfront with no security headers ', () => {
 
 test('test cloudfront override cloudfront custom domain names ', () => {
   const stack = new Stack();
-  const sourceBucket = buildS3Bucket(stack, {});
+  const [sourceBucket] = buildS3Bucket(stack, {});
 
   const myprops = {
     aliasConfiguration: {
@@ -318,7 +318,7 @@ test('test cloudfront override cloudfront custom domain names ', () => {
 
 test('test cloudfront override cloudfront logging bucket ', () => {
   const stack = new Stack();
-  const sourceBucket = buildS3Bucket(stack, {});
+  const [sourceBucket] = buildS3Bucket(stack, {});
   const loggingBucket = new Bucket(stack, 'loggingbucket');
 
   const myprops = {
@@ -406,7 +406,7 @@ test('test cloudfront override cloudfront logging bucket ', () => {
 
 test('test cloudfront override properties', () => {
     const stack = new Stack();
-    const sourceBucket = buildS3Bucket(stack, {});
+    const [sourceBucket] = buildS3Bucket(stack, {});
     // Create CloudFront Origin Access Identity User
     const cfnOrigAccessId = new cloudfront.CfnCloudFrontOriginAccessIdentity(stack, 'CloudFrontOriginAccessIdentity1', {
       cloudFrontOriginAccessIdentityConfig: {

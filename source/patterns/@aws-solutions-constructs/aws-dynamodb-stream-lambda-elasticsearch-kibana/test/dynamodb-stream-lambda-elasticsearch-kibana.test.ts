@@ -62,6 +62,7 @@ test('check properties', () => {
   expect(construct.lambdaFunction !== null);
   expect(construct.dynamoTable !== null);
   expect(construct.elasticsearchDomain !== null);
+  expect(construct.elasticsearchRole !== null);
   expect(construct.identityPool !== null);
   expect(construct.userPool !== null);
   expect(construct.userPoolClient !== null);

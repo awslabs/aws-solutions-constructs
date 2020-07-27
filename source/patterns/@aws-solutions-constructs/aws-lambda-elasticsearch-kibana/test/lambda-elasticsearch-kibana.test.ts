@@ -65,6 +65,7 @@ test('check properties', () => {
   expect(construct.userPool !== null);
   expect(construct.userPoolClient !== null);
   expect(construct.cloudwatchAlarms !== null);
+  expect(construct.elasticsearchRole !== null);
 });
 
 test('check exception for Missing existingObj from props for deploy = false', () => {
