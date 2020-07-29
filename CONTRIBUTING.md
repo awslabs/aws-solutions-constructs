@@ -63,7 +63,7 @@ Once the design is finalized, you can re-purpose this PR for the implementation,
 or open a new PR to that end.
 
 Good AWS Solutions Constructs have the following characteristics:
-  1) Multi-service: The goal of AWS Solutions Constructs is to weave mutiple services together in a well-architected way. 
+  1) Multi-service: The goal of AWS Solutions Constructs is to weave multiple services together in a well-architected way. 
   2) Minimal (if any) Business Logic: AWS Solutions Constructs should be applicable to all businesses and workloads as much as possible so that they are...
   3) Reusable across multiple use-cases: We would rather have a small library of Constructs that are wildly popular with customers rather than a huge library of Constructs that customers find irrelevant.
   4) Well Architected: AWS Solutions Constructs should be secure, reliable, scalable and cost efficient.
