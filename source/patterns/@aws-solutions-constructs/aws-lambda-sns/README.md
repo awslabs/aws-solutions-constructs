@@ -80,6 +80,7 @@ Out of the box implementation of the Construct without any override will set the
 ### Amazon SNS Topic
 * Configure least privilege access permissions for SNS Topic
 * Enable server-side encryption forSNS Topic using Customer managed KMS Key
+* Enforce encryption of data in transit
 
 ## Architecture
 ![Architecture Diagram](architecture.png)

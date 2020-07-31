@@ -21,6 +21,7 @@ import { DefaultS3Props } from './s3-bucket-defaults';
 import { DefaultCloudFrontWebDistributionForS3Props, DefaultCloudFrontWebDistributionForApiGatewayProps } from './cloudfront-distribution-defaults';
 import { overrideProps } from './utils';
 import { deployLambdaFunction } from './lambda-helper';
+import { applySecureBucketPolicy } from './s3-bucket-helper';
 
 // Override Cfn_Nag rule: Cloudfront TLS-1.2 rule (https://github.com/stelligent/cfn_nag/issues/384)
 function updateSecurityPolicy(cfDistribution: cloudfront.CloudFrontWebDistribution) {
@@ -40,6 +41,8 @@ function createCloudfrontLoggingBucket(scope: cdk.Construct): s3.Bucket {
     // Create the Logging Bucket
     const loggingBucket: s3.Bucket = new s3.Bucket(scope, 'CloudfrontLoggingBucket', DefaultS3Props());
 
+    applySecureBucketPolicy(loggingBucket);
+
     // Extract the CfnBucket from the loggingBucket
     const loggingBucketResource = loggingBucket.node.findChild('Resource') as s3.CfnBucket;
 
@@ -49,9 +52,6 @@ function createCloudfrontLoggingBucket(scope: cdk.Construct): s3.Bucket {
         cfn_nag: {
             rules_to_suppress: [{
                 id: 'W35',
-                reason: `This S3 bucket is used as the access logging bucket for CloudFront Distribution`
-            }, {
-                id: 'W51',
                 reason: `This S3 bucket is used as the access logging bucket for CloudFront Distribution`
             }]
         }
@@ -122,7 +122,8 @@ export function CloudFrontDistributionForApiGateway(scope: cdk.Construct,
                                                     httpSecurityHeaders?: boolean): [cloudfront.CloudFrontWebDistribution,
                                                     lambda.Version?, s3.Bucket?] {
 
-    const _httpSecurityHeaders = httpSecurityHeaders ? httpSecurityHeaders : true;
+    const _httpSecurityHeaders = (httpSecurityHeaders !== undefined && httpSecurityHeaders === false) ? false : true;
+
     let defaultprops: cloudfront.CloudFrontWebDistributionProps;
     let edgeLambdaVersion;
     let loggingBucket;

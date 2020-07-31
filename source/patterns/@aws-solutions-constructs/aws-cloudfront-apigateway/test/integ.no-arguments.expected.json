@@ -655,12 +655,46 @@
             {
               "id": "W35",
               "reason": "This S3 bucket is used as the access logging bucket for CloudFront Distribution"
-            },
-            {
-              "id": "W51",
-              "reason": "This S3 bucket is used as the access logging bucket for CloudFront Distribution"
             }
           ]
+        }
+      }
+    },
+    "testcloudfrontapigatewayCloudfrontLoggingBucketPolicyAA14EB71": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "testcloudfrontapigatewayCloudfrontLoggingBucket9811F6E8"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "testcloudfrontapigatewayCloudfrontLoggingBucket9811F6E8",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              },
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
         }
       }
     },

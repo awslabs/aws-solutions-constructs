@@ -16,6 +16,8 @@ import * as sqs from '@aws-cdk/aws-sqs';
 import * as defaults from './sqs-defaults';
 import * as cdk from '@aws-cdk/core';
 import { overrideProps } from './utils';
+import { AccountPrincipal, Effect, PolicyStatement, AnyPrincipal } from '@aws-cdk/aws-iam';
+import { Stack } from '@aws-cdk/core';
 
 export interface BuildQueueProps {
     /**
@@ -52,10 +54,11 @@ export function buildQueue(scope: cdk.Construct, id: string, props?: BuildQueueP
   }
 }
 
-export function deployQueue(scope: cdk.Construct,
-                            id: string,
-                            queuePropsParam?: sqs.QueueProps,
-                            deadLetterQueueParam?: sqs.DeadLetterQueue): sqs.Queue {
+function deployQueue(scope: cdk.Construct,
+                     id: string,
+                     queuePropsParam?: sqs.QueueProps,
+                     deadLetterQueueParam?: sqs.DeadLetterQueue): sqs.Queue {
+
   // Setup the queue
   let queueProps;
   if (queuePropsParam) {
@@ -69,8 +72,13 @@ export function deployQueue(scope: cdk.Construct,
   if (deadLetterQueueParam) {
     queueProps.deadLetterQueue = deadLetterQueueParam;
   }
+
+  const queue = new sqs.Queue(scope, id, queueProps);
+
+  applySecureQueuePolicy(queue);
+
   // Return the queue
-  return new sqs.Queue(scope, id, queueProps);
+  return queue;
 }
 
 export interface BuildDeadLetterQueueProps {
@@ -97,4 +105,49 @@ export function buildDeadLetterQueue(props: BuildDeadLetterQueueProps): sqs.Dead
     };
     // Return the dead letter queue
     return dlq;
+}
+
+function applySecureQueuePolicy(queue: sqs.Queue): void {
+
+  // Apply queue policy to enforce only the queue owner can perform operations on queue
+  queue.addToResourcePolicy(
+      new PolicyStatement({
+          sid: 'QueueOwnerOnlyAccess',
+          resources: [
+              `${queue.queueArn}`
+          ],
+          actions: [
+            "sqs:DeleteMessage",
+            "sqs:ReceiveMessage",
+            "sqs:SendMessage",
+            "sqs:GetQueueAttributes",
+            "sqs:RemovePermission",
+            "sqs:AddPermission",
+            "sqs:SetQueueAttributes"
+          ],
+          principals: [new AccountPrincipal(Stack.of(queue).account)],
+          effect: Effect.ALLOW
+      })
+  );
+
+  // Apply Topic policy to enforce encryption of data in transit
+  queue.addToResourcePolicy(
+      new PolicyStatement({
+          sid: 'HttpsOnly',
+          resources: [
+              `${queue.queueArn}`
+          ],
+          actions: [
+            "SQS:*"
+          ],
+          principals: [new AnyPrincipal()],
+          effect: Effect.DENY,
+          conditions:
+          {
+              Bool: {
+                  'aws:SecureTransport': 'false'
+              }
+          }
+      })
+  );
 }

@@ -74,6 +74,7 @@ Out of the box implementation of the Construct without any override will set the
 ### Amazon S3 Bucket
 * Configure Access logging for S3 Bucket
 * Enable server-side encryption for S3 Bucket using AWS managed KMS Key
+* Enforce encryption of data in transit
 * Turn on the versioning for S3 Bucket
 * Don't allow public access for S3 Bucket
 * Retain the S3 Bucket when deleting the CloudFormation stack

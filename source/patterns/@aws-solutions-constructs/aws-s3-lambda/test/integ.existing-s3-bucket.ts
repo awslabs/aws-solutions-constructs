@@ -15,7 +15,6 @@
 import { App, Stack } from "@aws-cdk/core";
 import { S3ToLambda, S3ToLambdaProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
-import * as s3 from '@aws-cdk/aws-s3';
 import * as defaults from '@aws-solutions-constructs/core';
 const app = new App();
 
@@ -23,18 +22,6 @@ const app = new App();
 const stack = new Stack(app, 'test-s3-lambda-existing-bucket-stack');
 
 const [myBucket] = defaults.buildS3Bucket(stack, {});
-
-// Extract the CfnBucket from the s3Bucket
-const s3BucketResource = myBucket.node.findChild('Resource') as s3.CfnBucket;
-
-s3BucketResource.cfnOptions.metadata = {
-    cfn_nag: {
-        rules_to_suppress: [{
-            id: 'W51',
-            reason: `This S3 bucket Bucket does not need a bucket policy`
-        }]
-    }
-};
 
 const props: S3ToLambdaProps = {
   lambdaFunctionProps: {

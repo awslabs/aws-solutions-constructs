@@ -18,6 +18,8 @@ import { DefaultSnsTopicProps } from './sns-defaults';
 import { buildEncryptionKey } from './kms-helper';
 import * as cdk from '@aws-cdk/core';
 import { overrideProps } from './utils';
+import { PolicyStatement, AnyPrincipal, Effect, AccountPrincipal } from '@aws-cdk/aws-iam';
+import { Stack } from '@aws-cdk/core';
 
 export interface BuildTopicProps {
     /**
@@ -41,6 +43,67 @@ export interface BuildTopicProps {
     readonly encryptionKey?: kms.Key
 }
 
+function applySecureTopicPolicy(topic: sns.Topic): void {
+
+    // Apply topic policy to enforce only the topic owner can publish and subscribe to this topic
+    topic.addToResourcePolicy(
+        new PolicyStatement({
+            sid: 'TopicOwnerOnlyAccess',
+            resources: [
+                `${topic.topicArn}`
+            ],
+            actions: [
+                "SNS:Publish",
+                "SNS:RemovePermission",
+                "SNS:SetTopicAttributes",
+                "SNS:DeleteTopic",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:GetTopicAttributes",
+                "SNS:Receive",
+                "SNS:AddPermission",
+                "SNS:Subscribe"
+            ],
+            principals: [new AccountPrincipal(Stack.of(topic).account)],
+            effect: Effect.ALLOW,
+            conditions:
+            {
+                StringEquals: {
+                    "AWS:SourceOwner": Stack.of(topic).account
+                }
+            }
+        })
+    );
+
+    // Apply Topic policy to enforce encryption of data in transit
+    topic.addToResourcePolicy(
+        new PolicyStatement({
+            sid: 'HttpsOnly',
+            resources: [
+                `${topic.topicArn}`
+            ],
+            actions: [
+                "SNS:Publish",
+                "SNS:RemovePermission",
+                "SNS:SetTopicAttributes",
+                "SNS:DeleteTopic",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:GetTopicAttributes",
+                "SNS:Receive",
+                "SNS:AddPermission",
+                "SNS:Subscribe"
+            ],
+            principals: [new AnyPrincipal()],
+            effect: Effect.DENY,
+            conditions:
+            {
+                Bool: {
+                    'aws:SecureTransport': 'false'
+                }
+            }
+        })
+    );
+}
+
 export function buildTopic(scope: cdk.Construct, props?: BuildTopicProps): [sns.Topic, kms.Key] {
     // If props is undefined, define it
     props = (props === undefined) ? {} : props;
@@ -54,6 +117,7 @@ export function buildTopic(scope: cdk.Construct, props?: BuildTopicProps): [sns.
         snsTopicProps = DefaultSnsTopicProps;
     }
     // Set encryption properties
+    // TODO: Look into using the AWS managed CMK by using 'alias/aws/sns'
     if (!props.enableEncryption || props.enableEncryption === true) {
         if (props.encryptionKey) {
             snsTopicProps.masterKey = props.encryptionKey;
@@ -61,6 +125,11 @@ export function buildTopic(scope: cdk.Construct, props?: BuildTopicProps): [sns.
             snsTopicProps.masterKey = buildEncryptionKey(scope);
         }
     }
-    // Create the stream and return
-    return [new sns.Topic(scope, 'SnsTopic', snsTopicProps), snsTopicProps.masterKey];
+    // Create the SNS Topic
+
+    const topic: sns.Topic = new sns.Topic(scope, 'SnsTopic', snsTopicProps);
+
+    applySecureTopicPolicy(topic);
+
+    return [topic, snsTopicProps.masterKey];
 }

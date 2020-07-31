@@ -83,12 +83,8 @@ export class S3ToStepFunction extends Construct {
       bucketProps: props.bucketProps
     });
 
-    this.addCfnNagSuppress(this.s3Bucket);
-
     if (!props.hasOwnProperty('deployCloudTrail') || props.deployCloudTrail === true) {
       [this.cloudtrailBucket, this.cloudtrailLoggingBucket] = defaults.buildS3Bucket(this, {}, 'CloudTrail');
-
-      this.addCfnNagSuppress(this.cloudtrailBucket);
 
       this.cloudtrail = new cloudtrail.Trail(this, 'S3EventsTrail', {
         bucket: this.cloudtrailBucket
@@ -136,19 +132,5 @@ export class S3ToStepFunction extends Construct {
     this.stateMachine = eventsRuleToStepFunction.stateMachine;
     this.stateMachineLogGroup = eventsRuleToStepFunction.stateMachineLogGroup;
     this.cloudwatchAlarms = eventsRuleToStepFunction.cloudwatchAlarms;
-  }
-
-  private addCfnNagSuppress(bucket: s3.Bucket) {
-    // Extract the CfnBucket from the s3Bucket
-    const s3BucketResource = bucket.node.findChild('Resource') as s3.CfnBucket;
-
-    s3BucketResource.cfnOptions.metadata = {
-        cfn_nag: {
-            rules_to_suppress: [{
-                id: 'W51',
-                reason: `This S3 bucket Bucket does not need a bucket policy`
-            }]
-        }
-    };
   }
 }

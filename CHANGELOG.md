@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.54.0] - 2020-07-31
+
+### Changed
+- Upgraded all patterns to CDK v1.54.0
+- Enforce encryption of data in transit for Amazon S3, Amazon SQS and Amazon SNS ([#28](https://github.com/awslabs/aws-solutions-constructs/issues/28))
+- Upgrade deprecated CDK property used by API Gateway patterns ([#31](https://github.com/awslabs/aws-solutions-constructs/issues/31))
+- Fix for CloudFrontDistributionForApiGateway bug ([#30](https://github.com/awslabs/aws-solutions-constructs/issues/30))
+
 ## [1.53.0] - 2020-07-27
 
 ### Added

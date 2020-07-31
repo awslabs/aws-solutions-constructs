@@ -205,12 +205,46 @@
             {
               "id": "W35",
               "reason": "This S3 bucket is used as the access logging bucket for another bucket"
-            },
-            {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy"
             }
           ]
+        }
+      }
+    },
+    "testlambdas3S3LoggingBucketPolicyCEAFB213": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "testlambdas3S3LoggingBucketD42FC73D"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "testlambdas3S3LoggingBucketD42FC73D",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              },
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
         }
       }
     },
@@ -242,15 +276,43 @@
         }
       },
       "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
+      "DeletionPolicy": "Retain"
+    },
+    "testlambdas3S3BucketPolicyE899B211": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "testlambdas3S3Bucket179A52E6"
+        },
+        "PolicyDocument": {
+          "Statement": [
             {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy"
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "testlambdas3S3Bucket179A52E6",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              },
+              "Sid": "HttpsOnly"
             }
-          ]
+          ],
+          "Version": "2012-10-17"
         }
       }
     }

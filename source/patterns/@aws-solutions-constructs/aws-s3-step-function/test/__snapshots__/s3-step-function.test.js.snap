@@ -5,16 +5,6 @@ Object {
   "Resources": Object {
     "tests3stepfunctionCloudTrailS3Bucket826F62C0": Object {
       "DeletionPolicy": "Retain",
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy",
-            },
-          ],
-        },
-      },
       "Properties": Object {
         "BucketEncryption": Object {
           "ServerSideEncryptionConfiguration": Array [
@@ -50,6 +40,31 @@ Object {
         },
         "PolicyDocument": Object {
           "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "tests3stepfunctionCloudTrailS3Bucket826F62C0",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
             Object {
               "Action": "s3:GetBucketAcl",
               "Effect": "Allow",
@@ -108,10 +123,6 @@ Object {
               "id": "W35",
               "reason": "This S3 bucket is used as the access logging bucket for another bucket",
             },
-            Object {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy",
-            },
           ],
         },
       },
@@ -139,18 +150,46 @@ Object {
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
     },
-    "tests3stepfunctionS3Bucket57D6600C": Object {
-      "DeletionPolicy": "Retain",
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
+    "tests3stepfunctionCloudTrailS3LoggingBucketPolicy31661F97": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "tests3stepfunctionCloudTrailS3LoggingBucket4FA5C122",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
             Object {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy",
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "tests3stepfunctionCloudTrailS3LoggingBucket4FA5C122",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+              "Sid": "HttpsOnly",
             },
           ],
+          "Version": "2012-10-17",
         },
       },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "tests3stepfunctionS3Bucket57D6600C": Object {
+      "DeletionPolicy": "Retain",
       "Properties": Object {
         "BucketEncryption": Object {
           "ServerSideEncryptionConfiguration": Array [
@@ -178,6 +217,44 @@ Object {
       },
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
+    },
+    "tests3stepfunctionS3BucketPolicy8C967304": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "tests3stepfunctionS3Bucket57D6600C",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "tests3stepfunctionS3Bucket57D6600C",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
     },
     "tests3stepfunctionS3EventsTrail4ECD93D3": Object {
       "DependsOn": Array [
@@ -230,10 +307,6 @@ Object {
               "id": "W35",
               "reason": "This S3 bucket is used as the access logging bucket for another bucket",
             },
-            Object {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy",
-            },
           ],
         },
       },
@@ -260,6 +333,44 @@ Object {
       },
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
+    },
+    "tests3stepfunctionS3LoggingBucketPolicyDB3C84EB": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "tests3stepfunctionS3LoggingBucketF58651AD",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "tests3stepfunctionS3LoggingBucketF58651AD",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
     },
     "tests3stepfunctiontesteventsrulestepfunctionstackEventsRule05BF80D3": Object {
       "Properties": Object {

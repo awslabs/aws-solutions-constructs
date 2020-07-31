@@ -15,6 +15,7 @@ import * as s3 from '@aws-cdk/aws-s3';
 import * as cdk from '@aws-cdk/core';
 import { DefaultS3Props } from './s3-bucket-defaults';
 import { overrideProps } from './utils';
+import { PolicyStatement, Effect, AnyPrincipal } from '@aws-cdk/aws-iam';
 
 export interface BuildS3BucketProps {
   /**
@@ -44,6 +45,29 @@ export function buildS3Bucket(scope: cdk.Construct, props: BuildS3BucketProps, b
     }
 }
 
+export function applySecureBucketPolicy(s3Bucket: s3.Bucket): void {
+
+    // Apply bucket policy to enforce encryption of data in transit
+
+    s3Bucket.addToResourcePolicy(
+        new PolicyStatement({
+            sid: 'HttpsOnly',
+            resources: [
+                `${s3Bucket.bucketArn}/*`
+            ],
+            actions: ['*'],
+            principals: [new AnyPrincipal()],
+            effect: Effect.DENY,
+            conditions:
+            {
+                Bool: {
+                    'aws:SecureTransport': 'false'
+                }
+            }
+        })
+    );
+}
+
 function s3BucketWithLogging(scope: cdk.Construct, s3BucketProps?: s3.BucketProps, bucketId?: string): [s3.Bucket, s3.Bucket?] {
 
     // Create the Application Bucket
@@ -58,6 +82,8 @@ function s3BucketWithLogging(scope: cdk.Construct, s3BucketProps?: s3.BucketProp
         // Create the Logging Bucket
         loggingBucket = new s3.Bucket(scope, _loggingBucketId, DefaultS3Props());
 
+        applySecureBucketPolicy(loggingBucket);
+
         // Extract the CfnBucket from the loggingBucket
         const loggingBucketResource = loggingBucket.node.findChild('Resource') as s3.CfnBucket;
 
@@ -68,9 +94,6 @@ function s3BucketWithLogging(scope: cdk.Construct, s3BucketProps?: s3.BucketProp
                 rules_to_suppress: [{
                     id: 'W35',
                     reason: `This S3 bucket is used as the access logging bucket for another bucket`
-                }, {
-                    id: 'W51',
-                    reason: `This S3 bucket Bucket does not need a bucket policy`
                 }]
             }
         };
@@ -81,6 +104,8 @@ function s3BucketWithLogging(scope: cdk.Construct, s3BucketProps?: s3.BucketProp
         bucketprops = overrideProps(bucketprops, s3BucketProps);
     }
     const s3Bucket: s3.Bucket = new s3.Bucket(scope, _bucketId, bucketprops);
+
+    applySecureBucketPolicy(s3Bucket);
 
     return [s3Bucket, loggingBucket];
 }

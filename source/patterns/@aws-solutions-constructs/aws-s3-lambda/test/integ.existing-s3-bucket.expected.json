@@ -31,12 +31,46 @@
             {
               "id": "W35",
               "reason": "This S3 bucket is used as the access logging bucket for another bucket"
-            },
-            {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy"
             }
           ]
+        }
+      }
+    },
+    "S3LoggingBucketPolicy6B3AA8AF": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "S3LoggingBucket800A2B27"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "S3LoggingBucket800A2B27",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              },
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
         }
       }
     },
@@ -68,17 +102,7 @@
         }
       },
       "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy"
-            }
-          ]
-        }
-      }
+      "DeletionPolicy": "Retain"
     },
     "S3BucketNotifications58B5AD06": {
       "Type": "Custom::S3BucketNotifications",
@@ -111,6 +135,44 @@
       "DependsOn": [
         "tests3lambdaLambdaFunctionAllowBucketNotificationsFromtests3lambdaexistingbucketstackS3BucketA1F8245606EA6713"
       ]
+    },
+    "S3BucketPolicyF560589A": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "S3Bucket07682993"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "S3Bucket07682993",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              },
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
     },
     "tests3lambdaLambdaFunctionServiceRoleA74F4427": {
       "Type": "AWS::IAM::Role",

@@ -108,16 +108,5 @@ export class LambdaToS3 extends Construct {
         } else {
             this.s3Bucket.grantReadWrite(this.lambdaFunction.grantPrincipal);
         }
-
-        // Add appropriate metadata
-        const s3BucketResource = this.s3Bucket.node.findChild('Resource') as s3.CfnBucket;
-        s3BucketResource.cfnOptions.metadata = {
-            cfn_nag: {
-                rules_to_suppress: [{
-                    id: 'W51',
-                    reason: `This S3 bucket Bucket does not need a bucket policy`
-                }]
-            }
-        };
     }
 }

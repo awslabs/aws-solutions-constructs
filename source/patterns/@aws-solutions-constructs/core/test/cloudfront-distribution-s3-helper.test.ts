@@ -55,10 +55,6 @@ test('check bucket metadata', () => {
           {
             id: "W35",
             reason: "This S3 bucket is used as the access logging bucket for CloudFront Distribution"
-          },
-          {
-            id: "W51",
-            reason: "This S3 bucket is used as the access logging bucket for CloudFront Distribution"
           }
         ]
       }
@@ -74,6 +70,30 @@ test('test cloudfront check bucket policy', () => {
     expect(stack).toHaveResourceLike("AWS::S3::BucketPolicy", {
       PolicyDocument: {
         Statement: [
+          {
+            Action: "*",
+            Condition: {
+              Bool: {
+                "aws:SecureTransport": "false"
+              }
+            },
+            Effect: "Deny",
+            Principal: "*",
+            Resource: {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "S3Bucket07682993",
+                      "Arn"
+                    ]
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          },
           {
             Action: [
               "s3:GetObject*",

@@ -14,7 +14,7 @@
 // Imports
 import { Stack } from "@aws-cdk/core";
 import * as defaults from '../';
-import { SynthUtils } from '@aws-cdk/assert';
+import { SynthUtils, expect as expectCDK, haveResource } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------
@@ -75,3 +75,83 @@ test('Test deployment w/ imported encryption key', () => {
       EnableKeyRotation: true
   });
 });
+
+test('Check SNS Topic policy', () => {
+    const stack = new Stack();
+    defaults.buildTopic(stack);
+
+    expectCDK(stack).to(haveResource("AWS::SNS::TopicPolicy", {
+        PolicyDocument: {
+            Statement: [
+              {
+                Action: [
+                  "SNS:Publish",
+                  "SNS:RemovePermission",
+                  "SNS:SetTopicAttributes",
+                  "SNS:DeleteTopic",
+                  "SNS:ListSubscriptionsByTopic",
+                  "SNS:GetTopicAttributes",
+                  "SNS:Receive",
+                  "SNS:AddPermission",
+                  "SNS:Subscribe"
+                ],
+                Condition: {
+                  StringEquals: {
+                    "AWS:SourceOwner": {
+                      Ref: "AWS::AccountId"
+                    }
+                  }
+                },
+                Effect: "Allow",
+                Principal: {
+                  AWS: {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          Ref: "AWS::Partition"
+                        },
+                        ":iam::",
+                        {
+                          Ref: "AWS::AccountId"
+                        },
+                        ":root"
+                      ]
+                    ]
+                  }
+                },
+                Resource: {
+                  Ref: "SnsTopic2C1570A4"
+                },
+                Sid: "TopicOwnerOnlyAccess"
+              },
+              {
+                Action: [
+                  "SNS:Publish",
+                  "SNS:RemovePermission",
+                  "SNS:SetTopicAttributes",
+                  "SNS:DeleteTopic",
+                  "SNS:ListSubscriptionsByTopic",
+                  "SNS:GetTopicAttributes",
+                  "SNS:Receive",
+                  "SNS:AddPermission",
+                  "SNS:Subscribe"
+                ],
+                Condition: {
+                  Bool: {
+                    "aws:SecureTransport": "false"
+                  }
+                },
+                Effect: "Deny",
+                Principal: "*",
+                Resource: {
+                  Ref: "SnsTopic2C1570A4"
+                },
+                Sid: "HttpsOnly"
+              }
+            ],
+            Version: "2012-10-17"
+        },
+    }));
+  });

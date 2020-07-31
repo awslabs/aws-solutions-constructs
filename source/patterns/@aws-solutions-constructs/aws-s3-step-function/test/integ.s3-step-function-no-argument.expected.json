@@ -31,12 +31,46 @@
             {
               "id": "W35",
               "reason": "This S3 bucket is used as the access logging bucket for another bucket"
-            },
-            {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy"
             }
           ]
+        }
+      }
+    },
+    "tests3stepfunctionstackS3LoggingBucketPolicy8549C1CC": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "tests3stepfunctionstackS3LoggingBucket740A14C5"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "tests3stepfunctionstackS3LoggingBucket740A14C5",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              },
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
         }
       }
     },
@@ -68,15 +102,43 @@
         }
       },
       "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
+      "DeletionPolicy": "Retain"
+    },
+    "tests3stepfunctionstackS3BucketPolicy7BDF618E": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "tests3stepfunctionstackS3Bucket8CC704E9"
+        },
+        "PolicyDocument": {
+          "Statement": [
             {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy"
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "tests3stepfunctionstackS3Bucket8CC704E9",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              },
+              "Sid": "HttpsOnly"
             }
-          ]
+          ],
+          "Version": "2012-10-17"
         }
       }
     },
@@ -111,12 +173,46 @@
             {
               "id": "W35",
               "reason": "This S3 bucket is used as the access logging bucket for another bucket"
-            },
-            {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy"
             }
           ]
+        }
+      }
+    },
+    "tests3stepfunctionstackCloudTrailS3LoggingBucketPolicyA0C182AE": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "tests3stepfunctionstackCloudTrailS3LoggingBucketC8E8D35B"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "tests3stepfunctionstackCloudTrailS3LoggingBucketC8E8D35B",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              },
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
         }
       }
     },
@@ -148,17 +244,7 @@
         }
       },
       "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy"
-            }
-          ]
-        }
-      }
+      "DeletionPolicy": "Retain"
     },
     "tests3stepfunctionstackCloudTrailS3BucketPolicyE88DD0A5": {
       "Type": "AWS::S3::BucketPolicy",
@@ -168,6 +254,31 @@
         },
         "PolicyDocument": {
           "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "tests3stepfunctionstackCloudTrailS3Bucket9CD2A45F",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              },
+              "Sid": "HttpsOnly"
+            },
             {
               "Action": "s3:GetBucketAcl",
               "Effect": "Allow",
@@ -355,13 +466,13 @@
     "tests3stepfunctionstacktesteventsrulestepfunctionstackStateMachine03BA781C": {
       "Type": "AWS::StepFunctions::StateMachine",
       "Properties": {
-        "DefinitionString": "{\"StartAt\":\"StartState\",\"States\":{\"StartState\":{\"Type\":\"Pass\",\"End\":true}}}",
         "RoleArn": {
           "Fn::GetAtt": [
             "tests3stepfunctionstacktesteventsrulestepfunctionstackStateMachineRoleC204E28A",
             "Arn"
           ]
         },
+        "DefinitionString": "{\"StartAt\":\"StartState\",\"States\":{\"StartState\":{\"Type\":\"Pass\",\"End\":true}}}",
         "LoggingConfiguration": {
           "Destinations": [
             {

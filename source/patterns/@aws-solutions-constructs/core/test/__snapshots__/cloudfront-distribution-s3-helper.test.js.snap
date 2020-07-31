@@ -107,10 +107,6 @@ Object {
               "id": "W35",
               "reason": "This S3 bucket is used as the access logging bucket for CloudFront Distribution",
             },
-            Object {
-              "id": "W51",
-              "reason": "This S3 bucket is used as the access logging bucket for CloudFront Distribution",
-            },
           ],
         },
       },
@@ -137,6 +133,44 @@ Object {
       },
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
+    },
+    "CloudfrontLoggingBucketPolicy8FC0956D": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "CloudfrontLoggingBucket3C3EFAA7",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "CloudfrontLoggingBucket3C3EFAA7",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
     },
     "S3Bucket07682993": Object {
       "DeletionPolicy": "Retain",
@@ -185,6 +219,31 @@ Object {
         },
         "PolicyDocument": Object {
           "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "S3Bucket07682993",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
             Object {
               "Action": Array [
                 "s3:GetObject*",
@@ -273,10 +332,6 @@ Object {
               "id": "W35",
               "reason": "This S3 bucket is used as the access logging bucket for another bucket",
             },
-            Object {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy",
-            },
           ],
         },
       },
@@ -303,6 +358,44 @@ Object {
       },
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
+    },
+    "S3LoggingBucketPolicy6B3AA8AF": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "S3LoggingBucket800A2B27",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "S3LoggingBucket800A2B27",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
     },
     "SetHttpSecurityHeadersEE936115": Object {
       "DependsOn": Array [

@@ -47,12 +47,14 @@ function DefaultRestApiProps(_endpointType: api.EndpointType[], _logGroup: LogGr
  * @param _endpointType - endpoint type for Api Gateway e.g. Regional, Global, Private
  * @param _logGroup - CW Log group for Api Gateway access logging
  */
-export function DefaultGlobalLambdaRestApiProps(_existingLambdaObj: lambda.Function, _logGroup: LogGroup) {
-    const defaultGatewayProps: api.LambdaRestApiProps = {
+export function DefaultGlobalLambdaRestApiProps(_existingLambdaObj: lambda.Function, _logGroup: LogGroup): api.LambdaRestApiProps {
+    const baseProps: api.RestApiProps = DefaultRestApiProps([api.EndpointType.EDGE], _logGroup);
+
+    const extraProps: api.LambdaRestApiProps = {
         handler: _existingLambdaObj,
-        options: DefaultRestApiProps([api.EndpointType.EDGE], _logGroup)
     };
-    return defaultGatewayProps;
+
+    return Object.assign(baseProps, extraProps);
 }
 
 /**
@@ -61,12 +63,14 @@ export function DefaultGlobalLambdaRestApiProps(_existingLambdaObj: lambda.Funct
  * @param _endpointType - endpoint type for Api Gateway e.g. Regional, Global, Private
  * @param _logGroup - CW Log group for Api Gateway access logging
  */
-export function DefaultRegionalLambdaRestApiProps(_existingLambdaObj: lambda.Function, _logGroup: LogGroup) {
-    const defaultGatewayProps: api.LambdaRestApiProps = {
+export function DefaultRegionalLambdaRestApiProps(_existingLambdaObj: lambda.Function, _logGroup: LogGroup): api.LambdaRestApiProps {
+    const baseProps: api.RestApiProps = DefaultRestApiProps([api.EndpointType.REGIONAL], _logGroup);
+
+    const extraProps: api.LambdaRestApiProps = {
         handler: _existingLambdaObj,
-        options: DefaultRestApiProps([api.EndpointType.REGIONAL], _logGroup)
     };
-    return defaultGatewayProps;
+
+    return Object.assign(baseProps, extraProps);
 }
 
 /**

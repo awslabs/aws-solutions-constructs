@@ -90,6 +90,7 @@ Out-of-the-box implementation of this Construct (without any overridden properti
 ### Amazon SQS Queue
 * Deploy a dead letter queue for the primary queue.
 * Enable server-side encryption for the primary queue using an AWS Managed KMS Key.
+* Enforce encryption of data in transit
 
 ## Architecture
 ![Architecture Diagram](architecture.png)

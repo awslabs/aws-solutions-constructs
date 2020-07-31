@@ -32,12 +32,46 @@
             {
               "id": "W35",
               "reason": "This S3 bucket is used as the access logging bucket for another bucket"
-            },
-            {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy"
             }
           ]
+        }
+      }
+    },
+    "testiotfirehoses3KinesisFirehoseToS3S3LoggingBucketPolicyE5A94728": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "testiotfirehoses3KinesisFirehoseToS3S3LoggingBucketC786B050"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "testiotfirehoses3KinesisFirehoseToS3S3LoggingBucketC786B050",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              },
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
         }
       }
     },
@@ -69,15 +103,43 @@
         }
       },
       "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
+      "DeletionPolicy": "Retain"
+    },
+    "testiotfirehoses3KinesisFirehoseToS3S3BucketPolicy39975CE7": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "testiotfirehoses3KinesisFirehoseToS3S3Bucket19C97D09"
+        },
+        "PolicyDocument": {
+          "Statement": [
             {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy"
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "testiotfirehoses3KinesisFirehoseToS3S3Bucket19C97D09",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              },
+              "Sid": "HttpsOnly"
             }
-          ]
+          ],
+          "Version": "2012-10-17"
         }
       }
     },

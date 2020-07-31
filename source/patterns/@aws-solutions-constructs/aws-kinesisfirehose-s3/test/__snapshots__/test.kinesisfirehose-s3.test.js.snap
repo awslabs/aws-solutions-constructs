@@ -131,16 +131,6 @@ Object {
     },
     "testfirehoses3S3Bucket93480488": Object {
       "DeletionPolicy": "Retain",
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy",
-            },
-          ],
-        },
-      },
       "Properties": Object {
         "BucketEncryption": Object {
           "ServerSideEncryptionConfiguration": Array [
@@ -169,6 +159,44 @@ Object {
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
     },
+    "testfirehoses3S3BucketPolicyF01906C0": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "testfirehoses3S3Bucket93480488",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "testfirehoses3S3Bucket93480488",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
     "testfirehoses3S3LoggingBucket31BFDC22": Object {
       "DeletionPolicy": "Retain",
       "Metadata": Object {
@@ -177,10 +205,6 @@ Object {
             Object {
               "id": "W35",
               "reason": "This S3 bucket is used as the access logging bucket for another bucket",
-            },
-            Object {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy",
             },
           ],
         },
@@ -208,6 +232,44 @@ Object {
       },
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
+    },
+    "testfirehoses3S3LoggingBucketPolicyA41D0380": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "testfirehoses3S3LoggingBucket31BFDC22",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "testfirehoses3S3LoggingBucket31BFDC22",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
     },
     "testfirehoses3firehoseloggroup8067C3EC": Object {
       "DeletionPolicy": "Retain",

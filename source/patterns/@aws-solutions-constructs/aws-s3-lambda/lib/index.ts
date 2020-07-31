@@ -88,18 +88,6 @@ export class S3ToLambda extends Construct {
   }
 
   private addCfnNagSuppress() {
-    // Extract the CfnBucket from the s3Bucket
-    const s3BucketResource = this.s3Bucket.node.findChild('Resource') as s3.CfnBucket;
-
-    s3BucketResource.cfnOptions.metadata = {
-        cfn_nag: {
-            rules_to_suppress: [{
-                id: 'W51',
-                reason: `This S3 bucket Bucket does not need a bucket policy`
-            }]
-        }
-    };
-
     const root = Stack.of(this);
     const logicalId = 'BucketNotificationsHandler050a0587b7544547bf325f094a3db834';
     const notificationsResourceHandler = root.node.tryFindChild(logicalId) as lambda.Function;

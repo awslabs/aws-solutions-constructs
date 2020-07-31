@@ -78,6 +78,7 @@ Out of the box implementation of the Construct without any override will set the
 ### Amazon SQS Queue
 * Deploy SQS dead-letter queue for the source SQS Queue
 * Enable server-side encryption for source SQS Queue using AWS Managed KMS Key
+* Enforce encryption of data in transit
 
 ### AWS Lambda Function
 * Configure least privilege access IAM role for Lambda function

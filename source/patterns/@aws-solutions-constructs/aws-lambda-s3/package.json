@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-lambda-s3",
-  "version": "1.53.0",
+  "version": "1.54.0",
   "description": "CDK constructs for defining an interaction between an AWS Lambda function and an Amazon S3 bucket.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -27,6 +27,7 @@
     "jsii": "jsii",
     "jsii-pacmak": "jsii-pacmak",
     "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
+    "integ-no-clean": "cdk-integ --no-clean",
     "snapshot-update": "npm run jsii && npm test -- -u && npm run integ-assert"
   },
   "jsii": {
@@ -52,14 +53,14 @@
     }
   },
   "dependencies": {
-    "@aws-cdk/aws-lambda": "~1.53.0",
-    "@aws-cdk/aws-s3": "~1.53.0",
-    "@aws-cdk/core": "~1.53.0",
-    "@aws-solutions-constructs/core": "~1.53.0",
+    "@aws-cdk/aws-lambda": "~1.54.0",
+    "@aws-cdk/aws-s3": "~1.54.0",
+    "@aws-cdk/core": "~1.54.0",
+    "@aws-solutions-constructs/core": "~1.54.0",
     "constructs": "^3.0.2"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "~1.53.0",
+    "@aws-cdk/assert": "~1.54.0",
     "@types/jest": "^24.0.23",
     "@types/node": "^10.3.0"
   },
@@ -69,10 +70,10 @@
     ]
   },
   "peerDependencies": {
-    "@aws-cdk/aws-lambda": "~1.53.0",
-    "@aws-cdk/aws-s3": "~1.53.0",
-    "@aws-cdk/core": "~1.53.0",
-    "@aws-solutions-constructs/core": "~1.53.0",
+    "@aws-cdk/aws-lambda": "~1.54.0",
+    "@aws-cdk/aws-s3": "~1.54.0",
+    "@aws-cdk/core": "~1.54.0",
+    "@aws-solutions-constructs/core": "~1.54.0",
     "constructs": "^3.0.2"
   }
 }

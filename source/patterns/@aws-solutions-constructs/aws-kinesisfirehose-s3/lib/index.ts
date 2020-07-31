@@ -63,18 +63,6 @@ export class KinesisFirehoseToS3 extends Construct {
             bucketProps: props.bucketProps
         });
 
-        // Extract the CfnBucket from the s3Bucket
-        const s3BucketResource = this.s3Bucket.node.findChild('Resource') as s3.CfnBucket;
-
-        s3BucketResource.cfnOptions.metadata = {
-            cfn_nag: {
-                rules_to_suppress: [{
-                    id: 'W51',
-                    reason: `This S3 bucket Bucket does not need a bucket policy`
-                }]
-            }
-        };
-
         // Setup Cloudwatch Log group & stream for Kinesis Firehose
         this.kinesisFirehoseLogGroup = new logs.LogGroup(this, 'firehose-log-group', defaults.DefaultLogGroupProps());
         const cwLogStream: logs.LogStream = this.kinesisFirehoseLogGroup.addStream('firehose-log-stream');

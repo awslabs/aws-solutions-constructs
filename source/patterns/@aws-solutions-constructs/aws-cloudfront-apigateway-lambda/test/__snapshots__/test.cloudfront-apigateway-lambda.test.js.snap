@@ -181,10 +181,6 @@ Object {
               "id": "W35",
               "reason": "This S3 bucket is used as the access logging bucket for CloudFront Distribution",
             },
-            Object {
-              "id": "W51",
-              "reason": "This S3 bucket is used as the access logging bucket for CloudFront Distribution",
-            },
           ],
         },
       },
@@ -211,6 +207,44 @@ Object {
       },
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
+    },
+    "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketPolicy4A551B79": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucket7F467421",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucket7F467421",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
     },
     "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeaders6945414A": Object {
       "DependsOn": Array [

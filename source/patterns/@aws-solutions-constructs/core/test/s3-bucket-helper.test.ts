@@ -102,3 +102,41 @@ test('s3 bucket with existingBucketObj with access logging configured', () => {
       },
     }));
 });
+
+test('Check S3 Bucket policy', () => {
+  const stack = new Stack();
+  defaults.buildS3Bucket(stack, {});
+
+  expectCDK(stack).to(haveResource("AWS::S3::BucketPolicy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Sid: 'HttpsOnly',
+          Action: "*",
+          Condition: {
+            Bool: {
+              "aws:SecureTransport": "false"
+            }
+          },
+          Effect: "Deny",
+          Principal: "*",
+          Resource: {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Fn::GetAtt": [
+                    "S3Bucket07682993",
+                    "Arn"
+                  ]
+                },
+                "/*"
+              ]
+            ]
+          }
+        }
+      ],
+      Version: "2012-10-17"
+    }
+  }));
+});
