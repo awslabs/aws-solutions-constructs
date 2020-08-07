@@ -42,7 +42,7 @@ export interface IotToKinesisFirehoseToS3Props {
      *
      * @default - None
      */
-    readonly existingBucketObj?: s3.Bucket,
+    readonly existingBucketObj?: s3.IBucket,
     /**
      * User provided props to override the default props for the S3 Bucket.
      *
@@ -56,7 +56,7 @@ export class IotToKinesisFirehoseToS3 extends Construct {
     public readonly kinesisFirehose: kinesisfirehose.CfnDeliveryStream;
     public readonly kinesisFirehoseLogGroup: logs.LogGroup;
     public readonly kinesisFirehoseRole: iam.Role;
-    public readonly s3Bucket: s3.Bucket;
+    public readonly s3Bucket?: s3.Bucket;
     public readonly s3LoggingBucket?: s3.Bucket;
     public readonly iotActionsRole: iam.Role;
 

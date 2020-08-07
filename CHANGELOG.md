@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.57.0] - 2020-08-07
+
+### Changed
+- Upgraded all patterns to CDK v1.57.0
+- Use `s3.IBucket` type instead of `s3.Bucket` for `existingBucketObj` construct props ([#33](https://github.com/awslabs/aws-solutions-constructs/issues/33))
+
 ## [1.56.0] - 2020-08-05
 
 ### Changed

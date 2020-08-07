@@ -42,7 +42,7 @@ export interface KinesisFirehoseToAnalyticsAndS3Props {
      *
      * @default - None
      */
-    readonly existingBucketObj?: s3.Bucket,
+    readonly existingBucketObj?: s3.IBucket,
     /**
      * User provided props to override the default props for the S3 Bucket.
      *
@@ -59,7 +59,7 @@ export class KinesisFirehoseToAnalyticsAndS3 extends Construct {
     public readonly kinesisFirehose: kinesisFirehose.CfnDeliveryStream;
     public readonly kinesisFirehoseRole: iam.Role;
     public readonly kinesisFirehoseLogGroup: logs.LogGroup;
-    public readonly s3Bucket: s3.Bucket;
+    public readonly s3Bucket?: s3.Bucket;
     public readonly s3LoggingBucket?: s3.Bucket;
 
     /**

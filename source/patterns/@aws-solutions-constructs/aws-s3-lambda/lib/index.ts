@@ -56,7 +56,7 @@ export interface S3ToLambdaProps {
 
 export class S3ToLambda extends Construct {
   public readonly lambdaFunction: lambda.Function;
-  public readonly s3Bucket: s3.Bucket;
+  public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
 
   /**
@@ -69,19 +69,24 @@ export class S3ToLambda extends Construct {
    */
   constructor(scope: Construct, id: string, props: S3ToLambdaProps) {
     super(scope, id);
+    let bucket: s3.Bucket;
 
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps
     });
 
-    [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
-      existingBucketObj: props.existingBucketObj,
-      bucketProps: props.bucketProps
-    });
+    if (!props.existingBucketObj) {
+      [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
+        bucketProps: props.bucketProps
+      });
+      bucket = this.s3Bucket;
+    } else {
+      bucket = props.existingBucketObj;
+    }
 
     // Create S3 trigger to invoke lambda function
-    this.lambdaFunction.addEventSource(new S3EventSource(this.s3Bucket,
+    this.lambdaFunction.addEventSource(new S3EventSource(bucket,
       defaults.S3EventSourceProps(props.s3EventSourceProps)));
 
     this.addCfnNagSuppress();

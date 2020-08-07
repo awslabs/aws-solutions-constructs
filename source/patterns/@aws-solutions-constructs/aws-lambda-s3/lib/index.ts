@@ -38,7 +38,7 @@ export interface LambdaToS3Props {
      *
      * @default - None
      */
-    readonly existingBucketObj?: s3.Bucket,
+    readonly existingBucketObj?: s3.IBucket,
     /**
      * User provided props to override the default props for the S3 Bucket.
      *
@@ -59,7 +59,7 @@ export interface LambdaToS3Props {
  */
 export class LambdaToS3 extends Construct {
     public readonly lambdaFunction: lambda.Function;
-    public readonly s3Bucket: s3.Bucket;
+    public readonly s3Bucket?: s3.Bucket;
     public readonly s3LoggingBucket?: s3.Bucket;
 
     /**
@@ -72,6 +72,7 @@ export class LambdaToS3 extends Construct {
      */
     constructor(scope: Construct, id: string, props: LambdaToS3Props) {
         super(scope, id);
+        let bucket: s3.IBucket;
 
         // Setup the Lambda function
         this.lambdaFunction = defaults.buildLambdaFunction(this, {
@@ -79,34 +80,38 @@ export class LambdaToS3 extends Construct {
             lambdaFunctionProps: props.lambdaFunctionProps
         });
 
-        // Setup the S3 bucket
-        [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
-            existingBucketObj: props.existingBucketObj,
-            bucketProps: props.bucketProps
-        });
+        // Setup S3 Bucket
+        if (!props.existingBucketObj) {
+            [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
+                bucketProps: props.bucketProps
+            });
+            bucket = this.s3Bucket;
+        } else {
+            bucket = props.existingBucketObj;
+        }
 
         // Configure environment variables
-        this.lambdaFunction.addEnvironment('S3_BUCKET_NAME', this.s3Bucket.bucketName);
+        this.lambdaFunction.addEnvironment('S3_BUCKET_NAME', bucket.bucketName);
 
         // Add the requested or default bucket permissions
         if (props.bucketPermissions) {
             if (props.bucketPermissions.includes('Delete')) {
-                this.s3Bucket.grantDelete(this.lambdaFunction.grantPrincipal);
+                bucket.grantDelete(this.lambdaFunction.grantPrincipal);
             }
             if (props.bucketPermissions.includes('Put')) {
-                this.s3Bucket.grantPut(this.lambdaFunction.grantPrincipal);
+                bucket.grantPut(this.lambdaFunction.grantPrincipal);
             }
             if (props.bucketPermissions.includes('Read')) {
-                this.s3Bucket.grantRead(this.lambdaFunction.grantPrincipal);
+                bucket.grantRead(this.lambdaFunction.grantPrincipal);
             }
             if (props.bucketPermissions.includes('ReadWrite')) {
-                this.s3Bucket.grantReadWrite(this.lambdaFunction.grantPrincipal);
+                bucket.grantReadWrite(this.lambdaFunction.grantPrincipal);
             }
             if (props.bucketPermissions.includes('Write')) {
-                this.s3Bucket.grantWrite(this.lambdaFunction.grantPrincipal);
+                bucket.grantWrite(this.lambdaFunction.grantPrincipal);
             }
         } else {
-            this.s3Bucket.grantReadWrite(this.lambdaFunction.grantPrincipal);
+            bucket.grantReadWrite(this.lambdaFunction.grantPrincipal);
         }
     }
 }

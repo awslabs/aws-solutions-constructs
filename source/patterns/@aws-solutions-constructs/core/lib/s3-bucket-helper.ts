@@ -19,12 +19,6 @@ import { PolicyStatement, Effect, AnyPrincipal } from '@aws-cdk/aws-iam';
 
 export interface BuildS3BucketProps {
   /**
-   * Existing instance of S3 Bucket object, if this is set then the bucketProps is ignored
-   *
-   * @default - None
-   */
-  readonly existingBucketObj?: s3.Bucket,
-  /**
    * User provided props to override the default props for the S3 Bucket.
    *
    * @default - Default props are used
@@ -33,15 +27,10 @@ export interface BuildS3BucketProps {
 }
 
 export function buildS3Bucket(scope: cdk.Construct, props: BuildS3BucketProps, bucketId?: string): [s3.Bucket, s3.Bucket?] {
-    // Conditional s3 Bucket creation
-    if (!props.existingBucketObj) {
-        if (props.bucketProps) {
-            return s3BucketWithLogging(scope, props.bucketProps, bucketId);
-        } else {
-            return s3BucketWithLogging(scope, DefaultS3Props(), bucketId);
-        }
+    if (props.bucketProps) {
+        return s3BucketWithLogging(scope, props.bucketProps, bucketId);
     } else {
-        return [props.existingBucketObj];
+        return s3BucketWithLogging(scope, DefaultS3Props(), bucketId);
     }
 }
 

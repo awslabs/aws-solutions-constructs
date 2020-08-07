@@ -298,15 +298,3 @@ Object {
   },
 }
 `;
-
-exports[`s3 bucket with existingBucketObj 1`] = `
-Object {
-  "Resources": Object {
-    "mybucket15D133BF": Object {
-      "DeletionPolicy": "Retain",
-      "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Retain",
-    },
-  },
-}
-`;

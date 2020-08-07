@@ -35,15 +35,6 @@ test('s3 bucket with default params and bucket names', () => {
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
-test('s3 bucket with existingBucketObj', () => {
-  const stack = new Stack();
-
-  defaults.buildS3Bucket(stack, {
-    existingBucketObj: new s3.Bucket(stack, 'my-bucket', {})
-  });
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
 test('check exception for Missing existingBucketObj from props for deploy = false', () => {
   const stack = new Stack();
 
@@ -82,7 +73,7 @@ test('s3 bucket with bucketProps', () => {
   }));
 });
 
-test('s3 bucket with existingBucketObj with access logging configured', () => {
+test('s3 bucket with access logging configured', () => {
     const stack = new Stack();
     const mybucket = new Bucket(stack, 'mybucket', {
       serverAccessLogsBucket: new Bucket(stack, 'myaccesslogbucket', {})

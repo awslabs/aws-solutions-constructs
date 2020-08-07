@@ -52,7 +52,7 @@ export class CloudFrontToS3 extends Construct {
     public readonly cloudFrontWebDistribution: cloudfront.CloudFrontWebDistribution;
     public readonly edgeLambdaFunctionVersion?: lambda.Version;
     public readonly cloudFrontLoggingBucket?: s3.Bucket;
-    public readonly s3Bucket: s3.Bucket;
+    public readonly s3Bucket?: s3.Bucket;
     public readonly s3LoggingBucket?: s3.Bucket;
 
   /**
@@ -65,14 +65,19 @@ export class CloudFrontToS3 extends Construct {
    */
     constructor(scope: Construct, id: string, props: CloudFrontToS3Props) {
         super(scope, id);
+        let bucket: s3.Bucket;
 
-        [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
-            existingBucketObj: props.existingBucketObj,
+        if (!props.existingBucketObj) {
+          [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
             bucketProps: props.bucketProps
-        });
+          });
+          bucket = this.s3Bucket;
+        } else {
+          bucket = props.existingBucketObj;
+        }
 
         [this.cloudFrontWebDistribution, this.edgeLambdaFunctionVersion, this.cloudFrontLoggingBucket] =
-          defaults.CloudFrontDistributionForS3(this, this.s3Bucket,
+          defaults.CloudFrontDistributionForS3(this, bucket,
           props.cloudFrontDistributionProps, props.insertHttpSecurityHeaders);
     }
 }

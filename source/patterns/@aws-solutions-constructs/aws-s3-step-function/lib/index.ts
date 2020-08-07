@@ -30,7 +30,7 @@ export interface S3ToStepFunctionProps {
    *
    * @default - None
    */
-  readonly existingBucketObj?: s3.Bucket,
+  readonly existingBucketObj?: s3.IBucket,
   /**
    * User provided props to override the default props for the S3 Bucket.
    *
@@ -60,7 +60,7 @@ export interface S3ToStepFunctionProps {
 export class S3ToStepFunction extends Construct {
   public readonly stateMachine: sfn.StateMachine;
   public readonly stateMachineLogGroup: LogGroup;
-  public readonly s3Bucket: s3.Bucket;
+  public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
   public readonly cloudwatchAlarms: cloudwatch.Alarm[];
   public readonly cloudtrail?: cloudtrail.Trail;
@@ -77,11 +77,16 @@ export class S3ToStepFunction extends Construct {
    */
   constructor(scope: Construct, id: string, props: S3ToStepFunctionProps) {
     super(scope, id);
+    let bucket: s3.IBucket;
 
-    [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
-      existingBucketObj: props.existingBucketObj,
-      bucketProps: props.bucketProps
-    });
+    if (!props.existingBucketObj) {
+      [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
+        bucketProps: props.bucketProps
+      });
+      bucket = this.s3Bucket;
+    } else {
+      bucket = props.existingBucketObj;
+    }
 
     if (!props.hasOwnProperty('deployCloudTrail') || props.deployCloudTrail === true) {
       [this.cloudtrailBucket, this.cloudtrailLoggingBucket] = defaults.buildS3Bucket(this, {}, 'CloudTrail');
@@ -91,7 +96,7 @@ export class S3ToStepFunction extends Construct {
       });
 
       this.cloudtrail.addS3EventSelector([{
-        bucket: this.s3Bucket
+        bucket
       }], {
         readWriteType: cloudtrail.ReadWriteType.ALL,
         includeManagementEvents: false
@@ -116,7 +121,7 @@ export class S3ToStepFunction extends Construct {
             ],
             requestParameters: {
               bucketName: [
-                this.s3Bucket.bucketName
+                bucket.bucketName
               ]
             }
           }

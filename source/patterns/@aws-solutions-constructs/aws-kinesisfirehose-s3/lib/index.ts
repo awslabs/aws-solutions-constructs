@@ -35,7 +35,7 @@ export interface KinesisFirehoseToS3Props {
      *
      * @default - None
      */
-    readonly existingBucketObj?: s3.Bucket,
+    readonly existingBucketObj?: s3.IBucket,
     /**
      * User provided props to override the default props for the S3 Bucket.
      *
@@ -48,7 +48,7 @@ export class KinesisFirehoseToS3 extends Construct {
     public readonly kinesisFirehose: kinesisfirehose.CfnDeliveryStream;
     public readonly kinesisFirehoseRole: iam.Role;
     public readonly kinesisFirehoseLogGroup: logs.LogGroup;
-    public readonly s3Bucket: s3.Bucket;
+    public readonly s3Bucket?: s3.Bucket;
     public readonly s3LoggingBucket?: s3.Bucket;
 
     /**
@@ -57,11 +57,18 @@ export class KinesisFirehoseToS3 extends Construct {
     constructor(scope: Construct, id: string, props: KinesisFirehoseToS3Props) {
         super(scope, id);
 
+        let bucket: s3.IBucket;
+
         // Setup S3 Bucket
-        [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
-            existingBucketObj: props.existingBucketObj,
-            bucketProps: props.bucketProps
-        });
+        if (!props.existingBucketObj) {
+            [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
+              bucketProps: props.bucketProps
+            });
+
+            bucket = this.s3Bucket;
+        } else {
+            bucket = props.existingBucketObj;
+        }
 
         // Setup Cloudwatch Log group & stream for Kinesis Firehose
         this.kinesisFirehoseLogGroup = new logs.LogGroup(this, 'firehose-log-group', defaults.DefaultLogGroupProps());
@@ -83,7 +90,7 @@ export class KinesisFirehoseToS3 extends Construct {
                 's3:ListBucketMultipartUploads',
                 's3:PutObject'
               ],
-              resources: [`${this.s3Bucket.bucketArn}`, `${this.s3Bucket.bucketArn}/*`]
+              resources: [`${bucket.bucketArn}`, `${bucket.bucketArn}/*`]
             }),
             new iam.PolicyStatement({
                 actions: [
@@ -98,7 +105,7 @@ export class KinesisFirehoseToS3 extends Construct {
 
         // Setup the default Kinesis Firehose props
         const defaultKinesisFirehoseProps: kinesisfirehose.CfnDeliveryStreamProps =
-            defaults.DefaultCfnDeliveryStreamProps(this.s3Bucket.bucketArn, this.kinesisFirehoseRole.roleArn,
+            defaults.DefaultCfnDeliveryStreamProps(bucket.bucketArn, this.kinesisFirehoseRole.roleArn,
             this.kinesisFirehoseLogGroup.logGroupName, cwLogStream.logStreamName);
 
         // Override with the input props
