@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.58.0] - 2020-08-14
+
+### Changed
+- Upgraded all patterns to CDK v1.58.0
+- Fix `aws-apigateway-sqs` pattern bug with overriding `apiGatewayProps` ([#37](https://github.com/awslabs/aws-solutions-constructs/issues/37))
+- Updated `aws-cloudfront-apigateway` and `aws-cloudfront-apigateway-lambda` patterns to deploy unauthenticated APIs
+- [All *-dynamodb-* patterns] Enable continuous backups and point-in-time recovery for DynamoDB Table ([#35](https://github.com/awslabs/aws-solutions-constructs/issues/35))
+- Removed the default Cognito UserPool SMS role creation ([#9513](https://github.com/aws/aws-cdk/pull/9513))
+
 ## [1.57.0] - 2020-08-07
 
 ### Changed

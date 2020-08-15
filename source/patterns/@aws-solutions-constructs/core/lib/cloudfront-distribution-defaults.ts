@@ -38,8 +38,9 @@ export function DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint: 
                             eventType: cloudfront.LambdaEdgeEventType.ORIGIN_RESPONSE,
                             lambdaFunction: edgeLambda
                         }
-                    ]
-                }]
+                    ],
+                }],
+                originPath: `/${apiEndPoint.deploymentStage.stageName}`
             }],
             loggingConfig: {
                 bucket: loggingBucket
@@ -52,8 +53,9 @@ export function DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint: 
                     domainName: apiEndPointDomainName
                 },
                 behaviors: [{
-                    isDefaultBehavior: true,
-                }]
+                    isDefaultBehavior: true
+                }],
+                originPath: `/${apiEndPoint.deploymentStage.stageName}`
             }],
             loggingConfig: {
                 bucket: loggingBucket

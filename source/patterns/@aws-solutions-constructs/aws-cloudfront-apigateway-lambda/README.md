@@ -89,7 +89,7 @@ Out of the box implementation of the Construct without any override will set the
 * Deploy a regional API endpoint
 * Enable CloudWatch logging for API Gateway
 * Configure least privilege access IAM role for API Gateway
-* Set the default authorizationType for all API methods to IAM
+* Set the default authorizationType for all API methods to NONE
 
 ### AWS Lambda Function
 * Configure least privilege access IAM role for Lambda function

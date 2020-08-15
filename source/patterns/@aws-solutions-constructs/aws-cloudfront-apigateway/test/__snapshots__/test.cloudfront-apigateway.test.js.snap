@@ -685,6 +685,17 @@ Object {
                 ],
               },
               "Id": "origin1",
+              "OriginPath": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "/",
+                    Object {
+                      "Ref": "LambdaRestApiDeploymentStageprodB1F3862A",
+                    },
+                  ],
+                ],
+              },
             },
           ],
           "PriceClass": "PriceClass_100",

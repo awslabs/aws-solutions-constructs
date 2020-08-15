@@ -157,6 +157,17 @@ Object {
                 ],
               },
               "Id": "origin1",
+              "OriginPath": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "/",
+                    Object {
+                      "Ref": "RestApiDeploymentStageprod3855DE66",
+                    },
+                  ],
+                ],
+              },
             },
           ],
           "PriceClass": "PriceClass_100",

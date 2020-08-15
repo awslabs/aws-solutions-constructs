@@ -62,15 +62,6 @@ test('override cognito properties', () => {
     },
     EmailVerificationMessage: "The verification code to your new account is {####}",
     EmailVerificationSubject: "Verify your new account",
-    SmsConfiguration: {
-      ExternalId: "testcognitoapigatewaylambdaCognitoUserPoolF2D785A1",
-      SnsCallerArn: {
-        "Fn::GetAtt": [
-          "testcognitoapigatewaylambdaCognitoUserPoolsmsRoleB297EE96",
-          "Arn"
-        ]
-      }
-    },
     SmsVerificationMessage: "The verification code to your new account is {####}",
     UserPoolAddOns: {
       AdvancedSecurityMode: "ENFORCED"

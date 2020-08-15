@@ -33,6 +33,9 @@ Object {
             "KeyType": "HASH",
           },
         ],
+        "PointInTimeRecoverySpecification": Object {
+          "PointInTimeRecoveryEnabled": true,
+        },
         "SSESpecification": Object {
           "SSEEnabled": true,
         },
@@ -490,15 +493,6 @@ Object {
         },
         "EmailVerificationMessage": "The verification code to your new account is {####}",
         "EmailVerificationSubject": "Verify your new account",
-        "SmsConfiguration": Object {
-          "ExternalId": "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoUserPool7B7B74A9",
-          "SnsCallerArn": Object {
-            "Fn::GetAtt": Array [
-              "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoUserPoolsmsRole58D31AFA",
-              "Arn",
-            ],
-          },
-        },
         "SmsVerificationMessage": "The verification code to your new account is {####}",
         "UserPoolAddOns": Object {
           "AdvancedSecurityMode": "ENFORCED",
@@ -511,53 +505,6 @@ Object {
         },
       },
       "Type": "AWS::Cognito::UserPool",
-    },
-    "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoUserPoolsmsRole58D31AFA": Object {
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W11",
-              "reason": "Allowing * resource on permissions policy since its used by Cognito to send SMS messages via sns:Publish",
-            },
-          ],
-        },
-      },
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Condition": Object {
-                "StringEquals": Object {
-                  "sts:ExternalId": "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoUserPool7B7B74A9",
-                },
-              },
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "cognito-idp.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "Policies": Array [
-          Object {
-            "PolicyDocument": Object {
-              "Statement": Array [
-                Object {
-                  "Action": "sns:Publish",
-                  "Effect": "Allow",
-                  "Resource": "*",
-                },
-              ],
-              "Version": "2012-10-17",
-            },
-            "PolicyName": "sns-publish",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Role",
     },
     "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchElasticsearchDomainD539E435": Object {
       "Metadata": Object {

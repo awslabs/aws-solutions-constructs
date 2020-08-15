@@ -86,6 +86,23 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
     [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] =
       defaults.RegionalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps);
 
+    this.apiGateway.methods.forEach((apiMethod) => {
+      // Override the API Gateway Authorization Type from AWS_IAM to NONE
+      const child = apiMethod.node.findChild('Resource') as api.CfnMethod;
+      if (child.authorizationType === 'AWS_IAM') {
+        child.addPropertyOverride('AuthorizationType', 'NONE');
+
+        child.cfnOptions.metadata = {
+          cfn_nag: {
+              rules_to_suppress: [{
+                  id: 'W59',
+                  reason: `AWS::ApiGateway::Method AuthorizationType is set to 'NONE' because API Gateway behind CloudFront does not support AWS_IAM authentication`
+              }]
+          }
+        };
+      }
+    });
+
     const apiCloudfront: CloudFrontToApiGateway = new CloudFrontToApiGateway(this, 'CloudFrontToApiGateway', {
       existingApiGatewayObj: this.apiGateway,
       cloudFrontDistributionProps: props.cloudFrontDistributionProps,

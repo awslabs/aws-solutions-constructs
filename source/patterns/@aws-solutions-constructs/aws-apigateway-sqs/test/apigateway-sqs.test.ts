@@ -16,6 +16,7 @@ import { Stack } from "@aws-cdk/core";
 import { ApiGatewayToSqs } from '../lib';
 import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
+import * as api from "@aws-cdk/aws-apigateway";
 
 // --------------------------------------------------------------
 // Test minimal deployment
@@ -108,3 +109,40 @@ test('Test properties', () => {
     expect(pattern.apiGatewayLogGroup !== null);
     expect(pattern.deadLetterQueue !== null);
 });
+
+// -----------------------------------------------------------------
+// Test deployment for override ApiGateway AuthorizationType to NONE
+// -----------------------------------------------------------------
+test('Test deployment ApiGateway AuthorizationType override', () => {
+    // Stack
+    const stack = new Stack();
+    // Helper declaration
+    new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+        apiGatewayProps: {
+            defaultMethodOptions: {
+                authorizationType: api.AuthorizationType.NONE
+            }
+        },
+        queueProps: {},
+        createRequestTemplate: "{}",
+        allowCreateOperation: true,
+        allowReadOperation: false,
+        allowDeleteOperation: true,
+        deployDeadLetterQueue: false
+    });
+    // Assertion 1
+    expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+        HttpMethod: "GET",
+        AuthorizationType: "NONE"
+    });
+    // Assertion 2
+    expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+        HttpMethod: "POST",
+        AuthorizationType: "NONE"
+    });
+    // Assertion 3
+    expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+        HttpMethod: "DELETE",
+        AuthorizationType: "NONE"
+    });
+  });

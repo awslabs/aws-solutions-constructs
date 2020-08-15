@@ -114,7 +114,7 @@ export class ApiGatewayToSqs extends Construct {
         });
 
         // Setup the API Gateway
-        [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] = defaults.GlobalRestApi(this);
+        [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] = defaults.GlobalRestApi(this, props.apiGatewayProps);
 
         // Setup the API Gateway role
         this.apiGatewayRole = new iam.Role(this, 'api-gateway-role', {
@@ -129,19 +129,43 @@ export class ApiGatewayToSqs extends Construct {
         if (props.allowCreateOperation && props.allowCreateOperation === true && props.createRequestTemplate) {
             const createRequestTemplate = "Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")";
             this.addActionToPolicy("sqs:SendMessage");
-            this.addMethod(this.apiGateway.root, createRequestTemplate, "POST");
+            defaults.addProxyMethodToApiResource({
+                service: "sqs",
+                path: `${cdk.Aws.ACCOUNT_ID}/${this.sqsQueue.queueName}`,
+                apiGatewayRole: this.apiGatewayRole,
+                apiMethod: "POST",
+                apiResource: this.apiGateway.root,
+                requestTemplate: createRequestTemplate,
+                contentType: "'application/x-www-form-urlencoded'"
+            });
         }
         // Read
         if (!props.allowReadOperation || props.allowReadOperation === true) {
             const getRequestTemplate = "Action=ReceiveMessage";
             this.addActionToPolicy("sqs:ReceiveMessage");
-            this.addMethod(this.apiGateway.root, getRequestTemplate, "GET");
+            defaults.addProxyMethodToApiResource({
+                service: "sqs",
+                path: `${cdk.Aws.ACCOUNT_ID}/${this.sqsQueue.queueName}`,
+                apiGatewayRole: this.apiGatewayRole,
+                apiMethod: "GET",
+                apiResource: this.apiGateway.root,
+                requestTemplate: getRequestTemplate,
+                contentType: "'application/x-www-form-urlencoded'"
+            });
         }
         // Delete
         if (props.allowDeleteOperation && props.allowDeleteOperation === true) {
             const deleteRequestTemplate = "Action=DeleteMessage&ReceiptHandle=$util.urlEncode($input.params('receiptHandle'))";
             this.addActionToPolicy("sqs:DeleteMessage");
-            this.addMethod(apiGatewayResource, deleteRequestTemplate, "DELETE");
+            defaults.addProxyMethodToApiResource({
+                service: "sqs",
+                path: `${cdk.Aws.ACCOUNT_ID}/${this.sqsQueue.queueName}`,
+                apiGatewayRole: this.apiGatewayRole,
+                apiMethod: "DELETE",
+                apiResource: apiGatewayResource,
+                requestTemplate: deleteRequestTemplate,
+                contentType: "'application/x-www-form-urlencoded'"
+            });
         }
     }
 
@@ -152,55 +176,5 @@ export class ApiGatewayToSqs extends Construct {
             ],
             actions: [ `${action}` ]
         }));
-    }
-
-    private addMethod(apiResource: api.IResource, requestTemplate: string, apiMethod: string) {
-        // Add the integration
-        const apiGatewayIntegration = new api.AwsIntegration({
-            service: "sqs",
-            path: `${cdk.Aws.ACCOUNT_ID}/${this.sqsQueue.queueName}`,
-            integrationHttpMethod: "POST",
-            options: {
-                passthroughBehavior: api.PassthroughBehavior.NEVER,
-                credentialsRole: this.apiGatewayRole,
-                requestParameters: {
-                    "integration.request.header.Content-Type": "'application/x-www-form-urlencoded'"
-                },
-                requestTemplates: {
-                    "application/json": requestTemplate
-                },
-                integrationResponses: [
-                    {
-                        statusCode: "200"
-                    },
-                    {
-                        statusCode: "500",
-                        responseTemplates: {
-                            "text/html": "Error"
-                        },
-                        selectionPattern: "500"
-                    }
-                ]
-            }
-        });
-
-        // Add the method to the resource
-        apiResource.addMethod(apiMethod, apiGatewayIntegration, {
-            authorizationType: api.AuthorizationType.IAM,
-            methodResponses: [
-                {
-                    statusCode: "200",
-                    responseParameters: {
-                        "method.response.header.Content-Type": true
-                    }
-                },
-                {
-                    statusCode: "500",
-                    responseParameters: {
-                        "method.response.header.Content-Type": true
-                    },
-                }
-            ]
-        });
     }
 }

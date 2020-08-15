@@ -79,6 +79,7 @@ Out of the box implementation of the Construct without any override will set the
 * Enable server-side encryption for DynamoDB Table using AWS managed KMS Key
 * Creates a partition key called 'id' for DynamoDB Table
 * Retain the Table when deleting the CloudFormation stack
+* Enable continuous backups and point-in-time recovery
 
 ### AWS Lambda Function
 * Configure least privilege access IAM role for Lambda function

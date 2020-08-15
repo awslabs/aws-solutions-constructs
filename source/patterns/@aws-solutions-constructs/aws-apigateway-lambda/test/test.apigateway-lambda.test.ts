@@ -15,6 +15,7 @@
 import { Stack } from "@aws-cdk/core";
 import { ApiGatewayToLambda, ApiGatewayToLambdaProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
+import * as api from '@aws-cdk/aws-apigateway';
 import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
@@ -158,3 +159,29 @@ test('Pattern deployment with two ApiGatewayToLambda constructs', () => {
     // Assertion 1
     expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
+
+// -----------------------------------------------------------------
+// Test deployment for override ApiGateway AuthorizationType to NONE
+// -----------------------------------------------------------------
+test('Test deployment ApiGateway AuthorizationType override', () => {
+    // Stack
+    const stack = new Stack();
+    // Helper declaration
+    new ApiGatewayToLambda(stack, 'api-gateway-lambda', {
+        apiGatewayProps: {
+            defaultMethodOptions: {
+                authorizationType: api.AuthorizationType.NONE
+            }
+        },
+        lambdaFunctionProps: {
+            runtime: lambda.Runtime.NODEJS_10_X,
+            handler: 'index.handler',
+            code: lambda.Code.asset(`${__dirname}/lambda`)
+        }
+    });
+    // Assertion 1
+    expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+        HttpMethod: "ANY",
+        AuthorizationType: "NONE"
+    });
+  });

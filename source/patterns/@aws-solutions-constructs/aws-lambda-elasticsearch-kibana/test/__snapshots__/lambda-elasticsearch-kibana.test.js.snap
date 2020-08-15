@@ -247,15 +247,6 @@ Object {
         },
         "EmailVerificationMessage": "The verification code to your new account is {####}",
         "EmailVerificationSubject": "Verify your new account",
-        "SmsConfiguration": Object {
-          "ExternalId": "testlambdaelasticsearchstackCognitoUserPoolE85DABFF",
-          "SnsCallerArn": Object {
-            "Fn::GetAtt": Array [
-              "testlambdaelasticsearchstackCognitoUserPoolsmsRoleDEC8C9B4",
-              "Arn",
-            ],
-          },
-        },
         "SmsVerificationMessage": "The verification code to your new account is {####}",
         "UserPoolAddOns": Object {
           "AdvancedSecurityMode": "ENFORCED",
@@ -294,53 +285,6 @@ Object {
         },
       },
       "Type": "AWS::Cognito::UserPoolClient",
-    },
-    "testlambdaelasticsearchstackCognitoUserPoolsmsRoleDEC8C9B4": Object {
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W11",
-              "reason": "Allowing * resource on permissions policy since its used by Cognito to send SMS messages via sns:Publish",
-            },
-          ],
-        },
-      },
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Condition": Object {
-                "StringEquals": Object {
-                  "sts:ExternalId": "testlambdaelasticsearchstackCognitoUserPoolE85DABFF",
-                },
-              },
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "cognito-idp.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "Policies": Array [
-          Object {
-            "PolicyDocument": Object {
-              "Statement": Array [
-                Object {
-                  "Action": "sns:Publish",
-                  "Effect": "Allow",
-                  "Resource": "*",
-                },
-              ],
-              "Version": "2012-10-17",
-            },
-            "PolicyName": "sns-publish",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Role",
     },
     "testlambdaelasticsearchstackElasticsearchDomain2DE7011B": Object {
       "Metadata": Object {
