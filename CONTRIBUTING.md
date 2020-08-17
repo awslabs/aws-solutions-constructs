@@ -70,7 +70,7 @@ Good AWS Solutions Constructs have the following characteristics:
 
 ### Step 3: Work your Magic
 
-Work your magic. Here are some guidelines:
+Now it's time to your magic. Here are some guidelines:
 
 * Coding style (abbreviated):
   * In general, follow the style of the code around you
