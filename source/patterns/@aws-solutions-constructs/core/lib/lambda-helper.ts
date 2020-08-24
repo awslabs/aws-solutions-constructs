@@ -13,7 +13,7 @@
 
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as iam from '@aws-cdk/aws-iam';
-import { DefaultLambdaFunctionProps, DefaultLambdaFunctionPropsForNodeJS } from './lambda-defaults';
+import { DefaultLambdaFunctionProps } from './lambda-defaults';
 import * as cdk from '@aws-cdk/core';
 import { overrideProps } from './utils';
 
@@ -70,14 +70,14 @@ export function deployLambdaFunction(scope: cdk.Construct,
   });
 
   // Override the DefaultFunctionProps with user provided  lambdaFunctionProps
-  let _lambdaFunctionProps = overrideProps(DefaultLambdaFunctionProps(lambdaServiceRole), lambdaFunctionProps);
+  const _lambdaFunctionProps = overrideProps(DefaultLambdaFunctionProps(lambdaServiceRole), lambdaFunctionProps);
+
+  const lambdafunction = new lambda.Function(scope, _functionId, _lambdaFunctionProps);
 
   if (lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_10_X ||
     lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_12_X) {
-      _lambdaFunctionProps = overrideProps(DefaultLambdaFunctionPropsForNodeJS(lambdaServiceRole), lambdaFunctionProps);
+      lambdafunction.addEnvironment('AWS_NODEJS_CONNECTION_REUSE_ENABLED', '1', { removeInEdge: true });
   }
-
-  const lambdafunction = new lambda.Function(scope, _functionId, _lambdaFunctionProps);
 
   const cfnLambdafunction = lambdafunction.node.findChild('Resource') as lambda.CfnFunction;
 

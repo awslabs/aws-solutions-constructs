@@ -109,10 +109,6 @@ function defaultLambdaEdgeFunction(scope: cdk.Construct): lambda.Function {
         handler: 'index.handler'
     }, 'SetHttpSecurityHeaders');
 
-    // Remove any environment variables as it is not supported by the Lambda@Edge functions :(
-    const cfnEdgeLambdaFunction = edgeLambdaFunc.node.defaultChild as lambda.CfnFunction;
-    cfnEdgeLambdaFunction.addDeletionOverride('Properties.Environment');
-
     return edgeLambdaFunc;
 }
 
