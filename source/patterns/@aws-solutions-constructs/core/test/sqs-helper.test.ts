@@ -120,3 +120,54 @@ test('Test existingQueueObj', () => {
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
+
+// --------------------------------------------------------------
+// Test deployment w/ imported encryption key
+// --------------------------------------------------------------
+test('Test deployment w/ imported encryption key', () => {
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  defaults.buildQueue(stack, 'existing-queue', {
+    queueProps: {
+      queueName: 'existing-queue'
+    },
+    enableEncryption: true,
+    encryptionKey: defaults.buildEncryptionKey(stack)
+  });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Assertion 2
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    QueueName: "existing-queue"
+  });
+  // Assertion 3
+  expect(stack).toHaveResource("AWS::KMS::Key", {
+    EnableKeyRotation: true
+  });
+});
+
+// --------------------------------------------------------------
+// Test deployment without imported encryption key
+// --------------------------------------------------------------
+test('Test deployment without imported encryption key', () => {
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  defaults.buildQueue(stack, 'existing-queue', {
+    queueProps: {
+      queueName: 'existing-queue'
+    },
+    enableEncryption: true
+  });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Assertion 2
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    QueueName: "existing-queue"
+  });
+  // Assertion 3
+  expect(stack).toHaveResource("AWS::KMS::Key", {
+    EnableKeyRotation: true
+  });
+});

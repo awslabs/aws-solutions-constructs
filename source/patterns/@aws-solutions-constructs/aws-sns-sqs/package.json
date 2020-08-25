@@ -1,0 +1,85 @@
+{
+  "name": "@aws-solutions-constructs/aws-sns-sqs",
+  "version": "1.57.0",
+  "description": "CDK constructs for defining an interaction between an Amazon SNS topic and an Amazon SQS queue.",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/awslabs/aws-solutions-constructs.git",
+    "directory": "source/patterns/@aws-solutions-constructs/aws-sns-sqs"
+  },
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com",
+    "organization": true
+  },
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc -b .",
+    "lint": "eslint -c ../eslintrc.yml --ext=.js,.ts . && tslint --project .",
+    "lint-fix": "eslint -c ../eslintrc.yml --ext=.js,.ts --fix .",
+    "test": "jest --coverage",
+    "clean": "tsc -b --clean",
+    "watch": "tsc -b -w",
+    "integ": "cdk-integ",
+    "integ-assert": "cdk-integ-assert",
+    "integ-no-clean": "cdk-integ --no-clean",
+    "jsii": "jsii",
+    "jsii-pacmak": "jsii-pacmak",
+    "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
+    "snapshot-update": "npm run jsii && npm test -- -u && npm run integ-assert"
+  },
+  "jsii": {
+    "outdir": "dist",
+    "targets": {
+      "java": {
+        "package": "software.amazon.awsconstructs.services.snssqs",
+        "maven": {
+          "groupId": "software.amazon.awsconstructs",
+          "artifactId": "snssqs"
+        }
+      },
+      "dotnet": {
+        "namespace": "Amazon.Constructs.AWS.SnsSqs",
+        "packageId": "Amazon.Constructs.AWS.SnsSqs",
+        "signAssembly": true,
+        "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
+      },
+      "python": {
+        "distName": "aws-solutions-constructs.aws-sns-sqs",
+        "module": "aws_solutions_constructs.aws_sns_sqs"
+      }
+    }
+  },
+  "dependencies": {
+    "@aws-cdk/aws-iam": "~1.57.0",
+    "@aws-cdk/aws-sns": "~1.57.0",
+    "@aws-cdk/aws-sqs": "~1.57.0",
+    "@aws-cdk/aws-sns-subscriptions": "~1.57.0",
+    "@aws-cdk/aws-kms": "~1.57.0",
+    "@aws-cdk/core": "~1.57.0",
+    "@aws-solutions-constructs/core": "~1.57.0",
+    "constructs": "^3.0.2"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "~1.57.0",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^10.3.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ]
+  },
+  "peerDependencies": {
+    "@aws-cdk/aws-iam": "~1.57.0",
+    "@aws-cdk/aws-sns": "~1.57.0",
+    "@aws-cdk/aws-sqs": "~1.57.0",
+    "@aws-cdk/aws-sns-subscriptions": "~1.57.0",
+    "@aws-cdk/aws-kms": "~1.57.0",
+    "@aws-cdk/core": "~1.57.0",
+    "@aws-solutions-constructs/core": "~1.57.0",
+    "constructs": "^3.0.2"
+  }
+}

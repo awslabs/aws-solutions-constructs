@@ -118,7 +118,7 @@ export function buildTopic(scope: cdk.Construct, props?: BuildTopicProps): [sns.
     }
     // Set encryption properties
     // TODO: Look into using the AWS managed CMK by using 'alias/aws/sns'
-    if (!props.enableEncryption || props.enableEncryption === true) {
+    if (props.enableEncryption === undefined || props.enableEncryption === true) {
         if (props.encryptionKey) {
             snsTopicProps.masterKey = props.encryptionKey;
         } else {
