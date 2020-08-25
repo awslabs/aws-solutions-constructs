@@ -162,6 +162,17 @@ Object {
                 ],
               },
               "Id": "origin1",
+              "OriginPath": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "/",
+                    Object {
+                      "Ref": "testcloudfrontapigatewaylambdaLambdaRestApiDeploymentStageprod4617A7B7",
+                    },
+                  ],
+                ],
+              },
             },
           ],
           "PriceClass": "PriceClass_100",
@@ -551,8 +562,18 @@ Object {
       "Type": "AWS::Lambda::Permission",
     },
     "testcloudfrontapigatewaylambdaLambdaRestApiANYBC435DFD": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W59",
+              "reason": "AWS::ApiGateway::Method AuthorizationType is set to 'NONE' because API Gateway behind CloudFront does not support AWS_IAM authentication",
+            },
+          ],
+        },
+      },
       "Properties": Object {
-        "AuthorizationType": "AWS_IAM",
+        "AuthorizationType": "NONE",
         "HttpMethod": "ANY",
         "Integration": Object {
           "IntegrationHttpMethod": "POST",
@@ -732,8 +753,18 @@ Object {
       "Type": "AWS::ApiGateway::UsagePlan",
     },
     "testcloudfrontapigatewaylambdaLambdaRestApiproxyANYAE500A13": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W59",
+              "reason": "AWS::ApiGateway::Method AuthorizationType is set to 'NONE' because API Gateway behind CloudFront does not support AWS_IAM authentication",
+            },
+          ],
+        },
+      },
       "Properties": Object {
-        "AuthorizationType": "AWS_IAM",
+        "AuthorizationType": "NONE",
         "HttpMethod": "ANY",
         "Integration": Object {
           "IntegrationHttpMethod": "POST",

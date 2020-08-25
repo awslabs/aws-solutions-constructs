@@ -16,6 +16,7 @@ import * as dynamodb from '@aws-cdk/aws-dynamodb';
 const DefaultTableProps: dynamodb.TableProps = {
   billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
   encryption: dynamodb.TableEncryption.AWS_MANAGED,
+  pointInTimeRecovery: true,
   partitionKey: {
     name: 'id',
     type: dynamodb.AttributeType.STRING
@@ -25,6 +26,7 @@ const DefaultTableProps: dynamodb.TableProps = {
 const DefaultTableWithStreamProps: dynamodb.TableProps = {
   billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
   encryption: dynamodb.TableEncryption.AWS_MANAGED,
+  pointInTimeRecovery: true,
   partitionKey: {
     name: 'id',
     type: dynamodb.AttributeType.STRING

@@ -1,0 +1,23 @@
+# VSCode extension
+.vscode/
+/.favorites.json
+
+# TypeScript incremental build states
+*.tsbuildinfo
+
+# Local state files & OS specifics
+.DS_Store
+node_modules/
+source/**/package-lock.json
+
+# CDK Context & Staging files
+cdk.context.json
+.cdk.staging/
+cdk.out/
+*.tabl.json
+
+source/patterns/**/tsconfig.json
+deployment/dist/*
+.DS_Store
+
+*.pptx

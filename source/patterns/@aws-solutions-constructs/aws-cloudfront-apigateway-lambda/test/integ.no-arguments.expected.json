@@ -293,7 +293,7 @@
         "RestApiId": {
           "Ref": "testcloudfrontapigatewaylambdaLambdaRestApi6A4CBD44"
         },
-        "AuthorizationType": "AWS_IAM",
+        "AuthorizationType": "NONE",
         "Integration": {
           "IntegrationHttpMethod": "POST",
           "Type": "AWS_PROXY",
@@ -320,6 +320,16 @@
               ]
             ]
           }
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W59",
+              "reason": "AWS::ApiGateway::Method AuthorizationType is set to 'NONE' because API Gateway behind CloudFront does not support AWS_IAM authentication"
+            }
+          ]
         }
       }
     },
@@ -414,7 +424,7 @@
         "RestApiId": {
           "Ref": "testcloudfrontapigatewaylambdaLambdaRestApi6A4CBD44"
         },
-        "AuthorizationType": "AWS_IAM",
+        "AuthorizationType": "NONE",
         "Integration": {
           "IntegrationHttpMethod": "POST",
           "Type": "AWS_PROXY",
@@ -441,6 +451,16 @@
               ]
             ]
           }
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W59",
+              "reason": "AWS::ApiGateway::Method AuthorizationType is set to 'NONE' because API Gateway behind CloudFront does not support AWS_IAM authentication"
+            }
+          ]
         }
       }
     },
@@ -800,7 +820,18 @@
                   }
                 ]
               },
-              "Id": "origin1"
+              "Id": "origin1",
+              "OriginPath": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "/",
+                    {
+                      "Ref": "testcloudfrontapigatewaylambdaLambdaRestApiDeploymentStageprod4617A7B7"
+                    }
+                  ]
+                ]
+              }
             }
           ],
           "PriceClass": "PriceClass_100",

@@ -15,6 +15,7 @@ import { SynthUtils, ResourcePart } from '@aws-cdk/assert';
 import { Stack } from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as api from '@aws-cdk/aws-apigateway';
+import * as iam from '@aws-cdk/aws-iam';
 import * as defaults from '../index';
 import '@aws-cdk/assert/jest';
 
@@ -62,7 +63,7 @@ function setupRestApi(stack: Stack, apiProps?: any): void {
             }
         ]
     },
-    path: '12345678' + "/" + 'thisqueuequeueName'
+    path: '11112222' + "/" + 'thisqueuequeueName'
   });
   // Setup the API Gateway method(s)
   apiGatewayResource.addMethod('POST', apiGatewayIntegration, {
@@ -236,4 +237,53 @@ test('Test default RestApi deployment for Cloudwatch loggroup', () => {
       Format: "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}",
     },
   });
+});
+
+test('Test addMethodToApiResource with action', () => {
+  const stack = new Stack();
+  const [restApi] = defaults.GlobalRestApi(stack);
+
+  // Setup the API Gateway role
+  const apiGatewayRole = new iam.Role(stack, 'api-gateway-role', {
+    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
+  });
+
+  // Setup the API Gateway resource
+  const apiGatewayResource = restApi.root.addResource('api-gateway-resource');
+  const getRequestTemplate = "{}";
+
+  // Add Method
+  defaults.addProxyMethodToApiResource({
+    action: "Query",
+    service: "dynamodb",
+    apiResource: apiGatewayResource,
+    apiGatewayRole,
+    apiMethod: "GET",
+    requestTemplate: getRequestTemplate
+  });
+
+  // Add Method
+  defaults.addProxyMethodToApiResource({
+    path: '11112222' + "/" + 'thisqueuequeueName',
+    service: "sqs",
+    apiResource: apiGatewayResource,
+    apiGatewayRole,
+    apiMethod: "PUT",
+    requestTemplate: getRequestTemplate
+  });
+
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
+  // Error scenario: missing action and path
+  try {
+    defaults.addProxyMethodToApiResource({
+      service: "sqs",
+      apiResource: apiGatewayResource,
+      apiGatewayRole,
+      apiMethod: "DELETE",
+      requestTemplate: getRequestTemplate
+    });
+  } catch (e) {
+    expect(e).toBeInstanceOf(Error);
+  }
 });

@@ -17,6 +17,7 @@ import { ApiGatewayToDynamoDB, ApiGatewayToDynamoDBProps } from '../lib';
 import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import { AttributeType } from "@aws-cdk/aws-dynamodb";
+import * as api from "@aws-cdk/aws-apigateway";
 
 test('snapshot test ApiGatewayToDynamoDB default params', () => {
     const stack = new Stack();
@@ -208,3 +209,19 @@ test('override apiGatewayProps for api gateway', () => {
     });
 
 });
+
+test('Test deployment ApiGateway AuthorizationType override', () => {
+    const stack = new Stack();
+    new ApiGatewayToDynamoDB(stack, 'api-gateway-dynamodb', {
+        apiGatewayProps: {
+            defaultMethodOptions: {
+                authorizationType: api.AuthorizationType.NONE
+            }
+        }
+    });
+
+    expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+        HttpMethod: "GET",
+        AuthorizationType: "NONE"
+    });
+  });

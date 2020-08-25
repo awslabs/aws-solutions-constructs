@@ -126,25 +126,53 @@ export class ApiGatewayToDynamoDB extends Construct {
     if (props.allowCreateOperation && props.allowCreateOperation === true && props.createRequestTemplate) {
       const createRequestTemplate = props.createRequestTemplate.replace("${Table}", this.dynamoTable.tableName);
       this.addActionToPolicy("dynamodb:PutItem");
-      this.addMethod(this.apiGateway.root, createRequestTemplate, "PutItem", "POST");
+      defaults.addProxyMethodToApiResource({
+        service: "dynamodb",
+        action: "PutItem",
+        apiGatewayRole: this.apiGatewayRole,
+        apiMethod: "POST",
+        apiResource: this.apiGateway.root,
+        requestTemplate: createRequestTemplate
+      });
     }
     // Read
     if (!props.allowReadOperation || props.allowReadOperation === true) {
       const getRequestTemplate = "{\r\n\"TableName\": \"" + this.dynamoTable.tableName + "\",\r\n \"KeyConditionExpression\": \"" + partitionKeyName + " = :v1\",\r\n    \"ExpressionAttributeValues\": {\r\n        \":v1\": {\r\n            \"S\": \"$input.params('" + partitionKeyName + "')\"\r\n        }\r\n    }\r\n}";
       this.addActionToPolicy("dynamodb:Query");
-      this.addMethod(apiGatewayResource, getRequestTemplate, "Query", "GET");
+      defaults.addProxyMethodToApiResource({
+        service: "dynamodb",
+        action: "Query",
+        apiGatewayRole: this.apiGatewayRole,
+        apiMethod: "GET",
+        apiResource: apiGatewayResource,
+        requestTemplate: getRequestTemplate
+      });
     }
     // Update
     if (props.allowUpdateOperation && props.allowUpdateOperation === true && props.updateRequestTemplate) {
       const updateRequestTemplate = props.updateRequestTemplate.replace("${Table}", this.dynamoTable.tableName);
       this.addActionToPolicy("dynamodb:UpdateItem");
-      this.addMethod(apiGatewayResource, updateRequestTemplate, "UpdateItem", "PUT");
+      defaults.addProxyMethodToApiResource({
+        service: "dynamodb",
+        action: "UpdateItem",
+        apiGatewayRole: this.apiGatewayRole,
+        apiMethod: "PUT",
+        apiResource: apiGatewayResource,
+        requestTemplate: updateRequestTemplate
+      });
     }
     // Delete
     if (props.allowDeleteOperation && props.allowDeleteOperation === true) {
       const deleteRequestTemplate = "{\r\n  \"TableName\": \"" + this.dynamoTable.tableName + "\",\r\n  \"Key\": {\r\n    \"" + partitionKeyName + "\": {\r\n      \"S\": \"$input.params('" + partitionKeyName + "')\"\r\n    }\r\n  },\r\n  \"ConditionExpression\": \"attribute_not_exists(Replies)\",\r\n  \"ReturnValues\": \"ALL_OLD\"\r\n}";
       this.addActionToPolicy("dynamodb:DeleteItem");
-      this.addMethod(apiGatewayResource, deleteRequestTemplate, "DeleteItem", "DELETE");
+      defaults.addProxyMethodToApiResource({
+        service: "dynamodb",
+        action: "DeleteItem",
+        apiGatewayRole: this.apiGatewayRole,
+        apiMethod: "DELETE",
+        apiResource: apiGatewayResource,
+        requestTemplate: deleteRequestTemplate
+      });
     }
   }
 
@@ -155,54 +183,5 @@ export class ApiGatewayToDynamoDB extends Construct {
       ],
       actions: [ `${action}` ]
     }));
-  }
-
-  private addMethod(apiResource: api.IResource, requestTemplate: string, dynamodbAction: string, apiMethod: string) {
-    // Setup the API Gateway Integration
-    const apiGatewayIntegration = new api.AwsIntegration({
-      service: "dynamodb",
-      action: dynamodbAction,
-      integrationHttpMethod: "POST",
-      options: {
-        passthroughBehavior: api.PassthroughBehavior.NEVER,
-        credentialsRole: this.apiGatewayRole,
-        requestParameters: {
-            "integration.request.header.Content-Type": "'application/json'"
-        },
-        requestTemplates: {
-            "application/json": requestTemplate
-        },
-        integrationResponses: [
-          {
-              statusCode: "200"
-          },
-          {
-              statusCode: "500",
-              responseTemplates: {
-                  "text/html": "Error"
-              },
-              selectionPattern: "500"
-          }
-        ]
-      }
-    });
-
-    // Setup the API Gateway method(s)
-    apiResource.addMethod(apiMethod, apiGatewayIntegration, {
-        methodResponses: [
-            {
-                statusCode: "200",
-                responseParameters: {
-                    "method.response.header.Content-Type": true
-                }
-            },
-            {
-                statusCode: "500",
-                responseParameters: {
-                    "method.response.header.Content-Type": true
-                },
-            }
-        ]
-    });
   }
 }

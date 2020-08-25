@@ -62,9 +62,16 @@ test('Pattern deployment w/ new Lambda function and overridden props', () => {
     };
     const app = new SqsToLambda(stack, 'test-sqs-lambda', props);
     // Assertion 1
-    expect(app.lambdaFunction).toHaveProperty('environment.OVERRIDE', 'TRUE');
-    // Assertion 2
     expect(app.sqsQueue).toHaveProperty('fifo', true);
+    // Assertion 2
+    expect(stack).toHaveResource('AWS::Lambda::Function', {
+        Environment: {
+            Variables: {
+              OVERRIDE: "TRUE",
+              AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
+            }
+        }
+    });
 });
 
 // --------------------------------------------------------------

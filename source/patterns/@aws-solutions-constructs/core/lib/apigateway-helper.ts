@@ -20,6 +20,7 @@ import * as iam from '@aws-cdk/aws-iam';
 import * as apiDefaults from './apigateway-defaults';
 import { DefaultLogGroupProps } from './cloudwatch-log-group-defaults';
 import { overrideProps } from './utils';
+import { Role } from '@aws-cdk/aws-iam';
 
 /**
  * Create and configures access logging for API Gateway resources.
@@ -181,3 +182,78 @@ export function GlobalRestApi(scope: cdk.Construct, apiGatewayProps?: api.RestAp
     const [restApi, apiCWRole] = configureRestApi(scope, defaultProps, apiGatewayProps);
     return [restApi, apiCWRole, logGroup ];
 }
+
+export interface AddProxyMethodToApiResourceInputParams {
+    readonly service: string,
+    readonly action?: string,
+    readonly path?: string,
+    readonly apiResource: api.IResource,
+    readonly apiMethod: string,
+    readonly apiGatewayRole: Role,
+    readonly requestTemplate: string,
+    readonly contentType?: string
+}
+
+export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceInputParams) {
+    const baseProps: api.AwsIntegrationProps = {
+        service: params.service,
+        integrationHttpMethod: "POST",
+        options: {
+          passthroughBehavior: api.PassthroughBehavior.NEVER,
+          credentialsRole: params.apiGatewayRole,
+          requestParameters: {
+              "integration.request.header.Content-Type": params.contentType ? params.contentType : "'application/json'"
+          },
+          requestTemplates: {
+              "application/json": params.requestTemplate
+          },
+          integrationResponses: [
+            {
+                statusCode: "200"
+            },
+            {
+                statusCode: "500",
+                responseTemplates: {
+                    "text/html": "Error"
+                },
+                selectionPattern: "500"
+            }
+          ]
+        }
+    };
+
+    let extraProps;
+
+    if (params.action) {
+        extraProps = {
+            action: params.action
+        };
+    } else if (params.path) {
+        extraProps = {
+            path: params.path
+        };
+    } else {
+        throw Error('Either action or path is required');
+    }
+
+    // Setup the API Gateway AWS Integration
+    const apiGatewayIntegration = new api.AwsIntegration(Object.assign(baseProps, extraProps));
+
+    // Setup the API Gateway method
+    params.apiResource.addMethod(params.apiMethod, apiGatewayIntegration, {
+        methodResponses: [
+            {
+                statusCode: "200",
+                responseParameters: {
+                    "method.response.header.Content-Type": true
+                }
+            },
+            {
+                statusCode: "500",
+                responseParameters: {
+                    "method.response.header.Content-Type": true
+                },
+            }
+        ]
+    });
+  }

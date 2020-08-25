@@ -27,7 +27,8 @@ This AWS Solutions Construct implements an AWS CloudFront fronting an Amazon API
 Here is a minimal deployable pattern definition:
 
 ``` javascript
-const { defaults } = require('@aws-solutions-constructs/core');
+const api = require('@aws-cdk/aws-apigateway');
+const lambda = require("@aws-cdk/aws-lambda");
 const { CloudFrontToApiGateway } = require('@aws-solutions-constructs/aws-cloudfront-apigateway');
 
 const stack = new Stack();
@@ -38,12 +39,22 @@ const lambdaProps: lambda.FunctionProps = {
     handler: 'index.handler'
 };
 
-const func = defaults.deployLambdaFunction(stack, lambdaProps);
+const lambdafunction = new lambda.Function(stack, 'LambdaFunction', lambdaProps);
 
-const _api = defaults.RegionalApiGateway(stack, func);
+const apiGatewayProps: api.LambdaRestApiProps = {
+        handler: lambdafunction,
+        endpointConfiguration: {
+            types: [api.EndpointType.REGIONAL]
+        },
+        defaultMethodOptions: {
+            authorizationType: api.AuthorizationType.NONE
+        }
+};
+
+const apiGateway = new api.LambdaRestApi(scope, 'LambdaRestApi', apiGatewayProps);
 
 new CloudFrontToApiGateway(stack, 'test-cloudfront-apigateway', {
-    existingApiGatewayObj: _api
+    existingApiGatewayObj: apiGateway
 });
 
 ```

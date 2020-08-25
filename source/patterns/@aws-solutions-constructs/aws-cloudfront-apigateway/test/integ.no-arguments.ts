@@ -16,6 +16,7 @@ import { App, Stack } from "@aws-cdk/core";
 import { CloudFrontToApiGateway } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
+import * as api from '@aws-cdk/aws-apigateway';
 
 // Setup
 const app = new App();
@@ -31,6 +32,23 @@ const inProps: lambda.FunctionProps = {
 const func = defaults.deployLambdaFunction(stack, inProps);
 
 const [_api] = defaults.RegionalLambdaRestApi(stack, func);
+
+_api.methods.forEach((apiMethod) => {
+    // Override the API Gateway Authorization Type from AWS_IAM to NONE
+    const child = apiMethod.node.findChild('Resource') as api.CfnMethod;
+    if (child.authorizationType === 'AWS_IAM') {
+      child.addPropertyOverride('AuthorizationType', 'NONE');
+
+      child.cfnOptions.metadata = {
+        cfn_nag: {
+            rules_to_suppress: [{
+                id: 'W59',
+                reason: `AWS::ApiGateway::Method AuthorizationType is set to 'NONE' because API Gateway behind CloudFront does not support AWS_IAM authentication`
+            }]
+        }
+      };
+    }
+});
 
 new CloudFrontToApiGateway(stack, 'test-cloudfront-apigateway', {
     existingApiGatewayObj: _api
