@@ -14,8 +14,8 @@
 // Imports
 import { App, Stack } from "@aws-cdk/core";
 import { SnsToSqs, SnsToSqsProps } from "../lib";
+import { KeyProps } from '@aws-cdk/aws-kms';
 import * as kms from '@aws-cdk/aws-kms';
-import * as sqs from '@aws-cdk/aws-sqs';
 
 // Setup
 const app = new App();
@@ -23,13 +23,23 @@ const stack = new Stack(app, 'test-sns-sqs');
 stack.templateOptions.description = 'Integration Test for aws-sns-sqs with SNS managed KMS key';
 
 // Definitions
+
+// Retrieve SNS managed key to encrypt the SNS Topic
 const snsManagedKey = kms.Alias.fromAliasName(stack, 'sns-managed-key', 'alias/aws/sns');
+
+// Create customer managed KMS CMK to encrypt the SQS Queue
+const sqsEncryptionKeyProps: KeyProps = {
+  enableKeyRotation: true
+};
+let sqsEncryptionKey = new kms.Key(stack, 'ImportedSQSEncryptionKey', sqsEncryptionKeyProps);
+
+// Create the SNS to SQS construct
 const props: SnsToSqsProps = {
   topicProps: {
     masterKey: snsManagedKey
   },
   queueProps: {
-    encryption: sqs.QueueEncryption.KMS
+    encryptionMasterKey: sqsEncryptionKey
   },
   enableEncryption: false
 };
