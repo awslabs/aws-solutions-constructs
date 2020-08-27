@@ -134,6 +134,14 @@
           "Statement": [
             {
               "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
                 "sqs:SendMessage",
                 "sqs:GetQueueAttributes",
                 "sqs:GetQueueUrl"
@@ -155,6 +163,16 @@
             "Ref": "testlambdasqslambdalambdatosqsLambdaFunctionServiceRoleAE4A8DCD"
           }
         ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray."
+            }
+          ]
+        }
       }
     },
     "testlambdasqslambdalambdatosqsLambdaFunction8CCC2F0B": {
@@ -213,6 +231,9 @@
               "Ref": "existingsqsqueue6AE880F4"
             }
           }
+        },
+        "TracingConfig": {
+          "Mode": "Active"
         }
       },
       "DependsOn": [
@@ -363,6 +384,14 @@
           "Statement": [
             {
               "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
                 "sqs:ReceiveMessage",
                 "sqs:ChangeMessageVisibility",
                 "sqs:GetQueueUrl",
@@ -386,6 +415,16 @@
             "Ref": "testlambdasqslambdasqstolambdaLambdaFunctionServiceRole785979D2"
           }
         ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray."
+            }
+          ]
+        }
       }
     },
     "testlambdasqslambdasqstolambdaLambdaFunction81308327": {
@@ -441,6 +480,9 @@
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
           }
+        },
+        "TracingConfig": {
+          "Mode": "Active"
         }
       },
       "DependsOn": [

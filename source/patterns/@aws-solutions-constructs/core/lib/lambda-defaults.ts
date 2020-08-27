@@ -17,7 +17,8 @@ import * as iam from '@aws-cdk/aws-iam';
 export function DefaultLambdaFunctionProps(lambdaServiceRole: iam.Role): lambda.FunctionProps | any {
 
   const lambdaFunctionProps: lambda.FunctionProps | any = {
-    role: lambdaServiceRole
+    role: lambdaServiceRole,
+    tracing: lambda.Tracing.ACTIVE
   };
 
   return lambdaFunctionProps;

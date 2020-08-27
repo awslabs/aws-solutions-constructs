@@ -58,6 +58,14 @@
           "Statement": [
             {
               "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
                 "dynamodb:BatchGetItem",
                 "dynamodb:GetRecords",
                 "dynamodb:GetShardIterator",
@@ -91,6 +99,16 @@
             "Ref": "testiotlambdadynamodbstackIotToLambdaLambdaFunctionServiceRoleC57F7FDA"
           }
         ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray."
+            }
+          ]
+        }
       }
     },
     "testiotlambdadynamodbstackIotToLambdaLambdaFunctionDFEAF894": {
@@ -149,6 +167,9 @@
               "Ref": "testiotlambdadynamodbstackLambdaToDynamoDBDynamoTableE17E5733"
             }
           }
+        },
+        "TracingConfig": {
+          "Mode": "Active"
         }
       },
       "DependsOn": [

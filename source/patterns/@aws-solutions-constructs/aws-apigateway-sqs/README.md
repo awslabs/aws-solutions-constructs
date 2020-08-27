@@ -93,6 +93,7 @@ Out of the box implementation of the Construct without any override will set the
 * Enable CloudWatch logging for API Gateway
 * Configure least privilege access IAM role for API Gateway
 * Set the default authorizationType for all API methods to IAM
+* Enable X-Ray Tracing
 
 ### Amazon SQS Queue
 * Deploy SQS dead-letter queue for the source SQS Queue

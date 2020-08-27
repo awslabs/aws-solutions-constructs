@@ -80,6 +80,7 @@ Out of the box implementation of the Construct without any override will set the
 * Configure least privilege access IAM role for Lambda function.
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function.
 * Allow the function to send messages only to the queue (purging can be enabled using the `enableQueuePurge` property).
+* Enable X-Ray Tracing
 
 ### Amazon SQS Queue
 * Deploy SQS dead-letter queue for the source SQS Queue.

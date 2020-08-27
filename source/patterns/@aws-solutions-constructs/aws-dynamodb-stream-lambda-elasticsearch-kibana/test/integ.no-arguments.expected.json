@@ -57,6 +57,14 @@
         "PolicyDocument": {
           "Statement": [
             {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
               "Action": "dynamodb:ListStreams",
               "Effect": "Allow",
               "Resource": {
@@ -97,6 +105,16 @@
             "Ref": "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaLambdaFunctionServiceRole7284FB59"
           }
         ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray."
+            }
+          ]
+        }
       }
     },
     "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaLambdaFunctionE4694B84": {
@@ -158,6 +176,9 @@
               ]
             }
           }
+        },
+        "TracingConfig": {
+          "Mode": "Active"
         }
       },
       "DependsOn": [

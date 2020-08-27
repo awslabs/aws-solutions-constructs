@@ -32,7 +32,8 @@ function DefaultRestApiProps(_endpointType: api.EndpointType[], _logGroup: LogGr
             accessLogDestination: new api.LogGroupLogDestination(_logGroup),
             accessLogFormat: api.AccessLogFormat.jsonWithStandardFields(),
             loggingLevel: api.MethodLoggingLevel.INFO,
-            dataTraceEnabled: true
+            dataTraceEnabled: true,
+            tracingEnabled: true
         },
         defaultMethodOptions: {
             authorizationType: api.AuthorizationType.IAM

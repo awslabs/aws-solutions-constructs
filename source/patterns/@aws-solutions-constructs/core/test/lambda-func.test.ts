@@ -168,9 +168,13 @@ test('test FunctionProps for no envrionment variable when runtime = PYTHON', () 
           "Arn"
         ]
       },
-      Runtime: "python3.6"
+      Runtime: "python3.6",
+      TracingConfig: {
+        Mode: "Active"
+      }
     },
     DependsOn: [
+      "LambdaFunctionServiceRoleDefaultPolicy126C8897",
       "LambdaFunctionServiceRole0C4CDE0B"
     ]
   }, ResourcePart.CompleteDefinition);

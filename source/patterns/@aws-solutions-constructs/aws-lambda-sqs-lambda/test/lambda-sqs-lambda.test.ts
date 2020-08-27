@@ -57,27 +57,63 @@ test('Test minimal deployment', () => {
   expect(stack).toHaveResourceLike('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
-        { Action: [
-          "sqs:SendMessage",
-          "sqs:GetQueueAttributes",
-          "sqs:GetQueueUrl"
-        ]}
-      ]
+        {
+          Action: [
+            "xray:PutTraceSegments",
+            "xray:PutTelemetryRecords"
+          ],
+          Effect: "Allow",
+          Resource: "*"
+        },
+        {
+          Action: [
+            "sqs:SendMessage",
+            "sqs:GetQueueAttributes",
+            "sqs:GetQueueUrl"
+          ],
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              "lambdasqslambdalambdatosqsqueue49588D68",
+              "Arn"
+            ]
+          }
+        }
+      ],
+      Version: "2012-10-17"
     }
   });
   // Assertion 6: test for consume-message permissions (only) on the consumer function
   expect(stack).toHaveResourceLike('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
-        { Action: [
-          "sqs:ReceiveMessage",
-          "sqs:ChangeMessageVisibility",
-          "sqs:GetQueueUrl",
-          "sqs:DeleteMessage",
-          "sqs:GetQueueAttributes"
-        ]}
-      ]
-    }
+        {
+          Action: [
+            "xray:PutTraceSegments",
+            "xray:PutTelemetryRecords"
+          ],
+          Effect: "Allow",
+          Resource: "*"
+        },
+        {
+          Action: [
+            "sqs:ReceiveMessage",
+            "sqs:ChangeMessageVisibility",
+            "sqs:GetQueueUrl",
+            "sqs:DeleteMessage",
+            "sqs:GetQueueAttributes"
+          ],
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              "lambdasqslambdalambdatosqsqueue49588D68",
+              "Arn"
+            ]
+          }
+        }
+      ],
+      Version: "2012-10-17"
+    },
   });
 });
 

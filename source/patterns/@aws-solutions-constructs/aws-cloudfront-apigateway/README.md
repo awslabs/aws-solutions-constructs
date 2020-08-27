@@ -96,6 +96,7 @@ Out of the box implementation of the Construct without any override will set the
 
 ### Amazon API Gateway
 * User provided API Gateway object is used as-is
+* Enable X-Ray Tracing
 
 ## Architecture
 ![Architecture Diagram](architecture.png)
