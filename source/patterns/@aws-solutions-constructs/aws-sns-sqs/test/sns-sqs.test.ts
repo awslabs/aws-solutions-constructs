@@ -21,7 +21,7 @@ import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------
-// Pattern deployment w/ new Lambda function and
+// Pattern deployment w/ new Topic, new Queue and
 // default properties
 // --------------------------------------------------------------
 test('Pattern deployment w/ new Topic, new Queue and default props', () => {
@@ -76,7 +76,10 @@ test('Pattern deployment w/ new topic, new queue, and overridden props', () => {
             queueName: "new-queue.fifo",
             fifo: true
         },
-        enableEncryption: true,
+        enableEncryptionWithCustomerManagedKey: true,
+        encryptionKeyProps: {
+            enableKeyRotation: false
+        },
         deployDeadLetterQueue: false,
         maxReceiveCount: 0
     };
@@ -93,6 +96,10 @@ test('Pattern deployment w/ new topic, new queue, and overridden props', () => {
         QueueName: "new-queue.fifo",
         FifoQueue: true
     });
+    // Assertion 3
+    expect(stack).toHaveResource("AWS::KMS::Key", {
+        EnableKeyRotation: false
+    });
 });
 
 // --------------------------------------------------------------
@@ -102,11 +109,9 @@ test('Test getter methods', () => {
     // Initial Setup
     const stack = new Stack();
     const props: SnsToSqsProps = {
-        topicProps: {},
-        enableEncryption: true,
+        enableEncryptionWithCustomerManagedKey: true,
         deployDeadLetterQueue: true,
-        maxReceiveCount: 0,
-        queueProps: {}
+        maxReceiveCount: 0
     };
     const app = new SnsToSqs(stack, 'test-sns-sqs', props);
     // Assertion 1
@@ -162,8 +167,7 @@ test('Test deployment with imported encryption key', () => {
     });
     // Helper declaration
     new SnsToSqs(stack, 'sns-to-sqs-stack', {
-        topicProps: {},
-        enableEncryption: true,
+        enableEncryptionWithCustomerManagedKey: true,
         encryptionKey: kmsKey
     });
     // Assertion 1
@@ -194,7 +198,7 @@ test('Test deployment with SNS managed KMS key', () => {
         queueProps: {
             encryption: sqs.QueueEncryption.KMS
         },
-        enableEncryption: false
+        enableEncryptionWithCustomerManagedKey: false
     });
     // Assertion 1
     expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();

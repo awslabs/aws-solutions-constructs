@@ -73,13 +73,19 @@ export interface SnsToSqsProps {
      *
      * @default - true (encryption enabled, managed by this CDK app).
      */
-    readonly enableEncryption?: boolean
+    readonly enableEncryptionWithCustomerManagedKey?: boolean
     /**
      * An optional, imported encryption key to encrypt the SQS queue, and SNS Topic.
      *
      * @default - not specified.
      */
     readonly encryptionKey?: kms.Key
+    /**
+     * Optional user-provided props to override the default props for the encryption key.
+     *
+     * @default - Default props are used.
+     */
+    readonly encryptionKeyProps?: kms.KeyProps
 }
 
 /**
@@ -96,7 +102,7 @@ export class SnsToSqs extends Construct {
      * @param {cdk.App} scope - represents the scope for all the resources.
      * @param {string} id - this is a a scope-unique id.
      * @param {SnsToSqsProps} props - user provided props for the construct.
-     * @since 0.8.0
+     * @since 1.61.0
      * @access public
      */
     constructor(scope: Construct, id: string, props: SnsToSqsProps) {
@@ -113,13 +119,17 @@ export class SnsToSqs extends Construct {
             });
         }
 
-        let enableEncryptionParam = props.enableEncryption;
-        let encryptionKeyParam = props.encryptionKey;
-        // Create the encryptionKey if none was provided
-        if (props.enableEncryption !== false) {
+        let enableEncryptionParam:boolean | undefined = props.enableEncryptionWithCustomerManagedKey;
+        let encryptionKeyParam:kms.Key | undefined = props.encryptionKey;
+
+        if (props.enableEncryptionWithCustomerManagedKey === undefined ||
+          props.enableEncryptionWithCustomerManagedKey === true) {
             enableEncryptionParam = true;
+            // Create the encryptionKey if none was provided
             if (!props.encryptionKey) {
-                encryptionKeyParam = buildEncryptionKey(scope);
+                encryptionKeyParam = buildEncryptionKey(scope, {
+                    encryptionKeyProps: props.encryptionKeyProps
+                });
             }
         }
         // Setup the SNS topic

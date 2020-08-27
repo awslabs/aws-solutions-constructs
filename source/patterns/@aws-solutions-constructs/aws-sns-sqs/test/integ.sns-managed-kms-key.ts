@@ -41,7 +41,7 @@ const props: SnsToSqsProps = {
   queueProps: {
     encryptionMasterKey: sqsEncryptionKey
   },
-  enableEncryption: false
+  enableEncryptionWithCustomerManagedKey: false
 };
 
 new SnsToSqs(stack, 'test-sns-sqs', props);

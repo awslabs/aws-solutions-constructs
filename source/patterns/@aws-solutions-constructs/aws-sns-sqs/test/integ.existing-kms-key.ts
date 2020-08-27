@@ -28,7 +28,7 @@ const encryptionKeyProps: KeyProps = {
 };
 let key = new kms.Key(stack, 'ImportedEncryptionKey', encryptionKeyProps);
 const props: SnsToSqsProps = {
-  enableEncryption: true,
+  enableEncryptionWithCustomerManagedKey: true,
   encryptionKey: key
 };
 new SnsToSqs(stack, 'test-sns-sqs', props);
