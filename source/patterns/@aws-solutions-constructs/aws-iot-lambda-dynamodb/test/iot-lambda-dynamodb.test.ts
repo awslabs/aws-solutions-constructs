@@ -208,6 +208,14 @@ test('check lambda function policy ', () => {
       Statement: [
         {
           Action: [
+            "xray:PutTraceSegments",
+            "xray:PutTelemetryRecords"
+          ],
+          Effect: "Allow",
+          Resource: "*"
+        },
+        {
+          Action: [
             "dynamodb:BatchGetItem",
             "dynamodb:GetRecords",
             "dynamodb:GetShardIterator",

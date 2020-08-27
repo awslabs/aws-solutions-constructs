@@ -52,6 +52,40 @@
         ]
       }
     },
+    "testapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyA5D0BE32": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyA5D0BE32",
+        "Roles": [
+          {
+            "Ref": "testapigatewaylambdaLambdaFunctionServiceRole5CD2E9F7"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray."
+            }
+          ]
+        }
+      }
+    },
     "testapigatewaylambdaLambdaFunction18FF222F": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -105,9 +139,13 @@
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
           }
+        },
+        "TracingConfig": {
+          "Mode": "Active"
         }
       },
       "DependsOn": [
+        "testapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyA5D0BE32",
         "testapigatewaylambdaLambdaFunctionServiceRole5CD2E9F7"
       ],
       "Metadata": {
@@ -187,7 +225,8 @@
             "ResourcePath": "/*"
           }
         ],
-        "StageName": "prod"
+        "StageName": "prod",
+        "TracingEnabled": true
       }
     },
     "testapigatewaylambdaLambdaRestApiproxy2C2C544E": {

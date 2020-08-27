@@ -182,6 +182,14 @@
         "PolicyDocument": {
           "Statement": [
             {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
               "Action": "states:StartExecution",
               "Effect": "Allow",
               "Resource": {
@@ -197,6 +205,16 @@
             "Ref": "testlambdastepfunctionstackLambdaFunctionServiceRoleA27C24DF"
           }
         ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray."
+            }
+          ]
+        }
       }
     },
     "testlambdastepfunctionstackLambdaFunctionF3ADF992": {
@@ -255,6 +273,9 @@
               "Ref": "testlambdastepfunctionstackStateMachine373C0BB9"
             }
           }
+        },
+        "TracingConfig": {
+          "Mode": "Active"
         }
       },
       "DependsOn": [

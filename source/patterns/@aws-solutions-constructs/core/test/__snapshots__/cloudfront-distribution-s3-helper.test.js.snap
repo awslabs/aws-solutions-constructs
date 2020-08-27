@@ -399,6 +399,7 @@ Object {
     },
     "SetHttpSecurityHeadersEE936115": Object {
       "DependsOn": Array [
+        "SetHttpSecurityHeadersServiceRoleDefaultPolicyD336F67B",
         "SetHttpSecurityHeadersServiceRoleAF063E32",
       ],
       "Metadata": Object {
@@ -423,6 +424,9 @@ Object {
           ],
         },
         "Runtime": "nodejs12.x",
+        "TracingConfig": Object {
+          "Mode": "Active",
+        },
       },
       "Type": "AWS::Lambda::Function",
     },
@@ -483,6 +487,40 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Role",
+    },
+    "SetHttpSecurityHeadersServiceRoleDefaultPolicyD336F67B": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "SetHttpSecurityHeadersServiceRoleDefaultPolicyD336F67B",
+        "Roles": Array [
+          Object {
+            "Ref": "SetHttpSecurityHeadersServiceRoleAF063E32",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
     "SetHttpSecurityHeadersVersion660E2F72": Object {
       "Properties": Object {

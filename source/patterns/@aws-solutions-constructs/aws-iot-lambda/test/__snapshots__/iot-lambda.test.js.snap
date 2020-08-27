@@ -41,6 +41,7 @@ Object {
     },
     "testiotlambdaintegrationLambdaFunctionC5329DBA": Object {
       "DependsOn": Array [
+        "testiotlambdaintegrationLambdaFunctionServiceRoleDefaultPolicy0FB2AE4D",
         "testiotlambdaintegrationLambdaFunctionServiceRole27C3EE41",
       ],
       "Metadata": Object {
@@ -105,6 +106,9 @@ Object {
           ],
         },
         "Runtime": "nodejs10.x",
+        "TracingConfig": Object {
+          "Mode": "Active",
+        },
       },
       "Type": "AWS::Lambda::Function",
     },
@@ -177,6 +181,40 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Role",
+    },
+    "testiotlambdaintegrationLambdaFunctionServiceRoleDefaultPolicy0FB2AE4D": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testiotlambdaintegrationLambdaFunctionServiceRoleDefaultPolicy0FB2AE4D",
+        "Roles": Array [
+          Object {
+            "Ref": "testiotlambdaintegrationLambdaFunctionServiceRole27C3EE41",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
   },
 }
