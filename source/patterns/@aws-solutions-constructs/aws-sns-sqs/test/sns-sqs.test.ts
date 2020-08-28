@@ -21,7 +21,7 @@ import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------
-// Pattern deployment w/ new Topic, new Queue and
+// Pattern deployment with new Topic, new Queue and
 // default properties
 // --------------------------------------------------------------
 test('Pattern deployment w/ new Topic, new Queue and default props', () => {
@@ -62,7 +62,7 @@ test('Pattern deployment w/ new Topic, new Queue and default props', () => {
 });
 
 // --------------------------------------------------------------
-// Pattern deployment w/ new Topic, new Queue, and
+// Pattern deployment with new Topic, new Queue, and
 // overridden properties
 // --------------------------------------------------------------
 test('Pattern deployment w/ new topic, new queue, and overridden props', () => {
@@ -125,7 +125,7 @@ test('Test getter methods', () => {
 });
 
 // --------------------------------------------------------------
-// Test deployment w/ existing queue, and topic
+// Test deployment with existing queue, and topic
 // --------------------------------------------------------------
 test('Test deployment w/ existing queue, and topic', () => {
     // Stack
