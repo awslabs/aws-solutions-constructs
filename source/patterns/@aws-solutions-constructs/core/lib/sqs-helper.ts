@@ -15,9 +15,11 @@
 import * as sqs from '@aws-cdk/aws-sqs';
 import * as defaults from './sqs-defaults';
 import * as cdk from '@aws-cdk/core';
+import * as kms from '@aws-cdk/aws-kms';
 import { overrideProps } from './utils';
 import { AccountPrincipal, Effect, PolicyStatement, AnyPrincipal } from '@aws-cdk/aws-iam';
 import { Stack } from '@aws-cdk/core';
+import {buildEncryptionKey} from "./kms-helper";
 
 export interface BuildQueueProps {
     /**
@@ -38,6 +40,19 @@ export interface BuildQueueProps {
      * @default - Default props are used.
      */
     readonly deadLetterQueue?: sqs.DeadLetterQueue
+    /**
+     * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
+     * the encryptionKey property for this construct.
+     *
+     * @default - false (encryption enabled with a KMS key managed by SQS).
+     */
+    readonly enableEncryption?: boolean
+    /**
+     * An optional, imported encryption key to encrypt the SQS queue with.
+     *
+     * @default - not specified.
+     */
+    readonly encryptionKey?: kms.Key
 }
 
 export function buildQueue(scope: cdk.Construct, id: string, props?: BuildQueueProps): sqs.Queue {
@@ -47,17 +62,19 @@ export function buildQueue(scope: cdk.Construct, id: string, props?: BuildQueueP
   // If an existingQueueObj is not specified
   if (!props.existingQueueObj) {
     // Deploy the queue
-    return deployQueue(scope, id, props.queueProps, props.deadLetterQueue);
+    return deployQueue(scope, id, props.queueProps, props.deadLetterQueue, props.enableEncryption, props.encryptionKey);
   // If an existingQueueObj is specified, return that object as the queue to be used
   } else {
-    return props.existingQueueObj;
+    return props.existingQueueObj
   }
 }
 
 function deployQueue(scope: cdk.Construct,
                      id: string,
                      queuePropsParam?: sqs.QueueProps,
-                     deadLetterQueueParam?: sqs.DeadLetterQueue): sqs.Queue {
+                     deadLetterQueueParam?: sqs.DeadLetterQueue,
+                     enableEncryptionParam?: boolean,
+                     encryptionKeyParam?: kms.Key): sqs.Queue {
 
   // Setup the queue
   let queueProps;
@@ -72,7 +89,14 @@ function deployQueue(scope: cdk.Construct,
   if (deadLetterQueueParam) {
     queueProps.deadLetterQueue = deadLetterQueueParam;
   }
-
+  // Set encryption properties
+  if (enableEncryptionParam === true) {
+    if (encryptionKeyParam) {
+      queueProps.encryptionMasterKey = encryptionKeyParam;
+    } else {
+      queueProps.encryptionMasterKey = buildEncryptionKey(scope);
+    }
+  }
   const queue = new sqs.Queue(scope, id, queueProps);
 
   applySecureQueuePolicy(queue);
