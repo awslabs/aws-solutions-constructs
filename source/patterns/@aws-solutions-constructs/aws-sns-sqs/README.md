@@ -24,14 +24,25 @@
 
 This AWS Solutions Construct implements an Amazon SNS topic connected to an Amazon SQS queue.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
 ``` javascript
-const { SnsToSqs } = require('@aws-solutions-constructs/aws-sns-sqs');
+import { SnsToSqs, SnsToSqsProps } from "@aws-solutions-constructs/aws-sns-sqs";
+import * as iam from '@aws-cdk/aws-iam';
 
 const props: SnsToSqsProps = {};
 
-new SnsToSqs(stack, 'SnsToSqsPattern', props);
+const snsToSqsStack = new SnsToSqs(this, 'SnsToSqsPattern', props);
+
+// Grant yourself permissions to use the Customer Managed KMS Key
+const policyStatement = new iam.PolicyStatement({
+    actions: ["kms:Encrypt", "kms:Decrypt"],
+    effect: iam.Effect.ALLOW,
+    principals: [ new iam.AccountRootPrincipal() ],
+    resources: [ "*" ]
+});
+
+snsToSqsStack.encryptionKey?.addToResourcePolicy(policyStatement);
 
 ```
 

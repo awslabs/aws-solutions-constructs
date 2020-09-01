@@ -11,29 +11,17 @@
  *  and limitations under the License.
  */
 
-// Imports
 import * as kms from '@aws-cdk/aws-kms';
 import { DefaultEncryptionProps } from './kms-defaults';
 import * as cdk from '@aws-cdk/core';
 import { overrideProps } from './utils';
 
-export interface BuildEncryptionKeyProps {
-    /**
-     * Optional user-provided props to override the default props for the encryption key.
-     *
-     * @default - Default props are used.
-     */
-    readonly encryptionKeyProps?: kms.KeyProps
-}
-
-export function buildEncryptionKey(scope: cdk.Construct, props?: BuildEncryptionKeyProps): kms.Key {
-    // If props is undefined, define it
-    props = (props === undefined) ? {} : props;
+export function buildEncryptionKey(scope: cdk.Construct, keyProps?: kms.KeyProps): kms.Key {
     // Setup the key properties
     let encryptionKeyProps;
-    if (props.encryptionKeyProps) {
+    if (keyProps) {
         // If property overrides have been provided, incorporate them and deploy
-        encryptionKeyProps = overrideProps(DefaultEncryptionProps, props.encryptionKeyProps);
+        encryptionKeyProps = overrideProps(DefaultEncryptionProps, keyProps);
     } else {
         // If no property overrides, deploy using the default configuration
         encryptionKeyProps = DefaultEncryptionProps;

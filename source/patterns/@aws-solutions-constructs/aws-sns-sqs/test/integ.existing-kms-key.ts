@@ -26,7 +26,7 @@ stack.templateOptions.description = 'Integration Test for aws-sns-sqs with exist
 const encryptionKeyProps: KeyProps = {
   enableKeyRotation: true
 };
-let key = new kms.Key(stack, 'ImportedEncryptionKey', encryptionKeyProps);
+const key = new kms.Key(stack, 'ImportedEncryptionKey', encryptionKeyProps);
 const props: SnsToSqsProps = {
   enableEncryptionWithCustomerManagedKey: true,
   encryptionKey: key

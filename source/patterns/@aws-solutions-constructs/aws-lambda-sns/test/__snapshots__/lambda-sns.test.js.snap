@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test deployment with existing Lambda function 1`] = `
+exports[`Test deployment with existing existingTopicObj 1`] = `
 Object {
   "Parameters": Object {
     "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420ArtifactHashA71E92AD": Object {
@@ -17,57 +17,11 @@ Object {
     },
   },
   "Resources": Object {
-    "lambdatosnsstackEncryptionKeyF46E3814": Object {
-      "DeletionPolicy": "Retain",
+    "MyTopic86869434": Object {
       "Properties": Object {
-        "EnableKeyRotation": true,
-        "KeyPolicy": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "kms:Create*",
-                "kms:Describe*",
-                "kms:Enable*",
-                "kms:List*",
-                "kms:Put*",
-                "kms:Update*",
-                "kms:Revoke*",
-                "kms:Disable*",
-                "kms:Get*",
-                "kms:Delete*",
-                "kms:ScheduleKeyDeletion",
-                "kms:CancelKeyDeletion",
-                "kms:GenerateDataKey",
-                "kms:TagResource",
-                "kms:UntagResource",
-              ],
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":iam::",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":root",
-                    ],
-                  ],
-                },
-              },
-              "Resource": "*",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
+        "TopicName": "custom-topic",
       },
-      "Type": "AWS::KMS::Key",
-      "UpdateReplacePolicy": "Retain",
+      "Type": "AWS::SNS::Topic",
     },
     "lambdatosnsstackLambdaFunction84DDA23E": Object {
       "DependsOn": Array [
@@ -128,11 +82,11 @@ Object {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "LAMBDA_NAME": "override-function",
             "SNS_TOPIC_ARN": Object {
-              "Ref": "lambdatosnsstackSnsTopic6292A14A",
+              "Ref": "MyTopic86869434",
             },
             "SNS_TOPIC_NAME": Object {
               "Fn::GetAtt": Array [
-                "lambdatosnsstackSnsTopic6292A14A",
+                "MyTopic86869434",
                 "TopicName",
               ],
             },
@@ -229,7 +183,7 @@ Object {
               "Action": "sns:Publish",
               "Effect": "Allow",
               "Resource": Object {
-                "Ref": "lambdatosnsstackSnsTopic6292A14A",
+                "Ref": "MyTopic86869434",
               },
             },
           ],
@@ -243,434 +197,6 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Policy",
-    },
-    "lambdatosnsstackSnsTopic6292A14A": Object {
-      "Properties": Object {
-        "KmsMasterKeyId": Object {
-          "Ref": "lambdatosnsstackEncryptionKeyF46E3814",
-        },
-      },
-      "Type": "AWS::SNS::Topic",
-    },
-    "lambdatosnsstackSnsTopicPolicy9C03E2DB": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "SNS:Publish",
-                "SNS:RemovePermission",
-                "SNS:SetTopicAttributes",
-                "SNS:DeleteTopic",
-                "SNS:ListSubscriptionsByTopic",
-                "SNS:GetTopicAttributes",
-                "SNS:Receive",
-                "SNS:AddPermission",
-                "SNS:Subscribe",
-              ],
-              "Condition": Object {
-                "StringEquals": Object {
-                  "AWS:SourceOwner": Object {
-                    "Ref": "AWS::AccountId",
-                  },
-                },
-              },
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":iam::",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":root",
-                    ],
-                  ],
-                },
-              },
-              "Resource": Object {
-                "Ref": "lambdatosnsstackSnsTopic6292A14A",
-              },
-              "Sid": "TopicOwnerOnlyAccess",
-            },
-            Object {
-              "Action": Array [
-                "SNS:Publish",
-                "SNS:RemovePermission",
-                "SNS:SetTopicAttributes",
-                "SNS:DeleteTopic",
-                "SNS:ListSubscriptionsByTopic",
-                "SNS:GetTopicAttributes",
-                "SNS:Receive",
-                "SNS:AddPermission",
-                "SNS:Subscribe",
-              ],
-              "Condition": Object {
-                "Bool": Object {
-                  "aws:SecureTransport": "false",
-                },
-              },
-              "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Ref": "lambdatosnsstackSnsTopic6292A14A",
-              },
-              "Sid": "HttpsOnly",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "Topics": Array [
-          Object {
-            "Ref": "lambdatosnsstackSnsTopic6292A14A",
-          },
-        ],
-      },
-      "Type": "AWS::SNS::TopicPolicy",
-    },
-  },
-}
-`;
-
-exports[`Test deployment with imported encryption key 1`] = `
-Object {
-  "Parameters": Object {
-    "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420ArtifactHashA71E92AD": Object {
-      "Description": "Artifact hash for asset \\"8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420\\"",
-      "Type": "String",
-    },
-    "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420S3Bucket749AC458": Object {
-      "Description": "S3 bucket for asset \\"8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420\\"",
-      "Type": "String",
-    },
-    "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420S3VersionKeyFF5CC16D": Object {
-      "Description": "S3 key for asset version \\"8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420\\"",
-      "Type": "String",
-    },
-  },
-  "Resources": Object {
-    "importedkey38675D68": Object {
-      "DeletionPolicy": "Retain",
-      "Properties": Object {
-        "EnableKeyRotation": false,
-        "KeyPolicy": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "kms:Create*",
-                "kms:Describe*",
-                "kms:Enable*",
-                "kms:List*",
-                "kms:Put*",
-                "kms:Update*",
-                "kms:Revoke*",
-                "kms:Disable*",
-                "kms:Get*",
-                "kms:Delete*",
-                "kms:ScheduleKeyDeletion",
-                "kms:CancelKeyDeletion",
-                "kms:GenerateDataKey",
-                "kms:TagResource",
-                "kms:UntagResource",
-              ],
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":iam::",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":root",
-                    ],
-                  ],
-                },
-              },
-              "Resource": "*",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::KMS::Key",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "lambdatosnsstackLambdaFunction84DDA23E": Object {
-      "DependsOn": Array [
-        "lambdatosnsstackLambdaFunctionServiceRoleDefaultPolicy787D809F",
-        "lambdatosnsstackLambdaFunctionServiceRole55BFEAA9",
-      ],
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W58",
-              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions.",
-            },
-          ],
-        },
-      },
-      "Properties": Object {
-        "Code": Object {
-          "S3Bucket": Object {
-            "Ref": "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420S3Bucket749AC458",
-          },
-          "S3Key": Object {
-            "Fn::Join": Array [
-              "",
-              Array [
-                Object {
-                  "Fn::Select": Array [
-                    0,
-                    Object {
-                      "Fn::Split": Array [
-                        "||",
-                        Object {
-                          "Ref": "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420S3VersionKeyFF5CC16D",
-                        },
-                      ],
-                    },
-                  ],
-                },
-                Object {
-                  "Fn::Select": Array [
-                    1,
-                    Object {
-                      "Fn::Split": Array [
-                        "||",
-                        Object {
-                          "Ref": "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420S3VersionKeyFF5CC16D",
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            ],
-          },
-        },
-        "Environment": Object {
-          "Variables": Object {
-            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
-            "LAMBDA_NAME": "deployed-function-no-enc",
-            "SNS_TOPIC_ARN": Object {
-              "Ref": "lambdatosnsstackSnsTopic6292A14A",
-            },
-            "SNS_TOPIC_NAME": Object {
-              "Fn::GetAtt": Array [
-                "lambdatosnsstackSnsTopic6292A14A",
-                "TopicName",
-              ],
-            },
-          },
-        },
-        "Handler": "index.handler",
-        "Role": Object {
-          "Fn::GetAtt": Array [
-            "lambdatosnsstackLambdaFunctionServiceRole55BFEAA9",
-            "Arn",
-          ],
-        },
-        "Runtime": "nodejs10.x",
-        "TracingConfig": Object {
-          "Mode": "Active",
-        },
-      },
-      "Type": "AWS::Lambda::Function",
-    },
-    "lambdatosnsstackLambdaFunctionServiceRole55BFEAA9": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "lambda.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "Policies": Array [
-          Object {
-            "PolicyDocument": Object {
-              "Statement": Array [
-                Object {
-                  "Action": Array [
-                    "logs:CreateLogGroup",
-                    "logs:CreateLogStream",
-                    "logs:PutLogEvents",
-                  ],
-                  "Effect": "Allow",
-                  "Resource": Object {
-                    "Fn::Join": Array [
-                      "",
-                      Array [
-                        "arn:aws:logs:",
-                        Object {
-                          "Ref": "AWS::Region",
-                        },
-                        ":",
-                        Object {
-                          "Ref": "AWS::AccountId",
-                        },
-                        ":log-group:/aws/lambda/*",
-                      ],
-                    ],
-                  },
-                },
-              ],
-              "Version": "2012-10-17",
-            },
-            "PolicyName": "LambdaFunctionServiceRolePolicy",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Role",
-    },
-    "lambdatosnsstackLambdaFunctionServiceRoleDefaultPolicy787D809F": Object {
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W12",
-              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray.",
-            },
-          ],
-        },
-      },
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "xray:PutTraceSegments",
-                "xray:PutTelemetryRecords",
-              ],
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-            Object {
-              "Action": "sns:Publish",
-              "Effect": "Allow",
-              "Resource": Object {
-                "Ref": "lambdatosnsstackSnsTopic6292A14A",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "lambdatosnsstackLambdaFunctionServiceRoleDefaultPolicy787D809F",
-        "Roles": Array [
-          Object {
-            "Ref": "lambdatosnsstackLambdaFunctionServiceRole55BFEAA9",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "lambdatosnsstackSnsTopic6292A14A": Object {
-      "Properties": Object {
-        "KmsMasterKeyId": Object {
-          "Ref": "importedkey38675D68",
-        },
-      },
-      "Type": "AWS::SNS::Topic",
-    },
-    "lambdatosnsstackSnsTopicPolicy9C03E2DB": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "SNS:Publish",
-                "SNS:RemovePermission",
-                "SNS:SetTopicAttributes",
-                "SNS:DeleteTopic",
-                "SNS:ListSubscriptionsByTopic",
-                "SNS:GetTopicAttributes",
-                "SNS:Receive",
-                "SNS:AddPermission",
-                "SNS:Subscribe",
-              ],
-              "Condition": Object {
-                "StringEquals": Object {
-                  "AWS:SourceOwner": Object {
-                    "Ref": "AWS::AccountId",
-                  },
-                },
-              },
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":iam::",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":root",
-                    ],
-                  ],
-                },
-              },
-              "Resource": Object {
-                "Ref": "lambdatosnsstackSnsTopic6292A14A",
-              },
-              "Sid": "TopicOwnerOnlyAccess",
-            },
-            Object {
-              "Action": Array [
-                "SNS:Publish",
-                "SNS:RemovePermission",
-                "SNS:SetTopicAttributes",
-                "SNS:DeleteTopic",
-                "SNS:ListSubscriptionsByTopic",
-                "SNS:GetTopicAttributes",
-                "SNS:Receive",
-                "SNS:AddPermission",
-                "SNS:Subscribe",
-              ],
-              "Condition": Object {
-                "Bool": Object {
-                  "aws:SecureTransport": "false",
-                },
-              },
-              "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Ref": "lambdatosnsstackSnsTopic6292A14A",
-              },
-              "Sid": "HttpsOnly",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "Topics": Array [
-          Object {
-            "Ref": "lambdatosnsstackSnsTopic6292A14A",
-          },
-        ],
-      },
-      "Type": "AWS::SNS::TopicPolicy",
     },
   },
 }
@@ -693,58 +219,6 @@ Object {
     },
   },
   "Resources": Object {
-    "lambdatosnsstackEncryptionKeyF46E3814": Object {
-      "DeletionPolicy": "Retain",
-      "Properties": Object {
-        "EnableKeyRotation": true,
-        "KeyPolicy": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "kms:Create*",
-                "kms:Describe*",
-                "kms:Enable*",
-                "kms:List*",
-                "kms:Put*",
-                "kms:Update*",
-                "kms:Revoke*",
-                "kms:Disable*",
-                "kms:Get*",
-                "kms:Delete*",
-                "kms:ScheduleKeyDeletion",
-                "kms:CancelKeyDeletion",
-                "kms:GenerateDataKey",
-                "kms:TagResource",
-                "kms:UntagResource",
-              ],
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":iam::",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":root",
-                    ],
-                  ],
-                },
-              },
-              "Resource": "*",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::KMS::Key",
-      "UpdateReplacePolicy": "Retain",
-    },
     "lambdatosnsstackLambdaFunction84DDA23E": Object {
       "DependsOn": Array [
         "lambdatosnsstackLambdaFunctionServiceRoleDefaultPolicy787D809F",
@@ -922,9 +396,7 @@ Object {
     },
     "lambdatosnsstackSnsTopic6292A14A": Object {
       "Properties": Object {
-        "KmsMasterKeyId": Object {
-          "Ref": "lambdatosnsstackEncryptionKeyF46E3814",
-        },
+        "KmsMasterKeyId": "alias/aws/sns",
       },
       "Type": "AWS::SNS::Topic",
     },

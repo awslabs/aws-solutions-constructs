@@ -1,13 +1,13 @@
 {
   "Description": "Integration Test for aws-sns-sqs",
   "Resources": {
-    "testsnssqsdeadLetterQueue8DACC0A1": {
+    "testsnssqsstackdeadLetterQueue83D183F2": {
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": "alias/aws/sqs"
       }
     },
-    "testsnssqsdeadLetterQueuePolicyAB8A9883": {
+    "testsnssqsstackdeadLetterQueuePolicy388F06A8": {
       "Type": "AWS::SQS::QueuePolicy",
       "Properties": {
         "PolicyDocument": {
@@ -43,7 +43,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "testsnssqsdeadLetterQueue8DACC0A1",
+                  "testsnssqsstackdeadLetterQueue83D183F2",
                   "Arn"
                 ]
               },
@@ -60,7 +60,7 @@
               "Principal": "*",
               "Resource": {
                 "Fn::GetAtt": [
-                  "testsnssqsdeadLetterQueue8DACC0A1",
+                  "testsnssqsstackdeadLetterQueue83D183F2",
                   "Arn"
                 ]
               },
@@ -71,12 +71,12 @@
         },
         "Queues": [
           {
-            "Ref": "testsnssqsdeadLetterQueue8DACC0A1"
+            "Ref": "testsnssqsstackdeadLetterQueue83D183F2"
           }
         ]
       }
     },
-    "testsnssqsSnsTopic2CD0065B": {
+    "testsnssqsstackSnsTopic92693DD8": {
       "Type": "AWS::SNS::Topic",
       "Properties": {
         "KmsMasterKeyId": {
@@ -84,7 +84,7 @@
         }
       }
     },
-    "testsnssqsSnsTopicPolicy604079F2": {
+    "testsnssqsstackSnsTopicPolicyBD0740CC": {
       "Type": "AWS::SNS::TopicPolicy",
       "Properties": {
         "PolicyDocument": {
@@ -128,7 +128,7 @@
                 }
               },
               "Resource": {
-                "Ref": "testsnssqsSnsTopic2CD0065B"
+                "Ref": "testsnssqsstackSnsTopic92693DD8"
               },
               "Sid": "TopicOwnerOnlyAccess"
             },
@@ -152,7 +152,7 @@
               "Effect": "Deny",
               "Principal": "*",
               "Resource": {
-                "Ref": "testsnssqsSnsTopic2CD0065B"
+                "Ref": "testsnssqsstackSnsTopic92693DD8"
               },
               "Sid": "HttpsOnly"
             }
@@ -161,12 +161,12 @@
         },
         "Topics": [
           {
-            "Ref": "testsnssqsSnsTopic2CD0065B"
+            "Ref": "testsnssqsstackSnsTopic92693DD8"
           }
         ]
       }
     },
-    "testsnssqsqueueB02504BF": {
+    "testsnssqsstackqueue908D8D48": {
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": {
@@ -178,7 +178,7 @@
         "RedrivePolicy": {
           "deadLetterTargetArn": {
             "Fn::GetAtt": [
-              "testsnssqsdeadLetterQueue8DACC0A1",
+              "testsnssqsstackdeadLetterQueue83D183F2",
               "Arn"
             ]
           },
@@ -186,7 +186,7 @@
         }
       }
     },
-    "testsnssqsqueuePolicyE64464B6": {
+    "testsnssqsstackqueuePolicyFD3F4725": {
       "Type": "AWS::SQS::QueuePolicy",
       "Properties": {
         "PolicyDocument": {
@@ -222,7 +222,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "testsnssqsqueueB02504BF",
+                  "testsnssqsstackqueue908D8D48",
                   "Arn"
                 ]
               },
@@ -239,7 +239,7 @@
               "Principal": "*",
               "Resource": {
                 "Fn::GetAtt": [
-                  "testsnssqsqueueB02504BF",
+                  "testsnssqsstackqueue908D8D48",
                   "Arn"
                 ]
               },
@@ -250,7 +250,7 @@
               "Condition": {
                 "ArnEquals": {
                   "aws:SourceArn": {
-                    "Ref": "testsnssqsSnsTopic2CD0065B"
+                    "Ref": "testsnssqsstackSnsTopic92693DD8"
                   }
                 }
               },
@@ -260,7 +260,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "testsnssqsqueueB02504BF",
+                  "testsnssqsstackqueue908D8D48",
                   "Arn"
                 ]
               }
@@ -270,21 +270,21 @@
         },
         "Queues": [
           {
-            "Ref": "testsnssqsqueueB02504BF"
+            "Ref": "testsnssqsstackqueue908D8D48"
           }
         ]
       }
     },
-    "testsnssqsqueuetestsnssqsSnsTopic752C989B046CB7AE": {
+    "testsnssqsstackqueuetestsnssqsstackSnsTopic3C855EBB5D6E630A": {
       "Type": "AWS::SNS::Subscription",
       "Properties": {
         "Protocol": "sqs",
         "TopicArn": {
-          "Ref": "testsnssqsSnsTopic2CD0065B"
+          "Ref": "testsnssqsstackSnsTopic92693DD8"
         },
         "Endpoint": {
           "Fn::GetAtt": [
-            "testsnssqsqueueB02504BF",
+            "testsnssqsstackqueue908D8D48",
             "Arn"
           ]
         }
@@ -342,6 +342,32 @@
               "Effect": "Allow",
               "Principal": {
                 "Service": "sns.amazonaws.com"
+              },
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "kms:Encrypt",
+                "kms:Decrypt"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
               },
               "Resource": "*"
             }

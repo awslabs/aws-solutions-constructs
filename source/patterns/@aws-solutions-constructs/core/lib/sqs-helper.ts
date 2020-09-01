@@ -44,65 +44,60 @@ export interface BuildQueueProps {
      * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
      * the encryptionKey property for this construct.
      *
-     * @default - false (encryption enabled with a KMS key managed by SQS).
+     * @default - false (encryption enabled with AWS Managed KMS Key).
      */
-    readonly enableEncryption?: boolean
+    readonly enableEncryptionWithCustomerManagedKey?: boolean
     /**
      * An optional, imported encryption key to encrypt the SQS queue with.
      *
      * @default - not specified.
      */
-    readonly encryptionKey?: kms.Key
+    readonly encryptionKey?: kms.Key,
+    /**
+     * Optional user-provided props to override the default props for the encryption key.
+     *
+     * @default - Ignored if encryptionKey is provided
+     */
+    readonly encryptionKeyProps?: kms.KeyProps
 }
 
-export function buildQueue(scope: cdk.Construct, id: string, props?: BuildQueueProps): sqs.Queue {
-  // If props is undefined, define it
-  props = (props === undefined) ? {} : props;
-  // Conditional queue creation
+export function buildQueue(scope: cdk.Construct, id: string, props: BuildQueueProps): [sqs.Queue, kms.IKey?] {
   // If an existingQueueObj is not specified
   if (!props.existingQueueObj) {
-    // Deploy the queue
-    return deployQueue(scope, id, props.queueProps, props.deadLetterQueue, props.enableEncryption, props.encryptionKey);
-  // If an existingQueueObj is specified, return that object as the queue to be used
-  } else {
-    return props.existingQueueObj
-  }
-}
-
-function deployQueue(scope: cdk.Construct,
-                     id: string,
-                     queuePropsParam?: sqs.QueueProps,
-                     deadLetterQueueParam?: sqs.DeadLetterQueue,
-                     enableEncryptionParam?: boolean,
-                     encryptionKeyParam?: kms.Key): sqs.Queue {
-
-  // Setup the queue
-  let queueProps;
-  if (queuePropsParam) {
-    // If property overrides have been provided, incorporate them and deploy
-    queueProps = overrideProps(defaults.DefaultQueueProps(), queuePropsParam);
-  } else {
-    // If no property overrides, deploy using the default configuration
-    queueProps = defaults.DefaultQueueProps();
-  }
-  // Determine whether a DLQ property should be added
-  if (deadLetterQueueParam) {
-    queueProps.deadLetterQueue = deadLetterQueueParam;
-  }
-  // Set encryption properties
-  if (enableEncryptionParam === true) {
-    if (encryptionKeyParam) {
-      queueProps.encryptionMasterKey = encryptionKeyParam;
+    // Setup the queue
+    let queueProps;
+    if (props.queueProps) {
+      // If property overrides have been provided, incorporate them and deploy
+      queueProps = overrideProps(defaults.DefaultQueueProps(), props.queueProps);
     } else {
-      queueProps.encryptionMasterKey = buildEncryptionKey(scope);
+      // If no property overrides, deploy using the default configuration
+      queueProps = defaults.DefaultQueueProps();
     }
+
+    // Determine whether a DLQ property should be added
+    if (props.deadLetterQueue) {
+      queueProps.deadLetterQueue = props.deadLetterQueue;
+    }
+
+    // Set encryption properties
+    if (props.enableEncryptionWithCustomerManagedKey) {
+      // Use the imported Customer Managed KMS key
+      if (props.encryptionKey) {
+        queueProps.encryptionMasterKey = props.encryptionKey;
+      } else {
+        queueProps.encryptionMasterKey = buildEncryptionKey(scope, props.encryptionKeyProps);
+      }
+    }
+    const queue = new sqs.Queue(scope, id, queueProps);
+
+    applySecureQueuePolicy(queue);
+
+    // Return the queue
+    return [queue, queue.encryptionMasterKey];
+  } else {
+    // If an existingQueueObj is specified, return that object as the queue to be used
+    return [props.existingQueueObj];
   }
-  const queue = new sqs.Queue(scope, id, queueProps);
-
-  applySecureQueuePolicy(queue);
-
-  // Return the queue
-  return queue;
 }
 
 export interface BuildDeadLetterQueueProps {

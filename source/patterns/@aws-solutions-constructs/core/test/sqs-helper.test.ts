@@ -25,7 +25,7 @@ test('Test minimal deployment with no properties', () => {
     // Stack
     const stack = new Stack();
     // Helper declaration
-    defaults.buildQueue(stack, 'primary-queue');
+    defaults.buildQueue(stack, 'primary-queue', {});
     // Assertion 1
     expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
@@ -58,7 +58,7 @@ test('Test dead letter queue deployment/configuration', () => {
     const stack = new Stack();
     // Helper setup
     const encKey = defaults.buildEncryptionKey(stack);
-    const dlq = defaults.buildQueue(stack, 'dead-letter-queue');
+    const [dlq] = defaults.buildQueue(stack, 'dead-letter-queue', {});
     const dlqi = defaults.buildDeadLetterQueue({
         deadLetterQueue: dlq,
         maxReceiveCount: 3
@@ -84,7 +84,7 @@ test('Test dead letter queue deployment/configuration w/o mrc', () => {
   const stack = new Stack();
   // Helper setup
   const encKey = defaults.buildEncryptionKey(stack);
-  const dlq = defaults.buildQueue(stack, 'dead-letter-queue');
+  const [dlq] = defaults.buildQueue(stack, 'dead-letter-queue', {});
   const dlqi = defaults.buildDeadLetterQueue({
       deadLetterQueue: dlq
   });
@@ -108,7 +108,7 @@ test('Test existingQueueObj', () => {
   // Stack
   const stack = new Stack();
   // Helper setup
-  const existingQueue = defaults.buildQueue(stack, 'existing-queue', {
+  const [existingQueue] = defaults.buildQueue(stack, 'existing-queue', {
     queueProps: {
       queueName: 'existing-queue'
     }
@@ -132,7 +132,7 @@ test('Test deployment w/ imported encryption key', () => {
     queueProps: {
       queueName: 'existing-queue'
     },
-    enableEncryption: true,
+    enableEncryptionWithCustomerManagedKey: true,
     encryptionKey: defaults.buildEncryptionKey(stack)
   });
   // Assertion 1
@@ -157,17 +157,13 @@ test('Test deployment without imported encryption key', () => {
   defaults.buildQueue(stack, 'existing-queue', {
     queueProps: {
       queueName: 'existing-queue'
-    },
-    enableEncryption: true
+    }
   });
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   // Assertion 2
   expect(stack).toHaveResource("AWS::SQS::Queue", {
-    QueueName: "existing-queue"
-  });
-  // Assertion 3
-  expect(stack).toHaveResource("AWS::KMS::Key", {
-    EnableKeyRotation: true
+    QueueName: "existing-queue",
+    KmsMasterKeyId: "alias/aws/sqs"
   });
 });

@@ -24,14 +24,14 @@
 
 This AWS Solutions Construct implements an AWS Lambda function connected to an Amazon SQS queue.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
 ``` javascript
-const { LambdaToSqs } = require('@aws-solutions-constructs/aws-lambda-sqs');
+import { LambdaToSqs, LambdaToSqsProps } from "@aws-solutions-constructs/aws-lambda-sqs";
 
-new LambdaToSqs(stack, 'LambdaToSqsPattern', {
+new LambdaToSqs(this, 'LambdaToSqsPattern', {
     lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
+        runtime: lambda.Runtime.NODEJS_12_X,
         handler: 'index.handler',
         code: lambda.Code.asset(`${__dirname}/lambda`)
     }

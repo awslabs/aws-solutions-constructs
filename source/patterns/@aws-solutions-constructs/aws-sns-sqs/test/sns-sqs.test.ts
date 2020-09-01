@@ -34,7 +34,7 @@ test('Pattern deployment w/ new Topic, new Queue and default props', () => {
     // Assertion 2
     expect(stack).toHaveResource("AWS::SNS::Topic", {
         KmsMasterKeyId: {
-            "Ref": "EncryptionKey1B843E66"
+            Ref: "EncryptionKey1B843E66"
         }
     });
     // Assertion 3
@@ -50,7 +50,7 @@ test('Pattern deployment w/ new Topic, new Queue and default props', () => {
     expect(stack).toHaveResource("AWS::SNS::Subscription", {
         Protocol: "sqs",
         TopicArn: {
-            "Ref": "testsnssqsSnsTopic2CD0065B"
+            Ref: "testsnssqsSnsTopic2CD0065B"
         },
         Endpoint: {
             "Fn::GetAtt": [
@@ -88,7 +88,7 @@ test('Pattern deployment w/ new topic, new queue, and overridden props', () => {
     expect(stack).toHaveResource("AWS::SNS::Topic", {
         TopicName: "new-topic",
         KmsMasterKeyId: {
-            "Ref": "EncryptionKey1B843E66"
+            Ref: "EncryptionKey1B843E66"
         }
     });
     // Assertion 2
@@ -179,7 +179,7 @@ test('Test deployment with imported encryption key', () => {
     // Assertion 3
     expect(stack).toHaveResource("AWS::SNS::Topic", {
         KmsMasterKeyId: {
-            "Ref": "importedkey38675D68"
+            Ref: "importedkey38675D68"
         }
     });
 });

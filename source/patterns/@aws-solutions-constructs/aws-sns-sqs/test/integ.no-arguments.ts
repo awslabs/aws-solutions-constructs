@@ -14,16 +14,27 @@
 // Imports
 import { App, Stack } from "@aws-cdk/core";
 import { SnsToSqs, SnsToSqsProps } from "../lib";
+import * as iam from '@aws-cdk/aws-iam';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-sns-sqs');
+const stack = new Stack(app, 'test-sns-sqs-stack');
 stack.templateOptions.description = 'Integration Test for aws-sns-sqs';
 
 // Definitions
 const props: SnsToSqsProps = {};
 
-new SnsToSqs(stack, 'test-sns-sqs', props);
+const snsToSqsStack = new SnsToSqs(stack, 'test-sns-sqs-stack', props);
+
+// Grant yourself permissions to use the Customer Managed KMS Key
+const policyStatement = new iam.PolicyStatement({
+    actions: ["kms:Encrypt", "kms:Decrypt"],
+    effect: iam.Effect.ALLOW,
+    principals: [ new iam.AccountRootPrincipal() ],
+    resources: [ "*" ]
+});
+
+snsToSqsStack.encryptionKey?.addToResourcePolicy(policyStatement);
 
 // Synth
 app.synth();

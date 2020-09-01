@@ -102,7 +102,7 @@ export class SnsToSqs extends Construct {
      * @param {cdk.App} scope - represents the scope for all the resources.
      * @param {string} id - this is a a scope-unique id.
      * @param {SnsToSqsProps} props - user provided props for the construct.
-     * @since 1.61.0
+     * @since 1.62.0
      * @access public
      */
     constructor(scope: Construct, id: string, props: SnsToSqsProps) {
@@ -110,7 +110,7 @@ export class SnsToSqs extends Construct {
 
         // Setup the dead letter queue, if applicable
         if (props.deployDeadLetterQueue || props.deployDeadLetterQueue === undefined) {
-            const dlq: sqs.Queue = defaults.buildQueue(this, 'deadLetterQueue', {
+            const [dlq] = defaults.buildQueue(this, 'deadLetterQueue', {
                 queueProps: props.deadLetterQueueProps
             });
             this.deadLetterQueue = defaults.buildDeadLetterQueue({
@@ -119,17 +119,15 @@ export class SnsToSqs extends Construct {
             });
         }
 
-        let enableEncryptionParam:boolean | undefined = props.enableEncryptionWithCustomerManagedKey;
-        let encryptionKeyParam:kms.Key | undefined = props.encryptionKey;
+        let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
+        let encryptionKeyParam = props.encryptionKey;
 
         if (props.enableEncryptionWithCustomerManagedKey === undefined ||
           props.enableEncryptionWithCustomerManagedKey === true) {
             enableEncryptionParam = true;
             // Create the encryptionKey if none was provided
             if (!props.encryptionKey) {
-                encryptionKeyParam = buildEncryptionKey(scope, {
-                    encryptionKeyProps: props.encryptionKeyProps
-                });
+                encryptionKeyParam = buildEncryptionKey(scope, props.encryptionKeyProps);
             }
         }
         // Setup the SNS topic
@@ -137,7 +135,7 @@ export class SnsToSqs extends Construct {
             // If an existingTopicObj was not specified create new topic
             [this.snsTopic, this.encryptionKey] = defaults.buildTopic(this, {
                 topicProps: props.topicProps,
-                enableEncryption: enableEncryptionParam,
+                enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
                 encryptionKey: encryptionKeyParam
             });
         } else {
@@ -146,11 +144,11 @@ export class SnsToSqs extends Construct {
         }
 
         // Setup the queue
-        this.sqsQueue = defaults.buildQueue(this, 'queue', {
+        [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
             existingQueueObj: props.existingQueueObj,
             queueProps: props.queueProps,
             deadLetterQueue: this.deadLetterQueue,
-            enableEncryption: enableEncryptionParam,
+            enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
             encryptionKey: encryptionKeyParam
         });
 

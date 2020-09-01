@@ -200,7 +200,7 @@ test('Test deployment w/ existing queue', () => {
   // Stack
   const stack = new Stack();
   // Define existing resources
-  const existingQueue = defaults.buildQueue(stack, 'existing-queue', {
+  const [existingQueue] = defaults.buildQueue(stack, 'existing-queue', {
     queueProps: {
       queueName: 'existing-queue'
     }

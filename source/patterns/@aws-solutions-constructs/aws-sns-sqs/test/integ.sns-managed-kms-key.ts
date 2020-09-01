@@ -31,7 +31,7 @@ const snsManagedKey = kms.Alias.fromAliasName(stack, 'sns-managed-key', 'alias/a
 const sqsEncryptionKeyProps: KeyProps = {
   enableKeyRotation: true
 };
-let sqsEncryptionKey = new kms.Key(stack, 'ImportedSQSEncryptionKey', sqsEncryptionKeyProps);
+const sqsEncryptionKey = new kms.Key(stack, 'ImportedSQSEncryptionKey', sqsEncryptionKeyProps);
 
 // Create the SNS to SQS construct
 const props: SnsToSqsProps = {

@@ -17,58 +17,6 @@ Object {
     },
   },
   "Resources": Object {
-    "testsnslambdaEncryptionKeyDDDF040B": Object {
-      "DeletionPolicy": "Retain",
-      "Properties": Object {
-        "EnableKeyRotation": true,
-        "KeyPolicy": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "kms:Create*",
-                "kms:Describe*",
-                "kms:Enable*",
-                "kms:List*",
-                "kms:Put*",
-                "kms:Update*",
-                "kms:Revoke*",
-                "kms:Disable*",
-                "kms:Get*",
-                "kms:Delete*",
-                "kms:ScheduleKeyDeletion",
-                "kms:CancelKeyDeletion",
-                "kms:GenerateDataKey",
-                "kms:TagResource",
-                "kms:UntagResource",
-              ],
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":iam::",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":root",
-                    ],
-                  ],
-                },
-              },
-              "Resource": "*",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::KMS::Key",
-      "UpdateReplacePolicy": "Retain",
-    },
     "testsnslambdaLambdaFunctionAllowInvoketestsnslambdaSnsTopicEB0543A09281910D": Object {
       "Properties": Object {
         "Action": "lambda:InvokeFunction",
@@ -260,9 +208,7 @@ Object {
     },
     "testsnslambdaSnsTopic52CA159E": Object {
       "Properties": Object {
-        "KmsMasterKeyId": Object {
-          "Ref": "testsnslambdaEncryptionKeyDDDF040B",
-        },
+        "KmsMasterKeyId": "alias/aws/sns",
       },
       "Type": "AWS::SNS::Topic",
     },
