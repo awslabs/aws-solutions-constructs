@@ -129,6 +129,7 @@ Object {
     },
     "testcognitoapigatewaylambdaLambdaFunction0C8EAC23": Object {
       "DependsOn": Array [
+        "testcognitoapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyED0AF2CF",
         "testcognitoapigatewaylambdaLambdaFunctionServiceRole943D8510",
       ],
       "Metadata": Object {
@@ -193,6 +194,9 @@ Object {
           ],
         },
         "Runtime": "nodejs10.x",
+        "TracingConfig": Object {
+          "Mode": "Active",
+        },
       },
       "Type": "AWS::Lambda::Function",
     },
@@ -246,6 +250,40 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Role",
+    },
+    "testcognitoapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyED0AF2CF": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testcognitoapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyED0AF2CF",
+        "Roles": Array [
+          Object {
+            "Ref": "testcognitoapigatewaylambdaLambdaFunctionServiceRole943D8510",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
     "testcognitoapigatewaylambdaLambdaRestApi2E272431": Object {
       "Properties": Object {
@@ -501,6 +539,7 @@ Object {
           "Ref": "testcognitoapigatewaylambdaLambdaRestApi2E272431",
         },
         "StageName": "prod",
+        "TracingEnabled": true,
       },
       "Type": "AWS::ApiGateway::Stage",
     },

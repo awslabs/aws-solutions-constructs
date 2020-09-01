@@ -95,6 +95,9 @@ Object {
           ],
         },
         "Runtime": "nodejs10.x",
+        "TracingConfig": Object {
+          "Mode": "Active",
+        },
       },
       "Type": "AWS::Lambda::Function",
     },
@@ -209,9 +212,27 @@ Object {
       "Type": "AWS::IAM::Role",
     },
     "testkinesisstreamslambdaLambdaFunctionServiceRoleDefaultPolicyE2BE8F65": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray.",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
             Object {
               "Action": Array [
                 "kinesis:DescribeStreamSummary",

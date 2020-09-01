@@ -58,6 +58,14 @@
         "PolicyDocument": {
           "Statement": [
             {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
               "Action": "sns:Publish",
               "Effect": "Allow",
               "Resource": {
@@ -73,6 +81,16 @@
             "Ref": "LambdaFunctionServiceRole0C4CDE0B"
           }
         ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray."
+            }
+          ]
+        }
       }
     },
     "LambdaFunctionBF21E41F": {
@@ -137,6 +155,9 @@
               "Ref": "testlambdasnsSnsTopic57DFED98"
             }
           }
+        },
+        "TracingConfig": {
+          "Mode": "Active"
         }
       },
       "DependsOn": [
@@ -154,64 +175,10 @@
         }
       }
     },
-    "testlambdasnsEncryptionKey57F4E220": {
-      "Type": "AWS::KMS::Key",
-      "Properties": {
-        "KeyPolicy": {
-          "Statement": [
-            {
-              "Action": [
-                "kms:Create*",
-                "kms:Describe*",
-                "kms:Enable*",
-                "kms:List*",
-                "kms:Put*",
-                "kms:Update*",
-                "kms:Revoke*",
-                "kms:Disable*",
-                "kms:Get*",
-                "kms:Delete*",
-                "kms:ScheduleKeyDeletion",
-                "kms:CancelKeyDeletion",
-                "kms:GenerateDataKey",
-                "kms:TagResource",
-                "kms:UntagResource"
-              ],
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":iam::",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":root"
-                    ]
-                  ]
-                }
-              },
-              "Resource": "*"
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "EnableKeyRotation": true
-      },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
-    },
     "testlambdasnsSnsTopic57DFED98": {
       "Type": "AWS::SNS::Topic",
       "Properties": {
-        "KmsMasterKeyId": {
-          "Ref": "testlambdasnsEncryptionKey57F4E220"
-        }
+        "KmsMasterKeyId": "alias/aws/sns"
       }
     },
     "testlambdasnsSnsTopicPolicy4481ABC3": {

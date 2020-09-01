@@ -24,12 +24,12 @@
 
 This AWS Solutions Construct implements (1) an AWS Lambda function that is configured to send messages to a queue; (2) an Amazon SQS queue; and (3) an AWS Lambda function configured to consume messages from the queue.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
 ``` javascript
-const { LambdaToSqsToLambda } = require('@aws-solutions-constructs/aws-lambda-sqs-lambda');
+import { LambdaToSqsToLambda, LambdaToSqsToLambdaProps } from "@aws-solutions-constructs/aws-lambda-sqs-lambda";
 
-new LambdaToSqsToLambda(stack, 'LambdaToSqsToLambdaPattern', {
+new LambdaToSqsToLambda(this, 'LambdaToSqsToLambdaPattern', {
     producerLambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_12_X,
         handler: 'index.handler',
@@ -86,6 +86,7 @@ Out-of-the-box implementation of this Construct (without any overridden properti
 ### AWS Lambda Functions
 * Configure least privilege access IAM role for Lambda functions.
 * Enable reusing connections with Keep-Alive for NodeJs Lambda functions.
+* Enable X-Ray Tracing
 
 ### Amazon SQS Queue
 * Deploy a dead letter queue for the primary queue.

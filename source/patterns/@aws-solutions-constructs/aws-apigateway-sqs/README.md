@@ -26,12 +26,12 @@
 
 This AWS Solutions Construct implements an Amazon API Gateway connected to an Amazon SQS queue pattern.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
 ``` javascript
-const { ApiGatewayToSqs } = require('@aws-solutions-constructs/aws-apigateway-sqs');
+import { ApiGatewayToSqs, ApiGatewayToSqsProps } from "@aws-solutions-constructs/aws-apigateway-sqs";
 
-new ApiGatewayToSqs(stack, 'ApiGatewayToSqsPattern', {
+new ApiGatewayToSqs(this, 'ApiGatewayToSqsPattern', {
     apiGatewayProps: {},
     queueProps: {},
     deployDeadLetterQueue?: true,
@@ -93,6 +93,7 @@ Out of the box implementation of the Construct without any override will set the
 * Enable CloudWatch logging for API Gateway
 * Configure least privilege access IAM role for API Gateway
 * Set the default authorizationType for all API methods to IAM
+* Enable X-Ray Tracing
 
 ### Amazon SQS Queue
 * Deploy SQS dead-letter queue for the source SQS Queue

@@ -98,7 +98,7 @@ export class ApiGatewayToSqs extends Construct {
 
         // Setup the dead letter queue, if applicable
         if (!props.deployDeadLetterQueue || props.deployDeadLetterQueue === true) {
-            const dlq: sqs.Queue = defaults.buildQueue(this, 'deadLetterQueue', {
+            const [dlq] = defaults.buildQueue(this, 'deadLetterQueue', {
                 queueProps: props.queueProps
             });
             this.deadLetterQueue = defaults.buildDeadLetterQueue({
@@ -108,7 +108,7 @@ export class ApiGatewayToSqs extends Construct {
         }
 
         // Setup the queue
-        this.sqsQueue = defaults.buildQueue(this, 'queue', {
+        [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
             queueProps: props.queueProps,
             deadLetterQueue: this.deadLetterQueue
         });

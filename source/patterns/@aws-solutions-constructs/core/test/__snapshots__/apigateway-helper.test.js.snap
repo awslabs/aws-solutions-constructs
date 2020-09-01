@@ -166,6 +166,7 @@ Object {
           "Ref": "RestApi0C43BF4B",
         },
         "StageName": "prod",
+        "TracingEnabled": true,
       },
       "Type": "AWS::ApiGateway::Stage",
     },
@@ -530,6 +531,7 @@ Object {
           "Ref": "RestApi0C43BF4B",
         },
         "StageName": "prod",
+        "TracingEnabled": true,
       },
       "Type": "AWS::ApiGateway::Stage",
     },
@@ -805,6 +807,7 @@ Object {
           "Ref": "RestApi0C43BF4B",
         },
         "StageName": "prod",
+        "TracingEnabled": true,
       },
       "Type": "AWS::ApiGateway::Stage",
     },
@@ -967,6 +970,7 @@ Object {
     },
     "LambdaFunctionBF21E41F": Object {
       "DependsOn": Array [
+        "LambdaFunctionServiceRoleDefaultPolicy126C8897",
         "LambdaFunctionServiceRole0C4CDE0B",
       ],
       "Metadata": Object {
@@ -1031,6 +1035,9 @@ Object {
           ],
         },
         "Runtime": "nodejs12.x",
+        "TracingConfig": Object {
+          "Mode": "Active",
+        },
       },
       "Type": "AWS::Lambda::Function",
     },
@@ -1084,6 +1091,40 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Role",
+    },
+    "LambdaFunctionServiceRoleDefaultPolicy126C8897": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "LambdaFunctionServiceRoleDefaultPolicy126C8897",
+        "Roles": Array [
+          Object {
+            "Ref": "LambdaFunctionServiceRole0C4CDE0B",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
     "LambdaRestApi95870433": Object {
       "Properties": Object {
@@ -1336,6 +1377,7 @@ Object {
           "Ref": "LambdaRestApi95870433",
         },
         "StageName": "prod",
+        "TracingEnabled": true,
       },
       "Type": "AWS::ApiGateway::Stage",
     },
