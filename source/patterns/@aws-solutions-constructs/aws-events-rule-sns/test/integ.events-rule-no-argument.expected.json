@@ -1,0 +1,162 @@
+{
+    "Resources": {
+        "testeventsrulelambdaEncryptionKeyD1FEEA79": {
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "EnableKeyRotation": true,
+              "KeyPolicy": {
+                "Statement": [
+                  {
+                    "Action": [
+                      "kms:Create*",
+                      "kms:Describe*",
+                      "kms:Enable*",
+                      "kms:List*",
+                      "kms:Put*",
+                      "kms:Update*",
+                      "kms:Revoke*",
+                      "kms:Disable*",
+                      "kms:Get*",
+                      "kms:Delete*",
+                      "kms:ScheduleKeyDeletion",
+                      "kms:CancelKeyDeletion",
+                      "kms:GenerateDataKey",
+                      "kms:TagResource",
+                      "kms:UntagResource"
+                    ],
+                    "Effect": "Allow",
+                    "Principal": {
+                      "AWS": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::111111111111:root"
+                          ]
+                        ]
+                      }
+                    },
+                    "Resource": "*"
+                  }
+                ],
+                "Version": "2012-10-17"
+              }
+            },
+            "Type": "AWS::KMS::Key",
+            "UpdateReplacePolicy": "Retain"
+          },
+          "testeventsrulelambdaEventsRule82B36872": {
+            "Properties": {
+              "ScheduleExpression": "rate(5 minutes)",
+              "State": "ENABLED",
+              "Targets": [
+                {
+                  "Arn": {
+                    "Ref": "testeventsrulelambdaSnsTopicE6187642"
+                  },
+                  "Id": "Target0"
+                }
+              ]
+            },
+            "Type": "AWS::Events::Rule"
+          },
+          "testeventsrulelambdaSnsTopicE6187642": {
+            "Properties": {
+              "KmsMasterKeyId": {
+                "Ref": "testeventsrulelambdaEncryptionKeyD1FEEA79"
+              }
+            },
+            "Type": "AWS::SNS::Topic"
+          },
+          "testeventsrulelambdaSnsTopicPolicy657AF0C4": {
+            "Properties": {
+              "PolicyDocument": {
+                "Statement": [
+                  {
+                    "Action": [
+                      "SNS:Publish",
+                      "SNS:RemovePermission",
+                      "SNS:SetTopicAttributes",
+                      "SNS:DeleteTopic",
+                      "SNS:ListSubscriptionsByTopic",
+                      "SNS:GetTopicAttributes",
+                      "SNS:Receive",
+                      "SNS:AddPermission",
+                      "SNS:Subscribe"
+                    ],
+                    "Condition": {
+                      "StringEquals": {
+                        "AWS:SourceOwner": "111111111111"
+                      }
+                    },
+                    "Effect": "Allow",
+                    "Principal": {
+                      "AWS": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::111111111111:root"
+                          ]
+                        ]
+                      }
+                    },
+                    "Resource": {
+                      "Ref": "testeventsrulelambdaSnsTopicE6187642"
+                    },
+                    "Sid": "TopicOwnerOnlyAccess"
+                  },
+                  {
+                    "Action": [
+                      "SNS:Publish",
+                      "SNS:RemovePermission",
+                      "SNS:SetTopicAttributes",
+                      "SNS:DeleteTopic",
+                      "SNS:ListSubscriptionsByTopic",
+                      "SNS:GetTopicAttributes",
+                      "SNS:Receive",
+                      "SNS:AddPermission",
+                      "SNS:Subscribe"
+                    ],
+                    "Condition": {
+                      "Bool": {
+                        "aws:SecureTransport": "false"
+                      }
+                    },
+                    "Effect": "Deny",
+                    "Principal": "*",
+                    "Resource": {
+                      "Ref": "testeventsrulelambdaSnsTopicE6187642"
+                    },
+                    "Sid": "HttpsOnly"
+                  },
+                  {
+                    "Action": "sns:Publish",
+                    "Effect": "Allow",
+                    "Principal": {
+                      "Service": "events.amazonaws.com"
+                    },
+                    "Resource": {
+                      "Ref": "testeventsrulelambdaSnsTopicE6187642"
+                    },
+                    "Sid": "2"
+                  }
+                ],
+                "Version": "2012-10-17"
+              },
+              "Topics": [
+                {
+                  "Ref": "testeventsrulelambdaSnsTopicE6187642"
+                }
+              ]
+            },
+            "Type": "AWS::SNS::TopicPolicy"
+          }
+    }
+}
