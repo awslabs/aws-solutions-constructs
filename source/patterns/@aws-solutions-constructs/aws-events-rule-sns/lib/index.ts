@@ -17,7 +17,7 @@ import * as kms from '@aws-cdk/aws-kms';
 import * as iam from '@aws-cdk/aws-iam';
 import { Construct } from '@aws-cdk/core';
 import { overrideProps } from '@aws-solutions-constructs/core';
-import { Effect } from '@aws-cdk/aws-iam';
+import { ArnPrincipal, Effect } from '@aws-cdk/aws-iam';
 
 export interface EventsRuleToSNSTopicProps {
     /**
@@ -87,12 +87,7 @@ export class EventsRuleToSNSTopic extends Construct {
         this.eventsRule = new events.Rule(this, 'EventsRule', eventsRuleProps);
 
         //Setup up the grant policy for event to be able to publish to the sns topic.
-        this.snsTopic.addToResourcePolicy(new iam.PolicyStatement({
-            resources: [this.snsTopic.topicArn],
-            actions: ['sns:Publish'],
-            principals: [new iam.ServicePrincipal('events.amazonaws.com')],
-            effect: Effect.ALLOW
-        }))
+        this.snsTopic.grantPublish(new ArnPrincipal(this.eventsRule.ruleArn))
     }
 
 }

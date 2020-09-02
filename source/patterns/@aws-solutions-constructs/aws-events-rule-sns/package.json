@@ -53,12 +53,16 @@
     }
   },
   "dependencies": {
-    "@aws-cdk/aws-sns": "~1.60.0",
-    "@aws-cdk/core": "~1.60.0",
     "@aws-cdk/aws-events": "~1.60.0",
     "@aws-cdk/aws-iam": "~1.60.0",
+    "@aws-cdk/aws-sns": "~1.60.0",
+    "@aws-cdk/core": "~1.60.0",
+    "@types/jest": "^25.2.1",
     "@aws-solutions-constructs/core": "~1.60.0",
-    "constructs": "^3.0.2"
+    "constructs": "^3.0.2",
+    "typescript": "^3.8.3",
+    "ts-jest": "^25.4.0",
+    "jest": "^25.5.4"
   },
   "devDependencies": {
     "@aws-cdk/assert": "~1.60.0",

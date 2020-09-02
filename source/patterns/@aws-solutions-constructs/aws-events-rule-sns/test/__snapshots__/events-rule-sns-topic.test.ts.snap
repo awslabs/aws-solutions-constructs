@@ -143,7 +143,12 @@ Object {
               "Action": "sns:Publish",
               "Effect": "Allow",
               "Principal": Object {
-                "Service": "events.amazonaws.com",
+                "AWS": Object {
+                  "Fn::GetAtt": Array [
+                    "testeventsrulelambdaEventsRule82B36872",
+                    "Arn",
+                  ],
+                },
               },
               "Resource": Object {
                 "Ref": "testeventsrulelambdaSnsTopicE6187642",

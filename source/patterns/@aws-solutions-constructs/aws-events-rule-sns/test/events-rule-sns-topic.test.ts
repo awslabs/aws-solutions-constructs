@@ -116,8 +116,13 @@ test('check if the event rule has permission/policy in place in sns for it to be
                {
                 Action: "sns:Publish",
                 Effect: "Allow",
-                Principal:  {
-                  "Service": "events.amazonaws.com",
+                Principal: {
+                  "AWS": {
+                    "Fn::GetAtt": [
+                      "testeventsrulelambdaEventsRule82B36872",
+                      "Arn",
+                    ],
+                  },
                 },
                 Resource:  {
                   "Ref": "testeventsrulelambdaSnsTopicE6187642",
