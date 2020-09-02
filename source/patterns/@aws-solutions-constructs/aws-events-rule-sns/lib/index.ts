@@ -74,7 +74,7 @@ export class EventsRuleToSNSTopic extends Construct {
         //Setup the event rule target as sns topic.
         const topicEventTarget: events.IRuleTarget = {
             bind: () => ({
-                id: '',
+                id: this.snsTopic.topicName,
                 arn: this.snsTopic.topicArn
             })
         }
