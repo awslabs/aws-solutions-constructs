@@ -1,6 +1,6 @@
 {
     "Resources": {
-        "testeventsrulelambdaEncryptionKeyD1FEEA79": {
+        "testeventsrulesnsEncryptionKey2CE611DB": {
             "DeletionPolicy": "Retain",
             "Properties": {
               "EnableKeyRotation": true,
@@ -48,14 +48,14 @@
             "Type": "AWS::KMS::Key",
             "UpdateReplacePolicy": "Retain"
           },
-          "testeventsrulelambdaEventsRule82B36872": {
+          "testeventsrulesnsEventsRule5F1C01CC": {
             "Properties": {
               "ScheduleExpression": "rate(5 minutes)",
               "State": "ENABLED",
               "Targets": [
                 {
                   "Arn": {
-                    "Ref": "testeventsrulelambdaSnsTopicE6187642"
+                    "Ref": "testeventsrulesnsSnsTopicCEB51DAD"
                   },
                   "Id": "Target0"
                 }
@@ -63,15 +63,15 @@
             },
             "Type": "AWS::Events::Rule"
           },
-          "testeventsrulelambdaSnsTopicE6187642": {
+          "testeventsrulesnsSnsTopicCEB51DAD": {
             "Properties": {
               "KmsMasterKeyId": {
-                "Ref": "testeventsrulelambdaEncryptionKeyD1FEEA79"
+                "Ref": "testeventsrulesnsEncryptionKey2CE611DB"
               }
             },
             "Type": "AWS::SNS::Topic"
           },
-          "testeventsrulelambdaSnsTopicPolicy657AF0C4": {
+          "testeventsrulesnsSnsTopicPolicyF1A0FC73": {
             "Properties": {
               "PolicyDocument": {
                 "Statement": [
@@ -108,7 +108,7 @@
                       }
                     },
                     "Resource": {
-                      "Ref": "testeventsrulelambdaSnsTopicE6187642"
+                      "Ref": "testeventsrulesnsSnsTopicCEB51DAD"
                     },
                     "Sid": "TopicOwnerOnlyAccess"
                   },
@@ -132,7 +132,7 @@
                     "Effect": "Deny",
                     "Principal": "*",
                     "Resource": {
-                      "Ref": "testeventsrulelambdaSnsTopicE6187642"
+                      "Ref": "testeventsrulesnsSnsTopicCEB51DAD"
                     },
                     "Sid": "HttpsOnly"
                   },
@@ -143,7 +143,7 @@
                       "Service": "events.amazonaws.com"
                     },
                     "Resource": {
-                      "Ref": "testeventsrulelambdaSnsTopicE6187642"
+                      "Ref": "testeventsrulesnsSnsTopicCEB51DAD"
                     },
                     "Sid": "2"
                   }
@@ -152,7 +152,7 @@
               },
               "Topics": [
                 {
-                  "Ref": "testeventsrulelambdaSnsTopicE6187642"
+                  "Ref": "testeventsrulesnsSnsTopicCEB51DAD"
                 }
               ]
             },

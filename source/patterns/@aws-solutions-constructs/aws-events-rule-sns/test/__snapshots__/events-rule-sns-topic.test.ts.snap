@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`snapshot test EventsRuleToLambda default params 1`] = `
+exports[`snapshot test EventsRuleToSNS default params 1`] = `
 Object {
   "Resources": Object {
-    "testeventsrulelambdaEncryptionKeyD1FEEA79": Object {
+    "testeventsrulesnsEncryptionKey2CE611DB": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
         "EnableKeyRotation": true,
@@ -51,30 +51,35 @@ Object {
       "Type": "AWS::KMS::Key",
       "UpdateReplacePolicy": "Retain",
     },
-    "testeventsrulelambdaEventsRule82B36872": Object {
+    "testeventsrulesnsEventsRule5F1C01CC": Object {
       "Properties": Object {
         "ScheduleExpression": "rate(5 minutes)",
         "State": "ENABLED",
         "Targets": Array [
           Object {
             "Arn": Object {
-              "Ref": "testeventsrulelambdaSnsTopicE6187642",
+              "Ref": "testeventsrulesnsSnsTopicCEB51DAD",
             },
-            "Id": "Target0",
+            "Id": Object {
+              "Fn::GetAtt": Array [
+                "testeventsrulesnsSnsTopicCEB51DAD",
+                "TopicName",
+              ],
+            },
           },
         ],
       },
       "Type": "AWS::Events::Rule",
     },
-    "testeventsrulelambdaSnsTopicE6187642": Object {
+    "testeventsrulesnsSnsTopicCEB51DAD": Object {
       "Properties": Object {
         "KmsMasterKeyId": Object {
-          "Ref": "testeventsrulelambdaEncryptionKeyD1FEEA79",
+          "Ref": "testeventsrulesnsEncryptionKey2CE611DB",
         },
       },
       "Type": "AWS::SNS::Topic",
     },
-    "testeventsrulelambdaSnsTopicPolicy657AF0C4": Object {
+    "testeventsrulesnsSnsTopicPolicyF1A0FC73": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -111,7 +116,7 @@ Object {
                 },
               },
               "Resource": Object {
-                "Ref": "testeventsrulelambdaSnsTopicE6187642",
+                "Ref": "testeventsrulesnsSnsTopicCEB51DAD",
               },
               "Sid": "TopicOwnerOnlyAccess",
             },
@@ -135,7 +140,7 @@ Object {
               "Effect": "Deny",
               "Principal": "*",
               "Resource": Object {
-                "Ref": "testeventsrulelambdaSnsTopicE6187642",
+                "Ref": "testeventsrulesnsSnsTopicCEB51DAD",
               },
               "Sid": "HttpsOnly",
             },
@@ -145,13 +150,13 @@ Object {
               "Principal": Object {
                 "AWS": Object {
                   "Fn::GetAtt": Array [
-                    "testeventsrulelambdaEventsRule82B36872",
+                    "testeventsrulesnsEventsRule5F1C01CC",
                     "Arn",
                   ],
                 },
               },
               "Resource": Object {
-                "Ref": "testeventsrulelambdaSnsTopicE6187642",
+                "Ref": "testeventsrulesnsSnsTopicCEB51DAD",
               },
               "Sid": "2",
             },
@@ -160,7 +165,7 @@ Object {
         },
         "Topics": Array [
           Object {
-            "Ref": "testeventsrulelambdaSnsTopicE6187642",
+            "Ref": "testeventsrulesnsSnsTopicCEB51DAD",
           },
         ],
       },

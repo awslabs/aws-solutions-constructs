@@ -24,7 +24,7 @@ function deployNewFunc(stack: cdk.Stack) {
             schedule: events.Schedule.rate(cdk.Duration.minutes(5))
         }
     }
-    return new EventsRuleToSNSTopic(stack, 'test-events-rule-lambda', props);
+    return new EventsRuleToSNSTopic(stack, 'test-events-rule-sns', props);
 }
 
 function getStack() {
@@ -33,7 +33,7 @@ function getStack() {
     return new cdk.Stack(app, 'stack', { env: envEU })
 }
 
-test('snapshot test EventsRuleToLambda default params', () => {
+test('snapshot test EventsRuleToSNS default params', () => {
     const stack = getStack()
     deployNewFunc(stack)
     expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
@@ -85,7 +85,7 @@ test('check if the event rule has permission/policy in place in sns for it to be
                   },
                 },
                 Resource:  {
-                  "Ref": "testeventsrulelambdaSnsTopicE6187642",
+                  "Ref": "testeventsrulesnsSnsTopicCEB51DAD",
                 },
                 Sid: "TopicOwnerOnlyAccess",
               },
@@ -109,7 +109,7 @@ test('check if the event rule has permission/policy in place in sns for it to be
                 Effect: "Deny",
                 Principal: "*",
                 Resource:  {
-                  "Ref": "testeventsrulelambdaSnsTopicE6187642",
+                  "Ref": "testeventsrulesnsSnsTopicCEB51DAD",
                 },
                 Sid: "HttpsOnly",
               },
@@ -119,13 +119,13 @@ test('check if the event rule has permission/policy in place in sns for it to be
                 Principal: {
                   "AWS": {
                     "Fn::GetAtt": [
-                      "testeventsrulelambdaEventsRule82B36872",
+                      "testeventsrulesnsEventsRule5F1C01CC",
                       "Arn",
                     ],
                   },
                 },
                 Resource:  {
-                  "Ref": "testeventsrulelambdaSnsTopicE6187642",
+                  "Ref": "testeventsrulesnsSnsTopicCEB51DAD",
                 },
                 Sid: "2",
               },
@@ -134,7 +134,7 @@ test('check if the event rule has permission/policy in place in sns for it to be
           },
           Topics:  [
              {
-              "Ref": "testeventsrulelambdaSnsTopicE6187642",
+              "Ref": "testeventsrulesnsSnsTopicCEB51DAD",
             },
           ],
         },
