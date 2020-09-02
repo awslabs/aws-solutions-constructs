@@ -17,8 +17,6 @@ import * as defaults from '@aws-solutions-constructs/core';
 import { ArnPrincipal } from '@aws-cdk/aws-iam';
 import { Construct } from '@aws-cdk/core';
 import { overrideProps } from '@aws-solutions-constructs/core';
-import { Effect } from '@aws-cdk/aws-iam';
-
 
 /**
  * @summary The properties for the EventsRuleToSQS Construct
