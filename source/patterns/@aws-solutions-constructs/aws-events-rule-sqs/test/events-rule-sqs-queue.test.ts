@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -29,8 +29,7 @@ function deployNewFunc(stack: cdk.Stack) {
 
 function getStack() {
     const app = new cdk.App()
-    const envEU = { account: '111111111111', region: 'eu-west-1'}
-    return new cdk.Stack(app, 'stack', { env: envEU })
+    return new cdk.Stack(app, 'stack')
 }
 
 test('snapshot test EventsRuleToSQS default params', () => {
@@ -71,7 +70,11 @@ test('check if the event rule has permission/policy in place in sqs queue for it
                          {
                           "Ref": "AWS::Partition",
                         },
-                        ":iam::111111111111:root",
+                        ":iam::",
+                        {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root"
                       ],
                     ],
                   },
@@ -160,7 +163,11 @@ test('check if the dead letter queue policy is setup', () => {
                          {
                           "Ref": "AWS::Partition",
                         },
-                        ":iam::111111111111:root",
+                        ":iam::",
+                       {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
                       ],
                     ],
                   },

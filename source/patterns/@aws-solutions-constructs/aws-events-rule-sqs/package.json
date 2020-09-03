@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-events-rule-sqs",
-  "version": "1.60.0",
+  "version": "1.61.1",
   "description": "CDK Constructs for deploying AWS Events Rule that invokes AWS SQS",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -53,19 +53,15 @@
     }
   },
   "dependencies": {
-    "@aws-cdk/aws-events": "~1.60.0",
-    "@aws-cdk/aws-iam": "~1.60.0",
-    "@aws-cdk/aws-sns": "~1.60.0",
-    "@aws-cdk/core": "~1.60.0",
-    "@types/jest": "^25.2.1",
-    "@aws-solutions-constructs/core": "~1.60.0",
-    "constructs": "^3.0.2",
-    "typescript": "^3.8.3",
-    "ts-jest": "^25.4.0",
-    "jest": "^25.5.4"
+    "@aws-cdk/aws-events": "~1.61.1",
+    "@aws-cdk/aws-iam": "~1.61.1",
+    "@aws-cdk/aws-sqs": "~1.61.1",
+    "@aws-cdk/core": "~1.61.1",
+    "@aws-solutions-constructs/core": "~1.61.1",
+    "constructs": "^3.0.4"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "~1.60.0",
+    "@aws-cdk/assert": "~1.61.1",
     "@types/jest": "^24.0.23",
     "@types/node": "^10.3.0"
   },
@@ -75,11 +71,12 @@
     ]
   },
   "peerDependencies": {
-    "@aws-cdk/aws-sns": "~1.60.0",
-    "@aws-cdk/core": "~1.60.0",
-    "@aws-cdk/aws-events": "~1.60.0",
-    "@aws-cdk/aws-iam": "~1.60.0",
-    "@aws-solutions-constructs/core": "~1.60.0",
-    "constructs": "^3.0.2"
+    "@aws-cdk/aws-sqs": "~1.61.1",
+    "@aws-cdk/core": "~1.61.1",
+    "@aws-cdk/aws-events": "~1.61.1",
+    "@aws-cdk/aws-iam": "~1.61.1",
+    "@aws-cdk/aws-kms": "~1.61.1",
+    "@aws-solutions-constructs/core": "~1.61.1",
+    "constructs": "^3.0.4"
   }
 }

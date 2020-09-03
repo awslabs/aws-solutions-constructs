@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -10,14 +10,13 @@
  *  OR CONDITIONS OF ANY KIND, express or implied. See the License for the specific language governing permissions
  *  and limitations under the License.
  */
+
 import * as sns from '@aws-cdk/aws-sns';
 import * as events from '@aws-cdk/aws-events';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as kms from '@aws-cdk/aws-kms';
-import * as iam from '@aws-cdk/aws-iam';
 import { Construct } from '@aws-cdk/core';
 import { overrideProps } from '@aws-solutions-constructs/core';
-import { ArnPrincipal, Effect } from '@aws-cdk/aws-iam';
+import { ArnPrincipal } from '@aws-cdk/aws-iam';
 
 export interface EventsRuleToSNSTopicProps {
     /**
@@ -33,24 +32,16 @@ export interface EventsRuleToSNSTopicProps {
      */
     readonly eventRuleProps: events.RuleProps
     /**
-     * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
-     * the encryptionKey property for this construct.
+     * Existing instance of SNS Topic object, if this is set then topicProps is ignored.
      *
-     * @default - true (encryption enabled, managed by this CDK app).
+     * @default - Default props are used
      */
-    readonly enableEncryption?: boolean
-    /**
-     * An optional, imported encryption key to encrypt the SNS topic with.
-     *
-     * @default - not specified.
-     */
-    readonly encryptionKey?: kms.Key
+    readonly existingTopicObj?: sns.Topic,
 }
 
 export class EventsRuleToSNSTopic extends Construct {
     public readonly snsTopic: sns.Topic;
     public readonly eventsRule: events.Rule;
-    public readonly encryptionKey: kms.Key
 
 
     /**
@@ -65,10 +56,9 @@ export class EventsRuleToSNSTopic extends Construct {
         super(scope, id);
 
         //Setup the sns topic.
-        [this.snsTopic, this.encryptionKey] = defaults.buildTopic(this, {
-            topicProps: props.snsTopicProps,
-            enableEncryption: props.enableEncryption,
-            encryptionKey: props.encryptionKey
+        [this.snsTopic] = defaults.buildTopic(this, {
+            existingTopicObj: props.existingTopicObj,
+            topicProps: props.snsTopicProps
         });
 
         //Setup the event rule target as sns topic.
