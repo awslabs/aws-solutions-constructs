@@ -71,9 +71,6 @@ Out of the box implementation of the Construct without any override will set the
 ### Amazon CloudWatch Events Rule
 * Grant least privilege permissions to CloudWatch Events to publish to the SNS Topic
 
-### AWS SNS Topic
-* 
-
 ## Architecture
 ![Architecture Diagram](architecture.png)
 
