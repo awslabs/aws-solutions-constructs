@@ -6,9 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.61.1] - 2020-09-01
 
+### Added
+- aws-sns-sqs pattern added ([#24](https://github.com/awslabs/aws-solutions-constructs/issues/24))
+
 ### Changed
 - Upgraded all patterns to CDK v1.61.1
-- aws-sns-sqs pattern added ([#24](https://github.com/awslabs/aws-solutions-constructs/issues/24))
 - [All *-sns-*  Patterns] Allow for existingTopicObj and change default encryption ([#49](https://github.com/awslabs/aws-solutions-constructs/issues/49))
 
 ## [1.61.0] - 2020-08-27
