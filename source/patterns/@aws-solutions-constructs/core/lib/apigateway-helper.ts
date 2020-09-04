@@ -191,7 +191,9 @@ export interface AddProxyMethodToApiResourceInputParams {
     readonly apiMethod: string,
     readonly apiGatewayRole: Role,
     readonly requestTemplate: string,
-    readonly contentType?: string
+    readonly contentType?: string,
+    readonly requestValidator?: api.RequestValidator,
+    readonly requestModel?: { [contentType: string]: api.IModel; }
 }
 
 export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceInputParams) {
@@ -254,6 +256,8 @@ export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceI
                     "method.response.header.Content-Type": true
                 },
             }
-        ]
+        ],
+        requestValidator: params.requestValidator,
+        requestModels: params.requestModel
     });
   }
