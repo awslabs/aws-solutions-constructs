@@ -416,8 +416,7 @@
       "Type": "AWS::Kinesis::Stream",
       "Properties": {
         "ShardCount": 1,
-        "Name": "my-stream",
-        "RetentionPeriodHours": 24,
+        "RetentionPeriodHours": 96,
         "StreamEncryption": {
           "EncryptionType": "KMS",
           "KeyId": "alias/aws/kinesis"

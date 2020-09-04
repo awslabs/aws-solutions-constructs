@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack } from '@aws-cdk/core';
+import { App, Stack, Duration } from '@aws-cdk/core';
 import { ApiGatewayToKinesisStreams, ApiGatewayToKinesisStreamsProps } from '../lib';
 
 // Setup
@@ -35,7 +35,7 @@ const props: ApiGatewayToKinesisStreamsProps = {
     },
     kinesisStreamProps: {
         shardCount: 1,
-        streamName: 'my-stream'
+        retentionPeriod: Duration.days(4)
     },
     createRequestModels: false
 };
