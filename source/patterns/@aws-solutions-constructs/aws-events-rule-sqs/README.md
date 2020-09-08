@@ -26,13 +26,19 @@ This AWS Solutions Construct implements an AWS Events rule and an AWS SQS Queue.
 
 Here is a minimal deployable pattern definition:
 
-``` javascript
-const { EventsRuleToSQSQueueProps, EventsRuleToSQSQueue } = require('@aws-solutions-constructs/aws-events-rule-sqs');
+``` typescript
+import { EventsRuleToSQSQueueProps, EventsRuleToSQSQueue } from ('@aws-solutions-constructs/aws-events-rule-sqs');
 
 const props: EventsRuleToSQSQueueProps = {
     eventRuleProps: {
       schedule: events.Schedule.rate(Duration.minutes(5))
-    }
+    },
+    queueProps: {
+      queueName: 'event-rule-sqs',
+      fifo: true
+    },
+    enableQueuePurging: false,
+    deployDeadLetterQueue: false
 };
 
 new EventsRuleToSQSQueue(stack, 'test-events-rule-sqs', props);
@@ -54,8 +60,13 @@ _Parameters_
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
-|sqsQueueProps?|[`sqs.QueueProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sqs.QueueProps.html)|User provided props to override the default props for the SQS Queue. |
 |eventRuleProps|[`events.RuleProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-events.RuleProps.html)|User provided eventRuleProps to override the defaults. |
+|existingQueueObj?|[`sqs.Queue`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sqs.Queue.html)|An optional, existing SQS queue to be used instead of the default queue. If an existing queue is provided, the `queueProps` property will be ignored.|
+|queueProps?|[`sqs.QueueProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sqs.QueueProps.html)|User provided props to override the default props for the SQS Queue. |
+|enableQueuePurging?|`boolean`|Whether to grant additional permissions to the Lambda function enabling it to purge the SQS queue. Defaults to `false`.|
+|deployDeadLetterQueue?|`boolean`|Whether to create a secondary queue to be used as a dead letter queue. Defaults to `true`.|
+|deadLetterQueueProps?|[`sqs.QueueProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sqs.QueueProps.html)|Optional user-provided props to override the default props for the dead letter queue. Only used if the `deployDeadLetterQueue` property is set to true.|
+|maxReceiveCount?|`number`|The number of times a message can be unsuccessfully dequeued before being moved to the dead letter queue. Defaults to `15`.|
 
 ## Pattern Properties
 
@@ -70,6 +81,11 @@ Out of the box implementation of the Construct without any override will set the
 
 ### Amazon CloudWatch Events Rule
 * Grant least privilege permissions to CloudWatch Events to publish to the SQS Queue
+
+### Amazon SQS Queue
+* Deploy SQS dead-letter queue for the source SQS Queue.
+* Enable server-side encryption for source SQS Queue using AWS Managed KMS Key.
+* Enforce encryption of data in transit
 
 ## Architecture
 ![Architecture Diagram](architecture.png)

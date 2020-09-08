@@ -23,6 +23,12 @@ import { overrideProps } from '@aws-solutions-constructs/core';
  */
 export interface EventsRuleToSQSProps {
   /**
+   * User provided eventRuleProps to override the defaults
+   *
+   * @default - None
+   */
+  readonly eventRuleProps: events.RuleProps
+  /**
    * Existing instance of SQS queue object, if this is set then the queueProps is ignored.
    *
    * @default - None
@@ -34,6 +40,12 @@ export interface EventsRuleToSQSProps {
    * @default - Default props are used
    */
   readonly queueProps?: sqs.QueueProps,
+  /**
+   * Whether to grant additional permissions to the Lambda function enabling it to purge the SQS queue.
+   *
+   * @default - "false", disabled by default.
+   */
+  readonly enableQueuePurging?: boolean,
   /**
    * Optional user provided properties for the dead letter queue
    *
@@ -52,12 +64,6 @@ export interface EventsRuleToSQSProps {
    * @default - required field if deployDeadLetterQueue=true.
    */
   readonly maxReceiveCount?: number
-  /**
-   * User provided eventRuleProps to override the defaults
-   *
-   * @default - None
-   */
-  readonly eventRuleProps: events.RuleProps
 }
 
 export class EventsRuleToSQS extends Construct {
@@ -105,6 +111,11 @@ export class EventsRuleToSQS extends Construct {
     const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);
 
     this.eventsRule = new events.Rule(this, 'EventsRule', eventsRuleProps);
+
+    // Enable queue purging permissions for the event rule, if enabled
+    if (props.enableQueuePurging) {
+      this.sqsQueue.grantPurge(new ArnPrincipal(this.eventsRule.ruleArn));
+    }
 
     //Policy for event to be able to send messages to the queue
     this.sqsQueue.grantSendMessages(new ArnPrincipal(this.eventsRule.ruleArn))

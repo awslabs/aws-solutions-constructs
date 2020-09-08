@@ -24,7 +24,7 @@ export interface EventsRuleToSNSTopicProps {
      *
      * @default - Default props are used
      */
-    readonly snsTopicProps?: sns.TopicProps
+    readonly topicsProps?: sns.TopicProps
     /**
      * User provided eventRuleProps to override the defaults
      *
@@ -58,7 +58,7 @@ export class EventsRuleToSNSTopic extends Construct {
         //Setup the sns topic.
         [this.snsTopic] = defaults.buildTopic(this, {
             existingTopicObj: props.existingTopicObj,
-            topicProps: props.snsTopicProps
+            topicProps: props.topicsProps
         });
 
         //Setup the event rule target as sns topic.

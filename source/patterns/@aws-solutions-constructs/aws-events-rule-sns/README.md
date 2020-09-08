@@ -26,16 +26,19 @@ This AWS Solutions Construct implements an AWS Events rule and an AWS SNS Topic.
 
 Here is a minimal deployable pattern definition:
 
-``` javascript
-const { EventsRuleToSNSTopicProps, EventsRuleToSNSTopic } = require('@aws-solutions-constructs/aws-events-rule-sns');
+``` typescript
+import { EventsRuleToSNSTopicProps, EventsRuleToSNSTopic } from "@aws-solutions-constructs/aws-events-rule-sns";
 
 const props: EventsRuleToSNSTopicProps = {
     eventRuleProps: {
-      schedule: events.Schedule.rate(Duration.minutes(5))
+      schedule: events.Schedule.rate(Duration.minutes(5)),
+    },
+    topicsProps: {
+      displayName: 'event-rule-sns'
     }
 };
 
-new EventsRuleToSNSTopic(stack, 'test-events-rule-sns', props);
+new EventsRuleToSNSTopic(this, 'test-events-rule-sns', props);
 ```
 
 ## Initializer
@@ -54,8 +57,10 @@ _Parameters_
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
-|snsTopicProps?|[`sns.TopicProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sns.TopicProps.html)|User provided props to override the default props for the SNS Topic. |
 |eventRuleProps|[`events.RuleProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-events.RuleProps.html)|User provided eventRuleProps to override the defaults. |
+|existingTopicObj?|[`sns.Topic`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)|Existing instance of SNS Topic object, if this is set then the topicProps is ignored.|
+|topicProps?|[`sns.TopicProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sns.TopicProps.html)|User provided props to override the default props for the SNS Topic. |
+
 
 ## Pattern Properties
 
@@ -70,6 +75,11 @@ Out of the box implementation of the Construct without any override will set the
 
 ### Amazon CloudWatch Events Rule
 * Grant least privilege permissions to CloudWatch Events to publish to the SNS Topic
+
+### Amazon SNS Topic
+* Configure least privilege access permissions for SNS Topic
+* Enable server-side encryption forSNS Topic using AWS managed KMS Key
+* Enforce encryption of data in transit
 
 ## Architecture
 ![Architecture Diagram](architecture.png)
