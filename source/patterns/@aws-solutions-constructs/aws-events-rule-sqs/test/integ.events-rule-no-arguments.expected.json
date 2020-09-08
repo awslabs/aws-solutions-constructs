@@ -1,0 +1,208 @@
+{
+    "Resources": {
+        "testeventsrulesqsEventsRule06054F3F": {
+            "Properties": {
+              "ScheduleExpression": "rate(5 minutes)",
+              "State": "ENABLED",
+              "Targets": [
+                {
+                  "Arn": {
+                    "Fn::GetAtt": [
+                      "testeventsrulesqsqueueAACD0364",
+                      "Arn"
+                    ]
+                  },
+                  "Id": {
+                    "Fn::GetAtt": [
+                      "testeventsrulesqsqueueAACD0364",
+                      "QueueName"
+                    ]
+                  }
+                }
+              ]
+            },
+            "Type": "AWS::Events::Rule"
+          },
+          "testeventsrulesqsdeadLetterQueueA4A15A1C": {
+            "Properties": {
+              "KmsMasterKeyId": "alias/aws/sqs"
+            },
+            "Type": "AWS::SQS::Queue"
+          },
+          "testeventsrulesqsdeadLetterQueuePolicyB769DC48": {
+            "Properties": {
+              "PolicyDocument": {
+                "Statement": [
+                  {
+                    "Action": [
+                      "sqs:DeleteMessage",
+                      "sqs:ReceiveMessage",
+                      "sqs:SendMessage",
+                      "sqs:GetQueueAttributes",
+                      "sqs:RemovePermission",
+                      "sqs:AddPermission",
+                      "sqs:SetQueueAttributes"
+                    ],
+                    "Effect": "Allow",
+                    "Principal": {
+                      "AWS": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::",
+                        {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                          ]
+                        ]
+                      }
+                    },
+                    "Resource": {
+                      "Fn::GetAtt": [
+                        "testeventsrulesqsdeadLetterQueueA4A15A1C",
+                        "Arn"
+                      ]
+                    },
+                    "Sid": "QueueOwnerOnlyAccess"
+                  },
+                  {
+                    "Action": "SQS:*",
+                    "Condition": {
+                      "Bool": {
+                        "aws:SecureTransport": "false"
+                      }
+                    },
+                    "Effect": "Deny",
+                    "Principal": "*",
+                    "Resource": {
+                      "Fn::GetAtt": [
+                        "testeventsrulesqsdeadLetterQueueA4A15A1C",
+                        "Arn"
+                      ]
+                    },
+                    "Sid": "HttpsOnly"
+                  }
+                ],
+                "Version": "2012-10-17"
+              },
+              "Queues": [
+                {
+                  "Ref": "testeventsrulesqsdeadLetterQueueA4A15A1C"
+                }
+              ]
+            },
+            "Type": "AWS::SQS::QueuePolicy"
+          },
+          "testeventsrulesqsqueueAACD0364": {
+            "Properties": {
+              "KmsMasterKeyId": "alias/aws/sqs",
+              "RedrivePolicy": {
+                "deadLetterTargetArn": {
+                  "Fn::GetAtt": [
+                    "testeventsrulesqsdeadLetterQueueA4A15A1C",
+                    "Arn"
+                  ]
+                },
+                "maxReceiveCount": 15
+              }
+            },
+            "Type": "AWS::SQS::Queue"
+          },
+          "testeventsrulesqsqueuePolicy6D46CF4A": {
+            "Properties": {
+              "PolicyDocument": {
+                "Statement": [
+                  {
+                    "Action": [
+                      "sqs:DeleteMessage",
+                      "sqs:ReceiveMessage",
+                      "sqs:SendMessage",
+                      "sqs:GetQueueAttributes",
+                      "sqs:RemovePermission",
+                      "sqs:AddPermission",
+                      "sqs:SetQueueAttributes"
+                    ],
+                    "Effect": "Allow",
+                    "Principal": {
+                      "AWS": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::",
+                             {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ":root"
+                          ]
+                        ]
+                      }
+                    },
+                    "Resource": {
+                      "Fn::GetAtt": [
+                        "testeventsrulesqsqueueAACD0364",
+                        "Arn"
+                      ]
+                    },
+                    "Sid": "QueueOwnerOnlyAccess"
+                  },
+                  {
+                    "Action": "SQS:*",
+                    "Condition": {
+                      "Bool": {
+                        "aws:SecureTransport": "false"
+                      }
+                    },
+                    "Effect": "Deny",
+                    "Principal": "*",
+                    "Resource": {
+                      "Fn::GetAtt": [
+                        "testeventsrulesqsqueueAACD0364",
+                        "Arn"
+                      ]
+                    },
+                    "Sid": "HttpsOnly"
+                  },
+                  {
+                    "Action": [
+                      "sqs:SendMessage",
+                      "sqs:GetQueueAttributes",
+                      "sqs:GetQueueUrl"
+                    ],
+                    "Effect": "Allow",
+                    "Principal": {
+                      "AWS": {
+                        "Fn::GetAtt": [
+                          "testeventsrulesqsEventsRule06054F3F",
+                          "Arn"
+                        ]
+                      }
+                    },
+                    "Resource": {
+                      "Fn::GetAtt": [
+                        "testeventsrulesqsqueueAACD0364",
+                        "Arn"
+                      ]
+                    }
+                  }
+                ],
+                "Version": "2012-10-17"
+              },
+              "Queues": [
+                {
+                  "Ref": "testeventsrulesqsqueueAACD0364"
+                }
+              ]
+            },
+            "Type": "AWS::SQS::QueuePolicy"
+          }
+    }
+}
