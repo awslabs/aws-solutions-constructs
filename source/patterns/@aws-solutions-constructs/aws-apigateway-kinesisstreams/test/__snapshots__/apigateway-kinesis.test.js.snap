@@ -699,12 +699,13 @@ Object {
       },
       "Type": "AWS::ApiGateway::RestApi",
     },
-    "apigatewaykinesisRestApiDeployment10E9BBA51217b9858a534750a131a59f516b2165": Object {
+    "apigatewaykinesisRestApiDeployment10E9BBA51fc5c8b6c1eab8317f1df6f599bf503b": Object {
       "DependsOn": Array [
         "apigatewaykinesisRestApirecordPOST833DA459",
         "apigatewaykinesisRestApirecord3F4EC064",
         "apigatewaykinesisRestApirecordsPOST08A9BEAD",
         "apigatewaykinesisRestApirecordsE5337BB6",
+        "apigatewaykinesisRestApirequestvalidator4482E7FC",
       ],
       "Metadata": Object {
         "cfn_nag": Object {
@@ -736,7 +737,7 @@ Object {
           "Format": "{\\"requestId\\":\\"$context.requestId\\",\\"ip\\":\\"$context.identity.sourceIp\\",\\"user\\":\\"$context.identity.user\\",\\"caller\\":\\"$context.identity.caller\\",\\"requestTime\\":\\"$context.requestTime\\",\\"httpMethod\\":\\"$context.httpMethod\\",\\"resourcePath\\":\\"$context.resourcePath\\",\\"status\\":\\"$context.status\\",\\"protocol\\":\\"$context.protocol\\",\\"responseLength\\":\\"$context.responseLength\\"}",
         },
         "DeploymentId": Object {
-          "Ref": "apigatewaykinesisRestApiDeployment10E9BBA51217b9858a534750a131a59f516b2165",
+          "Ref": "apigatewaykinesisRestApiDeployment10E9BBA51fc5c8b6c1eab8317f1df6f599bf503b",
         },
         "MethodSettings": Array [
           Object {
@@ -820,18 +821,7 @@ Object {
             "integration.request.header.Content-Type": "'x-amz-json-1.1'",
           },
           "RequestTemplates": Object {
-            "application/json": Object {
-              "Fn::Join": Array [
-                "",
-                Array [
-                  "{ \\"StreamName\\": \\"",
-                  Object {
-                    "Ref": "KinesisStream46752A3E",
-                  },
-                  "\\", \\"Data\\": \\"$util.base64Encode($input.json('$.data'))\\", \\"PartitionKey\\": \\"$input.path('$.partitionKey')\\" }",
-                ],
-              ],
-            },
+            "application/json": "{ \\"Data\\": \\"$util.base64Encode($input.json('$.foo'))\\", \\"PartitionKey\\": \\"$input.path('$.bar')\\" }",
           },
           "Type": "AWS",
           "Uri": Object {
@@ -867,6 +857,9 @@ Object {
         ],
         "RequestModels": Object {
           "application/json": "Empty",
+        },
+        "RequestValidatorId": Object {
+          "Ref": "apigatewaykinesisRestApirequestvalidator4482E7FC",
         },
         "ResourceId": Object {
           "Ref": "apigatewaykinesisRestApirecord3F4EC064",
@@ -921,18 +914,7 @@ Object {
             "integration.request.header.Content-Type": "'x-amz-json-1.1'",
           },
           "RequestTemplates": Object {
-            "application/json": Object {
-              "Fn::Join": Array [
-                "",
-                Array [
-                  "{ \\"StreamName\\": \\"",
-                  Object {
-                    "Ref": "KinesisStream46752A3E",
-                  },
-                  "\\", \\"Records\\": [ #foreach($elem in $input.path('$.records')) { \\"Data\\": \\"$util.base64Encode($elem.data)\\", \\"PartitionKey\\": \\"$elem.partitionKey\\"}#if($foreach.hasNext),#end #end ] }",
-                ],
-              ],
-            },
+            "application/json": "{ \\"Records\\": [ #foreach($elem in $input.path('$.records')) { \\"Data\\": \\"$util.base64Encode($elem.foo)\\", \\"PartitionKey\\": \\"$elem.bar\\"}#if($foreach.hasNext),#end #end ] }",
           },
           "Type": "AWS",
           "Uri": Object {
@@ -969,6 +951,9 @@ Object {
         "RequestModels": Object {
           "application/json": "Empty",
         },
+        "RequestValidatorId": Object {
+          "Ref": "apigatewaykinesisRestApirequestvalidator4482E7FC",
+        },
         "ResourceId": Object {
           "Ref": "apigatewaykinesisRestApirecordsE5337BB6",
         },
@@ -977,6 +962,16 @@ Object {
         },
       },
       "Type": "AWS::ApiGateway::Method",
+    },
+    "apigatewaykinesisRestApirequestvalidator4482E7FC": Object {
+      "Properties": Object {
+        "Name": "request-body-validator",
+        "RestApiId": Object {
+          "Ref": "apigatewaykinesisRestApi0DCC9877",
+        },
+        "ValidateRequestBody": true,
+      },
+      "Type": "AWS::ApiGateway::RequestValidator",
     },
     "apigatewaykinesisapigatewayrole9271A0CE": Object {
       "Properties": Object {
@@ -1029,7 +1024,7 @@ Object {
 }
 `;
 
-exports[`Test minimal deployment 1`] = `
+exports[`Test minimal deployment snapshot 1`] = `
 Object {
   "Outputs": Object {
     "apigatewaykinesisRestApiEndpoint0C8E406E": Object {

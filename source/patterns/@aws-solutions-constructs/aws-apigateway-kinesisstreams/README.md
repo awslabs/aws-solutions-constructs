@@ -31,15 +31,7 @@ Here is a minimal deployable pattern definition in Typescript:
 ``` javascript
 import { ApiGatewayToKinesisStreams, ApiGatewayToKinesisStreamsProps } from '@aws-solutions-constructs/aws-apigateway-kinesisstreams';
 
-const props: ApiGatewayToKinesisStreamsProps = {
-    apiGatewayProps: {
-        restApiName: 'my-api',
-    },
-    kinesisStreamProps: {
-        shardCount: 1,
-        streamName: 'my-stream'
-    },
-};
+const props: ApiGatewayToKinesisStreamsProps = {};
 
 new ApiGatewayToKinesisStreams(this, 'test-apigw-kinesis', props);
 
@@ -62,7 +54,10 @@ _Parameters_
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
 |apiGatewayProps?|[`api.RestApiProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.RestApiProps.html)|Optional user-provided props to override the default props for the API Gateway.|
-|createRequestModels?|`boolean`|Whether to create a data model for the request payload. If this is set to true, a request validator will also be created.|
+|putRecordRequestTemplate?|`string`|API Gateway request template for the PutRecord action. If not provided, a default one will be used.|
+|putRecordRequestModel?|[`api.Model`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.Model.html)|API Gateway request model for the PutRecord action. If not provided, a default one will be created.|
+|putRecordsRequestTemplate?|`string`|API Gateway request template for the PutRecords action. If not provided, a default one will be used.|
+|putRecordsRequestModel?|[`api.Model`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.Model.html)|API Gateway request model for the PutRecords action. If not provided, a default one will be created.|
 |existingStreamObj?|[`kinesis.Stream`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kinesis.Stream.html)|Existing instance of Kinesis Stream, if this is set then kinesisStreamProps is ignored.|
 |kinesisStreamProps?|[`kinesis.StreamProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kinesis.StreamProps.html)|Optional user-provided props to override the default props for the Kinesis stream.|
 

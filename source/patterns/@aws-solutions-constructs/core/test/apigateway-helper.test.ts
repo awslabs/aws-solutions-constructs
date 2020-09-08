@@ -323,4 +323,8 @@ test('Test default RestApi w/ request model and validator', () => {
     Name: "default-validator",
     ValidateRequestBody: true
   });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    RequestModels: { "application/json": "Empty" }
+  });
 });

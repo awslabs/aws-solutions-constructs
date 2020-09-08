@@ -14,6 +14,7 @@
 // Imports
 import { App, Stack, Duration } from '@aws-cdk/core';
 import { ApiGatewayToKinesisStreams, ApiGatewayToKinesisStreamsProps } from '../lib';
+import * as api from '@aws-cdk/aws-apigateway';
 
 // Setup
 const app = new App();
@@ -37,7 +38,11 @@ const props: ApiGatewayToKinesisStreamsProps = {
         shardCount: 1,
         retentionPeriod: Duration.days(4)
     },
-    createRequestModels: false
+    putRecordRequestTemplate: `{ "Data": "$util.base64Encode($input.json('$.foo'))", "PartitionKey": "$input.path('$.bar')" }`,
+    putRecordRequestModel: api.Model.EMPTY_MODEL,
+
+    putRecordsRequestTemplate: `{ "Records": [ #foreach($elem in $input.path('$.records')) { "Data": "$util.base64Encode($elem.foo)", "PartitionKey": "$elem.bar"}#if($foreach.hasNext),#end #end ] }`,
+    putRecordsRequestModel: api.Model.EMPTY_MODEL
 };
 
 new ApiGatewayToKinesisStreams(stack, 'test-apigateway-kinesis-overwrite', props);

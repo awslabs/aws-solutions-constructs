@@ -16,22 +16,29 @@ import { Stack, Duration } from '@aws-cdk/core';
 import { ApiGatewayToKinesisStreams } from '../lib';
 import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
-import * as kinesis from "@aws-cdk/aws-kinesis";
+import * as api from '@aws-cdk/aws-apigateway';
+import * as kinesis from '@aws-cdk/aws-kinesis';
 
 // --------------------------------------------------------------
-// Test minimal deployment
+// Test minimal deployment snapshot
 // --------------------------------------------------------------
-test('Test minimal deployment', () => {
+test('Test minimal deployment snapshot', () => {
     const stack = new Stack();
-    const pattern = new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis', { });
-
+    new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis', {});
     expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+// --------------------------------------------------------------
+// Test construct properties
+// --------------------------------------------------------------
+test('Test construct properties', () => {
+    const stack = new Stack();
+    const pattern = new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis', {});
 
     expect(pattern.apiGateway !== null);
     expect(pattern.apiGatewayRole !== null);
     expect(pattern.apiGatewayCloudWatchRole !== null);
     expect(pattern.apiGatewayLogGroup !== null);
-
     expect(pattern.kinesisStream !== null);
 });
 
@@ -57,7 +64,10 @@ test('Test deployment w/ overwritten properties', () => {
             shardCount: 1,
             streamName: 'my-stream'
         },
-        createRequestModels: false
+        putRecordRequestTemplate: `{ "Data": "$util.base64Encode($input.json('$.foo'))", "PartitionKey": "$input.path('$.bar')" }`,
+        putRecordRequestModel: api.Model.EMPTY_MODEL,
+        putRecordsRequestTemplate: `{ "Records": [ #foreach($elem in $input.path('$.records')) { "Data": "$util.base64Encode($elem.foo)", "PartitionKey": "$elem.bar"}#if($foreach.hasNext),#end #end ] }`,
+        putRecordsRequestModel: api.Model.EMPTY_MODEL
     });
 
     expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();

@@ -31,14 +31,36 @@ export interface ApiGatewayToKinesisStreamsProps {
     readonly apiGatewayProps?: api.RestApiProps,
 
     /**
-     * Whether to create a data model for the request payload.
-     * If this is set to true, a request validator will also be created.
+     * API Gateway request template for the PutRecord action.
+     * If not provided, a default one will be used.
      *
-     * @see https://docs.aws.amazon.com/apigateway/latest/developerguide/rest-api-data-transformations.html#models-mappings-models
-     * @see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-method-request-validation.html
-     * @default - true
+     * @default - None
      */
-    readonly createRequestModels?: boolean;
+    readonly putRecordRequestTemplate?: string;
+
+    /**
+     * API Gateway request model for the PutRecord action.
+     * If not provided, a default one will be created.
+     *
+     * @default - None
+     */
+    readonly putRecordRequestModel?: api.IModel;
+
+    /**
+     * API Gateway request template for the PutRecords action.
+     * If not provided, a default one will be used.
+     *
+     * @default - None
+     */
+    readonly putRecordsRequestTemplate?: string;
+
+    /**
+     * API Gateway request model for the PutRecords action.
+     * If not provided, a default one will be created.
+     *
+     * @default - None
+     */
+    readonly putRecordsRequestModel?: api.IModel;
 
     /**
      * Existing instance of Kinesis Stream, if this is set then kinesisStreamProps is ignored.
@@ -92,52 +114,53 @@ export class ApiGatewayToKinesisStreams extends Construct {
         this.kinesisStream.grantWrite(this.apiGatewayRole);
 
         // Setup API Gateway methods
-        const shouldCreateModels = props.createRequestModels === undefined || props.createRequestModels === true;
-
-        let requestValidator: api.RequestValidator | undefined;
-        if (shouldCreateModels) {
-            requestValidator = this.apiGateway.addRequestValidator('request-validator', {
-                requestValidatorName: 'request-body-validator',
-                validateRequestBody: true
-            });
-        }
+        const requestValidator = this.apiGateway.addRequestValidator('request-validator', {
+            requestValidatorName: 'request-body-validator',
+            validateRequestBody: true
+        });
 
         // PutRecord
         const putRecordResource = this.apiGateway.root.addResource('record');
-        const putRecordTemplate = `{ "StreamName": "${this.kinesisStream.streamName}", "Data": "$util.base64Encode($input.json('$.data'))", "PartitionKey": "$input.path('$.partitionKey')" }`;
-        const putRecordModel = shouldCreateModels ? this.getPutRecordModel() : api.Model.EMPTY_MODEL;
-
         defaults.addProxyMethodToApiResource({
             service: 'kinesis',
             action: 'PutRecord',
             apiGatewayRole: this.apiGatewayRole,
             apiMethod: 'POST',
             apiResource: putRecordResource,
-            requestTemplate: putRecordTemplate,
+            requestTemplate: this.getPutRecordTemplate(props.putRecordRequestTemplate),
             contentType: "'x-amz-json-1.1'",
             requestValidator,
-            requestModel: { 'application/json': putRecordModel }
+            requestModel: { 'application/json': this.getPutRecordModel(props.putRecordRequestModel) }
         });
 
         // PutRecords
         const putRecordsResource = this.apiGateway.root.addResource('records');
-        const putRecordsTemplate = `{ "StreamName": "${this.kinesisStream.streamName}", "Records": [ #foreach($elem in $input.path('$.records')) { "Data": "$util.base64Encode($elem.data)", "PartitionKey": "$elem.partitionKey"}#if($foreach.hasNext),#end #end ] }`;
-        const putRecordsModel = shouldCreateModels ? this.getPutRecordsModel() : api.Model.EMPTY_MODEL;
-
         defaults.addProxyMethodToApiResource({
             service: 'kinesis',
             action: 'PutRecords',
             apiGatewayRole: this.apiGatewayRole,
             apiMethod: 'POST',
             apiResource: putRecordsResource,
-            requestTemplate: putRecordsTemplate,
+            requestTemplate: this.getPutRecordsTemplate(props.putRecordsRequestTemplate),
             contentType: "'x-amz-json-1.1'",
             requestValidator,
-            requestModel: { 'application/json': putRecordsModel }
+            requestModel: { 'application/json': this.getPutRecordsModel(props.putRecordsRequestModel) }
         });
     }
 
-    private getPutRecordModel(): api.Model {
+    private getPutRecordTemplate(putRecordTemplate?: string): string {
+        if (putRecordTemplate !== undefined) {
+            return putRecordTemplate;
+        }
+
+        return `{ "StreamName": "${this.kinesisStream.streamName}", "Data": "$util.base64Encode($input.json('$.data'))", "PartitionKey": "$input.path('$.partitionKey')" }`;
+    }
+
+    private getPutRecordModel(putRecordModel?: api.IModel): api.IModel {
+        if (putRecordModel !== undefined) {
+            return putRecordModel;
+        }
+
         return this.apiGateway.addModel('PutRecordModel', {
             contentType: 'application/json',
             modelName: 'PutRecordModel',
@@ -155,7 +178,19 @@ export class ApiGatewayToKinesisStreams extends Construct {
         });
     }
 
-    private getPutRecordsModel(): api.Model {
+    private getPutRecordsTemplate(putRecordsTemplate?: string): string {
+        if (putRecordsTemplate !== undefined) {
+            return putRecordsTemplate;
+        }
+
+        return `{ "StreamName": "${this.kinesisStream.streamName}", "Records": [ #foreach($elem in $input.path('$.records')) { "Data": "$util.base64Encode($elem.data)", "PartitionKey": "$elem.partitionKey"}#if($foreach.hasNext),#end #end ] }`;
+    }
+
+    private getPutRecordsModel(putRecordsModel?: api.IModel): api.IModel {
+        if (putRecordsModel !== undefined) {
+            return putRecordsModel;
+        }
+
         return this.apiGateway.addModel('PutRecordsModel', {
             contentType: 'application/json',
             modelName: 'PutRecordsModel',

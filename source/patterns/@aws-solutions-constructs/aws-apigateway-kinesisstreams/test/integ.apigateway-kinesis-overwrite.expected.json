@@ -17,7 +17,7 @@
         "Name": "my-api"
       }
     },
-    "testapigatewaykinesisoverwriteRestApiDeployment1EE3B096e126f0bd09804049756b8e50c63ccaab": {
+    "testapigatewaykinesisoverwriteRestApiDeployment1EE3B096f7453da735d825aa4af9360039752401": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -29,7 +29,8 @@
         "testapigatewaykinesisoverwriteRestApirecordPOST2B249308",
         "testapigatewaykinesisoverwriteRestApirecordAECF6BBC",
         "testapigatewaykinesisoverwriteRestApirecordsPOST1501AC33",
-        "testapigatewaykinesisoverwriteRestApirecordsB70B7E7F"
+        "testapigatewaykinesisoverwriteRestApirecordsB70B7E7F",
+        "testapigatewaykinesisoverwriteRestApirequestvalidatorBAD987F2"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -58,7 +59,7 @@
           "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "testapigatewaykinesisoverwriteRestApiDeployment1EE3B096e126f0bd09804049756b8e50c63ccaab"
+          "Ref": "testapigatewaykinesisoverwriteRestApiDeployment1EE3B096f7453da735d825aa4af9360039752401"
         },
         "MethodSettings": [
           {
@@ -129,18 +130,7 @@
             "integration.request.header.Content-Type": "'x-amz-json-1.1'"
           },
           "RequestTemplates": {
-            "application/json": {
-              "Fn::Join": [
-                "",
-                [
-                  "{ \"StreamName\": \"",
-                  {
-                    "Ref": "KinesisStream46752A3E"
-                  },
-                  "\", \"Data\": \"$util.base64Encode($input.json('$.data'))\", \"PartitionKey\": \"$input.path('$.partitionKey')\" }"
-                ]
-              ]
-            }
+            "application/json": "{ \"Data\": \"$util.base64Encode($input.json('$.foo'))\", \"PartitionKey\": \"$input.path('$.bar')\" }"
           },
           "Type": "AWS",
           "Uri": {
@@ -176,6 +166,9 @@
         ],
         "RequestModels": {
           "application/json": "Empty"
+        },
+        "RequestValidatorId": {
+          "Ref": "testapigatewaykinesisoverwriteRestApirequestvalidatorBAD987F2"
         }
       }
     },
@@ -230,18 +223,7 @@
             "integration.request.header.Content-Type": "'x-amz-json-1.1'"
           },
           "RequestTemplates": {
-            "application/json": {
-              "Fn::Join": [
-                "",
-                [
-                  "{ \"StreamName\": \"",
-                  {
-                    "Ref": "KinesisStream46752A3E"
-                  },
-                  "\", \"Records\": [ #foreach($elem in $input.path('$.records')) { \"Data\": \"$util.base64Encode($elem.data)\", \"PartitionKey\": \"$elem.partitionKey\"}#if($foreach.hasNext),#end #end ] }"
-                ]
-              ]
-            }
+            "application/json": "{ \"Records\": [ #foreach($elem in $input.path('$.records')) { \"Data\": \"$util.base64Encode($elem.foo)\", \"PartitionKey\": \"$elem.bar\"}#if($foreach.hasNext),#end #end ] }"
           },
           "Type": "AWS",
           "Uri": {
@@ -277,6 +259,9 @@
         ],
         "RequestModels": {
           "application/json": "Empty"
+        },
+        "RequestValidatorId": {
+          "Ref": "testapigatewaykinesisoverwriteRestApirequestvalidatorBAD987F2"
         }
       }
     },
@@ -294,6 +279,16 @@
             "Throttle": {}
           }
         ]
+      }
+    },
+    "testapigatewaykinesisoverwriteRestApirequestvalidatorBAD987F2": {
+      "Type": "AWS::ApiGateway::RequestValidator",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "testapigatewaykinesisoverwriteRestApi77ABE5DA"
+        },
+        "Name": "request-body-validator",
+        "ValidateRequestBody": true
       }
     },
     "testapigatewaykinesisoverwriteLambdaRestApiCloudWatchRole5ABBFDA0": {
