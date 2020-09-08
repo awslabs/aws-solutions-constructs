@@ -70,20 +70,20 @@ export class EventsRuleToSQS extends Construct {
   public readonly sqsQueue: sqs.Queue;
   public readonly deadLetterQueue: sqs.DeadLetterQueue | undefined;
   public readonly eventsRule: events.Rule;
-  // public readonly key: kms.Key
+
   /**
    * @summary Constructs a new instance of the EventsRuleToSQS class.
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {EventsRuleToSQSProps} props - user provided props for the construct
-   * @since 0.8.0
+   * @since 1.61.1
    * @access public
    */
   constructor(scope: Construct, id: string, props: EventsRuleToSQSProps) {
     super(scope, id);
 
     // Setup the dead letter queue, if applicable
-    if (props.deployDeadLetterQueue || props.deployDeadLetterQueue === undefined) {
+    if (!props.existingQueueObj && (props.deployDeadLetterQueue || props.deployDeadLetterQueue === undefined)) {
       const [dlq] = defaults.buildQueue(this, 'deadLetterQueue', {
           queueProps: props.deadLetterQueueProps
       });
