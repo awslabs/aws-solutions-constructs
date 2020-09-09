@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
+import { Stack, Duration } from "@aws-cdk/core";
 import * as defaults from '../';
 import * as kinesis from '@aws-cdk/aws-kinesis';
 import { SynthUtils, ResourcePart } from '@aws-cdk/assert';
@@ -64,5 +64,35 @@ test('Test deployment w/ custom properties', () => {
   // Assertion 3
   expect(stack).toHaveResource('AWS::KMS::Key', {
       EnableKeyRotation: true
+  });
+});
+
+// --------------------------------------------------------------
+// Test deployment w/ existing stream
+// --------------------------------------------------------------
+test('Test deployment w/ existing stream', () => {
+  // Stack
+  const stack = new Stack();
+  // Helper setup
+  const stream = new kinesis.Stream(stack, 'existing-stream', {
+    shardCount: 2,
+    retentionPeriod: Duration.days(3)
+  });
+  // Helper declaration
+  defaults.buildKinesisStream(stack, {
+    existingStreamObj: stream,
+
+    // These props will be ignored as an existing stream was provided
+    kinesisStreamProps: {
+      shardCount: 1,
+      retentionPeriod: Duration.days(1)
+    }
+  });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Assertion 2
+  expect(stack).toHaveResource('AWS::Kinesis::Stream', {
+    ShardCount: 2,
+    RetentionPeriodHours: 72
   });
 });
