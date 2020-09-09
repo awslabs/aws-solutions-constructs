@@ -140,11 +140,7 @@ test('check if the event rule has permission/policy in place in sns for it to be
 
 test('check events rule properties for deploy: true', () => {
   const stack = getStack()
-<<<<<<< HEAD
   createConstruct(stack)
-=======
-  deployNewFunc(stack)
->>>>>>> 03975799433bee20dab9884724a85aa0c669158d
 
   expect(stack).toHaveResource('AWS::Events::Rule', {
     ScheduleExpression: "rate(5 minutes)",
