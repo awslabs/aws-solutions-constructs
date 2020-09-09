@@ -699,12 +699,14 @@ Object {
       },
       "Type": "AWS::ApiGateway::RestApi",
     },
-    "apigatewaykinesisRestApiDeployment10E9BBA51fc5c8b6c1eab8317f1df6f599bf503b": Object {
+    "apigatewaykinesisRestApiDeployment10E9BBA592f6dffe73c609db3a34add9add8b26e": Object {
       "DependsOn": Array [
         "apigatewaykinesisRestApirecordPOST833DA459",
         "apigatewaykinesisRestApirecord3F4EC064",
         "apigatewaykinesisRestApirecordsPOST08A9BEAD",
         "apigatewaykinesisRestApirecordsE5337BB6",
+        "apigatewaykinesisRestApiPutRecordModel55C7723E",
+        "apigatewaykinesisRestApiPutRecordsModel217E2E73",
         "apigatewaykinesisRestApirequestvalidator4482E7FC",
       ],
       "Metadata": Object {
@@ -737,7 +739,7 @@ Object {
           "Format": "{\\"requestId\\":\\"$context.requestId\\",\\"ip\\":\\"$context.identity.sourceIp\\",\\"user\\":\\"$context.identity.user\\",\\"caller\\":\\"$context.identity.caller\\",\\"requestTime\\":\\"$context.requestTime\\",\\"httpMethod\\":\\"$context.httpMethod\\",\\"resourcePath\\":\\"$context.resourcePath\\",\\"status\\":\\"$context.status\\",\\"protocol\\":\\"$context.protocol\\",\\"responseLength\\":\\"$context.responseLength\\"}",
         },
         "DeploymentId": Object {
-          "Ref": "apigatewaykinesisRestApiDeployment10E9BBA51fc5c8b6c1eab8317f1df6f599bf503b",
+          "Ref": "apigatewaykinesisRestApiDeployment10E9BBA592f6dffe73c609db3a34add9add8b26e",
         },
         "MethodSettings": Array [
           Object {
@@ -760,6 +762,30 @@ Object {
         "TracingEnabled": true,
       },
       "Type": "AWS::ApiGateway::Stage",
+    },
+    "apigatewaykinesisRestApiPutRecordModel55C7723E": Object {
+      "Properties": Object {
+        "ContentType": "application/json",
+        "RestApiId": Object {
+          "Ref": "apigatewaykinesisRestApi0DCC9877",
+        },
+        "Schema": Object {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+        },
+      },
+      "Type": "AWS::ApiGateway::Model",
+    },
+    "apigatewaykinesisRestApiPutRecordsModel217E2E73": Object {
+      "Properties": Object {
+        "ContentType": "application/json",
+        "RestApiId": Object {
+          "Ref": "apigatewaykinesisRestApi0DCC9877",
+        },
+        "Schema": Object {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+        },
+      },
+      "Type": "AWS::ApiGateway::Model",
     },
     "apigatewaykinesisRestApiUsagePlan40457E86": Object {
       "Properties": Object {
@@ -856,7 +882,9 @@ Object {
           },
         ],
         "RequestModels": Object {
-          "application/json": "Empty",
+          "application/json": Object {
+            "Ref": "apigatewaykinesisRestApiPutRecordModel55C7723E",
+          },
         },
         "RequestValidatorId": Object {
           "Ref": "apigatewaykinesisRestApirequestvalidator4482E7FC",
@@ -949,7 +977,9 @@ Object {
           },
         ],
         "RequestModels": Object {
-          "application/json": "Empty",
+          "application/json": Object {
+            "Ref": "apigatewaykinesisRestApiPutRecordsModel217E2E73",
+          },
         },
         "RequestValidatorId": Object {
           "Ref": "apigatewaykinesisRestApirequestvalidator4482E7FC",

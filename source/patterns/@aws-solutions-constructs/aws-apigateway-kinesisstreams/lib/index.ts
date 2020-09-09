@@ -44,7 +44,7 @@ export interface ApiGatewayToKinesisStreamsProps {
      *
      * @default - None
      */
-    readonly putRecordRequestModel?: api.IModel;
+    readonly putRecordRequestModel?: api.ModelOptions;
 
     /**
      * API Gateway request template for the PutRecords action.
@@ -60,7 +60,7 @@ export interface ApiGatewayToKinesisStreamsProps {
      *
      * @default - None
      */
-    readonly putRecordsRequestModel?: api.IModel;
+    readonly putRecordsRequestModel?: api.ModelOptions;
 
     /**
      * Existing instance of Kinesis Stream, if this is set then kinesisStreamProps is ignored.
@@ -156,26 +156,30 @@ export class ApiGatewayToKinesisStreams extends Construct {
         return `{ "StreamName": "${this.kinesisStream.streamName}", "Data": "$util.base64Encode($input.json('$.data'))", "PartitionKey": "$input.path('$.partitionKey')" }`;
     }
 
-    private getPutRecordModel(putRecordModel?: api.IModel): api.IModel {
+    private getPutRecordModel(putRecordModel?: api.ModelOptions): api.IModel {
+        let modelProps: api.ModelOptions;
+
         if (putRecordModel !== undefined) {
-            return putRecordModel;
+            modelProps = putRecordModel;
+        } else {
+            modelProps = {
+                contentType: 'application/json',
+                modelName: 'PutRecordModel',
+                description: 'PutRecord proxy single-record payload',
+                schema: {
+                    schema: api.JsonSchemaVersion.DRAFT4,
+                    title: 'PutRecord proxy single-record payload',
+                    type: api.JsonSchemaType.OBJECT,
+                    required: ['data', 'partitionKey'],
+                    properties: {
+                        data: { type: api.JsonSchemaType.STRING },
+                        partitionKey: { type: api.JsonSchemaType.STRING }
+                    }
+                }
+            };
         }
 
-        return this.apiGateway.addModel('PutRecordModel', {
-            contentType: 'application/json',
-            modelName: 'PutRecordModel',
-            description: 'PutRecord proxy single-record payload',
-            schema: {
-                schema: api.JsonSchemaVersion.DRAFT4,
-                title: 'PutRecord proxy single-record payload',
-                type: api.JsonSchemaType.OBJECT,
-                required: ['data', 'partitionKey'],
-                properties: {
-                    data: { type: api.JsonSchemaType.STRING },
-                    partitionKey: { type: api.JsonSchemaType.STRING }
-                }
-            }
-        });
+        return this.apiGateway.addModel('PutRecordModel', modelProps);
     }
 
     private getPutRecordsTemplate(putRecordsTemplate?: string): string {
@@ -186,34 +190,38 @@ export class ApiGatewayToKinesisStreams extends Construct {
         return `{ "StreamName": "${this.kinesisStream.streamName}", "Records": [ #foreach($elem in $input.path('$.records')) { "Data": "$util.base64Encode($elem.data)", "PartitionKey": "$elem.partitionKey"}#if($foreach.hasNext),#end #end ] }`;
     }
 
-    private getPutRecordsModel(putRecordsModel?: api.IModel): api.IModel {
-        if (putRecordsModel !== undefined) {
-            return putRecordsModel;
-        }
+    private getPutRecordsModel(putRecordsModel?: api.ModelOptions): api.IModel {
+        let modelProps: api.ModelOptions;
 
-        return this.apiGateway.addModel('PutRecordsModel', {
-            contentType: 'application/json',
-            modelName: 'PutRecordsModel',
-            description: 'PutRecords proxy payload data',
-            schema: {
-                schema: api.JsonSchemaVersion.DRAFT4,
-                title: 'PutRecords proxy payload data',
-                type: api.JsonSchemaType.OBJECT,
-                required: ['records'],
-                properties: {
-                    records: {
-                        type: api.JsonSchemaType.ARRAY,
-                        items: {
-                            type: api.JsonSchemaType.OBJECT,
-                            required: ['data', 'partitionKey'],
-                            properties: {
-                                data: { type: api.JsonSchemaType.STRING },
-                                partitionKey: { type: api.JsonSchemaType.STRING }
+        if (putRecordsModel !== undefined) {
+            modelProps = putRecordsModel;
+        } else {
+            modelProps = {
+                contentType: 'application/json',
+                modelName: 'PutRecordsModel',
+                description: 'PutRecords proxy payload data',
+                schema: {
+                    schema: api.JsonSchemaVersion.DRAFT4,
+                    title: 'PutRecords proxy payload data',
+                    type: api.JsonSchemaType.OBJECT,
+                    required: ['records'],
+                    properties: {
+                        records: {
+                            type: api.JsonSchemaType.ARRAY,
+                            items: {
+                                type: api.JsonSchemaType.OBJECT,
+                                required: ['data', 'partitionKey'],
+                                properties: {
+                                    data: { type: api.JsonSchemaType.STRING },
+                                    partitionKey: { type: api.JsonSchemaType.STRING }
+                                }
                             }
                         }
                     }
                 }
-            }
-        });
+            };
+        }
+
+        return this.apiGateway.addModel('PutRecordsModel', modelProps);
     }
 }

@@ -17,7 +17,7 @@
         "Name": "my-api"
       }
     },
-    "testapigatewaykinesisoverwriteRestApiDeployment1EE3B096f7453da735d825aa4af9360039752401": {
+    "testapigatewaykinesisoverwriteRestApiDeployment1EE3B0963b59c487316048a0c96d810cbd1cf3bb": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -30,6 +30,8 @@
         "testapigatewaykinesisoverwriteRestApirecordAECF6BBC",
         "testapigatewaykinesisoverwriteRestApirecordsPOST1501AC33",
         "testapigatewaykinesisoverwriteRestApirecordsB70B7E7F",
+        "testapigatewaykinesisoverwriteRestApiPutRecordModel82F936E0",
+        "testapigatewaykinesisoverwriteRestApiPutRecordsModel120A48A8",
         "testapigatewaykinesisoverwriteRestApirequestvalidatorBAD987F2"
       ],
       "Metadata": {
@@ -59,7 +61,7 @@
           "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "testapigatewaykinesisoverwriteRestApiDeployment1EE3B096f7453da735d825aa4af9360039752401"
+          "Ref": "testapigatewaykinesisoverwriteRestApiDeployment1EE3B0963b59c487316048a0c96d810cbd1cf3bb"
         },
         "MethodSettings": [
           {
@@ -165,7 +167,9 @@
           }
         ],
         "RequestModels": {
-          "application/json": "Empty"
+          "application/json": {
+            "Ref": "testapigatewaykinesisoverwriteRestApiPutRecordModel82F936E0"
+          }
         },
         "RequestValidatorId": {
           "Ref": "testapigatewaykinesisoverwriteRestApirequestvalidatorBAD987F2"
@@ -258,7 +262,9 @@
           }
         ],
         "RequestModels": {
-          "application/json": "Empty"
+          "application/json": {
+            "Ref": "testapigatewaykinesisoverwriteRestApiPutRecordsModel120A48A8"
+          }
         },
         "RequestValidatorId": {
           "Ref": "testapigatewaykinesisoverwriteRestApirequestvalidatorBAD987F2"
@@ -289,6 +295,30 @@
         },
         "Name": "request-body-validator",
         "ValidateRequestBody": true
+      }
+    },
+    "testapigatewaykinesisoverwriteRestApiPutRecordModel82F936E0": {
+      "Type": "AWS::ApiGateway::Model",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "testapigatewaykinesisoverwriteRestApi77ABE5DA"
+        },
+        "ContentType": "application/json",
+        "Schema": {
+          "$schema": "http://json-schema.org/draft-04/schema#"
+        }
+      }
+    },
+    "testapigatewaykinesisoverwriteRestApiPutRecordsModel120A48A8": {
+      "Type": "AWS::ApiGateway::Model",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "testapigatewaykinesisoverwriteRestApi77ABE5DA"
+        },
+        "ContentType": "application/json",
+        "Schema": {
+          "$schema": "http://json-schema.org/draft-04/schema#"
+        }
       }
     },
     "testapigatewaykinesisoverwriteLambdaRestApiCloudWatchRole5ABBFDA0": {

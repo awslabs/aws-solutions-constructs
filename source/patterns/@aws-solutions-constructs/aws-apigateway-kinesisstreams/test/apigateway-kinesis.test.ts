@@ -16,7 +16,6 @@ import { Stack, Duration } from '@aws-cdk/core';
 import { ApiGatewayToKinesisStreams } from '../lib';
 import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
-import * as api from '@aws-cdk/aws-apigateway';
 import * as kinesis from '@aws-cdk/aws-kinesis';
 
 // --------------------------------------------------------------
@@ -65,9 +64,9 @@ test('Test deployment w/ overwritten properties', () => {
             streamName: 'my-stream'
         },
         putRecordRequestTemplate: `{ "Data": "$util.base64Encode($input.json('$.foo'))", "PartitionKey": "$input.path('$.bar')" }`,
-        putRecordRequestModel: api.Model.EMPTY_MODEL,
+        putRecordRequestModel: { schema: {} },
         putRecordsRequestTemplate: `{ "Records": [ #foreach($elem in $input.path('$.records')) { "Data": "$util.base64Encode($elem.foo)", "PartitionKey": "$elem.bar"}#if($foreach.hasNext),#end #end ] }`,
-        putRecordsRequestModel: api.Model.EMPTY_MODEL
+        putRecordsRequestModel: { schema: {} }
     });
 
     expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
