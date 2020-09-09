@@ -117,7 +117,7 @@ export class EventsRuleToSQS extends Construct {
       this.sqsQueue.grantPurge(new ArnPrincipal(this.eventsRule.ruleArn));
     }
 
-    //Policy for event to be able to send messages to the queue
+    // Policy for event to be able to send messages to the queue
     this.sqsQueue.addToResourcePolicy(new PolicyStatement({
       actions: ['sqs:SendMessage', 'sqs:GetQueueAttributes', 'sqs:GetQueueUrl'],
       resources: [this.eventsRule.ruleArn],

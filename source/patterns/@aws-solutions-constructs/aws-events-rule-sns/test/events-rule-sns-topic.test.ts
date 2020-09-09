@@ -18,6 +18,7 @@ import '@aws-cdk/assert/jest';
 import { EventsRuleToSNSTopic, EventsRuleToSNSTopicProps } from "../lib"
 
 
+
 function createConstruct(stack: cdk.Stack) {
   const props: EventsRuleToSNSTopicProps = {
     eventRuleProps: {
@@ -139,7 +140,11 @@ test('check if the event rule has permission/policy in place in sns for it to be
 
 test('check events rule properties for deploy: true', () => {
   const stack = getStack()
+<<<<<<< HEAD
   createConstruct(stack)
+=======
+  deployNewFunc(stack)
+>>>>>>> 03975799433bee20dab9884724a85aa0c669158d
 
   expect(stack).toHaveResource('AWS::Events::Rule', {
     ScheduleExpression: "rate(5 minutes)",
@@ -162,7 +167,6 @@ test('check events rule properties for deploy: true', () => {
 
 test('check properties', () => {
   const stack = new cdk.Stack();
-
   const construct: EventsRuleToSNSTopic = createConstruct(stack);
 
   expect(construct.eventsRule !== null);

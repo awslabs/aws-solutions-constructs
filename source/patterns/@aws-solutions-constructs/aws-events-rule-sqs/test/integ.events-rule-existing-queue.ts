@@ -20,6 +20,7 @@ import * as Defaults from '@aws-solutions-constructs/core';
 const app = new App();
 const stack = new Stack(app, 'stack');
 
+
 const [existingQueueObj] = Defaults.buildQueue(stack, 'existing-queue', {})
 
 const props: EventsRuleToSQSProps = {

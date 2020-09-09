@@ -19,6 +19,7 @@ import { App, Stack } from '@aws-cdk/core'
 const app = new App();
 const stack = new Stack(app, 'test-stack');
 
+
 const props: EventsRuleToSNSTopicProps = {
     eventRuleProps: {
         schedule: events.Schedule.rate(Duration.minutes(5))
@@ -26,4 +27,5 @@ const props: EventsRuleToSNSTopicProps = {
 }
 
 new EventsRuleToSNSTopic(stack, 'test-construct', props);
+
 app.synth();

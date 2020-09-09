@@ -19,11 +19,13 @@ import { App, Stack } from '@aws-cdk/core'
 const app = new App();
 const stack = new Stack(app, 'stack');
 
+
 const props: EventsRuleToSQSProps = {
     eventRuleProps: {
         schedule: events.Schedule.rate(Duration.minutes(5))
     }
 }
+
 
 new EventsRuleToSQS(stack, 'construct', props);
 app.synth();
