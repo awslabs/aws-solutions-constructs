@@ -17,7 +17,7 @@ import * as events from '@aws-cdk/aws-events'
 import { App, Stack } from '@aws-cdk/core'
 
 const app = new App();
-const stack = new Stack(app, 'test-events-rule-sns-stack');
+const stack = new Stack(app, 'test-stack');
 
 const props: EventsRuleToSNSTopicProps = {
     eventRuleProps: {
@@ -25,5 +25,5 @@ const props: EventsRuleToSNSTopicProps = {
       }
 }
 
-new EventsRuleToSNSTopic(stack, 'test-events-rule-sns', props);
+new EventsRuleToSNSTopic(stack, 'test-construct', props);
 app.synth();

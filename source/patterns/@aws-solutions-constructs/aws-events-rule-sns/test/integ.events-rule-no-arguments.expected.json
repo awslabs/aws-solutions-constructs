@@ -1,32 +1,13 @@
 {
   "Resources": {
-    "testeventsrulesnsEventsRule5F1C01CC": {
-      "Properties": {
-        "ScheduleExpression": "rate(5 minutes)",
-        "State": "ENABLED",
-        "Targets": [
-          {
-            "Arn": {
-              "Ref": "testeventsrulesnsSnsTopicCEB51DAD"
-            },
-            "Id": {
-              "Fn::GetAtt": [
-                "testeventsrulesnsSnsTopicCEB51DAD",
-                "TopicName"
-              ]
-            }
-          }
-        ]
-      },
-      "Type": "AWS::Events::Rule"
-    },
-    "testeventsrulesnsSnsTopicCEB51DAD": {
+    "testconstructSnsTopic44188529": {
+      "Type": "AWS::SNS::Topic",
       "Properties": {
         "KmsMasterKeyId": "alias/aws/sns"
-      },
-      "Type": "AWS::SNS::Topic"
+      }
     },
-    "testeventsrulesnsSnsTopicPolicyF1A0FC73": {
+    "testconstructSnsTopicPolicy72FFD530": {
+      "Type": "AWS::SNS::TopicPolicy",
       "Properties": {
         "PolicyDocument": {
           "Statement": [
@@ -60,7 +41,7 @@
                         "Ref": "AWS::Partition"
                       },
                       ":iam::",
-                       {
+                      {
                         "Ref": "AWS::AccountId"
                       },
                       ":root"
@@ -69,7 +50,7 @@
                 }
               },
               "Resource": {
-                "Ref": "testeventsrulesnsSnsTopicCEB51DAD"
+                "Ref": "testconstructSnsTopic44188529"
               },
               "Sid": "TopicOwnerOnlyAccess"
             },
@@ -93,23 +74,21 @@
               "Effect": "Deny",
               "Principal": "*",
               "Resource": {
-                "Ref": "testeventsrulesnsSnsTopicCEB51DAD"
+                "Ref": "testconstructSnsTopic44188529"
               },
               "Sid": "HttpsOnly"
             },
             {
-              "Action": "sns:Publish",
+              "Action": "SNS:Publish",
               "Effect": "Allow",
               "Principal": {
-                "AWS": {
-                    "Fn::GetAtt": [
-                      "testeventsrulesnsEventsRule5F1C01CC",
-                      "Arn"
-                    ]
-                  }
+                "Service": "events.amazonaws.com"
               },
               "Resource": {
-                "Ref": "testeventsrulesnsSnsTopicCEB51DAD"
+                "Fn::GetAtt": [
+                  "testconstructEventsRule145DBA20",
+                  "Arn"
+                ]
               },
               "Sid": "2"
             }
@@ -118,11 +97,30 @@
         },
         "Topics": [
           {
-            "Ref": "testeventsrulesnsSnsTopicCEB51DAD"
+            "Ref": "testconstructSnsTopic44188529"
           }
         ]
-      },
-      "Type": "AWS::SNS::TopicPolicy"
+      }
+    },
+    "testconstructEventsRule145DBA20": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "ScheduleExpression": "rate(5 minutes)",
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Ref": "testconstructSnsTopic44188529"
+            },
+            "Id": {
+              "Fn::GetAtt": [
+                "testconstructSnsTopic44188529",
+                "TopicName"
+              ]
+            }
+          }
+        ]
+      }
     }
   }
 }

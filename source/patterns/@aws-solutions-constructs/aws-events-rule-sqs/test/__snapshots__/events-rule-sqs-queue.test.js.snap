@@ -182,16 +182,11 @@ Object {
               ],
               "Effect": "Allow",
               "Principal": Object {
-                "AWS": Object {
-                  "Fn::GetAtt": Array [
-                    "testeventsrulesqsEventsRule06054F3F",
-                    "Arn",
-                  ],
-                },
+                "Service": "events.amazonaws.com",
               },
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "testeventsrulesqsqueueAACD0364",
+                  "testeventsrulesqsEventsRule06054F3F",
                   "Arn",
                 ],
               },

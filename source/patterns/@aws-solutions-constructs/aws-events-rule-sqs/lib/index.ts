@@ -14,7 +14,7 @@
 import * as sqs from '@aws-cdk/aws-sqs';
 import * as events from '@aws-cdk/aws-events';
 import * as defaults from '@aws-solutions-constructs/core';
-import { ArnPrincipal } from '@aws-cdk/aws-iam';
+import { ArnPrincipal, Effect, PolicyStatement, ServicePrincipal } from '@aws-cdk/aws-iam';
 import { Construct } from '@aws-cdk/core';
 import { overrideProps } from '@aws-solutions-constructs/core';
 
@@ -118,6 +118,11 @@ export class EventsRuleToSQS extends Construct {
     }
 
     //Policy for event to be able to send messages to the queue
-    this.sqsQueue.grantSendMessages(new ArnPrincipal(this.eventsRule.ruleArn))
+    this.sqsQueue.addToResourcePolicy(new PolicyStatement({
+      actions: ['sqs:SendMessage', 'sqs:GetQueueAttributes', 'sqs:GetQueueUrl'],
+      resources: [this.eventsRule.ruleArn],
+      effect: Effect.ALLOW,
+      principals: [new ServicePrincipal('events.amazonaws.com')]
+    }))
   }
 }

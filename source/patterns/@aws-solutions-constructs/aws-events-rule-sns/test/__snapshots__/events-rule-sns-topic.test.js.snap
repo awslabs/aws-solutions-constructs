@@ -3,18 +3,18 @@
 exports[`snapshot test EventsRuleToSNS default params 1`] = `
 Object {
   "Resources": Object {
-    "testeventsrulesnsEventsRule5F1C01CC": Object {
+    "testEventsRuleE75BC9BA": Object {
       "Properties": Object {
         "ScheduleExpression": "rate(5 minutes)",
         "State": "ENABLED",
         "Targets": Array [
           Object {
             "Arn": Object {
-              "Ref": "testeventsrulesnsSnsTopicCEB51DAD",
+              "Ref": "testSnsTopic42942701",
             },
             "Id": Object {
               "Fn::GetAtt": Array [
-                "testeventsrulesnsSnsTopicCEB51DAD",
+                "testSnsTopic42942701",
                 "TopicName",
               ],
             },
@@ -23,13 +23,13 @@ Object {
       },
       "Type": "AWS::Events::Rule",
     },
-    "testeventsrulesnsSnsTopicCEB51DAD": Object {
+    "testSnsTopic42942701": Object {
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sns",
       },
       "Type": "AWS::SNS::Topic",
     },
-    "testeventsrulesnsSnsTopicPolicyF1A0FC73": Object {
+    "testSnsTopicPolicyCF3F7399": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -72,7 +72,7 @@ Object {
                 },
               },
               "Resource": Object {
-                "Ref": "testeventsrulesnsSnsTopicCEB51DAD",
+                "Ref": "testSnsTopic42942701",
               },
               "Sid": "TopicOwnerOnlyAccess",
             },
@@ -96,23 +96,21 @@ Object {
               "Effect": "Deny",
               "Principal": "*",
               "Resource": Object {
-                "Ref": "testeventsrulesnsSnsTopicCEB51DAD",
+                "Ref": "testSnsTopic42942701",
               },
               "Sid": "HttpsOnly",
             },
             Object {
-              "Action": "sns:Publish",
+              "Action": "SNS:Publish",
               "Effect": "Allow",
               "Principal": Object {
-                "AWS": Object {
-                  "Fn::GetAtt": Array [
-                    "testeventsrulesnsEventsRule5F1C01CC",
-                    "Arn",
-                  ],
-                },
+                "Service": "events.amazonaws.com",
               },
               "Resource": Object {
-                "Ref": "testeventsrulesnsSnsTopicCEB51DAD",
+                "Fn::GetAtt": Array [
+                  "testEventsRuleE75BC9BA",
+                  "Arn",
+                ],
               },
               "Sid": "2",
             },
@@ -121,7 +119,7 @@ Object {
         },
         "Topics": Array [
           Object {
-            "Ref": "testeventsrulesnsSnsTopicCEB51DAD",
+            "Ref": "testSnsTopic42942701",
           },
         ],
       },

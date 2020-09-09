@@ -16,7 +16,7 @@ import * as events from '@aws-cdk/aws-events';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
 import { overrideProps } from '@aws-solutions-constructs/core';
-import { ArnPrincipal } from '@aws-cdk/aws-iam';
+import { Effect, PolicyStatement, ServicePrincipal } from '@aws-cdk/aws-iam';
 
 export interface EventsRuleToSNSTopicProps {
     /**
@@ -76,8 +76,13 @@ export class EventsRuleToSNSTopic extends Construct {
         //Setup up the event rule.
         this.eventsRule = new events.Rule(this, 'EventsRule', eventsRuleProps);
 
-        //Setup up the grant policy for event to be able to publish to the sns topic.
-        this.snsTopic.grantPublish(new ArnPrincipal(this.eventsRule.ruleArn))
+        //add the policy details for the event rule to be able to publish to the sns topic
+        this.snsTopic.addToResourcePolicy(new PolicyStatement({
+            actions: ['SNS:Publish'],
+            resources: [this.eventsRule.ruleArn],
+            effect: Effect.ALLOW,
+            principals: [new ServicePrincipal('events.amazonaws.com')],
+        }))
     }
 
 }

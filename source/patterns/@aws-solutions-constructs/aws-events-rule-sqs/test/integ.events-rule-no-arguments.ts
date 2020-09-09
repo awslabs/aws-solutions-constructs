@@ -17,7 +17,7 @@ import * as events from '@aws-cdk/aws-events'
 import { App, Stack } from '@aws-cdk/core'
 
 const app = new App();
-const stack = new Stack(app, 'test-events-rule-sqs-stack');
+const stack = new Stack(app, 'stack');
 
 const props: EventsRuleToSQSProps = {
     eventRuleProps: {
@@ -25,5 +25,5 @@ const props: EventsRuleToSQSProps = {
     }
 }
 
-new EventsRuleToSQS(stack, 'test-events-rule-sqs', props);
+new EventsRuleToSQS(stack, 'construct', props);
 app.synth();

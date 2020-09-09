@@ -111,17 +111,12 @@ test('check if the event rule has permission/policy in place in sqs queue for it
                   "sqs:GetQueueUrl",
                 ],
                 Effect: "Allow",
-                Principal:  {
-                  "AWS":  {
-                    "Fn::GetAtt": [
-                      "testeventsrulesqsEventsRule06054F3F",
-                      "Arn",
-                    ],
-                  },
+                Principal: {
+                  "Service": "events.amazonaws.com",
                 },
                 Resource:  {
                   "Fn::GetAtt": [
-                    "testeventsrulesqsqueueAACD0364",
+                    "testeventsrulesqsEventsRule06054F3F",
                     "Arn",
                   ],
                 },
