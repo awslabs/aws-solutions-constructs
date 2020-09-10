@@ -13,8 +13,9 @@
 
 import * as sqs from '@aws-cdk/aws-sqs';
 import * as events from '@aws-cdk/aws-events';
+import * as kms from '@aws-cdk/aws-kms';
 import * as defaults from '@aws-solutions-constructs/core';
-import { ArnPrincipal } from '@aws-cdk/aws-iam';
+import { ServicePrincipal } from '@aws-cdk/aws-iam';
 import { Construct } from '@aws-cdk/core';
 import { overrideProps } from '@aws-solutions-constructs/core';
 
@@ -63,20 +64,40 @@ export interface EventsRuleToSQSProps {
    *
    * @default - required field if deployDeadLetterQueue=true.
    */
-  readonly maxReceiveCount?: number
+  readonly maxReceiveCount?: number,
+  /**
+   * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
+   * the encryptionKey property for this construct.
+   *
+   * @default - true (encryption enabled, managed by this CDK app).
+   */
+  readonly enableEncryptionWithCustomerManagedKey?: boolean
+  /**
+   * An optional, imported encryption key to encrypt the SQS queue, and SNS Topic.
+   *
+   * @default - not specified.
+   */
+  readonly encryptionKey?: kms.Key
+  /**
+   * Optional user-provided props to override the default props for the encryption key.
+   *
+   * @default - Default props are used.
+   */
+  readonly encryptionKeyProps?: kms.KeyProps
 }
 
 export class EventsRuleToSQS extends Construct {
   public readonly sqsQueue: sqs.Queue;
-  public readonly deadLetterQueue: sqs.DeadLetterQueue | undefined;
+  public readonly deadLetterQueue?: sqs.DeadLetterQueue;
   public readonly eventsRule: events.Rule;
+  public readonly encryptionKey?: kms.IKey;
 
   /**
    * @summary Constructs a new instance of the EventsRuleToSQS class.
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {EventsRuleToSQSProps} props - user provided props for the construct
-   * @since 1.61.1
+   * @since 1.62.0
    * @access public
    */
   constructor(scope: Construct, id: string, props: EventsRuleToSQSProps) {
@@ -93,11 +114,20 @@ export class EventsRuleToSQS extends Construct {
       });
     }
 
+    let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
+    if (props.enableEncryptionWithCustomerManagedKey === undefined ||
+      props.enableEncryptionWithCustomerManagedKey === true) {
+        enableEncryptionParam = true;
+    }
+
     // Setup the queue
-    [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
+    [this.sqsQueue, this.encryptionKey] = defaults.buildQueue(this, 'queue', {
         existingQueueObj: props.existingQueueObj,
         queueProps: props.queueProps,
-        deadLetterQueue: this.deadLetterQueue
+        deadLetterQueue: this.deadLetterQueue,
+        enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
+        encryptionKey: props.encryptionKey,
+        encryptionKeyProps: props.encryptionKeyProps
     });
 
     const sqsEventTarget: events.IRuleTarget = {
@@ -114,10 +144,10 @@ export class EventsRuleToSQS extends Construct {
 
     // Enable queue purging permissions for the event rule, if enabled
     if (props.enableQueuePurging) {
-      this.sqsQueue.grantPurge(new ArnPrincipal(this.eventsRule.ruleArn));
+      this.sqsQueue.grantPurge(new ServicePrincipal('events.amazonaws.com'));
     }
 
-    //Policy for event to be able to send messages to the queue
-    this.sqsQueue.grantSendMessages(new ArnPrincipal(this.eventsRule.ruleArn))
+    // Policy for event to be able to send messages to the queue and Grant Event Bridge service access to the SQS queue encryption key
+    this.sqsQueue.grantSendMessages(new ServicePrincipal('events.amazonaws.com'));
   }
 }

@@ -34,7 +34,8 @@ export interface ApiGatewayToKinesisStreamsProps {
      * API Gateway request template for the PutRecord action.
      * If not provided, a default one will be used.
      *
-     * @default - None
+     * @default - { "StreamName": "${this.kinesisStream.streamName}", "Data": "$util.base64Encode($input.json('$.data'))",
+     *  "PartitionKey": "$input.path('$.partitionKey')" }
      */
     readonly putRecordRequestTemplate?: string;
 
@@ -42,7 +43,8 @@ export interface ApiGatewayToKinesisStreamsProps {
      * API Gateway request model for the PutRecord action.
      * If not provided, a default one will be created.
      *
-     * @default - None
+     * @default - {"$schema":"http://json-schema.org/draft-04/schema#","title":"PutRecord proxy single-record payload","type":"object",
+     * "required":["data","partitionKey"],"properties":{"data":{"type":"string"},"partitionKey":{"type":"string"}}}
      */
     readonly putRecordRequestModel?: api.ModelOptions;
 
@@ -50,7 +52,8 @@ export interface ApiGatewayToKinesisStreamsProps {
      * API Gateway request template for the PutRecords action.
      * If not provided, a default one will be used.
      *
-     * @default - None
+     * @default - { "StreamName": "${this.kinesisStream.streamName}", "Records": [ #foreach($elem in $input.path('$.records'))
+     *  { "Data": "$util.base64Encode($elem.data)", "PartitionKey": "$elem.partitionKey"}#if($foreach.hasNext),#end #end ] }
      */
     readonly putRecordsRequestTemplate?: string;
 
@@ -58,7 +61,9 @@ export interface ApiGatewayToKinesisStreamsProps {
      * API Gateway request model for the PutRecords action.
      * If not provided, a default one will be created.
      *
-     * @default - None
+     * @default - {"$schema":"http://json-schema.org/draft-04/schema#","title":"PutRecords proxy payload data","type":"object","required":["records"],
+     * "properties":{"records":{"type":"array","items":{"type":"object",
+     * "required":["data","partitionKey"],"properties":{"data":{"type":"string"},"partitionKey":{"type":"string"}}}}}}
      */
     readonly putRecordsRequestModel?: api.ModelOptions;
 
@@ -92,7 +97,7 @@ export class ApiGatewayToKinesisStreams extends Construct {
      * @param {cdk.App} scope - represents the scope for all the resources.
      * @param {string} id - this is a a scope-unique id.
      * @param {ApiGatewayToKinesisStreamsProps} props - user provided props for the construct.
-     * @since 1.61.1
+     * @since 1.62.0
      * @access public
      */
     constructor(scope: Construct, id: string, props: ApiGatewayToKinesisStreamsProps) {
@@ -150,7 +155,7 @@ export class ApiGatewayToKinesisStreams extends Construct {
 
     private getPutRecordTemplate(putRecordTemplate?: string): string {
         if (putRecordTemplate !== undefined) {
-            return putRecordTemplate;
+            return putRecordTemplate.replace("${StreamName}", this.kinesisStream.streamName);
         }
 
         return `{ "StreamName": "${this.kinesisStream.streamName}", "Data": "$util.base64Encode($input.json('$.data'))", "PartitionKey": "$input.path('$.partitionKey')" }`;
@@ -184,7 +189,7 @@ export class ApiGatewayToKinesisStreams extends Construct {
 
     private getPutRecordsTemplate(putRecordsTemplate?: string): string {
         if (putRecordsTemplate !== undefined) {
-            return putRecordsTemplate;
+            return putRecordsTemplate.replace("${StreamName}", this.kinesisStream.streamName);
         }
 
         return `{ "StreamName": "${this.kinesisStream.streamName}", "Records": [ #foreach($elem in $input.path('$.records')) { "Data": "$util.base64Encode($elem.data)", "PartitionKey": "$elem.partitionKey"}#if($foreach.hasNext),#end #end ] }`;

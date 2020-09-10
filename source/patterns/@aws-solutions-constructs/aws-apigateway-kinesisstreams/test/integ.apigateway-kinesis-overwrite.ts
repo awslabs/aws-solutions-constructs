@@ -37,10 +37,10 @@ const props: ApiGatewayToKinesisStreamsProps = {
         shardCount: 1,
         retentionPeriod: Duration.days(4)
     },
-    putRecordRequestTemplate: `{ "Data": "$util.base64Encode($input.json('$.foo'))", "PartitionKey": "$input.path('$.bar')" }`,
+    putRecordRequestTemplate: `{ "StreamName": "\${StreamName}", "Data": "$util.base64Encode($input.json('$.foo'))", "PartitionKey": "$input.path('$.bar')" }`,
     putRecordRequestModel: { schema: {} },
 
-    putRecordsRequestTemplate: `{ "Records": [ #foreach($elem in $input.path('$.records')) { "Data": "$util.base64Encode($elem.foo)", "PartitionKey": "$elem.bar"}#if($foreach.hasNext),#end #end ] }`,
+    putRecordsRequestTemplate: `{ "StreamName": "\${StreamName}", "Records": [ #foreach($elem in $input.path('$.records')) { "Data": "$util.base64Encode($elem.foo)", "PartitionKey": "$elem.bar"}#if($foreach.hasNext),#end #end ] }`,
     putRecordsRequestModel: { schema: {} }
 };
 

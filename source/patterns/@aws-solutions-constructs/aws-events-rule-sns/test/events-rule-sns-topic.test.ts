@@ -14,140 +14,124 @@
 import { SynthUtils } from '@aws-cdk/assert';
 import * as cdk from "@aws-cdk/core";
 import * as events from "@aws-cdk/aws-events";
+import * as defaults from '@aws-solutions-constructs/core';
 import '@aws-cdk/assert/jest';
-import { EventsRuleToSNSTopic, EventsRuleToSNSTopicProps } from "../lib"
+import { EventsRuleToSNS, EventsRuleToSNSProps } from "../lib";
 
-
-function deployNewFunc(stack: cdk.Stack) {
-  const props: EventsRuleToSNSTopicProps = {
+function deployNewStack(stack: cdk.Stack) {
+  const props: EventsRuleToSNSProps = {
     eventRuleProps: {
       schedule: events.Schedule.rate(cdk.Duration.minutes(5))
     }
-  }
-  return new EventsRuleToSNSTopic(stack, 'test-events-rule-sns', props);
-}
-
-function getStack() {
-  const app = new cdk.App()
-  return new cdk.Stack(app, 'stack')
+  };
+  return new EventsRuleToSNS(stack, 'test', props);
 }
 
 test('snapshot test EventsRuleToSNS default params', () => {
-  const stack = getStack()
-  deployNewFunc(stack)
+  const stack = new cdk.Stack();
+  deployNewStack(stack);
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
-test('check the sns topic resource is created', () => {
-  const stack = getStack()
-  deployNewFunc(stack)
-  expect(stack).toHaveResource('AWS::SNS::Topic', {})
-})
-
 test('check if the event rule has permission/policy in place in sns for it to be able to publish to the topic', () => {
-  const stack = getStack()
-  deployNewFunc(stack)
+  const stack = new cdk.Stack();
+  deployNewStack(stack);
   expect(stack).toHaveResource('AWS::SNS::TopicPolicy', {
-    PolicyDocument: {
-      Statement: [
-        {
-          Action: [
-            "SNS:Publish",
-            "SNS:RemovePermission",
-            "SNS:SetTopicAttributes",
-            "SNS:DeleteTopic",
-            "SNS:ListSubscriptionsByTopic",
-            "SNS:GetTopicAttributes",
-            "SNS:Receive",
-            "SNS:AddPermission",
-            "SNS:Subscribe",
-          ],
-          Condition: {
-            "StringEquals": {
-              "AWS:SourceOwner": {
-                "Ref": "AWS::AccountId"
-              },
+      PolicyDocument: {
+        Statement: [
+          {
+            Action: [
+              "SNS:Publish",
+              "SNS:RemovePermission",
+              "SNS:SetTopicAttributes",
+              "SNS:DeleteTopic",
+              "SNS:ListSubscriptionsByTopic",
+              "SNS:GetTopicAttributes",
+              "SNS:Receive",
+              "SNS:AddPermission",
+              "SNS:Subscribe"
+            ],
+            Condition: {
+              StringEquals: {
+                "AWS:SourceOwner": {
+                  Ref: "AWS::AccountId"
+                }
+              }
             },
-          },
-          Effect: "Allow",
-          Principal: {
-            "AWS": {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:",
-                  {
-                    "Ref": "AWS::Partition",
-                  },
-                  ":iam::",
-                  {
-                    "Ref": "AWS::AccountId",
-                  },
-                  ":root",
-                ],
-              ],
+            Effect: "Allow",
+            Principal: {
+              AWS: {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      Ref: "AWS::Partition"
+                    },
+                    ":iam::",
+                    {
+                      Ref: "AWS::AccountId"
+                    },
+                    ":root"
+                  ]
+                ]
+              }
             },
-          },
-          Resource: {
-            "Ref": "testeventsrulesnsSnsTopicCEB51DAD",
-          },
-          Sid: "TopicOwnerOnlyAccess",
-        },
-        {
-          Action: [
-            "SNS:Publish",
-            "SNS:RemovePermission",
-            "SNS:SetTopicAttributes",
-            "SNS:DeleteTopic",
-            "SNS:ListSubscriptionsByTopic",
-            "SNS:GetTopicAttributes",
-            "SNS:Receive",
-            "SNS:AddPermission",
-            "SNS:Subscribe",
-          ],
-          Condition: {
-            "Bool": {
-              "aws:SecureTransport": "false",
+            Resource: {
+              Ref: "testSnsTopic42942701"
             },
+            Sid: "TopicOwnerOnlyAccess"
           },
-          Effect: "Deny",
-          Principal: "*",
-          Resource: {
-            "Ref": "testeventsrulesnsSnsTopicCEB51DAD",
-          },
-          Sid: "HttpsOnly",
-        },
-        {
-          Action: "sns:Publish",
-          Effect: "Allow",
-          Principal: {
-            "AWS": {
-              "Fn::GetAtt": [
-                "testeventsrulesnsEventsRule5F1C01CC",
-                "Arn",
-              ],
+          {
+            Action: [
+              "SNS:Publish",
+              "SNS:RemovePermission",
+              "SNS:SetTopicAttributes",
+              "SNS:DeleteTopic",
+              "SNS:ListSubscriptionsByTopic",
+              "SNS:GetTopicAttributes",
+              "SNS:Receive",
+              "SNS:AddPermission",
+              "SNS:Subscribe"
+            ],
+            Condition: {
+              Bool: {
+                "aws:SecureTransport": "false"
+              }
             },
+            Effect: "Deny",
+            Principal: "*",
+            Resource: {
+              Ref: "testSnsTopic42942701"
+            },
+            Sid: "HttpsOnly"
           },
-          Resource: {
-            "Ref": "testeventsrulesnsSnsTopicCEB51DAD",
-          },
-          Sid: "2",
-        },
-      ],
-      Version: "2012-10-17",
-    },
-    Topics: [
-      {
-        "Ref": "testeventsrulesnsSnsTopicCEB51DAD",
+          {
+            Action: "sns:Publish",
+            Effect: "Allow",
+            Principal: {
+              Service: "events.amazonaws.com"
+            },
+            Resource: {
+              Ref: "testSnsTopic42942701"
+            },
+            Sid: "2"
+          }
+        ],
+        Version: "2012-10-17"
       },
-    ],
-  },
-  )
-})
+      Topics: [
+        {
+          Ref: "testSnsTopic42942701"
+        }
+      ]
+    }
+  );
+});
 
-test('check events rule properties for deploy: true', () => {
-  const stack = getStack()
-  deployNewFunc(stack)
+test('check events rule properties', () => {
+  const stack = new cdk.Stack();
+  deployNewStack(stack);
 
   expect(stack).toHaveResource('AWS::Events::Rule', {
     ScheduleExpression: "rate(5 minutes)",
@@ -155,24 +139,124 @@ test('check events rule properties for deploy: true', () => {
     Targets: [
       {
         Arn: {
-          "Ref": "testeventsrulesnsSnsTopicCEB51DAD"
+          Ref: "testSnsTopic42942701"
         },
         Id: {
           "Fn::GetAtt": [
-            "testeventsrulesnsSnsTopicCEB51DAD",
+            "testSnsTopic42942701",
             "TopicName"
           ]
         }
       }
     ]
-  })
-})
+  });
+});
 
 test('check properties', () => {
   const stack = new cdk.Stack();
-
-  const construct: EventsRuleToSNSTopic = deployNewFunc(stack);
+  const construct: EventsRuleToSNS = deployNewStack(stack);
 
   expect(construct.eventsRule !== null);
   expect(construct.snsTopic !== null);
+  expect(construct.encryptionKey !== null);
+});
+
+test('check the sns topic properties', () => {
+  const stack = new cdk.Stack();
+  deployNewStack(stack);
+  expect(stack).toHaveResource('AWS::SNS::Topic', {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "testEncryptionKeyB55BFDBC",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('check the sns topic properties with existing KMS key', () => {
+  const stack = new cdk.Stack();
+  const key = defaults.buildEncryptionKey(stack, {
+    description: 'my-key'
+  });
+
+  const props: EventsRuleToSNSProps = {
+    eventRuleProps: {
+        schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    encryptionKey: key
+  };
+
+  new EventsRuleToSNS(stack, 'test-events-rule-sqs', props);
+
+  expect(stack).toHaveResource('AWS::SNS::Topic', {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "EncryptionKey1B843E66",
+        "Arn"
+      ]
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::KMS::Key', {
+    KeyPolicy: {
+      Statement: [
+        {
+          Action: [
+            "kms:Create*",
+            "kms:Describe*",
+            "kms:Enable*",
+            "kms:List*",
+            "kms:Put*",
+            "kms:Update*",
+            "kms:Revoke*",
+            "kms:Disable*",
+            "kms:Get*",
+            "kms:Delete*",
+            "kms:ScheduleKeyDeletion",
+            "kms:CancelKeyDeletion",
+            "kms:GenerateDataKey",
+            "kms:TagResource",
+            "kms:UntagResource"
+          ],
+          Effect: "Allow",
+          Principal: {
+            AWS: {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    Ref: "AWS::Partition"
+                  },
+                  ":iam::",
+                  {
+                    Ref: "AWS::AccountId"
+                  },
+                  ":root"
+                ]
+              ]
+            }
+          },
+          Resource: "*"
+        },
+        {
+          Action: [
+            "kms:Decrypt",
+            "kms:Encrypt",
+            "kms:ReEncrypt*",
+            "kms:GenerateDataKey*"
+          ],
+          Effect: "Allow",
+          Principal: {
+            Service: "events.amazonaws.com"
+          },
+          Resource: "*"
+        }
+      ],
+      Version: "2012-10-17"
+    },
+    Description: "my-key",
+    EnableKeyRotation: true
+  });
 });

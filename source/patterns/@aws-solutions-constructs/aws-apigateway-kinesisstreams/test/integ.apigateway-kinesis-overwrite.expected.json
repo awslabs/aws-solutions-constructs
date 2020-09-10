@@ -17,7 +17,7 @@
         "Name": "my-api"
       }
     },
-    "testapigatewaykinesisoverwriteRestApiDeployment1EE3B0963b59c487316048a0c96d810cbd1cf3bb": {
+    "testapigatewaykinesisoverwriteRestApiDeployment1EE3B096ca960d6e964dacd9ef8ada66856cca97": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -61,7 +61,7 @@
           "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "testapigatewaykinesisoverwriteRestApiDeployment1EE3B0963b59c487316048a0c96d810cbd1cf3bb"
+          "Ref": "testapigatewaykinesisoverwriteRestApiDeployment1EE3B096ca960d6e964dacd9ef8ada66856cca97"
         },
         "MethodSettings": [
           {
@@ -132,7 +132,18 @@
             "integration.request.header.Content-Type": "'x-amz-json-1.1'"
           },
           "RequestTemplates": {
-            "application/json": "{ \"Data\": \"$util.base64Encode($input.json('$.foo'))\", \"PartitionKey\": \"$input.path('$.bar')\" }"
+            "application/json": {
+              "Fn::Join": [
+                "",
+                [
+                  "{ \"StreamName\": \"",
+                  {
+                    "Ref": "KinesisStream46752A3E"
+                  },
+                  "\", \"Data\": \"$util.base64Encode($input.json('$.foo'))\", \"PartitionKey\": \"$input.path('$.bar')\" }"
+                ]
+              ]
+            }
           },
           "Type": "AWS",
           "Uri": {
@@ -227,7 +238,18 @@
             "integration.request.header.Content-Type": "'x-amz-json-1.1'"
           },
           "RequestTemplates": {
-            "application/json": "{ \"Records\": [ #foreach($elem in $input.path('$.records')) { \"Data\": \"$util.base64Encode($elem.foo)\", \"PartitionKey\": \"$elem.bar\"}#if($foreach.hasNext),#end #end ] }"
+            "application/json": {
+              "Fn::Join": [
+                "",
+                [
+                  "{ \"StreamName\": \"",
+                  {
+                    "Ref": "KinesisStream46752A3E"
+                  },
+                  "\", \"Records\": [ #foreach($elem in $input.path('$.records')) { \"Data\": \"$util.base64Encode($elem.foo)\", \"PartitionKey\": \"$elem.bar\"}#if($foreach.hasNext),#end #end ] }"
+                ]
+              ]
+            }
           },
           "Type": "AWS",
           "Uri": {

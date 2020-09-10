@@ -47,7 +47,26 @@ test('Test deployment with new Lambda function', () => {
         }
     });
     expect(stack).toHaveResource("AWS::SNS::Topic", {
-        KmsMasterKeyId: "alias/aws/sns"
+        KmsMasterKeyId: {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  Ref: "AWS::Partition"
+                },
+                ":kms:",
+                {
+                  Ref: "AWS::Region"
+                },
+                ":",
+                {
+                  Ref: "AWS::AccountId"
+                },
+                ":alias/aws/sns"
+              ]
+            ]
+          }
     });
 });
 

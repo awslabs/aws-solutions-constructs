@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.62.0] - 2020-09-09
+
+### Added
+- aws-events-rule-sqs pattern added ([#25](https://github.com/awslabs/aws-solutions-constructs/issues/25))
+- aws-events-rule-sns pattern added ([#42](https://github.com/awslabs/aws-solutions-constructs/issues/42))
+- aws-apigateway-kinesisstreams pattern added ([#51](https://github.com/awslabs/aws-solutions-constructs/issues/51))
+
+### Changed
+- Upgraded all patterns to CDK v1.62.0
+
 ## [1.61.1] - 2020-09-01
 
 ### Added

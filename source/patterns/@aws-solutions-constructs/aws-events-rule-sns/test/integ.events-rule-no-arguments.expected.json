@@ -1,32 +1,83 @@
 {
   "Resources": {
-    "testeventsrulesnsEventsRule5F1C01CC": {
+    "testconstructEncryptionKey6153B053": {
+      "Type": "AWS::KMS::Key",
       "Properties": {
-        "ScheduleExpression": "rate(5 minutes)",
-        "State": "ENABLED",
-        "Targets": [
-          {
-            "Arn": {
-              "Ref": "testeventsrulesnsSnsTopicCEB51DAD"
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion",
+                "kms:GenerateDataKey",
+                "kms:TagResource",
+                "kms:UntagResource"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              },
+              "Resource": "*"
             },
-            "Id": {
-              "Fn::GetAtt": [
-                "testeventsrulesnsSnsTopicCEB51DAD",
-                "TopicName"
-              ]
+            {
+              "Action": [
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              },
+              "Resource": "*"
             }
-          }
-        ]
+          ],
+          "Version": "2012-10-17"
+        },
+        "EnableKeyRotation": true
       },
-      "Type": "AWS::Events::Rule"
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
     },
-    "testeventsrulesnsSnsTopicCEB51DAD": {
+    "testconstructSnsTopic44188529": {
+      "Type": "AWS::SNS::Topic",
       "Properties": {
-        "KmsMasterKeyId": "alias/aws/sns"
-      },
-      "Type": "AWS::SNS::Topic"
+        "KmsMasterKeyId": {
+          "Fn::GetAtt": [
+            "testconstructEncryptionKey6153B053",
+            "Arn"
+          ]
+        }
+      }
     },
-    "testeventsrulesnsSnsTopicPolicyF1A0FC73": {
+    "testconstructSnsTopicPolicy72FFD530": {
+      "Type": "AWS::SNS::TopicPolicy",
       "Properties": {
         "PolicyDocument": {
           "Statement": [
@@ -60,7 +111,7 @@
                         "Ref": "AWS::Partition"
                       },
                       ":iam::",
-                       {
+                      {
                         "Ref": "AWS::AccountId"
                       },
                       ":root"
@@ -69,7 +120,7 @@
                 }
               },
               "Resource": {
-                "Ref": "testeventsrulesnsSnsTopicCEB51DAD"
+                "Ref": "testconstructSnsTopic44188529"
               },
               "Sid": "TopicOwnerOnlyAccess"
             },
@@ -93,7 +144,7 @@
               "Effect": "Deny",
               "Principal": "*",
               "Resource": {
-                "Ref": "testeventsrulesnsSnsTopicCEB51DAD"
+                "Ref": "testconstructSnsTopic44188529"
               },
               "Sid": "HttpsOnly"
             },
@@ -101,15 +152,10 @@
               "Action": "sns:Publish",
               "Effect": "Allow",
               "Principal": {
-                "AWS": {
-                    "Fn::GetAtt": [
-                      "testeventsrulesnsEventsRule5F1C01CC",
-                      "Arn"
-                    ]
-                  }
+                "Service": "events.amazonaws.com"
               },
               "Resource": {
-                "Ref": "testeventsrulesnsSnsTopicCEB51DAD"
+                "Ref": "testconstructSnsTopic44188529"
               },
               "Sid": "2"
             }
@@ -118,11 +164,30 @@
         },
         "Topics": [
           {
-            "Ref": "testeventsrulesnsSnsTopicCEB51DAD"
+            "Ref": "testconstructSnsTopic44188529"
           }
         ]
-      },
-      "Type": "AWS::SNS::TopicPolicy"
+      }
+    },
+    "testconstructEventsRule145DBA20": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "ScheduleExpression": "rate(5 minutes)",
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Ref": "testconstructSnsTopic44188529"
+            },
+            "Id": {
+              "Fn::GetAtt": [
+                "testconstructSnsTopic44188529",
+                "TopicName"
+              ]
+            }
+          }
+        ]
+      }
     }
   }
 }

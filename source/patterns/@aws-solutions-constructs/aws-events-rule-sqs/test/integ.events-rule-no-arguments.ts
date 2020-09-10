@@ -11,19 +11,19 @@
  *  and limitations under the License.
  */
 
-import { Duration } from '@aws-cdk/core'
-import { EventsRuleToSQSProps, EventsRuleToSQS } from '../lib'
-import * as events from '@aws-cdk/aws-events'
-import { App, Stack } from '@aws-cdk/core'
+import { Duration } from '@aws-cdk/core';
+import { EventsRuleToSQSProps, EventsRuleToSQS } from '../lib';
+import * as events from '@aws-cdk/aws-events';
+import { App, Stack } from '@aws-cdk/core';
 
 const app = new App();
-const stack = new Stack(app, 'test-events-rule-sqs-stack');
+const stack = new Stack(app, 'test-rule-sqs');
 
 const props: EventsRuleToSQSProps = {
     eventRuleProps: {
         schedule: events.Schedule.rate(Duration.minutes(5))
     }
-}
+};
 
-new EventsRuleToSQS(stack, 'test-events-rule-sqs', props);
+new EventsRuleToSQS(stack, 'construct', props);
 app.synth();

@@ -143,7 +143,10 @@
       "Type": "AWS::SNS::Topic",
       "Properties": {
         "KmsMasterKeyId": {
-          "Ref": "ImportedEncryptionKeyBE10B2FC"
+          "Fn::GetAtt": [
+            "ImportedEncryptionKeyBE10B2FC",
+            "Arn"
+          ]
         }
       }
     },

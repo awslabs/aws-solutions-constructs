@@ -208,7 +208,26 @@ Object {
     },
     "testsnslambdaSnsTopic52CA159E": Object {
       "Properties": Object {
-        "KmsMasterKeyId": "alias/aws/sns",
+        "KmsMasterKeyId": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":kms:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":alias/aws/sns",
+            ],
+          ],
+        },
       },
       "Type": "AWS::SNS::Topic",
     },

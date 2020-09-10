@@ -11,19 +11,20 @@
  *  and limitations under the License.
  */
 
-import { Duration } from '@aws-cdk/core'
-import { EventsRuleToSNSTopic, EventsRuleToSNSTopicProps } from '../lib'
-import * as events from '@aws-cdk/aws-events'
-import { App, Stack } from '@aws-cdk/core'
+import { Duration } from '@aws-cdk/core';
+import { EventsRuleToSNS, EventsRuleToSNSProps } from '../lib';
+import * as events from '@aws-cdk/aws-events';
+import { App, Stack } from '@aws-cdk/core';
 
 const app = new App();
-const stack = new Stack(app, 'test-events-rule-sns-stack');
+const stack = new Stack(app, 'test-rule-sns');
 
-const props: EventsRuleToSNSTopicProps = {
+const props: EventsRuleToSNSProps = {
     eventRuleProps: {
         schedule: events.Schedule.rate(Duration.minutes(5))
       }
-}
+};
 
-new EventsRuleToSNSTopic(stack, 'test-events-rule-sns', props);
+new EventsRuleToSNS(stack, 'test-construct', props);
+
 app.synth();

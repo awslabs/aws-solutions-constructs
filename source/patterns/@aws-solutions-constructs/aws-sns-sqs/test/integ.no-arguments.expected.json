@@ -80,7 +80,10 @@
       "Type": "AWS::SNS::Topic",
       "Properties": {
         "KmsMasterKeyId": {
-          "Ref": "EncryptionKey1B843E66"
+          "Fn::GetAtt": [
+            "EncryptionKey1B843E66",
+            "Arn"
+          ]
         }
       }
     },

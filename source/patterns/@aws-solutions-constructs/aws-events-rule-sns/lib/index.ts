@@ -13,12 +13,13 @@
 
 import * as sns from '@aws-cdk/aws-sns';
 import * as events from '@aws-cdk/aws-events';
+import * as kms from '@aws-cdk/aws-kms';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
 import { overrideProps } from '@aws-solutions-constructs/core';
-import { ArnPrincipal } from '@aws-cdk/aws-iam';
+import { ServicePrincipal } from '@aws-cdk/aws-iam';
 
-export interface EventsRuleToSNSTopicProps {
+export interface EventsRuleToSNSProps {
     /**
      * User provided props to override the default props for the SNS Topic.
      *
@@ -37,47 +38,83 @@ export interface EventsRuleToSNSTopicProps {
      * @default - Default props are used
      */
     readonly existingTopicObj?: sns.Topic,
+    /**
+     * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
+     * the encryptionKey property for this construct.
+     *
+     * @default - true (encryption enabled, managed by this CDK app).
+     */
+    readonly enableEncryptionWithCustomerManagedKey?: boolean
+    /**
+     * An optional, imported encryption key to encrypt the SQS queue, and SNS Topic.
+     *
+     * @default - not specified.
+     */
+    readonly encryptionKey?: kms.Key
+    /**
+     * Optional user-provided props to override the default props for the encryption key.
+     *
+     * @default - Default props are used.
+     */
+    readonly encryptionKeyProps?: kms.KeyProps
 }
 
-export class EventsRuleToSNSTopic extends Construct {
+export class EventsRuleToSNS extends Construct {
     public readonly snsTopic: sns.Topic;
     public readonly eventsRule: events.Rule;
-
+    public readonly encryptionKey?: kms.Key;
 
     /**
      * @summary Constructs a new instance of the EventRuleToSns class.
      * @param {cdk.App} scope - represents the scope for all the resources.
      * @param {string} id - this is a a scope-unique id.
-     * @param {EventsRuleToSNSTopicProps} props - user provided props for the construct.
-     * @since 1.61.1
+     * @param {EventsRuleToSNSProps} props - user provided props for the construct.
+     * @since 1.62.0
      * @access public
      */
-    constructor(scope: Construct, id: string, props: EventsRuleToSNSTopicProps) {
+    constructor(scope: Construct, id: string, props: EventsRuleToSNSProps) {
         super(scope, id);
 
-        //Setup the sns topic.
-        [this.snsTopic] = defaults.buildTopic(this, {
+        let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
+        if (props.enableEncryptionWithCustomerManagedKey === undefined ||
+          props.enableEncryptionWithCustomerManagedKey === true) {
+            enableEncryptionParam = true;
+        }
+
+        // Setup the sns topic.
+        [this.snsTopic, this.encryptionKey] = defaults.buildTopic(this, {
             existingTopicObj: props.existingTopicObj,
-            topicProps: props.topicsProps
+            topicProps: props.topicsProps,
+            enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
+            encryptionKey: props.encryptionKey,
+            encryptionKeyProps: props.encryptionKeyProps
         });
 
-        //Setup the event rule target as sns topic.
+        // Setup the event rule target as sns topic.
         const topicEventTarget: events.IRuleTarget = {
             bind: () => ({
                 id: this.snsTopic.topicName,
                 arn: this.snsTopic.topicArn
             })
-        }
+        };
 
-        //Setup up the event rule property.
-        const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([topicEventTarget]); 
+        // Setup up the event rule property.
+        const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([topicEventTarget]);
         const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);
 
-        //Setup up the event rule.
+        // Setup up the event rule.
         this.eventsRule = new events.Rule(this, 'EventsRule', eventsRuleProps);
 
-        //Setup up the grant policy for event to be able to publish to the sns topic.
-        this.snsTopic.grantPublish(new ArnPrincipal(this.eventsRule.ruleArn))
+        // Setup up the grant policy for event to be able to publish to the sns topic.
+        this.snsTopic.grantPublish(new ServicePrincipal('events.amazonaws.com'));
+
+        // Grant EventBridge service access to the SNS Topic encryption key
+        this.encryptionKey?.grant(new ServicePrincipal('events.amazonaws.com'),
+            "kms:Decrypt",
+            "kms:Encrypt",
+            "kms:ReEncrypt*",
+            "kms:GenerateDataKey*"
+        );
     }
 
 }

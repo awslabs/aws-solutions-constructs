@@ -11,23 +11,29 @@
  *  and limitations under the License.
  */
 
-import { Duration } from '@aws-cdk/core'
-import { EventsRuleToSQSProps, EventsRuleToSQS } from '../lib'
-import * as events from '@aws-cdk/aws-events'
-import { App, Stack } from '@aws-cdk/core'
-import * as Defaults from '@aws-solutions-constructs/core';
+import { Duration } from '@aws-cdk/core';
+import { EventsRuleToSQSProps, EventsRuleToSQS } from '../lib';
+import * as events from '@aws-cdk/aws-events';
+import { App, Stack } from '@aws-cdk/core';
+import * as sqs from '@aws-cdk/aws-sqs';
+import * as kms from '@aws-cdk/aws-kms';
 
 const app = new App();
-const stack = new Stack(app, 'test-events-rule-sqs-stack');
+const stack = new Stack(app, 'test-rule-exist-sqs');
 
-const [existingQueueObj] = Defaults.buildQueue(stack, 'existing-queue', {})
+const existingQueueObj = new sqs.Queue(stack, 'MyQueue', {
+    encryption: sqs.QueueEncryption.KMS,
+    encryptionMasterKey: new kms.Key(stack, 'MyKey', {
+        enableKeyRotation: true
+    }),
+});
 
 const props: EventsRuleToSQSProps = {
     eventRuleProps: {
         schedule: events.Schedule.rate(Duration.minutes(5))
     },
-    existingQueueObj: existingQueueObj
-}
+    existingQueueObj
+};
 
-new EventsRuleToSQS(stack, 'test-events-rule-sqs', props);
+new EventsRuleToSQS(stack, 'construct', props);
 app.synth();

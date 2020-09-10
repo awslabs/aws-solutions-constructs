@@ -193,7 +193,26 @@
     "testsnslambdaSnsTopic52CA159E": {
       "Type": "AWS::SNS::Topic",
       "Properties": {
-        "KmsMasterKeyId": "alias/aws/sns"
+        "KmsMasterKeyId": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":kms:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":alias/aws/sns"
+            ]
+          ]
+        }
       }
     },
     "testsnslambdaSnsTopicPolicyDA4647EB": {

@@ -75,8 +75,8 @@ _Parameters_
 
 | **Method** | **Request Path** | **Request Body** | **Stream Action** | **Description** |
 |:-------------|:----------------|-----------------|-----------------|-----------------|
-|POST|`/record`| `{ "data": "Hello World!", "partitionKey": "pk001 }` |`kinesis:PutRecord`|Writes a single data record into the stream.|
-|POST|`/records`| `{ "records": [{ "data": "abc", "partitionKey": "pk001" }, { "data": "xyz", "partitionKeyID": "pk001" }] }` |`kinesis:PutRecords`|Writes multiple data records into the stream in a single call.|
+|POST|`/record`| `{ "data": "Hello World!", "partitionKey": "pk001" }` |`kinesis:PutRecord`|Writes a single data record into the stream.|
+|POST|`/records`| `{ "records": [{ "data": "abc", "partitionKey": "pk001" }, { "data": "xyz", "partitionKey": "pk001" }] }` |`kinesis:PutRecords`|Writes multiple data records into the stream in a single call.|
 
 ## Default settings
 Out of the box implementation of the Construct without any override will set the following defaults:

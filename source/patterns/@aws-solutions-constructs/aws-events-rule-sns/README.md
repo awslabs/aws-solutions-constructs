@@ -24,34 +24,41 @@
 
 This AWS Solutions Construct implements an AWS Events rule and an AWS SNS Topic.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
 ``` typescript
-import { EventsRuleToSNSTopicProps, EventsRuleToSNSTopic } from "@aws-solutions-constructs/aws-events-rule-sns";
+import { EventsRuleToSNSProps, EventsRuleToSNS } from "@aws-solutions-constructs/aws-events-rule-sns";
 
-const props: EventsRuleToSNSTopicProps = {
+const props: EventsRuleToSNSProps = {
     eventRuleProps: {
       schedule: events.Schedule.rate(Duration.minutes(5)),
-    },
-    topicsProps: {
-      displayName: 'event-rule-sns'
     }
 };
 
-new EventsRuleToSNSTopic(this, 'test-events-rule-sns', props);
+const constructStack = new EventsRuleToSNS(this, 'test-events-rule-sns', props);
+
+// Grant yourself permissions to use the Customer Managed KMS Key
+const policyStatement = new iam.PolicyStatement({
+    actions: ["kms:Encrypt", "kms:Decrypt"],
+    effect: iam.Effect.ALLOW,
+    principals: [ new iam.AccountRootPrincipal() ],
+    resources: [ "*" ]
+});
+
+constructStack.encryptionKey?.addToResourcePolicy(policyStatement);
 ```
 
 ## Initializer
 
 ``` text
-new EventsRuleToSNSTopic(scope: Construct, id: string, props: EventsRuleToSNSTopicProps);
+new EventsRuleToSNS(scope: Construct, id: string, props: EventsRuleToSNSProps);
 ```
 
 _Parameters_
 
 * scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
 * id `string`
-* props [`EventsRuleToSNSTopicProps`](#pattern-construct-props)
+* props [`EventsRuleToSNSProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 
@@ -60,7 +67,9 @@ _Parameters_
 |eventRuleProps|[`events.RuleProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-events.RuleProps.html)|User provided eventRuleProps to override the defaults. |
 |existingTopicObj?|[`sns.Topic`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)|Existing instance of SNS Topic object, if this is set then the topicProps is ignored.|
 |topicProps?|[`sns.TopicProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sns.TopicProps.html)|User provided props to override the default props for the SNS Topic. |
-
+|enableEncryptionWithCustomerManagedKey?|`boolean`|Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in the encryptionKey property for this construct.|
+|encryptionKey?|[`kms.Key`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kms.Key.html)|An optional, imported encryption key to encrypt the SNS Topic.|
+|encryptionKeyProps?|[`kms.KeyProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kms.KeyProps.html)|An optional, user provided properties to override the default properties for the KMS encryption key.|
 
 ## Pattern Properties
 
@@ -68,18 +77,19 @@ _Parameters_
 |:-------------|:----------------|-----------------|
 |eventsRule|[`events.Rule`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-events.Rule.html)|Returns an instance of events.Rule created by the construct|
 |snsTopic|[`sns.Topic`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sns.Topic.html)|Returns an instance of sns.Topic created by the construct|
+|encryptionKey?|[`kms.Key`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kms.Key.html)|Returns an instance of kms Key used for the SNS Topic.|
 
 ## Default settings
 
 Out of the box implementation of the Construct without any override will set the following defaults:
 
 ### Amazon CloudWatch Events Rule
-* Grant least privilege permissions to CloudWatch Events to publish to the SNS Topic
+* Grant least privilege permissions to CloudWatch Events to publish to the SNS Topic.
 
 ### Amazon SNS Topic
-* Configure least privilege access permissions for SNS Topic
-* Enable server-side encryption forSNS Topic using AWS managed KMS Key
-* Enforce encryption of data in transit
+* Configure least privilege access permissions for SNS Topic.
+* Enable server-side encryption forSNS Topic using Customer managed KMS Key.
+* Enforce encryption of data in transit.
 
 ## Architecture
 ![Architecture Diagram](architecture.png)

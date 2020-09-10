@@ -69,7 +69,10 @@ Object {
     "testsnssqsSnsTopic2CD0065B": Object {
       "Properties": Object {
         "KmsMasterKeyId": Object {
-          "Ref": "EncryptionKey1B843E66",
+          "Fn::GetAtt": Array [
+            "EncryptionKey1B843E66",
+            "Arn",
+          ],
         },
       },
       "Type": "AWS::SNS::Topic",
@@ -560,7 +563,26 @@ Object {
   "Resources": Object {
     "snstosqsstackSnsTopicB387685B": Object {
       "Properties": Object {
-        "KmsMasterKeyId": "alias/aws/sns",
+        "KmsMasterKeyId": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":kms:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":alias/aws/sns",
+            ],
+          ],
+        },
       },
       "Type": "AWS::SNS::Topic",
     },
@@ -981,7 +1003,10 @@ Object {
     "snstosqsstackSnsTopicB387685B": Object {
       "Properties": Object {
         "KmsMasterKeyId": Object {
-          "Ref": "importedkey38675D68",
+          "Fn::GetAtt": Array [
+            "importedkey38675D68",
+            "Arn",
+          ],
         },
       },
       "Type": "AWS::SNS::Topic",

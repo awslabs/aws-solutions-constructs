@@ -29,7 +29,26 @@ test('Test deployment with no properties using AWS Managed KMS Key', () => {
     expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
     // Assertion 2
     expect(stack).toHaveResource("AWS::SNS::Topic", {
-      KmsMasterKeyId: "alias/aws/sns"
+      KmsMasterKeyId: {
+        "Fn::Join": [
+          "",
+          [
+            "arn:",
+            {
+              Ref: "AWS::Partition"
+            },
+            ":kms:",
+            {
+              Ref: "AWS::Region"
+            },
+            ":",
+            {
+              Ref: "AWS::AccountId"
+            },
+            ":alias/aws/sns"
+          ]
+        ]
+      }
     });
 });
 
@@ -79,7 +98,10 @@ test('Test deployment w/ imported encryption key', () => {
   // Assertion 2
   expect(stack).toHaveResource("AWS::SNS::Topic", {
     KmsMasterKeyId: {
-      Ref: "EncryptionKey1B843E66"
+      "Fn::GetAtt": [
+        "EncryptionKey1B843E66",
+        "Arn"
+      ]
     },
     TopicName: "custom-topic"
   });

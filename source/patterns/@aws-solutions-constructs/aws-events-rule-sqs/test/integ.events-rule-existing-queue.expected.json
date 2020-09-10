@@ -1,124 +1,135 @@
 {
-    "Resources": {
-        "testeventsrulesqsEventsRule06054F3F": {
-            "Properties": {
-              "ScheduleExpression": "rate(5 minutes)",
-              "State": "ENABLED",
-              "Targets": [
-                {
-                  "Arn": {
-                    "Fn::GetAtt": [
-                      "existingqueue03D57A53",
-                      "Arn"
+  "Resources": {
+    "MyKey6AB29FA6": {
+      "Type": "AWS::KMS::Key",
+      "Properties": {
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion",
+                "kms:GenerateDataKey",
+                "kms:TagResource",
+                "kms:UntagResource"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
                     ]
-                  },
-                  "Id": {
-                    "Fn::GetAtt": [
-                      "existingqueue03D57A53",
-                      "QueueName"
-                    ]
-                  }
+                  ]
                 }
-              ]
-            },
-            "Type": "AWS::Events::Rule"
-          },
-          "existingqueue03D57A53": {
-            "Properties": {
-              "KmsMasterKeyId": "alias/aws/sqs"
-            },
-            "Type": "AWS::SQS::Queue"
-          },
-          "existingqueuePolicy8BCB024D": {
-            "Properties": {
-              "PolicyDocument": {
-                "Statement": [
-                  {
-                    "Action": [
-                      "sqs:DeleteMessage",
-                      "sqs:ReceiveMessage",
-                      "sqs:SendMessage",
-                      "sqs:GetQueueAttributes",
-                      "sqs:RemovePermission",
-                      "sqs:AddPermission",
-                      "sqs:SetQueueAttributes"
-                    ],
-                    "Effect": "Allow",
-                    "Principal": {
-                      "AWS": {
-                        "Fn::Join": [
-                          "",
-                          [
-                            "arn:",
-                            {
-                              "Ref": "AWS::Partition"
-                            },
-                            ":iam::",
-                             {
-                              "Ref": "AWS::AccountId"
-                            },
-                            ":root"
-                          ]
-                        ]
-                      }
-                    },
-                    "Resource": {
-                      "Fn::GetAtt": [
-                        "existingqueue03D57A53",
-                        "Arn"
-                      ]
-                    },
-                    "Sid": "QueueOwnerOnlyAccess"
-                  },
-                  {
-                    "Action": "SQS:*",
-                    "Condition": {
-                      "Bool": {
-                        "aws:SecureTransport": "false"
-                      }
-                    },
-                    "Effect": "Deny",
-                    "Principal": "*",
-                    "Resource": {
-                      "Fn::GetAtt": [
-                        "existingqueue03D57A53",
-                        "Arn"
-                      ]
-                    },
-                    "Sid": "HttpsOnly"
-                  },
-                  {
-                    "Action": [
-                      "sqs:SendMessage",
-                      "sqs:GetQueueAttributes",
-                      "sqs:GetQueueUrl"
-                    ],
-                    "Effect": "Allow",
-                    "Principal": {
-                      "AWS": {
-                        "Fn::GetAtt": [
-                          "testeventsrulesqsEventsRule06054F3F",
-                          "Arn"
-                        ]
-                      }
-                    },
-                    "Resource": {
-                      "Fn::GetAtt": [
-                        "existingqueue03D57A53",
-                        "Arn"
-                      ]
-                    }
-                  }
-                ],
-                "Version": "2012-10-17"
               },
-              "Queues": [
-                {
-                  "Ref": "existingqueue03D57A53"
-                }
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              },
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "EnableKeyRotation": true
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "MyQueueE6CA6235": {
+      "Type": "AWS::SQS::Queue",
+      "Properties": {
+        "KmsMasterKeyId": {
+          "Fn::GetAtt": [
+            "MyKey6AB29FA6",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "MyQueuePolicy6BBEDDAC": {
+      "Type": "AWS::SQS::QueuePolicy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              },
+              "Resource": {
+                "Fn::GetAtt": [
+                  "MyQueueE6CA6235",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Queues": [
+          {
+            "Ref": "MyQueueE6CA6235"
+          }
+        ]
+      }
+    },
+    "constructEventsRule43880ADB": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "ScheduleExpression": "rate(5 minutes)",
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::GetAtt": [
+                "MyQueueE6CA6235",
+                "Arn"
               ]
             },
-            "Type": "AWS::SQS::QueuePolicy"
+            "Id": {
+              "Fn::GetAtt": [
+                "MyQueueE6CA6235",
+                "QueueName"
+              ]
+            }
           }
+        ]
+      }
     }
+  }
 }

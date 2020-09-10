@@ -58,7 +58,10 @@ Object {
     "SnsTopic2C1570A4": Object {
       "Properties": Object {
         "KmsMasterKeyId": Object {
-          "Ref": "EncryptionKey1B843E66",
+          "Fn::GetAtt": Array [
+            "EncryptionKey1B843E66",
+            "Arn",
+          ],
         },
         "TopicName": "custom-topic",
       },
@@ -155,7 +158,26 @@ Object {
   "Resources": Object {
     "SnsTopic2C1570A4": Object {
       "Properties": Object {
-        "KmsMasterKeyId": "alias/aws/sns",
+        "KmsMasterKeyId": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":kms:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":alias/aws/sns",
+            ],
+          ],
+        },
       },
       "Type": "AWS::SNS::Topic",
     },
@@ -303,7 +325,10 @@ Object {
     "SnsTopic2C1570A4": Object {
       "Properties": Object {
         "KmsMasterKeyId": Object {
-          "Ref": "EncryptionKey1B843E66",
+          "Fn::GetAtt": Array [
+            "EncryptionKey1B843E66",
+            "Arn",
+          ],
         },
         "TopicName": "custom-topic",
       },

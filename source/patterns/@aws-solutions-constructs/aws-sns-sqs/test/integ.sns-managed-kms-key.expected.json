@@ -142,7 +142,26 @@
     "testsnssqsSnsTopic2CD0065B": {
       "Type": "AWS::SNS::Topic",
       "Properties": {
-        "KmsMasterKeyId": "alias/aws/sns"
+        "KmsMasterKeyId": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":kms:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":alias/aws/sns"
+            ]
+          ]
+        }
       }
     },
     "testsnssqsSnsTopicPolicy604079F2": {
