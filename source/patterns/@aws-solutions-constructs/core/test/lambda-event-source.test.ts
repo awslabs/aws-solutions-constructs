@@ -12,7 +12,7 @@
  */
 
 import * as defaults from '../index';
-import { DynamoEventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
+import { DynamoEventSourceProps, KinesisEventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as s3 from '@aws-cdk/aws-s3';
 import '@aws-cdk/assert/jest';
@@ -39,14 +39,6 @@ test('test DynamoEventSourceProps override', () => {
   });
 });
 
-test('test KinesisEventSourceProps', () => {
-  const streamArn = 'xyz';
-  const props = defaults.DefaultKinesisEventSourceProps(streamArn);
-  expect(props).toEqual({
-      eventSourceArn: "xyz"
-  });
-});
-
 test('test S3EventSourceProps w/ default props', () => {
   const props = defaults.S3EventSourceProps();
   expect(props).toEqual({
@@ -63,5 +55,31 @@ test('test S3EventSourceProps w/ user props', () => {
   const props = defaults.S3EventSourceProps(s3EventSourceProps);
   expect(props).toEqual({
     events: ["s3:ObjectCreated:Post"]
+  });
+});
+
+test('test KinesisEventSourceProps', () => {
+  const props = defaults.KinesisEventSourceProps();
+
+  expect(props).toEqual({
+    startingPosition: "TRIM_HORIZON",
+    bisectBatchOnError: true
+  });
+});
+
+test('test KinesisEventSourceProps override', () => {
+  const myProps: KinesisEventSourceProps = {
+    startingPosition: lambda.StartingPosition.LATEST,
+    batchSize: 5,
+    retryAttempts: 3
+  };
+
+  const props = defaults.KinesisEventSourceProps(myProps);
+
+  expect(props).toEqual({
+    batchSize: 5,
+    startingPosition: "LATEST",
+    bisectBatchOnError: true,
+    retryAttempts: 3
   });
 });

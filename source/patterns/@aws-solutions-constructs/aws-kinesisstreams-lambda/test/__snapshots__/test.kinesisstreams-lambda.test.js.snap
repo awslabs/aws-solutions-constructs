@@ -101,8 +101,10 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "testkinesisstreamslambdaLambdaFunctionLambdaKinesisEventSourceMapping06EA601A": Object {
+    "testkinesisstreamslambdaLambdaFunctionKinesisEventSourcetestkinesisstreamslambdaKinesisStreamE01CADBD221E7379": Object {
       "Properties": Object {
+        "BatchSize": 100,
+        "BisectBatchOnFunctionError": true,
         "EventSourceArn": Object {
           "Fn::GetAtt": Array [
             "testkinesisstreamslambdaKinesisStream76FFCAB1",
@@ -112,6 +114,7 @@ Object {
         "FunctionName": Object {
           "Ref": "testkinesisstreamslambdaLambdaFunction02E4DD2D",
         },
+        "StartingPosition": "TRIM_HORIZON",
       },
       "Type": "AWS::Lambda::EventSourceMapping",
     },
@@ -249,6 +252,16 @@ Object {
                 ],
               },
             },
+            Object {
+              "Action": "kinesis:DescribeStream",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testkinesisstreamslambdaKinesisStream76FFCAB1",
+                  "Arn",
+                ],
+              },
+            },
           ],
           "Version": "2012-10-17",
         },
@@ -260,6 +273,225 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+  },
+}
+`;
+
+exports[`Test existing resources 1`] = `
+Object {
+  "Parameters": Object {
+    "AssetParametersdfe828a7d00b0da7a6e92dc1decf39ec907e4edc6006faea8631d4dabd7f4fcdArtifactHashEA3A5944": Object {
+      "Description": "Artifact hash for asset \\"dfe828a7d00b0da7a6e92dc1decf39ec907e4edc6006faea8631d4dabd7f4fcd\\"",
+      "Type": "String",
+    },
+    "AssetParametersdfe828a7d00b0da7a6e92dc1decf39ec907e4edc6006faea8631d4dabd7f4fcdS3BucketA460830B": Object {
+      "Description": "S3 bucket for asset \\"dfe828a7d00b0da7a6e92dc1decf39ec907e4edc6006faea8631d4dabd7f4fcd\\"",
+      "Type": "String",
+    },
+    "AssetParametersdfe828a7d00b0da7a6e92dc1decf39ec907e4edc6006faea8631d4dabd7f4fcdS3VersionKey58FEB9E6": Object {
+      "Description": "S3 key for asset version \\"dfe828a7d00b0da7a6e92dc1decf39ec907e4edc6006faea8631d4dabd7f4fcd\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "testfn76BCC25C": Object {
+      "DependsOn": Array [
+        "testfnServiceRoleDefaultPolicy63AA2D42",
+        "testfnServiceRoleC30E0817",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParametersdfe828a7d00b0da7a6e92dc1decf39ec907e4edc6006faea8631d4dabd7f4fcdS3BucketA460830B",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersdfe828a7d00b0da7a6e92dc1decf39ec907e4edc6006faea8631d4dabd7f4fcdS3VersionKey58FEB9E6",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersdfe828a7d00b0da7a6e92dc1decf39ec907e4edc6006faea8631d4dabd7f4fcdS3VersionKey58FEB9E6",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "testfnServiceRoleC30E0817",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs10.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "testfnKinesisEventSourceteststreamE93A322D": Object {
+      "Properties": Object {
+        "BatchSize": 100,
+        "BisectBatchOnFunctionError": true,
+        "EventSourceArn": Object {
+          "Fn::GetAtt": Array [
+            "teststream04374A09",
+            "Arn",
+          ],
+        },
+        "FunctionName": Object {
+          "Ref": "testfn76BCC25C",
+        },
+        "StartingPosition": "TRIM_HORIZON",
+      },
+      "Type": "AWS::Lambda::EventSourceMapping",
+    },
+    "testfnServiceRoleC30E0817": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testfnServiceRoleDefaultPolicy63AA2D42": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kinesis:DescribeStreamSummary",
+                "kinesis:GetRecords",
+                "kinesis:GetShardIterator",
+                "kinesis:ListShards",
+                "kinesis:SubscribeToShard",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "teststream04374A09",
+                  "Arn",
+                ],
+              },
+            },
+            Object {
+              "Action": "kinesis:DescribeStream",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "teststream04374A09",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testfnServiceRoleDefaultPolicy63AA2D42",
+        "Roles": Array [
+          Object {
+            "Ref": "testfnServiceRoleC30E0817",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "testkinesisstreamslambdaLambdaFunctionPolicyF7EF016E": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "The kinesis:ListStreams action requires a wildcard resource.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kinesis:GetRecords",
+                "kinesis:GetShardIterator",
+                "kinesis:DescribeStream",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "teststream04374A09",
+                  "Arn",
+                ],
+              },
+            },
+            Object {
+              "Action": "kinesis:ListStreams",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testkinesisstreamslambdaLambdaFunctionPolicyF7EF016E",
+        "Roles": Array [
+          Object {
+            "Ref": "testfnServiceRoleC30E0817",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "teststream04374A09": Object {
+      "Properties": Object {
+        "Name": "existing-stream",
+        "RetentionPeriodHours": 48,
+        "ShardCount": 5,
+      },
+      "Type": "AWS::Kinesis::Stream",
     },
   },
 }
