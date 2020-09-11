@@ -12,11 +12,11 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
+import { Stack, Duration } from "@aws-cdk/core";
 import { KinesisStreamsToLambda, KinesisStreamsToLambdaProps } from "../lib";
-import { StartingPosition } from '@aws-cdk/aws-lambda';
 import { SynthUtils } from '@aws-cdk/assert';
 import * as lambda from '@aws-cdk/aws-lambda';
+import * as kinesis from '@aws-cdk/aws-kinesis';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------
@@ -50,8 +50,8 @@ test('Test properties', () => {
             handler: 'index.handler',
             code: lambda.Code.asset(`${__dirname}/lambda`)
         },
-        eventSourceProps: {
-            startingPosition: StartingPosition.TRIM_HORIZON,
+        kinesisEventSourceProps: {
+            startingPosition: lambda.StartingPosition.TRIM_HORIZON,
             batchSize: 1
         }
     };
@@ -62,4 +62,56 @@ test('Test properties', () => {
     expect(app.kinesisStream !== null);
     // Assertion 3
     expect(app.kinesisStreamRole  !== null);
+});
+
+// --------------------------------------------------------------
+// Test existing resources
+// --------------------------------------------------------------
+test('Test existing resources', () => {
+    // Initial Setup
+    const stack = new Stack();
+
+    const fn = new lambda.Function(stack, 'test-fn', {
+        runtime: lambda.Runtime.NODEJS_10_X,
+        handler: 'index.handler',
+        code: lambda.Code.asset(`${__dirname}/lambda`)
+    });
+
+    const stream = new kinesis.Stream(stack, 'test-stream', {
+        streamName: 'existing-stream',
+        shardCount: 5,
+        retentionPeriod: Duration.hours(48),
+        encryption: kinesis.StreamEncryption.UNENCRYPTED
+    });
+
+    new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', {
+        existingLambdaObj: fn,
+        existingStreamObj: stream,
+
+        // These properties will be ignored as existing objects were provided
+        lambdaFunctionProps: {
+            runtime: lambda.Runtime.PYTHON_3_8,
+            handler: 'lambda_function.handler',
+            code: lambda.Code.asset(`${__dirname}/lambda`)
+        },
+        kinesisStreamProps: {
+            streamName: 'other-name-stream',
+            shardCount: 1,
+            retentionPeriod: Duration.hours(24)
+        }
+    });
+
+    // Assertions
+    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
+    expect(stack).toHaveResource('AWS::Kinesis::Stream', {
+        Name: 'existing-stream',
+        ShardCount: 5,
+        RetentionPeriodHours: 48,
+    });
+
+    expect(stack).toHaveResource('AWS::Lambda::Function', {
+        Handler: 'index.handler',
+        Runtime: 'nodejs10.x',
+    });
 });
