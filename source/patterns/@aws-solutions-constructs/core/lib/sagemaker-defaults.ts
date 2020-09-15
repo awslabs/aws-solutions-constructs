@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import { CfnNotebookInstanceProps } from  '@aws-cdk/aws-sagemaker';
- export function DefaultSagemakerNotebookProps(_roleArn: string): CfnNotebookInstanceProps {
+import { CfnNotebookInstanceProps } from '@aws-cdk/aws-sagemaker';
+export function DefaultSagemakerNotebookProps(_roleArn: string): CfnNotebookInstanceProps {
   return {
     instanceType: 'ml.t2.medium',
     roleArn: _roleArn

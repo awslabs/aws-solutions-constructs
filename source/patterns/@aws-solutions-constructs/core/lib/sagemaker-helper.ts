@@ -64,7 +64,7 @@ export interface BuildSagemakerNotebookProps {
 export function buildSagemakerNotebook(scope: cdk.Construct, _roleArn: string, props?: BuildSagemakerNotebookProps): sagemaker.CfnNotebookInstance {
   // Setup the notebook properties
   let sagemakerNotebookProps;
-  let vpc: ec2.Vpc;
+  let vpcInstance: ec2.Vpc;
   let securityGroup: ec2.SecurityGroup;
 
   // Conditional Sagemaker Notebook creation
@@ -82,12 +82,14 @@ export function buildSagemakerNotebook(scope: cdk.Construct, _roleArn: string, p
       }
       // Set up VPC, Subnet, and Security Group ID
       if (props.deployInsideVpc || props.deployInsideVpc !== false) {
-        if ((props.subnetId && !props.securityGroupIds) || (!props.subnetId && props.securityGroupIds)) throw new Error('Must define both props.subnetId and props.securityGroupIds');
+        if ((props.subnetId && !props.securityGroupIds) || (!props.subnetId && props.securityGroupIds)) {
+          throw new Error('Must define both props.subnetId and props.securityGroupIds');
+        }
         if (props.subnetId && props.securityGroupIds) {
           sagemakerNotebookProps.subnetId = props.subnetId;
           sagemakerNotebookProps.securityGroupIds = props.securityGroupIds;
         } else {
-          vpc = new ec2.Vpc(scope, "Vpc", {
+          vpcInstance = new ec2.Vpc(scope, "Vpc", {
             cidr: "10.0.0.0/16",
             maxAzs: 1,
             subnetConfiguration: [
@@ -99,9 +101,9 @@ export function buildSagemakerNotebook(scope: cdk.Construct, _roleArn: string, p
             ],
           });
 
-          sagemakerNotebookProps.subnetId = vpc.publicSubnets[0].subnetId;
+          sagemakerNotebookProps.subnetId = vpcInstance.publicSubnets[0].subnetId;
           securityGroup = new ec2.SecurityGroup(scope, "SecurityGroup", {
-            "vpc": vpc,
+            vpc: vpcInstance,
           });
 
           sagemakerNotebookProps.securityGroupIds = [securityGroup.securityGroupId];
