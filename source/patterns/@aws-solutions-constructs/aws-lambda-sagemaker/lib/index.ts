@@ -10,13 +10,12 @@
  *  OR CONDITIONS OF ANY KIND, express or implied. See the License for the specific language governing permissions
  *  and limitations under the License.
  */
-
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as sagemaker from "@aws-cdk/aws-sagemaker";
 import * as iam from "@aws-cdk/aws-iam";
 import { Construct } from "@aws-cdk/core";
 import * as defaults from "@aws-solutions-constructs/core";
-
+import * as kms from '@aws-cdk/aws-kms';
 /**
  * @summary The properties for the LambdaToDynamoDB Construct
  */
@@ -38,9 +37,46 @@ export interface LambdaToSagemakerProps {
    *
    * @default - Default props are used
    */
-  readonly sagemakerNotebookProps: sagemaker.CfnNotebookInstanceProps;
+  readonly sagemakerNotebookProps?: sagemaker.CfnNotebookInstanceProps;
+  /**
+   * Optional user provided props to deploy inside vpc
+   *
+   * @default - true
+   */
+  readonly deployInsideVpc?: boolean;
+  /**
+   * Optional user provided props of a subnet id for vpc configuration
+   *
+   * @default - true
+   */
+  readonly subnetId?: string;
+  /**
+   * Optional user provided props of security group ids for vpc configuration
+   *
+   * @default - true
+   */
+  readonly securityGroupIds?: string[];
+  /**
+     * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
+     * the encryptionKey property for this construct.
+     *
+     * @default - true (encryption enabled, managed by this CDK app).
+     */
+  readonly enableEncryption?: boolean
+  /**
+     * An optional, imported encryption key to encrypt the SNS topic with.
+     *
+     * @default - not specified.
+     */
+  readonly encryptionKey?: kms.Key
+  /**
+   * Existing instance of notebook object.
+   * If this is set then the sagemakerNotebookProps is ignored
+   *
+   * @default - None
+   */
+  readonly existingNotebookObj?: sagemaker.CfnNotebookInstance
 }
-
 /**
  * @summary The LambdaToSagemaker class.
  */
@@ -59,55 +95,41 @@ export class LambdaToSagemaker extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToSagemakerProps) {
     super(scope, id);
-
+    // Set up Lambda function
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps,
     });
 
-    // Set up lambda policy for invoking sagemaker endpoint
-    const invokeEndpointPolicy = new iam.Policy(this, 'InvokeEndpointPolicy', {
-      statements: [
-        new iam.PolicyStatement({
-          effect: iam.Effect.ALLOW,
-          resources: [ '*' ],
-          actions: [
-              'sagemaker:InvokeEndpoint',
-          ]
-        })
-      ]
+    // Attach policy to lambda role
+    const policy = new iam.Policy(this, 'LambdaFunctionPolicy');
+    const lambdaFunctionRole = this.lambdaFunction.role as iam.Role;
+    policy.addStatements(new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        resources: [ 'arn:aws:sagemaker:*:*:*' ],
+        actions: [
+            'sagemaker:InvokeEndpoint',
+            'sagemaker:DescribeNotebookInstance'
+        ]
+    }));
+    policy.attachToRole(lambdaFunctionRole);
+ 
+    // Set up Sagemaker role
+    this.sagemakerRole = new iam.Role(this, "SagemakerRole", {
+      assumedBy: new iam.ServicePrincipal("sagemaker.amazonaws.com"),
     });
 
-    // Attach policy to lambda role
-    invokeEndpointPolicy.attachToRole(this.lambdaFunction.role);
+    // Build notebook instance
+    this.sagemakerNotebook = defaults.buildSagemakerNotebook(this, this.sagemakerRole.roleArn, {
+      sagemakerNotebookProps: props.sagemakerNotebookProps,
+      deployInsideVpc: props.deployInsideVpc,
+      subnetId: props.subnetId,
+      securityGroupIds: props.securityGroupIds,
+      enableEncryption: props.enableEncryption,
+      encryptionKey: props.encryptionKey
+    });
 
-    // User provided Role ARN
-    if (props.sagemakerNotebookProps.roleArn) {
-      // Build notebook instance
-      this.sagemakerNotebook = defaults.buildSagemakerNotebook(this, props.sagemakerNotebookProps.roleArn, props.sagemakerNotebookProps);
-    } else {
-      // Setup the IAM role for Sagemaker
-      this.sagemakerRole = new iam.Role(this, "SagemakerRole", {
-        assumedBy: new iam.ServicePrincipal("sagemaker.amazonaws.com"),
-      });
-
-      // Setup the IAM policy for Sagemaker
-      const sagemakerPolicy = new iam.Policy(this, "SagemakerPolicy", {
-        statements: [
-          new iam.PolicyStatement({
-            actions: ["sagemaker:CreateNotebookInstance"],
-          }),
-        ],
-      });
-
-      // Attach policy to sagemaker role
-      sagemakerPolicy.attachToRole(this.sagemakerRole);
-
-      // Build notebook instance
-      this.sagemakerNotebook = defaults.buildSagemakerNotebook(this, this.sagemakerRole.roleArn, props.sagemakerNotebookProps);
-      
-      // Configure environment variables
-      this.lambdaFunction.addEnvironment('NOTEBOOK_NAME', this.sagemakerNotebook.notebookInstanceName);
-    }
+    // Configure environment variables
+    this.lambdaFunction.addEnvironment('NOTEBOOK_NAME', this.sagemakerNotebook.attrNotebookInstanceName);
   }
 }

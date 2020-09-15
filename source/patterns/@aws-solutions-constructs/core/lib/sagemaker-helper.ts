@@ -11,23 +11,120 @@
  *  and limitations under the License.
  */
 
-import * as sagemaker from '@aws-cdk/aws-sagemaker';
-import { DefaultSagemakerNotebookProps } from './sagemaker-defaults';
-import * as cdk from '@aws-cdk/core';
-import { overrideProps } from './utils';
+import * as sagemaker from "@aws-cdk/aws-sagemaker";
+import * as kms from "@aws-cdk/aws-kms";
+import * as ec2 from "@aws-cdk/aws-ec2";
+import { buildEncryptionKey } from "./kms-helper";
+import { DefaultSagemakerNotebookProps } from "./sagemaker-defaults";
+import * as cdk from "@aws-cdk/core";
+import { overrideProps } from "./utils";
 
-export function buildSagemakerNotebook(scope: cdk.Construct, _roleArn: string, props: sagemaker.CfnNotebookInstanceProps): sagemaker.CfnNotebookInstance {
-    //props = (props === undefined) ? {} : props;
-    //Setup the notebook properties
-    let sagemakerNotebookProps;
+export interface BuildSagemakerNotebookProps {
+  readonly sagemakerNotebookProps?: sagemaker.CfnNotebookInstanceProps;
+  /**
+   * Optional user provided props to deploy inside vpc
+   *
+   * @default - true
+   */
+  readonly deployInsideVpc?: boolean;
+  /**
+   * Optional user provided props of subnet ids for vpc configuration
+   *
+   * @default - true
+   */
+  readonly subnetId?: string;
+  /**
+   * Optional user provided props of security group ids for vpc configuration
+   *
+   * @default - true
+   */
+  readonly securityGroupIds?: string[];
+  /**
+   * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
+   * the encryptionKey property for this construct.
+   *
+   * @default - true (encryption enabled, managed by this CDK app).
+   */
+  readonly enableEncryption?: boolean;
+  /**
+   * An optional, imported encryption key to encrypt the SNS topic with.
+   *
+   * @default - not specified.
+   */
+  readonly encryptionKey?: kms.Key;
+  /**
+   * Existing instance of notebook object.
+   * If this is set then the sagemakerNotebookProps is ignored
+   *
+   * @default - None
+   */
+  readonly existingNotebookObj?: sagemaker.CfnNotebookInstance
+}
+
+export function buildSagemakerNotebook(scope: cdk.Construct, _roleArn: string, props?: BuildSagemakerNotebookProps): sagemaker.CfnNotebookInstance {
+  //Setup the notebook properties
+  let sagemakerNotebookProps;
+  let vpc: ec2.Vpc;
+  let securityGroup: ec2.SecurityGroup;
+
+  // Conditional Sagemaker Notebook creation
+  if(!props?.existingNotebookObj){
     if (props) {
+      if (props.sagemakerNotebookProps) {
         // If property overrides have been provided, incorporate them and deploy
-        sagemakerNotebookProps = overrideProps(DefaultSagemakerNotebookProps, props);
-    } else {
+        sagemakerNotebookProps = overrideProps(
+          DefaultSagemakerNotebookProps(_roleArn),
+          props.sagemakerNotebookProps
+        );
+      } else {
         // If no property overrides, deploy using the default configuration
-        sagemakerNotebookProps = DefaultSagemakerNotebookProps;
+        sagemakerNotebookProps = DefaultSagemakerNotebookProps(_roleArn);
+      }
+      // Set up VPC, Subnet, and Security Group ID
+      if (props.deployInsideVpc || props.deployInsideVpc !== false) {
+        if ((props.subnetId && !props.securityGroupIds) || (!props.subnetId && props.securityGroupIds)) throw new Error('Must define both props.subnetId and props.securityGroupIds');
+        if (props.subnetId && props.securityGroupIds) {
+          sagemakerNotebookProps.subnetId = props.subnetId;
+          sagemakerNotebookProps.securityGroupIds = props.securityGroupIds;
+        } else {
+          vpc = new ec2.Vpc(scope, "Vpc", {
+            cidr: "10.0.0.0/16",
+            maxAzs: 1,
+            subnetConfiguration: [
+              {
+                cidrMask: 26,
+                name: "publicSubnet",
+                subnetType: ec2.SubnetType.PUBLIC,
+              },
+            ],
+          });
+
+          sagemakerNotebookProps.subnetId = vpc.publicSubnets[0].subnetId;
+          securityGroup = new ec2.SecurityGroup(scope, "SecurityGroup", {
+            vpc: vpc,
+          });
+
+          sagemakerNotebookProps.securityGroupIds = [securityGroup.securityGroupId];
+        }
+      }
+
+      // Set encryption properties
+      if ((!props.enableEncryption || props.enableEncryption === true) && props.enableEncryption !== false) {
+        if (props.encryptionKey) {
+          sagemakerNotebookProps.kmsKeyId = props.encryptionKey.keyId;
+        } else {
+          sagemakerNotebookProps.kmsKeyId = buildEncryptionKey(scope).keyId;
+        }
+      }
+    } else {
+      // If no property overrides, deploy using the default configuration
+      sagemakerNotebookProps = DefaultSagemakerNotebookProps(_roleArn);
     }
 
     // Create the notebook and return
-    return new sagemaker.CfnNotebookInstance(scope, 'SagemakerNotebook', sagemakerNotebookProps);
+    return new sagemaker.CfnNotebookInstance(scope, "SagemakerNotebook", sagemakerNotebookProps);
+  } else {
+      // Return existing notebook object
+      return props.existingNotebookObj;
+  }
 }

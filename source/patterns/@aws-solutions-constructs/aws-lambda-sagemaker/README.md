@@ -1,4 +1,4 @@
-# aws-lambda-dynamodb module
+# aws-lambda-sagemaker module
 <!--BEGIN STABILITY BANNER-->
 
 ---
@@ -18,18 +18,18 @@
 
 | **Language**     | **Package**        |
 |:-------------|-----------------|
-|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_lambda_dynamodb`|
-|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-lambda-dynamodb`|
-|![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.lambdadynamodb`|
+|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_lambda_sagemaker`|
+|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-lambda-sagemaker`|
+|![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.lambdasagemaker`|
 
-This AWS Solutions Construct implements the AWS Lambda function and Amazon DynamoDB table with the least privileged permissions.
+This AWS Solutions Construct implements the AWS Lambda function and Amazon Sagemaker Notebook with the least privileged permissions.
 
 Here is a minimal deployable pattern definition:
 
 ``` javascript
-const { LambdaToDynamoDBProps,  LambdaToDynamoDB } = require('@aws-solutions-constructs/aws-lambda-dynamodb');
+const { LambdaToSagemakerProps,  LambdaToSagemaker } = require('@aws-solutions-constructs/aws-lambda-sagemaker');
 
-const props: LambdaToDynamoDBProps = {
+const props: LambdaToSagemakerProps = {
     lambdaFunctionProps: {
         code: lambda.Code.asset(`${__dirname}/lambda`),
         runtime: lambda.Runtime.NODEJS_12_X,
@@ -37,21 +37,21 @@ const props: LambdaToDynamoDBProps = {
     },
 };
 
-new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', props);
+new LambdaToSagemaker(stack, 'test-lambda-sagemaker-stack', props);
 
 ```
 
 ## Initializer
 
 ``` text
-new LambdaToDynamoDB(scope: Construct, id: string, props: LambdaToDynamoDBProps);
+new LambdaToSagemaker(scope: Construct, id: string, props: LambdaToSagemakerProps);
 ```
 
 _Parameters_
 
 * scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
 * id `string`
-* props [`LambdaToDynamoDBProps`](#pattern-construct-props)
+* props [`LambdaToSagemakerProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 
@@ -59,16 +59,21 @@ _Parameters_
 |:-------------|:----------------|-----------------|
 |existingLambdaObj?|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)|Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.|
 |lambdaFunctionProps?|[`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.FunctionProps.html)|User provided props to override the default props for the Lambda function.|
-|dynamoTableProps?|[`dynamodb.TableProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-dynamodb.TableProps.html)|Optional user provided props to override the default props for DynamoDB Table|
-|existingTableObj?|[`dynamodb.Table`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-dynamodb.Table.html)|Existing instance of DynamoDB table object, If this is set then the dynamoTableProps is ignored|
-|tablePermissions?|`string`|Optional table permissions to grant to the Lambda function. One of the following may be specified: `All`, `Read`, `ReadWrite`, `Write`.|
+|sagemakerNotebookProps?|[`sagemaker.CfnNotebookInstanceProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sagemaker.CfnNotebookInstance.html)|Optional user provided props to override the default props for a Sagemaker Notebook.|
+deployInsideVpc?|[`boolean`]()|Optional user provided props to deploy inside vpc.|
+|subnetId?|`string`|Optional user provided props of a subnet id for vpc configuration.|
+|securityGroupIds?|`string`|Optional user provided props of security group ids for vpc configuration.|
+|enableEncryption?|`boolean`|Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in the encryptionKey property for this construct.|
+|encryptionKey?|[`kms.Key`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kms.Key.html)|An optional, imported encryption key to encrypt the Sagemaker Notebook instance with.|
+|existingNotebookObj?|[`sagemaker.CfnNotebookInstanceProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sagemaker.CfnNotebookInstance.html)|Existing instance of notebook object. If this is set then the sagemakerNotebookProps is ignored|
 
 ## Pattern Properties
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
 |lambdaFunction|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)|Returns an instance of lambda.Function created by the construct|
-|dynamoTable|[`dynamodb.Table`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-dynamodb.Table.html)|Returns an instance of dynamodb.Table created by the construct|
+|sagemakerNotebook|[`sagemaker.CfnNotebookInstanceProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sagemaker.CfnNotebookInstance.html)|Returns an instance of sagemaker.CfnNotebookInstanceProps created by the construct|
+|sagemakerRole|[`iam.Role`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)|Returns the iam.Role created by the construct|
 
 ## Default settings
 
@@ -78,12 +83,9 @@ Out of the box implementation of the Construct without any override will set the
 * Configure least privilege access IAM role for Lambda function
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
 
-### Amazon DynamoDB Table
-* Set the billing mode for DynamoDB Table to On-Demand (Pay per request)
-* Enable server-side encryption for DynamoDB Table using AWS managed KMS Key
-* Creates a partition key called 'id' for DynamoDB Table
-* Retain the Table when deleting the CloudFormation stack
-* Enable continuous backups and point-in-time recovery
+### Amazon SageMaker
+* Deploy SageMaker NotebookInstance inside VPC
+* Enable server-side encryption for SageMaker NotebookInstance using Customer Managed KMS Key
 
 ## Architecture
 ![Architecture Diagram](architecture.png)

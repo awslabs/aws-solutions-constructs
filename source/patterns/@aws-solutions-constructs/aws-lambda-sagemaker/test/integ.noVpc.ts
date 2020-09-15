@@ -11,12 +11,23 @@
  *  and limitations under the License.
  */
 
-import { CfnNotebookInstanceProps } from  '@aws-cdk/aws-sagemaker';
+/// !cdk-integ *
+import { App, Stack } from "@aws-cdk/core";
+import { LambdaToSagemaker, LambdaToSagemakerProps } from "../lib";
+import * as lambda from '@aws-cdk/aws-lambda';
+const app = new App();
 
- export function DefaultSagemakerNotebookProps(_roleArn: string): CfnNotebookInstanceProps {
+// No VPC
+const stack = new Stack(app, 'test-lambda-sagemaker-stack');
 
-  return {
-    instanceType: 'ml.t2.medium',
-    roleArn: _roleArn
-  } as CfnNotebookInstanceProps;
-}
+const props: LambdaToSagemakerProps = {
+    lambdaFunctionProps: {
+        code: lambda.Code.asset(`${__dirname}/lambda`),
+        runtime: lambda.Runtime.NODEJS_10_X,
+        handler: 'index.handler'
+    },
+    deployInsideVpc: false
+};
+
+new LambdaToSagemaker(stack, 'test-lambda-sagemaker-stack', props);
+app.synth();
