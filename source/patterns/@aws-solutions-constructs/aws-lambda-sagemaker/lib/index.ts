@@ -58,17 +58,17 @@ export interface LambdaToSagemakerProps {
    */
   readonly securityGroupIds?: string[];
   /**
-     * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
-     * the encryptionKey property for this construct.
-     *
-     * @default - true (encryption enabled, managed by this CDK app).
-     */
+   * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
+   * the encryptionKey property for this construct.
+   *
+   * @default - true (encryption enabled, managed by this CDK app).
+   */
   readonly enableEncryption?: boolean
   /**
-     * An optional, imported encryption key to encrypt the Sagemaker Notebook instance with.
-     *
-     * @default - not specified.
-     */
+   * An optional, imported encryption key to encrypt the Sagemaker Notebook instance with.
+   *
+   * @default - not specified.
+   */
   readonly encryptionKey?: kms.Key
   /**
    * Existing instance of notebook object.
@@ -119,7 +119,6 @@ export class LambdaToSagemaker extends Construct {
         ]
     }));
     policy.attachToRole(lambdaFunctionRole);
- 
     // Set up Sagemaker role
     this.sagemakerRole = new iam.Role(this, "SagemakerRole", {
       assumedBy: new iam.ServicePrincipal("sagemaker.amazonaws.com"),

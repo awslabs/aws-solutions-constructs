@@ -20,7 +20,7 @@ const app = new App();
 
 // Existing encryption key
 const stack = new Stack(app, 'test-lambda-sagemaker-existing-encryption-stack');
-const kms = defaults.buildEncryptionKey(stack)
+const kms = defaults.buildEncryptionKey(stack);
 
 const props: LambdaToSagemakerProps = {
     lambdaFunctionProps: {
