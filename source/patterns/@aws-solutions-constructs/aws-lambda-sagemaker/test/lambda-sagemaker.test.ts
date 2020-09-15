@@ -16,7 +16,7 @@ import { Stack } from "@aws-cdk/core";
 import * as kms from "@aws-cdk/aws-kms";
 import * as lambda from "@aws-cdk/aws-lambda";
 import { LambdaToSagemaker } from '../lib';
-import { SynthUtils } from '@aws-cdk/assert';
+// import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------
@@ -37,7 +37,7 @@ test('Test deployment with new Lambda function', () => {
         }
     });
     // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+    // expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
     // Assertion 2
     expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
         Environment: {
@@ -70,7 +70,7 @@ test('Test deployment with existing Lambda function', () => {
         }
     });
     // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+    // expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
     // Assertion 2
     expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
         Environment: {
@@ -109,7 +109,7 @@ test('Test deployment with imported encryption key', () => {
         encryptionKey: kmsKey
     });
     // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+    // expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
     // Assertion 2
     expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
         Environment: {
