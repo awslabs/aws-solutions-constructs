@@ -93,7 +93,7 @@ export class SqsToLambda extends Construct {
 
         // Setup the dead letter queue, if applicable
         if (props.deployDeadLetterQueue || props.deployDeadLetterQueue === undefined) {
-            const dlq: sqs.Queue = defaults.buildQueue(this, 'deadLetterQueue', {
+            const [dlq] = defaults.buildQueue(this, 'deadLetterQueue', {
                 queueProps: props.deadLetterQueueProps
             });
             this.deadLetterQueue = defaults.buildDeadLetterQueue({
@@ -103,7 +103,7 @@ export class SqsToLambda extends Construct {
         }
 
         // Setup the queue
-        this.sqsQueue = defaults.buildQueue(this, 'queue', {
+        [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
             existingQueueObj: props.existingQueueObj,
             queueProps: props.queueProps,
             deadLetterQueue: this.deadLetterQueue

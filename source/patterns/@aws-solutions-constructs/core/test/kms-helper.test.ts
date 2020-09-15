@@ -39,14 +39,12 @@ test('Test minimal deployment with no properties', () => {
 // --------------------------------------------------------------
 // Test deployment w/ custom properties
 // --------------------------------------------------------------
-test('Test minimal deployment with no properties', () => {
+test('Test minimal deployment with custom properties', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   defaults.buildEncryptionKey(stack, {
-      encryptionKeyProps: {
-          enableKeyRotation: false
-      }
+    enableKeyRotation: false
   });
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();

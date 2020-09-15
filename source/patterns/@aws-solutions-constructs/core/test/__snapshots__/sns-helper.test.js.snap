@@ -1,155 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test deployment w/ custom properties 1`] = `
-Object {
-  "Resources": Object {
-    "EncryptionKey1B843E66": Object {
-      "DeletionPolicy": "Retain",
-      "Properties": Object {
-        "EnableKeyRotation": true,
-        "KeyPolicy": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "kms:Create*",
-                "kms:Describe*",
-                "kms:Enable*",
-                "kms:List*",
-                "kms:Put*",
-                "kms:Update*",
-                "kms:Revoke*",
-                "kms:Disable*",
-                "kms:Get*",
-                "kms:Delete*",
-                "kms:ScheduleKeyDeletion",
-                "kms:CancelKeyDeletion",
-                "kms:GenerateDataKey",
-                "kms:TagResource",
-                "kms:UntagResource",
-              ],
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":iam::",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":root",
-                    ],
-                  ],
-                },
-              },
-              "Resource": "*",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::KMS::Key",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "SnsTopic2C1570A4": Object {
-      "Properties": Object {
-        "KmsMasterKeyId": Object {
-          "Ref": "EncryptionKey1B843E66",
-        },
-        "TopicName": "custom-topic",
-      },
-      "Type": "AWS::SNS::Topic",
-    },
-    "SnsTopicPolicy520DD923": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "SNS:Publish",
-                "SNS:RemovePermission",
-                "SNS:SetTopicAttributes",
-                "SNS:DeleteTopic",
-                "SNS:ListSubscriptionsByTopic",
-                "SNS:GetTopicAttributes",
-                "SNS:Receive",
-                "SNS:AddPermission",
-                "SNS:Subscribe",
-              ],
-              "Condition": Object {
-                "StringEquals": Object {
-                  "AWS:SourceOwner": Object {
-                    "Ref": "AWS::AccountId",
-                  },
-                },
-              },
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":iam::",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":root",
-                    ],
-                  ],
-                },
-              },
-              "Resource": Object {
-                "Ref": "SnsTopic2C1570A4",
-              },
-              "Sid": "TopicOwnerOnlyAccess",
-            },
-            Object {
-              "Action": Array [
-                "SNS:Publish",
-                "SNS:RemovePermission",
-                "SNS:SetTopicAttributes",
-                "SNS:DeleteTopic",
-                "SNS:ListSubscriptionsByTopic",
-                "SNS:GetTopicAttributes",
-                "SNS:Receive",
-                "SNS:AddPermission",
-                "SNS:Subscribe",
-              ],
-              "Condition": Object {
-                "Bool": Object {
-                  "aws:SecureTransport": "false",
-                },
-              },
-              "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Ref": "SnsTopic2C1570A4",
-              },
-              "Sid": "HttpsOnly",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "Topics": Array [
-          Object {
-            "Ref": "SnsTopic2C1570A4",
-          },
-        ],
-      },
-      "Type": "AWS::SNS::TopicPolicy",
-    },
-  },
-}
-`;
-
 exports[`Test deployment w/ imported encryption key 1`] = `
 Object {
   "Resources": Object {
@@ -208,7 +58,10 @@ Object {
     "SnsTopic2C1570A4": Object {
       "Properties": Object {
         "KmsMasterKeyId": Object {
-          "Ref": "EncryptionKey1B843E66",
+          "Fn::GetAtt": Array [
+            "EncryptionKey1B843E66",
+            "Arn",
+          ],
         },
         "TopicName": "custom-topic",
       },
@@ -300,7 +153,121 @@ Object {
 }
 `;
 
-exports[`Test deployment with no properties 1`] = `
+exports[`Test deployment with no properties using AWS Managed KMS Key 1`] = `
+Object {
+  "Resources": Object {
+    "SnsTopic2C1570A4": Object {
+      "Properties": Object {
+        "KmsMasterKeyId": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":kms:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":alias/aws/sns",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::SNS::Topic",
+    },
+    "SnsTopicPolicy520DD923": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "SNS:Publish",
+                "SNS:RemovePermission",
+                "SNS:SetTopicAttributes",
+                "SNS:DeleteTopic",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:GetTopicAttributes",
+                "SNS:Receive",
+                "SNS:AddPermission",
+                "SNS:Subscribe",
+              ],
+              "Condition": Object {
+                "StringEquals": Object {
+                  "AWS:SourceOwner": Object {
+                    "Ref": "AWS::AccountId",
+                  },
+                },
+              },
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": Object {
+                "Ref": "SnsTopic2C1570A4",
+              },
+              "Sid": "TopicOwnerOnlyAccess",
+            },
+            Object {
+              "Action": Array [
+                "SNS:Publish",
+                "SNS:RemovePermission",
+                "SNS:SetTopicAttributes",
+                "SNS:DeleteTopic",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:GetTopicAttributes",
+                "SNS:Receive",
+                "SNS:AddPermission",
+                "SNS:Subscribe",
+              ],
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Ref": "SnsTopic2C1570A4",
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Topics": Array [
+          Object {
+            "Ref": "SnsTopic2C1570A4",
+          },
+        ],
+      },
+      "Type": "AWS::SNS::TopicPolicy",
+    },
+  },
+}
+`;
+
+exports[`Test deployment without imported encryption key 1`] = `
 Object {
   "Resources": Object {
     "EncryptionKey1B843E66": Object {
@@ -358,8 +325,12 @@ Object {
     "SnsTopic2C1570A4": Object {
       "Properties": Object {
         "KmsMasterKeyId": Object {
-          "Ref": "EncryptionKey1B843E66",
+          "Fn::GetAtt": Array [
+            "EncryptionKey1B843E66",
+            "Arn",
+          ],
         },
+        "TopicName": "custom-topic",
       },
       "Type": "AWS::SNS::Topic",
     },

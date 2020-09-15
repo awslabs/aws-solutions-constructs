@@ -287,3 +287,44 @@ test('Test addMethodToApiResource with action', () => {
     expect(e).toBeInstanceOf(Error);
   }
 });
+
+test('Test default RestApi w/ request model and validator', () => {
+  const stack = new Stack();
+  const [restApi] = defaults.GlobalRestApi(stack);
+
+  // Setup the API Gateway role
+  const apiGatewayRole = new iam.Role(stack, 'api-gateway-role', {
+    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
+  });
+
+  // Setup the API Gateway resource
+  const apiGatewayResource = restApi.root.addResource('api-gateway-resource');
+
+  const validator = restApi.addRequestValidator('default-validator', {
+    requestValidatorName: 'default-validator',
+    validateRequestBody: true
+  });
+
+  defaults.addProxyMethodToApiResource({
+    service: "kinesis",
+    action: "PutRecord",
+    apiGatewayRole,
+    apiMethod: 'POST',
+    apiResource: apiGatewayResource,
+    requestTemplate: "{}",
+    contentType: "'x-amz-json-1.1'",
+    requestValidator: validator,
+    requestModel: { "application/json": api.Model.EMPTY_MODEL }
+  });
+
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
+  expect(stack).toHaveResource('AWS::ApiGateway::RequestValidator', {
+    Name: "default-validator",
+    ValidateRequestBody: true
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    RequestModels: { "application/json": "Empty" }
+  });
+});

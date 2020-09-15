@@ -23,24 +23,36 @@ import { Stack } from '@aws-cdk/core';
 
 export interface BuildTopicProps {
     /**
+     * Existing instance of SNS Topic object, if this is set then the TopicProps is ignored.
+     *
+     * @default - None.
+     */
+    readonly existingTopicObj?: sns.Topic,
+    /**
      * Optional user provided props to override the default props for the SNS topic.
      *
      * @default - Default props are used.
      */
     readonly topicProps?: sns.TopicProps
     /**
-     * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
+     * Use a Customer Managed KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
      * the encryptionKey property for this construct.
      *
-     * @default - true (encryption enabled, managed by this CDK app).
+     * @default - false (encryption enabled with AWS Managed KMS Key).
      */
-    readonly enableEncryption?: boolean
+    readonly enableEncryptionWithCustomerManagedKey?: boolean
     /**
      * An optional, imported encryption key to encrypt the SNS topic with.
      *
      * @default - not specified.
      */
-    readonly encryptionKey?: kms.Key
+    readonly encryptionKey?: kms.Key,
+    /**
+     * Optional user-provided props to override the default props for the encryption key.
+     *
+     * @default - Ignored if encryptionKey is provided
+     */
+    readonly encryptionKeyProps?: kms.KeyProps
 }
 
 function applySecureTopicPolicy(topic: sns.Topic): void {
@@ -104,32 +116,38 @@ function applySecureTopicPolicy(topic: sns.Topic): void {
     );
 }
 
-export function buildTopic(scope: cdk.Construct, props?: BuildTopicProps): [sns.Topic, kms.Key] {
-    // If props is undefined, define it
-    props = (props === undefined) ? {} : props;
-    // Setup the topic properties
-    let snsTopicProps;
-    if (props.topicProps) {
-        // If property overrides have been provided, incorporate them and deploy
-        snsTopicProps = overrideProps(DefaultSnsTopicProps, props.topicProps);
-    } else {
-        // If no property overrides, deploy using the default configuration
-        snsTopicProps = DefaultSnsTopicProps;
-    }
-    // Set encryption properties
-    // TODO: Look into using the AWS managed CMK by using 'alias/aws/sns'
-    if (!props.enableEncryption || props.enableEncryption === true) {
-        if (props.encryptionKey) {
-            snsTopicProps.masterKey = props.encryptionKey;
+export function buildTopic(scope: cdk.Construct, props: BuildTopicProps): [sns.Topic, kms.Key?] {
+    if (!props.existingTopicObj) {
+        // Setup the topic properties
+        let snsTopicProps;
+        if (props.topicProps) {
+            // If property overrides have been provided, incorporate them and deploy
+            snsTopicProps = overrideProps(DefaultSnsTopicProps, props.topicProps);
         } else {
-            snsTopicProps.masterKey = buildEncryptionKey(scope);
+            // If no property overrides, deploy using the default configuration
+            snsTopicProps = DefaultSnsTopicProps;
         }
+        // Set encryption properties
+        if (props.enableEncryptionWithCustomerManagedKey === undefined || props.enableEncryptionWithCustomerManagedKey === false) {
+            // Retrieve SNS managed key to encrypt the SNS Topic
+            const awsManagedKey = kms.Alias.fromAliasName(scope, 'aws-managed-key', 'alias/aws/sns');
+            snsTopicProps.masterKey = awsManagedKey;
+        } else {
+            // Use the imported Customer Managed KMS key
+            if (props.encryptionKey) {
+                snsTopicProps.masterKey = props.encryptionKey;
+            } else {
+                // Create a new Customer Managed KMS key
+                snsTopicProps.masterKey = buildEncryptionKey(scope, props.encryptionKeyProps);
+            }
+        }
+        // Create the SNS Topic
+        const topic: sns.Topic = new sns.Topic(scope, 'SnsTopic', snsTopicProps);
+
+        applySecureTopicPolicy(topic);
+
+        return [topic, snsTopicProps.masterKey];
+    } else {
+        return [props.existingTopicObj];
     }
-    // Create the SNS Topic
-
-    const topic: sns.Topic = new sns.Topic(scope, 'SnsTopic', snsTopicProps);
-
-    applySecureTopicPolicy(topic);
-
-    return [topic, snsTopicProps.masterKey];
 }

@@ -94,6 +94,14 @@ test('check lambda permission to read dynamodb stream', () => {
     PolicyDocument: {
       Statement: [
         {
+          Action: [
+            "xray:PutTraceSegments",
+            "xray:PutTelemetryRecords"
+          ],
+          Effect: "Allow",
+          Resource: "*"
+        },
+        {
           Action: "dynamodb:ListStreams",
           Effect: "Allow",
           Resource: {
@@ -127,13 +135,7 @@ test('check lambda permission to read dynamodb stream', () => {
         }
       ],
       Version: "2012-10-17"
-    },
-    PolicyName: "testlambdadynamodbstackLambdaFunctionServiceRoleDefaultPolicy547FB7F4",
-    Roles: [
-      {
-        Ref: "testlambdadynamodbstackLambdaFunctionServiceRole758347A1"
-      }
-    ]
+    }
   });
 });
 

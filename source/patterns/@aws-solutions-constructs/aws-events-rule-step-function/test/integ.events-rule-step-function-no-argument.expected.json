@@ -97,13 +97,13 @@
     "testeventsrulestepfunctionstackStateMachine48534048": {
       "Type": "AWS::StepFunctions::StateMachine",
       "Properties": {
-        "DefinitionString": "{\"StartAt\":\"StartState\",\"States\":{\"StartState\":{\"Type\":\"Pass\",\"End\":true}}}",
         "RoleArn": {
           "Fn::GetAtt": [
             "testeventsrulestepfunctionstackStateMachineRoleA5C98F35",
             "Arn"
           ]
         },
+        "DefinitionString": "{\"StartAt\":\"StartState\",\"States\":{\"StartState\":{\"Type\":\"Pass\",\"End\":true}}}",
         "LoggingConfiguration": {
           "Destinations": [
             {

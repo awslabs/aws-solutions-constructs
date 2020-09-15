@@ -90,9 +90,16 @@ test('Test with lambdaFunctionProps', () => {
         description: "sampleApiProp"
     }
   };
-  const app = new ApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
-  // Assertion 1
-  expect(app.lambdaFunction).toHaveProperty('environment.OVERRIDE_STATUS', 'true');
+  new ApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
+
+  expect(stack).toHaveResource('AWS::Lambda::Function', {
+    Environment: {
+        Variables: {
+          OVERRIDE_STATUS: "true",
+          AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
+        }
+    }
+  });
 });
 
 // --------------------------------------------------------------

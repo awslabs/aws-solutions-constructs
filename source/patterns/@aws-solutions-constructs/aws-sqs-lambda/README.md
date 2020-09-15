@@ -24,12 +24,12 @@
 
 This AWS Solutions Construct implements an Amazon SQS queue connected to an AWS Lambda function.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescipr:
 
 ``` javascript
-const { SqsToLambda } = require('@aws-solutions-constructs/aws-sqs-lambda');
+import { SqsToLambda, SqsToLambdaProps } from "@aws-solutions-constructs/aws-sqs-lambda";
 
-new SqsToLambda(stack, 'SqsToLambdaPattern', {
+new SqsToLambda(this, 'SqsToLambdaPattern', {
     lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',
@@ -83,6 +83,7 @@ Out of the box implementation of the Construct without any override will set the
 ### AWS Lambda Function
 * Configure least privilege access IAM role for Lambda function
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
+* Enable X-Ray Tracing
 
 ## Architecture
 ![Architecture Diagram](architecture.png)

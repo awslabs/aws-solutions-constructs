@@ -174,6 +174,14 @@ test('check lambda function policy default table permissions', () => {
       Statement: [
         {
           Action: [
+            "xray:PutTraceSegments",
+            "xray:PutTelemetryRecords"
+          ],
+          Effect: "Allow",
+          Resource: "*"
+        },
+        {
+          Action: [
             "dynamodb:BatchGetItem",
             "dynamodb:GetRecords",
             "dynamodb:GetShardIterator",
@@ -329,6 +337,14 @@ test('check lambda function policy ReadOnly table permissions', () => {
       Statement: [
         {
           Action: [
+            "xray:PutTraceSegments",
+            "xray:PutTelemetryRecords"
+          ],
+          Effect: "Allow",
+          Resource: "*"
+        },
+        {
+          Action: [
             "dynamodb:BatchGetItem",
             "dynamodb:GetRecords",
             "dynamodb:GetShardIterator",
@@ -375,6 +391,14 @@ test('check lambda function policy WriteOnly table permissions', () => {
       Statement: [
         {
           Action: [
+            "xray:PutTraceSegments",
+            "xray:PutTelemetryRecords"
+          ],
+          Effect: "Allow",
+          Resource: "*"
+        },
+        {
+          Action: [
             "dynamodb:BatchWriteItem",
             "dynamodb:PutItem",
             "dynamodb:UpdateItem",
@@ -417,6 +441,14 @@ test('check lambda function policy ReadWrite table permissions', () => {
   expectCDK(stack).to(haveResource('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
+        {
+          Action: [
+            "xray:PutTraceSegments",
+            "xray:PutTelemetryRecords"
+          ],
+          Effect: "Allow",
+          Resource: "*"
+        },
         {
           Action: [
             "dynamodb:BatchGetItem",
@@ -467,6 +499,14 @@ test('check lambda function policy All table permissions', () => {
   expectCDK(stack).to(haveResource('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
+        {
+          Action: [
+            "xray:PutTraceSegments",
+            "xray:PutTelemetryRecords"
+          ],
+          Effect: "Allow",
+          Resource: "*"
+        },
         {
           Action: "dynamodb:*",
           Effect: "Allow",
