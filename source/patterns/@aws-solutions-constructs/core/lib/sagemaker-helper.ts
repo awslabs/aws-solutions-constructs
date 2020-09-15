@@ -47,7 +47,7 @@ export interface BuildSagemakerNotebookProps {
    */
   readonly enableEncryption?: boolean;
   /**
-   * An optional, imported encryption key to encrypt the SNS topic with.
+   * An optional, imported encryption key to encrypt the Sagemaker Notebook with.
    *
    * @default - not specified.
    */

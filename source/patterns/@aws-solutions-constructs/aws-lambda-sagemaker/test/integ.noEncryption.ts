@@ -18,7 +18,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 const app = new App();
 
 // No encryption key
-const stack = new Stack(app, 'test-lambda-sagemaker-stack');
+const stack = new Stack(app, 'test-lambda-sagemaker-no-encryption-stack');
 
 const props: LambdaToSagemakerProps = {
     lambdaFunctionProps: {
@@ -29,5 +29,5 @@ const props: LambdaToSagemakerProps = {
     enableEncryption: false,
 };
 
-new LambdaToSagemaker(stack, 'test-lambda-sagemaker-stack', props);
+new LambdaToSagemaker(stack, 'test-lambda-sagemaker-no-encryption-stack', props);
 app.synth();

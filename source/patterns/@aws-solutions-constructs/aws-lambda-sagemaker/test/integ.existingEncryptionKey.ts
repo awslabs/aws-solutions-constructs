@@ -19,7 +19,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 const app = new App();
 
 // Existing encryption key
-const stack = new Stack(app, 'test-lambda-sagemaker-stack');
+const stack = new Stack(app, 'test-lambda-sagemaker-existing-encryption-stack');
 const kms = defaults.buildEncryptionKey(stack)
 
 const props: LambdaToSagemakerProps = {
@@ -32,5 +32,5 @@ const props: LambdaToSagemakerProps = {
     encryptionKey: kms
 };
 
-new LambdaToSagemaker(stack, 'test-lambda-sagemaker-stack', props);
+new LambdaToSagemaker(stack, 'test-lambda-sagemaker-existing-encryption-stack', props);
 app.synth();

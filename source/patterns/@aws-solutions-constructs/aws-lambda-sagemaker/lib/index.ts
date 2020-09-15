@@ -10,6 +10,7 @@
  *  OR CONDITIONS OF ANY KIND, express or implied. See the License for the specific language governing permissions
  *  and limitations under the License.
  */
+
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as sagemaker from "@aws-cdk/aws-sagemaker";
 import * as iam from "@aws-cdk/aws-iam";
@@ -64,7 +65,7 @@ export interface LambdaToSagemakerProps {
      */
   readonly enableEncryption?: boolean
   /**
-     * An optional, imported encryption key to encrypt the SNS topic with.
+     * An optional, imported encryption key to encrypt the Sagemaker Notebook instance with.
      *
      * @default - not specified.
      */
@@ -109,7 +110,12 @@ export class LambdaToSagemaker extends Construct {
         resources: [ 'arn:aws:sagemaker:*:*:*' ],
         actions: [
             'sagemaker:InvokeEndpoint',
-            'sagemaker:DescribeNotebookInstance'
+            'sagemaker:DescribeNotebookInstance',
+            'sagemaker:DescribeTrainingJob',
+            'sagemaker:DescribeTransformJob',
+            'sagemaker:CreateTrainingJob',
+            'sagemaker:CreateTransformJob',
+            'sagemaker:CreateEndpointConfig'
         ]
     }));
     policy.attachToRole(lambdaFunctionRole);

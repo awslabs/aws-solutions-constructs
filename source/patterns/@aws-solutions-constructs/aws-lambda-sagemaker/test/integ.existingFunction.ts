@@ -19,7 +19,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-lambda-sagemaker');
+const stack = new Stack(app, 'test-lambda-existing-function-sagemaker');
 stack.templateOptions.description = 'Integration Test for aws-lambda-sagemaker';
 
 // Definitions
