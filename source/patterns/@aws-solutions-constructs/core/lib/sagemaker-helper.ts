@@ -68,7 +68,7 @@ export function buildSagemakerNotebook(scope: cdk.Construct, _roleArn: string, p
   let securityGroup: ec2.SecurityGroup;
 
   // Conditional Sagemaker Notebook creation
-  if(!props?.existingNotebookObj) {
+  if (!props?.existingNotebookObj) {
     if (props) {
       if (props.sagemakerNotebookProps) {
         // If property overrides have been provided, incorporate them and deploy
