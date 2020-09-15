@@ -15,9 +15,11 @@
 import * as sqs from '@aws-cdk/aws-sqs';
 import * as defaults from './sqs-defaults';
 import * as cdk from '@aws-cdk/core';
+import * as kms from '@aws-cdk/aws-kms';
 import { overrideProps } from './utils';
 import { AccountPrincipal, Effect, PolicyStatement, AnyPrincipal } from '@aws-cdk/aws-iam';
 import { Stack } from '@aws-cdk/core';
+import {buildEncryptionKey} from "./kms-helper";
 
 export interface BuildQueueProps {
     /**
@@ -38,47 +40,64 @@ export interface BuildQueueProps {
      * @default - Default props are used.
      */
     readonly deadLetterQueue?: sqs.DeadLetterQueue
+    /**
+     * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
+     * the encryptionKey property for this construct.
+     *
+     * @default - false (encryption enabled with AWS Managed KMS Key).
+     */
+    readonly enableEncryptionWithCustomerManagedKey?: boolean
+    /**
+     * An optional, imported encryption key to encrypt the SQS queue with.
+     *
+     * @default - not specified.
+     */
+    readonly encryptionKey?: kms.Key,
+    /**
+     * Optional user-provided props to override the default props for the encryption key.
+     *
+     * @default - Ignored if encryptionKey is provided
+     */
+    readonly encryptionKeyProps?: kms.KeyProps
 }
 
-export function buildQueue(scope: cdk.Construct, id: string, props?: BuildQueueProps): sqs.Queue {
-  // If props is undefined, define it
-  props = (props === undefined) ? {} : props;
-  // Conditional queue creation
+export function buildQueue(scope: cdk.Construct, id: string, props: BuildQueueProps): [sqs.Queue, kms.IKey?] {
   // If an existingQueueObj is not specified
   if (!props.existingQueueObj) {
-    // Deploy the queue
-    return deployQueue(scope, id, props.queueProps, props.deadLetterQueue);
-  // If an existingQueueObj is specified, return that object as the queue to be used
+    // Setup the queue
+    let queueProps;
+    if (props.queueProps) {
+      // If property overrides have been provided, incorporate them and deploy
+      queueProps = overrideProps(defaults.DefaultQueueProps(), props.queueProps);
+    } else {
+      // If no property overrides, deploy using the default configuration
+      queueProps = defaults.DefaultQueueProps();
+    }
+
+    // Determine whether a DLQ property should be added
+    if (props.deadLetterQueue) {
+      queueProps.deadLetterQueue = props.deadLetterQueue;
+    }
+
+    // Set encryption properties
+    if (props.enableEncryptionWithCustomerManagedKey) {
+      // Use the imported Customer Managed KMS key
+      if (props.encryptionKey) {
+        queueProps.encryptionMasterKey = props.encryptionKey;
+      } else {
+        queueProps.encryptionMasterKey = buildEncryptionKey(scope, props.encryptionKeyProps);
+      }
+    }
+    const queue = new sqs.Queue(scope, id, queueProps);
+
+    applySecureQueuePolicy(queue);
+
+    // Return the queue
+    return [queue, queue.encryptionMasterKey];
   } else {
-    return props.existingQueueObj;
+    // If an existingQueueObj is specified, return that object as the queue to be used
+    return [props.existingQueueObj];
   }
-}
-
-function deployQueue(scope: cdk.Construct,
-                     id: string,
-                     queuePropsParam?: sqs.QueueProps,
-                     deadLetterQueueParam?: sqs.DeadLetterQueue): sqs.Queue {
-
-  // Setup the queue
-  let queueProps;
-  if (queuePropsParam) {
-    // If property overrides have been provided, incorporate them and deploy
-    queueProps = overrideProps(defaults.DefaultQueueProps(), queuePropsParam);
-  } else {
-    // If no property overrides, deploy using the default configuration
-    queueProps = defaults.DefaultQueueProps();
-  }
-  // Determine whether a DLQ property should be added
-  if (deadLetterQueueParam) {
-    queueProps.deadLetterQueue = deadLetterQueueParam;
-  }
-
-  const queue = new sqs.Queue(scope, id, queueProps);
-
-  applySecureQueuePolicy(queue);
-
-  // Return the queue
-  return queue;
 }
 
 export interface BuildDeadLetterQueueProps {

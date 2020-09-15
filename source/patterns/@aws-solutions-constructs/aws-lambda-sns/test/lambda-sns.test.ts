@@ -13,10 +13,10 @@
 
 // Imports
 import { Stack } from "@aws-cdk/core";
-import * as kms from "@aws-cdk/aws-kms";
 import * as lambda from "@aws-cdk/aws-lambda";
-import { LambdaToSns } from '../lib';
-import { SynthUtils } from '@aws-cdk/assert';
+import * as sns from "@aws-cdk/aws-sns";
+import { LambdaToSns, LambdaToSnsProps } from '../lib';
+import { SynthUtils, expect as expectCDK, haveResource } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------
@@ -46,18 +46,41 @@ test('Test deployment with new Lambda function', () => {
             }
         }
     });
-    // Assertion 3
-    expect(stack).toHaveResource("AWS::KMS::Key", {
-        EnableKeyRotation: true
+    expect(stack).toHaveResource("AWS::SNS::Topic", {
+        KmsMasterKeyId: {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  Ref: "AWS::Partition"
+                },
+                ":kms:",
+                {
+                  Ref: "AWS::Region"
+                },
+                ":",
+                {
+                  Ref: "AWS::AccountId"
+                },
+                ":alias/aws/sns"
+              ]
+            ]
+          }
     });
 });
 
 // --------------------------------------------------------------
-// Test deployment with existing Lambda function
+// Test deployment with existing existingTopicObj
 // --------------------------------------------------------------
-test('Test deployment with existing Lambda function', () => {
+test('Test deployment with existing existingTopicObj', () => {
     // Stack
     const stack = new Stack();
+
+    const topic = new sns.Topic(stack, 'MyTopic', {
+        topicName: "custom-topic"
+    });
+
     // Helper declaration
     new LambdaToSns(stack, 'lambda-to-sns-stack', {
         lambdaFunctionProps: {
@@ -67,61 +90,39 @@ test('Test deployment with existing Lambda function', () => {
             environment: {
                 LAMBDA_NAME: 'override-function'
             }
-        }
+        },
+        existingTopicObj: topic
     });
     // Assertion 1
     expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
     // Assertion 2
-    expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
-        Environment: {
-            Variables: {
-                LAMBDA_NAME: 'override-function'
-            }
-        }
-    });
-    // Assertion 3
-    expect(stack).toHaveResource("AWS::KMS::Key", {
-        EnableKeyRotation: true
-    });
+    expectCDK(stack).to(haveResource("AWS::SNS::Topic", {
+        TopicName: "custom-topic"
+    }));
 });
 
 // --------------------------------------------------------------
 // Test deployment with imported encryption key
 // --------------------------------------------------------------
-test('Test deployment with imported encryption key', () => {
-    // Stack
+test('override topicProps', () => {
     const stack = new Stack();
-    // Setup
-    const kmsKey = new kms.Key(stack, 'imported-key', {
-        enableKeyRotation: false
-    });
-    // Helper declaration
-    new LambdaToSns(stack, 'lambda-to-sns-stack', {
+
+    const props: LambdaToSnsProps = {
         lambdaFunctionProps: {
-            runtime: lambda.Runtime.NODEJS_10_X,
-            handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`),
-            environment: {
-                LAMBDA_NAME: 'deployed-function-no-enc'
-            }
+          code: lambda.Code.asset(`${__dirname}/lambda`),
+          runtime: lambda.Runtime.NODEJS_12_X,
+          handler: 'index.handler'
         },
-        enableEncryption: true,
-        encryptionKey: kmsKey
-    });
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-    // Assertion 2
-    expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
-        Environment: {
-            Variables: {
-                LAMBDA_NAME: 'deployed-function-no-enc'
-            }
+        topicProps: {
+            topicName: "custom-topic"
         }
-    });
-    // Assertion 3
-    expect(stack).toHaveResource("AWS::KMS::Key", {
-        EnableKeyRotation: false
-    });
+    };
+
+    new LambdaToSns(stack, 'test-sns-lambda', props);
+
+    expectCDK(stack).to(haveResource("AWS::SNS::Topic", {
+      TopicName: "custom-topic"
+    }));
 });
 
 // --------------------------------------------------------------
@@ -144,5 +145,4 @@ test('Test the properties', () => {
     // Assertion 2
     const topic = pattern.snsTopic;
     expect(topic !== null);
-    expect(pattern.encryptionKey != null);
 });

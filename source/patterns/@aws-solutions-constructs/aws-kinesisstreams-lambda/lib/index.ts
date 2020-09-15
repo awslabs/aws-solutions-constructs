@@ -13,10 +13,10 @@
 
 // Imports
 import * as lambda from '@aws-cdk/aws-lambda';
+import { KinesisEventSourceProps, KinesisEventSource } from '@aws-cdk/aws-lambda-event-sources';
 import * as kinesis from '@aws-cdk/aws-kinesis';
 import * as iam from '@aws-cdk/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
-import { overrideProps } from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
 
 /**
@@ -36,6 +36,12 @@ export interface KinesisStreamsToLambdaProps {
      */
     readonly lambdaFunctionProps?: lambda.FunctionProps,
     /**
+     * Existing instance of Kinesis Stream, if this is set then kinesisStreamProps is ignored.
+     *
+     * @default - None
+     */
+    readonly existingStreamObj?: kinesis.Stream;
+    /**
      * Optional user-provided props to override the default props for the Kinesis stream.
      *
      * @default - Default props are used.
@@ -46,7 +52,7 @@ export interface KinesisStreamsToLambdaProps {
      *
      * @default - Default props are used.
      */
-    readonly eventSourceProps?: lambda.EventSourceMappingOptions | any
+    readonly kinesisEventSourceProps?: KinesisEventSourceProps
 }
 
 /**
@@ -61,7 +67,7 @@ export class KinesisStreamsToLambda extends Construct {
      * @summary Constructs a new instance of the KinesisStreamsToLambda class.
      * @param {cdk.App} scope - represents the scope for all the resources.
      * @param {string} id - this is a a scope-unique id.
-     * @param {CloudFrontToApiGatewayProps} props - user provided props for the construct
+     * @param {KinesisStreamsToLambdaProps} props - user provided props for the construct
      * @since 0.8.0
      * @access public
      */
@@ -70,6 +76,7 @@ export class KinesisStreamsToLambda extends Construct {
 
         // Setup the Kinesis Stream
         this.kinesisStream = defaults.buildKinesisStream(this, {
+            existingStreamObj: props.existingStreamObj,
             kinesisStreamProps: props.kinesisStreamProps
         });
 
@@ -80,10 +87,8 @@ export class KinesisStreamsToLambda extends Construct {
         });
 
         // Add the Lambda event source mapping
-        const eventSourceProps = (props.eventSourceProps) ?
-            overrideProps(defaults.DefaultKinesisEventSourceProps(this.kinesisStream.streamArn), props.eventSourceProps) :
-            defaults.DefaultKinesisEventSourceProps(this.kinesisStream.streamArn);
-        this.lambdaFunction.addEventSourceMapping('LambdaKinesisEventSourceMapping', eventSourceProps);
+        const eventSourceProps = defaults.KinesisEventSourceProps(props.kinesisEventSourceProps);
+        this.lambdaFunction.addEventSource(new KinesisEventSource(this.kinesisStream, eventSourceProps));
 
         // Add permissions for the Lambda function to access Kinesis
         const policy = new iam.Policy(this, 'LambdaFunctionPolicy');

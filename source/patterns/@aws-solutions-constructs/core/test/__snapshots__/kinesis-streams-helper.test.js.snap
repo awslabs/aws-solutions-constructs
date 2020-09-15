@@ -76,6 +76,54 @@ Object {
 }
 `;
 
+exports[`Test deployment w/ existing stream 1`] = `
+Object {
+  "Conditions": Object {
+    "AwsCdkKinesisEncryptedStreamsUnsupportedRegions": Object {
+      "Fn::Or": Array [
+        Object {
+          "Fn::Equals": Array [
+            Object {
+              "Ref": "AWS::Region",
+            },
+            "cn-north-1",
+          ],
+        },
+        Object {
+          "Fn::Equals": Array [
+            Object {
+              "Ref": "AWS::Region",
+            },
+            "cn-northwest-1",
+          ],
+        },
+      ],
+    },
+  },
+  "Resources": Object {
+    "existingstream0A902451": Object {
+      "Properties": Object {
+        "RetentionPeriodHours": 72,
+        "ShardCount": 2,
+        "StreamEncryption": Object {
+          "Fn::If": Array [
+            "AwsCdkKinesisEncryptedStreamsUnsupportedRegions",
+            Object {
+              "Ref": "AWS::NoValue",
+            },
+            Object {
+              "EncryptionType": "KMS",
+              "KeyId": "alias/aws/kinesis",
+            },
+          ],
+        },
+      },
+      "Type": "AWS::Kinesis::Stream",
+    },
+  },
+}
+`;
+
 exports[`Test minimal deployment with no properties 1`] = `
 Object {
   "Resources": Object {

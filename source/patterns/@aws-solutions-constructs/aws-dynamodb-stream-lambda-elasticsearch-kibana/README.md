@@ -92,6 +92,7 @@ Out of the box implementation of the Construct without any override will set the
 ### AWS Lambda Function
 * Configure least privilege access IAM role for Lambda function
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
+* Enable X-Ray Tracing
 
 ### Amazon Cognito
 * Set password policy for User Pools

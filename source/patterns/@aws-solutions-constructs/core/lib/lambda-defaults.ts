@@ -17,19 +17,8 @@ import * as iam from '@aws-cdk/aws-iam';
 export function DefaultLambdaFunctionProps(lambdaServiceRole: iam.Role): lambda.FunctionProps | any {
 
   const lambdaFunctionProps: lambda.FunctionProps | any = {
-    role: lambdaServiceRole
-  };
-
-  return lambdaFunctionProps;
-}
-
-export function DefaultLambdaFunctionPropsForNodeJS(lambdaServiceRole: iam.Role): lambda.FunctionProps | any {
-
-  const lambdaFunctionProps: lambda.FunctionProps | any = {
     role: lambdaServiceRole,
-    environment: {
-      AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
-    }
+    tracing: lambda.Tracing.ACTIVE
   };
 
   return lambdaFunctionProps;

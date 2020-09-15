@@ -23,7 +23,7 @@ const stack = new Stack(app, 'test-lambda-sqs-lambda');
 stack.templateOptions.description = 'Integration Test for aws-lambda-sqs-lambda';
 
 // Definitions
-const existingQueue = defaults.buildQueue(stack, 'existing-sqs-queue');
+const [existingQueue] = defaults.buildQueue(stack, 'existing-sqs-queue', {});
 
 const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {

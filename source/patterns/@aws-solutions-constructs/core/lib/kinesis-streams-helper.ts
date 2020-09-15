@@ -19,6 +19,13 @@ import { overrideProps } from './utils';
 
 export interface BuildKinesisStreamProps {
   /**
+   * Existing instance of Kinesis Stream, if this is set then kinesisStreamProps is ignored.
+   *
+   * @default - None
+   */
+    readonly existingStreamObj?: kinesis.Stream;
+
+  /**
    * Optional user provided props to override the default props for the Kinesis stream.
    *
    * @default - Default props are used.
@@ -29,6 +36,11 @@ export interface BuildKinesisStreamProps {
 export function buildKinesisStream(scope: cdk.Construct, props?: BuildKinesisStreamProps): kinesis.Stream {
     // If props is undefined, define it
     props = (props === undefined) ? {} : props;
+
+    if (props.existingStreamObj) {
+        return props.existingStreamObj;
+    }
+
     // Setup the stream properties
     let kinesisStreamProps;
     if (props.kinesisStreamProps) {

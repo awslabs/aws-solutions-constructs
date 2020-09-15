@@ -59,6 +59,14 @@
           "Statement": [
             {
               "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
                 "s3:GetObject*",
                 "s3:GetBucket*",
                 "s3:List*",
@@ -103,6 +111,16 @@
             "Ref": "testlambdas3preexistingbucketLambdaFunctionServiceRole9AC7CED0"
           }
         ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray."
+            }
+          ]
+        }
       }
     },
     "testlambdas3preexistingbucketLambdaFunctionA56FB2C7": {
@@ -159,6 +177,9 @@
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "S3_BUCKET_NAME": "cdktoolkit-stagingbucket-1cjqz1mn5psg3"
           }
+        },
+        "TracingConfig": {
+          "Mode": "Active"
         }
       },
       "DependsOn": [

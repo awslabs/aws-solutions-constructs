@@ -13,15 +13,8 @@
 
 import * as lambda from '@aws-cdk/aws-lambda';
 import { overrideProps } from './utils';
-import { DynamoEventSourceProps, S3EventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
+import { DynamoEventSourceProps, S3EventSourceProps, KinesisEventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
 import * as s3 from '@aws-cdk/aws-s3';
-
-export function DefaultKinesisEventSourceProps(_eventSourceArn: string) {
-    const defaultEventSourceProps: lambda.EventSourceMappingOptions = {
-        eventSourceArn: _eventSourceArn
-    };
-    return defaultEventSourceProps;
-}
 
 export function DynamoEventSourceProps(_dynamoEventSourceProps?: DynamoEventSourceProps) {
 
@@ -46,5 +39,18 @@ export function S3EventSourceProps(_s3EventSourceProps?: S3EventSourceProps) {
         return overrideProps(defaultS3EventSourceProps, _s3EventSourceProps, false);
     } else {
         return defaultS3EventSourceProps;
+    }
+}
+
+export function KinesisEventSourceProps(_kinesisEventSourceProps?: KinesisEventSourceProps) {
+    const defaultKinesisEventSourceProps = {
+        startingPosition: lambda.StartingPosition.TRIM_HORIZON,
+        bisectBatchOnError: true
+    };
+
+    if (_kinesisEventSourceProps) {
+        return overrideProps(defaultKinesisEventSourceProps, _kinesisEventSourceProps, false);
+    } else {
+        return defaultKinesisEventSourceProps;
     }
 }

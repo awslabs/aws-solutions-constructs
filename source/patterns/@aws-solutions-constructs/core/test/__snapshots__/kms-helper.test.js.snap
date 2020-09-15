@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test minimal deployment with no properties 1`] = `
+exports[`Test minimal deployment with custom properties 1`] = `
 Object {
   "Resources": Object {
     "EncryptionKey1B843E66": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
-        "EnableKeyRotation": true,
+        "EnableKeyRotation": false,
         "KeyPolicy": Object {
           "Statement": Array [
             Object {
@@ -59,13 +59,13 @@ Object {
 }
 `;
 
-exports[`Test minimal deployment with no properties 2`] = `
+exports[`Test minimal deployment with no properties 1`] = `
 Object {
   "Resources": Object {
     "EncryptionKey1B843E66": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
-        "EnableKeyRotation": false,
+        "EnableKeyRotation": true,
         "KeyPolicy": Object {
           "Statement": Array [
             Object {

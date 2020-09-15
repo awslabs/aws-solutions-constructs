@@ -70,12 +70,30 @@
           "Statement": [
             {
               "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
                 "kinesis:DescribeStreamSummary",
                 "kinesis:GetRecords",
                 "kinesis:GetShardIterator",
                 "kinesis:ListShards",
                 "kinesis:SubscribeToShard"
               ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testkslambdaKinesisStreamE607D575",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "kinesis:DescribeStream",
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
@@ -93,6 +111,16 @@
             "Ref": "testkslambdaLambdaFunctionServiceRole329F6464"
           }
         ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray."
+            }
+          ]
+        }
       }
     },
     "testkslambdaLambdaFunction995A7276": {
@@ -148,6 +176,9 @@
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
           }
+        },
+        "TracingConfig": {
+          "Mode": "Active"
         }
       },
       "DependsOn": [
@@ -165,7 +196,7 @@
         }
       }
     },
-    "testkslambdaLambdaFunctionLambdaKinesisEventSourceMapping70D66039": {
+    "testkslambdaLambdaFunctionKinesisEventSourcetestkslambdastacktestkslambdaKinesisStream34D4E9A7E70CF520": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
         "EventSourceArn": {
@@ -178,6 +209,7 @@
           "Ref": "testkslambdaLambdaFunction995A7276"
         },
         "BatchSize": 1,
+        "BisectBatchOnFunctionError": true,
         "StartingPosition": "TRIM_HORIZON"
       }
     },

@@ -375,6 +375,7 @@ Object {
           "Ref": "testapigatewaylambdaLambdaRestApiE957E944",
         },
         "StageName": "prod",
+        "TracingEnabled": true,
       },
       "Type": "AWS::ApiGateway::Stage",
     },
@@ -594,6 +595,7 @@ Object {
     },
     "testapigatewaylambdaLambdaFunction18FF222F": Object {
       "DependsOn": Array [
+        "testapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyA5D0BE32",
         "testapigatewaylambdaLambdaFunctionServiceRole5CD2E9F7",
       ],
       "Metadata": Object {
@@ -658,6 +660,9 @@ Object {
           ],
         },
         "Runtime": "nodejs10.x",
+        "TracingConfig": Object {
+          "Mode": "Active",
+        },
       },
       "Type": "AWS::Lambda::Function",
     },
@@ -711,6 +716,40 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Role",
+    },
+    "testapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyA5D0BE32": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyA5D0BE32",
+        "Roles": Array [
+          Object {
+            "Ref": "testapigatewaylambdaLambdaFunctionServiceRole5CD2E9F7",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
     "testapigatewaylambdaLambdaRestApiANY1FACA749": Object {
       "Properties": Object {
@@ -952,6 +991,7 @@ Object {
           "Ref": "testapigatewaylambdaLambdaRestApiE957E944",
         },
         "StageName": "prod",
+        "TracingEnabled": true,
       },
       "Type": "AWS::ApiGateway::Stage",
     },
@@ -1197,6 +1237,7 @@ Object {
     },
     "pattern1LambdaFunction4AE2BC2A": Object {
       "DependsOn": Array [
+        "pattern1LambdaFunctionServiceRoleDefaultPolicy3DAB9197",
         "pattern1LambdaFunctionServiceRoleEEE9B913",
       ],
       "Metadata": Object {
@@ -1261,8 +1302,45 @@ Object {
           ],
         },
         "Runtime": "nodejs10.x",
+        "TracingConfig": Object {
+          "Mode": "Active",
+        },
       },
       "Type": "AWS::Lambda::Function",
+    },
+    "pattern1LambdaFunctionServiceRoleDefaultPolicy3DAB9197": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "pattern1LambdaFunctionServiceRoleDefaultPolicy3DAB9197",
+        "Roles": Array [
+          Object {
+            "Ref": "pattern1LambdaFunctionServiceRoleEEE9B913",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
     "pattern1LambdaFunctionServiceRoleEEE9B913": Object {
       "Properties": Object {
@@ -1566,6 +1644,7 @@ Object {
           "Ref": "pattern1LambdaRestApi6083801A",
         },
         "StageName": "prod",
+        "TracingEnabled": true,
       },
       "Type": "AWS::ApiGateway::Stage",
     },
@@ -1725,6 +1804,7 @@ Object {
     },
     "pattern2LambdaFunction20E7E90C": Object {
       "DependsOn": Array [
+        "pattern2LambdaFunctionServiceRoleDefaultPolicyB413F001",
         "pattern2LambdaFunctionServiceRoleF8D0D0F1",
       ],
       "Metadata": Object {
@@ -1789,8 +1869,45 @@ Object {
           ],
         },
         "Runtime": "nodejs10.x",
+        "TracingConfig": Object {
+          "Mode": "Active",
+        },
       },
       "Type": "AWS::Lambda::Function",
+    },
+    "pattern2LambdaFunctionServiceRoleDefaultPolicyB413F001": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "pattern2LambdaFunctionServiceRoleDefaultPolicyB413F001",
+        "Roles": Array [
+          Object {
+            "Ref": "pattern2LambdaFunctionServiceRoleF8D0D0F1",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
     "pattern2LambdaFunctionServiceRoleF8D0D0F1": Object {
       "Properties": Object {
@@ -2094,6 +2211,7 @@ Object {
           "Ref": "pattern2LambdaRestApi7106C394",
         },
         "StageName": "prod",
+        "TracingEnabled": true,
       },
       "Type": "AWS::ApiGateway::Stage",
     },

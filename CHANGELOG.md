@@ -4,6 +4,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.63.0] - 2020-09-14
+
+### Changed
+- Upgraded all patterns to CDK v1.63.0
+- BREAKING CHANGE: For `aws-kinesisstreams-lambda` pattern, changed construct prop from `eventSourceProps?: lambda.EventSourceMappingOptions | any` to `kinesisEventSourceProps?: KinesisEventSourceProps`
+- Allow for `existingStreamObj?` for `aws-kinesisstreams-lambda` pattern ([#58](https://github.com/awslabs/aws-solutions-constructs/issues/58))
+
+## [1.62.0] - 2020-09-09
+
+### Added
+- aws-events-rule-sqs pattern added ([#25](https://github.com/awslabs/aws-solutions-constructs/issues/25))
+- aws-events-rule-sns pattern added ([#42](https://github.com/awslabs/aws-solutions-constructs/issues/42))
+- aws-apigateway-kinesisstreams pattern added ([#51](https://github.com/awslabs/aws-solutions-constructs/issues/51))
+
+### Changed
+- Upgraded all patterns to CDK v1.62.0
+
+## [1.61.1] - 2020-09-01
+
+### Added
+- aws-sns-sqs pattern added ([#24](https://github.com/awslabs/aws-solutions-constructs/issues/24))
+
+### Changed
+- Upgraded all patterns to CDK v1.61.1
+- [All *-sns-*  Patterns] Allow for existingTopicObj and change default encryption ([#49](https://github.com/awslabs/aws-solutions-constructs/issues/49))
+
+## [1.61.0] - 2020-08-27
+
+### Changed
+- Upgraded all patterns to CDK v1.61.0
+- [All *-lambda-* and *-apigateway-* patterns] Enable X-Ray tracing ([#36](https://github.com/awslabs/aws-solutions-constructs/issues/36))
+
+## [1.60.0] - 2020-08-24
+
+### Changed
+- Upgraded all patterns to CDK v1.60.0
+
 ## [1.59.0] - 2020-08-19
 
 ### Changed

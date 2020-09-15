@@ -118,10 +118,22 @@ test('Test invocation permissions', () => {
     PolicyDocument: {
       Statement: [
         {
+          Action: [
+            "xray:PutTraceSegments",
+            "xray:PutTelemetryRecords"
+          ],
+          Effect: "Allow",
+          Resource: "*"
+        },
+        {
           Action: "states:StartExecution",
-          Effect: "Allow"
+          Effect: "Allow",
+          Resource: {
+            Ref: "testlambdastepfunctionstackStateMachine373C0BB9"
+          }
         }
-      ]
+      ],
+      Version: "2012-10-17"
     }
   });
 });

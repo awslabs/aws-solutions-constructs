@@ -13,7 +13,6 @@
 
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as sns from '@aws-cdk/aws-sns';
-import * as kms from '@aws-cdk/aws-kms';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
 import { SnsEventSource } from '@aws-cdk/aws-lambda-event-sources';
@@ -35,24 +34,17 @@ export interface SnsToLambdaProps {
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps,
   /**
+   * Existing instance of SNS Topic object, if this is set then topicProps is ignored.
+   *
+   * @default - Default props are used
+   */
+  readonly existingTopicObj?: sns.Topic,
+  /**
    * Optional user provided properties to override the default properties for the SNS topic.
    *
    * @default - Default properties are used.
    */
-  readonly topicProps?: sns.TopicProps,
-  /**
-   * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
-   * the encryptionKey property for this construct.
-   *
-   * @default - true (encryption enabled, managed by this CDK app).
-   */
-  readonly enableEncryption?: boolean
-  /**
-   * An optional, imported encryption key to encrypt the SNS topic with.
-   *
-   * @default - not specified.
-   */
-  readonly encryptionKey?: kms.Key
+  readonly topicProps?: sns.TopicProps
 }
 
 /**
@@ -61,7 +53,6 @@ export interface SnsToLambdaProps {
 export class SnsToLambda extends Construct {
   public readonly lambdaFunction: lambda.Function;
   public readonly snsTopic: sns.Topic;
-  public readonly encryptionKey: kms.Key;
 
   /**
    * @summary Constructs a new instance of the LambdaToSns class.
@@ -81,9 +72,9 @@ export class SnsToLambda extends Construct {
     });
 
     // Setup the SNS topic
-    [this.snsTopic, this.encryptionKey] = defaults.buildTopic(this, {
-        enableEncryption: props.enableEncryption,
-        encryptionKey: props.encryptionKey
+    [this.snsTopic] = defaults.buildTopic(this, {
+      existingTopicObj: props.existingTopicObj,
+      topicProps: props.topicProps
     });
 
     this.lambdaFunction.addEventSource(new SnsEventSource(this.snsTopic));

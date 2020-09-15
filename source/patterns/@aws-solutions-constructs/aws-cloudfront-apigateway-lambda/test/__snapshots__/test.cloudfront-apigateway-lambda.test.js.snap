@@ -259,6 +259,7 @@ Object {
     },
     "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeaders6945414A": Object {
       "DependsOn": Array [
+        "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRoleDefaultPolicy2016F196",
         "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRoleCA39BFFF",
       ],
       "Metadata": Object {
@@ -283,6 +284,9 @@ Object {
           ],
         },
         "Runtime": "nodejs12.x",
+        "TracingConfig": Object {
+          "Mode": "Active",
+        },
       },
       "Type": "AWS::Lambda::Function",
     },
@@ -344,6 +348,40 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
+    "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRoleDefaultPolicy2016F196": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRoleDefaultPolicy2016F196",
+        "Roles": Array [
+          Object {
+            "Ref": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRoleCA39BFFF",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
     "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeadersVersion1946ABC2": Object {
       "Properties": Object {
         "FunctionName": Object {
@@ -354,6 +392,7 @@ Object {
     },
     "testcloudfrontapigatewaylambdaLambdaFunction17A55E65": Object {
       "DependsOn": Array [
+        "testcloudfrontapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyDB7FF8EB",
         "testcloudfrontapigatewaylambdaLambdaFunctionServiceRoleCB74590F",
       ],
       "Metadata": Object {
@@ -418,6 +457,9 @@ Object {
           ],
         },
         "Runtime": "nodejs10.x",
+        "TracingConfig": Object {
+          "Mode": "Active",
+        },
       },
       "Type": "AWS::Lambda::Function",
     },
@@ -471,6 +513,40 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Role",
+    },
+    "testcloudfrontapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyDB7FF8EB": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testcloudfrontapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyDB7FF8EB",
+        "Roles": Array [
+          Object {
+            "Ref": "testcloudfrontapigatewaylambdaLambdaFunctionServiceRoleCB74590F",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
     "testcloudfrontapigatewaylambdaLambdaRestApi6A4CBD44": Object {
       "Properties": Object {
@@ -733,6 +809,7 @@ Object {
           "Ref": "testcloudfrontapigatewaylambdaLambdaRestApi6A4CBD44",
         },
         "StageName": "prod",
+        "TracingEnabled": true,
       },
       "Type": "AWS::ApiGateway::Stage",
     },

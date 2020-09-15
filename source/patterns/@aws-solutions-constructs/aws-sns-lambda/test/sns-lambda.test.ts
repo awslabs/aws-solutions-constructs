@@ -11,9 +11,10 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
+import { SynthUtils, expect as expectCDK, haveResource } from '@aws-cdk/assert';
 import { SnsToLambda, SnsToLambdaProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
+import * as sns from '@aws-cdk/aws-sns';
 import * as cdk from "@aws-cdk/core";
 import '@aws-cdk/assert/jest';
 
@@ -42,5 +43,48 @@ test('check properties', () => {
 
   expect(construct.lambdaFunction !== null);
   expect(construct.snsTopic !== null);
-  expect(construct.encryptionKey !== null);
+});
+
+test('override topicProps', () => {
+  const stack = new cdk.Stack();
+
+  const props: SnsToLambdaProps = {
+    lambdaFunctionProps: {
+        code: lambda.Code.asset(`${__dirname}/lambda`),
+        runtime: lambda.Runtime.NODEJS_12_X,
+        handler: 'index.handler'
+    },
+    topicProps: {
+      topicName: "custom-topic"
+    }
+  };
+
+  new SnsToLambda(stack, 'test-sns-lambda', props);
+
+  expectCDK(stack).to(haveResource("AWS::SNS::Topic", {
+    TopicName: "custom-topic"
+  }));
+});
+
+test('provide existingTopicObj', () => {
+  const stack = new cdk.Stack();
+
+  const topic = new sns.Topic(stack, 'MyTopic', {
+    topicName: "custom-topic"
+  });
+
+  const props: SnsToLambdaProps = {
+    lambdaFunctionProps: {
+        code: lambda.Code.asset(`${__dirname}/lambda`),
+        runtime: lambda.Runtime.NODEJS_12_X,
+        handler: 'index.handler'
+    },
+    existingTopicObj: topic
+  };
+
+  new SnsToLambda(stack, 'test-sns-lambda', props);
+
+  expectCDK(stack).to(haveResource("AWS::SNS::Topic", {
+    TopicName: "custom-topic"
+  }));
 });
