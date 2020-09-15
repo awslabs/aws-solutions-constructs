@@ -62,7 +62,7 @@ export interface BuildSagemakerNotebookProps {
 }
 
 export function buildSagemakerNotebook(scope: cdk.Construct, _roleArn: string, props?: BuildSagemakerNotebookProps): sagemaker.CfnNotebookInstance {
-  //Setup the notebook properties
+  // Setup the notebook properties
   let sagemakerNotebookProps;
   let vpc: ec2.Vpc;
   let securityGroup: ec2.SecurityGroup;
@@ -101,7 +101,7 @@ export function buildSagemakerNotebook(scope: cdk.Construct, _roleArn: string, p
 
           sagemakerNotebookProps.subnetId = vpc.publicSubnets[0].subnetId;
           securityGroup = new ec2.SecurityGroup(scope, "SecurityGroup", {
-            vpc: vpc,
+            "vpc": vpc,
           });
 
           sagemakerNotebookProps.securityGroupIds = [securityGroup.securityGroupId];
