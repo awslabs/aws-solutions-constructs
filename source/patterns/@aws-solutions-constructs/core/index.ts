@@ -43,3 +43,5 @@ export * from './lib/elasticsearch-helper';
 export * from './lib/step-function-defaults';
 export * from './lib/step-function-helper';
 export * from './lib/dynamodb-table-helper';
+export * from './lib/sagemaker-defaults';
+export * from './lib/sagemaker-helper';

@@ -1,0 +1,1192 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test deployment with existing Lambda function 1`] = `
+Object {
+  "Parameters": Object {
+    "AssetParametersbbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20ArtifactHash21B905D2": Object {
+      "Description": "Artifact hash for asset \\"bbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20\\"",
+      "Type": "String",
+    },
+    "AssetParametersbbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20S3Bucket01219483": Object {
+      "Description": "S3 bucket for asset \\"bbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20\\"",
+      "Type": "String",
+    },
+    "AssetParametersbbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20S3VersionKeyC029AFFB": Object {
+      "Description": "S3 key for asset version \\"bbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "lambdatosagemakerstackEncryptionKeyDC12EC9F": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "EnableKeyRotation": true,
+        "KeyPolicy": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion",
+                "kms:GenerateDataKey",
+                "kms:TagResource",
+                "kms:UntagResource",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "lambdatosagemakerstackLambdaFunction1C80F3C5": Object {
+      "DependsOn": Array [
+        "lambdatosagemakerstackLambdaFunctionServiceRole1400E87F",
+      ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParametersbbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20S3Bucket01219483",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersbbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20S3VersionKeyC029AFFB",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersbbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20S3VersionKeyC029AFFB",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "LAMBDA_NAME": "override-function",
+            "NOTEBOOK_NAME": Object {
+              "Fn::GetAtt": Array [
+                "lambdatosagemakerstackSagemakerNotebook804D9A57",
+                "NotebookInstanceName",
+              ],
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "lambdatosagemakerstackLambdaFunctionServiceRole1400E87F",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs10.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "lambdatosagemakerstackLambdaFunctionPolicy5DD3BE2D": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "sagemaker:InvokeEndpoint",
+                "sagemaker:DescribeNotebookInstance",
+                "sagemaker:DescribeTrainingJob",
+                "sagemaker:DescribeTransformJob",
+                "sagemaker:CreateTrainingJob",
+                "sagemaker:CreateTransformJob",
+                "sagemaker:CreateEndpointConfig",
+              ],
+              "Effect": "Allow",
+              "Resource": "arn:aws:sagemaker:*:*:*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "lambdatosagemakerstackLambdaFunctionPolicy5DD3BE2D",
+        "Roles": Array [
+          Object {
+            "Ref": "lambdatosagemakerstackLambdaFunctionServiceRole1400E87F",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "lambdatosagemakerstackLambdaFunctionServiceRole1400E87F": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": Array [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        "arn:aws:logs:",
+                        Object {
+                          "Ref": "AWS::Region",
+                        },
+                        ":",
+                        Object {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":log-group:/aws/lambda/*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "lambdatosagemakerstackSagemakerNotebook804D9A57": Object {
+      "Properties": Object {
+        "InstanceType": "ml.t2.medium",
+        "KmsKeyId": Object {
+          "Ref": "lambdatosagemakerstackEncryptionKeyDC12EC9F",
+        },
+        "RoleArn": Object {
+          "Fn::GetAtt": Array [
+            "lambdatosagemakerstackSagemakerRoleF07CFB94",
+            "Arn",
+          ],
+        },
+        "SecurityGroupIds": Array [
+          Object {
+            "Fn::GetAtt": Array [
+              "lambdatosagemakerstackSecurityGroup53110AF9",
+              "GroupId",
+            ],
+          },
+        ],
+        "SubnetId": Object {
+          "Ref": "lambdatosagemakerstackVpcpublicSubnetSubnet1SubnetE21FDC1B",
+        },
+      },
+      "Type": "AWS::SageMaker::NotebookInstance",
+    },
+    "lambdatosagemakerstackSagemakerRoleF07CFB94": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "sagemaker.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "lambdatosagemakerstackSecurityGroup53110AF9": Object {
+      "Properties": Object {
+        "GroupDescription": "Default/lambda-to-sagemaker-stack/SecurityGroup",
+        "SecurityGroupEgress": Array [
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "lambdatosagemakerstackVpcA8F68D19",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "lambdatosagemakerstackVpcA8F68D19": Object {
+      "Properties": Object {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "Default/lambda-to-sagemaker-stack/Vpc",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::VPC",
+    },
+    "lambdatosagemakerstackVpcIGW12B7EDB5": Object {
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "Default/lambda-to-sagemaker-stack/Vpc",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::InternetGateway",
+    },
+    "lambdatosagemakerstackVpcVPCGW631531EC": Object {
+      "Properties": Object {
+        "InternetGatewayId": Object {
+          "Ref": "lambdatosagemakerstackVpcIGW12B7EDB5",
+        },
+        "VpcId": Object {
+          "Ref": "lambdatosagemakerstackVpcA8F68D19",
+        },
+      },
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+    },
+    "lambdatosagemakerstackVpcpublicSubnetSubnet1DefaultRoute75D6DF63": Object {
+      "DependsOn": Array [
+        "lambdatosagemakerstackVpcVPCGW631531EC",
+      ],
+      "Properties": Object {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": Object {
+          "Ref": "lambdatosagemakerstackVpcIGW12B7EDB5",
+        },
+        "RouteTableId": Object {
+          "Ref": "lambdatosagemakerstackVpcpublicSubnetSubnet1RouteTableDAFCC5D1",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "lambdatosagemakerstackVpcpublicSubnetSubnet1RouteTableAssociation87769E13": Object {
+      "Properties": Object {
+        "RouteTableId": Object {
+          "Ref": "lambdatosagemakerstackVpcpublicSubnetSubnet1RouteTableDAFCC5D1",
+        },
+        "SubnetId": Object {
+          "Ref": "lambdatosagemakerstackVpcpublicSubnetSubnet1SubnetE21FDC1B",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "lambdatosagemakerstackVpcpublicSubnetSubnet1RouteTableDAFCC5D1": Object {
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "Default/lambda-to-sagemaker-stack/Vpc/publicSubnetSubnet1",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "lambdatosagemakerstackVpcA8F68D19",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "lambdatosagemakerstackVpcpublicSubnetSubnet1SubnetE21FDC1B": Object {
+      "Properties": Object {
+        "AvailabilityZone": Object {
+          "Fn::Select": Array [
+            0,
+            Object {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.0.0.0/26",
+        "MapPublicIpOnLaunch": true,
+        "Tags": Array [
+          Object {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "publicSubnet",
+          },
+          Object {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public",
+          },
+          Object {
+            "Key": "Name",
+            "Value": "Default/lambda-to-sagemaker-stack/Vpc/publicSubnetSubnet1",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "lambdatosagemakerstackVpcA8F68D19",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+  },
+}
+`;
+
+exports[`Test deployment with imported encryption key 1`] = `
+Object {
+  "Parameters": Object {
+    "AssetParametersbbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20ArtifactHash21B905D2": Object {
+      "Description": "Artifact hash for asset \\"bbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20\\"",
+      "Type": "String",
+    },
+    "AssetParametersbbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20S3Bucket01219483": Object {
+      "Description": "S3 bucket for asset \\"bbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20\\"",
+      "Type": "String",
+    },
+    "AssetParametersbbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20S3VersionKeyC029AFFB": Object {
+      "Description": "S3 key for asset version \\"bbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "importedkey38675D68": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "EnableKeyRotation": false,
+        "KeyPolicy": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion",
+                "kms:GenerateDataKey",
+                "kms:TagResource",
+                "kms:UntagResource",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "lambdatosagemakerstackLambdaFunction1C80F3C5": Object {
+      "DependsOn": Array [
+        "lambdatosagemakerstackLambdaFunctionServiceRole1400E87F",
+      ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParametersbbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20S3Bucket01219483",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersbbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20S3VersionKeyC029AFFB",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersbbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20S3VersionKeyC029AFFB",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "LAMBDA_NAME": "deployed-function-no-enc",
+            "NOTEBOOK_NAME": Object {
+              "Fn::GetAtt": Array [
+                "lambdatosagemakerstackSagemakerNotebook804D9A57",
+                "NotebookInstanceName",
+              ],
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "lambdatosagemakerstackLambdaFunctionServiceRole1400E87F",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs10.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "lambdatosagemakerstackLambdaFunctionPolicy5DD3BE2D": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "sagemaker:InvokeEndpoint",
+                "sagemaker:DescribeNotebookInstance",
+                "sagemaker:DescribeTrainingJob",
+                "sagemaker:DescribeTransformJob",
+                "sagemaker:CreateTrainingJob",
+                "sagemaker:CreateTransformJob",
+                "sagemaker:CreateEndpointConfig",
+              ],
+              "Effect": "Allow",
+              "Resource": "arn:aws:sagemaker:*:*:*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "lambdatosagemakerstackLambdaFunctionPolicy5DD3BE2D",
+        "Roles": Array [
+          Object {
+            "Ref": "lambdatosagemakerstackLambdaFunctionServiceRole1400E87F",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "lambdatosagemakerstackLambdaFunctionServiceRole1400E87F": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": Array [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        "arn:aws:logs:",
+                        Object {
+                          "Ref": "AWS::Region",
+                        },
+                        ":",
+                        Object {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":log-group:/aws/lambda/*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "lambdatosagemakerstackSagemakerNotebook804D9A57": Object {
+      "Properties": Object {
+        "InstanceType": "ml.t2.medium",
+        "KmsKeyId": Object {
+          "Ref": "importedkey38675D68",
+        },
+        "RoleArn": Object {
+          "Fn::GetAtt": Array [
+            "lambdatosagemakerstackSagemakerRoleF07CFB94",
+            "Arn",
+          ],
+        },
+        "SecurityGroupIds": Array [
+          Object {
+            "Fn::GetAtt": Array [
+              "lambdatosagemakerstackSecurityGroup53110AF9",
+              "GroupId",
+            ],
+          },
+        ],
+        "SubnetId": Object {
+          "Ref": "lambdatosagemakerstackVpcpublicSubnetSubnet1SubnetE21FDC1B",
+        },
+      },
+      "Type": "AWS::SageMaker::NotebookInstance",
+    },
+    "lambdatosagemakerstackSagemakerRoleF07CFB94": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "sagemaker.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "lambdatosagemakerstackSecurityGroup53110AF9": Object {
+      "Properties": Object {
+        "GroupDescription": "Default/lambda-to-sagemaker-stack/SecurityGroup",
+        "SecurityGroupEgress": Array [
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "lambdatosagemakerstackVpcA8F68D19",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "lambdatosagemakerstackVpcA8F68D19": Object {
+      "Properties": Object {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "Default/lambda-to-sagemaker-stack/Vpc",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::VPC",
+    },
+    "lambdatosagemakerstackVpcIGW12B7EDB5": Object {
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "Default/lambda-to-sagemaker-stack/Vpc",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::InternetGateway",
+    },
+    "lambdatosagemakerstackVpcVPCGW631531EC": Object {
+      "Properties": Object {
+        "InternetGatewayId": Object {
+          "Ref": "lambdatosagemakerstackVpcIGW12B7EDB5",
+        },
+        "VpcId": Object {
+          "Ref": "lambdatosagemakerstackVpcA8F68D19",
+        },
+      },
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+    },
+    "lambdatosagemakerstackVpcpublicSubnetSubnet1DefaultRoute75D6DF63": Object {
+      "DependsOn": Array [
+        "lambdatosagemakerstackVpcVPCGW631531EC",
+      ],
+      "Properties": Object {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": Object {
+          "Ref": "lambdatosagemakerstackVpcIGW12B7EDB5",
+        },
+        "RouteTableId": Object {
+          "Ref": "lambdatosagemakerstackVpcpublicSubnetSubnet1RouteTableDAFCC5D1",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "lambdatosagemakerstackVpcpublicSubnetSubnet1RouteTableAssociation87769E13": Object {
+      "Properties": Object {
+        "RouteTableId": Object {
+          "Ref": "lambdatosagemakerstackVpcpublicSubnetSubnet1RouteTableDAFCC5D1",
+        },
+        "SubnetId": Object {
+          "Ref": "lambdatosagemakerstackVpcpublicSubnetSubnet1SubnetE21FDC1B",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "lambdatosagemakerstackVpcpublicSubnetSubnet1RouteTableDAFCC5D1": Object {
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "Default/lambda-to-sagemaker-stack/Vpc/publicSubnetSubnet1",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "lambdatosagemakerstackVpcA8F68D19",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "lambdatosagemakerstackVpcpublicSubnetSubnet1SubnetE21FDC1B": Object {
+      "Properties": Object {
+        "AvailabilityZone": Object {
+          "Fn::Select": Array [
+            0,
+            Object {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.0.0.0/26",
+        "MapPublicIpOnLaunch": true,
+        "Tags": Array [
+          Object {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "publicSubnet",
+          },
+          Object {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public",
+          },
+          Object {
+            "Key": "Name",
+            "Value": "Default/lambda-to-sagemaker-stack/Vpc/publicSubnetSubnet1",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "lambdatosagemakerstackVpcA8F68D19",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+  },
+}
+`;
+
+exports[`Test deployment with new Lambda function 1`] = `
+Object {
+  "Parameters": Object {
+    "AssetParametersbbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20ArtifactHash21B905D2": Object {
+      "Description": "Artifact hash for asset \\"bbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20\\"",
+      "Type": "String",
+    },
+    "AssetParametersbbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20S3Bucket01219483": Object {
+      "Description": "S3 bucket for asset \\"bbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20\\"",
+      "Type": "String",
+    },
+    "AssetParametersbbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20S3VersionKeyC029AFFB": Object {
+      "Description": "S3 key for asset version \\"bbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "lambdatosagemakerstackEncryptionKeyDC12EC9F": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "EnableKeyRotation": true,
+        "KeyPolicy": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion",
+                "kms:GenerateDataKey",
+                "kms:TagResource",
+                "kms:UntagResource",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "lambdatosagemakerstackLambdaFunction1C80F3C5": Object {
+      "DependsOn": Array [
+        "lambdatosagemakerstackLambdaFunctionServiceRole1400E87F",
+      ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParametersbbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20S3Bucket01219483",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersbbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20S3VersionKeyC029AFFB",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersbbd4928056408f5117aa5fd896a1f9d30cd4cdcdd7a62b4ad10695042c250b20S3VersionKeyC029AFFB",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "LAMBDA_NAME": "deployed-function",
+            "NOTEBOOK_NAME": Object {
+              "Fn::GetAtt": Array [
+                "lambdatosagemakerstackSagemakerNotebook804D9A57",
+                "NotebookInstanceName",
+              ],
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "lambdatosagemakerstackLambdaFunctionServiceRole1400E87F",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs10.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "lambdatosagemakerstackLambdaFunctionPolicy5DD3BE2D": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "sagemaker:InvokeEndpoint",
+                "sagemaker:DescribeNotebookInstance",
+                "sagemaker:DescribeTrainingJob",
+                "sagemaker:DescribeTransformJob",
+                "sagemaker:CreateTrainingJob",
+                "sagemaker:CreateTransformJob",
+                "sagemaker:CreateEndpointConfig",
+              ],
+              "Effect": "Allow",
+              "Resource": "arn:aws:sagemaker:*:*:*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "lambdatosagemakerstackLambdaFunctionPolicy5DD3BE2D",
+        "Roles": Array [
+          Object {
+            "Ref": "lambdatosagemakerstackLambdaFunctionServiceRole1400E87F",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "lambdatosagemakerstackLambdaFunctionServiceRole1400E87F": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": Array [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        "arn:aws:logs:",
+                        Object {
+                          "Ref": "AWS::Region",
+                        },
+                        ":",
+                        Object {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":log-group:/aws/lambda/*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "lambdatosagemakerstackSagemakerNotebook804D9A57": Object {
+      "Properties": Object {
+        "InstanceType": "ml.t2.medium",
+        "KmsKeyId": Object {
+          "Ref": "lambdatosagemakerstackEncryptionKeyDC12EC9F",
+        },
+        "RoleArn": Object {
+          "Fn::GetAtt": Array [
+            "lambdatosagemakerstackSagemakerRoleF07CFB94",
+            "Arn",
+          ],
+        },
+        "SecurityGroupIds": Array [
+          Object {
+            "Fn::GetAtt": Array [
+              "lambdatosagemakerstackSecurityGroup53110AF9",
+              "GroupId",
+            ],
+          },
+        ],
+        "SubnetId": Object {
+          "Ref": "lambdatosagemakerstackVpcpublicSubnetSubnet1SubnetE21FDC1B",
+        },
+      },
+      "Type": "AWS::SageMaker::NotebookInstance",
+    },
+    "lambdatosagemakerstackSagemakerRoleF07CFB94": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "sagemaker.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "lambdatosagemakerstackSecurityGroup53110AF9": Object {
+      "Properties": Object {
+        "GroupDescription": "Default/lambda-to-sagemaker-stack/SecurityGroup",
+        "SecurityGroupEgress": Array [
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "lambdatosagemakerstackVpcA8F68D19",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "lambdatosagemakerstackVpcA8F68D19": Object {
+      "Properties": Object {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "Default/lambda-to-sagemaker-stack/Vpc",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::VPC",
+    },
+    "lambdatosagemakerstackVpcIGW12B7EDB5": Object {
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "Default/lambda-to-sagemaker-stack/Vpc",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::InternetGateway",
+    },
+    "lambdatosagemakerstackVpcVPCGW631531EC": Object {
+      "Properties": Object {
+        "InternetGatewayId": Object {
+          "Ref": "lambdatosagemakerstackVpcIGW12B7EDB5",
+        },
+        "VpcId": Object {
+          "Ref": "lambdatosagemakerstackVpcA8F68D19",
+        },
+      },
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+    },
+    "lambdatosagemakerstackVpcpublicSubnetSubnet1DefaultRoute75D6DF63": Object {
+      "DependsOn": Array [
+        "lambdatosagemakerstackVpcVPCGW631531EC",
+      ],
+      "Properties": Object {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": Object {
+          "Ref": "lambdatosagemakerstackVpcIGW12B7EDB5",
+        },
+        "RouteTableId": Object {
+          "Ref": "lambdatosagemakerstackVpcpublicSubnetSubnet1RouteTableDAFCC5D1",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "lambdatosagemakerstackVpcpublicSubnetSubnet1RouteTableAssociation87769E13": Object {
+      "Properties": Object {
+        "RouteTableId": Object {
+          "Ref": "lambdatosagemakerstackVpcpublicSubnetSubnet1RouteTableDAFCC5D1",
+        },
+        "SubnetId": Object {
+          "Ref": "lambdatosagemakerstackVpcpublicSubnetSubnet1SubnetE21FDC1B",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "lambdatosagemakerstackVpcpublicSubnetSubnet1RouteTableDAFCC5D1": Object {
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "Default/lambda-to-sagemaker-stack/Vpc/publicSubnetSubnet1",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "lambdatosagemakerstackVpcA8F68D19",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "lambdatosagemakerstackVpcpublicSubnetSubnet1SubnetE21FDC1B": Object {
+      "Properties": Object {
+        "AvailabilityZone": Object {
+          "Fn::Select": Array [
+            0,
+            Object {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.0.0.0/26",
+        "MapPublicIpOnLaunch": true,
+        "Tags": Array [
+          Object {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "publicSubnet",
+          },
+          Object {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public",
+          },
+          Object {
+            "Key": "Name",
+            "Value": "Default/lambda-to-sagemaker-stack/Vpc/publicSubnetSubnet1",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "lambdatosagemakerstackVpcA8F68D19",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+  },
+}
+`;
