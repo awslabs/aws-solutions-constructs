@@ -51,6 +51,40 @@
         ]
       }
     },
+    "testlambdasagemakernoencryptionstackLambdaFunctionServiceRoleDefaultPolicy879820B4": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testlambdasagemakernoencryptionstackLambdaFunctionServiceRoleDefaultPolicy879820B4",
+        "Roles": [
+          {
+            "Ref": "testlambdasagemakernoencryptionstackLambdaFunctionServiceRoleD746613F"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray."
+            }
+          ]
+        }
+      }
+    },
     "testlambdasagemakernoencryptionstackLambdaFunction9E771884": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -110,9 +144,13 @@
               ]
             }
           }
+        },
+        "TracingConfig": {
+          "Mode": "Active"
         }
       },
       "DependsOn": [
+        "testlambdasagemakernoencryptionstackLambdaFunctionServiceRoleDefaultPolicy879820B4",
         "testlambdasagemakernoencryptionstackLambdaFunctionServiceRoleD746613F"
       ],
       "Metadata": {

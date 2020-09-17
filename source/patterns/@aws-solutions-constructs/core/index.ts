@@ -27,6 +27,8 @@ export * from './lib/lambda-defaults';
 export * from './lib/lambda-helper';
 export * from './lib/s3-bucket-defaults';
 export * from './lib/s3-bucket-helper';
+export * from './lib/sagemaker-defaults';
+export * from './lib/sagemaker-helper';
 export * from './lib/sns-defaults';
 export * from './lib/sns-helper';
 export * from './lib/sqs-defaults';
