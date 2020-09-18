@@ -94,17 +94,21 @@ export function buildSagemakerNotebook(scope: cdk.Construct, _roleArn: string, p
             maxAzs: 1,
             subnetConfiguration: [
               {
-                cidrMask: 26,
-                name: "publicSubnet",
-                subnetType: ec2.SubnetType.PUBLIC,
+                cidrMask: 24,
+                name: "isolatedSubnet",
+                subnetType: ec2.SubnetType.ISOLATED,
               },
             ],
+            natGateways: 0
           });
 
-          sagemakerNotebookProps.subnetId = vpcInstance.publicSubnets[0].subnetId;
+          sagemakerNotebookProps.subnetId = vpcInstance.isolatedSubnets[0].subnetId;
           securityGroup = new ec2.SecurityGroup(scope, "SecurityGroup", {
             vpc: vpcInstance,
+            allowAllOutbound: false
           });
+
+          vpcInstance.addFlowLog('FlowLog');
 
           sagemakerNotebookProps.securityGroupIds = [securityGroup.securityGroupId];
         }

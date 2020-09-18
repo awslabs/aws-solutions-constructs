@@ -225,32 +225,32 @@
         ]
       }
     },
-    "testlambdasagemakerstackVpcpublicSubnetSubnet1Subnet35C90FB0": {
+    "testlambdasagemakerstackVpcisolatedSubnetSubnet1SubnetD69EC095": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "CidrBlock": "10.0.0.0/26",
+        "CidrBlock": "10.0.0.0/24",
         "VpcId": {
           "Ref": "testlambdasagemakerstackVpcC02CE4FE"
         },
         "AvailabilityZone": "test-region-1a",
-        "MapPublicIpOnLaunch": true,
+        "MapPublicIpOnLaunch": false,
         "Tags": [
           {
             "Key": "aws-cdk:subnet-name",
-            "Value": "publicSubnet"
+            "Value": "isolatedSubnet"
           },
           {
             "Key": "aws-cdk:subnet-type",
-            "Value": "Public"
+            "Value": "Isolated"
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/publicSubnetSubnet1"
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/isolatedSubnetSubnet1"
           }
         ]
       }
     },
-    "testlambdasagemakerstackVpcpublicSubnetSubnet1RouteTableBBF3755B": {
+    "testlambdasagemakerstackVpcisolatedSubnetSubnet1RouteTableDD55542B": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -259,40 +259,37 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/publicSubnetSubnet1"
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/isolatedSubnetSubnet1"
           }
         ]
       }
     },
-    "testlambdasagemakerstackVpcpublicSubnetSubnet1RouteTableAssociation5742A179": {
+    "testlambdasagemakerstackVpcisolatedSubnetSubnet1RouteTableAssociation9C51F054": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "testlambdasagemakerstackVpcpublicSubnetSubnet1RouteTableBBF3755B"
+          "Ref": "testlambdasagemakerstackVpcisolatedSubnetSubnet1RouteTableDD55542B"
         },
         "SubnetId": {
-          "Ref": "testlambdasagemakerstackVpcpublicSubnetSubnet1Subnet35C90FB0"
+          "Ref": "testlambdasagemakerstackVpcisolatedSubnetSubnet1SubnetD69EC095"
         }
       }
     },
-    "testlambdasagemakerstackVpcpublicSubnetSubnet1DefaultRoute3FE84E5B": {
-      "Type": "AWS::EC2::Route",
+    "testlambdasagemakerstackVpcFlowLogIAMRoleE951637C": {
+      "Type": "AWS::IAM::Role",
       "Properties": {
-        "RouteTableId": {
-          "Ref": "testlambdasagemakerstackVpcpublicSubnetSubnet1RouteTableBBF3755B"
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "vpc-flow-logs.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
         },
-        "DestinationCidrBlock": "0.0.0.0/0",
-        "GatewayId": {
-          "Ref": "testlambdasagemakerstackVpcIGW4B31803C"
-        }
-      },
-      "DependsOn": [
-        "testlambdasagemakerstackVpcVPCGW13EDE857"
-      ]
-    },
-    "testlambdasagemakerstackVpcIGW4B31803C": {
-      "Type": "AWS::EC2::InternetGateway",
-      "Properties": {
         "Tags": [
           {
             "Key": "Name",
@@ -301,15 +298,78 @@
         ]
       }
     },
-    "testlambdasagemakerstackVpcVPCGW13EDE857": {
-      "Type": "AWS::EC2::VPCGatewayAttachment",
+    "testlambdasagemakerstackVpcFlowLogIAMRoleDefaultPolicyD372C1F0": {
+      "Type": "AWS::IAM::Policy",
       "Properties": {
-        "VpcId": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:DescribeLogStreams"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testlambdasagemakerstackVpcFlowLogLogGroupECD3E6E4",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "iam:PassRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testlambdasagemakerstackVpcFlowLogIAMRoleE951637C",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testlambdasagemakerstackVpcFlowLogIAMRoleDefaultPolicyD372C1F0",
+        "Roles": [
+          {
+            "Ref": "testlambdasagemakerstackVpcFlowLogIAMRoleE951637C"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackVpcFlowLogLogGroupECD3E6E4": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "RetentionInDays": 731
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "testlambdasagemakerstackVpcFlowLog8144C749": {
+      "Type": "AWS::EC2::FlowLog",
+      "Properties": {
+        "ResourceId": {
           "Ref": "testlambdasagemakerstackVpcC02CE4FE"
         },
-        "InternetGatewayId": {
-          "Ref": "testlambdasagemakerstackVpcIGW4B31803C"
-        }
+        "ResourceType": "VPC",
+        "TrafficType": "ALL",
+        "DeliverLogsPermissionArn": {
+          "Fn::GetAtt": [
+            "testlambdasagemakerstackVpcFlowLogIAMRoleE951637C",
+            "Arn"
+          ]
+        },
+        "LogDestinationType": "cloud-watch-logs",
+        "LogGroupName": {
+          "Ref": "testlambdasagemakerstackVpcFlowLogLogGroupECD3E6E4"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc"
+          }
+        ]
       }
     },
     "testlambdasagemakerstackSecurityGroupA3CACF23": {
@@ -318,9 +378,11 @@
         "GroupDescription": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/SecurityGroup",
         "SecurityGroupEgress": [
           {
-            "CidrIp": "0.0.0.0/0",
-            "Description": "Allow all outbound traffic by default",
-            "IpProtocol": "-1"
+            "CidrIp": "255.255.255.255/32",
+            "Description": "Disallow all traffic",
+            "FromPort": 252,
+            "IpProtocol": "icmp",
+            "ToPort": 86
           }
         ],
         "VpcId": {
@@ -402,7 +464,7 @@
           }
         ],
         "SubnetId": {
-          "Ref": "testlambdasagemakerstackVpcpublicSubnetSubnet1Subnet35C90FB0"
+          "Ref": "testlambdasagemakerstackVpcisolatedSubnetSubnet1SubnetD69EC095"
         }
       }
     }
