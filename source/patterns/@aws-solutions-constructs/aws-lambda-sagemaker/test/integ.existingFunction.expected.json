@@ -373,10 +373,11 @@
         ]
       }
     },
-    "testlambdasagemakerSecurityGroupC6C5F1B6": {
+    "testlambdasagemakeringresssecuritygroup5921291A": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "test-lambda-existing-function-sagemaker/test-lambda-sagemaker/SecurityGroup",
+        "GroupDescription": "test-lambda-existing-function-sagemaker/test-lambda-sagemaker/ingress-security-group",
+        "GroupName": "IngressSecurityGroup",
         "SecurityGroupEgress": [
           {
             "CidrIp": "255.255.255.255/32",
@@ -384,6 +385,34 @@
             "FromPort": 252,
             "IpProtocol": "icmp",
             "ToPort": 86
+          }
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": "10.0.0.0/16",
+            "Description": "from 10.0.0.0/16:3306",
+            "FromPort": 3306,
+            "IpProtocol": "tcp",
+            "ToPort": 3306
+          }
+        ],
+        "VpcId": {
+          "Ref": "testlambdasagemakerVpc93693A85"
+        }
+      }
+    },
+    "testlambdasagemakerSecurityGroupC6C5F1B6": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "test-lambda-existing-function-sagemaker/test-lambda-sagemaker/SecurityGroup",
+        "GroupName": "EgressSecurityGroup",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "from 0.0.0.0/0:80",
+            "FromPort": 80,
+            "IpProtocol": "tcp",
+            "ToPort": 80
           }
         ],
         "VpcId": {
@@ -457,6 +486,12 @@
           "Ref": "testlambdasagemakerEncryptionKey2AACF9E0"
         },
         "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "testlambdasagemakeringresssecuritygroup5921291A",
+              "GroupId"
+            ]
+          },
           {
             "Fn::GetAtt": [
               "testlambdasagemakerSecurityGroupC6C5F1B6",
