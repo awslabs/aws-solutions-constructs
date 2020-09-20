@@ -317,11 +317,11 @@ Object {
         "GroupDescription": "Default/lambda-to-sagemaker-stack/SecurityGroup",
         "SecurityGroupEgress": Array [
           Object {
-            "CidrIp": "255.255.255.255/32",
-            "Description": "Disallow all traffic",
-            "FromPort": 252,
-            "IpProtocol": "icmp",
-            "ToPort": 86,
+            "CidrIp": "0.0.0.0/0",
+            "Description": "from 0.0.0.0/0:80",
+            "FromPort": 80,
+            "IpProtocol": "tcp",
+            "ToPort": 80,
           },
         ],
         "VpcId": Object {
@@ -509,6 +509,15 @@ Object {
             "FromPort": 252,
             "IpProtocol": "icmp",
             "ToPort": 86,
+          },
+        ],
+        "SecurityGroupIngress": Array [
+          Object {
+            "CidrIp": "10.0.0.0/16",
+            "Description": "from 10.0.0.0/16:3306",
+            "FromPort": 3306,
+            "IpProtocol": "tcp",
+            "ToPort": 3306,
           },
         ],
         "VpcId": Object {
@@ -838,11 +847,11 @@ Object {
         "GroupDescription": "Default/lambda-to-sagemaker-stack/SecurityGroup",
         "SecurityGroupEgress": Array [
           Object {
-            "CidrIp": "255.255.255.255/32",
-            "Description": "Disallow all traffic",
-            "FromPort": 252,
-            "IpProtocol": "icmp",
-            "ToPort": 86,
+            "CidrIp": "0.0.0.0/0",
+            "Description": "from 0.0.0.0/0:80",
+            "FromPort": 80,
+            "IpProtocol": "tcp",
+            "ToPort": 80,
           },
         ],
         "VpcId": Object {
@@ -1030,6 +1039,15 @@ Object {
             "FromPort": 252,
             "IpProtocol": "icmp",
             "ToPort": 86,
+          },
+        ],
+        "SecurityGroupIngress": Array [
+          Object {
+            "CidrIp": "10.0.0.0/16",
+            "Description": "from 10.0.0.0/16:3306",
+            "FromPort": 3306,
+            "IpProtocol": "tcp",
+            "ToPort": 3306,
           },
         ],
         "VpcId": Object {
@@ -1359,11 +1377,11 @@ Object {
         "GroupDescription": "Default/lambda-to-sagemaker-stack/SecurityGroup",
         "SecurityGroupEgress": Array [
           Object {
-            "CidrIp": "255.255.255.255/32",
-            "Description": "Disallow all traffic",
-            "FromPort": 252,
-            "IpProtocol": "icmp",
-            "ToPort": 86,
+            "CidrIp": "0.0.0.0/0",
+            "Description": "from 0.0.0.0/0:80",
+            "FromPort": 80,
+            "IpProtocol": "tcp",
+            "ToPort": 80,
           },
         ],
         "VpcId": Object {
@@ -1551,6 +1569,15 @@ Object {
             "FromPort": 252,
             "IpProtocol": "icmp",
             "ToPort": 86,
+          },
+        ],
+        "SecurityGroupIngress": Array [
+          Object {
+            "CidrIp": "10.0.0.0/16",
+            "Description": "from 10.0.0.0/16:3306",
+            "FromPort": 3306,
+            "IpProtocol": "tcp",
+            "ToPort": 3306,
           },
         ],
         "VpcId": Object {
