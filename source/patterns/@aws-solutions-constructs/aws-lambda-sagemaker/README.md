@@ -88,7 +88,7 @@ Out of the box implementation of the Construct without any override will set the
 * Enable server-side encryption for SageMaker NotebookInstance using Customer Managed KMS Key
 
 ## Architecture
-![Architecture Diagram](architecture.png)
+![Architecture Diagram](architecture.png)z
 
 ***
 &copy; Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.

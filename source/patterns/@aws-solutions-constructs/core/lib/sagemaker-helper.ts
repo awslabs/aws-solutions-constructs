@@ -65,7 +65,8 @@ export function buildSagemakerNotebook(scope: cdk.Construct, _roleArn: string, p
   // Setup the notebook properties
   let sagemakerNotebookProps;
   let vpcInstance: ec2.Vpc;
-  let securityGroup: ec2.SecurityGroup;
+  let egressSecurityGroup: ec2.SecurityGroup;
+  let ingressSecurityGroup: ec2.SecurityGroup;
 
   // Conditional Sagemaker Notebook creation
   if (!props?.existingNotebookObj) {
@@ -94,19 +95,25 @@ export function buildSagemakerNotebook(scope: cdk.Construct, _roleArn: string, p
             maxAzs: 1,
             subnetConfiguration: [
               {
-                cidrMask: 26,
-                name: "publicSubnet",
-                subnetType: ec2.SubnetType.PUBLIC,
+                cidrMask: 24,
+                name: "isolatedSubnet",
+                subnetType: ec2.SubnetType.ISOLATED,
               },
             ],
+            natGateways: 0
           });
 
-          sagemakerNotebookProps.subnetId = vpcInstance.publicSubnets[0].subnetId;
-          securityGroup = new ec2.SecurityGroup(scope, "SecurityGroup", {
+          sagemakerNotebookProps.subnetId = vpcInstance.isolatedSubnets[0].subnetId;
+          ingressSecurityGroup = new ec2.SecurityGroup(scope, 'ingress-security-group', {
             vpc: vpcInstance,
+            allowAllOutbound: false
           });
-
-          sagemakerNotebookProps.securityGroupIds = [securityGroup.securityGroupId];
+          egressSecurityGroup = new ec2.SecurityGroup(scope, "egress-security-group", {
+            vpc: vpcInstance,
+            allowAllOutbound: false
+          });
+          vpcInstance.addFlowLog('FlowLog');
+          sagemakerNotebookProps.securityGroupIds = [ingressSecurityGroup.securityGroupId, egressSecurityGroup.securityGroupId];
         }
       }
 
