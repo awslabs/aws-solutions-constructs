@@ -278,12 +278,6 @@ Object {
         "SecurityGroupIds": Array [
           Object {
             "Fn::GetAtt": Array [
-              "lambdatosagemakerstackingresssecuritygroup10E25B33",
-              "GroupId",
-            ],
-          },
-          Object {
-            "Fn::GetAtt": Array [
               "lambdatosagemakerstackegresssecuritygroup61ADCCF7",
               "GroupId",
             ],
@@ -491,33 +485,6 @@ Object {
             "FromPort": 80,
             "IpProtocol": "tcp",
             "ToPort": 80,
-          },
-        ],
-        "VpcId": Object {
-          "Ref": "lambdatosagemakerstackVpcA8F68D19",
-        },
-      },
-      "Type": "AWS::EC2::SecurityGroup",
-    },
-    "lambdatosagemakerstackingresssecuritygroup10E25B33": Object {
-      "Properties": Object {
-        "GroupDescription": "Default/lambda-to-sagemaker-stack/ingress-security-group",
-        "SecurityGroupEgress": Array [
-          Object {
-            "CidrIp": "255.255.255.255/32",
-            "Description": "Disallow all traffic",
-            "FromPort": 252,
-            "IpProtocol": "icmp",
-            "ToPort": 86,
-          },
-        ],
-        "SecurityGroupIngress": Array [
-          Object {
-            "CidrIp": "10.0.0.0/24",
-            "Description": "from 10.0.0.0/24:443",
-            "FromPort": 443,
-            "IpProtocol": "tcp",
-            "ToPort": 443,
           },
         ],
         "VpcId": Object {
@@ -808,12 +775,6 @@ Object {
         "SecurityGroupIds": Array [
           Object {
             "Fn::GetAtt": Array [
-              "lambdatosagemakerstackingresssecuritygroup10E25B33",
-              "GroupId",
-            ],
-          },
-          Object {
-            "Fn::GetAtt": Array [
               "lambdatosagemakerstackegresssecuritygroup61ADCCF7",
               "GroupId",
             ],
@@ -1021,33 +982,6 @@ Object {
             "FromPort": 80,
             "IpProtocol": "tcp",
             "ToPort": 80,
-          },
-        ],
-        "VpcId": Object {
-          "Ref": "lambdatosagemakerstackVpcA8F68D19",
-        },
-      },
-      "Type": "AWS::EC2::SecurityGroup",
-    },
-    "lambdatosagemakerstackingresssecuritygroup10E25B33": Object {
-      "Properties": Object {
-        "GroupDescription": "Default/lambda-to-sagemaker-stack/ingress-security-group",
-        "SecurityGroupEgress": Array [
-          Object {
-            "CidrIp": "255.255.255.255/32",
-            "Description": "Disallow all traffic",
-            "FromPort": 252,
-            "IpProtocol": "icmp",
-            "ToPort": 86,
-          },
-        ],
-        "SecurityGroupIngress": Array [
-          Object {
-            "CidrIp": "10.0.0.0/24",
-            "Description": "from 10.0.0.0/24:443",
-            "FromPort": 443,
-            "IpProtocol": "tcp",
-            "ToPort": 443,
           },
         ],
         "VpcId": Object {
@@ -1338,12 +1272,6 @@ Object {
         "SecurityGroupIds": Array [
           Object {
             "Fn::GetAtt": Array [
-              "lambdatosagemakerstackingresssecuritygroup10E25B33",
-              "GroupId",
-            ],
-          },
-          Object {
-            "Fn::GetAtt": Array [
               "lambdatosagemakerstackegresssecuritygroup61ADCCF7",
               "GroupId",
             ],
@@ -1551,33 +1479,6 @@ Object {
             "FromPort": 80,
             "IpProtocol": "tcp",
             "ToPort": 80,
-          },
-        ],
-        "VpcId": Object {
-          "Ref": "lambdatosagemakerstackVpcA8F68D19",
-        },
-      },
-      "Type": "AWS::EC2::SecurityGroup",
-    },
-    "lambdatosagemakerstackingresssecuritygroup10E25B33": Object {
-      "Properties": Object {
-        "GroupDescription": "Default/lambda-to-sagemaker-stack/ingress-security-group",
-        "SecurityGroupEgress": Array [
-          Object {
-            "CidrIp": "255.255.255.255/32",
-            "Description": "Disallow all traffic",
-            "FromPort": 252,
-            "IpProtocol": "icmp",
-            "ToPort": 86,
-          },
-        ],
-        "SecurityGroupIngress": Array [
-          Object {
-            "CidrIp": "10.0.0.0/24",
-            "Description": "from 10.0.0.0/24:443",
-            "FromPort": 443,
-            "IpProtocol": "tcp",
-            "ToPort": 443,
           },
         ],
         "VpcId": Object {
