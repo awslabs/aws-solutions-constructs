@@ -424,17 +424,35 @@
         ]
       }
     },
+    "testlambdasagemakerexistingencryptionstackingresssecuritygroup43AB5E30": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "test-lambda-sagemaker-existing-encryption-stack/test-lambda-sagemaker-existing-encryption-stack/ingress-security-group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "255.255.255.255/32",
+            "Description": "Disallow all traffic",
+            "FromPort": 252,
+            "IpProtocol": "icmp",
+            "ToPort": 86
+          }
+        ],
+        "VpcId": {
+          "Ref": "testlambdasagemakerexistingencryptionstackVpc2E5F63E1"
+        }
+      }
+    },
     "testlambdasagemakerexistingencryptionstackegresssecuritygroupA13993F6": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "test-lambda-sagemaker-existing-encryption-stack/test-lambda-sagemaker-existing-encryption-stack/egress-security-group",
         "SecurityGroupEgress": [
           {
-            "CidrIp": "0.0.0.0/0",
-            "Description": "from 0.0.0.0/0:80",
-            "FromPort": 80,
-            "IpProtocol": "tcp",
-            "ToPort": 80
+            "CidrIp": "255.255.255.255/32",
+            "Description": "Disallow all traffic",
+            "FromPort": 252,
+            "IpProtocol": "icmp",
+            "ToPort": 86
           }
         ],
         "VpcId": {
@@ -456,6 +474,12 @@
           "Ref": "EncryptionKey1B843E66"
         },
         "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "testlambdasagemakerexistingencryptionstackingresssecuritygroup43AB5E30",
+              "GroupId"
+            ]
+          },
           {
             "Fn::GetAtt": [
               "testlambdasagemakerexistingencryptionstackegresssecuritygroupA13993F6",
