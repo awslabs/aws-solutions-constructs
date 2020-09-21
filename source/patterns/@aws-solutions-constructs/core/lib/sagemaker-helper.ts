@@ -108,8 +108,8 @@ export function buildSagemakerNotebook(scope: cdk.Construct, _roleArn: string, p
             vpc: vpcInstance,
             allowAllOutbound: false
           });
-          ingressSecurityGroup.addIngressRule(ec2.Peer.ipv4('10.0.0.0/16'), ec2.Port.tcp(3306));
-          egressSecurityGroup = new ec2.SecurityGroup(scope, "SecurityGroup", {
+          ingressSecurityGroup.addIngressRule(ec2.Peer.ipv4('10.0.0.0/24'), ec2.Port.tcp(443));
+          egressSecurityGroup = new ec2.SecurityGroup(scope, "egress-security-group", {
             vpc: vpcInstance,
             allowAllOutbound: false
           });
