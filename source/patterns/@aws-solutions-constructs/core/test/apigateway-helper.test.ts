@@ -23,7 +23,7 @@ function deployRegionalApiGateway(stack: Stack) {
   const lambdaFunctionProps: lambda.FunctionProps = {
     runtime: lambda.Runtime.NODEJS_12_X,
     handler: 'index.handler',
-    code: lambda.Code.asset(`${__dirname}/lambda`)
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
 
   const fn = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
@@ -100,7 +100,7 @@ test('Test override for RegionalApiGateway', () => {
   const lambdaFunctionProps: lambda.FunctionProps = {
     runtime: lambda.Runtime.NODEJS_12_X,
     handler: 'index.handler',
-    code: lambda.Code.asset(`${__dirname}/lambda`)
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
 
   const fn = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
@@ -130,7 +130,7 @@ test('Test override for GlobalApiGateway', () => {
   const lambdaFunctionProps: lambda.FunctionProps = {
     runtime: lambda.Runtime.NODEJS_12_X,
     handler: 'index.handler',
-    code: lambda.Code.asset(`${__dirname}/lambda`)
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
 
   const fn = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
@@ -158,7 +158,7 @@ test('Test ApiGateway::Account resource for RegionalApiGateway', () => {
   const lambdaFunctionProps: lambda.FunctionProps = {
     runtime: lambda.Runtime.NODEJS_12_X,
     handler: 'index.handler',
-    code: lambda.Code.asset(`${__dirname}/lambda`)
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
 
   const fn = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
@@ -180,7 +180,7 @@ test('Test ApiGateway::Account resource for GlobalApiGateway', () => {
   const lambdaFunctionProps: lambda.FunctionProps = {
     runtime: lambda.Runtime.NODEJS_12_X,
     handler: 'index.handler',
-    code: lambda.Code.asset(`${__dirname}/lambda`)
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
 
   const fn = defaults.deployLambdaFunction(stack, lambdaFunctionProps);

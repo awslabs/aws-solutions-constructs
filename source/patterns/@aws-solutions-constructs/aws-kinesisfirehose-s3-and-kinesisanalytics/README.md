@@ -109,6 +109,7 @@ Out of the box implementation of the Construct without any override will set the
 * Turn on the versioning for S3 Bucket
 * Don't allow public access for S3 Bucket
 * Retain the S3 Bucket when deleting the CloudFormation stack
+* Applies Lifecycle rule to move noncurrent object versions to Glacier storage after 90 days
 
 ### Amazon Kinesis Data Analytics
 * Configure least privilege access IAM role for Amazon Kinesis Analytics

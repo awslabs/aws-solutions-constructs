@@ -83,7 +83,11 @@ Object {
                     "Fn::Join": Array [
                       "",
                       Array [
-                        "arn:aws:logs:",
+                        "arn:",
+                        Object {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":logs:",
                         Object {
                           "Ref": "AWS::Region",
                         },
@@ -602,7 +606,7 @@ Object {
               "Arn",
             ],
           },
-          "maxReceiveCount": 3,
+          "maxReceiveCount": 15,
         },
       },
       "Type": "AWS::SQS::Queue",
@@ -763,7 +767,11 @@ Object {
                     "Fn::Join": Array [
                       "",
                       Array [
-                        "arn:aws:logs:",
+                        "arn:",
+                        Object {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":logs:",
                         Object {
                           "Ref": "AWS::Region",
                         },
@@ -1197,93 +1205,9 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
-    "apigatewaysqsdeadLetterQueue25B510FA": Object {
-      "Properties": Object {
-        "KmsMasterKeyId": "alias/aws/sqs",
-      },
-      "Type": "AWS::SQS::Queue",
-    },
-    "apigatewaysqsdeadLetterQueuePolicy55247071": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "sqs:DeleteMessage",
-                "sqs:ReceiveMessage",
-                "sqs:SendMessage",
-                "sqs:GetQueueAttributes",
-                "sqs:RemovePermission",
-                "sqs:AddPermission",
-                "sqs:SetQueueAttributes",
-              ],
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":iam::",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":root",
-                    ],
-                  ],
-                },
-              },
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "apigatewaysqsdeadLetterQueue25B510FA",
-                  "Arn",
-                ],
-              },
-              "Sid": "QueueOwnerOnlyAccess",
-            },
-            Object {
-              "Action": "SQS:*",
-              "Condition": Object {
-                "Bool": Object {
-                  "aws:SecureTransport": "false",
-                },
-              },
-              "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "apigatewaysqsdeadLetterQueue25B510FA",
-                  "Arn",
-                ],
-              },
-              "Sid": "HttpsOnly",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "Queues": Array [
-          Object {
-            "Ref": "apigatewaysqsdeadLetterQueue25B510FA",
-          },
-        ],
-      },
-      "Type": "AWS::SQS::QueuePolicy",
-    },
     "apigatewaysqsqueueE186B895": Object {
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
-        "RedrivePolicy": Object {
-          "deadLetterTargetArn": Object {
-            "Fn::GetAtt": Array [
-              "apigatewaysqsdeadLetterQueue25B510FA",
-              "Arn",
-            ],
-          },
-          "maxReceiveCount": 3,
-        },
       },
       "Type": "AWS::SQS::Queue",
     },
@@ -1443,7 +1367,11 @@ Object {
                     "Fn::Join": Array [
                       "",
                       Array [
-                        "arn:aws:logs:",
+                        "arn:",
+                        Object {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":logs:",
                         Object {
                           "Ref": "AWS::Region",
                         },
@@ -1773,7 +1701,7 @@ Object {
               "Arn",
             ],
           },
-          "maxReceiveCount": 3,
+          "maxReceiveCount": 15,
         },
       },
       "Type": "AWS::SQS::Queue",

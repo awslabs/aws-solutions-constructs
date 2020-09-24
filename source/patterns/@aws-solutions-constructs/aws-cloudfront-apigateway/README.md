@@ -24,22 +24,20 @@
 
 This AWS Solutions Construct implements an AWS CloudFront fronting an Amazon API Gateway REST API.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
 ``` javascript
-const api = require('@aws-cdk/aws-apigateway');
-const lambda = require("@aws-cdk/aws-lambda");
-const { CloudFrontToApiGateway } = require('@aws-solutions-constructs/aws-cloudfront-apigateway');
-
-const stack = new Stack();
+import * as api from '@aws-cdk/aws-apigateway';
+import * as lambda from "@aws-cdk/aws-lambda";
+import { CloudFrontToApiGateway } from '@aws-solutions-constructs/aws-cloudfront-apigateway';
 
 const lambdaProps: lambda.FunctionProps = {
-    code: lambda.Code.asset(`${__dirname}/lambda`),
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     runtime: lambda.Runtime.NODEJS_12_X,
     handler: 'index.handler'
 };
 
-const lambdafunction = new lambda.Function(stack, 'LambdaFunction', lambdaProps);
+const lambdafunction = new lambda.Function(this, 'LambdaFunction', lambdaProps);
 
 const apiGatewayProps: api.LambdaRestApiProps = {
         handler: lambdafunction,
@@ -51,9 +49,9 @@ const apiGatewayProps: api.LambdaRestApiProps = {
         }
 };
 
-const apiGateway = new api.LambdaRestApi(scope, 'LambdaRestApi', apiGatewayProps);
+const apiGateway = new api.LambdaRestApi(this, 'LambdaRestApi', apiGatewayProps);
 
-new CloudFrontToApiGateway(stack, 'test-cloudfront-apigateway', {
+new CloudFrontToApiGateway(this, 'test-cloudfront-apigateway', {
     existingApiGatewayObj: apiGateway
 });
 

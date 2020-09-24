@@ -24,21 +24,17 @@
 
 This AWS Solutions Construct implements an Amazon Cognito securing an Amazon API Gateway Lambda backed REST APIs pattern.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
-``` javascript
-const { CognitoToApiGatewayToLambda } = require('@aws-solutions-constructs/aws-cognito-apigateway-lambda');
+``` typescript
+import { CognitoToApiGatewayToLambda } from '@aws-solutions-constructs/aws-cognito-apigateway-lambda';
 
-const stack = new Stack(app, 'test-cognito-apigateway-lambda-stack');
-
-const lambdaProps: lambda.FunctionProps = {
-    code: lambda.Code.asset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_12_X,
-    handler: 'index.handler'
-};
-
-new CognitoToApiGatewayToLambda(stack, 'test-cognito-apigateway-lambda', {
-    lambdaFunctionProps: lambdaProps,
+new CognitoToApiGatewayToLambda(this, 'test-cognito-apigateway-lambda', {
+    lambdaFunctionProps: {
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+        runtime: lambda.Runtime.NODEJS_12_X,
+        handler: 'index.handler'
+    }
 });
 ```
 

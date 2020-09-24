@@ -67,7 +67,13 @@ export interface DynamoDBStreamToLambdaToElasticSearchAndKibanaProps {
    *
    * @default - None
    */
-  readonly domainName: string
+  readonly domainName: string,
+  /**
+   * Optional Cognito Domain Name, if provided it will be used for Cognito Domain, and domainName will be used for the Elasticsearch Domain
+   *
+   * @default - None
+   */
+  readonly cognitoDomainName?: string
 }
 
 export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
@@ -108,7 +114,8 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
     const _props2: LambdaToElasticSearchAndKibanaProps = {
       existingLambdaObj: this.lambdaFunction,
       domainName: props.domainName,
-      esDomainProps: props.esDomainProps
+      esDomainProps: props.esDomainProps,
+      cognitoDomainName: props.cognitoDomainName
     };
 
     this.lambdaToElasticSearchAndKibana = new LambdaToElasticSearchAndKibana(this, 'LambdaToElasticSearch', _props2);

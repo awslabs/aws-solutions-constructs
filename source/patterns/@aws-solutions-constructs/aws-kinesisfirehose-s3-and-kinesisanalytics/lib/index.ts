@@ -30,7 +30,7 @@ export interface KinesisFirehoseToAnalyticsAndS3Props {
      *
      * @default - Default props are used.
      */
-    readonly kinesisFirehoseProps?: kinesisFirehose.CfnDeliveryStreamProps,
+    readonly kinesisFirehoseProps?: kinesisFirehose.CfnDeliveryStreamProps | any,
     /**
      * Optional user-provided props to override the default props for the Kinesis Analytics application.
      *
@@ -66,7 +66,7 @@ export class KinesisFirehoseToAnalyticsAndS3 extends Construct {
      * @summary Constructs a new instance of the KinesisFirehoseToAnalyticsAndS3 class.
      * @param {cdk.App} scope - represents the scope for all the resources.
      * @param {string} id - this is a a scope-unique id.
-     * @param {CloudFrontToApiGatewayProps} props - user provided props for the construct
+     * @param {KinesisFirehoseToAnalyticsAndS3Props} props - user provided props for the construct
      * @since 0.8.0
      * @access public
      */

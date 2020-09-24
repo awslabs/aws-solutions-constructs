@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { Construct, Stack, StackProps, Duration, CfnOutput } from '@aws-cdk/core';
+import { Construct, Stack, StackProps, Duration, CfnOutput, Aws } from '@aws-cdk/core';
 import { CloudFrontToS3 } from '@aws-solutions-constructs/aws-cloudfront-s3';
 import * as lambda from '@aws-cdk/aws-lambda';
 import { Provider } from '@aws-cdk/custom-resources';
@@ -26,7 +26,7 @@ export class S3StaticWebsiteStack extends Stack {
     const sourcePrefix: string = 'WebApplication/1_StaticWebHosting/website/';
 
     const construct = new CloudFrontToS3(this, 'CloudFrontToS3', {});
-    const targetBucket: string = construct.s3Bucket.bucketName;
+    const targetBucket: string = construct.s3Bucket?.bucketName || '';
 
     const lambdaFunc = new lambda.Function(this, 'staticContentHandler', {
       runtime: lambda.Runtime.PYTHON_3_8,
@@ -37,7 +37,7 @@ export class S3StaticWebsiteStack extends Stack {
         new PolicyStatement({
           actions: ["s3:GetObject",
             "s3:ListBucket"],
-          resources: [`arn:aws:s3:::${sourceBucket}`,
+          resources: [`arn:${Aws.PARTITION}:s3:::${sourceBucket}`,
           `arn:aws:s3:::${sourceBucket}/${sourcePrefix}*`]
         }),
         new PolicyStatement({
@@ -49,7 +49,7 @@ export class S3StaticWebsiteStack extends Stack {
             "s3:DeleteObject",
             "s3:DeleteObjectVersion",
             "s3:CopyObject"],
-          resources: [`arn:aws:s3:::${targetBucket}`,
+          resources: [`arn:${Aws.PARTITION}:s3:::${targetBucket}`,
           `arn:aws:s3:::${targetBucket}/*`]
         }),
       ]

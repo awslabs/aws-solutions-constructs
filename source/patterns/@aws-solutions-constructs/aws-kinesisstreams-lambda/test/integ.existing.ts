@@ -20,7 +20,7 @@ import * as iam from '@aws-cdk/aws-iam';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-ks-lambda-stack');
+const stack = new Stack(app, 'test-ks-existing-lambda-stack');
 stack.templateOptions.description = 'Integration Test for aws-kinesisstreams-lambda';
 
 const lambdaRole = new iam.Role(stack, 'test-role', {
@@ -33,7 +33,7 @@ const lambdaRole = new iam.Role(stack, 'test-role', {
                     'logs:CreateLogStream',
                     'logs:PutLogEvents'
                 ],
-                resources: [`arn:aws:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group:/aws/lambda/*`]
+                resources: [`arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group:/aws/lambda/*`]
             })]
         })
     }
@@ -42,7 +42,7 @@ const lambdaRole = new iam.Role(stack, 'test-role', {
 const lambdaFn = new lambda.Function(stack, 'test-fn', {
     runtime: lambda.Runtime.NODEJS_10_X,
     handler: 'index.handler',
-    code: lambda.Code.asset(`${__dirname}/lambda`),
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     role: lambdaRole,
 });
 

@@ -52,7 +52,7 @@ export interface CognitoToApiGatewayToLambdaProps {
    *
    * @default - Default props are used
    */
-  readonly cognitoUserPoolClientProps?: cognito.UserPoolClientProps
+  readonly cognitoUserPoolClientProps?: cognito.UserPoolClientProps | any
 }
 
 export class CognitoToApiGatewayToLambda extends Construct {

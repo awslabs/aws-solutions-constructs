@@ -26,16 +26,16 @@
 
 This AWS Solutions Construct implements an Amazon API Gateway REST API connected to an AWS Lambda function pattern.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
-``` javascript
-const { ApiGatewayToLambda } = require('@aws-solutions-constructs/aws-apigateway-lambda');
+``` typescript
+import { ApiGatewayToLambda } from '@aws-solutions-constructs/aws-apigateway-lambda';
 
-new ApiGatewayToLambda(stack, 'ApiGatewayToLambdaPattern', {
+new ApiGatewayToLambda(this, 'ApiGatewayToLambdaPattern', {
     lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',
-        code: lambda.Code.asset(`${__dirname}/lambda`)
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }
 });
 

@@ -18,9 +18,6 @@
           "BlockPublicPolicy": true,
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
-        },
-        "VersioningConfiguration": {
-          "Status": "Enabled"
         }
       },
       "UpdateReplacePolicy": "Retain",
@@ -86,6 +83,19 @@
             }
           ]
         },
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "NoncurrentVersionTransitions": [
+                {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90
+                }
+              ],
+              "Status": "Enabled"
+            }
+          ]
+        },
         "LoggingConfiguration": {
           "DestinationBucketName": {
             "Ref": "S3LoggingBucket800A2B27"
@@ -133,7 +143,7 @@
         }
       },
       "DependsOn": [
-        "tests3lambdaLambdaFunctionAllowBucketNotificationsFromtests3lambdaexistingbucketstackS3BucketA1F8245606EA6713"
+        "S3BucketAllowBucketNotificationsTotests3lambdaexistingbucketstacktests3lambdaLambdaFunctionA42D14CC3F8CB11C"
       ]
     },
     "S3BucketPolicyF560589A": {
@@ -174,6 +184,28 @@
         }
       }
     },
+    "S3BucketAllowBucketNotificationsTotests3lambdaexistingbucketstacktests3lambdaLambdaFunctionA42D14CC3F8CB11C": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "tests3lambdaLambdaFunctionB56B7023",
+            "Arn"
+          ]
+        },
+        "Principal": "s3.amazonaws.com",
+        "SourceAccount": {
+          "Ref": "AWS::AccountId"
+        },
+        "SourceArn": {
+          "Fn::GetAtt": [
+            "S3Bucket07682993",
+            "Arn"
+          ]
+        }
+      }
+    },
     "tests3lambdaLambdaFunctionServiceRoleA74F4427": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -204,7 +236,11 @@
                     "Fn::Join": [
                       "",
                       [
-                        "arn:aws:logs:",
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
                         {
                           "Ref": "AWS::Region"
                         },
@@ -328,28 +364,6 @@
               "id": "W58",
               "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions."
             }
-          ]
-        }
-      }
-    },
-    "tests3lambdaLambdaFunctionAllowBucketNotificationsFromtests3lambdaexistingbucketstackS3BucketA1F8245606EA6713": {
-      "Type": "AWS::Lambda::Permission",
-      "Properties": {
-        "Action": "lambda:InvokeFunction",
-        "FunctionName": {
-          "Fn::GetAtt": [
-            "tests3lambdaLambdaFunctionB56B7023",
-            "Arn"
-          ]
-        },
-        "Principal": "s3.amazonaws.com",
-        "SourceAccount": {
-          "Ref": "AWS::AccountId"
-        },
-        "SourceArn": {
-          "Fn::GetAtt": [
-            "S3Bucket07682993",
-            "Arn"
           ]
         }
       }

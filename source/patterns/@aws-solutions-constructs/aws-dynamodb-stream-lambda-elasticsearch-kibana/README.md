@@ -24,21 +24,24 @@
 
 This AWS Solutions Construct implements Amazon DynamoDB table with stream, AWS Lambda function and Amazon Elasticsearch Service with the least privileged permissions.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
-``` javascript
-const { DynamoDBStreamToLambdaToElasticSearchAndKibana, DynamoDBStreamToLambdaToElasticSearchAndKibanaProps } = require('@aws-solutions-constructs/aws-dynamodb-stream-lambda-elasticsearch-kibana');
+``` typescript
+import { DynamoDBStreamToLambdaToElasticSearchAndKibana, DynamoDBStreamToLambdaToElasticSearchAndKibanaProps } from '@aws-solutions-constructs/aws-dynamodb-stream-lambda-elasticsearch-kibana';
+import { Aws } from "@aws-cdk/core";
 
 const props: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps = {
     lambdaFunctionProps: {
-        code: lambda.Code.asset(`${__dirname}/lambda`),
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
         runtime: lambda.Runtime.NODEJS_12_X,
         handler: 'index.handler'
     },
-    domainName: 'test-domain'
+    domainName: 'test-domain',
+    // TODO: Ensure the Cognito domain name is globally unique
+    cognitoDomainName: 'globallyuniquedomain' + Aws.ACCOUNT_ID;
 };
 
-new DynamoDBStreamToLambdaToElasticSearchAndKibana(stack, 'test-dynamodb-stream-lambda-elasticsearch-kibana', props);
+new DynamoDBStreamToLambdaToElasticSearchAndKibana(this, 'test-dynamodb-stream-lambda-elasticsearch-kibana', props);
 ```
 
 ## Initializer
@@ -77,6 +80,10 @@ _Parameters_
 |elasticsearchDomain|[`elasticsearch.CfnDomain`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-elasticsearch.CfnDomain.html)|Returns an instance of elasticsearch.CfnDomain created by the construct|
 |elasticsearchDomain|[`iam.Role`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)|Returns an instance of iam.Role created by the construct for elasticsearch.CfnDomain|
 |cloudwatchAlarms|[`cloudwatch.Alarm[]`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudwatch.Alarm.html)|Returns a list of cloudwatch.Alarm created by the construct|
+
+## Lambda Function
+
+This pattern requires a lambda function that can post data into the Elasticsearch from DynamoDB stream. A sample function is provided [here](https://github.com/awslabs/aws-solutions-constructs/blob/master/source/patterns/%40aws-solutions-constructs/aws-dynamodb-stream-lambda-elasticsearch-kibana/test/lambda/index.js).
 
 ## Default settings
 

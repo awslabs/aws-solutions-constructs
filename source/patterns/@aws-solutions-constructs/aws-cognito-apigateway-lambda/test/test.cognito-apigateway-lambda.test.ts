@@ -20,7 +20,7 @@ import '@aws-cdk/assert/jest';
 
 function deployNewFunc(stack: cdk.Stack) {
   const lambdaFunctionProps: lambda.FunctionProps = {
-    code: lambda.Code.asset(`${__dirname}/lambda`),
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     runtime: lambda.Runtime.NODEJS_10_X,
     handler: 'index.handler'
   };
@@ -40,7 +40,7 @@ test('override cognito properties', () => {
   const stack = new cdk.Stack();
 
   const lambdaFunctionProps: lambda.FunctionProps = {
-    code: lambda.Code.asset(`${__dirname}/lambda`),
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     runtime: lambda.Runtime.NODEJS_12_X,
     handler: 'index.handler'
   };
@@ -101,4 +101,31 @@ test('check properties', () => {
   expect(construct.apiGatewayCloudWatchRole !== null);
   expect(construct.apiGatewayLogGroup !== null);
   expect(construct.apiGatewayAuthorizer !== null);
+});
+
+test('override cognito cognitoUserPoolClientProps', () => {
+  const stack = new cdk.Stack();
+
+  const lambdaFunctionProps: lambda.FunctionProps = {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler'
+  };
+
+  const cognitoUserPoolClientProps = {
+    authFlows: {
+      userSrp: true
+    }
+  };
+
+  new CognitoToApiGatewayToLambda(stack, 'test-cognito-apigateway-lambda', {
+    lambdaFunctionProps,
+    cognitoUserPoolClientProps
+  });
+
+  expect(stack).toHaveResource('AWS::Cognito::UserPoolClient', {
+    ExplicitAuthFlows: [
+      "ALLOW_USER_SRP_AUTH"
+    ],
+  });
 });

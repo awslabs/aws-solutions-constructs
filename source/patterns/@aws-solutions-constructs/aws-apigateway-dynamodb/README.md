@@ -26,14 +26,12 @@
 ## Overview
 This AWS Solutions Construct implements an Amazon API Gateway REST API connected to Amazon DynamoDB table.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
-``` javascript
+``` typescript
 import { ApiGatewayToDynamoDBProps, ApiGatewayToDynamoDB } from "@aws-solutions-constructs/aws-apigateway-dynamodb";
 
-const props: ApiGatewayToDynamoDBProps = {};
-
-new ApiGatewayToDynamoDB(stack, 'test-api-gateway-dynamodb-default', props);
+new ApiGatewayToDynamoDB(this, 'test-api-gateway-dynamodb-default', {});
 
 ```
 

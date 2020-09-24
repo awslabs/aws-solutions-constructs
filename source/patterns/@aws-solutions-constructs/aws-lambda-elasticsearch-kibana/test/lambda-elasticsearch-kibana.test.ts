@@ -20,7 +20,7 @@ import '@aws-cdk/assert/jest';
 function deployNewFunc(stack: cdk.Stack) {
   const props: LambdaToElasticSearchAndKibanaProps = {
     lambdaFunctionProps: {
-          code: lambda.Code.asset(`${__dirname}/lambda`),
+          code: lambda.Code.fromAsset(`${__dirname}/lambda`),
           runtime: lambda.Runtime.NODEJS_10_X,
           handler: 'index.handler'
     },

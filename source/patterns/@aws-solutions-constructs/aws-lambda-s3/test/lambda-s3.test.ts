@@ -29,7 +29,7 @@ test('Test minimal deployment with new Lambda function', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`)
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
         }
     });
     // Assertion 1
@@ -47,7 +47,7 @@ test('Test deployment w/ s3:Delete only', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`)
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
         },
         bucketPermissions: ['Delete']
     });
@@ -66,7 +66,7 @@ test('Test deployment w/ s3:Put only', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`)
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
         },
         bucketPermissions: ['Put']
     });
@@ -85,7 +85,7 @@ test('Test deployment w/ s3:Read only', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`)
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
         },
         bucketPermissions: ['Read']
     });
@@ -104,7 +104,7 @@ test('Test deployment w/ s3:ReadWrite only', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`)
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
         },
         bucketPermissions: ['ReadWrite']
     });
@@ -123,7 +123,7 @@ test('Test deployment w/ s3:Write only', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`)
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
         },
         bucketPermissions: ['Write']
     });
@@ -142,7 +142,7 @@ test('Test deployment w/ s3 multiple permissions', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`)
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
         },
         bucketPermissions: ['Write', 'Delete']
     });
@@ -161,7 +161,7 @@ test('Test the properties', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`)
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
         },
         bucketPermissions: ['Write']
     });
@@ -185,7 +185,7 @@ test('Test the bucketProps override', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`)
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
         },
         bucketProps: {
             websiteIndexDocument: 'index.main.html'

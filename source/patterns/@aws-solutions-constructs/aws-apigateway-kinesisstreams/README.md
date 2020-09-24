@@ -31,9 +31,7 @@ Here is a minimal deployable pattern definition in Typescript:
 ``` javascript
 import { ApiGatewayToKinesisStreams, ApiGatewayToKinesisStreamsProps } from '@aws-solutions-constructs/aws-apigateway-kinesisstreams';
 
-const props: ApiGatewayToKinesisStreamsProps = {};
-
-new ApiGatewayToKinesisStreams(this, 'test-apigw-kinesis', props);
+new ApiGatewayToKinesisStreams(this, 'test-apigw-kinesis', {});
 
 ```
 

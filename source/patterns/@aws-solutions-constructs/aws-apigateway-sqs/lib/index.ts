@@ -31,7 +31,13 @@ export interface ApiGatewayToSqsProps {
      */
     readonly apiGatewayProps?: api.RestApiProps | any
     /**
-     * Optional user-provided props to override the default props for the queue.
+     * Existing instance of SQS queue object, if this is set then the queueProps is ignored.
+     *
+     * @default - None
+     */
+    readonly existingQueueObj?: sqs.Queue,
+    /**
+     * User provided props to override the default props for the SQS queue.
      *
      * @default - Default props are used
      */
@@ -42,6 +48,12 @@ export interface ApiGatewayToSqsProps {
      * @default - required field.
      */
     readonly deployDeadLetterQueue?: boolean,
+    /**
+     * Optional user provided properties for the dead letter queue
+     *
+     * @default - Default props are used
+     */
+    readonly deadLetterQueueProps?: sqs.QueueProps,
     /**
      * The number of times a message can be unsuccessfully dequeued before being moved to the dead-letter queue.
      *
@@ -55,7 +67,7 @@ export interface ApiGatewayToSqsProps {
      */
     readonly allowCreateOperation?: boolean,
     /**
-     * API Gateway Request template for Create method, required if allowCreateOperation set to true
+     * API Gateway Request template for Create method, if allowCreateOperation set to true
      *
      * @default - None
      */
@@ -63,15 +75,27 @@ export interface ApiGatewayToSqsProps {
     /**
      * Whether to deploy an API Gateway Method for Read operations on the queue (i.e. sqs:ReceiveMessage).
      *
-     * @default - false
+     * @default - "Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")"
      */
     readonly allowReadOperation?: boolean,
+    /**
+     * API Gateway Request template for Get method, if allowReadOperation set to true
+     *
+     * @default - "Action=ReceiveMessage"
+     */
+    readonly readRequestTemplate?: string,
     /**
      * Whether to deploy an API Gateway Method for Delete operations on the queue (i.e. sqs:DeleteMessage).
      *
      * @default - false
      */
     readonly allowDeleteOperation?: boolean
+    /**
+     * API Gateway Request template for Delete method, if allowDeleteOperation set to true
+     *
+     * @default - "Action=DeleteMessage&ReceiptHandle=$util.urlEncode($input.params('receiptHandle'))"
+     */
+    readonly deleteRequestTemplate?: string
 }
 
 /**
@@ -97,15 +121,12 @@ export class ApiGatewayToSqs extends Construct {
         super(scope, id);
 
         // Setup the dead letter queue, if applicable
-        if (!props.deployDeadLetterQueue || props.deployDeadLetterQueue === true) {
-            const [dlq] = defaults.buildQueue(this, 'deadLetterQueue', {
-                queueProps: props.queueProps
-            });
-            this.deadLetterQueue = defaults.buildDeadLetterQueue({
-                deadLetterQueue: dlq,
-                maxReceiveCount: (props.maxReceiveCount) ? props.maxReceiveCount : 3
-            });
-        }
+        this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
+            existingQueueObj: props.existingQueueObj,
+            deployDeadLetterQueue: props.deployDeadLetterQueue,
+            deadLetterQueueProps: props.deadLetterQueueProps,
+            maxReceiveCount: props.maxReceiveCount
+        });
 
         // Setup the queue
         [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
@@ -124,10 +145,14 @@ export class ApiGatewayToSqs extends Construct {
         // Setup the API Gateway resource
         const apiGatewayResource = this.apiGateway.root.addResource('message');
 
-        // Setup API Gateway methods
         // Create
-        if (props.allowCreateOperation && props.allowCreateOperation === true && props.createRequestTemplate) {
-            const createRequestTemplate = "Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")";
+        let createRequestTemplate = "Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")";
+
+        if (props.createRequestTemplate) {
+            createRequestTemplate = props.createRequestTemplate;
+        }
+
+        if (props.allowCreateOperation && props.allowCreateOperation === true) {
             this.addActionToPolicy("sqs:SendMessage");
             defaults.addProxyMethodToApiResource({
                 service: "sqs",
@@ -139,9 +164,15 @@ export class ApiGatewayToSqs extends Construct {
                 contentType: "'application/x-www-form-urlencoded'"
             });
         }
+
         // Read
+        let readRequestTemplate = "Action=ReceiveMessage";
+
+        if (props.readRequestTemplate) {
+            readRequestTemplate = props.readRequestTemplate;
+        }
+
         if (!props.allowReadOperation || props.allowReadOperation === true) {
-            const getRequestTemplate = "Action=ReceiveMessage";
             this.addActionToPolicy("sqs:ReceiveMessage");
             defaults.addProxyMethodToApiResource({
                 service: "sqs",
@@ -149,13 +180,19 @@ export class ApiGatewayToSqs extends Construct {
                 apiGatewayRole: this.apiGatewayRole,
                 apiMethod: "GET",
                 apiResource: this.apiGateway.root,
-                requestTemplate: getRequestTemplate,
+                requestTemplate: readRequestTemplate,
                 contentType: "'application/x-www-form-urlencoded'"
             });
         }
+
         // Delete
+        let deleteRequestTemplate = "Action=DeleteMessage&ReceiptHandle=$util.urlEncode($input.params('receiptHandle'))";
+
+        if (props.deleteRequestTemplate) {
+            deleteRequestTemplate = props.deleteRequestTemplate;
+        }
+
         if (props.allowDeleteOperation && props.allowDeleteOperation === true) {
-            const deleteRequestTemplate = "Action=DeleteMessage&ReceiptHandle=$util.urlEncode($input.params('receiptHandle'))";
             this.addActionToPolicy("sqs:DeleteMessage");
             defaults.addProxyMethodToApiResource({
                 service: "sqs",

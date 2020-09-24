@@ -102,11 +102,23 @@ export function buildQueue(scope: cdk.Construct, id: string, props: BuildQueuePr
 
 export interface BuildDeadLetterQueueProps {
   /**
-   * An existing queue that has already been defined to be used as the dead letter queue.
+   * Existing instance of SQS queue object, if this is set then the queueProps is ignored.
    *
-   * @default - Default props are used.
+   * @default - None.
    */
-  readonly deadLetterQueue: sqs.Queue
+  readonly existingQueueObj?: sqs.Queue,
+  /**
+   * Whether to deploy a secondary queue to be used as a dead letter queue.
+   *
+   * @default - required field.
+   */
+  readonly deployDeadLetterQueue?: boolean,
+  /**
+   * Optional user provided properties for the dead letter queue
+   *
+   * @default - Default props are used
+   */
+  readonly deadLetterQueueProps?: sqs.QueueProps,
   /**
    * The number of times a message can be unsuccessfully dequeued before being moved to the dead letter queue.
    *
@@ -115,15 +127,25 @@ export interface BuildDeadLetterQueueProps {
   readonly maxReceiveCount?: number
 }
 
-export function buildDeadLetterQueue(props: BuildDeadLetterQueueProps): sqs.DeadLetterQueue {
+export function buildDeadLetterQueue(scope: cdk.Construct, props: BuildDeadLetterQueueProps): sqs.DeadLetterQueue | undefined {
+  if (!props.existingQueueObj && (props.deployDeadLetterQueue || props.deployDeadLetterQueue === undefined)) {
+    // Create the Dead Letter Queue
+    const [dlq] = buildQueue(scope, 'deadLetterQueue', {
+        queueProps: props.deadLetterQueueProps
+    });
+
     const mrc = (props.maxReceiveCount) ? props.maxReceiveCount : defaults.defaultMaxReceiveCount;
-    // Setup the queue interface
-    const dlq: sqs.DeadLetterQueue = {
+
+    // Setup the Dead Letter Queue interface
+    const dlqInterface: sqs.DeadLetterQueue = {
         maxReceiveCount: mrc,
-        queue: props.deadLetterQueue
+        queue: dlq
     };
-    // Return the dead letter queue
-    return dlq;
+
+    // Return the dead letter queue interface
+    return dlqInterface;
+  }
+  return;
 }
 
 function applySecureQueuePolicy(queue: sqs.Queue): void {

@@ -32,7 +32,7 @@ test('Test deployment with new Lambda function', () => {
       lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',
-        code: lambda.Code.asset(`${__dirname}/lambda`),
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
         environment: {
           LAMBDA_NAME: 'deploy-function'
         }
@@ -64,7 +64,7 @@ test('Test deployment with existing Lambda function', () => {
   const lambdaFunctionProps = {
     runtime: lambda.Runtime.NODEJS_10_X,
     handler: 'index.handler',
-    code: lambda.Code.asset(`${__dirname}/lambda`),
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     environment: {
       LAMBDA_NAME: 'existing-function'
     }
@@ -100,7 +100,7 @@ test('Test invocation permissions', () => {
   const lambdaFunctionProps = {
     runtime: lambda.Runtime.NODEJS_10_X,
     handler: 'index.handler',
-    code: lambda.Code.asset(`${__dirname}/lambda`),
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     environment: {
       LAMBDA_NAME: 'existing-function'
     }
@@ -150,7 +150,7 @@ test('Test the properties', () => {
       lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',
-        code: lambda.Code.asset(`${__dirname}/lambda`),
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
         environment: {
           LAMBDA_NAME: 'existing-function'
         }

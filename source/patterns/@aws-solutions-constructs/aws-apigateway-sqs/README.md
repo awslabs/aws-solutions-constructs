@@ -28,15 +28,10 @@ This AWS Solutions Construct implements an Amazon API Gateway connected to an Am
 
 Here is a minimal deployable pattern definition in Typescript:
 
-``` javascript
+``` typescript
 import { ApiGatewayToSqs, ApiGatewayToSqsProps } from "@aws-solutions-constructs/aws-apigateway-sqs";
 
-new ApiGatewayToSqs(this, 'ApiGatewayToSqsPattern', {
-    apiGatewayProps: {},
-    queueProps: {},
-    deployDeadLetterQueue?: true,
-    maxReceiveCount?: 3
-});
+new ApiGatewayToSqs(this, 'ApiGatewayToSqsPattern', {});
 
 ```
 
@@ -61,9 +56,11 @@ _Parameters_
 |deployDeadLetterQueue|`boolean`|Whether to deploy a secondary queue to be used as a dead letter queue.|
 |maxReceiveCount|`number`|The number of times a message can be unsuccessfully dequeued before being moved to the dead-letter queue.|
 |allowCreateOperation?|`boolean`|Whether to deploy an API Gateway Method for Create operations on the queue (i.e. sqs:SendMessage).|
-|createRequestTemplate?|`string`|API Gateway Request template for Create method, required if allowCreateOperation set to true.|
+|createRequestTemplate?|`string`|Override the default API Gateway Request template for Create method, if allowCreateOperation set to true.|
 |allowReadOperation?|`boolean`|Whether to deploy an API Gateway Method for Read operations on the queue (i.e. sqs:ReceiveMessage).|
+|readRequestTemplate?|`string`|Override the default API Gateway Request template for Read method, if allowReadOperation set to true.|
 |allowDeleteOperation?|`boolean`|Whether to deploy an API Gateway Method for Delete operations on the queue (i.e. sqs:DeleteMessage).|
+|deleteRequestTemplate?|`string`|Override the default API Gateway Request template for Delete method, if allowDeleteOperation set to true.|
 
 ## Pattern Properties
 

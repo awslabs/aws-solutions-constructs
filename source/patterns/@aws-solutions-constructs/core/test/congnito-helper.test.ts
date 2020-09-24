@@ -173,7 +173,11 @@ test('Test setupCognitoForElasticSearch', () => {
                 "Fn::Join": [
                   "",
                   [
-                    "arn:aws:es:",
+                    "arn:",
+                    {
+                      Ref: "AWS::Partition"
+                    },
+                    ":es:",
                     {
                       Ref: "AWS::Region"
                     },

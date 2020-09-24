@@ -13,7 +13,7 @@
 
 import { CognitoToApiGatewayToLambda } from '@aws-solutions-constructs/aws-cognito-apigateway-lambda';
 import { LambdaToDynamoDB } from '@aws-solutions-constructs/aws-lambda-dynamodb';
-import { Construct, Stack, StackProps, Duration, Fn } from '@aws-cdk/core';
+import { Construct, Stack, StackProps, Duration, Fn, Aws } from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
 import { Provider } from '@aws-cdk/custom-resources';
 import { CustomResource } from '@aws-cdk/aws-cloudformation';
@@ -29,7 +29,7 @@ export class ServerlessBackendStack extends Stack {
 
     const construct = new CognitoToApiGatewayToLambda(this, 'CognitoToApiGatewayToLambda', {
       lambdaFunctionProps: {
-        code: lambda.Code.asset(`${__dirname}/lambda/business-logic`),
+        code: lambda.Code.fromAsset(`${__dirname}/lambda/business-logic`),
         runtime: lambda.Runtime.NODEJS_12_X,
         handler: 'index.handler'
       },
@@ -55,7 +55,7 @@ export class ServerlessBackendStack extends Stack {
           actions: ["s3:PutObject",
                     "s3:PutObjectAcl",
                     "s3:PutObjectVersionAcl"],
-          resources: [`arn:aws:s3:::${websiteBucketName}/*`]
+          resources: [`arn:${Aws.PARTITION}:s3:::${websiteBucketName}/*`]
         }),
       ]
     });

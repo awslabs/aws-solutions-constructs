@@ -30,7 +30,7 @@ test('Pattern deployment w/ new Lambda function and default props', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`)
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
         }
     };
     new SqsToLambda(stack, 'test-sqs-lambda', props);
@@ -49,7 +49,7 @@ test('Pattern deployment w/ new Lambda function and overridden props', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`),
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`),
             environment: {
                 OVERRIDE: "TRUE"
             }
@@ -83,7 +83,7 @@ test('Pattern deployment w/ Existing Lambda Function', () => {
     const fn = new lambda.Function(stack, 'ExistingLambdaFunction', {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',
-        code: lambda.Code.asset(`${__dirname}/lambda`)
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     });
     const props: SqsToLambdaProps = {
         existingLambdaObj: fn,
@@ -106,7 +106,7 @@ test('Test getter methods', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`)
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
         },
         deployDeadLetterQueue: true,
         maxReceiveCount: 0,
@@ -171,11 +171,32 @@ test('Test deployment w/ existing queue', () => {
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
-      code: lambda.Code.asset(`${__dirname}/lambda`)
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
-    deployDeadLetterQueue: false,
     existingQueueObj: queue
   });
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+// --------------------------------------------------------------
+// Pattern deployment w/ batch size
+// --------------------------------------------------------------
+test('Pattern deployment w/ batch size', () => {
+    const stack = new Stack();
+    const props: SqsToLambdaProps = {
+        lambdaFunctionProps: {
+            runtime: lambda.Runtime.NODEJS_10_X,
+            handler: 'index.handler',
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+        },
+        sqsEventSourceProps: {
+            batchSize: 5
+        }
+    };
+    new SqsToLambda(stack, 'test-sqs-lambda', props);
+
+    expect(stack).toHaveResource('AWS::Lambda::EventSourceMapping', {
+        BatchSize: 5
+    });
 });

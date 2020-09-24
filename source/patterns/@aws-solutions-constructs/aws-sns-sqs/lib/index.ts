@@ -109,15 +109,12 @@ export class SnsToSqs extends Construct {
         super(scope, id);
 
         // Setup the dead letter queue, if applicable
-        if (props.deployDeadLetterQueue || props.deployDeadLetterQueue === undefined) {
-            const [dlq] = defaults.buildQueue(this, 'deadLetterQueue', {
-                queueProps: props.deadLetterQueueProps
-            });
-            this.deadLetterQueue = defaults.buildDeadLetterQueue({
-                deadLetterQueue: dlq,
-                maxReceiveCount: props.maxReceiveCount
-            });
-        }
+        this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
+            existingQueueObj: props.existingQueueObj,
+            deployDeadLetterQueue: props.deployDeadLetterQueue,
+            deadLetterQueueProps: props.deadLetterQueueProps,
+            maxReceiveCount: props.maxReceiveCount
+        });
 
         let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
         let encryptionKeyParam = props.encryptionKey;

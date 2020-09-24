@@ -22,7 +22,7 @@ const stack = new Stack(app, 'test-lambda-dynamodb-stack');
 
 const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
-        code: lambda.Code.asset(`${__dirname}/lambda`),
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler'
     },

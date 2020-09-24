@@ -20,7 +20,7 @@ import '@aws-cdk/assert/jest';
 function deployNewFunc(stack: cdk.Stack) {
   const props: IotToLambdaProps = {
     lambdaFunctionProps: {
-      code: lambda.Code.asset(`${__dirname}/lambda`),
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler'
     },
@@ -42,7 +42,7 @@ function useExistingFunc(stack: cdk.Stack) {
   const lambdaFunctionProps: lambda.FunctionProps = {
       runtime: lambda.Runtime.PYTHON_3_6,
       handler: 'index.handler',
-      code: lambda.Code.asset(`${__dirname}/lambda`)
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
 
   const props: IotToLambdaProps = {
@@ -139,7 +139,11 @@ test('check iot lambda function role for deploy: true', () => {
                 "Fn::Join": [
                   "",
                   [
-                    "arn:aws:logs:",
+                    "arn:",
+                    {
+                      Ref: "AWS::Partition"
+                    },
+                    ":logs:",
                     {
                       Ref: "AWS::Region"
                     },

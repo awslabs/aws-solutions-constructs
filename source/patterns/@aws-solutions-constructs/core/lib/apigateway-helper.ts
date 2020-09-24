@@ -43,7 +43,7 @@ function configureCloudwatchRoleForApi(scope: cdk.Construct, _api: api.RestApi):
                         'logs:GetLogEvents',
                         'logs:FilterLogEvents'
                     ],
-                    resources: [`arn:aws:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:*`]
+                    resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:*`]
                 })]
             })
         }

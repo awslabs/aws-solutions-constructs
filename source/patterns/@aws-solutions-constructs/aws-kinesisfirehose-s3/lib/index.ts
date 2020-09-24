@@ -29,7 +29,7 @@ export interface KinesisFirehoseToS3Props {
      *
      * @default - Default props are used
      */
-    readonly kinesisFirehoseProps?: kinesisfirehose.CfnDeliveryStreamProps | any;
+    readonly kinesisFirehoseProps?: kinesisfirehose.CfnDeliveryStreamProps | any,
     /**
      * Existing instance of S3 Bucket object, if this is set then the bucketProps is ignored.
      *
@@ -96,7 +96,7 @@ export class KinesisFirehoseToS3 extends Construct {
                 actions: [
                     'logs:PutLogEvents'
                 ],
-                resources: [`arn:aws:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:log-group:${this.kinesisFirehoseLogGroup.logGroupName}:log-stream:${cwLogStream.logStreamName}`]
+                resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:log-group:${this.kinesisFirehoseLogGroup.logGroupName}:log-stream:${cwLogStream.logStreamName}`]
             })
         ]});
 

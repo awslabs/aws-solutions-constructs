@@ -29,7 +29,7 @@ test('Pattern minimal deployment', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`)
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
         }
     };
     new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);
@@ -48,7 +48,7 @@ test('Test properties', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`)
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
         },
         kinesisEventSourceProps: {
             startingPosition: lambda.StartingPosition.TRIM_HORIZON,
@@ -74,7 +74,7 @@ test('Test existing resources', () => {
     const fn = new lambda.Function(stack, 'test-fn', {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',
-        code: lambda.Code.asset(`${__dirname}/lambda`)
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     });
 
     const stream = new kinesis.Stream(stack, 'test-stream', {
@@ -92,7 +92,7 @@ test('Test existing resources', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.PYTHON_3_8,
             handler: 'lambda_function.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`)
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
         },
         kinesisStreamProps: {
             streamName: 'other-name-stream',

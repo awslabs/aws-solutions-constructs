@@ -21,7 +21,7 @@ const stack = new Stack(app, 'test-iot-lambda-stack');
 
 const props: IotToLambdaProps = {
     lambdaFunctionProps: {
-        code: lambda.Code.asset(`${__dirname}/lambda`),
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler'
     },

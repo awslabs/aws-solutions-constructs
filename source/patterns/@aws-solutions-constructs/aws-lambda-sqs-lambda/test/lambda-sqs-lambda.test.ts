@@ -30,13 +30,13 @@ test('Test minimal deployment', () => {
     producerLambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',
-        code: lambda.Code.asset(`${__dirname}/lambda/producer-function`),
+        code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
         functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
-      code: lambda.Code.asset(`${__dirname}/lambda/consumer-function`),
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
     }
   };
@@ -128,7 +128,7 @@ test('Test deployment w/ existing producer function', () => {
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
-      code: lambda.Code.asset(`${__dirname}/lambda/producer-function`),
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'existing-producer-function'
     }
   });
@@ -138,7 +138,7 @@ test('Test deployment w/ existing producer function', () => {
     consumerLambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
-      code: lambda.Code.asset(`${__dirname}/lambda/consumer-function`),
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'deployed-consumer-function'
     }
   };
@@ -166,7 +166,7 @@ test('Test deployment w/ existing consumer function', () => {
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
-      code: lambda.Code.asset(`${__dirname}/lambda/consumer-function`),
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'existing-consumer-function'
     }
   });
@@ -175,7 +175,7 @@ test('Test deployment w/ existing consumer function', () => {
     producerLambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
-      code: lambda.Code.asset(`${__dirname}/lambda/producer-function`),
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'deployed-producer-function'
     },
     existingConsumerLambdaObj: existingConsumerFn
@@ -210,13 +210,13 @@ test('Test deployment w/ existing queue', () => {
     producerLambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',
-        code: lambda.Code.asset(`${__dirname}/lambda/producer-function`),
+        code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
         functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
-      code: lambda.Code.asset(`${__dirname}/lambda/consumer-function`),
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
     },
     existingQueueObj: existingQueue
@@ -241,12 +241,12 @@ test('Test deployment w/ DLQ explicitly disabled', () => {
     producerLambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',
-        code: lambda.Code.asset(`${__dirname}/lambda/producer-function`)
+        code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`)
     },
     consumerLambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
-      code: lambda.Code.asset(`${__dirname}/lambda/consumer-function`)
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`)
     },
     deployDeadLetterQueue: false,
   };
@@ -272,12 +272,12 @@ test('Test deployment w/ DLQ explicitly enabled and w/ MRC override', () => {
     producerLambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',
-        code: lambda.Code.asset(`${__dirname}/lambda/producer-function`)
+        code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`)
     },
     consumerLambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
-      code: lambda.Code.asset(`${__dirname}/lambda/consumer-function`)
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`)
     },
     deployDeadLetterQueue: true,
     maxReceiveCount: 6
@@ -310,13 +310,13 @@ test('Test overrides for producer and consumer functions', () => {
     producerLambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_12_X,
         handler: 'index.handler',
-        code: lambda.Code.asset(`${__dirname}/lambda/producer-function`),
+        code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
         functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_12_X,
       handler: 'index.handler',
-      code: lambda.Code.asset(`${__dirname}/lambda/consumer-function`),
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
     }
   };
@@ -344,13 +344,13 @@ test('Test the public pattern props', () => {
     producerLambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',
-        code: lambda.Code.asset(`${__dirname}/lambda/producer-function`),
+        code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
         functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
-      code: lambda.Code.asset(`${__dirname}/lambda/consumer-function`),
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
     }
   };

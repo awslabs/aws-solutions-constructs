@@ -30,7 +30,11 @@
                     "Fn::Join": [
                       "",
                       [
-                        "arn:aws:logs:",
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
                         {
                           "Ref": "AWS::Region"
                         },
@@ -158,28 +162,6 @@
         }
       }
     },
-    "tests3lambdaLambdaFunctionAllowBucketNotificationsFromtests3lambdanewbucketstacktests3lambdaS3Bucket7441CD5B3462BBCF": {
-      "Type": "AWS::Lambda::Permission",
-      "Properties": {
-        "Action": "lambda:InvokeFunction",
-        "FunctionName": {
-          "Fn::GetAtt": [
-            "tests3lambdaLambdaFunctionB56B7023",
-            "Arn"
-          ]
-        },
-        "Principal": "s3.amazonaws.com",
-        "SourceAccount": {
-          "Ref": "AWS::AccountId"
-        },
-        "SourceArn": {
-          "Fn::GetAtt": [
-            "tests3lambdaS3BucketBE7C1B8E",
-            "Arn"
-          ]
-        }
-      }
-    },
     "tests3lambdaS3LoggingBucket0C3BBFDC": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
@@ -198,9 +180,6 @@
           "BlockPublicPolicy": true,
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
-        },
-        "VersioningConfiguration": {
-          "Status": "Enabled"
         }
       },
       "UpdateReplacePolicy": "Retain",
@@ -266,6 +245,19 @@
             }
           ]
         },
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "NoncurrentVersionTransitions": [
+                {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90
+                }
+              ],
+              "Status": "Enabled"
+            }
+          ]
+        },
         "LoggingConfiguration": {
           "DestinationBucketName": {
             "Ref": "tests3lambdaS3LoggingBucket0C3BBFDC"
@@ -313,7 +305,7 @@
         }
       },
       "DependsOn": [
-        "tests3lambdaLambdaFunctionAllowBucketNotificationsFromtests3lambdanewbucketstacktests3lambdaS3Bucket7441CD5B3462BBCF"
+        "tests3lambdaS3BucketAllowBucketNotificationsTotests3lambdanewbucketstacktests3lambdaLambdaFunctionB053EE5EC07EFB64"
       ]
     },
     "tests3lambdaS3BucketPolicyE0402ABD": {
@@ -351,6 +343,28 @@
             }
           ],
           "Version": "2012-10-17"
+        }
+      }
+    },
+    "tests3lambdaS3BucketAllowBucketNotificationsTotests3lambdanewbucketstacktests3lambdaLambdaFunctionB053EE5EC07EFB64": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "tests3lambdaLambdaFunctionB56B7023",
+            "Arn"
+          ]
+        },
+        "Principal": "s3.amazonaws.com",
+        "SourceAccount": {
+          "Ref": "AWS::AccountId"
+        },
+        "SourceArn": {
+          "Fn::GetAtt": [
+            "tests3lambdaS3BucketBE7C1B8E",
+            "Arn"
+          ]
         }
       }
     },

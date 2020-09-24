@@ -55,13 +55,13 @@ Object {
       "Type": "AWS::KMS::Key",
       "UpdateReplacePolicy": "Retain",
     },
-    "deadletterqueueD1EEB012": Object {
+    "deadLetterQueue3F848E28": Object {
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
     },
-    "deadletterqueuePolicy4F5E2629": Object {
+    "deadLetterQueuePolicy14A9D269": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -96,7 +96,7 @@ Object {
               },
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "deadletterqueueD1EEB012",
+                  "deadLetterQueue3F848E28",
                   "Arn",
                 ],
               },
@@ -113,7 +113,7 @@ Object {
               "Principal": "*",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "deadletterqueueD1EEB012",
+                  "deadLetterQueue3F848E28",
                   "Arn",
                 ],
               },
@@ -124,7 +124,7 @@ Object {
         },
         "Queues": Array [
           Object {
-            "Ref": "deadletterqueueD1EEB012",
+            "Ref": "deadLetterQueue3F848E28",
           },
         ],
       },
@@ -142,7 +142,7 @@ Object {
         "RedrivePolicy": Object {
           "deadLetterTargetArn": Object {
             "Fn::GetAtt": Array [
-              "deadletterqueueD1EEB012",
+              "deadLetterQueue3F848E28",
               "Arn",
             ],
           },
@@ -279,13 +279,13 @@ Object {
       "Type": "AWS::KMS::Key",
       "UpdateReplacePolicy": "Retain",
     },
-    "deadletterqueueD1EEB012": Object {
+    "deadLetterQueue3F848E28": Object {
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
     },
-    "deadletterqueuePolicy4F5E2629": Object {
+    "deadLetterQueuePolicy14A9D269": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -320,7 +320,7 @@ Object {
               },
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "deadletterqueueD1EEB012",
+                  "deadLetterQueue3F848E28",
                   "Arn",
                 ],
               },
@@ -337,7 +337,7 @@ Object {
               "Principal": "*",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "deadletterqueueD1EEB012",
+                  "deadLetterQueue3F848E28",
                   "Arn",
                 ],
               },
@@ -348,7 +348,7 @@ Object {
         },
         "Queues": Array [
           Object {
-            "Ref": "deadletterqueueD1EEB012",
+            "Ref": "deadLetterQueue3F848E28",
           },
         ],
       },
@@ -366,7 +366,7 @@ Object {
         "RedrivePolicy": Object {
           "deadLetterTargetArn": Object {
             "Fn::GetAtt": Array [
-              "deadletterqueueD1EEB012",
+              "deadLetterQueue3F848E28",
               "Arn",
             ],
           },

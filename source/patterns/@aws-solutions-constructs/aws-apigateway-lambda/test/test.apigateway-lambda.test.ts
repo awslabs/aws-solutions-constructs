@@ -29,7 +29,7 @@ test('Pattern deployment with new Lambda function', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`)
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
         }
     };
     new ApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
@@ -46,7 +46,7 @@ test('Pattern deployment with existing Lambda function', () => {
     const fn = new lambda.Function(stack, 'ExistingLambdaFunction', {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',
-        code: lambda.Code.asset(`${__dirname}/lambda`)
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     });
     const props: ApiGatewayToLambdaProps = {
         existingLambdaObj: fn
@@ -81,7 +81,7 @@ test('Test with lambdaFunctionProps', () => {
       lambdaFunctionProps: {
           runtime: lambda.Runtime.NODEJS_10_X,
           handler: 'index.handler',
-          code: lambda.Code.asset(`${__dirname}/lambda`),
+          code: lambda.Code.fromAsset(`${__dirname}/lambda`),
           environment: {
               OVERRIDE_STATUS: 'true'
           }
@@ -112,7 +112,7 @@ test('Test properties', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`)
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
         }
     };
     const app = new ApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
@@ -149,7 +149,7 @@ test('Pattern deployment with two ApiGatewayToLambda constructs', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`)
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
         }
     };
     new ApiGatewayToLambda(stack, 'pattern1', props1);
@@ -158,7 +158,7 @@ test('Pattern deployment with two ApiGatewayToLambda constructs', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`)
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
         }
     };
     new ApiGatewayToLambda(stack, 'pattern2', props2);
@@ -183,7 +183,7 @@ test('Test deployment ApiGateway AuthorizationType override', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`)
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
         }
     });
     // Assertion 1

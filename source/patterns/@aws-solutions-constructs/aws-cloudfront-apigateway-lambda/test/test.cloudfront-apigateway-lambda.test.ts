@@ -15,11 +15,12 @@ import { SynthUtils } from '@aws-cdk/assert';
 import { CloudFrontToApiGatewayToLambda, CloudFrontToApiGatewayToLambdaProps } from "../lib";
 import * as cdk from "@aws-cdk/core";
 import * as lambda from '@aws-cdk/aws-lambda';
+import * as api from '@aws-cdk/aws-apigateway';
 import '@aws-cdk/assert/jest';
 
 function deployNewFunc(stack: cdk.Stack) {
   const lambdaFunctionProps: lambda.FunctionProps = {
-    code: lambda.Code.asset(`${__dirname}/lambda`),
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     runtime: lambda.Runtime.NODEJS_10_X,
     handler: 'index.handler'
   };
@@ -33,7 +34,7 @@ function useExistingFunc(stack: cdk.Stack) {
   const lambdaFunctionProps: lambda.FunctionProps = {
     runtime: lambda.Runtime.NODEJS_10_X,
     handler: 'index.handler',
-    code: lambda.Code.asset(`${__dirname}/lambda`)
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
 
   return new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
@@ -144,11 +145,11 @@ test('check no prop', () => {
   }
 });
 
-test('override api gateway properties', () => {
+test('override api gateway properties with existingLambdaObj', () => {
   const stack = new cdk.Stack();
 
   const lambdaFunctionProps: lambda.FunctionProps = {
-    code: lambda.Code.asset(`${__dirname}/lambda`),
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     runtime: lambda.Runtime.NODEJS_10_X,
     handler: 'index.handler'
   };
@@ -158,7 +159,6 @@ test('override api gateway properties', () => {
   new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
     existingLambdaObj: fn,
     apiGatewayProps: {
-      handler: fn,
       options: {
         description: "Override description"
       }
@@ -171,6 +171,37 @@ test('override api gateway properties', () => {
     EndpointConfiguration: {
       Types: [
         "REGIONAL"
+      ]
+    },
+    Name: "LambdaRestApi"
+  });
+});
+
+test('override api gateway properties without existingLambdaObj', () => {
+  const stack = new cdk.Stack();
+
+  new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler'
+    },
+    apiGatewayProps: {
+      endpointConfiguration: {
+        types: [api.EndpointType.PRIVATE],
+      },
+      options: {
+        description: "Override description"
+      }
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::ApiGateway::RestApi',
+  {
+    Description: "Override description",
+    EndpointConfiguration: {
+      Types: [
+        "PRIVATE"
       ]
     },
     Name: "LambdaRestApi"

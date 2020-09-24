@@ -57,6 +57,42 @@ export function applySecureBucketPolicy(s3Bucket: s3.Bucket): void {
     );
 }
 
+export function createLoggingBucket(scope: cdk.Construct, bucketId: string): s3.Bucket {
+    // Create the Logging Bucket
+    const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, DefaultS3Props());
+
+    applySecureBucketPolicy(loggingBucket);
+
+    // Extract the CfnBucket from the loggingBucket
+    const loggingBucketResource = loggingBucket.node.findChild('Resource') as s3.CfnBucket;
+
+    // Override accessControl configuration and add metadata for the logging bucket
+    loggingBucketResource.addPropertyOverride('AccessControl', 'LogDeliveryWrite');
+
+    // Turn off Versioning for the logging bucket as objects will be written only ONCE
+    loggingBucketResource.addPropertyDeletionOverride('VersioningConfiguration.Status');
+
+    // Remove the default LifecycleConfiguration for the Logging Bucket
+    loggingBucketResource.addPropertyDeletionOverride('LifecycleConfiguration.Rules');
+
+    let _reason = "This S3 bucket is used as the access logging bucket for another bucket";
+
+    if (bucketId === 'CloudfrontLoggingBucket') {
+        _reason = "This S3 bucket is used as the access logging bucket for CloudFront Distribution";
+    }
+
+    loggingBucketResource.cfnOptions.metadata = {
+        cfn_nag: {
+            rules_to_suppress: [{
+                id: 'W35',
+                reason: _reason
+            }]
+        }
+    };
+
+    return loggingBucket;
+}
+
 function s3BucketWithLogging(scope: cdk.Construct, s3BucketProps?: s3.BucketProps, bucketId?: string): [s3.Bucket, s3.Bucket?] {
 
     // Create the Application Bucket
@@ -69,23 +105,8 @@ function s3BucketWithLogging(scope: cdk.Construct, s3BucketProps?: s3.BucketProp
         bucketprops = DefaultS3Props();
     } else {
         // Create the Logging Bucket
-        loggingBucket = new s3.Bucket(scope, _loggingBucketId, DefaultS3Props());
+        loggingBucket = createLoggingBucket(scope, _loggingBucketId);
 
-        applySecureBucketPolicy(loggingBucket);
-
-        // Extract the CfnBucket from the loggingBucket
-        const loggingBucketResource = loggingBucket.node.findChild('Resource') as s3.CfnBucket;
-
-        // Override accessControl configuration and add metadata for the logging bucket
-        loggingBucketResource.addPropertyOverride('AccessControl', 'LogDeliveryWrite');
-        loggingBucketResource.cfnOptions.metadata = {
-            cfn_nag: {
-                rules_to_suppress: [{
-                    id: 'W35',
-                    reason: `This S3 bucket is used as the access logging bucket for another bucket`
-                }]
-            }
-        };
         bucketprops = DefaultS3Props(loggingBucket);
     }
 

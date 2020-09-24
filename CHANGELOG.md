@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.64.0] - 2020-09-24
+
+### Changed
+- Upgraded all patterns to CDK v1.64.0
+- Fix `aws-cognito-apigateway-lambda` pattern bug with override for `cognitoUserPoolClientProps` ([#71](https://github.com/awslabs/aws-solutions-constructs/issues/71))
+- Fix `api-gateway-sqs` pattern bug with override for `createRequestTemplate` ([#69](https://github.com/awslabs/aws-solutions-constructs/issues/69))
+- Fix `aws-kinesisfirehose-s3-and-kinesisanalytics` pattern bug with override for `kinesisFirehoseProps` ([#73](https://github.com/awslabs/aws-solutions-constructs/issues/73))
+- Fix `aws-cloudfront-apigateway-lambda` pattern bug with override for `apiGatewayProps`
+- Fix ALL patterns to use the ARNs with `${cdk.Aws.PARTITION}` partition instead of `aws` ([#67](https://github.com/awslabs/aws-solutions-constructs/issues/67))
+- Update `aws-lambda-elasticsearch-kibana` pattern to add an optional construct props to provide Cognito Domain separately ([#54](https://github.com/awslabs/aws-solutions-constructs/issues/54))
+- Update ALL S3 patterns to disable versioning for the Logging bucket and apply default lifecycle policy for the versioned buckets ([#44](https://github.com/awslabs/aws-solutions-constructs/issues/44))
+- Fix ALL SQS patterns to not create DLQ when user provides the `existingQueueObj`
+- Update `aws-sqs-lambda` pattern to allow for overriding `sqsEventSourceProps`
+
 ## [1.63.0] - 2020-09-14
 
 ### Changed

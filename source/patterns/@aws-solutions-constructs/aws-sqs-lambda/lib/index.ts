@@ -16,7 +16,7 @@ import * as sqs from '@aws-cdk/aws-sqs';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
-import { SqsEventSource } from '@aws-cdk/aws-lambda-event-sources';
+import { SqsEventSource, SqsEventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
 
 /**
  * @summary The properties for the SqsToLambda class.
@@ -63,7 +63,13 @@ export interface SqsToLambdaProps {
      *
      * @default - required field if deployDeadLetterQueue=true.
      */
-    readonly maxReceiveCount?: number
+    readonly maxReceiveCount?: number,
+    /**
+     * Optional user provided properties for the dead letter queue
+     *
+     * @default - Default props are used
+     */
+    readonly sqsEventSourceProps?: SqsEventSourceProps
 }
 
 /**
@@ -92,15 +98,12 @@ export class SqsToLambda extends Construct {
         });
 
         // Setup the dead letter queue, if applicable
-        if (props.deployDeadLetterQueue || props.deployDeadLetterQueue === undefined) {
-            const [dlq] = defaults.buildQueue(this, 'deadLetterQueue', {
-                queueProps: props.deadLetterQueueProps
-            });
-            this.deadLetterQueue = defaults.buildDeadLetterQueue({
-                deadLetterQueue: dlq,
-                maxReceiveCount: props.maxReceiveCount
-            });
-        }
+        this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
+            existingQueueObj: props.existingQueueObj,
+            deployDeadLetterQueue: props.deployDeadLetterQueue,
+            deadLetterQueueProps: props.deadLetterQueueProps,
+            maxReceiveCount: props.maxReceiveCount
+        });
 
         // Setup the queue
         [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
@@ -110,6 +113,6 @@ export class SqsToLambda extends Construct {
         });
 
         // Setup the event source mapping
-        this.lambdaFunction.addEventSource(new SqsEventSource(this.sqsQueue));
+        this.lambdaFunction.addEventSource(new SqsEventSource(this.sqsQueue, props.sqsEventSourceProps));
     }
 }

@@ -24,12 +24,12 @@
 
 This AWS Solutions Construct implements an AWS CloudFront fronting an AWS S3 Bucket.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
-``` javascript
-const { CloudFrontToS3 } = require('@aws-solutions-constructs/aws-cloudfront-s3');
+``` typescript
+import { CloudFrontToS3 } from '@aws-solutions-constructs/aws-cloudfront-s3';
 
-new CloudFrontToS3(stack, 'test-cloudfront-s3', {});
+new CloudFrontToS3(this, 'test-cloudfront-s3', {});
 
 ```
 
@@ -79,6 +79,7 @@ Out of the box implementation of the Construct without any override will set the
 * Turn on the versioning for S3 Bucket
 * Don't allow public access for S3 Bucket
 * Retain the S3 Bucket when deleting the CloudFormation stack
+* Applies Lifecycle rule to move noncurrent object versions to Glacier storage after 90 days
 
 ## Architecture
 ![Architecture Diagram](architecture.png)

@@ -24,20 +24,18 @@
 
 This AWS Solutions Construct implements a pattern Amazon DynamoDB table with stream to invoke the AWS Lambda function  with the least privileged permissions.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
-``` javascript
-const { DynamoDBStreamToLambdaProps,  DynamoDBStreamToLambda} = require('@aws-solutions-constructs/aws-dynamodb-stream-lambda');
+``` typescript
+import { DynamoDBStreamToLambdaProps,  DynamoDBStreamToLambda} from '@aws-solutions-constructs/aws-dynamodb-stream-lambda';
 
-const props: DynamoDBStreamToLambdaProps = {
+new DynamoDBStreamToLambda(this, 'test-dynamodb-stream-lambda', {
     lambdaFunctionProps: {
-        code: lambda.Code.asset(`${__dirname}/lambda`),
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
         runtime: lambda.Runtime.NODEJS_12_X,
         handler: 'index.handler'
     },
-};
-
-new DynamoDBStreamToLambda(stack, 'test-dynamodb-stream-lambda', props);
+});
 
 ```
 
@@ -69,6 +67,10 @@ _Parameters_
 |:-------------|:----------------|-----------------|
 |dynamoTable|[`dynamodb.Table`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-dynamodb.Table.html)|Returns an instance of dynamodb.Table created by the construct|
 |lambdaFunction|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)|Returns an instance of lambda.Function created by the construct|
+
+## Lambda Function
+
+This pattern requires a lambda function that can post data into the Elasticsearch. A sample function is provided [here](https://github.com/awslabs/aws-solutions-constructs/blob/master/source/patterns/%40aws-solutions-constructs/aws-dynamodb-stream-lambda-elasticsearch-kibana/test/lambda/index.js).
 
 ## Default settings
 

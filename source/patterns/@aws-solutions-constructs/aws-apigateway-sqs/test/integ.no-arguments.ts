@@ -13,20 +13,14 @@
 
 // Imports
 import { App, Stack } from "@aws-cdk/core";
-import { ApiGatewayToSqs, ApiGatewayToSqsProps } from "../lib";
+import { ApiGatewayToSqs } from "../lib";
 
 // Setup
 const app = new App();
 const stack = new Stack(app, 'test-apigateway-sqs-default');
 stack.templateOptions.description = 'Integration Test for aws-apigateway-sqs';
 
-// Definitions
-const props: ApiGatewayToSqsProps = {
-    apiGatewayProps: {},
-    queueProps: {}
-};
-
-new ApiGatewayToSqs(stack, 'test-api-gateway-sqs-default', props);
+new ApiGatewayToSqs(stack, 'test-api-gateway-sqs-default', {});
 
 // Synth
 app.synth();

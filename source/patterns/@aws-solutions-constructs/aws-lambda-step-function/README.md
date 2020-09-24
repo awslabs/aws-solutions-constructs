@@ -24,16 +24,19 @@
 
 This AWS Solutions Construct implements an AWS Lambda function connected to an AWS Step Function.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
-``` javascript
-const { LambdaToStepFunction } = require('@aws-solutions-constructs/aws-lambda-step-function');
+``` typescript
+import { LambdaToStepFunction } from '@aws-solutions-constructs/aws-lambda-step-function';
+import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
 
-new LambdaToStepFunction(stack, 'LambdaToStepFunctionPattern', {
+const startState = new stepfunctions.Pass(stack, 'StartState');
+
+new LambdaToStepFunction(this, 'LambdaToStepFunctionPattern', {
     lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_12_X,
         handler: 'index.handler',
-        code: lambda.Code.asset(`${__dirname}/lambda`)
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
     stateMachineProps: {
       definition: startState

@@ -31,7 +31,7 @@ const { IotToLambdaProps, IotToLambda } = require('@aws-solutions-constructs/aws
 
 const props: IotToLambdaProps = {
     lambdaFunctionProps: {
-        code: lambda.Code.asset(`${__dirname}/lambda`),
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler'
     },
