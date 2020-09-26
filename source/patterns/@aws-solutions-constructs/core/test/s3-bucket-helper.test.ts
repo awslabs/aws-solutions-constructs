@@ -171,3 +171,127 @@ test('Check S3 Bucket policy', () => {
     }
   }));
 });
+
+test('s3 bucket with LoggingBucket and versioning turned off', () => {
+  const stack = new Stack();
+  const mybucket = new Bucket(stack, 'mybucket', {
+    serverAccessLogsBucket: new Bucket(stack, 'myaccesslogbucket', {})
+  });
+
+  defaults.buildS3Bucket(stack, {
+    bucketProps: {
+      serverAccessLogsBucket: mybucket,
+      serverAccessLogsPrefix: 'access-logs',
+      versioned: false
+    }
+  });
+
+  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+    BucketEncryption: {
+      ServerSideEncryptionConfiguration: [
+        {
+          ServerSideEncryptionByDefault: {
+            SSEAlgorithm: "AES256"
+          }
+        }
+      ]
+    },
+    LoggingConfiguration: {
+      DestinationBucketName: {
+        Ref: "mybucket160F8132"
+      },
+      LogFilePrefix: "access-logs"
+    },
+    PublicAccessBlockConfiguration: {
+      BlockPublicAcls: true,
+      BlockPublicPolicy: true,
+      IgnorePublicAcls: true,
+      RestrictPublicBuckets: true
+    }
+  }));
+});
+
+test('s3 bucket versioning turned off', () => {
+  const stack = new Stack();
+
+  defaults.buildS3Bucket(stack, {
+    bucketProps: {
+      serverAccessLogsPrefix: 'access-logs',
+      versioned: false
+    }
+  });
+
+  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+    BucketEncryption: {
+      ServerSideEncryptionConfiguration: [
+        {
+          ServerSideEncryptionByDefault: {
+            SSEAlgorithm: "AES256"
+          }
+        }
+      ]
+    },
+    LoggingConfiguration: {
+      DestinationBucketName: {
+        Ref: "S3LoggingBucket800A2B27"
+      },
+      LogFilePrefix: "access-logs"
+    },
+    PublicAccessBlockConfiguration: {
+      BlockPublicAcls: true,
+      BlockPublicPolicy: true,
+      IgnorePublicAcls: true,
+      RestrictPublicBuckets: true
+    }
+  }));
+});
+
+test('s3 bucket versioning turned on', () => {
+  const stack = new Stack();
+
+  defaults.buildS3Bucket(stack, {
+    bucketProps: {
+      serverAccessLogsPrefix: 'access-logs',
+    }
+  });
+
+  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+    BucketEncryption: {
+      ServerSideEncryptionConfiguration: [
+        {
+          ServerSideEncryptionByDefault: {
+            SSEAlgorithm: "AES256"
+          }
+        }
+      ]
+    },
+    LifecycleConfiguration: {
+      Rules: [
+        {
+          NoncurrentVersionTransitions: [
+            {
+              StorageClass: "GLACIER",
+              TransitionInDays: 90
+            }
+          ],
+          Status: "Enabled"
+        }
+      ]
+    },
+    LoggingConfiguration: {
+      DestinationBucketName: {
+        Ref: "S3LoggingBucket800A2B27"
+      },
+      LogFilePrefix: "access-logs"
+    },
+    PublicAccessBlockConfiguration: {
+      BlockPublicAcls: true,
+      BlockPublicPolicy: true,
+      IgnorePublicAcls: true,
+      RestrictPublicBuckets: true
+    },
+    VersioningConfiguration: {
+      Status: "Enabled"
+    }
+  }));
+});

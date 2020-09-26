@@ -14,35 +14,14 @@
 import * as s3 from '@aws-cdk/aws-s3';
 import { RemovalPolicy } from '@aws-cdk/core';
 import { Bucket, BucketProps } from '@aws-cdk/aws-s3';
-import { StorageClass } from '@aws-cdk/aws-s3/lib/rule';
-import { Duration } from '@aws-cdk/core/lib/duration';
 
-export function DefaultS3Props(loggingBucket ?: Bucket): s3.BucketProps {
-
-    /** Default Life Cycle policy to transition older versions to Glacier after 90 days */
-    const lifecycleRules: s3.LifecycleRule[] = [{
-        noncurrentVersionTransitions: [{
-            storageClass: StorageClass.GLACIER,
-            transitionAfter: Duration.days(90)
-        }]
-    }];
-
-    if (loggingBucket) {
-        return {
-            encryption: s3.BucketEncryption.S3_MANAGED,
-            versioned: true,
-            blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-            removalPolicy: RemovalPolicy.RETAIN,
-            lifecycleRules,
-            serverAccessLogsBucket: loggingBucket
-        } as BucketProps;
-    } else {
-        return {
-            encryption: s3.BucketEncryption.S3_MANAGED,
-            versioned: true,
-            blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-            removalPolicy: RemovalPolicy.RETAIN,
-            lifecycleRules
-        } as BucketProps;
-    }
+export function DefaultS3Props(loggingBucket ?: Bucket, lifecycleRules?: s3.LifecycleRule[]): s3.BucketProps {
+    return {
+        encryption: s3.BucketEncryption.S3_MANAGED,
+        versioned: true,
+        blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+        removalPolicy: RemovalPolicy.RETAIN,
+        ...((lifecycleRules !== undefined) && { lifecycleRules }),
+        ...((loggingBucket !== undefined) && { serverAccessLogsBucket: loggingBucket })
+    } as BucketProps;
 }

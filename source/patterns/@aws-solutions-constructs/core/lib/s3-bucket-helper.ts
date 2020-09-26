@@ -16,6 +16,8 @@ import * as cdk from '@aws-cdk/core';
 import { DefaultS3Props } from './s3-bucket-defaults';
 import { overrideProps } from './utils';
 import { PolicyStatement, Effect, AnyPrincipal } from '@aws-cdk/aws-iam';
+import { StorageClass } from '@aws-cdk/aws-s3/lib/rule';
+import { Duration } from '@aws-cdk/core/lib/duration';
 
 export interface BuildS3BucketProps {
   /**
@@ -95,24 +97,43 @@ export function createLoggingBucket(scope: cdk.Construct, bucketId: string): s3.
 
 function s3BucketWithLogging(scope: cdk.Construct, s3BucketProps?: s3.BucketProps, bucketId?: string): [s3.Bucket, s3.Bucket?] {
 
+    /** Default Life Cycle policy to transition older versions to Glacier after 90 days */
+    const lifecycleRules: s3.LifecycleRule[] = [{
+        noncurrentVersionTransitions: [{
+            storageClass: StorageClass.GLACIER,
+            transitionAfter: Duration.days(90)
+        }]
+    }];
+
     // Create the Application Bucket
-    let bucketprops;
+    let bucketprops: s3.BucketProps;
     let loggingBucket;
     const _bucketId = bucketId ? bucketId + 'S3Bucket' : 'S3Bucket';
     const _loggingBucketId = bucketId ? bucketId + 'S3LoggingBucket' : 'S3LoggingBucket';
 
     if (s3BucketProps?.serverAccessLogsBucket) {
-        bucketprops = DefaultS3Props();
+        // Attach the Default Life Cycle policy ONLY IF the versioning is ENABLED
+        if (s3BucketProps.versioned === undefined || s3BucketProps.versioned) {
+            bucketprops = DefaultS3Props(undefined, lifecycleRules);
+        } else {
+            bucketprops = DefaultS3Props();
+        }
     } else {
         // Create the Logging Bucket
         loggingBucket = createLoggingBucket(scope, _loggingBucketId);
 
-        bucketprops = DefaultS3Props(loggingBucket);
+        // Attach the Default Life Cycle policy ONLY IF the versioning is ENABLED
+        if (s3BucketProps?.versioned === undefined || s3BucketProps.versioned) {
+            bucketprops = DefaultS3Props(loggingBucket, lifecycleRules);
+        } else {
+            bucketprops = DefaultS3Props(loggingBucket);
+        }
     }
 
     if (s3BucketProps) {
         bucketprops = overrideProps(bucketprops, s3BucketProps);
     }
+
     const s3Bucket: s3.Bucket = new s3.Bucket(scope, _bucketId, bucketprops);
 
     applySecureBucketPolicy(s3Bucket);

@@ -44,3 +44,21 @@ test('check properties', () => {
   expect(construct.s3Bucket !== null);
   expect(construct.s3LoggingBucket !== null);
 });
+
+test('snapshot test S3ToLambda with versioning turned off', () => {
+  const stack = new cdk.Stack();
+
+  const props: S3ToLambdaProps = {
+    lambdaFunctionProps: {
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+        runtime: lambda.Runtime.NODEJS_12_X,
+        handler: 'index.handler'
+    },
+    bucketProps: {
+      versioned: false
+    }
+  };
+
+  new S3ToLambda(stack, 'test-s3-lambda', props);
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});

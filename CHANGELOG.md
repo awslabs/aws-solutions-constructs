@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.64.1] - 2020-09-26
+
+### Changed
+- Upgraded all patterns to CDK v1.64.1
+- Fix for *-S3-* patterns breaking when bucket versioning is turned off ([#80](https://github.com/awslabs/aws-solutions-constructs/issues/80))
+
 ## [1.64.0] - 2020-09-24
 
 ### Changed

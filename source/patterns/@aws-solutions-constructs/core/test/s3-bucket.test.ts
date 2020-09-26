@@ -12,111 +12,121 @@
  */
 
 import { SynthUtils } from '@aws-cdk/assert';
-import { Stack } from '@aws-cdk/core';
+import { Duration, Stack } from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
+import * as kms from '@aws-cdk/aws-kms';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
 import '@aws-cdk/assert/jest';
+import { StorageClass } from '@aws-cdk/aws-s3/lib/rule';
 
 test('s3 bucket with default params', () => {
   const stack = new Stack();
-  new s3.Bucket(stack, 'test-s3-defaults', defaults.DefaultS3Props());
+
+  /** Default Life Cycle policy to transition older versions to Glacier after 90 days */
+  const lifecycleRules: s3.LifecycleRule[] = [{
+    noncurrentVersionTransitions: [{
+        storageClass: StorageClass.GLACIER,
+        transitionAfter: Duration.days(90)
+    }]
+  }];
+
+  new s3.Bucket(stack, 'test-s3-defaults', defaults.DefaultS3Props(undefined, lifecycleRules));
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 test('test s3Bucket override versioningConfiguration', () => {
   const stack = new Stack();
-  const defaultProps: s3.CfnBucketProps = defaults.DefaultS3Props();
+  const defaultProps: s3.BucketProps = defaults.DefaultS3Props();
 
-  const inProps: s3.CfnBucketProps = {
-    versioningConfiguration: {
-      status: 'Disabled'
-    },
+  const inProps: s3.BucketProps = {
+    versioned: false
   };
 
   const outProps = overrideProps(defaultProps, inProps);
-  new s3.CfnBucket(stack, 'test-s3-verioning', outProps);
+  new s3.Bucket(stack, 'test-s3-verioning', outProps);
 
   expect(stack).toHaveResource("AWS::S3::Bucket", {
-    VersioningConfiguration: {
-      Status: 'Disabled'
+    BucketEncryption: {
+      ServerSideEncryptionConfiguration: [
+        {
+          ServerSideEncryptionByDefault: {
+            SSEAlgorithm: "AES256"
+          }
+        }
+      ]
+    },
+    PublicAccessBlockConfiguration: {
+      BlockPublicAcls: true,
+      BlockPublicPolicy: true,
+      IgnorePublicAcls: true,
+      RestrictPublicBuckets: true
     }
   });
 });
 
 test('test s3Bucket override bucketEncryption', () => {
   const stack = new Stack();
-  const defaultProps: s3.CfnBucketProps = defaults.DefaultS3Props();
+  const defaultProps: s3.BucketProps = defaults.DefaultS3Props();
 
-  const inProps: s3.CfnBucketProps = {
-    bucketEncryption: {
-      serverSideEncryptionConfiguration : [{
-          serverSideEncryptionByDefault: {
-              kmsMasterKeyId: 'mykeyid',
-              sseAlgorithm: 'aws:kms'
-          }
-      }]
-    },
+  const inProps: s3.BucketProps = {
+    encryption: s3.BucketEncryption.KMS,
+    encryptionKey: new kms.Key(stack, 'mykeyid')
   };
 
   const outProps = overrideProps(defaultProps, inProps);
-  new s3.CfnBucket(stack, 'test-s3-encryption', outProps);
+  new s3.Bucket(stack, 'test-s3-encryption', outProps);
 
   expect(stack).toHaveResource("AWS::S3::Bucket", {
     BucketEncryption: {
-      ServerSideEncryptionConfiguration : [{
+      ServerSideEncryptionConfiguration: [
+        {
           ServerSideEncryptionByDefault: {
-            KMSMasterKeyID: 'mykeyid',
-            SSEAlgorithm: 'aws:kms'
+            KMSMasterKeyID: {
+              "Fn::GetAtt": [
+                "mykeyidFA4203B0",
+                "Arn"
+              ]
+            },
+            SSEAlgorithm: "aws:kms"
           }
-      }]
+        }
+      ]
     },
   });
 });
 
 test('test s3Bucket override publicAccessBlockConfiguration', () => {
   const stack = new Stack();
-  const defaultProps: s3.CfnBucketProps = defaults.DefaultS3Props();
+  const defaultProps: s3.BucketProps = defaults.DefaultS3Props();
 
-  const inProps: s3.CfnBucketProps = {
-    publicAccessBlockConfiguration: {
-      blockPublicAcls: false,
-      blockPublicPolicy: true,
-      ignorePublicAcls: false,
-      restrictPublicBuckets: true
-    },
+  const inProps: s3.BucketProps = {
+    blockPublicAccess: s3.BlockPublicAccess.BLOCK_ACLS
   };
 
   const outProps = overrideProps(defaultProps, inProps);
-  new s3.CfnBucket(stack, 'test-s3-publicAccessBlock', outProps);
+  new s3.Bucket(stack, 'test-s3-publicAccessBlock', outProps);
 
   expect(stack).toHaveResource("AWS::S3::Bucket", {
     PublicAccessBlockConfiguration: {
-      BlockPublicAcls: false,
-      BlockPublicPolicy: true,
-      IgnorePublicAcls: false,
-      RestrictPublicBuckets: true
+      BlockPublicAcls: true,
+      IgnorePublicAcls: true
     },
   });
 });
 
 test('test s3Bucket add lifecycleConfiguration', () => {
   const stack = new Stack();
-  const defaultProps: s3.CfnBucketProps = defaults.DefaultS3Props();
+  const defaultProps: s3.BucketProps = defaults.DefaultS3Props();
 
-  const inProps: s3.CfnBucketProps = {
-    lifecycleConfiguration: {
-      rules: [
-        {
-          status: 'Enabled',
-          expirationInDays: 365,
-        }
-      ]
-    }
+  const inProps: s3.BucketProps = {
+    lifecycleRules: [{
+      expiration: Duration.days(365)
+    }]
   };
 
   const outProps = overrideProps(defaultProps, inProps);
-  new s3.CfnBucket(stack, 'test-s3-lifecycle', outProps);
+  new s3.Bucket(stack, 'test-s3-lifecycle', outProps);
 
   expect(stack).toHaveResource("AWS::S3::Bucket", {
     LifecycleConfiguration: {
@@ -127,38 +137,6 @@ test('test s3Bucket add lifecycleConfiguration', () => {
         }
       ]
     }
-  });
-});
-
-test('test s3Bucket add objectLock', () => {
-  const stack = new Stack();
-  const defaultProps: s3.CfnBucketProps = defaults.DefaultS3Props();
-
-  const inProps: s3.CfnBucketProps = {
-    objectLockConfiguration: {
-      objectLockEnabled: 'Enabled',
-      rule: {
-        defaultRetention: {
-          days: 365
-        }
-      }
-    },
-    objectLockEnabled: true,
-  };
-
-  const outProps = overrideProps(defaultProps, inProps);
-  new s3.CfnBucket(stack, 'test-s3-objlock', outProps);
-
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
-    ObjectLockConfiguration: {
-      ObjectLockEnabled: 'Enabled',
-      Rule: {
-        DefaultRetention: {
-          Days: 365
-        }
-      }
-    },
-    ObjectLockEnabled: true
   });
 });
 
