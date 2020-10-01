@@ -13,6 +13,7 @@
 
 import * as deepmerge from 'deepmerge';
 import { flagOverriddenDefaults } from './override-warning-service';
+import * as log from 'npmlog';
 
 function isObject(val: object) {
     return val != null && typeof val === 'object'
@@ -76,4 +77,12 @@ export function overrideProps(DefaultProps: object, userProps: object, concatArr
       isMergeableObject: isPlainObject
     });
   }
+}
+
+export function printWarning(message: string) {
+  // Style the log output
+  log.prefixStyle.bold = true;
+  log.prefixStyle.fg = 'red';
+  log.enableColor();
+  log.warn('AWS_SOLUTIONS_CONSTRUCTS_WARNING: ', message);
 }

@@ -153,7 +153,7 @@ test('test cloudfront with custom domain names', () => {
           Bucket: {
             "Fn::GetAtt": [
               "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
-              "RegionalDomainName"
+              "DomainName"
             ]
           },
           IncludeCookies: false

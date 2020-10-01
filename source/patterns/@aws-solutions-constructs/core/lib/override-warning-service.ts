@@ -12,7 +12,7 @@
  */
 
 import * as deepdiff from 'deep-diff';
-import * as log from 'npmlog';
+import { printWarning } from './utils';
 
 /**
  * Emits a warning to the console when a prescriptive default value is overridden by the user.
@@ -32,13 +32,9 @@ export function flagOverriddenDefaults(defaultProps: object, userProps: object) 
     );
     // Format the path for readability
     const path = formatOverridePath(e.path);
-    // Style the log output
-    log.prefixStyle.bold = true;
-    log.prefixStyle.fg = 'red';
-    log.enableColor();
     // Output
     const details = (valuesAreReadable) ? ` Default value: '${e.lhs}'. You provided: '${e.rhs}'.` : '';
-    log.warn('AWS_SOLUTIONS_CONSTRUCTS_WARNING: ', `An override has been provided for the property: ${path}.` + details);
+    printWarning(`An override has been provided for the property: ${path}.` + details);
   }
 }
 

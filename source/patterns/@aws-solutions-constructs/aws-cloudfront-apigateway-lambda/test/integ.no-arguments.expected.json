@@ -843,7 +843,7 @@
             "Bucket": {
               "Fn::GetAtt": [
                 "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucket7F467421",
-                "RegionalDomainName"
+                "DomainName"
               ]
             },
             "IncludeCookies": false

@@ -16,6 +16,7 @@ import { CognitoToApiGatewayToLambda, CognitoToApiGatewayToLambdaProps } from ".
 import * as cdk from "@aws-cdk/core";
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as lambda from '@aws-cdk/aws-lambda';
+import * as api from '@aws-cdk/aws-apigateway';
 import '@aws-cdk/assert/jest';
 
 function deployNewFunc(stack: cdk.Stack) {
@@ -125,7 +126,315 @@ test('override cognito cognitoUserPoolClientProps', () => {
 
   expect(stack).toHaveResource('AWS::Cognito::UserPoolClient', {
     ExplicitAuthFlows: [
-      "ALLOW_USER_SRP_AUTH"
+      "ALLOW_USER_SRP_AUTH",
+      "ALLOW_REFRESH_TOKEN_AUTH"
     ],
+  });
+});
+
+test('Check for default Cognito Auth Type', () => {
+  const stack = new cdk.Stack();
+
+  const lambdaFunctionProps: lambda.FunctionProps = {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler'
+  };
+
+  new CognitoToApiGatewayToLambda(stack, 'test-cognito-apigateway-lambda', {
+    lambdaFunctionProps
+  });
+
+  expect(stack).toHaveResource('AWS::ApiGateway::Method', {
+    ResourceId: {
+      "Fn::GetAtt": [
+        "testcognitoapigatewaylambdaLambdaRestApi2E272431",
+        "RootResourceId"
+      ]
+    },
+    AuthorizationType: "COGNITO_USER_POOLS",
+    AuthorizerId: {
+      Ref: "testcognitoapigatewaylambdaCognitoAuthorizer170CACC9"
+    },
+  });
+
+  expect(stack).toHaveResource('AWS::ApiGateway::Method', {
+    ResourceId: {
+      Ref: "testcognitoapigatewaylambdaLambdaRestApiproxy23E1DA20"
+    },
+    AuthorizationType: "COGNITO_USER_POOLS",
+    AuthorizerId: {
+      Ref: "testcognitoapigatewaylambdaCognitoAuthorizer170CACC9"
+    },
+  });
+
+});
+
+test('override Auth Type to COGNITO', () => {
+  const stack = new cdk.Stack();
+
+  const lambdaFunctionProps: lambda.FunctionProps = {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler'
+  };
+
+  new CognitoToApiGatewayToLambda(stack, 'test-cognito-apigateway-lambda', {
+    lambdaFunctionProps,
+    apiGatewayProps: {
+      defaultMethodOptions: {
+        authorizationType: api.AuthorizationType.COGNITO
+      }
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::ApiGateway::Method', {
+    ResourceId: {
+      "Fn::GetAtt": [
+        "testcognitoapigatewaylambdaLambdaRestApi2E272431",
+        "RootResourceId"
+      ]
+    },
+    AuthorizationType: "COGNITO_USER_POOLS",
+    AuthorizerId: {
+      Ref: "testcognitoapigatewaylambdaCognitoAuthorizer170CACC9"
+    },
+  });
+
+  expect(stack).toHaveResource('AWS::ApiGateway::Method', {
+    ResourceId: {
+      Ref: "testcognitoapigatewaylambdaLambdaRestApiproxy23E1DA20"
+    },
+    AuthorizationType: "COGNITO_USER_POOLS",
+    AuthorizerId: {
+      Ref: "testcognitoapigatewaylambdaCognitoAuthorizer170CACC9"
+    },
+  });
+
+});
+
+test('Try to override Auth Type to NONE', () => {
+  const stack = new cdk.Stack();
+
+  const lambdaFunctionProps: lambda.FunctionProps = {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler'
+  };
+
+  new CognitoToApiGatewayToLambda(stack, 'test-cognito-apigateway-lambda', {
+    lambdaFunctionProps,
+    apiGatewayProps: {
+      defaultMethodOptions: {
+        authorizationType: api.AuthorizationType.NONE
+      }
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::ApiGateway::Method', {
+    ResourceId: {
+      "Fn::GetAtt": [
+        "testcognitoapigatewaylambdaLambdaRestApi2E272431",
+        "RootResourceId"
+      ]
+    },
+    AuthorizationType: "COGNITO_USER_POOLS",
+    AuthorizerId: {
+      Ref: "testcognitoapigatewaylambdaCognitoAuthorizer170CACC9"
+    },
+  });
+
+  expect(stack).toHaveResource('AWS::ApiGateway::Method', {
+    ResourceId: {
+      Ref: "testcognitoapigatewaylambdaLambdaRestApiproxy23E1DA20"
+    },
+    AuthorizationType: "COGNITO_USER_POOLS",
+    AuthorizerId: {
+      Ref: "testcognitoapigatewaylambdaCognitoAuthorizer170CACC9"
+    },
+  });
+
+});
+
+test('Override apiGatewayProps', () => {
+  const stack = new cdk.Stack();
+
+  const lambdaFunctionProps: lambda.FunctionProps = {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler'
+  };
+
+  new CognitoToApiGatewayToLambda(stack, 'test-cognito-apigateway-lambda', {
+    lambdaFunctionProps,
+    apiGatewayProps: {
+      defaultMethodOptions: {
+        operationName: 'foo-bar'
+      }
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::ApiGateway::Method', {
+    OperationName: "foo-bar",
+    ResourceId: {
+      "Fn::GetAtt": [
+        "testcognitoapigatewaylambdaLambdaRestApi2E272431",
+        "RootResourceId"
+      ]
+    },
+    AuthorizationType: "COGNITO_USER_POOLS",
+    AuthorizerId: {
+      Ref: "testcognitoapigatewaylambdaCognitoAuthorizer170CACC9"
+    },
+  });
+
+  expect(stack).toHaveResource('AWS::ApiGateway::Method', {
+    OperationName: "foo-bar",
+    ResourceId: {
+      Ref: "testcognitoapigatewaylambdaLambdaRestApiproxy23E1DA20"
+    },
+    AuthorizationType: "COGNITO_USER_POOLS",
+    AuthorizerId: {
+      Ref: "testcognitoapigatewaylambdaCognitoAuthorizer170CACC9"
+    },
+  });
+
+});
+
+test('Override apiGatewayProps to support CORS', () => {
+  const stack = new cdk.Stack();
+
+  const lambdaFunctionProps: lambda.FunctionProps = {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler'
+  };
+
+  new CognitoToApiGatewayToLambda(stack, 'test-cognito-apigateway-lambda', {
+    lambdaFunctionProps,
+    apiGatewayProps: {
+      defaultCorsPreflightOptions: {
+        allowOrigins: api.Cors.ALL_ORIGINS,
+        allowMethods: api.Cors.ALL_METHODS
+      }
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::ApiGateway::Method', {
+    HttpMethod: "ANY",
+    ResourceId: {
+      "Fn::GetAtt": [
+        "testcognitoapigatewaylambdaLambdaRestApi2E272431",
+        "RootResourceId"
+      ]
+    },
+    AuthorizationType: "COGNITO_USER_POOLS",
+    AuthorizerId: {
+      Ref: "testcognitoapigatewaylambdaCognitoAuthorizer170CACC9"
+    },
+  });
+
+  expect(stack).toHaveResource('AWS::ApiGateway::Method', {
+    HttpMethod: "ANY",
+    ResourceId: {
+      Ref: "testcognitoapigatewaylambdaLambdaRestApiproxy23E1DA20"
+    },
+    AuthorizationType: "COGNITO_USER_POOLS",
+    AuthorizerId: {
+      Ref: "testcognitoapigatewaylambdaCognitoAuthorizer170CACC9"
+    },
+  });
+
+  expect(stack).toHaveResource('AWS::ApiGateway::Method', {
+    HttpMethod: "OPTIONS",
+    ResourceId: {
+      "Fn::GetAtt": [
+        "testcognitoapigatewaylambdaLambdaRestApi2E272431",
+        "RootResourceId"
+      ]
+    },
+    AuthorizationType: "NONE"
+  });
+
+  expect(stack).toHaveResource('AWS::ApiGateway::Method', {
+    HttpMethod: "OPTIONS",
+    ResourceId: {
+      Ref: "testcognitoapigatewaylambdaLambdaRestApiproxy23E1DA20"
+    },
+    AuthorizationType: "NONE"
+  });
+
+});
+
+test('Override apiGatewayProps with proxy = false and add POST method', () => {
+  const stack = new cdk.Stack();
+
+  const lambdaFunctionProps: lambda.FunctionProps = {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler'
+  };
+
+  const c = new CognitoToApiGatewayToLambda(stack, 'test-cognito-apigateway-lambda', {
+    lambdaFunctionProps,
+    apiGatewayProps: {
+      proxy: false
+    }
+  });
+
+  const r = c.apiGateway.root.addResource('foo');
+  r.addMethod('POST');
+
+  // Super imporant to call this method to Apply the Cognito Authorizers
+  c.addAuthorizers();
+
+  expect(stack).toHaveResource('AWS::ApiGateway::Method', {
+    HttpMethod: "POST",
+    ResourceId: {
+      Ref: "testcognitoapigatewaylambdaLambdaRestApifoo89ACA437"
+    },
+    AuthorizationType: "COGNITO_USER_POOLS",
+    AuthorizerId: {
+      Ref: "testcognitoapigatewaylambdaCognitoAuthorizer170CACC9"
+    },
+  });
+
+  expect(stack).toHaveResource('AWS::ApiGateway::Resource', {
+    PathPart: "foo",
+  });
+});
+
+test('Override apiGatewayProps with proxy = false and add OPTIONS method', () => {
+  const stack = new cdk.Stack();
+
+  const lambdaFunctionProps: lambda.FunctionProps = {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler'
+  };
+
+  const c = new CognitoToApiGatewayToLambda(stack, 'test-cognito-apigateway-lambda', {
+    lambdaFunctionProps,
+    apiGatewayProps: {
+      proxy: false
+    }
+  });
+
+  const r = c.apiGateway.root.addResource('foo');
+  r.addMethod('OPTIONS');
+
+  // Mandatory to call this method to Apply the Cognito Authorizers
+  c.addAuthorizers();
+
+  expect(stack).toHaveResource('AWS::ApiGateway::Method', {
+    HttpMethod: "OPTIONS",
+    ResourceId: {
+      Ref: "testcognitoapigatewaylambdaLambdaRestApifoo89ACA437"
+    },
+    AuthorizationType: "NONE",
+  });
+
+  expect(stack).toHaveResource('AWS::ApiGateway::Resource', {
+    PathPart: "foo",
   });
 });
