@@ -38,7 +38,11 @@ Object {
                     "Fn::Join": Array [
                       "",
                       Array [
-                        "arn:aws:es:",
+                        "arn:",
+                        Object {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":es:",
                         Object {
                           "Ref": "AWS::Region",
                         },

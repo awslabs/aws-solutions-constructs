@@ -18,9 +18,6 @@
           "BlockPublicPolicy": true,
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
-        },
-        "VersioningConfiguration": {
-          "Status": "Enabled"
         }
       },
       "UpdateReplacePolicy": "Retain",
@@ -83,6 +80,19 @@
               "ServerSideEncryptionByDefault": {
                 "SSEAlgorithm": "AES256"
               }
+            }
+          ]
+        },
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "NoncurrentVersionTransitions": [
+                {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90
+                }
+              ],
+              "Status": "Enabled"
             }
           ]
         },
@@ -219,7 +229,11 @@
                 "Fn::Join": [
                   "",
                   [
-                    "arn:aws:logs:",
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":logs:",
                     {
                       "Ref": "AWS::Region"
                     },

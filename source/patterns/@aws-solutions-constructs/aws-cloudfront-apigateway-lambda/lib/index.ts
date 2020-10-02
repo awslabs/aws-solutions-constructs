@@ -42,7 +42,7 @@ export interface CloudFrontToApiGatewayToLambdaProps {
    *
    * @default - Default props are used
    */
-  readonly apiGatewayProps?: api.LambdaRestApiProps
+  readonly apiGatewayProps?: api.LambdaRestApiProps | any
   /**
    * Optional user provided props to override the default props
    *

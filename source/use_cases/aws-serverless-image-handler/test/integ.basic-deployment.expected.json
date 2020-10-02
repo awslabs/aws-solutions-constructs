@@ -773,7 +773,7 @@
             "Bucket": {
               "Fn::GetAtt": [
                 "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewayCloudfrontLoggingBucket58AA7378",
-                "RegionalDomainName"
+                "DomainName"
               ]
             },
             "IncludeCookies": false

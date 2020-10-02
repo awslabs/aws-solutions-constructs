@@ -24,7 +24,7 @@ const stack = new Stack(app, 'test-cloudfront-apigateway-stack');
 stack.templateOptions.description = 'Integration Test for aws-cloudfront-apigateway';
 
 const inProps: lambda.FunctionProps = {
-    code: lambda.Code.asset(`${__dirname}/lambda`),
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     runtime: lambda.Runtime.NODEJS_10_X,
     handler: 'index.handler'
 };

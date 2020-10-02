@@ -52,7 +52,7 @@ export interface CognitoToApiGatewayToLambdaProps {
    *
    * @default - Default props are used
    */
-  readonly cognitoUserPoolClientProps?: cognito.UserPoolClientProps
+  readonly cognitoUserPoolClientProps?: cognito.UserPoolClientProps | any
 }
 
 export class CognitoToApiGatewayToLambda extends Construct {
@@ -75,6 +75,24 @@ export class CognitoToApiGatewayToLambda extends Construct {
   constructor(scope: Construct, id: string, props: CognitoToApiGatewayToLambdaProps) {
     super(scope, id);
 
+    // This Construct requires that the auth type be COGNITO regardless of what is specified in the props
+    if (props.apiGatewayProps) {
+      if (props.apiGatewayProps.defaultMethodOptions === undefined) {
+        props.apiGatewayProps.defaultMethodOptions = {
+          authorizationType: api.AuthorizationType.COGNITO,
+        };
+      } else if (props.apiGatewayProps?.defaultMethodOptions.authorizationType === undefined) {
+        props.apiGatewayProps.defaultMethodOptions.authorizationType = api.AuthorizationType.COGNITO;
+      } else if (props.apiGatewayProps?.defaultMethodOptions.authorizationType !== 'COGNITO_USER_POOLS') {
+        defaults.printWarning('Overriding Authorization type to be AuthorizationType.COGNITO');
+        props.apiGatewayProps.defaultMethodOptions.authorizationType = api.AuthorizationType.COGNITO;
+      }
+    }
+
+    if (props.apiGatewayProps && (typeof props.apiGatewayProps.proxy !== 'undefined') && (props.apiGatewayProps.proxy === false)) {
+      defaults.printWarning('For non-proxy API, addAuthorizers() method must be called after all the resources and methods for API are fuly defined. Not calling addAuthorizers() will result in API methods NOT protected by Cognito.');
+    }
+
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps
@@ -92,8 +110,12 @@ export class CognitoToApiGatewayToLambda extends Construct {
       name: "authorizer"
     });
 
+    this.addAuthorizers();
+  }
+
+  public addAuthorizers() {
     this.apiGateway.methods.forEach((apiMethod) => {
-      // Leave the authorizer NONE for HTTP OPTIONS method, for the rest set it to COGNITO
+      // Leave the authorizer NONE for HTTP OPTIONS method to support CORS, for the rest set it to COGNITO
       const child = apiMethod.node.findChild('Resource') as api.CfnMethod;
       if (apiMethod.httpMethod === 'OPTIONS') {
         child.addPropertyOverride('AuthorizationType', 'NONE');

@@ -82,7 +82,11 @@
                 "Fn::Join": [
                   "",
                   [
-                    "arn:aws:logs:",
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":logs:",
                     {
                       "Ref": "AWS::Region"
                     },

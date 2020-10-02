@@ -1,6 +1,6 @@
 {
   "Resources": {
-    "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaLambdaFunctionServiceRole7284FB59": {
+    "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleA59E9EBF": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -55,7 +55,7 @@
         ]
       }
     },
-    "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaLambdaFunctionServiceRoleDefaultPolicy9ECA9F26": {
+    "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleDefaultPolicy438CAC76": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -67,46 +67,14 @@
               ],
               "Effect": "Allow",
               "Resource": "*"
-            },
-            {
-              "Action": "dynamodb:ListStreams",
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaDynamoTable90CA17D8",
-                        "Arn"
-                      ]
-                    },
-                    "/stream/*"
-                  ]
-                ]
-              }
-            },
-            {
-              "Action": [
-                "dynamodb:DescribeStream",
-                "dynamodb:GetRecords",
-                "dynamodb:GetShardIterator"
-              ],
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaDynamoTable90CA17D8",
-                  "StreamArn"
-                ]
-              }
             }
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaLambdaFunctionServiceRoleDefaultPolicy9ECA9F26",
+        "PolicyName": "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleDefaultPolicy438CAC76",
         "Roles": [
           {
-            "Ref": "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaLambdaFunctionServiceRole7284FB59"
+            "Ref": "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleA59E9EBF"
           }
         ]
       },
@@ -121,12 +89,12 @@
         }
       }
     },
-    "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaLambdaFunctionE4694B84": {
+    "testlambdaelasticsearchkibana2LambdaFunctionE665DF63": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
-            "Ref": "AssetParameters92927de5fcc3aea277bddecb845bee318fb502f7375daedbdafb72c0400bc197S3Bucket87AE2D86"
+            "Ref": "AssetParameters67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682dbS3BucketBAF5BF3A"
           },
           "S3Key": {
             "Fn::Join": [
@@ -139,7 +107,7 @@
                       "Fn::Split": [
                         "||",
                         {
-                          "Ref": "AssetParameters92927de5fcc3aea277bddecb845bee318fb502f7375daedbdafb72c0400bc197S3VersionKey6EF53907"
+                          "Ref": "AssetParameters67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682dbS3VersionKeyADB3CCA3"
                         }
                       ]
                     }
@@ -152,7 +120,7 @@
                       "Fn::Split": [
                         "||",
                         {
-                          "Ref": "AssetParameters92927de5fcc3aea277bddecb845bee318fb502f7375daedbdafb72c0400bc197S3VersionKey6EF53907"
+                          "Ref": "AssetParameters67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682dbS3VersionKeyADB3CCA3"
                         }
                       ]
                     }
@@ -165,7 +133,7 @@
         "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
-            "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaLambdaFunctionServiceRole7284FB59",
+            "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleA59E9EBF",
             "Arn"
           ]
         },
@@ -175,7 +143,7 @@
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "DOMAIN_ENDPOINT": {
               "Fn::GetAtt": [
-                "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchElasticsearchDomainFAB96EC1",
+                "testlambdaelasticsearchkibana2ElasticsearchDomainE2BD1E73",
                 "DomainEndpoint"
               ]
             }
@@ -186,8 +154,8 @@
         }
       },
       "DependsOn": [
-        "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaLambdaFunctionServiceRoleDefaultPolicy9ECA9F26",
-        "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaLambdaFunctionServiceRole7284FB59"
+        "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleDefaultPolicy438CAC76",
+        "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleA59E9EBF"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -200,52 +168,7 @@
         }
       }
     },
-    "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaLambdaFunctionDynamoDBEventSourcetestdynamodbstreamlambdaelasticsearchkibanastacktestdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaDynamoTableEF5268D56B07EBC2": {
-      "Type": "AWS::Lambda::EventSourceMapping",
-      "Properties": {
-        "EventSourceArn": {
-          "Fn::GetAtt": [
-            "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaDynamoTable90CA17D8",
-            "StreamArn"
-          ]
-        },
-        "FunctionName": {
-          "Ref": "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaLambdaFunctionE4694B84"
-        },
-        "BatchSize": 100,
-        "StartingPosition": "TRIM_HORIZON"
-      }
-    },
-    "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaDynamoTable90CA17D8": {
-      "Type": "AWS::DynamoDB::Table",
-      "Properties": {
-        "KeySchema": [
-          {
-            "AttributeName": "id",
-            "KeyType": "HASH"
-          }
-        ],
-        "AttributeDefinitions": [
-          {
-            "AttributeName": "id",
-            "AttributeType": "S"
-          }
-        ],
-        "BillingMode": "PAY_PER_REQUEST",
-        "PointInTimeRecoverySpecification": {
-          "PointInTimeRecoveryEnabled": true
-        },
-        "SSESpecification": {
-          "SSEEnabled": true
-        },
-        "StreamSpecification": {
-          "StreamViewType": "NEW_AND_OLD_IMAGES"
-        }
-      },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
-    },
-    "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoUserPool77221A72": {
+    "testlambdaelasticsearchkibana2CognitoUserPool9D73D9DA": {
       "Type": "AWS::Cognito::UserPool",
       "Properties": {
         "AccountRecoverySetting": {
@@ -277,11 +200,11 @@
         }
       }
     },
-    "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoUserPoolClientA7156AE5": {
+    "testlambdaelasticsearchkibana2CognitoUserPoolClientB0F3872A": {
       "Type": "AWS::Cognito::UserPoolClient",
       "Properties": {
         "UserPoolId": {
-          "Ref": "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoUserPool77221A72"
+          "Ref": "testlambdaelasticsearchkibana2CognitoUserPool9D73D9DA"
         },
         "AllowedOAuthFlows": [
           "implicit",
@@ -303,18 +226,18 @@
         ]
       }
     },
-    "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoIdentityPool7F08EC45": {
+    "testlambdaelasticsearchkibana2CognitoIdentityPool0681F400": {
       "Type": "AWS::Cognito::IdentityPool",
       "Properties": {
         "AllowUnauthenticatedIdentities": false,
         "CognitoIdentityProviders": [
           {
             "ClientId": {
-              "Ref": "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoUserPoolClientA7156AE5"
+              "Ref": "testlambdaelasticsearchkibana2CognitoUserPoolClientB0F3872A"
             },
             "ProviderName": {
               "Fn::GetAtt": [
-                "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoUserPool77221A72",
+                "testlambdaelasticsearchkibana2CognitoUserPool9D73D9DA",
                 "ProviderName"
               ]
             },
@@ -323,19 +246,19 @@
         ]
       }
     },
-    "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchUserPoolDomain0A904A18": {
+    "testlambdaelasticsearchkibana2UserPoolDomainF6BF7A6F": {
       "Type": "AWS::Cognito::UserPoolDomain",
       "Properties": {
-        "Domain": "myconstructsdomain1",
+        "Domain": "globallyuniquedomain",
         "UserPoolId": {
-          "Ref": "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoUserPool77221A72"
+          "Ref": "testlambdaelasticsearchkibana2CognitoUserPool9D73D9DA"
         }
       },
       "DependsOn": [
-        "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoUserPool77221A72"
+        "testlambdaelasticsearchkibana2CognitoUserPool9D73D9DA"
       ]
     },
-    "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoAuthorizedRole6DD9C03D": {
+    "testlambdaelasticsearchkibana2CognitoAuthorizedRole7AD979E9": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -345,7 +268,7 @@
               "Condition": {
                 "StringEquals": {
                   "cognito-identity.amazonaws.com:aud": {
-                    "Ref": "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoIdentityPool7F08EC45"
+                    "Ref": "testlambdaelasticsearchkibana2CognitoIdentityPool0681F400"
                   }
                 },
                 "ForAnyValue:StringLike": {
@@ -383,7 +306,7 @@
                         {
                           "Ref": "AWS::AccountId"
                         },
-                        ":domain/myconstructsdomain1/*"
+                        ":domain/globallyuniquedomain/*"
                       ]
                     ]
                   }
@@ -396,23 +319,23 @@
         ]
       }
     },
-    "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchIdentityPoolRoleMapping9F79B834": {
+    "testlambdaelasticsearchkibana2IdentityPoolRoleMapping5CE56BBF": {
       "Type": "AWS::Cognito::IdentityPoolRoleAttachment",
       "Properties": {
         "IdentityPoolId": {
-          "Ref": "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoIdentityPool7F08EC45"
+          "Ref": "testlambdaelasticsearchkibana2CognitoIdentityPool0681F400"
         },
         "Roles": {
           "authenticated": {
             "Fn::GetAtt": [
-              "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoAuthorizedRole6DD9C03D",
+              "testlambdaelasticsearchkibana2CognitoAuthorizedRole7AD979E9",
               "Arn"
             ]
           }
         }
       }
     },
-    "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoKibanaConfigureRoleD7825A72": {
+    "testlambdaelasticsearchkibana2CognitoKibanaConfigureRoleC9C9E921": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -429,7 +352,7 @@
         }
       }
     },
-    "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoKibanaConfigureRolePolicy10C81645": {
+    "testlambdaelasticsearchkibana2CognitoKibanaConfigureRolePolicy6DE68343": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -453,7 +376,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoUserPool77221A72",
+                    "testlambdaelasticsearchkibana2CognitoUserPool9D73D9DA",
                     "Arn"
                   ]
                 },
@@ -471,7 +394,7 @@
                       },
                       ":identitypool/",
                       {
-                        "Ref": "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoIdentityPool7F08EC45"
+                        "Ref": "testlambdaelasticsearchkibana2CognitoIdentityPool0681F400"
                       }
                     ]
                   ]
@@ -488,7 +411,10 @@
                       {
                         "Ref": "AWS::AccountId"
                       },
-                      ":domain/myconstructsdomain1"
+                      ":domain/domain-",
+                      {
+                        "Ref": "AWS::AccountId"
+                      }
                     ]
                   ]
                 }
@@ -504,7 +430,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoKibanaConfigureRoleD7825A72",
+                  "testlambdaelasticsearchkibana2CognitoKibanaConfigureRoleC9C9E921",
                   "Arn"
                 ]
               }
@@ -512,15 +438,15 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoKibanaConfigureRolePolicy10C81645",
+        "PolicyName": "testlambdaelasticsearchkibana2CognitoKibanaConfigureRolePolicy6DE68343",
         "Roles": [
           {
-            "Ref": "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoKibanaConfigureRoleD7825A72"
+            "Ref": "testlambdaelasticsearchkibana2CognitoKibanaConfigureRoleC9C9E921"
           }
         ]
       }
     },
-    "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchElasticsearchDomainFAB96EC1": {
+    "testlambdaelasticsearchkibana2ElasticsearchDomainE2BD1E73": {
       "Type": "AWS::Elasticsearch::Domain",
       "Properties": {
         "AccessPolicies": {
@@ -532,13 +458,13 @@
                 "AWS": [
                   {
                     "Fn::GetAtt": [
-                      "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoAuthorizedRole6DD9C03D",
+                      "testlambdaelasticsearchkibana2CognitoAuthorizedRole7AD979E9",
                       "Arn"
                     ]
                   },
                   {
                     "Fn::GetAtt": [
-                      "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaLambdaFunctionServiceRole7284FB59",
+                      "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleA59E9EBF",
                       "Arn"
                     ]
                   }
@@ -556,7 +482,11 @@
                     {
                       "Ref": "AWS::AccountId"
                     },
-                    ":domain/myconstructsdomain1/*"
+                    ":domain/domain-",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    "/*"
                   ]
                 ]
               }
@@ -567,19 +497,29 @@
         "CognitoOptions": {
           "Enabled": true,
           "IdentityPoolId": {
-            "Ref": "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoIdentityPool7F08EC45"
+            "Ref": "testlambdaelasticsearchkibana2CognitoIdentityPool0681F400"
           },
           "RoleArn": {
             "Fn::GetAtt": [
-              "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoKibanaConfigureRoleD7825A72",
+              "testlambdaelasticsearchkibana2CognitoKibanaConfigureRoleC9C9E921",
               "Arn"
             ]
           },
           "UserPoolId": {
-            "Ref": "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoUserPool77221A72"
+            "Ref": "testlambdaelasticsearchkibana2CognitoUserPool9D73D9DA"
           }
         },
-        "DomainName": "myconstructsdomain1",
+        "DomainName": {
+          "Fn::Join": [
+            "",
+            [
+              "domain-",
+              {
+                "Ref": "AWS::AccountId"
+              }
+            ]
+          ]
+        },
         "EBSOptions": {
           "EBSEnabled": true,
           "VolumeSize": 10
@@ -615,7 +555,7 @@
         }
       }
     },
-    "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchStatusRedAlarmC938FB71": {
+    "testlambdaelasticsearchkibana2StatusRedAlarm508A4D17": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -628,7 +568,7 @@
         "Threshold": 1
       }
     },
-    "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchStatusYellowAlarm71DCDA44": {
+    "testlambdaelasticsearchkibana2StatusYellowAlarmEF13F129": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -641,7 +581,7 @@
         "Threshold": 1
       }
     },
-    "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchFreeStorageSpaceTooLowAlarm7AD3AF98": {
+    "testlambdaelasticsearchkibana2FreeStorageSpaceTooLowAlarm1ED7AA90": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "LessThanOrEqualToThreshold",
@@ -654,7 +594,7 @@
         "Threshold": 2000
       }
     },
-    "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchIndexWritesBlockedTooHighAlarmDEF471CE": {
+    "testlambdaelasticsearchkibana2IndexWritesBlockedTooHighAlarmCE02A217": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -667,7 +607,7 @@
         "Threshold": 1
       }
     },
-    "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchAutomatedSnapshotFailureTooHighAlarmC39154C6": {
+    "testlambdaelasticsearchkibana2AutomatedSnapshotFailureTooHighAlarm75E8F988": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -680,7 +620,7 @@
         "Threshold": 1
       }
     },
-    "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCPUUtilizationTooHighAlarmE30CA506": {
+    "testlambdaelasticsearchkibana2CPUUtilizationTooHighAlarm7E4A7ADE": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -693,7 +633,7 @@
         "Threshold": 80
       }
     },
-    "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchJVMMemoryPressureTooHighAlarm569D9580": {
+    "testlambdaelasticsearchkibana2JVMMemoryPressureTooHighAlarm7CB5E1C7": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -706,7 +646,7 @@
         "Threshold": 80
       }
     },
-    "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchMasterCPUUtilizationTooHighAlarmE5B5DE48": {
+    "testlambdaelasticsearchkibana2MasterCPUUtilizationTooHighAlarmE22B714C": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -719,7 +659,7 @@
         "Threshold": 50
       }
     },
-    "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchMasterJVMMemoryPressureTooHighAlarmE30608AC": {
+    "testlambdaelasticsearchkibana2MasterJVMMemoryPressureTooHighAlarm37A392A6": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -734,17 +674,17 @@
     }
   },
   "Parameters": {
-    "AssetParameters92927de5fcc3aea277bddecb845bee318fb502f7375daedbdafb72c0400bc197S3Bucket87AE2D86": {
+    "AssetParameters67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682dbS3BucketBAF5BF3A": {
       "Type": "String",
-      "Description": "S3 bucket for asset \"92927de5fcc3aea277bddecb845bee318fb502f7375daedbdafb72c0400bc197\""
+      "Description": "S3 bucket for asset \"67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682db\""
     },
-    "AssetParameters92927de5fcc3aea277bddecb845bee318fb502f7375daedbdafb72c0400bc197S3VersionKey6EF53907": {
+    "AssetParameters67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682dbS3VersionKeyADB3CCA3": {
       "Type": "String",
-      "Description": "S3 key for asset version \"92927de5fcc3aea277bddecb845bee318fb502f7375daedbdafb72c0400bc197\""
+      "Description": "S3 key for asset version \"67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682db\""
     },
-    "AssetParameters92927de5fcc3aea277bddecb845bee318fb502f7375daedbdafb72c0400bc197ArtifactHash052E3F31": {
+    "AssetParameters67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682dbArtifactHash322F5E2F": {
       "Type": "String",
-      "Description": "Artifact hash for asset \"92927de5fcc3aea277bddecb845bee318fb502f7375daedbdafb72c0400bc197\""
+      "Description": "Artifact hash for asset \"67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682db\""
     }
   }
 }

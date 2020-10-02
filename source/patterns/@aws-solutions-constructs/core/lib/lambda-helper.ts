@@ -63,7 +63,7 @@ export function deployLambdaFunction(scope: cdk.Construct,
             'logs:CreateLogStream',
             'logs:PutLogEvents'
           ],
-          resources: [`arn:aws:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:log-group:/aws/lambda/*`]
+          resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:log-group:/aws/lambda/*`]
         })]
       })
     }

@@ -21,7 +21,7 @@ import '@aws-cdk/assert/jest';
 function deployNewFunc(stack: cdk.Stack) {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
-          code: lambda.Code.asset(`${__dirname}/lambda`),
+          code: lambda.Code.fromAsset(`${__dirname}/lambda`),
           runtime: lambda.Runtime.NODEJS_10_X,
           handler: 'index.handler'
     },
@@ -34,7 +34,7 @@ function useExistingFunc(stack: cdk.Stack) {
   const lambdaFunctionProps: lambda.FunctionProps = {
     runtime: lambda.Runtime.PYTHON_3_6,
     handler: 'index.handler',
-    code: lambda.Code.asset(`${__dirname}/lambda`)
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
 
   const props: LambdaToDynamoDBProps = {
@@ -109,7 +109,7 @@ test('check dynamo table properties for deploy: true', () => {
   });
 });
 
-test('check iot lambda function role for deploy: true', () => {
+test('check lambda function role for deploy: true', () => {
   const stack = new cdk.Stack();
 
   deployNewFunc(stack);
@@ -142,7 +142,11 @@ test('check iot lambda function role for deploy: true', () => {
                 "Fn::Join": [
                   "",
                   [
-                    "arn:aws:logs:",
+                    "arn:",
+                    {
+                      Ref: "AWS::Partition"
+                    },
+                    ":logs:",
                     {
                       Ref: "AWS::Region"
                     },
@@ -291,7 +295,7 @@ test('check for no prop', () => {
 
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
-      code: lambda.Code.asset(`${__dirname}/lambda`),
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler'
     }
@@ -323,7 +327,7 @@ test('check lambda function policy ReadOnly table permissions', () => {
 
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
-          code: lambda.Code.asset(`${__dirname}/lambda`),
+          code: lambda.Code.fromAsset(`${__dirname}/lambda`),
           runtime: lambda.Runtime.NODEJS_10_X,
           handler: 'index.handler'
     },
@@ -377,7 +381,7 @@ test('check lambda function policy WriteOnly table permissions', () => {
 
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
-          code: lambda.Code.asset(`${__dirname}/lambda`),
+          code: lambda.Code.fromAsset(`${__dirname}/lambda`),
           runtime: lambda.Runtime.NODEJS_10_X,
           handler: 'index.handler'
     },
@@ -429,7 +433,7 @@ test('check lambda function policy ReadWrite table permissions', () => {
 
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
-          code: lambda.Code.asset(`${__dirname}/lambda`),
+          code: lambda.Code.fromAsset(`${__dirname}/lambda`),
           runtime: lambda.Runtime.NODEJS_10_X,
           handler: 'index.handler'
     },
@@ -487,7 +491,7 @@ test('check lambda function policy All table permissions', () => {
 
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
-          code: lambda.Code.asset(`${__dirname}/lambda`),
+          code: lambda.Code.fromAsset(`${__dirname}/lambda`),
           runtime: lambda.Runtime.NODEJS_10_X,
           handler: 'index.handler'
     },

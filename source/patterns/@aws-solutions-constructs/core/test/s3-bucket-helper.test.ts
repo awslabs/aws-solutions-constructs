@@ -12,11 +12,11 @@
  */
 
 import { SynthUtils, expect as expectCDK, haveResource } from '@aws-cdk/assert';
-import { Stack } from '@aws-cdk/core';
+import { Duration, Stack } from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as defaults from '../index';
 import '@aws-cdk/assert/jest';
-import { Bucket } from '@aws-cdk/aws-s3';
+import { Bucket, StorageClass } from '@aws-cdk/aws-s3';
 
 test('s3 bucket with default params', () => {
   const stack = new Stack();
@@ -70,6 +70,46 @@ test('s3 bucket with bucketProps', () => {
 
   expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
     BucketName: "mybucket"
+  }));
+});
+
+test('s3 bucket with life cycle policy', () => {
+  const stack = new Stack();
+
+  defaults.buildS3Bucket(stack, {
+    bucketProps: {
+      lifecycleRules: [{
+        expiration: Duration.days(365),
+        transitions: [{
+            storageClass: StorageClass.INFREQUENT_ACCESS,
+            transitionAfter: Duration.days(30)
+        }, {
+            storageClass: StorageClass.GLACIER,
+            transitionAfter: Duration.days(90)
+        }]
+      }]
+    }
+  });
+
+  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+    LifecycleConfiguration: {
+      Rules: [
+        {
+          ExpirationInDays: 365,
+          Status: "Enabled",
+          Transitions: [
+            {
+              StorageClass: "STANDARD_IA",
+              TransitionInDays: 30
+            },
+            {
+              StorageClass: "GLACIER",
+              TransitionInDays: 90
+            }
+          ]
+        }
+      ]
+    }
   }));
 });
 
@@ -128,6 +168,130 @@ test('Check S3 Bucket policy', () => {
         }
       ],
       Version: "2012-10-17"
+    }
+  }));
+});
+
+test('s3 bucket with LoggingBucket and versioning turned off', () => {
+  const stack = new Stack();
+  const mybucket = new Bucket(stack, 'mybucket', {
+    serverAccessLogsBucket: new Bucket(stack, 'myaccesslogbucket', {})
+  });
+
+  defaults.buildS3Bucket(stack, {
+    bucketProps: {
+      serverAccessLogsBucket: mybucket,
+      serverAccessLogsPrefix: 'access-logs',
+      versioned: false
+    }
+  });
+
+  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+    BucketEncryption: {
+      ServerSideEncryptionConfiguration: [
+        {
+          ServerSideEncryptionByDefault: {
+            SSEAlgorithm: "AES256"
+          }
+        }
+      ]
+    },
+    LoggingConfiguration: {
+      DestinationBucketName: {
+        Ref: "mybucket160F8132"
+      },
+      LogFilePrefix: "access-logs"
+    },
+    PublicAccessBlockConfiguration: {
+      BlockPublicAcls: true,
+      BlockPublicPolicy: true,
+      IgnorePublicAcls: true,
+      RestrictPublicBuckets: true
+    }
+  }));
+});
+
+test('s3 bucket versioning turned off', () => {
+  const stack = new Stack();
+
+  defaults.buildS3Bucket(stack, {
+    bucketProps: {
+      serverAccessLogsPrefix: 'access-logs',
+      versioned: false
+    }
+  });
+
+  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+    BucketEncryption: {
+      ServerSideEncryptionConfiguration: [
+        {
+          ServerSideEncryptionByDefault: {
+            SSEAlgorithm: "AES256"
+          }
+        }
+      ]
+    },
+    LoggingConfiguration: {
+      DestinationBucketName: {
+        Ref: "S3LoggingBucket800A2B27"
+      },
+      LogFilePrefix: "access-logs"
+    },
+    PublicAccessBlockConfiguration: {
+      BlockPublicAcls: true,
+      BlockPublicPolicy: true,
+      IgnorePublicAcls: true,
+      RestrictPublicBuckets: true
+    }
+  }));
+});
+
+test('s3 bucket versioning turned on', () => {
+  const stack = new Stack();
+
+  defaults.buildS3Bucket(stack, {
+    bucketProps: {
+      serverAccessLogsPrefix: 'access-logs',
+    }
+  });
+
+  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+    BucketEncryption: {
+      ServerSideEncryptionConfiguration: [
+        {
+          ServerSideEncryptionByDefault: {
+            SSEAlgorithm: "AES256"
+          }
+        }
+      ]
+    },
+    LifecycleConfiguration: {
+      Rules: [
+        {
+          NoncurrentVersionTransitions: [
+            {
+              StorageClass: "GLACIER",
+              TransitionInDays: 90
+            }
+          ],
+          Status: "Enabled"
+        }
+      ]
+    },
+    LoggingConfiguration: {
+      DestinationBucketName: {
+        Ref: "S3LoggingBucket800A2B27"
+      },
+      LogFilePrefix: "access-logs"
+    },
+    PublicAccessBlockConfiguration: {
+      BlockPublicAcls: true,
+      BlockPublicPolicy: true,
+      IgnorePublicAcls: true,
+      RestrictPublicBuckets: true
+    },
+    VersioningConfiguration: {
+      Status: "Enabled"
     }
   }));
 });

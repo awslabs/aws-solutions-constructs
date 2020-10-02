@@ -21,7 +21,7 @@ import * as cdk from '@aws-cdk/core';
 function deployNewFunc(stack: cdk.Stack) {
   const props: EventsRuleToLambdaProps = {
     lambdaFunctionProps: {
-        code: lambda.Code.asset(`${__dirname}/lambda`),
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
         runtime: lambda.Runtime.NODEJS_12_X,
         handler: 'index.handler'
     },
@@ -117,7 +117,11 @@ test('check lambda function role for deploy: true', () => {
                 "Fn::Join": [
                   "",
                   [
-                    "arn:aws:logs:",
+                    "arn:",
+                    {
+                      Ref: "AWS::Partition"
+                    },
+                    ":logs:",
                     {
                       Ref: "AWS::Region"
                     },

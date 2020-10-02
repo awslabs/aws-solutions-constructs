@@ -95,7 +95,7 @@ Object {
             "Bucket": Object {
               "Fn::GetAtt": Array [
                 "CloudFrontToS3CloudfrontLoggingBucket8350BE9B",
-                "RegionalDomainName",
+                "DomainName",
               ],
             },
             "IncludeCookies": false,

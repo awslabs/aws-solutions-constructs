@@ -24,20 +24,23 @@
 
 This AWS Solutions Construct implements the AWS Lambda function and Amazon Elasticsearch Service with the least privileged permissions.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
-``` javascript
-const { LambdaToElasticSearchAndKibana } = require('@aws-solutions-constructs/aws-lambda-elasticsearch-kibana');
+``` typescript
+import { LambdaToElasticSearchAndKibana } from '@aws-solutions-constructs/aws-lambda-elasticsearch-kibana';
+import { Aws } from "@aws-cdk/core";
 
 const lambdaProps: lambda.FunctionProps = {
-    code: lambda.Code.asset(`${__dirname}/lambda`),
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     runtime: lambda.Runtime.NODEJS_12_X,
     handler: 'index.handler'
 };
 
-new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
+new LambdaToElasticSearchAndKibana(this, 'test-lambda-elasticsearch-kibana', {
     lambdaFunctionProps: lambdaProps,
-    domainName: 'test-domain'
+    domainName: 'test-domain',
+    // TODO: Ensure the Cognito domain name is globally unique
+    cognitoDomainName: 'globallyuniquedomain' + Aws.ACCOUNT_ID;
 });
 
 ```
@@ -62,6 +65,7 @@ _Parameters_
 |lambdaFunctionProps?|[`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.FunctionProps.html)|User provided props to override the default props for the Lambda function.|
 |esDomainProps?|[`elasticsearch.CfnDomainProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-elasticsearch.CfnDomainProps.html)|Optional user provided props to override the default props for the Elasticsearch Service|
 |domainName|`string`|Domain name for the Cognito and the Elasticsearch Service|
+|cognitoDomainName?|`string`|Optional Cognito Domain Name, if provided it will be used for Cognito Domain, and domainName will be used for the Elasticsearch Domain|
 
 ## Pattern Properties
 
@@ -74,6 +78,10 @@ _Parameters_
 |elasticsearchDomain|[`elasticsearch.CfnDomain`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-elasticsearch.CfnDomain.html)|Returns an instance of elasticsearch.CfnDomain created by the construct|
 |elasticsearchDomain|[`iam.Role`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)|Returns an instance of iam.Role created by the construct for elasticsearch.CfnDomain|
 |cloudwatchAlarms|[`cloudwatch.Alarm[]`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudwatch.Alarm.html)|Returns a list of cloudwatch.Alarm created by the construct|
+
+## Lambda Function
+
+This pattern requires a lambda function that can post data into the Elasticsearch. A sample function is provided [here](https://github.com/awslabs/aws-solutions-constructs/blob/master/source/patterns/%40aws-solutions-constructs/aws-lambda-elasticsearch-kibana/test/lambda/index.js).
 
 ## Default settings
 

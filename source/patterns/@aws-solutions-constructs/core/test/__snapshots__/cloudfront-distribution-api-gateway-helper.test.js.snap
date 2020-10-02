@@ -93,7 +93,7 @@ Object {
             "Bucket": Object {
               "Fn::GetAtt": Array [
                 "CloudfrontLoggingBucket3C3EFAA7",
-                "RegionalDomainName",
+                "DomainName",
               ],
             },
             "IncludeCookies": false,
@@ -206,9 +206,6 @@ Object {
           "BlockPublicPolicy": true,
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true,
-        },
-        "VersioningConfiguration": Object {
-          "Status": "Enabled",
         },
       },
       "Type": "AWS::S3::Bucket",
@@ -737,7 +734,11 @@ Object {
                     "Fn::Join": Array [
                       "",
                       Array [
-                        "arn:aws:logs:",
+                        "arn:",
+                        Object {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":logs:",
                         Object {
                           "Ref": "AWS::Region",
                         },

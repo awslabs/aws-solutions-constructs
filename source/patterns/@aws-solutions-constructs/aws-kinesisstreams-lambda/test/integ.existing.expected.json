@@ -31,7 +31,11 @@
                     "Fn::Join": [
                       "",
                       [
-                        "arn:aws:logs:",
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
                         {
                           "Ref": "AWS::Region"
                         },
@@ -149,7 +153,7 @@
         "testroleB50A37BE"
       ]
     },
-    "testfnKinesisEventSourcetestkslambdastackteststream0CD251F02AE6CC2F": {
+    "testfnKinesisEventSourcetestksexistinglambdastackteststream12C1A0467DF707DE": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
         "EventSourceArn": {

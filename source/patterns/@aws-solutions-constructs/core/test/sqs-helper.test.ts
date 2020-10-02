@@ -58,9 +58,9 @@ test('Test dead letter queue deployment/configuration', () => {
     const stack = new Stack();
     // Helper setup
     const encKey = defaults.buildEncryptionKey(stack);
-    const [dlq] = defaults.buildQueue(stack, 'dead-letter-queue', {});
-    const dlqi = defaults.buildDeadLetterQueue({
-        deadLetterQueue: dlq,
+    // const [dlq] = defaults.buildQueue(stack, 'dead-letter-queue', {});
+    const dlqi = defaults.buildDeadLetterQueue(stack, {
+        deployDeadLetterQueue: true,
         maxReceiveCount: 3
     });
     // Helper declaration
@@ -84,9 +84,9 @@ test('Test dead letter queue deployment/configuration w/o mrc', () => {
   const stack = new Stack();
   // Helper setup
   const encKey = defaults.buildEncryptionKey(stack);
-  const [dlq] = defaults.buildQueue(stack, 'dead-letter-queue', {});
-  const dlqi = defaults.buildDeadLetterQueue({
-      deadLetterQueue: dlq
+  // const [dlq] = defaults.buildQueue(stack, 'dead-letter-queue', {});
+  const dlqi = defaults.buildDeadLetterQueue(stack, {
+      deployDeadLetterQueue: true
   });
   // Helper declaration
   defaults.buildQueue(stack, 'primary-queue', {

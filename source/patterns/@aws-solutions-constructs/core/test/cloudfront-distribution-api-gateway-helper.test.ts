@@ -28,7 +28,7 @@ test('cloudfront distribution for ApiGateway with default params', () => {
   const lambdaFunctionProps: lambda.FunctionProps = {
     runtime: lambda.Runtime.NODEJS_12_X,
     handler: 'index.handler',
-    code: lambda.Code.asset(`${__dirname}/lambda`)
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
 
   const func = new lambda.Function(stack, 'LambdaFunction', lambdaFunctionProps);
@@ -45,7 +45,7 @@ test('test cloudfront for Api Gateway with user provided logging bucket', () => 
   const loggingBucket: s3.Bucket = new s3.Bucket(stack, 'MyCloudfrontLoggingBucket', defaults.DefaultS3Props());
 
   const inProps: lambda.FunctionProps = {
-    code: lambda.Code.asset(`${__dirname}/lambda-test`),
+    code: lambda.Code.fromAsset(`${__dirname}/lambda-test`),
     runtime: lambda.Runtime.PYTHON_3_6,
     handler: 'index.handler'
   };
@@ -92,7 +92,7 @@ test('test cloudfront for Api Gateway with user provided logging bucket', () => 
         Bucket: {
           "Fn::GetAtt": [
             "MyCloudfrontLoggingBucket9AA652E8",
-            "RegionalDomainName"
+            "DomainName"
           ]
         },
         IncludeCookies: false
@@ -168,7 +168,7 @@ test('test cloudfront for Api Gateway override properties', () => {
   const stack = new Stack();
 
   const inProps: lambda.FunctionProps = {
-    code: lambda.Code.asset(`${__dirname}/lambda-test`),
+    code: lambda.Code.fromAsset(`${__dirname}/lambda-test`),
     runtime: lambda.Runtime.PYTHON_3_6,
     handler: 'index.handler'
   };
@@ -230,7 +230,7 @@ test('test cloudfront for Api Gateway override properties', () => {
           Bucket: {
             "Fn::GetAtt": [
               "CloudfrontLoggingBucket3C3EFAA7",
-              "RegionalDomainName"
+              "DomainName"
             ]
           },
           IncludeCookies: false

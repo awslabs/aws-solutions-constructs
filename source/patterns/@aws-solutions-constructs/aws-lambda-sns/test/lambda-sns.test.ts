@@ -30,7 +30,7 @@ test('Test deployment with new Lambda function', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`),
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`),
             environment: {
                 LAMBDA_NAME: 'deployed-function'
             }
@@ -86,7 +86,7 @@ test('Test deployment with existing existingTopicObj', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`),
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`),
             environment: {
                 LAMBDA_NAME: 'override-function'
             }
@@ -109,7 +109,7 @@ test('override topicProps', () => {
 
     const props: LambdaToSnsProps = {
         lambdaFunctionProps: {
-          code: lambda.Code.asset(`${__dirname}/lambda`),
+          code: lambda.Code.fromAsset(`${__dirname}/lambda`),
           runtime: lambda.Runtime.NODEJS_12_X,
           handler: 'index.handler'
         },
@@ -136,7 +136,7 @@ test('Test the properties', () => {
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
-            code: lambda.Code.asset(`${__dirname}/lambda`)
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
         }
     });
     // Assertion 1

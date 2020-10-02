@@ -24,16 +24,16 @@
 
 This AWS Solutions Construct implements an AWS Lambda function connected to an Amazon S3 bucket.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
-``` javascript
-const { LambdaToS3 } = require('@aws-solutions-constructs/aws-lambda-s3');
+``` typescript
+import { LambdaToS3 } from '@aws-solutions-constructs/aws-lambda-s3';
 
-new LambdaToS3(stack, 'LambdaToS3Pattern', {
+new LambdaToS3(this, 'LambdaToS3Pattern', {
     lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',
-        code: lambda.Code.asset(`${__dirname}/lambda`)
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }
 });
 
@@ -85,6 +85,7 @@ Out of the box implementation of the Construct without any override will set the
 * Turn on the versioning for S3 Bucket
 * Don't allow public access for S3 Bucket
 * Retain the S3 Bucket when deleting the CloudFormation stack
+* Applies Lifecycle rule to move noncurrent object versions to Glacier storage after 90 days
 
 ## Architecture
 ![Architecture Diagram](architecture.png)

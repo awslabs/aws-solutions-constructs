@@ -29,13 +29,13 @@ const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',
-        code: lambda.Code.asset(`${__dirname}/lambda/producer-function`)
+        code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`)
     },
     existingQueueObj: existingQueue,
     consumerLambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
-      code: lambda.Code.asset(`${__dirname}/lambda/consumer-function`)
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`)
     }
 };
 

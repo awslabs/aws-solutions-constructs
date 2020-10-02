@@ -95,3 +95,49 @@ test('Test properties', () => {
     expect(app.s3Bucket !== null);
     expect(app.s3LoggingBucket !== null);
 });
+
+// --------------------------------------------------------------
+// Test Case 3 - Override kinesisFirehose props
+// --------------------------------------------------------------
+test('test kinesisFirehose override ', () => {
+    const stack = new Stack();
+
+    new KinesisFirehoseToAnalyticsAndS3(stack, 'test-firehose-s3', {
+      kinesisFirehoseProps: {
+        extendedS3DestinationConfiguration: {
+          bufferingHints: {
+            intervalInSeconds: 600,
+            sizeInMBs: 55
+          },
+        }
+      },
+      kinesisAnalyticsProps: {
+        inputs: [{
+            inputSchema: {
+                recordColumns: [{
+                    name: 'ts',
+                    sqlType: 'TIMESTAMP',
+                    mapping: '$.timestamp'
+                }, {
+                    name: 'trip_id',
+                    sqlType: 'VARCHAR(64)',
+                    mapping: '$.trip_id'
+                }],
+                recordFormat: {
+                    recordFormatType: 'JSON'
+                },
+                recordEncoding: 'UTF-8'
+            },
+            namePrefix: 'SOURCE_SQL_STREAM'
+        }]
+      }
+    });
+
+    expect(stack).toHaveResourceLike("AWS::KinesisFirehose::DeliveryStream", {
+      ExtendedS3DestinationConfiguration: {
+        BufferingHints: {
+          IntervalInSeconds: 600,
+          SizeInMBs: 55
+        }
+    }});
+  });

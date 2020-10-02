@@ -19,9 +19,6 @@
           "BlockPublicPolicy": true,
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
-        },
-        "VersioningConfiguration": {
-          "Status": "Enabled"
         }
       },
       "UpdateReplacePolicy": "Retain",
@@ -84,6 +81,19 @@
               "ServerSideEncryptionByDefault": {
                 "SSEAlgorithm": "AES256"
               }
+            }
+          ]
+        },
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "NoncurrentVersionTransitions": [
+                {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90
+                }
+              ],
+              "Status": "Enabled"
             }
           ]
         },
@@ -252,9 +262,6 @@
           "BlockPublicPolicy": true,
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
-        },
-        "VersioningConfiguration": {
-          "Status": "Enabled"
         }
       },
       "UpdateReplacePolicy": "Retain",
@@ -339,7 +346,7 @@
             "Bucket": {
               "Fn::GetAtt": [
                 "testcloudfronts3nosecurityheadersCloudfrontLoggingBucket92A5E2A5",
-                "RegionalDomainName"
+                "DomainName"
               ]
             },
             "IncludeCookies": false

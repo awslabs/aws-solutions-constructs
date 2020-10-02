@@ -39,9 +39,6 @@ test('Test deployment w/ DLQ', () => {
     const stack = new Stack();
     // Helper declaration
     new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
-        apiGatewayProps: {},
-        queueProps: {},
-        createRequestTemplate: "{}",
         allowCreateOperation: true,
         allowReadOperation: true,
         allowDeleteOperation: true,
@@ -59,9 +56,6 @@ test('Test deployment w/o DLQ', () => {
   const stack = new Stack();
   // Helper declaration
   new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
-      apiGatewayProps: {},
-      queueProps: {},
-      createRequestTemplate: "{}",
       allowCreateOperation: true,
       allowReadOperation: false,
       allowDeleteOperation: true,
@@ -94,8 +88,6 @@ test('Test properties', () => {
     const stack = new Stack();
     // Helper declaration
     const pattern = new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
-        apiGatewayProps: {},
-        queueProps: {},
         deployDeadLetterQueue: true,
         maxReceiveCount: 3
     });
@@ -146,3 +138,66 @@ test('Test deployment ApiGateway AuthorizationType override', () => {
         AuthorizationType: "NONE"
     });
   });
+
+// -----------------------------------------------------------------
+// Test deployment for override ApiGateway createRequestTemplate
+// -----------------------------------------------------------------
+test('Test deployment for override ApiGateway createRequestTemplate', () => {
+    // Stack
+    const stack = new Stack();
+    // Helper declaration
+    new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+        createRequestTemplate:  "Action=SendMessage&MessageBody=$util.urlEncode(\"HelloWorld\")",
+        allowCreateOperation: true
+    });
+    expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+        HttpMethod: "POST",
+        Integration: {
+            RequestTemplates: {
+                "application/json": "Action=SendMessage&MessageBody=$util.urlEncode(\"HelloWorld\")"
+            }
+        }
+    });
+});
+
+// -----------------------------------------------------------------
+// Test deployment for override ApiGateway getRequestTemplate
+// -----------------------------------------------------------------
+test('Test deployment for override ApiGateway getRequestTemplate', () => {
+    // Stack
+    const stack = new Stack();
+    // Helper declaration
+    new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+        readRequestTemplate:  "Action=HelloWorld",
+        allowReadOperation: true
+    });
+    expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+        HttpMethod: "GET",
+        Integration: {
+            RequestTemplates: {
+                "application/json": "Action=HelloWorld"
+            }
+        }
+    });
+});
+
+// -----------------------------------------------------------------
+// Test deployment for override ApiGateway deleteRequestTemplate
+// -----------------------------------------------------------------
+test('Test deployment for override ApiGateway deleteRequestTemplate', () => {
+    // Stack
+    const stack = new Stack();
+    // Helper declaration
+    new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+        deleteRequestTemplate:  "Action=HelloWorld",
+        allowDeleteOperation: true
+    });
+    expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+        HttpMethod: "DELETE",
+        Integration: {
+            RequestTemplates: {
+                "application/json": "Action=HelloWorld"
+            }
+        }
+    });
+});

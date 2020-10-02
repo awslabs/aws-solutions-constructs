@@ -24,20 +24,19 @@
 
 This AWS Solutions Construct implements an Amazon S3 bucket connected to an AWS Step Function.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
-``` javascript
-const { S3ToStepFunction, S3ToStepFunctionProps } = require('@aws-solutions-constructs/aws-s3-step-function');
+``` typescript
+import { S3ToStepFunction, S3ToStepFunctionProps } from '@aws-solutions-constructs/aws-s3-step-function';
+import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
 
 const startState = new stepfunctions.Pass(stack, 'StartState');
 
-const props: S3ToStepFunctionProps = {
+new S3ToStepFunction(this, 'test-s3-step-function-stack', {
     stateMachineProps: {
       definition: startState
     }
-};
-
-new S3ToStepFunction(stack, 'test-s3-step-function-stack', props);
+});
 ```
 
 ## Initializer
@@ -86,6 +85,7 @@ Out of the box implementation of the Construct without any override will set the
 * Turn on the versioning for S3 Bucket
 * Don't allow public access for S3 Bucket
 * Retain the S3 Bucket when deleting the CloudFormation stack
+* Applies Lifecycle rule to move noncurrent object versions to Glacier storage after 90 days
 
 ### AWS CloudTrail
 * Configure a Trail in AWS CloudTrail to log API events in Amazon S3 related to the Bucket created by the Construct

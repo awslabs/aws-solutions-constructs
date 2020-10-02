@@ -17,11 +17,10 @@ import * as cdk from '@aws-cdk/core';
 import * as iam from '@aws-cdk/aws-iam';
 import * as api from '@aws-cdk/aws-apigateway';
 import * as lambda from '@aws-cdk/aws-lambda';
-import { DefaultS3Props } from './s3-bucket-defaults';
 import { DefaultCloudFrontWebDistributionForS3Props, DefaultCloudFrontWebDistributionForApiGatewayProps } from './cloudfront-distribution-defaults';
 import { overrideProps } from './utils';
 import { deployLambdaFunction } from './lambda-helper';
-import { applySecureBucketPolicy } from './s3-bucket-helper';
+import { createLoggingBucket } from './s3-bucket-helper';
 
 // Override Cfn_Nag rule: Cloudfront TLS-1.2 rule (https://github.com/stelligent/cfn_nag/issues/384)
 function updateSecurityPolicy(cfDistribution: cloudfront.CloudFrontWebDistribution) {
@@ -35,29 +34,6 @@ function updateSecurityPolicy(cfDistribution: cloudfront.CloudFrontWebDistributi
         }
     };
     return cfDistribution;
-}
-
-function createCloudfrontLoggingBucket(scope: cdk.Construct): s3.Bucket {
-    // Create the Logging Bucket
-    const loggingBucket: s3.Bucket = new s3.Bucket(scope, 'CloudfrontLoggingBucket', DefaultS3Props());
-
-    applySecureBucketPolicy(loggingBucket);
-
-    // Extract the CfnBucket from the loggingBucket
-    const loggingBucketResource = loggingBucket.node.findChild('Resource') as s3.CfnBucket;
-
-    // Override accessControl configuration and add metadata for the logging bucket
-    loggingBucketResource.addPropertyOverride('AccessControl', 'LogDeliveryWrite');
-    loggingBucketResource.cfnOptions.metadata = {
-        cfn_nag: {
-            rules_to_suppress: [{
-                id: 'W35',
-                reason: `This S3 bucket is used as the access logging bucket for CloudFront Distribution`
-            }]
-        }
-    };
-
-    return loggingBucket;
 }
 
 // Lambda@Edge function to insert the HTTP Security Headers into the response coming from the origin servers
@@ -135,7 +111,7 @@ export function CloudFrontDistributionForApiGateway(scope: cdk.Construct,
             cloudFrontDistributionProps.loggingConfig.bucket, _httpSecurityHeaders,
             edgeLambdaVersion);
     } else {
-        loggingBucket = createCloudfrontLoggingBucket(scope);
+        loggingBucket = createLoggingBucket(scope, 'CloudfrontLoggingBucket');
         defaultprops = DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint,
             loggingBucket, _httpSecurityHeaders,
             edgeLambdaVersion);
@@ -184,7 +160,7 @@ export function CloudFrontDistributionForS3(scope: cdk.Construct,
             cloudFrontDistributionProps.loggingConfig.bucket, oaiImported, _httpSecurityHeaders,
             edgeLambdaVersion);
     } else {
-        loggingBucket = createCloudfrontLoggingBucket(scope);
+        loggingBucket = createLoggingBucket(scope, 'CloudfrontLoggingBucket');
         defaultprops = DefaultCloudFrontWebDistributionForS3Props(sourceBucket, loggingBucket,
             oaiImported, _httpSecurityHeaders,
             edgeLambdaVersion);

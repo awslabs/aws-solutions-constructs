@@ -15,21 +15,13 @@ import * as s3 from '@aws-cdk/aws-s3';
 import { RemovalPolicy } from '@aws-cdk/core';
 import { Bucket, BucketProps } from '@aws-cdk/aws-s3';
 
-export function DefaultS3Props(loggingBucket ?: Bucket): s3.BucketProps {
-    if (loggingBucket) {
-        return {
-            encryption: s3.BucketEncryption.S3_MANAGED,
-            versioned: true,
-            blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-            removalPolicy: RemovalPolicy.RETAIN,
-            serverAccessLogsBucket: loggingBucket
-        } as BucketProps;
-    } else {
-        return {
-            encryption: s3.BucketEncryption.S3_MANAGED,
-            versioned: true,
-            blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-            removalPolicy: RemovalPolicy.RETAIN
-        } as BucketProps;
-    }
+export function DefaultS3Props(loggingBucket ?: Bucket, lifecycleRules?: s3.LifecycleRule[]): s3.BucketProps {
+    return {
+        encryption: s3.BucketEncryption.S3_MANAGED,
+        versioned: true,
+        blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+        removalPolicy: RemovalPolicy.RETAIN,
+        ...((lifecycleRules !== undefined) && { lifecycleRules }),
+        ...((loggingBucket !== undefined) && { serverAccessLogsBucket: loggingBucket })
+    } as BucketProps;
 }

@@ -20,7 +20,7 @@ import '@aws-cdk/assert/jest';
 
 function deploy(stack: cdk.Stack) {
   const inProps: lambda.FunctionProps = {
-    code: lambda.Code.asset(`${__dirname}/lambda`),
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     runtime: lambda.Runtime.NODEJS_10_X,
     handler: 'index.handler'
   };
@@ -139,7 +139,11 @@ test('test api gateway lambda service role', () => {
                 "Fn::Join": [
                   "",
                   [
-                    "arn:aws:logs:",
+                    "arn:",
+                    {
+                      Ref: "AWS::Partition"
+                    },
+                    ":logs:",
                     {
                       Ref: "AWS::Region"
                     },

@@ -26,18 +26,16 @@ This AWS Solutions Construct implements an AWS Lambda function connected to an A
 
 Here is a minimal deployable pattern definition in Typescript:
 
-``` javascript
+``` typescript
 import { LambdaToSns, LambdaToSnsProps } from "@aws-solutions-constructs/aws-lambda-sns";
 
-const props: LambdaToSnsProps = {
+new LambdaToSns(this, 'test-lambda-sns', {
     lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_12_X,
         handler: 'index.handler',
-        code: lambda.Code.asset(`${__dirname}/lambda`)
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }
-};
-
-new LambdaToSns(stack, 'test-lambda-sns', props);
+});
 
 ```
 

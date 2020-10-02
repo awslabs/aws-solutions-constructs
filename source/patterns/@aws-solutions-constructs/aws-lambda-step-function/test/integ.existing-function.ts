@@ -29,7 +29,7 @@ const startState = new stepfunctions.Pass(stack, 'StartState');
 const lambdaFunctionProps = {
   runtime: lambda.Runtime.NODEJS_10_X,
   handler: 'index.handler',
-  code: lambda.Code.asset(`${__dirname}/lambda`)
+  code: lambda.Code.fromAsset(`${__dirname}/lambda`)
 };
 
 // Setup the "existing" Lambda function

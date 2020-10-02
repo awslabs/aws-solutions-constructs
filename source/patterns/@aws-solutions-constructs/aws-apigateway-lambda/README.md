@@ -26,16 +26,16 @@
 
 This AWS Solutions Construct implements an Amazon API Gateway REST API connected to an AWS Lambda function pattern.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
-``` javascript
-const { ApiGatewayToLambda } = require('@aws-solutions-constructs/aws-apigateway-lambda');
+``` typescript
+import { ApiGatewayToLambda } from '@aws-solutions-constructs/aws-apigateway-lambda';
 
-new ApiGatewayToLambda(stack, 'ApiGatewayToLambdaPattern', {
+new ApiGatewayToLambda(this, 'ApiGatewayToLambdaPattern', {
     lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',
-        code: lambda.Code.asset(`${__dirname}/lambda`)
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }
 });
 
@@ -66,7 +66,7 @@ _Parameters_
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
 |lambdaFunction|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)|Returns an instance of the Lambda function created by the pattern.|
-|restApi|[`api.LambdaRestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.LambdaRestApi.html)|Returns an instance of the API Gateway REST API created by the pattern.|
+|apiGateway|[`api.LambdaRestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.LambdaRestApi.html)|Returns an instance of the API Gateway REST API created by the pattern.|
 |apiGatewayCloudWatchRole|[`iam.Role`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)|Returns an instance of the iam.Role created by the construct for API Gateway for CloudWatch access.|
 |apiGatewayLogGroup|[`logs.LogGroup`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-logs.LogGroup.html)|Returns an instance of the LogGroup created by the construct for API Gateway access logging to CloudWatch.|
 

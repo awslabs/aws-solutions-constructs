@@ -26,7 +26,7 @@ stack.templateOptions.description = 'Integration Test for aws-sqs-lambda';
 const lambdaFunctionProps = {
   runtime: lambda.Runtime.NODEJS_10_X,
   handler: 'index.handler',
-  code: lambda.Code.asset(`${__dirname}/lambda`)
+  code: lambda.Code.fromAsset(`${__dirname}/lambda`)
 };
 
 const func = defaults.deployLambdaFunction(stack, lambdaFunctionProps);

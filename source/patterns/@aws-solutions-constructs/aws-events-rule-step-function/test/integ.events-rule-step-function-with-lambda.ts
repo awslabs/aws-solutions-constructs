@@ -26,7 +26,7 @@ const stack = new Stack(app, 'test-events-rule-step-function-and-lambda-stack');
 
 const submitLambda = deployLambdaFunction(stack, {
   runtime: lambda.Runtime.NODEJS_12_X,
-  code: lambda.Code.asset(`${__dirname}/lambda`),
+  code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   handler: 'index.handler'
 });
 

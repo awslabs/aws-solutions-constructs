@@ -208,7 +208,7 @@ test('test cloudfront with no security headers ', () => {
         Bucket: {
           "Fn::GetAtt": [
             "CloudfrontLoggingBucket3C3EFAA7",
-            "RegionalDomainName"
+            "DomainName"
           ]
         },
         IncludeCookies: false
@@ -298,7 +298,7 @@ test('test cloudfront override cloudfront custom domain names ', () => {
           Bucket: {
             "Fn::GetAtt": [
               "CloudfrontLoggingBucket3C3EFAA7",
-              "RegionalDomainName"
+              "DomainName"
             ]
           },
           IncludeCookies: false
@@ -387,7 +387,7 @@ test('test cloudfront override cloudfront logging bucket ', () => {
           Bucket: {
             "Fn::GetAtt": [
               "loggingbucket6D73BD53",
-              "RegionalDomainName"
+              "DomainName"
             ]
           },
           IncludeCookies    : true
@@ -491,7 +491,7 @@ test('test cloudfront override properties', () => {
               Bucket: {
                 "Fn::GetAtt": [
                   "CloudfrontLoggingBucket3C3EFAA7",
-                  "RegionalDomainName"
+                  "DomainName"
                 ]
               },
               IncludeCookies: false

@@ -24,22 +24,41 @@
 
 This AWS Solutions Construct implements an Amazon Cognito securing an Amazon API Gateway Lambda backed REST APIs pattern.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
-``` javascript
-const { CognitoToApiGatewayToLambda } = require('@aws-solutions-constructs/aws-cognito-apigateway-lambda');
+``` typescript
+import { CognitoToApiGatewayToLambda } from '@aws-solutions-constructs/aws-cognito-apigateway-lambda';
 
-const stack = new Stack(app, 'test-cognito-apigateway-lambda-stack');
-
-const lambdaProps: lambda.FunctionProps = {
-    code: lambda.Code.asset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_12_X,
-    handler: 'index.handler'
-};
-
-new CognitoToApiGatewayToLambda(stack, 'test-cognito-apigateway-lambda', {
-    lambdaFunctionProps: lambdaProps,
+new CognitoToApiGatewayToLambda(this, 'test-cognito-apigateway-lambda', {
+    lambdaFunctionProps: {
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+        runtime: lambda.Runtime.NODEJS_12_X,
+        handler: 'index.handler'
+    }
 });
+```
+
+If you are defining resources and methods on your API (e.g. proxy = false), then you must call addAuthorizers() after the API is fully defined to ensure every method is protected. Here is an example in Typescript:
+
+``` typescript
+import { CognitoToApiGatewayToLambda } from '@aws-solutions-constructs/aws-cognito-apigateway-lambda';
+
+const construct = new CognitoToApiGatewayToLambda(this, 'test-cognito-apigateway-lambda', {
+    lambdaFunctionProps: {
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+        runtime: lambda.Runtime.NODEJS_12_X,
+        handler: 'index.handler'
+    },
+    apiGatewayProps: {
+      proxy: false
+    }
+});
+
+const resource = construct.apiGateway.root.addResource('foobar');
+resource.addMethod('POST');
+
+// Mandatory to call this method to Apply the Cognito Authorizers on all API methods
+construct.addAuthorizers();
 ```
 
 ## Initializer
@@ -88,7 +107,7 @@ Out of the box implementation of the Construct without any override will set the
 * Deploy an edge-optimized API endpoint
 * Enable CloudWatch logging for API Gateway
 * Configure least privilege access IAM role for API Gateway
-* Set the default authorizationType for all API methods to IAM
+* Set the default authorizationType for all API methods to Cognito User Pool
 * Enable X-Ray Tracing
 
 ### AWS Lambda Function

@@ -72,7 +72,7 @@ export function buildStateMachine(scope: cdk.Construct, stateMachineProps: sfn.S
         'logs:DescribeResourcePolicies',
         'logs:DescribeLogGroups'
       ],
-      resources: [`arn:aws:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:*`]
+      resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:*`]
     }));
 
     return [_sm, logGroup];

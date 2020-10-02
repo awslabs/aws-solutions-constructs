@@ -15,6 +15,19 @@ Object {
             },
           ],
         },
+        "LifecycleConfiguration": Object {
+          "Rules": Array [
+            Object {
+              "NoncurrentVersionTransitions": Array [
+                Object {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90,
+                },
+              ],
+              "Status": "Enabled",
+            },
+          ],
+        },
         "LoggingConfiguration": Object {
           "DestinationBucketName": Object {
             "Ref": "S3LoggingBucket800A2B27",
@@ -99,9 +112,6 @@ Object {
           "BlockPublicPolicy": true,
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true,
-        },
-        "VersioningConfiguration": Object {
-          "Status": "Enabled",
         },
       },
       "Type": "AWS::S3::Bucket",
@@ -165,6 +175,19 @@ Object {
           ],
         },
         "BucketName": "my-bucket",
+        "LifecycleConfiguration": Object {
+          "Rules": Array [
+            Object {
+              "NoncurrentVersionTransitions": Array [
+                Object {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90,
+                },
+              ],
+              "Status": "Enabled",
+            },
+          ],
+        },
         "LoggingConfiguration": Object {
           "DestinationBucketName": Object {
             "Ref": "S3LoggingBucket800A2B27",
@@ -249,9 +272,6 @@ Object {
           "BlockPublicPolicy": true,
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true,
-        },
-        "VersioningConfiguration": Object {
-          "Status": "Enabled",
         },
       },
       "Type": "AWS::S3::Bucket",

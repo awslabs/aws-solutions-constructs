@@ -47,7 +47,13 @@ export interface LambdaToElasticSearchAndKibanaProps {
    *
    * @default - None
    */
-  readonly domainName: string
+  readonly domainName: string,
+  /**
+   * Optional Cognito Domain Name, if provided it will be used for Cognito Domain, and domainName will be used for the Elasticsearch Domain
+   *
+   * @default - None
+   */
+  readonly cognitoDomainName?: string
 }
 
 export class LambdaToElasticSearchAndKibana extends Construct {
@@ -82,7 +88,13 @@ export class LambdaToElasticSearchAndKibana extends Construct {
     this.userPoolClient = defaults.buildUserPoolClient(this, this.userPool);
     this.identityPool = defaults.buildIdentityPool(this, this.userPool, this.userPoolClient);
 
-    const cognitoAuthorizedRole: Role = defaults.setupCognitoForElasticSearch(this, props.domainName, {
+    let cognitoDomainName = props.domainName;
+
+    if (props.cognitoDomainName) {
+      cognitoDomainName = props.cognitoDomainName;
+    }
+
+    const cognitoAuthorizedRole: Role = defaults.setupCognitoForElasticSearch(this, cognitoDomainName, {
       userpool: this.userPool,
       identitypool: this.identityPool,
       userpoolclient: this.userPoolClient

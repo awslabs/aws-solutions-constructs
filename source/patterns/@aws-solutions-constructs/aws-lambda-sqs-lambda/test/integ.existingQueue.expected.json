@@ -106,7 +106,11 @@
                     "Fn::Join": [
                       "",
                       [
-                        "arn:aws:logs:",
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
                         {
                           "Ref": "AWS::Region"
                         },
@@ -251,81 +255,6 @@
         }
       }
     },
-    "testlambdasqslambdalambdatosqsdeadLetterQueue016B6E58": {
-      "Type": "AWS::SQS::Queue",
-      "Properties": {
-        "KmsMasterKeyId": "alias/aws/sqs"
-      }
-    },
-    "testlambdasqslambdalambdatosqsdeadLetterQueuePolicyAA313AD2": {
-      "Type": "AWS::SQS::QueuePolicy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "sqs:DeleteMessage",
-                "sqs:ReceiveMessage",
-                "sqs:SendMessage",
-                "sqs:GetQueueAttributes",
-                "sqs:RemovePermission",
-                "sqs:AddPermission",
-                "sqs:SetQueueAttributes"
-              ],
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":iam::",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":root"
-                    ]
-                  ]
-                }
-              },
-              "Resource": {
-                "Fn::GetAtt": [
-                  "testlambdasqslambdalambdatosqsdeadLetterQueue016B6E58",
-                  "Arn"
-                ]
-              },
-              "Sid": "QueueOwnerOnlyAccess"
-            },
-            {
-              "Action": "SQS:*",
-              "Condition": {
-                "Bool": {
-                  "aws:SecureTransport": "false"
-                }
-              },
-              "Effect": "Deny",
-              "Principal": "*",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "testlambdasqslambdalambdatosqsdeadLetterQueue016B6E58",
-                  "Arn"
-                ]
-              },
-              "Sid": "HttpsOnly"
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "Queues": [
-          {
-            "Ref": "testlambdasqslambdalambdatosqsdeadLetterQueue016B6E58"
-          }
-        ]
-      }
-    },
     "testlambdasqslambdasqstolambdaLambdaFunctionServiceRole785979D2": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -356,7 +285,11 @@
                     "Fn::Join": [
                       "",
                       [
-                        "arn:aws:logs:",
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
                         {
                           "Ref": "AWS::Region"
                         },

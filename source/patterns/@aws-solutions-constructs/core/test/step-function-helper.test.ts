@@ -128,7 +128,11 @@ test('Test deployment w/ logging enabled', () => {
               "Fn::Join": [
                 "",
                 [
-                  "arn:aws:logs:",
+                  "arn:",
+                  {
+                    Ref: "AWS::Partition"
+                  },
+                  ":logs:",
                   {
                     Ref: "AWS::Region"
                   },

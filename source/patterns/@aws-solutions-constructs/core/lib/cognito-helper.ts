@@ -115,7 +115,7 @@ export function setupCognitoForElasticSearch(scope: cdk.Construct, domainName: s
             actions: [
               'es:ESHttp*'
             ],
-            resources: [`arn:aws:es:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:domain/${domainName}/*`]
+            resources: [`arn:${cdk.Aws.PARTITION}:es:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:domain/${domainName}/*`]
             })
           ]
         })

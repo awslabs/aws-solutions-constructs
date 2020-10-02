@@ -125,7 +125,7 @@ export class ServerlessImageHandler extends Construct {
 
         // Use case specific properties for the Lambda function
         const useCaseFunctionProps: lambda.FunctionProps = {
-            code: lambda.Code.asset(`${__dirname}/lambda/image-handler`),
+            code: lambda.Code.fromAsset(`${__dirname}/lambda/image-handler`),
             runtime: lambda.Runtime.NODEJS_12_X,
             handler: 'index.handler',
             environment: {

@@ -26,18 +26,16 @@ This AWS Solutions Construct implements an Amazon SNS connected to an AWS Lambda
 
 Here is a minimal deployable pattern definition in Typescript:
 
-``` javascript
+``` typescript
 import { SnsToLambda, SnsToLambdaProps } from "@aws-solutions-constructs/aws-sns-lambda";
 
-const props: SnsToLambdaProps = {
+new SnsToLambda(this, 'test-sns-lambda', {
     lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_12_X,
         handler: 'index.handler',
-        code: lambda.Code.asset(`${__dirname}/lambda`)
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }
-};
-
-new SnsToLambda(this, 'test-sns-lambda', props);
+});
 
 ```
 

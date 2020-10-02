@@ -181,7 +181,11 @@ Object {
                 "Fn::Join": Array [
                   "",
                   Array [
-                    "arn:aws:logs:",
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":logs:",
                     Object {
                       "Ref": "AWS::Region",
                     },
@@ -239,6 +243,19 @@ Object {
               "ServerSideEncryptionByDefault": Object {
                 "SSEAlgorithm": "AES256",
               },
+            },
+          ],
+        },
+        "LifecycleConfiguration": Object {
+          "Rules": Array [
+            Object {
+              "NoncurrentVersionTransitions": Array [
+                Object {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90,
+                },
+              ],
+              "Status": "Enabled",
             },
           ],
         },
@@ -326,9 +343,6 @@ Object {
           "BlockPublicPolicy": true,
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true,
-        },
-        "VersioningConfiguration": Object {
-          "Status": "Enabled",
         },
       },
       "Type": "AWS::S3::Bucket",

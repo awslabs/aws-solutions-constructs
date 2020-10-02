@@ -96,16 +96,13 @@ export class LambdaToSqs extends Construct {
             lambdaFunctionProps: props.lambdaFunctionProps
         });
 
-        // Setup a dead letter queue, if applicable
-        if (props.deployDeadLetterQueue || props.deployDeadLetterQueue === undefined) {
-          const [dlq] = defaults.buildQueue(this, 'deadLetterQueue', {
-              queueProps: props.deadLetterQueueProps
-          });
-          this.deadLetterQueue = defaults.buildDeadLetterQueue({
-              deadLetterQueue: dlq,
-              maxReceiveCount: props.maxReceiveCount
-          });
-        }
+        // Setup the dead letter queue, if applicable
+        this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
+            existingQueueObj: props.existingQueueObj,
+            deployDeadLetterQueue: props.deployDeadLetterQueue,
+            deadLetterQueueProps: props.deadLetterQueueProps,
+            maxReceiveCount: props.maxReceiveCount
+        });
 
         // Setup the queue
         [this.sqsQueue] = defaults.buildQueue(this, 'queue', {

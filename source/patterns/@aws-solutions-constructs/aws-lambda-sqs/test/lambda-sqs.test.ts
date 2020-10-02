@@ -30,7 +30,7 @@ test('Test minimal deployment with new Lambda function', () => {
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
-      code: lambda.Code.asset(`${__dirname}/lambda`)
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }
   });
   // Assertion 1
@@ -48,7 +48,7 @@ test('Test deployment w/ DLQ and purging enabled', () => {
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
-      code: lambda.Code.asset(`${__dirname}/lambda`)
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
     enableQueuePurging: true,
     deployDeadLetterQueue: true
@@ -68,7 +68,7 @@ test('Test deployment w/ purging disabled', () => {
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
-      code: lambda.Code.asset(`${__dirname}/lambda`)
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
     enableQueuePurging: false
   });
@@ -87,7 +87,7 @@ test('Test the properties', () => {
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
-      code: lambda.Code.asset(`${__dirname}/lambda`)
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
   });
   // Assertion 1
@@ -112,7 +112,7 @@ test('Test deployment w/ DLQ disabled', () => {
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
-      code: lambda.Code.asset(`${__dirname}/lambda`)
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
     enableQueuePurging: true,
     deployDeadLetterQueue: false,
@@ -138,10 +138,9 @@ test('Test deployment w/ existing queue', () => {
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
-      code: lambda.Code.asset(`${__dirname}/lambda`)
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
     enableQueuePurging: true,
-    deployDeadLetterQueue: false,
     existingQueueObj: queue
   });
   // Assertion 1
