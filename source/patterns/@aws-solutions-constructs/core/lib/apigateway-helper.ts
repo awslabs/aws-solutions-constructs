@@ -20,7 +20,7 @@ import * as iam from '@aws-cdk/aws-iam';
 import * as apiDefaults from './apigateway-defaults';
 import { DefaultLogGroupProps } from './cloudwatch-log-group-defaults';
 import { overrideProps } from './utils';
-import { Role } from '@aws-cdk/aws-iam';
+import { IRole } from '@aws-cdk/aws-iam';
 
 /**
  * Create and configures access logging for API Gateway resources.
@@ -78,6 +78,12 @@ function configureCloudwatchRoleForApi(scope: cdk.Construct, _api: api.RestApi):
  */
 function configureLambdaRestApi(scope: cdk.Construct, defaultApiGatewayProps: api.LambdaRestApiProps,
                                 apiGatewayProps?: api.LambdaRestApiProps): [api.RestApi, iam.Role] {
+
+    // API Gateway doesn't allow both endpointTypes and endpointConfiguration, check whether endPointTypes exists
+    if (apiGatewayProps?.endpointTypes) {
+        throw Error('Solutions Constructs internally uses endpointConfiguration, use endpointConfiguration instead of endpointTypes');
+    }
+
     // Define the API object
     let _api: api.RestApi;
     if (apiGatewayProps) {
@@ -91,13 +97,20 @@ function configureLambdaRestApi(scope: cdk.Construct, defaultApiGatewayProps: ap
     // Configure API access logging
     const cwRole = configureCloudwatchRoleForApi(scope, _api);
 
-    // Configure Usage Plan
-    _api.addUsagePlan('UsagePlan', {
+    let usagePlanProps: api.UsagePlanProps = {
         apiStages: [{
-          api: _api,
-          stage: _api.deploymentStage
+            api: _api,
+            stage: _api.deploymentStage
         }]
-    });
+    };
+    // If requireApiKey param is set to true, create a api key & associate to Usage Plan
+    if (apiGatewayProps?.defaultMethodOptions?.apiKeyRequired === true) {
+        const extraParams = { apiKey: _api.addApiKey('ApiKey')};
+        usagePlanProps = Object.assign(usagePlanProps, extraParams);
+    }
+
+    // Configure Usage Plan
+    _api.addUsagePlan('UsagePlan', usagePlanProps);
 
     // Return the API and CW Role
     return [_api, cwRole];
@@ -111,6 +124,12 @@ function configureLambdaRestApi(scope: cdk.Construct, defaultApiGatewayProps: ap
  */
 function configureRestApi(scope: cdk.Construct, defaultApiGatewayProps: api.RestApiProps,
                           apiGatewayProps?: api.RestApiProps): [api.RestApi, iam.Role] {
+
+    // API Gateway doesn't allow both endpointTypes and endpointConfiguration, check whether endPointTypes exists
+    if (apiGatewayProps?.endpointTypes) {
+        throw Error('Solutions Constructs internally uses endpointConfiguration, use endpointConfiguration instead of endpointTypes');
+    }
+
     // Define the API
     let _api: api.RestApi;
     if (apiGatewayProps) {
@@ -124,13 +143,21 @@ function configureRestApi(scope: cdk.Construct, defaultApiGatewayProps: api.Rest
     // Configure API access logging
     const cwRole = configureCloudwatchRoleForApi(scope, _api);
 
-    // Configure Usage Plan
-    _api.addUsagePlan('UsagePlan', {
+    let usagePlanProps: api.UsagePlanProps = {
         apiStages: [{
-          api: _api,
-          stage: _api.deploymentStage
+            api: _api,
+            stage: _api.deploymentStage
         }]
-    });
+    };
+
+    // If requireApiKey param is set to true, create a api key & associate to Usage Plan
+    if (apiGatewayProps?.defaultMethodOptions?.apiKeyRequired === true) {
+        const extraParams = { apiKey: _api.addApiKey('ApiKey')};
+        usagePlanProps = Object.assign(usagePlanProps, extraParams);
+    }
+
+    // Configure Usage Plan
+    _api.addUsagePlan('UsagePlan', usagePlanProps);
 
     // Return the API and CW Role
     return [_api, cwRole];
@@ -183,21 +210,37 @@ export function GlobalRestApi(scope: cdk.Construct, apiGatewayProps?: api.RestAp
     return [restApi, apiCWRole, logGroup ];
 }
 
+/**
+ * Builds and returns a Regional api.RestApi.
+ * @param scope - the construct to which the RestApi should be attached to.
+ * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
+ */
+export function RegionalRestApi(scope: cdk.Construct, apiGatewayProps?: api.RestApiProps): [api.RestApi, iam.Role, logs.LogGroup] {
+    // Configure log group for API Gateway AccessLogging
+    const logGroup = new logs.LogGroup(scope, 'ApiAccessLogGroup', DefaultLogGroupProps());
+
+    const defaultProps = apiDefaults.DefaultRegionalRestApiProps(logGroup);
+    const [restApi, apiCWRole] = configureRestApi(scope, defaultProps, apiGatewayProps);
+    return [restApi, apiCWRole, logGroup ];
+}
+
 export interface AddProxyMethodToApiResourceInputParams {
     readonly service: string,
     readonly action?: string,
     readonly path?: string,
     readonly apiResource: api.IResource,
     readonly apiMethod: string,
-    readonly apiGatewayRole: Role,
+    readonly apiGatewayRole: IRole,
     readonly requestTemplate: string,
     readonly contentType?: string,
-    readonly requestValidator?: api.RequestValidator,
-    readonly requestModel?: { [contentType: string]: api.IModel; }
+    readonly requestValidator?: api.IRequestValidator,
+    readonly requestModel?: { [contentType: string]: api.IModel; },
+    readonly awsIntegrationProps?: api.AwsIntegrationProps | any,
+    readonly methodOptions?: api.MethodOptions | any
 }
 
 export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceInputParams) {
-    const baseProps: api.AwsIntegrationProps = {
+    let baseProps: api.AwsIntegrationProps = {
         service: params.service,
         integrationHttpMethod: "POST",
         options: {
@@ -239,10 +282,16 @@ export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceI
     }
 
     // Setup the API Gateway AWS Integration
-    const apiGatewayIntegration = new api.AwsIntegration(Object.assign(baseProps, extraProps));
+    baseProps = Object.assign(baseProps, extraProps);
+    let apiGatewayIntegration;
+    if (params.awsIntegrationProps) {
+        const overridenProps = overrideProps(baseProps, params.awsIntegrationProps);
+        apiGatewayIntegration = new api.AwsIntegration(overridenProps);
+    } else {
+        apiGatewayIntegration = new api.AwsIntegration(baseProps);
+    }
 
-    // Setup the API Gateway method
-    params.apiResource.addMethod(params.apiMethod, apiGatewayIntegration, {
+    const defaultMethodOptions = {
         methodResponses: [
             {
                 statusCode: "200",
@@ -259,5 +308,13 @@ export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceI
         ],
         requestValidator: params.requestValidator,
         requestModels: params.requestModel
-    });
-  }
+    };
+
+    // Setup the API Gateway method
+    if (params.methodOptions) {
+        const overridenProps =  overrideProps(defaultMethodOptions, params.methodOptions);
+        params.apiResource.addMethod(params.apiMethod, apiGatewayIntegration, overridenProps);
+    } else {
+        params.apiResource.addMethod(params.apiMethod, apiGatewayIntegration, defaultMethodOptions);
+    }
+}
