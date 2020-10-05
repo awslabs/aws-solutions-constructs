@@ -189,7 +189,7 @@ export class ApiGatewayToIot extends Construct {
           topicPath = `${topicPath}/${pathSegments[pathLevel]}`;
           integParams = Object.assign(integParams, integReqParams[pathLevel]);
           methodParams = Object.assign(methodParams, methodReqParams[pathLevel]);
-          this.addResourceMethod(topicResource, topicPath, integParams, methodParams);
+          this.addResourceMethod(topicResource, props, topicPath, integParams, methodParams);
           parentNode = topicResource;
         }
 
@@ -200,7 +200,7 @@ export class ApiGatewayToIot extends Construct {
         const defaultShadowResource: api.IResource = shadowResource.addResource('{thingName}');
         const shadowReqParams = {'integration.request.path.thingName': 'method.request.path.thingName'};
         const methodShadowReqParams = {'method.request.path.thingName': true};
-        this.addResourceMethod(defaultShadowResource, 'things/{thingName}/shadow',
+        this.addResourceMethod(defaultShadowResource, props, 'things/{thingName}/shadow',
                                 shadowReqParams, methodShadowReqParams);
 
         // Create resource '/shadow/{thingName}/{shadowName}'
@@ -211,7 +211,7 @@ export class ApiGatewayToIot extends Construct {
         const methodNamedShadowReqParams = Object.assign({
           'method.request.path.shadowName': true}, methodShadowReqParams);
         // For some reason path mapping to 'things/{thingName}/shadow/name/{shadowName}' results in 403 error, hence this shortcut
-        this.addResourceMethod(namedShadowResource, 'topics/$aws/things/{thingName}/shadow/name/{shadowName}/update',
+        this.addResourceMethod(namedShadowResource, props, 'topics/$aws/things/{thingName}/shadow/name/{shadowName}/update',
                                 namedShadowReqParams, methodNamedShadowReqParams);
     }
 
@@ -222,7 +222,7 @@ export class ApiGatewayToIot extends Construct {
      * @param integReqParams request paramters for the Integration method
      * @param methodReqParams request parameters at Method level
      */
-    private addResourceMethod(resource: api.IResource, resourcePath: string,
+    private addResourceMethod(resource: api.IResource, props: ApiGatewayToIotProps, resourcePath: string,
                               integReqParams: {[key: string]: string},
                               methodReqParams: {[key: string]: boolean}) {
       const integResp: api.IntegrationResponse[] = [
@@ -289,6 +289,19 @@ export class ApiGatewayToIot extends Construct {
         methodOptions: resourceMethodOptions
       };
 
-      defaults.addProxyMethodToApiResource(resourceMethodParams);
+      const apiMethod = defaults.addProxyMethodToApiResource(resourceMethodParams);
+
+      // cfn Nag doesn't like having a HTTP Method with Authorization Set to None, supress the warning
+      if (props.apiGatewayCreateApiKey === true) {
+        const cfnMethod = apiMethod.node.findChild('Resource') as api.CfnMethod;
+        cfnMethod.cfnOptions.metadata = {
+          cfn_nag: {
+              rules_to_suppress: [{
+                  id: 'W59',
+                  reason: 'When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE'
+              }]
+          }
+        };
+      }
     }
 }

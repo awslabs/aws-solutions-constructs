@@ -274,6 +274,16 @@
         "RequestValidatorId": {
           "Ref": "testapigatewayiotawsapigatewayiotreqval2BA7D930"
         }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W59",
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+            }
+          ]
+        }
       }
     },
     "testapigatewayiotRestApimessagetopiclevel1topiclevel25B0B16A2": {
@@ -374,6 +384,16 @@
         },
         "RequestValidatorId": {
           "Ref": "testapigatewayiotawsapigatewayiotreqval2BA7D930"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W59",
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+            }
+          ]
         }
       }
     },
@@ -477,6 +497,16 @@
         },
         "RequestValidatorId": {
           "Ref": "testapigatewayiotawsapigatewayiotreqval2BA7D930"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W59",
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+            }
+          ]
         }
       }
     },
@@ -582,6 +612,16 @@
         },
         "RequestValidatorId": {
           "Ref": "testapigatewayiotawsapigatewayiotreqval2BA7D930"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W59",
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+            }
+          ]
         }
       }
     },
@@ -689,6 +729,16 @@
         },
         "RequestValidatorId": {
           "Ref": "testapigatewayiotawsapigatewayiotreqval2BA7D930"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W59",
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+            }
+          ]
         }
       }
     },
@@ -798,6 +848,16 @@
         },
         "RequestValidatorId": {
           "Ref": "testapigatewayiotawsapigatewayiotreqval2BA7D930"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W59",
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+            }
+          ]
         }
       }
     },
@@ -909,6 +969,16 @@
         },
         "RequestValidatorId": {
           "Ref": "testapigatewayiotawsapigatewayiotreqval2BA7D930"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W59",
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+            }
+          ]
         }
       }
     },
@@ -1024,6 +1094,16 @@
         "RequestValidatorId": {
           "Ref": "testapigatewayiotawsapigatewayiotreqval2BA7D930"
         }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W59",
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+            }
+          ]
+        }
       }
     },
     "testapigatewayiotRestApishadowthingNameshadowName04D15774": {
@@ -1124,6 +1204,16 @@
         },
         "RequestValidatorId": {
           "Ref": "testapigatewayiotawsapigatewayiotreqval2BA7D930"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W59",
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+            }
+          ]
         }
       }
     },

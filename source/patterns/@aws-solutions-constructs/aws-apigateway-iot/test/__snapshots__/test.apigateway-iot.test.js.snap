@@ -4075,6 +4075,16 @@ Object {
       "Type": "AWS::ApiGateway::Resource",
     },
     "testapigatewayiotoverridenparamsRestApimessagetopiclevel1POST37ECFE98": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W59",
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "ApiKeyRequired": true,
         "AuthorizationType": "NONE",
@@ -4174,6 +4184,16 @@ Object {
       "Type": "AWS::ApiGateway::Resource",
     },
     "testapigatewayiotoverridenparamsRestApimessagetopiclevel1topiclevel2POSTAED0B4BF": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W59",
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "ApiKeyRequired": true,
         "AuthorizationType": "NONE",
@@ -4275,6 +4295,16 @@ Object {
       "Type": "AWS::ApiGateway::Resource",
     },
     "testapigatewayiotoverridenparamsRestApimessagetopiclevel1topiclevel2topiclevel3POST67DEDF1F": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W59",
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "ApiKeyRequired": true,
         "AuthorizationType": "NONE",
@@ -4378,6 +4408,16 @@ Object {
       "Type": "AWS::ApiGateway::Resource",
     },
     "testapigatewayiotoverridenparamsRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4POSTE9C69A8C": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W59",
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "ApiKeyRequired": true,
         "AuthorizationType": "NONE",
@@ -4483,6 +4523,16 @@ Object {
       "Type": "AWS::ApiGateway::Resource",
     },
     "testapigatewayiotoverridenparamsRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5POSTD4CCE443": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W59",
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "ApiKeyRequired": true,
         "AuthorizationType": "NONE",
@@ -4590,6 +4640,16 @@ Object {
       "Type": "AWS::ApiGateway::Resource",
     },
     "testapigatewayiotoverridenparamsRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6POST03EED79D": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W59",
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "ApiKeyRequired": true,
         "AuthorizationType": "NONE",
@@ -4699,6 +4759,16 @@ Object {
       "Type": "AWS::ApiGateway::Resource",
     },
     "testapigatewayiotoverridenparamsRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6topiclevel7POST78BF6C48": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W59",
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "ApiKeyRequired": true,
         "AuthorizationType": "NONE",
@@ -4825,6 +4895,16 @@ Object {
       "Type": "AWS::ApiGateway::Resource",
     },
     "testapigatewayiotoverridenparamsRestApishadowthingNamePOST050ECC4D": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W59",
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "ApiKeyRequired": true,
         "AuthorizationType": "NONE",
@@ -4924,6 +5004,16 @@ Object {
       "Type": "AWS::ApiGateway::Resource",
     },
     "testapigatewayiotoverridenparamsRestApishadowthingNameshadowNamePOST0450BB44": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W59",
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "ApiKeyRequired": true,
         "AuthorizationType": "NONE",

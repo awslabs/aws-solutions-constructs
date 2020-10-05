@@ -16,7 +16,7 @@ import * as cdk from "@aws-cdk/core";
 import { ApiGatewayToIot, ApiGatewayToIotProps } from "../lib";
 import * as api from '@aws-cdk/aws-apigateway';
 import * as iam from '@aws-cdk/aws-iam';
-import { SynthUtils } from '@aws-cdk/assert';
+import { ResourcePart, SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------
@@ -518,8 +518,19 @@ test('Test for Api Key Creation', () => {
 
   // Assertion to check for ApiKey
   expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
-    ApiKeyRequired: true
-  });
+    Properties : {
+      ApiKeyRequired: true
+    },
+    Metadata: {
+      cfn_nag: {
+        rules_to_suppress: [
+          {
+            id: "W59"
+          }
+        ]
+      }
+    }
+  }, ResourcePart.CompleteDefinition);
   expect(stack).toHaveResourceLike("AWS::ApiGateway::ApiKey", {
     Enabled: true
   });

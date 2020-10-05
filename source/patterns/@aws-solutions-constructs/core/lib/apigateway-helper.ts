@@ -239,7 +239,7 @@ export interface AddProxyMethodToApiResourceInputParams {
     readonly methodOptions?: api.MethodOptions | any
 }
 
-export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceInputParams) {
+export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceInputParams): api.Method {
     let baseProps: api.AwsIntegrationProps = {
         service: params.service,
         integrationHttpMethod: "POST",
@@ -310,11 +310,13 @@ export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceI
         requestModels: params.requestModel
     };
 
+    let apiMethod;
     // Setup the API Gateway method
     if (params.methodOptions) {
         const overridenProps =  overrideProps(defaultMethodOptions, params.methodOptions);
-        params.apiResource.addMethod(params.apiMethod, apiGatewayIntegration, overridenProps);
+        apiMethod = params.apiResource.addMethod(params.apiMethod, apiGatewayIntegration, overridenProps);
     } else {
-        params.apiResource.addMethod(params.apiMethod, apiGatewayIntegration, defaultMethodOptions);
+        apiMethod = params.apiResource.addMethod(params.apiMethod, apiGatewayIntegration, defaultMethodOptions);
     }
+    return apiMethod;
 }
