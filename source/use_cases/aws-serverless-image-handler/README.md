@@ -4,12 +4,12 @@ This use case construct implements an Amazon CloudFront distribution, an Amazon 
 function, and necessary permissions/logic to provision a functional image handler API for serving image content from 
 one or more Amazon S3 buckets within the deployment account.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
-```
-const { ServerlessImageHandler } = require('@aws-solutions-constructs/aws-serverless-image-handler');
+```javascript
+const { ServerlessImageHandler } from '@aws-solutions-constructs/aws-serverless-image-handler';
 
-new ServerlessImageHandler(stack, 'ServerlessImageHandlerPattern', {
+new ServerlessImageHandler(this, 'ServerlessImageHandlerPattern', {
     lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_12_X,
         handler: 'index.handler',

@@ -76,10 +76,16 @@ export function DefaultRegionalLambdaRestApiProps(_existingLambdaObj: lambda.Fun
 
 /**
  * Provides the default set of properties for Edge/Global RestApi
- * @param scope - the construct to which the RestApi should be attached to.
- * @param _endpointType - endpoint type for Api Gateway e.g. Regional, Global, Private
  * @param _logGroup - CW Log group for Api Gateway access logging
  */
 export function DefaultGlobalRestApiProps(_logGroup: LogGroup) {
     return DefaultRestApiProps([api.EndpointType.EDGE], _logGroup);
+}
+
+/**
+ * Provides the default set of properties for Regional RestApi
+ * @param _logGroup - CW Log group for Api Gateway access logging
+ */
+export function DefaultRegionalRestApiProps(_logGroup: LogGroup) {
+    return DefaultRestApiProps([api.EndpointType.REGIONAL], _logGroup);
 }

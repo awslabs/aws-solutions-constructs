@@ -24,12 +24,12 @@
 
 This AWS Solutions Construct implements an AWS Events rule and an AWS Step function.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
 ``` javascript
-const { EventsRuleToStepFunction, EventsRuleToStepFunctionProps } = require('@aws-solutions-constructs/aws-events-rule-step-function');
+const { EventsRuleToStepFunction, EventsRuleToStepFunctionProps } from '@aws-solutions-constructs/aws-events-rule-step-function';
 
-const startState = new stepfunctions.Pass(stack, 'StartState');
+const startState = new stepfunctions.Pass(this, 'StartState');
 
 const props: EventsRuleToStepFunctionProps = {
     stateMachineProps: {

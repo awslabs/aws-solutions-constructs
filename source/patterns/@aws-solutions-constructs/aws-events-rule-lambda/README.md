@@ -24,10 +24,10 @@
 
 This AWS Solutions Construct implements an AWS Events rule and an AWS Lambda function.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
 ``` javascript
-const { EventsRuleToLambdaProps, EventsRuleToLambda } = require('@aws-solutions-constructs/aws-events-rule-lambda');
+const { EventsRuleToLambdaProps, EventsRuleToLambda } from '@aws-solutions-constructs/aws-events-rule-lambda';
 
 const props: EventsRuleToLambdaProps = {
     lambdaFunctionProps: {
@@ -40,7 +40,7 @@ const props: EventsRuleToLambdaProps = {
     }
 };
 
-new EventsRuleToLambda(stack, 'test-events-rule-lambda', props);
+new EventsRuleToLambda(this, 'test-events-rule-lambda', props);
 ```
 
 ## Initializer

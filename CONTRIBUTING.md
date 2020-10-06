@@ -83,7 +83,7 @@ Now it's time to work your magic. Here are some guidelines:
    changes along the way, but try to avoid conflating multiple features. Eventually all these are going to go into a
    single commit, so you can use that to frame your scope.
 * If your change introduces a new construct, take a look at the our
-  [aws-apigateway-lambd Construct](https://github.com/awslabs/aws-solutions-constructs/tree/master/source/patterns/%40aws-solutions-constructs/aws-apigateway-lambda) for an explanation of the L3 patterns we use.
+  [aws-apigateway-lambda Construct](https://github.com/awslabs/aws-solutions-constructs/tree/master/source/patterns/%40aws-solutions-constructs/aws-apigateway-lambda) for an explanation of the L3 patterns we use.
   Feel free to start your contribution by copy&pasting files from that project,
   and then edit and rename them as appropriate -
   it might be easier to get started that way.
