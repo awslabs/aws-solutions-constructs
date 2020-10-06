@@ -24,12 +24,12 @@
 
 This AWS Solutions Construct deploys a Kinesis Stream and Lambda function with the appropriate resources/properties for interaction and security.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
 ``` javascript
-const { KinesisStreamsToLambda } = require('@aws-solutions-constructs/aws-kinesisstreams-lambda');
+const { KinesisStreamsToLambda } from '@aws-solutions-constructs/aws-kinesisstreams-lambda';
 
-new KinesisStreamsToLambda(stack, 'KinesisToLambdaPattern', {
+new KinesisStreamsToLambda(this, 'KinesisToLambdaPattern', {
     eventSourceProps: {
         startingPosition: lambda.StartingPosition.TRIM_HORIZON,
         batchSize: 1

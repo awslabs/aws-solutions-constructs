@@ -24,12 +24,12 @@
 
 This AWS Solutions Construct implements an Amazon Kinesis Data Firehose delivery stream connected to an Amazon S3 bucket.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
 ``` javascript
-const { KinesisFirehoseToS3 } = require('@aws-solutions-constructs/aws-kinesisfirehose-s3');
+const { KinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-kinesisfirehose-s3';
 
-new KinesisFirehoseToS3(stack, 'test-firehose-s3', {});
+new KinesisFirehoseToS3(this, 'test-firehose-s3', {});
 
 ```
 

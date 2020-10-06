@@ -584,3 +584,40 @@ test('Test for deployment ApiGateway AuthorizationType override', () => {
         AuthorizationType: "NONE"
     });
   });
+
+  // -----------------------------------------------------------------
+// Test deployment for fully qualified iotEndpoint name
+// -----------------------------------------------------------------
+test('Test for handling fully qualified iotEndpoint', () => {
+  // Stack
+  const stack = new cdk.Stack();
+  // Helper declaration
+  new ApiGatewayToIot(stack, 'test-apigateway-iot-override-auth', {
+      iotEndpoint: 'a1234567890123-ats.iot.ap-south-1.amazonaws.com',
+      apiGatewayProps: {
+          defaultMethodOptions: {
+              authorizationType: api.AuthorizationType.NONE
+          }
+      }
+  });
+  // Assertion 1
+  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+    Integration: {
+    Uri: {
+      "Fn::Join": [
+        "",
+        [
+          "arn:",
+          {
+            Ref: "AWS::Partition"
+          },
+          ":apigateway:",
+          {
+            Ref: "AWS::Region"
+          },
+          ":a1234567890123-ats.iotdata:path/topics/{topic-level-1}/{topic-level-2}/{topic-level-3}"
+        ]
+      ]
+    } }
+  });
+});

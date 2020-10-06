@@ -46,7 +46,7 @@ export interface ApiGatewayToIotProps {
      *
      * @default - Default props are used.
      */
-    readonly apiGatewayProps?: api.RestApiProps | any
+    readonly apiGatewayProps?: api.RestApiProps
 }
 
 /**
@@ -59,6 +59,10 @@ export class ApiGatewayToIot extends Construct {
     public readonly apiGatewayRole: iam.IRole;
     private readonly iotEndpoint: string;
     private readonly requestValidator: api.IRequestValidator;
+    // IoT Core topic nesting. A topic in a publish or subscribe request can have no more than 7 forward slashes (/).
+    // This excludes the first 3 slashes in the mandatory segments for Basic Ingest
+    // Refer IoT Limits - https://docs.aws.amazon.com/general/latest/gr/iot-core.html#limits_iot
+    private readonly topicNestingLevel = 7;
 
     /**
      * @summary Constructs a new instance of the ApiGatewayIot class.
@@ -71,8 +75,9 @@ export class ApiGatewayToIot extends Construct {
     constructor(scope: Construct, id: string, props: ApiGatewayToIotProps) {
         super(scope, id);
 
-        // Assignment to private members to make these available to all members of the class
-        this.iotEndpoint = props.iotEndpoint.trim();
+        // Assignment to local member variables to make these available to all member methods of the class.
+        // (Split the string just in case user supplies fully qualified endpoint eg. ab123cdefghij4l-ats.iot.ap-south-1.amazonaws.com)
+        this.iotEndpoint = props.iotEndpoint.trim().split('.')[0];
 
         // Mandatory params check
         if (!this.iotEndpoint || this.iotEndpoint.length < 0) {
@@ -146,49 +151,19 @@ export class ApiGatewayToIot extends Construct {
         // Create a resource for messages '/message'
         const msgResource: api.IResource = this.apiGateway.root.addResource('message');
 
-        // List of Integrtion Request params that needs to be added at each path level
-        const integReqParams = [
-          {'integration.request.path.topic-level-1': 'method.request.path.topic-level-1'},
-          {'integration.request.path.topic-level-2': 'method.request.path.topic-level-2'},
-          {'integration.request.path.topic-level-3': 'method.request.path.topic-level-3'},
-          {'integration.request.path.topic-level-4': 'method.request.path.topic-level-4'},
-          {'integration.request.path.topic-level-5': 'method.request.path.topic-level-5'},
-          {'integration.request.path.topic-level-6': 'method.request.path.topic-level-6'},
-          {'integration.request.path.topic-level-7': 'method.request.path.topic-level-7'}
-        ];
-
-        // List of method request params that needs to be added at each path level
-        const methodReqParams = [
-          {'method.request.path.topic-level-1': true},
-          {'method.request.path.topic-level-2': true},
-          {'method.request.path.topic-level-3': true},
-          {'method.request.path.topic-level-4': true},
-          {'method.request.path.topic-level-5': true},
-          {'method.request.path.topic-level-6': true},
-          {'method.request.path.topic-level-7': true}
-        ];
-
-        // List of Rest path segments
-        const pathSegments = [
-          '{topic-level-1}',
-          '{topic-level-2}',
-          '{topic-level-3}',
-          '{topic-level-4}',
-          '{topic-level-5}',
-          '{topic-level-6}',
-          '{topic-level-7}'
-        ];
-
         // Create resources from '/message/{topic-level-1}' through '/message/{topic-level-1}/..../{topic-level-7}'
         let topicPath = 'topics';
         let parentNode = msgResource;
         let integParams = {};
         let methodParams = {};
-        for (let pathLevel = 0; pathLevel < pathSegments.length; pathLevel++) {
-          const topicResource: api.IResource = parentNode.addResource(pathSegments[pathLevel]);
-          topicPath = `${topicPath}/${pathSegments[pathLevel]}`;
-          integParams = Object.assign(integParams, integReqParams[pathLevel]);
-          methodParams = Object.assign(methodParams, methodReqParams[pathLevel]);
+        for (let pathLevel = 1; pathLevel <= this.topicNestingLevel; pathLevel++) {
+          const topicName = `topic-level-${pathLevel}`;
+          const topicResource: api.IResource = parentNode.addResource(`{${topicName}}`);
+          const integReqParam = JSON.parse(`{"integration.request.path.${topicName}": "method.request.path.${topicName}"}`);
+          const methodReqParam = JSON.parse(`{"method.request.path.${topicName}": true}`);
+          topicPath = `${topicPath}/{${topicName}}`;
+          integParams = Object.assign(integParams, integReqParam);
+          methodParams = Object.assign(methodParams, methodReqParam);
           this.addResourceMethod(topicResource, props, topicPath, integParams, methodParams);
           parentNode = topicResource;
         }

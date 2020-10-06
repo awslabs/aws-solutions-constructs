@@ -236,7 +236,7 @@ export interface AddProxyMethodToApiResourceInputParams {
     readonly requestValidator?: api.IRequestValidator,
     readonly requestModel?: { [contentType: string]: api.IModel; },
     readonly awsIntegrationProps?: api.AwsIntegrationProps | any,
-    readonly methodOptions?: api.MethodOptions | any
+    readonly methodOptions?: api.MethodOptions
 }
 
 export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceInputParams): api.Method {

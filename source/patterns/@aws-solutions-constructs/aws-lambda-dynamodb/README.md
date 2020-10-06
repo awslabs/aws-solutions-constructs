@@ -24,10 +24,10 @@
 
 This AWS Solutions Construct implements the AWS Lambda function and Amazon DynamoDB table with the least privileged permissions.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
 ``` javascript
-const { LambdaToDynamoDBProps,  LambdaToDynamoDB } = require('@aws-solutions-constructs/aws-lambda-dynamodb');
+const { LambdaToDynamoDBProps,  LambdaToDynamoDB } from '@aws-solutions-constructs/aws-lambda-dynamodb';
 
 const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
@@ -37,7 +37,7 @@ const props: LambdaToDynamoDBProps = {
     },
 };
 
-new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', props);
+new LambdaToDynamoDB(this, 'test-lambda-dynamodb-stack', props);
 
 ```
 

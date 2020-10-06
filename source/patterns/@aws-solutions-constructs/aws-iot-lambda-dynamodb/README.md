@@ -24,10 +24,10 @@
 
 This AWS Solutions Construct implements an AWS IoT topic rule, an AWS Lambda function and Amazon DynamoDB table with the least privileged permissions.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
 ``` javascript
-const { IotToLambdaToDynamoDBProps,  IotToLambdaToDynamoDB } = require('@aws-solutions-constructs/aws-iot-lambda-dynamodb');
+const { IotToLambdaToDynamoDBProps,  IotToLambdaToDynamoDB } from '@aws-solutions-constructs/aws-iot-lambda-dynamodb';
 
 const props: IotToLambdaToDynamoDBProps = {
     lambdaFunctionProps: {
@@ -45,7 +45,7 @@ const props: IotToLambdaToDynamoDBProps = {
     }
 };
 
-new IotToLambdaToDynamoDB(stack, 'test-iot-lambda-dynamodb-stack', props);
+new IotToLambdaToDynamoDB(this, 'test-iot-lambda-dynamodb-stack', props);
 
 ```
 

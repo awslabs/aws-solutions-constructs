@@ -24,10 +24,10 @@
 
 This AWS Solutions Construct implements an AWS IoT MQTT topic rule and an AWS Lambda function pattern.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
 ``` javascript
-const { IotToLambdaProps, IotToLambda } = require('@aws-solutions-constructs/aws-iot-lambda');
+const { IotToLambdaProps, IotToLambda } from '@aws-solutions-constructs/aws-iot-lambda';
 
 const props: IotToLambdaProps = {
     lambdaFunctionProps: {
@@ -45,7 +45,7 @@ const props: IotToLambdaProps = {
     }
 };
 
-new IotToLambda(stack, 'test-iot-lambda-integration', props);
+new IotToLambda(this, 'test-iot-lambda-integration', props);
 ```
 
 ## Initializer

@@ -30,12 +30,12 @@ This construct creates a scalable HTTPS proxy between API Gateway and AWS IoT. T
 
 This implementation enables write-only messages to be published on given MQTT topics, and also supports shadow updates of HTTPS devices to allowed things in the device registry. It does not involve Lambda functions for proxying messages, and instead relies on direct API Gateway to AWS IoT integration which supports both JSON messages as well as binary messages.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
 ``` javascript
-const { ApiGatewayToIot } = require('@aws-solutions-constructs/aws-apigateway-iot');
+const { ApiGatewayToIot } from '@aws-solutions-constructs/aws-apigateway-iot';
 
-new ApiGatewayToIot(stack, 'ApiGatewayToIotPattern', {
+new ApiGatewayToIot(this, 'ApiGatewayToIotPattern', {
     apiGatewayToIotProps: {
         iotEndpoint: 'a1234567890123-ats'
     }
@@ -93,8 +93,8 @@ Below is a description of the different resources and methods exposed by the API
 |Method         | Resource              | Query parameter(s) |  Return code(s)   |  Description|
 |-------------- | --------------------- | ------------------ | ----------------- | -----------------|
 |  **POST**     |  `/message/<topics>`  |      **qos**       |   `200/403/500`   | By calling this endpoint, you need to pass the topics on which you would like to publish (e.g `/message/device/foo`).|
-|  **POST**     | `/shadow/<thingName>` |      **None**      |   `200/403/500`   | This route allows to update the shadow document of a thing, given its `thingName`. The body shall comply with the standard shadow stucture comprising a `state` node and associated `desired` and `reported` nodes. See the [Updating device shadows](#updating-device-shadows) section for an example.|
-|  **POST**     | `/shadow/<thingName>/<shadowName>` |      **None**      |   `200/403/500`   | This route allows to update the named shadow document of a thing, given its `thingName` and the `shadowName`. The body shall comply with the standard shadow stucture comprising a `state` node and associated `desired` and `reported` nodes. See the [Updating named shadows](#updating-named-shadows) section for an example.|
+|  **POST**     | `/shadow/<thingName>` |      **None**      |   `200/403/500`   | This route allows to update the shadow document of a thing, given its `thingName` using Unnamed (classic) shadow type. The body shall comply with the standard shadow stucture comprising a `state` node and associated `desired` and `reported` nodes. See the [Updating device shadows](#updating-device-shadows) section for an example.|
+|  **POST**     | `/shadow/<thingName>/<shadowName>` |      **None**      |   `200/403/500`   | This route allows to update the named shadow document of a thing, given its `thingName` and the `shadowName` using the Named shadow type. The body shall comply with the standard shadow stucture comprising a `state` node and associated `desired` and `reported` nodes. See the [Updating named shadows](#updating-named-shadows) section for an example.|
 
 ## Architecture
 

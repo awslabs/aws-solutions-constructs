@@ -24,10 +24,10 @@
 
 This AWS Solutions Construct implements an AWS IoT MQTT topic rule to send data to an Amazon Kinesis Data Firehose delivery stream connected to an Amazon S3 bucket.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition in Typescript:
 
 ``` javascript
-const { IotToKinesisFirehoseToS3Props, IotToKinesisFirehoseToS3 } = require('@aws-solutions-constructs/aws-iot-kinesisfirehose-s3');
+const { IotToKinesisFirehoseToS3Props, IotToKinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-iot-kinesisfirehose-s3';
 
 const props: IotToKinesisFirehoseToS3Props = {
     iotTopicRuleProps: {
@@ -40,7 +40,7 @@ const props: IotToKinesisFirehoseToS3Props = {
     }
 };
 
-new IotToKinesisFirehoseToS3(stack, 'test-iot-firehose-s3', props);
+new IotToKinesisFirehoseToS3(this, 'test-iot-firehose-s3', props);
 
 ```
 
