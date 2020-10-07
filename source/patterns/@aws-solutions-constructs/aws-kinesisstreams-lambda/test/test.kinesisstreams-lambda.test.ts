@@ -44,7 +44,6 @@ test('Test properties', () => {
     // Initial Setup
     const stack = new Stack();
     const props: KinesisStreamsToLambdaProps = {
-        kinesisStreamProps: {},
         lambdaFunctionProps: {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
@@ -60,8 +59,6 @@ test('Test properties', () => {
     expect(app.lambdaFunction !== null);
     // Assertion 2
     expect(app.kinesisStream !== null);
-    // Assertion 3
-    expect(app.kinesisStreamRole  !== null);
 });
 
 // --------------------------------------------------------------
@@ -115,3 +112,24 @@ test('Test existing resources', () => {
         Runtime: 'nodejs10.x',
     });
 });
+
+test('test sqsDlqQueueProps override', () => {
+    const stack = new Stack();
+    const props: KinesisStreamsToLambdaProps = {
+        lambdaFunctionProps: {
+            runtime: lambda.Runtime.NODEJS_10_X,
+            handler: 'index.handler',
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+        },
+        sqsDlqQueueProps: {
+            queueName: 'hello-world',
+            visibilityTimeout: Duration.seconds(50)
+        }
+    };
+    new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);
+
+    expect(stack).toHaveResource("AWS::SQS::Queue", {
+        QueueName: "hello-world",
+        VisibilityTimeout: 50
+    });
+  });

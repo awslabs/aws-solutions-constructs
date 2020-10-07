@@ -16,6 +16,7 @@ import { DynamoEventSourceProps, DynamoEventSource } from '@aws-cdk/aws-lambda-e
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
+import * as sqs from '@aws-cdk/aws-sqs';
 
 /**
  * @summary The properties for the DynamoDBStreamToLambda Construct
@@ -50,7 +51,20 @@ export interface DynamoDBStreamToLambdaProps {
    *
    * @default - Default props are used
    */
-  readonly dynamoEventSourceProps?: DynamoEventSourceProps
+  readonly dynamoEventSourceProps?: DynamoEventSourceProps | any,
+  /**
+   * Whether to deploy a SQS dead letter queue when a data record reaches the Maximum Retry Attempts or Maximum Record Age,
+   * its metadata like shard ID and stream ARN will be sent to an SQS queue.
+   *
+   * @default - true.
+   */
+  readonly deploySqsDlqQueue?: boolean,
+  /**
+   * Optional user provided properties for the SQS dead letter queue
+   *
+   * @default - Default props are used
+   */
+  readonly sqsDlqQueueProps?: sqs.QueueProps
 }
 
 export class DynamoDBStreamToLambda extends Construct {
@@ -81,8 +95,12 @@ export class DynamoDBStreamToLambda extends Construct {
     // Grant DynamoDB Stream read perimssion for lambda function
     this.dynamoTable.grantStreamRead(this.lambdaFunction.grantPrincipal);
 
-    // Create DynamDB trigger to invoke lambda function
-    this.lambdaFunction.addEventSource(new DynamoEventSource(this.dynamoTable,
-      defaults.DynamoEventSourceProps(props.dynamoEventSourceProps)));
+    // Add the Lambda event source mapping
+    const eventSourceProps = defaults.DynamoEventSourceProps(this, {
+      eventSourceProps: props.dynamoEventSourceProps,
+      deploySqsDlqQueue: props.deploySqsDlqQueue,
+      sqsDlqQueueProps: props.sqsDlqQueueProps
+    });
+    this.lambdaFunction.addEventSource(new DynamoEventSource(this.dynamoTable, eventSourceProps));
   }
 }

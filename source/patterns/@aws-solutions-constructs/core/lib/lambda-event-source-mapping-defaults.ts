@@ -13,17 +13,44 @@
 
 import * as lambda from '@aws-cdk/aws-lambda';
 import { overrideProps } from './utils';
-import { DynamoEventSourceProps, S3EventSourceProps, KinesisEventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
+import { DynamoEventSourceProps, S3EventSourceProps, KinesisEventSourceProps,  StreamEventSourceProps, SqsDlq } from '@aws-cdk/aws-lambda-event-sources';
 import * as s3 from '@aws-cdk/aws-s3';
+import { Construct, Duration } from '@aws-cdk/core';
+import * as sqs from '@aws-cdk/aws-sqs';
+import { buildQueue } from './sqs-helper';
 
-export function DynamoEventSourceProps(_dynamoEventSourceProps?: DynamoEventSourceProps) {
+export interface EventSourceProps {
+    readonly eventSourceProps?: StreamEventSourceProps,
+    readonly deploySqsDlqQueue?: boolean,
+    readonly sqsDlqQueueProps?: sqs.QueueProps
+}
 
-    const defaultDynamoEventSourceProps = {
-        startingPosition: lambda.StartingPosition.TRIM_HORIZON
+export function DynamoEventSourceProps(scope: Construct, _dynamoEventSourceProps?: EventSourceProps): DynamoEventSourceProps {
+
+    const baseProps: DynamoEventSourceProps = {
+        startingPosition: lambda.StartingPosition.TRIM_HORIZON,
+        bisectBatchOnError: true,
+        maxRecordAge: Duration.hours(24),
+        retryAttempts: 500
     };
 
-    if (_dynamoEventSourceProps) {
-        return overrideProps(defaultDynamoEventSourceProps, _dynamoEventSourceProps);
+    let extraProps = {};
+
+    if (_dynamoEventSourceProps === undefined || _dynamoEventSourceProps?.deploySqsDlqQueue === undefined
+        || _dynamoEventSourceProps.deploySqsDlqQueue ) {
+        const [sqsQueue] = buildQueue(scope, 'SqsDlqQueue', {
+            queueProps: _dynamoEventSourceProps?.sqsDlqQueueProps
+        });
+
+        extraProps = {
+            onFailure: new SqsDlq(sqsQueue),
+        };
+    }
+
+    const defaultDynamoEventSourceProps = Object.assign(baseProps, extraProps);
+
+    if (_dynamoEventSourceProps?.eventSourceProps) {
+        return overrideProps(defaultDynamoEventSourceProps, _dynamoEventSourceProps.eventSourceProps as DynamoEventSourceProps);
     } else {
         return defaultDynamoEventSourceProps;
     }
@@ -42,14 +69,31 @@ export function S3EventSourceProps(_s3EventSourceProps?: S3EventSourceProps) {
     }
 }
 
-export function KinesisEventSourceProps(_kinesisEventSourceProps?: KinesisEventSourceProps) {
-    const defaultKinesisEventSourceProps = {
+export function KinesisEventSourceProps(scope: Construct, _kinesisEventSourceProps?: EventSourceProps): KinesisEventSourceProps {
+    const baseProps: KinesisEventSourceProps = {
         startingPosition: lambda.StartingPosition.TRIM_HORIZON,
-        bisectBatchOnError: true
+        bisectBatchOnError: true,
+        maxRecordAge: Duration.hours(24),
+        retryAttempts: 500
     };
 
-    if (_kinesisEventSourceProps) {
-        return overrideProps(defaultKinesisEventSourceProps, _kinesisEventSourceProps, false);
+    let extraProps = {};
+
+    if (_kinesisEventSourceProps === undefined || _kinesisEventSourceProps?.deploySqsDlqQueue === undefined
+        || _kinesisEventSourceProps.deploySqsDlqQueue ) {
+        const [sqsQueue] = buildQueue(scope, 'SqsDlqQueue', {
+            queueProps: _kinesisEventSourceProps?.sqsDlqQueueProps
+        });
+
+        extraProps = {
+            onFailure: new SqsDlq(sqsQueue),
+        };
+    }
+
+    const defaultKinesisEventSourceProps = Object.assign(baseProps, extraProps);
+
+    if (_kinesisEventSourceProps?.eventSourceProps) {
+        return overrideProps(defaultKinesisEventSourceProps, _kinesisEventSourceProps.eventSourceProps as KinesisEventSourceProps);
     } else {
         return defaultKinesisEventSourceProps;
     }

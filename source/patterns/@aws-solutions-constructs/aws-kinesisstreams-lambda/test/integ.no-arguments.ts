@@ -18,24 +18,22 @@ import * as lambda from '@aws-cdk/aws-lambda';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-ks-lambda-stack');
+const stack = new Stack(app, 'test-kinesisstreams-lambda');
 stack.templateOptions.description = 'Integration Test for aws-kinesisstreams-lambda';
 
 // Definitions
 const props: KinesisStreamsToLambdaProps = {
-    kinesisStreamProps: {},
-    kinesisEventSourceProps: {
-        startingPosition: lambda.StartingPosition.TRIM_HORIZON,
-        batchSize: 1
-    },
     lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',
         code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
+    kinesisEventSourceProps: {
+        retryAttempts: 5
+    }
 };
 
-new KinesisStreamsToLambda(stack, 'test-ks-lambda', props);
+new KinesisStreamsToLambda(stack, 'test-kinesisstreams-lambda', props);
 
 // Synth
 app.synth();

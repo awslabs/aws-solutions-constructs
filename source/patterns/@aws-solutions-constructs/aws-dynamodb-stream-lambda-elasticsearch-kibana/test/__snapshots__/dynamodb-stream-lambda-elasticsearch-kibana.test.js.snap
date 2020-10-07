@@ -128,6 +128,17 @@ Object {
     "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaLambdaFunctionDynamoDBEventSourcetestdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoTable0DD1CCDAA02C0130": Object {
       "Properties": Object {
         "BatchSize": 100,
+        "BisectBatchOnFunctionError": true,
+        "DestinationConfig": Object {
+          "OnFailure": Object {
+            "Destination": Object {
+              "Fn::GetAtt": Array [
+                "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaSqsDlqQueue2AC67B0B",
+                "Arn",
+              ],
+            },
+          },
+        },
         "EventSourceArn": Object {
           "Fn::GetAtt": Array [
             "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoTable9A779B83",
@@ -137,6 +148,8 @@ Object {
         "FunctionName": Object {
           "Ref": "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaLambdaFunction10347BD5",
         },
+        "MaximumRecordAgeInSeconds": 86400,
+        "MaximumRetryAttempts": 500,
         "StartingPosition": "TRIM_HORIZON",
       },
       "Type": "AWS::Lambda::EventSourceMapping",
@@ -250,6 +263,20 @@ Object {
                 ],
               },
             },
+            Object {
+              "Action": Array [
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaSqsDlqQueue2AC67B0B",
+                  "Arn",
+                ],
+              },
+            },
           ],
           "Version": "2012-10-17",
         },
@@ -261,6 +288,81 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaSqsDlqQueue2AC67B0B": Object {
+      "Properties": Object {
+        "KmsMasterKeyId": "alias/aws/sqs",
+      },
+      "Type": "AWS::SQS::Queue",
+    },
+    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaSqsDlqQueuePolicyEB0A0B8A": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:RemovePermission",
+                "sqs:AddPermission",
+                "sqs:SetQueueAttributes",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaSqsDlqQueue2AC67B0B",
+                  "Arn",
+                ],
+              },
+              "Sid": "QueueOwnerOnlyAccess",
+            },
+            Object {
+              "Action": "SQS:*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaSqsDlqQueue2AC67B0B",
+                  "Arn",
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Queues": Array [
+          Object {
+            "Ref": "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaSqsDlqQueue2AC67B0B",
+          },
+        ],
+      },
+      "Type": "AWS::SQS::QueuePolicy",
     },
     "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchAutomatedSnapshotFailureTooHighAlarm79E9F162": Object {
       "Properties": Object {

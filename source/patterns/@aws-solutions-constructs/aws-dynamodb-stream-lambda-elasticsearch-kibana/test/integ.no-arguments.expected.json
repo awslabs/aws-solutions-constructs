@@ -99,6 +99,20 @@
                   "StreamArn"
                 ]
               }
+            },
+            {
+              "Action": [
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaSqsDlqQueue2C5C0C44",
+                  "Arn"
+                ]
+              }
             }
           ],
           "Version": "2012-10-17"
@@ -213,6 +227,19 @@
           "Ref": "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaLambdaFunctionE4694B84"
         },
         "BatchSize": 100,
+        "BisectBatchOnFunctionError": true,
+        "DestinationConfig": {
+          "OnFailure": {
+            "Destination": {
+              "Fn::GetAtt": [
+                "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaSqsDlqQueue2C5C0C44",
+                "Arn"
+              ]
+            }
+          }
+        },
+        "MaximumRecordAgeInSeconds": 86400,
+        "MaximumRetryAttempts": 500,
         "StartingPosition": "TRIM_HORIZON"
       }
     },
@@ -244,6 +271,81 @@
       },
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
+    },
+    "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaSqsDlqQueue2C5C0C44": {
+      "Type": "AWS::SQS::Queue",
+      "Properties": {
+        "KmsMasterKeyId": "alias/aws/sqs"
+      }
+    },
+    "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaSqsDlqQueuePolicyD5959B81": {
+      "Type": "AWS::SQS::QueuePolicy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:RemovePermission",
+                "sqs:AddPermission",
+                "sqs:SetQueueAttributes"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              },
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaSqsDlqQueue2C5C0C44",
+                  "Arn"
+                ]
+              },
+              "Sid": "QueueOwnerOnlyAccess"
+            },
+            {
+              "Action": "SQS:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaSqsDlqQueue2C5C0C44",
+                  "Arn"
+                ]
+              },
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Queues": [
+          {
+            "Ref": "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaSqsDlqQueue2C5C0C44"
+          }
+        ]
+      }
     },
     "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoUserPool77221A72": {
       "Type": "AWS::Cognito::UserPool",

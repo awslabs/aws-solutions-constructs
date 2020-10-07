@@ -28,6 +28,32 @@ Object {
       },
       "Type": "AWS::Kinesis::Stream",
     },
+    "testkinesisstreamslambdaKinesisStreamGetRecordsIteratorAgeAlarmD4A643E3": Object {
+      "Properties": Object {
+        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "GetRecords.IteratorAgeMilliseconds",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 2592000,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "testkinesisstreamslambdaKinesisStreamReadProvisionedThroughputExceededAlarm625E46F4": Object {
+      "Properties": Object {
+        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
+        "ComparisonOperator": "GreaterThanThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "ReadProvisionedThroughputExceeded",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Average",
+        "Threshold": 0,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
     "testkinesisstreamslambdaLambdaFunction02E4DD2D": Object {
       "DependsOn": Array [
         "testkinesisstreamslambdaLambdaFunctionServiceRoleDefaultPolicyE2BE8F65",
@@ -105,6 +131,16 @@ Object {
       "Properties": Object {
         "BatchSize": 100,
         "BisectBatchOnFunctionError": true,
+        "DestinationConfig": Object {
+          "OnFailure": Object {
+            "Destination": Object {
+              "Fn::GetAtt": Array [
+                "testkinesisstreamslambdaSqsDlqQueueDCC12D0A",
+                "Arn",
+              ],
+            },
+          },
+        },
         "EventSourceArn": Object {
           "Fn::GetAtt": Array [
             "testkinesisstreamslambdaKinesisStream76FFCAB1",
@@ -114,54 +150,11 @@ Object {
         "FunctionName": Object {
           "Ref": "testkinesisstreamslambdaLambdaFunction02E4DD2D",
         },
+        "MaximumRecordAgeInSeconds": 86400,
+        "MaximumRetryAttempts": 500,
         "StartingPosition": "TRIM_HORIZON",
       },
       "Type": "AWS::Lambda::EventSourceMapping",
-    },
-    "testkinesisstreamslambdaLambdaFunctionPolicyF7EF016E": Object {
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W12",
-              "reason": "The kinesis:ListStreams action requires a wildcard resource.",
-            },
-          ],
-        },
-      },
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "kinesis:GetRecords",
-                "kinesis:GetShardIterator",
-                "kinesis:DescribeStream",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "testkinesisstreamslambdaKinesisStream76FFCAB1",
-                  "Arn",
-                ],
-              },
-            },
-            Object {
-              "Action": "kinesis:ListStreams",
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "testkinesisstreamslambdaLambdaFunctionPolicyF7EF016E",
-        "Roles": Array [
-          Object {
-            "Ref": "testkinesisstreamslambdaLambdaFunctionServiceRoleD083672F",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
     },
     "testkinesisstreamslambdaLambdaFunctionServiceRoleD083672F": Object {
       "Properties": Object {
@@ -257,6 +250,20 @@ Object {
               },
             },
             Object {
+              "Action": Array [
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testkinesisstreamslambdaSqsDlqQueueDCC12D0A",
+                  "Arn",
+                ],
+              },
+            },
+            Object {
               "Action": "kinesis:DescribeStream",
               "Effect": "Allow",
               "Resource": Object {
@@ -277,6 +284,81 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+    "testkinesisstreamslambdaSqsDlqQueueDCC12D0A": Object {
+      "Properties": Object {
+        "KmsMasterKeyId": "alias/aws/sqs",
+      },
+      "Type": "AWS::SQS::Queue",
+    },
+    "testkinesisstreamslambdaSqsDlqQueuePolicyB865E539": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:RemovePermission",
+                "sqs:AddPermission",
+                "sqs:SetQueueAttributes",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testkinesisstreamslambdaSqsDlqQueueDCC12D0A",
+                  "Arn",
+                ],
+              },
+              "Sid": "QueueOwnerOnlyAccess",
+            },
+            Object {
+              "Action": "SQS:*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testkinesisstreamslambdaSqsDlqQueueDCC12D0A",
+                  "Arn",
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Queues": Array [
+          Object {
+            "Ref": "testkinesisstreamslambdaSqsDlqQueueDCC12D0A",
+          },
+        ],
+      },
+      "Type": "AWS::SQS::QueuePolicy",
     },
   },
 }
@@ -358,6 +440,16 @@ Object {
       "Properties": Object {
         "BatchSize": 100,
         "BisectBatchOnFunctionError": true,
+        "DestinationConfig": Object {
+          "OnFailure": Object {
+            "Destination": Object {
+              "Fn::GetAtt": Array [
+                "testkinesisstreamslambdaSqsDlqQueueDCC12D0A",
+                "Arn",
+              ],
+            },
+          },
+        },
         "EventSourceArn": Object {
           "Fn::GetAtt": Array [
             "teststream04374A09",
@@ -367,6 +459,8 @@ Object {
         "FunctionName": Object {
           "Ref": "testfn76BCC25C",
         },
+        "MaximumRecordAgeInSeconds": 86400,
+        "MaximumRetryAttempts": 500,
         "StartingPosition": "TRIM_HORIZON",
       },
       "Type": "AWS::Lambda::EventSourceMapping",
@@ -423,6 +517,20 @@ Object {
               },
             },
             Object {
+              "Action": Array [
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testkinesisstreamslambdaSqsDlqQueueDCC12D0A",
+                  "Arn",
+                ],
+              },
+            },
+            Object {
               "Action": "kinesis:DescribeStream",
               "Effect": "Allow",
               "Resource": Object {
@@ -444,50 +552,106 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
-    "testkinesisstreamslambdaLambdaFunctionPolicyF7EF016E": Object {
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W12",
-              "reason": "The kinesis:ListStreams action requires a wildcard resource.",
-            },
-          ],
-        },
+    "testkinesisstreamslambdaKinesisStreamGetRecordsIteratorAgeAlarmD4A643E3": Object {
+      "Properties": Object {
+        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "GetRecords.IteratorAgeMilliseconds",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 2592000,
       },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "testkinesisstreamslambdaKinesisStreamReadProvisionedThroughputExceededAlarm625E46F4": Object {
+      "Properties": Object {
+        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
+        "ComparisonOperator": "GreaterThanThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "ReadProvisionedThroughputExceeded",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Average",
+        "Threshold": 0,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "testkinesisstreamslambdaSqsDlqQueueDCC12D0A": Object {
+      "Properties": Object {
+        "KmsMasterKeyId": "alias/aws/sqs",
+      },
+      "Type": "AWS::SQS::Queue",
+    },
+    "testkinesisstreamslambdaSqsDlqQueuePolicyB865E539": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
             Object {
               "Action": Array [
-                "kinesis:GetRecords",
-                "kinesis:GetShardIterator",
-                "kinesis:DescribeStream",
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:RemovePermission",
+                "sqs:AddPermission",
+                "sqs:SetQueueAttributes",
               ],
               "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "teststream04374A09",
+                  "testkinesisstreamslambdaSqsDlqQueueDCC12D0A",
                   "Arn",
                 ],
               },
+              "Sid": "QueueOwnerOnlyAccess",
             },
             Object {
-              "Action": "kinesis:ListStreams",
-              "Effect": "Allow",
-              "Resource": "*",
+              "Action": "SQS:*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testkinesisstreamslambdaSqsDlqQueueDCC12D0A",
+                  "Arn",
+                ],
+              },
+              "Sid": "HttpsOnly",
             },
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "testkinesisstreamslambdaLambdaFunctionPolicyF7EF016E",
-        "Roles": Array [
+        "Queues": Array [
           Object {
-            "Ref": "testfnServiceRoleC30E0817",
+            "Ref": "testkinesisstreamslambdaSqsDlqQueueDCC12D0A",
           },
         ],
       },
-      "Type": "AWS::IAM::Policy",
+      "Type": "AWS::SQS::QueuePolicy",
     },
     "teststream04374A09": Object {
       "Properties": Object {

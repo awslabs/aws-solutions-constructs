@@ -51,7 +51,10 @@ test('check lambda EventSourceMapping', () => {
       Ref: "testlambdadynamodbstackLambdaFunction5DDB3E8D"
     },
     BatchSize: 100,
-    StartingPosition: "TRIM_HORIZON"
+    StartingPosition: "TRIM_HORIZON",
+    MaximumRecordAgeInSeconds: 86400,
+    MaximumRetryAttempts: 500,
+    BisectBatchOnFunctionError: true
   });
 });
 
@@ -130,6 +133,20 @@ test('check lambda permission to read dynamodb stream', () => {
             "Fn::GetAtt": [
               "testlambdadynamodbstackDynamoTable8138E93B",
               "StreamArn"
+            ]
+          }
+        },
+        {
+          Action: [
+            "sqs:SendMessage",
+            "sqs:GetQueueAttributes",
+            "sqs:GetQueueUrl"
+          ],
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              "testlambdadynamodbstackSqsDlqQueue4CC9868B",
+              "Arn"
             ]
           }
         }

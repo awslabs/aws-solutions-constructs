@@ -122,6 +122,17 @@ Object {
     "testlambdadynamodbstackLambdaFunctionDynamoDBEventSourcetestlambdadynamodbstackDynamoTableD6E2BCEF4AB6F3DD": Object {
       "Properties": Object {
         "BatchSize": 100,
+        "BisectBatchOnFunctionError": true,
+        "DestinationConfig": Object {
+          "OnFailure": Object {
+            "Destination": Object {
+              "Fn::GetAtt": Array [
+                "testlambdadynamodbstackSqsDlqQueue4CC9868B",
+                "Arn",
+              ],
+            },
+          },
+        },
         "EventSourceArn": Object {
           "Fn::GetAtt": Array [
             "testlambdadynamodbstackDynamoTable8138E93B",
@@ -131,6 +142,8 @@ Object {
         "FunctionName": Object {
           "Ref": "testlambdadynamodbstackLambdaFunction5DDB3E8D",
         },
+        "MaximumRecordAgeInSeconds": 86400,
+        "MaximumRetryAttempts": 500,
         "StartingPosition": "TRIM_HORIZON",
       },
       "Type": "AWS::Lambda::EventSourceMapping",
@@ -244,6 +257,20 @@ Object {
                 ],
               },
             },
+            Object {
+              "Action": Array [
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testlambdadynamodbstackSqsDlqQueue4CC9868B",
+                  "Arn",
+                ],
+              },
+            },
           ],
           "Version": "2012-10-17",
         },
@@ -255,6 +282,81 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+    "testlambdadynamodbstackSqsDlqQueue4CC9868B": Object {
+      "Properties": Object {
+        "KmsMasterKeyId": "alias/aws/sqs",
+      },
+      "Type": "AWS::SQS::Queue",
+    },
+    "testlambdadynamodbstackSqsDlqQueuePolicy192E20FD": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:RemovePermission",
+                "sqs:AddPermission",
+                "sqs:SetQueueAttributes",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testlambdadynamodbstackSqsDlqQueue4CC9868B",
+                  "Arn",
+                ],
+              },
+              "Sid": "QueueOwnerOnlyAccess",
+            },
+            Object {
+              "Action": "SQS:*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testlambdadynamodbstackSqsDlqQueue4CC9868B",
+                  "Arn",
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Queues": Array [
+          Object {
+            "Ref": "testlambdadynamodbstackSqsDlqQueue4CC9868B",
+          },
+        ],
+      },
+      "Type": "AWS::SQS::QueuePolicy",
     },
   },
 }

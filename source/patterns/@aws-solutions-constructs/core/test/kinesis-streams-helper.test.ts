@@ -25,7 +25,7 @@ test('Test minimal deployment with no properties', () => {
     // Stack
     const stack = new Stack();
     // Helper declaration
-    defaults.buildKinesisStream(stack);
+    defaults.buildKinesisStream(stack, {});
     // Assertion 1
     expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
     // Assertion 2
@@ -95,4 +95,12 @@ test('Test deployment w/ existing stream', () => {
     ShardCount: 2,
     RetentionPeriodHours: 72
   });
+});
+
+test('Count Kinesis CW Alarms', () => {
+  const stack = new Stack();
+
+  const cwList = defaults.buildKinesisStreamCWAlarms(stack);
+
+  expect(cwList.length).toEqual(2);
 });

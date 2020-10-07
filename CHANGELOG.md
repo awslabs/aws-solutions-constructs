@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.66.0] - 2020-10-06
+
+### Added
+- aws-apigateway-iot pattern added ([#61](https://github.com/awslabs/aws-solutions-constructs/issues/61))
+
+### Changed
+- Upgraded all patterns to CDK v1.66.0
+- Update `aws-dynamodb-stream-lambda` to add AWS Lambda support for Failure-Handling Features for DynamoDB Event Source ([#79](https://github.com/awslabs/aws-solutions-constructs/issues/79))
+- Update `aws-kinesisstreams-lambda` to add AWS Lambda support for Failure-Handling Features for Kinesis Event Source ([#78](https://github.com/awslabs/aws-solutions-constructs/issues/78))
+
 ## [1.65.0] - 2020-10-01
 
 ### Changed

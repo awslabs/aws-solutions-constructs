@@ -21,6 +21,7 @@ import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import { Construct } from '@aws-cdk/core';
+import * as sqs from '@aws-cdk/aws-sqs';
 
 /**
  * @summary The properties for the DynamoDBStreamToLambdaToElastciSearchAndKibana Construct
@@ -73,7 +74,20 @@ export interface DynamoDBStreamToLambdaToElasticSearchAndKibanaProps {
    *
    * @default - None
    */
-  readonly cognitoDomainName?: string
+  readonly cognitoDomainName?: string,
+  /**
+   * Whether to deploy a SQS dead letter queue when a data record reaches the Maximum Retry Attempts or Maximum Record Age,
+   * its metadata like shard ID and stream ARN will be sent to an SQS queue.
+   *
+   * @default - true.
+   */
+  readonly deploySqsDlqQueue?: boolean,
+  /**
+   * Optional user provided properties for the SQS dead letter queue
+   *
+   * @default - Default props are used
+   */
+  readonly sqsDlqQueueProps?: sqs.QueueProps
 }
 
 export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
@@ -104,7 +118,9 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
       lambdaFunctionProps: props.lambdaFunctionProps,
       dynamoEventSourceProps: props.dynamoEventSourceProps,
       dynamoTableProps: props.dynamoTableProps,
-      existingTableObj: props.existingTableObj
+      existingTableObj: props.existingTableObj,
+      deploySqsDlqQueue: props.deploySqsDlqQueue,
+      sqsDlqQueueProps: props.sqsDlqQueueProps
     };
 
     this.dynamoDBStreamToLambda = new DynamoDBStreamToLambda(this, 'DynamoDBStreamToLambda', _props1);

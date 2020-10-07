@@ -38,6 +38,20 @@ export function flagOverriddenDefaults(defaultProps: object, userProps: object) 
   }
 }
 
+/** The prefilter function returns true for any filtered path/key that should be excluded from the diff check.
+ * Any Construct Props using cdk.Duration type is not properly handled by
+ * 'deep-diff' library, whenever it encounters a Duration object, it throws the exception
+ * 'Argument to Intrinsic must be a plain value object', so such props are excluded from the diff check.
+ */
+function _prefilter(_path: any[], _key: string): boolean {
+  const prefilters = ['maxRecordAge', 'expiration', 'transitionAfter'];
+
+  if (prefilters.indexOf(_key) >= 0) {
+    return true;
+  }
+  return false;
+}
+
 /**
  * Performs a diff check of the userProps against the defaultProps to detect overridden properties.
  * @param {object} defaultProps the prescriptive defaults for the pattern.
@@ -45,20 +59,7 @@ export function flagOverriddenDefaults(defaultProps: object, userProps: object) 
  * @return {Array} an array containing the overridden values.
  */
 function findOverrides(defaultProps: object, userProps: object) {
-  const diff = deepdiff.diff(defaultProps, userProps,
-    /** This prefilter function returns true for any filtered path/key that should be excluded from the diff check.
-     * S3 Bucket Props with lifecycleRules uses cdk.Duration which is not properly handled by
-     * 'deep-diff' library, whenever it encounters a Duration object, it throws the exception
-     * 'argument to intrinsic must be a plain value object', so the lifecycleRules needs to be excluded from
-     * the diff check.
-     */
-    (_path, _key) => {
-      if ( _path.includes('lifecycleRules') ) {
-        return true;
-      }
-      return false;
-    }
-  );
+  const diff = deepdiff.diff(defaultProps, userProps, _prefilter);
   // Filter the results
   return (diff !== undefined) ? diff?.filter((e) => (
     e.kind === 'E' && // only return overrides

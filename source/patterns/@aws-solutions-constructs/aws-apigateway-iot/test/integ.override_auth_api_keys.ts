@@ -11,25 +11,28 @@
  *  and limitations under the License.
  */
 
-/// !cdk-integ *
+// Imports
 import { App, Stack } from "@aws-cdk/core";
-import { DynamoDBStreamToLambdaProps, DynamoDBStreamToLambda } from "../lib";
-import * as lambda from '@aws-cdk/aws-lambda';
+import { ApiGatewayToIot, ApiGatewayToIotProps } from "../lib";
+import { AuthorizationType } from "@aws-cdk/aws-apigateway";
+
+// Setup
 const app = new App();
+const stack = new Stack(app, 'test-apigateway-iot-apikeys-params');
+stack.templateOptions.description = 'Integration Test for aws-apigateway-iot with default params';
 
-// Empty arguments
-const stack = new Stack(app, 'test-dynamodb-stream-lambda-stack');
-
-const props: DynamoDBStreamToLambdaProps = {
-    lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_12_X,
-        handler: 'index.handler'
-    },
-    dynamoEventSourceProps: {
-        retryAttempts: 5
+// Definitions
+const props: ApiGatewayToIotProps = {
+    iotEndpoint: 'a1234567890123-ats',
+    apiGatewayCreateApiKey: true,
+    apiGatewayProps: {
+        defaultMethodOptions: {
+            authorizationType: AuthorizationType.NONE
+        }
     }
 };
 
-new DynamoDBStreamToLambda(stack, 'test-dynamodb-stream-lambda', props);
+new ApiGatewayToIot(stack, 'test-apigateway-iot', props);
+
+// Synth
 app.synth();

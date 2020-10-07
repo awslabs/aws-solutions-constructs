@@ -15,9 +15,10 @@
 import * as lambda from '@aws-cdk/aws-lambda';
 import { KinesisEventSourceProps, KinesisEventSource } from '@aws-cdk/aws-lambda-event-sources';
 import * as kinesis from '@aws-cdk/aws-kinesis';
-import * as iam from '@aws-cdk/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
+import * as sqs from '@aws-cdk/aws-sqs';
+import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 
 /**
  * The properties for the KinesisStreamsToLambda class.
@@ -52,7 +53,20 @@ export interface KinesisStreamsToLambdaProps {
      *
      * @default - Default props are used.
      */
-    readonly kinesisEventSourceProps?: KinesisEventSourceProps
+    readonly kinesisEventSourceProps?: KinesisEventSourceProps | any,
+    /**
+     * Whether to deploy a SQS dead letter queue when a data record reaches the Maximum Retry Attempts or Maximum Record Age,
+     * its metadata like shard ID and stream ARN will be sent to an SQS queue.
+     *
+     * @default - true.
+     */
+    readonly deploySqsDlqQueue?: boolean,
+    /**
+     * Optional user provided properties for the SQS dead letter queue
+     *
+     * @default - Default props are used
+     */
+    readonly sqsDlqQueueProps?: sqs.QueueProps
 }
 
 /**
@@ -61,7 +75,7 @@ export interface KinesisStreamsToLambdaProps {
 export class KinesisStreamsToLambda extends Construct {
     public readonly kinesisStream: kinesis.Stream;
     public readonly lambdaFunction: lambda.Function;
-    public readonly kinesisStreamRole: iam.Role;
+    public readonly cloudwatchAlarms: cloudwatch.Alarm[];
 
     /**
      * @summary Constructs a new instance of the KinesisStreamsToLambda class.
@@ -86,43 +100,18 @@ export class KinesisStreamsToLambda extends Construct {
             lambdaFunctionProps: props.lambdaFunctionProps
         });
 
-        // Add the Lambda event source mapping
-        const eventSourceProps = defaults.KinesisEventSourceProps(props.kinesisEventSourceProps);
-        this.lambdaFunction.addEventSource(new KinesisEventSource(this.kinesisStream, eventSourceProps));
-
-        // Add permissions for the Lambda function to access Kinesis
-        const policy = new iam.Policy(this, 'LambdaFunctionPolicy');
-        this.kinesisStreamRole = this.lambdaFunction.role as iam.Role;
-        policy.addStatements(new iam.PolicyStatement({
-            effect: iam.Effect.ALLOW,
-            resources: [ this.kinesisStream.streamArn ],
-            actions: [
-                'kinesis:GetRecords',
-                'kinesis:GetShardIterator',
-                'kinesis:DescribeStream'
-            ]
-        }));
-        policy.addStatements(new iam.PolicyStatement({
-            effect: iam.Effect.ALLOW,
-            resources: [ '*' ],
-            actions: [
-                'kinesis:ListStreams',
-            ]
-        }));
-        policy.attachToRole(this.kinesisStreamRole);
+        // Grant Kinesis Stream read perimssion for lambda function
         this.kinesisStream.grantRead(this.lambdaFunction.grantPrincipal);
 
-        // Add appropriate cfn_nag metadata
-        const cfnCustomPolicy = policy.node.defaultChild as iam.CfnPolicy;
-        cfnCustomPolicy.cfnOptions.metadata = {
-            cfn_nag: {
-                rules_to_suppress: [
-                    {
-                        id: "W12",
-                        reason: "The kinesis:ListStreams action requires a wildcard resource."
-                    }
-                ]
-            }
-        };
+        // Add the Lambda event source mapping
+        const eventSourceProps = defaults.KinesisEventSourceProps(this, {
+            eventSourceProps: props.kinesisEventSourceProps,
+            deploySqsDlqQueue: props.deploySqsDlqQueue,
+            sqsDlqQueueProps: props.sqsDlqQueueProps
+        });
+        this.lambdaFunction.addEventSource(new KinesisEventSource(this.kinesisStream, eventSourceProps));
+
+        // Deploy best practices CW Alarms for Kinesis Stream
+        this.cloudwatchAlarms = defaults.buildKinesisStreamCWAlarms(this);
     }
 }

@@ -78,6 +78,20 @@
               }
             },
             {
+              "Action": [
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testkslambdaSqsDlqQueueDE67EC6C",
+                  "Arn"
+                ]
+              }
+            },
+            {
               "Action": "kinesis:DescribeStream",
               "Effect": "Allow",
               "Resource": {
@@ -167,6 +181,18 @@
         },
         "BatchSize": 1,
         "BisectBatchOnFunctionError": true,
+        "DestinationConfig": {
+          "OnFailure": {
+            "Destination": {
+              "Fn::GetAtt": [
+                "testkslambdaSqsDlqQueueDE67EC6C",
+                "Arn"
+              ]
+            }
+          }
+        },
+        "MaximumRecordAgeInSeconds": 86400,
+        "MaximumRetryAttempts": 500,
         "StartingPosition": "LATEST"
       }
     },
@@ -181,49 +207,105 @@
         }
       }
     },
-    "testkslambdaLambdaFunctionPolicyDC40446F": {
-      "Type": "AWS::IAM::Policy",
+    "testkslambdaSqsDlqQueueDE67EC6C": {
+      "Type": "AWS::SQS::Queue",
+      "Properties": {
+        "KmsMasterKeyId": "alias/aws/sqs"
+      }
+    },
+    "testkslambdaSqsDlqQueuePolicy48897D8E": {
+      "Type": "AWS::SQS::QueuePolicy",
       "Properties": {
         "PolicyDocument": {
           "Statement": [
             {
               "Action": [
-                "kinesis:GetRecords",
-                "kinesis:GetShardIterator",
-                "kinesis:DescribeStream"
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:RemovePermission",
+                "sqs:AddPermission",
+                "sqs:SetQueueAttributes"
               ],
               "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              },
               "Resource": {
                 "Fn::GetAtt": [
-                  "teststream04374A09",
+                  "testkslambdaSqsDlqQueueDE67EC6C",
                   "Arn"
                 ]
-              }
+              },
+              "Sid": "QueueOwnerOnlyAccess"
             },
             {
-              "Action": "kinesis:ListStreams",
-              "Effect": "Allow",
-              "Resource": "*"
+              "Action": "SQS:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testkslambdaSqsDlqQueueDE67EC6C",
+                  "Arn"
+                ]
+              },
+              "Sid": "HttpsOnly"
             }
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testkslambdaLambdaFunctionPolicyDC40446F",
-        "Roles": [
+        "Queues": [
           {
-            "Ref": "testroleB50A37BE"
+            "Ref": "testkslambdaSqsDlqQueueDE67EC6C"
           }
         ]
-      },
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W12",
-              "reason": "The kinesis:ListStreams action requires a wildcard resource."
-            }
-          ]
-        }
+      }
+    },
+    "testkslambdaKinesisStreamGetRecordsIteratorAgeAlarmD5DC1A73": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
+        "MetricName": "GetRecords.IteratorAgeMilliseconds",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 2592000
+      }
+    },
+    "testkslambdaKinesisStreamReadProvisionedThroughputExceededAlarmFAEF1236": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
+        "MetricName": "ReadProvisionedThroughputExceeded",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Average",
+        "Threshold": 0
       }
     }
   },

@@ -117,7 +117,7 @@ curl -XPOST https://<stage-id>.execute-api.<region>.amazonaws.com/prod/message/d
 You can chain topic names in the URL and the API accepts up to 7 sub-topics that you can publish on. For instance, the below example publishes a message on the topic `device/foo/bar/abc/xyz`.
 
 ```bash
-curl -XPOST https://<stage-id>.execute-api.<region>.amazonaws.com/development/message/device/foo/bar/abc/xyz -H "x-api-key: <api-key>" -H "Content-Type: application/json" -d '{"Hello": "World"}'
+curl -XPOST https://<stage-id>.execute-api.<region>.amazonaws.com/prod/message/device/foo/bar/abc/xyz -H "x-api-key: <api-key>" -H "Content-Type: application/json" -d '{"Hello": "World"}'
 ```
 
 ### Updating device shadows
@@ -125,7 +125,7 @@ curl -XPOST https://<stage-id>.execute-api.<region>.amazonaws.com/development/me
 To update the shadow document associated with a given thing, you can issue a shadow state request using a thing name. See the following example on how to update a thing shadow.
 
 ```bash
-curl -XPOST https://<stage-id>.execute-api.<region>.amazonaws.com/prod/shadow/device1 -H "x-api-key: <api-key>" -H "Content-Type: application/json" -d '{"state": "desired": { "Hello": "World" }}'
+curl -XPOST https://<stage-id>.execute-api.<region>.amazonaws.com/prod/shadow/device1 -H "x-api-key: <api-key>" -H "Content-Type: application/json" -d '{"state": {"desired": { "Hello": "World" }}}'
 ```
 
 ### Updating named shadows
@@ -133,7 +133,7 @@ curl -XPOST https://<stage-id>.execute-api.<region>.amazonaws.com/prod/shadow/de
 To update the shadow document associated with a given thing's named shadow, you can issue a shadow state request using a thing name and shadow name. See the following example on how to update a named shadow.
 
 ```bash
-curl -XPOST https://<stage-id>.execute-api.<region>.amazonaws.com/prod/shadow/device1/shadow1 -H "x-api-key: <api-key>" -H "Content-Type: application/json" -d '{"state": "desired": { "Hello": "World" }}'
+curl -XPOST https://<stage-id>.execute-api.<region>.amazonaws.com/prod/shadow/device1/shadow1 -H "x-api-key: <api-key>" -H "Content-Type: application/json" -d '{"state": {"desired": { "Hello": "World" }}}'
 ```
 
 ### Sending binary payloads
