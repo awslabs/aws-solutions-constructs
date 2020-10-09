@@ -1,5 +1,5 @@
 /**
- *  Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -80,4 +80,28 @@ test('check exception for Missing existingObj from props for deploy = false', ()
   } catch (e) {
     expect(e).toBeInstanceOf(Error);
   }
+});
+
+test('check properties with no CW Alarms ', () => {
+  const stack = new cdk.Stack();
+
+  const props: LambdaToElasticSearchAndKibanaProps = {
+    lambdaFunctionProps: {
+          code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+          runtime: lambda.Runtime.NODEJS_10_X,
+          handler: 'index.handler'
+    },
+    domainName: 'test-domain',
+    createCloudWatchAlarms: false
+  };
+
+  const construct = new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-stack', props);
+
+  expect(construct.lambdaFunction !== null);
+  expect(construct.elasticsearchDomain !== null);
+  expect(construct.identityPool !== null);
+  expect(construct.userPool !== null);
+  expect(construct.userPoolClient !== null);
+  expect(construct.cloudwatchAlarms === null);
+  expect(construct.elasticsearchRole !== null);
 });

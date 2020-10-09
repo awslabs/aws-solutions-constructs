@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.67.0] - 2020-10-09
+
+### Changed
+- Upgraded all patterns to CDK v1.66.0
+- Make CloudWatch alarm creation optional ([#85](https://github.com/awslabs/aws-solutions-constructs/issues/85))
+
 ## [1.66.0] - 2020-10-06
 
 ### Added

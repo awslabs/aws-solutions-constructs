@@ -1,5 +1,5 @@
 /**
- *  Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -54,7 +54,13 @@ export interface S3ToStepFunctionProps {
    *
    * @default - true
    */
-  readonly deployCloudTrail?: boolean
+  readonly deployCloudTrail?: boolean,
+  /**
+   * Whether to create recommended CloudWatch alarms
+   *
+   * @default - Alarms are created
+   */
+  readonly createCloudWatchAlarms?: boolean
 }
 
 export class S3ToStepFunction extends Construct {
@@ -62,7 +68,7 @@ export class S3ToStepFunction extends Construct {
   public readonly stateMachineLogGroup: LogGroup;
   public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
-  public readonly cloudwatchAlarms: cloudwatch.Alarm[];
+  public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
   public readonly cloudtrail?: cloudtrail.Trail;
   public readonly cloudtrailBucket?: s3.Bucket;
   public readonly cloudtrailLoggingBucket?: s3.Bucket;
@@ -88,7 +94,7 @@ export class S3ToStepFunction extends Construct {
       bucket = props.existingBucketObj;
     }
 
-    if (!props.hasOwnProperty('deployCloudTrail') || props.deployCloudTrail === true) {
+    if (props.deployCloudTrail === undefined || props.deployCloudTrail) {
       [this.cloudtrailBucket, this.cloudtrailLoggingBucket] = defaults.buildS3Bucket(this, {}, 'CloudTrail');
 
       this.cloudtrail = new cloudtrail.Trail(this, 'S3EventsTrail', {
@@ -131,7 +137,8 @@ export class S3ToStepFunction extends Construct {
 
     const eventsRuleToStepFunction = new EventsRuleToStepFunction(this, 'test-events-rule-step-function-stack', {
       stateMachineProps: props.stateMachineProps,
-      eventRuleProps: _eventRuleProps
+      eventRuleProps: _eventRuleProps,
+      createCloudWatchAlarms: props.createCloudWatchAlarms
     });
 
     this.stateMachine = eventsRuleToStepFunction.stateMachine;

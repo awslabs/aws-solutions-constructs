@@ -1,5 +1,5 @@
 /**
- *  Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -87,7 +87,13 @@ export interface DynamoDBStreamToLambdaToElasticSearchAndKibanaProps {
    *
    * @default - Default props are used
    */
-  readonly sqsDlqQueueProps?: sqs.QueueProps
+  readonly sqsDlqQueueProps?: sqs.QueueProps,
+  /**
+   * Whether to create recommended CloudWatch alarms
+   *
+   * @default - Alarms are created
+   */
+  readonly createCloudWatchAlarms?: boolean
 }
 
 export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
@@ -100,7 +106,7 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
   public readonly identityPool: cognito.CfnIdentityPool;
   public readonly elasticsearchDomain: elasticsearch.CfnDomain;
   public readonly elasticsearchRole: iam.Role;
-  public readonly cloudwatchAlarms: cloudwatch.Alarm[];
+  public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
 
   /**
    * @summary Constructs a new instance of the LambdaToDynamoDB class.
@@ -131,7 +137,8 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
       existingLambdaObj: this.lambdaFunction,
       domainName: props.domainName,
       esDomainProps: props.esDomainProps,
-      cognitoDomainName: props.cognitoDomainName
+      cognitoDomainName: props.cognitoDomainName,
+      createCloudWatchAlarms: props.createCloudWatchAlarms
     };
 
     this.lambdaToElasticSearchAndKibana = new LambdaToElasticSearchAndKibana(this, 'LambdaToElasticSearch', _props2);

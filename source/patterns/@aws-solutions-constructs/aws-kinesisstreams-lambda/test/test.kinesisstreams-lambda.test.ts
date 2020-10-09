@@ -1,5 +1,5 @@
 /**
- *  Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -38,7 +38,7 @@ test('Pattern minimal deployment', () => {
 });
 
 // --------------------------------------------------------------
-// Test getter methods
+// Test properties
 // --------------------------------------------------------------
 test('Test properties', () => {
     // Initial Setup
@@ -48,10 +48,6 @@ test('Test properties', () => {
             runtime: lambda.Runtime.NODEJS_10_X,
             handler: 'index.handler',
             code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-        },
-        kinesisEventSourceProps: {
-            startingPosition: lambda.StartingPosition.TRIM_HORIZON,
-            batchSize: 1
         }
     };
     const app = new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);
@@ -59,6 +55,8 @@ test('Test properties', () => {
     expect(app.lambdaFunction !== null);
     // Assertion 2
     expect(app.kinesisStream !== null);
+    // Assertion 3
+    expect(app.cloudwatchAlarms !== null);
 });
 
 // --------------------------------------------------------------
@@ -113,6 +111,9 @@ test('Test existing resources', () => {
     });
 });
 
+// --------------------------------------------------------------
+// Test sqsDlqQueueProps override
+// --------------------------------------------------------------
 test('test sqsDlqQueueProps override', () => {
     const stack = new Stack();
     const props: KinesisStreamsToLambdaProps = {
@@ -133,3 +134,26 @@ test('test sqsDlqQueueProps override', () => {
         VisibilityTimeout: 50
     });
   });
+
+// --------------------------------------------------------------
+// Test properties with no CW Alarms
+// --------------------------------------------------------------
+test('Test properties with no CW Alarms', () => {
+    // Initial Setup
+    const stack = new Stack();
+    const props: KinesisStreamsToLambdaProps = {
+        lambdaFunctionProps: {
+            runtime: lambda.Runtime.NODEJS_10_X,
+            handler: 'index.handler',
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+        },
+        createCloudWatchAlarms: false
+    };
+    const app = new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);
+    // Assertion 1
+    expect(app.lambdaFunction !== null);
+    // Assertion 2
+    expect(app.kinesisStream !== null);
+    // Assertion 3
+    expect(app.cloudwatchAlarms === null);
+});

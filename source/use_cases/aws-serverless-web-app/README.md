@@ -33,4 +33,4 @@ After the stack is deployed successfully, go to the Outputs tab in AWS Cloudform
 
 
 ***
-&copy; Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+&copy; Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.

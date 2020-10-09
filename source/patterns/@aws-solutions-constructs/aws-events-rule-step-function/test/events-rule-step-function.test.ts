@@ -1,5 +1,5 @@
 /**
- *  Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -93,6 +93,28 @@ test('check properties', () => {
   const construct: EventsRuleToStepFunction = deployNewStateMachine(stack);
 
   expect(construct.cloudwatchAlarms !== null);
+  expect(construct.stateMachine !== null);
+  expect(construct.eventsRule !== null);
+  expect(construct.stateMachineLogGroup !== null);
+});
+
+test('check properties with no CW Alarms', () => {
+  const stack = new cdk.Stack();
+  const startState = new sfn.Pass(stack, 'StartState');
+
+  const props: EventsRuleToStepFunctionProps = {
+    stateMachineProps: {
+      definition: startState
+    },
+    eventRuleProps: {
+      schedule: events.Schedule.rate(Duration.minutes(5))
+    },
+    createCloudWatchAlarms: false
+  };
+
+  const construct: EventsRuleToStepFunction =  new EventsRuleToStepFunction(stack, 'test-events-rule-step-function', props);
+
+  expect(construct.cloudwatchAlarms === null);
   expect(construct.stateMachine !== null);
   expect(construct.eventsRule !== null);
   expect(construct.stateMachineLogGroup !== null);

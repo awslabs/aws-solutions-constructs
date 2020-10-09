@@ -1,5 +1,5 @@
 /**
- *  Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -67,6 +67,12 @@ export interface KinesisStreamsToLambdaProps {
      * @default - Default props are used
      */
     readonly sqsDlqQueueProps?: sqs.QueueProps
+    /**
+     * Whether to create recommended CloudWatch alarms
+     *
+     * @default - Alarms are created
+     */
+    readonly createCloudWatchAlarms?: boolean
 }
 
 /**
@@ -75,7 +81,7 @@ export interface KinesisStreamsToLambdaProps {
 export class KinesisStreamsToLambda extends Construct {
     public readonly kinesisStream: kinesis.Stream;
     public readonly lambdaFunction: lambda.Function;
-    public readonly cloudwatchAlarms: cloudwatch.Alarm[];
+    public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
 
     /**
      * @summary Constructs a new instance of the KinesisStreamsToLambda class.
@@ -111,7 +117,9 @@ export class KinesisStreamsToLambda extends Construct {
         });
         this.lambdaFunction.addEventSource(new KinesisEventSource(this.kinesisStream, eventSourceProps));
 
-        // Deploy best practices CW Alarms for Kinesis Stream
-        this.cloudwatchAlarms = defaults.buildKinesisStreamCWAlarms(this);
+        if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
+            // Deploy best practices CW Alarms for Kinesis Stream
+            this.cloudwatchAlarms = defaults.buildKinesisStreamCWAlarms(this);
+        }
     }
 }

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -35,14 +35,20 @@ export interface EventsRuleToStepFunctionProps {
    *
    * @default - None
    */
-  readonly eventRuleProps: events.RuleProps
+  readonly eventRuleProps: events.RuleProps,
+  /**
+   * Whether to create recommended CloudWatch alarms
+   *
+   * @default - Alarms are created
+   */
+  readonly createCloudWatchAlarms?: boolean
 }
 
 export class EventsRuleToStepFunction extends Construct {
   public readonly stateMachine: sfn.StateMachine;
   public readonly stateMachineLogGroup: LogGroup;
   public readonly eventsRule: events.Rule;
-  public readonly cloudwatchAlarms: cloudwatch.Alarm[];
+  public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
 
   /**
    * @summary Constructs a new instance of the EventsRuleToStepFunction class.
@@ -80,7 +86,10 @@ export class EventsRuleToStepFunction extends Construct {
     const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);
     // Create the Events Rule for the State Machine
     this.eventsRule = new events.Rule(this, 'EventsRule', eventsRuleProps);
-    // Deploy best practices CW Alarms for State Machine
-    this.cloudwatchAlarms = defaults.buildStepFunctionCWAlarms(this, this.stateMachine);
+
+    if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
+      // Deploy best practices CW Alarms for State Machine
+      this.cloudwatchAlarms = defaults.buildStepFunctionCWAlarms(this, this.stateMachine);
+    }
   }
 }

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -40,7 +40,13 @@ export interface LambdaToStepFunctionProps {
      *
      * @default - None
      */
-    readonly stateMachineProps: sfn.StateMachineProps
+    readonly stateMachineProps: sfn.StateMachineProps,
+    /**
+     * Whether to create recommended CloudWatch alarms
+     *
+     * @default - Alarms are created
+     */
+    readonly createCloudWatchAlarms?: boolean
 }
 
 /**
@@ -50,7 +56,7 @@ export class LambdaToStepFunction extends Construct {
     public readonly lambdaFunction: lambda.Function;
     public readonly stateMachine: sfn.StateMachine;
     public readonly stateMachineLogGroup: LogGroup;
-    public readonly cloudwatchAlarms: cloudwatch.Alarm[];
+    public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
 
     /**
      * @summary Constructs a new instance of the LambdaToStepFunctionProps class.
@@ -78,7 +84,9 @@ export class LambdaToStepFunction extends Construct {
       // Grant the start execution permission to the Lambda function
       this.stateMachine.grantStartExecution(this.lambdaFunction);
 
-      // Deploy best-practice CloudWatch Alarm for state machine
-      this.cloudwatchAlarms = defaults.buildStepFunctionCWAlarms(this, this.stateMachine);
+      if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
+        // Deploy best-practice CloudWatch Alarm for state machine
+        this.cloudwatchAlarms = defaults.buildStepFunctionCWAlarms(this, this.stateMachine);
+      }
     }
 }

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -139,7 +139,7 @@ test('Test invocation permissions', () => {
 });
 
 // --------------------------------------------------------------
-// Test the getter methods
+// Test the properties
 // --------------------------------------------------------------
 test('Test the properties', () => {
     // Stack
@@ -169,4 +169,35 @@ test('Test the properties', () => {
     const cwAlarm = pattern.cloudwatchAlarms;
     expect(cwAlarm !== null);
     expect(pattern.stateMachineLogGroup !== null);
+});
+
+// --------------------------------------------------------------
+// Test the properties
+// --------------------------------------------------------------
+test('Test the properties with no CW Alarms', () => {
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  const startState = new stepfunctions.Pass(stack, 'StartState');
+  const pattern = new LambdaToStepFunction(stack, 'lambda-to-step-function-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'existing-function'
+      }
+    },
+    stateMachineProps: {
+      definition: startState
+    },
+    createCloudWatchAlarms: false
+  });
+  // Assertion 1
+  expect(pattern.lambdaFunction !== null);
+  // Assertion 2
+  expect(pattern.stateMachine !== null);
+  // Assertion 3
+  expect(pattern.cloudwatchAlarms === null);
+  expect(pattern.stateMachineLogGroup !== null);
 });

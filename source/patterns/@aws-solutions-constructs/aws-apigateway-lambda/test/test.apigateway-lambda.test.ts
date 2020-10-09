@@ -1,5 +1,5 @@
 /**
- *  Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -191,4 +191,32 @@ test('Test deployment ApiGateway AuthorizationType override', () => {
         HttpMethod: "ANY",
         AuthorizationType: "NONE"
     });
-  });
+});
+
+// -----------------------------------------------------------------
+// Test deployment for override ApiGateway cloudWatchRole = false
+// -----------------------------------------------------------------
+test('Test deployment ApiGateway override cloudWatchRole = false', () => {
+    // Stack
+    const stack = new Stack();
+    // Helper declaration
+    new ApiGatewayToLambda(stack, 'api-gateway-lambda', {
+        apiGatewayProps: {
+            cloudWatchRole: false
+        },
+        lambdaFunctionProps: {
+            runtime: lambda.Runtime.NODEJS_10_X,
+            handler: 'index.handler',
+            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+        }
+    });
+    // Assertion 1
+    expect(stack).toHaveResourceLike("AWS::ApiGateway::Account", {
+        CloudWatchRoleArn: {
+          "Fn::GetAtt": [
+            "apigatewaylambdaLambdaRestApiCloudWatchRoleA759E8AC",
+            "Arn"
+          ]
+        }
+      });
+});
