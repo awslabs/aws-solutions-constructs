@@ -98,11 +98,12 @@ export class ApiGatewayToSageMakerEndpoint extends Construct {
         // Setup the IAM policy for SageMaker endpoint
         const invokePolicy = new iam.Policy(this, 'InvokeEndpointPolicy', {
             statements: [
-            new iam.PolicyStatement({
-                actions: ['sagemaker:InvokeEndpoint'],
-                resources: [`arn:${Aws.PARTITION}:sagemaker:${Aws.REGION}:${Aws.ACCOUNT_ID}:endpoint/${props.endpointName}`]
-            })
-        ]});
+                new iam.PolicyStatement({
+                    actions: ['sagemaker:InvokeEndpoint'],
+                    resources: [`arn:${Aws.PARTITION}:sagemaker:${Aws.REGION}:${Aws.ACCOUNT_ID}:endpoint/${props.endpointName}`]
+                })
+            ]
+        });
 
         invokePolicy.attachToRole(this.apiGatewayRole);
 
@@ -134,7 +135,8 @@ export class ApiGatewayToSageMakerEndpoint extends Construct {
             { statusCode: '400', selectionPattern: '4\\d{2}' }
         );
 
-        // The SageMaker integration can be added either at the root of the API (GET https://execute-api.amazonaws.com/{some-param}), or as a sub-resource (GET https://execute-api.amazonaws.com/inference/{some-param}).
+        // The SageMaker integration can be added either at the root of the API (GET https://execute-api.amazonaws.com/{some-param}),
+        // or as a sub-resource (GET https://execute-api.amazonaws.com/inference/{some-param}).
         // The following lines will make sure only the necessary resources are created.
         let apiResource = this.apiGateway.root;
         if (props.resourceName !== undefined) {
