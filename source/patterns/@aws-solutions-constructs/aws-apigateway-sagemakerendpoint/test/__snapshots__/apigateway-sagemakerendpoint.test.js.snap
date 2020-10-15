@@ -31,50 +31,62 @@ Object {
     },
   },
   "Resources": Object {
-    "apigatewaysagemakerendpointApiAccessLogGroupDBD19445": Object {
-      "DeletionPolicy": "Retain",
-      "Type": "AWS::Logs::LogGroup",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "apigatewaysagemakerendpointInvokeEndpointPolicyCF496123": Object {
+    "apigatewayroleE6D48DBD": Object {
       "Properties": Object {
-        "PolicyDocument": Object {
+        "AssumeRolePolicyDocument": Object {
           "Statement": Array [
             Object {
-              "Action": "sagemaker:InvokeEndpoint",
+              "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "arn:",
-                    Object {
-                      "Ref": "AWS::Partition",
-                    },
-                    ":sagemaker:",
-                    Object {
-                      "Ref": "AWS::Region",
-                    },
-                    ":",
-                    Object {
-                      "Ref": "AWS::AccountId",
-                    },
-                    ":endpoint/my-endpoint",
-                  ],
-                ],
+              "Principal": Object {
+                "Service": "apigateway.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "apigatewaysagemakerendpointInvokeEndpointPolicyCF496123",
-        "Roles": Array [
+        "Description": "existing role for SageMaker integration",
+        "Policies": Array [
           Object {
-            "Ref": "apigatewaysagemakerendpointapigatewayrole5B5E1DAC",
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": "sagemaker:InvokeEndpoint",
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        "arn:",
+                        Object {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":sagemaker:",
+                        Object {
+                          "Ref": "AWS::Region",
+                        },
+                        ":",
+                        Object {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":endpoint/my-endpoint",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "InvokePolicy",
           },
         ],
       },
-      "Type": "AWS::IAM::Policy",
+      "Type": "AWS::IAM::Role",
+    },
+    "apigatewaysagemakerendpointApiAccessLogGroupDBD19445": Object {
+      "DeletionPolicy": "Retain",
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
     },
     "apigatewaysagemakerendpointLambdaRestApiAccount1E510B70": Object {
       "DependsOn": Array [
@@ -149,7 +161,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "apigatewaysagemakerendpointRestApiDeployment6524D6DC919dc0e3df0eeaf77cb6023b59971378": Object {
+    "apigatewaysagemakerendpointRestApiDeployment6524D6DC087faef8ff6b595bfd57b5ff8e9e5cc7": Object {
       "DependsOn": Array [
         "apigatewaysagemakerendpointRestApimyresourcemyparamGETD236BC79",
         "apigatewaysagemakerendpointRestApimyresourcemyparam67E19507",
@@ -186,7 +198,7 @@ Object {
           "Format": "{\\"requestId\\":\\"$context.requestId\\",\\"ip\\":\\"$context.identity.sourceIp\\",\\"user\\":\\"$context.identity.user\\",\\"caller\\":\\"$context.identity.caller\\",\\"requestTime\\":\\"$context.requestTime\\",\\"httpMethod\\":\\"$context.httpMethod\\",\\"resourcePath\\":\\"$context.resourcePath\\",\\"status\\":\\"$context.status\\",\\"protocol\\":\\"$context.protocol\\",\\"responseLength\\":\\"$context.responseLength\\"}",
         },
         "DeploymentId": Object {
-          "Ref": "apigatewaysagemakerendpointRestApiDeployment6524D6DC919dc0e3df0eeaf77cb6023b59971378",
+          "Ref": "apigatewaysagemakerendpointRestApiDeployment6524D6DC087faef8ff6b595bfd57b5ff8e9e5cc7",
         },
         "MethodSettings": Array [
           Object {
@@ -271,7 +283,7 @@ Object {
         "Integration": Object {
           "Credentials": Object {
             "Fn::GetAtt": Array [
-              "apigatewaysagemakerendpointapigatewayrole5B5E1DAC",
+              "apigatewayroleE6D48DBD",
               "Arn",
             ],
           },
@@ -349,23 +361,6 @@ Object {
         "ValidateRequestParameters": true,
       },
       "Type": "AWS::ApiGateway::RequestValidator",
-    },
-    "apigatewaysagemakerendpointapigatewayrole5B5E1DAC": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "apigateway.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::IAM::Role",
     },
   },
 }

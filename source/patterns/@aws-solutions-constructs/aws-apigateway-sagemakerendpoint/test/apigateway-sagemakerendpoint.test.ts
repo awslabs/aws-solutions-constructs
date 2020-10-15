@@ -12,8 +12,9 @@
  */
 
 // Imports
-import { Stack } from '@aws-cdk/core';
+import { Stack, Aws } from '@aws-cdk/core';
 import { ApiGatewayToSageMakerEndpoint } from '../lib';
+import * as iam from '@aws-cdk/aws-iam';
 import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
@@ -53,6 +54,19 @@ test('Test construct properties', () => {
 test('Test deployment w/ overwritten properties', () => {
     const stack = new Stack();
 
+    const existingRole = new iam.Role(stack, 'api-gateway-role', {
+        assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
+        description: 'existing role for SageMaker integration',
+        inlinePolicies: {
+            InvokePolicy: new iam.PolicyDocument({
+                statements: [new iam.PolicyStatement({
+                    resources: [`arn:${Aws.PARTITION}:sagemaker:${Aws.REGION}:${Aws.ACCOUNT_ID}:endpoint/my-endpoint`],
+                    actions: ['sagemaker:InvokeEndpoint']
+                })]
+            })
+        }
+    });
+
     new ApiGatewayToSageMakerEndpoint(stack, 'api-gateway-sagemakerendpoint', {
         endpointName: 'my-endpoint',
         resourcePath: '{my_param}',
@@ -69,6 +83,7 @@ test('Test deployment w/ overwritten properties', () => {
                 }
             }
         },
+        apiGatewayExecutionRole: existingRole,
         resourceName: 'my-resource',
         responseMappingTemplate: 'my-response-vtl-template'
     });
@@ -120,5 +135,9 @@ test('Test deployment w/ overwritten properties', () => {
             { StatusCode: '500' },
             { StatusCode: '400' }
         ]
+    });
+
+    expect(stack).toHaveResourceLike('AWS::IAM::Role', {
+        Description: 'existing role for SageMaker integration'
     });
 });

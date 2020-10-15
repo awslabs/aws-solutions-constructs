@@ -12,13 +12,27 @@
  */
 
 // Imports
-import { App, Stack } from '@aws-cdk/core';
+import { App, Stack, Aws } from '@aws-cdk/core';
 import { ApiGatewayToSageMakerEndpoint, ApiGatewayToSageMakerEndpointProps } from '../lib';
+import * as iam from '@aws-cdk/aws-iam';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, 'test-apigateway-sagemakerendpoint-overwrite');
 stack.templateOptions.description = 'Integration Test for aws-apigateway-sagemakerendpoint';
+
+const existingRole = new iam.Role(stack, 'api-gateway-role', {
+    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
+    description: 'existing role for SageMaker integration',
+    inlinePolicies: {
+        InvokePolicy: new iam.PolicyDocument({
+            statements: [new iam.PolicyStatement({
+                resources: [`arn:${Aws.PARTITION}:sagemaker:${Aws.REGION}:${Aws.ACCOUNT_ID}:endpoint/my-endpoint`],
+                actions: ['sagemaker:InvokeEndpoint']
+            })]
+        })
+    }
+});
 
 // Definitions
 const requestTemplate =
@@ -49,7 +63,8 @@ const props: ApiGatewayToSageMakerEndpointProps = {
     resourcePath: '{user_id}',
     resourceName: 'predicted-ratings',
     requestMappingTemplate: requestTemplate,
-    responseMappingTemplate: responseTemplate
+    responseMappingTemplate: responseTemplate,
+    apiGatewayExecutionRole: existingRole
 };
 
 new ApiGatewayToSageMakerEndpoint(stack, 'test-apigateway-sagemakerendpoint-overwrite', props);

@@ -30,6 +30,13 @@ export interface ApiGatewayToSageMakerEndpointProps {
     readonly apiGatewayProps?: api.RestApiProps,
 
     /**
+     * Optional IAM role that is used by API Gateway to invoke the SageMaker endpoint.
+     *
+     * @default - An IAM role with sagemaker:InvokeEndpoint access to `endpointName` is created.
+     */
+    readonly apiGatewayExecutionRole?: iam.Role,
+
+    /**
      * Name of the deployed SageMaker inference endpoint.
      *
      * @default - None.
@@ -91,21 +98,25 @@ export class ApiGatewayToSageMakerEndpoint extends Construct {
         [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] = defaults.GlobalRestApi(this, props.apiGatewayProps);
 
         // Setup the API Gateway role
-        this.apiGatewayRole = new iam.Role(this, 'api-gateway-role', {
-            assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
-        });
+        if (props.apiGatewayExecutionRole !== undefined) {
+            this.apiGatewayRole = props.apiGatewayExecutionRole;
+        } else {
+            this.apiGatewayRole = new iam.Role(this, 'api-gateway-role', {
+                assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
+            });
 
-        // Setup the IAM policy for SageMaker endpoint
-        const invokePolicy = new iam.Policy(this, 'InvokeEndpointPolicy', {
-            statements: [
-                new iam.PolicyStatement({
-                    actions: ['sagemaker:InvokeEndpoint'],
-                    resources: [`arn:${Aws.PARTITION}:sagemaker:${Aws.REGION}:${Aws.ACCOUNT_ID}:endpoint/${props.endpointName}`]
-                })
-            ]
-        });
+            // Setup the IAM policy for SageMaker endpoint
+            const invokePolicy = new iam.Policy(this, 'InvokeEndpointPolicy', {
+                statements: [
+                    new iam.PolicyStatement({
+                        actions: ['sagemaker:InvokeEndpoint'],
+                        resources: [`arn:${Aws.PARTITION}:sagemaker:${Aws.REGION}:${Aws.ACCOUNT_ID}:endpoint/${props.endpointName}`]
+                    })
+                ]
+            });
 
-        invokePolicy.attachToRole(this.apiGatewayRole);
+            invokePolicy.attachToRole(this.apiGatewayRole);
+        }
 
         // Setup request validation
         const requestValidator = this.apiGateway.addRequestValidator('request-validator', {

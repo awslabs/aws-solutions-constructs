@@ -55,6 +55,7 @@ _Parameters_
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
 |apiGatewayProps?|[`api.RestApiProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.RestApiProps.html)|Optional user-provided props to override the default props for the API Gateway.|
+|apiGatewayExecutionRole?|[`iam.Role`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)|IAM Role used by API Gateway to invoke the SageMaker endpoint. If not specified, a default role is created with access to `endpointName`.|
 |endpointName|`string`|Name of the deployed SageMaker inference endpoint.|
 |resourceName?|`string`|Optional resource name where the GET method will be available.|
 |resourcePath|`string`|Resource path for the GET method. The variable defined here can be referenced in `requestMappingTemplate`.|
