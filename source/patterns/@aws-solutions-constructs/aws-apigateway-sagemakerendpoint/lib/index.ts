@@ -81,8 +81,6 @@ export class ApiGatewayToSageMakerEndpoint extends Construct {
     public readonly apiGatewayCloudWatchRole: iam.Role;
     public readonly apiGatewayLogGroup: LogGroup;
 
-    private readonly sageMakerRuntimeServiceId = 'runtime.sagemaker';
-
     /**
      * @summary Constructs a new instance of the ApiGatewayToSageMakerEndpoint class.
      * @param {cdk.App} scope - represents the scope for all the resources.
@@ -157,7 +155,7 @@ export class ApiGatewayToSageMakerEndpoint extends Construct {
 
         // Setup API Gateway method
         defaults.addProxyMethodToApiResource({
-            service: this.sageMakerRuntimeServiceId,
+            service: 'runtime.sagemaker',
             path: `endpoints/${props.endpointName}/invocations`,
             apiGatewayRole: this.apiGatewayRole,
             apiMethod: 'GET',
@@ -165,7 +163,6 @@ export class ApiGatewayToSageMakerEndpoint extends Construct {
             requestValidator,
             requestTemplate: props.requestMappingTemplate,
             awsIntegrationProps: {
-                service: this.sageMakerRuntimeServiceId,
                 options: { integrationResponses: integResponses }
             },
             methodOptions: { methodResponses }
