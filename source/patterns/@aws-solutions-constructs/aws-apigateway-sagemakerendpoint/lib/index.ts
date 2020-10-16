@@ -119,6 +119,11 @@ export class ApiGatewayToSageMakerEndpoint extends Construct {
         // Setup request validation
         const requestValidator = this.apiGateway.addRequestValidator('request-validator', {
             requestValidatorName: 'request-param-validator',
+
+            // Setting this property to true makes sure the following are validated:
+            // - Required request parameters in the URI
+            // - Query string
+            // - Headers
             validateRequestParameters: true
         });
 
