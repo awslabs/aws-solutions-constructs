@@ -1,0 +1,180 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test existing resources 1`] = `
+Object {
+  "Resources": Object {
+    "testeventsrulekinesisstreamsexistingresourceEventsRuleEFD8ADE5": Object {
+      "Properties": Object {
+        "Description": "event rule props",
+        "ScheduleExpression": "rate(5 minutes)",
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "testexistingstreamA6CF7AE7",
+                "Arn",
+              ],
+            },
+            "Id": "Target0",
+            "RoleArn": Object {
+              "Fn::GetAtt": Array [
+                "testeventsrulekinesisstreamsexistingresourceeventsRole6600B7FE",
+                "Arn",
+              ],
+            },
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "testeventsrulekinesisstreamsexistingresourceeventsRole6600B7FE": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Events Rule Role",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testeventsrulekinesisstreamsexistingresourceeventsRoleDefaultPolicy5FF81DB6": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kinesis:ListShards",
+                "kinesis:PutRecord",
+                "kinesis:PutRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testexistingstreamA6CF7AE7",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testeventsrulekinesisstreamsexistingresourceeventsRoleDefaultPolicy5FF81DB6",
+        "Roles": Array [
+          Object {
+            "Ref": "testeventsrulekinesisstreamsexistingresourceeventsRole6600B7FE",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "testexistingstreamA6CF7AE7": Object {
+      "Properties": Object {
+        "Name": "existing-stream",
+        "RetentionPeriodHours": 48,
+        "ShardCount": 5,
+      },
+      "Type": "AWS::Kinesis::Stream",
+    },
+  },
+}
+`;
+
+exports[`Test snapshot match with default parameters 1`] = `
+Object {
+  "Resources": Object {
+    "testeventsrulekinesisstreamsdefaultparametersEventsRuleB892ACC8": Object {
+      "Properties": Object {
+        "Description": "event rule props",
+        "ScheduleExpression": "rate(5 minutes)",
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "testeventsrulekinesisstreamsdefaultparametersKinesisStream289DD083",
+                "Arn",
+              ],
+            },
+            "Id": "Target0",
+            "RoleArn": Object {
+              "Fn::GetAtt": Array [
+                "testeventsrulekinesisstreamsdefaultparameterseventsRole3067A354",
+                "Arn",
+              ],
+            },
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "testeventsrulekinesisstreamsdefaultparametersKinesisStream289DD083": Object {
+      "Properties": Object {
+        "RetentionPeriodHours": 24,
+        "ShardCount": 1,
+        "StreamEncryption": Object {
+          "EncryptionType": "KMS",
+          "KeyId": "alias/aws/kinesis",
+        },
+      },
+      "Type": "AWS::Kinesis::Stream",
+    },
+    "testeventsrulekinesisstreamsdefaultparameterseventsRole3067A354": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Events Rule Role",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testeventsrulekinesisstreamsdefaultparameterseventsRoleDefaultPolicyF4C8EFFF": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kinesis:ListShards",
+                "kinesis:PutRecord",
+                "kinesis:PutRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testeventsrulekinesisstreamsdefaultparametersKinesisStream289DD083",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testeventsrulekinesisstreamsdefaultparameterseventsRoleDefaultPolicyF4C8EFFF",
+        "Roles": Array [
+          Object {
+            "Ref": "testeventsrulekinesisstreamsdefaultparameterseventsRole3067A354",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+  },
+}
+`;
