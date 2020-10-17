@@ -31,10 +31,24 @@ Here is a minimal deployable pattern definition in Typescript:
 ``` javascript
 import { ApiGatewayToSageMakerEndpoint, ApiGatewayToSageMakerEndpointProps } from '@aws-solutions-constructs/aws-apigateway-sagemakerendpoint';
 
+// Below is an example VTL (Velocity Template Language) mapping template for mapping the Api GET request to the Sagemaker POST request
+const requestTemplate =
+`{
+    "instances": [
+#set( $user_id = $input.params("user_id") )
+#set( $items = $input.params("items") )
+#foreach( $item in $items.split(",") )
+    {"in0": [$user_id], "in1": [$item]}#if( $foreach.hasNext ),#end
+    $esc.newline
+#end
+    ]
+}`;
+
+// Replace 'my-endpoint' with your Sagemaker Inference Endpoint
 new ApiGatewayToSageMakerEndpoint(this, 'test-apigw-sagemakerendpoint', {
     endpointName: 'my-endpoint',
-    resourcePath: '{my_param}',
-    requestMappingTemplate: 'my-request-vtl-template'
+    resourcePath: '{user_id}',
+    requestMappingTemplate: requestTemplate
 });
 ```
 
@@ -77,7 +91,7 @@ _Parameters_
 
 | **Method** | **Request Path** | **Query String** | **SageMaker Action** | **Description** |
 |:-------------|:----------------|-----------------|-----------------|-----------------|
-|GET|`/predicted-ratings/321`| `items=101,131,162` |`sagemaker:InvokeEndpoint`|Retrieves the predictions for a specific user and items.|
+|GET|`/321`| `items=101,131,162` |`sagemaker:InvokeEndpoint`|Retrieves the predictions for a specific user and items.|
 
 ## Default settings
 Out of the box implementation of the Construct without any override will set the following defaults:

@@ -86,7 +86,7 @@ export class ApiGatewayToSageMakerEndpoint extends Construct {
      * @param {cdk.App} scope - represents the scope for all the resources.
      * @param {string} id - this is a a scope-unique id.
      * @param {ApiGatewayToSageMakerEndpointProps} props - user provided props for the construct.
-     * @since 1.67.0
+     * @since 1.68.0
      * @access public
      */
     constructor(scope: Construct, id: string, props: ApiGatewayToSageMakerEndpointProps) {

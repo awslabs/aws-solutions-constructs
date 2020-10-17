@@ -27,6 +27,9 @@ This AWS Solutions Construct implements an AWS Events rule and an AWS SNS Topic.
 Here is a minimal deployable pattern definition in Typescript:
 
 ``` typescript
+import { Duration } from '@aws-cdk/core';
+import * as events from '@aws-cdk/aws-events';
+import * as iam from '@aws-cdk/aws-iam';
 import { EventsRuleToSNSProps, EventsRuleToSNS } from "@aws-solutions-constructs/aws-events-rule-sns";
 
 const props: EventsRuleToSNSProps = {
@@ -35,7 +38,7 @@ const props: EventsRuleToSNSProps = {
     }
 };
 
-const constructStack = new EventsRuleToSNS(this, 'test-events-rule-sns', props);
+const constructStack = new EventsRuleToSNS(this, 'test-construct', props);
 
 // Grant yourself permissions to use the Customer Managed KMS Key
 const policyStatement = new iam.PolicyStatement({

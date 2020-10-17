@@ -4,10 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.68.0] - 2020-10-16
+
+### Added
+- aws-kinesisstreams-kinesisfirehose-s3 pattern added ([#74](https://github.com/awslabs/aws-solutions-constructs/issues/74))
+- aws-apigateway-sagemakerendpoint pattern added ([#75](https://github.com/awslabs/aws-solutions-constructs/issues/75))
+
+### Changed
+- Upgraded all patterns to CDK v1.68.0
+- BREAKING CHANGE: For All `aws-cloudfront-*` patterns, changed the underlying CloudFront L2 construct from `CloudFrontWebDistribution` to `Distribution`
+
 ## [1.67.0] - 2020-10-09
 
 ### Changed
-- Upgraded all patterns to CDK v1.66.0
+- Upgraded all patterns to CDK v1.67.0
 - Make CloudWatch alarm creation optional ([#85](https://github.com/awslabs/aws-solutions-constructs/issues/85))
 
 ## [1.66.0] - 2020-10-06

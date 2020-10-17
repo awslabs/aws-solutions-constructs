@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-s3-static-website",
-  "version": "1.67.0",
+  "version": "1.68.0",
   "description": "Use case pattern for deploying a S3 static website.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -28,19 +28,19 @@
     "build+lint+test": "npm run build && npm run lint && npm test && npm run integ-assert"
   },
   "dependencies": {
-    "@aws-solutions-constructs/aws-cloudfront-s3": "~1.67.0",
-    "@aws-cdk/core": "~1.67.0",
-    "@aws-cdk/aws-lambda": "~1.67.0",
-    "@aws-cdk/aws-cloudfront": "~1.67.0",
-    "@aws-cdk/aws-s3": "~1.67.0",
-    "@aws-cdk/custom-resources": "~1.67.0",
-    "@aws-cdk/aws-cloudformation": "~1.67.0",
-    "@aws-cdk/aws-iam": "~1.67.0",
-    "@aws-solutions-constructs/core": "~1.67.0",
+    "@aws-solutions-constructs/aws-cloudfront-s3": "~1.68.0",
+    "@aws-cdk/core": "~1.68.0",
+    "@aws-cdk/aws-lambda": "~1.68.0",
+    "@aws-cdk/aws-cloudfront": "~1.68.0",
+    "@aws-cdk/aws-s3": "~1.68.0",
+    "@aws-cdk/custom-resources": "~1.68.0",
+    "@aws-cdk/aws-cloudformation": "~1.68.0",
+    "@aws-cdk/aws-iam": "~1.68.0",
+    "@aws-solutions-constructs/core": "~1.68.0",
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "~1.67.0",
+    "@aws-cdk/assert": "~1.68.0",
     "@types/jest": "^24.0.23",
     "@types/node": "^10.3.0"
   },

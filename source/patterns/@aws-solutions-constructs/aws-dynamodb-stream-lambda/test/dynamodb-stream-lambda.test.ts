@@ -107,20 +107,7 @@ test('check lambda permission to read dynamodb stream', () => {
         {
           Action: "dynamodb:ListStreams",
           Effect: "Allow",
-          Resource: {
-            "Fn::Join": [
-              "",
-              [
-                {
-                  "Fn::GetAtt": [
-                    "testlambdadynamodbstackDynamoTable8138E93B",
-                    "Arn"
-                  ]
-                },
-                "/stream/*"
-              ]
-            ]
-          }
+          Resource: "*"
         },
         {
           Action: [

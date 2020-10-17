@@ -71,20 +71,7 @@
             {
               "Action": "dynamodb:ListStreams",
               "Effect": "Allow",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaDynamoTable90CA17D8",
-                        "Arn"
-                      ]
-                    },
-                    "/stream/*"
-                  ]
-                ]
-              }
+              "Resource": "*"
             },
             {
               "Action": [

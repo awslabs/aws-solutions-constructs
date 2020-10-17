@@ -16,6 +16,7 @@ import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
 import * as cdk from "@aws-cdk/core";
 import * as s3 from '@aws-cdk/aws-s3';
 import '@aws-cdk/assert/jest';
+import * as acm from '@aws-cdk/aws-certificatemanager';
 
 function deploy(stack: cdk.Stack) {
   return new CloudFrontToS3(stack, 'test-cloudfront-s3', {});
@@ -102,12 +103,12 @@ test('check existing bucket', () => {
 test('test cloudfront with custom domain names', () => {
   const stack = new cdk.Stack();
 
+  const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012');
+
   const props: CloudFrontToS3Props = {
     cloudFrontDistributionProps: {
-      aliasConfiguration: {
-        acmCertRef: '/acm/mycertificate',
-        names: ['mydomains']
-      }
+      domainNames: ['mydomains'],
+      certificate
     }
   };
 
@@ -115,79 +116,65 @@ test('test cloudfront with custom domain names', () => {
 
   expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
     DistributionConfig: {
-        Aliases: [
-            "mydomains"
-        ],
-        DefaultCacheBehavior: {
-          AllowedMethods: [
-            "GET",
-            "HEAD"
-          ],
-          CachedMethods: [
-            "GET",
-            "HEAD"
-          ],
-          Compress: true,
-          ForwardedValues: {
-            Cookies: {
-              Forward: "none"
-            },
-            QueryString: false
-          },
-          LambdaFunctionAssociations: [
-            {
-              EventType: "origin-response",
-              LambdaFunctionARN: {
-                Ref: "testcloudfronts3SetHttpSecurityHeadersVersionF1C744BB"
-              }
-            }
-          ],
-          TargetOriginId: "origin1",
-          ViewerProtocolPolicy: "redirect-to-https"
-        },
-        DefaultRootObject: "index.html",
-        Enabled: true,
-        HttpVersion: "http2",
-        IPV6Enabled: true,
-        Logging: {
-          Bucket: {
-            "Fn::GetAtt": [
-              "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
-              "DomainName"
-            ]
-          },
-          IncludeCookies: false
-        },
-        Origins: [
+      Aliases: [
+        "mydomains"
+      ],
+      DefaultCacheBehavior: {
+        CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
+        Compress: true,
+        LambdaFunctionAssociations: [
           {
-            DomainName: {
-              "Fn::GetAtt": [
-                "testcloudfronts3S3BucketE0C5F76E",
-                "RegionalDomainName"
-              ]
-            },
-            Id: "origin1",
-            S3OriginConfig: {
-                OriginAccessIdentity: {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "origin-access-identity/cloudfront/",
-                      {
-                        Ref: "testcloudfronts3CloudFrontOriginAccessIdentity2C681839"
-                      }
-                    ]
-                  ]
-                }
+            EventType: "origin-response",
+            LambdaFunctionARN: {
+              Ref: "testcloudfronts3SetHttpSecurityHeadersVersionF1C744BB"
             }
           }
         ],
-        PriceClass: "PriceClass_100",
-        ViewerCertificate: {
-          AcmCertificateArn: "/acm/mycertificate",
-          SslSupportMethod: "sni-only"
+        TargetOriginId: "testcloudfronts3CloudFrontDistributionOrigin124051039",
+        ViewerProtocolPolicy: "redirect-to-https"
+      },
+      DefaultRootObject: "index.html",
+      Enabled: true,
+      HttpVersion: "http2",
+      IPV6Enabled: true,
+      Logging: {
+        Bucket: {
+          "Fn::GetAtt": [
+            "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
+            "DomainName"
+          ]
         }
+      },
+      Origins: [
+        {
+          DomainName: {
+            "Fn::GetAtt": [
+              "testcloudfronts3S3BucketE0C5F76E",
+              "RegionalDomainName"
+            ]
+          },
+          Id: "testcloudfronts3CloudFrontDistributionOrigin124051039",
+          S3OriginConfig: {
+            OriginAccessIdentity: {
+              "Fn::Join": [
+                "",
+                [
+                  "origin-access-identity/cloudfront/",
+                  {
+                    Ref: "testcloudfronts3CloudFrontDistributionOrigin1S3Origin4695F058"
+                  }
+                ]
+              ]
+            }
+          }
+        }
+      ],
+      ViewerCertificate: {
+        AcmCertificateArn: "arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012",
+        MinimumProtocolVersion: "TLSv1.2_2019",
+        SslSupportMethod: "sni-only"
       }
+    }
   });
 });
 

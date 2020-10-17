@@ -1,0 +1,93 @@
+{
+  "name": "@aws-solutions-constructs/aws-kinesisstreams-kinesisfirehose-s3",
+  "version": "1.68.0",
+  "description": "CDK constructs for defining an interaction between an Amazon Kinesis Data Stream (KDS), Amazon Kinesis Data Firehose (KDF) delivery stream and an Amazon S3 bucket.",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/awslabs/aws-solutions-constructs.git",
+    "directory": "source/patterns/@aws-solutions-constructs/aws-kinesisstreams-kinesisfirehose-s3"
+  },
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com",
+    "organization": true
+  },
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc -b .",
+    "lint": "eslint -c ../eslintrc.yml --ext=.js,.ts . && tslint --project .",
+    "lint-fix": "eslint -c ../eslintrc.yml --ext=.js,.ts --fix .",
+    "test": "jest --coverage",
+    "clean": "tsc -b --clean",
+    "watch": "tsc -b -w",
+    "integ": "cdk-integ",
+    "integ-assert": "cdk-integ-assert",
+    "jsii": "jsii",
+    "jsii-pacmak": "jsii-pacmak",
+    "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
+    "integ-no-clean": "cdk-integ --no-clean",
+    "snapshot-update": "npm run jsii && npm test -- -u && npm run integ-assert"
+  },
+  "jsii": {
+    "outdir": "dist",
+    "targets": {
+      "java": {
+        "package": "software.amazon.awsconstructs.services.kinesisstreamskinesisfirehoses3",
+        "maven": {
+          "groupId": "software.amazon.awsconstructs",
+          "artifactId": "kinesisstreamskinesisfirehoses3"
+        }
+      },
+      "dotnet": {
+        "namespace": "Amazon.Constructs.AWS.KinesisStreamsKinesisFirehoseS3",
+        "packageId": "Amazon.Constructs.AWS.KinesisStreamsKinesisFirehoseS3",
+        "signAssembly": true,
+        "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
+      },
+      "python": {
+        "distName": "aws-solutions-constructs.aws-kinesis-streams-kinesis-firehose-s3",
+        "module": "aws_solutions_constructs.aws_kinesis_streams_kinesis_firehose_s3"
+      }
+    }
+  },
+  "dependencies": {
+    "@aws-cdk/aws-iam": "~1.68.0",
+    "@aws-cdk/aws-kinesis": "~1.68.0",
+    "@aws-cdk/aws-kinesisfirehose": "~1.68.0",
+    "@aws-cdk/aws-s3": "~1.68.0",
+    "@aws-cdk/aws-cloudwatch": "~1.68.0",
+    "@aws-cdk/core": "~1.68.0",
+    "@aws-cdk/aws-logs": "~1.68.0",
+    "@aws-cdk/aws-lambda": "~1.68.0",
+    "@aws-solutions-constructs/core": "~1.68.0",
+    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "~1.68.0",
+    "@aws-solutions-constructs/aws-kinesisstreams-lambda": "~1.68.0",
+    "constructs": "^3.0.4"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "~1.68.0",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^10.3.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ]
+  },
+  "peerDependencies": {
+    "@aws-cdk/aws-iam": "~1.68.0",
+    "@aws-cdk/aws-kinesisfirehose": "~1.68.0",
+    "@aws-cdk/aws-s3": "~1.68.0",
+    "@aws-cdk/core": "~1.68.0",
+    "@aws-cdk/aws-logs": "~1.68.0",
+    "@aws-solutions-constructs/core": "~1.68.0",
+    "constructs": "^3.0.4",
+    "@aws-cdk/aws-kinesis": "~1.68.0",
+    "@aws-cdk/aws-cloudwatch": "~1.68.0",
+    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "~1.68.0",
+    "@aws-cdk/aws-lambda": "~1.68.0",
+    "@aws-solutions-constructs/aws-kinesisstreams-lambda": "~1.68.0"
+  }
+}

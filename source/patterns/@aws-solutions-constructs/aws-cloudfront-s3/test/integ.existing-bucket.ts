@@ -16,6 +16,9 @@ import { App, Stack } from "@aws-cdk/core";
 import * as s3 from "@aws-cdk/aws-s3";
 import * as defaults from "@aws-solutions-constructs/core";
 import { CloudFrontToS3 } from "../lib";
+import * as origins from '@aws-cdk/aws-cloudfront-origins';
+import * as cloudfront from '@aws-cdk/aws-cloudfront';
+import { Duration } from "@aws-cdk/core/lib/duration";
 
 // Setup
 const app = new App();
@@ -24,8 +27,21 @@ const stack = new Stack(app, 'test-cloudfront-s3-existing-bucket-stack');
 let mybucket: s3.Bucket;
 [mybucket] = defaults.buildS3Bucket(stack, {});
 
-new CloudFrontToS3(stack, 'test-cloudfront-s3', {
+const _construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {
     existingBucketObj: mybucket
+});
+
+// Add Cache Policy
+const myCachePolicy = new cloudfront.CachePolicy(stack, 'myCachePolicy', {
+    cachePolicyName: 'MyPolicy',
+    defaultTtl: Duration.minutes(0),
+    minTtl: Duration.minutes(0),
+    maxTtl: Duration.minutes(0),
+});
+
+// Add behavior
+_construct.cloudFrontWebDistribution.addBehavior('/images/*.jpg', new origins.S3Origin(mybucket), {
+    cachePolicy: myCachePolicy
 });
 
 // Synth

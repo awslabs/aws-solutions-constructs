@@ -147,6 +147,22 @@
             }
           },
           "CompressionFormat": "GZIP",
+          "EncryptionConfiguration": {
+            "KMSEncryptionConfig": {
+              "AWSKMSKeyARN": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:kms:us-west-2:",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":alias/aws/s3"
+                  ]
+                ]
+              }
+            }
+          },
           "RoleARN": {
             "Fn::GetAtt": [
               "testfirehoses3preexistingbucketstackKinesisFirehoseRole84325204",

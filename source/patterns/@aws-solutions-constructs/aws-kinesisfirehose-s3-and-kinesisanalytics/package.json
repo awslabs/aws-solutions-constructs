@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-kinesisfirehose-s3-and-kinesisanalytics",
-  "version": "1.67.0",
+  "version": "1.68.0",
   "description": "CDK constructs for defining an interaction between an Amazon Kinesis Data Firehose delivery stream and (1) an Amazon S3 bucket, and (2) an Amazon Kinesis Data Analytics application.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -53,19 +53,19 @@
     }
   },
   "dependencies": {
-    "@aws-cdk/aws-iam": "~1.67.0",
-    "@aws-cdk/aws-kinesis": "~1.67.0",
-    "@aws-cdk/aws-kinesisanalytics": "~1.67.0",
-    "@aws-cdk/aws-kinesisfirehose": "~1.67.0",
-    "@aws-cdk/aws-s3": "~1.67.0",
-    "@aws-cdk/aws-logs": "~1.67.0",
-    "@aws-cdk/core": "~1.67.0",
-    "@aws-solutions-constructs/core": "~1.67.0",
-    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "~1.67.0",
+    "@aws-cdk/aws-iam": "~1.68.0",
+    "@aws-cdk/aws-kinesis": "~1.68.0",
+    "@aws-cdk/aws-kinesisanalytics": "~1.68.0",
+    "@aws-cdk/aws-kinesisfirehose": "~1.68.0",
+    "@aws-cdk/aws-s3": "~1.68.0",
+    "@aws-cdk/aws-logs": "~1.68.0",
+    "@aws-cdk/core": "~1.68.0",
+    "@aws-solutions-constructs/core": "~1.68.0",
+    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "~1.68.0",
     "constructs": "^3.0.4"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "~1.67.0",
+    "@aws-cdk/assert": "~1.68.0",
     "@types/jest": "^24.0.23",
     "@types/node": "^10.3.0"
   },
@@ -75,15 +75,15 @@
     ]
   },
   "peerDependencies": {
-    "@aws-cdk/aws-iam": "~1.67.0",
-    "@aws-cdk/aws-kinesis": "~1.67.0",
-    "@aws-cdk/aws-kinesisanalytics": "~1.67.0",
-    "@aws-cdk/aws-kinesisfirehose": "~1.67.0",
-    "@aws-cdk/aws-s3": "~1.67.0",
-    "@aws-cdk/core": "~1.67.0",
-    "@aws-solutions-constructs/core": "~1.67.0",
-    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "~1.67.0",
+    "@aws-cdk/aws-iam": "~1.68.0",
+    "@aws-cdk/aws-kinesis": "~1.68.0",
+    "@aws-cdk/aws-kinesisanalytics": "~1.68.0",
+    "@aws-cdk/aws-kinesisfirehose": "~1.68.0",
+    "@aws-cdk/aws-s3": "~1.68.0",
+    "@aws-cdk/core": "~1.68.0",
+    "@aws-solutions-constructs/core": "~1.68.0",
+    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "~1.68.0",
     "constructs": "^3.0.4",
-    "@aws-cdk/aws-logs": "~1.67.0"
+    "@aws-cdk/aws-logs": "~1.68.0"
   }
 }

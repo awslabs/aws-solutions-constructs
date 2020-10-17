@@ -27,8 +27,10 @@ This AWS Solutions Construct implements an AWS Events rule and an AWS SQS Queue.
 Here is a minimal deployable pattern definition in Typescript:
 
 ``` typescript
-import { EventsRuleToSQSProps, EventsRuleToSQS } from "@aws-solutions-constructs/aws-events-rule-sqs";
+import { Duration } from '@aws-cdk/core';
+import * as events from '@aws-cdk/aws-events';
 import * as iam from '@aws-cdk/aws-iam';
+import { EventsRuleToSQSProps, EventsRuleToSQS } from "@aws-solutions-constructs/aws-events-rule-sqs";
 
 const props: EventsRuleToSQSProps = {
     eventRuleProps: {
@@ -36,7 +38,7 @@ const props: EventsRuleToSQSProps = {
     }
 };
 
-const constructStack = new EventsRuleToSQS(this, 'test-events-rule-sqs', props);
+const constructStack = new EventsRuleToSQS(this, 'test-construct', props);
 
 // Grant yourself permissions to use the Customer Managed KMS Key
 const policyStatement = new iam.PolicyStatement({

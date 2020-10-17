@@ -32,13 +32,11 @@ This implementation enables write-only messages to be published on given MQTT to
 
 Here is a minimal deployable pattern definition in Typescript:
 
-``` javascript
-const { ApiGatewayToIot } from '@aws-solutions-constructs/aws-apigateway-iot';
+``` typescript
+import { ApiGatewayToIot } from '@aws-solutions-constructs/aws-apigateway-iot';
 
 new ApiGatewayToIot(this, 'ApiGatewayToIotPattern', {
-    apiGatewayToIotProps: {
-        iotEndpoint: 'a1234567890123-ats'
-    }
+    iotEndpoint: 'a1234567890123-ats'
 });
 
 ```
