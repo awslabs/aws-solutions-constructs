@@ -1,7 +1,7 @@
 {
-  "name": "@aws-solutions-constructs/aws-events-rule-kinesis-stream",
+  "name": "@aws-solutions-constructs/aws-events-rule-kinesisstream",
   "version": "1.67.0",
-  "description": "CDK Constructs for deploying AWS Events Rule that invokes AWS SNS",
+  "description": "CDK Constructs for deploying Amazon CloudWatch Events Rule that invokes Amazon Kinesis Data Stream",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -22,7 +22,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/awslabs/aws-solutions-constructs.git",
-    "directory": "source/patterns/@aws-solutions-constructs/aws-events-rule-kinesis-stream"
+    "directory": "source/patterns/@aws-solutions-constructs/aws-events-rule-kinesisstream"
   },
   "author": {
     "name": "Amazon Web Services",
@@ -34,21 +34,21 @@
     "outdir": "dist",
     "targets": {
       "java": {
-        "package": "software.amazon.awsconstructs.services.eventsrulesns",
+        "package": "software.amazon.awsconstructs.services.eventsrulekinesisstream",
         "maven": {
           "groupId": "software.amazon.awsconstructs",
-          "artifactId": "eventsrulesns"
+          "artifactId": "eventsrulekinesisstream"
         }
       },
       "dotnet": {
-        "namespace": "Amazon.Constructs.AWS.EventsRuleSns",
-        "packageId": "Amazon.Constructs.AWS.EventsRuleSns",
+        "namespace": "Amazon.Constructs.AWS.eventsrulekinesisstream",
+        "packageId": "Amazon.Constructs.AWS.eventsrulekinesisstream",
         "signAssembly": true,
         "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
       },
       "python": {
-        "distName": "aws-solutions-constructs.aws-events-rule-kinesis-stream",
-        "module": "aws_solutions_constructs.aws_events_rule_sns"
+        "distName": "aws-solutions-constructs.aws-events-rule-kinesisstream",
+        "module": "aws_solutions_constructs.aws_events_rule_kinesisstream"
       }
     }
   },

@@ -1,4 +1,4 @@
-# aws-events-rule-kinesis-stream module
+# aws-events-rule-kinesisstream module
 <!--BEGIN STABILITY BANNER-->
 
 ---
@@ -18,16 +18,16 @@
 
 | **Language**     | **Package**        |
 |:-------------|-----------------|
-|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws-events-rule-kinesisstream`|
-|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-events-rule-kinesis-stream`|
+|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_events_rule_kinesisstream`|
+|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-events-rule-kinesisstream`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.eventsrulekinesisstream`|
 
-This AWS Solutions Construct implements an AWS Events rule and an AWS SNS Topic.
+This AWS Solutions Construct implements an Amazon CloudWatch Events rule to send data to an Amazon Kinesis Data Stream
 
 Here is a minimal deployable pattern definition in Typescript:
 
 ``` typescript
-import {EventsRuleToKinesisStream, EventsRuleToKinesisStreamProps} from "@aws-solutions-constructs/aws-events-rule-kinesis-stream";
+import {EventsRuleToKinesisStream, EventsRuleToKinesisStreamProps} from "@aws-solutions-constructs/aws-events-rule-kinesisstream";
 
 const props: EventsRuleToKinesisStreamProps = {
     eventRuleProps: {
@@ -71,10 +71,10 @@ _Parameters_
 Out of the box implementation of the Construct without any override will set the following defaults:
 
 ### Amazon CloudWatch Events Rule
-* Configure least privilege access IAM role for Events Rule to publish to the Kinesis Stream..
+* Configure least privilege access IAM role for Events Rule to publish to the Kinesis Data Stream.
 
 ### Amazon Kinesis Stream
-* Enable server-side encryption for Kinesis Stream using AWS Managed KMS Key
+* Enable server-side encryption for Kinesis Data Stream using AWS Managed KMS Key.
 
 ## Architecture
 ![Architecture Diagram](architecture.png)

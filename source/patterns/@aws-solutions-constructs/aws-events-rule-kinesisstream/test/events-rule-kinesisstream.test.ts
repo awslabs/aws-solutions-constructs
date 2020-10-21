@@ -55,7 +55,7 @@ test('Test properties', () => {
 // --------------------------------------------------------------
 // Test default AWS managed encryption key property
 // --------------------------------------------------------------
-test('check events rule properties', () => {
+test('Test default AWS managed encryption key property', () => {
   const stack = new cdk.Stack();
   deployNewStack(stack);
 

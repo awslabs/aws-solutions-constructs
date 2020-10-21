@@ -1,5 +1,6 @@
 lib/*.js
 test/*.js
+!test/lambda/*
 *.js.map
 *.d.ts
 node_modules
@@ -15,13 +16,11 @@ coverage
 *.snk
 
 #temp - to be removed
-# test.ts
-# **snap.*
-# **json.*
-# **.test.ts.*
-# jest.*
-# run-all-test*
-# cdk.json
-# *.yaml
-# misc/
-# ../../../../deployment/build-patterns-aijun.sh
+test.ts
+**snap.*
+**json.*
+**.ts.*
+jest.*
+cdk.json
+*.yaml
+bin/

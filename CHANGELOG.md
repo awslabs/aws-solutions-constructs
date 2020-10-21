@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - aws-events-rule-kinesisstream pattern added ([#59](https://github.com/awslabs/aws-solutions-constructs/issues/59))
+- aws-events-rule-kinesisfirehose-s3 pattern added ([#72](https://github.com/awslabs/aws-solutions-constructs/issues/72)
 
 ## [1.67.0] - 2020-10-09
 

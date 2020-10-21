@@ -13,18 +13,18 @@
 
 import * as events from '@aws-cdk/aws-events';
 import { App, Stack, Duration } from '@aws-cdk/core';
-import { EventsRuleToKinesisStream, EventsRuleToKinesisStreamProps } from '../lib';
+import {EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props} from '../lib';
 
 const app = new App();
-const stack = new Stack(app, 'test-rule-kinesisstream');
-stack.templateOptions.description = 'Integration Test for aws-events-rule-kinesisstream';
+const stack = new Stack(app, 'test-events-rule-kinesisfirehose-s3');
+stack.templateOptions.description = 'Integration Test for aws-events-rule-kinesisfirehose-s3';
 
-const props: EventsRuleToKinesisStreamProps = {
+const props: EventsRuleToKinesisFirehoseToS3Props = {
     eventRuleProps: {
         schedule: events.Schedule.rate(Duration.minutes(5))
       }
 };
 
-new EventsRuleToKinesisStream(stack, 'test-events-rule-kinesis-stream', props);
+new EventsRuleToKinesisFirehoseToS3(stack, 'test-events-rule-kinesisfirehose-s3', props);
 
 app.synth();
