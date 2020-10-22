@@ -53,7 +53,6 @@ test('Test properties', () => {
   expect(construct.kinesisFirehoseLogGroup !== null);
   expect(construct.s3Bucket !== null);
   expect(construct.s3LoggingBucket !== null);
-  expect(construct.firehoseToS3 !== null);
 });
 
 // --------------------------------------------------------------

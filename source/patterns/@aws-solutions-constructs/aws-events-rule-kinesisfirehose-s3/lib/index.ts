@@ -82,7 +82,6 @@ export class EventsRuleToKinesisFirehoseToS3 extends Construct {
     this.kinesisFirehoseRole = firehoseToS3.kinesisFirehoseRole;
     this.s3LoggingBucket = firehoseToS3.s3LoggingBucket;
     this.kinesisFirehoseLogGroup = firehoseToS3.kinesisFirehoseLogGroup;
-    this.firehoseToS3 = firehoseToS3;
 
     // Create an events service role
     this.eventsRole = new iam.Role(this, 'EventsRuleInvokeKinesisFirehoseRole', {
