@@ -20,9 +20,9 @@ import { Construct } from '@aws-cdk/core';
 import { overrideProps } from '@aws-solutions-constructs/core';
 
 /**
- * @summary The properties for the EventsRuleToSQS Construct
+ * @summary The properties for the EventsRuleToSqs Construct
  */
-export interface EventsRuleToSQSProps {
+export interface EventsRuleToSqsProps {
   /**
    * User provided eventRuleProps to override the defaults
    *
@@ -86,21 +86,21 @@ export interface EventsRuleToSQSProps {
   readonly encryptionKeyProps?: kms.KeyProps
 }
 
-export class EventsRuleToSQS extends Construct {
+export class EventsRuleToSqs extends Construct {
   public readonly sqsQueue: sqs.Queue;
   public readonly deadLetterQueue?: sqs.DeadLetterQueue;
   public readonly eventsRule: events.Rule;
   public readonly encryptionKey?: kms.IKey;
 
   /**
-   * @summary Constructs a new instance of the EventsRuleToSQS class.
+   * @summary Constructs a new instance of the EventsRuleToSqs class.
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
-   * @param {EventsRuleToSQSProps} props - user provided props for the construct
+   * @param {EventsRuleToSqsProps} props - user provided props for the construct
    * @since 1.62.0
    * @access public
    */
-  constructor(scope: Construct, id: string, props: EventsRuleToSQSProps) {
+  constructor(scope: Construct, id: string, props: EventsRuleToSqsProps) {
     super(scope, id);
 
     // Setup the dead letter queue, if applicable

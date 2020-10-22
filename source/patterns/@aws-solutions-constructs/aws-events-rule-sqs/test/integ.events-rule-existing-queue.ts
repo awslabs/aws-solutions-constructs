@@ -12,7 +12,7 @@
  */
 
 import { Duration } from '@aws-cdk/core';
-import { EventsRuleToSQSProps, EventsRuleToSQS } from '../lib';
+import { EventsRuleToSqsProps, EventsRuleToSqs } from '../lib';
 import * as events from '@aws-cdk/aws-events';
 import { App, Stack } from '@aws-cdk/core';
 import * as sqs from '@aws-cdk/aws-sqs';
@@ -28,12 +28,12 @@ const existingQueueObj = new sqs.Queue(stack, 'MyQueue', {
     }),
 });
 
-const props: EventsRuleToSQSProps = {
+const props: EventsRuleToSqsProps = {
     eventRuleProps: {
         schedule: events.Schedule.rate(Duration.minutes(5))
     },
     existingQueueObj
 };
 
-new EventsRuleToSQS(stack, 'construct', props);
+new EventsRuleToSqs(stack, 'construct', props);
 app.synth();

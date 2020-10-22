@@ -16,18 +16,18 @@ import * as cdk from "@aws-cdk/core";
 import * as events from "@aws-cdk/aws-events";
 import * as defaults from '@aws-solutions-constructs/core';
 import '@aws-cdk/assert/jest';
-import { EventsRuleToSNS, EventsRuleToSNSProps } from "../lib";
+import { EventsRuleToSns, EventsRuleToSnsProps } from "../lib";
 
 function deployNewStack(stack: cdk.Stack) {
-  const props: EventsRuleToSNSProps = {
+  const props: EventsRuleToSnsProps = {
     eventRuleProps: {
       schedule: events.Schedule.rate(cdk.Duration.minutes(5))
     }
   };
-  return new EventsRuleToSNS(stack, 'test', props);
+  return new EventsRuleToSns(stack, 'test', props);
 }
 
-test('snapshot test EventsRuleToSNS default params', () => {
+test('snapshot test EventsRuleToSns default params', () => {
   const stack = new cdk.Stack();
   deployNewStack(stack);
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
@@ -154,7 +154,7 @@ test('check events rule properties', () => {
 
 test('check properties', () => {
   const stack = new cdk.Stack();
-  const construct: EventsRuleToSNS = deployNewStack(stack);
+  const construct: EventsRuleToSns = deployNewStack(stack);
 
   expect(construct.eventsRule !== null);
   expect(construct.snsTopic !== null);
@@ -180,14 +180,14 @@ test('check the sns topic properties with existing KMS key', () => {
     description: 'my-key'
   });
 
-  const props: EventsRuleToSNSProps = {
+  const props: EventsRuleToSnsProps = {
     eventRuleProps: {
         schedule: events.Schedule.rate(cdk.Duration.minutes(5))
     },
     encryptionKey: key
   };
 
-  new EventsRuleToSNS(stack, 'test-events-rule-sqs', props);
+  new EventsRuleToSns(stack, 'test-events-rule-sqs', props);
 
   expect(stack).toHaveResource('AWS::SNS::Topic', {
     KmsMasterKeyId: {

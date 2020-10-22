@@ -30,15 +30,15 @@ Here is a minimal deployable pattern definition in Typescript:
 import { Duration } from '@aws-cdk/core';
 import * as events from '@aws-cdk/aws-events';
 import * as iam from '@aws-cdk/aws-iam';
-import { EventsRuleToSQSProps, EventsRuleToSQS } from "@aws-solutions-constructs/aws-events-rule-sqs";
+import { EventsRuleToSqsProps, EventsRuleToSqs } from "@aws-solutions-constructs/aws-events-rule-sqs";
 
-const props: EventsRuleToSQSProps = {
+const props: EventsRuleToSqsProps = {
     eventRuleProps: {
       schedule: events.Schedule.rate(Duration.minutes(5))
     }
 };
 
-const constructStack = new EventsRuleToSQS(this, 'test-construct', props);
+const constructStack = new EventsRuleToSqs(this, 'test-construct', props);
 
 // Grant yourself permissions to use the Customer Managed KMS Key
 const policyStatement = new iam.PolicyStatement({
@@ -54,14 +54,14 @@ constructStack.encryptionKey?.addToResourcePolicy(policyStatement);
 ## Initializer
 
 ``` text
-new EventsRuleToSQS(scope: Construct, id: string, props: EventsRuleToSQSProps);
+new EventsRuleToSqs(scope: Construct, id: string, props: EventsRuleToSqsProps);
 ```
 
 _Parameters_
 
 * scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
 * id `string`
-* props [`EventsRuleToSQSProps`](#pattern-construct-props)
+* props [`EventsRuleToSqsProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 
