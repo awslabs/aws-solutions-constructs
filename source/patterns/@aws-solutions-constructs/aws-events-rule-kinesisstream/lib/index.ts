@@ -13,9 +13,10 @@
 
 import * as events from '@aws-cdk/aws-events';
 import * as kinesis from '@aws-cdk/aws-kinesis';
-import * as defaults from '@aws-solutions-constructs/core';
 import * as iam from '@aws-cdk/aws-iam';
+import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import { Construct } from '@aws-cdk/core';
+import * as defaults from '@aws-solutions-constructs/core';
 import { overrideProps } from '@aws-solutions-constructs/core';
 
 /**
@@ -40,12 +41,19 @@ readonly existingStreamObj?: kinesis.Stream,
  * @default - Default props are used
  */
 readonly kinesisStreamProps?: kinesis.StreamProps | any
+/**
+ * Whether to create recommended CloudWatch alarms
+ *
+ * @default - Alarms are created
+ */
+readonly createCloudWatchAlarms?: boolean
 }
 
 export class EventsRuleToKinesisStream extends Construct {
     public readonly kinesisStream: kinesis.Stream;
     public readonly eventsRule: events.Rule;
     public readonly eventsRole: iam.Role;
+    public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
 
     /**
      * @summary Constructs a new instance of the EventsRuleToKinesisStream class.
@@ -82,12 +90,16 @@ export class EventsRuleToKinesisStream extends Construct {
           })
         };
 
-        // Add the kinese event source mapping
+        // Set up the events rule props
         const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([kinesisStreamEventTarget]);
         const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);
 
         // Setup up the event rule
         this.eventsRule = new events.Rule(this, 'EventsRule', eventsRuleProps);
 
+        if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
+          // Deploy best practices CW Alarms for Kinesis Stream
+          this.cloudwatchAlarms = defaults.buildKinesisStreamCWAlarms(this);
+      }
     }
 }

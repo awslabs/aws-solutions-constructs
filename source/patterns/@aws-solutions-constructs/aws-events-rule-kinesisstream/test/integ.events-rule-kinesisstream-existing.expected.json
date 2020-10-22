@@ -1,0 +1,114 @@
+{
+  "Description": "Integration Test for aws-events-rule-kinesisstream with existing kinesis stream",
+  "Resources": {
+    "testeventsrulekinesisstreamexistingEventsRule07EC6002": {
+      "Properties": {
+        "ScheduleExpression": "rate(5 minutes)",
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::GetAtt": [
+                "teststream04374A09",
+                "Arn"
+              ]
+            },
+            "Id": "Target0",
+            "RoleArn": {
+              "Fn::GetAtt": [
+                "testeventsrulekinesisstreamexistingeventsRole6BFA3F09",
+                "Arn"
+              ]
+            }
+          }
+        ]
+      },
+      "Type": "AWS::Events::Rule"
+    },
+    "testeventsrulekinesisstreamexistingKinesisStreamGetRecordsIteratorAgeAlarm6BBE2CE5": {
+      "Properties": {
+        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "GetRecords.IteratorAgeMilliseconds",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 2592000
+      },
+      "Type": "AWS::CloudWatch::Alarm"
+    },
+    "testeventsrulekinesisstreamexistingKinesisStreamReadProvisionedThroughputExceededAlarmEFD57259": {
+      "Properties": {
+        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
+        "ComparisonOperator": "GreaterThanThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "ReadProvisionedThroughputExceeded",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Average",
+        "Threshold": 0
+      },
+      "Type": "AWS::CloudWatch::Alarm"
+    },
+    "testeventsrulekinesisstreamexistingeventsRole6BFA3F09": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Description": "Events Rule Role"
+      },
+      "Type": "AWS::IAM::Role"
+    },
+    "testeventsrulekinesisstreamexistingeventsRoleDefaultPolicy7B842A0C": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "kinesis:ListShards",
+                "kinesis:PutRecord",
+                "kinesis:PutRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "teststream04374A09",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testeventsrulekinesisstreamexistingeventsRoleDefaultPolicy7B842A0C",
+        "Roles": [
+          {
+            "Ref": "testeventsrulekinesisstreamexistingeventsRole6BFA3F09"
+          }
+        ]
+      },
+      "Type": "AWS::IAM::Policy"
+    },
+    "teststream04374A09": {
+      "Properties": {
+        "RetentionPeriodHours": 24,
+        "ShardCount": 2,
+        "StreamEncryption": {
+          "EncryptionType": "KMS",
+          "KeyId": "alias/aws/kinesis"
+        }
+      },
+      "Type": "AWS::Kinesis::Stream"
+    }
+  }
+}

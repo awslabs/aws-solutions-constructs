@@ -27,11 +27,10 @@ This AWS Solutions Construct implements an Amazon CloudWatch Events rule to send
 Here is a minimal deployable pattern definition in Typescript:
 
 ``` javascript
-const { EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props } from '@aws-solutions-constructs/aws-events-rule-kinesisfirehose-s3';
+import { EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props } from '@aws-solutions-constructs/aws-events-rule-kinesisfirehose-s3';
 
 const props: EventsRuleToKinesisFirehoseToS3Props = {
     eventRuleProps: {
-    description: 'event rule props',
     schedule: events.Schedule.rate(cdk.Duration.minutes(5))
 };
 
@@ -71,7 +70,6 @@ _Parameters_
 |eventsRole|[`iam.Role`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)|Returns an instance of the iam.Role created by the construct for Events Rule|
 |kinesisFirehoseRole|[`iam.Role`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)|Returns an instance of the iam.Role created by the construct for Kinesis Data Firehose delivery stream|
 |kinesisFirehoseLogGroup|[`logs.LogGroup`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-logs.LogGroup.html)|Returns an instance of the LogGroup created by the construct for Kinesis Data Firehose delivery stream|
-|firehoseToS3|[`aws_solutions_constructs.aws-kinesisfirehose-s3`](https://docs.aws.amazon.com/solutions/latest/constructs/aws-kinesisfirehose-s3.html)|Returns an instance of aws-kinesisfirehose-s3 construct created by the construct|
 
 ## Default settings
 

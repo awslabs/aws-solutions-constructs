@@ -59,7 +59,6 @@ export class EventsRuleToKinesisFirehoseToS3 extends Construct {
   public readonly kinesisFirehoseRole: iam.Role;
   public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
-  public readonly firehoseToS3: KinesisFirehoseToS3;
 
   /**
    * @summary Constructs a new instance of the EventsRuleToKinesisFirehoseToS3 class.
@@ -114,7 +113,7 @@ export class EventsRuleToKinesisFirehoseToS3 extends Construct {
       })
     };
 
-    // Add the kinese event source mapping
+    // Set up the events rule props
     const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([KinesisFirehoseEventTarget]);
     const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);
 

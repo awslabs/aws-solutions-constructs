@@ -28,6 +28,32 @@ Object {
       },
       "Type": "AWS::Events::Rule",
     },
+    "testeventsrulekinesisstreamsexistingresourceKinesisStreamGetRecordsIteratorAgeAlarm0F7901D7": Object {
+      "Properties": Object {
+        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "GetRecords.IteratorAgeMilliseconds",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 2592000,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "testeventsrulekinesisstreamsexistingresourceKinesisStreamReadProvisionedThroughputExceededAlarm746D524D": Object {
+      "Properties": Object {
+        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
+        "ComparisonOperator": "GreaterThanThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "ReadProvisionedThroughputExceeded",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Average",
+        "Threshold": 0,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
     "testeventsrulekinesisstreamsexistingresourceeventsRole6600B7FE": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
@@ -126,6 +152,32 @@ Object {
         },
       },
       "Type": "AWS::Kinesis::Stream",
+    },
+    "testeventsrulekinesisstreamsdefaultparametersKinesisStreamGetRecordsIteratorAgeAlarmF78CCCCE": Object {
+      "Properties": Object {
+        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "GetRecords.IteratorAgeMilliseconds",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 2592000,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "testeventsrulekinesisstreamsdefaultparametersKinesisStreamReadProvisionedThroughputExceededAlarm07FC3EDE": Object {
+      "Properties": Object {
+        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
+        "ComparisonOperator": "GreaterThanThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "ReadProvisionedThroughputExceeded",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Average",
+        "Threshold": 0,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
     },
     "testeventsrulekinesisstreamsdefaultparameterseventsRole3067A354": Object {
       "Properties": Object {

@@ -35,7 +35,7 @@ const props: EventsRuleToKinesisStreamProps = {
     }
 };
 
-const constructStack = new EventsRuleToKinesisStream(this, 'test-events-rule-kinesis-stream', props);
+new EventsRuleToKinesisStream(this, 'test-events-rule-kinesis-stream', props);
 ```
 
 ## Initializer
@@ -57,6 +57,7 @@ _Parameters_
 |eventRuleProps|[`events.RuleProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-events.RuleProps.html)|User provided eventRuleProps to override the defaults. |
 |existingStreamObj?|[`kinesis.Stream`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kinesis.Stream.html)|Existing instance of Kinesis Stream, if this is set then kinesisStreamProps is ignored.|
 |kinesisStreamProps?|[`kinesis.StreamProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kinesis.StreamProps.html)|Optional user-provided props to override the default props for the Kinesis stream. |
+|createCloudWatchAlarms|`boolean`|Whether to create recommended CloudWatch alarms. |
 
 ## Pattern Properties
 

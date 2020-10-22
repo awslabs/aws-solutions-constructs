@@ -41,14 +41,14 @@
         }
       },
       "dotnet": {
-        "namespace": "Amazon.Constructs.AWS.eventsrulekinesisstream",
-        "packageId": "Amazon.Constructs.AWS.eventsrulekinesisstream",
+        "namespace": "Amazon.Constructs.AWS.EventsRuleKinesisStream",
+        "packageId": "Amazon.Constructs.AWS.EventsRuleKinesisStream",
         "signAssembly": true,
         "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
       },
       "python": {
-        "distName": "aws-solutions-constructs.aws-events-rule-kinesisstream",
-        "module": "aws_solutions_constructs.aws_events_rule_kinesisstream"
+        "distName": "aws-solutions-constructs.aws-events-rule-kinesis-stream",
+        "module": "aws_solutions_constructs.aws_events_rule_kinesis_stream"
       }
     }
   },
@@ -56,6 +56,7 @@
     "@aws-cdk/aws-events": "~1.67.0",
     "@aws-cdk/aws-kinesis": "~1.67.0",
     "@aws-cdk/aws-iam": "~1.67.0",
+    "@aws-cdk/aws-cloudwatch": "~1.67.0",
     "@aws-cdk/core": "~1.67.0",
     "@aws-solutions-constructs/core": "~1.67.0",
     "constructs": "^3.0.4"
@@ -74,6 +75,7 @@
     "@aws-cdk/aws-events": "~1.67.0",
     "@aws-cdk/aws-kinesis": "~1.67.0",
     "@aws-cdk/aws-iam": "~1.67.0",
+    "@aws-cdk/aws-cloudwatch": "~1.67.0",
     "@aws-cdk/core": "~1.67.0",
     "@aws-solutions-constructs/core": "~1.67.0",
     "constructs": "^3.0.4"
