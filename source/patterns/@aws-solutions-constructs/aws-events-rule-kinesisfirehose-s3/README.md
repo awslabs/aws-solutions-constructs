@@ -27,14 +27,16 @@ This AWS Solutions Construct implements an Amazon CloudWatch Events rule to send
 Here is a minimal deployable pattern definition in Typescript:
 
 ``` javascript
+import * as cdk from '@aws-cdk/core';
 import { EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props } from '@aws-solutions-constructs/aws-events-rule-kinesisfirehose-s3';
 
-const props: EventsRuleToKinesisFirehoseToS3Props = {
+const eventsRuleToKinesisFirehoseToS3Props: EventsRuleToKinesisFirehoseToS3Props = {
     eventRuleProps: {
     schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    }
 };
 
-new EventsRuleToKinesisFirehoseToS3(this, 'test-events-rule-firehose-s3', props);
+new EventsRuleToKinesisFirehoseToS3(this, 'test-events-rule-firehose-s3', eventsRuleToKinesisFirehoseToS3Props);
 
 ```
 

@@ -1,4 +1,4 @@
-# aws-events-rule-kinesisstream module
+# aws-events-rule-kinesisstreams module
 <!--BEGIN STABILITY BANNER-->
 
 ---
@@ -19,7 +19,7 @@
 | **Language**     | **Package**        |
 |:-------------|-----------------|
 |![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_events_rule_kinesisstream`|
-|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-events-rule-kinesisstream`|
+|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-events-rule-kinesisstreams`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.eventsrulekinesisstream`|
 
 This AWS Solutions Construct implements an Amazon CloudWatch Events rule to send data to an Amazon Kinesis Data Stream
@@ -27,28 +27,29 @@ This AWS Solutions Construct implements an Amazon CloudWatch Events rule to send
 Here is a minimal deployable pattern definition in Typescript:
 
 ``` typescript
-import {EventsRuleToKinesisStream, EventsRuleToKinesisStreamProps} from "@aws-solutions-constructs/aws-events-rule-kinesisstream";
+import * as cdk from '@aws-cdk/core';
+import {EventsRuleToKinesisStreams, EventsRuleToKinesisStreamsProps} from "@aws-solutions-constructs/aws-events-rule-kinesisstreams";
 
-const props: EventsRuleToKinesisStreamProps = {
+const props: EventsRuleToKinesisStreamsProps = {
     eventRuleProps: {
       schedule: events.Schedule.rate(Duration.minutes(5)),
     }
 };
 
-new EventsRuleToKinesisStream(this, 'test-events-rule-kinesis-stream', props);
+new EventsRuleToKinesisStreams(this, 'test-events-rule-kinesis-stream', props);
 ```
 
 ## Initializer
 
 ``` text
-new EventsRuleToKinesisStream(scope: Construct, id: string, props: EventsRuleToKinesisStreamProps);
+new EventsRuleToKinesisStreams(scope: Construct, id: string, props: EventsRuleToKinesisStreamsProps);
 ```
 
 _Parameters_
 
 * scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
 * id `string`
-* props [`EventsRuleToKinesisStreamProps`](#pattern-construct-props)
+* props [`EventsRuleToKinesisStreamsProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

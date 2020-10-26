@@ -20,9 +20,9 @@ import * as defaults from '@aws-solutions-constructs/core';
 import { overrideProps } from '@aws-solutions-constructs/core';
 
 /**
- * @summary The properties for the EventsRuleToKinesisStream Construct
+ * @summary The properties for the EventsRuleToKinesisStreams Construct
  */
-export interface EventsRuleToKinesisStreamProps {
+export interface EventsRuleToKinesisStreamsProps {
 /**
  * User provided eventRuleProps to override the defaults
  *
@@ -30,7 +30,7 @@ export interface EventsRuleToKinesisStreamProps {
  */
 readonly eventRuleProps: events.RuleProps
 /**
- * Existing instance of Kinesis Stream object, if this is set then the kinesisStreamProps is ignored.
+ * Existing instance of Kinesis Stream object, if this is set then the KinesisStreamProps is ignored.
  *
  * @default - Default props are used
  */
@@ -49,21 +49,21 @@ readonly kinesisStreamProps?: kinesis.StreamProps | any
 readonly createCloudWatchAlarms?: boolean
 }
 
-export class EventsRuleToKinesisStream extends Construct {
+export class EventsRuleToKinesisStreams extends Construct {
     public readonly kinesisStream: kinesis.Stream;
     public readonly eventsRule: events.Rule;
     public readonly eventsRole: iam.Role;
     public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
 
     /**
-     * @summary Constructs a new instance of the EventsRuleToKinesisStream class.
+     * @summary Constructs a new instance of the EventsRuleToKinesisStreams class.
      * @param {cdk.App} scope - represents the scope for all the resources.
      * @param {string} id - this is a a scope-unique id.
-     * @param {EventsRuleToKinesisStreamProps} props - user provided props for the construct
+     * @param {EventsRuleToKinesisStreamsProps} props - user provided props for the construct
      * @since 0.8.0
      * @access public
      */
-    constructor(scope: Construct, id: string, props: EventsRuleToKinesisStreamProps) {
+    constructor(scope: Construct, id: string, props: EventsRuleToKinesisStreamsProps) {
         super(scope, id);
 
         // Set up the Kinesis Stream

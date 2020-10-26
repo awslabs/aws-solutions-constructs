@@ -16,19 +16,19 @@ import * as cdk from "@aws-cdk/core";
 import * as events from "@aws-cdk/aws-events";
 import * as kinesis from '@aws-cdk/aws-kinesis';
 import '@aws-cdk/assert/jest';
-import {EventsRuleToKinesisStream, EventsRuleToKinesisStreamProps} from '../lib';
+import {EventsRuleToKinesisStreams, EventsRuleToKinesisStreamsProps} from '../lib';
 
 // --------------------------------------------------------------
 // Test snapshot match with default parameters
 // --------------------------------------------------------------
 function deployNewStack(stack: cdk.Stack) {
-  const props: EventsRuleToKinesisStreamProps = {
+  const props: EventsRuleToKinesisStreamsProps = {
     eventRuleProps: {
       description: 'event rule props',
       schedule: events.Schedule.rate(cdk.Duration.minutes(5))
     }
   };
-  return new EventsRuleToKinesisStream(stack, 'test-events-rule-kinesis-streams-default-parameters', props);
+  return new EventsRuleToKinesisStreams(stack, 'test-events-rule-kinesis-streams-default-parameters', props);
 }
 
 test('Test snapshot match with default parameters', () => {
@@ -44,7 +44,7 @@ test('Test snapshot match with default parameters', () => {
 // --------------------------------------------------------------
 test('Test properties', () => {
   const stack = new cdk.Stack();
-  const construct: EventsRuleToKinesisStream = deployNewStack(stack);
+  const construct: EventsRuleToKinesisStreams = deployNewStack(stack);
 
   // Assertions
   expect(construct.eventsRule !== null);
@@ -82,7 +82,7 @@ test('Test existing resources', () => {
       encryption: kinesis.StreamEncryption.UNENCRYPTED
   });
 
-  new EventsRuleToKinesisStream(stack, 'test-events-rule-kinesis-streams-existing-resource', {
+  new EventsRuleToKinesisStreams(stack, 'test-events-rule-kinesis-stream-existing-resource', {
       existingStreamObj: existingStream,
       // These properties will be ignored as existing object was provided
       kinesisStreamProps: {

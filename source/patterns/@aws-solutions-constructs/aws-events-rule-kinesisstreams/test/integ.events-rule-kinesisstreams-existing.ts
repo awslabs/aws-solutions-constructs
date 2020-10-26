@@ -12,19 +12,26 @@
  */
 
 import * as events from '@aws-cdk/aws-events';
+import * as kinesis from '@aws-cdk/aws-kinesis';
 import { App, Stack, Duration } from '@aws-cdk/core';
-import { EventsRuleToKinesisStream, EventsRuleToKinesisStreamProps } from '../lib';
+import { EventsRuleToKinesisStreams, EventsRuleToKinesisStreamsProps } from '../lib';
 
 const app = new App();
-const stack = new Stack(app, 'test-rule-kinesisstream');
-stack.templateOptions.description = 'Integration Test for aws-events-rule-kinesisstream';
+const stack = new Stack(app, 'test-existing-rule-kinesisstream');
+stack.templateOptions.description = 'Integration Test for aws-events-rule-kinesisstreams with existing kinesis stream';
 
-const props: EventsRuleToKinesisStreamProps = {
+const stream = new kinesis.Stream(stack, 'test-stream', {
+    shardCount: 2,
+    encryption: kinesis.StreamEncryption.MANAGED
+});
+
+const props: EventsRuleToKinesisStreamsProps = {
     eventRuleProps: {
         schedule: events.Schedule.rate(Duration.minutes(5))
-      }
+      },
+    existingStreamObj: stream
 };
 
-new EventsRuleToKinesisStream(stack, 'test-events-rule-kinesis-stream', props);
+new EventsRuleToKinesisStreams(stack, 'test-events-rule-kinesis-stream-existing', props);
 
 app.synth();
