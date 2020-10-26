@@ -1,0 +1,232 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test existing resources 1`] = `
+Object {
+  "Resources": Object {
+    "testeventsrulekinesisstreamexistingresourceEventsRule50C4E158": Object {
+      "Properties": Object {
+        "Description": "event rule props",
+        "ScheduleExpression": "rate(5 minutes)",
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "testexistingstreamA6CF7AE7",
+                "Arn",
+              ],
+            },
+            "Id": "Target0",
+            "RoleArn": Object {
+              "Fn::GetAtt": Array [
+                "testeventsrulekinesisstreamexistingresourceeventsRole6431B874",
+                "Arn",
+              ],
+            },
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "testeventsrulekinesisstreamexistingresourceKinesisStreamGetRecordsIteratorAgeAlarmCFA3A3CB": Object {
+      "Properties": Object {
+        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "GetRecords.IteratorAgeMilliseconds",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 2592000,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "testeventsrulekinesisstreamexistingresourceKinesisStreamReadProvisionedThroughputExceededAlarm2DAC9390": Object {
+      "Properties": Object {
+        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
+        "ComparisonOperator": "GreaterThanThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "ReadProvisionedThroughputExceeded",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Average",
+        "Threshold": 0,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "testeventsrulekinesisstreamexistingresourceeventsRole6431B874": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Events Rule Role",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testeventsrulekinesisstreamexistingresourceeventsRoleDefaultPolicyDB76C6C1": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kinesis:ListShards",
+                "kinesis:PutRecord",
+                "kinesis:PutRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testexistingstreamA6CF7AE7",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testeventsrulekinesisstreamexistingresourceeventsRoleDefaultPolicyDB76C6C1",
+        "Roles": Array [
+          Object {
+            "Ref": "testeventsrulekinesisstreamexistingresourceeventsRole6431B874",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "testexistingstreamA6CF7AE7": Object {
+      "Properties": Object {
+        "Name": "existing-stream",
+        "RetentionPeriodHours": 48,
+        "ShardCount": 5,
+      },
+      "Type": "AWS::Kinesis::Stream",
+    },
+  },
+}
+`;
+
+exports[`Test snapshot match with default parameters 1`] = `
+Object {
+  "Resources": Object {
+    "testeventsrulekinesisstreamsdefaultparametersEventsRuleB892ACC8": Object {
+      "Properties": Object {
+        "Description": "event rule props",
+        "ScheduleExpression": "rate(5 minutes)",
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "testeventsrulekinesisstreamsdefaultparametersKinesisStream289DD083",
+                "Arn",
+              ],
+            },
+            "Id": "Target0",
+            "RoleArn": Object {
+              "Fn::GetAtt": Array [
+                "testeventsrulekinesisstreamsdefaultparameterseventsRole3067A354",
+                "Arn",
+              ],
+            },
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "testeventsrulekinesisstreamsdefaultparametersKinesisStream289DD083": Object {
+      "Properties": Object {
+        "RetentionPeriodHours": 24,
+        "ShardCount": 1,
+        "StreamEncryption": Object {
+          "EncryptionType": "KMS",
+          "KeyId": "alias/aws/kinesis",
+        },
+      },
+      "Type": "AWS::Kinesis::Stream",
+    },
+    "testeventsrulekinesisstreamsdefaultparametersKinesisStreamGetRecordsIteratorAgeAlarmF78CCCCE": Object {
+      "Properties": Object {
+        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "GetRecords.IteratorAgeMilliseconds",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 2592000,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "testeventsrulekinesisstreamsdefaultparametersKinesisStreamReadProvisionedThroughputExceededAlarm07FC3EDE": Object {
+      "Properties": Object {
+        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
+        "ComparisonOperator": "GreaterThanThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "ReadProvisionedThroughputExceeded",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Average",
+        "Threshold": 0,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "testeventsrulekinesisstreamsdefaultparameterseventsRole3067A354": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Events Rule Role",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testeventsrulekinesisstreamsdefaultparameterseventsRoleDefaultPolicyF4C8EFFF": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kinesis:ListShards",
+                "kinesis:PutRecord",
+                "kinesis:PutRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testeventsrulekinesisstreamsdefaultparametersKinesisStream289DD083",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testeventsrulekinesisstreamsdefaultparameterseventsRoleDefaultPolicyF4C8EFFF",
+        "Roles": Array [
+          Object {
+            "Ref": "testeventsrulekinesisstreamsdefaultparameterseventsRole3067A354",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+  },
+}
+`;
