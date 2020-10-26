@@ -156,19 +156,10 @@
               ],
               "Effect": "Allow",
               "Principal": {
-                "AWS": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":iam::cloudfront:user/CloudFront Origin Access Identity ",
-                      {
-                        "Ref": "testcloudfronts3nosecurityheadersCloudFrontOriginAccessIdentity5321D214"
-                      }
-                    ]
+                "CanonicalUser": {
+                  "Fn::GetAtt": [
+                    "testcloudfronts3nosecurityheadersCloudFrontDistributionOrigin1S3Origin38CFDB89",
+                    "S3CanonicalUserId"
                   ]
                 }
               },
@@ -194,32 +185,6 @@
                   ]
                 }
               ]
-            },
-            {
-              "Action": "s3:GetObject",
-              "Effect": "Allow",
-              "Principal": {
-                "CanonicalUser": {
-                  "Fn::GetAtt": [
-                    "testcloudfronts3nosecurityheadersCloudFrontOriginAccessIdentity5321D214",
-                    "S3CanonicalUserId"
-                  ]
-                }
-              },
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "testcloudfronts3nosecurityheadersS3Bucket4D06173D",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
-              }
             }
           ],
           "Version": "2012-10-17"
@@ -233,14 +198,6 @@
               "reason": "Public website bucket policy requires a wildcard principal"
             }
           ]
-        }
-      }
-    },
-    "testcloudfronts3nosecurityheadersCloudFrontOriginAccessIdentity5321D214": {
-      "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
-      "Properties": {
-        "CloudFrontOriginAccessIdentityConfig": {
-          "Comment": "Access S3 bucket content only through CloudFront"
         }
       }
     },
@@ -315,27 +272,22 @@
         }
       }
     },
-    "testcloudfronts3nosecurityheadersCloudFrontDistributionCFDistribution3F3C52A8": {
+    "testcloudfronts3nosecurityheadersCloudFrontDistributionOrigin1S3Origin38CFDB89": {
+      "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+      "Properties": {
+        "CloudFrontOriginAccessIdentityConfig": {
+          "Comment": "Identity for testcloudfronts3nosecurityheadersCloudFrontDistributionOrigin1BB2D7D46"
+        }
+      }
+    },
+    "testcloudfronts3nosecurityheadersCloudFrontDistribution3BC8CDED": {
       "Type": "AWS::CloudFront::Distribution",
       "Properties": {
         "DistributionConfig": {
           "DefaultCacheBehavior": {
-            "AllowedMethods": [
-              "GET",
-              "HEAD"
-            ],
-            "CachedMethods": [
-              "GET",
-              "HEAD"
-            ],
+            "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
             "Compress": true,
-            "ForwardedValues": {
-              "Cookies": {
-                "Forward": "none"
-              },
-              "QueryString": false
-            },
-            "TargetOriginId": "origin1",
+            "TargetOriginId": "testcloudfronts3nosecurityheadersCloudFrontDistributionOrigin1BB2D7D46",
             "ViewerProtocolPolicy": "redirect-to-https"
           },
           "DefaultRootObject": "index.html",
@@ -348,20 +300,17 @@
                 "testcloudfronts3nosecurityheadersCloudfrontLoggingBucket92A5E2A5",
                 "DomainName"
               ]
-            },
-            "IncludeCookies": false
+            }
           },
           "Origins": [
             {
-              "ConnectionAttempts": 3,
-              "ConnectionTimeout": 10,
               "DomainName": {
                 "Fn::GetAtt": [
                   "testcloudfronts3nosecurityheadersS3Bucket4D06173D",
                   "RegionalDomainName"
                 ]
               },
-              "Id": "origin1",
+              "Id": "testcloudfronts3nosecurityheadersCloudFrontDistributionOrigin1BB2D7D46",
               "S3OriginConfig": {
                 "OriginAccessIdentity": {
                   "Fn::Join": [
@@ -369,18 +318,14 @@
                     [
                       "origin-access-identity/cloudfront/",
                       {
-                        "Ref": "testcloudfronts3nosecurityheadersCloudFrontOriginAccessIdentity5321D214"
+                        "Ref": "testcloudfronts3nosecurityheadersCloudFrontDistributionOrigin1S3Origin38CFDB89"
                       }
                     ]
                   ]
                 }
               }
             }
-          ],
-          "PriceClass": "PriceClass_100",
-          "ViewerCertificate": {
-            "CloudFrontDefaultCertificate": true
-          }
+          ]
         }
       },
       "Metadata": {

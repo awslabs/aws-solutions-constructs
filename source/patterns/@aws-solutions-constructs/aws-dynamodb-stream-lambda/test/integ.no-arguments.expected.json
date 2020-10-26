@@ -71,20 +71,7 @@
             {
               "Action": "dynamodb:ListStreams",
               "Effect": "Allow",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "testdynamodbstreamlambdaDynamoTable6EB2ED0F",
-                        "Arn"
-                      ]
-                    },
-                    "/stream/*"
-                  ]
-                ]
-              }
+              "Resource": "*"
             },
             {
               "Action": [

@@ -3,7 +3,7 @@
 exports[`snapshot test CloudFrontToS3 default params 1`] = `
 Object {
   "Resources": Object {
-    "testcloudfronts3CloudFrontDistributionCFDistribution61FCC088": Object {
+    "testcloudfronts3CloudFrontDistribution0565DEE8": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -17,21 +17,8 @@ Object {
       "Properties": Object {
         "DistributionConfig": Object {
           "DefaultCacheBehavior": Object {
-            "AllowedMethods": Array [
-              "GET",
-              "HEAD",
-            ],
-            "CachedMethods": Array [
-              "GET",
-              "HEAD",
-            ],
+            "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
             "Compress": true,
-            "ForwardedValues": Object {
-              "Cookies": Object {
-                "Forward": "none",
-              },
-              "QueryString": false,
-            },
             "LambdaFunctionAssociations": Array [
               Object {
                 "EventType": "origin-response",
@@ -40,7 +27,7 @@ Object {
                 },
               },
             ],
-            "TargetOriginId": "origin1",
+            "TargetOriginId": "testcloudfronts3CloudFrontDistributionOrigin124051039",
             "ViewerProtocolPolicy": "redirect-to-https",
           },
           "DefaultRootObject": "index.html",
@@ -54,19 +41,16 @@ Object {
                 "DomainName",
               ],
             },
-            "IncludeCookies": false,
           },
           "Origins": Array [
             Object {
-              "ConnectionAttempts": 3,
-              "ConnectionTimeout": 10,
               "DomainName": Object {
                 "Fn::GetAtt": Array [
                   "testcloudfronts3S3BucketE0C5F76E",
                   "RegionalDomainName",
                 ],
               },
-              "Id": "origin1",
+              "Id": "testcloudfronts3CloudFrontDistributionOrigin124051039",
               "S3OriginConfig": Object {
                 "OriginAccessIdentity": Object {
                   "Fn::Join": Array [
@@ -74,7 +58,7 @@ Object {
                     Array [
                       "origin-access-identity/cloudfront/",
                       Object {
-                        "Ref": "testcloudfronts3CloudFrontOriginAccessIdentity2C681839",
+                        "Ref": "testcloudfronts3CloudFrontDistributionOrigin1S3Origin4695F058",
                       },
                     ],
                   ],
@@ -82,18 +66,14 @@ Object {
               },
             },
           ],
-          "PriceClass": "PriceClass_100",
-          "ViewerCertificate": Object {
-            "CloudFrontDefaultCertificate": true,
-          },
         },
       },
       "Type": "AWS::CloudFront::Distribution",
     },
-    "testcloudfronts3CloudFrontOriginAccessIdentity2C681839": Object {
+    "testcloudfronts3CloudFrontDistributionOrigin1S3Origin4695F058": Object {
       "Properties": Object {
         "CloudFrontOriginAccessIdentityConfig": Object {
-          "Comment": "Access S3 bucket content only through CloudFront",
+          "Comment": "Identity for testcloudfronts3CloudFrontDistributionOrigin124051039",
         },
       },
       "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
@@ -262,19 +242,10 @@ Object {
               ],
               "Effect": "Allow",
               "Principal": Object {
-                "AWS": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":iam::cloudfront:user/CloudFront Origin Access Identity ",
-                      Object {
-                        "Ref": "testcloudfronts3CloudFrontOriginAccessIdentity2C681839",
-                      },
-                    ],
+                "CanonicalUser": Object {
+                  "Fn::GetAtt": Array [
+                    "testcloudfronts3CloudFrontDistributionOrigin1S3Origin4695F058",
+                    "S3CanonicalUserId",
                   ],
                 },
               },
@@ -300,32 +271,6 @@ Object {
                   ],
                 },
               ],
-            },
-            Object {
-              "Action": "s3:GetObject",
-              "Effect": "Allow",
-              "Principal": Object {
-                "CanonicalUser": Object {
-                  "Fn::GetAtt": Array [
-                    "testcloudfronts3CloudFrontOriginAccessIdentity2C681839",
-                    "S3CanonicalUserId",
-                  ],
-                },
-              },
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "testcloudfronts3S3BucketE0C5F76E",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
-              },
             },
           ],
           "Version": "2012-10-17",

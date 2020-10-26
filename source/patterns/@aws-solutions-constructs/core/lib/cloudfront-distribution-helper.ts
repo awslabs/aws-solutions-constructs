@@ -23,7 +23,7 @@ import { deployLambdaFunction } from './lambda-helper';
 import { createLoggingBucket } from './s3-bucket-helper';
 
 // Override Cfn_Nag rule: Cloudfront TLS-1.2 rule (https://github.com/stelligent/cfn_nag/issues/384)
-function updateSecurityPolicy(cfDistribution: cloudfront.CloudFrontWebDistribution) {
+function updateSecurityPolicy(cfDistribution: cloudfront.Distribution) {
     const cfnCfDistribution = cfDistribution.node.defaultChild as cloudfront.CfnDistribution;
     cfnCfDistribution.cfnOptions.metadata = {
         cfn_nag: {
@@ -85,18 +85,27 @@ function defaultLambdaEdgeFunction(scope: cdk.Construct): lambda.Function {
         handler: 'index.handler'
     }, 'SetHttpSecurityHeaders');
 
+    // Switching from cloudfront.CloudFrontWebDistribution -> cloudfront.Distribution breaks the Lamba@Edge as it does not automatically update
+    // the lambda role AssumePolicy for 'edgelambda.amazonaws.com'
+    if (edgeLambdaFunc.role && edgeLambdaFunc.role instanceof iam.Role && edgeLambdaFunc.role.assumeRolePolicy) {
+      edgeLambdaFunc.role.assumeRolePolicy.addStatements(new iam.PolicyStatement({
+        actions: [ 'sts:AssumeRole' ],
+        principals: [ new iam.ServicePrincipal('edgelambda.amazonaws.com') ],
+      }));
+    }
+
     return edgeLambdaFunc;
 }
 
 export function CloudFrontDistributionForApiGateway(scope: cdk.Construct,
                                                     apiEndPoint: api.RestApi,
-                                                    cloudFrontDistributionProps?: cloudfront.CloudFrontWebDistributionProps | any,
-                                                    httpSecurityHeaders?: boolean): [cloudfront.CloudFrontWebDistribution,
+                                                    cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
+                                                    httpSecurityHeaders?: boolean): [cloudfront.Distribution,
                                                     lambda.Version?, s3.Bucket?] {
 
     const _httpSecurityHeaders = (httpSecurityHeaders !== undefined && httpSecurityHeaders === false) ? false : true;
 
-    let defaultprops: cloudfront.CloudFrontWebDistributionProps;
+    let defaultprops: cloudfront.DistributionProps;
     let edgeLambdaVersion;
     let loggingBucket;
 
@@ -119,7 +128,7 @@ export function CloudFrontDistributionForApiGateway(scope: cdk.Construct,
 
     const cfprops = cloudFrontDistributionProps ? overrideProps(defaultprops, cloudFrontDistributionProps) : defaultprops;
     // Create the Cloudfront Distribution
-    const cfDistribution: cloudfront.CloudFrontWebDistribution = new cloudfront.CloudFrontWebDistribution(scope, 'CloudFrontDistribution', cfprops);
+    const cfDistribution: cloudfront.Distribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
     updateSecurityPolicy(cfDistribution);
 
     return [cfDistribution, edgeLambdaVersion, loggingBucket];
@@ -127,24 +136,11 @@ export function CloudFrontDistributionForApiGateway(scope: cdk.Construct,
 
 export function CloudFrontDistributionForS3(scope: cdk.Construct,
                                             sourceBucket: s3.Bucket,
-                                            cloudFrontDistributionProps?: cloudfront.CloudFrontWebDistributionProps | any,
-                                            httpSecurityHeaders?: boolean): [cloudfront.CloudFrontWebDistribution,
+                                            cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
+                                            httpSecurityHeaders?: boolean): [cloudfront.Distribution,
                                             lambda.Version?, s3.Bucket?] {
 
-    // Create CloudFront Origin Access Identity User
-    const cfnOrigAccessId = new cloudfront.CfnCloudFrontOriginAccessIdentity(scope, 'CloudFrontOriginAccessIdentity', {
-        cloudFrontOriginAccessIdentityConfig: {
-            comment: 'Access S3 bucket content only through CloudFront'
-        }
-    });
-
-    const oaiImported = cloudfront.OriginAccessIdentity.fromOriginAccessIdentityName(
-        scope,
-        'OAIImported',
-        cfnOrigAccessId.ref
-    );
-
-    let defaultprops: cloudfront.CloudFrontWebDistributionProps;
+    let defaultprops: cloudfront.DistributionProps;
     let edgeLambdaVersion;
     let loggingBucket;
     const _httpSecurityHeaders = (httpSecurityHeaders !== undefined && httpSecurityHeaders === false) ? false : true;
@@ -157,26 +153,17 @@ export function CloudFrontDistributionForS3(scope: cdk.Construct,
 
     if (cloudFrontDistributionProps && cloudFrontDistributionProps.loggingConfig) {
         defaultprops = DefaultCloudFrontWebDistributionForS3Props(sourceBucket,
-            cloudFrontDistributionProps.loggingConfig.bucket, oaiImported, _httpSecurityHeaders,
-            edgeLambdaVersion);
+          cloudFrontDistributionProps.loggingConfig.bucket, _httpSecurityHeaders, edgeLambdaVersion);
     } else {
         loggingBucket = createLoggingBucket(scope, 'CloudfrontLoggingBucket');
         defaultprops = DefaultCloudFrontWebDistributionForS3Props(sourceBucket, loggingBucket,
-            oaiImported, _httpSecurityHeaders,
-            edgeLambdaVersion);
+          _httpSecurityHeaders, edgeLambdaVersion);
     }
 
     const cfprops = cloudFrontDistributionProps ? overrideProps(defaultprops, cloudFrontDistributionProps) : defaultprops;
     // Create the Cloudfront Distribution
-    const cfDistribution: cloudfront.CloudFrontWebDistribution = new cloudfront.CloudFrontWebDistribution(scope, 'CloudFrontDistribution', cfprops);
+    const cfDistribution: cloudfront.Distribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
     updateSecurityPolicy(cfDistribution);
-
-    // Add S3 Bucket Policy to allow s3:GetObject for CloudFront Origin Access Identity User
-    sourceBucket.addToResourcePolicy(new iam.PolicyStatement({
-        actions: ['s3:GetObject'],
-        resources: [sourceBucket.arnForObjects('*')],
-        principals: [new iam.CanonicalUserPrincipal(cfnOrigAccessId.attrS3CanonicalUserId)]
-    }));
 
     // Extract the CfnBucketPolicy from the sourceBucket
     const bucketPolicy = sourceBucket.policy as s3.BucketPolicy;

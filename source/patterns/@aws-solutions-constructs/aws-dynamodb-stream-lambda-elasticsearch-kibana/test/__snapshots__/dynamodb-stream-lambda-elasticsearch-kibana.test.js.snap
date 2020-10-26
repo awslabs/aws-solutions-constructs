@@ -234,20 +234,7 @@ Object {
             Object {
               "Action": "dynamodb:ListStreams",
               "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoTable9A779B83",
-                        "Arn",
-                      ],
-                    },
-                    "/stream/*",
-                  ],
-                ],
-              },
+              "Resource": "*",
             },
             Object {
               "Action": Array [

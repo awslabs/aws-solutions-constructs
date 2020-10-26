@@ -804,26 +804,13 @@
         }
       }
     },
-    "testcloudfrontapigatewayCloudFrontDistributionCFDistribution2270C4C1": {
+    "testcloudfrontapigatewayCloudFrontDistribution159820CC": {
       "Type": "AWS::CloudFront::Distribution",
       "Properties": {
         "DistributionConfig": {
           "DefaultCacheBehavior": {
-            "AllowedMethods": [
-              "GET",
-              "HEAD"
-            ],
-            "CachedMethods": [
-              "GET",
-              "HEAD"
-            ],
+            "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
             "Compress": true,
-            "ForwardedValues": {
-              "Cookies": {
-                "Forward": "none"
-              },
-              "QueryString": false
-            },
             "LambdaFunctionAssociations": [
               {
                 "EventType": "origin-response",
@@ -832,10 +819,9 @@
                 }
               }
             ],
-            "TargetOriginId": "origin1",
+            "TargetOriginId": "testcloudfrontapigatewaystacktestcloudfrontapigatewayCloudFrontDistributionOrigin1D5DE2087",
             "ViewerProtocolPolicy": "redirect-to-https"
           },
-          "DefaultRootObject": "index.html",
           "Enabled": true,
           "HttpVersion": "http2",
           "IPV6Enabled": true,
@@ -845,22 +831,12 @@
                 "testcloudfrontapigatewayCloudfrontLoggingBucket9811F6E8",
                 "DomainName"
               ]
-            },
-            "IncludeCookies": false
+            }
           },
           "Origins": [
             {
-              "ConnectionAttempts": 3,
-              "ConnectionTimeout": 10,
               "CustomOriginConfig": {
-                "HTTPPort": 80,
-                "HTTPSPort": 443,
-                "OriginKeepaliveTimeout": 5,
-                "OriginProtocolPolicy": "https-only",
-                "OriginReadTimeout": 30,
-                "OriginSSLProtocols": [
-                  "TLSv1.2"
-                ]
+                "OriginProtocolPolicy": "https-only"
               },
               "DomainName": {
                 "Fn::Select": [
@@ -906,7 +882,7 @@
                   }
                 ]
               },
-              "Id": "origin1",
+              "Id": "testcloudfrontapigatewaystacktestcloudfrontapigatewayCloudFrontDistributionOrigin1D5DE2087",
               "OriginPath": {
                 "Fn::Join": [
                   "",
@@ -919,11 +895,7 @@
                 ]
               }
             }
-          ],
-          "PriceClass": "PriceClass_100",
-          "ViewerCertificate": {
-            "CloudFrontDefaultCertificate": true
-          }
+          ]
         }
       },
       "Metadata": {

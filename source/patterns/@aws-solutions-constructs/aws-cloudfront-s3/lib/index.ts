@@ -38,7 +38,7 @@ export interface CloudFrontToS3Props {
    *
    * @default - Default props are used
    */
-  readonly cloudFrontDistributionProps?: cloudfront.CloudFrontWebDistributionProps | any,
+  readonly cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
   /**
    * Optional user provided props to turn on/off the automatic injection of best practice HTTP
    * security headers in all responses from cloudfront
@@ -49,7 +49,7 @@ export interface CloudFrontToS3Props {
 }
 
 export class CloudFrontToS3 extends Construct {
-    public readonly cloudFrontWebDistribution: cloudfront.CloudFrontWebDistribution;
+    public readonly cloudFrontWebDistribution: cloudfront.Distribution;
     public readonly edgeLambdaFunctionVersion?: lambda.Version;
     public readonly cloudFrontLoggingBucket?: s3.Bucket;
     public readonly s3Bucket?: s3.Bucket;

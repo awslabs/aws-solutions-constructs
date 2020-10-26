@@ -15,6 +15,7 @@
 import { App, Stack } from "@aws-cdk/core";
 import { KinesisFirehoseToS3 } from "../lib";
 import * as s3 from "@aws-cdk/aws-s3";
+import * as cdk from "@aws-cdk/core";
 
 // Setup
 const app = new App();
@@ -23,7 +24,16 @@ stack.templateOptions.description = 'Integration Test for aws-kinesisfirehose-s3
 
 const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', 'cdktoolkit-stagingbucket-1cjqz1mn5psg3');
 new KinesisFirehoseToS3(stack, 'test-firehose-s3-pre-existing-bucket-stack', {
-    existingBucketObj: mybucket
+    existingBucketObj: mybucket,
+    kinesisFirehoseProps: {
+        extendedS3DestinationConfiguration : {
+            encryptionConfiguration: {
+                kmsEncryptionConfig: {
+                    awskmsKeyArn: `arn:aws:kms:us-west-2:${cdk.Aws.ACCOUNT_ID}:alias/aws/s3`
+                }
+            }
+        }
+    }
 });
 
 // Synth

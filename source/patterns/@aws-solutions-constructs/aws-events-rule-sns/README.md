@@ -27,15 +27,18 @@ This AWS Solutions Construct implements an AWS Events rule and an AWS SNS Topic.
 Here is a minimal deployable pattern definition in Typescript:
 
 ``` typescript
-import { EventsRuleToSNSProps, EventsRuleToSNS } from "@aws-solutions-constructs/aws-events-rule-sns";
+import { Duration } from '@aws-cdk/core';
+import * as events from '@aws-cdk/aws-events';
+import * as iam from '@aws-cdk/aws-iam';
+import { EventsRuleToSnsProps, EventsRuleToSns } from "@aws-solutions-constructs/aws-events-rule-sns";
 
-const props: EventsRuleToSNSProps = {
+const props: EventsRuleToSnsProps = {
     eventRuleProps: {
       schedule: events.Schedule.rate(Duration.minutes(5)),
     }
 };
 
-const constructStack = new EventsRuleToSNS(this, 'test-events-rule-sns', props);
+const constructStack = new EventsRuleToSns(this, 'test-construct', props);
 
 // Grant yourself permissions to use the Customer Managed KMS Key
 const policyStatement = new iam.PolicyStatement({
@@ -51,14 +54,14 @@ constructStack.encryptionKey?.addToResourcePolicy(policyStatement);
 ## Initializer
 
 ``` text
-new EventsRuleToSNS(scope: Construct, id: string, props: EventsRuleToSNSProps);
+new EventsRuleToSns(scope: Construct, id: string, props: EventsRuleToSnsProps);
 ```
 
 _Parameters_
 
 * scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
 * id `string`
-* props [`EventsRuleToSNSProps`](#pattern-construct-props)
+* props [`EventsRuleToSnsProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

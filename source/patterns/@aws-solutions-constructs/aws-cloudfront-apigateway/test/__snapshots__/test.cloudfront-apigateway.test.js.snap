@@ -620,7 +620,7 @@ Object {
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "testcloudfrontapigatewayCloudFrontDistributionCFDistribution2270C4C1": Object {
+    "testcloudfrontapigatewayCloudFrontDistribution159820CC": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -634,21 +634,8 @@ Object {
       "Properties": Object {
         "DistributionConfig": Object {
           "DefaultCacheBehavior": Object {
-            "AllowedMethods": Array [
-              "GET",
-              "HEAD",
-            ],
-            "CachedMethods": Array [
-              "GET",
-              "HEAD",
-            ],
+            "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
             "Compress": true,
-            "ForwardedValues": Object {
-              "Cookies": Object {
-                "Forward": "none",
-              },
-              "QueryString": false,
-            },
             "LambdaFunctionAssociations": Array [
               Object {
                 "EventType": "origin-response",
@@ -657,10 +644,9 @@ Object {
                 },
               },
             ],
-            "TargetOriginId": "origin1",
+            "TargetOriginId": "testcloudfrontapigatewayCloudFrontDistributionOrigin1FA7A74D5",
             "ViewerProtocolPolicy": "redirect-to-https",
           },
-          "DefaultRootObject": "index.html",
           "Enabled": true,
           "HttpVersion": "http2",
           "IPV6Enabled": true,
@@ -671,21 +657,11 @@ Object {
                 "DomainName",
               ],
             },
-            "IncludeCookies": false,
           },
           "Origins": Array [
             Object {
-              "ConnectionAttempts": 3,
-              "ConnectionTimeout": 10,
               "CustomOriginConfig": Object {
-                "HTTPPort": 80,
-                "HTTPSPort": 443,
-                "OriginKeepaliveTimeout": 5,
                 "OriginProtocolPolicy": "https-only",
-                "OriginReadTimeout": 30,
-                "OriginSSLProtocols": Array [
-                  "TLSv1.2",
-                ],
               },
               "DomainName": Object {
                 "Fn::Select": Array [
@@ -731,7 +707,7 @@ Object {
                   },
                 ],
               },
-              "Id": "origin1",
+              "Id": "testcloudfrontapigatewayCloudFrontDistributionOrigin1FA7A74D5",
               "OriginPath": Object {
                 "Fn::Join": Array [
                   "",
@@ -745,10 +721,6 @@ Object {
               },
             },
           ],
-          "PriceClass": "PriceClass_100",
-          "ViewerCertificate": Object {
-            "CloudFrontDefaultCertificate": true,
-          },
         },
       },
       "Type": "AWS::CloudFront::Distribution",

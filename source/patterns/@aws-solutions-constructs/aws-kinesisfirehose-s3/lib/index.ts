@@ -19,6 +19,7 @@ import * as iam from '@aws-cdk/aws-iam';
 import { overrideProps } from '@aws-solutions-constructs/core';
 import * as logs from '@aws-cdk/aws-logs';
 import * as cdk from '@aws-cdk/core';
+import * as kms from '@aws-cdk/aws-kms';
 
 /**
  * The properties for the KinesisFirehoseToS3 class.
@@ -103,10 +104,12 @@ export class KinesisFirehoseToS3 extends Construct {
         // Attach policy to role
         firehosePolicy.attachToRole(this.kinesisFirehoseRole);
 
+        const awsManagedKey: kms.IKey = kms.Alias.fromAliasName(scope, 'aws-managed-key', 'alias/aws/s3');
+
         // Setup the default Kinesis Firehose props
         const defaultKinesisFirehoseProps: kinesisfirehose.CfnDeliveryStreamProps =
             defaults.DefaultCfnDeliveryStreamProps(bucket.bucketArn, this.kinesisFirehoseRole.roleArn,
-            this.kinesisFirehoseLogGroup.logGroupName, cwLogStream.logStreamName);
+            this.kinesisFirehoseLogGroup.logGroupName, cwLogStream.logStreamName, awsManagedKey);
 
         // Override with the input props
         if (props.kinesisFirehoseProps) {

@@ -12,6 +12,7 @@
  */
 
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
+import * as origins from '@aws-cdk/aws-cloudfront-origins';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as api from '@aws-cdk/aws-apigateway';
 import * as lambda from '@aws-cdk/aws-lambda';
@@ -20,91 +21,72 @@ import * as cdk from '@aws-cdk/core';
 export function DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint: api.RestApi,
                                                                    loggingBucket: s3.Bucket,
                                                                    setHttpSecurityHeaders: boolean,
-                                                                   edgeLambda?: lambda.Version): cloudfront.CloudFrontWebDistributionProps {
+                                                                   edgeLambda?: lambda.Version): cloudfront.DistributionProps {
 
     const apiEndPointUrlWithoutProtocol = cdk.Fn.select(1, cdk.Fn.split("://", apiEndPoint.url));
     const apiEndPointDomainName = cdk.Fn.select(0, cdk.Fn.split("/", apiEndPointUrlWithoutProtocol));
 
     if (setHttpSecurityHeaders) {
         return {
-            originConfigs: [{
-                customOriginSource: {
-                    domainName: apiEndPointDomainName
-                },
-                behaviors: [{
-                    isDefaultBehavior: true,
-                    lambdaFunctionAssociations: [
-                        {
-                            eventType: cloudfront.LambdaEdgeEventType.ORIGIN_RESPONSE,
-                            lambdaFunction: edgeLambda
-                        }
+            defaultBehavior: {
+                    origin: new origins.HttpOrigin(apiEndPointDomainName, {
+                        originPath: `/${apiEndPoint.deploymentStage.stageName}`
+                    }),
+                    edgeLambdas: [
+                            {
+                                eventType: cloudfront.LambdaEdgeEventType.ORIGIN_RESPONSE,
+                                functionVersion: edgeLambda
+                            }
                     ],
-                }],
-                originPath: `/${apiEndPoint.deploymentStage.stageName}`
-            }],
-            loggingConfig: {
-                bucket: loggingBucket
-            }
-        } as cloudfront.CloudFrontWebDistributionProps;
+                    viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS
+                },
+                enableLogging: true,
+                logBucket: loggingBucket,
+                } as cloudfront.DistributionProps;
     } else {
         return {
-            originConfigs: [{
-                customOriginSource: {
-                    domainName: apiEndPointDomainName
-                },
-                behaviors: [{
-                    isDefaultBehavior: true
-                }],
-                originPath: `/${apiEndPoint.deploymentStage.stageName}`
-            }],
-            loggingConfig: {
-                bucket: loggingBucket
-            }
-        } as cloudfront.CloudFrontWebDistributionProps;
+            defaultBehavior: {
+                origin: new origins.HttpOrigin(apiEndPointDomainName, {
+                    originPath: `/${apiEndPoint.deploymentStage.stageName}`
+                }),
+                viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS
+            },
+            enableLogging: true,
+            logBucket: loggingBucket,
+            } as cloudfront.DistributionProps;
     }
 }
 
 export function DefaultCloudFrontWebDistributionForS3Props(sourceBucket: s3.Bucket, loggingBucket: s3.Bucket,
-                                                           _originAccessIdentity: cloudfront.IOriginAccessIdentity,
                                                            setHttpSecurityHeaders: boolean,
                                                            edgeLambda?: lambda.Version):
-                                                           cloudfront.CloudFrontWebDistributionProps {
+                                                           cloudfront.DistributionProps {
 
     if (setHttpSecurityHeaders) {
         return {
-            originConfigs: [{
-                s3OriginSource: {
-                    s3BucketSource: sourceBucket,
-                    originAccessIdentity: _originAccessIdentity
-                },
-                behaviors: [{
-                    isDefaultBehavior: true,
-                    lambdaFunctionAssociations: [
-                        {
-                            eventType: cloudfront.LambdaEdgeEventType.ORIGIN_RESPONSE,
-                            lambdaFunction: edgeLambda
-                        }
-                    ]
-                }]
-            }],
-            loggingConfig: {
-                bucket: loggingBucket
-            }
-        } as cloudfront.CloudFrontWebDistributionProps;
+            defaultBehavior: {
+                origin: new origins.S3Origin(sourceBucket),
+                edgeLambdas: [
+                    {
+                        eventType: cloudfront.LambdaEdgeEventType.ORIGIN_RESPONSE,
+                        functionVersion: edgeLambda
+                    }
+                ],
+                viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS
+            },
+            enableLogging: true,
+            logBucket: loggingBucket,
+            defaultRootObject: 'index.html'
+            } as cloudfront.DistributionProps;
     } else {
         return {
-            originConfigs: [ {
-                s3OriginSource: {
-                    s3BucketSource: sourceBucket,
-                    originAccessIdentity: _originAccessIdentity
-                },
-                behaviors: [ {
-                        isDefaultBehavior: true,
-                    } ]
-            } ],
-            loggingConfig: {
-                bucket: loggingBucket
-            }
-        } as cloudfront.CloudFrontWebDistributionProps;
+            defaultBehavior: {
+                origin: new origins.S3Origin(sourceBucket),
+                viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS
+            },
+            enableLogging: true,
+            logBucket: loggingBucket,
+            defaultRootObject: 'index.html'
+        } as cloudfront.DistributionProps;
     }
 }

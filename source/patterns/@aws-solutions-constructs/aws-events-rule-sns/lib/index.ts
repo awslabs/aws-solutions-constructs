@@ -19,7 +19,7 @@ import { Construct } from '@aws-cdk/core';
 import { overrideProps } from '@aws-solutions-constructs/core';
 import { ServicePrincipal } from '@aws-cdk/aws-iam';
 
-export interface EventsRuleToSNSProps {
+export interface EventsRuleToSnsProps {
     /**
      * User provided props to override the default props for the SNS Topic.
      *
@@ -59,7 +59,7 @@ export interface EventsRuleToSNSProps {
     readonly encryptionKeyProps?: kms.KeyProps
 }
 
-export class EventsRuleToSNS extends Construct {
+export class EventsRuleToSns extends Construct {
     public readonly snsTopic: sns.Topic;
     public readonly eventsRule: events.Rule;
     public readonly encryptionKey?: kms.Key;
@@ -68,11 +68,11 @@ export class EventsRuleToSNS extends Construct {
      * @summary Constructs a new instance of the EventRuleToSns class.
      * @param {cdk.App} scope - represents the scope for all the resources.
      * @param {string} id - this is a a scope-unique id.
-     * @param {EventsRuleToSNSProps} props - user provided props for the construct.
+     * @param {EventsRuleToSnsProps} props - user provided props for the construct.
      * @since 1.62.0
      * @access public
      */
-    constructor(scope: Construct, id: string, props: EventsRuleToSNSProps) {
+    constructor(scope: Construct, id: string, props: EventsRuleToSnsProps) {
         super(scope, id);
 
         let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
