@@ -84,7 +84,7 @@ _Parameters_
 Out-of-the-box implementation of this Construct (without any overridden properties) will adhere to the following defaults:
 
 ### AWS Lambda Functions
-* Configure least privilege access IAM role for Lambda functions.
+* Configure limited privilege access IAM role for Lambda functions.
 * Enable reusing connections with Keep-Alive for NodeJs Lambda functions.
 * Enable X-Ray Tracing
 

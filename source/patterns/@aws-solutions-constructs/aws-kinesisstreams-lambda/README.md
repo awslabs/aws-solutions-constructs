@@ -85,7 +85,7 @@ Out of the box implementation of the Construct without any override will set the
 * Deploy best practices CloudWatch Alarms for the Kinesis Stream
 
 ### AWS Lambda Function
-* Configure least privilege access IAM role for Lambda function
+* Configure limited privilege access IAM role for Lambda function
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
 * Enable X-Ray Tracing
 * Enable Failure-Handling features like enable bisect on function Error, set defaults for Maximum Record Age (24 hours) & Maximum Retry Attempts (500) and deploy SQS dead-letter queue as destination on failure

@@ -79,7 +79,7 @@ Object {
             "Bucket": Object {
               "Fn::GetAtt": Array [
                 "CloudfrontLoggingBucket3C3EFAA7",
-                "DomainName",
+                "RegionalDomainName",
               ],
             },
           },
@@ -849,7 +849,7 @@ Object {
             "Bucket": Object {
               "Fn::GetAtt": Array [
                 "CloudfrontLoggingBucket3C3EFAA7",
-                "DomainName",
+                "RegionalDomainName",
               ],
             },
           },

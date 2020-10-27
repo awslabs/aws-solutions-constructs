@@ -12,7 +12,7 @@ Object {
             Object {
               "Fn::GetAtt": Array [
                 "CloudFrontToS3CloudFrontDistributionCFDistribution7EEEEF4E",
-                "DomainName",
+                "RegionalDomainName",
               ],
             },
           ],
@@ -95,7 +95,7 @@ Object {
             "Bucket": Object {
               "Fn::GetAtt": Array [
                 "CloudFrontToS3CloudfrontLoggingBucket8350BE9B",
-                "DomainName",
+                "RegionalDomainName",
               ],
             },
             "IncludeCookies": false,

@@ -103,7 +103,7 @@ test('test cloudfront for Api Gateway with user provided logging bucket', () => 
         Bucket: {
           "Fn::GetAtt": [
             "MyCloudfrontLoggingBucket9AA652E8",
-            "DomainName"
+            "RegionalDomainName"
           ]
         }
       },
@@ -238,7 +238,7 @@ test('test cloudfront for Api Gateway override properties', () => {
         Bucket: {
           "Fn::GetAtt": [
             "CloudfrontLoggingBucket3C3EFAA7",
-            "DomainName"
+            "RegionalDomainName"
           ]
         }
       },

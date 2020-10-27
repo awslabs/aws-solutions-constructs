@@ -348,7 +348,7 @@
             "Bucket": {
               "Fn::GetAtt": [
                 "CloudFrontToS3CloudfrontLoggingBucket8350BE9B",
-                "DomainName"
+                "RegionalDomainName"
               ]
             },
             "IncludeCookies": false
@@ -724,7 +724,7 @@
             {
               "Fn::GetAtt": [
                 "CloudFrontToS3CloudFrontDistributionCFDistribution7EEEEF4E",
-                "DomainName"
+                "RegionalDomainName"
               ]
             }
           ]

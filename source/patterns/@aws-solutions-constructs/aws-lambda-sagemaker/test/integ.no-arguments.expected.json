@@ -1,0 +1,1093 @@
+{
+  "Resources": {
+    "testlambdasagemakerstackSagemakerRole76D42313": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "sagemaker.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "testlambdasagemakerstackSagemakerRoleDefaultPolicyB76B81C5": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "sagemaker:CreateTrainingJob",
+                "sagemaker:DescribeTrainingJob",
+                "sagemaker:CreateModel",
+                "sagemaker:DescribeModel",
+                "sagemaker:DeleteModel",
+                "sagemaker:CreateEndpoint",
+                "sagemaker:CreateEndpointConfig",
+                "sagemaker:DescribeEndpoint",
+                "sagemaker:DescribeEndpointConfig",
+                "sagemaker:DeleteEndpoint",
+                "sagemaker:DeleteEndpointConfig",
+                "sagemaker:InvokeEndpoint"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":sagemaker:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:DescribeLogStreams",
+                "logs:GetLogEvents",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":logs:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":log-group:/aws/sagemaker/*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": "iam:GetRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testlambdasagemakerstackSagemakerRole76D42313",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "iam:PassRole",
+              "Condition": {
+                "StringLike": {
+                  "iam:PassedToService": "sagemaker.amazonaws.com"
+                }
+              },
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testlambdasagemakerstackSagemakerRole76D42313",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testlambdasagemakerstackSagemakerRoleDefaultPolicyB76B81C5",
+        "Roles": [
+          {
+            "Ref": "testlambdasagemakerstackSagemakerRole76D42313"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackEncryptionKeyF242E80B": {
+      "Type": "AWS::KMS::Key",
+      "Properties": {
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion",
+                "kms:GenerateDataKey",
+                "kms:TagResource",
+                "kms:UntagResource"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              },
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "EnableKeyRotation": true
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "testlambdasagemakerstackVpcC02CE4FE": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackVpcPublicSubnet1Subnet17E21597": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/19",
+        "VpcId": {
+          "Ref": "testlambdasagemakerstackVpcC02CE4FE"
+        },
+        "AvailabilityZone": "test-region-1a",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/PublicSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W33",
+              "reason": "Allow Public Subnets to have MapPublicIpOnLaunch set to true"
+            }
+          ]
+        }
+      }
+    },
+    "testlambdasagemakerstackVpcPublicSubnet1RouteTable864FCCC1": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "testlambdasagemakerstackVpcC02CE4FE"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/PublicSubnet1"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackVpcPublicSubnet1RouteTableAssociationC312AEBD": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "testlambdasagemakerstackVpcPublicSubnet1RouteTable864FCCC1"
+        },
+        "SubnetId": {
+          "Ref": "testlambdasagemakerstackVpcPublicSubnet1Subnet17E21597"
+        }
+      }
+    },
+    "testlambdasagemakerstackVpcPublicSubnet1DefaultRouteB07BD7C6": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "testlambdasagemakerstackVpcPublicSubnet1RouteTable864FCCC1"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "testlambdasagemakerstackVpcIGW4B31803C"
+        }
+      },
+      "DependsOn": [
+        "testlambdasagemakerstackVpcVPCGW13EDE857"
+      ]
+    },
+    "testlambdasagemakerstackVpcPublicSubnet1EIPA0236B29": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/PublicSubnet1"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackVpcPublicSubnet1NATGatewayF35EB57E": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "testlambdasagemakerstackVpcPublicSubnet1EIPA0236B29",
+            "AllocationId"
+          ]
+        },
+        "SubnetId": {
+          "Ref": "testlambdasagemakerstackVpcPublicSubnet1Subnet17E21597"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/PublicSubnet1"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackVpcPublicSubnet2Subnet9AF8B8EB": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.32.0/19",
+        "VpcId": {
+          "Ref": "testlambdasagemakerstackVpcC02CE4FE"
+        },
+        "AvailabilityZone": "test-region-1b",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/PublicSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W33",
+              "reason": "Allow Public Subnets to have MapPublicIpOnLaunch set to true"
+            }
+          ]
+        }
+      }
+    },
+    "testlambdasagemakerstackVpcPublicSubnet2RouteTableB307B26F": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "testlambdasagemakerstackVpcC02CE4FE"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/PublicSubnet2"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackVpcPublicSubnet2RouteTableAssociationEF8B144C": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "testlambdasagemakerstackVpcPublicSubnet2RouteTableB307B26F"
+        },
+        "SubnetId": {
+          "Ref": "testlambdasagemakerstackVpcPublicSubnet2Subnet9AF8B8EB"
+        }
+      }
+    },
+    "testlambdasagemakerstackVpcPublicSubnet2DefaultRoute1F54D32E": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "testlambdasagemakerstackVpcPublicSubnet2RouteTableB307B26F"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "testlambdasagemakerstackVpcIGW4B31803C"
+        }
+      },
+      "DependsOn": [
+        "testlambdasagemakerstackVpcVPCGW13EDE857"
+      ]
+    },
+    "testlambdasagemakerstackVpcPublicSubnet2EIP088F0374": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/PublicSubnet2"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackVpcPublicSubnet2NATGatewayE2B3A3E3": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "testlambdasagemakerstackVpcPublicSubnet2EIP088F0374",
+            "AllocationId"
+          ]
+        },
+        "SubnetId": {
+          "Ref": "testlambdasagemakerstackVpcPublicSubnet2Subnet9AF8B8EB"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/PublicSubnet2"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackVpcPublicSubnet3Subnet03785636": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.64.0/19",
+        "VpcId": {
+          "Ref": "testlambdasagemakerstackVpcC02CE4FE"
+        },
+        "AvailabilityZone": "test-region-1c",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/PublicSubnet3"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W33",
+              "reason": "Allow Public Subnets to have MapPublicIpOnLaunch set to true"
+            }
+          ]
+        }
+      }
+    },
+    "testlambdasagemakerstackVpcPublicSubnet3RouteTable700BE040": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "testlambdasagemakerstackVpcC02CE4FE"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/PublicSubnet3"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackVpcPublicSubnet3RouteTableAssociation31C7703C": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "testlambdasagemakerstackVpcPublicSubnet3RouteTable700BE040"
+        },
+        "SubnetId": {
+          "Ref": "testlambdasagemakerstackVpcPublicSubnet3Subnet03785636"
+        }
+      }
+    },
+    "testlambdasagemakerstackVpcPublicSubnet3DefaultRoute264ED179": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "testlambdasagemakerstackVpcPublicSubnet3RouteTable700BE040"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "testlambdasagemakerstackVpcIGW4B31803C"
+        }
+      },
+      "DependsOn": [
+        "testlambdasagemakerstackVpcVPCGW13EDE857"
+      ]
+    },
+    "testlambdasagemakerstackVpcPublicSubnet3EIP244604DC": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/PublicSubnet3"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackVpcPublicSubnet3NATGatewayD996662E": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "testlambdasagemakerstackVpcPublicSubnet3EIP244604DC",
+            "AllocationId"
+          ]
+        },
+        "SubnetId": {
+          "Ref": "testlambdasagemakerstackVpcPublicSubnet3Subnet03785636"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/PublicSubnet3"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackVpcPrivateSubnet1SubnetE50027C5": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.96.0/19",
+        "VpcId": {
+          "Ref": "testlambdasagemakerstackVpcC02CE4FE"
+        },
+        "AvailabilityZone": "test-region-1a",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private"
+          },
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/PrivateSubnet1"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackVpcPrivateSubnet1RouteTableAAA72A68": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "testlambdasagemakerstackVpcC02CE4FE"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/PrivateSubnet1"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackVpcPrivateSubnet1RouteTableAssociationC5E2D07B": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "testlambdasagemakerstackVpcPrivateSubnet1RouteTableAAA72A68"
+        },
+        "SubnetId": {
+          "Ref": "testlambdasagemakerstackVpcPrivateSubnet1SubnetE50027C5"
+        }
+      }
+    },
+    "testlambdasagemakerstackVpcPrivateSubnet1DefaultRoute3145E33E": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "testlambdasagemakerstackVpcPrivateSubnet1RouteTableAAA72A68"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "testlambdasagemakerstackVpcPublicSubnet1NATGatewayF35EB57E"
+        }
+      }
+    },
+    "testlambdasagemakerstackVpcPrivateSubnet2Subnet35AA819B": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.128.0/19",
+        "VpcId": {
+          "Ref": "testlambdasagemakerstackVpcC02CE4FE"
+        },
+        "AvailabilityZone": "test-region-1b",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private"
+          },
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/PrivateSubnet2"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackVpcPrivateSubnet2RouteTable6FA4EFAF": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "testlambdasagemakerstackVpcC02CE4FE"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/PrivateSubnet2"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackVpcPrivateSubnet2RouteTableAssociation869BD1E4": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "testlambdasagemakerstackVpcPrivateSubnet2RouteTable6FA4EFAF"
+        },
+        "SubnetId": {
+          "Ref": "testlambdasagemakerstackVpcPrivateSubnet2Subnet35AA819B"
+        }
+      }
+    },
+    "testlambdasagemakerstackVpcPrivateSubnet2DefaultRouteBC917AE4": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "testlambdasagemakerstackVpcPrivateSubnet2RouteTable6FA4EFAF"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "testlambdasagemakerstackVpcPublicSubnet2NATGatewayE2B3A3E3"
+        }
+      }
+    },
+    "testlambdasagemakerstackVpcPrivateSubnet3Subnet03C6E4C1": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.160.0/19",
+        "VpcId": {
+          "Ref": "testlambdasagemakerstackVpcC02CE4FE"
+        },
+        "AvailabilityZone": "test-region-1c",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private"
+          },
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/PrivateSubnet3"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackVpcPrivateSubnet3RouteTable0C4620B5": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "testlambdasagemakerstackVpcC02CE4FE"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc/PrivateSubnet3"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackVpcPrivateSubnet3RouteTableAssociation14BD8356": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "testlambdasagemakerstackVpcPrivateSubnet3RouteTable0C4620B5"
+        },
+        "SubnetId": {
+          "Ref": "testlambdasagemakerstackVpcPrivateSubnet3Subnet03C6E4C1"
+        }
+      }
+    },
+    "testlambdasagemakerstackVpcPrivateSubnet3DefaultRoute552DC925": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "testlambdasagemakerstackVpcPrivateSubnet3RouteTable0C4620B5"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "testlambdasagemakerstackVpcPublicSubnet3NATGatewayD996662E"
+        }
+      }
+    },
+    "testlambdasagemakerstackVpcIGW4B31803C": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackVpcVPCGW13EDE857": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": {
+          "Ref": "testlambdasagemakerstackVpcC02CE4FE"
+        },
+        "InternetGatewayId": {
+          "Ref": "testlambdasagemakerstackVpcIGW4B31803C"
+        }
+      }
+    },
+    "testlambdasagemakerstackVpcFlowLogIAMRoleE951637C": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "vpc-flow-logs.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackVpcFlowLogIAMRoleDefaultPolicyD372C1F0": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:DescribeLogStreams"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testlambdasagemakerstackVpcFlowLogLogGroupECD3E6E4",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "iam:PassRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testlambdasagemakerstackVpcFlowLogIAMRoleE951637C",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testlambdasagemakerstackVpcFlowLogIAMRoleDefaultPolicyD372C1F0",
+        "Roles": [
+          {
+            "Ref": "testlambdasagemakerstackVpcFlowLogIAMRoleE951637C"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackVpcFlowLogLogGroupECD3E6E4": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "RetentionInDays": 731
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "testlambdasagemakerstackVpcFlowLog8144C749": {
+      "Type": "AWS::EC2::FlowLog",
+      "Properties": {
+        "ResourceId": {
+          "Ref": "testlambdasagemakerstackVpcC02CE4FE"
+        },
+        "ResourceType": "VPC",
+        "TrafficType": "ALL",
+        "DeliverLogsPermissionArn": {
+          "Fn::GetAtt": [
+            "testlambdasagemakerstackVpcFlowLogIAMRoleE951637C",
+            "Arn"
+          ]
+        },
+        "LogDestinationType": "cloud-watch-logs",
+        "LogGroupName": {
+          "Ref": "testlambdasagemakerstackVpcFlowLogLogGroupECD3E6E4"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/Vpc"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackSecurityGroupA3CACF23": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "test-lambda-sagemaker-stack/test-lambda-sagemaker-stack/SecurityGroup",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "from 0.0.0.0/0:443",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443
+          }
+        ],
+        "VpcId": {
+          "Ref": "testlambdasagemakerstackVpcC02CE4FE"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W5",
+              "reason": "Allow notebook users to access the Internet from the notebook"
+            }
+          ]
+        }
+      }
+    },
+    "testlambdasagemakerstackSagemakerNotebook9A2099B0": {
+      "Type": "AWS::SageMaker::NotebookInstance",
+      "Properties": {
+        "InstanceType": "ml.t2.medium",
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "testlambdasagemakerstackSagemakerRole76D42313",
+            "Arn"
+          ]
+        },
+        "DirectInternetAccess": "Disabled",
+        "KmsKeyId": {
+          "Ref": "testlambdasagemakerstackEncryptionKeyF242E80B"
+        },
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "testlambdasagemakerstackSecurityGroupA3CACF23",
+              "GroupId"
+            ]
+          }
+        ],
+        "SubnetId": {
+          "Ref": "testlambdasagemakerstackVpcPrivateSubnet1SubnetE50027C5"
+        }
+      }
+    },
+    "testlambdasagemakerstackLambdaFunctionServiceRole46BF6945": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":log-group:/aws/lambda/*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy"
+          }
+        ]
+      }
+    },
+    "testlambdasagemakerstackLambdaFunctionServiceRoleDefaultPolicy50A7D3F6": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testlambdasagemakerstackLambdaFunctionServiceRoleDefaultPolicy50A7D3F6",
+        "Roles": [
+          {
+            "Ref": "testlambdasagemakerstackLambdaFunctionServiceRole46BF6945"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray."
+            }
+          ]
+        }
+      }
+    },
+    "testlambdasagemakerstackLambdaFunction9ACA360F": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "AssetParameters50c19841308501b4ad09b060159161be80516f28a324405b8b67ee9d9f6bf19bS3Bucket755D82D7"
+          },
+          "S3Key": {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Fn::Select": [
+                    0,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParameters50c19841308501b4ad09b060159161be80516f28a324405b8b67ee9d9f6bf19bS3VersionKeyC58BBBDE"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Fn::Select": [
+                    1,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParameters50c19841308501b4ad09b060159161be80516f28a324405b8b67ee9d9f6bf19bS3VersionKeyC58BBBDE"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            ]
+          }
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testlambdasagemakerstackLambdaFunctionServiceRole46BF6945",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs10.x",
+        "Environment": {
+          "Variables": {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+          }
+        },
+        "TracingConfig": {
+          "Mode": "Active"
+        }
+      },
+      "DependsOn": [
+        "testlambdasagemakerstackLambdaFunctionServiceRoleDefaultPolicy50A7D3F6",
+        "testlambdasagemakerstackLambdaFunctionServiceRole46BF6945"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions."
+            }
+          ]
+        }
+      }
+    },
+    "testlambdasagemakerstackLambdaFunctionPolicy8DC8C861": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sagemaker:InvokeEndpoint",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":sagemaker:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":endpoint/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testlambdasagemakerstackLambdaFunctionPolicy8DC8C861",
+        "Roles": [
+          {
+            "Ref": "testlambdasagemakerstackLambdaFunctionServiceRole46BF6945"
+          }
+        ]
+      }
+    }
+  },
+  "Parameters": {
+    "AssetParameters50c19841308501b4ad09b060159161be80516f28a324405b8b67ee9d9f6bf19bS3Bucket755D82D7": {
+      "Type": "String",
+      "Description": "S3 bucket for asset \"50c19841308501b4ad09b060159161be80516f28a324405b8b67ee9d9f6bf19b\""
+    },
+    "AssetParameters50c19841308501b4ad09b060159161be80516f28a324405b8b67ee9d9f6bf19bS3VersionKeyC58BBBDE": {
+      "Type": "String",
+      "Description": "S3 key for asset version \"50c19841308501b4ad09b060159161be80516f28a324405b8b67ee9d9f6bf19b\""
+    },
+    "AssetParameters50c19841308501b4ad09b060159161be80516f28a324405b8b67ee9d9f6bf19bArtifactHash102890AC": {
+      "Type": "String",
+      "Description": "Artifact hash for asset \"50c19841308501b4ad09b060159161be80516f28a324405b8b67ee9d9f6bf19b\""
+    }
+  }
+}

@@ -83,7 +83,7 @@ Out of the box implementation of the Construct without any override will set the
 * Applies Lifecycle rule to move noncurrent object versions to Glacier storage after 90 days
 
 ### AWS Lambda Function
-* Configure least privilege access IAM role for Lambda function
+* Configure limited privilege access IAM role for Lambda function
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
 * Enable X-Ray Tracing
 

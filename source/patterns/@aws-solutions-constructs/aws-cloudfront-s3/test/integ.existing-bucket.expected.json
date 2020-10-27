@@ -491,7 +491,7 @@
             "Bucket": {
               "Fn::GetAtt": [
                 "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
-                "DomainName"
+                "RegionalDomainName"
               ]
             }
           },
@@ -575,6 +575,7 @@
               "CookieBehavior": "none"
             },
             "EnableAcceptEncodingGzip": false,
+            "EnableAcceptEncodingBrotli": false,
             "HeadersConfig": {
               "HeaderBehavior": "none"
             },

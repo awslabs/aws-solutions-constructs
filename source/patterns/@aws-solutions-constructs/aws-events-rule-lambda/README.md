@@ -78,7 +78,7 @@ Out of the box implementation of the Construct without any override will set the
 * Grant least privilege permissions to CloudWatch Events to trigger the Lambda Function
 
 ### AWS Lambda Function
-* Configure least privilege access IAM role for Lambda function
+* Configure limited privilege access IAM role for Lambda function
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
 * Enable X-Ray Tracing
 

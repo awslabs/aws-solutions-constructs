@@ -14,6 +14,7 @@
               "CookieBehavior": "none"
             },
             "EnableAcceptEncodingGzip": false,
+            "EnableAcceptEncodingBrotli": false,
             "HeadersConfig": {
               "HeaderBehavior": "none"
             },
@@ -37,6 +38,7 @@
               "CookieBehavior": "none"
             },
             "EnableAcceptEncodingGzip": false,
+            "EnableAcceptEncodingBrotli": false,
             "HeadersConfig": {
               "HeaderBehavior": "none"
             },
@@ -801,7 +803,7 @@
             "Bucket": {
               "Fn::GetAtt": [
                 "cfapilambdaoverrideCloudFrontToApiGatewayCloudfrontLoggingBucket3A71B9E0",
-                "DomainName"
+                "RegionalDomainName"
               ]
             }
           },
