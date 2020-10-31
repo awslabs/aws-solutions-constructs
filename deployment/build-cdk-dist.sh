@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-deployment_dir="$PWD"
+deployment_dir=$(cd $(dirname $0) && pwd)
 source_dir="$deployment_dir/../source"
 dist_dir="$deployment_dir/dist"
 
@@ -9,9 +9,6 @@ cd $source_dir/
 export PATH=$(npm bin):$PATH
 export NODE_OPTIONS="--max-old-space-size=4096 ${NODE_OPTIONS:-}"
 
-echo "============================================================================================="
-echo "packaging..."
-time lerna run --bail --stream jsii-pacmak || fail
 cd $deployment_dir/
 
 echo "------------------------------------------------------------------------------"

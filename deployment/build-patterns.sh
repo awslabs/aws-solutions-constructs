@@ -1,8 +1,12 @@
 #!/bin/bash
 set -euo pipefail
 
-deployment_dir="$PWD"
+deployment_dir=$(cd $(dirname $0) && pwd)
 source_dir="$deployment_dir/../source"
+
+echo "============================================================================================="
+echo "aligning versions..."
+/bin/bash $deployment_dir/align-version.sh
 
 echo "============================================================================================="
 echo "building cdk-integ-tools..."
@@ -25,3 +29,11 @@ yarn install --frozen-lockfile
 echo "============================================================================================="
 echo "building..."
 time lerna run $bail --stream $runtarget || fail
+
+echo "============================================================================================="
+echo "packaging..."
+time lerna run --bail --stream jsii-pacmak || fail
+
+echo "============================================================================================="
+echo "reverting back versions..."
+/bin/bash $deployment_dir/align-version.sh revert

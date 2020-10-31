@@ -176,13 +176,22 @@ GitHub provides additional document on [forking a repository](https://help.githu
 
 ## Building Pattern(s)
 
+### Versioning
+
+All `package.json` files in this repo use a stable marker version of `0.0.0`. This means that when you declare dependencies, you should always use `0.0.0`. This makes it easier for us to bump a new version and also reduces the chance of merge conflicts after a new version is released.
+
+Additional scripts that take part in the versioning mechanism:
+
+- `deployment/get-version.js` can be used to obtain the actual version of the repo. You can use either from JavaScript code by `require('./deployment/get-version')` or from a shell script `node -p "require('./deployment/get-version')"`.
+- `deployment/get-version-marker.js` returns `0.0.0` and used to DRY the version marker.
+- `deployment/align-version.sh` and `deployment/align-version.js` are used to align all package.json files in the repo to the official version. This script is invoked in from `build-patterns.sh`, first time before the build process to replace the versions from marker version (`0.0.0`) to the release version e.g. `1.71.0` and then the second time at the end of the build process to revert the versions back from release version e.g. `1.71.0` to marker version (`0.0.0`).
+
 ### Full Build
 
 ```console
 $ cd <root-of-aws-solutions-constructs-repo>
 $ docker run --rm --net=host -it -v $PWD:$PWD -w $PWD jsii/superchain
-docker$ cd deployment
-docker$ ./build-patterns.sh
+docker$ ./deployment/build-patterns.sh
 docker$ exit
 ```
 
@@ -193,10 +202,12 @@ First run a clean Full Build before doing the partial build.
 ```console
 $ cd <root-of-aws-solutions-constructs-repo>
 $ docker run --rm --net=host -it -v $PWD:$PWD -w $PWD jsii/superchain
+docker$ ./deployment/align-version.sh
 docker$ cd source
 docker$ export PATH=$(npm bin):$PATH
 docker$ cd patterns/@aws-solutions-constructs/my-module
 docker$ npm run build+lint+test
+docker$ ../../../../deployment/align-version.sh revert
 docker$ exit
 ```
 

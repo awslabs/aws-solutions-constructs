@@ -1,10 +1,13 @@
-# Change Log
-All notable changes to this project will be documented in this file.
+# Changelog
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [1.70.0] - 2020-10-26
+## 1.71.0 (2020-10-30)
+
+### Changed
+- Upgraded all patterns to CDK v1.71.0
+
+## 1.70.0 (2020-10-26)
 
 ### Added
 - aws-events-rule-kinesisstreams pattern added ([#59](https://github.com/awslabs/aws-solutions-constructs/issues/59))
@@ -14,13 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Upgraded all patterns to CDK v1.70.0
 
-## [1.69.0] - 2020-10-21
+## 1.69.0 (2020-10-21)
 
 ### Changed
 - Upgraded all patterns to CDK v1.69.0
 - BREAKING CHANGE: Updated `aws-events-rule-sns` and `aws-events-rule-sqs` patterns to use pascal case for class and interface names
 
-## [1.68.0] - 2020-10-16
+## 1.68.0 (2020-10-16)
 
 ### Added
 - aws-kinesisstreams-kinesisfirehose-s3 pattern added ([#74](https://github.com/awslabs/aws-solutions-constructs/issues/74))
@@ -30,13 +33,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgraded all patterns to CDK v1.68.0
 - BREAKING CHANGE: For All `aws-cloudfront-*` patterns, changed the underlying CloudFront L2 construct from `CloudFrontWebDistribution` to `Distribution`
 
-## [1.67.0] - 2020-10-09
+## 1.67.0 (2020-10-09)
 
 ### Changed
 - Upgraded all patterns to CDK v1.67.0
 - Make CloudWatch alarm creation optional ([#85](https://github.com/awslabs/aws-solutions-constructs/issues/85))
 
-## [1.66.0] - 2020-10-06
+## 1.66.0 (2020-10-06)
 
 ### Added
 - aws-apigateway-iot pattern added ([#61](https://github.com/awslabs/aws-solutions-constructs/issues/61))
@@ -46,18 +49,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update `aws-dynamodb-stream-lambda` to add AWS Lambda support for Failure-Handling Features for DynamoDB Event Source ([#79](https://github.com/awslabs/aws-solutions-constructs/issues/79))
 - Update `aws-kinesisstreams-lambda` to add AWS Lambda support for Failure-Handling Features for Kinesis Event Source ([#78](https://github.com/awslabs/aws-solutions-constructs/issues/78))
 
-## [1.65.0] - 2020-10-01
+## 1.65.0 (2020-10-01)
 
 ### Changed
 - Upgraded all patterns to CDK v1.65.0
 
-## [1.64.1] - 2020-09-26
+## 1.64.1 (2020-09-26)
 
 ### Changed
 - Upgraded all patterns to CDK v1.64.1
 - Fix for *-S3-* patterns breaking when bucket versioning is turned off ([#80](https://github.com/awslabs/aws-solutions-constructs/issues/80))
 
-## [1.64.0] - 2020-09-24
+## 1.64.0 (2020-09-24)
 
 ### Changed
 - Upgraded all patterns to CDK v1.64.0
@@ -71,14 +74,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix ALL SQS patterns to not create DLQ when user provides the `existingQueueObj`
 - Update `aws-sqs-lambda` pattern to allow for overriding `sqsEventSourceProps`
 
-## [1.63.0] - 2020-09-14
+## 1.63.0 (2020-09-14)
 
 ### Changed
 - Upgraded all patterns to CDK v1.63.0
 - BREAKING CHANGE: For `aws-kinesisstreams-lambda` pattern, changed construct prop from `eventSourceProps?: lambda.EventSourceMappingOptions | any` to `kinesisEventSourceProps?: KinesisEventSourceProps`
 - Allow for `existingStreamObj?` for `aws-kinesisstreams-lambda` pattern ([#58](https://github.com/awslabs/aws-solutions-constructs/issues/58))
 
-## [1.62.0] - 2020-09-09
+## 1.62.0 (2020-09-09)
 
 ### Added
 - aws-events-rule-sqs pattern added ([#25](https://github.com/awslabs/aws-solutions-constructs/issues/25))
@@ -88,7 +91,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Upgraded all patterns to CDK v1.62.0
 
-## [1.61.1] - 2020-09-01
+## 1.61.1 (2020-09-01)
 
 ### Added
 - aws-sns-sqs pattern added ([#24](https://github.com/awslabs/aws-solutions-constructs/issues/24))
@@ -97,23 +100,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgraded all patterns to CDK v1.61.1
 - [All *-sns-*  Patterns] Allow for existingTopicObj and change default encryption ([#49](https://github.com/awslabs/aws-solutions-constructs/issues/49))
 
-## [1.61.0] - 2020-08-27
+## 1.61.0 (2020-08-27)
 
 ### Changed
 - Upgraded all patterns to CDK v1.61.0
 - [All *-lambda-* and *-apigateway-* patterns] Enable X-Ray tracing ([#36](https://github.com/awslabs/aws-solutions-constructs/issues/36))
 
-## [1.60.0] - 2020-08-24
+## 1.60.0 (2020-08-24)
 
 ### Changed
 - Upgraded all patterns to CDK v1.60.0
 
-## [1.59.0] - 2020-08-19
+## 1.59.0 (2020-08-19)
 
 ### Changed
 - Upgraded all patterns to CDK v1.59.0
 
-## [1.58.0] - 2020-08-14
+## 1.58.0 (2020-08-14)
 
 ### Changed
 - Upgraded all patterns to CDK v1.58.0
@@ -122,23 +125,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [All *-dynamodb-* patterns] Enable continuous backups and point-in-time recovery for DynamoDB Table ([#35](https://github.com/awslabs/aws-solutions-constructs/issues/35))
 - Removed the default Cognito UserPool SMS role creation ([#9513](https://github.com/aws/aws-cdk/pull/9513))
 
-## [1.57.0] - 2020-08-07
+## 1.57.0 (2020-08-07)
 
 ### Changed
 - Upgraded all patterns to CDK v1.57.0
 - Use `s3.IBucket` type instead of `s3.Bucket` for `existingBucketObj` construct props ([#33](https://github.com/awslabs/aws-solutions-constructs/issues/33))
 
-## [1.56.0] - 2020-08-05
+## 1.56.0 (2020-08-05)
 
 ### Changed
 - Upgraded all patterns to CDK v1.56.0
 
-## [1.55.0] - 2020-08-05
+## 1.55.0 (2020-08-05)
 
 ### Changed
 - Upgraded all patterns to CDK v1.55.0
 
-## [1.54.0] - 2020-07-31
+## 1.54.0 (2020-07-31)
 
 ### Changed
 - Upgraded all patterns to CDK v1.54.0
@@ -146,7 +149,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade deprecated CDK property used by API Gateway patterns ([#31](https://github.com/awslabs/aws-solutions-constructs/issues/31))
 - Fix for CloudFrontDistributionForApiGateway bug ([#30](https://github.com/awslabs/aws-solutions-constructs/issues/30))
 
-## [1.53.0] - 2020-07-27
+## 1.53.0 (2020-07-27)
 
 ### Added
 - aws-lambda-sqs-lambda pattern added
@@ -155,7 +158,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgraded all patterns to CDK v1.53.0
 - Expose all cdk objects created by the construct as pattern properties
 
-## [1.52.0] - 2020-07-20
+## 1.52.0 (2020-07-20)
 
 ### Added
 - aws-lambda-sqs pattern added
@@ -163,24 +166,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Upgraded all patterns to CDK v1.52.0
 
-## [1.51.0] - 2020-07-13
+## 1.51.0 (2020-07-13)
 
 ### Changed
 - Upgraded all patterns to CDK v1.51.0
 
-## [1.50.0] - 2020-07-09
+## 1.50.0 (2020-07-09)
 
 ### Changed
 - Upgraded all patterns to CDK v1.50.0
 
-## [1.49.0] - 2020-07-09
+## 1.49.0 (2020-07-09)
 
 ### Changed
 - Upgraded all patterns to CDK v1.49.0
 - BREAKING CHANGE: Removed `deployLambda` and `deployBucket` from all patterns Construct Props
 - Added `tablePermissions` to aws-lambda-dynamodb & aws-iot-lambda-dynamodb for fine-grained table permissions to grant to the lambda function
 
-## [1.48.0] - 2020-07-06
+## 1.48.0 (2020-07-06)
 
 ### Added
 - aws-lambda-step-function pattern added
@@ -190,14 +193,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix for aws-sqs-lambda pattern bug when using FIFO queue ([#13](https://github.com/awslabs/aws-solutions-constructs/pull/13))
 - Minor updates to CONTRIBUTING.md and deployment/build-patterns.sh
 
-## [1.47.0] - 2020-06-25
+## 1.47.0 (2020-06-25)
 
 ### Changed
 - Upgraded all patterns to CDK v1.47.0
 - Adding ability to provide a dynamodb table ([#8](https://github.com/awslabs/aws-solutions-constructs/pull/8))
 - Fix bug in s3BucketWithLogging function ([#9](https://github.com/awslabs/aws-solutions-constructs/pull/9))
 
-## [1.46.0] - 2020-06-22
+## 1.46.0 (2020-06-22)
 
 General Availability of the AWS Solutions Constructs!! 🎉🎉🥂🥂🍾🍾
 
@@ -212,14 +215,14 @@ General Availability of the AWS Solutions Constructs!! 🎉🎉🥂🥂🍾🍾
 - Updated READMEs for all patterns to include Default settings section
 - For all patterns, converted the getter methods to properties; used for retrieving the underlying AWS Resource object(s) created by the Solutions Constructs
 
-## [0.8.1-beta] - 2020-05-21
+## 0.8.1-beta (2020-05-21)
 ### Changed
 - Upgraded to CDK v1.40.0
 - Ability to emit a warning to the console when a prescriptive default value is overridden by the user
 - Automatic injection of best practice HTTP security headers in all HTTP responses from cloudfront
 - Fix the Cfn Nag warning Cloudfront should use minimum protocol version TLS 1.2 (W70)
 
-## [0.8.0-beta] - 2020-03-31
+## 0.8.0-beta (2020-03-31)
 ### Added
 - Initial public beta release
 - aws-apigateway-dynamodb pattern added
