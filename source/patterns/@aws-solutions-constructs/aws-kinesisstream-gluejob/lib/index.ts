@@ -11,13 +11,34 @@
  *  and limitations under the License.
  */
 
+import { Stream, StreamProps } from '@aws-cdk/aws-kinesis';
 import { Construct } from '@aws-cdk/core';
+import * as defaults from '@aws-solutions-constructs/core';
 
 
 export interface KinesisStreamGlueJobProps {
-
-}
+    /**
+     * Existing instance of Kineses Data Stream. If not set, it will create an instance
+     */
+    readonly existingStreamObj?: Stream;
+    /**
+     * User provided props to override the default props for the Kinesis Stream.
+     *
+     * @default - Default props are used
+     */
+    readonly kinesisStreamProps?: StreamProps | any
+};
 
 export class KinesisStreamGlueJob extends Construct {
+    public readonly kinesisStream: Stream;
 
+
+    constructor(scope: Construct, id: string, props: KinesisStreamGlueJobProps) {
+        super(scope, id);
+
+        this.kinesisStream = defaults.buildKinesisStream(this, {
+            existingStreamObj: props.existingStreamObj,
+            kinesisStreamProps: props.kinesisStreamProps,
+        });
+    }
 }
