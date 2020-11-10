@@ -56,9 +56,6 @@ test('Test deployment w/o DLQ', () => {
   const stack = new Stack();
   // Helper declaration
   new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
-      allowCreateOperation: true,
-      allowReadOperation: false,
-      allowDeleteOperation: true,
       deployDeadLetterQueue: false
   });
   // Assertion 1
@@ -68,16 +65,45 @@ test('Test deployment w/o DLQ', () => {
       HttpMethod: "GET",
       AuthorizationType: "AWS_IAM"
   });
-  // Assertion 3
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
-      HttpMethod: "POST",
-      AuthorizationType: "AWS_IAM"
-  });
-  // Assertion 4
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
-      HttpMethod: "DELETE",
-      AuthorizationType: "AWS_IAM"
-  });
+});
+
+// --------------------------------------------------------------
+// Test deployment w/o allowReadOperation
+// --------------------------------------------------------------
+test('Test deployment w/o allowReadOperation', () => {
+    // Stack
+    const stack = new Stack();
+    // Helper declaration
+    new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+        allowCreateOperation: true,
+        allowReadOperation: false,
+    });
+    // Assertion 1
+    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+    // Assertion 2
+    expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+        HttpMethod: "POST",
+        AuthorizationType: "AWS_IAM"
+    });
+});
+
+// --------------------------------------------------------------
+// Test deployment w/ allowReadOperation
+// --------------------------------------------------------------
+test('Test deployment w/ allowReadOperation', () => {
+    // Stack
+    const stack = new Stack();
+    // Helper declaration
+    new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+        allowReadOperation: true,
+    });
+    // Assertion 1
+    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+    // Assertion 2
+    expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+        HttpMethod: "GET",
+        AuthorizationType: "AWS_IAM"
+    });
 });
 
 // --------------------------------------------------------------
@@ -124,15 +150,10 @@ test('Test deployment ApiGateway AuthorizationType override', () => {
     });
     // Assertion 1
     expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
-        HttpMethod: "GET",
-        AuthorizationType: "NONE"
-    });
-    // Assertion 2
-    expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
         HttpMethod: "POST",
         AuthorizationType: "NONE"
     });
-    // Assertion 3
+    // Assertion 2
     expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
         HttpMethod: "DELETE",
         AuthorizationType: "NONE"

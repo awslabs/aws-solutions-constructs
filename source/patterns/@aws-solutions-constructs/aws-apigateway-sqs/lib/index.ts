@@ -172,7 +172,7 @@ export class ApiGatewayToSqs extends Construct {
             readRequestTemplate = props.readRequestTemplate;
         }
 
-        if (!props.allowReadOperation || props.allowReadOperation === true) {
+        if (props.allowReadOperation === undefined || props.allowReadOperation === true) {
             this.addActionToPolicy("sqs:ReceiveMessage");
             defaults.addProxyMethodToApiResource({
                 service: "sqs",

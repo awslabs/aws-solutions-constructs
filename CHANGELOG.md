@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.72.0 (2020-11-09)
+
+### Changed
+- Upgraded all patterns to CDK v1.72.0
+- Fix ALL lambda patterns to allow for disabling the X-ray tracing ([#95](https://github.com/awslabs/aws-solutions-constructs/issues/95))
+- Fix `aws-apigateway-sqs` pattern to override AllowReadOperation to false ([#100](https://github.com/awslabs/aws-solutions-constructs/pull/100/))
+
 ## 1.71.0 (2020-10-30)
 
 ### Changed

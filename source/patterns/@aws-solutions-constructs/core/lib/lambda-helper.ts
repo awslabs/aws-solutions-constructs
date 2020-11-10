@@ -79,7 +79,7 @@ export function deployLambdaFunction(scope: cdk.Construct,
       lambdafunction.addEnvironment('AWS_NODEJS_CONNECTION_REUSE_ENABLED', '1', { removeInEdge: true });
   }
 
-  const cfnLambdafunction = lambdafunction.node.findChild('Resource') as lambda.CfnFunction;
+  const cfnLambdafunction: lambda.CfnFunction = lambdafunction.node.findChild('Resource') as lambda.CfnFunction;
 
   cfnLambdafunction.cfnOptions.metadata = {
     cfn_nag: {
@@ -90,18 +90,20 @@ export function deployLambdaFunction(scope: cdk.Construct,
     }
   };
 
-  // Find the X-Ray IAM Policy
-  const cfnLambdafunctionDefPolicy = lambdafunction.role?.node.tryFindChild('DefaultPolicy')?.node.findChild('Resource') as iam.CfnPolicy;
+  if (cfnLambdafunction.tracingConfig) {
+    // Find the X-Ray IAM Policy
+    const cfnLambdafunctionDefPolicy = lambdafunction.role?.node.tryFindChild('DefaultPolicy')?.node.findChild('Resource') as iam.CfnPolicy;
 
-  // Add the CFN NAG suppress to allow for "Resource": "*" for AWS X-Ray
-  cfnLambdafunctionDefPolicy.cfnOptions.metadata = {
-    cfn_nag: {
-        rules_to_suppress: [{
-            id: 'W12',
-            reason: `Lambda needs the following minimum required permissions to send trace data to X-Ray.`
-        }]
-    }
-  };
+    // Add the CFN NAG suppress to allow for "Resource": "*" for AWS X-Ray
+    cfnLambdafunctionDefPolicy.cfnOptions.metadata = {
+      cfn_nag: {
+          rules_to_suppress: [{
+              id: 'W12',
+              reason: `Lambda needs the following minimum required permissions to send trace data to X-Ray.`
+          }]
+      }
+    };
+  }
 
   return lambdafunction;
 }
