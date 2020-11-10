@@ -38,7 +38,7 @@ reported the issue. Please try to include as much information as you can. Detail
 
 ---
 
-### Step 1: Open Issue
+### Step 1: Open An Issue
 
 If there isn't one already, open an issue describing what you intend to contribute. It's useful to communicate in
 advance, because sometimes, someone is already working in this space, so maybe it's worth collaborating with them
