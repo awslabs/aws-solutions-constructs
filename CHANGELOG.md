@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## 1.73.0 (2020-11-11)
 
+### Changed
 - Upgraded all patterns to CDK v1.73.0
 - Removed aws-lambda-sagemaker pattern from the library
 
