@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.73.0 (2020-11-11)
+
+- Upgraded all patterns to CDK v1.73.0
+- Removed aws-lambda-sagemaker pattern from the library
+
 ## 1.72.0 (2020-11-09)
 
 ### Changed
