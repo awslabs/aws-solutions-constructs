@@ -11,11 +11,10 @@
  *  and limitations under the License.
  */
 
+import { CfnJobProps } from '@aws-cdk/aws-glue';
 import { Stream, StreamProps } from '@aws-cdk/aws-kinesis';
 import { Construct } from '@aws-cdk/core';
 import * as defaults from '@aws-solutions-constructs/core';
-
-
 export interface KinesisStreamGlueJobProps {
     /**
      * Existing instance of Kineses Data Stream. If not set, it will create an instance
@@ -27,11 +26,14 @@ export interface KinesisStreamGlueJobProps {
      * @default - Default props are used
      */
     readonly kinesisStreamProps?: StreamProps | any
-};
+    /**
+     * User provides props to override the default props for Glue ETL Jobs
+     */
+    readonly glueJobProps?: CfnJobProps
+}
 
 export class KinesisStreamGlueJob extends Construct {
     public readonly kinesisStream: Stream;
-
 
     constructor(scope: Construct, id: string, props: KinesisStreamGlueJobProps) {
         super(scope, id);
