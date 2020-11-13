@@ -238,3 +238,27 @@ test('test exception', () => {
     expect(e).toBeInstanceOf(Error);
   }
 });
+
+test('test buildLambdaFunction with Tracing Disabled', () => {
+  const stack = new Stack();
+
+  const inProps: lambda.FunctionProps = {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda-test`),
+    runtime: lambda.Runtime.PYTHON_3_6,
+    handler: 'index.handler',
+    tracing: lambda.Tracing.DISABLED
+  };
+
+  defaults.deployLambdaFunction(stack, inProps);
+
+  expect(stack).toHaveResource('AWS::Lambda::Function', {
+    Handler: "index.handler",
+    Role: {
+      "Fn::GetAtt": [
+        "LambdaFunctionServiceRole0C4CDE0B",
+        "Arn"
+      ]
+    },
+    Runtime: "python3.6"
+  });
+});
