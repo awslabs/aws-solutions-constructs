@@ -8,6 +8,16 @@ Object {
         "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36",
         "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC",
       ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "Lambda function has permission to write CloudWatch Logs via AWSLambdaBasicExecutionRole policy attached to the lambda role",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "Code": Object {
           "ZipFile": "exports.handler = (event, context) => {
@@ -121,6 +131,16 @@ Object {
       "Type": "AWS::IAM::Role",
     },
     "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Bucket resource is '*' due to circular dependency with bucket and role creation at the same time",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -615,6 +635,16 @@ Object {
         "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36",
         "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC",
       ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "Lambda function has permission to write CloudWatch Logs via AWSLambdaBasicExecutionRole policy attached to the lambda role",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "Code": Object {
           "ZipFile": "exports.handler = (event, context) => {
@@ -728,6 +758,16 @@ Object {
       "Type": "AWS::IAM::Role",
     },
     "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Bucket resource is '*' due to circular dependency with bucket and role creation at the same time",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -1084,6 +1124,16 @@ Object {
         "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36",
         "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC",
       ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "Lambda function has permission to write CloudWatch Logs via AWSLambdaBasicExecutionRole policy attached to the lambda role",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "Code": Object {
           "ZipFile": "exports.handler = (event, context) => {
@@ -1197,6 +1247,16 @@ Object {
       "Type": "AWS::IAM::Role",
     },
     "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Bucket resource is '*' due to circular dependency with bucket and role creation at the same time",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -1705,6 +1765,16 @@ Object {
         "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36",
         "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC",
       ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "Lambda function has permission to write CloudWatch Logs via AWSLambdaBasicExecutionRole policy attached to the lambda role",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "Code": Object {
           "ZipFile": "exports.handler = (event, context) => {
@@ -1818,6 +1888,16 @@ Object {
       "Type": "AWS::IAM::Role",
     },
     "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Bucket resource is '*' due to circular dependency with bucket and role creation at the same time",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
