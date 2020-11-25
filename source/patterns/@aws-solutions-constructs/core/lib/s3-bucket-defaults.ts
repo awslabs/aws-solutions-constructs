@@ -25,3 +25,6 @@ export function DefaultS3Props(loggingBucket ?: Bucket, lifecycleRules?: s3.Life
         ...((loggingBucket !== undefined) && { serverAccessLogsBucket: loggingBucket })
     } as BucketProps;
 }
+
+// Default event types to trigger S3 notifications
+export const defaultS3NotificationEventTypes = [s3.EventType.OBJECT_CREATED];
