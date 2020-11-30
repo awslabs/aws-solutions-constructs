@@ -13,10 +13,11 @@
 
 import { CfnJob, CfnJobProps } from '@aws-cdk/aws-glue';
 
-export function DefaultGlueJobProps(jobRole: string, jobCommand: CfnJob.JobCommandProperty ): CfnJobProps | any {
+export function DefaultGlueJobProps(jobRole: string, jobCommand: CfnJob.JobCommandProperty, glueSecurityConfigName: string ): CfnJobProps | any {
     const defaultGlueJobProps: CfnJobProps | any = {
         command: jobCommand,
-        role: jobRole
+        role: jobRole,
+        securityConfiguration: glueSecurityConfigName
     };
 
     return defaultGlueJobProps;

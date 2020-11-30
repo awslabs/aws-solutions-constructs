@@ -11,11 +11,12 @@
  *  and limitations under the License.
  */
 
-import { CfnJob, CfnJobProps } from '@aws-cdk/aws-glue';
+import { CfnJob, CfnJobProps, CfnSecurityConfiguration } from '@aws-cdk/aws-glue';
 import { Role, ServicePrincipal } from '@aws-cdk/aws-iam';
 import { Bucket } from '@aws-cdk/aws-s3';
-import { Construct } from '@aws-cdk/core';
+import { Aws, Construct } from '@aws-cdk/core';
 import { DefaultGlueJobProps } from './gluejob-defaults';
+import { buildEncryptionKey } from './kms-helper';
 import { buildS3Bucket } from './s3-bucket-helper';
 import { overrideProps } from './utils';
 
@@ -38,6 +39,28 @@ export function buildGlueJob(scope: Construct, props: BuildGlueJobProps, jobId?:
         description: 'Service role that Glue custom ETL jobs will assume for exeuction'
     })).roleArn;
 
+    const glueKMSKey = buildEncryptionKey(scope);
+    glueKMSKey.grantEncryptDecrypt(new ServicePrincipal(`logs.${Aws.REGION}.amazonaws.com`));
+
+    const _glueSecurityConfigName: string = 'ETLJobSecurityConfig';
+
+    new CfnSecurityConfiguration(scope, 'GlueSecurityConfig', {
+        name: _glueSecurityConfigName,
+        encryptionConfiguration: {
+            cloudWatchEncryption: {
+                cloudWatchEncryptionMode: 'SSE-KMS',
+                kmsKeyArn: glueKMSKey.keyArn
+            },
+            jobBookmarksEncryption: {
+                jobBookmarksEncryptionMode: 'SSE-KMS',
+                kmsKeyArn: glueKMSKey.keyArn
+            },
+            s3Encryptions: [{
+                s3EncryptionMode: 'SSE-S3'
+            }]
+        }
+    });
+
     const _jobCommand: CfnJob.JobCommandProperty = {
         name: _jobID,
         pythonVersion: '3',
@@ -46,7 +69,7 @@ export function buildGlueJob(scope: Construct, props: BuildGlueJobProps, jobId?:
         })[1]?.s3UrlForObject()!
     };
 
-    const _glueJobProps = overrideProps(DefaultGlueJobProps(_jobRole, _jobCommand), props.glueJobProps!);
+    const _glueJobProps = overrideProps(DefaultGlueJobProps(_jobRole, _jobCommand, _glueSecurityConfigName), props.glueJobProps!);
     const _glueJob = new CfnJob(scope, _jobID, _glueJobProps);
 
     return _glueJob;
