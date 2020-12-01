@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-kinesis-stream-gluejob",
-  "version": "1.71.0",
+  "version": "0.0.0",
   "description": "CDK Constructs for streaming data from AWS Kinesis Data Stream for Glue ETL custom Job processing",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -53,16 +53,18 @@
     }
   },
   "dependencies": {
-    "@aws-cdk/aws-glue": "1.71.0",
-    "@aws-cdk/aws-kinesis": "1.71.0",
-    "@aws-cdk/core": "1.71.0",
-    "@aws-solutions-constructs/core": "1.71.0",
+    "@aws-cdk/aws-glue": "0.0.0",
+    "@aws-cdk/aws-kinesis": "0.0.0",
+    "@aws-cdk/core": "0.0.0",
+    "@aws-solutions-constructs/core": "0.0.0",
     "constructs": "^3.2.0"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.71.0",
+    "@aws-cdk/assert": "0.0.0",
     "@types/jest": "^24.0.23",
-    "@types/node": "^10.3.0"
+    "@types/node": "^10.3.0",
+    "cdk-integ-tools": "*",
+    "aws-cdk": "0.0.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -70,10 +72,10 @@
     ]
   },
   "peerDependencies": {
-    "@aws-cdk/aws-glue": "1.71.0",
-    "@aws-cdk/aws-kinesis": "1.71.0",
-    "@aws-cdk/core": "1.71.0",
-    "@aws-solutions-constructs/core": "1.71.0",
+    "@aws-cdk/aws-glue": "0.0.0",
+    "@aws-cdk/aws-kinesis": "0.0.0",
+    "@aws-cdk/core": "0.0.0",
+    "@aws-solutions-constructs/core": "0.0.0",
     "constructs": "^3.2.0"
   }
 }
