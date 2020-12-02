@@ -11,10 +11,11 @@
  *  and limitations under the License.
  */
 
-import { CfnJobProps } from '@aws-cdk/aws-glue';
+import { CfnJob, CfnJobProps } from '@aws-cdk/aws-glue';
 import { Stream, StreamProps } from '@aws-cdk/aws-kinesis';
 import { Construct } from '@aws-cdk/core';
 import * as defaults from '@aws-solutions-constructs/core';
+
 export interface KinesisStreamGlueJobProps {
     /**
      * Existing instance of Kineses Data Stream. If not set, it will create an instance
@@ -25,15 +26,23 @@ export interface KinesisStreamGlueJobProps {
      *
      * @default - Default props are used
      */
-    readonly kinesisStreamProps?: StreamProps | any
+    readonly kinesisStreamProps?: StreamProps | any;
     /**
-     * User provides props to override the default props for Glue ETL Jobs
+     * User provides props to override the default props for Glue ETL Jobs. This parameter will be ignored if the
+     * existingGlueJob parameter is set
+     *
+     * @default - Default props are used
      */
-    readonly glueJobProps?: CfnJobProps
+    readonly glueJobProps?: CfnJobProps;
+    /**
+     * Existing GlueJob configuration. If not set, it will create the a CfnJob instance using the glueJobProps
+     */
+    readonly existingGlueJob?: CfnJob;
 }
 
 export class KinesisStreamGlueJob extends Construct {
     public readonly kinesisStream: Stream;
+    public readonly glueJob: CfnJob;
 
     constructor(scope: Construct, id: string, props: KinesisStreamGlueJobProps) {
         super(scope, id);
@@ -42,5 +51,7 @@ export class KinesisStreamGlueJob extends Construct {
             existingStreamObj: props.existingStreamObj,
             kinesisStreamProps: props.kinesisStreamProps,
         });
+
+
     }
 }

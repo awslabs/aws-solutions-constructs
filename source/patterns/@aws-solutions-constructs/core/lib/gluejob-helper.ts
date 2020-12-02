@@ -16,7 +16,6 @@ import { Role, ServicePrincipal } from '@aws-cdk/aws-iam';
 import { Bucket } from '@aws-cdk/aws-s3';
 import { Aws, Construct } from '@aws-cdk/core';
 import { DefaultGlueJobProps } from './gluejob-defaults';
-import { buildEncryptionKey } from './kms-helper';
 import { buildS3Bucket } from './s3-bucket-helper';
 import { overrideProps } from './utils';
 
@@ -39,21 +38,19 @@ export function buildGlueJob(scope: Construct, props: BuildGlueJobProps, jobId?:
         description: 'Service role that Glue custom ETL jobs will assume for exeuction'
     })).roleArn;
 
-    const glueKMSKey = buildEncryptionKey(scope);
-    glueKMSKey.grantEncryptDecrypt(new ServicePrincipal(`logs.${Aws.REGION}.amazonaws.com`));
-
     const _glueSecurityConfigName: string = 'ETLJobSecurityConfig';
+    const glueKMSKey = `arn:${Aws.PARTITION}:kms:${Aws.REGION}:${Aws.ACCOUNT_ID}/alias/aws/glue`;
 
     new CfnSecurityConfiguration(scope, 'GlueSecurityConfig', {
         name: _glueSecurityConfigName,
         encryptionConfiguration: {
             cloudWatchEncryption: {
                 cloudWatchEncryptionMode: 'SSE-KMS',
-                kmsKeyArn: glueKMSKey.keyArn
+                kmsKeyArn: glueKMSKey
             },
             jobBookmarksEncryption: {
-                jobBookmarksEncryptionMode: 'SSE-KMS',
-                kmsKeyArn: glueKMSKey.keyArn
+                jobBookmarksEncryptionMode: 'CSE-KMS',
+                kmsKeyArn: glueKMSKey
             },
             s3Encryptions: [{
                 s3EncryptionMode: 'SSE-S3'
