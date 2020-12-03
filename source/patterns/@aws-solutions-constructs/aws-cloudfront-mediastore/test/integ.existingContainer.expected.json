@@ -1,0 +1,201 @@
+{
+  "Description": "Integration test for aws-cloudfront-mediastore with existing mediastore container",
+  "Resources": {
+    "CloudFrontDistributionBA64CE3A": {
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W70",
+              "reason": "Since the distribution uses the CloudFront domain name, CloudFront automatically sets the security policy to TLSv1 regardless of the value of MinimumProtocolVersion"
+            }
+          ]
+        }
+      },
+      "Properties": {
+        "DistributionConfig": {
+          "DefaultCacheBehavior": {
+            "AllowedMethods": [
+              "GET",
+              "HEAD",
+              "OPTIONS"
+            ],
+            "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+            "CachedMethods": [
+              "GET",
+              "HEAD",
+              "OPTIONS"
+            ],
+            "Compress": true,
+            "OriginRequestPolicyId": {
+              "Ref": "CloudfrontOriginRequestPolicy299A10DB"
+            },
+            "TargetOriginId": "testcloudfrontmediastoreCloudFrontDistributionOrigin1BBFA2A4D",
+            "ViewerProtocolPolicy": "redirect-to-https"
+          },
+          "Enabled": true,
+          "HttpVersion": "http2",
+          "IPV6Enabled": true,
+          "Logging": {
+            "Bucket": {
+              "Fn::GetAtt": [
+                "CloudfrontLoggingBucket3C3EFAA7",
+                "RegionalDomainName"
+              ]
+            }
+          },
+          "Origins": [
+            {
+              "CustomOriginConfig": {
+                "OriginProtocolPolicy": "https-only"
+              },
+              "DomainName": {
+                "Fn::Select": [
+                  0,
+                  {
+                    "Fn::Split": [
+                      "/",
+                      {
+                        "Fn::Select": [
+                          1,
+                          {
+                            "Fn::Split": [
+                              "://",
+                              {
+                                "Fn::GetAtt": [
+                                  "MyMediaStoreContainer",
+                                  "Endpoint"
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "Id": "testcloudfrontmediastoreCloudFrontDistributionOrigin1BBFA2A4D"
+            }
+          ]
+        }
+      },
+      "Type": "AWS::CloudFront::Distribution"
+    },
+    "CloudfrontLoggingBucket3C3EFAA7": {
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W35",
+              "reason": "This S3 bucket is used as the access logging bucket for CloudFront Distribution"
+            }
+          ]
+        }
+      },
+      "Properties": {
+        "AccessControl": "LogDeliveryWrite",
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        }
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain"
+    },
+    "CloudfrontLoggingBucketPolicy8FC0956D": {
+      "Properties": {
+        "Bucket": {
+          "Ref": "CloudfrontLoggingBucket3C3EFAA7"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "CloudfrontLoggingBucket3C3EFAA7",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              },
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Type": "AWS::S3::BucketPolicy"
+    },
+    "CloudfrontOriginRequestPolicy299A10DB": {
+      "Properties": {
+        "OriginRequestPolicyConfig": {
+          "Comment": "Policy for Constructs CloudFrontDistributionForMediaStore",
+          "CookiesConfig": {
+            "CookieBehavior": "none"
+          },
+          "HeadersConfig": {
+            "HeaderBehavior": "whitelist",
+            "Headers": [
+              "Access-Control-Allow-Origin",
+              "Access-Control-Request-Method",
+              "Access-Control-Request-Header",
+              "Origin"
+            ]
+          },
+          "Name": {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Ref": "AWS::StackName"
+                },
+                "-",
+                {
+                  "Ref": "AWS::Region"
+                },
+                "-CloudFrontDistributionForMediaStore"
+              ]
+            ]
+          },
+          "QueryStringsConfig": {
+            "QueryStringBehavior": "all"
+          }
+        }
+      },
+      "Type": "AWS::CloudFront::OriginRequestPolicy"
+    },
+    "MyMediaStoreContainer": {
+      "Properties": {
+        "ContainerName": "MyMediaStoreContainer"
+      },
+      "Type": "AWS::MediaStore::Container"
+    }
+  }
+}
