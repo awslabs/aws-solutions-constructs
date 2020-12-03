@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Pattern minimal deployment 1`] = `
+Object {
+  "Resources": Object {
+    "testkinesisstreamslambdaKinesisStream374D6D56": Object {
+      "Properties": Object {
+        "RetentionPeriodHours": 24,
+        "ShardCount": 1,
+        "StreamEncryption": Object {
+          "EncryptionType": "KMS",
+          "KeyId": "alias/aws/kinesis",
+        },
+      },
+      "Type": "AWS::Kinesis::Stream",
+    },
+  },
+}
+`;

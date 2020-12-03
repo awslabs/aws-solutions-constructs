@@ -1,0 +1,16 @@
+{
+  "Description": "Integration Test for aws-kinesisstream-gluejob",
+  "Resources": {
+    "testkinesisstreamslambdaKinesisStream374D6D56": {
+      "Type": "AWS::Kinesis::Stream",
+      "Properties": {
+        "ShardCount": 1,
+        "RetentionPeriodHours": 24,
+        "StreamEncryption": {
+          "EncryptionType": "KMS",
+          "KeyId": "alias/aws/kinesis"
+        }
+      }
+    }
+  }
+}
