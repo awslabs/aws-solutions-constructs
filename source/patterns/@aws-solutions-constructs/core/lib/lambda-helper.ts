@@ -69,6 +69,21 @@ export function deployLambdaFunction(scope: cdk.Construct,
     }
   });
 
+  // If this Lambda function is going to access resoures in a
+  // VPC, then it needs privileges to access an ENI in that VPC
+  if (lambdaFunctionProps.vpc) {
+    lambdaServiceRole.addToPolicy(new iam.PolicyStatement({
+      actions: [
+        "ec2:CreateNetworkInterface",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DeleteNetworkInterface",
+        "ec2:AssignPrivateIpAddresses",
+        "ec2:UnassignPrivateIpAddresses"
+      ],
+      resources: ["*"]
+    }));
+  }
+
   // Override the DefaultFunctionProps with user provided  lambdaFunctionProps
   const _lambdaFunctionProps = overrideProps(DefaultLambdaFunctionProps(lambdaServiceRole), lambdaFunctionProps);
 
@@ -99,7 +114,7 @@ export function deployLambdaFunction(scope: cdk.Construct,
       cfn_nag: {
           rules_to_suppress: [{
               id: 'W12',
-              reason: `Lambda needs the following minimum required permissions to send trace data to X-Ray.`
+              reason: `Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.`
           }]
       }
     };
