@@ -42,7 +42,7 @@ export interface KinesisStreamGlueJobProps {
 
 export class KinesisStreamGlueJob extends Construct {
     public readonly kinesisStream: Stream;
-    public readonly glueJob: CfnJob;
+    // public readonly glueJob: CfnJob;
 
     constructor(scope: Construct, id: string, props: KinesisStreamGlueJobProps) {
         super(scope, id);
@@ -51,7 +51,5 @@ export class KinesisStreamGlueJob extends Construct {
             existingStreamObj: props.existingStreamObj,
             kinesisStreamProps: props.kinesisStreamProps,
         });
-
-
     }
 }

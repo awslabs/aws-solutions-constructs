@@ -27,13 +27,28 @@ export interface BuildGlueJobProps {
     /**
      * Existing instance of the S3 bucket object, if this is set then the script location is ignored.
      */
-    readonly existingBucketObj: Bucket;
+    readonly existingCfnJob?: CfnJob;
 }
 
-export function buildGlueJob(scope: Construct, props: BuildGlueJobProps, jobId?: string): CfnJob {
-    const _jobID = jobId ? jobId : 'ETLJob';
+export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): [ CfnJob, Bucket | any ] {
 
-    const _jobRole: string = props.glueJobProps?.role ? props.glueJobProps.role : (new Role(scope, `${_jobID}Role`, {
+    if (!props.existingCfnJob) {
+        if (props.glueJobProps) {
+            return deployGlueJob(scope, props.glueJobProps);
+        } else {
+            throw Error('Either glueJobProps or existingCfnJob is required');
+        }
+    } else {
+        // return properties are already supplied then bucket is not created and hence returns undefined
+        return [ props.existingCfnJob , undefined ];
+    }
+}
+
+export function deployGlueJob(scope: Construct, glueJobProps: CfnJobProps): [ CfnJob, Bucket | any ] {
+
+    const _jobID = 'ETLJob';
+
+    const _jobRole: string = glueJobProps?.role ? glueJobProps.role : (new Role(scope, `${_jobID}Role`, {
         assumedBy: new ServicePrincipal('glue.amazonaws.com'),
         description: 'Service role that Glue custom ETL jobs will assume for exeuction'
     })).roleArn;
@@ -58,16 +73,17 @@ export function buildGlueJob(scope: Construct, props: BuildGlueJobProps, jobId?:
         }
     });
 
+    // create s3 bucket where script can be deployed
+    const scriptLocation = buildS3Bucket(scope, {});
+
     const _jobCommand: CfnJob.JobCommandProperty = {
         name: _jobID,
         pythonVersion: '3',
-        scriptLocation: buildS3Bucket(scope, {
-
-        })[1]?.s3UrlForObject()!
+        scriptLocation: scriptLocation[0].s3UrlForObject()
     };
 
-    const _glueJobProps = overrideProps(DefaultGlueJobProps(_jobRole, _jobCommand, _glueSecurityConfigName), props.glueJobProps!);
+    const _glueJobProps = overrideProps(DefaultGlueJobProps(_jobRole, _jobCommand, _glueSecurityConfigName), glueJobProps!);
     const _glueJob = new CfnJob(scope, _jobID, _glueJobProps);
 
-    return _glueJob;
+    return [ _glueJob, scriptLocation ];
 }
