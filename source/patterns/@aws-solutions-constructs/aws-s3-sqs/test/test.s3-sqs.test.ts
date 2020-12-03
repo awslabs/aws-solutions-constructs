@@ -17,7 +17,6 @@ import { S3ToSqs, S3ToSqsProps } from "../lib";
 import * as sqs from '@aws-cdk/aws-sqs';
 import * as kms from '@aws-cdk/aws-kms';
 import * as s3 from '@aws-cdk/aws-s3';
-import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
 
@@ -51,7 +50,7 @@ test('Test deployment w/ existing queue', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  const kmsKey: kms.Key = new kms.Key(stack, 'EncryptionKey', {});
+  const kmsKey: kms.Key = new kms.Key(stack, 'ExistingQueueEncryptionKey', {});
   const queue = new sqs.Queue(stack, 'existing-queue-obj', {
     queueName: 'existing-queue-obj',
     encryptionMasterKey: kmsKey
@@ -60,7 +59,21 @@ test('Test deployment w/ existing queue', () => {
     existingQueueObj: queue
   });
   // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(stack).toHaveResource("Custom::S3BucketNotifications", {
+    NotificationConfiguration: {
+      QueueConfigurations: [
+        {
+          Events: ['s3:ObjectCreated:*'],
+          QueueArn: {
+            "Fn::GetAtt": [
+              "existingqueueobjF8AF0ED1",
+              "Arn"
+            ]
+          }
+        }
+      ]
+    }
+  });
 });
 
 // --------------------------------------------------------------
@@ -76,7 +89,21 @@ test('Test deployment w/ existing Bucket', () => {
         existingBucketObj: myBucket
     });
     // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+    expect(stack).toHaveResource("Custom::S3BucketNotifications", {
+      NotificationConfiguration: {
+        QueueConfigurations: [
+          {
+            Events: ['s3:ObjectCreated:*'],
+            QueueArn: {
+              "Fn::GetAtt": [
+                "tests3sqsqueue810CCE19",
+                "Arn"
+              ]
+            }
+          }
+        ]
+      }
+    });
 });
 
 // --------------------------------------------------------------
@@ -125,8 +152,6 @@ test('Test deployment w/ s3 event types and filters', () => {
   };
   new S3ToSqs(stack, 'test-s3-sqs', props);
   // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
   expect(stack).toHaveResource("Custom::S3BucketNotifications", {
     NotificationConfiguration: {
       QueueConfigurations: [
@@ -156,6 +181,112 @@ test('Test deployment w/ s3 event types and filters', () => {
       ]
     }
   });
+});
+
+// --------------------------------------------------------------
+// Test deployment w/ SSE encryption enabled using customer managed KMS CMK
+// --------------------------------------------------------------
+test('Test deployment w/ SSE encryption enabled using customer managed KMS CMK', () => {
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  new S3ToSqs(stack, 'test-s3-sqs', {
+    enableEncryptionWithCustomerManagedKey: true
+  });
+
   // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(stack).toHaveResource("Custom::S3BucketNotifications");
+
+  // Assertion 2
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "tests3sqsEncryptionKeyFD4D5946",
+        "Arn"
+      ]
+    }
+  });
+
+  // Assertion 3
+  expect(stack).toHaveResource('AWS::KMS::Key', {
+      KeyPolicy: {
+        Statement: [
+          {
+            Action: [
+              "kms:Create*",
+              "kms:Describe*",
+              "kms:Enable*",
+              "kms:List*",
+              "kms:Put*",
+              "kms:Update*",
+              "kms:Revoke*",
+              "kms:Disable*",
+              "kms:Get*",
+              "kms:Delete*",
+              "kms:ScheduleKeyDeletion",
+              "kms:CancelKeyDeletion",
+              "kms:GenerateDataKey",
+              "kms:TagResource",
+              "kms:UntagResource"
+            ],
+            Effect: "Allow",
+            Principal: {
+              AWS: {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      Ref: "AWS::Partition"
+                    },
+                    ":iam::",
+                    {
+                      Ref: "AWS::AccountId"
+                    },
+                    ":root"
+                  ]
+                ]
+              }
+            },
+            Resource: "*"
+          },
+          {
+            Action: [
+              "kms:Decrypt",
+              "kms:Encrypt",
+              "kms:ReEncrypt*",
+              "kms:GenerateDataKey*"
+            ],
+            Condition: {
+              ArnLike: {
+                "aws:SourceArn": {
+                  "Fn::GetAtt": [
+                    "tests3sqsS3BucketFF76CDA6",
+                    "Arn"
+                  ]
+                }
+              }
+            },
+            Effect: "Allow",
+            Principal: {
+              Service: "s3.amazonaws.com"
+            },
+            Resource: "*"
+          },
+          {
+            Action: [
+              "kms:GenerateDataKey*",
+              "kms:Decrypt"
+            ],
+            Effect: "Allow",
+            Principal: {
+              Service: "s3.amazonaws.com"
+            },
+            Resource: "*"
+          }
+        ],
+        Version: "2012-10-17"
+      },
+      EnableKeyRotation: true
+    });
 });

@@ -16,7 +16,6 @@ import { App, Stack } from "@aws-cdk/core";
 import { S3ToSqs, S3ToSqsProps } from "../lib";
 import * as kms from '@aws-cdk/aws-kms';
 import * as s3 from '@aws-cdk/aws-s3';
-import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -24,7 +23,10 @@ const stack = new Stack(app, 'test-s3-sqs-deploy-queue');
 stack.templateOptions.description = 'Integration Test for aws-s3-sqs with standard Queue';
 
 // For S3 to SQS bucket notification a customer managed CMK must be used:
-const kmsKey: kms.Key = defaults.buildEncryptionKey(stack, {});
+const encryptionKeyProps: kms.KeyProps = {
+    enableKeyRotation: true
+};
+const kmsKey = new kms.Key(stack, 'ImportedEncryptionKey', encryptionKeyProps);
 
 // Configure notification filter
 const filter: s3.NotificationKeyFilter = {
@@ -32,7 +34,7 @@ const filter: s3.NotificationKeyFilter = {
     suffix: '*.mp3'
 };
 
-// Definitions
+// Define construct properties so that a new queue myQueue is created
 const props: S3ToSqsProps = {
     queueProps: {
         queueName: `myQueue`,

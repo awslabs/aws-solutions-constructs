@@ -12,13 +12,13 @@
  */
 
 // Imports
+import * as kms from '@aws-cdk/aws-kms';
 import * as sqs from '@aws-cdk/aws-sqs';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as s3n from '@aws-cdk/aws-s3-notifications';
 import { Construct, Stack } from '@aws-cdk/core';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as iam from '@aws-cdk/aws-iam';
+import {addCfnNagS3BucketNotificationRulesToSuppress} from "@aws-solutions-constructs/core";
 
 /**
  * @summary The properties for the S3ToSqs class.
@@ -78,6 +78,25 @@ export interface S3ToSqsProps {
      * @default - required field if deployDeadLetterQueue=true.
      */
     readonly maxReceiveCount?: number
+    /**
+     * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
+     * the encryptionKey property for this construct.
+     *
+     * @default - true (encryption enabled, managed by this CDK app).
+     */
+    readonly enableEncryptionWithCustomerManagedKey?: boolean
+    /**
+     * An optional, imported encryption key to encrypt the SQS queue.
+     *
+     * @default - not specified.
+     */
+    readonly encryptionKey?: kms.Key,
+    /**
+     * Optional user-provided props to override the default props for the encryption key.
+     *
+     * @default - Default props are used.
+     */
+    readonly encryptionKeyProps?: kms.KeyProps
 }
 
 /**
@@ -88,6 +107,7 @@ export class S3ToSqs extends Construct {
     public readonly deadLetterQueue?: sqs.DeadLetterQueue;
     public readonly s3Bucket?: s3.Bucket;
     public readonly s3LoggingBucket?: s3.Bucket;
+    public readonly encryptionKey?: kms.IKey;
 
     /**
      * @summary Constructs a new instance of the S3ToSqs class.
@@ -100,29 +120,12 @@ export class S3ToSqs extends Construct {
     constructor(scope: Construct, id: string, props: S3ToSqsProps) {
         super(scope, id);
         let bucket: s3.Bucket;
+        let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
 
-        // Setup the dead letter queue, if applicable
-        this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
-            existingQueueObj: props.existingQueueObj,
-            deployDeadLetterQueue: props.deployDeadLetterQueue,
-            deadLetterQueueProps: props.deadLetterQueueProps,
-            maxReceiveCount: props.maxReceiveCount
-        });
-
-        // Setup customer managed KMS CMK for Queue encryption
-        let enableEncryptionWithCustomerManagedKey: boolean = false;
-        if (!this.hasQueueEncryptionProperties(props.queueProps)) {
-            // If no encryption configuration provided by user create the KMS CMK by default
-            enableEncryptionWithCustomerManagedKey = true;
+        if (props.enableEncryptionWithCustomerManagedKey === undefined ||
+          props.enableEncryptionWithCustomerManagedKey === true) {
+            enableEncryptionParam = true;
         }
-
-        // Setup the queue
-        [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
-            existingQueueObj: props.existingQueueObj,
-            queueProps: props.queueProps,
-            deadLetterQueue: this.deadLetterQueue,
-            enableEncryptionWithCustomerManagedKey
-        });
 
         // Setup the S3 bucket
         if (!props.existingBucketObj) {
@@ -133,6 +136,22 @@ export class S3ToSqs extends Construct {
         } else {
             bucket = props.existingBucketObj;
         }
+
+        // Setup the dead letter queue, if applicable
+        this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
+            existingQueueObj: props.existingQueueObj,
+            deployDeadLetterQueue: props.deployDeadLetterQueue,
+            deadLetterQueueProps: props.deadLetterQueueProps,
+            maxReceiveCount: props.maxReceiveCount
+        });
+        // Setup the queue
+        [this.sqsQueue, this.encryptionKey] = defaults.buildQueue(this, 'queue', {
+            existingQueueObj: props.existingQueueObj,
+            queueProps: props.queueProps,
+            deadLetterQueue: this.deadLetterQueue,
+            enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
+            encryptionKey: props.encryptionKey
+        });
 
         // Setup the S3 bucket event types
         let s3EventTypes;
@@ -151,42 +170,6 @@ export class S3ToSqs extends Construct {
         // Setup the S3 bucket event notifications
         s3EventTypes.forEach(type => bucket.addEventNotification(type, new s3n.SqsDestination(this.sqsQueue), ...s3Eventfilters));
 
-        this.addCfnNagSuppress();
-    }
-
-    private addCfnNagSuppress() {
-        const root = Stack.of(this);
-        const logicalId = 'BucketNotificationsHandler050a0587b7544547bf325f094a3db834';
-        const notificationsResourceHandler = root.node.tryFindChild(logicalId) as lambda.Function;
-        const notificationsResourceHandlerRoleRole = notificationsResourceHandler.node.findChild('Role') as iam.Role;
-        const notificationsResourceHandlerRolePolicy = notificationsResourceHandlerRoleRole.node.findChild('DefaultPolicy') as iam.Policy;
-
-        // Extract the CfnFunction from the Function
-        const fnResource = notificationsResourceHandler.node.findChild('Resource') as lambda.CfnFunction;
-
-        fnResource.cfnOptions.metadata = {
-            cfn_nag: {
-                rules_to_suppress: [{
-                    id: 'W58',
-                    reason: `Lambda function has permission to write CloudWatch Logs via AWSLambdaBasicExecutionRole policy attached to the lambda role`
-                }]
-            }
-        };
-
-        // Extract the CfnPolicy from the iam.Policy
-        const policyResource = notificationsResourceHandlerRolePolicy.node.findChild('Resource') as iam.CfnPolicy;
-
-        policyResource.cfnOptions.metadata = {
-            cfn_nag: {
-                rules_to_suppress: [{
-                    id: 'W12',
-                    reason: `Bucket resource is '*' due to circular dependency with bucket and role creation at the same time`
-                }]
-            }
-        };
-    }
-
-    private hasQueueEncryptionProperties(queueProps: sqs.QueueProps | undefined) {
-        return queueProps && (queueProps.encryptionMasterKey || queueProps.encryption);
+        addCfnNagS3BucketNotificationRulesToSuppress(Stack.of(this), 'BucketNotificationsHandler050a0587b7544547bf325f094a3db834');
     }
 }
