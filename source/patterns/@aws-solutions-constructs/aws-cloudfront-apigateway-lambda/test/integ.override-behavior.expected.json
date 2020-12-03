@@ -132,7 +132,7 @@
           "rules_to_suppress": [
             {
               "id": "W12",
-              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray."
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
             }
           ]
         }
@@ -647,7 +647,7 @@
           "rules_to_suppress": [
             {
               "id": "W12",
-              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray."
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
             }
           ]
         }
