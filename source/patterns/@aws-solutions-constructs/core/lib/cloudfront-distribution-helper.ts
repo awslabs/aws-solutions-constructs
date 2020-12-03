@@ -17,7 +17,12 @@ import * as cdk from '@aws-cdk/core';
 import * as iam from '@aws-cdk/aws-iam';
 import * as api from '@aws-cdk/aws-apigateway';
 import * as lambda from '@aws-cdk/aws-lambda';
-import { DefaultCloudFrontWebDistributionForS3Props, DefaultCloudFrontWebDistributionForApiGatewayProps } from './cloudfront-distribution-defaults';
+import * as mediastore from '@aws-cdk/aws-mediastore';
+import {
+    DefaultCloudFrontWebDistributionForS3Props,
+    DefaultCloudFrontWebDistributionForApiGatewayProps,
+    DefaultCloudFrontDisributionForMediaStoreProps
+} from './cloudfront-distribution-defaults';
 import { overrideProps } from './utils';
 import { deployLambdaFunction } from './lambda-helper';
 import { createLoggingBucket } from './s3-bucket-helper';
@@ -177,4 +182,75 @@ export function CloudFrontDistributionForS3(scope: cdk.Construct,
         }
     };
     return [cfDistribution, edgeLambdaVersion, loggingBucket];
+}
+
+export function CloudFrontDistributionForMediaStore(scope: cdk.Construct,
+                                                    mediaStoreContainer: mediastore.CfnContainer,
+                                                    cloudFrontDistributionProps?: cloudfront.DistributionProps | any):
+                                                    [cloudfront.Distribution, s3.Bucket, cloudfront.OriginRequestPolicy] {
+
+    let defaultprops: cloudfront.DistributionProps;
+    let originRequestPolicy: cloudfront.OriginRequestPolicy;
+    let loggingBucket: s3.Bucket;
+
+    if (cloudFrontDistributionProps && cloudFrontDistributionProps.enableLogging && cloudFrontDistributionProps.logBucket) {
+        loggingBucket = cloudFrontDistributionProps.logBucket as s3.Bucket;
+    } else {
+        loggingBucket = createLoggingBucket(scope, 'CloudfrontLoggingBucket');
+    }
+
+    if (cloudFrontDistributionProps
+        && cloudFrontDistributionProps.defaultBehavior
+        && cloudFrontDistributionProps.defaultBehavior.originRequestPolicy) {
+        originRequestPolicy = cloudFrontDistributionProps.defaultBehavior.originRequestPolicy;
+    } else {
+        const originRequestPolicyProps: cloudfront.OriginRequestPolicyProps = {
+            headerBehavior: {
+                behavior: 'whitelist',
+                headers: [
+                    'Access-Control-Allow-Origin',
+                    'Access-Control-Request-Method',
+                    'Access-Control-Request-Header',
+                    'Origin'
+                ]
+            },
+            queryStringBehavior: {
+                behavior: 'all'
+            },
+            cookieBehavior: {
+                behavior: 'none'
+            },
+            comment: 'Policy for Constructs CloudFrontDistributionForMediaStore',
+            originRequestPolicyName: `${cdk.Aws.STACK_NAME}-${cdk.Aws.REGION}-CloudFrontDistributionForMediaStore`
+        };
+
+        originRequestPolicy = new cloudfront.OriginRequestPolicy(scope, 'CloudfrontOriginRequestPolicy', originRequestPolicyProps);
+    }
+
+    defaultprops = DefaultCloudFrontDisributionForMediaStoreProps(
+        mediaStoreContainer,
+        loggingBucket,
+        originRequestPolicy,
+        cloudFrontDistributionProps?.customHeaders
+    );
+
+    let cfprops: cloudfront.DistributionProps;
+
+    if (cloudFrontDistributionProps) {
+        cfprops = overrideProps(defaultprops, cloudFrontDistributionProps);
+    } else {
+        cfprops = defaultprops;
+    }
+
+    // Create the CloudFront Distribution
+    const cfDistribution: cloudfront.Distribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
+    updateSecurityPolicy(cfDistribution);
+
+    return [cfDistribution, loggingBucket, originRequestPolicy];
+}
+
+export function CloudFrontOriginAccessIdentity(scope: cdk.Construct, comment?: string) {
+    return new cloudfront.OriginAccessIdentity(scope, 'CloudFrontOriginAccessIdentity', {
+        comment: comment ? comment : `access-identity-${cdk.Aws.REGION}-${cdk.Aws.STACK_NAME}`
+    });
 }
