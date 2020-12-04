@@ -1,19 +1,93 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test minimal deployment with no properties 1`] = `
+exports[`Create a Glue Job outside the construct 1`] = `
+Object {
+  "Resources": Object {
+    "ExistingJob": Object {
+      "Properties": Object {
+        "AllocatedCapacity": 2,
+        "Command": Object {
+          "Name": "existingJob",
+          "PythonVersion": "2",
+          "ScriptLocation": "s3://existingFakeLocation/existingScript",
+        },
+        "GlueVersion": "1",
+        "MaxCapacity": 4,
+        "NumberOfWorkers": 2,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "ExistingJobRole8F750976",
+            "Arn",
+          ],
+        },
+        "WorkerType": "Standard",
+      },
+      "Type": "AWS::Glue::Job",
+    },
+    "ExistingJobRole8F750976": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "glue.amazon.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Existing role",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+  },
+}
+`;
+
+exports[`Test custom deployment properties 1`] = `
 Object {
   "Resources": Object {
     "ETLJob": Object {
       "Properties": Object {
+        "AllocatedCapacity": 2,
         "Command": Object {
           "Name": "testETLJob",
           "PythonVersion": "3",
-          "ScriptLocation": "s3://fakelocation/script",
+          "ScriptLocation": "s3://existingFakeLocation/existingScript",
         },
-        "Role": "jobRole",
-        "SecurityConfiguration": "testETLJob",
+        "GlueVersion": "1",
+        "MaxCapacity": 4,
+        "NumberOfWorkers": 2,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "ExistingJobRole8F750976",
+            "Arn",
+          ],
+        },
+        "SecurityConfiguration": "ETLJobSecurityConfig",
+        "WorkerType": "Standard",
       },
       "Type": "AWS::Glue::Job",
+    },
+    "ExistingJobRole8F750976": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "glue.amazon.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Existing role",
+      },
+      "Type": "AWS::IAM::Role",
     },
     "GlueSecurityConfig": Object {
       "Properties": Object {
@@ -74,157 +148,24 @@ Object {
       },
       "Type": "AWS::Glue::SecurityConfiguration",
     },
-    "S3Bucket07682993": Object {
-      "DeletionPolicy": "Retain",
+  },
+}
+`;
+
+exports[`Test minimal deployment with no properties 1`] = `
+Object {
+  "Resources": Object {
+    "ETLJob": Object {
       "Properties": Object {
-        "BucketEncryption": Object {
-          "ServerSideEncryptionConfiguration": Array [
-            Object {
-              "ServerSideEncryptionByDefault": Object {
-                "SSEAlgorithm": "AES256",
-              },
-            },
-          ],
+        "Command": Object {
+          "Name": "testETLJob",
+          "PythonVersion": "3",
+          "ScriptLocation": "s3://fakelocation/script",
         },
-        "LifecycleConfiguration": Object {
-          "Rules": Array [
-            Object {
-              "NoncurrentVersionTransitions": Array [
-                Object {
-                  "StorageClass": "GLACIER",
-                  "TransitionInDays": 90,
-                },
-              ],
-              "Status": "Enabled",
-            },
-          ],
-        },
-        "LoggingConfiguration": Object {
-          "DestinationBucketName": Object {
-            "Ref": "S3LoggingBucket800A2B27",
-          },
-        },
-        "PublicAccessBlockConfiguration": Object {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true,
-        },
-        "VersioningConfiguration": Object {
-          "Status": "Enabled",
-        },
+        "Role": "jobRole",
+        "SecurityConfiguration": "testETLJob",
       },
-      "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "S3BucketPolicyF560589A": Object {
-      "Properties": Object {
-        "Bucket": Object {
-          "Ref": "S3Bucket07682993",
-        },
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "*",
-              "Condition": Object {
-                "Bool": Object {
-                  "aws:SecureTransport": "false",
-                },
-              },
-              "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "S3Bucket07682993",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
-              },
-              "Sid": "HttpsOnly",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::S3::BucketPolicy",
-    },
-    "S3LoggingBucket800A2B27": Object {
-      "DeletionPolicy": "Retain",
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W35",
-              "reason": "This S3 bucket is used as the access logging bucket for another bucket",
-            },
-          ],
-        },
-      },
-      "Properties": Object {
-        "AccessControl": "LogDeliveryWrite",
-        "BucketEncryption": Object {
-          "ServerSideEncryptionConfiguration": Array [
-            Object {
-              "ServerSideEncryptionByDefault": Object {
-                "SSEAlgorithm": "AES256",
-              },
-            },
-          ],
-        },
-        "PublicAccessBlockConfiguration": Object {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true,
-        },
-      },
-      "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "S3LoggingBucketPolicy6B3AA8AF": Object {
-      "Properties": Object {
-        "Bucket": Object {
-          "Ref": "S3LoggingBucket800A2B27",
-        },
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "*",
-              "Condition": Object {
-                "Bool": Object {
-                  "aws:SecureTransport": "false",
-                },
-              },
-              "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "S3LoggingBucket800A2B27",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
-              },
-              "Sid": "HttpsOnly",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::S3::BucketPolicy",
+      "Type": "AWS::Glue::Job",
     },
   },
 }

@@ -12,8 +12,11 @@
  */
 
 import { CfnJob, CfnJobProps } from '@aws-cdk/aws-glue';
+import { IResolvable } from '@aws-cdk/core';
 
-export function DefaultGlueJobProps(jobRole: string, jobCommand: CfnJob.JobCommandProperty, glueSecurityConfigName: string ): CfnJobProps | any {
+export function DefaultGlueJobProps(jobRole: string,
+                                    jobCommand: CfnJob.JobCommandProperty | IResolvable,
+                                    glueSecurityConfigName: string ): CfnJobProps | any {
     const defaultGlueJobProps: CfnJobProps | any = {
         command: jobCommand,
         role: jobRole,

@@ -12,16 +12,15 @@
  */
 
 import { CfnJob, CfnJobProps, CfnSecurityConfiguration } from '@aws-cdk/aws-glue';
-import { Role, ServicePrincipal } from '@aws-cdk/aws-iam';
-import { Bucket } from '@aws-cdk/aws-s3';
 import { Aws, Construct } from '@aws-cdk/core';
-import { DefaultGlueJobProps } from './gluejob-defaults';
-import { buildS3Bucket } from './s3-bucket-helper';
+import * as defaults from '../';
 import { overrideProps } from './utils';
 
 export interface BuildGlueJobProps {
     /**
-     * Glue ETL job properties
+     * Glue ETL job properties. Do not pass the location of the script under the JobCommand. This
+     * bucket location will be ignored and new location will be created. If a bucket location for the
+     * ETL script exists, set it as the @scriptLocation parameter
      */
     readonly glueJobProps?: CfnJobProps
     /**
@@ -30,7 +29,7 @@ export interface BuildGlueJobProps {
     readonly existingCfnJob?: CfnJob;
 }
 
-export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): [ CfnJob, Bucket | any ] {
+export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): CfnJob {
 
     if (!props.existingCfnJob) {
         if (props.glueJobProps) {
@@ -40,50 +39,42 @@ export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): [ CfnJ
         }
     } else {
         // return properties are already supplied then bucket is not created and hence returns undefined
-        return [ props.existingCfnJob , undefined ];
+        return props.existingCfnJob;
     }
 }
 
-export function deployGlueJob(scope: Construct, glueJobProps: CfnJobProps): [ CfnJob, Bucket | any ] {
-
+export function deployGlueJob(scope: Construct, glueJobProps: CfnJobProps): CfnJob {
     const _jobID = 'ETLJob';
 
-    const _jobRole: string = glueJobProps?.role ? glueJobProps.role : (new Role(scope, `${_jobID}Role`, {
-        assumedBy: new ServicePrincipal('glue.amazonaws.com'),
-        description: 'Service role that Glue custom ETL jobs will assume for exeuction'
-    })).roleArn;
+    let _glueSecurityConfigName: string;
 
-    const _glueSecurityConfigName: string = 'ETLJobSecurityConfig';
-    const glueKMSKey = `arn:${Aws.PARTITION}:kms:${Aws.REGION}:${Aws.ACCOUNT_ID}/alias/aws/glue`;
+    if (glueJobProps.securityConfiguration === undefined) {
+        _glueSecurityConfigName = 'ETLJobSecurityConfig';
+        const glueKMSKey = `arn:${Aws.PARTITION}:kms:${Aws.REGION}:${Aws.ACCOUNT_ID}/alias/aws/glue`;
 
-    new CfnSecurityConfiguration(scope, 'GlueSecurityConfig', {
-        name: _glueSecurityConfigName,
-        encryptionConfiguration: {
-            cloudWatchEncryption: {
-                cloudWatchEncryptionMode: 'SSE-KMS',
-                kmsKeyArn: glueKMSKey
-            },
-            jobBookmarksEncryption: {
-                jobBookmarksEncryptionMode: 'CSE-KMS',
-                kmsKeyArn: glueKMSKey
-            },
-            s3Encryptions: [{
-                s3EncryptionMode: 'SSE-S3'
-            }]
-        }
-    });
+        new CfnSecurityConfiguration(scope, 'GlueSecurityConfig', {
+            name: _glueSecurityConfigName,
+            encryptionConfiguration: {
+                cloudWatchEncryption: {
+                    cloudWatchEncryptionMode: 'SSE-KMS',
+                    kmsKeyArn: glueKMSKey
+                },
+                jobBookmarksEncryption: {
+                    jobBookmarksEncryptionMode: 'CSE-KMS',
+                    kmsKeyArn: glueKMSKey
+                },
+                s3Encryptions: [{
+                    s3EncryptionMode: 'SSE-S3'
+                }]
+            }
+        });
+    } else {
+        _glueSecurityConfigName = glueJobProps.securityConfiguration;
+    }
 
-    // create s3 bucket where script can be deployed
-    const scriptLocation = buildS3Bucket(scope, {});
+    const _glueJobProps: CfnJobProps = overrideProps(defaults.DefaultGlueJobProps(glueJobProps.role, glueJobProps.command,
+                                                                                _glueSecurityConfigName), glueJobProps);
 
-    const _jobCommand: CfnJob.JobCommandProperty = {
-        name: _jobID,
-        pythonVersion: '3',
-        scriptLocation: scriptLocation[0].s3UrlForObject()
-    };
-
-    const _glueJobProps = overrideProps(DefaultGlueJobProps(_jobRole, _jobCommand, _glueSecurityConfigName), glueJobProps!);
-    const _glueJob = new CfnJob(scope, _jobID, _glueJobProps);
-
-    return [ _glueJob, scriptLocation ];
+    const _glueJob: CfnJob = new CfnJob(scope, _jobID, _glueJobProps);
+    return _glueJob;
 }

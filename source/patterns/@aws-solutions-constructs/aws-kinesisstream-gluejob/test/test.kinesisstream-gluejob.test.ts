@@ -24,12 +24,8 @@ test('Pattern minimal deployment', () => {
     const stack = new Stack();
     const props: KinesisStreamGlueJobProps = {
     glueJobProps: {
-        command: {
-            name: 'testCommand',
-            pythonVersion: '3',
-            scriptLocation: 's3://fakelocation/script'
-        },
-        role: 'testGlueJobRole',
+        command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'testJob', undefined, undefined),
+        role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
         securityConfiguration: 'testSecConfig'
     }
 

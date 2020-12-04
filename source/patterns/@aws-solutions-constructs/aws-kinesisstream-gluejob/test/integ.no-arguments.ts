@@ -23,12 +23,10 @@ stack.templateOptions.description = 'Integration Test for aws-kinesisstream-glue
 // Definitions
 const props: KinesisStreamGlueJobProps = {
     glueJobProps: {
-        command: {
-            name: 'testCommand',
-            pythonVersion: '3',
-            scriptLocation: 's3://fakelocation/script'
-        },
-        role: 'testGlueJobRole',
+        command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'testETLJob', undefined, {
+            versioned: false
+        }),
+        role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
         securityConfiguration: 'testSecConfig'
     }
 };
