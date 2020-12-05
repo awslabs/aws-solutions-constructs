@@ -14,7 +14,7 @@
 import { CfnJob, CfnJobProps } from '@aws-cdk/aws-glue';
 import { Role, ServicePrincipal } from '@aws-cdk/aws-iam';
 import { Stream, StreamProps } from '@aws-cdk/aws-kinesis';
-import { Bucket, BucketProps } from '@aws-cdk/aws-s3';
+import { Bucket, BucketProps, CfnBucket } from '@aws-cdk/aws-s3';
 import { Construct } from '@aws-cdk/core';
 import * as defaults from '@aws-solutions-constructs/core';
 
@@ -89,7 +89,10 @@ export class KinesisStreamGlueJob extends Construct {
     /**
      * This is a helper method to creates @CfnJob.JobCommandProperty for CfnJob. Based on the input parameters provided,
      * it will also create the S3 bucket for the ETL script location and grant 'read' access to 'glue.amazonaws.com'
-     * Service Principal so that the script inside the bucket can be accessed as by AWS Glue
+     * Service Principal so that the script inside the bucket can be accessed as by AWS Glueglobal.fetch = require('node-fetch');
+     *
+     * Also this method does not set lifecycle policies on S3 buckets created unless they are explicitly set in the bucket
+     * props
      *
      * @param scope - The AWS Construct under the underlying construct should be created
      * @param _jobID - The identifier/ name of the ETL Job
@@ -112,6 +115,11 @@ export class KinesisStreamGlueJob extends Construct {
             scriptLocation = defaults.buildS3Bucket(scope, {
                 bucketProps: scriptLocationBucketProps
             });
+            // Remove the default LifecycleConfiguration for the Logging Bucket
+            if (scriptLocationBucketProps?.lifecycleRules === undefined) {
+                (scriptLocation[0]!.node.findChild('Resource') as CfnBucket).addPropertyDeletionOverride(
+                                                                                        'LifecycleConfiguration.Rules');
+            }
         } else {
             // since bucket location was provided in the props, logger bucket is not created
             scriptLocation = [ existingScriptLocation, undefined ];
