@@ -78,12 +78,10 @@ export class KinesisStreamGlueJob extends Construct {
      * @param scope - The AWS Construct under which the role is to be created
      */
     public static createGlueJobRole(scope: Construct): Role {
-        const _jobRole: Role = new Role(scope, 'JobRole', {
+        return new Role(scope, 'JobRole', {
             assumedBy: new ServicePrincipal('glue.amazonaws.com'),
             description: 'Service role that Glue custom ETL jobs will assume for exeuction',
         });
-
-        return _jobRole;
     }
 
     /**
@@ -127,12 +125,10 @@ export class KinesisStreamGlueJob extends Construct {
 
         scriptLocation[0].grantRead(new ServicePrincipal('glue.amazonaws.com'));
 
-        const _jobCommand: CfnJob.JobCommandProperty = {
+        return {
             name: _jobID,
             pythonVersion,
             scriptLocation: scriptLocation[0].s3UrlForObject()
         };
-
-        return _jobCommand;
     }
 }
