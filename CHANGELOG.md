@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.75.0 (2020-12-03)
+
+### Changed
+- Upgraded all patterns to CDK v1.75.0
+- Updated `lambda-helper` in `core` to grant Vpc permissions for the lambda role, if required by the lambda function
+
 ## 1.74.0 (2020-11-17)
 
 ### Changed
