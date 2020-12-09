@@ -18,7 +18,6 @@ import { Bucket, BucketProps, CfnBucket } from '@aws-cdk/aws-s3';
 import { Construct } from '@aws-cdk/core';
 import * as defaults from '@aws-solutions-constructs/core';
 
-
 export interface KinesisStreamGlueJobProps {
     /**
      * Existing instance of Kineses Data Stream. If not set, it will create an instance
