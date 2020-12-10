@@ -1,5 +1,5 @@
 {
-  "name": "@aws-solutions-constructs/aws-kinesisstream-gluejob",
+  "name": "@aws-solutions-constructs/aws-kinesisstreams-gluejob",
   "version": "0.0.0",
   "description": "CDK Constructs for streaming data from AWS Kinesis Data Stream for Glue ETL custom Job processing",
   "main": "lib/index.js",
@@ -7,7 +7,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/awslabs/aws-solutions-constructs.git",
-    "directory": "source/patterns/@aws-solutions-constructs/aws-kinesisstream-gluejob"
+    "directory": "source/patterns/@aws-solutions-constructs/aws-kinesisstreams-gluejob"
   },
   "author": {
     "name": "Amazon Web Services",
@@ -34,21 +34,21 @@
     "outdir": "dist",
     "targets": {
       "java": {
-        "package": "software.amazon.awsconstructs.services.kinesisstreamgluejob",
+        "package": "software.amazon.awsconstructs.services.kinesisstreamsgluejob",
         "maven": {
           "groupId": "software.amazon.awsconstructs",
-          "artifactId": "kinesisstreamgluejob"
+          "artifactId": "kinesisstreamsgluejob"
         }
       },
       "dotnet": {
-        "namespace": "Amazon.Constructs.AWS.KinesisStreamGlueJob",
-        "packageId": "Amazon.Constructs.AWS.KinesisStreamGlueJob",
+        "namespace": "Amazon.Constructs.AWS.KinesisStreamsGlueJob",
+        "packageId": "Amazon.Constructs.AWS.KinesisStreamsGlueJob",
         "signAssembly": true,
         "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
       },
       "python": {
-        "distName": "aws-solutions-constructs.aws-kinesis-stream-gluejob",
-        "module": "aws_solutions_constructs.aws_kinesis_stream_gluejob"
+        "distName": "aws-solutions-constructs.aws-kinesis-streams-gluejob",
+        "module": "aws_solutions_constructs.aws_kinesis_streams_gluejob"
       }
     }
   },
