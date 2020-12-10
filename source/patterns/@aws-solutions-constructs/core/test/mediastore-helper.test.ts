@@ -29,7 +29,10 @@ test('MediaStore container override params', () => {
   const mediaStoreContainerProps: mediastore.CfnContainerProps = {
     containerName: 'TestContainer',
     policy: '{}',
-    lifecyclePolicy: '{}'
+    lifecyclePolicy: '{}',
+    metricPolicy: {
+      containerLevelMetrics: 'DISABLED'
+    }
   };
 
   MediaStoreContainer(stack, mediaStoreContainerProps);
@@ -41,9 +44,12 @@ test('MediaStore container override params', () => {
         AllowedMethods: [ 'GET' ],
         AllowedOrigins: [ '*' ],
         ExposeHeaders: [ '*' ],
-        MaxAgeSeconds: 3000,
+        MaxAgeSeconds: 3000
       }
     ],
+    MetricPolicy: {
+      ContainerLevelMetrics: 'DISABLED'
+    },
     Policy: '{}',
     LifecyclePolicy: '{}',
     ContainerName: 'TestContainer'

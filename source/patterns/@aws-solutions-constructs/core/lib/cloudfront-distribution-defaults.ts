@@ -95,7 +95,9 @@ export function DefaultCloudFrontWebDistributionForS3Props(sourceBucket: s3.Buck
 export function DefaultCloudFrontDisributionForMediaStoreProps(mediastoreContainer: mediastore.CfnContainer,
                                                                loggingBucket: s3.Bucket,
                                                                originRequestPolicy: cloudfront.OriginRequestPolicy,
-                                                               customHeaders?: Record<string, string>): cloudfront.DistributionProps {
+                                                               setHttpSecurityHeaders: boolean,
+                                                               customHeaders?: Record<string, string>,
+                                                               edgeLambda?: lambda.Version): cloudfront.DistributionProps {
     const mediaStoreContainerUrlWithoutProtocol = cdk.Fn.select(1, cdk.Fn.split('://', mediastoreContainer.attrEndpoint));
     const mediaStoreContainerDomainName = cdk.Fn.select(0, cdk.Fn.split('/', mediaStoreContainerUrlWithoutProtocol));
 
@@ -103,15 +105,35 @@ export function DefaultCloudFrontDisributionForMediaStoreProps(mediastoreContain
         new origins.HttpOrigin(mediaStoreContainerDomainName, { customHeaders }) :
         new origins.HttpOrigin(mediaStoreContainerDomainName);
 
-    return {
-        defaultBehavior: {
-            origin: httpOrigin,
-            viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-            allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
-            cachedMethods: cloudfront.CachedMethods.CACHE_GET_HEAD_OPTIONS,
-            originRequestPolicy
-        },
-        enableLogging: true,
-        logBucket: loggingBucket
-    } as cloudfront.DistributionProps;
+    if (setHttpSecurityHeaders) {
+        return {
+            defaultBehavior: {
+                origin: httpOrigin,
+                edgeLambdas: [
+                    {
+                        eventType: cloudfront.LambdaEdgeEventType.ORIGIN_RESPONSE,
+                        functionVersion: edgeLambda
+                    }
+                ],
+                viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+                allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
+                cachedMethods: cloudfront.CachedMethods.CACHE_GET_HEAD_OPTIONS,
+                originRequestPolicy
+            },
+            enableLogging: true,
+            logBucket: loggingBucket
+        } as cloudfront.DistributionProps;
+    } else {
+        return {
+            defaultBehavior: {
+                origin: httpOrigin,
+                viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+                allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
+                cachedMethods: cloudfront.CachedMethods.CACHE_GET_HEAD_OPTIONS,
+                originRequestPolicy
+            },
+            enableLogging: true,
+            logBucket: loggingBucket
+        } as cloudfront.DistributionProps;
+    }
 }

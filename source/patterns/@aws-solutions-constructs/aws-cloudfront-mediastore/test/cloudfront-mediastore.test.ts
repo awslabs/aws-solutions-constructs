@@ -25,7 +25,7 @@ import { CloudFrontToMediaStore } from '../lib';
 test('Test the default deployment snapshot', () => {
   // Initial setup
   const stack = new Stack();
-  new CloudFrontToMediaStore(stack, 'CloudFrontToMediaStore', {});
+  new CloudFrontToMediaStore(stack, 'test-cloudfront-mediastore', {});
 
   // Assertion
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
@@ -37,7 +37,7 @@ test('Test the default deployment snapshot', () => {
 test('Test the default deployment pattern variables', () => {
   // Initial setup
   const stack = new Stack();
-  const cloudFrontToMediaStore = new CloudFrontToMediaStore(stack, 'CloudFrontToMediaStore', {});
+  const cloudFrontToMediaStore = new CloudFrontToMediaStore(stack, 'test-cloudfront-mediastore', {});
 
   // Assertion
   expect(cloudFrontToMediaStore.cloudFrontWebDistribution).not.toEqual(undefined);
@@ -45,19 +45,17 @@ test('Test the default deployment pattern variables', () => {
   expect(cloudFrontToMediaStore.cloudFrontLoggingBucket).not.toEqual(undefined);
   expect(cloudFrontToMediaStore.cloudFrontOriginRequestPolicy).not.toEqual(undefined);
   expect(cloudFrontToMediaStore.cloudFrontOriginAccessIdentity).not.toEqual(undefined);
+  expect(cloudFrontToMediaStore.edgeLambdaFunctionVersion).not.toEqual(undefined);
 });
 
 // --------------------------------------------------------------
-// Test the deployment with existing MediaStore container
+// Test the deployment without HTTP security headers
 // --------------------------------------------------------------
-test('Test the deployment with existing MediaStore container', () => {
+test('Test the deployment without HTTP security headers', () => {
   // Initial setup
   const stack = new Stack();
-  const mediaStoreContainer = new mediastore.CfnContainer(stack, 'MyMediaStoreContainer', {
-    containerName: 'MyMediaStoreContainer'
-  });
-  const cloudFrontToMediaStore = new CloudFrontToMediaStore(stack, 'CloudFrontToMediaStore', {
-    existingMediaStoreContainerObj: mediaStoreContainer
+  const cloudFrontToMediaStore = new CloudFrontToMediaStore(stack, 'test-cloudfront-mediastore', {
+    insertHttpSecurityHeaders: false
   });
 
   // Assertion
@@ -77,9 +75,9 @@ test('Test the deployment with existing MediaStore container', () => {
         ],
         Compress: true,
         OriginRequestPolicyId: {
-          Ref: 'CloudfrontOriginRequestPolicy299A10DB'
+          Ref: 'testcloudfrontmediastoreCloudfrontOriginRequestPolicyA1D988D3'
         },
-        TargetOriginId: 'CloudFrontDistributionOrigin176EC3A12',
+        TargetOriginId: 'testcloudfrontmediastoreCloudFrontDistributionOrigin1BBFA2A4D',
         ViewerProtocolPolicy: 'redirect-to-https'
       },
       Enabled: true,
@@ -88,7 +86,108 @@ test('Test the deployment with existing MediaStore container', () => {
       Logging: {
         Bucket: {
           'Fn::GetAtt': [
-            'CloudfrontLoggingBucket3C3EFAA7',
+            'testcloudfrontmediastoreCloudfrontLoggingBucketA3A51E6A',
+            'RegionalDomainName'
+          ]
+        }
+      },
+      Origins: [
+        {
+          CustomOriginConfig: {
+            OriginProtocolPolicy: 'https-only'
+          },
+          DomainName: {
+            'Fn::Select': [
+              0,
+              {
+                'Fn::Split': [
+                  '/',
+                  {
+                    'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          '://',
+                          {
+                            'Fn::GetAtt': [
+                              'testcloudfrontmediastoreMediaStoreContainerF60A96BB',
+                              'Endpoint'
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          Id: 'testcloudfrontmediastoreCloudFrontDistributionOrigin1BBFA2A4D',
+          OriginCustomHeaders: [
+            {
+              HeaderName: 'User-Agent',
+              HeaderValue: {
+                Ref: 'testcloudfrontmediastoreCloudFrontOriginAccessIdentity966405A0'
+              }
+            }
+          ]
+        }
+      ]
+    }
+  });
+  expect(cloudFrontToMediaStore.edgeLambdaFunctionVersion).toEqual(undefined);
+});
+
+// --------------------------------------------------------------
+// Test the deployment with existing MediaStore container
+// --------------------------------------------------------------
+test('Test the deployment with existing MediaStore container', () => {
+  // Initial setup
+  const stack = new Stack();
+  const mediaStoreContainer = new mediastore.CfnContainer(stack, 'MyMediaStoreContainer', {
+    containerName: 'MyMediaStoreContainer'
+  });
+  const cloudFrontToMediaStore = new CloudFrontToMediaStore(stack, 'test-cloudfront-mediastore', {
+    existingMediaStoreContainerObj: mediaStoreContainer
+  });
+
+  // Assertion
+  expect(stack).toHaveResourceLike('AWS::CloudFront::Distribution', {
+    DistributionConfig: {
+      DefaultCacheBehavior: {
+        AllowedMethods: [
+          'GET',
+          'HEAD',
+          'OPTIONS'
+        ],
+        CachePolicyId: '658327ea-f89d-4fab-a63d-7e88639e58f6',
+        CachedMethods: [
+          'GET',
+          'HEAD',
+          'OPTIONS'
+        ],
+        Compress: true,
+        LambdaFunctionAssociations: [
+          {
+            EventType: 'origin-response',
+            LambdaFunctionARN: {
+              Ref: 'testcloudfrontmediastoreSetHttpSecurityHeadersVersionE87B65C3'
+            }
+          }
+        ],
+        OriginRequestPolicyId: {
+          Ref: 'testcloudfrontmediastoreCloudfrontOriginRequestPolicyA1D988D3'
+        },
+        TargetOriginId: 'testcloudfrontmediastoreCloudFrontDistributionOrigin1BBFA2A4D',
+        ViewerProtocolPolicy: 'redirect-to-https'
+      },
+      Enabled: true,
+      HttpVersion: 'http2',
+      IPV6Enabled: true,
+      Logging: {
+        Bucket: {
+          'Fn::GetAtt': [
+            'testcloudfrontmediastoreCloudfrontLoggingBucketA3A51E6A',
             'RegionalDomainName'
           ]
         }
@@ -124,7 +223,7 @@ test('Test the deployment with existing MediaStore container', () => {
               }
             ]
           },
-          Id: 'CloudFrontDistributionOrigin176EC3A12'
+          Id: 'testcloudfrontmediastoreCloudFrontDistributionOrigin1BBFA2A4D'
         }
       ]
     }
@@ -176,12 +275,15 @@ test('Test the deployment with existing MediaStore container', () => {
 test('Test the deployment with the user provided MediaStore properties', () => {
   // Initial setup
   const stack = new Stack();
-  const cloudFrontToMediaStore = new CloudFrontToMediaStore(stack, 'CloudFrontToMediaStore', {
+  const cloudFrontToMediaStore = new CloudFrontToMediaStore(stack, 'test-cloudfront-mediastore', {
     mediaStoreContainerProps: {
       containerName: 'MyMediaStoreContainer',
       policy: '{}',
       lifecyclePolicy: '{}',
-      corsPolicy: []
+      corsPolicy: [],
+      metricPolicy: {
+        containerLevelMetrics: 'DISABLED'
+      }
     }
   });
 
@@ -201,10 +303,18 @@ test('Test the deployment with the user provided MediaStore properties', () => {
           'OPTIONS'
         ],
         Compress: true,
+        LambdaFunctionAssociations: [
+          {
+            EventType: 'origin-response',
+            LambdaFunctionARN: {
+              Ref: 'testcloudfrontmediastoreSetHttpSecurityHeadersVersionE87B65C3'
+            }
+          }
+        ],
         OriginRequestPolicyId: {
-          Ref: 'CloudfrontOriginRequestPolicy299A10DB'
+          Ref: 'testcloudfrontmediastoreCloudfrontOriginRequestPolicyA1D988D3'
         },
-        TargetOriginId: 'CloudFrontDistributionOrigin176EC3A12',
+        TargetOriginId: 'testcloudfrontmediastoreCloudFrontDistributionOrigin1BBFA2A4D',
         ViewerProtocolPolicy: 'redirect-to-https'
       },
       Enabled: true,
@@ -213,7 +323,7 @@ test('Test the deployment with the user provided MediaStore properties', () => {
       Logging: {
         Bucket: {
           'Fn::GetAtt': [
-            'CloudfrontLoggingBucket3C3EFAA7',
+            'testcloudfrontmediastoreCloudfrontLoggingBucketA3A51E6A',
             'RegionalDomainName'
           ]
         }
@@ -237,7 +347,7 @@ test('Test the deployment with the user provided MediaStore properties', () => {
                           '://',
                           {
                             'Fn::GetAtt': [
-                              'MediaStoreContainer',
+                              'testcloudfrontmediastoreMediaStoreContainerF60A96BB',
                               'Endpoint'
                             ]
                           }
@@ -249,7 +359,7 @@ test('Test the deployment with the user provided MediaStore properties', () => {
               }
             ]
           },
-          Id: 'CloudFrontDistributionOrigin176EC3A12'
+          Id: 'testcloudfrontmediastoreCloudFrontDistributionOrigin1BBFA2A4D'
         }
       ]
     }
@@ -258,7 +368,10 @@ test('Test the deployment with the user provided MediaStore properties', () => {
     ContainerName: 'MyMediaStoreContainer',
     Policy: '{}',
     LifecyclePolicy: '{}',
-    CorsPolicy: []
+    CorsPolicy: [],
+    MetricPolicy: {
+      ContainerLevelMetrics: 'DISABLED'
+    }
   });
   expect(stack).toHaveResourceLike('AWS::CloudFront::OriginRequestPolicy', {
     OriginRequestPolicyConfig: {
@@ -304,7 +417,7 @@ test('Test the deployment with the user provided MediaStore properties', () => {
 test('Test the deployment with the user provided CloudFront properties', () => {
   // Initial setup
   const stack = new Stack();
-  new CloudFrontToMediaStore(stack, 'CloudFrontToMediaStore', {
+  new CloudFrontToMediaStore(stack, 'test-cloudfront-mediastore', {
     cloudFrontDistributionProps: {
       defaultBehavior: {
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.HTTPS_ONLY,
@@ -333,10 +446,18 @@ test('Test the deployment with the user provided CloudFront properties', () => {
           'HEAD'
         ],
         Compress: true,
+        LambdaFunctionAssociations: [
+          {
+            EventType: 'origin-response',
+            LambdaFunctionARN: {
+              Ref: 'testcloudfrontmediastoreSetHttpSecurityHeadersVersionE87B65C3'
+            }
+          }
+        ],
         OriginRequestPolicyId: {
-          Ref: 'CloudfrontOriginRequestPolicy299A10DB'
+          Ref: 'testcloudfrontmediastoreCloudfrontOriginRequestPolicyA1D988D3'
         },
-        TargetOriginId: 'CloudFrontDistributionOrigin176EC3A12',
+        TargetOriginId: 'testcloudfrontmediastoreCloudFrontDistributionOrigin1BBFA2A4D',
         ViewerProtocolPolicy: 'https-only'
       },
       Enabled: true,
@@ -345,21 +466,13 @@ test('Test the deployment with the user provided CloudFront properties', () => {
       Logging: {
         Bucket: {
           'Fn::GetAtt': [
-            'CloudfrontLoggingBucket3C3EFAA7',
+            'testcloudfrontmediastoreCloudfrontLoggingBucketA3A51E6A',
             'RegionalDomainName'
           ]
         }
       },
       Origins: [
         {
-          OriginCustomHeaders: [
-            {
-              HeaderName: 'User-Agent',
-              HeaderValue: {
-                Ref: 'CloudFrontOriginAccessIdentity04EB66DA'
-              }
-            }
-          ],
           CustomOriginConfig: {
             OriginProtocolPolicy: 'https-only'
           },
@@ -377,7 +490,7 @@ test('Test the deployment with the user provided CloudFront properties', () => {
                           '://',
                           {
                             'Fn::GetAtt': [
-                              'MediaStoreContainer',
+                              'testcloudfrontmediastoreMediaStoreContainerF60A96BB',
                               'Endpoint'
                             ]
                           }
@@ -389,7 +502,15 @@ test('Test the deployment with the user provided CloudFront properties', () => {
               }
             ]
           },
-          Id: 'CloudFrontDistributionOrigin176EC3A12'
+          Id: 'testcloudfrontmediastoreCloudFrontDistributionOrigin1BBFA2A4D',
+          OriginCustomHeaders: [
+            {
+              HeaderName: 'User-Agent',
+              HeaderValue: {
+                Ref: 'testcloudfrontmediastoreCloudFrontOriginAccessIdentity966405A0'
+              }
+            }
+          ]
         }
       ]
     }

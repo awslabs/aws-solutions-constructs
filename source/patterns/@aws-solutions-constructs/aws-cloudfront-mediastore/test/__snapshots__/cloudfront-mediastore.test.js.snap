@@ -3,7 +3,7 @@
 exports[`Test the default deployment snapshot 1`] = `
 Object {
   "Resources": Object {
-    "CloudFrontDistributionBA64CE3A": Object {
+    "testcloudfrontmediastoreCloudFrontDistributionED9265B1": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -29,10 +29,18 @@ Object {
               "OPTIONS",
             ],
             "Compress": true,
+            "LambdaFunctionAssociations": Array [
+              Object {
+                "EventType": "origin-response",
+                "LambdaFunctionARN": Object {
+                  "Ref": "testcloudfrontmediastoreSetHttpSecurityHeadersVersionE87B65C3",
+                },
+              },
+            ],
             "OriginRequestPolicyId": Object {
-              "Ref": "CloudfrontOriginRequestPolicy299A10DB",
+              "Ref": "testcloudfrontmediastoreCloudfrontOriginRequestPolicyA1D988D3",
             },
-            "TargetOriginId": "CloudFrontDistributionOrigin176EC3A12",
+            "TargetOriginId": "testcloudfrontmediastoreCloudFrontDistributionOrigin1BBFA2A4D",
             "ViewerProtocolPolicy": "redirect-to-https",
           },
           "Enabled": true,
@@ -41,7 +49,7 @@ Object {
           "Logging": Object {
             "Bucket": Object {
               "Fn::GetAtt": Array [
-                "CloudfrontLoggingBucket3C3EFAA7",
+                "testcloudfrontmediastoreCloudfrontLoggingBucketA3A51E6A",
                 "RegionalDomainName",
               ],
             },
@@ -65,7 +73,7 @@ Object {
                               "://",
                               Object {
                                 "Fn::GetAtt": Array [
-                                  "MediaStoreContainer",
+                                  "testcloudfrontmediastoreMediaStoreContainerF60A96BB",
                                   "Endpoint",
                                 ],
                               },
@@ -77,12 +85,12 @@ Object {
                   },
                 ],
               },
-              "Id": "CloudFrontDistributionOrigin176EC3A12",
+              "Id": "testcloudfrontmediastoreCloudFrontDistributionOrigin1BBFA2A4D",
               "OriginCustomHeaders": Array [
                 Object {
                   "HeaderName": "User-Agent",
                   "HeaderValue": Object {
-                    "Ref": "CloudFrontOriginAccessIdentity04EB66DA",
+                    "Ref": "testcloudfrontmediastoreCloudFrontOriginAccessIdentity966405A0",
                   },
                 },
               ],
@@ -92,7 +100,7 @@ Object {
       },
       "Type": "AWS::CloudFront::Distribution",
     },
-    "CloudFrontOriginAccessIdentity04EB66DA": Object {
+    "testcloudfrontmediastoreCloudFrontOriginAccessIdentity966405A0": Object {
       "Properties": Object {
         "CloudFrontOriginAccessIdentityConfig": Object {
           "Comment": Object {
@@ -114,7 +122,7 @@ Object {
       },
       "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
     },
-    "CloudfrontLoggingBucket3C3EFAA7": Object {
+    "testcloudfrontmediastoreCloudfrontLoggingBucketA3A51E6A": Object {
       "DeletionPolicy": "Retain",
       "Metadata": Object {
         "cfn_nag": Object {
@@ -147,10 +155,10 @@ Object {
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
     },
-    "CloudfrontLoggingBucketPolicy8FC0956D": Object {
+    "testcloudfrontmediastoreCloudfrontLoggingBucketPolicyF3B44DFD": Object {
       "Properties": Object {
         "Bucket": Object {
-          "Ref": "CloudfrontLoggingBucket3C3EFAA7",
+          "Ref": "testcloudfrontmediastoreCloudfrontLoggingBucketA3A51E6A",
         },
         "PolicyDocument": Object {
           "Statement": Array [
@@ -169,7 +177,7 @@ Object {
                   Array [
                     Object {
                       "Fn::GetAtt": Array [
-                        "CloudfrontLoggingBucket3C3EFAA7",
+                        "testcloudfrontmediastoreCloudfrontLoggingBucketA3A51E6A",
                         "Arn",
                       ],
                     },
@@ -185,7 +193,7 @@ Object {
       },
       "Type": "AWS::S3::BucketPolicy",
     },
-    "CloudfrontOriginRequestPolicy299A10DB": Object {
+    "testcloudfrontmediastoreCloudfrontOriginRequestPolicyA1D988D3": Object {
       "Properties": Object {
         "OriginRequestPolicyConfig": Object {
           "Comment": "Policy for Constructs CloudFrontDistributionForMediaStore",
@@ -223,7 +231,7 @@ Object {
       },
       "Type": "AWS::CloudFront::OriginRequestPolicy",
     },
-    "MediaStoreContainer": Object {
+    "testcloudfrontmediastoreMediaStoreContainerF60A96BB": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
         "AccessLoggingEnabled": true,
@@ -248,6 +256,9 @@ Object {
           },
         ],
         "LifecyclePolicy": "{\\"rules\\":[{\\"definition\\":{\\"path\\":[{\\"wildcard\\":\\"*\\"}],\\"days_since_create\\":[{\\"numeric\\":[\\">\\",30]}]},\\"action\\":\\"EXPIRE\\"}]}",
+        "MetricPolicy": Object {
+          "ContainerLevelMetrics": "ENABLED",
+        },
         "Policy": Object {
           "Fn::Join": Array [
             "",
@@ -270,7 +281,7 @@ Object {
               },
               "/*\\",\\"Condition\\":{\\"Bool\\":{\\"aws:UserAgent\\":\\"",
               Object {
-                "Ref": "CloudFrontOriginAccessIdentity04EB66DA",
+                "Ref": "testcloudfrontmediastoreCloudFrontOriginAccessIdentity966405A0",
               },
               "\\",\\"aws:SecureTransport\\":\\"true\\"}}}]}",
             ],
@@ -278,6 +289,143 @@ Object {
         },
       },
       "Type": "AWS::MediaStore::Container",
+    },
+    "testcloudfrontmediastoreSetHttpSecurityHeaders9995A63D": Object {
+      "DependsOn": Array [
+        "testcloudfrontmediastoreSetHttpSecurityHeadersServiceRoleDefaultPolicy73DF1407",
+        "testcloudfrontmediastoreSetHttpSecurityHeadersServiceRole2F1F5449",
+      ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "Code": Object {
+          "ZipFile": "exports.handler = (event, context, callback) => {           const response = event.Records[0].cf.response;           const headers = response.headers;           headers['x-xss-protection'] = [             {               key: 'X-XSS-Protection',               value: '1; mode=block'             }           ];           headers['x-frame-options'] = [             {               key: 'X-Frame-Options',               value: 'DENY'             }           ];           headers['x-content-type-options'] = [             {               key: 'X-Content-Type-Options',               value: 'nosniff'             }           ];           headers['strict-transport-security'] = [             {               key: 'Strict-Transport-Security',               value: 'max-age=63072000; includeSubdomains; preload'             }           ];           headers['referrer-policy'] = [             {               key: 'Referrer-Policy',               value: 'same-origin'             }           ];           headers['content-security-policy'] = [             {               key: 'Content-Security-Policy',               value: \\"default-src 'none'; base-uri 'self'; img-src 'self'; script-src 'self'; style-src 'self' https:; object-src 'none'; frame-ancestors 'none'; font-src 'self' https:; form-action 'self'; manifest-src 'self'; connect-src 'self'\\"              }           ];           callback(null, response);         };",
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "testcloudfrontmediastoreSetHttpSecurityHeadersServiceRole2F1F5449",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs12.x",
+        "TracingConfig": Object {
+          "Mode": "Active",
+        },
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "testcloudfrontmediastoreSetHttpSecurityHeadersServiceRole2F1F5449": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "edgelambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": Array [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        "arn:",
+                        Object {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":logs:",
+                        Object {
+                          "Ref": "AWS::Region",
+                        },
+                        ":",
+                        Object {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":log-group:/aws/lambda/*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testcloudfrontmediastoreSetHttpSecurityHeadersServiceRoleDefaultPolicy73DF1407": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testcloudfrontmediastoreSetHttpSecurityHeadersServiceRoleDefaultPolicy73DF1407",
+        "Roles": Array [
+          Object {
+            "Ref": "testcloudfrontmediastoreSetHttpSecurityHeadersServiceRole2F1F5449",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "testcloudfrontmediastoreSetHttpSecurityHeadersVersionE87B65C3": Object {
+      "Properties": Object {
+        "FunctionName": Object {
+          "Ref": "testcloudfrontmediastoreSetHttpSecurityHeaders9995A63D",
+        },
+      },
+      "Type": "AWS::Lambda::Version",
     },
   },
 }

@@ -1,7 +1,7 @@
 {
   "Description": "Integration test for aws-cloudfront-mediastore with existing mediastore container",
   "Resources": {
-    "CloudFrontDistributionBA64CE3A": {
+    "testcloudfrontmediastoreCloudFrontDistributionED9265B1": {
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
@@ -27,10 +27,18 @@
               "OPTIONS"
             ],
             "Compress": true,
+            "LambdaFunctionAssociations": [
+              {
+                "EventType": "origin-response",
+                "LambdaFunctionARN": {
+                  "Ref": "testcloudfrontmediastoreSetHttpSecurityHeadersVersionE87B65C3"
+                }
+              }
+            ],
             "OriginRequestPolicyId": {
-              "Ref": "CloudfrontOriginRequestPolicy299A10DB"
+              "Ref": "testcloudfrontmediastoreCloudfrontOriginRequestPolicyA1D988D3"
             },
-            "TargetOriginId": "testcloudfrontmediastoreCloudFrontDistributionOrigin1BBFA2A4D",
+            "TargetOriginId": "testcloudfrontmediastoreCloudFrontDistributionOrigin1CB4159BB",
             "ViewerProtocolPolicy": "redirect-to-https"
           },
           "Enabled": true,
@@ -39,7 +47,7 @@
           "Logging": {
             "Bucket": {
               "Fn::GetAtt": [
-                "CloudfrontLoggingBucket3C3EFAA7",
+                "testcloudfrontmediastoreCloudfrontLoggingBucketA3A51E6A",
                 "RegionalDomainName"
               ]
             }
@@ -75,14 +83,14 @@
                   }
                 ]
               },
-              "Id": "testcloudfrontmediastoreCloudFrontDistributionOrigin1BBFA2A4D"
+              "Id": "testcloudfrontmediastoreCloudFrontDistributionOrigin1CB4159BB"
             }
           ]
         }
       },
       "Type": "AWS::CloudFront::Distribution"
     },
-    "CloudfrontLoggingBucket3C3EFAA7": {
+    "testcloudfrontmediastoreCloudfrontLoggingBucketA3A51E6A": {
       "DeletionPolicy": "Retain",
       "Metadata": {
         "cfn_nag": {
@@ -115,10 +123,10 @@
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain"
     },
-    "CloudfrontLoggingBucketPolicy8FC0956D": {
+    "testcloudfrontmediastoreCloudfrontLoggingBucketPolicyF3B44DFD": {
       "Properties": {
         "Bucket": {
-          "Ref": "CloudfrontLoggingBucket3C3EFAA7"
+          "Ref": "testcloudfrontmediastoreCloudfrontLoggingBucketA3A51E6A"
         },
         "PolicyDocument": {
           "Statement": [
@@ -137,7 +145,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "CloudfrontLoggingBucket3C3EFAA7",
+                        "testcloudfrontmediastoreCloudfrontLoggingBucketA3A51E6A",
                         "Arn"
                       ]
                     },
@@ -153,7 +161,7 @@
       },
       "Type": "AWS::S3::BucketPolicy"
     },
-    "CloudfrontOriginRequestPolicy299A10DB": {
+    "testcloudfrontmediastoreCloudfrontOriginRequestPolicyA1D988D3": {
       "Properties": {
         "OriginRequestPolicyConfig": {
           "Comment": "Policy for Constructs CloudFrontDistributionForMediaStore",
@@ -196,6 +204,143 @@
         "ContainerName": "MyMediaStoreContainer"
       },
       "Type": "AWS::MediaStore::Container"
+    },
+    "testcloudfrontmediastoreSetHttpSecurityHeaders9995A63D": {
+      "DependsOn": [
+        "testcloudfrontmediastoreSetHttpSecurityHeadersServiceRoleDefaultPolicy73DF1407",
+        "testcloudfrontmediastoreSetHttpSecurityHeadersServiceRole2F1F5449"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions."
+            }
+          ]
+        }
+      },
+      "Properties": {
+        "Code": {
+          "ZipFile": "exports.handler = (event, context, callback) => {           const response = event.Records[0].cf.response;           const headers = response.headers;           headers['x-xss-protection'] = [             {               key: 'X-XSS-Protection',               value: '1; mode=block'             }           ];           headers['x-frame-options'] = [             {               key: 'X-Frame-Options',               value: 'DENY'             }           ];           headers['x-content-type-options'] = [             {               key: 'X-Content-Type-Options',               value: 'nosniff'             }           ];           headers['strict-transport-security'] = [             {               key: 'Strict-Transport-Security',               value: 'max-age=63072000; includeSubdomains; preload'             }           ];           headers['referrer-policy'] = [             {               key: 'Referrer-Policy',               value: 'same-origin'             }           ];           headers['content-security-policy'] = [             {               key: 'Content-Security-Policy',               value: \"default-src 'none'; base-uri 'self'; img-src 'self'; script-src 'self'; style-src 'self' https:; object-src 'none'; frame-ancestors 'none'; font-src 'self' https:; form-action 'self'; manifest-src 'self'; connect-src 'self'\"              }           ];           callback(null, response);         };"
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testcloudfrontmediastoreSetHttpSecurityHeadersServiceRole2F1F5449",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs12.x",
+        "TracingConfig": {
+          "Mode": "Active"
+        }
+      },
+      "Type": "AWS::Lambda::Function"
+    },
+    "testcloudfrontmediastoreSetHttpSecurityHeadersServiceRole2F1F5449": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "edgelambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":log-group:/aws/lambda/*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy"
+          }
+        ]
+      },
+      "Type": "AWS::IAM::Role"
+    },
+    "testcloudfrontmediastoreSetHttpSecurityHeadersServiceRoleDefaultPolicy73DF1407": {
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+            }
+          ]
+        }
+      },
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testcloudfrontmediastoreSetHttpSecurityHeadersServiceRoleDefaultPolicy73DF1407",
+        "Roles": [
+          {
+            "Ref": "testcloudfrontmediastoreSetHttpSecurityHeadersServiceRole2F1F5449"
+          }
+        ]
+      },
+      "Type": "AWS::IAM::Policy"
+    },
+    "testcloudfrontmediastoreSetHttpSecurityHeadersVersionE87B65C3": {
+      "Properties": {
+        "FunctionName": {
+          "Ref": "testcloudfrontmediastoreSetHttpSecurityHeaders9995A63D"
+        }
+      },
+      "Type": "AWS::Lambda::Version"
     }
   }
 }

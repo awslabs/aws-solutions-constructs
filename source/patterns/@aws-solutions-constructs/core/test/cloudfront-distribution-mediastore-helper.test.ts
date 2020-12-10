@@ -59,6 +59,14 @@ test('CloudFront distribution for MediaStore with user provided log bucket', () 
           'OPTIONS'
         ],
         Compress: true,
+        LambdaFunctionAssociations: [
+          {
+            EventType: 'origin-response',
+            LambdaFunctionARN: {
+              Ref: 'SetHttpSecurityHeadersVersion660E2F72'
+            }
+          }
+        ],
         OriginRequestPolicyId: {
           Ref: 'CloudfrontOriginRequestPolicy299A10DB'
         },
@@ -154,6 +162,14 @@ test('CloudFront distribution for MediaStore with user provided origin request p
           'OPTIONS'
         ],
         Compress: true,
+        LambdaFunctionAssociations: [
+          {
+            EventType: 'origin-response',
+            LambdaFunctionARN: {
+              Ref: 'SetHttpSecurityHeadersVersion660E2F72'
+            }
+          }
+        ],
         OriginRequestPolicyId: {
           Ref: 'MyCloudfrontOriginRequestPolicy632B7DED'
         },
@@ -223,7 +239,7 @@ test('CloudFront distribution for MediaStore with user provided origin request p
   });
 });
 
-test('CloudFront distribution for MediaStore with user provided custom heaers with CloudFrontOriginAccessIdentity', () => {
+test('CloudFront distribution for MediaStore with user provided custom headers with CloudFrontOriginAccessIdentity', () => {
   const stack = new Stack();
   const mediaStoreContainerProps: mediastore.CfnContainerProps = {
     containerName: 'TestContainer'
@@ -252,6 +268,14 @@ test('CloudFront distribution for MediaStore with user provided custom heaers wi
           'OPTIONS'
         ],
         Compress: true,
+        LambdaFunctionAssociations: [
+          {
+            EventType: 'origin-response',
+            LambdaFunctionARN: {
+              Ref: 'SetHttpSecurityHeadersVersion660E2F72'
+            }
+          }
+        ],
         OriginRequestPolicyId: {
           Ref: 'CloudfrontOriginRequestPolicy299A10DB'
         },
@@ -330,6 +354,84 @@ test('CloudFront distribution for MediaStore with user provided custom heaers wi
           ]
         ]
       }
+    }
+  });
+});
+
+test('CloudFront distribution without HTTP security headers for MediaStore', () => {
+  const stack = new Stack();
+  const mediaStoreContainerProps: mediastore.CfnContainerProps = {
+    containerName: 'TestContainer'
+  };
+  const mediaStoreContainer = new mediastore.CfnContainer(stack, 'MediaStoreContainer', mediaStoreContainerProps);
+
+  CloudFrontDistributionForMediaStore(stack, mediaStoreContainer, {}, false);
+  expect(stack).toHaveResourceLike('AWS::CloudFront::Distribution', {
+    DistributionConfig: {
+      DefaultCacheBehavior: {
+        AllowedMethods: [
+          'GET',
+          'HEAD',
+          'OPTIONS'
+        ],
+        CachePolicyId: '658327ea-f89d-4fab-a63d-7e88639e58f6',
+        CachedMethods: [
+          'GET',
+          'HEAD',
+          'OPTIONS'
+        ],
+        Compress: true,
+        OriginRequestPolicyId: {
+          Ref: 'CloudfrontOriginRequestPolicy299A10DB'
+        },
+        TargetOriginId: 'CloudFrontDistributionOrigin176EC3A12',
+        ViewerProtocolPolicy: 'redirect-to-https'
+      },
+      Enabled: true,
+      HttpVersion: 'http2',
+      IPV6Enabled: true,
+      Logging: {
+        Bucket: {
+          'Fn::GetAtt': [
+            'CloudfrontLoggingBucket3C3EFAA7',
+            'RegionalDomainName'
+          ]
+        }
+      },
+      Origins: [
+        {
+          CustomOriginConfig: {
+            OriginProtocolPolicy: 'https-only'
+          },
+          DomainName: {
+            'Fn::Select': [
+              0,
+              {
+                'Fn::Split': [
+                  '/',
+                  {
+                    'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          '://',
+                          {
+                            'Fn::GetAtt': [
+                              'MediaStoreContainer',
+                              'Endpoint'
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          Id: 'CloudFrontDistributionOrigin176EC3A12'
+        }
+      ]
     }
   });
 });

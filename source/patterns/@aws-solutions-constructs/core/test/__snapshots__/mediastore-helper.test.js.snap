@@ -28,6 +28,9 @@ Object {
           },
         ],
         "LifecyclePolicy": "{\\"rules\\":[{\\"definition\\":{\\"path\\":[{\\"wildcard\\":\\"*\\"}],\\"days_since_create\\":[{\\"numeric\\":[\\">\\",30]}]},\\"action\\":\\"EXPIRE\\"}]}",
+        "MetricPolicy": Object {
+          "ContainerLevelMetrics": "ENABLED",
+        },
         "Policy": Object {
           "Fn::Join": Array [
             "",

@@ -14,9 +14,9 @@
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as mediastore from '@aws-cdk/aws-mediastore';
 import * as s3 from '@aws-cdk/aws-s3';
+import * as lambda from '@aws-cdk/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct, Aws} from '@aws-cdk/core';
-import { MediaStoreContainer } from '../../core/lib/mediastore-helper';
 
 /**
  * @summary The properties for the CloudFrontToMediaStore Construct
@@ -40,6 +40,13 @@ export interface CloudFrontToMediaStoreProps {
    * @default - Default props are used
    */
   readonly cloudFrontDistributionProps?: cloudfront.DistributionProps | any;
+  /**
+   * Optional user provided props to turn on/off the automatic injection of best practice HTTP
+   * security headers in all responses from cloudfront
+   *
+   * @default - true
+   */
+  readonly insertHttpSecurityHeaders?: boolean;
 }
 
 export class CloudFrontToMediaStore extends Construct {
@@ -48,6 +55,7 @@ export class CloudFrontToMediaStore extends Construct {
   public readonly cloudFrontLoggingBucket: s3.Bucket;
   public readonly cloudFrontOriginRequestPolicy: cloudfront.OriginRequestPolicy;
   public readonly cloudFrontOriginAccessIdentity?: cloudfront.OriginAccessIdentity;
+  public readonly edgeLambdaFunctionVersion?: lambda.Version;
 
   /**
    * @summary Constructs a new instance of CloudFrontToMediaStore class.
@@ -70,7 +78,7 @@ export class CloudFrontToMediaStore extends Construct {
       if (props.mediaStoreContainerProps) {
         mediaStoreProps = props.mediaStoreContainerProps;
       } else {
-        this.cloudFrontOriginAccessIdentity = defaults.CloudFrontOriginAccessIdentity(scope);
+        this.cloudFrontOriginAccessIdentity = defaults.CloudFrontOriginAccessIdentity(this);
 
         mediaStoreProps = {
           containerName: Aws.STACK_NAME,
@@ -108,10 +116,10 @@ export class CloudFrontToMediaStore extends Construct {
         }
       }
 
-      this.mediaStoreContainer = MediaStoreContainer(scope, mediaStoreProps);
+      this.mediaStoreContainer = defaults.MediaStoreContainer(this, mediaStoreProps);
     }
 
-    [this.cloudFrontWebDistribution, this.cloudFrontLoggingBucket, this.cloudFrontOriginRequestPolicy]
-      = defaults.CloudFrontDistributionForMediaStore(scope, this.mediaStoreContainer, cloudFrontDistributionProps);
+    [this.cloudFrontWebDistribution, this.cloudFrontLoggingBucket, this.cloudFrontOriginRequestPolicy, this.edgeLambdaFunctionVersion]
+      = defaults.CloudFrontDistributionForMediaStore(this, this.mediaStoreContainer, cloudFrontDistributionProps, props.insertHttpSecurityHeaders);
   }
 }

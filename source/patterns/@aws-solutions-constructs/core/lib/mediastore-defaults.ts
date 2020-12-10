@@ -53,8 +53,11 @@ export function MediaStoreContainerProps(): mediastore.CfnContainerProps {
             { numeric: ['>', 30] }
           ]
         },
-        action: 'EXPIRE',
+        action: 'EXPIRE'
       }]
-    })
+    }),
+    metricPolicy: {
+      containerLevelMetrics: 'ENABLED'
+    }
   } as mediastore.CfnContainerProps;
 }

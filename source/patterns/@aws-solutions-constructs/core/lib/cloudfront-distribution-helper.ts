@@ -186,12 +186,21 @@ export function CloudFrontDistributionForS3(scope: cdk.Construct,
 
 export function CloudFrontDistributionForMediaStore(scope: cdk.Construct,
                                                     mediaStoreContainer: mediastore.CfnContainer,
-                                                    cloudFrontDistributionProps?: cloudfront.DistributionProps | any):
-                                                    [cloudfront.Distribution, s3.Bucket, cloudfront.OriginRequestPolicy] {
+                                                    cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
+                                                    httpSecurityHeaders?: boolean):
+                                                    [cloudfront.Distribution, s3.Bucket, cloudfront.OriginRequestPolicy, lambda.Version?] {
 
     let defaultprops: cloudfront.DistributionProps;
     let originRequestPolicy: cloudfront.OriginRequestPolicy;
     let loggingBucket: s3.Bucket;
+    let edgeLambdaVersion: lambda.Version | undefined;
+    const _httpSecurityHeaders = (httpSecurityHeaders !== undefined && httpSecurityHeaders === false) ? false : true;
+
+    if (_httpSecurityHeaders) {
+        edgeLambdaVersion = new lambda.Version(scope, 'SetHttpSecurityHeadersVersion', {
+            lambda: defaultLambdaEdgeFunction(scope)
+        });
+    }
 
     if (cloudFrontDistributionProps && cloudFrontDistributionProps.enableLogging && cloudFrontDistributionProps.logBucket) {
         loggingBucket = cloudFrontDistributionProps.logBucket as s3.Bucket;
@@ -231,7 +240,9 @@ export function CloudFrontDistributionForMediaStore(scope: cdk.Construct,
         mediaStoreContainer,
         loggingBucket,
         originRequestPolicy,
-        cloudFrontDistributionProps?.customHeaders
+        _httpSecurityHeaders,
+        cloudFrontDistributionProps?.customHeaders,
+        edgeLambdaVersion
     );
 
     let cfprops: cloudfront.DistributionProps;
@@ -246,7 +257,7 @@ export function CloudFrontDistributionForMediaStore(scope: cdk.Construct,
     const cfDistribution: cloudfront.Distribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
     updateSecurityPolicy(cfDistribution);
 
-    return [cfDistribution, loggingBucket, originRequestPolicy];
+    return [cfDistribution, loggingBucket, originRequestPolicy, edgeLambdaVersion];
 }
 
 export function CloudFrontOriginAccessIdentity(scope: cdk.Construct, comment?: string) {
