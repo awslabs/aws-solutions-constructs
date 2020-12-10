@@ -62,7 +62,6 @@ _Parameters_
 | existingStreamObj?  | [`kinesis.Stream`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kinesis.Stream.html)           | Existing instance of Kinesis Stream, if this is set then kinesisStreamProps is ignored. |
 | glueJobProps?       | [`cfnJob.CfnJobProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnJobProps.html)     | User provided props to override the default props for the CfnJob.                       |
 | existingGlueJob?    | [`cfnJob.CfnJob`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnJob.html)               | Existing CfnJob configuration, if this this set then glueJobProps is ignored.           |
-| ##                  |
 
 # Default settings
 
@@ -78,5 +77,10 @@ Out of the box implementation of the Construct without any override will set the
 
 -   Create a Glue Security Config that configures encryption for CloudWatch, Job Bookmarks, and S3. CloudWatch and Job Bookmarks are encrypted using AWS Managed KMS Key created for AWS Glue Service. The S3 bucket is configured with SSE-S3 encryption mode
 -   Configure service role policies that allow AWS Glue to read from Kinesis Data Streams
+
+### S3 Bucket
+
+-   It creates an AWS S3 Bucket to which the custom ETL Job script can be uploaded
+-   Grants read access to AWS Glue Job Service Principal through S3 Bucket Policy
 
 &copy; Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
