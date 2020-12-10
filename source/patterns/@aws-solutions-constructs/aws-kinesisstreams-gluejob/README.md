@@ -83,4 +83,8 @@ Out of the box implementation of the Construct without any override will set the
 -   It creates an AWS S3 Bucket to which the custom ETL Job script can be uploaded
 -   Grants read access to AWS Glue Job Service Principal through S3 Bucket Policy
 
+## Architecture
+
+![Architecture Diagram](architecture.png)
+
 &copy; Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.

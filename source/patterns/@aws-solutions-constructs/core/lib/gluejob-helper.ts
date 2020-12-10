@@ -50,7 +50,7 @@ export function deployGlueJob(scope: Construct, glueJobProps: CfnJobProps): CfnJ
 
     if (glueJobProps.securityConfiguration === undefined) {
         _glueSecurityConfigName = 'ETLJobSecurityConfig';
-        const glueKMSKey = `arn:${Aws.PARTITION}:kms:${Aws.REGION}:${Aws.ACCOUNT_ID}:/alias/aws/glue`;
+        const glueKMSKey = `arn:${Aws.PARTITION}:kms:${Aws.REGION}:${Aws.ACCOUNT_ID}:alias/aws/glue`;
 
         new CfnSecurityConfiguration(scope, 'GlueSecurityConfig', {
             name: _glueSecurityConfigName,

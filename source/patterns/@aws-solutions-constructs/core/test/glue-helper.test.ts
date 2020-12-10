@@ -192,7 +192,7 @@ test('Test custom deployment properties', () => {
                                 ":", {
                                     Ref: "AWS::AccountId",
                                 },
-                                "/alias/aws/glue",
+                                ":alias/aws/glue",
                             ],
                         ],
                     },
@@ -211,7 +211,7 @@ test('Test custom deployment properties', () => {
                                 ":", {
                                     Ref: "AWS::AccountId",
                                 },
-                                "/alias/aws/glue",
+                                ":alias/aws/glue",
                             ],
                         ],
                     },
