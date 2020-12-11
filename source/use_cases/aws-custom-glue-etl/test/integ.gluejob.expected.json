@@ -265,7 +265,7 @@
       "Type": "AWS::Glue::Job",
       "Properties": {
         "Command": {
-          "Name": "JobCommanda",
+          "Name": "JobCommand",
           "PythonVersion": "3",
           "ScriptLocation": {
             "Fn::Join": [

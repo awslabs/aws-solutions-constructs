@@ -46,7 +46,7 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
        encryption: StreamEncryption.MANAGED
       },
       glueJobProps: {
-        command: KinesisStreamGlueJob.createGlueJobCommand(this, 'JobCommanda', '3'),
+        command: KinesisStreamGlueJob.createGlueJobCommand(this, 'JobCommand', '3'),
         role: KinesisStreamGlueJob.createGlueJobRole(this).roleArn,
         securityConfiguration: securityConfigName
       }
