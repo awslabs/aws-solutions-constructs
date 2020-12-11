@@ -27,7 +27,7 @@ test('Pattern minimal deployment', () => {
     const stack = new Stack();
     const props: KinesisStreamGlueJobProps = {
         glueJobProps: {
-            command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'testJob', '3'),
+            command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'testJob', '3', undefined, `${__dirname}/transform.py`)[0],
             role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
             securityConfiguration: 'testSecConfig'
         }
@@ -52,35 +52,6 @@ test('Pattern minimal deployment', () => {
         Description: "Service role that Glue custom ETL jobs will assume for exeuction",
         },
         Type: "AWS::IAM::Role"
-    }, ResourcePart.CompleteDefinition);
-
-    // check for bucket creation
-    expect(stack).toHaveResourceLike('AWS::S3::Bucket', {
-        Properties: {
-            BucketEncryption: {
-                ServerSideEncryptionConfiguration: [{
-                    ServerSideEncryptionByDefault: {
-                        SSEAlgorithm: "AES256",
-                    },
-                }],
-            },
-            LoggingConfiguration: {
-                DestinationBucketName: {
-                    Ref: "S3LoggingBucket800A2B27",
-                },
-            },
-            PublicAccessBlockConfiguration: {
-                BlockPublicAcls: true,
-                BlockPublicPolicy: true,
-                IgnorePublicAcls: true,
-                RestrictPublicBuckets: true,
-            },
-            VersioningConfiguration: {
-                Status: "Enabled",
-            },
-        },
-        Type: "AWS::S3::Bucket",
-        UpdateReplacePolicy: "Retain"
     }, ResourcePart.CompleteDefinition);
 
     // check for Kinesis Stream
@@ -123,11 +94,11 @@ test('Pattern minimal deployment', () => {
 // --------------------------------------------------------------
 // Test if existing Glue Job is provided
 // --------------------------------------------------------------
-test('Pattern minimal deployment', () => {
+test('Test if existing Glue Job is provided', () => {
     // Initial setup
     const stack = new Stack();
     const existingCfnJob = new CfnJob(stack, 'ExistingJob', {
-        command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'testJob', '3'),
+        command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'testJob', '3', undefined, `${__dirname}/transform.py`)[0],
         role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
         securityConfiguration: 'testSecConfig'
     });
@@ -181,9 +152,10 @@ test('Pattern minimal deployment', () => {
 test('When S3 bucket location for script exists', () => {
     // Initial setup
     const stack = new Stack();
+    const s3ObjectUrl = new Bucket(stack, 'ScriptLocation').s3UrlForObject('/dummyfile.py');
     const props: KinesisStreamGlueJobProps = {
         glueJobProps: {
-            command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'testJob', '3', new Bucket(stack, 'ScriptLocation')),
+            command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'testJob', '3', s3ObjectUrl)[0],
             role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
             securityConfiguration: 'testSecConfig'
         },
@@ -198,43 +170,6 @@ test('When S3 bucket location for script exists', () => {
         Type: "AWS::S3::Bucket",
         UpdateReplacePolicy: "Retain",
     }, ResourcePart.CompleteDefinition);
-
-    // Assert bucket policy on existing bucket
-    expect(stack).toHaveResourceLike('AWS::S3::BucketPolicy', {
-        Properties: {
-            Bucket: {
-                Ref: "ScriptLocation6396DB53",
-            },
-            PolicyDocument: {
-                Statement: [{
-                    Action: [ "s3:GetObject*", "s3:GetBucket*", "s3:List*" ],
-                    Effect: "Allow",
-                    Principal: {
-                        Service: "glue.amazonaws.com",
-                    },
-                    Resource: [{
-                        "Fn::GetAtt": [
-                            "ScriptLocation6396DB53",
-                            "Arn",
-                        ]}, {
-                            "Fn::Join": [
-                                "", [{
-                                    "Fn::GetAtt": [
-                                        "ScriptLocation6396DB53",
-                                        "Arn",
-                                    ],
-                                },
-                                "/*",
-                                ],
-                            ],
-                        },
-                    ],
-                }],
-                Version: "2012-10-17",
-            }
-        },
-        Type: "AWS::S3::BucketPolicy"
-    }, ResourcePart.CompleteDefinition);
 });
 
 // --------------------------------------------------------------
@@ -246,7 +181,7 @@ test('create glue job with existing kinesis stream', () => {
     new KinesisStreamGlueJob(stack, 'existingStreamJob', {
         existingStreamObj: kinesisStream,
         glueJobProps: {
-            command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'JobCommand', '3'),
+            command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'JobCommand', '3', undefined, `${__dirname}/transform.py`)[0],
             role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn
         }
     });
@@ -295,4 +230,15 @@ test('create glue job with existing kinesis stream', () => {
         },
         Type: "AWS::IAM::Policy",
     }, ResourcePart.CompleteDefinition);
+});
+
+test('Expect to throw error', () => {
+    const stack = new Stack();
+    try {
+        KinesisStreamGlueJob.createGlueJobCommand(stack, 'testJob', '3');
+    } catch (error) {
+        if (!(error instanceof Error)) {
+            fail();
+        }
+    }
 });

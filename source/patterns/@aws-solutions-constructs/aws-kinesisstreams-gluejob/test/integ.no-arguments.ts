@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack } from '@aws-cdk/core';
+import { App, CfnOutput, Stack } from '@aws-cdk/core';
 import { KinesisStreamGlueJob, KinesisStreamGlueJobProps } from '../lib';
 
 // Setup
@@ -20,18 +20,21 @@ const app = new App();
 const stack = new Stack(app, 'test-kinesisstream-gluejob');
 stack.templateOptions.description = 'Integration Test for aws-kinesisstream-gluejob';
 
+const createJobCommand = KinesisStreamGlueJob.createGlueJobCommand(stack, 'testETLJob', '3', undefined, `${__dirname}/transform.py`);
+
 // Definitions
 const props: KinesisStreamGlueJobProps = {
     glueJobProps: {
-        command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'testETLJob', '3', undefined, {
-            versioned: false
-        }),
+        command: createJobCommand[0],
         role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
         securityConfiguration: 'testSecConfig'
     }
 };
 
 new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
+new CfnOutput(stack, 'ScriptLocation', {
+    value: createJobCommand[1]!.s3ObjectUrl
+});
 
 // Synth
 app.synth();

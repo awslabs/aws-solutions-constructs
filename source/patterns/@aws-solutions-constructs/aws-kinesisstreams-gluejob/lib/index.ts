@@ -14,7 +14,7 @@
 import { CfnJob, CfnJobProps } from '@aws-cdk/aws-glue';
 import { Role, ServicePrincipal } from '@aws-cdk/aws-iam';
 import { Stream, StreamProps } from '@aws-cdk/aws-kinesis';
-import { Bucket, BucketProps, CfnBucket } from '@aws-cdk/aws-s3';
+import { Asset } from '@aws-cdk/aws-s3-assets';
 import { Construct } from '@aws-cdk/core';
 import * as defaults from '@aws-solutions-constructs/core';
 
@@ -84,50 +84,48 @@ export class KinesisStreamGlueJob extends Construct {
   }
 
   /**
-   * This is a helper method to creates @CfnJob.JobCommandProperty for CfnJob. Based on the input parameters provided,
-   * it will also create the S3 bucket for the ETL script location and grant 'read' access to 'glue.amazonaws.com'
-   * Service Principal so that the script inside the bucket can be accessed as by AWS Glueglobal.fetch = require('node-fetch');
-   *
-   * Also this method does not set lifecycle policies on S3 buckets created unless they are explicitly set in the bucket
-   * props
+   * This is a helper method to creates @CfnJob.JobCommandProperty for CfnJob. Based on the input parameters, If the
+   * @S3ObjectUrlForScript is passed, it will create only the JobCommandProperty. Instead if the @scriptLocationPath is
+   * passed it will an Asset from the @scriptLocationPath and returns the JobCommandProperty and the Asset. The script
+   * location can be retrieved using @Asset.s3ObjectUrl
    *
    * @param scope - The AWS Construct under the underlying construct should be created
    * @param _jobID - The identifier/ name of the ETL Job
    * @param pythonVersion - The values as for Glue Documentation are '2' and '3'. There is no validation in the
    * method to check for these values to be forward compatible with Glue API changes. If valid values are not provided
    * the deployment would fail.
-   * @param existingScriptLocation - If an S3 bucket location for the script exists, set this parameter. If the Bucket
+   * @param s3ObjectUrlForScript - If an S3 bucket location for the script exists, set this parameter. If the Bucket
    * is to be created, set the value as undefined. Setting this parameter will ignore @scriptLocationBucketProps as the
    * bucket already exists
-   * @param scriptLocationBucketProps - Set this parameter only if the bucket is to be created. If the
-   * @existingScriptLocation parameter is set, this parameter will be ignored. This parameter allows to set S3 Bucket
-   * properts where the ETL script will be located
+   * @param scriptLocationPath - Set this parameter only if the bucket is to be created. If not then a new
+   * Bucket location will be created to upload the ETL script asset
    */
   public static createGlueJobCommand(scope: Construct,
-                                      _jobID: string, pythonVersion: string, existingScriptLocation?: Bucket,
-                                      scriptLocationBucketProps?: BucketProps): CfnJob.JobCommandProperty {
+                                     _jobID: string, pythonVersion: string,
+                                     s3ObjectUrlForScript?: string,
+                                     scriptLocationPath?: string): [ CfnJob.JobCommandProperty, Asset? ] {
   // create s3 bucket where script can be deployed
-    let scriptLocation: [ Bucket, (Bucket | undefined)? ];
-    if (existingScriptLocation === undefined) {
-      scriptLocation = defaults.buildS3Bucket(scope, {
-        bucketProps: scriptLocationBucketProps
-      });
-      // Remove the default LifecycleConfiguration for the Logging Bucket
-      if (scriptLocationBucketProps?.lifecycleRules === undefined) {
-        (scriptLocation[0]!.node.findChild('Resource') as CfnBucket).addPropertyDeletionOverride(
-                                                                                'LifecycleConfiguration.Rules');
+    let _scriptLocation: string;
+    let _assetLocation: Asset;
+    if (s3ObjectUrlForScript === undefined) {
+      if (scriptLocationPath === undefined) {
+        throw Error('Either s3ObjectUrlForScript or scriptLocationPath is required');
+      } else {
+        _assetLocation = new Asset(scope, 'ETLScriptLocation', {
+          path: scriptLocationPath!
+        });
+        _assetLocation.grantRead(new ServicePrincipal('glue.amazonaws.com'));
+        _scriptLocation = _assetLocation.s3ObjectUrl;
       }
     } else {
       // since bucket location was provided in the props, logger bucket is not created
-      scriptLocation = [ existingScriptLocation, undefined ];
+      _scriptLocation = s3ObjectUrlForScript;
     }
 
-    scriptLocation[0].grantRead(new ServicePrincipal('glue.amazonaws.com'));
-
-    return {
+    return [{
       name: _jobID,
       pythonVersion,
-      scriptLocation: scriptLocation[0].s3UrlForObject()
-    };
+      scriptLocation: _scriptLocation
+    }, _assetLocation! === undefined ? _assetLocation! : undefined ];
   }
 }

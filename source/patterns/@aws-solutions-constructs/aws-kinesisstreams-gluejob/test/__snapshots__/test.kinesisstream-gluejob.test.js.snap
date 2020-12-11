@@ -2,6 +2,20 @@
 
 exports[`Pattern minimal deployment 1`] = `
 Object {
+  "Parameters": Object {
+    "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04ArtifactHashC173448A": Object {
+      "Description": "Artifact hash for asset \\"aadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04\\"",
+      "Type": "String",
+    },
+    "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3Bucket4BA63B65": Object {
+      "Description": "S3 bucket for asset \\"aadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04\\"",
+      "Type": "String",
+    },
+    "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3VersionKey03140123": Object {
+      "Description": "S3 key for asset version \\"aadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04\\"",
+      "Type": "String",
+    },
+  },
   "Resources": Object {
     "GlueJobRolePolicy422D4F2E": Object {
       "Properties": Object {
@@ -76,178 +90,6 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "S3Bucket07682993": Object {
-      "DeletionPolicy": "Retain",
-      "Properties": Object {
-        "BucketEncryption": Object {
-          "ServerSideEncryptionConfiguration": Array [
-            Object {
-              "ServerSideEncryptionByDefault": Object {
-                "SSEAlgorithm": "AES256",
-              },
-            },
-          ],
-        },
-        "LoggingConfiguration": Object {
-          "DestinationBucketName": Object {
-            "Ref": "S3LoggingBucket800A2B27",
-          },
-        },
-        "PublicAccessBlockConfiguration": Object {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true,
-        },
-        "VersioningConfiguration": Object {
-          "Status": "Enabled",
-        },
-      },
-      "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "S3BucketPolicyF560589A": Object {
-      "Properties": Object {
-        "Bucket": Object {
-          "Ref": "S3Bucket07682993",
-        },
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "*",
-              "Condition": Object {
-                "Bool": Object {
-                  "aws:SecureTransport": "false",
-                },
-              },
-              "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "S3Bucket07682993",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
-              },
-              "Sid": "HttpsOnly",
-            },
-            Object {
-              "Action": Array [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-              ],
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "glue.amazonaws.com",
-              },
-              "Resource": Array [
-                Object {
-                  "Fn::GetAtt": Array [
-                    "S3Bucket07682993",
-                    "Arn",
-                  ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      Object {
-                        "Fn::GetAtt": Array [
-                          "S3Bucket07682993",
-                          "Arn",
-                        ],
-                      },
-                      "/*",
-                    ],
-                  ],
-                },
-              ],
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::S3::BucketPolicy",
-    },
-    "S3LoggingBucket800A2B27": Object {
-      "DeletionPolicy": "Retain",
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W35",
-              "reason": "This S3 bucket is used as the access logging bucket for another bucket",
-            },
-          ],
-        },
-      },
-      "Properties": Object {
-        "AccessControl": "LogDeliveryWrite",
-        "BucketEncryption": Object {
-          "ServerSideEncryptionConfiguration": Array [
-            Object {
-              "ServerSideEncryptionByDefault": Object {
-                "SSEAlgorithm": "AES256",
-              },
-            },
-          ],
-        },
-        "PublicAccessBlockConfiguration": Object {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true,
-        },
-      },
-      "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "S3LoggingBucketPolicy6B3AA8AF": Object {
-      "Properties": Object {
-        "Bucket": Object {
-          "Ref": "S3LoggingBucket800A2B27",
-        },
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "*",
-              "Condition": Object {
-                "Bool": Object {
-                  "aws:SecureTransport": "false",
-                },
-              },
-              "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "S3LoggingBucket800A2B27",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
-              },
-              "Sid": "HttpsOnly",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::S3::BucketPolicy",
-    },
     "testkinesisstreamslambdaETLJob44B50676": Object {
       "Properties": Object {
         "Command": Object {
@@ -259,7 +101,34 @@ Object {
               Array [
                 "s3://",
                 Object {
-                  "Ref": "S3Bucket07682993",
+                  "Ref": "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3Bucket4BA63B65",
+                },
+                "/",
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3VersionKey03140123",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3VersionKey03140123",
+                        },
+                      ],
+                    },
+                  ],
                 },
               ],
             ],
@@ -290,8 +159,22 @@ Object {
 }
 `;
 
-exports[`Pattern minimal deployment 2`] = `
+exports[`Test if existing Glue Job is provided 1`] = `
 Object {
+  "Parameters": Object {
+    "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04ArtifactHashC173448A": Object {
+      "Description": "Artifact hash for asset \\"aadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04\\"",
+      "Type": "String",
+    },
+    "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3Bucket4BA63B65": Object {
+      "Description": "S3 bucket for asset \\"aadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04\\"",
+      "Type": "String",
+    },
+    "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3VersionKey03140123": Object {
+      "Description": "S3 key for asset version \\"aadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04\\"",
+      "Type": "String",
+    },
+  },
   "Resources": Object {
     "ExistingJob": Object {
       "Properties": Object {
@@ -304,7 +187,34 @@ Object {
               Array [
                 "s3://",
                 Object {
-                  "Ref": "S3Bucket07682993",
+                  "Ref": "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3Bucket4BA63B65",
+                },
+                "/",
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3VersionKey03140123",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3VersionKey03140123",
+                        },
+                      ],
+                    },
+                  ],
                 },
               ],
             ],
@@ -392,178 +302,6 @@ Object {
         "Description": "Service role that Glue custom ETL jobs will assume for exeuction",
       },
       "Type": "AWS::IAM::Role",
-    },
-    "S3Bucket07682993": Object {
-      "DeletionPolicy": "Retain",
-      "Properties": Object {
-        "BucketEncryption": Object {
-          "ServerSideEncryptionConfiguration": Array [
-            Object {
-              "ServerSideEncryptionByDefault": Object {
-                "SSEAlgorithm": "AES256",
-              },
-            },
-          ],
-        },
-        "LoggingConfiguration": Object {
-          "DestinationBucketName": Object {
-            "Ref": "S3LoggingBucket800A2B27",
-          },
-        },
-        "PublicAccessBlockConfiguration": Object {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true,
-        },
-        "VersioningConfiguration": Object {
-          "Status": "Enabled",
-        },
-      },
-      "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "S3BucketPolicyF560589A": Object {
-      "Properties": Object {
-        "Bucket": Object {
-          "Ref": "S3Bucket07682993",
-        },
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "*",
-              "Condition": Object {
-                "Bool": Object {
-                  "aws:SecureTransport": "false",
-                },
-              },
-              "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "S3Bucket07682993",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
-              },
-              "Sid": "HttpsOnly",
-            },
-            Object {
-              "Action": Array [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-              ],
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "glue.amazonaws.com",
-              },
-              "Resource": Array [
-                Object {
-                  "Fn::GetAtt": Array [
-                    "S3Bucket07682993",
-                    "Arn",
-                  ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      Object {
-                        "Fn::GetAtt": Array [
-                          "S3Bucket07682993",
-                          "Arn",
-                        ],
-                      },
-                      "/*",
-                    ],
-                  ],
-                },
-              ],
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::S3::BucketPolicy",
-    },
-    "S3LoggingBucket800A2B27": Object {
-      "DeletionPolicy": "Retain",
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W35",
-              "reason": "This S3 bucket is used as the access logging bucket for another bucket",
-            },
-          ],
-        },
-      },
-      "Properties": Object {
-        "AccessControl": "LogDeliveryWrite",
-        "BucketEncryption": Object {
-          "ServerSideEncryptionConfiguration": Array [
-            Object {
-              "ServerSideEncryptionByDefault": Object {
-                "SSEAlgorithm": "AES256",
-              },
-            },
-          ],
-        },
-        "PublicAccessBlockConfiguration": Object {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true,
-        },
-      },
-      "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "S3LoggingBucketPolicy6B3AA8AF": Object {
-      "Properties": Object {
-        "Bucket": Object {
-          "Ref": "S3LoggingBucket800A2B27",
-        },
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "*",
-              "Condition": Object {
-                "Bool": Object {
-                  "aws:SecureTransport": "false",
-                },
-              },
-              "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "S3LoggingBucket800A2B27",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
-              },
-              "Sid": "HttpsOnly",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::S3::BucketPolicy",
     },
     "testkinesisstreamslambdaKinesisStream374D6D56": Object {
       "Properties": Object {
@@ -661,52 +399,6 @@ Object {
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
     },
-    "ScriptLocationPolicyF26F8F68": Object {
-      "Properties": Object {
-        "Bucket": Object {
-          "Ref": "ScriptLocation6396DB53",
-        },
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-              ],
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "glue.amazonaws.com",
-              },
-              "Resource": Array [
-                Object {
-                  "Fn::GetAtt": Array [
-                    "ScriptLocation6396DB53",
-                    "Arn",
-                  ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      Object {
-                        "Fn::GetAtt": Array [
-                          "ScriptLocation6396DB53",
-                          "Arn",
-                        ],
-                      },
-                      "/*",
-                    ],
-                  ],
-                },
-              ],
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::S3::BucketPolicy",
-    },
     "testkinesisstreamslambdaETLJob44B50676": Object {
       "Properties": Object {
         "Command": Object {
@@ -720,6 +412,7 @@ Object {
                 Object {
                   "Ref": "ScriptLocation6396DB53",
                 },
+                "/dummyfile.py",
               ],
             ],
           },
@@ -751,6 +444,20 @@ Object {
 
 exports[`create glue job with existing kinesis stream 1`] = `
 Object {
+  "Parameters": Object {
+    "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04ArtifactHashC173448A": Object {
+      "Description": "Artifact hash for asset \\"aadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04\\"",
+      "Type": "String",
+    },
+    "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3Bucket4BA63B65": Object {
+      "Description": "S3 bucket for asset \\"aadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04\\"",
+      "Type": "String",
+    },
+    "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3VersionKey03140123": Object {
+      "Description": "S3 key for asset version \\"aadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04\\"",
+      "Type": "String",
+    },
+  },
   "Resources": Object {
     "GlueJobRolePolicy422D4F2E": Object {
       "Properties": Object {
@@ -836,178 +543,6 @@ Object {
       },
       "Type": "AWS::Kinesis::Stream",
     },
-    "S3Bucket07682993": Object {
-      "DeletionPolicy": "Retain",
-      "Properties": Object {
-        "BucketEncryption": Object {
-          "ServerSideEncryptionConfiguration": Array [
-            Object {
-              "ServerSideEncryptionByDefault": Object {
-                "SSEAlgorithm": "AES256",
-              },
-            },
-          ],
-        },
-        "LoggingConfiguration": Object {
-          "DestinationBucketName": Object {
-            "Ref": "S3LoggingBucket800A2B27",
-          },
-        },
-        "PublicAccessBlockConfiguration": Object {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true,
-        },
-        "VersioningConfiguration": Object {
-          "Status": "Enabled",
-        },
-      },
-      "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "S3BucketPolicyF560589A": Object {
-      "Properties": Object {
-        "Bucket": Object {
-          "Ref": "S3Bucket07682993",
-        },
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "*",
-              "Condition": Object {
-                "Bool": Object {
-                  "aws:SecureTransport": "false",
-                },
-              },
-              "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "S3Bucket07682993",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
-              },
-              "Sid": "HttpsOnly",
-            },
-            Object {
-              "Action": Array [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-              ],
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "glue.amazonaws.com",
-              },
-              "Resource": Array [
-                Object {
-                  "Fn::GetAtt": Array [
-                    "S3Bucket07682993",
-                    "Arn",
-                  ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      Object {
-                        "Fn::GetAtt": Array [
-                          "S3Bucket07682993",
-                          "Arn",
-                        ],
-                      },
-                      "/*",
-                    ],
-                  ],
-                },
-              ],
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::S3::BucketPolicy",
-    },
-    "S3LoggingBucket800A2B27": Object {
-      "DeletionPolicy": "Retain",
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W35",
-              "reason": "This S3 bucket is used as the access logging bucket for another bucket",
-            },
-          ],
-        },
-      },
-      "Properties": Object {
-        "AccessControl": "LogDeliveryWrite",
-        "BucketEncryption": Object {
-          "ServerSideEncryptionConfiguration": Array [
-            Object {
-              "ServerSideEncryptionByDefault": Object {
-                "SSEAlgorithm": "AES256",
-              },
-            },
-          ],
-        },
-        "PublicAccessBlockConfiguration": Object {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true,
-        },
-      },
-      "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "S3LoggingBucketPolicy6B3AA8AF": Object {
-      "Properties": Object {
-        "Bucket": Object {
-          "Ref": "S3LoggingBucket800A2B27",
-        },
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "*",
-              "Condition": Object {
-                "Bool": Object {
-                  "aws:SecureTransport": "false",
-                },
-              },
-              "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "S3LoggingBucket800A2B27",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
-              },
-              "Sid": "HttpsOnly",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::S3::BucketPolicy",
-    },
     "existingStreamJobETLJob50478D3D": Object {
       "Properties": Object {
         "Command": Object {
@@ -1019,7 +554,34 @@ Object {
               Array [
                 "s3://",
                 Object {
-                  "Ref": "S3Bucket07682993",
+                  "Ref": "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3Bucket4BA63B65",
+                },
+                "/",
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3VersionKey03140123",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3VersionKey03140123",
+                        },
+                      ],
+                    },
+                  ],
                 },
               ],
             ],
