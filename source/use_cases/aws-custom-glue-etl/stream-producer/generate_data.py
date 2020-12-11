@@ -80,8 +80,8 @@ def main():
     args = parser.parse_args()
 
     # print (args)
-    # Make sure to set credentials here or use profile_name
-
+    # Make sure to set credentials here or use profile_name. Also make sure that the user role for which credentials
+    # are set has write premissions to the Kinesis Data Streams
     # session = boto3.Session(
     #     aws_access_key_id="FAKE_ID_UPDATE_ACCESS_KEY_ID",
     #     aws_secret_access_key="FAKE_KEY_UPDATE_ACCESS_KEY",
