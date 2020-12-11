@@ -1,14 +1,28 @@
-# Welcome to your CDK TypeScript project!
+# AWS Glue Custom ETL Job
 
-This is a blank project for TypeScript development with CDK.
+This use case implements an example using the Kinesis Data Streams Glue Job construct.
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+## Architecture
 
-## Useful commands
+The application architecture uses a custom ETL job defined in AWS Glue that takes in data from Amazon Kinesis Data Streams to
+process and store it in the target datastore as defined by the ETL script (for this example an S3 bucket location)
+![Architecture Diagram](architecture.png)
 
- * `npm run build`   compile typescript to js
- * `npm run watch`   watch for changes and compile
- * `npm run test`    perform the jest unit tests
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk synth`       emits the synthesized CloudFormation template
+## Deployment steps
+
+Below are the steps to deploy the use case:
+
+```
+npm run build
+
+cdk deploy
+
+```
+
+## Deployment Verification
+
+After the stack is deployed successfully, After logging into AWS Console, you can check if the job is configured correctly and can triggered on-demand or on a schedule.
+
+---
+
+&copy; Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.

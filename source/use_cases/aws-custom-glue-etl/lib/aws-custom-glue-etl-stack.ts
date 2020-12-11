@@ -14,7 +14,7 @@
 import { CfnSecurityConfiguration } from '@aws-cdk/aws-glue';
 import { StreamEncryption } from '@aws-cdk/aws-kinesis';
 import * as cdk from '@aws-cdk/core';
-import { Aws } from '@aws-cdk/core';
+import { Aws, CfnOutput } from '@aws-cdk/core';
 import { KinesisStreamGlueJob } from '@aws-solutions-constructs/aws-kinesisstreams-gluejob';
 
 export class AwsCustomGlueEtlStack extends cdk.Stack {
@@ -41,7 +41,7 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
       }
     });
 
-    new KinesisStreamGlueJob(this, 'CustomETL', {
+    const customEtlJob = new KinesisStreamGlueJob(this, 'CustomETL', {
       kinesisStreamProps: {
        encryption: StreamEncryption.MANAGED
       },
@@ -50,6 +50,10 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
         role: KinesisStreamGlueJob.createGlueJobRole(this).roleArn,
         securityConfiguration: securityConfigName
       }
+    });
+
+    new CfnOutput(this, 'KinesisStreamName', {
+      value: customEtlJob.kinesisStream.streamName
     });
   }
 }
