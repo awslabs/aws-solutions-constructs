@@ -87,4 +87,8 @@ Out of the box implementation of the Construct without any override will set the
 
 ![Architecture Diagram](architecture.png)
 
+## Reference Implementation
+
+A sample use case which uses this pattern is available under [`use_cases/aws-custom-glue-etl`](https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-custom-glue-etl).
+
 &copy; Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
