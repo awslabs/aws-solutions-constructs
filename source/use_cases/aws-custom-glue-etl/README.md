@@ -23,9 +23,11 @@ Post deployment, this example will publish the name of the Kinesis Data Stream i
 to produce sample data into this data stream using the generator code in the `stream-producer` folder. In the `generate_data.py` file, please update the AWS credential portion of the code and then run the following command from the CLI
 
 ```
-python generate_data.py --region <region-name> --streanname <name of the stream obtained from the CloudFormation Output>
+python generate_data.py --region <region-name> --streanname <name-of-the-stream-obtained-from-the-CloudFormation-Output>
 ```
 
-This will generate data into the Kinesis Data Stream.
+This will generate data into the Kinesis Data Stream. The ETL transform in AWS Glue writes the data into an S3 bucket. This bucket ARN
+is published in the CloudFormation output. The job also publishes logs into Amazon CloudWatch Logs. Verify the job is running and data is
+being written into the output location.
 
 &copy; Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
