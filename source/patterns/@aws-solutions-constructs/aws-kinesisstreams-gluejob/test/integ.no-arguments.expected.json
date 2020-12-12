@@ -153,5 +153,47 @@
         ]
       }
     }
+  },
+  "Outputs": {
+    "ScriptLocation": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "s3://",
+            {
+              "Ref": "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3Bucket4BA63B65"
+            },
+            "/",
+            {
+              "Fn::Select": [
+                0,
+                {
+                  "Fn::Split": [
+                    "||",
+                    {
+                      "Ref": "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3VersionKey03140123"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Fn::Select": [
+                1,
+                {
+                  "Fn::Split": [
+                    "||",
+                    {
+                      "Ref": "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3VersionKey03140123"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        ]
+      }
+    }
   }
 }
