@@ -126,6 +126,6 @@ export class KinesisStreamGlueJob extends Construct {
       name: _jobID,
       pythonVersion,
       scriptLocation: _scriptLocation
-    }, _assetLocation! === undefined ? _assetLocation! : undefined ];
+    }, _assetLocation! !== undefined ? _assetLocation! : undefined ];
   }
 }
