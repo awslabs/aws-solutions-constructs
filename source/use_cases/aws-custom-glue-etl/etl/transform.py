@@ -36,8 +36,8 @@ job = Job(glueContext)
 job.init(args["JOB_NAME"], args)
 
 # S3 sink locations
-aws_region = args["aws_region"]
-output_path = args["output_path"]
+aws_region = args["aws-region"]
+output_path = args["output-path"]
 
 s3_target = output_path + "ventilator_metrics"
 checkpoint_location = output_path + "cp/"

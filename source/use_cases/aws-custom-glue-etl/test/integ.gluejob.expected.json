@@ -78,6 +78,212 @@
         "Description": "Service role that Glue custom ETL jobs will assume for exeuction"
       }
     },
+    "JobRoleDefaultPolicy5DE0D8F9": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "S3Bucket07682993",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "S3Bucket07682993",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "JobRoleDefaultPolicy5DE0D8F9",
+        "Roles": [
+          {
+            "Ref": "JobRole014917C6"
+          }
+        ]
+      }
+    },
+    "S3LoggingBucket800A2B27": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "LogDeliveryWrite",
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W35",
+              "reason": "This S3 bucket is used as the access logging bucket for another bucket"
+            }
+          ]
+        }
+      }
+    },
+    "S3LoggingBucketPolicy6B3AA8AF": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "S3LoggingBucket800A2B27"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "S3LoggingBucket800A2B27",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              },
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "S3Bucket07682993": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "NoncurrentVersionTransitions": [
+                {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90
+                }
+              ],
+              "Status": "Enabled"
+            }
+          ]
+        },
+        "LoggingConfiguration": {
+          "DestinationBucketName": {
+            "Ref": "S3LoggingBucket800A2B27"
+          }
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "S3BucketPolicyF560589A": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "S3Bucket07682993"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "S3Bucket07682993",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              },
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "GlueCWLogGroupF324EA6B": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "RetentionInDays": 731
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
     "CustomETLKinesisStreamB4F1869F": {
       "Type": "AWS::Kinesis::Stream",
       "Properties": {
@@ -101,7 +307,7 @@
               [
                 "s3://",
                 {
-                  "Ref": "AssetParameters19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcddS3Bucket577745F0"
+                  "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B"
                 },
                 "/",
                 {
@@ -111,7 +317,7 @@
                       "Fn::Split": [
                         "||",
                         {
-                          "Ref": "AssetParameters19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcddS3VersionKeyBA1049F8"
+                          "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE"
                         }
                       ]
                     }
@@ -124,7 +330,7 @@
                       "Fn::Split": [
                         "||",
                         {
-                          "Ref": "AssetParameters19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcddS3VersionKeyBA1049F8"
+                          "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE"
                         }
                       ]
                     }
@@ -139,6 +345,31 @@
             "JobRole014917C6",
             "Arn"
           ]
+        },
+        "DefaultArguments": {
+          "--job-bookmark-option": "job-bookmark-disable",
+          "--enable-metrics": true,
+          "--enable-continuous-cloudwatch-log": true,
+          "--enable-continuous-log-filter": true,
+          "--enable-glue-datacatalog": true,
+          "--continuous-log-logGroup": {
+            "Ref": "GlueCWLogGroupF324EA6B"
+          },
+          "--output-path": {
+            "Fn::Join": [
+              "",
+              [
+                "s3://",
+                {
+                  "Ref": "S3Bucket07682993"
+                },
+                "/output/"
+              ]
+            ]
+          },
+          "--aws-region": {
+            "Ref": "AWS::Region"
+          }
         },
         "SecurityConfiguration": "customjob-example-config"
       }
@@ -200,17 +431,17 @@
     }
   },
   "Parameters": {
-    "AssetParameters19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcddS3Bucket577745F0": {
+    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B": {
       "Type": "String",
-      "Description": "S3 bucket for asset \"19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcdd\""
+      "Description": "S3 bucket for asset \"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\""
     },
-    "AssetParameters19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcddS3VersionKeyBA1049F8": {
+    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE": {
       "Type": "String",
-      "Description": "S3 key for asset version \"19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcdd\""
+      "Description": "S3 key for asset version \"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\""
     },
-    "AssetParameters19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcddArtifactHash6996C948": {
+    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acArtifactHash2A1C2D40": {
       "Type": "String",
-      "Description": "Artifact hash for asset \"19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcdd\""
+      "Description": "Artifact hash for asset \"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\""
     }
   },
   "Outputs": {
@@ -226,7 +457,7 @@
           [
             "s3://",
             {
-              "Ref": "AssetParameters19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcddS3Bucket577745F0"
+              "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B"
             },
             "/",
             {
@@ -236,7 +467,7 @@
                   "Fn::Split": [
                     "||",
                     {
-                      "Ref": "AssetParameters19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcddS3VersionKeyBA1049F8"
+                      "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE"
                     }
                   ]
                 }
@@ -249,13 +480,21 @@
                   "Fn::Split": [
                     "||",
                     {
-                      "Ref": "AssetParameters19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcddS3VersionKeyBA1049F8"
+                      "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE"
                     }
                   ]
                 }
               ]
             }
           ]
+        ]
+      }
+    },
+    "OutputBucket": {
+      "Value": {
+        "Fn::GetAtt": [
+          "S3Bucket07682993",
+          "Arn"
         ]
       }
     }

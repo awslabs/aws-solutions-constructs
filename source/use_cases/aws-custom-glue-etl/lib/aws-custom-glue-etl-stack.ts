@@ -13,19 +13,21 @@
 
 import { CfnSecurityConfiguration } from '@aws-cdk/aws-glue';
 import { StreamEncryption } from '@aws-cdk/aws-kinesis';
+import { LogGroup } from '@aws-cdk/aws-logs';
 import * as cdk from '@aws-cdk/core';
 import { Aws, CfnOutput } from '@aws-cdk/core';
 import { KinesisStreamGlueJob } from '@aws-solutions-constructs/aws-kinesisstreams-gluejob';
+import * as defaults from '@aws-solutions-constructs/core';
 
 export class AwsCustomGlueEtlStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     const _glueKMSKey = `arn:${Aws.PARTITION}:kms:${Aws.REGION}:${Aws.ACCOUNT_ID}:alias/aws/glue`;
-    const securityConfigName = 'customjob-example-config';
+    const _securityConfigName = 'customjob-example-config';
 
     new CfnSecurityConfiguration(this, 'GlueSecConfig', {
-      name: securityConfigName,
+      name: _securityConfigName,
       encryptionConfiguration: {
         cloudWatchEncryption: {
           cloudWatchEncryptionMode: 'SSE-KMS',
@@ -41,25 +43,47 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
       }
     });
 
-    const jobCommand = KinesisStreamGlueJob.createGlueJobCommand(this, 'JobCommand', '3', undefined, `${__dirname}/../etl/transform.py`);
+    const _glueJobRole = KinesisStreamGlueJob.createGlueJobRole(this)
 
-    const customEtlJob = new KinesisStreamGlueJob(this, 'CustomETL', {
+    const _outputBucket = defaults.buildS3Bucket(this, {
+      bucketProps: defaults.DefaultS3Props()
+    });
+
+    _outputBucket[0].grantWrite(_glueJobRole);
+
+    const _jobCommand = KinesisStreamGlueJob.createGlueJobCommand(this, 'JobCommand', '3', undefined, `${__dirname}/../etl/transform.py`);
+
+    const _customEtlJob = new KinesisStreamGlueJob(this, 'CustomETL', {
       kinesisStreamProps: {
        encryption: StreamEncryption.MANAGED
       },
       glueJobProps: {
-        command: jobCommand[0],
-        role: KinesisStreamGlueJob.createGlueJobRole(this).roleArn,
-        securityConfiguration: securityConfigName
+        command: _jobCommand[0],
+        role: _glueJobRole.roleArn,
+        securityConfiguration: _securityConfigName,
+        defaultArguments: {
+          "--job-bookmark-option": "job-bookmark-disable",
+          "--enable-metrics" : true,
+          "--enable-continuous-cloudwatch-log" : true,
+          "--enable-continuous-log-filter": true,
+          "--enable-glue-datacatalog": true,
+          "--continuous-log-logGroup": new LogGroup(this, 'GlueCWLogGroup').logGroupName,
+          "--output-path": `s3://${_outputBucket[0].bucketName}/output/`,
+          "--aws-region": Aws.REGION
+        }
       }
     });
 
     new CfnOutput(this, 'KinesisStreamName', {
-      value: customEtlJob.kinesisStream.streamName
+      value: _customEtlJob.kinesisStream.streamName
     });
 
     new CfnOutput(this, 'ScripLocation', {
-      value: jobCommand[1]!.s3ObjectUrl
+      value: _jobCommand[1]!.s3ObjectUrl
+    });
+
+    new CfnOutput(this, 'OutputBucket', {
+      value: _outputBucket[0].bucketArn
     });
   }
 }
