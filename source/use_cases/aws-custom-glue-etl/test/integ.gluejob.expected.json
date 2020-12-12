@@ -60,178 +60,6 @@
         "Name": "customjob-example-config"
       }
     },
-    "S3LoggingBucket800A2B27": {
-      "Type": "AWS::S3::Bucket",
-      "Properties": {
-        "AccessControl": "LogDeliveryWrite",
-        "BucketEncryption": {
-          "ServerSideEncryptionConfiguration": [
-            {
-              "ServerSideEncryptionByDefault": {
-                "SSEAlgorithm": "AES256"
-              }
-            }
-          ]
-        },
-        "PublicAccessBlockConfiguration": {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true
-        }
-      },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W35",
-              "reason": "This S3 bucket is used as the access logging bucket for another bucket"
-            }
-          ]
-        }
-      }
-    },
-    "S3LoggingBucketPolicy6B3AA8AF": {
-      "Type": "AWS::S3::BucketPolicy",
-      "Properties": {
-        "Bucket": {
-          "Ref": "S3LoggingBucket800A2B27"
-        },
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": "*",
-              "Condition": {
-                "Bool": {
-                  "aws:SecureTransport": "false"
-                }
-              },
-              "Effect": "Deny",
-              "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "S3LoggingBucket800A2B27",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
-              },
-              "Sid": "HttpsOnly"
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      }
-    },
-    "S3Bucket07682993": {
-      "Type": "AWS::S3::Bucket",
-      "Properties": {
-        "BucketEncryption": {
-          "ServerSideEncryptionConfiguration": [
-            {
-              "ServerSideEncryptionByDefault": {
-                "SSEAlgorithm": "AES256"
-              }
-            }
-          ]
-        },
-        "LoggingConfiguration": {
-          "DestinationBucketName": {
-            "Ref": "S3LoggingBucket800A2B27"
-          }
-        },
-        "PublicAccessBlockConfiguration": {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true
-        },
-        "VersioningConfiguration": {
-          "Status": "Enabled"
-        }
-      },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
-    },
-    "S3BucketPolicyF560589A": {
-      "Type": "AWS::S3::BucketPolicy",
-      "Properties": {
-        "Bucket": {
-          "Ref": "S3Bucket07682993"
-        },
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": "*",
-              "Condition": {
-                "Bool": {
-                  "aws:SecureTransport": "false"
-                }
-              },
-              "Effect": "Deny",
-              "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "S3Bucket07682993",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
-              },
-              "Sid": "HttpsOnly"
-            },
-            {
-              "Action": [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*"
-              ],
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "glue.amazonaws.com"
-              },
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "S3Bucket07682993",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "S3Bucket07682993",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      }
-    },
     "JobRole014917C6": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -273,7 +101,34 @@
               [
                 "s3://",
                 {
-                  "Ref": "S3Bucket07682993"
+                  "Ref": "AssetParameters19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcddS3Bucket577745F0"
+                },
+                "/",
+                {
+                  "Fn::Select": [
+                    0,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParameters19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcddS3VersionKeyBA1049F8"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Fn::Select": [
+                    1,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParameters19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcddS3VersionKeyBA1049F8"
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             ]
@@ -340,6 +195,67 @@
               }
             ]
           }
+        ]
+      }
+    }
+  },
+  "Parameters": {
+    "AssetParameters19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcddS3Bucket577745F0": {
+      "Type": "String",
+      "Description": "S3 bucket for asset \"19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcdd\""
+    },
+    "AssetParameters19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcddS3VersionKeyBA1049F8": {
+      "Type": "String",
+      "Description": "S3 key for asset version \"19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcdd\""
+    },
+    "AssetParameters19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcddArtifactHash6996C948": {
+      "Type": "String",
+      "Description": "Artifact hash for asset \"19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcdd\""
+    }
+  },
+  "Outputs": {
+    "KinesisStreamName": {
+      "Value": {
+        "Ref": "CustomETLKinesisStreamB4F1869F"
+      }
+    },
+    "ScripLocation": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "s3://",
+            {
+              "Ref": "AssetParameters19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcddS3Bucket577745F0"
+            },
+            "/",
+            {
+              "Fn::Select": [
+                0,
+                {
+                  "Fn::Split": [
+                    "||",
+                    {
+                      "Ref": "AssetParameters19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcddS3VersionKeyBA1049F8"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Fn::Select": [
+                1,
+                {
+                  "Fn::Split": [
+                    "||",
+                    {
+                      "Ref": "AssetParameters19c43446531f25e8cd1e38bf3d30aef766da794f817f5d28d71758bfdae2bcddS3VersionKeyBA1049F8"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         ]
       }
     }

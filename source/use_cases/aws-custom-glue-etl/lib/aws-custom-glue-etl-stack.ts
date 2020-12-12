@@ -41,12 +41,14 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
       }
     });
 
+    const jobCommand = KinesisStreamGlueJob.createGlueJobCommand(this, 'JobCommand', '3', undefined, `${__dirname}/../etl/transform.py`);
+
     const customEtlJob = new KinesisStreamGlueJob(this, 'CustomETL', {
       kinesisStreamProps: {
        encryption: StreamEncryption.MANAGED
       },
       glueJobProps: {
-        command: KinesisStreamGlueJob.createGlueJobCommand(this, 'JobCommand', '3'),
+        command: jobCommand[0],
         role: KinesisStreamGlueJob.createGlueJobRole(this).roleArn,
         securityConfiguration: securityConfigName
       }
@@ -54,6 +56,10 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
 
     new CfnOutput(this, 'KinesisStreamName', {
       value: customEtlJob.kinesisStream.streamName
+    });
+
+    new CfnOutput(this, 'ScripLocation', {
+      value: jobCommand[1]!.s3ObjectUrl
     });
   }
 }
