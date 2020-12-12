@@ -92,24 +92,14 @@ def processBatch(data_frame, batchId):
 
 
 # Read from Kinesis Data Stream
-sourceData1 = glueContext.create_data_frame.from_catalog(
+sourceData = glueContext.create_data_frame.from_catalog(
     database="ventilatordb",
     table_name="ventilators_table",
     transformation_ctx="datasource1",
     additional_options={"startingPosition": "TRIM_HORIZON", "inferSchema": "true"},
 )
 
-sourceData1.printSchema()
-
-sourceData2 = glueContext.create_data_frame.from_catalog(
-    database="ventilatordb",
-    table_name="ventilators_table2",
-    transformation_ctx="datasource2",
-    additional_options={"startingPosition": "TRIM_HORIZON", "inferSchema": "true"},
-)
-
-sourceData2.printSchema()
-
+sourceData.printSchema()
 
 glueContext.forEachBatch(
     frame=sourceData,
