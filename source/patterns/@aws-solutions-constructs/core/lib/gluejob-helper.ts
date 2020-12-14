@@ -78,7 +78,7 @@ export function deployGlueJob(scope: Construct, glueJobProps: CfnJobProps): CfnJ
       new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'logs:CreateLogGroup', 'logs:CreateLogStream', 'logs:PutLogEvents' ],
-        resources: [ `arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:/aws-glue/*` ]
+        resources: [ `arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group/aws-glue/*` ]
       })
     ]
   });

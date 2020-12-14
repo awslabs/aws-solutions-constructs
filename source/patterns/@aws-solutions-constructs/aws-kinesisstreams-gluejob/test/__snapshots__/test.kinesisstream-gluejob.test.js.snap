@@ -182,7 +182,7 @@ Object {
                     Object {
                       "Ref": "AWS::AccountId",
                     },
-                    ":/aws-glue/*",
+                    ":log-group/aws-glue/*",
                   ],
                 ],
               },
@@ -532,7 +532,7 @@ Object {
                     Object {
                       "Ref": "AWS::AccountId",
                     },
-                    ":/aws-glue/*",
+                    ":log-group/aws-glue/*",
                   ],
                 ],
               },
@@ -817,7 +817,7 @@ Object {
                     Object {
                       "Ref": "AWS::AccountId",
                     },
-                    ":/aws-glue/*",
+                    ":log-group/aws-glue/*",
                   ],
                 ],
               },
