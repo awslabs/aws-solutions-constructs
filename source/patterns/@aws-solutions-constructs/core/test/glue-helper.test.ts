@@ -27,10 +27,14 @@ test('Test minimal deployment with no properties', () => {
     const stack = new Stack();
     const _jobID = 'testETLJob';
 
-    const cfnJobProps: CfnJobProps = defaults.DefaultGlueJobProps('jobRole', {
-        name: _jobID,
-        pythonVersion: '3',
-        scriptLocation: 's3://fakelocation/script'
+    const _jobRole = new Role(stack, 'CustomETLJobRole', {
+      assumedBy: new ServicePrincipal('glue.amazonaws.com')
+    });
+
+    const cfnJobProps: CfnJobProps = defaults.DefaultGlueJobProps(_jobRole.roleArn, {
+      name: _jobID,
+      pythonVersion: '3',
+      scriptLocation: 's3://fakelocation/script'
     }, _jobID);
 
     defaults.buildGlueJob(stack, { glueJobProps: cfnJobProps });
@@ -38,16 +42,21 @@ test('Test minimal deployment with no properties', () => {
     expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
     // Assertion 2
     expect(stack).toHaveResourceLike('AWS::Glue::Job', {
-        Type: "AWS::Glue::Job",
-        Properties: {
-            Command: {
-                Name: "testETLJob",
-                PythonVersion: "3",
-                ScriptLocation: "s3://fakelocation/script"
-            },
-            Role: "jobRole",
-            SecurityConfiguration: "testETLJob"
-        }
+      Type: "AWS::Glue::Job",
+      Properties: {
+        Command: {
+          Name: "testETLJob",
+          PythonVersion: "3",
+          ScriptLocation: "s3://fakelocation/script"
+        },
+        Role: {
+          "Fn::GetAtt": [
+            "CustomETLJobRole90A83A66",
+            "Arn"
+          ]
+        },
+        SecurityConfiguration: "testETLJob"
+      }
     }, ResourcePart.CompleteDefinition);
 });
 

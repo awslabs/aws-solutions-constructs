@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { CfnSecurityConfiguration } from '@aws-cdk/aws-glue';
+ import { CfnSecurityConfiguration } from '@aws-cdk/aws-glue';
 import { StreamEncryption } from '@aws-cdk/aws-kinesis';
 import { LogGroup } from '@aws-cdk/aws-logs';
 import * as cdk from '@aws-cdk/core';
@@ -49,13 +49,13 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
       bucketProps: defaults.DefaultS3Props()
     });
 
-    _outputBucket[0].grantWrite(_glueJobRole);
+    _outputBucket[0].grantReadWrite(_glueJobRole);
 
-    const _jobCommand = KinesisStreamGlueJob.createGlueJobCommand(this, 'JobCommand', '3', undefined, `${__dirname}/../etl/transform.py`);
+    const _jobCommand = KinesisStreamGlueJob.createGlueJobCommand(this, 'glueetl', '3', undefined, `${__dirname}/../etl/transform.py`);
 
     const _customEtlJob = new KinesisStreamGlueJob(this, 'CustomETL', {
       kinesisStreamProps: {
-       encryption: StreamEncryption.MANAGED
+       encryption: StreamEncryption.UNENCRYPTED
       },
       glueJobProps: {
         command: _jobCommand[0],

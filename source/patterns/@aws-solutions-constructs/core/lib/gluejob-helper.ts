@@ -12,8 +12,7 @@
  */
 
 import { CfnJob, CfnJobProps, CfnSecurityConfiguration } from '@aws-cdk/aws-glue';
-import { ServicePrincipal } from '@aws-cdk/aws-iam';
-import { Key } from '@aws-cdk/aws-kms';
+import { Effect, Policy, PolicyStatement, Role } from '@aws-cdk/aws-iam';
 import { Aws, Construct } from '@aws-cdk/core';
 import * as defaults from '../';
 import { overrideProps } from './utils';
@@ -53,7 +52,6 @@ export function deployGlueJob(scope: Construct, glueJobProps: CfnJobProps): CfnJ
   if (glueJobProps.securityConfiguration === undefined) {
     _glueSecurityConfigName = 'ETLJobSecurityConfig';
     const _glueKMSKey = `arn:${Aws.PARTITION}:kms:${Aws.REGION}:${Aws.ACCOUNT_ID}:alias/aws/glue`;
-    Key.fromKeyArn(scope, 'GlueKMSKey', _glueKMSKey).grantEncryptDecrypt(new ServicePrincipal('glue.amazonaws.com'));
 
     new CfnSecurityConfiguration(scope, 'GlueSecurityConfig', {
       name: _glueSecurityConfigName,
@@ -74,6 +72,18 @@ export function deployGlueJob(scope: Construct, glueJobProps: CfnJobProps): CfnJ
   } else {
     _glueSecurityConfigName = glueJobProps.securityConfiguration;
   }
+
+  const _glueJobPolicy = new Policy(scope, 'LogPolicy', {
+    statements: [
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: [ 'logs:CreateLogGroup', 'logs:CreateLogStream', 'logs:PutLogEvents' ],
+        resources: [ `arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:/aws-glue/*` ]
+      })
+    ]
+  });
+
+  _glueJobPolicy.attachToRole(Role.fromRoleArn(scope, 'GlueJobRole', glueJobProps.role));
 
   const _glueJobProps: CfnJobProps = overrideProps(defaults.DefaultGlueJobProps(glueJobProps.role, glueJobProps.command,
                                                                               _glueSecurityConfigName), glueJobProps);

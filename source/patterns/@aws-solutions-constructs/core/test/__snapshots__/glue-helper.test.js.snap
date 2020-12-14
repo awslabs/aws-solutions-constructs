@@ -148,6 +148,73 @@ Object {
       },
       "Type": "AWS::Glue::SecurityConfiguration",
     },
+    "LogPolicy9292E033": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":logs:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":/aws-glue/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "LogPolicy9292E033",
+        "Roles": Array [
+          Object {
+            "Fn::Select": Array [
+              1,
+              Object {
+                "Fn::Split": Array [
+                  "/",
+                  Object {
+                    "Fn::Select": Array [
+                      5,
+                      Object {
+                        "Fn::Split": Array [
+                          ":",
+                          Object {
+                            "Fn::GetAtt": Array [
+                              "ExistingJobRole8F750976",
+                              "Arn",
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
   },
 }
 `;
@@ -155,6 +222,23 @@ Object {
 exports[`Test minimal deployment with no properties 1`] = `
 Object {
   "Resources": Object {
+    "CustomETLJobRole90A83A66": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "glue.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
     "ETLJob": Object {
       "Properties": Object {
         "Command": Object {
@@ -162,10 +246,82 @@ Object {
           "PythonVersion": "3",
           "ScriptLocation": "s3://fakelocation/script",
         },
-        "Role": "jobRole",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "CustomETLJobRole90A83A66",
+            "Arn",
+          ],
+        },
         "SecurityConfiguration": "testETLJob",
       },
       "Type": "AWS::Glue::Job",
+    },
+    "LogPolicy9292E033": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":logs:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":/aws-glue/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "LogPolicy9292E033",
+        "Roles": Array [
+          Object {
+            "Fn::Select": Array [
+              1,
+              Object {
+                "Fn::Split": Array [
+                  "/",
+                  Object {
+                    "Fn::Select": Array [
+                      5,
+                      Object {
+                        "Fn::Split": Array [
+                          ":",
+                          Object {
+                            "Fn::GetAtt": Array [
+                              "CustomETLJobRole90A83A66",
+                              "Arn",
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
   },
 }

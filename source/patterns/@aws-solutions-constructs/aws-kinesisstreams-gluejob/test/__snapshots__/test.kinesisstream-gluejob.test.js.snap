@@ -3,16 +3,16 @@
 exports[`Pattern minimal deployment 1`] = `
 Object {
   "Parameters": Object {
-    "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04ArtifactHashC173448A": Object {
-      "Description": "Artifact hash for asset \\"aadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04\\"",
+    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acArtifactHash2A1C2D40": Object {
+      "Description": "Artifact hash for asset \\"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\\"",
       "Type": "String",
     },
-    "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3Bucket4BA63B65": Object {
-      "Description": "S3 bucket for asset \\"aadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04\\"",
+    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B": Object {
+      "Description": "S3 bucket for asset \\"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\\"",
       "Type": "String",
     },
-    "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3VersionKey03140123": Object {
-      "Description": "S3 key for asset version \\"aadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04\\"",
+    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE": Object {
+      "Description": "S3 key for asset version \\"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\\"",
       "Type": "String",
     },
   },
@@ -101,7 +101,7 @@ Object {
               Array [
                 "s3://",
                 Object {
-                  "Ref": "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3Bucket4BA63B65",
+                  "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B",
                 },
                 "/",
                 Object {
@@ -111,7 +111,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3VersionKey03140123",
+                          "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE",
                         },
                       ],
                     },
@@ -124,7 +124,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3VersionKey03140123",
+                          "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE",
                         },
                       ],
                     },
@@ -155,6 +155,73 @@ Object {
       },
       "Type": "AWS::Kinesis::Stream",
     },
+    "testkinesisstreamslambdaLogPolicy5FB58427": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":logs:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":/aws-glue/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testkinesisstreamslambdaLogPolicy5FB58427",
+        "Roles": Array [
+          Object {
+            "Fn::Select": Array [
+              1,
+              Object {
+                "Fn::Split": Array [
+                  "/",
+                  Object {
+                    "Fn::Select": Array [
+                      5,
+                      Object {
+                        "Fn::Split": Array [
+                          ":",
+                          Object {
+                            "Fn::GetAtt": Array [
+                              "JobRole014917C6",
+                              "Arn",
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
   },
 }
 `;
@@ -162,16 +229,16 @@ Object {
 exports[`Test if existing Glue Job is provided 1`] = `
 Object {
   "Parameters": Object {
-    "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04ArtifactHashC173448A": Object {
-      "Description": "Artifact hash for asset \\"aadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04\\"",
+    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acArtifactHash2A1C2D40": Object {
+      "Description": "Artifact hash for asset \\"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\\"",
       "Type": "String",
     },
-    "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3Bucket4BA63B65": Object {
-      "Description": "S3 bucket for asset \\"aadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04\\"",
+    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B": Object {
+      "Description": "S3 bucket for asset \\"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\\"",
       "Type": "String",
     },
-    "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3VersionKey03140123": Object {
-      "Description": "S3 key for asset version \\"aadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04\\"",
+    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE": Object {
+      "Description": "S3 key for asset version \\"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\\"",
       "Type": "String",
     },
   },
@@ -187,7 +254,7 @@ Object {
               Array [
                 "s3://",
                 Object {
-                  "Ref": "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3Bucket4BA63B65",
+                  "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B",
                 },
                 "/",
                 Object {
@@ -197,7 +264,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3VersionKey03140123",
+                          "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE",
                         },
                       ],
                     },
@@ -210,7 +277,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3VersionKey03140123",
+                          "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE",
                         },
                       ],
                     },
@@ -438,6 +505,73 @@ Object {
       },
       "Type": "AWS::Kinesis::Stream",
     },
+    "testkinesisstreamslambdaLogPolicy5FB58427": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":logs:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":/aws-glue/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testkinesisstreamslambdaLogPolicy5FB58427",
+        "Roles": Array [
+          Object {
+            "Fn::Select": Array [
+              1,
+              Object {
+                "Fn::Split": Array [
+                  "/",
+                  Object {
+                    "Fn::Select": Array [
+                      5,
+                      Object {
+                        "Fn::Split": Array [
+                          ":",
+                          Object {
+                            "Fn::GetAtt": Array [
+                              "JobRole014917C6",
+                              "Arn",
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
   },
 }
 `;
@@ -445,16 +579,16 @@ Object {
 exports[`create glue job with existing kinesis stream 1`] = `
 Object {
   "Parameters": Object {
-    "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04ArtifactHashC173448A": Object {
-      "Description": "Artifact hash for asset \\"aadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04\\"",
+    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acArtifactHash2A1C2D40": Object {
+      "Description": "Artifact hash for asset \\"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\\"",
       "Type": "String",
     },
-    "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3Bucket4BA63B65": Object {
-      "Description": "S3 bucket for asset \\"aadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04\\"",
+    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B": Object {
+      "Description": "S3 bucket for asset \\"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\\"",
       "Type": "String",
     },
-    "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3VersionKey03140123": Object {
-      "Description": "S3 key for asset version \\"aadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04\\"",
+    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE": Object {
+      "Description": "S3 key for asset version \\"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\\"",
       "Type": "String",
     },
   },
@@ -554,7 +688,7 @@ Object {
               Array [
                 "s3://",
                 Object {
-                  "Ref": "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3Bucket4BA63B65",
+                  "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B",
                 },
                 "/",
                 Object {
@@ -564,7 +698,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3VersionKey03140123",
+                          "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE",
                         },
                       ],
                     },
@@ -577,7 +711,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParametersaadae4f8295412f3987d803069cad69f367436321959fe2150012ee106bd6c04S3VersionKey03140123",
+                          "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE",
                         },
                       ],
                     },
@@ -655,6 +789,73 @@ Object {
         "Name": "ETLJobSecurityConfig",
       },
       "Type": "AWS::Glue::SecurityConfiguration",
+    },
+    "existingStreamJobLogPolicy08F24C09": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":logs:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":/aws-glue/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "existingStreamJobLogPolicy08F24C09",
+        "Roles": Array [
+          Object {
+            "Fn::Select": Array [
+              1,
+              Object {
+                "Fn::Split": Array [
+                  "/",
+                  Object {
+                    "Fn::Select": Array [
+                      5,
+                      Object {
+                        "Fn::Split": Array [
+                          ":",
+                          Object {
+                            "Fn::GetAtt": Array [
+                              "JobRole014917C6",
+                              "Arn",
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
   },
 }
