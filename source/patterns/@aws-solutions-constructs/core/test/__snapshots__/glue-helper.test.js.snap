@@ -92,29 +92,6 @@ Object {
     "GlueSecurityConfig": Object {
       "Properties": Object {
         "EncryptionConfiguration": Object {
-          "CloudWatchEncryption": Object {
-            "CloudWatchEncryptionMode": "SSE-KMS",
-            "KmsKeyArn": Object {
-              "Fn::Join": Array [
-                "",
-                Array [
-                  "arn:",
-                  Object {
-                    "Ref": "AWS::Partition",
-                  },
-                  ":kms:",
-                  Object {
-                    "Ref": "AWS::Region",
-                  },
-                  ":",
-                  Object {
-                    "Ref": "AWS::AccountId",
-                  },
-                  ":alias/aws/glue",
-                ],
-              ],
-            },
-          },
           "JobBookmarksEncryption": Object {
             "JobBookmarksEncryptionMode": "CSE-KMS",
             "KmsKeyArn": Object {
@@ -175,7 +152,7 @@ Object {
                     Object {
                       "Ref": "AWS::AccountId",
                     },
-                    ":log-group/aws-glue/*",
+                    ":log-group:/aws-glue/*",
                   ],
                 ],
               },
@@ -283,7 +260,7 @@ Object {
                     Object {
                       "Ref": "AWS::AccountId",
                     },
-                    ":log-group/aws-glue/*",
+                    ":log-group:/aws-glue/*",
                   ],
                 ],
               },

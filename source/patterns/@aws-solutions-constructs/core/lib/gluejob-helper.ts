@@ -56,10 +56,11 @@ export function deployGlueJob(scope: Construct, glueJobProps: CfnJobProps): CfnJ
     new CfnSecurityConfiguration(scope, 'GlueSecurityConfig', {
       name: _glueSecurityConfigName,
       encryptionConfiguration: {
-        cloudWatchEncryption: {
-          cloudWatchEncryptionMode: 'SSE-KMS',
-          kmsKeyArn: _glueKMSKey
-        },
+        // TODO - remove commented code
+        // cloudWatchEncryption: {
+        //   cloudWatchEncryptionMode: 'SSE-KMS',
+        //   kmsKeyArn: _glueKMSKey
+        // },
         jobBookmarksEncryption: {
           jobBookmarksEncryptionMode: 'CSE-KMS',
           kmsKeyArn: _glueKMSKey
@@ -78,7 +79,7 @@ export function deployGlueJob(scope: Construct, glueJobProps: CfnJobProps): CfnJ
       new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'logs:CreateLogGroup', 'logs:CreateLogStream', 'logs:PutLogEvents' ],
-        resources: [ `arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group/aws-glue/*` ]
+        resources: [ `arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group:/aws-glue/*` ]
       })
     ]
   });

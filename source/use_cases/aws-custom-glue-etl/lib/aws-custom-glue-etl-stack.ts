@@ -11,9 +11,7 @@
  *  and limitations under the License.
  */
 
- import { CfnSecurityConfiguration } from '@aws-cdk/aws-glue';
-import { StreamEncryption } from '@aws-cdk/aws-kinesis';
-import { LogGroup } from '@aws-cdk/aws-logs';
+ import { StreamEncryption } from '@aws-cdk/aws-kinesis';
 import * as cdk from '@aws-cdk/core';
 import { Aws, CfnOutput } from '@aws-cdk/core';
 import { KinesisStreamGlueJob } from '@aws-solutions-constructs/aws-kinesisstreams-gluejob';
@@ -23,33 +21,13 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const _glueKMSKey = `arn:${Aws.PARTITION}:kms:${Aws.REGION}:${Aws.ACCOUNT_ID}:alias/aws/glue`;
-    const _securityConfigName = 'customjob-example-config';
-
-    new CfnSecurityConfiguration(this, 'GlueSecConfig', {
-      name: _securityConfigName,
-      encryptionConfiguration: {
-        cloudWatchEncryption: {
-          cloudWatchEncryptionMode: 'SSE-KMS',
-          kmsKeyArn: _glueKMSKey
-        },
-        s3Encryptions: [{
-          s3EncryptionMode: 'SSE-S3'
-        }],
-        jobBookmarksEncryption: {
-          jobBookmarksEncryptionMode: 'CSE-KMS',
-          kmsKeyArn: _glueKMSKey
-        }
-      }
-    });
-
-    const _glueJobRole = KinesisStreamGlueJob.createGlueJobRole(this)
+    const _glueJobRole = KinesisStreamGlueJob.createGlueJobRole(this);
 
     const _outputBucket = defaults.buildS3Bucket(this, {
       bucketProps: defaults.DefaultS3Props()
     });
 
-    _outputBucket[0].grantReadWrite(_glueJobRole);
+    _outputBucket[0].grantWrite(_glueJobRole);
 
     const _jobCommand = KinesisStreamGlueJob.createGlueJobCommand(this, 'glueetl', '3', undefined, `${__dirname}/../etl/transform.py`);
 
@@ -60,14 +38,12 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
       glueJobProps: {
         command: _jobCommand[0],
         role: _glueJobRole.roleArn,
-        securityConfiguration: _securityConfigName,
         defaultArguments: {
           "--job-bookmark-option": "job-bookmark-disable",
           "--enable-metrics" : true,
           "--enable-continuous-cloudwatch-log" : true,
           "--enable-continuous-log-filter": true,
           "--enable-glue-datacatalog": true,
-          "--continuous-log-logGroup": new LogGroup(this, 'GlueCWLogGroup').logGroupName,
           "--output-path": `s3://${_outputBucket[0].bucketName}/output/`,
           "--aws-region": Aws.REGION
         }

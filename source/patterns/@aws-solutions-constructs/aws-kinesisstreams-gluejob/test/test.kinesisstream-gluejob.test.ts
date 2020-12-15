@@ -38,56 +38,56 @@ test('Pattern minimal deployment', () => {
 
     // check for role creation
     expect(stack).toHaveResourceLike('AWS::IAM::Role', {
-        Properties: {
-            AssumeRolePolicyDocument: {
-                Statement: [{
-                    Action: "sts:AssumeRole",
-                    Effect: "Allow",
-                    Principal: {
-                        Service: "glue.amazonaws.com",
-                    },
-                }],
-                Version: "2012-10-17",
-            },
+      Properties: {
+        AssumeRolePolicyDocument: {
+          Statement: [{
+              Action: "sts:AssumeRole",
+              Effect: "Allow",
+              Principal: {
+                  Service: "glue.amazonaws.com",
+              },
+            }],
+            Version: "2012-10-17",
+          },
         Description: "Service role that Glue custom ETL jobs will assume for exeuction",
-        },
-        Type: "AWS::IAM::Role"
+      },
+      Type: "AWS::IAM::Role"
     }, ResourcePart.CompleteDefinition);
 
     // check for Kinesis Stream
     expect(stack).toHaveResourceLike('AWS::Kinesis::Stream', {
-        Properties: {
-            RetentionPeriodHours: 24,
-            ShardCount: 1,
-            StreamEncryption: {
-                EncryptionType: "KMS",
-                KeyId: "alias/aws/kinesis",
-            },
+      Properties: {
+        RetentionPeriodHours: 24,
+        ShardCount: 1,
+        StreamEncryption: {
+            EncryptionType: "KMS",
+            KeyId: "alias/aws/kinesis",
         },
-        Type: "AWS::Kinesis::Stream"
+      },
+      Type: "AWS::Kinesis::Stream"
     }, ResourcePart.CompleteDefinition);
 
     // check policy to allow read access to Kinesis Stream
     expect(stack).toHaveResourceLike('AWS::IAM::Policy', {
-        PolicyDocument: {
-            Statement: [{
-                Action: [
-                    "kinesis:DescribeStreamSummary",
-                    "kinesis:GetRecords",
-                    "kinesis:GetShardIterator",
-                    "kinesis:ListShards",
-                    "kinesis:SubscribeToShard",
-                ],
-                Effect: "Allow",
-                Resource: {
-                    "Fn::GetAtt": [
-                        "testkinesisstreamslambdaKinesisStream374D6D56",
-                        "Arn",
-                    ],
-                },
-            }],
-            Version: "2012-10-17"
-        }
+      PolicyDocument: {
+        Statement: [{
+          Action: [
+            "kinesis:DescribeStreamSummary",
+            "kinesis:GetRecords",
+            "kinesis:GetShardIterator",
+            "kinesis:ListShards",
+            "kinesis:SubscribeToShard",
+          ],
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+                "testkinesisstreamslambdaKinesisStream374D6D56",
+                "Arn",
+            ],
+          },
+        }],
+        Version: "2012-10-17"
+      }
     }, ResourcePart.Properties);
 });
 
@@ -187,49 +187,6 @@ test('create glue job with existing kinesis stream', () => {
     });
 
     expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-
-    // Assert if the Glue Job role has read access to the stream
-    expect(stack).toHaveResourceLike('AWS::IAM::Policy', {
-        Properties: {
-            PolicyDocument: {
-                Statement: [{
-                    Action: [ "kinesis:DescribeStreamSummary", "kinesis:GetRecords", "kinesis:GetShardIterator",
-                                "kinesis:ListShards", "kinesis:SubscribeToShard"
-                    ],
-                    Effect: "Allow",
-                    Resource: {
-                        "Fn::GetAtt":  [
-                            "KinesisStream46752A3E",
-                            "Arn",
-                        ]
-                    },
-                }],
-                Version: "2012-10-17",
-            },
-            PolicyName: "GlueJobRolePolicy422D4F2E",
-            Roles: [{
-                "Fn::Select": [
-                    1, {
-                        "Fn::Split": [
-                        "/", {
-                            "Fn::Select": [
-                                5, {
-                                    "Fn::Split": [
-                                    ":", {
-                                        "Fn::GetAtt": [
-                                            "JobRole014917C6",
-                                            "Arn",
-                                        ],
-                                    }]
-                                },
-                            ]
-                        },
-                    ],
-                }],
-            }],
-        },
-        Type: "AWS::IAM::Policy",
-    }, ResourcePart.CompleteDefinition);
 });
 
 test('Expect to throw error', () => {

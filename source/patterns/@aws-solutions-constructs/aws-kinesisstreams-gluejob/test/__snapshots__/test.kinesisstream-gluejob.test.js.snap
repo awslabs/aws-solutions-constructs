@@ -17,6 +17,72 @@ Object {
     },
   },
   "Resources": Object {
+    "GlueJobPolicyAEA4B94E": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "glue:GetJob",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":glue:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":job/",
+                    Object {
+                      "Ref": "testkinesisstreamslambdaETLJob44B50676",
+                    },
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "GlueJobPolicyAEA4B94E",
+        "Roles": Array [
+          Object {
+            "Fn::Select": Array [
+              1,
+              Object {
+                "Fn::Split": Array [
+                  "/",
+                  Object {
+                    "Fn::Select": Array [
+                      5,
+                      Object {
+                        "Fn::Split": Array [
+                          ":",
+                          Object {
+                            "Fn::GetAtt": Array [
+                              "JobRole014917C6",
+                              "Arn",
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
     "GlueJobRolePolicy422D4F2E": Object {
       "Properties": Object {
         "PolicyDocument": Object {
@@ -182,7 +248,7 @@ Object {
                     Object {
                       "Ref": "AWS::AccountId",
                     },
-                    ":log-group/aws-glue/*",
+                    ":log-group:/aws-glue/*",
                   ],
                 ],
               },
@@ -297,6 +363,72 @@ Object {
       },
       "Type": "AWS::Glue::Job",
     },
+    "GlueJobPolicyAEA4B94E": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "glue:GetJob",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":glue:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":job/",
+                    Object {
+                      "Ref": "ExistingJob",
+                    },
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "GlueJobPolicyAEA4B94E",
+        "Roles": Array [
+          Object {
+            "Fn::Select": Array [
+              1,
+              Object {
+                "Fn::Split": Array [
+                  "/",
+                  Object {
+                    "Fn::Select": Array [
+                      5,
+                      Object {
+                        "Fn::Split": Array [
+                          ":",
+                          Object {
+                            "Fn::GetAtt": Array [
+                              "JobRole014917C6",
+                              "Arn",
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
     "GlueJobRolePolicy422D4F2E": Object {
       "Properties": Object {
         "PolicyDocument": Object {
@@ -388,6 +520,72 @@ Object {
 exports[`When S3 bucket location for script exists 1`] = `
 Object {
   "Resources": Object {
+    "GlueJobPolicyAEA4B94E": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "glue:GetJob",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":glue:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":job/",
+                    Object {
+                      "Ref": "testkinesisstreamslambdaETLJob44B50676",
+                    },
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "GlueJobPolicyAEA4B94E",
+        "Roles": Array [
+          Object {
+            "Fn::Select": Array [
+              1,
+              Object {
+                "Fn::Split": Array [
+                  "/",
+                  Object {
+                    "Fn::Select": Array [
+                      5,
+                      Object {
+                        "Fn::Split": Array [
+                          ":",
+                          Object {
+                            "Fn::GetAtt": Array [
+                              "JobRole014917C6",
+                              "Arn",
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
     "GlueJobRolePolicy422D4F2E": Object {
       "Properties": Object {
         "PolicyDocument": Object {
@@ -532,7 +730,7 @@ Object {
                     Object {
                       "Ref": "AWS::AccountId",
                     },
-                    ":log-group/aws-glue/*",
+                    ":log-group:/aws-glue/*",
                   ],
                 ],
               },
@@ -593,6 +791,72 @@ Object {
     },
   },
   "Resources": Object {
+    "GlueJobPolicyAEA4B94E": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "glue:GetJob",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":glue:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":job/",
+                    Object {
+                      "Ref": "existingStreamJobETLJob50478D3D",
+                    },
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "GlueJobPolicyAEA4B94E",
+        "Roles": Array [
+          Object {
+            "Fn::Select": Array [
+              1,
+              Object {
+                "Fn::Split": Array [
+                  "/",
+                  Object {
+                    "Fn::Select": Array [
+                      5,
+                      Object {
+                        "Fn::Split": Array [
+                          ":",
+                          Object {
+                            "Fn::GetAtt": Array [
+                              "JobRole014917C6",
+                              "Arn",
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
     "GlueJobRolePolicy422D4F2E": Object {
       "Properties": Object {
         "PolicyDocument": Object {
@@ -734,29 +998,6 @@ Object {
     "existingStreamJobGlueSecurityConfig88E060CD": Object {
       "Properties": Object {
         "EncryptionConfiguration": Object {
-          "CloudWatchEncryption": Object {
-            "CloudWatchEncryptionMode": "SSE-KMS",
-            "KmsKeyArn": Object {
-              "Fn::Join": Array [
-                "",
-                Array [
-                  "arn:",
-                  Object {
-                    "Ref": "AWS::Partition",
-                  },
-                  ":kms:",
-                  Object {
-                    "Ref": "AWS::Region",
-                  },
-                  ":",
-                  Object {
-                    "Ref": "AWS::AccountId",
-                  },
-                  ":alias/aws/glue",
-                ],
-              ],
-            },
-          },
           "JobBookmarksEncryption": Object {
             "JobBookmarksEncryptionMode": "CSE-KMS",
             "KmsKeyArn": Object {
@@ -817,7 +1058,7 @@ Object {
                     Object {
                       "Ref": "AWS::AccountId",
                     },
-                    ":log-group/aws-glue/*",
+                    ":log-group:/aws-glue/*",
                   ],
                 ],
               },

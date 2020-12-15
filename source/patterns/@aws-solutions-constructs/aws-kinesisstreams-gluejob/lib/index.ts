@@ -12,10 +12,10 @@
  */
 
 import { CfnJob, CfnJobProps } from '@aws-cdk/aws-glue';
-import { Role, ServicePrincipal } from '@aws-cdk/aws-iam';
+import { Effect, Policy, PolicyStatement, Role, ServicePrincipal } from '@aws-cdk/aws-iam';
 import { Stream, StreamProps } from '@aws-cdk/aws-kinesis';
 import { Asset } from '@aws-cdk/aws-s3-assets';
-import { Construct } from '@aws-cdk/core';
+import { Aws, Construct } from '@aws-cdk/core';
 import * as defaults from '@aws-solutions-constructs/core';
 
 export interface KinesisStreamGlueJobProps {
@@ -60,14 +60,16 @@ export class KinesisStreamGlueJob extends Construct {
       glueJobProps: props.glueJobProps
     });
 
-    let _glueJobRoleName: string;
-    if (props.existingGlueJob === undefined) {
-      _glueJobRoleName = props.glueJobProps?.role!;
-    } else {
-      _glueJobRoleName = props.existingGlueJob.role;
-    }
+    const _glueJobRole = Role.fromRoleArn(scope, 'GlueJobRole', this.glueJob.role);
+    _glueJobRole.attachInlinePolicy(new Policy(scope, 'GlueJobPolicy', {
+      statements: [ new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: [ 'glue:GetJob' ],
+        resources: [ `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:job/${this.glueJob.ref}` ]
+      })]
+    }));
 
-    this.kinesisStream.grantRead(Role.fromRoleArn(scope, 'GlueJobRole', _glueJobRoleName));
+    this.kinesisStream.grantRead(_glueJobRole);
   }
 
   /**
