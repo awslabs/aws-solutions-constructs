@@ -23,8 +23,10 @@ export * from './lib/dynamodb-table-helper';
 export * from './lib/elasticsearch-defaults';
 export * from './lib/elasticsearch-helper';
 export * from './lib/events-rule-defaults';
-export * from './lib/gluejob-defaults';
-export * from './lib/gluejob-helper';
+export * from './lib/glue-database-defaults';
+export * from './lib/glue-job-defaults';
+export * from './lib/glue-job-helper';
+export * from './lib/glue-table-defaults';
 export * from './lib/iot-topic-rule-defaults';
 export * from './lib/kinesis-analytics-defaults';
 export * from './lib/kinesis-analytics-helper';
@@ -49,3 +51,4 @@ export * from './lib/step-function-helper';
 export * from './lib/utils';
 export * from './lib/vpc-defaults';
 export * from './lib/vpc-helper';
+

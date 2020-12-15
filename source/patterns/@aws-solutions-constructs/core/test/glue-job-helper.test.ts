@@ -17,7 +17,7 @@ import '@aws-cdk/assert/jest';
 import { CfnJob, CfnJobProps } from '@aws-cdk/aws-glue';
 import { Role, ServicePrincipal } from '@aws-cdk/aws-iam';
 import { Stack } from "@aws-cdk/core";
-import * as defaults from '../';
+import * as defaults from '..';
 
 // --------------------------------------------------------------
 // Test minimal deployment with no properties
@@ -35,7 +35,7 @@ test('Test minimal deployment with no properties', () => {
     name: _jobID,
     pythonVersion: '3',
     scriptLocation: 's3://fakelocation/script'
-  }, _jobID);
+  }, 'testETLJob');
 
   defaults.buildGlueJob(stack, { glueJobProps: cfnJobProps });
   // Assertion 1
@@ -45,7 +45,7 @@ test('Test minimal deployment with no properties', () => {
     Type: "AWS::Glue::Job",
     Properties: {
       Command: {
-        Name: "testETLJob",
+        Name: "glueetl",
         PythonVersion: "3",
         ScriptLocation: "s3://fakelocation/script"
       },
@@ -92,7 +92,7 @@ test('Create a Glue Job outside the construct', () => {
     Properties: {
       AllocatedCapacity: 2,
       Command: {
-        Name: "glueetl",
+        Name: "pythonshell",
         PythonVersion: "2",
         ScriptLocation: "s3://existingFakeLocation/existingScript",
       },
@@ -144,7 +144,7 @@ test('Test custom deployment properties', () => {
     Properties: {
       AllocatedCapacity: 2,
       Command: {
-        Name: "pythonshell",
+        Name: "glueetl",
         PythonVersion: "3",
         ScriptLocation: "s3://existingFakeLocation/existingScript",
       },
@@ -214,4 +214,13 @@ test('Test custom deployment properties', () => {
     },
     Type: "AWS::Glue::SecurityConfiguration",
   }, ResourcePart.CompleteDefinition);
+});
+
+test('Do no supply glueJobProps or existingCfnJob and error out', () => {
+  const stack = new Stack();
+  try {
+    defaults.buildGlueJob(stack, {});
+  } catch(error) {
+    expect(error).toBeInstanceOf(Error);
+  }
 });

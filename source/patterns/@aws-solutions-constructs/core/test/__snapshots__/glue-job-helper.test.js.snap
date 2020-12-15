@@ -7,7 +7,7 @@ Object {
       "Properties": Object {
         "AllocatedCapacity": 2,
         "Command": Object {
-          "Name": "existingJob",
+          "Name": "pythonshell",
           "PythonVersion": "2",
           "ScriptLocation": "s3://existingFakeLocation/existingScript",
         },
@@ -53,7 +53,7 @@ Object {
       "Properties": Object {
         "AllocatedCapacity": 2,
         "Command": Object {
-          "Name": "testETLJob",
+          "Name": "glueetl",
           "PythonVersion": "3",
           "ScriptLocation": "s3://existingFakeLocation/existingScript",
         },
@@ -219,7 +219,7 @@ Object {
     "ETLJob": Object {
       "Properties": Object {
         "Command": Object {
-          "Name": "testETLJob",
+          "Name": "glueetl",
           "PythonVersion": "3",
           "ScriptLocation": "s3://fakelocation/script",
         },
