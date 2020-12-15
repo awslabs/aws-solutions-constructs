@@ -42,7 +42,7 @@ export interface KinesisStreamGlueJobProps {
   readonly existingGlueJob?: CfnJob;
   /**
    * A JSON document defining the schema structure of the records in the data stream. An example of such a
-   * definition as below
+   * definition as below. Either @table or @fieldSchema is mandatory. If @table is provided then @fieldSchema is ignored
    * 	"FieldSchema": [{
 	 *		"name": "id",
 	 *		"type": "int",
@@ -61,7 +61,18 @@ export interface KinesisStreamGlueJobProps {
 	 *		"comment": "Some value associated with the record"
 	 *	},
    */
-  readonly fieldSchema: CfnTable.ColumnProperty []
+  readonly fieldSchema?: CfnTable.ColumnProperty [];
+  /**
+   * Glue Database for this construct. If not provided the construct will create a new Glue Database.
+   * The database is where the schema for the data in Kinesis Data Streams
+   */
+  readonly database?: CfnDatabase;
+  /**
+   * Glue Table for this construct, If not provided the construct will create a new Table in the
+   * database. This table should define the schema for the records in the Kinesis Data Streams.
+   * Either @table or @fieldSchema is mandatory. If @table is provided then @fieldSchema is ignored
+   */
+  readonly table?: CfnTable;
 }
 
 export class KinesisStreamGlueJob extends Construct {
@@ -82,42 +93,25 @@ export class KinesisStreamGlueJob extends Construct {
       glueJobProps: props.glueJobProps
     });
 
-    const _glueDatabase = new CfnDatabase(scope, 'GlueDatabase', {
-      catalogId: Aws.ACCOUNT_ID,
-      databaseInput: {
-        description: 'A database for Kinesis Stream processing'
-      }
-    });
+    let _glueDatabase: CfnDatabase;
+    if (props.database !== undefined) {
+      _glueDatabase = props.database!;
+    } else {
+      _glueDatabase = defaults.DefaultGlueDatabaseProps(scope);
+    }
 
-    const _glueTable = new CfnTable(scope, 'GlueTable', {
-      catalogId: _glueDatabase.catalogId,
-      databaseName: _glueDatabase.ref,
-      tableInput: {
-        storageDescriptor: {
-          columns: props.fieldSchema,
-          location: this.kinesisStream.streamName,
-          inputFormat: "org.apache.hadoop.mapred.TextInputFormat",
-          outputFormat: "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
-          compressed: false,
-          numberOfBuckets: -1,
-          serdeInfo: {
-            serializationLibrary: "org.openx.data.jsonserde.JsonSerDe",
-            parameters: {
-              paths: '.'
-            }
-          },
-          parameters: {
-            endpointUrl: `https://kinesis.${Aws.REGION}.amazonaws.com`,
-            streamName: this.kinesisStream.streamName,
-            typeOfData: "kinesis"
-          }
-        },
-        tableType: 'EXTERNAL_TABLE',
-        parameters: {
-          classication: 'json'
-        }
-      }
-    });
+    if (props.fieldSchema === undefined && props.table === undefined) {
+      throw Error('Either fieldSchema or table property has to be set, both cannot be optional');
+    }
+
+    let _glueTable: CfnTable;
+    if (props.table !== undefined) {
+      _glueTable = props.table;
+    } else {
+      _glueTable = defaults.DefaultGlueTableProps(scope, _glueDatabase, props.fieldSchema!, 'Kinesis', {
+        STREAM_NAME: this.kinesisStream.streamName
+      });
+    }
 
     const _glueJobRole = Role.fromRoleArn(scope, 'GlueJobRole', this.glueJob.role);
     _glueJobRole.attachInlinePolicy(new Policy(scope, 'GlueJobPolicy', {

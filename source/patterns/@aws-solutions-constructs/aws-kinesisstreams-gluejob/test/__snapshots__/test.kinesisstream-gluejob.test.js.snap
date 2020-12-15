@@ -23,7 +23,7 @@ Object {
           "Ref": "AWS::AccountId",
         },
         "DatabaseInput": Object {
-          "Description": "A database for Kinesis Stream processing",
+          "Description": "A Glue database table",
         },
       },
       "Type": "AWS::Glue::Database",
@@ -265,10 +265,12 @@ Object {
                 "Type": "int",
               },
             ],
+            "Compressed": false,
             "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
             "Location": Object {
               "Ref": "testkinesisstreamslambdaKinesisStream374D6D56",
             },
+            "NumberOfBuckets": -1,
             "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
             "Parameters": Object {
               "endpointUrl": Object {
@@ -289,9 +291,13 @@ Object {
               "typeOfData": "kinesis",
             },
             "SerdeInfo": Object {
+              "Parameters": Object {
+                "paths": ".",
+              },
               "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
             },
           },
+          "TableType": "EXTERNAL_TABLE",
         },
       },
       "Type": "AWS::Glue::Table",
@@ -317,7 +323,7 @@ Object {
     "testkinesisstreamslambdaETLJob44B50676": Object {
       "Properties": Object {
         "Command": Object {
-          "Name": "testJob",
+          "Name": "glueetl",
           "PythonVersion": "3",
           "ScriptLocation": Object {
             "Fn::Join": Array [
@@ -470,7 +476,7 @@ Object {
     "ExistingJob": Object {
       "Properties": Object {
         "Command": Object {
-          "Name": "testJob",
+          "Name": "glueetl",
           "PythonVersion": "3",
           "ScriptLocation": Object {
             "Fn::Join": Array [
@@ -527,7 +533,7 @@ Object {
           "Ref": "AWS::AccountId",
         },
         "DatabaseInput": Object {
-          "Description": "A database for Kinesis Stream processing",
+          "Description": "A Glue database table",
         },
       },
       "Type": "AWS::Glue::Database",
@@ -769,10 +775,12 @@ Object {
                 "Type": "int",
               },
             ],
+            "Compressed": false,
             "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
             "Location": Object {
               "Ref": "testkinesisstreamslambdaKinesisStream374D6D56",
             },
+            "NumberOfBuckets": -1,
             "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
             "Parameters": Object {
               "endpointUrl": Object {
@@ -793,9 +801,13 @@ Object {
               "typeOfData": "kinesis",
             },
             "SerdeInfo": Object {
+              "Parameters": Object {
+                "paths": ".",
+              },
               "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
             },
           },
+          "TableType": "EXTERNAL_TABLE",
         },
       },
       "Type": "AWS::Glue::Table",
@@ -842,7 +854,7 @@ Object {
           "Ref": "AWS::AccountId",
         },
         "DatabaseInput": Object {
-          "Description": "A database for Kinesis Stream processing",
+          "Description": "A Glue database table",
         },
       },
       "Type": "AWS::Glue::Database",
@@ -1084,10 +1096,12 @@ Object {
                 "Type": "int",
               },
             ],
+            "Compressed": false,
             "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
             "Location": Object {
               "Ref": "testkinesisstreamslambdaKinesisStream374D6D56",
             },
+            "NumberOfBuckets": -1,
             "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
             "Parameters": Object {
               "endpointUrl": Object {
@@ -1108,9 +1122,13 @@ Object {
               "typeOfData": "kinesis",
             },
             "SerdeInfo": Object {
+              "Parameters": Object {
+                "paths": ".",
+              },
               "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
             },
           },
+          "TableType": "EXTERNAL_TABLE",
         },
       },
       "Type": "AWS::Glue::Table",
@@ -1141,7 +1159,7 @@ Object {
     "testkinesisstreamslambdaETLJob44B50676": Object {
       "Properties": Object {
         "Command": Object {
-          "Name": "testJob",
+          "Name": "pythonshell",
           "PythonVersion": "3",
           "ScriptLocation": Object {
             "Fn::Join": Array [
@@ -1271,7 +1289,7 @@ Object {
           "Ref": "AWS::AccountId",
         },
         "DatabaseInput": Object {
-          "Description": "A database for Kinesis Stream processing",
+          "Description": "A Glue database table",
         },
       },
       "Type": "AWS::Glue::Database",
@@ -1513,10 +1531,12 @@ Object {
                 "Type": "int",
               },
             ],
+            "Compressed": false,
             "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
             "Location": Object {
               "Ref": "KinesisStream46752A3E",
             },
+            "NumberOfBuckets": -1,
             "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
             "Parameters": Object {
               "endpointUrl": Object {
@@ -1537,9 +1557,13 @@ Object {
               "typeOfData": "kinesis",
             },
             "SerdeInfo": Object {
+              "Parameters": Object {
+                "paths": ".",
+              },
               "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
             },
           },
+          "TableType": "EXTERNAL_TABLE",
         },
       },
       "Type": "AWS::Glue::Table",
@@ -1576,7 +1600,7 @@ Object {
     "existingStreamJobETLJob50478D3D": Object {
       "Properties": Object {
         "Command": Object {
-          "Name": "JobCommand",
+          "Name": "glueetl",
           "PythonVersion": "3",
           "ScriptLocation": Object {
             "Fn::Join": Array [

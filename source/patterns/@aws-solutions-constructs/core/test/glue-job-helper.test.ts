@@ -220,7 +220,7 @@ test('Do no supply glueJobProps or existingCfnJob and error out', () => {
   const stack = new Stack();
   try {
     defaults.buildGlueJob(stack, {});
-  } catch(error) {
+  } catch (error) {
     expect(error).toBeInstanceOf(Error);
   }
 });

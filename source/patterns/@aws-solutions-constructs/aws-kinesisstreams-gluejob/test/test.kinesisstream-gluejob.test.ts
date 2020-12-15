@@ -16,7 +16,7 @@ import '@aws-cdk/assert/jest';
 import { CfnJob } from '@aws-cdk/aws-glue';
 import { Bucket } from '@aws-cdk/aws-s3';
 import { Stack } from "@aws-cdk/core";
-import { buildKinesisStream } from '@aws-solutions-constructs/core';
+import * as defaults from '@aws-solutions-constructs/core';
 import { KinesisStreamGlueJob, KinesisStreamGlueJobProps } from '../lib';
 
 // --------------------------------------------------------------
@@ -228,7 +228,7 @@ test('When S3 bucket location for script exists', () => {
 // --------------------------------------------------------------
 test('create glue job with existing kinesis stream', () => {
   const stack = new Stack();
-  const kinesisStream = buildKinesisStream(stack, {});
+  const kinesisStream = defaults.buildKinesisStream(stack, {});
   new KinesisStreamGlueJob(stack, 'existingStreamJob', {
     existingStreamObj: kinesisStream,
     glueJobProps: {
@@ -257,13 +257,101 @@ test('create glue job with existing kinesis stream', () => {
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
-test('Expect to throw error', () => {
+test('Do not pass s3ObjectUrlForScript or scriptLocationPath, error out', () => {
   const stack = new Stack();
   try {
-      KinesisStreamGlueJob.createGlueJobCommand(stack, 'pythonshell', '3');
+    KinesisStreamGlueJob.createGlueJobCommand(stack, 'pythonshell', '3');
   } catch (error) {
-      if (!(error instanceof Error)) {
-          fail();
+    expect(error).toBeInstanceOf(Error);
+  }
+});
+
+test('Do not pass fieldSchame or table (CfnTable), error out', () => {
+  const stack = new Stack();
+  try {
+    const props: KinesisStreamGlueJobProps = {
+      glueJobProps: {
+          command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'glueetl', '3', undefined, `${__dirname}/transform.py`)[0],
+          role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
+          securityConfiguration: 'testSecConfig'
       }
+    };
+    new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
+  } catch (error) {
+    expect(error).toBeInstanceOf(Error);
+  }
+});
+
+test('Pass an instance of CfnTable', () => {
+  const stack = new Stack();
+  try {
+    const props: KinesisStreamGlueJobProps = {
+      glueJobProps: {
+          command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'glueetl', '3', undefined, `${__dirname}/transform.py`)[0],
+          role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
+          securityConfiguration: 'testSecConfig'
+      },
+      table: defaults.DefaultGlueTableProps(stack, defaults.DefaultGlueDatabaseProps(stack),
+        [{
+          name: "id",
+          type: "int",
+          comment: "Identifier for the record"
+        }, {
+          name: "name",
+          type: "string",
+          comment: "The name of the record"
+        }, {
+          name: "type",
+          type: "string",
+          comment: "The type of the record"
+        }, {
+          name: "numericvalue",
+          type: "int",
+          comment: "Some value associated with the record"
+        }], 'Kinesis', {
+        STREAM_NAME: 'fakeStream'
+      })
+    };
+    new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
+  } catch (error) {
+    expect(error).toBeInstanceOf(Error);
+  }
+});
+
+test('Pass an instance of CfnDatabase', () => {
+  const stack = new Stack();
+  try {
+    const database = defaults.DefaultGlueDatabaseProps(stack);
+    const props: KinesisStreamGlueJobProps = {
+      glueJobProps: {
+          command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'glueetl', '3', undefined, `${__dirname}/transform.py`)[0],
+          role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
+          securityConfiguration: 'testSecConfig'
+      },
+      database: database,
+      table: defaults.DefaultGlueTableProps(stack, database,
+        [{
+          name: "id",
+          type: "int",
+          comment: "Identifier for the record"
+        }, {
+          name: "name",
+          type: "string",
+          comment: "The name of the record"
+        }, {
+          name: "type",
+          type: "string",
+          comment: "The type of the record"
+        }, {
+          name: "numericvalue",
+          type: "int",
+          comment: "Some value associated with the record"
+        }], 'Kinesis', {
+        STREAM_NAME: 'fakeStream'
+      })
+    };
+    new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
+  } catch (error) {
+    expect(error).toBeInstanceOf(Error);
   }
 });
