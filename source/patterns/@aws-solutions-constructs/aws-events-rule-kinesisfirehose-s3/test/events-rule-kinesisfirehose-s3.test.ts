@@ -62,7 +62,7 @@ test('Test default server side s3 bucket encryption', () => {
   const stack = new cdk.Stack();
   deployNewStack(stack);
 
-   // Assertions
+  // Assertions
   expect(stack).toHaveResource('AWS::S3::Bucket', {
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [
@@ -122,5 +122,5 @@ test('Test property override', () => {
         IntervalInSeconds: 600,
         SizeInMBs: 55
       }
-  }});
+    }});
 });

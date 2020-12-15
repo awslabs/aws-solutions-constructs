@@ -82,63 +82,63 @@ export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
      * @access public
      */
     constructor(scope: Construct, id: string, props: KinesisStreamsToKinesisFirehoseToS3Props) {
-        super(scope, id);
+      super(scope, id);
 
-        // Setup the Kinesis Stream
-        this.kinesisStream = defaults.buildKinesisStream(this, {
-            existingStreamObj: props.existingStreamObj,
-            kinesisStreamProps: props.kinesisStreamProps
-        });
+      // Setup the Kinesis Stream
+      this.kinesisStream = defaults.buildKinesisStream(this, {
+        existingStreamObj: props.existingStreamObj,
+        kinesisStreamProps: props.kinesisStreamProps
+      });
 
-        const kinesisStreamsRole = new iam.Role(scope, 'KinesisStreamsRole', {
-            assumedBy: new iam.ServicePrincipal('firehose.amazonaws.com'),
-            inlinePolicies: {
-                KinesisStreamsRoleRolePolicy: new iam.PolicyDocument({
-                    statements: [new iam.PolicyStatement({
-                        actions: [
-                            "kinesis:DescribeStream",
-                            "kinesis:GetShardIterator",
-                            "kinesis:GetRecords",
-                            "kinesis:ListShards"
-                        ],
-                        resources: [this.kinesisStream.streamArn]
-                    })]
-                })
-            }
-        });
+      const kinesisStreamsRole = new iam.Role(scope, 'KinesisStreamsRole', {
+        assumedBy: new iam.ServicePrincipal('firehose.amazonaws.com'),
+        inlinePolicies: {
+          KinesisStreamsRoleRolePolicy: new iam.PolicyDocument({
+            statements: [new iam.PolicyStatement({
+              actions: [
+                "kinesis:DescribeStream",
+                "kinesis:GetShardIterator",
+                "kinesis:GetRecords",
+                "kinesis:ListShards"
+              ],
+              resources: [this.kinesisStream.streamArn]
+            })]
+          })
+        }
+      });
 
-        // This Construct requires that the deliveryStreamType be overriden regardless of what is specified in the user props
-        if (props.kinesisFirehoseProps) {
-            if (props.kinesisFirehoseProps.deliveryStreamType !== undefined) {
-                defaults.printWarning('Overriding deliveryStreamType type to be KinesisStreamAsSource');
-            }
-
-            if (props.kinesisFirehoseProps.kinesisStreamSourceConfiguration !== undefined) {
-                defaults.printWarning('Overriding kinesisStreamSourceConfiguration');
-            }
+      // This Construct requires that the deliveryStreamType be overriden regardless of what is specified in the user props
+      if (props.kinesisFirehoseProps) {
+        if (props.kinesisFirehoseProps.deliveryStreamType !== undefined) {
+          defaults.printWarning('Overriding deliveryStreamType type to be KinesisStreamAsSource');
         }
 
-        const _kinesisFirehoseProps: kinesisfirehose.CfnDeliveryStreamProps = {
-            deliveryStreamType: 'KinesisStreamAsSource',
-            kinesisStreamSourceConfiguration: {
-                kinesisStreamArn: this.kinesisStream.streamArn,
-                roleArn: kinesisStreamsRole.roleArn
-            }
-        };
-
-        const kdfToS3Construct = new kdfToS3.KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {
-            kinesisFirehoseProps: overrideProps(props.kinesisFirehoseProps, _kinesisFirehoseProps),
-            existingBucketObj: props.existingBucketObj,
-            bucketProps: props.bucketProps
-        });
-
-        this.kinesisFirehose = kdfToS3Construct.kinesisFirehose;
-        this.kinesisFirehoseRole = kdfToS3Construct.kinesisFirehoseRole;
-        this.kinesisFirehoseLogGroup = kdfToS3Construct.kinesisFirehoseLogGroup;
-
-        if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
-            // Deploy best practices CW Alarms for Kinesis Stream
-            this.cloudwatchAlarms = defaults.buildKinesisStreamCWAlarms(this);
+        if (props.kinesisFirehoseProps.kinesisStreamSourceConfiguration !== undefined) {
+          defaults.printWarning('Overriding kinesisStreamSourceConfiguration');
         }
+      }
+
+      const _kinesisFirehoseProps: kinesisfirehose.CfnDeliveryStreamProps = {
+        deliveryStreamType: 'KinesisStreamAsSource',
+        kinesisStreamSourceConfiguration: {
+          kinesisStreamArn: this.kinesisStream.streamArn,
+          roleArn: kinesisStreamsRole.roleArn
+        }
+      };
+
+      const kdfToS3Construct = new kdfToS3.KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {
+        kinesisFirehoseProps: overrideProps(props.kinesisFirehoseProps, _kinesisFirehoseProps),
+        existingBucketObj: props.existingBucketObj,
+        bucketProps: props.bucketProps
+      });
+
+      this.kinesisFirehose = kdfToS3Construct.kinesisFirehose;
+      this.kinesisFirehoseRole = kdfToS3Construct.kinesisFirehoseRole;
+      this.kinesisFirehoseLogGroup = kdfToS3Construct.kinesisFirehoseLogGroup;
+
+      if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
+        // Deploy best practices CW Alarms for Kinesis Stream
+        this.cloudwatchAlarms = defaults.buildKinesisStreamCWAlarms(this);
+      }
     }
 }

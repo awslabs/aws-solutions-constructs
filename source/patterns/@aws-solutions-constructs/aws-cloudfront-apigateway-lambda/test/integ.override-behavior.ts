@@ -27,40 +27,40 @@ const stack = new Stack(app, 'test-cf-api-lambda-override-stack');
 stack.templateOptions.description = 'Integration Test for aws-cloudfront-apigateway-lambda';
 
 const lambdaProps: lambda.FunctionProps = {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_10_X,
-    handler: 'index.handler'
+  code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  runtime: lambda.Runtime.NODEJS_10_X,
+  handler: 'index.handler'
 };
 
 // Some Caching for static content
 const someCachePolicy = new cloudfront.CachePolicy(stack, 'SomeCachePolicy', {
-    cachePolicyName: 'SomeCachePolicy',
-    defaultTtl: Duration.hours(8),
-    minTtl: Duration.hours(5),
-    maxTtl: Duration.hours(10),
+  cachePolicyName: 'SomeCachePolicy',
+  defaultTtl: Duration.hours(8),
+  minTtl: Duration.hours(5),
+  maxTtl: Duration.hours(10),
 });
 
 // Disable Caching for dynamic content
 const noCachePolicy = new cloudfront.CachePolicy(stack, 'NoCachePolicy', {
-    cachePolicyName: 'NoCachePolicy',
-    defaultTtl: Duration.minutes(0),
-    minTtl: Duration.minutes(0),
-    maxTtl: Duration.minutes(0),
+  cachePolicyName: 'NoCachePolicy',
+  defaultTtl: Duration.minutes(0),
+  minTtl: Duration.minutes(0),
+  maxTtl: Duration.minutes(0),
 });
 
 const construct = new CloudFrontToApiGatewayToLambda(stack, 'cf-api-lambda-override', {
-    lambdaFunctionProps: lambdaProps,
-    apiGatewayProps: {
-        proxy: false,
-        defaultMethodOptions: {
-            authorizationType: apigateway.AuthorizationType.NONE,
-        },
+  lambdaFunctionProps: lambdaProps,
+  apiGatewayProps: {
+    proxy: false,
+    defaultMethodOptions: {
+      authorizationType: apigateway.AuthorizationType.NONE,
     },
-    cloudFrontDistributionProps: {
-        defaultBehavior: {
-            cachePolicy: someCachePolicy
-        }
+  },
+  cloudFrontDistributionProps: {
+    defaultBehavior: {
+      cachePolicy: someCachePolicy
     }
+  }
 });
 
 const apiEndPoint = construct.apiGateway;
@@ -75,24 +75,24 @@ const dynamicMethod = dynamicResource.addMethod('GET');
 
 // Add behavior
 construct.cloudFrontWebDistribution.addBehavior('/dynamic', new origins.HttpOrigin(apiEndPointDomainName, {
-    originPath: `/${apiEndPoint.deploymentStage.stageName}/dynamic`
-    }), {
-    cachePolicy: noCachePolicy
+  originPath: `/${apiEndPoint.deploymentStage.stageName}/dynamic`
+}), {
+  cachePolicy: noCachePolicy
 });
 // Suppress CFN_NAG warnings
 suppressWarnings(staticMethod);
 suppressWarnings(dynamicMethod);
 
 function suppressWarnings(method: apigateway.Method) {
-    const child = method.node.findChild('Resource') as apigateway.CfnMethod;
-    child.cfnOptions.metadata = {
-        cfn_nag: {
-            rules_to_suppress: [{
-                id: 'W59',
-                reason: `AWS::ApiGateway::Method AuthorizationType is set to 'NONE' because API Gateway behind CloudFront does not support AWS_IAM authentication`
-            }]
-        }
-    };
+  const child = method.node.findChild('Resource') as apigateway.CfnMethod;
+  child.cfnOptions.metadata = {
+    cfn_nag: {
+      rules_to_suppress: [{
+        id: 'W59',
+        reason: `AWS::ApiGateway::Method AuthorizationType is set to 'NONE' because API Gateway behind CloudFront does not support AWS_IAM authentication`
+      }]
+    }
+  };
 }
 
 // Synth

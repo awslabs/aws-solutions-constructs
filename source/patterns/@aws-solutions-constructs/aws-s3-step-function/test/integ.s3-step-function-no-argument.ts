@@ -22,9 +22,9 @@ const stack = new Stack(app, 'test-s3-step-function-stack');
 const startState = new stepfunctions.Pass(stack, 'StartState');
 
 const props: S3ToStepFunctionProps = {
-    stateMachineProps: {
-      definition: startState
-    }
+  stateMachineProps: {
+    definition: startState
+  }
 };
 
 new S3ToStepFunction(stack, 'test-s3-step-function-stack', props);

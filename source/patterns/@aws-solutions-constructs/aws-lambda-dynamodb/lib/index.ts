@@ -84,28 +84,28 @@ export class LambdaToDynamoDB extends Construct {
     if (props.tablePermissions) {
       const _permissions = props.tablePermissions.toUpperCase();
       if (_permissions === 'ALL') {
-          this.dynamoTable.grantFullAccess(this.lambdaFunction.grantPrincipal);
+        this.dynamoTable.grantFullAccess(this.lambdaFunction.grantPrincipal);
       } else if (_permissions  ===  'READ') {
-          this.dynamoTable.grantReadData(this.lambdaFunction.grantPrincipal);
+        this.dynamoTable.grantReadData(this.lambdaFunction.grantPrincipal);
       } else if (_permissions  ===  'READWRITE') {
-          this.dynamoTable.grantReadWriteData(this.lambdaFunction.grantPrincipal);
+        this.dynamoTable.grantReadWriteData(this.lambdaFunction.grantPrincipal);
       } else if (_permissions  ===  'WRITE') {
-          this.dynamoTable.grantWriteData(this.lambdaFunction.grantPrincipal);
+        this.dynamoTable.grantWriteData(this.lambdaFunction.grantPrincipal);
       }
-  } else {
-    this.dynamoTable.grantReadWriteData(this.lambdaFunction.grantPrincipal);
-  }
+    } else {
+      this.dynamoTable.grantReadWriteData(this.lambdaFunction.grantPrincipal);
+    }
 
     // Conditional metadata for cfn_nag
     if (props.dynamoTableProps?.billingMode === dynamodb.BillingMode.PROVISIONED) {
       const cfnTable: dynamodb.CfnTable = this.dynamoTable.node.findChild('Resource') as dynamodb.CfnTable;
       cfnTable.cfnOptions.metadata = {
-          cfn_nag: {
-              rules_to_suppress: [{
-                  id: 'W73',
-                  reason: `PROVISIONED billing mode is a default and is not explicitly applied as a setting.`
-              }]
-          }
+        cfn_nag: {
+          rules_to_suppress: [{
+            id: 'W73',
+            reason: `PROVISIONED billing mode is a default and is not explicitly applied as a setting.`
+          }]
+        }
       };
     }
   }

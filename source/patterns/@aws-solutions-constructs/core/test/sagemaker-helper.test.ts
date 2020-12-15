@@ -23,60 +23,60 @@ import '@aws-cdk/assert/jest';
 // Test minimal deployment with no properties
 // --------------------------------------------------------------
 test('Test minimal deployment with no properties', () => {
-    // Stack
-    const stack = new Stack();
-    const sagemakerRole = new iam.Role(stack, "SagemakerRole", {
-        assumedBy: new iam.ServicePrincipal("sagemaker.amazonaws.com"),
-    });
+  // Stack
+  const stack = new Stack();
+  const sagemakerRole = new iam.Role(stack, "SagemakerRole", {
+    assumedBy: new iam.ServicePrincipal("sagemaker.amazonaws.com"),
+  });
     // Build SageMaker Notebook Instance
-    defaults.buildSagemakerNotebook(stack, {
-        role: sagemakerRole,
-    });
-    // Assertion
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  defaults.buildSagemakerNotebook(stack, {
+    role: sagemakerRole,
+  });
+  // Assertion
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
 // Test deployment with VPC
 // --------------------------------------------------------------
 test('Test deployment with VPC', () => {
-    // Stack
-    const stack = new Stack();
-    const sagemakerRole = new iam.Role(stack, "SagemakerRole", {
-        assumedBy: new iam.ServicePrincipal("sagemaker.amazonaws.com"),
-    });
-    let sagemaker;
-    let vpc;
-    let sg;
+  // Stack
+  const stack = new Stack();
+  const sagemakerRole = new iam.Role(stack, "SagemakerRole", {
+    assumedBy: new iam.ServicePrincipal("sagemaker.amazonaws.com"),
+  });
+  let sagemaker;
+  let vpc;
+  let sg;
 
-    // Build SageMaker Notebook Instance
-    [sagemaker, vpc, sg] = defaults.buildSagemakerNotebook(stack, {
-        role: sagemakerRole,
-    });
-    // Assertion
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-    expect(vpc?.privateSubnets.length).toEqual(2);
-    expect(vpc?.publicSubnets.length).toEqual(2);
-    expect(sagemaker.instanceType).toEqual('ml.t2.medium');
-    expect(sg).toBeInstanceOf(ec2.SecurityGroup);
+  // Build SageMaker Notebook Instance
+  [sagemaker, vpc, sg] = defaults.buildSagemakerNotebook(stack, {
+    role: sagemakerRole,
+  });
+  // Assertion
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(vpc?.privateSubnets.length).toEqual(2);
+  expect(vpc?.publicSubnets.length).toEqual(2);
+  expect(sagemaker.instanceType).toEqual('ml.t2.medium');
+  expect(sg).toBeInstanceOf(ec2.SecurityGroup);
 });
 
 // --------------------------------------------------------------
 // Test deployment witout VPC
 // --------------------------------------------------------------
 test('Test deployment w/o VPC', () => {
-    // Stack
-    const stack = new Stack();
-    const sagemakerRole = new iam.Role(stack, "SagemakerRole", {
-        assumedBy: new iam.ServicePrincipal("sagemaker.amazonaws.com"),
-    });
+  // Stack
+  const stack = new Stack();
+  const sagemakerRole = new iam.Role(stack, "SagemakerRole", {
+    assumedBy: new iam.ServicePrincipal("sagemaker.amazonaws.com"),
+  });
     // Build SageMaker Notebook Instance
-    defaults.buildSagemakerNotebook(stack, {
-        role: sagemakerRole,
-        deployInsideVpc: false
-    });
-    // Assertion
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  defaults.buildSagemakerNotebook(stack, {
+    role: sagemakerRole,
+    deployInsideVpc: false
+  });
+  // Assertion
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
 });
 
@@ -84,27 +84,27 @@ test('Test deployment w/o VPC', () => {
 // Test deployment in existing VPC
 // --------------------------------------------------------------
 test('Test deployment w/ existing VPC', () => {
-    // Stack
-    const stack = new Stack();
-    const sagemakerRole = new iam.Role(stack, "SagemakerRole", {
-        assumedBy: new iam.ServicePrincipal("sagemaker.amazonaws.com"),
-    });
+  // Stack
+  const stack = new Stack();
+  const sagemakerRole = new iam.Role(stack, "SagemakerRole", {
+    assumedBy: new iam.ServicePrincipal("sagemaker.amazonaws.com"),
+  });
     // Build SageMaker Notebook Instance
-    defaults.buildSagemakerNotebook(stack, {
-        role: sagemakerRole,
-        deployInsideVpc: true,
-        sagemakerNotebookProps: {
-            subnetId: 'subnet-deadbeef',
-            securityGroupIds: ['sg-deadbeef']
-        }
-    });
-    expect(stack).toHaveResource("AWS::SageMaker::NotebookInstance", {
-        DirectInternetAccess: "Disabled",
-        SecurityGroupIds: [
-          "sg-deadbeef"
-        ],
-        SubnetId: "subnet-deadbeef"
-    });
+  defaults.buildSagemakerNotebook(stack, {
+    role: sagemakerRole,
+    deployInsideVpc: true,
+    sagemakerNotebookProps: {
+      subnetId: 'subnet-deadbeef',
+      securityGroupIds: ['sg-deadbeef']
+    }
+  });
+  expect(stack).toHaveResource("AWS::SageMaker::NotebookInstance", {
+    DirectInternetAccess: "Disabled",
+    SecurityGroupIds: [
+      "sg-deadbeef"
+    ],
+    SubnetId: "subnet-deadbeef"
+  });
 
 });
 
@@ -112,50 +112,50 @@ test('Test deployment w/ existing VPC', () => {
 // Test deployment with override
 // --------------------------------------------------------------
 test('Test deployment w/ override', () => {
-    // Stack
-    const stack = new Stack();
-    const sagemakerRole = new iam.Role(stack, "SagemakerRole", {
-        assumedBy: new iam.ServicePrincipal("sagemaker.amazonaws.com"),
-    });
-    const key = new kms.Key(stack, 'MyEncryptionKey');
-    // Build SageMaker Notebook Instance
-    defaults.buildSagemakerNotebook(stack, {
-        role: sagemakerRole,
-        sagemakerNotebookProps: {
-            instanceType: 'ml.c4.2xlarge',
-            kmsKeyId: key.keyArn
-        }
-    });
-    expect(stack).toHaveResource("AWS::SageMaker::NotebookInstance", {
-        DirectInternetAccess: "Disabled",
-        InstanceType: "ml.c4.2xlarge",
-        KmsKeyId: {
-            "Fn::GetAtt": [
-              "MyEncryptionKeyD795679F",
-              "Arn"
-            ]
-          }
-    });
+  // Stack
+  const stack = new Stack();
+  const sagemakerRole = new iam.Role(stack, "SagemakerRole", {
+    assumedBy: new iam.ServicePrincipal("sagemaker.amazonaws.com"),
+  });
+  const key = new kms.Key(stack, 'MyEncryptionKey');
+  // Build SageMaker Notebook Instance
+  defaults.buildSagemakerNotebook(stack, {
+    role: sagemakerRole,
+    sagemakerNotebookProps: {
+      instanceType: 'ml.c4.2xlarge',
+      kmsKeyId: key.keyArn
+    }
+  });
+  expect(stack).toHaveResource("AWS::SageMaker::NotebookInstance", {
+    DirectInternetAccess: "Disabled",
+    InstanceType: "ml.c4.2xlarge",
+    KmsKeyId: {
+      "Fn::GetAtt": [
+        "MyEncryptionKeyD795679F",
+        "Arn"
+      ]
+    }
+  });
 });
 
 // --------------------------------------------------------------
 // Test exception
 // --------------------------------------------------------------
 test('Test exception', () => {
-    // Stack
-    const stack = new Stack();
-    const sagemakerRole = new iam.Role(stack, "SagemakerRole", {
-        assumedBy: new iam.ServicePrincipal("sagemaker.amazonaws.com"),
-    });
+  // Stack
+  const stack = new Stack();
+  const sagemakerRole = new iam.Role(stack, "SagemakerRole", {
+    assumedBy: new iam.ServicePrincipal("sagemaker.amazonaws.com"),
+  });
 
-    expect(() => {
-        // Build SageMaker Notebook Instance
-        defaults.buildSagemakerNotebook(stack, {
-            role: sagemakerRole,
-            deployInsideVpc: true,
-            sagemakerNotebookProps: {
-                subnetId: 'subnet-deadbeef',
-            }
-        });
-    }).toThrowError();
+  expect(() => {
+    // Build SageMaker Notebook Instance
+    defaults.buildSagemakerNotebook(stack, {
+      role: sagemakerRole,
+      deployInsideVpc: true,
+      sagemakerNotebookProps: {
+        subnetId: 'subnet-deadbeef',
+      }
+    });
+  }).toThrowError();
 });

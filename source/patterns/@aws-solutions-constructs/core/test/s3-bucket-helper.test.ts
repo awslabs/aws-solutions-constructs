@@ -27,7 +27,7 @@ test('s3 bucket with default params', () => {
 test('s3 bucket with default params and bucket names', () => {
   const stack = new Stack();
   const s3BucketProps: s3.BucketProps = {
-      bucketName: 'my-bucket'
+    bucketName: 'my-bucket'
   };
   defaults.buildS3Bucket(stack, {
     bucketProps: s3BucketProps
@@ -81,11 +81,11 @@ test('s3 bucket with life cycle policy', () => {
       lifecycleRules: [{
         expiration: Duration.days(365),
         transitions: [{
-            storageClass: StorageClass.INFREQUENT_ACCESS,
-            transitionAfter: Duration.days(30)
+          storageClass: StorageClass.INFREQUENT_ACCESS,
+          transitionAfter: Duration.days(30)
         }, {
-            storageClass: StorageClass.GLACIER,
-            transitionAfter: Duration.days(90)
+          storageClass: StorageClass.GLACIER,
+          transitionAfter: Duration.days(90)
         }]
       }]
     }
@@ -114,24 +114,24 @@ test('s3 bucket with life cycle policy', () => {
 });
 
 test('s3 bucket with access logging configured', () => {
-    const stack = new Stack();
-    const mybucket = new Bucket(stack, 'mybucket', {
-      serverAccessLogsBucket: new Bucket(stack, 'myaccesslogbucket', {})
-    });
+  const stack = new Stack();
+  const mybucket = new Bucket(stack, 'mybucket', {
+    serverAccessLogsBucket: new Bucket(stack, 'myaccesslogbucket', {})
+  });
 
-    defaults.buildS3Bucket(stack, {
-      bucketProps: {
-        serverAccessLogsBucket: mybucket
+  defaults.buildS3Bucket(stack, {
+    bucketProps: {
+      serverAccessLogsBucket: mybucket
+    }
+  });
+
+  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+    LoggingConfiguration: {
+      DestinationBucketName: {
+        Ref: "mybucket160F8132"
       }
-    });
-
-    expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
-      LoggingConfiguration: {
-        DestinationBucketName: {
-          Ref: "mybucket160F8132"
-        }
-      },
-    }));
+    },
+  }));
 });
 
 test('Check S3 Bucket policy', () => {

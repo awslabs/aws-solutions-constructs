@@ -1,5 +1,9 @@
 extends: "tslint:recommended"
 rules:
+    # Once we enforce indent rules, function declarations and invocations
+    # that span multiple lines are indented 2 spaces and not aligned
+    align: false
+
     semicolon: [true, "always", "ignore-interfaces"]
 
     # Due to VSCode syntax highlighting we're unlikely to do this wrong, and it gets annoying
@@ -58,5 +62,3 @@ rules:
 
     # Turning off class member ordering
     member-ordering: false
-
-

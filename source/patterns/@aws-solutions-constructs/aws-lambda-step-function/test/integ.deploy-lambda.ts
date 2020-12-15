@@ -26,14 +26,14 @@ const startState = new stepfunctions.Pass(stack, 'StartState');
 
 // Setup the pattern props
 const props: LambdaToStepFunctionProps = {
-    lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    },
-    stateMachineProps: {
-      definition: startState
-    }
+  lambdaFunctionProps: {
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+  },
+  stateMachineProps: {
+    definition: startState
+  }
 };
 
 // Add the pattern

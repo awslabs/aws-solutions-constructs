@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
- /// !cdk-integ *
+/// !cdk-integ *
 import { App, Stack } from "@aws-cdk/core";
 import { CloudFrontToApiGateway } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
@@ -24,9 +24,9 @@ const stack = new Stack(app, 'test-cloudfront-apigateway-stack');
 stack.templateOptions.description = 'Integration Test for aws-cloudfront-apigateway';
 
 const inProps: lambda.FunctionProps = {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_10_X,
-    handler: 'index.handler'
+  code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  runtime: lambda.Runtime.NODEJS_10_X,
+  handler: 'index.handler'
 };
 
 const func = defaults.deployLambdaFunction(stack, inProps);
@@ -34,24 +34,24 @@ const func = defaults.deployLambdaFunction(stack, inProps);
 const [_api] = defaults.RegionalLambdaRestApi(stack, func);
 
 _api.methods.forEach((apiMethod) => {
-    // Override the API Gateway Authorization Type from AWS_IAM to NONE
-    const child = apiMethod.node.findChild('Resource') as api.CfnMethod;
-    if (child.authorizationType === 'AWS_IAM') {
-      child.addPropertyOverride('AuthorizationType', 'NONE');
+  // Override the API Gateway Authorization Type from AWS_IAM to NONE
+  const child = apiMethod.node.findChild('Resource') as api.CfnMethod;
+  if (child.authorizationType === 'AWS_IAM') {
+    child.addPropertyOverride('AuthorizationType', 'NONE');
 
-      child.cfnOptions.metadata = {
-        cfn_nag: {
-            rules_to_suppress: [{
-                id: 'W59',
-                reason: `AWS::ApiGateway::Method AuthorizationType is set to 'NONE' because API Gateway behind CloudFront does not support AWS_IAM authentication`
-            }]
-        }
-      };
-    }
+    child.cfnOptions.metadata = {
+      cfn_nag: {
+        rules_to_suppress: [{
+          id: 'W59',
+          reason: `AWS::ApiGateway::Method AuthorizationType is set to 'NONE' because API Gateway behind CloudFront does not support AWS_IAM authentication`
+        }]
+      }
+    };
+  }
 });
 
 new CloudFrontToApiGateway(stack, 'test-cloudfront-apigateway', {
-    existingApiGatewayObj: _api
+  existingApiGatewayObj: _api
 });
 
 // Synth

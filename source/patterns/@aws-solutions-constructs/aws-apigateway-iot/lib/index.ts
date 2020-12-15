@@ -73,121 +73,121 @@ export class ApiGatewayToIot extends Construct {
      * @access public
      */
     constructor(scope: Construct, id: string, props: ApiGatewayToIotProps) {
-        super(scope, id);
+      super(scope, id);
 
-        // Assignment to local member variables to make these available to all member methods of the class.
-        // (Split the string just in case user supplies fully qualified endpoint eg. ab123cdefghij4l-ats.iot.ap-south-1.amazonaws.com)
-        this.iotEndpoint = props.iotEndpoint.trim().split('.')[0];
+      // Assignment to local member variables to make these available to all member methods of the class.
+      // (Split the string just in case user supplies fully qualified endpoint eg. ab123cdefghij4l-ats.iot.ap-south-1.amazonaws.com)
+      this.iotEndpoint = props.iotEndpoint.trim().split('.')[0];
 
-        // Mandatory params check
-        if (!this.iotEndpoint || this.iotEndpoint.length < 0) {
-          throw new Error('specify a valid iotEndpoint');
+      // Mandatory params check
+      if (!this.iotEndpoint || this.iotEndpoint.length < 0) {
+        throw new Error('specify a valid iotEndpoint');
+      }
+
+      // Add additional params to the apiGatewayProps
+      let extraApiGwProps = {
+        binaryMediaTypes: ['application/octet-stream'],
+        defaultMethodOptions: {
+          apiKeyRequired: props.apiGatewayCreateApiKey
         }
+      };
 
-        // Add additional params to the apiGatewayProps
-        let extraApiGwProps = {
-          binaryMediaTypes: ['application/octet-stream'],
-          defaultMethodOptions: {
-            apiKeyRequired: props.apiGatewayCreateApiKey
-          }
+      // If apiGatewayProps are specified override the extra Api Gateway properties
+      if (props.apiGatewayProps) {
+        extraApiGwProps = defaults.overrideProps(props.apiGatewayProps, extraApiGwProps);
+      }
+
+      // Check whether an API Gateway execution role is specified?
+      if (props.apiGatewayExecutionRole) {
+        this.apiGatewayRole = props.apiGatewayExecutionRole;
+      } else {
+        // JSON that will be used for policy document
+        const policyJSON = {
+          Version: "2012-10-17",
+          Statement: [
+            {
+              Action: [
+                "iot:UpdateThingShadow"
+              ],
+              Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:thing/*`,
+              Effect: "Allow"
+            },
+            {
+              Action: [
+                "iot:Publish"
+              ],
+              Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:topic/*`,
+              Effect: "Allow"
+            }
+          ]
         };
 
-        // If apiGatewayProps are specified override the extra Api Gateway properties
-        if (props.apiGatewayProps) {
-          extraApiGwProps = defaults.overrideProps(props.apiGatewayProps, extraApiGwProps);
-        }
+        // Create a policy document
+        const policyDocument: iam.PolicyDocument = iam.PolicyDocument.fromJson(policyJSON);
 
-        // Check whether an API Gateway execution role is specified?
-        if (props.apiGatewayExecutionRole) {
-          this.apiGatewayRole = props.apiGatewayExecutionRole;
-        } else {
-          // JSON that will be used for policy document
-          const policyJSON = {
-            Version: "2012-10-17",
-            Statement: [
-                {
-                    Action: [
-                        "iot:UpdateThingShadow"
-                    ],
-                    Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:thing/*`,
-                    Effect: "Allow"
-                },
-                {
-                    Action: [
-                        "iot:Publish"
-                    ],
-                    Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:topic/*`,
-                    Effect: "Allow"
-                }
-            ]
-          };
-
-          // Create a policy document
-          const policyDocument: iam.PolicyDocument = iam.PolicyDocument.fromJson(policyJSON);
-
-          // Props for IAM Role
-          const iamRoleProps: iam.RoleProps = {
-            assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
-            path: '/',
-            inlinePolicies: {awsapigatewayiotpolicy: policyDocument}
-          };
+        // Props for IAM Role
+        const iamRoleProps: iam.RoleProps = {
+          assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
+          path: '/',
+          inlinePolicies: {awsapigatewayiotpolicy: policyDocument}
+        };
 
         // Create a policy that overrides the default policy that gets created with the construct
-          this.apiGatewayRole = new iam.Role(this, 'apigateway-iot-role', iamRoleProps);
-        }
+        this.apiGatewayRole = new iam.Role(this, 'apigateway-iot-role', iamRoleProps);
+      }
 
-        // Setup the API Gateway
-        [this.apiGateway, this.apiGatewayCloudWatchRole,
-            this.apiGatewayLogGroup] = defaults.GlobalRestApi(this, extraApiGwProps);
+      // Setup the API Gateway
+      [this.apiGateway, this.apiGatewayCloudWatchRole,
+        this.apiGatewayLogGroup] = defaults.GlobalRestApi(this, extraApiGwProps);
 
-        // Validate the Query Params
-        const requestValidatorProps: api.RequestValidatorProps = {
-          restApi: this.apiGateway,
-          validateRequestBody: false,
-          validateRequestParameters: true
-        };
-        this.requestValidator = new api.RequestValidator(this, `aws-apigateway-iot-req-val`, requestValidatorProps);
+      // Validate the Query Params
+      const requestValidatorProps: api.RequestValidatorProps = {
+        restApi: this.apiGateway,
+        validateRequestBody: false,
+        validateRequestParameters: true
+      };
+      this.requestValidator = new api.RequestValidator(this, `aws-apigateway-iot-req-val`, requestValidatorProps);
 
-        // Create a resource for messages '/message'
-        const msgResource: api.IResource = this.apiGateway.root.addResource('message');
+      // Create a resource for messages '/message'
+      const msgResource: api.IResource = this.apiGateway.root.addResource('message');
 
-        // Create resources from '/message/{topic-level-1}' through '/message/{topic-level-1}/..../{topic-level-7}'
-        let topicPath = 'topics';
-        let parentNode = msgResource;
-        let integParams = {};
-        let methodParams = {};
-        for (let pathLevel = 1; pathLevel <= this.topicNestingLevel; pathLevel++) {
-          const topicName = `topic-level-${pathLevel}`;
-          const topicResource: api.IResource = parentNode.addResource(`{${topicName}}`);
-          const integReqParam = JSON.parse(`{"integration.request.path.${topicName}": "method.request.path.${topicName}"}`);
-          const methodReqParam = JSON.parse(`{"method.request.path.${topicName}": true}`);
-          topicPath = `${topicPath}/{${topicName}}`;
-          integParams = Object.assign(integParams, integReqParam);
-          methodParams = Object.assign(methodParams, methodReqParam);
-          this.addResourceMethod(topicResource, props, topicPath, integParams, methodParams);
-          parentNode = topicResource;
-        }
+      // Create resources from '/message/{topic-level-1}' through '/message/{topic-level-1}/..../{topic-level-7}'
+      let topicPath = 'topics';
+      let parentNode = msgResource;
+      let integParams = {};
+      let methodParams = {};
+      for (let pathLevel = 1; pathLevel <= this.topicNestingLevel; pathLevel++) {
+        const topicName = `topic-level-${pathLevel}`;
+        const topicResource: api.IResource = parentNode.addResource(`{${topicName}}`);
+        const integReqParam = JSON.parse(`{"integration.request.path.${topicName}": "method.request.path.${topicName}"}`);
+        const methodReqParam = JSON.parse(`{"method.request.path.${topicName}": true}`);
+        topicPath = `${topicPath}/{${topicName}}`;
+        integParams = Object.assign(integParams, integReqParam);
+        methodParams = Object.assign(methodParams, methodReqParam);
+        this.addResourceMethod(topicResource, props, topicPath, integParams, methodParams);
+        parentNode = topicResource;
+      }
 
-        // Create a resource for shadow updates '/shadow'
-        const shadowResource: api.IResource = this.apiGateway.root.addResource('shadow');
+      // Create a resource for shadow updates '/shadow'
+      const shadowResource: api.IResource = this.apiGateway.root.addResource('shadow');
 
-        // Create resource '/shadow/{thingName}'
-        const defaultShadowResource: api.IResource = shadowResource.addResource('{thingName}');
-        const shadowReqParams = {'integration.request.path.thingName': 'method.request.path.thingName'};
-        const methodShadowReqParams = {'method.request.path.thingName': true};
-        this.addResourceMethod(defaultShadowResource, props, 'things/{thingName}/shadow',
-                                shadowReqParams, methodShadowReqParams);
+      // Create resource '/shadow/{thingName}'
+      const defaultShadowResource: api.IResource = shadowResource.addResource('{thingName}');
+      const shadowReqParams = {'integration.request.path.thingName': 'method.request.path.thingName'};
+      const methodShadowReqParams = {'method.request.path.thingName': true};
+      this.addResourceMethod(defaultShadowResource, props, 'things/{thingName}/shadow',
+        shadowReqParams, methodShadowReqParams);
 
-        // Create resource '/shadow/{thingName}/{shadowName}'
-        const namedShadowResource: api.IResource = defaultShadowResource.addResource('{shadowName}');
-        const namedShadowReqParams = Object.assign({
-          'integration.request.path.shadowName': 'method.request.path.shadowName'},
-          shadowReqParams);
-        const methodNamedShadowReqParams = Object.assign({
-          'method.request.path.shadowName': true}, methodShadowReqParams);
+      // Create resource '/shadow/{thingName}/{shadowName}'
+      const namedShadowResource: api.IResource = defaultShadowResource.addResource('{shadowName}');
+      const namedShadowReqParams = Object.assign({
+        'integration.request.path.shadowName': 'method.request.path.shadowName'},
+      shadowReqParams);
+      const methodNamedShadowReqParams = Object.assign({
+        'method.request.path.shadowName': true}, methodShadowReqParams);
         // For some reason path mapping to 'things/{thingName}/shadow/name/{shadowName}' results in 403 error, hence this shortcut
-        this.addResourceMethod(namedShadowResource, props, 'topics/$aws/things/{thingName}/shadow/name/{shadowName}/update',
-                                namedShadowReqParams, methodNamedShadowReqParams);
+      this.addResourceMethod(namedShadowResource, props, 'topics/$aws/things/{thingName}/shadow/name/{shadowName}/update',
+        namedShadowReqParams, methodNamedShadowReqParams);
     }
 
     /**
@@ -198,8 +198,8 @@ export class ApiGatewayToIot extends Construct {
      * @param methodReqParams request parameters at Method level
      */
     private addResourceMethod(resource: api.IResource, props: ApiGatewayToIotProps, resourcePath: string,
-                              integReqParams: {[key: string]: string},
-                              methodReqParams: {[key: string]: boolean}) {
+      integReqParams: {[key: string]: string},
+      methodReqParams: {[key: string]: boolean}) {
       const integResp: api.IntegrationResponse[] = [
         {
           statusCode: "200",
@@ -271,10 +271,10 @@ export class ApiGatewayToIot extends Construct {
         const cfnMethod = apiMethod.node.findChild('Resource') as api.CfnMethod;
         cfnMethod.cfnOptions.metadata = {
           cfn_nag: {
-              rules_to_suppress: [{
-                  id: 'W59',
-                  reason: 'When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE'
-              }]
+            rules_to_suppress: [{
+              id: 'W59',
+              reason: 'When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE'
+            }]
           }
         };
       }

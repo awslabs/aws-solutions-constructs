@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.76.0 (2020-12-14)
+
+### Changed
+- Upgraded all patterns to CDK v1.76.0
+- Added ESLint rule to enfore 2 space indentation
+- Updated `aws-lambda-sqs` to support for VPC
+
 ## 1.75.0 (2020-12-03)
 
 ### Changed

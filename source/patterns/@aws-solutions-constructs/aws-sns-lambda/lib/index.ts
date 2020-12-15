@@ -67,8 +67,8 @@ export class SnsToLambda extends Construct {
 
     // Setup the Lambda function
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
-        existingLambdaObj: props.existingLambdaObj,
-        lambdaFunctionProps: props.lambdaFunctionProps
+      existingLambdaObj: props.existingLambdaObj,
+      lambdaFunctionProps: props.lambdaFunctionProps
     });
 
     // Setup the SNS topic

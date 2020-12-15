@@ -32,10 +32,10 @@ const lambdaFunctionProps = {
 const func = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 
 const props: SqsToLambdaProps = {
-    existingLambdaObj: func,
-    queueProps: {},
-    deployDeadLetterQueue: true,
-    maxReceiveCount: 3
+  existingLambdaObj: func,
+  queueProps: {},
+  deployDeadLetterQueue: true,
+  maxReceiveCount: 3
 };
 
 new SqsToLambda(stack, 'test-sqs-lambda', props);

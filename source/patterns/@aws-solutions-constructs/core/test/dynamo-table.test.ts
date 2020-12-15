@@ -19,9 +19,9 @@ import { overrideProps } from '../lib/utils';
 import '@aws-cdk/assert/jest';
 
 test('snapshot test TableProps default params', () => {
-    const stack = new Stack();
-    new dynamodb.Table(stack, 'test-dynamo-defaults', defaults.DefaultTableProps);
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  const stack = new Stack();
+  new dynamodb.Table(stack, 'test-dynamo-defaults', defaults.DefaultTableProps);
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 test('snapshot test TableWithStream default params', () => {
@@ -31,91 +31,91 @@ test('snapshot test TableWithStream default params', () => {
 });
 
 test('test TableProps change billing mode', () => {
-    const stack = new Stack();
+  const stack = new Stack();
 
-    const defaultProps: dynamodb.TableProps = defaults.DefaultTableProps;
+  const defaultProps: dynamodb.TableProps = defaults.DefaultTableProps;
 
-    const inProps: dynamodb.TableProps = {
-        billingMode: dynamodb.BillingMode.PROVISIONED,
-        readCapacity: 3,
-        writeCapacity: 3,
-        partitionKey: {
-            name: 'id',
-            type: dynamodb.AttributeType.STRING
-        }
-    };
+  const inProps: dynamodb.TableProps = {
+    billingMode: dynamodb.BillingMode.PROVISIONED,
+    readCapacity: 3,
+    writeCapacity: 3,
+    partitionKey: {
+      name: 'id',
+      type: dynamodb.AttributeType.STRING
+    }
+  };
 
-    const outProps = overrideProps(defaultProps, inProps);
-    new dynamodb.Table(stack, 'test-dynamo-override', outProps);
+  const outProps = overrideProps(defaultProps, inProps);
+  new dynamodb.Table(stack, 'test-dynamo-override', outProps);
 
-    expect(stack).toHaveResource("AWS::DynamoDB::Table", {
-        KeySchema: [
-          {
-            AttributeName: "id",
-            KeyType: "HASH"
-          }
-        ],
-        AttributeDefinitions: [
-          {
-            AttributeName: "id",
-            AttributeType: "S"
-          }
-        ],
-        ProvisionedThroughput: {
-          ReadCapacityUnits: 3,
-          WriteCapacityUnits: 3
-        },
-        SSESpecification: {
-          SSEEnabled: true
-        }
-      });
+  expect(stack).toHaveResource("AWS::DynamoDB::Table", {
+    KeySchema: [
+      {
+        AttributeName: "id",
+        KeyType: "HASH"
+      }
+    ],
+    AttributeDefinitions: [
+      {
+        AttributeName: "id",
+        AttributeType: "S"
+      }
+    ],
+    ProvisionedThroughput: {
+      ReadCapacityUnits: 3,
+      WriteCapacityUnits: 3
+    },
+    SSESpecification: {
+      SSEEnabled: true
+    }
+  });
 });
 
 test('test TableProps override add sort key', () => {
-    const stack = new Stack();
+  const stack = new Stack();
 
-    const defaultProps: dynamodb.TableProps = defaults.DefaultTableProps;
+  const defaultProps: dynamodb.TableProps = defaults.DefaultTableProps;
 
-    const inProps: dynamodb.TableProps = {
-        partitionKey: {
-          name: 'id',
-          type: dynamodb.AttributeType.STRING
-        },
-        sortKey: {
-            name: 'sort_key',
-            type: dynamodb.AttributeType.STRING
-        }
-    };
+  const inProps: dynamodb.TableProps = {
+    partitionKey: {
+      name: 'id',
+      type: dynamodb.AttributeType.STRING
+    },
+    sortKey: {
+      name: 'sort_key',
+      type: dynamodb.AttributeType.STRING
+    }
+  };
 
-    const outProps = overrideProps(defaultProps, inProps);
-    new dynamodb.Table(stack, 'test-dynamo-override', outProps);
+  const outProps = overrideProps(defaultProps, inProps);
+  new dynamodb.Table(stack, 'test-dynamo-override', outProps);
 
-    expect(stack).toHaveResource("AWS::DynamoDB::Table", {
-        KeySchema: [
-          {
-            AttributeName: "id",
-            KeyType: "HASH"
-          },
-          {
-            AttributeName: "sort_key",
-            KeyType: "RANGE"
-          }
-        ],
-        AttributeDefinitions: [
-          {
-            AttributeName: "id",
-            AttributeType: "S"
-          },
-          {
-            AttributeName: "sort_key",
-            AttributeType: "S"
-          }
-        ],
-        BillingMode: "PAY_PER_REQUEST",
-        SSESpecification: {
-          SSEEnabled: true
-        }
-    });
+  expect(stack).toHaveResource("AWS::DynamoDB::Table", {
+    KeySchema: [
+      {
+        AttributeName: "id",
+        KeyType: "HASH"
+      },
+      {
+        AttributeName: "sort_key",
+        KeyType: "RANGE"
+      }
+    ],
+    AttributeDefinitions: [
+      {
+        AttributeName: "id",
+        AttributeType: "S"
+      },
+      {
+        AttributeName: "sort_key",
+        AttributeType: "S"
+      }
+    ],
+    BillingMode: "PAY_PER_REQUEST",
+    SSESpecification: {
+      SSEEnabled: true
+    }
+  });
 });
 
 test('test TableWithStreamProps override stream view type', () => {
@@ -124,11 +124,11 @@ test('test TableWithStreamProps override stream view type', () => {
   const defaultProps: dynamodb.TableProps = defaults.DefaultTableWithStreamProps;
 
   const inProps: dynamodb.TableProps = {
-      partitionKey: {
-        name: 'id',
-        type: dynamodb.AttributeType.STRING
-      },
-      stream: dynamodb.StreamViewType.NEW_IMAGE
+    partitionKey: {
+      name: 'id',
+      type: dynamodb.AttributeType.STRING
+    },
+    stream: dynamodb.StreamViewType.NEW_IMAGE
   };
 
   const outProps = overrideProps(defaultProps, inProps);

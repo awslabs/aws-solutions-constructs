@@ -104,10 +104,10 @@ export class S3ToLambda extends Construct {
 
     fnResource.cfnOptions.metadata = {
       cfn_nag: {
-          rules_to_suppress: [{
-              id: 'W58',
-              reason: `Lambda function has permission to write CloudWatch Logs via AWSLambdaBasicExecutionRole policy attached to the lambda role`
-          }]
+        rules_to_suppress: [{
+          id: 'W58',
+          reason: `Lambda function has permission to write CloudWatch Logs via AWSLambdaBasicExecutionRole policy attached to the lambda role`
+        }]
       }
     };
 
@@ -116,10 +116,10 @@ export class S3ToLambda extends Construct {
 
     policyResource.cfnOptions.metadata = {
       cfn_nag: {
-          rules_to_suppress: [{
-              id: 'W12',
-              reason: `Bucket resource is '*' due to circular dependency with bucket and role creation at the same time`
-          }]
+        rules_to_suppress: [{
+          id: 'W12',
+          reason: `Bucket resource is '*' due to circular dependency with bucket and role creation at the same time`
+        }]
       }
     };
   }

@@ -21,14 +21,14 @@ const app = new App();
 const stack = new Stack(app, 'test-dynamodb-stream-lambda-stack');
 
 const props: DynamoDBStreamToLambdaProps = {
-    lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_12_X,
-        handler: 'index.handler'
-    },
-    dynamoEventSourceProps: {
-        retryAttempts: 5
-    }
+  lambdaFunctionProps: {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler'
+  },
+  dynamoEventSourceProps: {
+    retryAttempts: 5
+  }
 };
 
 new DynamoDBStreamToLambda(stack, 'test-dynamodb-stream-lambda', props);

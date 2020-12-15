@@ -22,7 +22,7 @@ stack.templateOptions.description = 'Integration test for aws-cloudfront-mediast
 
 // Instantiate construct
 new CloudFrontToMediaStore(stack, 'test-cloudfront-mediastore', {
-    insertHttpSecurityHeaders: false
+  insertHttpSecurityHeaders: false
 });
 
 // Synth

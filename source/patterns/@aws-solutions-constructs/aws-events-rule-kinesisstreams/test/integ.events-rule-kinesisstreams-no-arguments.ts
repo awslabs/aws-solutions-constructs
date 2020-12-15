@@ -20,9 +20,9 @@ const stack = new Stack(app, 'test-rule-kinesisstream');
 stack.templateOptions.description = 'Integration Test for aws-events-rule-kinesisstreams';
 
 const props: EventsRuleToKinesisStreamsProps = {
-    eventRuleProps: {
-        schedule: events.Schedule.rate(Duration.minutes(5))
-      }
+  eventRuleProps: {
+    schedule: events.Schedule.rate(Duration.minutes(5))
+  }
 };
 
 new EventsRuleToKinesisStreams(stack, 'test-events-rule-kinesis-stream', props);

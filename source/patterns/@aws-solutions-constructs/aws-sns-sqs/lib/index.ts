@@ -106,58 +106,58 @@ export class SnsToSqs extends Construct {
      * @access public
      */
     constructor(scope: Construct, id: string, props: SnsToSqsProps) {
-        super(scope, id);
+      super(scope, id);
 
-        // Setup the dead letter queue, if applicable
-        this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
-            existingQueueObj: props.existingQueueObj,
-            deployDeadLetterQueue: props.deployDeadLetterQueue,
-            deadLetterQueueProps: props.deadLetterQueueProps,
-            maxReceiveCount: props.maxReceiveCount
-        });
+      // Setup the dead letter queue, if applicable
+      this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
+        existingQueueObj: props.existingQueueObj,
+        deployDeadLetterQueue: props.deployDeadLetterQueue,
+        deadLetterQueueProps: props.deadLetterQueueProps,
+        maxReceiveCount: props.maxReceiveCount
+      });
 
-        let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
-        let encryptionKeyParam = props.encryptionKey;
+      let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
+      let encryptionKeyParam = props.encryptionKey;
 
-        if (props.enableEncryptionWithCustomerManagedKey === undefined ||
+      if (props.enableEncryptionWithCustomerManagedKey === undefined ||
           props.enableEncryptionWithCustomerManagedKey === true) {
-            enableEncryptionParam = true;
-            // Create the encryptionKey if none was provided
-            if (!props.encryptionKey) {
-                encryptionKeyParam = buildEncryptionKey(scope, props.encryptionKeyProps);
-            }
+        enableEncryptionParam = true;
+        // Create the encryptionKey if none was provided
+        if (!props.encryptionKey) {
+          encryptionKeyParam = buildEncryptionKey(scope, props.encryptionKeyProps);
         }
-        // Setup the SNS topic
-        if (!props.existingTopicObj) {
-            // If an existingTopicObj was not specified create new topic
-            [this.snsTopic, this.encryptionKey] = defaults.buildTopic(this, {
-                topicProps: props.topicProps,
-                enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
-                encryptionKey: encryptionKeyParam
-            });
-        } else {
-            // If an existingTopicObj was specified utilize the provided topic
-            this.snsTopic = props.existingTopicObj;
-        }
-
-        // Setup the queue
-        [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
-            existingQueueObj: props.existingQueueObj,
-            queueProps: props.queueProps,
-            deadLetterQueue: this.deadLetterQueue,
-            enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
-            encryptionKey: encryptionKeyParam
+      }
+      // Setup the SNS topic
+      if (!props.existingTopicObj) {
+        // If an existingTopicObj was not specified create new topic
+        [this.snsTopic, this.encryptionKey] = defaults.buildTopic(this, {
+          topicProps: props.topicProps,
+          enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
+          encryptionKey: encryptionKeyParam
         });
+      } else {
+        // If an existingTopicObj was specified utilize the provided topic
+        this.snsTopic = props.existingTopicObj;
+      }
 
-        // Setup the SQS queue subscription to the SNS topic
-        this.snsTopic.addSubscription(new subscriptions.SqsSubscription(this.sqsQueue));
+      // Setup the queue
+      [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
+        existingQueueObj: props.existingQueueObj,
+        queueProps: props.queueProps,
+        deadLetterQueue: this.deadLetterQueue,
+        enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
+        encryptionKey: encryptionKeyParam
+      });
 
-        // Grant SNS service access to the SQS queue encryption key
-        if (this.sqsQueue.encryptionMasterKey) {
-            this.sqsQueue.encryptionMasterKey.grant(new iam.ServicePrincipal("sns.amazonaws.com"),
-              'kms:Decrypt',
-              'kms:GenerateDataKey*',
-            );
-        }
+      // Setup the SQS queue subscription to the SNS topic
+      this.snsTopic.addSubscription(new subscriptions.SqsSubscription(this.sqsQueue));
+
+      // Grant SNS service access to the SQS queue encryption key
+      if (this.sqsQueue.encryptionMasterKey) {
+        this.sqsQueue.encryptionMasterKey.grant(new iam.ServicePrincipal("sns.amazonaws.com"),
+          'kms:Decrypt',
+          'kms:GenerateDataKey*',
+        );
+      }
     }
 }

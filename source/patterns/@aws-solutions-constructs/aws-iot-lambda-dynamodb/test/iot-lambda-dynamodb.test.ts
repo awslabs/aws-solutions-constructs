@@ -25,12 +25,12 @@ function deployStack(stack: cdk.Stack) {
       handler: 'index.handler'
     },
     iotTopicRuleProps: {
-        topicRulePayload: {
-            ruleDisabled: false,
-            description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
-            sql: "SELECT * FROM 'connectedcar/dtc/#'",
-            actions: []
-        }
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+        sql: "SELECT * FROM 'connectedcar/dtc/#'",
+        actions: []
+      }
     }
   };
 
@@ -49,22 +49,22 @@ test('check lambda function properties', () => {
   deployStack(stack);
 
   expect(stack).toHaveResource('AWS::Lambda::Function', {
-      Handler: "index.handler",
-      Role: {
-        "Fn::GetAtt": [
-          "testiotlambdadynamodbstackIotToLambdaLambdaFunctionServiceRoleC57F7FDA",
-          "Arn"
-        ]
-      },
-      Runtime: "nodejs10.x",
-      Environment: {
-        Variables: {
-          AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
-          DDB_TABLE_NAME: {
-            Ref: "testiotlambdadynamodbstackLambdaToDynamoDBDynamoTableE17E5733"
-          }
+    Handler: "index.handler",
+    Role: {
+      "Fn::GetAtt": [
+        "testiotlambdadynamodbstackIotToLambdaLambdaFunctionServiceRoleC57F7FDA",
+        "Arn"
+      ]
+    },
+    Runtime: "nodejs10.x",
+    Environment: {
+      Variables: {
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
+        DDB_TABLE_NAME: {
+          Ref: "testiotlambdadynamodbstackLambdaToDynamoDBDynamoTableE17E5733"
         }
       }
+    }
   });
 });
 
@@ -74,20 +74,20 @@ test('check lambda function permission', () => {
   deployStack(stack);
 
   expect(stack).toHaveResource('AWS::Lambda::Permission', {
-      Action: "lambda:InvokeFunction",
-      FunctionName: {
-        "Fn::GetAtt": [
-          "testiotlambdadynamodbstackIotToLambdaLambdaFunctionDFEAF894",
-          "Arn"
-        ]
-      },
-      Principal: "iot.amazonaws.com",
-      SourceArn: {
-        "Fn::GetAtt": [
-          "testiotlambdadynamodbstackIotToLambdaIotTopic74F5E3BB",
-          "Arn"
-        ]
-      }
+    Action: "lambda:InvokeFunction",
+    FunctionName: {
+      "Fn::GetAtt": [
+        "testiotlambdadynamodbstackIotToLambdaLambdaFunctionDFEAF894",
+        "Arn"
+      ]
+    },
+    Principal: "iot.amazonaws.com",
+    SourceArn: {
+      "Fn::GetAtt": [
+        "testiotlambdadynamodbstackIotToLambdaIotTopic74F5E3BB",
+        "Arn"
+      ]
+    }
   });
 });
 
@@ -156,23 +156,23 @@ test('check iot topic rule properties', () => {
   deployStack(stack);
 
   expect(stack).toHaveResource('AWS::IoT::TopicRule', {
-      TopicRulePayload: {
-        Actions: [
-          {
-            Lambda: {
-              FunctionArn: {
-                "Fn::GetAtt": [
-                  "testiotlambdadynamodbstackIotToLambdaLambdaFunctionDFEAF894",
-                  "Arn"
-                ]
-              }
+    TopicRulePayload: {
+      Actions: [
+        {
+          Lambda: {
+            FunctionArn: {
+              "Fn::GetAtt": [
+                "testiotlambdadynamodbstackIotToLambdaLambdaFunctionDFEAF894",
+                "Arn"
+              ]
             }
           }
-        ],
-        Description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
-        RuleDisabled: false,
-        Sql: "SELECT * FROM 'connectedcar/dtc/#'"
-      }
+        }
+      ],
+      Description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+      RuleDisabled: false,
+      Sql: "SELECT * FROM 'connectedcar/dtc/#'"
+    }
   });
 
 });
@@ -265,13 +265,13 @@ test('check exception for Missing existingObj from props for deploy = false', ()
   const stack = new cdk.Stack();
 
   const props: IotToLambdaToDynamoDBProps = {
-      iotTopicRuleProps: {
-        topicRulePayload: {
-            ruleDisabled: false,
-            description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
-            sql: "SELECT * FROM 'connectedcar/dtc/#'",
-            actions: []
-        }
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+        sql: "SELECT * FROM 'connectedcar/dtc/#'",
+        actions: []
+      }
     }
   };
 

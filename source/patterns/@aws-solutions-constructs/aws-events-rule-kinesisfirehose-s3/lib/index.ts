@@ -91,14 +91,14 @@ export class EventsRuleToKinesisFirehoseToS3 extends Construct {
 
     // Setup the IAM policy that grants events rule the permission to send cw events data to kinesis firehose
     const eventsPolicy = new iam.Policy(this, 'EventsRuleInvokeKinesisFirehosePolicy', {
-        statements: [new iam.PolicyStatement({
-          actions: [
-            'firehose:PutRecord',
-            'firehose:PutRecordBatch'
-          ],
-          resources: [this.kinesisFirehose.attrArn]
-        })
-    ]});
+      statements: [new iam.PolicyStatement({
+        actions: [
+          'firehose:PutRecord',
+          'firehose:PutRecordBatch'
+        ],
+        resources: [this.kinesisFirehose.attrArn]
+      })
+      ]});
 
     // Attach policy to role
     eventsPolicy.attachToRole(this.eventsRole);

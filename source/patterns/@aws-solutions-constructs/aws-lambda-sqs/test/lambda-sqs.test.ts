@@ -15,6 +15,7 @@
 import { Stack } from "@aws-cdk/core";
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as sqs from "@aws-cdk/aws-sqs";
+import * as ec2 from "@aws-cdk/aws-ec2";
 import { LambdaToSqs } from '../lib';
 import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
@@ -145,4 +146,180 @@ test('Test deployment w/ existing queue', () => {
   });
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+// --------------------------------------------------------------
+// Test minimal deployment that deploys a VPC without vpcProps
+// --------------------------------------------------------------
+test("Test minimal deployment that deploys a VPC without vpcProps", () => {
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  new LambdaToSqs(stack, "lambda-to-sqs-stack", {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: "index.handler",
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    deployVpc: true,
+  });
+
+  expect(stack).toHaveResource("AWS::Lambda::Function", {
+    VpcConfig: {
+      SecurityGroupIds: [
+        {
+          "Fn::GetAtt": [
+            "lambdatosqsstackReplaceDefaultSecurityGroup7FE5F431",
+            "GroupId",
+          ],
+        },
+      ],
+      SubnetIds: [
+        {
+          Ref: "VpcisolatedSubnet1SubnetE62B1B9B",
+        },
+        {
+          Ref: "VpcisolatedSubnet2Subnet39217055",
+        },
+      ],
+    },
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPC", {
+    EnableDnsHostnames: true,
+    EnableDnsSupport: true,
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+    VpcEndpointType: "Interface",
+  });
+
+  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
+  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+});
+
+// --------------------------------------------------------------
+// Test minimal deployment that deploys a VPC w/vpcProps
+// --------------------------------------------------------------
+test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  new LambdaToSqs(stack, "lambda-to-sqs-stack", {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: "index.handler",
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    vpcProps: {
+      enableDnsHostnames: false,
+      enableDnsSupport: false,
+      cidr: "192.68.0.0/16",
+    },
+    deployVpc: true,
+  });
+
+  expect(stack).toHaveResource("AWS::Lambda::Function", {
+    VpcConfig: {
+      SecurityGroupIds: [
+        {
+          "Fn::GetAtt": [
+            "lambdatosqsstackReplaceDefaultSecurityGroup7FE5F431",
+            "GroupId",
+          ],
+        },
+      ],
+      SubnetIds: [
+        {
+          Ref: "VpcisolatedSubnet1SubnetE62B1B9B",
+        },
+        {
+          Ref: "VpcisolatedSubnet2Subnet39217055",
+        },
+      ],
+    },
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPC", {
+    CidrBlock: "192.68.0.0/16",
+    EnableDnsHostnames: true,
+    EnableDnsSupport: true,
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+    VpcEndpointType: "Interface",
+  });
+
+  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
+  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+});
+
+// --------------------------------------------------------------
+// Test minimal deployment with an existing VPC
+// --------------------------------------------------------------
+test("Test minimal deployment with an existing VPC", () => {
+  // Stack
+  const stack = new Stack();
+
+  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
+
+  // Helper declaration
+  new LambdaToSqs(stack, "lambda-to-sqs-stack", {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: "index.handler",
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingVpc: testVpc,
+  });
+
+  expect(stack).toHaveResource("AWS::Lambda::Function", {
+    VpcConfig: {
+      SecurityGroupIds: [
+        {
+          "Fn::GetAtt": [
+            "lambdatosqsstackReplaceDefaultSecurityGroup7FE5F431",
+            "GroupId",
+          ],
+        },
+      ],
+      SubnetIds: [
+        {
+          Ref: "testvpcPrivateSubnet1Subnet865FB50A",
+        },
+        {
+          Ref: "testvpcPrivateSubnet2Subnet23D3396F",
+        },
+      ],
+    },
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+    VpcEndpointType: "Interface",
+  });
+});
+
+// --------------------------------------------------------------
+// Test bad call with existingVpc and deployVpc
+// --------------------------------------------------------------
+test("Test bad call with existingVpc and deployVpc", () => {
+  // Stack
+  const stack = new Stack();
+
+  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
+
+  const app = () => {
+    // Helper declaration
+    new LambdaToSqs(stack, "lambda-to-sqs-stack", {
+      lambdaFunctionProps: {
+        runtime: lambda.Runtime.NODEJS_10_X,
+        handler: "index.handler",
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      },
+      existingVpc: testVpc,
+      deployVpc: true,
+    });
+  };
+  // Assertion
+  expect(app).toThrowError();
 });

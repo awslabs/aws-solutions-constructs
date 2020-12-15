@@ -23,14 +23,14 @@ stack.templateOptions.description = 'Integration Test for aws-kinesisstreams-lam
 
 // Definitions
 const props: KinesisStreamsToLambdaProps = {
-    lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    },
-    kinesisEventSourceProps: {
-        retryAttempts: 5
-    }
+  lambdaFunctionProps: {
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+  },
+  kinesisEventSourceProps: {
+    retryAttempts: 5
+  }
 };
 
 new KinesisStreamsToLambda(stack, 'test-kinesisstreams-lambda', props);

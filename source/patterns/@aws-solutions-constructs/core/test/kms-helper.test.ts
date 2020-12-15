@@ -21,19 +21,19 @@ import '@aws-cdk/assert/jest';
 // Test minimal deployment with no properties
 // --------------------------------------------------------------
 test('Test minimal deployment with no properties', () => {
-    // Stack
-    const stack = new Stack();
-    // Helper declaration
-    defaults.buildEncryptionKey(stack);
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-    // Assertion 2
-    expect(stack).toHaveResourceLike('AWS::KMS::Key', {
-        Type: "AWS::KMS::Key",
-        Properties: {
-            EnableKeyRotation: true
-        }
-      }, ResourcePart.CompleteDefinition);
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  defaults.buildEncryptionKey(stack);
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Assertion 2
+  expect(stack).toHaveResourceLike('AWS::KMS::Key', {
+    Type: "AWS::KMS::Key",
+    Properties: {
+      EnableKeyRotation: true
+    }
+  }, ResourcePart.CompleteDefinition);
 });
 
 // --------------------------------------------------------------
@@ -50,9 +50,9 @@ test('Test minimal deployment with custom properties', () => {
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   // Assertion 2
   expect(stack).toHaveResourceLike('AWS::KMS::Key', {
-      Type: "AWS::KMS::Key",
-      Properties: {
-          EnableKeyRotation: false
-      }
-    }, ResourcePart.CompleteDefinition);
+    Type: "AWS::KMS::Key",
+    Properties: {
+      EnableKeyRotation: false
+    }
+  }, ResourcePart.CompleteDefinition);
 });

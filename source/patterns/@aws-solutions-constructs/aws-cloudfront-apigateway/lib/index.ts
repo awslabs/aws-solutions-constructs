@@ -64,6 +64,6 @@ export class CloudFrontToApiGateway extends Construct {
 
     [this.cloudFrontWebDistribution, this.edgeLambdaFunctionVersion, this.cloudFrontLoggingBucket] =
       defaults.CloudFrontDistributionForApiGateway(this, props.existingApiGatewayObj,
-      props.cloudFrontDistributionProps, props.insertHttpSecurityHeaders);
+        props.cloudFrontDistributionProps, props.insertHttpSecurityHeaders);
   }
 }

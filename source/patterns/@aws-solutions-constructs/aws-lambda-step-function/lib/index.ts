@@ -74,8 +74,8 @@ export class LambdaToStepFunction extends Construct {
 
       // Setup the Lambda function
       this.lambdaFunction = defaults.buildLambdaFunction(this, {
-          existingLambdaObj: props.existingLambdaObj,
-          lambdaFunctionProps: props.lambdaFunctionProps,
+        existingLambdaObj: props.existingLambdaObj,
+        lambdaFunctionProps: props.lambdaFunctionProps,
       });
 
       // Assign the state machine ARN as an environment variable

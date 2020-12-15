@@ -74,11 +74,11 @@ function addPermissions(_role: iam.Role) {
   _role.addToPolicy(new iam.PolicyStatement({
     resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:log-group:/aws/sagemaker/*`],
     actions: [
-        'logs:CreateLogGroup',
-        'logs:CreateLogStream',
-        'logs:DescribeLogStreams',
-        'logs:GetLogEvents',
-        'logs:PutLogEvents'
+      'logs:CreateLogGroup',
+      'logs:CreateLogStream',
+      'logs:DescribeLogStreams',
+      'logs:GetLogEvents',
+      'logs:PutLogEvents'
     ],
   }));
 
@@ -86,7 +86,7 @@ function addPermissions(_role: iam.Role) {
   _role.addToPolicy(new iam.PolicyStatement({
     resources: [_role.roleArn],
     actions: [
-        'iam:GetRole'
+      'iam:GetRole'
     ],
   }));
 
@@ -94,7 +94,7 @@ function addPermissions(_role: iam.Role) {
   _role.addToPolicy(new iam.PolicyStatement({
     resources: [_role.roleArn],
     actions: [
-        'iam:PassRole'
+      'iam:PassRole'
     ],
     conditions: {
       StringLike: {'iam:PassedToService': 'sagemaker.amazonaws.com'}
@@ -122,7 +122,7 @@ export function buildSagemakerNotebook(scope: cdk.Construct, props: BuildSagemak
     addPermissions(props.role);
 
     if (props.sagemakerNotebookProps?.kmsKeyId === undefined) {
-        kmsKeyId = buildEncryptionKey(scope).keyId;
+      kmsKeyId = buildEncryptionKey(scope).keyId;
     } else {
       kmsKeyId = props.sagemakerNotebookProps.kmsKeyId;
     }
@@ -140,10 +140,10 @@ export function buildSagemakerNotebook(scope: cdk.Construct, props: BuildSagemak
         const cfnSecurityGroup = securityGroup.node.findChild('Resource') as ec2.CfnSecurityGroup;
         cfnSecurityGroup.cfnOptions.metadata = {
           cfn_nag: {
-              rules_to_suppress: [{
-                  id: 'W5',
-                  reason: 'Allow notebook users to access the Internet from the notebook'
-              }]
+            rules_to_suppress: [{
+              id: 'W5',
+              reason: 'Allow notebook users to access the Internet from the notebook'
+            }]
           }
         };
 
@@ -170,7 +170,7 @@ export function buildSagemakerNotebook(scope: cdk.Construct, props: BuildSagemak
       return [sagemakerInstance];
     }
   } else {
-      // Return existing notebook object
-      return [props.existingNotebookObj];
+    // Return existing notebook object
+    return [props.existingNotebookObj];
   }
 }

@@ -26,8 +26,8 @@ test('s3 bucket with default params', () => {
   /** Default Life Cycle policy to transition older versions to Glacier after 90 days */
   const lifecycleRules: s3.LifecycleRule[] = [{
     noncurrentVersionTransitions: [{
-        storageClass: StorageClass.GLACIER,
-        transitionAfter: Duration.days(90)
+      storageClass: StorageClass.GLACIER,
+      transitionAfter: Duration.days(90)
     }]
   }];
 

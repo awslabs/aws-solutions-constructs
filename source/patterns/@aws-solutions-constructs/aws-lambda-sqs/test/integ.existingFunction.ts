@@ -32,7 +32,7 @@ const lambdaFunctionProps = {
 const func = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 
 const props: LambdaToSqsProps = {
-    existingLambdaObj: func
+  existingLambdaObj: func
 };
 
 new LambdaToSqs(stack, 'test-lambda-sqs', props);

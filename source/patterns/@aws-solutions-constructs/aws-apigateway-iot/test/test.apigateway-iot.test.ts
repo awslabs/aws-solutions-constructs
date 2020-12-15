@@ -23,14 +23,14 @@ import '@aws-cdk/assert/jest';
 // Snapshot matching
 // --------------------------------------------------------------
 test('Test for default Params snapshot match', () => {
-    // Initial Setup
-    const stack = new cdk.Stack();
-    const props: ApiGatewayToIotProps = {
-        iotEndpoint: `a1234567890123-ats`
-    };
-    new ApiGatewayToIot(stack, 'test-apigateway-iot-default-snapshot', props);
-    // Assertion
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Initial Setup
+  const stack = new cdk.Stack();
+  const props: ApiGatewayToIotProps = {
+    iotEndpoint: `a1234567890123-ats`
+  };
+  new ApiGatewayToIot(stack, 'test-apigateway-iot-default-snapshot', props);
+  // Assertion
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
@@ -40,7 +40,7 @@ test('Test for default Params construct props', () => {
   // Initial Setup
   const stack = new cdk.Stack();
   const props: ApiGatewayToIotProps = {
-      iotEndpoint: `a1234567890123-ats`
+    iotEndpoint: `a1234567890123-ats`
   };
   const construct = new ApiGatewayToIot(stack, 'test-apigateway-iot-default-params', props);
   // Assertion
@@ -57,7 +57,7 @@ test('Test for default IAM Role', () => {
   // Initial Setup
   const stack = new cdk.Stack();
   const props: ApiGatewayToIotProps = {
-      iotEndpoint: `a1234567890123-ats`
+    iotEndpoint: `a1234567890123-ats`
   };
   new ApiGatewayToIot(stack, 'test-apigateway-iot-default-iam-role', props);
   // Check whether default IAM role is creted to access IoT core
@@ -135,7 +135,7 @@ test('Test for default Params request validator', () => {
   // Initial Setup
   const stack = new cdk.Stack();
   const props: ApiGatewayToIotProps = {
-      iotEndpoint: `a1234567890123-ats`
+    iotEndpoint: `a1234567890123-ats`
   };
   new ApiGatewayToIot(stack, 'test-apigateway-iot-request-validator', props);
   // Assertion
@@ -152,7 +152,7 @@ test('Test for default Params Integ Props and Method Props', () => {
   // Initial Setup
   const stack = new cdk.Stack();
   const props: ApiGatewayToIotProps = {
-      iotEndpoint: `a1234567890123-ats`
+    iotEndpoint: `a1234567890123-ats`
   };
   new ApiGatewayToIot(stack, 'test-apigateway-iot-integpros-methodprops', props);
 
@@ -246,7 +246,7 @@ test('Test for valid iot enpoint', () => {
   // Initial Setup
   const stack = new cdk.Stack();
   const props: ApiGatewayToIotProps = {
-      iotEndpoint: ' '
+    iotEndpoint: ' '
   };
 
   const app = () => {
@@ -264,8 +264,8 @@ test('Test for Binary Media types', () => {
   const stack = new cdk.Stack();
   // Helper declaration
   new ApiGatewayToIot(stack, 'test-apigateway-iot-binaryMediaTypes', {
-      iotEndpoint: 'a1234567890123-ats'
-      }
+    iotEndpoint: 'a1234567890123-ats'
+  }
   );
   // Assertion 1
   expect(stack).toHaveResourceLike("AWS::ApiGateway::RestApi", {
@@ -295,58 +295,58 @@ test('Test for multiple constructs usage', () => {
 // Check for ApiGateway Overriden Props Snapshot match
 // --------------------------------------------------------------
 test('Test for overriden props snapshot', () => {
-    // Initial Setup
-    const stack = new cdk.Stack();
-    const apiGatewayProps = {
-      restApiName: 'RestApi-Regional',
-      description: 'Description for the Regional Rest Api',
-      endpointConfiguration: {types: [api.EndpointType.REGIONAL]},
-      apiKeySourceType: api.ApiKeySourceType.HEADER,
-      defaultMethodOptions: {
-        authorizationType: api.AuthorizationType.NONE,
+  // Initial Setup
+  const stack = new cdk.Stack();
+  const apiGatewayProps = {
+    restApiName: 'RestApi-Regional',
+    description: 'Description for the Regional Rest Api',
+    endpointConfiguration: {types: [api.EndpointType.REGIONAL]},
+    apiKeySourceType: api.ApiKeySourceType.HEADER,
+    defaultMethodOptions: {
+      authorizationType: api.AuthorizationType.NONE,
+    }
+  };
+
+  const policyJSON = {
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Action: [
+          "iot:UpdateThingShadow"
+        ],
+        Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:thing/*`,
+        Effect: "Allow"
+      },
+      {
+        Action: [
+          "iot:Publish"
+        ],
+        Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:topic/*`,
+        Effect: "Allow"
       }
-    };
+    ]
+  };
+  const policyDocument: iam.PolicyDocument = iam.PolicyDocument.fromJson(policyJSON);
+  const iamRoleProps: iam.RoleProps = {
+    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
+    path: '/',
+    inlinePolicies: {testPolicy: policyDocument}
+  };
 
-    const policyJSON = {
-      Version: "2012-10-17",
-      Statement: [
-          {
-              Action: [
-                  "iot:UpdateThingShadow"
-              ],
-              Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:thing/*`,
-              Effect: "Allow"
-          },
-          {
-              Action: [
-                  "iot:Publish"
-              ],
-              Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:topic/*`,
-              Effect: "Allow"
-          }
-      ]
-    };
-    const policyDocument: iam.PolicyDocument = iam.PolicyDocument.fromJson(policyJSON);
-    const iamRoleProps: iam.RoleProps = {
-      assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
-      path: '/',
-      inlinePolicies: {testPolicy: policyDocument}
-    };
+  // Create a policy that overrides the default policy that gets created with the construct
+  const apiGatewayExecutionRole: iam.Role = new iam.Role(stack, 'apigateway-iot-role', iamRoleProps);
 
-    // Create a policy that overrides the default policy that gets created with the construct
-    const apiGatewayExecutionRole: iam.Role = new iam.Role(stack, 'apigateway-iot-role', iamRoleProps);
+  // Api gateway setup
+  const props: ApiGatewayToIotProps = {
+    iotEndpoint: `a1234567890123-ats`,
+    apiGatewayCreateApiKey: true,
+    apiGatewayExecutionRole,
+    apiGatewayProps
+  };
+  new ApiGatewayToIot(stack, 'test-apigateway-iot-overriden-params', props);
 
-    // Api gateway setup
-    const props: ApiGatewayToIotProps = {
-      iotEndpoint: `a1234567890123-ats`,
-      apiGatewayCreateApiKey: true,
-      apiGatewayExecutionRole,
-      apiGatewayProps
-    };
-    new ApiGatewayToIot(stack, 'test-apigateway-iot-overriden-params', props);
-
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
@@ -361,9 +361,9 @@ test('Test for Api Name and Desc', () => {
   };
   // Helper declaration
   new ApiGatewayToIot(stack, 'test-apigateway-iot-name-desc', {
-      iotEndpoint: 'a1234567890123-ats',
-      apiGatewayProps
-      }
+    iotEndpoint: 'a1234567890123-ats',
+    apiGatewayProps
+  }
   );
   // Assertion 1
   expect(stack).toHaveResourceLike("AWS::ApiGateway::RestApi", {
@@ -382,20 +382,20 @@ test('Test for overriden IAM Role', () => {
   const policyJSON = {
     Version: "2012-10-17",
     Statement: [
-        {
-            Action: [
-                "iot:UpdateThingShadow"
-            ],
-            Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:thing/mything1`,
-            Effect: "Allow"
-        },
-        {
-            Action: [
-                "iot:Publish"
-            ],
-            Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:topic/topic-abc`,
-            Effect: "Allow"
-        }
+      {
+        Action: [
+          "iot:UpdateThingShadow"
+        ],
+        Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:thing/mything1`,
+        Effect: "Allow"
+      },
+      {
+        Action: [
+          "iot:Publish"
+        ],
+        Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:topic/topic-abc`,
+        Effect: "Allow"
+      }
     ]
   };
   const policyDocument: iam.PolicyDocument = iam.PolicyDocument.fromJson(policyJSON);
@@ -409,8 +409,8 @@ test('Test for overriden IAM Role', () => {
   const apiGatewayExecutionRole: iam.Role = new iam.Role(stack, 'apigateway-iot-role', iamRoleProps);
 
   const props: ApiGatewayToIotProps = {
-      iotEndpoint: `a1234567890123-ats`,
-      apiGatewayExecutionRole,
+    iotEndpoint: `a1234567890123-ats`,
+    apiGatewayExecutionRole,
   };
 
   new ApiGatewayToIot(stack, 'test-apigateway-iot-overriden-iam-role', props);
@@ -494,9 +494,9 @@ test('Test for APi Key Source', () => {
 
   // Helper declaration
   new ApiGatewayToIot(stack, 'test-apigateway-iot-api-key-source', {
-      iotEndpoint: 'a1234567890123-ats',
-      apiGatewayProps
-      }
+    iotEndpoint: 'a1234567890123-ats',
+    apiGatewayProps
+  }
   );
   // Assertion 1
   expect(stack).toHaveResourceLike("AWS::ApiGateway::RestApi", {
@@ -548,18 +548,18 @@ test('Test for deployment ApiGateway AuthorizationType override', () => {
   const stack = new cdk.Stack();
   // Helper declaration
   new ApiGatewayToIot(stack, 'test-apigateway-iot-auth-none', {
-      iotEndpoint: 'a1234567890123-ats',
-      apiGatewayProps: {
-          endpointConfiguration: {
-            types: [api.EndpointType.REGIONAL]
-          }
+    iotEndpoint: 'a1234567890123-ats',
+    apiGatewayProps: {
+      endpointConfiguration: {
+        types: [api.EndpointType.REGIONAL]
       }
+    }
   });
   // Assertion 1
   expect(stack).toHaveResourceLike("AWS::ApiGateway::RestApi", {
     EndpointConfiguration: {
-        Types: ["REGIONAL"]
-      }
+      Types: ["REGIONAL"]
+    }
   });
 });
 
@@ -567,25 +567,25 @@ test('Test for deployment ApiGateway AuthorizationType override', () => {
 // Test deployment for override ApiGateway AuthorizationType to NONE
 // -----------------------------------------------------------------
 test('Test for deployment ApiGateway AuthorizationType override', () => {
-    // Stack
-    const stack = new cdk.Stack();
-    // Helper declaration
-    new ApiGatewayToIot(stack, 'test-apigateway-iot-override-auth', {
-        iotEndpoint: 'a1234567890123-ats',
-        apiGatewayProps: {
-            defaultMethodOptions: {
-                authorizationType: api.AuthorizationType.NONE
-            }
-        }
-    });
-    // Assertion 1
-    expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
-        HttpMethod: "POST",
-        AuthorizationType: "NONE"
-    });
+  // Stack
+  const stack = new cdk.Stack();
+  // Helper declaration
+  new ApiGatewayToIot(stack, 'test-apigateway-iot-override-auth', {
+    iotEndpoint: 'a1234567890123-ats',
+    apiGatewayProps: {
+      defaultMethodOptions: {
+        authorizationType: api.AuthorizationType.NONE
+      }
+    }
   });
+  // Assertion 1
+  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+    HttpMethod: "POST",
+    AuthorizationType: "NONE"
+  });
+});
 
-  // -----------------------------------------------------------------
+// -----------------------------------------------------------------
 // Test deployment for fully qualified iotEndpoint name
 // -----------------------------------------------------------------
 test('Test for handling fully qualified iotEndpoint', () => {
@@ -593,31 +593,31 @@ test('Test for handling fully qualified iotEndpoint', () => {
   const stack = new cdk.Stack();
   // Helper declaration
   new ApiGatewayToIot(stack, 'test-apigateway-iot-override-auth', {
-      iotEndpoint: 'a1234567890123-ats.iot.ap-south-1.amazonaws.com',
-      apiGatewayProps: {
-          defaultMethodOptions: {
-              authorizationType: api.AuthorizationType.NONE
-          }
+    iotEndpoint: 'a1234567890123-ats.iot.ap-south-1.amazonaws.com',
+    apiGatewayProps: {
+      defaultMethodOptions: {
+        authorizationType: api.AuthorizationType.NONE
       }
+    }
   });
   // Assertion 1
   expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
     Integration: {
-    Uri: {
-      "Fn::Join": [
-        "",
-        [
-          "arn:",
-          {
-            Ref: "AWS::Partition"
-          },
-          ":apigateway:",
-          {
-            Ref: "AWS::Region"
-          },
-          ":a1234567890123-ats.iotdata:path/topics/{topic-level-1}/{topic-level-2}/{topic-level-3}"
+      Uri: {
+        "Fn::Join": [
+          "",
+          [
+            "arn:",
+            {
+              Ref: "AWS::Partition"
+            },
+            ":apigateway:",
+            {
+              Ref: "AWS::Region"
+            },
+            ":a1234567890123-ats.iotdata:path/topics/{topic-level-1}/{topic-level-2}/{topic-level-3}"
+          ]
         ]
-      ]
-    } }
+      } }
   });
 });

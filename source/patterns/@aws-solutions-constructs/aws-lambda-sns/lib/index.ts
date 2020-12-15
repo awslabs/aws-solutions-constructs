@@ -63,25 +63,25 @@ export class LambdaToSns extends Construct {
      * @access public
      */
     constructor(scope: Construct, id: string, props: LambdaToSnsProps) {
-        super(scope, id);
+      super(scope, id);
 
-        // Setup the Lambda function
-        this.lambdaFunction = defaults.buildLambdaFunction(this, {
-            existingLambdaObj: props.existingLambdaObj,
-            lambdaFunctionProps: props.lambdaFunctionProps
-        });
+      // Setup the Lambda function
+      this.lambdaFunction = defaults.buildLambdaFunction(this, {
+        existingLambdaObj: props.existingLambdaObj,
+        lambdaFunctionProps: props.lambdaFunctionProps
+      });
 
-        // Setup the SNS topic
-        [this.snsTopic] = defaults.buildTopic(this, {
-            existingTopicObj: props.existingTopicObj,
-            topicProps: props.topicProps
-        });
+      // Setup the SNS topic
+      [this.snsTopic] = defaults.buildTopic(this, {
+        existingTopicObj: props.existingTopicObj,
+        topicProps: props.topicProps
+      });
 
-        // Configure environment variables
-        this.lambdaFunction.addEnvironment('SNS_TOPIC_NAME', this.snsTopic.topicName);
-        this.lambdaFunction.addEnvironment('SNS_TOPIC_ARN', this.snsTopic.topicArn);
+      // Configure environment variables
+      this.lambdaFunction.addEnvironment('SNS_TOPIC_NAME', this.snsTopic.topicName);
+      this.lambdaFunction.addEnvironment('SNS_TOPIC_ARN', this.snsTopic.topicArn);
 
-        // Add publishing permissions to the function
-        this.snsTopic.grantPublish(this.lambdaFunction.grantPrincipal);
+      // Add publishing permissions to the function
+      this.snsTopic.grantPublish(this.lambdaFunction.grantPrincipal);
     }
 }

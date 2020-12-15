@@ -59,7 +59,7 @@ test('Test default AWS managed encryption key property', () => {
   const stack = new cdk.Stack();
   deployNewStack(stack);
 
-   // Assertions
+  // Assertions
   expect(stack).toHaveResource('AWS::Kinesis::Stream', {
     StreamEncryption: {
       EncryptionType: "KMS",
@@ -76,31 +76,31 @@ test('Test existing resources', () => {
 
   // create resource
   const existingStream = new kinesis.Stream(stack, 'test-existing-stream', {
-      streamName: 'existing-stream',
-      shardCount: 5,
-      retentionPeriod: cdk.Duration.hours(48),
-      encryption: kinesis.StreamEncryption.UNENCRYPTED
+    streamName: 'existing-stream',
+    shardCount: 5,
+    retentionPeriod: cdk.Duration.hours(48),
+    encryption: kinesis.StreamEncryption.UNENCRYPTED
   });
 
   new EventsRuleToKinesisStreams(stack, 'test-events-rule-kinesis-stream-existing-resource', {
-      existingStreamObj: existingStream,
-      // These properties will be ignored as existing object was provided
-      kinesisStreamProps: {
-          streamName: 'other-name-stream',
-          shardCount: 1,
-          retentionPeriod: cdk.Duration.hours(24)
-      },
-      eventRuleProps: {
-        description: 'event rule props',
-        schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    existingStreamObj: existingStream,
+    // These properties will be ignored as existing object was provided
+    kinesisStreamProps: {
+      streamName: 'other-name-stream',
+      shardCount: 1,
+      retentionPeriod: cdk.Duration.hours(24)
+    },
+    eventRuleProps: {
+      description: 'event rule props',
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
     }
   });
 
   // Assertions
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   expect(stack).toHaveResource('AWS::Kinesis::Stream', {
-      Name: 'existing-stream',
-      ShardCount: 5,
-      RetentionPeriodHours: 48,
+    Name: 'existing-stream',
+    ShardCount: 5,
+    RetentionPeriodHours: 48,
   });
 });

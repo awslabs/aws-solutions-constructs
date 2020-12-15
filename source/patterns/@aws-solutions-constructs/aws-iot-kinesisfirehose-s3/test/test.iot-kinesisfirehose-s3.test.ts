@@ -19,12 +19,12 @@ import '@aws-cdk/assert/jest';
 function deploy(stack: cdk.Stack) {
   const props: IotToKinesisFirehoseToS3Props = {
     iotTopicRuleProps: {
-        topicRulePayload: {
-            ruleDisabled: false,
-            description: "Persistent storage of connected vehicle telematics data",
-            sql: "SELECT * FROM 'connectedcar/telemetry/#'",
-            actions: []
-        }
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "Persistent storage of connected vehicle telematics data",
+        sql: "SELECT * FROM 'connectedcar/telemetry/#'",
+        actions: []
+      }
     }
   };
 
@@ -43,26 +43,26 @@ test('check iot topic rule properties', () => {
   deploy(stack);
 
   expect(stack).toHaveResource('AWS::IoT::TopicRule', {
-      TopicRulePayload: {
-        Actions: [
-          {
-            Firehose: {
-              DeliveryStreamName: {
-                Ref: "testiotfirehoses3KinesisFirehoseToS3KinesisFirehose68DB2BEE"
-              },
-              RoleArn: {
-                "Fn::GetAtt": [
-                  "testiotfirehoses3IotActionsRole743F8973",
-                  "Arn"
-                ]
-              }
+    TopicRulePayload: {
+      Actions: [
+        {
+          Firehose: {
+            DeliveryStreamName: {
+              Ref: "testiotfirehoses3KinesisFirehoseToS3KinesisFirehose68DB2BEE"
+            },
+            RoleArn: {
+              "Fn::GetAtt": [
+                "testiotfirehoses3IotActionsRole743F8973",
+                "Arn"
+              ]
             }
           }
-        ],
-        Description: "Persistent storage of connected vehicle telematics data",
-        RuleDisabled: false,
-        Sql: "SELECT * FROM 'connectedcar/telemetry/#'"
-      }
+        }
+      ],
+      Description: "Persistent storage of connected vehicle telematics data",
+      RuleDisabled: false,
+      Sql: "SELECT * FROM 'connectedcar/telemetry/#'"
+    }
   });
 });
 
@@ -71,12 +71,12 @@ test('check firehose and s3 overrides', () => {
 
   const props: IotToKinesisFirehoseToS3Props = {
     iotTopicRuleProps: {
-        topicRulePayload: {
-            ruleDisabled: false,
-            description: "Persistent storage of connected vehicle telematics data",
-            sql: "SELECT * FROM 'connectedcar/telemetry/#'",
-            actions: []
-        }
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "Persistent storage of connected vehicle telematics data",
+        sql: "SELECT * FROM 'connectedcar/telemetry/#'",
+        actions: []
+      }
     },
     kinesisFirehoseProps: {
       extendedS3DestinationConfiguration: {
@@ -112,7 +112,7 @@ test('check firehose and s3 overrides', () => {
         IntervalInSeconds: 600,
         SizeInMBs: 55
       }
-  }});
+    }});
 });
 test('check properties', () => {
   const stack = new cdk.Stack();

@@ -94,10 +94,10 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
 
         child.cfnOptions.metadata = {
           cfn_nag: {
-              rules_to_suppress: [{
-                  id: 'W59',
-                  reason: `AWS::ApiGateway::Method AuthorizationType is set to 'NONE' because API Gateway behind CloudFront does not support AWS_IAM authentication`
-              }]
+            rules_to_suppress: [{
+              id: 'W59',
+              reason: `AWS::ApiGateway::Method AuthorizationType is set to 'NONE' because API Gateway behind CloudFront does not support AWS_IAM authentication`
+            }]
           }
         };
       }

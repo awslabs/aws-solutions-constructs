@@ -22,17 +22,17 @@ const app = new App();
 const stack = new Stack(app, 'test-rule-exist-sqs');
 
 const existingQueueObj = new sqs.Queue(stack, 'MyQueue', {
-    encryption: sqs.QueueEncryption.KMS,
-    encryptionMasterKey: new kms.Key(stack, 'MyKey', {
-        enableKeyRotation: true
-    }),
+  encryption: sqs.QueueEncryption.KMS,
+  encryptionMasterKey: new kms.Key(stack, 'MyKey', {
+    enableKeyRotation: true
+  }),
 });
 
 const props: EventsRuleToSqsProps = {
-    eventRuleProps: {
-        schedule: events.Schedule.rate(Duration.minutes(5))
-    },
-    existingQueueObj
+  eventRuleProps: {
+    schedule: events.Schedule.rate(Duration.minutes(5))
+  },
+  existingQueueObj
 };
 
 new EventsRuleToSqs(stack, 'construct', props);

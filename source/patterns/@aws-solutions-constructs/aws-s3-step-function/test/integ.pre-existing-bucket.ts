@@ -24,10 +24,10 @@ const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', 'cdktoo
 const startState = new stepfunctions.Pass(stack, 'StartState');
 
 const props: S3ToStepFunctionProps = {
-    existingBucketObj: mybucket,
-    stateMachineProps: {
-      definition: startState
-    }
+  existingBucketObj: mybucket,
+  stateMachineProps: {
+    definition: startState
+  }
 };
 
 new S3ToStepFunction(stack, 'test-s3-step-function-pre-existing-bucket-stack', props);
