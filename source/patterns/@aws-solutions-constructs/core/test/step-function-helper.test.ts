@@ -23,132 +23,132 @@ import { LogGroup } from "@aws-cdk/aws-logs";
 // Test minimal deployment with no properties
 // --------------------------------------------------------------
 test('Test minimal deployment with no properties', () => {
-    // Stack
-    const stack = new Stack();
-    // Step function definition
-    const startState = new sfn.Pass(stack, 'StartState');
-    // Build state machine
-    defaults.buildStateMachine(stack, {
-        definition: startState
-    });
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Stack
+  const stack = new Stack();
+  // Step function definition
+  const startState = new sfn.Pass(stack, 'StartState');
+  // Build state machine
+  defaults.buildStateMachine(stack, {
+    definition: startState
+  });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
 // Test deployment w/ custom properties
 // --------------------------------------------------------------
 test('Test deployment w/ custom properties', () => {
-    // Stack
-    const stack = new Stack();
-    // Step function definition
-    const startState = new sfn.Pass(stack, 'StartState');
-    // Build state machine
-    defaults.buildStateMachine(stack, {
-        definition: startState,
-        stateMachineName: 'myStateMachine'
-    });
-    // Assertion
-    expect(stack).toHaveResource("AWS::StepFunctions::StateMachine", {
-        StateMachineName: "myStateMachine"
-    });
+  // Stack
+  const stack = new Stack();
+  // Step function definition
+  const startState = new sfn.Pass(stack, 'StartState');
+  // Build state machine
+  defaults.buildStateMachine(stack, {
+    definition: startState,
+    stateMachineName: 'myStateMachine'
+  });
+  // Assertion
+  expect(stack).toHaveResource("AWS::StepFunctions::StateMachine", {
+    StateMachineName: "myStateMachine"
+  });
 });
 
 // --------------------------------------------------------------
 // Test deployment w/ logging enabled
 // --------------------------------------------------------------
 test('Test deployment w/ logging enabled', () => {
-    // Stack
-    const stack = new Stack();
-    // Step function definition
-    const startState = new sfn.Pass(stack, 'StartState');
-    // Log group
-    const logGroup = new LogGroup(stack, 'myLogGroup', defaults.DefaultLogGroupProps());
-    // Build state machine
-    defaults.buildStateMachine(stack, {
-        definition: startState,
-        logs: {
-            destination: logGroup,
-            level: sfn.LogLevel.FATAL
+  // Stack
+  const stack = new Stack();
+  // Step function definition
+  const startState = new sfn.Pass(stack, 'StartState');
+  // Log group
+  const logGroup = new LogGroup(stack, 'myLogGroup', defaults.DefaultLogGroupProps());
+  // Build state machine
+  defaults.buildStateMachine(stack, {
+    definition: startState,
+    logs: {
+      destination: logGroup,
+      level: sfn.LogLevel.FATAL
+    }
+  });
+  // Assertion
+  expect(stack).toHaveResource("AWS::StepFunctions::StateMachine", {
+    LoggingConfiguration: {
+      Destinations: [{
+        CloudWatchLogsLogGroup: {
+          LogGroupArn: {
+            "Fn::GetAtt": [
+              "myLogGroup46524CAB",
+              "Arn"
+            ]
+          }
         }
-    });
-    // Assertion
-    expect(stack).toHaveResource("AWS::StepFunctions::StateMachine", {
-        LoggingConfiguration: {
-            Destinations: [{
-                CloudWatchLogsLogGroup: {
-                  LogGroupArn: {
-                    "Fn::GetAtt": [
-                      "myLogGroup46524CAB",
-                      "Arn"
-                    ]
-                  }
-                }
-              }],
-            Level: 'FATAL'
-        }
-    });
+      }],
+      Level: 'FATAL'
+    }
+  });
 });
 
 // --------------------------------------------------------------
 // Check default Cloudwatch perissions
 // --------------------------------------------------------------
 test('Test deployment w/ logging enabled', () => {
-    // Stack
-    const stack = new Stack();
-    // Step function definition
-    const startState = new sfn.Pass(stack, 'StartState');
-    // Build state machine
-    defaults.buildStateMachine(stack, {
-        definition: startState
-    });
-    // Assertion
-    expect(stack).toHaveResource("AWS::IAM::Policy", {
-      PolicyDocument: {
-        Statement: [
-          {
-            Action: [
-              "logs:CreateLogDelivery",
-              "logs:GetLogDelivery",
-              "logs:UpdateLogDelivery",
-              "logs:DeleteLogDelivery",
-              "logs:ListLogDeliveries"
-            ],
-            Effect: "Allow",
-            Resource: "*"
-          },
-          {
-            Action: [
-              "logs:PutResourcePolicy",
-              "logs:DescribeResourcePolicies",
-              "logs:DescribeLogGroups"
-            ],
-            Effect: "Allow",
-            Resource: {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:",
-                  {
-                    Ref: "AWS::Partition"
-                  },
-                  ":logs:",
-                  {
-                    Ref: "AWS::Region"
-                  },
-                  ":",
-                  {
-                    Ref: "AWS::AccountId"
-                  },
-                  ":*"
-                ]
+  // Stack
+  const stack = new Stack();
+  // Step function definition
+  const startState = new sfn.Pass(stack, 'StartState');
+  // Build state machine
+  defaults.buildStateMachine(stack, {
+    definition: startState
+  });
+  // Assertion
+  expect(stack).toHaveResource("AWS::IAM::Policy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: [
+            "logs:CreateLogDelivery",
+            "logs:GetLogDelivery",
+            "logs:UpdateLogDelivery",
+            "logs:DeleteLogDelivery",
+            "logs:ListLogDeliveries"
+          ],
+          Effect: "Allow",
+          Resource: "*"
+        },
+        {
+          Action: [
+            "logs:PutResourcePolicy",
+            "logs:DescribeResourcePolicies",
+            "logs:DescribeLogGroups"
+          ],
+          Effect: "Allow",
+          Resource: {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  Ref: "AWS::Partition"
+                },
+                ":logs:",
+                {
+                  Ref: "AWS::Region"
+                },
+                ":",
+                {
+                  Ref: "AWS::AccountId"
+                },
+                ":*"
               ]
-            }
+            ]
           }
-        ],
-        Version: "2012-10-17"
-      }
-    });
+        }
+      ],
+      Version: "2012-10-17"
+    }
+  });
 });
 
 // --------------------------------------------------------------
@@ -161,7 +161,7 @@ test('Count State Machine CW Alarms', () => {
   const startState = new sfn.Pass(stack, 'StartState');
   // Build state machine
   const [sm] = defaults.buildStateMachine(stack, {
-      definition: startState
+    definition: startState
   });
   const cwList = defaults.buildStepFunctionCWAlarms(stack, sm);
 

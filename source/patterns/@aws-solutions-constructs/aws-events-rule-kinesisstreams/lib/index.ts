@@ -64,42 +64,42 @@ export class EventsRuleToKinesisStreams extends Construct {
      * @access public
      */
     constructor(scope: Construct, id: string, props: EventsRuleToKinesisStreamsProps) {
-        super(scope, id);
+      super(scope, id);
 
-        // Set up the Kinesis Stream
-        this.kinesisStream = defaults.buildKinesisStream(this, {
-            existingStreamObj: props.existingStreamObj,
-            kinesisStreamProps: props.kinesisStreamProps,
-        });
+      // Set up the Kinesis Stream
+      this.kinesisStream = defaults.buildKinesisStream(this, {
+        existingStreamObj: props.existingStreamObj,
+        kinesisStreamProps: props.kinesisStreamProps,
+      });
 
-        // Create an events service role
-        this.eventsRole = new iam.Role(this, 'eventsRole', {
-          assumedBy: new iam.ServicePrincipal('events.amazonaws.com'),
-          description: 'Events Rule Role',
-        });
+      // Create an events service role
+      this.eventsRole = new iam.Role(this, 'eventsRole', {
+        assumedBy: new iam.ServicePrincipal('events.amazonaws.com'),
+        description: 'Events Rule Role',
+      });
 
-        // Grant permission to events service role to allow event rule to send events data to the kinesis stream
-        this.kinesisStream.grantWrite(this.eventsRole);
+      // Grant permission to events service role to allow event rule to send events data to the kinesis stream
+      this.kinesisStream.grantWrite(this.eventsRole);
 
-        // Set up the Kinesis Stream as the target for event rule
-        const kinesisStreamEventTarget: events.IRuleTarget = {
-          bind: () => ({
-            id: '',
-            arn: this.kinesisStream.streamArn,
-            role: this.eventsRole
-          })
-        };
+      // Set up the Kinesis Stream as the target for event rule
+      const kinesisStreamEventTarget: events.IRuleTarget = {
+        bind: () => ({
+          id: '',
+          arn: this.kinesisStream.streamArn,
+          role: this.eventsRole
+        })
+      };
 
-        // Set up the events rule props
-        const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([kinesisStreamEventTarget]);
-        const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);
+      // Set up the events rule props
+      const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([kinesisStreamEventTarget]);
+      const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);
 
-        // Setup up the event rule
-        this.eventsRule = new events.Rule(this, 'EventsRule', eventsRuleProps);
+      // Setup up the event rule
+      this.eventsRule = new events.Rule(this, 'EventsRule', eventsRuleProps);
 
-        if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
-          // Deploy best practices CW Alarms for Kinesis Stream
-          this.cloudwatchAlarms = defaults.buildKinesisStreamCWAlarms(this);
+      if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
+        // Deploy best practices CW Alarms for Kinesis Stream
+        this.cloudwatchAlarms = defaults.buildKinesisStreamCWAlarms(this);
       }
     }
 }

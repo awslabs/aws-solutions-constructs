@@ -55,29 +55,29 @@ export class CloudFrontToS3 extends Construct {
     public readonly s3Bucket?: s3.Bucket;
     public readonly s3LoggingBucket?: s3.Bucket;
 
-  /**
-   * @summary Constructs a new instance of the CloudFrontToS3 class.
-   * @param {cdk.App} scope - represents the scope for all the resources.
-   * @param {string} id - this is a a scope-unique id.
-   * @param {CloudFrontToS3Props} props - user provided props for the construct
-   * @since 0.8.0
-   * @access public
-   */
+    /**
+     * @summary Constructs a new instance of the CloudFrontToS3 class.
+     * @param {cdk.App} scope - represents the scope for all the resources.
+     * @param {string} id - this is a a scope-unique id.
+     * @param {CloudFrontToS3Props} props - user provided props for the construct
+     * @since 0.8.0
+     * @access public
+     */
     constructor(scope: Construct, id: string, props: CloudFrontToS3Props) {
-        super(scope, id);
-        let bucket: s3.Bucket;
+      super(scope, id);
+      let bucket: s3.Bucket;
 
-        if (!props.existingBucketObj) {
-          [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
-            bucketProps: props.bucketProps
-          });
-          bucket = this.s3Bucket;
-        } else {
-          bucket = props.existingBucketObj;
-        }
+      if (!props.existingBucketObj) {
+        [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
+          bucketProps: props.bucketProps
+        });
+        bucket = this.s3Bucket;
+      } else {
+        bucket = props.existingBucketObj;
+      }
 
-        [this.cloudFrontWebDistribution, this.edgeLambdaFunctionVersion, this.cloudFrontLoggingBucket] =
+      [this.cloudFrontWebDistribution, this.edgeLambdaFunctionVersion, this.cloudFrontLoggingBucket] =
           defaults.CloudFrontDistributionForS3(this, bucket,
-          props.cloudFrontDistributionProps, props.insertHttpSecurityHeaders);
+            props.cloudFrontDistributionProps, props.insertHttpSecurityHeaders);
     }
 }

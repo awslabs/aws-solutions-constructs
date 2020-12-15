@@ -28,10 +28,10 @@ const snsToSqsStack = new SnsToSqs(stack, 'test-sns-sqs-stack', props);
 
 // Grant yourself permissions to use the Customer Managed KMS Key
 const policyStatement = new iam.PolicyStatement({
-    actions: ["kms:Encrypt", "kms:Decrypt"],
-    effect: iam.Effect.ALLOW,
-    principals: [ new iam.AccountRootPrincipal() ],
-    resources: [ "*" ]
+  actions: ["kms:Encrypt", "kms:Decrypt"],
+  effect: iam.Effect.ALLOW,
+  principals: [ new iam.AccountRootPrincipal() ],
+  resources: [ "*" ]
 });
 
 snsToSqsStack.encryptionKey?.addToResourcePolicy(policyStatement);

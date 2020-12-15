@@ -73,40 +73,40 @@ export class EventsRuleToSns extends Construct {
      * @access public
      */
     constructor(scope: Construct, id: string, props: EventsRuleToSnsProps) {
-        super(scope, id);
+      super(scope, id);
 
-        let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
-        if (props.enableEncryptionWithCustomerManagedKey === undefined ||
+      let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
+      if (props.enableEncryptionWithCustomerManagedKey === undefined ||
           props.enableEncryptionWithCustomerManagedKey === true) {
-            enableEncryptionParam = true;
-        }
+        enableEncryptionParam = true;
+      }
 
-        // Setup the sns topic.
-        [this.snsTopic, this.encryptionKey] = defaults.buildTopic(this, {
-            existingTopicObj: props.existingTopicObj,
-            topicProps: props.topicsProps,
-            enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
-            encryptionKey: props.encryptionKey,
-            encryptionKeyProps: props.encryptionKeyProps
-        });
+      // Setup the sns topic.
+      [this.snsTopic, this.encryptionKey] = defaults.buildTopic(this, {
+        existingTopicObj: props.existingTopicObj,
+        topicProps: props.topicsProps,
+        enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
+        encryptionKey: props.encryptionKey,
+        encryptionKeyProps: props.encryptionKeyProps
+      });
 
-        // Setup the event rule target as sns topic.
-        const topicEventTarget: events.IRuleTarget = {
-            bind: () => ({
-                id: this.snsTopic.topicName,
-                arn: this.snsTopic.topicArn
-            })
-        };
+      // Setup the event rule target as sns topic.
+      const topicEventTarget: events.IRuleTarget = {
+        bind: () => ({
+          id: this.snsTopic.topicName,
+          arn: this.snsTopic.topicArn
+        })
+      };
 
-        // Setup up the event rule property.
-        const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([topicEventTarget]);
-        const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);
+      // Setup up the event rule property.
+      const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([topicEventTarget]);
+      const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);
 
-        // Setup up the event rule.
-        this.eventsRule = new events.Rule(this, 'EventsRule', eventsRuleProps);
+      // Setup up the event rule.
+      this.eventsRule = new events.Rule(this, 'EventsRule', eventsRuleProps);
 
-        // Setup up the grant policy for event to be able to publish to the sns topic.
-        this.snsTopic.grantPublish(new ServicePrincipal('events.amazonaws.com'));
+      // Setup up the grant policy for event to be able to publish to the sns topic.
+      this.snsTopic.grantPublish(new ServicePrincipal('events.amazonaws.com'));
 
         // Grant EventBridge service access to the SNS Topic encryption key
         this.encryptionKey?.grant(new ServicePrincipal('events.amazonaws.com'),

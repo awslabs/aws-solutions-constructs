@@ -57,97 +57,97 @@ export interface BuildTopicProps {
 
 function applySecureTopicPolicy(topic: sns.Topic): void {
 
-    // Apply topic policy to enforce only the topic owner can publish and subscribe to this topic
-    topic.addToResourcePolicy(
-        new PolicyStatement({
-            sid: 'TopicOwnerOnlyAccess',
-            resources: [
-                `${topic.topicArn}`
-            ],
-            actions: [
-                "SNS:Publish",
-                "SNS:RemovePermission",
-                "SNS:SetTopicAttributes",
-                "SNS:DeleteTopic",
-                "SNS:ListSubscriptionsByTopic",
-                "SNS:GetTopicAttributes",
-                "SNS:Receive",
-                "SNS:AddPermission",
-                "SNS:Subscribe"
-            ],
-            principals: [new AccountPrincipal(Stack.of(topic).account)],
-            effect: Effect.ALLOW,
-            conditions:
+  // Apply topic policy to enforce only the topic owner can publish and subscribe to this topic
+  topic.addToResourcePolicy(
+    new PolicyStatement({
+      sid: 'TopicOwnerOnlyAccess',
+      resources: [
+        `${topic.topicArn}`
+      ],
+      actions: [
+        "SNS:Publish",
+        "SNS:RemovePermission",
+        "SNS:SetTopicAttributes",
+        "SNS:DeleteTopic",
+        "SNS:ListSubscriptionsByTopic",
+        "SNS:GetTopicAttributes",
+        "SNS:Receive",
+        "SNS:AddPermission",
+        "SNS:Subscribe"
+      ],
+      principals: [new AccountPrincipal(Stack.of(topic).account)],
+      effect: Effect.ALLOW,
+      conditions:
             {
-                StringEquals: {
-                    "AWS:SourceOwner": Stack.of(topic).account
-                }
+              StringEquals: {
+                "AWS:SourceOwner": Stack.of(topic).account
+              }
             }
-        })
-    );
+    })
+  );
 
-    // Apply Topic policy to enforce encryption of data in transit
-    topic.addToResourcePolicy(
-        new PolicyStatement({
-            sid: 'HttpsOnly',
-            resources: [
-                `${topic.topicArn}`
-            ],
-            actions: [
-                "SNS:Publish",
-                "SNS:RemovePermission",
-                "SNS:SetTopicAttributes",
-                "SNS:DeleteTopic",
-                "SNS:ListSubscriptionsByTopic",
-                "SNS:GetTopicAttributes",
-                "SNS:Receive",
-                "SNS:AddPermission",
-                "SNS:Subscribe"
-            ],
-            principals: [new AnyPrincipal()],
-            effect: Effect.DENY,
-            conditions:
+  // Apply Topic policy to enforce encryption of data in transit
+  topic.addToResourcePolicy(
+    new PolicyStatement({
+      sid: 'HttpsOnly',
+      resources: [
+        `${topic.topicArn}`
+      ],
+      actions: [
+        "SNS:Publish",
+        "SNS:RemovePermission",
+        "SNS:SetTopicAttributes",
+        "SNS:DeleteTopic",
+        "SNS:ListSubscriptionsByTopic",
+        "SNS:GetTopicAttributes",
+        "SNS:Receive",
+        "SNS:AddPermission",
+        "SNS:Subscribe"
+      ],
+      principals: [new AnyPrincipal()],
+      effect: Effect.DENY,
+      conditions:
             {
-                Bool: {
-                    'aws:SecureTransport': 'false'
-                }
+              Bool: {
+                'aws:SecureTransport': 'false'
+              }
             }
-        })
-    );
+    })
+  );
 }
 
 export function buildTopic(scope: cdk.Construct, props: BuildTopicProps): [sns.Topic, kms.Key?] {
-    if (!props.existingTopicObj) {
-        // Setup the topic properties
-        let snsTopicProps;
-        if (props.topicProps) {
-            // If property overrides have been provided, incorporate them and deploy
-            snsTopicProps = overrideProps(DefaultSnsTopicProps, props.topicProps);
-        } else {
-            // If no property overrides, deploy using the default configuration
-            snsTopicProps = DefaultSnsTopicProps;
-        }
-        // Set encryption properties
-        if (props.enableEncryptionWithCustomerManagedKey === undefined || props.enableEncryptionWithCustomerManagedKey === false) {
-            // Retrieve SNS managed key to encrypt the SNS Topic
-            const awsManagedKey = kms.Alias.fromAliasName(scope, 'aws-managed-key', 'alias/aws/sns');
-            snsTopicProps.masterKey = awsManagedKey;
-        } else {
-            // Use the imported Customer Managed KMS key
-            if (props.encryptionKey) {
-                snsTopicProps.masterKey = props.encryptionKey;
-            } else {
-                // Create a new Customer Managed KMS key
-                snsTopicProps.masterKey = buildEncryptionKey(scope, props.encryptionKeyProps);
-            }
-        }
-        // Create the SNS Topic
-        const topic: sns.Topic = new sns.Topic(scope, 'SnsTopic', snsTopicProps);
-
-        applySecureTopicPolicy(topic);
-
-        return [topic, snsTopicProps.masterKey];
+  if (!props.existingTopicObj) {
+    // Setup the topic properties
+    let snsTopicProps;
+    if (props.topicProps) {
+      // If property overrides have been provided, incorporate them and deploy
+      snsTopicProps = overrideProps(DefaultSnsTopicProps, props.topicProps);
     } else {
-        return [props.existingTopicObj];
+      // If no property overrides, deploy using the default configuration
+      snsTopicProps = DefaultSnsTopicProps;
     }
+    // Set encryption properties
+    if (props.enableEncryptionWithCustomerManagedKey === undefined || props.enableEncryptionWithCustomerManagedKey === false) {
+      // Retrieve SNS managed key to encrypt the SNS Topic
+      const awsManagedKey = kms.Alias.fromAliasName(scope, 'aws-managed-key', 'alias/aws/sns');
+      snsTopicProps.masterKey = awsManagedKey;
+    } else {
+      // Use the imported Customer Managed KMS key
+      if (props.encryptionKey) {
+        snsTopicProps.masterKey = props.encryptionKey;
+      } else {
+        // Create a new Customer Managed KMS key
+        snsTopicProps.masterKey = buildEncryptionKey(scope, props.encryptionKeyProps);
+      }
+    }
+    // Create the SNS Topic
+    const topic: sns.Topic = new sns.Topic(scope, 'SnsTopic', snsTopicProps);
+
+    applySecureTopicPolicy(topic);
+
+    return [topic, snsTopicProps.masterKey];
+  } else {
+    return [props.existingTopicObj];
+  }
 }

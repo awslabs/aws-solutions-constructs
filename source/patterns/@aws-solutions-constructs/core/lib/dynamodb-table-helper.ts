@@ -33,31 +33,31 @@ export interface BuildDynamoDBTableProps {
 }
 
 export function buildDynamoDBTable(scope: cdk.Construct, props: BuildDynamoDBTableProps): dynamodb.Table {
-    // Conditional DynamoDB Table creation
-    if (!props.existingTableObj) {
-        // Set the default props for DynamoDB table
-        if (props.dynamoTableProps) {
-            const dynamoTableProps = overrideProps(DefaultTableProps, props.dynamoTableProps);
-            return new dynamodb.Table(scope, 'DynamoTable', dynamoTableProps);
-        } else {
-            return new dynamodb.Table(scope, 'DynamoTable', DefaultTableProps);
-        }
+  // Conditional DynamoDB Table creation
+  if (!props.existingTableObj) {
+    // Set the default props for DynamoDB table
+    if (props.dynamoTableProps) {
+      const dynamoTableProps = overrideProps(DefaultTableProps, props.dynamoTableProps);
+      return new dynamodb.Table(scope, 'DynamoTable', dynamoTableProps);
     } else {
-        return props.existingTableObj;
+      return new dynamodb.Table(scope, 'DynamoTable', DefaultTableProps);
     }
+  } else {
+    return props.existingTableObj;
+  }
 }
 
 export function buildDynamoDBTableWithStream(scope: cdk.Construct, props: BuildDynamoDBTableProps): dynamodb.Table {
-    // Conditional DynamoDB Table creation
-    if (!props.existingTableObj) {
-        // Set the default props for DynamoDB table
-        if (props.dynamoTableProps) {
-            const dynamoTableProps = overrideProps(DefaultTableWithStreamProps, props.dynamoTableProps);
-            return new dynamodb.Table(scope, 'DynamoTable', dynamoTableProps);
-        } else {
-            return new dynamodb.Table(scope, 'DynamoTable', DefaultTableWithStreamProps);
-        }
+  // Conditional DynamoDB Table creation
+  if (!props.existingTableObj) {
+    // Set the default props for DynamoDB table
+    if (props.dynamoTableProps) {
+      const dynamoTableProps = overrideProps(DefaultTableWithStreamProps, props.dynamoTableProps);
+      return new dynamodb.Table(scope, 'DynamoTable', dynamoTableProps);
     } else {
-        return props.existingTableObj;
+      return new dynamodb.Table(scope, 'DynamoTable', DefaultTableWithStreamProps);
     }
+  } else {
+    return props.existingTableObj;
+  }
 }

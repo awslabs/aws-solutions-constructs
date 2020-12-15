@@ -57,24 +57,24 @@ test('override cognito properties', () => {
   });
 
   expect(stack).toHaveResource('AWS::Cognito::UserPool',
-  {
-    AdminCreateUserConfig: {
-      AllowAdminCreateUserOnly: true
-    },
-    EmailVerificationMessage: "The verification code to your new account is {####}",
-    EmailVerificationSubject: "Verify your new account",
-    SmsVerificationMessage: "The verification code to your new account is {####}",
-    UserPoolAddOns: {
-      AdvancedSecurityMode: "ENFORCED"
-    },
-    UserPoolName: "test",
-    VerificationMessageTemplate: {
-      DefaultEmailOption: "CONFIRM_WITH_CODE",
-      EmailMessage: "The verification code to your new account is {####}",
-      EmailSubject: "Verify your new account",
-      SmsMessage: "The verification code to your new account is {####}"
-    }
-  });
+    {
+      AdminCreateUserConfig: {
+        AllowAdminCreateUserOnly: true
+      },
+      EmailVerificationMessage: "The verification code to your new account is {####}",
+      EmailVerificationSubject: "Verify your new account",
+      SmsVerificationMessage: "The verification code to your new account is {####}",
+      UserPoolAddOns: {
+        AdvancedSecurityMode: "ENFORCED"
+      },
+      UserPoolName: "test",
+      VerificationMessageTemplate: {
+        DefaultEmailOption: "CONFIRM_WITH_CODE",
+        EmailMessage: "The verification code to your new account is {####}",
+        EmailSubject: "Verify your new account",
+        SmsMessage: "The verification code to your new account is {####}"
+      }
+    });
 });
 
 test('check exception for Missing existingObj from props', () => {

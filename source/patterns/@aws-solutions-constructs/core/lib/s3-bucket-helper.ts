@@ -30,116 +30,116 @@ export interface BuildS3BucketProps {
 }
 
 export function buildS3Bucket(scope: cdk.Construct, props: BuildS3BucketProps, bucketId?: string): [s3.Bucket, s3.Bucket?] {
-    if (props.bucketProps) {
-        return s3BucketWithLogging(scope, props.bucketProps, bucketId);
-    } else {
-        return s3BucketWithLogging(scope, DefaultS3Props(), bucketId);
-    }
+  if (props.bucketProps) {
+    return s3BucketWithLogging(scope, props.bucketProps, bucketId);
+  } else {
+    return s3BucketWithLogging(scope, DefaultS3Props(), bucketId);
+  }
 }
 
 export function applySecureBucketPolicy(s3Bucket: s3.Bucket): void {
 
-    // Apply bucket policy to enforce encryption of data in transit
+  // Apply bucket policy to enforce encryption of data in transit
 
-    s3Bucket.addToResourcePolicy(
-        new PolicyStatement({
-            sid: 'HttpsOnly',
-            resources: [
-                `${s3Bucket.bucketArn}/*`
-            ],
-            actions: ['*'],
-            principals: [new AnyPrincipal()],
-            effect: Effect.DENY,
-            conditions:
+  s3Bucket.addToResourcePolicy(
+    new PolicyStatement({
+      sid: 'HttpsOnly',
+      resources: [
+        `${s3Bucket.bucketArn}/*`
+      ],
+      actions: ['*'],
+      principals: [new AnyPrincipal()],
+      effect: Effect.DENY,
+      conditions:
             {
-                Bool: {
-                    'aws:SecureTransport': 'false'
-                }
+              Bool: {
+                'aws:SecureTransport': 'false'
+              }
             }
-        })
-    );
+    })
+  );
 }
 
 export function createLoggingBucket(scope: cdk.Construct, bucketId: string): s3.Bucket {
-    // Create the Logging Bucket
-    const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, DefaultS3Props());
+  // Create the Logging Bucket
+  const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, DefaultS3Props());
 
-    applySecureBucketPolicy(loggingBucket);
+  applySecureBucketPolicy(loggingBucket);
 
-    // Extract the CfnBucket from the loggingBucket
-    const loggingBucketResource = loggingBucket.node.findChild('Resource') as s3.CfnBucket;
+  // Extract the CfnBucket from the loggingBucket
+  const loggingBucketResource = loggingBucket.node.findChild('Resource') as s3.CfnBucket;
 
-    // Override accessControl configuration and add metadata for the logging bucket
-    loggingBucketResource.addPropertyOverride('AccessControl', 'LogDeliveryWrite');
+  // Override accessControl configuration and add metadata for the logging bucket
+  loggingBucketResource.addPropertyOverride('AccessControl', 'LogDeliveryWrite');
 
-    // Turn off Versioning for the logging bucket as objects will be written only ONCE
-    loggingBucketResource.addPropertyDeletionOverride('VersioningConfiguration.Status');
+  // Turn off Versioning for the logging bucket as objects will be written only ONCE
+  loggingBucketResource.addPropertyDeletionOverride('VersioningConfiguration.Status');
 
-    // Remove the default LifecycleConfiguration for the Logging Bucket
-    loggingBucketResource.addPropertyDeletionOverride('LifecycleConfiguration.Rules');
+  // Remove the default LifecycleConfiguration for the Logging Bucket
+  loggingBucketResource.addPropertyDeletionOverride('LifecycleConfiguration.Rules');
 
-    let _reason = "This S3 bucket is used as the access logging bucket for another bucket";
+  let _reason = "This S3 bucket is used as the access logging bucket for another bucket";
 
-    if (bucketId === 'CloudfrontLoggingBucket') {
-        _reason = "This S3 bucket is used as the access logging bucket for CloudFront Distribution";
+  if (bucketId === 'CloudfrontLoggingBucket') {
+    _reason = "This S3 bucket is used as the access logging bucket for CloudFront Distribution";
+  }
+
+  loggingBucketResource.cfnOptions.metadata = {
+    cfn_nag: {
+      rules_to_suppress: [{
+        id: 'W35',
+        reason: _reason
+      }]
     }
+  };
 
-    loggingBucketResource.cfnOptions.metadata = {
-        cfn_nag: {
-            rules_to_suppress: [{
-                id: 'W35',
-                reason: _reason
-            }]
-        }
-    };
-
-    return loggingBucket;
+  return loggingBucket;
 }
 
 function s3BucketWithLogging(scope: cdk.Construct, s3BucketProps?: s3.BucketProps, bucketId?: string): [s3.Bucket, s3.Bucket?] {
 
-    /** Default Life Cycle policy to transition older versions to Glacier after 90 days */
-    const lifecycleRules: s3.LifecycleRule[] = [{
-        noncurrentVersionTransitions: [{
-            storageClass: StorageClass.GLACIER,
-            transitionAfter: Duration.days(90)
-        }]
-    }];
+  /** Default Life Cycle policy to transition older versions to Glacier after 90 days */
+  const lifecycleRules: s3.LifecycleRule[] = [{
+    noncurrentVersionTransitions: [{
+      storageClass: StorageClass.GLACIER,
+      transitionAfter: Duration.days(90)
+    }]
+  }];
 
-    // Create the Application Bucket
-    let bucketprops: s3.BucketProps;
-    let loggingBucket;
-    const _bucketId = bucketId ? bucketId + 'S3Bucket' : 'S3Bucket';
-    const _loggingBucketId = bucketId ? bucketId + 'S3LoggingBucket' : 'S3LoggingBucket';
+  // Create the Application Bucket
+  let bucketprops: s3.BucketProps;
+  let loggingBucket;
+  const _bucketId = bucketId ? bucketId + 'S3Bucket' : 'S3Bucket';
+  const _loggingBucketId = bucketId ? bucketId + 'S3LoggingBucket' : 'S3LoggingBucket';
 
-    if (s3BucketProps?.serverAccessLogsBucket) {
-        // Attach the Default Life Cycle policy ONLY IF the versioning is ENABLED
-        if (s3BucketProps.versioned === undefined || s3BucketProps.versioned) {
-            bucketprops = DefaultS3Props(undefined, lifecycleRules);
-        } else {
-            bucketprops = DefaultS3Props();
-        }
+  if (s3BucketProps?.serverAccessLogsBucket) {
+    // Attach the Default Life Cycle policy ONLY IF the versioning is ENABLED
+    if (s3BucketProps.versioned === undefined || s3BucketProps.versioned) {
+      bucketprops = DefaultS3Props(undefined, lifecycleRules);
     } else {
-        // Create the Logging Bucket
-        loggingBucket = createLoggingBucket(scope, _loggingBucketId);
-
-        // Attach the Default Life Cycle policy ONLY IF the versioning is ENABLED
-        if (s3BucketProps?.versioned === undefined || s3BucketProps.versioned) {
-            bucketprops = DefaultS3Props(loggingBucket, lifecycleRules);
-        } else {
-            bucketprops = DefaultS3Props(loggingBucket);
-        }
+      bucketprops = DefaultS3Props();
     }
+  } else {
+    // Create the Logging Bucket
+    loggingBucket = createLoggingBucket(scope, _loggingBucketId);
 
-    if (s3BucketProps) {
-        bucketprops = overrideProps(bucketprops, s3BucketProps);
+    // Attach the Default Life Cycle policy ONLY IF the versioning is ENABLED
+    if (s3BucketProps?.versioned === undefined || s3BucketProps.versioned) {
+      bucketprops = DefaultS3Props(loggingBucket, lifecycleRules);
+    } else {
+      bucketprops = DefaultS3Props(loggingBucket);
     }
+  }
 
-    const s3Bucket: s3.Bucket = new s3.Bucket(scope, _bucketId, bucketprops);
+  if (s3BucketProps) {
+    bucketprops = overrideProps(bucketprops, s3BucketProps);
+  }
 
-    applySecureBucketPolicy(s3Bucket);
+  const s3Bucket: s3.Bucket = new s3.Bucket(scope, _bucketId, bucketprops);
 
-    return [s3Bucket, loggingBucket];
+  applySecureBucketPolicy(s3Bucket);
+
+  return [s3Bucket, loggingBucket];
 }
 
 export function addCfnNagS3BucketNotificationRulesToSuppress(stackRoot: cdk.Stack, logicalId: string) {

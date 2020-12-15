@@ -22,24 +22,24 @@ import { LogGroup } from '@aws-cdk/aws-logs';
  * @param _logGroup - CW Log group for Api Gateway access logging
  */
 function DefaultRestApiProps(_endpointType: api.EndpointType[], _logGroup: LogGroup): api.RestApiProps {
-    return {
-        endpointConfiguration: {
-            types: _endpointType
-        },
-        cloudWatchRole: false,
-        // Configure API Gateway Access logging
-        deployOptions: {
-            accessLogDestination: new api.LogGroupLogDestination(_logGroup),
-            accessLogFormat: api.AccessLogFormat.jsonWithStandardFields(),
-            loggingLevel: api.MethodLoggingLevel.INFO,
-            dataTraceEnabled: true,
-            tracingEnabled: true
-        },
-        defaultMethodOptions: {
-            authorizationType: api.AuthorizationType.IAM
-        }
+  return {
+    endpointConfiguration: {
+      types: _endpointType
+    },
+    cloudWatchRole: false,
+    // Configure API Gateway Access logging
+    deployOptions: {
+      accessLogDestination: new api.LogGroupLogDestination(_logGroup),
+      accessLogFormat: api.AccessLogFormat.jsonWithStandardFields(),
+      loggingLevel: api.MethodLoggingLevel.INFO,
+      dataTraceEnabled: true,
+      tracingEnabled: true
+    },
+    defaultMethodOptions: {
+      authorizationType: api.AuthorizationType.IAM
+    }
 
-    } as api.RestApiProps;
+  } as api.RestApiProps;
 }
 
 /**
@@ -49,13 +49,13 @@ function DefaultRestApiProps(_endpointType: api.EndpointType[], _logGroup: LogGr
  * @param _logGroup - CW Log group for Api Gateway access logging
  */
 export function DefaultGlobalLambdaRestApiProps(_existingLambdaObj: lambda.Function, _logGroup: LogGroup): api.LambdaRestApiProps {
-    const baseProps: api.RestApiProps = DefaultRestApiProps([api.EndpointType.EDGE], _logGroup);
+  const baseProps: api.RestApiProps = DefaultRestApiProps([api.EndpointType.EDGE], _logGroup);
 
-    const extraProps: api.LambdaRestApiProps = {
-        handler: _existingLambdaObj,
-    };
+  const extraProps: api.LambdaRestApiProps = {
+    handler: _existingLambdaObj,
+  };
 
-    return Object.assign(baseProps, extraProps);
+  return Object.assign(baseProps, extraProps);
 }
 
 /**
@@ -65,13 +65,13 @@ export function DefaultGlobalLambdaRestApiProps(_existingLambdaObj: lambda.Funct
  * @param _logGroup - CW Log group for Api Gateway access logging
  */
 export function DefaultRegionalLambdaRestApiProps(_existingLambdaObj: lambda.Function, _logGroup: LogGroup): api.LambdaRestApiProps {
-    const baseProps: api.RestApiProps = DefaultRestApiProps([api.EndpointType.REGIONAL], _logGroup);
+  const baseProps: api.RestApiProps = DefaultRestApiProps([api.EndpointType.REGIONAL], _logGroup);
 
-    const extraProps: api.LambdaRestApiProps = {
-        handler: _existingLambdaObj,
-    };
+  const extraProps: api.LambdaRestApiProps = {
+    handler: _existingLambdaObj,
+  };
 
-    return Object.assign(baseProps, extraProps);
+  return Object.assign(baseProps, extraProps);
 }
 
 /**
@@ -79,7 +79,7 @@ export function DefaultRegionalLambdaRestApiProps(_existingLambdaObj: lambda.Fun
  * @param _logGroup - CW Log group for Api Gateway access logging
  */
 export function DefaultGlobalRestApiProps(_logGroup: LogGroup) {
-    return DefaultRestApiProps([api.EndpointType.EDGE], _logGroup);
+  return DefaultRestApiProps([api.EndpointType.EDGE], _logGroup);
 }
 
 /**
@@ -87,5 +87,5 @@ export function DefaultGlobalRestApiProps(_logGroup: LogGroup) {
  * @param _logGroup - CW Log group for Api Gateway access logging
  */
 export function DefaultRegionalRestApiProps(_logGroup: LogGroup) {
-    return DefaultRestApiProps([api.EndpointType.REGIONAL], _logGroup);
+  return DefaultRestApiProps([api.EndpointType.REGIONAL], _logGroup);
 }

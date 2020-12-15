@@ -19,74 +19,74 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as cdk from '@aws-cdk/core';
 
 export function DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint: api.RestApi,
-                                                                   loggingBucket: s3.Bucket,
-                                                                   setHttpSecurityHeaders: boolean,
-                                                                   edgeLambda?: lambda.Version): cloudfront.DistributionProps {
+  loggingBucket: s3.Bucket,
+  setHttpSecurityHeaders: boolean,
+  edgeLambda?: lambda.Version): cloudfront.DistributionProps {
 
-    const apiEndPointUrlWithoutProtocol = cdk.Fn.select(1, cdk.Fn.split("://", apiEndPoint.url));
-    const apiEndPointDomainName = cdk.Fn.select(0, cdk.Fn.split("/", apiEndPointUrlWithoutProtocol));
+  const apiEndPointUrlWithoutProtocol = cdk.Fn.select(1, cdk.Fn.split("://", apiEndPoint.url));
+  const apiEndPointDomainName = cdk.Fn.select(0, cdk.Fn.split("/", apiEndPointUrlWithoutProtocol));
 
-    if (setHttpSecurityHeaders) {
-        return {
-            defaultBehavior: {
-                    origin: new origins.HttpOrigin(apiEndPointDomainName, {
-                        originPath: `/${apiEndPoint.deploymentStage.stageName}`
-                    }),
-                    edgeLambdas: [
-                            {
-                                eventType: cloudfront.LambdaEdgeEventType.ORIGIN_RESPONSE,
-                                functionVersion: edgeLambda
-                            }
-                    ],
-                    viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS
-                },
-                enableLogging: true,
-                logBucket: loggingBucket,
-                } as cloudfront.DistributionProps;
-    } else {
-        return {
-            defaultBehavior: {
-                origin: new origins.HttpOrigin(apiEndPointDomainName, {
-                    originPath: `/${apiEndPoint.deploymentStage.stageName}`
-                }),
-                viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS
-            },
-            enableLogging: true,
-            logBucket: loggingBucket,
-            } as cloudfront.DistributionProps;
-    }
+  if (setHttpSecurityHeaders) {
+    return {
+      defaultBehavior: {
+        origin: new origins.HttpOrigin(apiEndPointDomainName, {
+          originPath: `/${apiEndPoint.deploymentStage.stageName}`
+        }),
+        edgeLambdas: [
+          {
+            eventType: cloudfront.LambdaEdgeEventType.ORIGIN_RESPONSE,
+            functionVersion: edgeLambda
+          }
+        ],
+        viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS
+      },
+      enableLogging: true,
+      logBucket: loggingBucket,
+    } as cloudfront.DistributionProps;
+  } else {
+    return {
+      defaultBehavior: {
+        origin: new origins.HttpOrigin(apiEndPointDomainName, {
+          originPath: `/${apiEndPoint.deploymentStage.stageName}`
+        }),
+        viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS
+      },
+      enableLogging: true,
+      logBucket: loggingBucket,
+    } as cloudfront.DistributionProps;
+  }
 }
 
 export function DefaultCloudFrontWebDistributionForS3Props(sourceBucket: s3.Bucket, loggingBucket: s3.Bucket,
-                                                           setHttpSecurityHeaders: boolean,
-                                                           edgeLambda?: lambda.Version):
+  setHttpSecurityHeaders: boolean,
+  edgeLambda?: lambda.Version):
                                                            cloudfront.DistributionProps {
 
-    if (setHttpSecurityHeaders) {
-        return {
-            defaultBehavior: {
-                origin: new origins.S3Origin(sourceBucket),
-                edgeLambdas: [
-                    {
-                        eventType: cloudfront.LambdaEdgeEventType.ORIGIN_RESPONSE,
-                        functionVersion: edgeLambda
-                    }
-                ],
-                viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS
-            },
-            enableLogging: true,
-            logBucket: loggingBucket,
-            defaultRootObject: 'index.html'
-            } as cloudfront.DistributionProps;
-    } else {
-        return {
-            defaultBehavior: {
-                origin: new origins.S3Origin(sourceBucket),
-                viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS
-            },
-            enableLogging: true,
-            logBucket: loggingBucket,
-            defaultRootObject: 'index.html'
-        } as cloudfront.DistributionProps;
-    }
+  if (setHttpSecurityHeaders) {
+    return {
+      defaultBehavior: {
+        origin: new origins.S3Origin(sourceBucket),
+        edgeLambdas: [
+          {
+            eventType: cloudfront.LambdaEdgeEventType.ORIGIN_RESPONSE,
+            functionVersion: edgeLambda
+          }
+        ],
+        viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS
+      },
+      enableLogging: true,
+      logBucket: loggingBucket,
+      defaultRootObject: 'index.html'
+    } as cloudfront.DistributionProps;
+  } else {
+    return {
+      defaultBehavior: {
+        origin: new origins.S3Origin(sourceBucket),
+        viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS
+      },
+      enableLogging: true,
+      logBucket: loggingBucket,
+      defaultRootObject: 'index.html'
+    } as cloudfront.DistributionProps;
+  }
 }

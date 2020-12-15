@@ -23,126 +23,126 @@ import '@aws-cdk/assert/jest';
 // Test deployment with new Lambda function
 // --------------------------------------------------------------
 test('Test deployment with new Lambda function', () => {
-    // Stack
-    const stack = new Stack();
-    // Helper declaration
-    new LambdaToSns(stack, 'lambda-to-sns-stack', {
-        lambdaFunctionProps: {
-            runtime: lambda.Runtime.NODEJS_10_X,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-            environment: {
-                LAMBDA_NAME: 'deployed-function'
-            }
-        }
-    });
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-    // Assertion 2
-    expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
-        Environment: {
-            Variables: {
-                LAMBDA_NAME: 'deployed-function'
-            }
-        }
-    });
-    expect(stack).toHaveResource("AWS::SNS::Topic", {
-        KmsMasterKeyId: {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  Ref: "AWS::Partition"
-                },
-                ":kms:",
-                {
-                  Ref: "AWS::Region"
-                },
-                ":",
-                {
-                  Ref: "AWS::AccountId"
-                },
-                ":alias/aws/sns"
-              ]
-            ]
-          }
-    });
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  new LambdaToSns(stack, 'lambda-to-sns-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    }
+  });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Assertion 2
+  expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
+    Environment: {
+      Variables: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    }
+  });
+  expect(stack).toHaveResource("AWS::SNS::Topic", {
+    KmsMasterKeyId: {
+      "Fn::Join": [
+        "",
+        [
+          "arn:",
+          {
+            Ref: "AWS::Partition"
+          },
+          ":kms:",
+          {
+            Ref: "AWS::Region"
+          },
+          ":",
+          {
+            Ref: "AWS::AccountId"
+          },
+          ":alias/aws/sns"
+        ]
+      ]
+    }
+  });
 });
 
 // --------------------------------------------------------------
 // Test deployment with existing existingTopicObj
 // --------------------------------------------------------------
 test('Test deployment with existing existingTopicObj', () => {
-    // Stack
-    const stack = new Stack();
+  // Stack
+  const stack = new Stack();
 
-    const topic = new sns.Topic(stack, 'MyTopic', {
-        topicName: "custom-topic"
-    });
+  const topic = new sns.Topic(stack, 'MyTopic', {
+    topicName: "custom-topic"
+  });
 
-    // Helper declaration
-    new LambdaToSns(stack, 'lambda-to-sns-stack', {
-        lambdaFunctionProps: {
-            runtime: lambda.Runtime.NODEJS_10_X,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-            environment: {
-                LAMBDA_NAME: 'override-function'
-            }
-        },
-        existingTopicObj: topic
-    });
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-    // Assertion 2
-    expectCDK(stack).to(haveResource("AWS::SNS::Topic", {
-        TopicName: "custom-topic"
-    }));
+  // Helper declaration
+  new LambdaToSns(stack, 'lambda-to-sns-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'override-function'
+      }
+    },
+    existingTopicObj: topic
+  });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Assertion 2
+  expectCDK(stack).to(haveResource("AWS::SNS::Topic", {
+    TopicName: "custom-topic"
+  }));
 });
 
 // --------------------------------------------------------------
 // Test deployment with imported encryption key
 // --------------------------------------------------------------
 test('override topicProps', () => {
-    const stack = new Stack();
+  const stack = new Stack();
 
-    const props: LambdaToSnsProps = {
-        lambdaFunctionProps: {
-          code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-          runtime: lambda.Runtime.NODEJS_12_X,
-          handler: 'index.handler'
-        },
-        topicProps: {
-            topicName: "custom-topic"
-        }
-    };
+  const props: LambdaToSnsProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    topicProps: {
+      topicName: "custom-topic"
+    }
+  };
 
-    new LambdaToSns(stack, 'test-sns-lambda', props);
+  new LambdaToSns(stack, 'test-sns-lambda', props);
 
-    expectCDK(stack).to(haveResource("AWS::SNS::Topic", {
-      TopicName: "custom-topic"
-    }));
+  expectCDK(stack).to(haveResource("AWS::SNS::Topic", {
+    TopicName: "custom-topic"
+  }));
 });
 
 // --------------------------------------------------------------
 // Test the getter methods
 // --------------------------------------------------------------
 test('Test the properties', () => {
-    // Stack
-    const stack = new Stack();
-    // Helper declaration
-    const pattern = new LambdaToSns(stack, 'lambda-to-sns-stack', {
-        lambdaFunctionProps: {
-            runtime: lambda.Runtime.NODEJS_10_X,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-        }
-    });
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  const pattern = new LambdaToSns(stack, 'lambda-to-sns-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    }
+  });
     // Assertion 1
-    const func = pattern.lambdaFunction;
-    expect(func !== null);
-    // Assertion 2
-    const topic = pattern.snsTopic;
-    expect(topic !== null);
+  const func = pattern.lambdaFunction;
+  expect(func !== null);
+  // Assertion 2
+  const topic = pattern.snsTopic;
+  expect(topic !== null);
 });

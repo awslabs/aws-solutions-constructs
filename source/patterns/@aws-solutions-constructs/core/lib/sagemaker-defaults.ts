@@ -14,7 +14,7 @@
 import { CfnNotebookInstanceProps } from '@aws-cdk/aws-sagemaker';
 
 export function DefaultSagemakerNotebookProps(roleArn: string, kmsKeyId: string,
-                                              subnetId?: string, securityGroupIds?: string[]): CfnNotebookInstanceProps {
+  subnetId?: string, securityGroupIds?: string[]): CfnNotebookInstanceProps {
   return {
     instanceType: 'ml.t2.medium',
     roleArn,

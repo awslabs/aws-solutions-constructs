@@ -23,14 +23,14 @@ stack.templateOptions.description = 'Integration Test for aws-sqs-lambda';
 
 // Definitions
 const props: SqsToLambdaProps = {
-    lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    },
-    queueProps: {},
-    deployDeadLetterQueue: true,
-    maxReceiveCount: 3
+  lambdaFunctionProps: {
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+  },
+  queueProps: {},
+  deployDeadLetterQueue: true,
+  maxReceiveCount: 3
 };
 
 new SqsToLambda(stack, 'test-sqs-lambda', props);

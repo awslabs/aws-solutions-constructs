@@ -21,15 +21,15 @@ const stack = new Stack(app, 'test-existing-rule-kinesisstream');
 stack.templateOptions.description = 'Integration Test for aws-events-rule-kinesisstreams with existing kinesis stream';
 
 const stream = new kinesis.Stream(stack, 'test-stream', {
-    shardCount: 2,
-    encryption: kinesis.StreamEncryption.MANAGED
+  shardCount: 2,
+  encryption: kinesis.StreamEncryption.MANAGED
 });
 
 const props: EventsRuleToKinesisStreamsProps = {
-    eventRuleProps: {
-        schedule: events.Schedule.rate(Duration.minutes(5))
-      },
-    existingStreamObj: stream
+  eventRuleProps: {
+    schedule: events.Schedule.rate(Duration.minutes(5))
+  },
+  existingStreamObj: stream
 };
 
 new EventsRuleToKinesisStreams(stack, 'test-events-rule-kinesis-stream-existing', props);

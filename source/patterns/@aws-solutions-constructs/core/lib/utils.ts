@@ -16,7 +16,7 @@ import { flagOverriddenDefaults } from './override-warning-service';
 import * as log from 'npmlog';
 
 function isObject(val: object) {
-    return val != null && typeof val === 'object'
+  return val != null && typeof val === 'object'
         && Object.prototype.toString.call(val) === '[object Object]';
 }
 
@@ -51,7 +51,7 @@ function isPlainObject(o: object) {
 }
 
 function combineMerge(target: any[], source: any[]) {
-    return target.concat(source);
+  return target.concat(source);
 }
 
 function overwriteMerge(target: any[], source: any[]) {

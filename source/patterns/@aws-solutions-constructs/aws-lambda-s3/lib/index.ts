@@ -71,47 +71,47 @@ export class LambdaToS3 extends Construct {
      * @access public
      */
     constructor(scope: Construct, id: string, props: LambdaToS3Props) {
-        super(scope, id);
-        let bucket: s3.IBucket;
+      super(scope, id);
+      let bucket: s3.IBucket;
 
-        // Setup the Lambda function
-        this.lambdaFunction = defaults.buildLambdaFunction(this, {
-            existingLambdaObj: props.existingLambdaObj,
-            lambdaFunctionProps: props.lambdaFunctionProps
+      // Setup the Lambda function
+      this.lambdaFunction = defaults.buildLambdaFunction(this, {
+        existingLambdaObj: props.existingLambdaObj,
+        lambdaFunctionProps: props.lambdaFunctionProps
+      });
+
+      // Setup S3 Bucket
+      if (!props.existingBucketObj) {
+        [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
+          bucketProps: props.bucketProps
         });
+        bucket = this.s3Bucket;
+      } else {
+        bucket = props.existingBucketObj;
+      }
 
-        // Setup S3 Bucket
-        if (!props.existingBucketObj) {
-            [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
-                bucketProps: props.bucketProps
-            });
-            bucket = this.s3Bucket;
-        } else {
-            bucket = props.existingBucketObj;
+      // Configure environment variables
+      this.lambdaFunction.addEnvironment('S3_BUCKET_NAME', bucket.bucketName);
+
+      // Add the requested or default bucket permissions
+      if (props.bucketPermissions) {
+        if (props.bucketPermissions.includes('Delete')) {
+          bucket.grantDelete(this.lambdaFunction.grantPrincipal);
         }
-
-        // Configure environment variables
-        this.lambdaFunction.addEnvironment('S3_BUCKET_NAME', bucket.bucketName);
-
-        // Add the requested or default bucket permissions
-        if (props.bucketPermissions) {
-            if (props.bucketPermissions.includes('Delete')) {
-                bucket.grantDelete(this.lambdaFunction.grantPrincipal);
-            }
-            if (props.bucketPermissions.includes('Put')) {
-                bucket.grantPut(this.lambdaFunction.grantPrincipal);
-            }
-            if (props.bucketPermissions.includes('Read')) {
-                bucket.grantRead(this.lambdaFunction.grantPrincipal);
-            }
-            if (props.bucketPermissions.includes('ReadWrite')) {
-                bucket.grantReadWrite(this.lambdaFunction.grantPrincipal);
-            }
-            if (props.bucketPermissions.includes('Write')) {
-                bucket.grantWrite(this.lambdaFunction.grantPrincipal);
-            }
-        } else {
-            bucket.grantReadWrite(this.lambdaFunction.grantPrincipal);
+        if (props.bucketPermissions.includes('Put')) {
+          bucket.grantPut(this.lambdaFunction.grantPrincipal);
         }
+        if (props.bucketPermissions.includes('Read')) {
+          bucket.grantRead(this.lambdaFunction.grantPrincipal);
+        }
+        if (props.bucketPermissions.includes('ReadWrite')) {
+          bucket.grantReadWrite(this.lambdaFunction.grantPrincipal);
+        }
+        if (props.bucketPermissions.includes('Write')) {
+          bucket.grantWrite(this.lambdaFunction.grantPrincipal);
+        }
+      } else {
+        bucket.grantReadWrite(this.lambdaFunction.grantPrincipal);
+      }
     }
 }

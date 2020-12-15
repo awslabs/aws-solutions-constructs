@@ -14,15 +14,15 @@
 import * as iot from '@aws-cdk/aws-iot';
 
 export function DefaultCfnTopicRuleProps(_actions: iot.CfnTopicRule.ActionProperty[], _sql: string = '') {
-    const _topicRulePayload: iot.CfnTopicRule.TopicRulePayloadProperty = {
-        ruleDisabled: false,
-        actions: _actions,
-        sql: _sql
-    };
+  const _topicRulePayload: iot.CfnTopicRule.TopicRulePayloadProperty = {
+    ruleDisabled: false,
+    actions: _actions,
+    sql: _sql
+  };
 
-    const defaultCfnTopicRuleProps: iot.CfnTopicRuleProps = {
-        topicRulePayload: _topicRulePayload
-    };
+  const defaultCfnTopicRuleProps: iot.CfnTopicRuleProps = {
+    topicRulePayload: _topicRulePayload
+  };
 
-    return defaultCfnTopicRuleProps;
+  return defaultCfnTopicRuleProps;
 }

@@ -118,100 +118,100 @@ export class ApiGatewayToSqs extends Construct {
      * @access public
      */
     constructor(scope: Construct, id: string, props: ApiGatewayToSqsProps) {
-        super(scope, id);
+      super(scope, id);
 
-        // Setup the dead letter queue, if applicable
-        this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
-            existingQueueObj: props.existingQueueObj,
-            deployDeadLetterQueue: props.deployDeadLetterQueue,
-            deadLetterQueueProps: props.deadLetterQueueProps,
-            maxReceiveCount: props.maxReceiveCount
+      // Setup the dead letter queue, if applicable
+      this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
+        existingQueueObj: props.existingQueueObj,
+        deployDeadLetterQueue: props.deployDeadLetterQueue,
+        deadLetterQueueProps: props.deadLetterQueueProps,
+        maxReceiveCount: props.maxReceiveCount
+      });
+
+      // Setup the queue
+      [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
+        queueProps: props.queueProps,
+        deadLetterQueue: this.deadLetterQueue
+      });
+
+      // Setup the API Gateway
+      [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] = defaults.GlobalRestApi(this, props.apiGatewayProps);
+
+      // Setup the API Gateway role
+      this.apiGatewayRole = new iam.Role(this, 'api-gateway-role', {
+        assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
+      });
+
+      // Setup the API Gateway resource
+      const apiGatewayResource = this.apiGateway.root.addResource('message');
+
+      // Create
+      let createRequestTemplate = "Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")";
+
+      if (props.createRequestTemplate) {
+        createRequestTemplate = props.createRequestTemplate;
+      }
+
+      if (props.allowCreateOperation && props.allowCreateOperation === true) {
+        this.addActionToPolicy("sqs:SendMessage");
+        defaults.addProxyMethodToApiResource({
+          service: "sqs",
+          path: `${cdk.Aws.ACCOUNT_ID}/${this.sqsQueue.queueName}`,
+          apiGatewayRole: this.apiGatewayRole,
+          apiMethod: "POST",
+          apiResource: this.apiGateway.root,
+          requestTemplate: createRequestTemplate,
+          contentType: "'application/x-www-form-urlencoded'"
         });
+      }
 
-        // Setup the queue
-        [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
-            queueProps: props.queueProps,
-            deadLetterQueue: this.deadLetterQueue
+      // Read
+      let readRequestTemplate = "Action=ReceiveMessage";
+
+      if (props.readRequestTemplate) {
+        readRequestTemplate = props.readRequestTemplate;
+      }
+
+      if (props.allowReadOperation === undefined || props.allowReadOperation === true) {
+        this.addActionToPolicy("sqs:ReceiveMessage");
+        defaults.addProxyMethodToApiResource({
+          service: "sqs",
+          path: `${cdk.Aws.ACCOUNT_ID}/${this.sqsQueue.queueName}`,
+          apiGatewayRole: this.apiGatewayRole,
+          apiMethod: "GET",
+          apiResource: this.apiGateway.root,
+          requestTemplate: readRequestTemplate,
+          contentType: "'application/x-www-form-urlencoded'"
         });
+      }
 
-        // Setup the API Gateway
-        [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] = defaults.GlobalRestApi(this, props.apiGatewayProps);
+      // Delete
+      let deleteRequestTemplate = "Action=DeleteMessage&ReceiptHandle=$util.urlEncode($input.params('receiptHandle'))";
 
-        // Setup the API Gateway role
-        this.apiGatewayRole = new iam.Role(this, 'api-gateway-role', {
-            assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
+      if (props.deleteRequestTemplate) {
+        deleteRequestTemplate = props.deleteRequestTemplate;
+      }
+
+      if (props.allowDeleteOperation && props.allowDeleteOperation === true) {
+        this.addActionToPolicy("sqs:DeleteMessage");
+        defaults.addProxyMethodToApiResource({
+          service: "sqs",
+          path: `${cdk.Aws.ACCOUNT_ID}/${this.sqsQueue.queueName}`,
+          apiGatewayRole: this.apiGatewayRole,
+          apiMethod: "DELETE",
+          apiResource: apiGatewayResource,
+          requestTemplate: deleteRequestTemplate,
+          contentType: "'application/x-www-form-urlencoded'"
         });
-
-        // Setup the API Gateway resource
-        const apiGatewayResource = this.apiGateway.root.addResource('message');
-
-        // Create
-        let createRequestTemplate = "Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")";
-
-        if (props.createRequestTemplate) {
-            createRequestTemplate = props.createRequestTemplate;
-        }
-
-        if (props.allowCreateOperation && props.allowCreateOperation === true) {
-            this.addActionToPolicy("sqs:SendMessage");
-            defaults.addProxyMethodToApiResource({
-                service: "sqs",
-                path: `${cdk.Aws.ACCOUNT_ID}/${this.sqsQueue.queueName}`,
-                apiGatewayRole: this.apiGatewayRole,
-                apiMethod: "POST",
-                apiResource: this.apiGateway.root,
-                requestTemplate: createRequestTemplate,
-                contentType: "'application/x-www-form-urlencoded'"
-            });
-        }
-
-        // Read
-        let readRequestTemplate = "Action=ReceiveMessage";
-
-        if (props.readRequestTemplate) {
-            readRequestTemplate = props.readRequestTemplate;
-        }
-
-        if (props.allowReadOperation === undefined || props.allowReadOperation === true) {
-            this.addActionToPolicy("sqs:ReceiveMessage");
-            defaults.addProxyMethodToApiResource({
-                service: "sqs",
-                path: `${cdk.Aws.ACCOUNT_ID}/${this.sqsQueue.queueName}`,
-                apiGatewayRole: this.apiGatewayRole,
-                apiMethod: "GET",
-                apiResource: this.apiGateway.root,
-                requestTemplate: readRequestTemplate,
-                contentType: "'application/x-www-form-urlencoded'"
-            });
-        }
-
-        // Delete
-        let deleteRequestTemplate = "Action=DeleteMessage&ReceiptHandle=$util.urlEncode($input.params('receiptHandle'))";
-
-        if (props.deleteRequestTemplate) {
-            deleteRequestTemplate = props.deleteRequestTemplate;
-        }
-
-        if (props.allowDeleteOperation && props.allowDeleteOperation === true) {
-            this.addActionToPolicy("sqs:DeleteMessage");
-            defaults.addProxyMethodToApiResource({
-                service: "sqs",
-                path: `${cdk.Aws.ACCOUNT_ID}/${this.sqsQueue.queueName}`,
-                apiGatewayRole: this.apiGatewayRole,
-                apiMethod: "DELETE",
-                apiResource: apiGatewayResource,
-                requestTemplate: deleteRequestTemplate,
-                contentType: "'application/x-www-form-urlencoded'"
-            });
-        }
+      }
     }
 
     private addActionToPolicy(action: string) {
-        this.apiGatewayRole.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                this.sqsQueue.queueArn
-            ],
-            actions: [ `${action}` ]
-        }));
+      this.apiGatewayRole.addToPolicy(new iam.PolicyStatement({
+        resources: [
+          this.sqsQueue.queueArn
+        ],
+        actions: [ `${action}` ]
+      }));
     }
 }

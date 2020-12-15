@@ -166,15 +166,15 @@ test('override api gateway properties with existingLambdaObj', () => {
   });
 
   expect(stack).toHaveResource('AWS::ApiGateway::RestApi',
-  {
-    Description: "Override description",
-    EndpointConfiguration: {
-      Types: [
-        "REGIONAL"
-      ]
-    },
-    Name: "LambdaRestApi"
-  });
+    {
+      Description: "Override description",
+      EndpointConfiguration: {
+        Types: [
+          "REGIONAL"
+        ]
+      },
+      Name: "LambdaRestApi"
+    });
 });
 
 test('override api gateway properties without existingLambdaObj', () => {
@@ -197,13 +197,13 @@ test('override api gateway properties without existingLambdaObj', () => {
   });
 
   expect(stack).toHaveResource('AWS::ApiGateway::RestApi',
-  {
-    Description: "Override description",
-    EndpointConfiguration: {
-      Types: [
-        "PRIVATE"
-      ]
-    },
-    Name: "LambdaRestApi"
-  });
+    {
+      Description: "Override description",
+      EndpointConfiguration: {
+        Types: [
+          "PRIVATE"
+        ]
+      },
+      Name: "LambdaRestApi"
+    });
 });

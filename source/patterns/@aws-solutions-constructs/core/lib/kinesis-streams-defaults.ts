@@ -14,7 +14,7 @@
 import * as kinesis from '@aws-cdk/aws-kinesis';
 
 const DefaultStreamProps: kinesis.StreamProps = {
-    encryption: kinesis.StreamEncryption.MANAGED
+  encryption: kinesis.StreamEncryption.MANAGED
 };
 
 export { DefaultStreamProps };

@@ -99,7 +99,7 @@ test('test kinesisFirehose override ', () => {
         IntervalInSeconds: 600,
         SizeInMBs: 55
       }
-  }});
+    }});
 });
 
 test('check properties', () => {

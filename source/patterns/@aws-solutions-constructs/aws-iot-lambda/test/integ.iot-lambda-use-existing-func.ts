@@ -22,24 +22,24 @@ const app = new App();
 const stack = new Stack(app, 'test-iot-lambda-stack');
 
 const lambdaFunctionProps = {
-    runtime: lambda.Runtime.NODEJS_10_X,
-    handler: 'index.handler',
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+  runtime: lambda.Runtime.NODEJS_10_X,
+  handler: 'index.handler',
+  code: lambda.Code.fromAsset(`${__dirname}/lambda`)
 };
 
 const func = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 
 // Definitions
 const props: IotToLambdaProps = {
-    existingLambdaObj: func,
-    iotTopicRuleProps: {
-        topicRulePayload: {
-            ruleDisabled: false,
-            description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
-            sql: "SELECT * FROM 'connectedcar/dtc/#'",
-            actions: []
-        }
+  existingLambdaObj: func,
+  iotTopicRuleProps: {
+    topicRulePayload: {
+      ruleDisabled: false,
+      description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+      sql: "SELECT * FROM 'connectedcar/dtc/#'",
+      actions: []
     }
+  }
 };
 
 new IotToLambda(stack, 'test-iot-lambda-integration', props);

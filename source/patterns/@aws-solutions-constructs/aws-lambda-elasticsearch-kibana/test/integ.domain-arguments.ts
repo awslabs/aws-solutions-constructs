@@ -21,18 +21,18 @@ const app = new App();
 const stack = new Stack(app, 'test-lambda-elasticsearch-kibana-stack2');
 
 const lambdaProps: lambda.FunctionProps = {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_12_X,
-    handler: 'index.handler'
+  code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  runtime: lambda.Runtime.NODEJS_12_X,
+  handler: 'index.handler'
 };
 
 const esDomain = 'domain-' + Aws.ACCOUNT_ID;
 const cognitoDomain = 'globallyuniquedomain';
 
 new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana2', {
-    lambdaFunctionProps: lambdaProps,
-    domainName: esDomain,
-    cognitoDomainName: cognitoDomain
+  lambdaFunctionProps: lambdaProps,
+  domainName: esDomain,
+  cognitoDomainName: cognitoDomain
 });
 
 // Synth

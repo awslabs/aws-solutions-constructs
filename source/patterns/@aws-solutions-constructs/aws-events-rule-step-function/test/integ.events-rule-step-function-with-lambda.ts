@@ -33,17 +33,17 @@ const submitLambda = deployLambdaFunction(stack, {
 const submitJob = new tasks.RunLambdaTask(submitLambda);
 const startState = new stepfunctions.Pass(stack, 'StartState');
 startState.next(new stepfunctions.Task(stack, 'LambdaTask', {
-    task: submitJob
+  task: submitJob
 }));
 
 const props: EventsRuleToStepFunctionProps = {
-    stateMachineProps: {
-      definition: startState,
-      timeout: Duration.minutes(5)
-    },
-    eventRuleProps: {
-      schedule: events.Schedule.rate(Duration.minutes(5))
-    }
+  stateMachineProps: {
+    definition: startState,
+    timeout: Duration.minutes(5)
+  },
+  eventRuleProps: {
+    schedule: events.Schedule.rate(Duration.minutes(5))
+  }
 };
 
 new EventsRuleToStepFunction(stack, 'test-events-rule-step-function-and-lambda-stack', props);

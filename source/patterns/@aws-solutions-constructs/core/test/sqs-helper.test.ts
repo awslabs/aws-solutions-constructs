@@ -22,58 +22,58 @@ import * as sqs from '@aws-cdk/aws-sqs';
 // Test minimal deployment with no properties
 // --------------------------------------------------------------
 test('Test minimal deployment with no properties', () => {
-    // Stack
-    const stack = new Stack();
-    // Helper declaration
-    defaults.buildQueue(stack, 'primary-queue', {});
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  defaults.buildQueue(stack, 'primary-queue', {});
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
 // Test deployment w/ custom properties
 // --------------------------------------------------------------
 test('Test deployment w/ custom properties', () => {
-    // Stack
-    const stack = new Stack();
-    // Helper setup
-    const encKey = defaults.buildEncryptionKey(stack);
-    // Helper declaration
-    defaults.buildQueue(stack, 'primary-queue', {
-        queueProps: {
-            queueName: "custom-queue-props",
-            encryption: sqs.QueueEncryption.KMS,
-            encryptionMasterKey: encKey
-        }
-    });
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Stack
+  const stack = new Stack();
+  // Helper setup
+  const encKey = defaults.buildEncryptionKey(stack);
+  // Helper declaration
+  defaults.buildQueue(stack, 'primary-queue', {
+    queueProps: {
+      queueName: "custom-queue-props",
+      encryption: sqs.QueueEncryption.KMS,
+      encryptionMasterKey: encKey
+    }
+  });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
 // Test dead letter queue deployment/configuration
 // --------------------------------------------------------------
 test('Test dead letter queue deployment/configuration', () => {
-    // Stack
-    const stack = new Stack();
-    // Helper setup
-    const encKey = defaults.buildEncryptionKey(stack);
-    // const [dlq] = defaults.buildQueue(stack, 'dead-letter-queue', {});
-    const dlqi = defaults.buildDeadLetterQueue(stack, {
-        deployDeadLetterQueue: true,
-        maxReceiveCount: 3
-    });
+  // Stack
+  const stack = new Stack();
+  // Helper setup
+  const encKey = defaults.buildEncryptionKey(stack);
+  // const [dlq] = defaults.buildQueue(stack, 'dead-letter-queue', {});
+  const dlqi = defaults.buildDeadLetterQueue(stack, {
+    deployDeadLetterQueue: true,
+    maxReceiveCount: 3
+  });
     // Helper declaration
-    defaults.buildQueue(stack, 'primary-queue', {
-        queueProps: {
-            queueName: "not-the-dead-letter-queue-props",
-            encryption: sqs.QueueEncryption.KMS,
-            encryptionMasterKey: encKey
-        },
-        deadLetterQueue: dlqi
-    });
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  defaults.buildQueue(stack, 'primary-queue', {
+    queueProps: {
+      queueName: "not-the-dead-letter-queue-props",
+      encryption: sqs.QueueEncryption.KMS,
+      encryptionMasterKey: encKey
+    },
+    deadLetterQueue: dlqi
+  });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
@@ -86,16 +86,16 @@ test('Test dead letter queue deployment/configuration w/o mrc', () => {
   const encKey = defaults.buildEncryptionKey(stack);
   // const [dlq] = defaults.buildQueue(stack, 'dead-letter-queue', {});
   const dlqi = defaults.buildDeadLetterQueue(stack, {
-      deployDeadLetterQueue: true
+    deployDeadLetterQueue: true
   });
   // Helper declaration
   defaults.buildQueue(stack, 'primary-queue', {
-      queueProps: {
-          queueName: "not-the-dead-letter-queue-props",
-          encryption: sqs.QueueEncryption.KMS,
-          encryptionMasterKey: encKey
-      },
-      deadLetterQueue: dlqi
+    queueProps: {
+      queueName: "not-the-dead-letter-queue-props",
+      encryption: sqs.QueueEncryption.KMS,
+      encryptionMasterKey: encKey
+    },
+    deadLetterQueue: dlqi
   });
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
@@ -115,7 +115,7 @@ test('Test existingQueueObj', () => {
   });
   // Helper declaration
   defaults.buildQueue(stack, 'primary-queue', {
-      existingQueueObj: existingQueue
+    existingQueueObj: existingQueue
   });
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();

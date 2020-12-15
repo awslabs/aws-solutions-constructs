@@ -67,21 +67,21 @@ test('override eventRuleProps', () => {
     existingBucketObj: mybucket,
     eventRuleProps: {
       eventPattern: {
-          source: ['aws.s3'],
-          detailType: ['AWS API Call via CloudTrail'],
-          detail: {
-            eventSource: [
-              "s3.amazonaws.com"
-            ],
-            eventName: [
-              "GetObject"
-            ],
-            requestParameters: {
-              bucketName: [
-                mybucket.bucketName
-              ]
-            }
+        source: ['aws.s3'],
+        detailType: ['AWS API Call via CloudTrail'],
+        detail: {
+          eventSource: [
+            "s3.amazonaws.com"
+          ],
+          eventName: [
+            "GetObject"
+          ],
+          requestParameters: {
+            bucketName: [
+              mybucket.bucketName
+            ]
           }
+        }
       }
     }
   };

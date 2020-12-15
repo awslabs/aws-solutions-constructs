@@ -21,9 +21,9 @@ import '@aws-cdk/assert/jest';
 function deployNewFunc(stack: cdk.Stack) {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
-          code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-          runtime: lambda.Runtime.NODEJS_10_X,
-          handler: 'index.handler'
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler'
     },
   };
 
@@ -44,8 +44,8 @@ function useExistingFunc(stack: cdk.Stack) {
       readCapacity: 3,
       writeCapacity: 3,
       partitionKey: {
-          name: 'id',
-          type: dynamodb.AttributeType.STRING
+        name: 'id',
+        type: dynamodb.AttributeType.STRING
       }
     },
   };
@@ -77,7 +77,7 @@ test('check lambda function properties for deploy: true', () => {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
         DDB_TABLE_NAME: {
-        Ref: "testlambdadynamodbstackDynamoTable8138E93B"
+          Ref: "testlambdadynamodbstackDynamoTable8138E93B"
         }
       }
     }
@@ -222,14 +222,14 @@ test('check lambda function properties for deploy: false', () => {
   useExistingFunc(stack);
 
   expect(stack).toHaveResource('AWS::Lambda::Function', {
-      Handler: "index.handler",
-      Role: {
-        "Fn::GetAtt": [
-          "MyExistingFunctionServiceRoleF9E14BFD",
-          "Arn"
-        ]
-      },
-      Runtime: "python3.6"
+    Handler: "index.handler",
+    Role: {
+      "Fn::GetAtt": [
+        "MyExistingFunctionServiceRoleF9E14BFD",
+        "Arn"
+      ]
+    },
+    Runtime: "python3.6"
   });
 });
 
@@ -327,9 +327,9 @@ test('check lambda function policy ReadOnly table permissions', () => {
 
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
-          code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-          runtime: lambda.Runtime.NODEJS_10_X,
-          handler: 'index.handler'
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler'
     },
     tablePermissions: 'Read'
   };
@@ -381,9 +381,9 @@ test('check lambda function policy WriteOnly table permissions', () => {
 
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
-          code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-          runtime: lambda.Runtime.NODEJS_10_X,
-          handler: 'index.handler'
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler'
     },
     tablePermissions: 'Write'
   };
@@ -433,9 +433,9 @@ test('check lambda function policy ReadWrite table permissions', () => {
 
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
-          code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-          runtime: lambda.Runtime.NODEJS_10_X,
-          handler: 'index.handler'
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler'
     },
     tablePermissions: 'ReadWrite'
   };
@@ -491,9 +491,9 @@ test('check lambda function policy All table permissions', () => {
 
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
-          code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-          runtime: lambda.Runtime.NODEJS_10_X,
-          handler: 'index.handler'
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler'
     },
     tablePermissions: 'All'
   };

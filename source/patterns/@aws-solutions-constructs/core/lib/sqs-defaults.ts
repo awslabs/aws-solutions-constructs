@@ -14,10 +14,10 @@
 import * as sqs from '@aws-cdk/aws-sqs';
 
 export function DefaultQueueProps() {
-    const _DefaultQueueProps: sqs.QueueProps = {
-        encryption: sqs.QueueEncryption.KMS_MANAGED
-    };
-    return _DefaultQueueProps;
+  const _DefaultQueueProps: sqs.QueueProps = {
+    encryption: sqs.QueueEncryption.KMS_MANAGED
+  };
+  return _DefaultQueueProps;
 }
 
 // Default value for the max receive count of a dead letter queue

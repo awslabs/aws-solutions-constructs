@@ -19,48 +19,48 @@ import { overrideProps } from '../lib/utils';
 import '@aws-cdk/assert/jest';
 
 test('snapshot test kinesisanalytics default params', () => {
-    const stack = new Stack();
-    new kinesisanalytics.CfnApplication(stack, 'KinesisAnalytics', defaults.DefaultCfnApplicationProps);
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  const stack = new Stack();
+  new kinesisanalytics.CfnApplication(stack, 'KinesisAnalytics', defaults.DefaultCfnApplicationProps);
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 test('test kinesisanalytics override inputProperty', () => {
-    const stack = new Stack();
+  const stack = new Stack();
 
-    const inputProperty: kinesisanalytics.CfnApplication.InputProperty = {
-        inputSchema: {
-            recordColumns: [{name: 'x', sqlType: 'y'}],
-            recordFormat: { recordFormatType: 'csv' }
-        },
-        namePrefix: 'zzz'
-    };
+  const inputProperty: kinesisanalytics.CfnApplication.InputProperty = {
+    inputSchema: {
+      recordColumns: [{name: 'x', sqlType: 'y'}],
+      recordFormat: { recordFormatType: 'csv' }
+    },
+    namePrefix: 'zzz'
+  };
 
-    const defaultProps: kinesisanalytics.CfnApplicationProps = defaults.DefaultCfnApplicationProps;
+  const defaultProps: kinesisanalytics.CfnApplicationProps = defaults.DefaultCfnApplicationProps;
 
-    const inProps: kinesisanalytics.CfnApplicationProps = {
-        inputs: [inputProperty]
-    };
+  const inProps: kinesisanalytics.CfnApplicationProps = {
+    inputs: [inputProperty]
+  };
 
-    const outProps = overrideProps(defaultProps, inProps);
+  const outProps = overrideProps(defaultProps, inProps);
 
-    new kinesisanalytics.CfnApplication(stack, 'KinesisAnalytics', outProps);
+  new kinesisanalytics.CfnApplication(stack, 'KinesisAnalytics', outProps);
 
-    expect(stack).toHaveResource("AWS::KinesisAnalytics::Application", {
-        Inputs: [
-          {
-            InputSchema: {
-              RecordColumns: [
-                {
-                  Name: "x",
-                  SqlType: "y"
-                }
-              ],
-              RecordFormat: {
-                RecordFormatType: "csv"
-              }
-            },
-            NamePrefix: "zzz"
+  expect(stack).toHaveResource("AWS::KinesisAnalytics::Application", {
+    Inputs: [
+      {
+        InputSchema: {
+          RecordColumns: [
+            {
+              Name: "x",
+              SqlType: "y"
+            }
+          ],
+          RecordFormat: {
+            RecordFormatType: "csv"
           }
-        ]
-    });
+        },
+        NamePrefix: "zzz"
+      }
+    ]
+  });
 });

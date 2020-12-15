@@ -17,39 +17,165 @@ import { overrideProps } from "./utils";
 import { DefaultVpcProps } from './vpc-defaults';
 
 export interface BuildVpcProps {
-    /**
-     * User provided props to override the default props for the VPC.
-     *
-     * @default - Default props are used
-     */
-    readonly vpcProps?: ec2.VpcProps
+  /**
+   * Existing instance of a VPC, if this is set then the all Props are ignored
+   */
+  readonly existingVpc?: ec2.Vpc;
+  /**
+   * User provided props to override the default props for the VPC.
+   */
+  readonly userVpcProps?: ec2.VpcProps;
+  /**
+   * Construct specified props that override both the default props
+   * and user props for the VPC.
+   */
+  readonly constructVpcProps?: ec2.VpcProps;
 }
 
 export function buildVpc(scope: Construct, props?: BuildVpcProps): ec2.Vpc {
+  if (props?.existingVpc) {
+    return props?.existingVpc;
+  }
 
-    let bucketprops: ec2.VpcProps = DefaultVpcProps();
+  let cumulativeProps: ec2.VpcProps = DefaultVpcProps();
 
-    if (props?.vpcProps) {
-        bucketprops = overrideProps(bucketprops, props?.vpcProps);
+  if (props?.userVpcProps) {
+    cumulativeProps = overrideProps(cumulativeProps, props?.userVpcProps);
+  }
+
+  if (props?.constructVpcProps) {
+    cumulativeProps = overrideProps(
+      cumulativeProps,
+      props?.constructVpcProps
+    );
+  }
+
+  const vpc = new ec2.Vpc(scope, "Vpc", cumulativeProps);
+
+  // Add VPC FlowLogs with the default setting of trafficType:ALL and destination: CloudWatch Logs
+  vpc.addFlowLog("FlowLog");
+
+  // Add Cfn Nag suppression for PUBLIC subnets to suppress WARN W33: EC2 Subnet should not have MapPublicIpOnLaunch set to true
+  vpc.publicSubnets.forEach((subnet) => {
+    const cfnSubnet = subnet.node.defaultChild as ec2.CfnSubnet;
+    cfnSubnet.cfnOptions.metadata = {
+      cfn_nag: {
+        rules_to_suppress: [{
+          id: 'W33',
+          reason: 'Allow Public Subnets to have MapPublicIpOnLaunch set to true'
+        }]
+      }
+    };
+  });
+
+  return vpc;
+}
+
+export enum ServiceEndpointTypes {
+  DYNAMODB = "DDB",
+  SNS = "SNS",
+  SQS = "SQS",
+  S3 = "S3",
+  STEPFUNCTIONS = "STEPFUNCTIONS",
+}
+
+enum EndpointTypes {
+  GATEWAY = "Gateway",
+  INTERFACE = "Interface",
+}
+
+interface EndpointDefinition {
+  endpointName: ServiceEndpointTypes;
+  endpointType: EndpointTypes;
+  endpointGatewayService?: ec2.GatewayVpcEndpointAwsService;
+  endpointInterfaceService?: ec2.InterfaceVpcEndpointAwsService;
+}
+
+const endpointSettings: EndpointDefinition[] = [
+  {
+    endpointName: ServiceEndpointTypes.DYNAMODB,
+    endpointType: EndpointTypes.GATEWAY,
+    endpointGatewayService: ec2.GatewayVpcEndpointAwsService.DYNAMODB,
+  },
+  {
+    endpointName: ServiceEndpointTypes.S3,
+    endpointType: EndpointTypes.GATEWAY,
+    endpointGatewayService: ec2.GatewayVpcEndpointAwsService.S3,
+  },
+  {
+    endpointName: ServiceEndpointTypes.SNS,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.SNS,
+  },
+  {
+    endpointName: ServiceEndpointTypes.SQS,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.SQS,
+  },
+];
+
+export function AddAwsServiceEndpoint(
+  scope: Construct,
+  vpc: ec2.Vpc,
+  interfaceTag: ServiceEndpointTypes
+) {
+  if (!vpc.node.children.some((child) => child.node.id === interfaceTag)) {
+    const service = endpointSettings.find(
+      (endpoint) => endpoint.endpointName === interfaceTag
+    );
+
+    if (!service) {
+      throw new Error("Unsupported Service sent to AddServiceEndpoint");
     }
 
-    const vpc = new ec2.Vpc(scope, "Vpc", bucketprops);
+    if (service.endpointType === EndpointTypes.GATEWAY) {
+      vpc.addGatewayEndpoint(interfaceTag, {
+        service: service.endpointGatewayService as ec2.GatewayVpcEndpointAwsService,
+      });
+    }
+    if (service.endpointType === EndpointTypes.INTERFACE) {
 
-    // Add VPC FlowLogs with the default setting of trafficType:ALL and destination: CloudWatch Logs
-    vpc.addFlowLog('FlowLog');
+      const endpointDefaultSecurityGroup = new ec2.SecurityGroup(
+        scope,
+        "ReplaceEndpointDefaultSecurityGroup",
+        {
+          vpc,
+          allowAllOutbound: true,
+        }
+      );
 
-    // Add Cfn Nag suppression for PUBLIC subnets to suppress WARN W33: EC2 Subnet should not have MapPublicIpOnLaunch set to true
-    vpc.publicSubnets.forEach((subnet) => {
-        const cfnSubnet = subnet.node.defaultChild as ec2.CfnSubnet;
-        cfnSubnet.cfnOptions.metadata = {
-          cfn_nag: {
-              rules_to_suppress: [{
-                  id: 'W33',
-                  reason: 'Allow Public Subnets to have MapPublicIpOnLaunch set to true'
-              }]
-          }
-        };
-    });
+      // Allow https traffic from within the VPC
+      endpointDefaultSecurityGroup.addIngressRule(
+        ec2.Peer.ipv4(vpc.vpcCidrBlock),
+        ec2.Port.tcp(443),
+      );
 
-    return vpc;
+      const cfnSecurityGroup = endpointDefaultSecurityGroup.node.findChild(
+        "Resource"
+      ) as ec2.CfnSecurityGroup;
+      cfnSecurityGroup.cfnOptions.metadata = {
+        cfn_nag: {
+          rules_to_suppress: [
+            {
+              id: "W5",
+              reason:
+                "Egress of 0.0.0.0/0 is default and generally considered OK",
+            },
+            {
+              id: "W40",
+              reason:
+                "Egress IPProtocol of -1 is default and generally considered OK",
+            },
+          ],
+        },
+      };
+
+      vpc.addInterfaceEndpoint(interfaceTag, {
+        service: service.endpointInterfaceService as ec2.InterfaceVpcEndpointAwsService,
+        securityGroups: [ endpointDefaultSecurityGroup ],
+      });
+    }
+  }
+
+  return;
 }

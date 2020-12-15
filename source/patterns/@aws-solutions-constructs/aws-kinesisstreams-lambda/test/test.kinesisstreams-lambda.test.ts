@@ -23,137 +23,137 @@ import '@aws-cdk/assert/jest';
 // Pattern minimal deployment
 // --------------------------------------------------------------
 test('Pattern minimal deployment', () => {
-    // Initial setup
-    const stack = new Stack();
-    const props: KinesisStreamsToLambdaProps = {
-        lambdaFunctionProps: {
-            runtime: lambda.Runtime.NODEJS_10_X,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-        }
-    };
-    new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Initial setup
+  const stack = new Stack();
+  const props: KinesisStreamsToLambdaProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    }
+  };
+  new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
 // Test properties
 // --------------------------------------------------------------
 test('Test properties', () => {
-    // Initial Setup
-    const stack = new Stack();
-    const props: KinesisStreamsToLambdaProps = {
-        lambdaFunctionProps: {
-            runtime: lambda.Runtime.NODEJS_10_X,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-        }
-    };
-    const app = new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);
-    // Assertion 1
-    expect(app.lambdaFunction !== null);
-    // Assertion 2
-    expect(app.kinesisStream !== null);
-    // Assertion 3
-    expect(app.cloudwatchAlarms !== null);
+  // Initial Setup
+  const stack = new Stack();
+  const props: KinesisStreamsToLambdaProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    }
+  };
+  const app = new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);
+  // Assertion 1
+  expect(app.lambdaFunction !== null);
+  // Assertion 2
+  expect(app.kinesisStream !== null);
+  // Assertion 3
+  expect(app.cloudwatchAlarms !== null);
 });
 
 // --------------------------------------------------------------
 // Test existing resources
 // --------------------------------------------------------------
 test('Test existing resources', () => {
-    // Initial Setup
-    const stack = new Stack();
+  // Initial Setup
+  const stack = new Stack();
 
-    const fn = new lambda.Function(stack, 'test-fn', {
-        runtime: lambda.Runtime.NODEJS_10_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    });
+  const fn = new lambda.Function(stack, 'test-fn', {
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+  });
 
-    const stream = new kinesis.Stream(stack, 'test-stream', {
-        streamName: 'existing-stream',
-        shardCount: 5,
-        retentionPeriod: Duration.hours(48),
-        encryption: kinesis.StreamEncryption.UNENCRYPTED
-    });
+  const stream = new kinesis.Stream(stack, 'test-stream', {
+    streamName: 'existing-stream',
+    shardCount: 5,
+    retentionPeriod: Duration.hours(48),
+    encryption: kinesis.StreamEncryption.UNENCRYPTED
+  });
 
-    new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', {
-        existingLambdaObj: fn,
-        existingStreamObj: stream,
+  new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', {
+    existingLambdaObj: fn,
+    existingStreamObj: stream,
 
-        // These properties will be ignored as existing objects were provided
-        lambdaFunctionProps: {
-            runtime: lambda.Runtime.PYTHON_3_8,
-            handler: 'lambda_function.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-        },
-        kinesisStreamProps: {
-            streamName: 'other-name-stream',
-            shardCount: 1,
-            retentionPeriod: Duration.hours(24)
-        }
-    });
+    // These properties will be ignored as existing objects were provided
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.PYTHON_3_8,
+      handler: 'lambda_function.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    kinesisStreamProps: {
+      streamName: 'other-name-stream',
+      shardCount: 1,
+      retentionPeriod: Duration.hours(24)
+    }
+  });
 
-    // Assertions
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Assertions
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
-    expect(stack).toHaveResource('AWS::Kinesis::Stream', {
-        Name: 'existing-stream',
-        ShardCount: 5,
-        RetentionPeriodHours: 48,
-    });
+  expect(stack).toHaveResource('AWS::Kinesis::Stream', {
+    Name: 'existing-stream',
+    ShardCount: 5,
+    RetentionPeriodHours: 48,
+  });
 
-    expect(stack).toHaveResource('AWS::Lambda::Function', {
-        Handler: 'index.handler',
-        Runtime: 'nodejs10.x',
-    });
+  expect(stack).toHaveResource('AWS::Lambda::Function', {
+    Handler: 'index.handler',
+    Runtime: 'nodejs10.x',
+  });
 });
 
 // --------------------------------------------------------------
 // Test sqsDlqQueueProps override
 // --------------------------------------------------------------
 test('test sqsDlqQueueProps override', () => {
-    const stack = new Stack();
-    const props: KinesisStreamsToLambdaProps = {
-        lambdaFunctionProps: {
-            runtime: lambda.Runtime.NODEJS_10_X,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-        },
-        sqsDlqQueueProps: {
-            queueName: 'hello-world',
-            visibilityTimeout: Duration.seconds(50)
-        }
-    };
-    new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);
+  const stack = new Stack();
+  const props: KinesisStreamsToLambdaProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    sqsDlqQueueProps: {
+      queueName: 'hello-world',
+      visibilityTimeout: Duration.seconds(50)
+    }
+  };
+  new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);
 
-    expect(stack).toHaveResource("AWS::SQS::Queue", {
-        QueueName: "hello-world",
-        VisibilityTimeout: 50
-    });
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    QueueName: "hello-world",
+    VisibilityTimeout: 50
   });
+});
 
 // --------------------------------------------------------------
 // Test properties with no CW Alarms
 // --------------------------------------------------------------
 test('Test properties with no CW Alarms', () => {
-    // Initial Setup
-    const stack = new Stack();
-    const props: KinesisStreamsToLambdaProps = {
-        lambdaFunctionProps: {
-            runtime: lambda.Runtime.NODEJS_10_X,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-        },
-        createCloudWatchAlarms: false
-    };
-    const app = new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);
-    // Assertion 1
-    expect(app.lambdaFunction !== null);
-    // Assertion 2
-    expect(app.kinesisStream !== null);
-    // Assertion 3
-    expect(app.cloudwatchAlarms === null);
+  // Initial Setup
+  const stack = new Stack();
+  const props: KinesisStreamsToLambdaProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    createCloudWatchAlarms: false
+  };
+  const app = new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);
+  // Assertion 1
+  expect(app.lambdaFunction !== null);
+  // Assertion 2
+  expect(app.kinesisStream !== null);
+  // Assertion 3
+  expect(app.cloudwatchAlarms === null);
 });

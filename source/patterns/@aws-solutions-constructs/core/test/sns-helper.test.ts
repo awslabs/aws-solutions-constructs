@@ -21,35 +21,35 @@ import '@aws-cdk/assert/jest';
 // Test deployment with no properties using AWS Managed KMS Key
 // --------------------------------------------------------------
 test('Test deployment with no properties using AWS Managed KMS Key', () => {
-    // Stack
-    const stack = new Stack();
-    // Helper declaration
-    defaults.buildTopic(stack, {});
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-    // Assertion 2
-    expect(stack).toHaveResource("AWS::SNS::Topic", {
-      KmsMasterKeyId: {
-        "Fn::Join": [
-          "",
-          [
-            "arn:",
-            {
-              Ref: "AWS::Partition"
-            },
-            ":kms:",
-            {
-              Ref: "AWS::Region"
-            },
-            ":",
-            {
-              Ref: "AWS::AccountId"
-            },
-            ":alias/aws/sns"
-          ]
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  defaults.buildTopic(stack, {});
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Assertion 2
+  expect(stack).toHaveResource("AWS::SNS::Topic", {
+    KmsMasterKeyId: {
+      "Fn::Join": [
+        "",
+        [
+          "arn:",
+          {
+            Ref: "AWS::Partition"
+          },
+          ":kms:",
+          {
+            Ref: "AWS::Region"
+          },
+          ":",
+          {
+            Ref: "AWS::AccountId"
+          },
+          ":alias/aws/sns"
         ]
-      }
-    });
+      ]
+    }
+  });
 });
 
 // --------------------------------------------------------------
@@ -60,16 +60,16 @@ test('Test deployment without imported encryption key', () => {
   const stack = new Stack();
   // Helper declaration
   defaults.buildTopic(stack, {
-      topicProps: {
-          topicName: "custom-topic"
-      },
-      enableEncryptionWithCustomerManagedKey: true
+    topicProps: {
+      topicName: "custom-topic"
+    },
+    enableEncryptionWithCustomerManagedKey: true
   });
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   // Assertion 2
   expect(stack).toHaveResource("AWS::SNS::Topic", {
-      TopicName: "custom-topic"
+    TopicName: "custom-topic"
   });
   // Assertion 3
   expect(stack).toHaveResource("AWS::KMS::Key", {
@@ -87,11 +87,11 @@ test('Test deployment w/ imported encryption key', () => {
   const key = defaults.buildEncryptionKey(stack);
   // Helper declaration
   defaults.buildTopic(stack, {
-      topicProps: {
-          topicName: "custom-topic"
-      },
-      enableEncryptionWithCustomerManagedKey: true,
-      encryptionKey: key
+    topicProps: {
+      topicName: "custom-topic"
+    },
+    enableEncryptionWithCustomerManagedKey: true,
+    encryptionKey: key
   });
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
@@ -108,81 +108,81 @@ test('Test deployment w/ imported encryption key', () => {
 });
 
 test('Check SNS Topic policy', () => {
-    const stack = new Stack();
-    defaults.buildTopic(stack, {});
+  const stack = new Stack();
+  defaults.buildTopic(stack, {});
 
-    expectCDK(stack).to(haveResource("AWS::SNS::TopicPolicy", {
-      PolicyDocument: {
-        Statement: [
-          {
-            Action: [
-              "SNS:Publish",
-              "SNS:RemovePermission",
-              "SNS:SetTopicAttributes",
-              "SNS:DeleteTopic",
-              "SNS:ListSubscriptionsByTopic",
-              "SNS:GetTopicAttributes",
-              "SNS:Receive",
-              "SNS:AddPermission",
-              "SNS:Subscribe"
-            ],
-            Condition: {
-              StringEquals: {
-                "AWS:SourceOwner": {
-                  Ref: "AWS::AccountId"
-                }
+  expectCDK(stack).to(haveResource("AWS::SNS::TopicPolicy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: [
+            "SNS:Publish",
+            "SNS:RemovePermission",
+            "SNS:SetTopicAttributes",
+            "SNS:DeleteTopic",
+            "SNS:ListSubscriptionsByTopic",
+            "SNS:GetTopicAttributes",
+            "SNS:Receive",
+            "SNS:AddPermission",
+            "SNS:Subscribe"
+          ],
+          Condition: {
+            StringEquals: {
+              "AWS:SourceOwner": {
+                Ref: "AWS::AccountId"
               }
-            },
-            Effect: "Allow",
-            Principal: {
-              AWS: {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:",
-                    {
-                      Ref: "AWS::Partition"
-                    },
-                    ":iam::",
-                    {
-                      Ref: "AWS::AccountId"
-                    },
-                    ":root"
-                  ]
-                ]
-              }
-            },
-            Resource: {
-              Ref: "SnsTopic2C1570A4"
-            },
-            Sid: "TopicOwnerOnlyAccess"
+            }
           },
-          {
-            Action: [
-              "SNS:Publish",
-              "SNS:RemovePermission",
-              "SNS:SetTopicAttributes",
-              "SNS:DeleteTopic",
-              "SNS:ListSubscriptionsByTopic",
-              "SNS:GetTopicAttributes",
-              "SNS:Receive",
-              "SNS:AddPermission",
-              "SNS:Subscribe"
-            ],
-            Condition: {
-              Bool: {
-                "aws:SecureTransport": "false"
-              }
-            },
-            Effect: "Deny",
-            Principal: "*",
-            Resource: {
-              Ref: "SnsTopic2C1570A4"
-            },
-            Sid: "HttpsOnly"
-          }
-        ],
-        Version: "2012-10-17"
-      },
-    }));
-  });
+          Effect: "Allow",
+          Principal: {
+            AWS: {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    Ref: "AWS::Partition"
+                  },
+                  ":iam::",
+                  {
+                    Ref: "AWS::AccountId"
+                  },
+                  ":root"
+                ]
+              ]
+            }
+          },
+          Resource: {
+            Ref: "SnsTopic2C1570A4"
+          },
+          Sid: "TopicOwnerOnlyAccess"
+        },
+        {
+          Action: [
+            "SNS:Publish",
+            "SNS:RemovePermission",
+            "SNS:SetTopicAttributes",
+            "SNS:DeleteTopic",
+            "SNS:ListSubscriptionsByTopic",
+            "SNS:GetTopicAttributes",
+            "SNS:Receive",
+            "SNS:AddPermission",
+            "SNS:Subscribe"
+          ],
+          Condition: {
+            Bool: {
+              "aws:SecureTransport": "false"
+            }
+          },
+          Effect: "Deny",
+          Principal: "*",
+          Resource: {
+            Ref: "SnsTopic2C1570A4"
+          },
+          Sid: "HttpsOnly"
+        }
+      ],
+      Version: "2012-10-17"
+    },
+  }));
+});

@@ -24,41 +24,41 @@ const stack = new Stack(app, 'test-ks-existing-lambda-stack');
 stack.templateOptions.description = 'Integration Test for aws-kinesisstreams-lambda';
 
 const lambdaRole = new iam.Role(stack, 'test-role', {
-    assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-    inlinePolicies: {
-        LambdaFunctionServiceRolePolicy: new iam.PolicyDocument({
-            statements: [new iam.PolicyStatement({
-                actions: [
-                    'logs:CreateLogGroup',
-                    'logs:CreateLogStream',
-                    'logs:PutLogEvents'
-                ],
-                resources: [`arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group:/aws/lambda/*`]
-            })]
-        })
-    }
+  assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+  inlinePolicies: {
+    LambdaFunctionServiceRolePolicy: new iam.PolicyDocument({
+      statements: [new iam.PolicyStatement({
+        actions: [
+          'logs:CreateLogGroup',
+          'logs:CreateLogStream',
+          'logs:PutLogEvents'
+        ],
+        resources: [`arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group:/aws/lambda/*`]
+      })]
+    })
+  }
 });
 
 const lambdaFn = new lambda.Function(stack, 'test-fn', {
-    runtime: lambda.Runtime.NODEJS_10_X,
-    handler: 'index.handler',
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    role: lambdaRole,
+  runtime: lambda.Runtime.NODEJS_10_X,
+  handler: 'index.handler',
+  code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  role: lambdaRole,
 });
 
 const stream = new kinesis.Stream(stack, 'test-stream', {
-    shardCount: 2,
-    encryption: kinesis.StreamEncryption.MANAGED
+  shardCount: 2,
+  encryption: kinesis.StreamEncryption.MANAGED
 });
 
 // Definitions
 const props: KinesisStreamsToLambdaProps = {
-    existingStreamObj: stream,
-    existingLambdaObj: lambdaFn,
-    kinesisEventSourceProps: {
-        startingPosition: lambda.StartingPosition.LATEST,
-        batchSize: 1
-    },
+  existingStreamObj: stream,
+  existingLambdaObj: lambdaFn,
+  kinesisEventSourceProps: {
+    startingPosition: lambda.StartingPosition.LATEST,
+    batchSize: 1
+  },
 };
 
 new KinesisStreamsToLambda(stack, 'test-ks-lambda', props);

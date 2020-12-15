@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
- // Imports
+// Imports
 import * as logs from '@aws-cdk/aws-logs';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as cdk from '@aws-cdk/core';
@@ -28,46 +28,46 @@ import { IRole } from '@aws-cdk/aws-iam';
  * @param _api - an existing api.RestApi or api.LambdaRestApi.
  */
 function configureCloudwatchRoleForApi(scope: cdk.Construct, _api: api.RestApi): iam.Role {
-    // Setup the IAM Role for API Gateway CloudWatch access
-    const restApiCloudwatchRole = new iam.Role(scope, 'LambdaRestApiCloudWatchRole', {
-        assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
-        inlinePolicies: {
-            LambdaRestApiCloudWatchRolePolicy: new iam.PolicyDocument({
-                statements: [new iam.PolicyStatement({
-                    actions: [
-                        'logs:CreateLogGroup',
-                        'logs:CreateLogStream',
-                        'logs:DescribeLogGroups',
-                        'logs:DescribeLogStreams',
-                        'logs:PutLogEvents',
-                        'logs:GetLogEvents',
-                        'logs:FilterLogEvents'
-                    ],
-                    resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:*`]
-                })]
-            })
-        }
-    });
+  // Setup the IAM Role for API Gateway CloudWatch access
+  const restApiCloudwatchRole = new iam.Role(scope, 'LambdaRestApiCloudWatchRole', {
+    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
+    inlinePolicies: {
+      LambdaRestApiCloudWatchRolePolicy: new iam.PolicyDocument({
+        statements: [new iam.PolicyStatement({
+          actions: [
+            'logs:CreateLogGroup',
+            'logs:CreateLogStream',
+            'logs:DescribeLogGroups',
+            'logs:DescribeLogStreams',
+            'logs:PutLogEvents',
+            'logs:GetLogEvents',
+            'logs:FilterLogEvents'
+          ],
+          resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:*`]
+        })]
+      })
+    }
+  });
     // Create and configure AWS::ApiGateway::Account with CloudWatch Role for ApiGateway
-    const CfnApi = _api.node.findChild('Resource') as api.CfnRestApi;
-    const cfnAccount: api.CfnAccount = new api.CfnAccount(scope, 'LambdaRestApiAccount', {
-        cloudWatchRoleArn: restApiCloudwatchRole.roleArn
-    });
-    cfnAccount.addDependsOn(CfnApi);
+  const CfnApi = _api.node.findChild('Resource') as api.CfnRestApi;
+  const cfnAccount: api.CfnAccount = new api.CfnAccount(scope, 'LambdaRestApiAccount', {
+    cloudWatchRoleArn: restApiCloudwatchRole.roleArn
+  });
+  cfnAccount.addDependsOn(CfnApi);
 
-    // Suppress Cfn Nag warning for APIG
-    const deployment: api.CfnDeployment = _api.latestDeployment?.node.findChild('Resource') as api.CfnDeployment;
-    deployment.cfnOptions.metadata = {
-        cfn_nag: {
-            rules_to_suppress: [{
-                id: 'W45',
-                reason: `ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checkes for it in AWS::ApiGateway::Deployment resource`
-            }]
-        }
-    };
+  // Suppress Cfn Nag warning for APIG
+  const deployment: api.CfnDeployment = _api.latestDeployment?.node.findChild('Resource') as api.CfnDeployment;
+  deployment.cfnOptions.metadata = {
+    cfn_nag: {
+      rules_to_suppress: [{
+        id: 'W45',
+        reason: `ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checkes for it in AWS::ApiGateway::Deployment resource`
+      }]
+    }
+  };
 
-    // Return the CW Role
-    return restApiCloudwatchRole;
+  // Return the CW Role
+  return restApiCloudwatchRole;
 }
 
 /**
@@ -77,43 +77,43 @@ function configureCloudwatchRoleForApi(scope: cdk.Construct, _api: api.RestApi):
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 function configureLambdaRestApi(scope: cdk.Construct, defaultApiGatewayProps: api.LambdaRestApiProps,
-                                apiGatewayProps?: api.LambdaRestApiProps): [api.RestApi, iam.Role] {
+  apiGatewayProps?: api.LambdaRestApiProps): [api.RestApi, iam.Role] {
 
-    // API Gateway doesn't allow both endpointTypes and endpointConfiguration, check whether endPointTypes exists
-    if (apiGatewayProps?.endpointTypes) {
-        throw Error('Solutions Constructs internally uses endpointConfiguration, use endpointConfiguration instead of endpointTypes');
-    }
+  // API Gateway doesn't allow both endpointTypes and endpointConfiguration, check whether endPointTypes exists
+  if (apiGatewayProps?.endpointTypes) {
+    throw Error('Solutions Constructs internally uses endpointConfiguration, use endpointConfiguration instead of endpointTypes');
+  }
 
-    // Define the API object
-    let _api: api.RestApi;
-    if (apiGatewayProps) {
-        // If property overrides have been provided, incorporate them and deploy
-        const _apiGatewayProps = overrideProps(defaultApiGatewayProps, apiGatewayProps);
-        _api = new api.LambdaRestApi(scope, 'LambdaRestApi', _apiGatewayProps);
-    } else {
-        // If no property overrides, deploy using the default configuration
-        _api = new api.LambdaRestApi(scope, 'LambdaRestApi', defaultApiGatewayProps);
-    }
-    // Configure API access logging
-    const cwRole = configureCloudwatchRoleForApi(scope, _api);
+  // Define the API object
+  let _api: api.RestApi;
+  if (apiGatewayProps) {
+    // If property overrides have been provided, incorporate them and deploy
+    const _apiGatewayProps = overrideProps(defaultApiGatewayProps, apiGatewayProps);
+    _api = new api.LambdaRestApi(scope, 'LambdaRestApi', _apiGatewayProps);
+  } else {
+    // If no property overrides, deploy using the default configuration
+    _api = new api.LambdaRestApi(scope, 'LambdaRestApi', defaultApiGatewayProps);
+  }
+  // Configure API access logging
+  const cwRole = configureCloudwatchRoleForApi(scope, _api);
 
-    let usagePlanProps: api.UsagePlanProps = {
-        apiStages: [{
-            api: _api,
-            stage: _api.deploymentStage
-        }]
-    };
+  let usagePlanProps: api.UsagePlanProps = {
+    apiStages: [{
+      api: _api,
+      stage: _api.deploymentStage
+    }]
+  };
     // If requireApiKey param is set to true, create a api key & associate to Usage Plan
-    if (apiGatewayProps?.defaultMethodOptions?.apiKeyRequired === true) {
-        const extraParams = { apiKey: _api.addApiKey('ApiKey')};
-        usagePlanProps = Object.assign(usagePlanProps, extraParams);
-    }
+  if (apiGatewayProps?.defaultMethodOptions?.apiKeyRequired === true) {
+    const extraParams = { apiKey: _api.addApiKey('ApiKey')};
+    usagePlanProps = Object.assign(usagePlanProps, extraParams);
+  }
 
-    // Configure Usage Plan
-    _api.addUsagePlan('UsagePlan', usagePlanProps);
+  // Configure Usage Plan
+  _api.addUsagePlan('UsagePlan', usagePlanProps);
 
-    // Return the API and CW Role
-    return [_api, cwRole];
+  // Return the API and CW Role
+  return [_api, cwRole];
 }
 
 /**
@@ -123,44 +123,44 @@ function configureLambdaRestApi(scope: cdk.Construct, defaultApiGatewayProps: ap
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 function configureRestApi(scope: cdk.Construct, defaultApiGatewayProps: api.RestApiProps,
-                          apiGatewayProps?: api.RestApiProps): [api.RestApi, iam.Role] {
+  apiGatewayProps?: api.RestApiProps): [api.RestApi, iam.Role] {
 
-    // API Gateway doesn't allow both endpointTypes and endpointConfiguration, check whether endPointTypes exists
-    if (apiGatewayProps?.endpointTypes) {
-        throw Error('Solutions Constructs internally uses endpointConfiguration, use endpointConfiguration instead of endpointTypes');
-    }
+  // API Gateway doesn't allow both endpointTypes and endpointConfiguration, check whether endPointTypes exists
+  if (apiGatewayProps?.endpointTypes) {
+    throw Error('Solutions Constructs internally uses endpointConfiguration, use endpointConfiguration instead of endpointTypes');
+  }
 
-    // Define the API
-    let _api: api.RestApi;
-    if (apiGatewayProps) {
-        // If property overrides have been provided, incorporate them and deploy
-        const _apiGatewayProps = overrideProps(defaultApiGatewayProps, apiGatewayProps);
-        _api = new api.RestApi(scope, 'RestApi', _apiGatewayProps);
-    } else {
-        // If no property overrides, deploy using the default configuration
-        _api = new api.RestApi(scope, 'RestApi', defaultApiGatewayProps);
-    }
-    // Configure API access logging
-    const cwRole = configureCloudwatchRoleForApi(scope, _api);
+  // Define the API
+  let _api: api.RestApi;
+  if (apiGatewayProps) {
+    // If property overrides have been provided, incorporate them and deploy
+    const _apiGatewayProps = overrideProps(defaultApiGatewayProps, apiGatewayProps);
+    _api = new api.RestApi(scope, 'RestApi', _apiGatewayProps);
+  } else {
+    // If no property overrides, deploy using the default configuration
+    _api = new api.RestApi(scope, 'RestApi', defaultApiGatewayProps);
+  }
+  // Configure API access logging
+  const cwRole = configureCloudwatchRoleForApi(scope, _api);
 
-    let usagePlanProps: api.UsagePlanProps = {
-        apiStages: [{
-            api: _api,
-            stage: _api.deploymentStage
-        }]
-    };
+  let usagePlanProps: api.UsagePlanProps = {
+    apiStages: [{
+      api: _api,
+      stage: _api.deploymentStage
+    }]
+  };
 
-    // If requireApiKey param is set to true, create a api key & associate to Usage Plan
-    if (apiGatewayProps?.defaultMethodOptions?.apiKeyRequired === true) {
-        const extraParams = { apiKey: _api.addApiKey('ApiKey')};
-        usagePlanProps = Object.assign(usagePlanProps, extraParams);
-    }
+  // If requireApiKey param is set to true, create a api key & associate to Usage Plan
+  if (apiGatewayProps?.defaultMethodOptions?.apiKeyRequired === true) {
+    const extraParams = { apiKey: _api.addApiKey('ApiKey')};
+    usagePlanProps = Object.assign(usagePlanProps, extraParams);
+  }
 
-    // Configure Usage Plan
-    _api.addUsagePlan('UsagePlan', usagePlanProps);
+  // Configure Usage Plan
+  _api.addUsagePlan('UsagePlan', usagePlanProps);
 
-    // Return the API and CW Role
-    return [_api, cwRole];
+  // Return the API and CW Role
+  return [_api, cwRole];
 }
 
 /**
@@ -170,14 +170,14 @@ function configureRestApi(scope: cdk.Construct, defaultApiGatewayProps: api.Rest
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 export function GlobalLambdaRestApi(scope: cdk.Construct, _existingLambdaObj: lambda.Function,
-                                    apiGatewayProps?: api.LambdaRestApiProps): [api.RestApi, iam.Role, logs.LogGroup] {
+  apiGatewayProps?: api.LambdaRestApiProps): [api.RestApi, iam.Role, logs.LogGroup] {
 
-    // Configure log group for API Gateway AccessLogging
-    const logGroup = new logs.LogGroup(scope, 'ApiAccessLogGroup', DefaultLogGroupProps());
+  // Configure log group for API Gateway AccessLogging
+  const logGroup = new logs.LogGroup(scope, 'ApiAccessLogGroup', DefaultLogGroupProps());
 
-    const defaultProps = apiDefaults.DefaultGlobalLambdaRestApiProps(_existingLambdaObj, logGroup);
-    const [restApi, apiCWRole] = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
-    return [restApi, apiCWRole, logGroup ];
+  const defaultProps = apiDefaults.DefaultGlobalLambdaRestApiProps(_existingLambdaObj, logGroup);
+  const [restApi, apiCWRole] = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
+  return [restApi, apiCWRole, logGroup ];
 }
 
 /**
@@ -187,13 +187,13 @@ export function GlobalLambdaRestApi(scope: cdk.Construct, _existingLambdaObj: la
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 export function RegionalLambdaRestApi(scope: cdk.Construct, _existingLambdaObj: lambda.Function,
-                                      apiGatewayProps?: api.LambdaRestApiProps): [api.RestApi, iam.Role, logs.LogGroup] {
-    // Configure log group for API Gateway AccessLogging
-    const logGroup = new logs.LogGroup(scope, 'ApiAccessLogGroup', DefaultLogGroupProps());
+  apiGatewayProps?: api.LambdaRestApiProps): [api.RestApi, iam.Role, logs.LogGroup] {
+  // Configure log group for API Gateway AccessLogging
+  const logGroup = new logs.LogGroup(scope, 'ApiAccessLogGroup', DefaultLogGroupProps());
 
-    const defaultProps = apiDefaults.DefaultRegionalLambdaRestApiProps(_existingLambdaObj, logGroup);
-    const [restApi, apiCWRole] = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
-    return [restApi, apiCWRole, logGroup ];
+  const defaultProps = apiDefaults.DefaultRegionalLambdaRestApiProps(_existingLambdaObj, logGroup);
+  const [restApi, apiCWRole] = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
+  return [restApi, apiCWRole, logGroup ];
 }
 
 /**
@@ -202,12 +202,12 @@ export function RegionalLambdaRestApi(scope: cdk.Construct, _existingLambdaObj: 
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 export function GlobalRestApi(scope: cdk.Construct, apiGatewayProps?: api.RestApiProps): [api.RestApi, iam.Role, logs.LogGroup] {
-    // Configure log group for API Gateway AccessLogging
-    const logGroup = new logs.LogGroup(scope, 'ApiAccessLogGroup', DefaultLogGroupProps());
+  // Configure log group for API Gateway AccessLogging
+  const logGroup = new logs.LogGroup(scope, 'ApiAccessLogGroup', DefaultLogGroupProps());
 
-    const defaultProps = apiDefaults.DefaultGlobalRestApiProps(logGroup);
-    const [restApi, apiCWRole] = configureRestApi(scope, defaultProps, apiGatewayProps);
-    return [restApi, apiCWRole, logGroup ];
+  const defaultProps = apiDefaults.DefaultGlobalRestApiProps(logGroup);
+  const [restApi, apiCWRole] = configureRestApi(scope, defaultProps, apiGatewayProps);
+  return [restApi, apiCWRole, logGroup ];
 }
 
 /**
@@ -216,12 +216,12 @@ export function GlobalRestApi(scope: cdk.Construct, apiGatewayProps?: api.RestAp
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 export function RegionalRestApi(scope: cdk.Construct, apiGatewayProps?: api.RestApiProps): [api.RestApi, iam.Role, logs.LogGroup] {
-    // Configure log group for API Gateway AccessLogging
-    const logGroup = new logs.LogGroup(scope, 'ApiAccessLogGroup', DefaultLogGroupProps());
+  // Configure log group for API Gateway AccessLogging
+  const logGroup = new logs.LogGroup(scope, 'ApiAccessLogGroup', DefaultLogGroupProps());
 
-    const defaultProps = apiDefaults.DefaultRegionalRestApiProps(logGroup);
-    const [restApi, apiCWRole] = configureRestApi(scope, defaultProps, apiGatewayProps);
-    return [restApi, apiCWRole, logGroup ];
+  const defaultProps = apiDefaults.DefaultRegionalRestApiProps(logGroup);
+  const [restApi, apiCWRole] = configureRestApi(scope, defaultProps, apiGatewayProps);
+  return [restApi, apiCWRole, logGroup ];
 }
 
 export interface AddProxyMethodToApiResourceInputParams {
@@ -240,83 +240,83 @@ export interface AddProxyMethodToApiResourceInputParams {
 }
 
 export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceInputParams): api.Method {
-    let baseProps: api.AwsIntegrationProps = {
-        service: params.service,
-        integrationHttpMethod: "POST",
-        options: {
-          passthroughBehavior: api.PassthroughBehavior.NEVER,
-          credentialsRole: params.apiGatewayRole,
-          requestParameters: {
-              "integration.request.header.Content-Type": params.contentType ? params.contentType : "'application/json'"
+  let baseProps: api.AwsIntegrationProps = {
+    service: params.service,
+    integrationHttpMethod: "POST",
+    options: {
+      passthroughBehavior: api.PassthroughBehavior.NEVER,
+      credentialsRole: params.apiGatewayRole,
+      requestParameters: {
+        "integration.request.header.Content-Type": params.contentType ? params.contentType : "'application/json'"
+      },
+      requestTemplates: {
+        "application/json": params.requestTemplate
+      },
+      integrationResponses: [
+        {
+          statusCode: "200"
+        },
+        {
+          statusCode: "500",
+          responseTemplates: {
+            "text/html": "Error"
           },
-          requestTemplates: {
-              "application/json": params.requestTemplate
-          },
-          integrationResponses: [
-            {
-                statusCode: "200"
-            },
-            {
-                statusCode: "500",
-                responseTemplates: {
-                    "text/html": "Error"
-                },
-                selectionPattern: "500"
-            }
-          ]
+          selectionPattern: "500"
         }
+      ]
+    }
+  };
+
+  let extraProps;
+
+  if (params.action) {
+    extraProps = {
+      action: params.action
     };
-
-    let extraProps;
-
-    if (params.action) {
-        extraProps = {
-            action: params.action
-        };
-    } else if (params.path) {
-        extraProps = {
-            path: params.path
-        };
-    } else {
-        throw Error('Either action or path is required');
-    }
-
-    // Setup the API Gateway AWS Integration
-    baseProps = Object.assign(baseProps, extraProps);
-    let apiGatewayIntegration;
-    if (params.awsIntegrationProps) {
-        const overridenProps = overrideProps(baseProps, params.awsIntegrationProps);
-        apiGatewayIntegration = new api.AwsIntegration(overridenProps);
-    } else {
-        apiGatewayIntegration = new api.AwsIntegration(baseProps);
-    }
-
-    const defaultMethodOptions = {
-        methodResponses: [
-            {
-                statusCode: "200",
-                responseParameters: {
-                    "method.response.header.Content-Type": true
-                }
-            },
-            {
-                statusCode: "500",
-                responseParameters: {
-                    "method.response.header.Content-Type": true
-                },
-            }
-        ],
-        requestValidator: params.requestValidator,
-        requestModels: params.requestModel
+  } else if (params.path) {
+    extraProps = {
+      path: params.path
     };
+  } else {
+    throw Error('Either action or path is required');
+  }
 
-    let apiMethod;
-    // Setup the API Gateway method
-    if (params.methodOptions) {
-        const overridenProps =  overrideProps(defaultMethodOptions, params.methodOptions);
-        apiMethod = params.apiResource.addMethod(params.apiMethod, apiGatewayIntegration, overridenProps);
-    } else {
-        apiMethod = params.apiResource.addMethod(params.apiMethod, apiGatewayIntegration, defaultMethodOptions);
-    }
-    return apiMethod;
+  // Setup the API Gateway AWS Integration
+  baseProps = Object.assign(baseProps, extraProps);
+  let apiGatewayIntegration;
+  if (params.awsIntegrationProps) {
+    const overridenProps = overrideProps(baseProps, params.awsIntegrationProps);
+    apiGatewayIntegration = new api.AwsIntegration(overridenProps);
+  } else {
+    apiGatewayIntegration = new api.AwsIntegration(baseProps);
+  }
+
+  const defaultMethodOptions = {
+    methodResponses: [
+      {
+        statusCode: "200",
+        responseParameters: {
+          "method.response.header.Content-Type": true
+        }
+      },
+      {
+        statusCode: "500",
+        responseParameters: {
+          "method.response.header.Content-Type": true
+        },
+      }
+    ],
+    requestValidator: params.requestValidator,
+    requestModels: params.requestModel
+  };
+
+  let apiMethod;
+  // Setup the API Gateway method
+  if (params.methodOptions) {
+    const overridenProps =  overrideProps(defaultMethodOptions, params.methodOptions);
+    apiMethod = params.apiResource.addMethod(params.apiMethod, apiGatewayIntegration, overridenProps);
+  } else {
+    apiMethod = params.apiResource.addMethod(params.apiMethod, apiGatewayIntegration, defaultMethodOptions);
+  }
+  return apiMethod;
 }

@@ -24,18 +24,18 @@ import '@aws-cdk/assert/jest';
 // default properties
 // --------------------------------------------------------------
 test('Pattern deployment w/ new Lambda function and default props', () => {
-    // Initial Setup
-    const stack = new Stack();
-    const props: SqsToLambdaProps = {
-        lambdaFunctionProps: {
-            runtime: lambda.Runtime.NODEJS_10_X,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-        }
-    };
-    new SqsToLambda(stack, 'test-sqs-lambda', props);
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Initial Setup
+  const stack = new Stack();
+  const props: SqsToLambdaProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    }
+  };
+  new SqsToLambda(stack, 'test-sqs-lambda', props);
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
@@ -43,100 +43,100 @@ test('Pattern deployment w/ new Lambda function and default props', () => {
 // overridden properties
 // --------------------------------------------------------------
 test('Pattern deployment w/ new Lambda function and overridden props', () => {
-    // Initial Setup
-    const stack = new Stack();
-    const props: SqsToLambdaProps = {
-        lambdaFunctionProps: {
-            runtime: lambda.Runtime.NODEJS_10_X,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-            environment: {
-                OVERRIDE: "TRUE"
-            }
-        },
-        queueProps: {
-            fifo: true
-        },
-        deployDeadLetterQueue: false,
-        maxReceiveCount: 0
-    };
-    const app = new SqsToLambda(stack, 'test-sqs-lambda', props);
-    // Assertion 1
-    expect(app.sqsQueue).toHaveProperty('fifo', true);
-    // Assertion 2
-    expect(stack).toHaveResource('AWS::Lambda::Function', {
-        Environment: {
-            Variables: {
-              OVERRIDE: "TRUE",
-              AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
-            }
-        }
-    });
+  // Initial Setup
+  const stack = new Stack();
+  const props: SqsToLambdaProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        OVERRIDE: "TRUE"
+      }
+    },
+    queueProps: {
+      fifo: true
+    },
+    deployDeadLetterQueue: false,
+    maxReceiveCount: 0
+  };
+  const app = new SqsToLambda(stack, 'test-sqs-lambda', props);
+  // Assertion 1
+  expect(app.sqsQueue).toHaveProperty('fifo', true);
+  // Assertion 2
+  expect(stack).toHaveResource('AWS::Lambda::Function', {
+    Environment: {
+      Variables: {
+        OVERRIDE: "TRUE",
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
+      }
+    }
+  });
 });
 
 // --------------------------------------------------------------
 // Pattern Deployment w/ Existing Lambda function
 // --------------------------------------------------------------
 test('Pattern deployment w/ Existing Lambda Function', () => {
-    // Initial Setup
-    const stack = new Stack();
-    const fn = new lambda.Function(stack, 'ExistingLambdaFunction', {
-        runtime: lambda.Runtime.NODEJS_10_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    });
-    const props: SqsToLambdaProps = {
-        existingLambdaObj: fn,
-        deployDeadLetterQueue: false,
-        maxReceiveCount: 0,
-        queueProps: {}
-    };
-    new SqsToLambda(stack, 'test-apigateway-lambda', props);
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Initial Setup
+  const stack = new Stack();
+  const fn = new lambda.Function(stack, 'ExistingLambdaFunction', {
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+  });
+  const props: SqsToLambdaProps = {
+    existingLambdaObj: fn,
+    deployDeadLetterQueue: false,
+    maxReceiveCount: 0,
+    queueProps: {}
+  };
+  new SqsToLambda(stack, 'test-apigateway-lambda', props);
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
 // Test the getter methods
 // --------------------------------------------------------------
 test('Test getter methods', () => {
-    // Initial Setup
-    const stack = new Stack();
-    const props: SqsToLambdaProps = {
-        lambdaFunctionProps: {
-            runtime: lambda.Runtime.NODEJS_10_X,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-        },
-        deployDeadLetterQueue: true,
-        maxReceiveCount: 0,
-        queueProps: {}
-    };
-    const app = new SqsToLambda(stack, 'test-apigateway-lambda', props);
-    // Assertion 1
-    expect(app.lambdaFunction !== null);
-    // Assertion 2
-    expect(app.sqsQueue !== null);
-    // Assertion 3
-    expect(app.deadLetterQueue !== null);
+  // Initial Setup
+  const stack = new Stack();
+  const props: SqsToLambdaProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    deployDeadLetterQueue: true,
+    maxReceiveCount: 0,
+    queueProps: {}
+  };
+  const app = new SqsToLambda(stack, 'test-apigateway-lambda', props);
+  // Assertion 1
+  expect(app.lambdaFunction !== null);
+  // Assertion 2
+  expect(app.sqsQueue !== null);
+  // Assertion 3
+  expect(app.deadLetterQueue !== null);
 });
 
 // --------------------------------------------------------------
 // Test error handling for existing Lambda function
 // --------------------------------------------------------------
 test('Test error handling for existing Lambda function', () => {
-    // Initial Setup
-    const stack = new Stack();
-    const props: SqsToLambdaProps = {
-        existingLambdaObj: undefined,
-        deployDeadLetterQueue: false,
-        maxReceiveCount: 0,
-        queueProps: {}
-    };
+  // Initial Setup
+  const stack = new Stack();
+  const props: SqsToLambdaProps = {
+    existingLambdaObj: undefined,
+    deployDeadLetterQueue: false,
+    maxReceiveCount: 0,
+    queueProps: {}
+  };
     // Assertion 1
-    expect(() => {
-        new SqsToLambda(stack, 'test-sqs-lambda', props);
-    }).toThrowError();
+  expect(() => {
+    new SqsToLambda(stack, 'test-sqs-lambda', props);
+  }).toThrowError();
 });
 
 // --------------------------------------------------------------
@@ -144,17 +144,17 @@ test('Test error handling for existing Lambda function', () => {
 // w/o required properties
 // --------------------------------------------------------------
 test('Test error handling for new Lambda function w/o required properties', () => {
-    // Initial Setup
-    const stack = new Stack();
-    const props: SqsToLambdaProps = {
-        deployDeadLetterQueue: false,
-        maxReceiveCount: 0,
-        queueProps: {}
-    };
+  // Initial Setup
+  const stack = new Stack();
+  const props: SqsToLambdaProps = {
+    deployDeadLetterQueue: false,
+    maxReceiveCount: 0,
+    queueProps: {}
+  };
     // Assertion 1
-    expect(() => {
-        new SqsToLambda(stack, 'test-sqs-lambda', props);
-    }).toThrowError();
+  expect(() => {
+    new SqsToLambda(stack, 'test-sqs-lambda', props);
+  }).toThrowError();
 });
 
 // --------------------------------------------------------------
@@ -183,20 +183,20 @@ test('Test deployment w/ existing queue', () => {
 // Pattern deployment w/ batch size
 // --------------------------------------------------------------
 test('Pattern deployment w/ batch size', () => {
-    const stack = new Stack();
-    const props: SqsToLambdaProps = {
-        lambdaFunctionProps: {
-            runtime: lambda.Runtime.NODEJS_10_X,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        },
-        sqsEventSourceProps: {
-            batchSize: 5
-        }
-    };
-    new SqsToLambda(stack, 'test-sqs-lambda', props);
+  const stack = new Stack();
+  const props: SqsToLambdaProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    sqsEventSourceProps: {
+      batchSize: 5
+    }
+  };
+  new SqsToLambda(stack, 'test-sqs-lambda', props);
 
-    expect(stack).toHaveResource('AWS::Lambda::EventSourceMapping', {
-        BatchSize: 5
-    });
+  expect(stack).toHaveResource('AWS::Lambda::EventSourceMapping', {
+    BatchSize: 5
+  });
 });

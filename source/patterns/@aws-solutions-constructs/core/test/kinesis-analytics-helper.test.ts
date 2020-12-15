@@ -22,41 +22,41 @@ import '@aws-cdk/assert/jest';
 // Test default functionality
 // --------------------------------------------------------------
 test('Test default functionality', () => {
-    // Setup the stack
-    const stack = new Stack();
-    const firehose = new kinesisFirehose.CfnDeliveryStream(stack, 'KinesisFirehose');
-    // Setup the Kinesis Analytics application
-    defaults.buildKinesisAnalyticsApp(stack, {
-        kinesisFirehose: firehose,
-        kinesisAnalyticsProps: {
-            inputs: [{
-                inputSchema: {
-                    recordColumns: [{
-                        name: 'ticker_symbol',
-                        sqlType: 'VARCHAR(4)',
-                        mapping: '$.ticker_symbol'
-                    }, {
-                        name: 'sector',
-                        sqlType: 'VARCHAR(16)',
-                        mapping: '$.sector'
-                    }, {
-                        name: 'change',
-                        sqlType: 'REAL',
-                        mapping: '$.change'
-                    }, {
-                        name: 'price',
-                        sqlType: 'REAL',
-                        mapping: '$.price'
-                    }],
-                    recordFormat: {
-                        recordFormatType: 'JSON'
-                    },
-                    recordEncoding: 'UTF-8'
-                },
-                namePrefix: 'SOURCE_SQL_STREAM'
-            }]
-        }
-    });
-    // Assertions
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Setup the stack
+  const stack = new Stack();
+  const firehose = new kinesisFirehose.CfnDeliveryStream(stack, 'KinesisFirehose');
+  // Setup the Kinesis Analytics application
+  defaults.buildKinesisAnalyticsApp(stack, {
+    kinesisFirehose: firehose,
+    kinesisAnalyticsProps: {
+      inputs: [{
+        inputSchema: {
+          recordColumns: [{
+            name: 'ticker_symbol',
+            sqlType: 'VARCHAR(4)',
+            mapping: '$.ticker_symbol'
+          }, {
+            name: 'sector',
+            sqlType: 'VARCHAR(16)',
+            mapping: '$.sector'
+          }, {
+            name: 'change',
+            sqlType: 'REAL',
+            mapping: '$.change'
+          }, {
+            name: 'price',
+            sqlType: 'REAL',
+            mapping: '$.price'
+          }],
+          recordFormat: {
+            recordFormatType: 'JSON'
+          },
+          recordEncoding: 'UTF-8'
+        },
+        namePrefix: 'SOURCE_SQL_STREAM'
+      }]
+    }
+  });
+  // Assertions
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });

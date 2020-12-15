@@ -23,19 +23,19 @@ stack.templateOptions.description = 'Integration Test for aws-sqs-lambda with FI
 
 // Definitions
 const props: SqsToLambdaProps = {
-    lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    },
-    queueProps: {
-        queueName: `myQueue.fifo`,
-        fifo: true,
-    },
-    deadLetterQueueProps: {
-        queueName: `myDLQueue.fifo`,
-        fifo: true,
-    },
+  lambdaFunctionProps: {
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+  },
+  queueProps: {
+    queueName: `myQueue.fifo`,
+    fifo: true,
+  },
+  deadLetterQueueProps: {
+    queueName: `myDLQueue.fifo`,
+    fifo: true,
+  },
 };
 
 new SqsToLambda(stack, 'test-sqs-lambda-fifo', props);

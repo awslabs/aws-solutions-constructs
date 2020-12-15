@@ -197,6 +197,25 @@ test("test buildLambdaFunction with deploy = true", () => {
   });
 });
 
+test("test buildLambdaFunction with existing Lambda function (no VPC)", () => {
+  const stack = new Stack();
+
+  const inProps: lambda.FunctionProps = {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda-test`),
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: "index.handler",
+  };
+
+  const newFunction = new lambda.Function(stack, "existingFunction", inProps);
+
+  const construct = defaults.buildLambdaFunction(stack, {
+    existingLambdaObj: newFunction
+  });
+
+  expect(construct).toBe(newFunction);
+
+});
+
 test("test buildLambdaFunction with FunctionProps", () => {
   const stack = new Stack();
 
@@ -285,4 +304,23 @@ test("test buildLambdaFunction when Lambda properties includes a VPC", () => {
       Version: "2012-10-17",
     },
   });
+});
+
+test("Test for error if VPC in arguments AND in Lambda Function properties", () => {
+  const stack = new Stack();
+
+  const fakeVpc = new ec2.Vpc(stack, "vpc", {});
+
+  const lambdaFunctionProps: lambda.FunctionProps = {
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: "index.handler",
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    vpc: fakeVpc,
+  };
+
+  const app = () =>  {
+    defaults.deployLambdaFunction(stack, lambdaFunctionProps, undefined, fakeVpc);
+  };
+
+  expect(app).toThrowError();
 });

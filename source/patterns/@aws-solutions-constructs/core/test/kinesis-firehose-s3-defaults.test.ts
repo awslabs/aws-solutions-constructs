@@ -20,72 +20,72 @@ import '@aws-cdk/assert/jest';
 import * as kms from '@aws-cdk/aws-kms';
 
 test('snapshot test kinesisfirehose default params', () => {
-    const stack = new Stack();
+  const stack = new Stack();
 
-    const awsManagedKey: kms.IKey = kms.Alias.fromAliasName(stack, 'aws-managed-key', 'alias/aws/s3');
+  const awsManagedKey: kms.IKey = kms.Alias.fromAliasName(stack, 'aws-managed-key', 'alias/aws/s3');
 
-    new kinesisfirehose.CfnDeliveryStream(stack, 'KinesisFirehose',
-        defaults.DefaultCfnDeliveryStreamProps('bucket_arn', 'role_arn', 'log_group', 'log_stream', awsManagedKey));
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  new kinesisfirehose.CfnDeliveryStream(stack, 'KinesisFirehose',
+    defaults.DefaultCfnDeliveryStreamProps('bucket_arn', 'role_arn', 'log_group', 'log_stream', awsManagedKey));
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 test('test kinesisanalytics override buffer conditions', () => {
-    const stack = new Stack();
+  const stack = new Stack();
 
-    const inProps = {
-        extendedS3DestinationConfiguration: {
-            bufferingHints: {
-                intervalInSeconds: 600,
-                sizeInMBs: 10
-            },
+  const inProps = {
+    extendedS3DestinationConfiguration: {
+      bufferingHints: {
+        intervalInSeconds: 600,
+        sizeInMBs: 10
+      },
+    }
+  };
+  const awsManagedKey: kms.IKey = kms.Alias.fromAliasName(stack, 'aws-managed-key', 'alias/aws/s3');
+
+  const defaultProps = defaults.DefaultCfnDeliveryStreamProps('bucket_arn', 'role_arn', 'log_group', 'log_stream', awsManagedKey);
+
+  const outProps = overrideProps(defaultProps, inProps);
+
+  new kinesisfirehose.CfnDeliveryStream(stack, 'KinesisFirehose', outProps);
+
+  expect(stack).toHaveResource("AWS::KinesisFirehose::DeliveryStream", {
+    ExtendedS3DestinationConfiguration: {
+      BucketARN: "bucket_arn",
+      BufferingHints: {
+        IntervalInSeconds: 600,
+        SizeInMBs: 10
+      },
+      CloudWatchLoggingOptions: {
+        Enabled: true,
+        LogGroupName: "log_group",
+        LogStreamName: "log_stream"
+      },
+      CompressionFormat: "GZIP",
+      EncryptionConfiguration: {
+        KMSEncryptionConfig: {
+          AWSKMSKeyARN: {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  Ref: "AWS::Partition"
+                },
+                ":kms:",
+                {
+                  Ref: "AWS::Region"
+                },
+                ":",
+                {
+                  Ref: "AWS::AccountId"
+                },
+                ":alias/aws/s3"
+              ]
+            ]
+          }
         }
-    };
-    const awsManagedKey: kms.IKey = kms.Alias.fromAliasName(stack, 'aws-managed-key', 'alias/aws/s3');
-
-    const defaultProps = defaults.DefaultCfnDeliveryStreamProps('bucket_arn', 'role_arn', 'log_group', 'log_stream', awsManagedKey);
-
-    const outProps = overrideProps(defaultProps, inProps);
-
-    new kinesisfirehose.CfnDeliveryStream(stack, 'KinesisFirehose', outProps);
-
-    expect(stack).toHaveResource("AWS::KinesisFirehose::DeliveryStream", {
-        ExtendedS3DestinationConfiguration: {
-            BucketARN: "bucket_arn",
-            BufferingHints: {
-              IntervalInSeconds: 600,
-              SizeInMBs: 10
-            },
-            CloudWatchLoggingOptions: {
-              Enabled: true,
-              LogGroupName: "log_group",
-              LogStreamName: "log_stream"
-            },
-            CompressionFormat: "GZIP",
-            EncryptionConfiguration: {
-                KMSEncryptionConfig: {
-                  AWSKMSKeyARN: {
-                    "Fn::Join": [
-                      "",
-                      [
-                        "arn:",
-                        {
-                          Ref: "AWS::Partition"
-                        },
-                        ":kms:",
-                        {
-                          Ref: "AWS::Region"
-                        },
-                        ":",
-                        {
-                          Ref: "AWS::AccountId"
-                        },
-                        ":alias/aws/s3"
-                      ]
-                    ]
-                  }
-                }
-            },
-            RoleARN: "role_arn"
-        }
-    });
+      },
+      RoleARN: "role_arn"
+    }
+  });
 });
