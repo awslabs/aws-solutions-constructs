@@ -26,9 +26,9 @@
           "Statement": [
             {
               "Action": [
-                "s3:DeleteObject*",
-                "s3:PutObject*",
-                "s3:Abort*"
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
               ],
               "Effect": "Allow",
               "Resource": [
@@ -379,10 +379,9 @@
           ]
         },
         "DefaultArguments": {
-          "--job-bookmark-option": "job-bookmark-disable",
+          "--job-bookmark-option": "job-bookmark-enable",
           "--enable-metrics": true,
           "--enable-continuous-cloudwatch-log": true,
-          "--enable-continuous-log-filter": true,
           "--enable-glue-datacatalog": true,
           "--output-path": {
             "Fn::Join": [
@@ -401,6 +400,104 @@
           }
         },
         "SecurityConfiguration": "ETLJobSecurityConfig"
+      }
+    },
+    "GlueDatabase": {
+      "Type": "AWS::Glue::Database",
+      "Properties": {
+        "CatalogId": {
+          "Ref": "AWS::AccountId"
+        },
+        "DatabaseInput": {
+          "Description": "A Glue database table"
+        }
+      }
+    },
+    "GlueTable": {
+      "Type": "AWS::Glue::Table",
+      "Properties": {
+        "CatalogId": {
+          "Ref": "AWS::AccountId"
+        },
+        "DatabaseName": {
+          "Ref": "GlueDatabase"
+        },
+        "TableInput": {
+          "Parameters": {
+            "classication": "json"
+          },
+          "StorageDescriptor": {
+            "Columns": [
+              {
+                "Comment": "",
+                "Name": "ventilatorid",
+                "Type": "int"
+              },
+              {
+                "Comment": "",
+                "Name": "eventtime",
+                "Type": "string"
+              },
+              {
+                "Comment": "",
+                "Name": "serialnumber",
+                "Type": "string"
+              },
+              {
+                "Comment": "",
+                "Name": "pressurecontrol",
+                "Type": "int"
+              },
+              {
+                "Comment": "",
+                "Name": "o2stats",
+                "Type": "int"
+              },
+              {
+                "Comment": "",
+                "Name": "minutevolume",
+                "Type": "int"
+              },
+              {
+                "Comment": "",
+                "Name": "manufacturer",
+                "Type": "string"
+              }
+            ],
+            "Compressed": false,
+            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+            "Location": {
+              "Ref": "CustomETLKinesisStreamB4F1869F"
+            },
+            "NumberOfBuckets": -1,
+            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+            "Parameters": {
+              "endpointUrl": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "https://kinesis.",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ".amazonaws.com"
+                  ]
+                ]
+              },
+              "streamName": {
+                "Ref": "CustomETLKinesisStreamB4F1869F"
+              },
+              "typeOfData": "kinesis"
+            },
+            "SerdeInfo": {
+              "Parameters": {
+                "paths": "."
+              },
+              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe"
+            }
+          },
+          "TableType": "EXTERNAL_TABLE"
+        }
       }
     },
     "GlueJobRolePolicy422D4F2E": {
@@ -489,6 +586,87 @@
                   ]
                 ]
               }
+            },
+            {
+              "Action": "glue:GetSecurityConfiguration",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": "glue:GetTable",
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":glue:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Ref": "GlueDatabase"
+                      },
+                      "/",
+                      {
+                        "Ref": "GlueTable"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":glue:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":database/",
+                      {
+                        "Ref": "GlueDatabase"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":glue:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":catalog"
+                    ]
+                  ]
+                }
+              ]
             }
           ],
           "Version": "2012-10-17"

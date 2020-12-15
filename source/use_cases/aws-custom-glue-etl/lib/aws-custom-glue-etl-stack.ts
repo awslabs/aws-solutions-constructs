@@ -27,7 +27,7 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
       bucketProps: defaults.DefaultS3Props()
     });
 
-    _outputBucket[0].grantReadWrite(_glueJobRole);
+    _outputBucket[0].grantRead(_glueJobRole);
 
     const _jobCommand = KinesisStreamGlueJob.createGlueJobCommand(this, 'glueetl', '3', undefined, `${__dirname}/../etl/transform.py`);
 
