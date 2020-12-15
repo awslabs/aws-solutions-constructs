@@ -26,11 +26,28 @@ test('Pattern minimal deployment', () => {
     // Initial setup
     const stack = new Stack();
     const props: KinesisStreamGlueJobProps = {
-        glueJobProps: {
-            command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'testJob', '3', undefined, `${__dirname}/transform.py`)[0],
-            role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
-            securityConfiguration: 'testSecConfig'
-        }
+      glueJobProps: {
+          command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'glueetl', '3', undefined, `${__dirname}/transform.py`)[0],
+          role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
+          securityConfiguration: 'testSecConfig'
+      },
+      fieldSchema: [{
+        name: "id",
+        type: "int",
+        comment: "Identifier for the record"
+      }, {
+        name: "name",
+        type: "string",
+        comment: "The name of the record"
+      }, {
+        name: "type",
+        type: "string",
+        comment: "The type of the record"
+      }, {
+        name: "numericvalue",
+        type: "int",
+        comment: "Some value associated with the record"
+      }]
     };
     new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
     // Assertion 1
@@ -98,13 +115,30 @@ test('Test if existing Glue Job is provided', () => {
     // Initial setup
     const stack = new Stack();
     const existingCfnJob = new CfnJob(stack, 'ExistingJob', {
-        command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'testJob', '3', undefined, `${__dirname}/transform.py`)[0],
+        command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'glueetl', '3', undefined, `${__dirname}/transform.py`)[0],
         role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
         securityConfiguration: 'testSecConfig'
     });
 
     new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', {
-        existingGlueJob: existingCfnJob
+      existingGlueJob: existingCfnJob,
+      fieldSchema: [{
+          name: "id",
+          type: "int",
+          comment: "Identifier for the record"
+        }, {
+          name: "name",
+          type: "string",
+          comment: "The name of the record"
+        }, {
+          name: "type",
+          type: "string",
+          comment: "The type of the record"
+        }, {
+          name: "numericvalue",
+          type: "int",
+          comment: "Some value associated with the record"
+        }]
     });
     // Assertion 1
     expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
@@ -150,52 +184,86 @@ test('Test if existing Glue Job is provided', () => {
 // Test if existing S3 bucket location is provided
 // --------------------------------------------------------------
 test('When S3 bucket location for script exists', () => {
-    // Initial setup
-    const stack = new Stack();
-    const s3ObjectUrl = new Bucket(stack, 'ScriptLocation').s3UrlForObject('/dummyfile.py');
-    const props: KinesisStreamGlueJobProps = {
-        glueJobProps: {
-            command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'testJob', '3', s3ObjectUrl)[0],
-            role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
-            securityConfiguration: 'testSecConfig'
-        },
-    };
-    new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Initial setup
+  const stack = new Stack();
+  const s3ObjectUrl = new Bucket(stack, 'ScriptLocation').s3UrlForObject('/dummyfile.py');
+  const props: KinesisStreamGlueJobProps = {
+    glueJobProps: {
+        command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'pythonshell', '3', s3ObjectUrl)[0],
+        role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
+        securityConfiguration: 'testSecConfig'
+    },
+    fieldSchema: [{
+      name: "id",
+      type: "int",
+      comment: "Identifier for the record"
+    }, {
+      name: "name",
+      type: "string",
+      comment: "The name of the record"
+    }, {
+      name: "type",
+      type: "string",
+      comment: "The type of the record"
+    }, {
+      name: "numericvalue",
+      type: "int",
+      comment: "Some value associated with the record"
+    }]
+  };
+  new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
-    // Assert existing bucket
-    expect(stack).toHaveResourceLike('AWS::S3::Bucket', {
-        DeletionPolicy: "Retain",
-        Type: "AWS::S3::Bucket",
-        UpdateReplacePolicy: "Retain",
-    }, ResourcePart.CompleteDefinition);
+  // Assert existing bucket
+  expect(stack).toHaveResourceLike('AWS::S3::Bucket', {
+    DeletionPolicy: "Retain",
+    Type: "AWS::S3::Bucket",
+    UpdateReplacePolicy: "Retain",
+  }, ResourcePart.CompleteDefinition);
 });
 
 // --------------------------------------------------------------
 // Test when the construct is supplied with an existing stream
 // --------------------------------------------------------------
 test('create glue job with existing kinesis stream', () => {
-    const stack = new Stack();
-    const kinesisStream = buildKinesisStream(stack, {});
-    new KinesisStreamGlueJob(stack, 'existingStreamJob', {
-        existingStreamObj: kinesisStream,
-        glueJobProps: {
-            command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'JobCommand', '3', undefined, `${__dirname}/transform.py`)[0],
-            role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn
-        }
-    });
+  const stack = new Stack();
+  const kinesisStream = buildKinesisStream(stack, {});
+  new KinesisStreamGlueJob(stack, 'existingStreamJob', {
+    existingStreamObj: kinesisStream,
+    glueJobProps: {
+        command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'glueetl', '3', undefined, `${__dirname}/transform.py`)[0],
+        role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn
+    },
+    fieldSchema: [{
+        name: "id",
+        type: "int",
+        comment: "Identifier for the record"
+      }, {
+        name: "name",
+        type: "string",
+        comment: "The name of the record"
+      }, {
+        name: "type",
+        type: "string",
+        comment: "The type of the record"
+      }, {
+        name: "numericvalue",
+        type: "int",
+        comment: "Some value associated with the record"
+      }]
+  });
 
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 test('Expect to throw error', () => {
-    const stack = new Stack();
-    try {
-        KinesisStreamGlueJob.createGlueJobCommand(stack, 'testJob', '3');
-    } catch (error) {
-        if (!(error instanceof Error)) {
-            fail();
-        }
-    }
+  const stack = new Stack();
+  try {
+      KinesisStreamGlueJob.createGlueJobCommand(stack, 'pythonshell', '3');
+  } catch (error) {
+      if (!(error instanceof Error)) {
+          fail();
+      }
+  }
 });

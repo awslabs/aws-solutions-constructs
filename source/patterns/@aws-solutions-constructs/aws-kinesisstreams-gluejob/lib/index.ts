@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { CfnJob, CfnJobProps } from '@aws-cdk/aws-glue';
+import { CfnDatabase, CfnJob, CfnJobProps, CfnTable } from '@aws-cdk/aws-glue';
 import { Effect, Policy, PolicyStatement, Role, ServicePrincipal } from '@aws-cdk/aws-iam';
 import { Stream, StreamProps } from '@aws-cdk/aws-kinesis';
 import { Asset } from '@aws-cdk/aws-s3-assets';
@@ -40,6 +40,28 @@ export interface KinesisStreamGlueJobProps {
    * Existing GlueJob configuration. If not set, it will create the a CfnJob instance using the glueJobProps
    */
   readonly existingGlueJob?: CfnJob;
+  /**
+   * A JSON document defining the schema structure of the records in the data stream. An example of such a
+   * definition as below
+   * 	"FieldSchema": [{
+	 *		"name": "id",
+	 *		"type": "int",
+	 *		"comment": "Identifier for the record"
+	 *	}, {
+   *    "name": "name",
+	 *		"type": "string",
+	 *		"comment": "The name of the record"
+	 *	}, {
+	 *		"name": "type",
+	 * 		"type": "string",
+	 *		"comment": "The type of the record"
+	 *	}, {
+	 *		"name": "numericvalue",
+	 *		"type": "int",
+	 *		"comment": "Some value associated with the record"
+	 *	},
+   */
+  readonly fieldSchema: CfnTable.ColumnProperty []
 }
 
 export class KinesisStreamGlueJob extends Construct {
@@ -60,12 +82,60 @@ export class KinesisStreamGlueJob extends Construct {
       glueJobProps: props.glueJobProps
     });
 
+    const _glueDatabase = new CfnDatabase(scope, 'GlueDatabase', {
+      catalogId: Aws.ACCOUNT_ID,
+      databaseInput: {
+        description: 'A database for Kinesis Stream processing'
+      }
+    });
+
+    const _glueTable = new CfnTable(scope, 'GlueTable', {
+      catalogId: _glueDatabase.catalogId,
+      databaseName: _glueDatabase.ref,
+      tableInput: {
+        storageDescriptor: {
+          columns: props.fieldSchema,
+          location: this.kinesisStream.streamName,
+          inputFormat: "org.apache.hadoop.mapred.TextInputFormat",
+          outputFormat: "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+          compressed: false,
+          numberOfBuckets: -1,
+          serdeInfo: {
+            serializationLibrary: "org.openx.data.jsonserde.JsonSerDe",
+            parameters: {
+              paths: '.'
+            }
+          },
+          parameters: {
+            endpointUrl: `https://kinesis.${Aws.REGION}.amazonaws.com`,
+            streamName: this.kinesisStream.streamName,
+            typeOfData: "kinesis"
+          }
+        },
+        tableType: 'EXTERNAL_TABLE',
+        parameters: {
+          classication: 'json'
+        }
+      }
+    });
+
     const _glueJobRole = Role.fromRoleArn(scope, 'GlueJobRole', this.glueJob.role);
     _glueJobRole.attachInlinePolicy(new Policy(scope, 'GlueJobPolicy', {
       statements: [ new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'glue:GetJob' ],
         resources: [ `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:job/${this.glueJob.ref}` ]
+      }), new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: [ 'glue:GetSecurityConfiguration' ],
+        resources: [ '*' ] //Security Configurations have no resource arns
+      }), new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: [ 'glue:GetTable' ],
+        resources: [ `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:table/${_glueDatabase.ref}/${_glueTable.ref}`,
+                     `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:database/${_glueDatabase.ref}`,
+                     `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:catalog`
+        ]
       })]
     }));
 
@@ -92,7 +162,7 @@ export class KinesisStreamGlueJob extends Construct {
    * location can be retrieved using @Asset.s3ObjectUrl
    *
    * @param scope - The AWS Construct under the underlying construct should be created
-   * @param _jobID - The identifier/ name of the ETL Job
+   * @param _commandName - The identifier/ name of the ETL Job
    * @param pythonVersion - The values as for Glue Documentation are '2' and '3'. There is no validation in the
    * method to check for these values to be forward compatible with Glue API changes. If valid values are not provided
    * the deployment would fail.
@@ -103,7 +173,7 @@ export class KinesisStreamGlueJob extends Construct {
    * Bucket location will be created to upload the ETL script asset
    */
   public static createGlueJobCommand(scope: Construct,
-                                     _jobID: string, pythonVersion: string,
+                                     _commandName: string, pythonVersion: string,
                                      s3ObjectUrlForScript?: string,
                                      scriptLocationPath?: string): [ CfnJob.JobCommandProperty, Asset? ] {
   // create s3 bucket where script can be deployed
@@ -125,7 +195,7 @@ export class KinesisStreamGlueJob extends Construct {
     }
 
     return [{
-      name: _jobID,
+      name: _commandName,
       pythonVersion,
       scriptLocation: _scriptLocation
     }, _assetLocation! !== undefined ? _assetLocation! : undefined ];

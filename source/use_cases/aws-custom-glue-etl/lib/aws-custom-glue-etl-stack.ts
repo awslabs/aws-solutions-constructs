@@ -45,8 +45,44 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
           "--enable-glue-datacatalog": true,
           "--output-path": `s3://${_outputBucket[0].bucketName}/output/`,
           "--aws-region": Aws.REGION
-        }
-      }
+        },
+      },
+      fieldSchema: [{
+				  "name": "ventilatorid",
+					"type": "int",
+					"comment": ""
+				},
+				{
+					"name": "eventtime",
+					"type": "string",
+					"comment": ""
+				},
+				{
+					"name": "serialnumber",
+					"type": "string",
+					"comment": ""
+				},
+				{
+					"name": "pressurecontrol",
+					"type": "int",
+					"comment": ""
+				},
+				{
+					"name": "o2stats",
+					"type": "int",
+					"comment": ""
+				},
+				{
+					"name": "minutevolume",
+					"type": "int",
+					"comment": ""
+				},
+				{
+					"name": "manufacturer",
+					"type": "string",
+					"comment": ""
+				}
+			]
     });
 
     new CfnOutput(this, 'KinesisStreamName', {

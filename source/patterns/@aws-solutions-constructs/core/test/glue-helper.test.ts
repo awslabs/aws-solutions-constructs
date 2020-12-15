@@ -25,7 +25,7 @@ import * as defaults from '../';
 test('Test minimal deployment with no properties', () => {
   // Stack
   const stack = new Stack();
-  const _jobID = 'testETLJob';
+  const _jobID = 'glueetl';
 
   const _jobRole = new Role(stack, 'CustomETLJobRole', {
     assumedBy: new ServicePrincipal('glue.amazonaws.com')
@@ -68,7 +68,7 @@ test('Create a Glue Job outside the construct', () => {
   const stack = new Stack();
   const _existingCfnJob = new CfnJob(stack, 'ExistingJob', {
     command: {
-        name: 'existingJob',
+        name: 'pythonshell',
         pythonVersion: '2',
         scriptLocation: 's3://existingFakeLocation/existingScript'
     },
@@ -92,7 +92,7 @@ test('Create a Glue Job outside the construct', () => {
     Properties: {
       AllocatedCapacity: 2,
       Command: {
-        Name: "existingJob",
+        Name: "glueetl",
         PythonVersion: "2",
         ScriptLocation: "s3://existingFakeLocation/existingScript",
       },
@@ -116,11 +116,11 @@ test('Create a Glue Job outside the construct', () => {
 test('Test custom deployment properties', () => {
   // Stack
   const stack = new Stack();
-  const _jobID = 'testETLJob';
+  const _commandName = 'glueetl';
 
   const cfnJobProps: CfnJobProps = {
     command: {
-      name: _jobID,
+      name: _commandName,
       pythonVersion: '3',
       scriptLocation: 's3://existingFakeLocation/existingScript'
     },
@@ -144,7 +144,7 @@ test('Test custom deployment properties', () => {
     Properties: {
       AllocatedCapacity: 2,
       Command: {
-        Name: "testETLJob",
+        Name: "pythonshell",
         PythonVersion: "3",
         ScriptLocation: "s3://existingFakeLocation/existingScript",
       },
@@ -187,26 +187,6 @@ test('Test custom deployment properties', () => {
   expect(stack).toHaveResourceLike('AWS::Glue::SecurityConfiguration', {
     Properties: {
       EncryptionConfiguration: {
-          // TODO - remove commented code
-          // CloudWatchEncryption: {
-          //     CloudWatchEncryptionMode: "SSE-KMS",
-          //     KmsKeyArn: {
-          //         "Fn::Join": [
-          //             "", [
-          //                 "arn:", {
-          //                     Ref: "AWS::Partition",
-          //                 },
-          //                 ":kms:", {
-          //                     Ref: "AWS::Region",
-          //                 },
-          //                 ":", {
-          //                     Ref: "AWS::AccountId",
-          //                 },
-          //                 ":alias/aws/glue",
-          //             ],
-          //         ],
-          //     },
-          // },
         JobBookmarksEncryption: {
           JobBookmarksEncryptionMode: "CSE-KMS",
           KmsKeyArn: {

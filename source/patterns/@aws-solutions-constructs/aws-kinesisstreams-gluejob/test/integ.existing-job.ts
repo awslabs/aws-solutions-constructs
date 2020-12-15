@@ -24,24 +24,41 @@ const stack = new Stack(app, 'test-kinesisstream-gluejob');
 stack.templateOptions.description = 'Integration Test for aws-kinesisstream-gluejob';
 
 const job = new CfnJob(stack, 'ExistingJob', {
-    command: {
-        name: 'existingJobName',
-        pythonVersion: '3',
-        scriptLocation: new Bucket(stack, 'existingScriptLocation', {
-            versioned: false,
-            lifecycleRules: [{
-                expiration: Duration.days(30)
-            }]
-        }).bucketArn,
-    },
-    role: new Role(stack, 'JobRole', {
-        assumedBy: new ServicePrincipal('glue.amazonaws.com')
-    }).roleArn
+  command: {
+    name: 'glueetl',
+    pythonVersion: '3',
+    scriptLocation: new Bucket(stack, 'existingScriptLocation', {
+      versioned: false,
+      lifecycleRules: [{
+          expiration: Duration.days(30)
+      }]
+    }).bucketArn,
+  },
+  role: new Role(stack, 'JobRole', {
+    assumedBy: new ServicePrincipal('glue.amazonaws.com')
+  }).roleArn
 });
 
 // Definitions
 new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', {
-    existingGlueJob: job
+    existingGlueJob: job,
+    fieldSchema: [{
+      name: "id",
+      type: "int",
+      comment: "Identifier for the record"
+    }, {
+      name: "name",
+      type: "string",
+      comment: "The name of the record"
+    }, {
+      name: "type",
+      type: "string",
+      comment: "The type of the record"
+    }, {
+      name: "numericvalue",
+      type: "int",
+      comment: "Some value associated with the record"
+    }]
 });
 
 // Synth

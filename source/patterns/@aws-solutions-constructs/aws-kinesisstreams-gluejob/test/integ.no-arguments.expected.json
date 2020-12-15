@@ -165,6 +165,83 @@
         "SecurityConfiguration": "testSecConfig"
       }
     },
+    "GlueDatabase": {
+      "Type": "AWS::Glue::Database",
+      "Properties": {
+        "CatalogId": {
+          "Ref": "AWS::AccountId"
+        },
+        "DatabaseInput": {
+          "Description": "A database for Kinesis Stream processing"
+        }
+      }
+    },
+    "GlueTable": {
+      "Type": "AWS::Glue::Table",
+      "Properties": {
+        "CatalogId": {
+          "Ref": "AWS::AccountId"
+        },
+        "DatabaseName": {
+          "Ref": "GlueDatabase"
+        },
+        "TableInput": {
+          "Parameters": {
+            "classication": "json"
+          },
+          "StorageDescriptor": {
+            "Columns": [
+              {
+                "Comment": "Identifier for the record",
+                "Name": "id",
+                "Type": "int"
+              },
+              {
+                "Comment": "The name of the record",
+                "Name": "name",
+                "Type": "string"
+              },
+              {
+                "Comment": "The type of the record",
+                "Name": "type",
+                "Type": "string"
+              },
+              {
+                "Comment": "Some value associated with the record",
+                "Name": "numericvalue",
+                "Type": "int"
+              }
+            ],
+            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+            "Location": {
+              "Ref": "testkinesisstreamslambdaKinesisStream374D6D56"
+            },
+            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+            "Parameters": {
+              "endpointUrl": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "https://kinesis.",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ".amazonaws.com"
+                  ]
+                ]
+              },
+              "streamName": {
+                "Ref": "testkinesisstreamslambdaKinesisStream374D6D56"
+              },
+              "typeOfData": "kinesis"
+            },
+            "SerdeInfo": {
+              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe"
+            }
+          }
+        }
+      }
+    },
     "GlueJobRolePolicy422D4F2E": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
@@ -251,6 +328,87 @@
                   ]
                 ]
               }
+            },
+            {
+              "Action": "glue:GetSecurityConfiguration",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": "glue:GetTable",
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":glue:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Ref": "GlueDatabase"
+                      },
+                      "/",
+                      {
+                        "Ref": "GlueTable"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":glue:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":database/",
+                      {
+                        "Ref": "GlueDatabase"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":glue:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":catalog"
+                    ]
+                  ]
+                }
+              ]
             }
           ],
           "Version": "2012-10-17"

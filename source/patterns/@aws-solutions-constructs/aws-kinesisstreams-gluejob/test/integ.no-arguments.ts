@@ -20,15 +20,32 @@ const app = new App();
 const stack = new Stack(app, 'test-kinesisstream-gluejob');
 stack.templateOptions.description = 'Integration Test for aws-kinesisstream-gluejob';
 
-const createJobCommand = KinesisStreamGlueJob.createGlueJobCommand(stack, 'testETLJob', '3', undefined, `${__dirname}/transform.py`);
+const createJobCommand = KinesisStreamGlueJob.createGlueJobCommand(stack, 'pythonshell', '3', undefined, `${__dirname}/transform.py`);
 
 // Definitions
 const props: KinesisStreamGlueJobProps = {
-    glueJobProps: {
-        command: createJobCommand[0],
-        role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
-        securityConfiguration: 'testSecConfig'
-    }
+  glueJobProps: {
+    command: createJobCommand[0],
+    role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
+    securityConfiguration: 'testSecConfig'
+  },
+  fieldSchema: [{
+    name: "id",
+    type: "int",
+    comment: "Identifier for the record"
+  }, {
+    name: "name",
+    type: "string",
+    comment: "The name of the record"
+  }, {
+    name: "type",
+    type: "string",
+    comment: "The type of the record"
+  }, {
+    name: "numericvalue",
+    type: "int",
+    comment: "Some value associated with the record"
+  }]
 };
 
 new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
