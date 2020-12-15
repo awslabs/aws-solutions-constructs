@@ -14,7 +14,7 @@
 import { KeyProps } from '@aws-cdk/aws-kms';
 
 const DefaultEncryptionProps: KeyProps = {
-    enableKeyRotation: true
+  enableKeyRotation: true
 };
 
 export { DefaultEncryptionProps };

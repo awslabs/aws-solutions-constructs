@@ -23,11 +23,11 @@ stack.templateOptions.description = 'Integration Test for aws-lambda-s3';
 
 // Definitions
 const props: LambdaToS3Props = {
-    lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    }
+  lambdaFunctionProps: {
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+  }
 };
 
 new LambdaToS3(stack, 'test-lambda-s3', props);

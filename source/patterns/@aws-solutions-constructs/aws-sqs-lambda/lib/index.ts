@@ -89,30 +89,30 @@ export class SqsToLambda extends Construct {
      * @access public
      */
     constructor(scope: Construct, id: string, props: SqsToLambdaProps) {
-        super(scope, id);
+      super(scope, id);
 
-        // Setup the Lambda function
-        this.lambdaFunction = defaults.buildLambdaFunction(this, {
-            existingLambdaObj: props.existingLambdaObj,
-            lambdaFunctionProps: props.lambdaFunctionProps
-        });
+      // Setup the Lambda function
+      this.lambdaFunction = defaults.buildLambdaFunction(this, {
+        existingLambdaObj: props.existingLambdaObj,
+        lambdaFunctionProps: props.lambdaFunctionProps
+      });
 
-        // Setup the dead letter queue, if applicable
-        this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
-            existingQueueObj: props.existingQueueObj,
-            deployDeadLetterQueue: props.deployDeadLetterQueue,
-            deadLetterQueueProps: props.deadLetterQueueProps,
-            maxReceiveCount: props.maxReceiveCount
-        });
+      // Setup the dead letter queue, if applicable
+      this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
+        existingQueueObj: props.existingQueueObj,
+        deployDeadLetterQueue: props.deployDeadLetterQueue,
+        deadLetterQueueProps: props.deadLetterQueueProps,
+        maxReceiveCount: props.maxReceiveCount
+      });
 
-        // Setup the queue
-        [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
-            existingQueueObj: props.existingQueueObj,
-            queueProps: props.queueProps,
-            deadLetterQueue: this.deadLetterQueue
-        });
+      // Setup the queue
+      [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
+        existingQueueObj: props.existingQueueObj,
+        queueProps: props.queueProps,
+        deadLetterQueue: this.deadLetterQueue
+      });
 
-        // Setup the event source mapping
-        this.lambdaFunction.addEventSource(new SqsEventSource(this.sqsQueue, props.sqsEventSourceProps));
+      // Setup the event source mapping
+      this.lambdaFunction.addEventSource(new SqsEventSource(this.sqsQueue, props.sqsEventSourceProps));
     }
 }

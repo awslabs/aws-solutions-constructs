@@ -20,9 +20,9 @@ const stack = new Stack(app, 'test-events-rule-kinesisfirehose-s3');
 stack.templateOptions.description = 'Integration Test for aws-events-rule-kinesisfirehose-s3';
 
 const props: EventsRuleToKinesisFirehoseToS3Props = {
-    eventRuleProps: {
-        schedule: events.Schedule.rate(Duration.minutes(5))
-      }
+  eventRuleProps: {
+    schedule: events.Schedule.rate(Duration.minutes(5))
+  }
 };
 
 new EventsRuleToKinesisFirehoseToS3(stack, 'test-events-rule-kinesisfirehose-s3', props);

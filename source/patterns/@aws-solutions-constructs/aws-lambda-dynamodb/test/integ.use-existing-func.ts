@@ -20,15 +20,15 @@ import * as defaults from '@aws-solutions-constructs/core';
 const app = new App();
 const stack = new Stack(app, 'test-lambda-dynamodb-stack');
 const lambdaFunctionProps = {
-    runtime: lambda.Runtime.NODEJS_10_X,
-    handler: 'index.handler',
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+  runtime: lambda.Runtime.NODEJS_10_X,
+  handler: 'index.handler',
+  code: lambda.Code.fromAsset(`${__dirname}/lambda`)
 };
 
 const func = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 
 new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', {
-    existingLambdaObj: func
+  existingLambdaObj: func
 });
 
 app.synth();

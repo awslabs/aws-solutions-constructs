@@ -51,7 +51,7 @@ test('test kinesisFirehose override ', () => {
         IntervalInSeconds: 600,
         SizeInMBs: 55
       }
-  }});
+    }});
 });
 
 test('test kinesisFirehose.deliveryStreamType override ', () => {
@@ -136,7 +136,7 @@ test('Test All properties', () => {
 test('Test properties with no CW Alarms', () => {
   const stack = new Stack();
   const props: KinesisStreamsToKinesisFirehoseToS3Props = {
-      createCloudWatchAlarms: false
+    createCloudWatchAlarms: false
   };
   const app = new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-stream-firehose-s3', props);
 

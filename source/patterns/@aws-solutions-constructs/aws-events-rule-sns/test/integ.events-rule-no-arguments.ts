@@ -20,9 +20,9 @@ const app = new App();
 const stack = new Stack(app, 'test-rule-sns');
 
 const props: EventsRuleToSnsProps = {
-    eventRuleProps: {
-        schedule: events.Schedule.rate(Duration.minutes(5))
-      }
+  eventRuleProps: {
+    schedule: events.Schedule.rate(Duration.minutes(5))
+  }
 };
 
 new EventsRuleToSns(stack, 'test-construct', props);

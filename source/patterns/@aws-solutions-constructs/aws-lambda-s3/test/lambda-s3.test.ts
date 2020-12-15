@@ -22,181 +22,181 @@ import '@aws-cdk/assert/jest';
 // Test minimal deployment with new Lambda function
 // --------------------------------------------------------------
 test('Test minimal deployment with new Lambda function', () => {
-    // Stack
-    const stack = new Stack();
-    // Helper declaration
-    new LambdaToS3(stack, 'lambda-to-s3-stack', {
-        lambdaFunctionProps: {
-            runtime: lambda.Runtime.NODEJS_10_X,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-        }
-    });
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  new LambdaToS3(stack, 'lambda-to-s3-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    }
+  });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
 // Test deployment w/ s3:Delete only
 // --------------------------------------------------------------
 test('Test deployment w/ s3:Delete only', () => {
-    // Stack
-    const stack = new Stack();
-    // Helper declaration
-    new LambdaToS3(stack, 'lambda-to-s3-stack', {
-        lambdaFunctionProps: {
-            runtime: lambda.Runtime.NODEJS_10_X,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-        },
-        bucketPermissions: ['Delete']
-    });
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  new LambdaToS3(stack, 'lambda-to-s3-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    bucketPermissions: ['Delete']
+  });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
 // Test deployment w/ s3:Put only
 // --------------------------------------------------------------
 test('Test deployment w/ s3:Put only', () => {
-    // Stack
-    const stack = new Stack();
-    // Helper declaration
-    new LambdaToS3(stack, 'lambda-to-s3-stack', {
-        lambdaFunctionProps: {
-            runtime: lambda.Runtime.NODEJS_10_X,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-        },
-        bucketPermissions: ['Put']
-    });
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  new LambdaToS3(stack, 'lambda-to-s3-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    bucketPermissions: ['Put']
+  });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
 // Test deployment w/ s3:Read only
 // --------------------------------------------------------------
 test('Test deployment w/ s3:Read only', () => {
-    // Stack
-    const stack = new Stack();
-    // Helper declaration
-    new LambdaToS3(stack, 'lambda-to-s3-stack', {
-        lambdaFunctionProps: {
-            runtime: lambda.Runtime.NODEJS_10_X,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-        },
-        bucketPermissions: ['Read']
-    });
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  new LambdaToS3(stack, 'lambda-to-s3-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    bucketPermissions: ['Read']
+  });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
 // Test deployment w/ s3:ReadWrite only
 // --------------------------------------------------------------
 test('Test deployment w/ s3:ReadWrite only', () => {
-    // Stack
-    const stack = new Stack();
-    // Helper declaration
-    new LambdaToS3(stack, 'lambda-to-s3-stack', {
-        lambdaFunctionProps: {
-            runtime: lambda.Runtime.NODEJS_10_X,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-        },
-        bucketPermissions: ['ReadWrite']
-    });
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  new LambdaToS3(stack, 'lambda-to-s3-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    bucketPermissions: ['ReadWrite']
+  });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
 // Test deployment w/ s3:Write only
 // --------------------------------------------------------------
 test('Test deployment w/ s3:Write only', () => {
-    // Stack
-    const stack = new Stack();
-    // Helper declaration
-    new LambdaToS3(stack, 'lambda-to-s3-stack', {
-        lambdaFunctionProps: {
-            runtime: lambda.Runtime.NODEJS_10_X,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-        },
-        bucketPermissions: ['Write']
-    });
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  new LambdaToS3(stack, 'lambda-to-s3-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    bucketPermissions: ['Write']
+  });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
 // Test deployment w/ s3 multiple permissions
 // --------------------------------------------------------------
 test('Test deployment w/ s3 multiple permissions', () => {
-    // Stack
-    const stack = new Stack();
-    // Helper declaration
-    new LambdaToS3(stack, 'lambda-to-s3-stack', {
-        lambdaFunctionProps: {
-            runtime: lambda.Runtime.NODEJS_10_X,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-        },
-        bucketPermissions: ['Write', 'Delete']
-    });
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  new LambdaToS3(stack, 'lambda-to-s3-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    bucketPermissions: ['Write', 'Delete']
+  });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
 // Test the getter methods
 // --------------------------------------------------------------
 test('Test the properties', () => {
-    // Stack
-    const stack = new Stack();
-    // Helper declaration
-    const pattern = new LambdaToS3(stack, 'lambda-to-s3-stack', {
-        lambdaFunctionProps: {
-            runtime: lambda.Runtime.NODEJS_10_X,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-        },
-        bucketPermissions: ['Write']
-    });
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  const pattern = new LambdaToS3(stack, 'lambda-to-s3-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    bucketPermissions: ['Write']
+  });
     // Assertion 1
-    const func = pattern.lambdaFunction;
-    expect(func !== null);
-    // Assertion 2
-    const bucket = pattern.s3Bucket;
-    expect(bucket !== null);
-    expect(pattern.s3LoggingBucket !== null);
+  const func = pattern.lambdaFunction;
+  expect(func !== null);
+  // Assertion 2
+  const bucket = pattern.s3Bucket;
+  expect(bucket !== null);
+  expect(pattern.s3LoggingBucket !== null);
 });
 
 // --------------------------------------------------------------
 // Test the bucketProps override
 // --------------------------------------------------------------
 test('Test the bucketProps override', () => {
-    // Stack
-    const stack = new Stack();
-    // Helper declaration
-    new LambdaToS3(stack, 'lambda-to-s3-stack', {
-        lambdaFunctionProps: {
-            runtime: lambda.Runtime.NODEJS_10_X,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-        },
-        bucketProps: {
-            websiteIndexDocument: 'index.main.html'
-        }
-    });
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-    // Assertion 2
-    expect(stack).toHaveResource("AWS::S3::Bucket", {
-        WebsiteConfiguration: {
-            IndexDocument: 'index.main.html'
-        }
-    });
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  new LambdaToS3(stack, 'lambda-to-s3-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    bucketProps: {
+      websiteIndexDocument: 'index.main.html'
+    }
+  });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Assertion 2
+  expect(stack).toHaveResource("AWS::S3::Bucket", {
+    WebsiteConfiguration: {
+      IndexDocument: 'index.main.html'
+    }
+  });
 });

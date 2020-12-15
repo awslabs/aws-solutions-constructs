@@ -23,13 +23,13 @@ stack.templateOptions.description = 'Integration Test for aws-apigateway-iot wit
 
 // Definitions
 const props: ApiGatewayToIotProps = {
-    iotEndpoint: 'a1234567890123-ats',
-    apiGatewayCreateApiKey: true,
-    apiGatewayProps: {
-        defaultMethodOptions: {
-            authorizationType: AuthorizationType.NONE
-        }
+  iotEndpoint: 'a1234567890123-ats',
+  apiGatewayCreateApiKey: true,
+  apiGatewayProps: {
+    defaultMethodOptions: {
+      authorizationType: AuthorizationType.NONE
     }
+  }
 };
 
 new ApiGatewayToIot(stack, 'test-apigateway-iot', props);

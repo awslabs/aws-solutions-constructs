@@ -18,13 +18,13 @@ import '@aws-cdk/assert/jest';
 import * as logs from '@aws-cdk/aws-logs';
 
 test('cw log group with default params', () => {
-    const stack = new Stack();
-    new logs.LogGroup(stack, 'test-cw-logs-default', defaults.DefaultLogGroupProps());
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  const stack = new Stack();
+  new logs.LogGroup(stack, 'test-cw-logs-default', defaults.DefaultLogGroupProps());
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 test('cw log group with log group name', () => {
-    const stack = new Stack();
-    new logs.LogGroup(stack, 'test-cw-logs-default', defaults.DefaultLogGroupProps('lambda-log-group'));
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  const stack = new Stack();
+  new logs.LogGroup(stack, 'test-cw-logs-default', defaults.DefaultLogGroupProps('lambda-log-group'));
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });

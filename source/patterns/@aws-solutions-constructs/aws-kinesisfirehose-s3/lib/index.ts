@@ -56,67 +56,67 @@ export class KinesisFirehoseToS3 extends Construct {
      * Constructs a new instance of the IotToLambda class.
      */
     constructor(scope: Construct, id: string, props: KinesisFirehoseToS3Props) {
-        super(scope, id);
+      super(scope, id);
 
-        let bucket: s3.IBucket;
+      let bucket: s3.IBucket;
 
-        // Setup S3 Bucket
-        if (!props.existingBucketObj) {
-            [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
-              bucketProps: props.bucketProps
-            });
-
-            bucket = this.s3Bucket;
-        } else {
-            bucket = props.existingBucketObj;
-        }
-
-        // Setup Cloudwatch Log group & stream for Kinesis Firehose
-        this.kinesisFirehoseLogGroup = new logs.LogGroup(this, 'firehose-log-group', defaults.DefaultLogGroupProps());
-        const cwLogStream: logs.LogStream = this.kinesisFirehoseLogGroup.addStream('firehose-log-stream');
-
-        // Setup the IAM Role for Kinesis Firehose
-        this.kinesisFirehoseRole = new iam.Role(this, 'KinesisFirehoseRole', {
-            assumedBy: new iam.ServicePrincipal('firehose.amazonaws.com'),
+      // Setup S3 Bucket
+      if (!props.existingBucketObj) {
+        [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
+          bucketProps: props.bucketProps
         });
 
-        // Setup the IAM policy for Kinesis Firehose
-        const firehosePolicy = new iam.Policy(this, 'KinesisFirehosePolicy', {
-            statements: [new iam.PolicyStatement({
-              actions: [
-                's3:AbortMultipartUpload',
-                's3:GetBucketLocation',
-                's3:GetObject',
-                's3:ListBucket',
-                's3:ListBucketMultipartUploads',
-                's3:PutObject'
-              ],
-              resources: [`${bucket.bucketArn}`, `${bucket.bucketArn}/*`]
-            }),
-            new iam.PolicyStatement({
-                actions: [
-                    'logs:PutLogEvents'
-                ],
-                resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:log-group:${this.kinesisFirehoseLogGroup.logGroupName}:log-stream:${cwLogStream.logStreamName}`]
-            })
+        bucket = this.s3Bucket;
+      } else {
+        bucket = props.existingBucketObj;
+      }
+
+      // Setup Cloudwatch Log group & stream for Kinesis Firehose
+      this.kinesisFirehoseLogGroup = new logs.LogGroup(this, 'firehose-log-group', defaults.DefaultLogGroupProps());
+      const cwLogStream: logs.LogStream = this.kinesisFirehoseLogGroup.addStream('firehose-log-stream');
+
+      // Setup the IAM Role for Kinesis Firehose
+      this.kinesisFirehoseRole = new iam.Role(this, 'KinesisFirehoseRole', {
+        assumedBy: new iam.ServicePrincipal('firehose.amazonaws.com'),
+      });
+
+      // Setup the IAM policy for Kinesis Firehose
+      const firehosePolicy = new iam.Policy(this, 'KinesisFirehosePolicy', {
+        statements: [new iam.PolicyStatement({
+          actions: [
+            's3:AbortMultipartUpload',
+            's3:GetBucketLocation',
+            's3:GetObject',
+            's3:ListBucket',
+            's3:ListBucketMultipartUploads',
+            's3:PutObject'
+          ],
+          resources: [`${bucket.bucketArn}`, `${bucket.bucketArn}/*`]
+        }),
+        new iam.PolicyStatement({
+          actions: [
+            'logs:PutLogEvents'
+          ],
+          resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:log-group:${this.kinesisFirehoseLogGroup.logGroupName}:log-stream:${cwLogStream.logStreamName}`]
+        })
         ]});
 
-        // Attach policy to role
-        firehosePolicy.attachToRole(this.kinesisFirehoseRole);
+      // Attach policy to role
+      firehosePolicy.attachToRole(this.kinesisFirehoseRole);
 
-        const awsManagedKey: kms.IKey = kms.Alias.fromAliasName(scope, 'aws-managed-key', 'alias/aws/s3');
+      const awsManagedKey: kms.IKey = kms.Alias.fromAliasName(scope, 'aws-managed-key', 'alias/aws/s3');
 
-        // Setup the default Kinesis Firehose props
-        const defaultKinesisFirehoseProps: kinesisfirehose.CfnDeliveryStreamProps =
+      // Setup the default Kinesis Firehose props
+      const defaultKinesisFirehoseProps: kinesisfirehose.CfnDeliveryStreamProps =
             defaults.DefaultCfnDeliveryStreamProps(bucket.bucketArn, this.kinesisFirehoseRole.roleArn,
-            this.kinesisFirehoseLogGroup.logGroupName, cwLogStream.logStreamName, awsManagedKey);
+              this.kinesisFirehoseLogGroup.logGroupName, cwLogStream.logStreamName, awsManagedKey);
 
-        // Override with the input props
-        if (props.kinesisFirehoseProps) {
-            const kinesisFirehoseProps = overrideProps(defaultKinesisFirehoseProps, props.kinesisFirehoseProps);
-            this.kinesisFirehose = new kinesisfirehose.CfnDeliveryStream(this, 'KinesisFirehose', kinesisFirehoseProps);
-        } else {
-            this.kinesisFirehose = new kinesisfirehose.CfnDeliveryStream(this, 'KinesisFirehose', defaultKinesisFirehoseProps);
-        }
+      // Override with the input props
+      if (props.kinesisFirehoseProps) {
+        const kinesisFirehoseProps = overrideProps(defaultKinesisFirehoseProps, props.kinesisFirehoseProps);
+        this.kinesisFirehose = new kinesisfirehose.CfnDeliveryStream(this, 'KinesisFirehose', kinesisFirehoseProps);
+      } else {
+        this.kinesisFirehose = new kinesisfirehose.CfnDeliveryStream(this, 'KinesisFirehose', defaultKinesisFirehoseProps);
+      }
     }
 }

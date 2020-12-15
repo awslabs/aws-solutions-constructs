@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
- // Imports
+// Imports
 import * as kinesis from '@aws-cdk/aws-kinesis';
 import { DefaultStreamProps } from './kinesis-streams-defaults';
 import * as cdk from '@aws-cdk/core';
@@ -36,55 +36,55 @@ export interface BuildKinesisStreamProps {
 
 export function buildKinesisStream(scope: cdk.Construct, props: BuildKinesisStreamProps): kinesis.Stream {
 
-    if (props.existingStreamObj) {
-        return props.existingStreamObj;
-    }
+  if (props.existingStreamObj) {
+    return props.existingStreamObj;
+  }
 
-    // Setup the stream properties
-    let kinesisStreamProps;
-    if (props.kinesisStreamProps) {
-        // If property overrides have been provided, incorporate them and deploy
-        kinesisStreamProps = overrideProps(DefaultStreamProps, props.kinesisStreamProps);
-    } else {
-        // If no property overrides, deploy using the default configuration
-        kinesisStreamProps = DefaultStreamProps;
-    }
+  // Setup the stream properties
+  let kinesisStreamProps;
+  if (props.kinesisStreamProps) {
+    // If property overrides have been provided, incorporate them and deploy
+    kinesisStreamProps = overrideProps(DefaultStreamProps, props.kinesisStreamProps);
+  } else {
+    // If no property overrides, deploy using the default configuration
+    kinesisStreamProps = DefaultStreamProps;
+  }
 
-    // Create the stream and return
-    return new kinesis.Stream(scope, 'KinesisStream', kinesisStreamProps);
+  // Create the stream and return
+  return new kinesis.Stream(scope, 'KinesisStream', kinesisStreamProps);
 }
 
 export function buildKinesisStreamCWAlarms(scope: cdk.Construct): cloudwatch.Alarm[] {
-    // Setup CW Alarms for KinesisStream
-    const alarms: cloudwatch.Alarm[] = new Array();
+  // Setup CW Alarms for KinesisStream
+  const alarms: cloudwatch.Alarm[] = new Array();
 
-    // Alarm if Max (GetRecords.IteratorAgeMilliseconds): >= 12 hours (50% of 24 hours default retention period)
-    alarms.push(new cloudwatch.Alarm(scope, 'KinesisStreamGetRecordsIteratorAgeAlarm', {
-      metric: new cloudwatch.Metric({
-        namespace: 'AWS/Kinesis',
-        metricName: 'GetRecords.IteratorAgeMilliseconds'
-      }),
-      threshold: 2592000, // 12 Hours (50% of 24 hours - default record retention period)
-      evaluationPeriods: 1,
-      statistic: 'Maximum',
-      period: cdk.Duration.minutes(5),
-      comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
-      alarmDescription: 'Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.'
-    }));
+  // Alarm if Max (GetRecords.IteratorAgeMilliseconds): >= 12 hours (50% of 24 hours default retention period)
+  alarms.push(new cloudwatch.Alarm(scope, 'KinesisStreamGetRecordsIteratorAgeAlarm', {
+    metric: new cloudwatch.Metric({
+      namespace: 'AWS/Kinesis',
+      metricName: 'GetRecords.IteratorAgeMilliseconds'
+    }),
+    threshold: 2592000, // 12 Hours (50% of 24 hours - default record retention period)
+    evaluationPeriods: 1,
+    statistic: 'Maximum',
+    period: cdk.Duration.minutes(5),
+    comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
+    alarmDescription: 'Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.'
+  }));
 
-    // Alarm if Avg (ReadProvisionedThroughputExceeded): > 0
-    alarms.push(new cloudwatch.Alarm(scope, 'KinesisStreamReadProvisionedThroughputExceededAlarm', {
-        metric: new cloudwatch.Metric({
-          namespace: 'AWS/Kinesis',
-          metricName: 'ReadProvisionedThroughputExceeded'
-        }),
-        threshold: 0,
-        evaluationPeriods: 1,
-        statistic: 'Average',
-        period: cdk.Duration.minutes(5),
-        comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
-        alarmDescription: 'Consumer Application is Reading at a Slower Rate Than Expected.'
-    }));
+  // Alarm if Avg (ReadProvisionedThroughputExceeded): > 0
+  alarms.push(new cloudwatch.Alarm(scope, 'KinesisStreamReadProvisionedThroughputExceededAlarm', {
+    metric: new cloudwatch.Metric({
+      namespace: 'AWS/Kinesis',
+      metricName: 'ReadProvisionedThroughputExceeded'
+    }),
+    threshold: 0,
+    evaluationPeriods: 1,
+    statistic: 'Average',
+    period: cdk.Duration.minutes(5),
+    comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+    alarmDescription: 'Consumer Application is Reading at a Slower Rate Than Expected.'
+  }));
 
-    return alarms;
+  return alarms;
 }

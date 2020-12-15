@@ -25,12 +25,12 @@ function deployNewFunc(stack: cdk.Stack) {
       handler: 'index.handler'
     },
     iotTopicRuleProps: {
-        topicRulePayload: {
-            ruleDisabled: false,
-            description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
-            sql: "SELECT * FROM 'connectedcar/dtc/#'",
-            actions: []
-        }
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+        sql: "SELECT * FROM 'connectedcar/dtc/#'",
+        actions: []
+      }
     }
   };
 
@@ -40,21 +40,21 @@ function deployNewFunc(stack: cdk.Stack) {
 function useExistingFunc(stack: cdk.Stack) {
 
   const lambdaFunctionProps: lambda.FunctionProps = {
-      runtime: lambda.Runtime.PYTHON_3_6,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    runtime: lambda.Runtime.PYTHON_3_6,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
 
   const props: IotToLambdaProps = {
-      existingLambdaObj: new lambda.Function(stack, 'MyExistingFunction', lambdaFunctionProps),
-      iotTopicRuleProps: {
-        topicRulePayload: {
-            ruleDisabled: false,
-            description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
-            sql: "SELECT * FROM 'connectedcar/dtc/#'",
-            actions: []
-        }
+    existingLambdaObj: new lambda.Function(stack, 'MyExistingFunction', lambdaFunctionProps),
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+        sql: "SELECT * FROM 'connectedcar/dtc/#'",
+        actions: []
       }
+    }
   };
 
   return new IotToLambda(stack, 'test-iot-lambda-integration', props);
@@ -72,38 +72,38 @@ test('check lambda function properties for deploy: true', () => {
   deployNewFunc(stack);
 
   expect(stack).toHaveResource('AWS::Lambda::Function', {
-      Handler: "index.handler",
-      Role: {
-        "Fn::GetAtt": [
-          "testiotlambdaintegrationLambdaFunctionServiceRole27C3EE41",
-          "Arn"
-        ]
-      },
-      Runtime: "nodejs10.x"
+    Handler: "index.handler",
+    Role: {
+      "Fn::GetAtt": [
+        "testiotlambdaintegrationLambdaFunctionServiceRole27C3EE41",
+        "Arn"
+      ]
+    },
+    Runtime: "nodejs10.x"
   });
 });
 
 test('check lambda function permission for deploy: true', () => {
-    const stack = new cdk.Stack();
+  const stack = new cdk.Stack();
 
-    deployNewFunc(stack);
+  deployNewFunc(stack);
 
-    expect(stack).toHaveResource('AWS::Lambda::Permission', {
-        Action: "lambda:InvokeFunction",
-        FunctionName: {
-          "Fn::GetAtt": [
-            "testiotlambdaintegrationLambdaFunctionC5329DBA",
-            "Arn"
-          ]
-        },
-        Principal: "iot.amazonaws.com",
-        SourceArn: {
-          "Fn::GetAtt": [
-            "testiotlambdaintegrationIotTopic18B6A735",
-            "Arn"
-          ]
-        }
-    });
+  expect(stack).toHaveResource('AWS::Lambda::Permission', {
+    Action: "lambda:InvokeFunction",
+    FunctionName: {
+      "Fn::GetAtt": [
+        "testiotlambdaintegrationLambdaFunctionC5329DBA",
+        "Arn"
+      ]
+    },
+    Principal: "iot.amazonaws.com",
+    SourceArn: {
+      "Fn::GetAtt": [
+        "testiotlambdaintegrationIotTopic18B6A735",
+        "Arn"
+      ]
+    }
+  });
 });
 
 test('check iot lambda function role for deploy: true', () => {
@@ -166,46 +166,46 @@ test('check iot lambda function role for deploy: true', () => {
 });
 
 test('check iot topic rule properties for deploy: true', () => {
-    const stack = new cdk.Stack();
+  const stack = new cdk.Stack();
 
-    deployNewFunc(stack);
+  deployNewFunc(stack);
 
-    expect(stack).toHaveResource('AWS::IoT::TopicRule', {
-        TopicRulePayload: {
-          Actions: [
-            {
-              Lambda: {
-                FunctionArn: {
-                  "Fn::GetAtt": [
-                    "testiotlambdaintegrationLambdaFunctionC5329DBA",
-                    "Arn"
-                  ]
-                }
-              }
+  expect(stack).toHaveResource('AWS::IoT::TopicRule', {
+    TopicRulePayload: {
+      Actions: [
+        {
+          Lambda: {
+            FunctionArn: {
+              "Fn::GetAtt": [
+                "testiotlambdaintegrationLambdaFunctionC5329DBA",
+                "Arn"
+              ]
             }
-          ],
-          Description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
-          RuleDisabled: false,
-          Sql: "SELECT * FROM 'connectedcar/dtc/#'"
+          }
         }
-    });
+      ],
+      Description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+      RuleDisabled: false,
+      Sql: "SELECT * FROM 'connectedcar/dtc/#'"
+    }
+  });
 });
 
 test('check lambda function properties for deploy: false', () => {
-    const stack = new cdk.Stack();
+  const stack = new cdk.Stack();
 
-    useExistingFunc(stack);
+  useExistingFunc(stack);
 
-    expect(stack).toHaveResource('AWS::Lambda::Function', {
-        Handler: "index.handler",
-        Role: {
-          "Fn::GetAtt": [
-            "MyExistingFunctionServiceRoleF9E14BFD",
-            "Arn"
-          ]
-        },
-        Runtime: "python3.6"
-    });
+  expect(stack).toHaveResource('AWS::Lambda::Function', {
+    Handler: "index.handler",
+    Role: {
+      "Fn::GetAtt": [
+        "MyExistingFunctionServiceRoleF9E14BFD",
+        "Arn"
+      ]
+    },
+    Runtime: "python3.6"
+  });
 });
 
 test('check lambda function permissions for deploy: false', () => {
@@ -214,21 +214,21 @@ test('check lambda function permissions for deploy: false', () => {
   useExistingFunc(stack);
 
   expect(stack).toHaveResource('AWS::Lambda::Permission', {
-      Action: "lambda:InvokeFunction",
-      FunctionName: {
-        "Fn::GetAtt": [
-          "MyExistingFunction4D772515",
-          "Arn"
-        ]
-      },
-      Principal: "iot.amazonaws.com",
-      SourceArn: {
-        "Fn::GetAtt": [
-          "testiotlambdaintegrationIotTopic18B6A735",
-          "Arn"
-        ]
-      }
-    });
+    Action: "lambda:InvokeFunction",
+    FunctionName: {
+      "Fn::GetAtt": [
+        "MyExistingFunction4D772515",
+        "Arn"
+      ]
+    },
+    Principal: "iot.amazonaws.com",
+    SourceArn: {
+      "Fn::GetAtt": [
+        "testiotlambdaintegrationIotTopic18B6A735",
+        "Arn"
+      ]
+    }
+  });
 });
 
 test('check iot lambda function role for deploy: false', () => {
@@ -267,12 +267,12 @@ test('check iot lambda function role for deploy: false', () => {
 });
 
 test('check properties', () => {
-    const stack = new cdk.Stack();
+  const stack = new cdk.Stack();
 
-    const construct: IotToLambda = deployNewFunc(stack);
+  const construct: IotToLambda = deployNewFunc(stack);
 
-    expect(construct.iotTopicRule !== null);
-    expect(construct.lambdaFunction !== null);
+  expect(construct.iotTopicRule !== null);
+  expect(construct.lambdaFunction !== null);
 });
 
 test('check exception for Missing existingObj from props for deploy = false', () => {
@@ -281,10 +281,10 @@ test('check exception for Missing existingObj from props for deploy = false', ()
   const props: IotToLambdaProps = {
     iotTopicRuleProps: {
       topicRulePayload: {
-          ruleDisabled: false,
-          description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
-          sql: "SELECT * FROM 'connectedcar/dtc/#'",
-          actions: []
+        ruleDisabled: false,
+        description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+        sql: "SELECT * FROM 'connectedcar/dtc/#'",
+        actions: []
       }
     }
   };
@@ -302,10 +302,10 @@ test('check deploy = true and no prop', () => {
   const props: IotToLambdaProps = {
     iotTopicRuleProps: {
       topicRulePayload: {
-          ruleDisabled: false,
-          description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
-          sql: "SELECT * FROM 'connectedcar/dtc/#'",
-          actions: []
+        ruleDisabled: false,
+        description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+        sql: "SELECT * FROM 'connectedcar/dtc/#'",
+        actions: []
       }
     }
   };

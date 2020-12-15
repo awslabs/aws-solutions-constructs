@@ -40,50 +40,50 @@ function setupRestApi(stack: Stack, apiProps?: any): void {
     service: "sqs",
     integrationHttpMethod: "POST",
     options: {
-        passthroughBehavior: api.PassthroughBehavior.NEVER,
-        requestParameters: {
-            "integration.request.header.Content-Type": "'application/x-www-form-urlencoded'"
+      passthroughBehavior: api.PassthroughBehavior.NEVER,
+      requestParameters: {
+        "integration.request.header.Content-Type": "'application/x-www-form-urlencoded'"
+      },
+      requestTemplates: {
+        "application/x-www-form-urlencoded": "Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")&MessageAttribute.1.Name=queryParam1&MessageAttribute.1.Value.StringValue=$input.params(\"query_param_1\")&MessageAttribute.1.Value.DataType=String"
+      },
+      integrationResponses: [
+        {
+          statusCode: "200",
+          responseTemplates: {
+            "text/html": "Success"
+          }
         },
-        requestTemplates: {
-            "application/x-www-form-urlencoded": "Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")&MessageAttribute.1.Name=queryParam1&MessageAttribute.1.Value.StringValue=$input.params(\"query_param_1\")&MessageAttribute.1.Value.DataType=String"
-        },
-        integrationResponses: [
-            {
-                statusCode: "200",
-                responseTemplates: {
-                    "text/html": "Success"
-                }
-            },
-            {
-                statusCode: "500",
-                responseTemplates: {
-                    "text/html": "Error"
-                },
-                selectionPattern: "500"
-            }
-        ]
+        {
+          statusCode: "500",
+          responseTemplates: {
+            "text/html": "Error"
+          },
+          selectionPattern: "500"
+        }
+      ]
     },
     path: '11112222' + "/" + 'thisqueuequeueName'
   });
   // Setup the API Gateway method(s)
   apiGatewayResource.addMethod('POST', apiGatewayIntegration, {
-      requestParameters: {
-          "method.request.querystring.query_param_1": true
+    requestParameters: {
+      "method.request.querystring.query_param_1": true
+    },
+    methodResponses: [
+      {
+        statusCode: "200",
+        responseParameters: {
+          "method.response.header.Content-Type": true
+        }
       },
-      methodResponses: [
-          {
-              statusCode: "200",
-              responseParameters: {
-                  "method.response.header.Content-Type": true
-              }
-          },
-          {
-              statusCode: "500",
-              responseParameters: {
-                  "method.response.header.Content-Type": true
-              },
-          }
-      ]
+      {
+        statusCode: "500",
+        responseParameters: {
+          "method.response.header.Content-Type": true
+        },
+      }
+    ]
   });
 }
 
@@ -549,9 +549,9 @@ test('Test for Method Request Props Override', () => {
         {
           StatusCode: "500",
           ResponseTemplates: {
-                "text/html": "Error"
-            },
-            SelectionPattern: "500"
+            "text/html": "Error"
+          },
+          SelectionPattern: "500"
         }
       ],
       PassthroughBehavior: "NEVER",

@@ -104,33 +104,33 @@ export class LambdaToSqsToLambda extends Construct {
      * @access public
      */
     constructor(scope: Construct, id: string, props: LambdaToSqsToLambdaProps) {
-        super(scope, id);
+      super(scope, id);
 
-        // Setup the aws-lambda-sqs pattern
-        const lambdaToSqs = new LambdaToSqs(this, 'lambda-to-sqs', {
-            existingLambdaObj: props.existingProducerLambdaObj,
-            lambdaFunctionProps: props.producerLambdaFunctionProps,
-            existingQueueObj: props.existingQueueObj,
-            queueProps: props.queueProps,
-            deadLetterQueueProps: props.deadLetterQueueProps,
-            deployDeadLetterQueue: props.deployDeadLetterQueue,
-            maxReceiveCount: props.maxReceiveCount
-        });
+      // Setup the aws-lambda-sqs pattern
+      const lambdaToSqs = new LambdaToSqs(this, 'lambda-to-sqs', {
+        existingLambdaObj: props.existingProducerLambdaObj,
+        lambdaFunctionProps: props.producerLambdaFunctionProps,
+        existingQueueObj: props.existingQueueObj,
+        queueProps: props.queueProps,
+        deadLetterQueueProps: props.deadLetterQueueProps,
+        deployDeadLetterQueue: props.deployDeadLetterQueue,
+        maxReceiveCount: props.maxReceiveCount
+      });
 
-        // Set the queue as a pattern property
-        this.sqsQueue = lambdaToSqs.sqsQueue;
+      // Set the queue as a pattern property
+      this.sqsQueue = lambdaToSqs.sqsQueue;
 
-        // Setup the aws-sqs-lambda pattern
-        const sqsToLambda = new SqsToLambda(this, 'sqs-to-lambda', {
-            existingLambdaObj: props.existingConsumerLambdaObj,
-            lambdaFunctionProps: props.consumerLambdaFunctionProps,
-            existingQueueObj: this.sqsQueue,
-            deployDeadLetterQueue: false
-        });
+      // Setup the aws-sqs-lambda pattern
+      const sqsToLambda = new SqsToLambda(this, 'sqs-to-lambda', {
+        existingLambdaObj: props.existingConsumerLambdaObj,
+        lambdaFunctionProps: props.consumerLambdaFunctionProps,
+        existingQueueObj: this.sqsQueue,
+        deployDeadLetterQueue: false
+      });
 
-        // Set other relevant pattern properties
-        this.producerLambdaFunction = lambdaToSqs.lambdaFunction;
-        this.deadLetterQueue = lambdaToSqs.deadLetterQueue;
-        this.consumerLambdaFunction = sqsToLambda.lambdaFunction;
+      // Set other relevant pattern properties
+      this.producerLambdaFunction = lambdaToSqs.lambdaFunction;
+      this.deadLetterQueue = lambdaToSqs.deadLetterQueue;
+      this.consumerLambdaFunction = sqsToLambda.lambdaFunction;
     }
 }

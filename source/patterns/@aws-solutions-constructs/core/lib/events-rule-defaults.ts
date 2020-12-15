@@ -14,9 +14,9 @@
 import * as events from '@aws-cdk/aws-events';
 
 export function DefaultEventsRuleProps(_targets: events.IRuleTarget[]) {
-    const defaultEventsRuleProps: events.RuleProps = {
-      targets: _targets
-    };
+  const defaultEventsRuleProps: events.RuleProps = {
+    targets: _targets
+  };
 
-    return defaultEventsRuleProps;
+  return defaultEventsRuleProps;
 }

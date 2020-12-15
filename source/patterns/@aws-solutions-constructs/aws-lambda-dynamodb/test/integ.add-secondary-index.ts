@@ -22,19 +22,19 @@ const app = new App();
 const stack = new Stack(app, 'test-lambda-dynamodb-stack');
 
 const construct: LambdaToDynamoDB = new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', {
-    lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_10_X,
-        handler: 'index.handler'
-    },
+  lambdaFunctionProps: {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: 'index.handler'
+  },
 });
 
 const props: dynamodb.GlobalSecondaryIndexProps = {
-    partitionKey: {
-        name: 'id2',
-        type: dynamodb.AttributeType.STRING
-    },
-    indexName: 'test_id2'
+  partitionKey: {
+    name: 'id2',
+    type: dynamodb.AttributeType.STRING
+  },
+  indexName: 'test_id2'
 };
 construct.dynamoTable.addGlobalSecondaryIndex(props);
 

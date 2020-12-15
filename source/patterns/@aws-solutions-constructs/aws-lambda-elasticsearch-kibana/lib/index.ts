@@ -107,10 +107,10 @@ export class LambdaToElasticSearchAndKibana extends Construct {
     });
 
     [this.elasticsearchDomain, this.elasticsearchRole] = defaults.buildElasticSearch(this, props.domainName, {
-        userpool: this.userPool,
-        identitypool: this.identityPool,
-        cognitoAuthorizedRoleARN: cognitoAuthorizedRole.roleArn,
-        serviceRoleARN: lambdaFunctionRoleARN}, props.esDomainProps);
+      userpool: this.userPool,
+      identitypool: this.identityPool,
+      cognitoAuthorizedRoleARN: cognitoAuthorizedRole.roleArn,
+      serviceRoleARN: lambdaFunctionRoleARN}, props.esDomainProps);
 
     // Add ES Domain to lambda envrionment variable
     this.lambdaFunction.addEnvironment('DOMAIN_ENDPOINT', this.elasticsearchDomain.attrDomainEndpoint);

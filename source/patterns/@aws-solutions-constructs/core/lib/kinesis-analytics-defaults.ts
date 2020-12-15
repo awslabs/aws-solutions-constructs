@@ -14,7 +14,7 @@
 import * as kinesisanalytics from '@aws-cdk/aws-kinesisanalytics';
 
 const DefaultCfnApplicationProps: kinesisanalytics.CfnApplicationProps = {
-    inputs: []
+  inputs: []
 };
 
 export { DefaultCfnApplicationProps };

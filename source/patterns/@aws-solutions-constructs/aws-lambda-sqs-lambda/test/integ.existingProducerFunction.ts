@@ -32,12 +32,12 @@ const lambdaFunctionProps: lambda.FunctionProps = {
 const existingProducerFn = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 
 const props: LambdaToSqsToLambdaProps = {
-    existingProducerLambdaObj: existingProducerFn,
-    consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`)
-    }
+  existingProducerLambdaObj: existingProducerFn,
+  consumerLambdaFunctionProps: {
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`)
+  }
 };
 
 new LambdaToSqsToLambda(stack, 'test-lambda-sqs-lambda', props);

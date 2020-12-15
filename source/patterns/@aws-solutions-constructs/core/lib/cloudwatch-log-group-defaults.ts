@@ -14,14 +14,14 @@
 import * as logs from '@aws-cdk/aws-logs';
 
 export function DefaultLogGroupProps(_logGroupName: string = ''): logs.LogGroupProps {
-    if (_logGroupName !== '') {
-        return {
-            logGroupName: _logGroupName,
-            retention: logs.RetentionDays.INFINITE
-        } as logs.LogGroupProps;
-    } else {
-        return {
-            retention: logs.RetentionDays.INFINITE
-        } as logs.LogGroupProps;
-    }
+  if (_logGroupName !== '') {
+    return {
+      logGroupName: _logGroupName,
+      retention: logs.RetentionDays.INFINITE
+    } as logs.LogGroupProps;
+  } else {
+    return {
+      retention: logs.RetentionDays.INFINITE
+    } as logs.LogGroupProps;
+  }
 }

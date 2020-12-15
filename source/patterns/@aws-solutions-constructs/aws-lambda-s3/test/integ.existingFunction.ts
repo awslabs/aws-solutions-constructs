@@ -32,7 +32,7 @@ const lambdaFunctionProps = {
 const func = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 
 const props: LambdaToS3Props = {
-    existingLambdaObj: func
+  existingLambdaObj: func
 };
 
 new LambdaToS3(stack, 'test-lambda-s3', props);

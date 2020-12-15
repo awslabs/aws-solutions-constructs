@@ -23,16 +23,16 @@ const stack = new Stack(app, 'test-existing-stream-firehose-s3-stack');
 stack.templateOptions.description = 'Integration Test for aws-kinesisstreams-kinesisfirehose-s3';
 
 const construct = new KinesisStreamsToLambda(stack, 'test-kinesis-lambda', {
-    lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    }
+  lambdaFunctionProps: {
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+  }
 });
 
 new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-existing-stream-firehose-s3-stack', {
-    existingStreamObj: construct.kinesisStream,
-    createCloudWatchAlarms: false
+  existingStreamObj: construct.kinesisStream,
+  createCloudWatchAlarms: false
 });
 
 // Synth

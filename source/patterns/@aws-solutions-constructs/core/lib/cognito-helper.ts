@@ -61,7 +61,7 @@ export function buildUserPool(scope: cdk.Construct, userPoolProps?: cognito.User
 }
 
 export function buildUserPoolClient(scope: cdk.Construct, userPool: cognito.UserPool,
-                                    cognitoUserPoolClientProps?: cognito.UserPoolClientProps): cognito.UserPoolClient {
+  cognitoUserPoolClientProps?: cognito.UserPoolClientProps): cognito.UserPoolClient {
 
   let userPoolClientProps: cognito.UserPoolClientProps;
 
@@ -75,7 +75,7 @@ export function buildUserPoolClient(scope: cdk.Construct, userPool: cognito.User
 }
 
 export function buildIdentityPool(scope: cdk.Construct, userpool: cognito.UserPool, userpoolclient: cognito.UserPoolClient,
-                                  identityPoolProps?: cognito.CfnIdentityPoolProps): cognito.CfnIdentityPool {
+  identityPoolProps?: cognito.CfnIdentityPoolProps): cognito.CfnIdentityPool {
 
   let cognitoIdentityPoolProps: cognito.CfnIdentityPoolProps = DefaultIdentityPoolProps(userpoolclient.userPoolClientId,
     userpool.userPoolProviderName);
@@ -91,44 +91,44 @@ export function buildIdentityPool(scope: cdk.Construct, userpool: cognito.UserPo
 
 export function setupCognitoForElasticSearch(scope: cdk.Construct, domainName: string, options: CognitoOptions): iam.Role {
 
-    // Create the domain for Cognito UserPool
-    const userpooldomain = new cognito.CfnUserPoolDomain(scope, 'UserPoolDomain', {
-      domain: domainName,
-      userPoolId: options.userpool.userPoolId
-    });
-    userpooldomain.addDependsOn(options.userpool.node.findChild('Resource') as cognito.CfnUserPool);
+  // Create the domain for Cognito UserPool
+  const userpooldomain = new cognito.CfnUserPoolDomain(scope, 'UserPoolDomain', {
+    domain: domainName,
+    userPoolId: options.userpool.userPoolId
+  });
+  userpooldomain.addDependsOn(options.userpool.node.findChild('Resource') as cognito.CfnUserPool);
 
-    // Setup the IAM Role for Cognito Authorized Users
-    const cognitoPrincipal = new iam.FederatedPrincipal(
-      'cognito-identity.amazonaws.com',
-      {
-        'StringEquals': { 'cognito-identity.amazonaws.com:aud': options.identitypool.ref },
-        'ForAnyValue:StringLike': { 'cognito-identity.amazonaws.com:amr': 'authenticated' }
-      },
-      'sts:AssumeRoleWithWebIdentity');
+  // Setup the IAM Role for Cognito Authorized Users
+  const cognitoPrincipal = new iam.FederatedPrincipal(
+    'cognito-identity.amazonaws.com',
+    {
+      'StringEquals': { 'cognito-identity.amazonaws.com:aud': options.identitypool.ref },
+      'ForAnyValue:StringLike': { 'cognito-identity.amazonaws.com:amr': 'authenticated' }
+    },
+    'sts:AssumeRoleWithWebIdentity');
 
-    const cognitoAuthorizedRole = new iam.Role(scope, 'CognitoAuthorizedRole', {
-      assumedBy: cognitoPrincipal,
-      inlinePolicies: {
-        CognitoAccessPolicy: new iam.PolicyDocument({
-          statements: [new iam.PolicyStatement({
-            actions: [
-              'es:ESHttp*'
-            ],
-            resources: [`arn:${cdk.Aws.PARTITION}:es:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:domain/${domainName}/*`]
-            })
-          ]
+  const cognitoAuthorizedRole = new iam.Role(scope, 'CognitoAuthorizedRole', {
+    assumedBy: cognitoPrincipal,
+    inlinePolicies: {
+      CognitoAccessPolicy: new iam.PolicyDocument({
+        statements: [new iam.PolicyStatement({
+          actions: [
+            'es:ESHttp*'
+          ],
+          resources: [`arn:${cdk.Aws.PARTITION}:es:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:domain/${domainName}/*`]
         })
-      }
-    });
+        ]
+      })
+    }
+  });
 
-    // Attach the IAM Role for Cognito Authorized Users
-    new cognito.CfnIdentityPoolRoleAttachment(scope, 'IdentityPoolRoleMapping', {
-      identityPoolId: options.identitypool.ref,
-      roles: {
-        authenticated: cognitoAuthorizedRole.roleArn
-      }
-    });
+  // Attach the IAM Role for Cognito Authorized Users
+  new cognito.CfnIdentityPoolRoleAttachment(scope, 'IdentityPoolRoleMapping', {
+    identityPoolId: options.identitypool.ref,
+    roles: {
+      authenticated: cognitoAuthorizedRole.roleArn
+    }
+  });
 
-    return cognitoAuthorizedRole;
+  return cognitoAuthorizedRole;
 }

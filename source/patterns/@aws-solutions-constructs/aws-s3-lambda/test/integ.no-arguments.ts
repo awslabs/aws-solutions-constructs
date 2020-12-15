@@ -21,11 +21,11 @@ const app = new App();
 const stack = new Stack(app, 'test-s3-lambda-new-bucket-stack');
 
 const props: S3ToLambdaProps = {
-    lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_12_X,
-        handler: 'index.handler'
-    },
+  lambdaFunctionProps: {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler'
+  },
 };
 
 new S3ToLambda(stack, 'test-s3-lambda', props);

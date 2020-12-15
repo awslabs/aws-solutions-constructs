@@ -28,54 +28,54 @@ import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
  */
 export function buildStateMachine(scope: cdk.Construct, stateMachineProps: sfn.StateMachineProps): [sfn.StateMachine, LogGroup] {
 
-    let logGroup: LogGroup;
+  let logGroup: LogGroup;
 
-    // Configure Cloudwatch log group for Step function State Machine
-    if (!stateMachineProps.logs) {
-        logGroup = new LogGroup(scope, 'StateMachineLogGroup', DefaultLogGroupProps());
-    } else {
-        logGroup = stateMachineProps.logs.destination as LogGroup;
+  // Configure Cloudwatch log group for Step function State Machine
+  if (!stateMachineProps.logs) {
+    logGroup = new LogGroup(scope, 'StateMachineLogGroup', DefaultLogGroupProps());
+  } else {
+    logGroup = stateMachineProps.logs.destination as LogGroup;
+  }
+
+  // Override the defaults with the user provided props
+  const _smProps = overrideProps(smDefaults.DefaultStateMachineProps(logGroup), stateMachineProps);
+
+  // Override the Cloudwatch permissions to make it more fine grained
+  const _sm = new sfn.StateMachine(scope, 'StateMachine', _smProps);
+  const role = _sm.node.findChild('Role') as iam.Role;
+  const cfnDefaultPolicy = role.node.findChild('DefaultPolicy').node.defaultChild as iam.CfnPolicy;
+
+  // Reduce the scope of actions for the existing DefaultPolicy
+  cfnDefaultPolicy.addPropertyOverride('PolicyDocument.Statement.0.Action',
+    [
+      "logs:CreateLogDelivery",
+      'logs:GetLogDelivery',
+      'logs:UpdateLogDelivery',
+      'logs:DeleteLogDelivery',
+      'logs:ListLogDeliveries'
+    ]);
+
+  // Override Cfn Nag warning W12: IAM policy should not allow * resource
+  cfnDefaultPolicy.cfnOptions.metadata = {
+    cfn_nag: {
+      rules_to_suppress: [{
+        id: 'W12',
+        reason: `The 'LogDelivery' actions do not support resource-level authorizations`
+      }]
     }
+  };
 
-    // Override the defaults with the user provided props
-    const _smProps = overrideProps(smDefaults.DefaultStateMachineProps(logGroup), stateMachineProps);
+  // Add a new policy with logging permissions for the given cloudwatch log group
+  _sm.addToRolePolicy(new iam.PolicyStatement({
+    actions: [
+      'logs:PutResourcePolicy',
+      'logs:DescribeResourcePolicies',
+      'logs:DescribeLogGroups'
+    ],
+    resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:*`]
+  }));
 
-    // Override the Cloudwatch permissions to make it more fine grained
-    const _sm = new sfn.StateMachine(scope, 'StateMachine', _smProps);
-    const role = _sm.node.findChild('Role') as iam.Role;
-    const cfnDefaultPolicy = role.node.findChild('DefaultPolicy').node.defaultChild as iam.CfnPolicy;
-
-    // Reduce the scope of actions for the existing DefaultPolicy
-    cfnDefaultPolicy.addPropertyOverride('PolicyDocument.Statement.0.Action',
-      [
-        "logs:CreateLogDelivery",
-        'logs:GetLogDelivery',
-        'logs:UpdateLogDelivery',
-        'logs:DeleteLogDelivery',
-        'logs:ListLogDeliveries'
-      ]);
-
-    // Override Cfn Nag warning W12: IAM policy should not allow * resource
-    cfnDefaultPolicy.cfnOptions.metadata = {
-      cfn_nag: {
-        rules_to_suppress: [{
-            id: 'W12',
-            reason: `The 'LogDelivery' actions do not support resource-level authorizations`
-        }]
-      }
-    };
-
-    // Add a new policy with logging permissions for the given cloudwatch log group
-    _sm.addToRolePolicy(new iam.PolicyStatement({
-      actions: [
-        'logs:PutResourcePolicy',
-        'logs:DescribeResourcePolicies',
-        'logs:DescribeLogGroups'
-      ],
-      resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:*`]
-    }));
-
-    return [_sm, logGroup];
+  return [_sm, logGroup];
 }
 
 export function buildStepFunctionCWAlarms(scope: cdk.Construct, sm: sfn.StateMachine): cloudwatch.Alarm[] {

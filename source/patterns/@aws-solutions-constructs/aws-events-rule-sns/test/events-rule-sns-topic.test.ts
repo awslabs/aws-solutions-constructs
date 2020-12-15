@@ -37,95 +37,95 @@ test('check if the event rule has permission/policy in place in sns for it to be
   const stack = new cdk.Stack();
   deployNewStack(stack);
   expect(stack).toHaveResource('AWS::SNS::TopicPolicy', {
-      PolicyDocument: {
-        Statement: [
-          {
-            Action: [
-              "SNS:Publish",
-              "SNS:RemovePermission",
-              "SNS:SetTopicAttributes",
-              "SNS:DeleteTopic",
-              "SNS:ListSubscriptionsByTopic",
-              "SNS:GetTopicAttributes",
-              "SNS:Receive",
-              "SNS:AddPermission",
-              "SNS:Subscribe"
-            ],
-            Condition: {
-              StringEquals: {
-                "AWS:SourceOwner": {
-                  Ref: "AWS::AccountId"
-                }
-              }
-            },
-            Effect: "Allow",
-            Principal: {
-              AWS: {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:",
-                    {
-                      Ref: "AWS::Partition"
-                    },
-                    ":iam::",
-                    {
-                      Ref: "AWS::AccountId"
-                    },
-                    ":root"
-                  ]
-                ]
-              }
-            },
-            Resource: {
-              Ref: "testSnsTopic42942701"
-            },
-            Sid: "TopicOwnerOnlyAccess"
-          },
-          {
-            Action: [
-              "SNS:Publish",
-              "SNS:RemovePermission",
-              "SNS:SetTopicAttributes",
-              "SNS:DeleteTopic",
-              "SNS:ListSubscriptionsByTopic",
-              "SNS:GetTopicAttributes",
-              "SNS:Receive",
-              "SNS:AddPermission",
-              "SNS:Subscribe"
-            ],
-            Condition: {
-              Bool: {
-                "aws:SecureTransport": "false"
-              }
-            },
-            Effect: "Deny",
-            Principal: "*",
-            Resource: {
-              Ref: "testSnsTopic42942701"
-            },
-            Sid: "HttpsOnly"
-          },
-          {
-            Action: "sns:Publish",
-            Effect: "Allow",
-            Principal: {
-              Service: "events.amazonaws.com"
-            },
-            Resource: {
-              Ref: "testSnsTopic42942701"
-            },
-            Sid: "2"
-          }
-        ],
-        Version: "2012-10-17"
-      },
-      Topics: [
+    PolicyDocument: {
+      Statement: [
         {
-          Ref: "testSnsTopic42942701"
+          Action: [
+            "SNS:Publish",
+            "SNS:RemovePermission",
+            "SNS:SetTopicAttributes",
+            "SNS:DeleteTopic",
+            "SNS:ListSubscriptionsByTopic",
+            "SNS:GetTopicAttributes",
+            "SNS:Receive",
+            "SNS:AddPermission",
+            "SNS:Subscribe"
+          ],
+          Condition: {
+            StringEquals: {
+              "AWS:SourceOwner": {
+                Ref: "AWS::AccountId"
+              }
+            }
+          },
+          Effect: "Allow",
+          Principal: {
+            AWS: {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    Ref: "AWS::Partition"
+                  },
+                  ":iam::",
+                  {
+                    Ref: "AWS::AccountId"
+                  },
+                  ":root"
+                ]
+              ]
+            }
+          },
+          Resource: {
+            Ref: "testSnsTopic42942701"
+          },
+          Sid: "TopicOwnerOnlyAccess"
+        },
+        {
+          Action: [
+            "SNS:Publish",
+            "SNS:RemovePermission",
+            "SNS:SetTopicAttributes",
+            "SNS:DeleteTopic",
+            "SNS:ListSubscriptionsByTopic",
+            "SNS:GetTopicAttributes",
+            "SNS:Receive",
+            "SNS:AddPermission",
+            "SNS:Subscribe"
+          ],
+          Condition: {
+            Bool: {
+              "aws:SecureTransport": "false"
+            }
+          },
+          Effect: "Deny",
+          Principal: "*",
+          Resource: {
+            Ref: "testSnsTopic42942701"
+          },
+          Sid: "HttpsOnly"
+        },
+        {
+          Action: "sns:Publish",
+          Effect: "Allow",
+          Principal: {
+            Service: "events.amazonaws.com"
+          },
+          Resource: {
+            Ref: "testSnsTopic42942701"
+          },
+          Sid: "2"
         }
-      ]
-    }
+      ],
+      Version: "2012-10-17"
+    },
+    Topics: [
+      {
+        Ref: "testSnsTopic42942701"
+      }
+    ]
+  }
   );
 });
 
@@ -182,7 +182,7 @@ test('check the sns topic properties with existing KMS key', () => {
 
   const props: EventsRuleToSnsProps = {
     eventRuleProps: {
-        schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
     },
     encryptionKey: key
   };
