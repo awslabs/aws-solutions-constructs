@@ -143,31 +143,31 @@ function s3BucketWithLogging(scope: cdk.Construct, s3BucketProps?: s3.BucketProp
 }
 
 export function addCfnNagS3BucketNotificationRulesToSuppress(stackRoot: cdk.Stack, logicalId: string) {
-    const notificationsResourceHandler = stackRoot.node.tryFindChild(logicalId) as lambda.Function;
-    const notificationsResourceHandlerRoleRole = notificationsResourceHandler.node.findChild('Role') as iam.Role;
-    const notificationsResourceHandlerRolePolicy = notificationsResourceHandlerRoleRole.node.findChild('DefaultPolicy') as iam.Policy;
+  const notificationsResourceHandler = stackRoot.node.tryFindChild(logicalId) as lambda.Function;
+  const notificationsResourceHandlerRoleRole = notificationsResourceHandler.node.findChild('Role') as iam.Role;
+  const notificationsResourceHandlerRolePolicy = notificationsResourceHandlerRoleRole.node.findChild('DefaultPolicy') as iam.Policy;
 
-    // Extract the CfnFunction from the Function
-    const fnResource = notificationsResourceHandler.node.findChild('Resource') as lambda.CfnFunction;
+  // Extract the CfnFunction from the Function
+  const fnResource = notificationsResourceHandler.node.findChild('Resource') as lambda.CfnFunction;
 
-    fnResource.cfnOptions.metadata = {
-        cfn_nag: {
-            rules_to_suppress: [{
-                id: 'W58',
-                reason: `Lambda function has permission to write CloudWatch Logs via AWSLambdaBasicExecutionRole policy attached to the lambda role`
-            }]
-        }
-    };
+  fnResource.cfnOptions.metadata = {
+    cfn_nag: {
+      rules_to_suppress: [{
+        id: 'W58',
+        reason: `Lambda function has permission to write CloudWatch Logs via AWSLambdaBasicExecutionRole policy attached to the lambda role`
+      }]
+    }
+  };
 
-    // Extract the CfnPolicy from the iam.Policy
-    const policyResource = notificationsResourceHandlerRolePolicy.node.findChild('Resource') as iam.CfnPolicy;
+  // Extract the CfnPolicy from the iam.Policy
+  const policyResource = notificationsResourceHandlerRolePolicy.node.findChild('Resource') as iam.CfnPolicy;
 
-    policyResource.cfnOptions.metadata = {
-        cfn_nag: {
-            rules_to_suppress: [{
-                id: 'W12',
-                reason: `Bucket resource is '*' due to circular dependency with bucket and role creation at the same time`
-            }]
-        }
-    };
+  policyResource.cfnOptions.metadata = {
+    cfn_nag: {
+      rules_to_suppress: [{
+        id: 'W12',
+        reason: `Bucket resource is '*' due to circular dependency with bucket and role creation at the same time`
+      }]
+    }
+  };
 }

@@ -118,58 +118,58 @@ export class S3ToSqs extends Construct {
      * @access public
      */
     constructor(scope: Construct, id: string, props: S3ToSqsProps) {
-        super(scope, id);
-        let bucket: s3.Bucket;
-        let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
+      super(scope, id);
+      let bucket: s3.Bucket;
+      let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
 
-        if (props.enableEncryptionWithCustomerManagedKey === undefined ||
+      if (props.enableEncryptionWithCustomerManagedKey === undefined ||
           props.enableEncryptionWithCustomerManagedKey === true) {
-            enableEncryptionParam = true;
-        }
+        enableEncryptionParam = true;
+      }
 
-        // Setup the S3 bucket
-        if (!props.existingBucketObj) {
-            [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
-                bucketProps: props.bucketProps
-            });
-            bucket = this.s3Bucket;
-        } else {
-            bucket = props.existingBucketObj;
-        }
-
-        // Setup the dead letter queue, if applicable
-        this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
-            existingQueueObj: props.existingQueueObj,
-            deployDeadLetterQueue: props.deployDeadLetterQueue,
-            deadLetterQueueProps: props.deadLetterQueueProps,
-            maxReceiveCount: props.maxReceiveCount
+      // Setup the S3 bucket
+      if (!props.existingBucketObj) {
+        [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
+          bucketProps: props.bucketProps
         });
-        // Setup the queue
-        [this.sqsQueue, this.encryptionKey] = defaults.buildQueue(this, 'queue', {
-            existingQueueObj: props.existingQueueObj,
-            queueProps: props.queueProps,
-            deadLetterQueue: this.deadLetterQueue,
-            enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
-            encryptionKey: props.encryptionKey
-        });
+        bucket = this.s3Bucket;
+      } else {
+        bucket = props.existingBucketObj;
+      }
 
-        // Setup the S3 bucket event types
-        let s3EventTypes;
-        if (!props.s3EventTypes) {
-            s3EventTypes = defaults.defaultS3NotificationEventTypes;
-        } else {
-            s3EventTypes = props.s3EventTypes;
-        }
+      // Setup the dead letter queue, if applicable
+      this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
+        existingQueueObj: props.existingQueueObj,
+        deployDeadLetterQueue: props.deployDeadLetterQueue,
+        deadLetterQueueProps: props.deadLetterQueueProps,
+        maxReceiveCount: props.maxReceiveCount
+      });
+      // Setup the queue
+      [this.sqsQueue, this.encryptionKey] = defaults.buildQueue(this, 'queue', {
+        existingQueueObj: props.existingQueueObj,
+        queueProps: props.queueProps,
+        deadLetterQueue: this.deadLetterQueue,
+        enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
+        encryptionKey: props.encryptionKey
+      });
 
-        // Setup the S3 bucket event filters
-        let s3Eventfilters: s3.NotificationKeyFilter[] = [];
-        if (props.s3EventFilters) {
-            s3Eventfilters = props.s3EventFilters;
-        }
+      // Setup the S3 bucket event types
+      let s3EventTypes;
+      if (!props.s3EventTypes) {
+        s3EventTypes = defaults.defaultS3NotificationEventTypes;
+      } else {
+        s3EventTypes = props.s3EventTypes;
+      }
 
-        // Setup the S3 bucket event notifications
-        s3EventTypes.forEach(type => bucket.addEventNotification(type, new s3n.SqsDestination(this.sqsQueue), ...s3Eventfilters));
+      // Setup the S3 bucket event filters
+      let s3Eventfilters: s3.NotificationKeyFilter[] = [];
+      if (props.s3EventFilters) {
+        s3Eventfilters = props.s3EventFilters;
+      }
 
-        addCfnNagS3BucketNotificationRulesToSuppress(Stack.of(this), 'BucketNotificationsHandler050a0587b7544547bf325f094a3db834');
+      // Setup the S3 bucket event notifications
+      s3EventTypes.forEach(type => bucket.addEventNotification(type, new s3n.SqsDestination(this.sqsQueue), ...s3Eventfilters));
+
+      addCfnNagS3BucketNotificationRulesToSuppress(Stack.of(this), 'BucketNotificationsHandler050a0587b7544547bf325f094a3db834');
     }
 }

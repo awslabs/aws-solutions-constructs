@@ -24,27 +24,27 @@ stack.templateOptions.description = 'Integration Test for aws-s3-sqs with standa
 
 // For S3 to SQS bucket notification a customer managed CMK must be used:
 const encryptionKeyProps: kms.KeyProps = {
-    enableKeyRotation: true
+  enableKeyRotation: true
 };
 const kmsKey = new kms.Key(stack, 'ImportedEncryptionKey', encryptionKeyProps);
 
 // Configure notification filter
 const filter: s3.NotificationKeyFilter = {
-    prefix: 'the/place',
-    suffix: '*.mp3'
+  prefix: 'the/place',
+  suffix: '*.mp3'
 };
 
 // Define construct properties so that a new queue myQueue is created
 const props: S3ToSqsProps = {
-    queueProps: {
-        queueName: `myQueue`,
-        encryptionMasterKey: kmsKey
-    },
-    deadLetterQueueProps: {
-        queueName: `myDLQueue`
-    },
-    s3EventTypes: [s3.EventType.OBJECT_REMOVED],
-    s3EventFilters: [filter]
+  queueProps: {
+    queueName: `myQueue`,
+    encryptionMasterKey: kmsKey
+  },
+  deadLetterQueueProps: {
+    queueName: `myDLQueue`
+  },
+  s3EventTypes: [s3.EventType.OBJECT_REMOVED],
+  s3EventFilters: [filter]
 };
 
 new S3ToSqs(stack, 'test-s3-sqs', props);

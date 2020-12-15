@@ -24,23 +24,23 @@ import * as defaults from '@aws-solutions-constructs/core';
 // Test the getter methods
 // --------------------------------------------------------------
 test('Test getter methods', () => {
-    // Initial Setup
-    const stack = new Stack();
-    const filter: s3.NotificationKeyFilter = { prefix: 'the/place', suffix: '*.mp3' };
-    const props: S3ToSqsProps = {
-        deployDeadLetterQueue: true,
-        maxReceiveCount: 0,
-        queueProps: {},
-        s3EventTypes: [s3.EventType.OBJECT_REMOVED],
-        s3EventFilters: [filter]
-    };
-    const app = new S3ToSqs(stack, 'test-s3-sqs', props);
-    // Assertion 1
-    expect(app.sqsQueue !== null);
-    // Assertion 2
-    expect(app.deadLetterQueue !== null);
-    // Assertion 3
-    expect(app.s3Bucket !== null);
+  // Initial Setup
+  const stack = new Stack();
+  const filter: s3.NotificationKeyFilter = { prefix: 'the/place', suffix: '*.mp3' };
+  const props: S3ToSqsProps = {
+    deployDeadLetterQueue: true,
+    maxReceiveCount: 0,
+    queueProps: {},
+    s3EventTypes: [s3.EventType.OBJECT_REMOVED],
+    s3EventFilters: [filter]
+  };
+  const app = new S3ToSqs(stack, 'test-s3-sqs', props);
+  // Assertion 1
+  expect(app.sqsQueue !== null);
+  // Assertion 2
+  expect(app.deadLetterQueue !== null);
+  // Assertion 3
+  expect(app.s3Bucket !== null);
 });
 
 // --------------------------------------------------------------
@@ -80,56 +80,56 @@ test('Test deployment w/ existing queue', () => {
 // Test deployment w/ existing s3 Bucket
 // --------------------------------------------------------------
 test('Test deployment w/ existing Bucket', () => {
-    // Stack
-    const stack = new Stack();
-    // Helper declaration
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
 
-    const [myBucket] = defaults.buildS3Bucket(stack, {});
-    new S3ToSqs(stack, 'test-s3-sqs', {
-        existingBucketObj: myBucket
-    });
-    // Assertion 1
-    expect(stack).toHaveResource("Custom::S3BucketNotifications", {
-      NotificationConfiguration: {
-        QueueConfigurations: [
-          {
-            Events: ['s3:ObjectCreated:*'],
-            QueueArn: {
-              "Fn::GetAtt": [
-                "tests3sqsqueue810CCE19",
-                "Arn"
-              ]
-            }
+  const [myBucket] = defaults.buildS3Bucket(stack, {});
+  new S3ToSqs(stack, 'test-s3-sqs', {
+    existingBucketObj: myBucket
+  });
+  // Assertion 1
+  expect(stack).toHaveResource("Custom::S3BucketNotifications", {
+    NotificationConfiguration: {
+      QueueConfigurations: [
+        {
+          Events: ['s3:ObjectCreated:*'],
+          QueueArn: {
+            "Fn::GetAtt": [
+              "tests3sqsqueue810CCE19",
+              "Arn"
+            ]
           }
-        ]
-      }
-    });
+        }
+      ]
+    }
+  });
 });
 
 // --------------------------------------------------------------
 // Pattern deployment w/ bucket block public access override
 // --------------------------------------------------------------
 test('Pattern deployment w/ bucket versioning turned off', () => {
-    const stack = new Stack();
-    const props: S3ToSqsProps = {
-        bucketProps: {
-            blockPublicAccess: {
-                blockPublicAcls: false,
-                blockPublicPolicy: true,
-                ignorePublicAcls: false,
-                restrictPublicBuckets: true
-            }
-        }
-    };
-    new S3ToSqs(stack, 'test-s3-sqs', props);
-    expect(stack).toHaveResource("AWS::S3::Bucket", {
-        PublicAccessBlockConfiguration: {
-            BlockPublicAcls: false,
-            BlockPublicPolicy: true,
-            IgnorePublicAcls: false,
-            RestrictPublicBuckets: true
-        }
-    });
+  const stack = new Stack();
+  const props: S3ToSqsProps = {
+    bucketProps: {
+      blockPublicAccess: {
+        blockPublicAcls: false,
+        blockPublicPolicy: true,
+        ignorePublicAcls: false,
+        restrictPublicBuckets: true
+      }
+    }
+  };
+  new S3ToSqs(stack, 'test-s3-sqs', props);
+  expect(stack).toHaveResource("AWS::S3::Bucket", {
+    PublicAccessBlockConfiguration: {
+      BlockPublicAcls: false,
+      BlockPublicPolicy: true,
+      IgnorePublicAcls: false,
+      RestrictPublicBuckets: true
+    }
+  });
 });
 
 // --------------------------------------------------------------
@@ -209,84 +209,84 @@ test('Test deployment w/ SSE encryption enabled using customer managed KMS CMK',
 
   // Assertion 3
   expect(stack).toHaveResource('AWS::KMS::Key', {
-      KeyPolicy: {
-        Statement: [
-          {
-            Action: [
-              "kms:Create*",
-              "kms:Describe*",
-              "kms:Enable*",
-              "kms:List*",
-              "kms:Put*",
-              "kms:Update*",
-              "kms:Revoke*",
-              "kms:Disable*",
-              "kms:Get*",
-              "kms:Delete*",
-              "kms:ScheduleKeyDeletion",
-              "kms:CancelKeyDeletion",
-              "kms:GenerateDataKey",
-              "kms:TagResource",
-              "kms:UntagResource"
-            ],
-            Effect: "Allow",
-            Principal: {
-              AWS: {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:",
-                    {
-                      Ref: "AWS::Partition"
-                    },
-                    ":iam::",
-                    {
-                      Ref: "AWS::AccountId"
-                    },
-                    ":root"
-                  ]
+    KeyPolicy: {
+      Statement: [
+        {
+          Action: [
+            "kms:Create*",
+            "kms:Describe*",
+            "kms:Enable*",
+            "kms:List*",
+            "kms:Put*",
+            "kms:Update*",
+            "kms:Revoke*",
+            "kms:Disable*",
+            "kms:Get*",
+            "kms:Delete*",
+            "kms:ScheduleKeyDeletion",
+            "kms:CancelKeyDeletion",
+            "kms:GenerateDataKey",
+            "kms:TagResource",
+            "kms:UntagResource"
+          ],
+          Effect: "Allow",
+          Principal: {
+            AWS: {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    Ref: "AWS::Partition"
+                  },
+                  ":iam::",
+                  {
+                    Ref: "AWS::AccountId"
+                  },
+                  ":root"
+                ]
+              ]
+            }
+          },
+          Resource: "*"
+        },
+        {
+          Action: [
+            "kms:Decrypt",
+            "kms:Encrypt",
+            "kms:ReEncrypt*",
+            "kms:GenerateDataKey*"
+          ],
+          Condition: {
+            ArnLike: {
+              "aws:SourceArn": {
+                "Fn::GetAtt": [
+                  "tests3sqsS3BucketFF76CDA6",
+                  "Arn"
                 ]
               }
-            },
-            Resource: "*"
+            }
           },
-          {
-            Action: [
-              "kms:Decrypt",
-              "kms:Encrypt",
-              "kms:ReEncrypt*",
-              "kms:GenerateDataKey*"
-            ],
-            Condition: {
-              ArnLike: {
-                "aws:SourceArn": {
-                  "Fn::GetAtt": [
-                    "tests3sqsS3BucketFF76CDA6",
-                    "Arn"
-                  ]
-                }
-              }
-            },
-            Effect: "Allow",
-            Principal: {
-              Service: "s3.amazonaws.com"
-            },
-            Resource: "*"
+          Effect: "Allow",
+          Principal: {
+            Service: "s3.amazonaws.com"
           },
-          {
-            Action: [
-              "kms:GenerateDataKey*",
-              "kms:Decrypt"
-            ],
-            Effect: "Allow",
-            Principal: {
-              Service: "s3.amazonaws.com"
-            },
-            Resource: "*"
-          }
-        ],
-        Version: "2012-10-17"
-      },
-      EnableKeyRotation: true
-    });
+          Resource: "*"
+        },
+        {
+          Action: [
+            "kms:GenerateDataKey*",
+            "kms:Decrypt"
+          ],
+          Effect: "Allow",
+          Principal: {
+            Service: "s3.amazonaws.com"
+          },
+          Resource: "*"
+        }
+      ],
+      Version: "2012-10-17"
+    },
+    EnableKeyRotation: true
+  });
 });
