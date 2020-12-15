@@ -37,7 +37,7 @@ test('create default CfnTable', () => {
     }]
   , 'Kinesis', {STREAM_NAME: 'fakeStreamName'});
 
-  expect(SynthUtils.synthesize(stack)).toMatchSnapshot();
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 test('error condition', () => {

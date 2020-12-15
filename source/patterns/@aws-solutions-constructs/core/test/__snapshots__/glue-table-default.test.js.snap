@@ -1,145 +1,87 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`create default CfnTable 1`] = `
-CloudFormationStackArtifact {
-  "_dependencyIDs": Array [],
-  "_deps": Array [],
-  "assembly": CloudAssembly {
-    "artifacts": Array [
-      [Circular],
-      TreeCloudArtifact {
-        "_dependencyIDs": Array [],
-        "_deps": Array [],
-        "assembly": [Circular],
-        "file": "tree.json",
-        "id": "Tree",
-        "manifest": Object {
-          "properties": Object {
-            "file": "tree.json",
-          },
-          "type": "cdk:tree",
+Object {
+  "Resources": Object {
+    "GlueDatabase": Object {
+      "Properties": Object {
+        "CatalogId": Object {
+          "Ref": "AWS::AccountId",
         },
-        "messages": Array [],
-      },
-    ],
-    "directory": "/private/var/folders/1g/06jq51996q92kg4mxnn01g9c5w0t6w/T/cdk-test-app-o0edMu",
-    "manifest": Object {
-      "artifacts": Object {
-        "Default": Object {
-          "environment": "aws://unknown-account/unknown-region",
-          "metadata": Object {
-            "/Default/GlueDatabase": Array [
-              Object {
-                "data": "GlueDatabase",
-                "trace": Array [
-                  "Object.DefaultGlueDatabaseProps (/Users/nihitkas/code/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/glue-database-defaults.ts:18:10)",
-                  "Object.<anonymous> (/Users/nihitkas/code/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/glue-table-default.test.ts:20:50)",
-                  "Object.asyncJestTest (/Users/nihitkas/code/aws-solutions-constructs/source/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:102:37)",
-                  "/Users/nihitkas/code/aws-solutions-constructs/source/node_modules/jest-jasmine2/build/queueRunner.js:43:12",
-                  "new Promise (<anonymous>)",
-                  "mapper (/Users/nihitkas/code/aws-solutions-constructs/source/node_modules/jest-jasmine2/build/queueRunner.js:26:19)",
-                  "/Users/nihitkas/code/aws-solutions-constructs/source/node_modules/jest-jasmine2/build/queueRunner.js:73:41",
-                  "processTicksAndRejections (node:internal/process/task_queues:93:5)",
-                ],
-                "type": "aws:cdk:logicalId",
-              },
-            ],
-            "/Default/GlueTable": Array [
-              Object {
-                "data": "GlueTable",
-                "trace": Array [
-                  "Object.DefaultGlueTableProps (/Users/nihitkas/code/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/glue-table-defaults.ts:31:18)",
-                  "Object.<anonymous> (/Users/nihitkas/code/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/glue-table-default.test.ts:20:12)",
-                  "Object.asyncJestTest (/Users/nihitkas/code/aws-solutions-constructs/source/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:102:37)",
-                  "/Users/nihitkas/code/aws-solutions-constructs/source/node_modules/jest-jasmine2/build/queueRunner.js:43:12",
-                  "new Promise (<anonymous>)",
-                  "mapper (/Users/nihitkas/code/aws-solutions-constructs/source/node_modules/jest-jasmine2/build/queueRunner.js:26:19)",
-                  "/Users/nihitkas/code/aws-solutions-constructs/source/node_modules/jest-jasmine2/build/queueRunner.js:73:41",
-                  "processTicksAndRejections (node:internal/process/task_queues:93:5)",
-                ],
-                "type": "aws:cdk:logicalId",
-              },
-            ],
-          },
-          "properties": Object {
-            "templateFile": "Default.template.json",
-          },
-          "type": "aws:cloudformation:stack",
-        },
-        "Tree": Object {
-          "properties": Object {
-            "file": "tree.json",
-          },
-          "type": "cdk:tree",
+        "DatabaseInput": Object {
+          "Description": "A Glue database table",
         },
       },
-      "version": "7.0.0",
+      "Type": "AWS::Glue::Database",
     },
-    "runtime": Object {
-      "libraries": Object {},
-    },
-    "version": "7.0.0",
-  },
-  "assets": Array [],
-  "assumeRoleArn": undefined,
-  "cloudFormationExecutionRoleArn": undefined,
-  "displayName": "Default",
-  "environment": Object {
-    "account": "unknown-account",
-    "name": "aws://unknown-account/unknown-region",
-    "region": "unknown-region",
-  },
-  "id": "Default",
-  "manifest": Object {
-    "environment": "aws://unknown-account/unknown-region",
-    "metadata": Object {
-      "/Default/GlueDatabase": Array [
-        Object {
-          "data": "GlueDatabase",
-          "trace": Array [
-            "Object.DefaultGlueDatabaseProps (/Users/nihitkas/code/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/glue-database-defaults.ts:18:10)",
-            "Object.<anonymous> (/Users/nihitkas/code/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/glue-table-default.test.ts:20:50)",
-            "Object.asyncJestTest (/Users/nihitkas/code/aws-solutions-constructs/source/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:102:37)",
-            "/Users/nihitkas/code/aws-solutions-constructs/source/node_modules/jest-jasmine2/build/queueRunner.js:43:12",
-            "new Promise (<anonymous>)",
-            "mapper (/Users/nihitkas/code/aws-solutions-constructs/source/node_modules/jest-jasmine2/build/queueRunner.js:26:19)",
-            "/Users/nihitkas/code/aws-solutions-constructs/source/node_modules/jest-jasmine2/build/queueRunner.js:73:41",
-            "processTicksAndRejections (node:internal/process/task_queues:93:5)",
-          ],
-          "type": "aws:cdk:logicalId",
+    "GlueTable": Object {
+      "Properties": Object {
+        "CatalogId": Object {
+          "Ref": "AWS::AccountId",
         },
-      ],
-      "/Default/GlueTable": Array [
-        Object {
-          "data": "GlueTable",
-          "trace": Array [
-            "Object.DefaultGlueTableProps (/Users/nihitkas/code/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/glue-table-defaults.ts:31:18)",
-            "Object.<anonymous> (/Users/nihitkas/code/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/glue-table-default.test.ts:20:12)",
-            "Object.asyncJestTest (/Users/nihitkas/code/aws-solutions-constructs/source/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:102:37)",
-            "/Users/nihitkas/code/aws-solutions-constructs/source/node_modules/jest-jasmine2/build/queueRunner.js:43:12",
-            "new Promise (<anonymous>)",
-            "mapper (/Users/nihitkas/code/aws-solutions-constructs/source/node_modules/jest-jasmine2/build/queueRunner.js:26:19)",
-            "/Users/nihitkas/code/aws-solutions-constructs/source/node_modules/jest-jasmine2/build/queueRunner.js:73:41",
-            "processTicksAndRejections (node:internal/process/task_queues:93:5)",
-          ],
-          "type": "aws:cdk:logicalId",
+        "DatabaseName": Object {
+          "Ref": "GlueDatabase",
         },
-      ],
+        "TableInput": Object {
+          "Parameters": Object {
+            "classication": "json",
+          },
+          "StorageDescriptor": Object {
+            "Columns": Array [
+              Object {
+                "Comment": "Identifier for the record",
+                "Name": "id",
+                "Type": "int",
+              },
+              Object {
+                "Comment": "The name of the record",
+                "Name": "name",
+                "Type": "string",
+              },
+              Object {
+                "Comment": "The type of the record",
+                "Name": "type",
+                "Type": "string",
+              },
+              Object {
+                "Comment": "Some value associated with the record",
+                "Name": "numericvalue",
+                "Type": "int",
+              },
+            ],
+            "Compressed": false,
+            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+            "Location": "fakeStreamName",
+            "NumberOfBuckets": -1,
+            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+            "Parameters": Object {
+              "endpointUrl": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "https://kinesis.",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ".amazonaws.com",
+                  ],
+                ],
+              },
+              "streamName": "fakeStreamName",
+              "typeOfData": "kinesis",
+            },
+            "SerdeInfo": Object {
+              "Parameters": Object {
+                "paths": ".",
+              },
+              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
+            },
+          },
+          "TableType": "EXTERNAL_TABLE",
+        },
+      },
+      "Type": "AWS::Glue::Table",
     },
-    "properties": Object {
-      "templateFile": "Default.template.json",
-    },
-    "type": "aws:cloudformation:stack",
   },
-  "messages": Array [],
-  "name": "Default",
-  "originalName": "Default",
-  "parameters": Object {},
-  "requiresBootstrapStackVersion": undefined,
-  "stackName": "Default",
-  "stackTemplateAssetObjectUrl": undefined,
-  "tags": Object {},
-  "templateFile": "Default.template.json",
-  "terminationProtection": undefined,
 }
 `;
