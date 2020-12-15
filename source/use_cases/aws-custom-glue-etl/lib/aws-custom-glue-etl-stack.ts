@@ -27,7 +27,7 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
       bucketProps: defaults.DefaultS3Props()
     });
 
-    _outputBucket[0].grantWrite(_glueJobRole);
+    _outputBucket[0].grantReadWrite(_glueJobRole);
 
     const _jobCommand = KinesisStreamGlueJob.createGlueJobCommand(this, 'glueetl', '3', undefined, `${__dirname}/../etl/transform.py`);
 
@@ -39,10 +39,9 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
         command: _jobCommand[0],
         role: _glueJobRole.roleArn,
         defaultArguments: {
-          "--job-bookmark-option": "job-bookmark-disable",
+          "--job-bookmark-option": "job-bookmark-enable",
           "--enable-metrics" : true,
           "--enable-continuous-cloudwatch-log" : true,
-          "--enable-continuous-log-filter": true,
           "--enable-glue-datacatalog": true,
           "--output-path": `s3://${_outputBucket[0].bucketName}/output/`,
           "--aws-region": Aws.REGION
