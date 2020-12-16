@@ -14,9 +14,9 @@
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as s3 from '@aws-cdk/aws-s3';
 import { Construct, Stack } from '@aws-cdk/core';
-import * as iam from '@aws-cdk/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
 import { S3EventSourceProps, S3EventSource } from '@aws-cdk/aws-lambda-event-sources';
+import {addCfnNagS3BucketNotificationRulesToSuppress} from "@aws-solutions-constructs/core";
 
 /**
  * @summary The properties for the S3ToLambda class.
@@ -89,38 +89,7 @@ export class S3ToLambda extends Construct {
     this.lambdaFunction.addEventSource(new S3EventSource(bucket,
       defaults.S3EventSourceProps(props.s3EventSourceProps)));
 
-    this.addCfnNagSuppress();
-  }
-
-  private addCfnNagSuppress() {
-    const root = Stack.of(this);
-    const logicalId = 'BucketNotificationsHandler050a0587b7544547bf325f094a3db834';
-    const notificationsResourceHandler = root.node.tryFindChild(logicalId) as lambda.Function;
-    const notificationsResourceHandlerRoleRole = notificationsResourceHandler.node.findChild('Role') as iam.Role;
-    const notificationsResourceHandlerRolePolicy = notificationsResourceHandlerRoleRole.node.findChild('DefaultPolicy') as iam.Policy;
-
-    // Extract the CfnFunction from the Function
-    const fnResource = notificationsResourceHandler.node.findChild('Resource') as lambda.CfnFunction;
-
-    fnResource.cfnOptions.metadata = {
-      cfn_nag: {
-        rules_to_suppress: [{
-          id: 'W58',
-          reason: `Lambda function has permission to write CloudWatch Logs via AWSLambdaBasicExecutionRole policy attached to the lambda role`
-        }]
-      }
-    };
-
-    // Extract the CfnPolicy from the iam.Policy
-    const policyResource = notificationsResourceHandlerRolePolicy.node.findChild('Resource') as iam.CfnPolicy;
-
-    policyResource.cfnOptions.metadata = {
-      cfn_nag: {
-        rules_to_suppress: [{
-          id: 'W12',
-          reason: `Bucket resource is '*' due to circular dependency with bucket and role creation at the same time`
-        }]
-      }
-    };
+    // Suppress cfn-nag rules that generate warns for S3 bucket notification CDK resources
+    addCfnNagS3BucketNotificationRulesToSuppress(Stack.of(this), 'BucketNotificationsHandler050a0587b7544547bf325f094a3db834');
   }
 }

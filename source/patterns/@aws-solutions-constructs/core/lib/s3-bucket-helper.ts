@@ -11,6 +11,8 @@
  *  and limitations under the License.
  */
 
+import * as iam from '@aws-cdk/aws-iam';
+import * as lambda from '@aws-cdk/aws-lambda';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as cdk from '@aws-cdk/core';
 import { DefaultS3Props } from './s3-bucket-defaults';
@@ -18,7 +20,6 @@ import { overrideProps } from './utils';
 import { PolicyStatement, Effect, AnyPrincipal } from '@aws-cdk/aws-iam';
 import { StorageClass } from '@aws-cdk/aws-s3/lib/rule';
 import { Duration } from '@aws-cdk/core/lib/duration';
-
 export interface BuildS3BucketProps {
   /**
    * User provided props to override the default props for the S3 Bucket.
@@ -139,4 +140,34 @@ function s3BucketWithLogging(scope: cdk.Construct, s3BucketProps?: s3.BucketProp
   applySecureBucketPolicy(s3Bucket);
 
   return [s3Bucket, loggingBucket];
+}
+
+export function addCfnNagS3BucketNotificationRulesToSuppress(stackRoot: cdk.Stack, logicalId: string) {
+  const notificationsResourceHandler = stackRoot.node.tryFindChild(logicalId) as lambda.Function;
+  const notificationsResourceHandlerRoleRole = notificationsResourceHandler.node.findChild('Role') as iam.Role;
+  const notificationsResourceHandlerRolePolicy = notificationsResourceHandlerRoleRole.node.findChild('DefaultPolicy') as iam.Policy;
+
+  // Extract the CfnFunction from the Function
+  const fnResource = notificationsResourceHandler.node.findChild('Resource') as lambda.CfnFunction;
+
+  fnResource.cfnOptions.metadata = {
+    cfn_nag: {
+      rules_to_suppress: [{
+        id: 'W58',
+        reason: `Lambda function has permission to write CloudWatch Logs via AWSLambdaBasicExecutionRole policy attached to the lambda role`
+      }]
+    }
+  };
+
+  // Extract the CfnPolicy from the iam.Policy
+  const policyResource = notificationsResourceHandlerRolePolicy.node.findChild('Resource') as iam.CfnPolicy;
+
+  policyResource.cfnOptions.metadata = {
+    cfn_nag: {
+      rules_to_suppress: [{
+        id: 'W12',
+        reason: `Bucket resource is '*' due to circular dependency with bucket and role creation at the same time`
+      }]
+    }
+  };
 }
