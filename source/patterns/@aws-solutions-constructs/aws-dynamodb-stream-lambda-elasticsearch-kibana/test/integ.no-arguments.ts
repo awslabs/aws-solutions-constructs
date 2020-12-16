@@ -21,12 +21,12 @@ const app = new App();
 const stack = new Stack(app, 'test-dynamodb-stream-lambda-elasticsearch-kibana-stack');
 
 const props: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps = {
-    lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_12_X,
-        handler: 'index.handler'
-    },
-    domainName: 'myconstructsdomain1'
+  lambdaFunctionProps: {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler'
+  },
+  domainName: 'myconstructsdomain1'
 };
 
 new DynamoDBStreamToLambdaToElasticSearchAndKibana(stack, 'test-dynamodb-stream-lambda-elasticsearch-kibana', props);

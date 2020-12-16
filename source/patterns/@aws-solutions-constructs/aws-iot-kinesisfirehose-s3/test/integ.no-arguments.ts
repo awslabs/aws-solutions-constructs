@@ -22,14 +22,14 @@ stack.templateOptions.description = 'Integration Test for aws-iot-kinesisfirehos
 
 // Definitions
 const props: IotToKinesisFirehoseToS3Props = {
-    iotTopicRuleProps: {
-        topicRulePayload: {
-            ruleDisabled: false,
-            description: "Persistent storage of connected vehicle telematics data",
-            sql: "SELECT * FROM 'connectedcar/telemetry/#'",
-            actions: []
-        }
+  iotTopicRuleProps: {
+    topicRulePayload: {
+      ruleDisabled: false,
+      description: "Persistent storage of connected vehicle telematics data",
+      sql: "SELECT * FROM 'connectedcar/telemetry/#'",
+      actions: []
     }
+  }
 };
 
 new IotToKinesisFirehoseToS3(stack, 'test-iot-firehose-s3', props);

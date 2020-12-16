@@ -24,33 +24,33 @@ import '@aws-cdk/assert/jest';
 // Test deployment with new Lambda function
 // --------------------------------------------------------------
 test('Test deployment with new Lambda function', () => {
-    // Stack
-    const stack = new Stack();
-    // Helper declaration
-    const startState = new stepfunctions.Pass(stack, 'StartState');
-    new LambdaToStepFunction(stack, 'lambda-to-step-function-stack', {
-      lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        environment: {
-          LAMBDA_NAME: 'deploy-function'
-        }
-      },
-      stateMachineProps: {
-        definition: startState
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  const startState = new stepfunctions.Pass(stack, 'StartState');
+  new LambdaToStepFunction(stack, 'lambda-to-step-function-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deploy-function'
       }
-    });
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-    // Assertion 2
-    expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
-      Environment: {
-        Variables: {
-          LAMBDA_NAME: 'deploy-function'
-        }
+    },
+    stateMachineProps: {
+      definition: startState
+    }
+  });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Assertion 2
+  expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
+    Environment: {
+      Variables: {
+        LAMBDA_NAME: 'deploy-function'
       }
-    });
+    }
+  });
 });
 
 // --------------------------------------------------------------
@@ -142,33 +142,33 @@ test('Test invocation permissions', () => {
 // Test the properties
 // --------------------------------------------------------------
 test('Test the properties', () => {
-    // Stack
-    const stack = new Stack();
-    // Helper declaration
-    const startState = new stepfunctions.Pass(stack, 'StartState');
-    const pattern = new LambdaToStepFunction(stack, 'lambda-to-step-function-stack', {
-      lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        environment: {
-          LAMBDA_NAME: 'existing-function'
-        }
-      },
-      stateMachineProps: {
-        definition: startState
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  const startState = new stepfunctions.Pass(stack, 'StartState');
+  const pattern = new LambdaToStepFunction(stack, 'lambda-to-step-function-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'existing-function'
       }
-    });
+    },
+    stateMachineProps: {
+      definition: startState
+    }
+  });
     // Assertion 1
-    const func = pattern.lambdaFunction;
-    expect(func !== null);
-    // Assertion 2
-    const stateMachine = pattern.stateMachine;
-    expect(stateMachine !== null);
-    // Assertion 3
-    const cwAlarm = pattern.cloudwatchAlarms;
-    expect(cwAlarm !== null);
-    expect(pattern.stateMachineLogGroup !== null);
+  const func = pattern.lambdaFunction;
+  expect(func !== null);
+  // Assertion 2
+  const stateMachine = pattern.stateMachine;
+  expect(stateMachine !== null);
+  // Assertion 3
+  const cwAlarm = pattern.cloudwatchAlarms;
+  expect(cwAlarm !== null);
+  expect(pattern.stateMachineLogGroup !== null);
 });
 
 // --------------------------------------------------------------

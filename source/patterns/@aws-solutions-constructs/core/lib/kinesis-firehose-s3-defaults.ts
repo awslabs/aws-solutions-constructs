@@ -15,27 +15,27 @@ import { CfnDeliveryStreamProps } from '@aws-cdk/aws-kinesisfirehose';
 import { IKey } from '@aws-cdk/aws-kms';
 
 export function DefaultCfnDeliveryStreamProps(_bucketArn: string, _roleArn: string,
-                                              _logGroupName: string, _logStreamName: string, _kms: IKey): CfnDeliveryStreamProps {
+  _logGroupName: string, _logStreamName: string, _kms: IKey): CfnDeliveryStreamProps {
 
-    return {
-        extendedS3DestinationConfiguration : {
-            bucketArn: _bucketArn,
-            bufferingHints: {
-                intervalInSeconds: 300,
-                sizeInMBs: 5
-            },
-            compressionFormat: 'GZIP',
-            roleArn: _roleArn,
-            cloudWatchLoggingOptions: {
-                enabled: true,
-                logGroupName: _logGroupName,
-                logStreamName: _logStreamName
-            },
-            encryptionConfiguration: {
-                kmsEncryptionConfig: {
-                    awskmsKeyArn: _kms.keyArn
-                }
-            }
+  return {
+    extendedS3DestinationConfiguration : {
+      bucketArn: _bucketArn,
+      bufferingHints: {
+        intervalInSeconds: 300,
+        sizeInMBs: 5
+      },
+      compressionFormat: 'GZIP',
+      roleArn: _roleArn,
+      cloudWatchLoggingOptions: {
+        enabled: true,
+        logGroupName: _logGroupName,
+        logStreamName: _logStreamName
+      },
+      encryptionConfiguration: {
+        kmsEncryptionConfig: {
+          awskmsKeyArn: _kms.keyArn
         }
-    } as CfnDeliveryStreamProps;
+      }
+    }
+  } as CfnDeliveryStreamProps;
 }

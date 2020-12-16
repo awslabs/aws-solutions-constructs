@@ -23,11 +23,11 @@ stack.templateOptions.description = 'Integration Test for aws-lambda-sqs';
 
 // Definitions
 const props: LambdaToSqsProps = {
-    lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    }
+  lambdaFunctionProps: {
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+  }
 };
 
 new LambdaToSqs(stack, 'test-lambda-sqs', props);

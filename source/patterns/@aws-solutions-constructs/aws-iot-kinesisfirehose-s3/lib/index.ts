@@ -69,47 +69,47 @@ export class IotToKinesisFirehoseToS3 extends Construct {
      * @access public
      */
     constructor(scope: Construct, id: string, props: IotToKinesisFirehoseToS3Props) {
-        super(scope, id);
+      super(scope, id);
 
-        const firehoseToS3 = new KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {
-            kinesisFirehoseProps: props.kinesisFirehoseProps,
-            existingBucketObj: props.existingBucketObj,
-            bucketProps: props.bucketProps
-        });
-        this.kinesisFirehose = firehoseToS3.kinesisFirehose;
-        this.s3Bucket = firehoseToS3.s3Bucket;
+      const firehoseToS3 = new KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {
+        kinesisFirehoseProps: props.kinesisFirehoseProps,
+        existingBucketObj: props.existingBucketObj,
+        bucketProps: props.bucketProps
+      });
+      this.kinesisFirehose = firehoseToS3.kinesisFirehose;
+      this.s3Bucket = firehoseToS3.s3Bucket;
 
-        // Setup the IAM Role for IoT Actions
-        this.iotActionsRole = new iam.Role(this, 'IotActionsRole', {
-            assumedBy: new iam.ServicePrincipal('iot.amazonaws.com'),
-        });
+      // Setup the IAM Role for IoT Actions
+      this.iotActionsRole = new iam.Role(this, 'IotActionsRole', {
+        assumedBy: new iam.ServicePrincipal('iot.amazonaws.com'),
+      });
 
-        // Setup the IAM policy for IoT Actions
-        const iotActionsPolicy = new iam.Policy(this, 'IotActionsPolicy', {
-            statements: [new iam.PolicyStatement({
-              actions: [
-                'firehose:PutRecord'
-              ],
-              resources: [this.kinesisFirehose.attrArn]
-            })
+      // Setup the IAM policy for IoT Actions
+      const iotActionsPolicy = new iam.Policy(this, 'IotActionsPolicy', {
+        statements: [new iam.PolicyStatement({
+          actions: [
+            'firehose:PutRecord'
+          ],
+          resources: [this.kinesisFirehose.attrArn]
+        })
         ]});
 
-        // Attach policy to role
-        iotActionsPolicy.attachToRole(this.iotActionsRole);
+      // Attach policy to role
+      iotActionsPolicy.attachToRole(this.iotActionsRole);
 
-        const defaultIotTopicProps = defaults.DefaultCfnTopicRuleProps([{
-            firehose: {
-                deliveryStreamName: this.kinesisFirehose.ref,
-                roleArn: this.iotActionsRole.roleArn
-            }
-        }]);
-        const iotTopicProps = overrideProps(defaultIotTopicProps, props.iotTopicRuleProps, true);
+      const defaultIotTopicProps = defaults.DefaultCfnTopicRuleProps([{
+        firehose: {
+          deliveryStreamName: this.kinesisFirehose.ref,
+          roleArn: this.iotActionsRole.roleArn
+        }
+      }]);
+      const iotTopicProps = overrideProps(defaultIotTopicProps, props.iotTopicRuleProps, true);
 
-        // Create the IoT topic rule
-        this.iotTopicRule = new iot.CfnTopicRule(this, 'IotTopic', iotTopicProps);
+      // Create the IoT topic rule
+      this.iotTopicRule = new iot.CfnTopicRule(this, 'IotTopic', iotTopicProps);
 
-        this.kinesisFirehoseRole = firehoseToS3.kinesisFirehoseRole;
-        this.s3LoggingBucket = firehoseToS3.s3LoggingBucket;
-        this.kinesisFirehoseLogGroup = firehoseToS3.kinesisFirehoseLogGroup;
+      this.kinesisFirehoseRole = firehoseToS3.kinesisFirehoseRole;
+      this.s3LoggingBucket = firehoseToS3.s3LoggingBucket;
+      this.kinesisFirehoseLogGroup = firehoseToS3.kinesisFirehoseLogGroup;
     }
 }

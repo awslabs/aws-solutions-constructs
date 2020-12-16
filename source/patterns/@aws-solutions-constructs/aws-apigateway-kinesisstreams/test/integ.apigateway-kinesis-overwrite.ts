@@ -22,26 +22,26 @@ stack.templateOptions.description = 'Integration Test for aws-apigateway-kinesis
 
 // Definitions
 const props: ApiGatewayToKinesisStreamsProps = {
-    apiGatewayProps: {
-        restApiName: 'my-api',
-        deployOptions: {
-            methodOptions: {
-                '/*/*': {
-                    throttlingRateLimit: 100,
-                    throttlingBurstLimit: 25
-                }
-            }
+  apiGatewayProps: {
+    restApiName: 'my-api',
+    deployOptions: {
+      methodOptions: {
+        '/*/*': {
+          throttlingRateLimit: 100,
+          throttlingBurstLimit: 25
         }
-    },
-    kinesisStreamProps: {
-        shardCount: 1,
-        retentionPeriod: Duration.days(4)
-    },
-    putRecordRequestTemplate: `{ "StreamName": "\${StreamName}", "Data": "$util.base64Encode($input.json('$.foo'))", "PartitionKey": "$input.path('$.bar')" }`,
-    putRecordRequestModel: { schema: {} },
+      }
+    }
+  },
+  kinesisStreamProps: {
+    shardCount: 1,
+    retentionPeriod: Duration.days(4)
+  },
+  putRecordRequestTemplate: `{ "StreamName": "\${StreamName}", "Data": "$util.base64Encode($input.json('$.foo'))", "PartitionKey": "$input.path('$.bar')" }`,
+  putRecordRequestModel: { schema: {} },
 
-    putRecordsRequestTemplate: `{ "StreamName": "\${StreamName}", "Records": [ #foreach($elem in $input.path('$.records')) { "Data": "$util.base64Encode($elem.foo)", "PartitionKey": "$elem.bar"}#if($foreach.hasNext),#end #end ] }`,
-    putRecordsRequestModel: { schema: {} }
+  putRecordsRequestTemplate: `{ "StreamName": "\${StreamName}", "Records": [ #foreach($elem in $input.path('$.records')) { "Data": "$util.base64Encode($elem.foo)", "PartitionKey": "$elem.bar"}#if($foreach.hasNext),#end #end ] }`,
+  putRecordsRequestModel: { schema: {} }
 };
 
 new ApiGatewayToKinesisStreams(stack, 'test-apigateway-kinesis-overwrite', props);

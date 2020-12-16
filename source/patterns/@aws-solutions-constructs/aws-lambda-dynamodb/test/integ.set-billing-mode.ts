@@ -22,20 +22,20 @@ const app = new App();
 const stack = new Stack(app, 'test-lambda-dynamodb-stack');
 
 new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', {
-    dynamoTableProps: {
-        billingMode: dynamodb.BillingMode.PROVISIONED,
-        readCapacity: 3,
-        writeCapacity: 3,
-        partitionKey: {
-            name: 'id',
-            type: dynamodb.AttributeType.STRING
-        }
-    },
-    lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_10_X,
-        handler: 'index.handler'
+  dynamoTableProps: {
+    billingMode: dynamodb.BillingMode.PROVISIONED,
+    readCapacity: 3,
+    writeCapacity: 3,
+    partitionKey: {
+      name: 'id',
+      type: dynamodb.AttributeType.STRING
     }
+  },
+  lambdaFunctionProps: {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: 'index.handler'
+  }
 });
 
 app.synth();

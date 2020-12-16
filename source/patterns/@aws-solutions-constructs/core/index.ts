@@ -38,6 +38,8 @@ export * from './lib/kms-helper';
 export * from './lib/lambda-defaults';
 export * from './lib/lambda-event-source-mapping-defaults';
 export * from './lib/lambda-helper';
+export * from './lib/mediastore-defaults';
+export * from './lib/mediastore-helper';
 export * from './lib/s3-bucket-defaults';
 export * from './lib/s3-bucket-helper';
 export * from './lib/sagemaker-defaults';

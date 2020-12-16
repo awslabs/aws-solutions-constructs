@@ -16,12 +16,15 @@ import { RemovalPolicy } from '@aws-cdk/core';
 import { Bucket, BucketProps } from '@aws-cdk/aws-s3';
 
 export function DefaultS3Props(loggingBucket ?: Bucket, lifecycleRules?: s3.LifecycleRule[]): s3.BucketProps {
-    return {
-        encryption: s3.BucketEncryption.S3_MANAGED,
-        versioned: true,
-        blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-        removalPolicy: RemovalPolicy.RETAIN,
-        ...((lifecycleRules !== undefined) && { lifecycleRules }),
-        ...((loggingBucket !== undefined) && { serverAccessLogsBucket: loggingBucket })
-    } as BucketProps;
+  return {
+    encryption: s3.BucketEncryption.S3_MANAGED,
+    versioned: true,
+    blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    removalPolicy: RemovalPolicy.RETAIN,
+    ...((lifecycleRules !== undefined) && { lifecycleRules }),
+    ...((loggingBucket !== undefined) && { serverAccessLogsBucket: loggingBucket })
+  } as BucketProps;
 }
+
+// Default event types to trigger S3 notifications
+export const defaultS3NotificationEventTypes = [s3.EventType.OBJECT_CREATED];

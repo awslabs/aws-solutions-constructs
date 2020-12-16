@@ -71,28 +71,28 @@ export class KinesisFirehoseToAnalyticsAndS3 extends Construct {
      * @access public
      */
     constructor(scope: Construct, id: string, props: KinesisFirehoseToAnalyticsAndS3Props) {
-        super(scope, id);
+      super(scope, id);
 
-        // Setup the kinesisfirehose-s3 pattern
-        const kinesisFirehoseToS3Props: KinesisFirehoseToS3Props = {
-            kinesisFirehoseProps: props.kinesisFirehoseProps,
-            existingBucketObj: props.existingBucketObj,
-            bucketProps: props.bucketProps
-        };
+      // Setup the kinesisfirehose-s3 pattern
+      const kinesisFirehoseToS3Props: KinesisFirehoseToS3Props = {
+        kinesisFirehoseProps: props.kinesisFirehoseProps,
+        existingBucketObj: props.existingBucketObj,
+        bucketProps: props.bucketProps
+      };
 
-        // Add the kinesisfirehose-s3 pattern
-        const kfs = new KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', kinesisFirehoseToS3Props);
+      // Add the kinesisfirehose-s3 pattern
+      const kfs = new KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', kinesisFirehoseToS3Props);
 
-        // Add the Kinesis Analytics application
-        this.kinesisAnalytics = defaults.buildKinesisAnalyticsApp(this, {
-            kinesisFirehose: kfs.kinesisFirehose,
-            kinesisAnalyticsProps: props.kinesisAnalyticsProps
-        });
+      // Add the Kinesis Analytics application
+      this.kinesisAnalytics = defaults.buildKinesisAnalyticsApp(this, {
+        kinesisFirehose: kfs.kinesisFirehose,
+        kinesisAnalyticsProps: props.kinesisAnalyticsProps
+      });
 
-        this.kinesisFirehose = kfs.kinesisFirehose;
-        this.kinesisFirehoseLogGroup = kfs.kinesisFirehoseLogGroup;
-        this.kinesisFirehoseRole = kfs.kinesisFirehoseRole;
-        this.s3Bucket = kfs.s3Bucket;
-        this.s3LoggingBucket = kfs.s3LoggingBucket;
+      this.kinesisFirehose = kfs.kinesisFirehose;
+      this.kinesisFirehoseLogGroup = kfs.kinesisFirehoseLogGroup;
+      this.kinesisFirehoseRole = kfs.kinesisFirehoseRole;
+      this.s3Bucket = kfs.s3Bucket;
+      this.s3LoggingBucket = kfs.s3LoggingBucket;
     }
 }

@@ -27,74 +27,74 @@ export interface EventSourceProps {
 
 export function DynamoEventSourceProps(scope: Construct, _dynamoEventSourceProps?: EventSourceProps): DynamoEventSourceProps {
 
-    const baseProps: DynamoEventSourceProps = {
-        startingPosition: lambda.StartingPosition.TRIM_HORIZON,
-        bisectBatchOnError: true,
-        maxRecordAge: Duration.hours(24),
-        retryAttempts: 500
-    };
+  const baseProps: DynamoEventSourceProps = {
+    startingPosition: lambda.StartingPosition.TRIM_HORIZON,
+    bisectBatchOnError: true,
+    maxRecordAge: Duration.hours(24),
+    retryAttempts: 500
+  };
 
-    let extraProps = {};
+  let extraProps = {};
 
-    if (_dynamoEventSourceProps === undefined || _dynamoEventSourceProps?.deploySqsDlqQueue === undefined
+  if (_dynamoEventSourceProps === undefined || _dynamoEventSourceProps?.deploySqsDlqQueue === undefined
         || _dynamoEventSourceProps.deploySqsDlqQueue ) {
-        const [sqsQueue] = buildQueue(scope, 'SqsDlqQueue', {
-            queueProps: _dynamoEventSourceProps?.sqsDlqQueueProps
-        });
+    const [sqsQueue] = buildQueue(scope, 'SqsDlqQueue', {
+      queueProps: _dynamoEventSourceProps?.sqsDlqQueueProps
+    });
 
-        extraProps = {
-            onFailure: new SqsDlq(sqsQueue),
-        };
-    }
+    extraProps = {
+      onFailure: new SqsDlq(sqsQueue),
+    };
+  }
 
-    const defaultDynamoEventSourceProps = Object.assign(baseProps, extraProps);
+  const defaultDynamoEventSourceProps = Object.assign(baseProps, extraProps);
 
-    if (_dynamoEventSourceProps?.eventSourceProps) {
-        return overrideProps(defaultDynamoEventSourceProps, _dynamoEventSourceProps.eventSourceProps as DynamoEventSourceProps);
-    } else {
-        return defaultDynamoEventSourceProps;
-    }
+  if (_dynamoEventSourceProps?.eventSourceProps) {
+    return overrideProps(defaultDynamoEventSourceProps, _dynamoEventSourceProps.eventSourceProps as DynamoEventSourceProps);
+  } else {
+    return defaultDynamoEventSourceProps;
+  }
 }
 
 export function S3EventSourceProps(_s3EventSourceProps?: S3EventSourceProps) {
 
-    const defaultS3EventSourceProps: S3EventSourceProps = {
-        events: [s3.EventType.OBJECT_CREATED]
-    };
+  const defaultS3EventSourceProps: S3EventSourceProps = {
+    events: [s3.EventType.OBJECT_CREATED]
+  };
 
-    if (_s3EventSourceProps) {
-        return overrideProps(defaultS3EventSourceProps, _s3EventSourceProps, false);
-    } else {
-        return defaultS3EventSourceProps;
-    }
+  if (_s3EventSourceProps) {
+    return overrideProps(defaultS3EventSourceProps, _s3EventSourceProps, false);
+  } else {
+    return defaultS3EventSourceProps;
+  }
 }
 
 export function KinesisEventSourceProps(scope: Construct, _kinesisEventSourceProps?: EventSourceProps): KinesisEventSourceProps {
-    const baseProps: KinesisEventSourceProps = {
-        startingPosition: lambda.StartingPosition.TRIM_HORIZON,
-        bisectBatchOnError: true,
-        maxRecordAge: Duration.hours(24),
-        retryAttempts: 500
-    };
+  const baseProps: KinesisEventSourceProps = {
+    startingPosition: lambda.StartingPosition.TRIM_HORIZON,
+    bisectBatchOnError: true,
+    maxRecordAge: Duration.hours(24),
+    retryAttempts: 500
+  };
 
-    let extraProps = {};
+  let extraProps = {};
 
-    if (_kinesisEventSourceProps === undefined || _kinesisEventSourceProps?.deploySqsDlqQueue === undefined
+  if (_kinesisEventSourceProps === undefined || _kinesisEventSourceProps?.deploySqsDlqQueue === undefined
         || _kinesisEventSourceProps.deploySqsDlqQueue ) {
-        const [sqsQueue] = buildQueue(scope, 'SqsDlqQueue', {
-            queueProps: _kinesisEventSourceProps?.sqsDlqQueueProps
-        });
+    const [sqsQueue] = buildQueue(scope, 'SqsDlqQueue', {
+      queueProps: _kinesisEventSourceProps?.sqsDlqQueueProps
+    });
 
-        extraProps = {
-            onFailure: new SqsDlq(sqsQueue),
-        };
-    }
+    extraProps = {
+      onFailure: new SqsDlq(sqsQueue),
+    };
+  }
 
-    const defaultKinesisEventSourceProps = Object.assign(baseProps, extraProps);
+  const defaultKinesisEventSourceProps = Object.assign(baseProps, extraProps);
 
-    if (_kinesisEventSourceProps?.eventSourceProps) {
-        return overrideProps(defaultKinesisEventSourceProps, _kinesisEventSourceProps.eventSourceProps as KinesisEventSourceProps);
-    } else {
-        return defaultKinesisEventSourceProps;
-    }
+  if (_kinesisEventSourceProps?.eventSourceProps) {
+    return overrideProps(defaultKinesisEventSourceProps, _kinesisEventSourceProps.eventSourceProps as KinesisEventSourceProps);
+  } else {
+    return defaultKinesisEventSourceProps;
+  }
 }

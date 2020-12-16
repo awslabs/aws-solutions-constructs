@@ -21,9 +21,9 @@ import * as cdk from '@aws-cdk/core';
 function deployNewFunc(stack: cdk.Stack) {
   const props: EventsRuleToLambdaProps = {
     lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_12_X,
-        handler: 'index.handler'
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
     },
     eventRuleProps: {
       schedule: events.Schedule.rate(cdk.Duration.minutes(5))
@@ -181,7 +181,7 @@ test('check exception for Missing existingObj from props', () => {
     eventRuleProps: {
       schedule: events.Schedule.rate(cdk.Duration.minutes(5))
     }
-    };
+  };
 
   try {
     new EventsRuleToLambda(stack, 'test-events-rule-lambda', props);

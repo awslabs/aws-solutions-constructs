@@ -34,9 +34,9 @@ const requestTemplate =
 }`;
 
 const props: ApiGatewayToSageMakerEndpointProps = {
-    endpointName: 'my-endpoint',
-    resourcePath: '{user_id}',
-    requestMappingTemplate: requestTemplate
+  endpointName: 'my-endpoint',
+  resourcePath: '{user_id}',
+  requestMappingTemplate: requestTemplate
 };
 
 new ApiGatewayToSageMakerEndpoint(stack, 'test-apigateway-sagemakerendpoint-default', props);

@@ -114,17 +114,17 @@ export class EventsRuleToSqs extends Construct {
     let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
     if (props.enableEncryptionWithCustomerManagedKey === undefined ||
       props.enableEncryptionWithCustomerManagedKey === true) {
-        enableEncryptionParam = true;
+      enableEncryptionParam = true;
     }
 
     // Setup the queue
     [this.sqsQueue, this.encryptionKey] = defaults.buildQueue(this, 'queue', {
-        existingQueueObj: props.existingQueueObj,
-        queueProps: props.queueProps,
-        deadLetterQueue: this.deadLetterQueue,
-        enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
-        encryptionKey: props.encryptionKey,
-        encryptionKeyProps: props.encryptionKeyProps
+      existingQueueObj: props.existingQueueObj,
+      queueProps: props.queueProps,
+      deadLetterQueue: this.deadLetterQueue,
+      enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
+      encryptionKey: props.encryptionKey,
+      encryptionKeyProps: props.encryptionKeyProps
     });
 
     const sqsEventTarget: events.IRuleTarget = {

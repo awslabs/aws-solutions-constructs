@@ -21,14 +21,14 @@ const app = new App();
 const stack = new Stack(app, 'test-lambda-elasticsearch-kibana-stack');
 
 const lambdaProps: lambda.FunctionProps = {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_12_X,
-    handler: 'index.handler'
+  code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  runtime: lambda.Runtime.NODEJS_12_X,
+  handler: 'index.handler'
 };
 
 new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
-    lambdaFunctionProps: lambdaProps,
-    domainName: 'myconstructsdomain'
+  lambdaFunctionProps: lambdaProps,
+  domainName: 'myconstructsdomain'
 });
 
 // Synth

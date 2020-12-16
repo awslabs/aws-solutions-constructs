@@ -11,9 +11,11 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils, expect as expectCDK, haveResource } from '@aws-cdk/assert';
+import { SynthUtils, expect as expectCDK, haveResource, ResourcePart } from '@aws-cdk/assert';
 import { Duration, Stack } from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
+import * as s3n from '@aws-cdk/aws-s3-notifications';
+import * as sqs from '@aws-cdk/aws-sqs';
 import * as defaults from '../index';
 import '@aws-cdk/assert/jest';
 import { Bucket, StorageClass } from '@aws-cdk/aws-s3';
@@ -27,7 +29,7 @@ test('s3 bucket with default params', () => {
 test('s3 bucket with default params and bucket names', () => {
   const stack = new Stack();
   const s3BucketProps: s3.BucketProps = {
-      bucketName: 'my-bucket'
+    bucketName: 'my-bucket'
   };
   defaults.buildS3Bucket(stack, {
     bucketProps: s3BucketProps
@@ -81,11 +83,11 @@ test('s3 bucket with life cycle policy', () => {
       lifecycleRules: [{
         expiration: Duration.days(365),
         transitions: [{
-            storageClass: StorageClass.INFREQUENT_ACCESS,
-            transitionAfter: Duration.days(30)
+          storageClass: StorageClass.INFREQUENT_ACCESS,
+          transitionAfter: Duration.days(30)
         }, {
-            storageClass: StorageClass.GLACIER,
-            transitionAfter: Duration.days(90)
+          storageClass: StorageClass.GLACIER,
+          transitionAfter: Duration.days(90)
         }]
       }]
     }
@@ -114,24 +116,24 @@ test('s3 bucket with life cycle policy', () => {
 });
 
 test('s3 bucket with access logging configured', () => {
-    const stack = new Stack();
-    const mybucket = new Bucket(stack, 'mybucket', {
-      serverAccessLogsBucket: new Bucket(stack, 'myaccesslogbucket', {})
-    });
+  const stack = new Stack();
+  const mybucket = new Bucket(stack, 'mybucket', {
+    serverAccessLogsBucket: new Bucket(stack, 'myaccesslogbucket', {})
+  });
 
-    defaults.buildS3Bucket(stack, {
-      bucketProps: {
-        serverAccessLogsBucket: mybucket
+  defaults.buildS3Bucket(stack, {
+    bucketProps: {
+      serverAccessLogsBucket: mybucket
+    }
+  });
+
+  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+    LoggingConfiguration: {
+      DestinationBucketName: {
+        Ref: "mybucket160F8132"
       }
-    });
-
-    expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
-      LoggingConfiguration: {
-        DestinationBucketName: {
-          Ref: "mybucket160F8132"
-        }
-      },
-    }));
+    },
+  }));
 });
 
 test('Check S3 Bucket policy', () => {
@@ -294,4 +296,40 @@ test('s3 bucket versioning turned on', () => {
       Status: "Enabled"
     }
   }));
+});
+
+test('Suppress cfn-nag warning for s3 bucket notification', () => {
+  const stack = new Stack();
+  let queue: sqs.Queue;
+  let bucket: s3.Bucket;
+  [bucket] = defaults.buildS3Bucket(stack, {});
+  [queue] = defaults.buildQueue(stack, "S3BucketNotificationQueue", {});
+  bucket.addEventNotification(s3.EventType.OBJECT_CREATED, new s3n.SqsDestination(queue));
+  defaults.addCfnNagS3BucketNotificationRulesToSuppress(stack, "BucketNotificationsHandler050a0587b7544547bf325f094a3db834");
+
+  expectCDK(stack).to(haveResource("AWS::Lambda::Function", {
+    Metadata: {
+      cfn_nag: {
+        rules_to_suppress: [
+          {
+            id: "W58",
+            reason: "Lambda function has permission to write CloudWatch Logs via AWSLambdaBasicExecutionRole policy attached to the lambda role"
+          }
+        ]
+      }
+    }
+  }, ResourcePart.CompleteDefinition));
+
+  expectCDK(stack).to(haveResource("AWS::IAM::Policy", {
+    Metadata: {
+      cfn_nag: {
+        rules_to_suppress: [
+          {
+            id: "W12",
+            reason: "Bucket resource is '*' due to circular dependency with bucket and role creation at the same time"
+          }
+        ]
+      }
+    }
+  }, ResourcePart.CompleteDefinition));
 });

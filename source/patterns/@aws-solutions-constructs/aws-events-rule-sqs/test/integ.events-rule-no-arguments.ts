@@ -20,9 +20,9 @@ const app = new App();
 const stack = new Stack(app, 'test-rule-sqs');
 
 const props: EventsRuleToSqsProps = {
-    eventRuleProps: {
-        schedule: events.Schedule.rate(Duration.minutes(5))
-    }
+  eventRuleProps: {
+    schedule: events.Schedule.rate(Duration.minutes(5))
+  }
 };
 
 new EventsRuleToSqs(stack, 'construct', props);

@@ -24,12 +24,12 @@ const stack = new Stack(app, 'test-events-rule-step-function-stack');
 const startState = new stepfunctions.Pass(stack, 'StartState');
 
 const props: EventsRuleToStepFunctionProps = {
-    stateMachineProps: {
-      definition: startState
-    },
-    eventRuleProps: {
-      schedule: events.Schedule.rate(Duration.minutes(5))
-    }
+  stateMachineProps: {
+    definition: startState
+  },
+  eventRuleProps: {
+    schedule: events.Schedule.rate(Duration.minutes(5))
+  }
 };
 
 new EventsRuleToStepFunction(stack, 'test-events-rule-step-function-stack', props);

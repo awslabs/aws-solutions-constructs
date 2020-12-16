@@ -92,34 +92,34 @@ export class KinesisStreamsToLambda extends Construct {
      * @access public
      */
     constructor(scope: Construct, id: string, props: KinesisStreamsToLambdaProps) {
-        super(scope, id);
+      super(scope, id);
 
-        // Setup the Kinesis Stream
-        this.kinesisStream = defaults.buildKinesisStream(this, {
-            existingStreamObj: props.existingStreamObj,
-            kinesisStreamProps: props.kinesisStreamProps
-        });
+      // Setup the Kinesis Stream
+      this.kinesisStream = defaults.buildKinesisStream(this, {
+        existingStreamObj: props.existingStreamObj,
+        kinesisStreamProps: props.kinesisStreamProps
+      });
 
-        // Setup the Lambda function
-        this.lambdaFunction = defaults.buildLambdaFunction(this, {
-            existingLambdaObj: props.existingLambdaObj,
-            lambdaFunctionProps: props.lambdaFunctionProps
-        });
+      // Setup the Lambda function
+      this.lambdaFunction = defaults.buildLambdaFunction(this, {
+        existingLambdaObj: props.existingLambdaObj,
+        lambdaFunctionProps: props.lambdaFunctionProps
+      });
 
-        // Grant Kinesis Stream read perimssion for lambda function
-        this.kinesisStream.grantRead(this.lambdaFunction.grantPrincipal);
+      // Grant Kinesis Stream read perimssion for lambda function
+      this.kinesisStream.grantRead(this.lambdaFunction.grantPrincipal);
 
-        // Add the Lambda event source mapping
-        const eventSourceProps = defaults.KinesisEventSourceProps(this, {
-            eventSourceProps: props.kinesisEventSourceProps,
-            deploySqsDlqQueue: props.deploySqsDlqQueue,
-            sqsDlqQueueProps: props.sqsDlqQueueProps
-        });
-        this.lambdaFunction.addEventSource(new KinesisEventSource(this.kinesisStream, eventSourceProps));
+      // Add the Lambda event source mapping
+      const eventSourceProps = defaults.KinesisEventSourceProps(this, {
+        eventSourceProps: props.kinesisEventSourceProps,
+        deploySqsDlqQueue: props.deploySqsDlqQueue,
+        sqsDlqQueueProps: props.sqsDlqQueueProps
+      });
+      this.lambdaFunction.addEventSource(new KinesisEventSource(this.kinesisStream, eventSourceProps));
 
-        if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
-            // Deploy best practices CW Alarms for Kinesis Stream
-            this.cloudwatchAlarms = defaults.buildKinesisStreamCWAlarms(this);
-        }
+      if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
+        // Deploy best practices CW Alarms for Kinesis Stream
+        this.cloudwatchAlarms = defaults.buildKinesisStreamCWAlarms(this);
+      }
     }
 }

@@ -90,87 +90,87 @@ export class ApiGatewayToSageMakerEndpoint extends Construct {
      * @access public
      */
     constructor(scope: Construct, id: string, props: ApiGatewayToSageMakerEndpointProps) {
-        super(scope, id);
+      super(scope, id);
 
-        // Setup the API Gateway
-        [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] = defaults.GlobalRestApi(this, props.apiGatewayProps);
+      // Setup the API Gateway
+      [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] = defaults.GlobalRestApi(this, props.apiGatewayProps);
 
-        // Setup the API Gateway role
-        if (props.apiGatewayExecutionRole !== undefined) {
-            this.apiGatewayRole = props.apiGatewayExecutionRole;
-        } else {
-            this.apiGatewayRole = new iam.Role(this, 'api-gateway-role', {
-                assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
-            });
-
-            // Setup the IAM policy for SageMaker endpoint
-            const invokePolicy = new iam.Policy(this, 'InvokeEndpointPolicy', {
-                statements: [
-                    new iam.PolicyStatement({
-                        actions: ['sagemaker:InvokeEndpoint'],
-                        resources: [`arn:${Aws.PARTITION}:sagemaker:${Aws.REGION}:${Aws.ACCOUNT_ID}:endpoint/${props.endpointName}`]
-                    })
-                ]
-            });
-
-            invokePolicy.attachToRole(this.apiGatewayRole);
-        }
-
-        // Setup request validation
-        const requestValidator = this.apiGateway.addRequestValidator('request-validator', {
-            requestValidatorName: 'request-param-validator',
-
-            // Setting this property to true makes sure the following are validated:
-            // - Required request parameters in the URI
-            // - Query string
-            // - Headers
-            validateRequestParameters: true
+      // Setup the API Gateway role
+      if (props.apiGatewayExecutionRole !== undefined) {
+        this.apiGatewayRole = props.apiGatewayExecutionRole;
+      } else {
+        this.apiGatewayRole = new iam.Role(this, 'api-gateway-role', {
+          assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
         });
 
-        // Setup method and integration responses
-        const methodResponses: api.MethodResponse[] = [
-            { statusCode: '200' },
-            { statusCode: '500' },
-            { statusCode: '400' }
-        ];
-
-        const integResponses: api.IntegrationResponse[] = [];
-        if (props.responseMappingTemplate !== undefined) {
-            integResponses.push({
-                statusCode: '200',
-                responseTemplates: { 'application/json': props.responseMappingTemplate }
-            });
-        } else {
-            integResponses.push({ statusCode: '200' });
-        }
-
-        integResponses.push(
-            { statusCode: '500', selectionPattern: '5\\d{2}' },
-            { statusCode: '400', selectionPattern: '4\\d{2}' }
-        );
-
-        // The SageMaker integration can be added either at the root of the API (GET https://execute-api.amazonaws.com/{some-param}),
-        // or as a sub-resource (GET https://execute-api.amazonaws.com/inference/{some-param}).
-        // The following lines will make sure only the necessary resources are created.
-        let apiResource = this.apiGateway.root;
-        if (props.resourceName !== undefined) {
-            apiResource = apiResource.addResource(props.resourceName);
-        }
-        apiResource = apiResource.addResource(props.resourcePath);
-
-        // Setup API Gateway method
-        defaults.addProxyMethodToApiResource({
-            service: 'runtime.sagemaker',
-            path: `endpoints/${props.endpointName}/invocations`,
-            apiGatewayRole: this.apiGatewayRole,
-            apiMethod: 'GET',
-            apiResource,
-            requestValidator,
-            requestTemplate: props.requestMappingTemplate,
-            awsIntegrationProps: {
-                options: { integrationResponses: integResponses }
-            },
-            methodOptions: { methodResponses }
+        // Setup the IAM policy for SageMaker endpoint
+        const invokePolicy = new iam.Policy(this, 'InvokeEndpointPolicy', {
+          statements: [
+            new iam.PolicyStatement({
+              actions: ['sagemaker:InvokeEndpoint'],
+              resources: [`arn:${Aws.PARTITION}:sagemaker:${Aws.REGION}:${Aws.ACCOUNT_ID}:endpoint/${props.endpointName}`]
+            })
+          ]
         });
+
+        invokePolicy.attachToRole(this.apiGatewayRole);
+      }
+
+      // Setup request validation
+      const requestValidator = this.apiGateway.addRequestValidator('request-validator', {
+        requestValidatorName: 'request-param-validator',
+
+        // Setting this property to true makes sure the following are validated:
+        // - Required request parameters in the URI
+        // - Query string
+        // - Headers
+        validateRequestParameters: true
+      });
+
+      // Setup method and integration responses
+      const methodResponses: api.MethodResponse[] = [
+        { statusCode: '200' },
+        { statusCode: '500' },
+        { statusCode: '400' }
+      ];
+
+      const integResponses: api.IntegrationResponse[] = [];
+      if (props.responseMappingTemplate !== undefined) {
+        integResponses.push({
+          statusCode: '200',
+          responseTemplates: { 'application/json': props.responseMappingTemplate }
+        });
+      } else {
+        integResponses.push({ statusCode: '200' });
+      }
+
+      integResponses.push(
+        { statusCode: '500', selectionPattern: '5\\d{2}' },
+        { statusCode: '400', selectionPattern: '4\\d{2}' }
+      );
+
+      // The SageMaker integration can be added either at the root of the API (GET https://execute-api.amazonaws.com/{some-param}),
+      // or as a sub-resource (GET https://execute-api.amazonaws.com/inference/{some-param}).
+      // The following lines will make sure only the necessary resources are created.
+      let apiResource = this.apiGateway.root;
+      if (props.resourceName !== undefined) {
+        apiResource = apiResource.addResource(props.resourceName);
+      }
+      apiResource = apiResource.addResource(props.resourcePath);
+
+      // Setup API Gateway method
+      defaults.addProxyMethodToApiResource({
+        service: 'runtime.sagemaker',
+        path: `endpoints/${props.endpointName}/invocations`,
+        apiGatewayRole: this.apiGatewayRole,
+        apiMethod: 'GET',
+        apiResource,
+        requestValidator,
+        requestTemplate: props.requestMappingTemplate,
+        awsIntegrationProps: {
+          options: { integrationResponses: integResponses }
+        },
+        methodOptions: { methodResponses }
+      });
     }
 }

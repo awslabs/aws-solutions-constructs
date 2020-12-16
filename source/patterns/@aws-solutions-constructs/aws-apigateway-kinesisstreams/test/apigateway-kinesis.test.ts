@@ -22,96 +22,96 @@ import * as kinesis from '@aws-cdk/aws-kinesis';
 // Test minimal deployment snapshot
 // --------------------------------------------------------------
 test('Test minimal deployment snapshot', () => {
-    const stack = new Stack();
-    new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis', {});
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  const stack = new Stack();
+  new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis', {});
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
 // Test construct properties
 // --------------------------------------------------------------
 test('Test construct properties', () => {
-    const stack = new Stack();
-    const pattern = new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis', {});
+  const stack = new Stack();
+  const pattern = new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis', {});
 
-    expect(pattern.apiGateway !== null);
-    expect(pattern.apiGatewayRole !== null);
-    expect(pattern.apiGatewayCloudWatchRole !== null);
-    expect(pattern.apiGatewayLogGroup !== null);
-    expect(pattern.kinesisStream !== null);
+  expect(pattern.apiGateway !== null);
+  expect(pattern.apiGatewayRole !== null);
+  expect(pattern.apiGatewayCloudWatchRole !== null);
+  expect(pattern.apiGatewayLogGroup !== null);
+  expect(pattern.kinesisStream !== null);
 });
 
 // --------------------------------------------------------------
 // Test deployment w/ overwritten properties
 // --------------------------------------------------------------
 test('Test deployment w/ overwritten properties', () => {
-    const stack = new Stack();
+  const stack = new Stack();
 
-    new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis', {
-        apiGatewayProps: {
-            restApiName: 'my-api',
-            deployOptions: {
-                methodOptions: {
-                    '/*/*': {
-                        throttlingRateLimit: 100,
-                        throttlingBurstLimit: 25
-                    }
-                }
-            }
-        },
-        kinesisStreamProps: {
-            shardCount: 1,
-            streamName: 'my-stream'
-        },
-        putRecordRequestTemplate: `{ "Data": "$util.base64Encode($input.json('$.foo'))", "PartitionKey": "$input.path('$.bar')" }`,
-        putRecordRequestModel: { schema: {} },
-        putRecordsRequestTemplate: `{ "Records": [ #foreach($elem in $input.path('$.records')) { "Data": "$util.base64Encode($elem.foo)", "PartitionKey": "$elem.bar"}#if($foreach.hasNext),#end #end ] }`,
-        putRecordsRequestModel: { schema: {} }
-    });
+  new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis', {
+    apiGatewayProps: {
+      restApiName: 'my-api',
+      deployOptions: {
+        methodOptions: {
+          '/*/*': {
+            throttlingRateLimit: 100,
+            throttlingBurstLimit: 25
+          }
+        }
+      }
+    },
+    kinesisStreamProps: {
+      shardCount: 1,
+      streamName: 'my-stream'
+    },
+    putRecordRequestTemplate: `{ "Data": "$util.base64Encode($input.json('$.foo'))", "PartitionKey": "$input.path('$.bar')" }`,
+    putRecordRequestModel: { schema: {} },
+    putRecordsRequestTemplate: `{ "Records": [ #foreach($elem in $input.path('$.records')) { "Data": "$util.base64Encode($elem.foo)", "PartitionKey": "$elem.bar"}#if($foreach.hasNext),#end #end ] }`,
+    putRecordsRequestModel: { schema: {} }
+  });
 
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
-    expect(stack).toHaveResourceLike('AWS::ApiGateway::Stage', {
-        MethodSettings: [
-            {
-                DataTraceEnabled: true,
-                HttpMethod: '*',
-                LoggingLevel: 'INFO',
-                ResourcePath: '/*'
-            },
-            {
-                HttpMethod: '*',
-                ResourcePath: '/*',
-                ThrottlingRateLimit: 100,
-                ThrottlingBurstLimit: 25
-            }
-        ]
-    });
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Stage', {
+    MethodSettings: [
+      {
+        DataTraceEnabled: true,
+        HttpMethod: '*',
+        LoggingLevel: 'INFO',
+        ResourcePath: '/*'
+      },
+      {
+        HttpMethod: '*',
+        ResourcePath: '/*',
+        ThrottlingRateLimit: 100,
+        ThrottlingBurstLimit: 25
+      }
+    ]
+  });
 
-    expect(stack).toHaveResource('AWS::Kinesis::Stream', {
-        ShardCount: 1,
-        Name: 'my-stream'
-    });
+  expect(stack).toHaveResource('AWS::Kinesis::Stream', {
+    ShardCount: 1,
+    Name: 'my-stream'
+  });
 });
 
 // --------------------------------------------------------------
 // Test deployment w/ existing stream
 // --------------------------------------------------------------
 test('Test deployment w/ existing stream', () => {
-    const stack = new Stack();
+  const stack = new Stack();
 
-    new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis', {
-        apiGatewayProps: {},
-        existingStreamObj: new kinesis.Stream(stack, 'ExistingStream', {
-            shardCount: 5,
-            retentionPeriod: Duration.days(4)
-        })
-    });
+  new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis', {
+    apiGatewayProps: {},
+    existingStreamObj: new kinesis.Stream(stack, 'ExistingStream', {
+      shardCount: 5,
+      retentionPeriod: Duration.days(4)
+    })
+  });
 
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
-    expect(stack).toHaveResource('AWS::Kinesis::Stream', {
-        ShardCount: 5,
-        RetentionPeriodHours: 96
-    });
+  expect(stack).toHaveResource('AWS::Kinesis::Stream', {
+    ShardCount: 5,
+    RetentionPeriodHours: 96
+  });
 });

@@ -142,7 +142,7 @@ test('test sqsDlqQueueProps override', () => {
   });
 
   expect(stack).toHaveResource("AWS::SQS::Queue", {
-      QueueName: "hello-world",
-      VisibilityTimeout: 50
+    QueueName: "hello-world",
+    VisibilityTimeout: 50
   });
 });

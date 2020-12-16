@@ -23,11 +23,11 @@ stack.templateOptions.description = 'Integration Test for aws-sns-lambda';
 
 // Definitions
 const props: SnsToLambdaProps = {
-    lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_12_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    }
+  lambdaFunctionProps: {
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+  }
 };
 
 new SnsToLambda(stack, 'test-sns-lambda', props);

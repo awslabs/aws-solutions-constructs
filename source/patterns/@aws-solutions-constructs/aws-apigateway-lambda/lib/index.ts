@@ -61,16 +61,16 @@ export class ApiGatewayToLambda extends Construct {
      * @access public
      */
     constructor(scope: Construct, id: string, props: ApiGatewayToLambdaProps) {
-        super(scope, id);
+      super(scope, id);
 
-        // Setup the Lambda function
-        this.lambdaFunction = defaults.buildLambdaFunction(this, {
-            existingLambdaObj: props.existingLambdaObj,
-            lambdaFunctionProps: props.lambdaFunctionProps
-        });
+      // Setup the Lambda function
+      this.lambdaFunction = defaults.buildLambdaFunction(this, {
+        existingLambdaObj: props.existingLambdaObj,
+        lambdaFunctionProps: props.lambdaFunctionProps
+      });
 
-        // Setup the API Gateway
-        [this.apiGateway, this.apiGatewayCloudWatchRole,
-            this.apiGatewayLogGroup] = defaults.GlobalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps);
+      // Setup the API Gateway
+      [this.apiGateway, this.apiGatewayCloudWatchRole,
+        this.apiGatewayLogGroup] = defaults.GlobalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps);
     }
 }

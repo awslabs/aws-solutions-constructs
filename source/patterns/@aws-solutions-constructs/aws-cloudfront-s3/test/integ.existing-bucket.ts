@@ -28,20 +28,20 @@ let mybucket: s3.Bucket;
 [mybucket] = defaults.buildS3Bucket(stack, {});
 
 const _construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {
-    existingBucketObj: mybucket
+  existingBucketObj: mybucket
 });
 
 // Add Cache Policy
 const myCachePolicy = new cloudfront.CachePolicy(stack, 'myCachePolicy', {
-    cachePolicyName: 'MyPolicy',
-    defaultTtl: Duration.minutes(0),
-    minTtl: Duration.minutes(0),
-    maxTtl: Duration.minutes(0),
+  cachePolicyName: 'MyPolicy',
+  defaultTtl: Duration.minutes(0),
+  minTtl: Duration.minutes(0),
+  maxTtl: Duration.minutes(0),
 });
 
 // Add behavior
 _construct.cloudFrontWebDistribution.addBehavior('/images/*.jpg', new origins.S3Origin(mybucket), {
-    cachePolicy: myCachePolicy
+  cachePolicy: myCachePolicy
 });
 
 // Synth

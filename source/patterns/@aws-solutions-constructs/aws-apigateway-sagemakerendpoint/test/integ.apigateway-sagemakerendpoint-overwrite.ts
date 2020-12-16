@@ -22,16 +22,16 @@ const stack = new Stack(app, 'test-apigateway-sagemakerendpoint-overwrite');
 stack.templateOptions.description = 'Integration Test for aws-apigateway-sagemakerendpoint';
 
 const existingRole = new iam.Role(stack, 'api-gateway-role', {
-    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
-    description: 'existing role for SageMaker integration',
-    inlinePolicies: {
-        InvokePolicy: new iam.PolicyDocument({
-            statements: [new iam.PolicyStatement({
-                resources: [`arn:${Aws.PARTITION}:sagemaker:${Aws.REGION}:${Aws.ACCOUNT_ID}:endpoint/my-endpoint`],
-                actions: ['sagemaker:InvokeEndpoint']
-            })]
-        })
-    }
+  assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
+  description: 'existing role for SageMaker integration',
+  inlinePolicies: {
+    InvokePolicy: new iam.PolicyDocument({
+      statements: [new iam.PolicyStatement({
+        resources: [`arn:${Aws.PARTITION}:sagemaker:${Aws.REGION}:${Aws.ACCOUNT_ID}:endpoint/my-endpoint`],
+        actions: ['sagemaker:InvokeEndpoint']
+      })]
+    })
+  }
 });
 
 // Definitions
@@ -59,12 +59,12 @@ const responseTemplate =
 }`;
 
 const props: ApiGatewayToSageMakerEndpointProps = {
-    endpointName: 'my-endpoint',
-    resourcePath: '{user_id}',
-    resourceName: 'predicted-ratings',
-    requestMappingTemplate: requestTemplate,
-    responseMappingTemplate: responseTemplate,
-    apiGatewayExecutionRole: existingRole
+  endpointName: 'my-endpoint',
+  resourcePath: '{user_id}',
+  resourceName: 'predicted-ratings',
+  requestMappingTemplate: requestTemplate,
+  responseMappingTemplate: responseTemplate,
+  apiGatewayExecutionRole: existingRole
 };
 
 new ApiGatewayToSageMakerEndpoint(stack, 'test-apigateway-sagemakerendpoint-overwrite', props);

@@ -19,25 +19,25 @@ import { overrideProps } from '../lib/utils';
 import '@aws-cdk/assert/jest';
 
 test('snapshot test kinesisstream default params', () => {
-    const stack = new Stack();
-    new kinesis.Stream(stack, 'KinesisStream', defaults.DefaultStreamProps);
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  const stack = new Stack();
+  new kinesis.Stream(stack, 'KinesisStream', defaults.DefaultStreamProps);
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 test('test kinesisstream override RetentionPeriodHours', () => {
-    const stack = new Stack();
+  const stack = new Stack();
 
-    const defaultProps = defaults.DefaultStreamProps;
+  const defaultProps = defaults.DefaultStreamProps;
 
-    const inProps: kinesis.StreamProps = {
-        retentionPeriod: Duration.hours(48)
-    };
+  const inProps: kinesis.StreamProps = {
+    retentionPeriod: Duration.hours(48)
+  };
 
-    const outProps = overrideProps(defaultProps, inProps);
+  const outProps = overrideProps(defaultProps, inProps);
 
-    new kinesis.Stream(stack, 'KinesisStream', outProps);
+  new kinesis.Stream(stack, 'KinesisStream', outProps);
 
-    expect(stack).toHaveResource("AWS::Kinesis::Stream", {
-        RetentionPeriodHours: 48
-    });
+  expect(stack).toHaveResource("AWS::Kinesis::Stream", {
+    RetentionPeriodHours: 48
+  });
 });

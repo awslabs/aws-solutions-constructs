@@ -21,9 +21,9 @@ import '@aws-cdk/assert/jest';
 function deployNewFunc(stack: cdk.Stack) {
   const props: DynamoDBStreamToLambdaProps = {
     lambdaFunctionProps: {
-          code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-          runtime: lambda.Runtime.NODEJS_12_X,
-          handler: 'index.handler'
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
     },
   };
 

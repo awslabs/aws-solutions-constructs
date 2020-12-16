@@ -22,21 +22,21 @@ import '@aws-cdk/assert/jest';
 // Test minimal deployment with no properties
 // --------------------------------------------------------------
 test('Test minimal deployment with no properties', () => {
-    // Stack
-    const stack = new Stack();
-    // Helper declaration
-    defaults.buildKinesisStream(stack, {});
-    // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-    // Assertion 2
-    expect(stack).toHaveResourceLike('AWS::Kinesis::Stream', {
-        Type: "AWS::Kinesis::Stream",
-        Properties: {
-          StreamEncryption: {
-            EncryptionType: "KMS"
-          }
-        }
-      }, ResourcePart.CompleteDefinition);
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  defaults.buildKinesisStream(stack, {});
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Assertion 2
+  expect(stack).toHaveResourceLike('AWS::Kinesis::Stream', {
+    Type: "AWS::Kinesis::Stream",
+    Properties: {
+      StreamEncryption: {
+        EncryptionType: "KMS"
+      }
+    }
+  }, ResourcePart.CompleteDefinition);
 });
 
 // --------------------------------------------------------------
@@ -49,21 +49,21 @@ test('Test deployment w/ custom properties', () => {
   const encKey = defaults.buildEncryptionKey(stack);
   // Helper declaration
   defaults.buildKinesisStream(stack, {
-      kinesisStreamProps: {
-          streamName: 'myCustomKinesisStream',
-          encryption: kinesis.StreamEncryption.KMS,
-          encryptionKey: encKey
-      }
+    kinesisStreamProps: {
+      streamName: 'myCustomKinesisStream',
+      encryption: kinesis.StreamEncryption.KMS,
+      encryptionKey: encKey
+    }
   });
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   // Assertion 2
   expect(stack).toHaveResource('AWS::Kinesis::Stream', {
-      Name: 'myCustomKinesisStream'
+    Name: 'myCustomKinesisStream'
   });
   // Assertion 3
   expect(stack).toHaveResource('AWS::KMS::Key', {
-      EnableKeyRotation: true
+    EnableKeyRotation: true
   });
 });
 

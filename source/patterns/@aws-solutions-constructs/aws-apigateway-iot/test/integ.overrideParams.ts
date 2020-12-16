@@ -23,39 +23,39 @@ const stack = new cdk.Stack(app, 'test-apigateway-iot-overriden-params');
 stack.templateOptions.description = 'Integration Test for aws-apigateway-iot with overriden params';
 
 const apiGatewayProps = {
-    restApiName: 'RestApi-Regional',
-    description: 'Description for the Regional Rest Api',
-    endpointConfiguration: {types: [api.EndpointType.REGIONAL]},
-    apiKeySourceType: api.ApiKeySourceType.HEADER,
-    defaultMethodOptions: {
-      authorizationType: api.AuthorizationType.NONE,
-    }
+  restApiName: 'RestApi-Regional',
+  description: 'Description for the Regional Rest Api',
+  endpointConfiguration: {types: [api.EndpointType.REGIONAL]},
+  apiKeySourceType: api.ApiKeySourceType.HEADER,
+  defaultMethodOptions: {
+    authorizationType: api.AuthorizationType.NONE,
+  }
 };
 
 const policyJSON = {
-    Version: "2012-10-17",
-    Statement: [
-        {
-            Action: [
-                "iot:UpdateThingShadow"
-            ],
-            Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:thing/*`,
-            Effect: "Allow"
-        },
-        {
-            Action: [
-                "iot:Publish"
-            ],
-            Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:topic/*`,
-            Effect: "Allow"
-        }
-    ]
+  Version: "2012-10-17",
+  Statement: [
+    {
+      Action: [
+        "iot:UpdateThingShadow"
+      ],
+      Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:thing/*`,
+      Effect: "Allow"
+    },
+    {
+      Action: [
+        "iot:Publish"
+      ],
+      Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:topic/*`,
+      Effect: "Allow"
+    }
+  ]
 };
 const policyDocument: iam.PolicyDocument = iam.PolicyDocument.fromJson(policyJSON);
 const iamRoleProps: iam.RoleProps = {
-    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
-    path: '/',
-    inlinePolicies: {testPolicy: policyDocument}
+  assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
+  path: '/',
+  inlinePolicies: {testPolicy: policyDocument}
 };
 
 // Create a policy that overrides the default policy that gets created with the construct
@@ -63,10 +63,10 @@ const apiGatewayExecutionRole: iam.Role = new iam.Role(stack, 'apigateway-iot-ro
 
 // Api gateway setup
 const props: ApiGatewayToIotProps = {
-    iotEndpoint: 'a1234567890123-ats', // `a1234567890123-ats`,
-    apiGatewayCreateApiKey: true,
-    apiGatewayExecutionRole,
-    apiGatewayProps
+  iotEndpoint: 'a1234567890123-ats', // `a1234567890123-ats`,
+  apiGatewayCreateApiKey: true,
+  apiGatewayExecutionRole,
+  apiGatewayProps
 };
 
 // Instantiate construct

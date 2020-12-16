@@ -131,15 +131,15 @@ export function buildDeadLetterQueue(scope: cdk.Construct, props: BuildDeadLette
   if (!props.existingQueueObj && (props.deployDeadLetterQueue || props.deployDeadLetterQueue === undefined)) {
     // Create the Dead Letter Queue
     const [dlq] = buildQueue(scope, 'deadLetterQueue', {
-        queueProps: props.deadLetterQueueProps
+      queueProps: props.deadLetterQueueProps
     });
 
     const mrc = (props.maxReceiveCount) ? props.maxReceiveCount : defaults.defaultMaxReceiveCount;
 
     // Setup the Dead Letter Queue interface
     const dlqInterface: sqs.DeadLetterQueue = {
-        maxReceiveCount: mrc,
-        queue: dlq
+      maxReceiveCount: mrc,
+      queue: dlq
     };
 
     // Return the dead letter queue interface
@@ -152,43 +152,43 @@ function applySecureQueuePolicy(queue: sqs.Queue): void {
 
   // Apply queue policy to enforce only the queue owner can perform operations on queue
   queue.addToResourcePolicy(
-      new PolicyStatement({
-          sid: 'QueueOwnerOnlyAccess',
-          resources: [
-              `${queue.queueArn}`
-          ],
-          actions: [
-            "sqs:DeleteMessage",
-            "sqs:ReceiveMessage",
-            "sqs:SendMessage",
-            "sqs:GetQueueAttributes",
-            "sqs:RemovePermission",
-            "sqs:AddPermission",
-            "sqs:SetQueueAttributes"
-          ],
-          principals: [new AccountPrincipal(Stack.of(queue).account)],
-          effect: Effect.ALLOW
-      })
+    new PolicyStatement({
+      sid: 'QueueOwnerOnlyAccess',
+      resources: [
+        `${queue.queueArn}`
+      ],
+      actions: [
+        "sqs:DeleteMessage",
+        "sqs:ReceiveMessage",
+        "sqs:SendMessage",
+        "sqs:GetQueueAttributes",
+        "sqs:RemovePermission",
+        "sqs:AddPermission",
+        "sqs:SetQueueAttributes"
+      ],
+      principals: [new AccountPrincipal(Stack.of(queue).account)],
+      effect: Effect.ALLOW
+    })
   );
 
   // Apply Topic policy to enforce encryption of data in transit
   queue.addToResourcePolicy(
-      new PolicyStatement({
-          sid: 'HttpsOnly',
-          resources: [
-              `${queue.queueArn}`
-          ],
-          actions: [
-            "SQS:*"
-          ],
-          principals: [new AnyPrincipal()],
-          effect: Effect.DENY,
-          conditions:
+    new PolicyStatement({
+      sid: 'HttpsOnly',
+      resources: [
+        `${queue.queueArn}`
+      ],
+      actions: [
+        "SQS:*"
+      ],
+      principals: [new AnyPrincipal()],
+      effect: Effect.DENY,
+      conditions:
           {
-              Bool: {
-                  'aws:SecureTransport': 'false'
-              }
+            Bool: {
+              'aws:SecureTransport': 'false'
+            }
           }
-      })
+    })
   );
 }

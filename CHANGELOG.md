@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.77.0 (2020-12-16)
+
+### Added
+- aws-cloudfront-mediastore pattern added ([#104](https://github.com/awslabs/aws-solutions-constructs/issues/104))
+- aws-s3-sqs pattern added ([#27](https://github.com/awslabs/aws-solutions-constructs/issues/27))
+
+### Changed
+- Upgraded all patterns to CDK v1.77.0
+
+## 1.76.0 (2020-12-14)
+
+### Changed
+- Upgraded all patterns to CDK v1.76.0
+- Added ESLint rule to enfore 2 space indentation
+- Updated `aws-lambda-sqs` to support for VPC
+
 ## 1.75.0 (2020-12-03)
 
 ### Changed

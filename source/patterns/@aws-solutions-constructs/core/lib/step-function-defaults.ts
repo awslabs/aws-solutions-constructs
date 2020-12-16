@@ -17,10 +17,10 @@ import { LogGroup } from '@aws-cdk/aws-logs';
 export function DefaultStateMachineProps(_logGroup: LogGroup): sfn.StateMachineProps | any {
 
   const stateMachineProps: sfn.StateMachineProps | any = {
-      logs: {
-        destination: _logGroup,
-        level: sfn.LogLevel.ERROR
-      }
+    logs: {
+      destination: _logGroup,
+      level: sfn.LogLevel.ERROR
+    }
   };
 
   return stateMachineProps;

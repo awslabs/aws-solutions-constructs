@@ -37,10 +37,10 @@ const fn = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 
 // Setup the pattern props
 const props: LambdaToStepFunctionProps = {
-    existingLambdaObj: fn,
-    stateMachineProps: {
-      definition: startState
-    }
+  existingLambdaObj: fn,
+  stateMachineProps: {
+    definition: startState
+  }
 };
 
 // Add the pattern

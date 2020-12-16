@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MediaStore container with default params 1`] = `
+Object {
+  "Resources": Object {
+    "MediaStoreContainer": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "AccessLoggingEnabled": true,
+        "ContainerName": Object {
+          "Ref": "AWS::StackName",
+        },
+        "CorsPolicy": Array [
+          Object {
+            "AllowedHeaders": Array [
+              "*",
+            ],
+            "AllowedMethods": Array [
+              "GET",
+            ],
+            "AllowedOrigins": Array [
+              "*",
+            ],
+            "ExposeHeaders": Array [
+              "*",
+            ],
+            "MaxAgeSeconds": 3000,
+          },
+        ],
+        "LifecyclePolicy": "{\\"rules\\":[{\\"definition\\":{\\"path\\":[{\\"wildcard\\":\\"*\\"}],\\"days_since_create\\":[{\\"numeric\\":[\\">\\",30]}]},\\"action\\":\\"EXPIRE\\"}]}",
+        "MetricPolicy": Object {
+          "ContainerLevelMetrics": "ENABLED",
+        },
+        "Policy": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "{\\"Version\\":\\"2012-10-17\\",\\"Statement\\":[{\\"Sid\\":\\"MediaStoreDefaultPolicy\\",\\"Effect\\":\\"Allow\\",\\"Principal\\":\\"*\\",\\"Action\\":[\\"mediastore:GetObject\\",\\"mediastore:DescribeObject\\"],\\"Resource\\":\\"arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":mediastore:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":container/",
+              Object {
+                "Ref": "AWS::StackName",
+              },
+              "/*\\",\\"Condition\\":{\\"Bool\\":{\\"aws:SecureTransport\\":\\"true\\"}}}]}",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::MediaStore::Container",
+    },
+  },
+}
+`;

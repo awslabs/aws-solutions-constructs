@@ -17,15 +17,15 @@ import * as cdk from '@aws-cdk/core';
 import { overrideProps } from './utils';
 
 export function buildEncryptionKey(scope: cdk.Construct, keyProps?: kms.KeyProps): kms.Key {
-    // Setup the key properties
-    let encryptionKeyProps;
-    if (keyProps) {
-        // If property overrides have been provided, incorporate them and deploy
-        encryptionKeyProps = overrideProps(DefaultEncryptionProps, keyProps);
-    } else {
-        // If no property overrides, deploy using the default configuration
-        encryptionKeyProps = DefaultEncryptionProps;
-    }
-    // Create the encryption key and return
-    return new kms.Key(scope, 'EncryptionKey', encryptionKeyProps);
+  // Setup the key properties
+  let encryptionKeyProps;
+  if (keyProps) {
+    // If property overrides have been provided, incorporate them and deploy
+    encryptionKeyProps = overrideProps(DefaultEncryptionProps, keyProps);
+  } else {
+    // If no property overrides, deploy using the default configuration
+    encryptionKeyProps = DefaultEncryptionProps;
+  }
+  // Create the encryption key and return
+  return new kms.Key(scope, 'EncryptionKey', encryptionKeyProps);
 }

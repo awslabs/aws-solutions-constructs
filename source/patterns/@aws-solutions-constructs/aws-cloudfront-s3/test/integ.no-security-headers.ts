@@ -22,7 +22,7 @@ stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3';
 
 // Definitions
 const props: CloudFrontToS3Props = {
-    insertHttpSecurityHeaders: false
+  insertHttpSecurityHeaders: false
 };
 
 new CloudFrontToS3(stack, 'test-cloudfront-s3-no-security-headers', props);

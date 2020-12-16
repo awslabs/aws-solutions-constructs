@@ -12,63 +12,79 @@
  */
 
 // Imports
-import * as defaults from '@aws-solutions-constructs/core';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as sqs from '@aws-cdk/aws-sqs';
-import { Construct } from '@aws-cdk/core';
+import * as defaults from "@aws-solutions-constructs/core";
+import * as lambda from "@aws-cdk/aws-lambda";
+import * as sqs from "@aws-cdk/aws-sqs";
+import * as ec2 from "@aws-cdk/aws-ec2";
+import { Construct } from "@aws-cdk/core";
+import { AddAwsServiceEndpoint } from "@aws-solutions-constructs/core";
 
 /**
  * @summary The properties for the LambdaToSqs class.
  */
 export interface LambdaToSqsProps {
-    /**
-     * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
-     *
-     * @default - None
-     */
-    readonly existingLambdaObj?: lambda.Function,
-    /**
-     * User provided props to override the default props for the Lambda function.
-     *
-     * @default - Default properties are used.
-     */
-    readonly lambdaFunctionProps?: lambda.FunctionProps,
-    /**
-     * Existing instance of SQS queue object, if this is set then queueProps is ignored.
-     *
-     * @default - Default props are used
-     */
-    readonly existingQueueObj?: sqs.Queue,
-    /**
-     * Optional user-provided props to override the default props for the SQS queue.
-     *
-     * @default - Default props are used
-     */
-    readonly queueProps?: sqs.QueueProps,
-    /**
-     * Whether to grant additional permissions to the Lambda function enabling it to purge the SQS queue.
-     *
-     * @default - "false", disabled by default.
-     */
-    readonly enableQueuePurging?: boolean,
-    /**
-     * Optional user provided properties for the dead letter queue
-     *
-     * @default - Default props are used
-     */
-    readonly deadLetterQueueProps?: sqs.QueueProps,
-    /**
-     * Whether to deploy a secondary queue to be used as a dead letter queue.
-     *
-     * @default - true.
-     */
-    readonly deployDeadLetterQueue?: boolean,
-    /**
-     * The number of times a message can be unsuccessfully dequeued before being moved to the dead-letter queue.
-     *
-     * @default - required field if deployDeadLetterQueue=true.
-     */
-    readonly maxReceiveCount?: number
+  /**
+   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
+   *
+   * @default - None
+   */
+  readonly existingLambdaObj?: lambda.Function;
+  /**
+   * User provided props to override the default props for the Lambda function.
+   *
+   * @default - Default properties are used.
+   */
+  readonly lambdaFunctionProps?: lambda.FunctionProps;
+  /**
+   * Existing instance of SQS queue object, if this is set then queueProps is ignored.
+   *
+   * @default - Default props are used
+   */
+  readonly existingQueueObj?: sqs.Queue;
+  /**
+   * Optional user-provided props to override the default props for the SQS queue.
+   *
+   * @default - Default props are used
+   */
+  readonly queueProps?: sqs.QueueProps;
+  /**
+   * Whether to grant additional permissions to the Lambda function enabling it to purge the SQS queue.
+   *
+   * @default - "false", disabled by default.
+   */
+  readonly enableQueuePurging?: boolean;
+  /**
+   * Optional user provided properties for the dead letter queue
+   *
+   * @default - Default props are used
+   */
+  readonly deadLetterQueueProps?: sqs.QueueProps;
+  /**
+   * Whether to deploy a secondary queue to be used as a dead letter queue.
+   *
+   * @default - true.
+   */
+  readonly deployDeadLetterQueue?: boolean;
+  /**
+   * The number of times a message can be unsuccessfully dequeued before being moved to the dead-letter queue.
+   *
+   * @default - required field if deployDeadLetterQueue=true.
+   */
+  readonly maxReceiveCount?: number;
+  /**
+   * An existing VPC for the construct to use (construct will NOT create a new VPC in this case)
+   */
+  readonly existingVpc?: ec2.Vpc;
+  /**
+   * Properties to override default properties if deployVpc is true
+   */
+  readonly vpcProps?: ec2.VpcProps;
+  /**
+   * Whether to deploy a new VPC
+   *
+   * @default - false
+   */
+  readonly deployVpc?: boolean;
 }
 
 /**
@@ -78,6 +94,7 @@ export class LambdaToSqs extends Construct {
     public readonly lambdaFunction: lambda.Function;
     public readonly sqsQueue: sqs.Queue;
     public readonly deadLetterQueue?: sqs.DeadLetterQueue;
+    public readonly vpc?: ec2.Vpc;
 
     /**
      * @summary Constructs a new instance of the LambdaToSqs class.
@@ -88,38 +105,64 @@ export class LambdaToSqs extends Construct {
      * @access public
      */
     constructor(scope: Construct, id: string, props: LambdaToSqsProps) {
-        super(scope, id);
+      super(scope, id);
 
-        // Setup the Lambda function
-        this.lambdaFunction = defaults.buildLambdaFunction(this, {
-            existingLambdaObj: props.existingLambdaObj,
-            lambdaFunctionProps: props.lambdaFunctionProps
-        });
-
-        // Setup the dead letter queue, if applicable
-        this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
-            existingQueueObj: props.existingQueueObj,
-            deployDeadLetterQueue: props.deployDeadLetterQueue,
-            deadLetterQueueProps: props.deadLetterQueueProps,
-            maxReceiveCount: props.maxReceiveCount
-        });
-
-        // Setup the queue
-        [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
-            existingQueueObj: props.existingQueueObj,
-            queueProps: props.queueProps,
-            deadLetterQueue: this.deadLetterQueue
-        });
-
-        // Configure environment variables
-        this.lambdaFunction.addEnvironment('SQS_QUEUE_URL', this.sqsQueue.queueUrl);
-
-        // Enable queue purging permissions for the Lambda function, if enabled
-        if (props.enableQueuePurging) {
-            this.sqsQueue.grantPurge(this.lambdaFunction);
+      if (props.deployVpc || props.existingVpc) {
+        if (props.deployVpc && props.existingVpc) {
+          throw new Error("More than 1 VPC specified in the properties");
         }
 
-        // Enable message send permissions for the Lambda function by default
-        this.sqsQueue.grantSendMessages(this.lambdaFunction);
+        this.vpc = defaults.buildVpc(scope, {
+          existingVpc: props.existingVpc,
+          userVpcProps: props.vpcProps,
+          constructVpcProps: {
+            enableDnsHostnames: true,
+            enableDnsSupport: true,
+            natGateways: 0,
+            subnetConfiguration: [
+              {
+                cidrMask: 18,
+                name: "isolated",
+                subnetType: ec2.SubnetType.ISOLATED,
+              },
+            ],
+          },
+        });
+
+        AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.SQS);
+      }
+
+      // Setup the Lambda function
+      this.lambdaFunction = defaults.buildLambdaFunction(this, {
+        existingLambdaObj: props.existingLambdaObj,
+        lambdaFunctionProps: props.lambdaFunctionProps,
+        vpc: this.vpc,
+      });
+
+      // Setup the dead letter queue, if applicable
+      this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
+        existingQueueObj: props.existingQueueObj,
+        deployDeadLetterQueue: props.deployDeadLetterQueue,
+        deadLetterQueueProps: props.deadLetterQueueProps,
+        maxReceiveCount: props.maxReceiveCount
+      });
+
+      // Setup the queue
+      [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
+        existingQueueObj: props.existingQueueObj,
+        queueProps: props.queueProps,
+        deadLetterQueue: this.deadLetterQueue
+      });
+
+      // Configure environment variables
+      this.lambdaFunction.addEnvironment('SQS_QUEUE_URL', this.sqsQueue.queueUrl);
+
+      // Enable queue purging permissions for the Lambda function, if enabled
+      if (props.enableQueuePurging) {
+        this.sqsQueue.grantPurge(this.lambdaFunction);
+      }
+
+      // Enable message send permissions for the Lambda function by default
+      this.sqsQueue.grantSendMessages(this.lambdaFunction);
     }
 }

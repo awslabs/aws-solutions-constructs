@@ -28,10 +28,10 @@ test('Test minimal deployment', () => {
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
-        functionName: 'producer-function'
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
+      functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
@@ -208,10 +208,10 @@ test('Test deployment w/ existing queue', () => {
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
-        functionName: 'producer-function'
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
+      functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
@@ -239,9 +239,9 @@ test('Test deployment w/ DLQ explicitly disabled', () => {
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`)
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`)
     },
     consumerLambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
@@ -270,9 +270,9 @@ test('Test deployment w/ DLQ explicitly enabled and w/ MRC override', () => {
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`)
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`)
     },
     consumerLambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
@@ -308,10 +308,10 @@ test('Test overrides for producer and consumer functions', () => {
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_12_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
-        functionName: 'producer-function'
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
+      functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_12_X,
@@ -342,10 +342,10 @@ test('Test the public pattern props', () => {
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
-        functionName: 'producer-function'
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
+      functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,

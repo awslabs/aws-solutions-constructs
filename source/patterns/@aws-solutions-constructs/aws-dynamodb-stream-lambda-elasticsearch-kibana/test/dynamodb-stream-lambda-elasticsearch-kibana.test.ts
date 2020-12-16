@@ -20,9 +20,9 @@ import '@aws-cdk/assert/jest';
 function deployNewFunc(stack: cdk.Stack) {
   const props: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps = {
     lambdaFunctionProps: {
-          code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-          runtime: lambda.Runtime.NODEJS_10_X,
-          handler: 'index.handler'
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler'
     },
     domainName: 'test-domain'
   };

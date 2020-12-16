@@ -22,122 +22,122 @@ import '@aws-cdk/assert/jest';
 // Test minimal deployment snapshot
 // --------------------------------------------------------------
 test('Test minimal deployment snapshot', () => {
-    const stack = new Stack();
-    new ApiGatewayToSageMakerEndpoint(stack, 'api-gateway-sagemakerendpoint', {
-        endpointName: 'my-endpoint',
-        resourcePath: '{my_param}',
-        requestMappingTemplate: 'my-request-vtl-template'
-    });
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  const stack = new Stack();
+  new ApiGatewayToSageMakerEndpoint(stack, 'api-gateway-sagemakerendpoint', {
+    endpointName: 'my-endpoint',
+    resourcePath: '{my_param}',
+    requestMappingTemplate: 'my-request-vtl-template'
+  });
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
 // Test construct properties
 // --------------------------------------------------------------
 test('Test construct properties', () => {
-    const stack = new Stack();
-    const pattern = new ApiGatewayToSageMakerEndpoint(stack, 'api-gateway-sagemakerendpoint', {
-        endpointName: 'my-endpoint',
-        resourcePath: '{my_param}',
-        requestMappingTemplate: 'my-request-vtl-template'
-    });
+  const stack = new Stack();
+  const pattern = new ApiGatewayToSageMakerEndpoint(stack, 'api-gateway-sagemakerendpoint', {
+    endpointName: 'my-endpoint',
+    resourcePath: '{my_param}',
+    requestMappingTemplate: 'my-request-vtl-template'
+  });
 
-    expect(pattern.apiGateway !== null);
-    expect(pattern.apiGatewayRole !== null);
-    expect(pattern.apiGatewayCloudWatchRole !== null);
-    expect(pattern.apiGatewayLogGroup !== null);
+  expect(pattern.apiGateway !== null);
+  expect(pattern.apiGatewayRole !== null);
+  expect(pattern.apiGatewayCloudWatchRole !== null);
+  expect(pattern.apiGatewayLogGroup !== null);
 });
 
 // --------------------------------------------------------------
 // Test deployment w/ overwritten properties
 // --------------------------------------------------------------
 test('Test deployment w/ overwritten properties', () => {
-    const stack = new Stack();
+  const stack = new Stack();
 
-    const existingRole = new iam.Role(stack, 'api-gateway-role', {
-        assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
-        description: 'existing role for SageMaker integration',
-        inlinePolicies: {
-            InvokePolicy: new iam.PolicyDocument({
-                statements: [new iam.PolicyStatement({
-                    resources: [`arn:${Aws.PARTITION}:sagemaker:${Aws.REGION}:${Aws.ACCOUNT_ID}:endpoint/my-endpoint`],
-                    actions: ['sagemaker:InvokeEndpoint']
-                })]
-            })
+  const existingRole = new iam.Role(stack, 'api-gateway-role', {
+    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
+    description: 'existing role for SageMaker integration',
+    inlinePolicies: {
+      InvokePolicy: new iam.PolicyDocument({
+        statements: [new iam.PolicyStatement({
+          resources: [`arn:${Aws.PARTITION}:sagemaker:${Aws.REGION}:${Aws.ACCOUNT_ID}:endpoint/my-endpoint`],
+          actions: ['sagemaker:InvokeEndpoint']
+        })]
+      })
+    }
+  });
+
+  new ApiGatewayToSageMakerEndpoint(stack, 'api-gateway-sagemakerendpoint', {
+    endpointName: 'my-endpoint',
+    resourcePath: '{my_param}',
+    requestMappingTemplate: 'my-request-vtl-template',
+
+    apiGatewayProps: {
+      restApiName: 'my-api',
+      deployOptions: {
+        methodOptions: {
+          '/*/*': {
+            throttlingRateLimit: 100,
+            throttlingBurstLimit: 25
+          }
         }
-    });
+      }
+    },
+    apiGatewayExecutionRole: existingRole,
+    resourceName: 'my-resource',
+    responseMappingTemplate: 'my-response-vtl-template'
+  });
 
-    new ApiGatewayToSageMakerEndpoint(stack, 'api-gateway-sagemakerendpoint', {
-        endpointName: 'my-endpoint',
-        resourcePath: '{my_param}',
-        requestMappingTemplate: 'my-request-vtl-template',
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
-        apiGatewayProps: {
-            restApiName: 'my-api',
-            deployOptions: {
-                methodOptions: {
-                    '/*/*': {
-                        throttlingRateLimit: 100,
-                        throttlingBurstLimit: 25
-                    }
-                }
-            }
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Stage', {
+    MethodSettings: [
+      {
+        DataTraceEnabled: true,
+        HttpMethod: '*',
+        LoggingLevel: 'INFO',
+        ResourcePath: '/*'
+      },
+      {
+        HttpMethod: '*',
+        ResourcePath: '/*',
+        ThrottlingRateLimit: 100,
+        ThrottlingBurstLimit: 25
+      }
+    ]
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Resource', {
+    PathPart: 'my-resource'
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    Integration: {
+      IntegrationResponses: [
+        {
+          ResponseTemplates: {
+            'application/json': 'my-response-vtl-template',
+          },
+          StatusCode: '200'
         },
-        apiGatewayExecutionRole: existingRole,
-        resourceName: 'my-resource',
-        responseMappingTemplate: 'my-response-vtl-template'
-    });
-
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-
-    expect(stack).toHaveResourceLike('AWS::ApiGateway::Stage', {
-        MethodSettings: [
-            {
-                DataTraceEnabled: true,
-                HttpMethod: '*',
-                LoggingLevel: 'INFO',
-                ResourcePath: '/*'
-            },
-            {
-                HttpMethod: '*',
-                ResourcePath: '/*',
-                ThrottlingRateLimit: 100,
-                ThrottlingBurstLimit: 25
-            }
-        ]
-    });
-
-    expect(stack).toHaveResourceLike('AWS::ApiGateway::Resource', {
-        PathPart: 'my-resource'
-    });
-
-    expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
-        Integration: {
-            IntegrationResponses: [
-                {
-                    ResponseTemplates: {
-                        'application/json': 'my-response-vtl-template',
-                    },
-                    StatusCode: '200'
-                },
-                {
-                    StatusCode: '500',
-                    SelectionPattern: '5\\d{2}'
-                },
-                {
-                    StatusCode: '400',
-                    SelectionPattern: '4\\d{2}'
-                }
-            ]
+        {
+          StatusCode: '500',
+          SelectionPattern: '5\\d{2}'
         },
-        MethodResponses: [
-            { StatusCode: '200' },
-            { StatusCode: '500' },
-            { StatusCode: '400' }
-        ]
-    });
+        {
+          StatusCode: '400',
+          SelectionPattern: '4\\d{2}'
+        }
+      ]
+    },
+    MethodResponses: [
+      { StatusCode: '200' },
+      { StatusCode: '500' },
+      { StatusCode: '400' }
+    ]
+  });
 
-    expect(stack).toHaveResourceLike('AWS::IAM::Role', {
-        Description: 'existing role for SageMaker integration'
-    });
+  expect(stack).toHaveResourceLike('AWS::IAM::Role', {
+    Description: 'existing role for SageMaker integration'
+  });
 });

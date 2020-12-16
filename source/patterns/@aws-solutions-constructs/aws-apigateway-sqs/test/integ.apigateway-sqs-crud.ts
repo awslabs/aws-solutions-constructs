@@ -22,9 +22,9 @@ stack.templateOptions.description = 'Integration Test for aws-apigateway-sqs';
 
 // Definitions
 const props: ApiGatewayToSqsProps = {
-    allowReadOperation: true,
-    allowCreateOperation: true,
-    allowDeleteOperation: true
+  allowReadOperation: true,
+  allowCreateOperation: true,
+  allowDeleteOperation: true
 };
 
 new ApiGatewayToSqs(stack, 'test-api-gateway-sqs', props);

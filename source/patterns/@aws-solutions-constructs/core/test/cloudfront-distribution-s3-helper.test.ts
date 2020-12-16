@@ -65,23 +65,60 @@ test('check bucket metadata', () => {
 });
 
 test('test cloudfront check bucket policy', () => {
-    const stack = new Stack();
-    const [sourceBucket] = buildS3Bucket(stack, {});
-    CloudFrontDistributionForS3(stack, sourceBucket);
+  const stack = new Stack();
+  const [sourceBucket] = buildS3Bucket(stack, {});
+  CloudFrontDistributionForS3(stack, sourceBucket);
 
-    expect(stack).toHaveResourceLike("AWS::S3::BucketPolicy", {
-      PolicyDocument: {
-        Statement: [
-          {
-            Action: "*",
-            Condition: {
-              Bool: {
-                "aws:SecureTransport": "false"
-              }
+  expect(stack).toHaveResourceLike("AWS::S3::BucketPolicy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: "*",
+          Condition: {
+            Bool: {
+              "aws:SecureTransport": "false"
+            }
+          },
+          Effect: "Deny",
+          Principal: "*",
+          Resource: {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Fn::GetAtt": [
+                    "S3Bucket07682993",
+                    "Arn"
+                  ]
+                },
+                "/*"
+              ]
+            ]
+          }
+        },
+        {
+          Action: [
+            "s3:GetObject*",
+            "s3:GetBucket*",
+            "s3:List*"
+          ],
+          Effect: "Allow",
+          Principal: {
+            CanonicalUser: {
+              "Fn::GetAtt": [
+                "CloudFrontDistributionOrigin1S3Origin3D9CA0E9",
+                "S3CanonicalUserId"
+              ]
+            }
+          },
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                "S3Bucket07682993",
+                "Arn"
+              ]
             },
-            Effect: "Deny",
-            Principal: "*",
-            Resource: {
+            {
               "Fn::Join": [
                 "",
                 [
@@ -95,49 +132,12 @@ test('test cloudfront check bucket policy', () => {
                 ]
               ]
             }
-          },
-          {
-            Action: [
-              "s3:GetObject*",
-              "s3:GetBucket*",
-              "s3:List*"
-            ],
-            Effect: "Allow",
-            Principal: {
-              CanonicalUser: {
-                "Fn::GetAtt": [
-                    "CloudFrontDistributionOrigin1S3Origin3D9CA0E9",
-                  "S3CanonicalUserId"
-                ]
-              }
-            },
-            Resource: [
-              {
-                "Fn::GetAtt": [
-                  "S3Bucket07682993",
-                  "Arn"
-                ]
-              },
-              {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "S3Bucket07682993",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
-              }
-            ]
-          }
-        ],
-        Version: "2012-10-17"
-      }
-    });
+          ]
+        }
+      ],
+      Version: "2012-10-17"
+    }
+  });
 });
 
 test('test cloudfront with no security headers ', () => {
@@ -341,85 +341,85 @@ test('test cloudfront override cloudfront logging bucket ', () => {
 });
 
 test('test cloudfront override properties', () => {
-    const stack = new Stack();
-    const [sourceBucket] = buildS3Bucket(stack, {});
-    const props: cloudfront.DistributionProps = {
-      defaultBehavior: {
-        origin: new origins.S3Origin(sourceBucket),
-        viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-        allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
-        cachedMethods: cloudfront.CachedMethods.CACHE_GET_HEAD_OPTIONS
-      },
-    };
+  const stack = new Stack();
+  const [sourceBucket] = buildS3Bucket(stack, {});
+  const props: cloudfront.DistributionProps = {
+    defaultBehavior: {
+      origin: new origins.S3Origin(sourceBucket),
+      viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
+      cachedMethods: cloudfront.CachedMethods.CACHE_GET_HEAD_OPTIONS
+    },
+  };
 
-    CloudFrontDistributionForS3(stack, sourceBucket, props);
+  CloudFrontDistributionForS3(stack, sourceBucket, props);
 
-    expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
-      DistributionConfig: {
-        DefaultCacheBehavior: {
-          AllowedMethods: [
-            "GET",
-            "HEAD",
-            "OPTIONS",
-            "PUT",
-            "PATCH",
-            "POST",
-            "DELETE"
-          ],
-          CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
-          CachedMethods: [
-            "GET",
-            "HEAD",
-            "OPTIONS"
-          ],
-          Compress: true,
-          LambdaFunctionAssociations: [
-            {
-              EventType: "origin-response",
-              LambdaFunctionARN: {
-                Ref: "SetHttpSecurityHeadersVersion660E2F72"
-              }
+  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+      DefaultCacheBehavior: {
+        AllowedMethods: [
+          "GET",
+          "HEAD",
+          "OPTIONS",
+          "PUT",
+          "PATCH",
+          "POST",
+          "DELETE"
+        ],
+        CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
+        CachedMethods: [
+          "GET",
+          "HEAD",
+          "OPTIONS"
+        ],
+        Compress: true,
+        LambdaFunctionAssociations: [
+          {
+            EventType: "origin-response",
+            LambdaFunctionARN: {
+              Ref: "SetHttpSecurityHeadersVersion660E2F72"
             }
-          ],
-          TargetOriginId: "CloudFrontDistributionOrigin176EC3A12",
-          ViewerProtocolPolicy: "redirect-to-https"
-        },
-        DefaultRootObject: "index.html",
-        Enabled: true,
-        HttpVersion: "http2",
-        IPV6Enabled: true,
-        Logging: {
-          Bucket: {
+          }
+        ],
+        TargetOriginId: "CloudFrontDistributionOrigin176EC3A12",
+        ViewerProtocolPolicy: "redirect-to-https"
+      },
+      DefaultRootObject: "index.html",
+      Enabled: true,
+      HttpVersion: "http2",
+      IPV6Enabled: true,
+      Logging: {
+        Bucket: {
+          "Fn::GetAtt": [
+            "CloudfrontLoggingBucket3C3EFAA7",
+            "RegionalDomainName"
+          ]
+        }
+      },
+      Origins: [
+        {
+          DomainName: {
             "Fn::GetAtt": [
-              "CloudfrontLoggingBucket3C3EFAA7",
+              "S3Bucket07682993",
               "RegionalDomainName"
             ]
-          }
-        },
-        Origins: [
-          {
-            DomainName: {
-              "Fn::GetAtt": [
-                "S3Bucket07682993",
-                "RegionalDomainName"
-              ]
-            },
-            Id: "CloudFrontDistributionOrigin176EC3A12",
-            S3OriginConfig: {
-              OriginAccessIdentity: {
-                "Fn::Join": [
-                  "",
-                  [
-                    "origin-access-identity/cloudfront/",
-                    {
-                      Ref: "CloudFrontDistributionOrigin1S3Origin3D9CA0E9"
-                    }
-                  ]
+          },
+          Id: "CloudFrontDistributionOrigin176EC3A12",
+          S3OriginConfig: {
+            OriginAccessIdentity: {
+              "Fn::Join": [
+                "",
+                [
+                  "origin-access-identity/cloudfront/",
+                  {
+                    Ref: "CloudFrontDistributionOrigin1S3Origin3D9CA0E9"
+                  }
                 ]
-              }
+              ]
             }
           }
-        ]
-      }
-    });
+        }
+      ]
+    }
   });
+});

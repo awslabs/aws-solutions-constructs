@@ -22,8 +22,8 @@ stack.templateOptions.description = 'Integration Test for aws-apigateway-kinesis
 
 // Definitions
 const props: ApiGatewayToKinesisStreamsProps = {
-    apiGatewayProps: {},
-    kinesisStreamProps: {}
+  apiGatewayProps: {},
+  kinesisStreamProps: {}
 };
 
 new ApiGatewayToKinesisStreams(stack, 'test-apigateway-kinesis-default', props);
