@@ -140,6 +140,11 @@ Object {
                 },
               ],
             },
+            Object {
+              "Action": "cloudwatch:PutMetricData",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
           ],
           "Version": "2012-10-17",
         },
@@ -292,7 +297,7 @@ Object {
             },
             "SerdeInfo": Object {
               "Parameters": Object {
-                "paths": ".",
+                "paths": "id,name,type,numericvalue",
               },
               "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
             },
@@ -707,6 +712,11 @@ Object {
                 },
               ],
             },
+            Object {
+              "Action": "cloudwatch:PutMetricData",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
           ],
           "Version": "2012-10-17",
         },
@@ -859,7 +869,7 @@ Object {
             },
             "SerdeInfo": Object {
               "Parameters": Object {
-                "paths": ".",
+                "paths": "id,name,type,numericvalue",
               },
               "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
             },
@@ -1085,6 +1095,11 @@ Object {
                 },
               ],
             },
+            Object {
+              "Action": "cloudwatch:PutMetricData",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
           ],
           "Version": "2012-10-17",
         },
@@ -1237,7 +1252,7 @@ Object {
             },
             "SerdeInfo": Object {
               "Parameters": Object {
-                "paths": ".",
+                "paths": "id,name,type,numericvalue",
               },
               "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
             },
@@ -1520,6 +1535,11 @@ Object {
                 },
               ],
             },
+            Object {
+              "Action": "cloudwatch:PutMetricData",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
           ],
           "Version": "2012-10-17",
         },
@@ -1672,7 +1692,7 @@ Object {
             },
             "SerdeInfo": Object {
               "Parameters": Object {
-                "paths": ".",
+                "paths": "id,name,type,numericvalue",
               },
               "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
             },

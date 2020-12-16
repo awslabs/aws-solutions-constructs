@@ -130,6 +130,10 @@ export class KinesisStreamGlueJob extends Construct {
                      `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:database/${_glueDatabase.ref}`,
                      `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:catalog`
         ]
+      }), new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: [ 'cloudwatch:PutMetricData' ],
+        resources: [ '*' ]
       })]
     }));
 

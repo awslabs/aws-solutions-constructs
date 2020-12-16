@@ -27,7 +27,7 @@ from pyspark.sql import DataFrame, Row
 from pyspark.sql.functions import *
 from pyspark.sql.types import *
 
-args = getResolvedOptions(sys.argv, ["JOB_NAME", "aws_region", "output_path"])
+args = getResolvedOptions(sys.argv, ["JOB_NAME", "aws-region", "output-path", "database-name", "table-name"])
 
 sc = SparkContext()
 glueContext = GlueContext(sc)
@@ -36,8 +36,9 @@ job = Job(glueContext)
 job.init(args["JOB_NAME"], args)
 
 # S3 sink locations
-aws_region = args["aws-region"]
 output_path = args["output-path"]
+databasename = args["database-name"]
+tablename = args["table-name"]
 
 s3_target = output_path + "ventilator_metrics"
 checkpoint_location = output_path + "cp/"
@@ -93,9 +94,9 @@ def processBatch(data_frame, batchId):
 
 # Read from Kinesis Data Stream
 sourceData = glueContext.create_data_frame.from_catalog(
-    database="ventilatordb",
-    table_name="ventilators_table",
-    transformation_ctx="datasource1",
+    database=databasename,
+    table_name=tablename,
+    transformation_ctx="datasource0",
     additional_options={"startingPosition": "TRIM_HORIZON", "inferSchema": "true"},
 )
 

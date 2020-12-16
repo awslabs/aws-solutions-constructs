@@ -11,9 +11,9 @@
  *  and limitations under the License.
  */
 
- import { StreamEncryption } from '@aws-cdk/aws-kinesis';
+import { StreamEncryption } from '@aws-cdk/aws-kinesis';
 import * as cdk from '@aws-cdk/core';
-import { Aws, CfnOutput } from '@aws-cdk/core';
+import { CfnOutput } from '@aws-cdk/core';
 import { KinesisStreamGlueJob } from '@aws-solutions-constructs/aws-kinesisstreams-gluejob';
 import * as defaults from '@aws-solutions-constructs/core';
 
@@ -29,25 +29,15 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
 
     _outputBucket[0].grantRead(_glueJobRole);
 
-    const _jobCommand = KinesisStreamGlueJob.createGlueJobCommand(this, 'glueetl', '3', undefined, `${__dirname}/../etl/transform.py`);
-
-    const _customEtlJob = new KinesisStreamGlueJob(this, 'CustomETL', {
+    const _jobCommand = KinesisStreamGlueJob.createGlueJobCommand(this, 'gluestreaming', '3', _glueJobRole, undefined, `${__dirname}/../etl/transform.py`);
+    const _kinesisStream = defaults.buildKinesisStream(this, {
       kinesisStreamProps: {
-       encryption: StreamEncryption.UNENCRYPTED
-      },
-      glueJobProps: {
-        command: _jobCommand[0],
-        role: _glueJobRole.roleArn,
-        defaultArguments: {
-          "--job-bookmark-option": "job-bookmark-enable",
-          "--enable-metrics" : true,
-          "--enable-continuous-cloudwatch-log" : true,
-          "--enable-glue-datacatalog": true,
-          "--output-path": `s3://${_outputBucket[0].bucketName}/output/`,
-          "--aws-region": Aws.REGION
-        },
-      },
-      fieldSchema: [{
+        encryption: StreamEncryption.UNENCRYPTED
+      }
+    });
+
+    const _database = KinesisStreamGlueJob.createGlueDatabase(this);
+    const _table = KinesisStreamGlueJob.createGlueTable(this, _database, [{
 				  "name": "ventilatorid",
 					"type": "int",
 					"comment": ""
@@ -81,8 +71,26 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
 					"name": "manufacturer",
 					"type": "string",
 					"comment": ""
-				}
-			]
+				}], 'kinesis', { STREAM_NAME: _kinesisStream.streamName });
+
+    const _customEtlJob = new KinesisStreamGlueJob(this, 'CustomETL', {
+      existingStreamObj: _kinesisStream,
+      glueJobProps: {
+        command: _jobCommand[0],
+        role: _glueJobRole.roleArn,
+        defaultArguments: {
+          "--job-bookmark-option": "job-bookmark-enable",
+          "--enable-metrics" : true,
+          "--enable-continuous-cloudwatch-log" : true,
+          "--enable-glue-datacatalog": true,
+          "--output-path": `s3://${_outputBucket[0].bucketName}/output/`,
+          "--database-name": _database.ref,
+          "--table-name": _table.ref
+        },
+        glueVersion: "1.0"
+      },
+      database: _database,
+      table: _table
     });
 
     new CfnOutput(this, 'KinesisStreamName', {

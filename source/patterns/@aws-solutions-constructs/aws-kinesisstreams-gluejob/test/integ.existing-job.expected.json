@@ -139,7 +139,7 @@
             },
             "SerdeInfo": {
               "Parameters": {
-                "paths": "."
+                "paths": "id,name,type,numericvalue"
               },
               "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe"
             }
@@ -315,6 +315,11 @@
                   ]
                 }
               ]
+            },
+            {
+              "Action": "cloudwatch:PutMetricData",
+              "Effect": "Allow",
+              "Resource": "*"
             }
           ],
           "Version": "2012-10-17"
