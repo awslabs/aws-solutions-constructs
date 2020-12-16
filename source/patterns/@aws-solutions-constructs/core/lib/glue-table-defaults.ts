@@ -15,6 +15,7 @@ import { CfnDatabase, CfnTable } from "@aws-cdk/aws-glue";
 import { Aws, Construct } from "@aws-cdk/core";
 
 /**
+ * Method to build the default table props
  *
  * @param scope
  * @param database
@@ -23,11 +24,19 @@ import { Aws, Construct } from "@aws-cdk/core";
  * @param parameters - Key value pairs of parmaeters. If source type is 'Kinesis', pass Kinesis Data Stream name with key
  *  as 'STREAM_NAME'. Example: {STREAM_NAME: 'KinesisStreamConstrct.streamName'}
  */
-export function DefaultGlueTableProps(scope: Construct, database: CfnDatabase, fieldSchema: CfnTable.ColumnProperty [],
-                                      sourceType: string, parameters?: any): CfnTable {
+export function DefaultGlueTable(scope: Construct, database: CfnDatabase, fieldSchema: CfnTable.ColumnProperty [],
+                                 sourceType: string, parameters?: any): CfnTable {
   let _glueTable: CfnTable;
-  if (sourceType === 'Kinesis') {
+  if (sourceType === 'kinesis') {
     const kinesisStreamName = parameters.STREAM_NAME;
+
+    const _paths: string = '';
+    for (const field in fieldSchema) {
+      if (fieldSchema.hasOwnProperty(field)) {
+        _paths!.concat(fieldSchema[field].name);
+      }
+    }
+
     _glueTable = new CfnTable(scope, 'GlueTable', {
       catalogId: database.catalogId,
       databaseName: database.ref,
@@ -42,13 +51,13 @@ export function DefaultGlueTableProps(scope: Construct, database: CfnDatabase, f
           serdeInfo: {
             serializationLibrary: "org.openx.data.jsonserde.JsonSerDe",
             parameters: {
-              paths: '.'
+              paths: _paths
             }
           },
           parameters: {
             endpointUrl: `https://kinesis.${Aws.REGION}.amazonaws.com`,
             streamName: kinesisStreamName,
-            typeOfData: "kinesis"
+            typeOfData: sourceType
           }
         },
         tableType: 'EXTERNAL_TABLE',

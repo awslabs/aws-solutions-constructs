@@ -14,7 +14,7 @@
 import { CfnDatabase } from "@aws-cdk/aws-glue";
 import { Aws, Construct } from "@aws-cdk/core";
 
-export function DefaultGlueDatabaseProps(scope: Construct): CfnDatabase {
+export function DefaultGlueDatabase(scope: Construct): CfnDatabase {
   return new CfnDatabase(scope, 'GlueDatabase', {
     catalogId: Aws.ACCOUNT_ID,
     databaseInput: {

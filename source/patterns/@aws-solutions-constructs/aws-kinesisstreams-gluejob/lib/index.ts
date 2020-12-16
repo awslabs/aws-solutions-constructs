@@ -44,22 +44,22 @@ export interface KinesisStreamGlueJobProps {
    * A JSON document defining the schema structure of the records in the data stream. An example of such a
    * definition as below. Either @table or @fieldSchema is mandatory. If @table is provided then @fieldSchema is ignored
    * 	"FieldSchema": [{
-	 *		"name": "id",
-	 *		"type": "int",
-	 *		"comment": "Identifier for the record"
-	 *	}, {
+   *  	"name": "id",
+   *  	"type": "int",
+   *    "comment": "Identifier for the record"
+   *  }, {
    *    "name": "name",
-	 *		"type": "string",
-	 *		"comment": "The name of the record"
-	 *	}, {
-	 *		"name": "type",
-	 * 		"type": "string",
-	 *		"comment": "The type of the record"
-	 *	}, {
-	 *		"name": "numericvalue",
-	 *		"type": "int",
-	 *		"comment": "Some value associated with the record"
-	 *	},
+   *    "type": "string",
+   *    "comment": "The name of the record"
+   *  }, {
+   *    "name": "type",
+   *    "type": "string",
+   *    "comment": "The type of the record"
+   *  }, {
+   *    "name": "numericvalue",
+   *    "type": "int",
+   *    "comment": "Some value associated with the record"
+   *  },
    */
   readonly fieldSchema?: CfnTable.ColumnProperty [];
   /**
@@ -97,7 +97,7 @@ export class KinesisStreamGlueJob extends Construct {
     if (props.database !== undefined) {
       _glueDatabase = props.database!;
     } else {
-      _glueDatabase = defaults.DefaultGlueDatabaseProps(scope);
+      _glueDatabase = KinesisStreamGlueJob.createGlueDatabase(scope);
     }
 
     if (props.fieldSchema === undefined && props.table === undefined) {
@@ -108,7 +108,7 @@ export class KinesisStreamGlueJob extends Construct {
     if (props.table !== undefined) {
       _glueTable = props.table;
     } else {
-      _glueTable = defaults.DefaultGlueTableProps(scope, _glueDatabase, props.fieldSchema!, 'Kinesis', {
+      _glueTable = KinesisStreamGlueJob.createGlueTable(scope, _glueDatabase, props.fieldSchema!, 'kinesis', {
         STREAM_NAME: this.kinesisStream.streamName
       });
     }
@@ -122,7 +122,7 @@ export class KinesisStreamGlueJob extends Construct {
       }), new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'glue:GetSecurityConfiguration' ],
-        resources: [ '*' ] //Security Configurations have no resource arns
+        resources: [ '*' ] // Security Configurations have no resource ARNs
       }), new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'glue:GetTable' ],
@@ -167,10 +167,12 @@ export class KinesisStreamGlueJob extends Construct {
    * Bucket location will be created to upload the ETL script asset
    */
   public static createGlueJobCommand(scope: Construct,
-                                     _commandName: string, pythonVersion: string,
+                                     _commandName: string,
+                                     pythonVersion: string,
+                                     glueJobRole: Role,
                                      s3ObjectUrlForScript?: string,
                                      scriptLocationPath?: string): [ CfnJob.JobCommandProperty, Asset? ] {
-  // create s3 bucket where script can be deployed
+    // create s3 bucket where script can be deployed
     let _scriptLocation: string;
     let _assetLocation: Asset;
     if (s3ObjectUrlForScript === undefined) {
@@ -180,7 +182,7 @@ export class KinesisStreamGlueJob extends Construct {
         _assetLocation = new Asset(scope, 'ETLScriptLocation', {
           path: scriptLocationPath!
         });
-        _assetLocation.grantRead(new ServicePrincipal('glue.amazonaws.com'));
+        _assetLocation.grantRead(glueJobRole);
         _scriptLocation = _assetLocation.s3ObjectUrl;
       }
     } else {
@@ -193,5 +195,14 @@ export class KinesisStreamGlueJob extends Construct {
       pythonVersion,
       scriptLocation: _scriptLocation
     }, _assetLocation! !== undefined ? _assetLocation! : undefined ];
+  }
+
+  public static createGlueTable(scope: Construct, database: CfnDatabase, fieldSchema: CfnTable.ColumnProperty [],
+                                sourceType: string, parameters?: any): CfnTable {
+    return defaults.DefaultGlueTable(scope, database, fieldSchema, sourceType, parameters);
+  }
+
+  public static createGlueDatabase(scope: Construct): CfnDatabase {
+    return defaults.DefaultGlueDatabase(scope);
   }
 }

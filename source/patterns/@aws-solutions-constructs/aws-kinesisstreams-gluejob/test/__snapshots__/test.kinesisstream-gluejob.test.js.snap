@@ -320,6 +320,63 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
+    "JobRoleDefaultPolicy5DE0D8F9": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      Object {
+                        "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B",
+                      },
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      Object {
+                        "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B",
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "JobRoleDefaultPolicy5DE0D8F9",
+        "Roles": Array [
+          Object {
+            "Ref": "JobRole014917C6",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
     "testkinesisstreamslambdaETLJob44B50676": Object {
       "Properties": Object {
         "Command": Object {
@@ -829,6 +886,63 @@ Object {
         "Description": "Service role that Glue custom ETL jobs will assume for exeuction",
       },
       "Type": "AWS::IAM::Role",
+    },
+    "JobRoleDefaultPolicy5DE0D8F9": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      Object {
+                        "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B",
+                      },
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      Object {
+                        "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B",
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "JobRoleDefaultPolicy5DE0D8F9",
+        "Roles": Array [
+          Object {
+            "Ref": "JobRole014917C6",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
     "testkinesisstreamslambdaKinesisStream374D6D56": Object {
       "Properties": Object {
@@ -1585,6 +1699,63 @@ Object {
         "Description": "Service role that Glue custom ETL jobs will assume for exeuction",
       },
       "Type": "AWS::IAM::Role",
+    },
+    "JobRoleDefaultPolicy5DE0D8F9": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      Object {
+                        "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B",
+                      },
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      Object {
+                        "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B",
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "JobRoleDefaultPolicy5DE0D8F9",
+        "Roles": Array [
+          Object {
+            "Ref": "JobRole014917C6",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
     "KinesisStream46752A3E": Object {
       "Properties": Object {

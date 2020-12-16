@@ -1,19 +1,5 @@
 {
   "Description": "Integration Test for aws-kinesisstream-gluejob",
-  "Parameters": {
-    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B": {
-      "Type": "String",
-      "Description": "S3 bucket for asset \"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\""
-    },
-    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE": {
-      "Type": "String",
-      "Description": "S3 key for asset version \"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\""
-    },
-    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acArtifactHash2A1C2D40": {
-      "Type": "String",
-      "Description": "Artifact hash for asset \"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\""
-    }
-  },
   "Resources": {
     "JobRole014917C6": {
       "Type": "AWS::IAM::Role",
@@ -31,6 +17,63 @@
           "Version": "2012-10-17"
         },
         "Description": "Service role that Glue custom ETL jobs will assume for exeuction"
+      }
+    },
+    "JobRoleDefaultPolicy5DE0D8F9": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "JobRoleDefaultPolicy5DE0D8F9",
+        "Roles": [
+          {
+            "Ref": "JobRole014917C6"
+          }
+        ]
       }
     },
     "testkinesisstreamslambdaKinesisStream374D6D56": {
@@ -449,6 +492,20 @@
           }
         ]
       }
+    }
+  },
+  "Parameters": {
+    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B": {
+      "Type": "String",
+      "Description": "S3 bucket for asset \"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\""
+    },
+    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE": {
+      "Type": "String",
+      "Description": "S3 key for asset version \"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\""
+    },
+    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acArtifactHash2A1C2D40": {
+      "Type": "String",
+      "Description": "Artifact hash for asset \"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\""
     }
   },
   "Outputs": {

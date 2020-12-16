@@ -25,10 +25,12 @@ import { KinesisStreamGlueJob, KinesisStreamGlueJobProps } from '../lib';
 test('Pattern minimal deployment', () => {
     // Initial setup
     const stack = new Stack();
+    const _jobRole = KinesisStreamGlueJob.createGlueJobRole(stack);
     const props: KinesisStreamGlueJobProps = {
       glueJobProps: {
-          command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'glueetl', '3', undefined, `${__dirname}/transform.py`)[0],
-          role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
+          command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'glueetl', '3', _jobRole,
+                                                            undefined, `${__dirname}/transform.py`)[0],
+          role: _jobRole.roleArn,
           securityConfiguration: 'testSecConfig'
       },
       fieldSchema: [{
@@ -114,9 +116,11 @@ test('Pattern minimal deployment', () => {
 test('Test if existing Glue Job is provided', () => {
     // Initial setup
     const stack = new Stack();
+    const _jobRole = KinesisStreamGlueJob.createGlueJobRole(stack);
     const existingCfnJob = new CfnJob(stack, 'ExistingJob', {
-        command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'glueetl', '3', undefined, `${__dirname}/transform.py`)[0],
-        role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
+        command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'glueetl', '3', _jobRole,
+                                                          undefined, `${__dirname}/transform.py`)[0],
+        role: _jobRole.roleArn,
         securityConfiguration: 'testSecConfig'
     });
 
@@ -186,11 +190,12 @@ test('Test if existing Glue Job is provided', () => {
 test('When S3 bucket location for script exists', () => {
   // Initial setup
   const stack = new Stack();
-  const s3ObjectUrl = new Bucket(stack, 'ScriptLocation').s3UrlForObject('/dummyfile.py');
+  const _s3ObjectUrl = new Bucket(stack, 'ScriptLocation').s3UrlForObject('/dummyfile.py');
+  const _jobRole = KinesisStreamGlueJob.createGlueJobRole(stack);
   const props: KinesisStreamGlueJobProps = {
     glueJobProps: {
-        command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'pythonshell', '3', s3ObjectUrl)[0],
-        role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
+        command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'pythonshell', '3', _jobRole, _s3ObjectUrl)[0],
+        role: _jobRole.roleArn,
         securityConfiguration: 'testSecConfig'
     },
     fieldSchema: [{
@@ -228,12 +233,13 @@ test('When S3 bucket location for script exists', () => {
 // --------------------------------------------------------------
 test('create glue job with existing kinesis stream', () => {
   const stack = new Stack();
-  const kinesisStream = defaults.buildKinesisStream(stack, {});
+  const _kinesisStream = defaults.buildKinesisStream(stack, {});
+  const _jobRole = KinesisStreamGlueJob.createGlueJobRole(stack);
   new KinesisStreamGlueJob(stack, 'existingStreamJob', {
-    existingStreamObj: kinesisStream,
+    existingStreamObj: _kinesisStream,
     glueJobProps: {
-        command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'glueetl', '3', undefined, `${__dirname}/transform.py`)[0],
-        role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn
+        command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'glueetl', '3', _jobRole, undefined, `${__dirname}/transform.py`)[0],
+        role: _jobRole.roleArn
     },
     fieldSchema: [{
         name: "id",
@@ -259,8 +265,9 @@ test('create glue job with existing kinesis stream', () => {
 
 test('Do not pass s3ObjectUrlForScript or scriptLocationPath, error out', () => {
   const stack = new Stack();
+  const _jobRole = KinesisStreamGlueJob.createGlueJobRole(stack);
   try {
-    KinesisStreamGlueJob.createGlueJobCommand(stack, 'pythonshell', '3');
+    KinesisStreamGlueJob.createGlueJobCommand(stack, 'pythonshell', '3', _jobRole);
   } catch (error) {
     expect(error).toBeInstanceOf(Error);
   }
@@ -268,11 +275,13 @@ test('Do not pass s3ObjectUrlForScript or scriptLocationPath, error out', () => 
 
 test('Do not pass fieldSchame or table (CfnTable), error out', () => {
   const stack = new Stack();
+  const _jobRole = KinesisStreamGlueJob.createGlueJobRole(stack);
+
   try {
     const props: KinesisStreamGlueJobProps = {
       glueJobProps: {
-          command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'glueetl', '3', undefined, `${__dirname}/transform.py`)[0],
-          role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
+          command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'glueetl', '3', _jobRole, undefined, `${__dirname}/transform.py`)[0],
+          role: _jobRole.roleArn,
           securityConfiguration: 'testSecConfig'
       }
     };
@@ -284,14 +293,16 @@ test('Do not pass fieldSchame or table (CfnTable), error out', () => {
 
 test('Pass an instance of CfnTable', () => {
   const stack = new Stack();
+  const _jobRole = KinesisStreamGlueJob.createGlueJobRole(stack);
+
   try {
     const props: KinesisStreamGlueJobProps = {
       glueJobProps: {
-          command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'glueetl', '3', undefined, `${__dirname}/transform.py`)[0],
-          role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
+          command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'glueetl', '3', _jobRole, undefined, `${__dirname}/transform.py`)[0],
+          role: _jobRole.roleArn,
           securityConfiguration: 'testSecConfig'
       },
-      table: defaults.DefaultGlueTableProps(stack, defaults.DefaultGlueDatabaseProps(stack),
+      table: defaults.DefaultGlueTable(stack, defaults.DefaultGlueDatabase(stack),
         [{
           name: "id",
           type: "int",
@@ -320,16 +331,17 @@ test('Pass an instance of CfnTable', () => {
 
 test('Pass an instance of CfnDatabase', () => {
   const stack = new Stack();
+  const _jobRole = KinesisStreamGlueJob.createGlueJobRole(stack);
+  const _database = defaults.DefaultGlueDatabase(stack);
   try {
-    const database = defaults.DefaultGlueDatabaseProps(stack);
     const props: KinesisStreamGlueJobProps = {
       glueJobProps: {
-          command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'glueetl', '3', undefined, `${__dirname}/transform.py`)[0],
-          role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
+          command: KinesisStreamGlueJob.createGlueJobCommand(stack, 'glueetl', '3', _jobRole, undefined, `${__dirname}/transform.py`)[0],
+          role: _jobRole.roleArn,
           securityConfiguration: 'testSecConfig'
       },
-      database: database,
-      table: defaults.DefaultGlueTableProps(stack, database,
+      database: _database,
+      table: defaults.DefaultGlueTable(stack, _database,
         [{
           name: "id",
           type: "int",

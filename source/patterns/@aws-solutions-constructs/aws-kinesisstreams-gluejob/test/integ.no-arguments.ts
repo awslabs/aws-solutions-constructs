@@ -20,13 +20,15 @@ const app = new App();
 const stack = new Stack(app, 'test-kinesisstream-gluejob');
 stack.templateOptions.description = 'Integration Test for aws-kinesisstream-gluejob';
 
-const createJobCommand = KinesisStreamGlueJob.createGlueJobCommand(stack, 'pythonshell', '3', undefined, `${__dirname}/transform.py`);
+const _jobRole = KinesisStreamGlueJob.createGlueJobRole(stack);
+const _createJobCommand = KinesisStreamGlueJob.createGlueJobCommand(stack, 'pythonshell', '3', _jobRole,
+                                                                  undefined, `${__dirname}/transform.py`);
 
 // Definitions
 const props: KinesisStreamGlueJobProps = {
   glueJobProps: {
-    command: createJobCommand[0],
-    role: KinesisStreamGlueJob.createGlueJobRole(stack).roleArn,
+    command: _createJobCommand[0],
+    role: _jobRole.roleArn,
     securityConfiguration: 'testSecConfig'
   },
   fieldSchema: [{
@@ -50,7 +52,7 @@ const props: KinesisStreamGlueJobProps = {
 
 new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
 new CfnOutput(stack, 'ScriptLocation', {
-    value: createJobCommand[1]!.s3ObjectUrl
+    value: _createJobCommand[1]!.s3ObjectUrl
 });
 
 // Synth

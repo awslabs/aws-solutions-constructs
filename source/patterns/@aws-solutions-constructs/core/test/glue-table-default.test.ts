@@ -17,7 +17,7 @@ import * as defaults from '../';
 
 test('create default CfnTable', () => {
   const stack = new Stack();
-  defaults.DefaultGlueTableProps(stack, defaults.DefaultGlueDatabaseProps(stack),
+  defaults.DefaultGlueTable(stack, defaults.DefaultGlueDatabase(stack),
   [{
       name: "id",
       type: "int",
@@ -35,7 +35,7 @@ test('create default CfnTable', () => {
       type: "int",
       comment: "Some value associated with the record"
     }]
-  , 'Kinesis', {STREAM_NAME: 'fakeStreamName'});
+  , 'kinesis', {STREAM_NAME: 'fakeStreamName'});
 
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
@@ -43,7 +43,7 @@ test('create default CfnTable', () => {
 test('error condition', () => {
   const stack = new Stack();
   try {
-    defaults.DefaultGlueTableProps(stack, defaults.DefaultGlueDatabaseProps(stack),
+    defaults.DefaultGlueTable(stack, defaults.DefaultGlueDatabase(stack),
       [{
         name: "id",
         type: "int",
