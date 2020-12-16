@@ -28,7 +28,10 @@
               "Action": [
                 "s3:GetObject*",
                 "s3:GetBucket*",
-                "s3:List*"
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
               ],
               "Effect": "Allow",
               "Resource": [
@@ -47,6 +50,47 @@
                           "S3Bucket07682993",
                           "Arn"
                         ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Ref": "AssetParameters057a9e927956a9d6e9a2039ac1e4f06008292c6c0cf36bde0dc5a592901f9cf2S3Bucket56A828E1"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Ref": "AssetParameters057a9e927956a9d6e9a2039ac1e4f06008292c6c0cf36bde0dc5a592901f9cf2S3Bucket56A828E1"
                       },
                       "/*"
                     ]
@@ -217,11 +261,109 @@
         }
       }
     },
-    "CustomETLKinesisStreamB4F1869F": {
+    "KinesisStream46752A3E": {
       "Type": "AWS::Kinesis::Stream",
       "Properties": {
         "ShardCount": 1,
         "RetentionPeriodHours": 24
+      }
+    },
+    "GlueDatabase": {
+      "Type": "AWS::Glue::Database",
+      "Properties": {
+        "CatalogId": {
+          "Ref": "AWS::AccountId"
+        },
+        "DatabaseInput": {
+          "Description": "A Glue database table"
+        }
+      }
+    },
+    "GlueTable": {
+      "Type": "AWS::Glue::Table",
+      "Properties": {
+        "CatalogId": {
+          "Ref": "AWS::AccountId"
+        },
+        "DatabaseName": {
+          "Ref": "GlueDatabase"
+        },
+        "TableInput": {
+          "Parameters": {
+            "classication": "json"
+          },
+          "StorageDescriptor": {
+            "Columns": [
+              {
+                "Comment": "",
+                "Name": "ventilatorid",
+                "Type": "int"
+              },
+              {
+                "Comment": "",
+                "Name": "eventtime",
+                "Type": "string"
+              },
+              {
+                "Comment": "",
+                "Name": "serialnumber",
+                "Type": "string"
+              },
+              {
+                "Comment": "",
+                "Name": "pressurecontrol",
+                "Type": "int"
+              },
+              {
+                "Comment": "",
+                "Name": "o2stats",
+                "Type": "int"
+              },
+              {
+                "Comment": "",
+                "Name": "minutevolume",
+                "Type": "int"
+              },
+              {
+                "Comment": "",
+                "Name": "manufacturer",
+                "Type": "string"
+              }
+            ],
+            "Compressed": false,
+            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+            "Location": {
+              "Ref": "KinesisStream46752A3E"
+            },
+            "NumberOfBuckets": -1,
+            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+            "Parameters": {
+              "endpointUrl": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "https://kinesis.",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ".amazonaws.com"
+                  ]
+                ]
+              },
+              "streamName": {
+                "Ref": "KinesisStream46752A3E"
+              },
+              "typeOfData": "kinesis"
+            },
+            "SerdeInfo": {
+              "Parameters": {
+                "paths": "ventilatorid,eventtime,serialnumber,pressurecontrol,o2stats,minutevolume,manufacturer"
+              },
+              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe"
+            }
+          },
+          "TableType": "EXTERNAL_TABLE"
+        }
       }
     },
     "CustomETLGlueSecurityConfigDFE12B1C": {
@@ -331,7 +473,7 @@
       "Type": "AWS::Glue::Job",
       "Properties": {
         "Command": {
-          "Name": "glueetl",
+          "Name": "gluestreaming",
           "PythonVersion": "3",
           "ScriptLocation": {
             "Fn::Join": [
@@ -339,7 +481,7 @@
               [
                 "s3://",
                 {
-                  "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B"
+                  "Ref": "AssetParameters057a9e927956a9d6e9a2039ac1e4f06008292c6c0cf36bde0dc5a592901f9cf2S3Bucket56A828E1"
                 },
                 "/",
                 {
@@ -349,7 +491,7 @@
                       "Fn::Split": [
                         "||",
                         {
-                          "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE"
+                          "Ref": "AssetParameters057a9e927956a9d6e9a2039ac1e4f06008292c6c0cf36bde0dc5a592901f9cf2S3VersionKeyA51BA1F8"
                         }
                       ]
                     }
@@ -362,7 +504,7 @@
                       "Fn::Split": [
                         "||",
                         {
-                          "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE"
+                          "Ref": "AssetParameters057a9e927956a9d6e9a2039ac1e4f06008292c6c0cf36bde0dc5a592901f9cf2S3VersionKeyA51BA1F8"
                         }
                       ]
                     }
@@ -383,7 +525,7 @@
           "--enable-metrics": true,
           "--enable-continuous-cloudwatch-log": true,
           "--enable-glue-datacatalog": true,
-          "--output-path": {
+          "--output_path": {
             "Fn::Join": [
               "",
               [
@@ -395,109 +537,15 @@
               ]
             ]
           },
-          "--aws-region": {
-            "Ref": "AWS::Region"
+          "--database_name": {
+            "Ref": "GlueDatabase"
+          },
+          "--table_name": {
+            "Ref": "GlueTable"
           }
         },
+        "GlueVersion": "1.0",
         "SecurityConfiguration": "ETLJobSecurityConfig"
-      }
-    },
-    "GlueDatabase": {
-      "Type": "AWS::Glue::Database",
-      "Properties": {
-        "CatalogId": {
-          "Ref": "AWS::AccountId"
-        },
-        "DatabaseInput": {
-          "Description": "A Glue database table"
-        }
-      }
-    },
-    "GlueTable": {
-      "Type": "AWS::Glue::Table",
-      "Properties": {
-        "CatalogId": {
-          "Ref": "AWS::AccountId"
-        },
-        "DatabaseName": {
-          "Ref": "GlueDatabase"
-        },
-        "TableInput": {
-          "Parameters": {
-            "classication": "json"
-          },
-          "StorageDescriptor": {
-            "Columns": [
-              {
-                "Comment": "",
-                "Name": "ventilatorid",
-                "Type": "int"
-              },
-              {
-                "Comment": "",
-                "Name": "eventtime",
-                "Type": "string"
-              },
-              {
-                "Comment": "",
-                "Name": "serialnumber",
-                "Type": "string"
-              },
-              {
-                "Comment": "",
-                "Name": "pressurecontrol",
-                "Type": "int"
-              },
-              {
-                "Comment": "",
-                "Name": "o2stats",
-                "Type": "int"
-              },
-              {
-                "Comment": "",
-                "Name": "minutevolume",
-                "Type": "int"
-              },
-              {
-                "Comment": "",
-                "Name": "manufacturer",
-                "Type": "string"
-              }
-            ],
-            "Compressed": false,
-            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
-            "Location": {
-              "Ref": "CustomETLKinesisStreamB4F1869F"
-            },
-            "NumberOfBuckets": -1,
-            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
-            "Parameters": {
-              "endpointUrl": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "https://kinesis.",
-                    {
-                      "Ref": "AWS::Region"
-                    },
-                    ".amazonaws.com"
-                  ]
-                ]
-              },
-              "streamName": {
-                "Ref": "CustomETLKinesisStreamB4F1869F"
-              },
-              "typeOfData": "kinesis"
-            },
-            "SerdeInfo": {
-              "Parameters": {
-                "paths": "."
-              },
-              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe"
-            }
-          },
-          "TableType": "EXTERNAL_TABLE"
-        }
       }
     },
     "GlueJobRolePolicy422D4F2E": {
@@ -516,7 +564,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "CustomETLKinesisStreamB4F1869F",
+                  "KinesisStream46752A3E",
                   "Arn"
                 ]
               }
@@ -667,6 +715,11 @@
                   ]
                 }
               ]
+            },
+            {
+              "Action": "cloudwatch:PutMetricData",
+              "Effect": "Allow",
+              "Resource": "*"
             }
           ],
           "Version": "2012-10-17"
@@ -704,23 +757,23 @@
     }
   },
   "Parameters": {
-    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B": {
+    "AssetParameters057a9e927956a9d6e9a2039ac1e4f06008292c6c0cf36bde0dc5a592901f9cf2S3Bucket56A828E1": {
       "Type": "String",
-      "Description": "S3 bucket for asset \"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\""
+      "Description": "S3 bucket for asset \"057a9e927956a9d6e9a2039ac1e4f06008292c6c0cf36bde0dc5a592901f9cf2\""
     },
-    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE": {
+    "AssetParameters057a9e927956a9d6e9a2039ac1e4f06008292c6c0cf36bde0dc5a592901f9cf2S3VersionKeyA51BA1F8": {
       "Type": "String",
-      "Description": "S3 key for asset version \"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\""
+      "Description": "S3 key for asset version \"057a9e927956a9d6e9a2039ac1e4f06008292c6c0cf36bde0dc5a592901f9cf2\""
     },
-    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acArtifactHash2A1C2D40": {
+    "AssetParameters057a9e927956a9d6e9a2039ac1e4f06008292c6c0cf36bde0dc5a592901f9cf2ArtifactHash6564C060": {
       "Type": "String",
-      "Description": "Artifact hash for asset \"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\""
+      "Description": "Artifact hash for asset \"057a9e927956a9d6e9a2039ac1e4f06008292c6c0cf36bde0dc5a592901f9cf2\""
     }
   },
   "Outputs": {
     "KinesisStreamName": {
       "Value": {
-        "Ref": "CustomETLKinesisStreamB4F1869F"
+        "Ref": "KinesisStream46752A3E"
       }
     },
     "ScripLocation": {
@@ -730,7 +783,7 @@
           [
             "s3://",
             {
-              "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B"
+              "Ref": "AssetParameters057a9e927956a9d6e9a2039ac1e4f06008292c6c0cf36bde0dc5a592901f9cf2S3Bucket56A828E1"
             },
             "/",
             {
@@ -740,7 +793,7 @@
                   "Fn::Split": [
                     "||",
                     {
-                      "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE"
+                      "Ref": "AssetParameters057a9e927956a9d6e9a2039ac1e4f06008292c6c0cf36bde0dc5a592901f9cf2S3VersionKeyA51BA1F8"
                     }
                   ]
                 }
@@ -753,7 +806,7 @@
                   "Fn::Split": [
                     "||",
                     {
-                      "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE"
+                      "Ref": "AssetParameters057a9e927956a9d6e9a2039ac1e4f06008292c6c0cf36bde0dc5a592901f9cf2S3VersionKeyA51BA1F8"
                     }
                   ]
                 }

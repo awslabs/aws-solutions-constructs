@@ -27,7 +27,7 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
       bucketProps: defaults.DefaultS3Props()
     });
 
-    _outputBucket[0].grantRead(_glueJobRole);
+    _outputBucket[0].grantReadWrite(_glueJobRole);
 
     const _jobCommand = KinesisStreamGlueJob.createGlueJobCommand(this, 'gluestreaming', '3', _glueJobRole, undefined, `${__dirname}/../etl/transform.py`);
     const _kinesisStream = defaults.buildKinesisStream(this, {
@@ -83,9 +83,9 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
           "--enable-metrics" : true,
           "--enable-continuous-cloudwatch-log" : true,
           "--enable-glue-datacatalog": true,
-          "--output-path": `s3://${_outputBucket[0].bucketName}/output/`,
-          "--database-name": _database.ref,
-          "--table-name": _table.ref
+          "--output_path": `s3://${_outputBucket[0].bucketName}/output/`,
+          "--database_name": _database.ref,
+          "--table_name": _table.ref
         },
         glueVersion: "1.0"
       },

@@ -27,7 +27,7 @@ from pyspark.sql import DataFrame, Row
 from pyspark.sql.functions import *
 from pyspark.sql.types import *
 
-args = getResolvedOptions(sys.argv, ["JOB_NAME", "aws-region", "output-path", "database-name", "table-name"])
+args = getResolvedOptions(sys.argv, ["JOB_NAME", "output_path", "database_name", "table_name"])
 
 sc = SparkContext()
 glueContext = GlueContext(sc)
@@ -36,9 +36,9 @@ job = Job(glueContext)
 job.init(args["JOB_NAME"], args)
 
 # S3 sink locations
-output_path = args["output-path"]
-databasename = args["database-name"]
-tablename = args["table-name"]
+output_path = args["output_path"]
+databasename = args["database_name"]
+tablename = args["table_name"]
 
 s3_target = output_path + "ventilator_metrics"
 checkpoint_location = output_path + "cp/"
