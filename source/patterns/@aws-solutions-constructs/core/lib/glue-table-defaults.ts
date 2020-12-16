@@ -30,10 +30,11 @@ export function DefaultGlueTable(scope: Construct, database: CfnDatabase, fieldS
   if (sourceType === 'kinesis') {
     const kinesisStreamName = parameters.STREAM_NAME;
 
-    const _paths: string = '';
-    for (const field in fieldSchema) {
-      if (fieldSchema.hasOwnProperty(field)) {
-        _paths!.concat(fieldSchema[field].name);
+    let _paths: string = '';
+    for (let index = 0; index < fieldSchema.length; ++index) {
+      _paths = _paths + fieldSchema[index].name;
+      if (index < fieldSchema.length - 1) {
+        _paths = _paths + ',';
       }
     }
 
