@@ -53,4 +53,3 @@ export * from './lib/step-function-helper';
 export * from './lib/utils';
 export * from './lib/vpc-defaults';
 export * from './lib/vpc-helper';
-
