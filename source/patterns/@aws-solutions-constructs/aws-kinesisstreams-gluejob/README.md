@@ -30,15 +30,76 @@ This AWS Solutions Construct deploys a Kinesis Stream and configures a AWS Glue 
 Here is a minimal deployable pattern definition in Typescript:
 
 ```javascript
-new KinesisStreamGlueJob(this, 'CustomETL', {
+const _glueJobRole = KinesisStreamGlueJob.createGlueJobRole(this);
+
+const _outputBucket = defaults.buildS3Bucket(this, {
+    bucketProps: defaults.DefaultS3Props(),
+});
+
+_outputBucket[0].grantRead(_glueJobRole);
+
+const _jobCommand = KinesisStreamGlueJob.createGlueJobCommand(
+    this,
+    'gluestreaming',
+    '3',
+    _glueJobRole,
+    undefined,
+    `${__dirname}/../python/transform.py`
+);
+const _kinesisStream = defaults.buildKinesisStream(this, {
     kinesisStreamProps: {
-        encryption: StreamEncryption.MANAGED,
+        encryption: StreamEncryption.UNENCRYPTED,
     },
+});
+
+const _database = KinesisStreamGlueJob.createGlueDatabase(this);
+const _table = KinesisStreamGlueJob.createGlueTable(
+    this,
+    _database,
+    [
+        {
+            name: 'id',
+            type: 'int',
+            comment: '',
+        },
+        {
+            name: 'name',
+            type: 'string',
+            comment: '',
+        },
+        {
+            name: 'address',
+            type: 'string',
+            comment: '',
+        },
+        {
+            name: 'value',
+            type: 'int',
+            comment: '',
+        },
+    ],
+    'kinesis',
+    {STREAM_NAME: _kinesisStream.streamName}
+);
+
+const _customEtlJob = new KinesisStreamGlueJob(this, 'CustomETL', {
+    existingStreamObj: _kinesisStream,
     glueJobProps: {
-        command: KinesisStreamGlueJob.createGlueJobCommand(this, 'JobCommanda', '3'),
-        role: KinesisStreamGlueJob.createGlueJobRole(this).roleArn,
-        securityConfiguration: securityConfigName,
+        command: _jobCommand[0],
+        role: _glueJobRole.roleArn,
+        defaultArguments: {
+            '--job-bookmark-option': 'job-bookmark-enable',
+            '--enable-metrics': true,
+            '--enable-continuous-cloudwatch-log': true,
+            '--enable-glue-datacatalog': true,
+            '--output_path': `s3://${_outputBucket[0].bucketName}/output/`,
+            '--database_name': _database.ref,
+            '--table_name': _table.ref,
+        },
+        glueVersion: '1.0',
     },
+    database: _database,
+    table: _table,
 });
 ```
 
