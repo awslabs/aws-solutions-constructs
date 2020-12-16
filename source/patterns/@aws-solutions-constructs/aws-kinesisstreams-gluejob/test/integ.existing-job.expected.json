@@ -148,61 +148,6 @@
         }
       }
     },
-    "GlueJobRolePolicy422D4F2E": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "kinesis:DescribeStreamSummary",
-                "kinesis:GetRecords",
-                "kinesis:GetShardIterator",
-                "kinesis:ListShards",
-                "kinesis:SubscribeToShard"
-              ],
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "testkinesisstreamslambdaKinesisStream374D6D56",
-                  "Arn"
-                ]
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "GlueJobRolePolicy422D4F2E",
-        "Roles": [
-          {
-            "Fn::Select": [
-              1,
-              {
-                "Fn::Split": [
-                  "/",
-                  {
-                    "Fn::Select": [
-                      5,
-                      {
-                        "Fn::Split": [
-                          ":",
-                          {
-                            "Fn::GetAtt": [
-                              "JobRole014917C6",
-                              "Arn"
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    },
     "GlueJobPolicyAEA4B94E": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
@@ -320,6 +265,23 @@
               "Action": "cloudwatch:PutMetricData",
               "Effect": "Allow",
               "Resource": "*"
+            },
+            {
+              "Action": [
+                "kinesis:DescribeStream",
+                "kinesis:DescribeStreamSummary",
+                "kinesis:GetRecords",
+                "kinesis:GetShardIterator",
+                "kinesis:ListShards",
+                "kinesis:SubscribeToShard"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testkinesisstreamslambdaKinesisStream374D6D56",
+                  "Arn"
+                ]
+              }
             }
           ],
           "Version": "2012-10-17"

@@ -12,7 +12,7 @@
  */
 
 import { CfnDatabase, CfnJob, CfnJobProps, CfnTable } from '@aws-cdk/aws-glue';
-import { Effect, Policy, PolicyStatement, Role, ServicePrincipal } from '@aws-cdk/aws-iam';
+import { Effect, IRole, Policy, PolicyStatement, Role, ServicePrincipal } from '@aws-cdk/aws-iam';
 import { Stream, StreamProps } from '@aws-cdk/aws-kinesis';
 import { Asset } from '@aws-cdk/aws-s3-assets';
 import { Aws, Construct } from '@aws-cdk/core';
@@ -113,9 +113,13 @@ export class KinesisStreamGlueJob extends Construct {
       });
     }
 
-    const _glueJobRole = Role.fromRoleArn(scope, 'GlueJobRole', this.glueJob.role);
-    _glueJobRole.attachInlinePolicy(new Policy(scope, 'GlueJobPolicy', {
-      statements: [ new PolicyStatement({
+    this.buildRolePolicy(scope, _glueDatabase, _glueTable, this.glueJob.role);
+  }
+
+  private buildRolePolicy(scope: Construct, glueDatabase: CfnDatabase, glueTable: CfnTable, role: string): IRole {
+  const _glueJobRole = Role.fromRoleArn(scope, 'GlueJobRole', role);
+  _glueJobRole.attachInlinePolicy(new Policy(scope, 'GlueJobPolicy', {
+    statements: [ new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'glue:GetJob' ],
         resources: [ `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:job/${this.glueJob.ref}` ]
@@ -126,18 +130,22 @@ export class KinesisStreamGlueJob extends Construct {
       }), new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'glue:GetTable' ],
-        resources: [ `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:table/${_glueDatabase.ref}/${_glueTable.ref}`,
-                     `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:database/${_glueDatabase.ref}`,
-                     `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:catalog`
+        resources: [ `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:table/${glueDatabase.ref}/${glueTable.ref}`,
+                    `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:database/${glueDatabase.ref}`,
+                    `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:catalog`
         ]
       }), new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'cloudwatch:PutMetricData' ],
         resources: [ '*' ]
+      }), new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: [ 'kinesis:DescribeStream', 'kinesis:DescribeStreamSummary', 'kinesis:GetRecords',
+                  'kinesis:GetShardIterator', 'kinesis:ListShards', 'kinesis:SubscribeToShard' ],
+        resources: [ this.kinesisStream.streamArn ]
       })]
     }));
-
-    this.kinesisStream.grantRead(_glueJobRole);
+    return _glueJobRole;
   }
 
   /**

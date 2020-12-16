@@ -145,47 +145,9 @@ Object {
               "Effect": "Allow",
               "Resource": "*",
             },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "GlueJobPolicyAEA4B94E",
-        "Roles": Array [
-          Object {
-            "Fn::Select": Array [
-              1,
-              Object {
-                "Fn::Split": Array [
-                  "/",
-                  Object {
-                    "Fn::Select": Array [
-                      5,
-                      Object {
-                        "Fn::Split": Array [
-                          ":",
-                          Object {
-                            "Fn::GetAtt": Array [
-                              "JobRole014917C6",
-                              "Arn",
-                            ],
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "GlueJobRolePolicy422D4F2E": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
             Object {
               "Action": Array [
+                "kinesis:DescribeStream",
                 "kinesis:DescribeStreamSummary",
                 "kinesis:GetRecords",
                 "kinesis:GetShardIterator",
@@ -203,7 +165,7 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "GlueJobRolePolicy422D4F2E",
+        "PolicyName": "GlueJobPolicyAEA4B94E",
         "Roles": Array [
           Object {
             "Fn::Select": Array [
@@ -717,47 +679,9 @@ Object {
               "Effect": "Allow",
               "Resource": "*",
             },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "GlueJobPolicyAEA4B94E",
-        "Roles": Array [
-          Object {
-            "Fn::Select": Array [
-              1,
-              Object {
-                "Fn::Split": Array [
-                  "/",
-                  Object {
-                    "Fn::Select": Array [
-                      5,
-                      Object {
-                        "Fn::Split": Array [
-                          ":",
-                          Object {
-                            "Fn::GetAtt": Array [
-                              "JobRole014917C6",
-                              "Arn",
-                            ],
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "GlueJobRolePolicy422D4F2E": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
             Object {
               "Action": Array [
+                "kinesis:DescribeStream",
                 "kinesis:DescribeStreamSummary",
                 "kinesis:GetRecords",
                 "kinesis:GetShardIterator",
@@ -775,7 +699,7 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "GlueJobRolePolicy422D4F2E",
+        "PolicyName": "GlueJobPolicyAEA4B94E",
         "Roles": Array [
           Object {
             "Fn::Select": Array [
@@ -1100,47 +1024,9 @@ Object {
               "Effect": "Allow",
               "Resource": "*",
             },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "GlueJobPolicyAEA4B94E",
-        "Roles": Array [
-          Object {
-            "Fn::Select": Array [
-              1,
-              Object {
-                "Fn::Split": Array [
-                  "/",
-                  Object {
-                    "Fn::Select": Array [
-                      5,
-                      Object {
-                        "Fn::Split": Array [
-                          ":",
-                          Object {
-                            "Fn::GetAtt": Array [
-                              "JobRole014917C6",
-                              "Arn",
-                            ],
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "GlueJobRolePolicy422D4F2E": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
             Object {
               "Action": Array [
+                "kinesis:DescribeStream",
                 "kinesis:DescribeStreamSummary",
                 "kinesis:GetRecords",
                 "kinesis:GetShardIterator",
@@ -1158,7 +1044,7 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "GlueJobRolePolicy422D4F2E",
+        "PolicyName": "GlueJobPolicyAEA4B94E",
         "Roles": Array [
           Object {
             "Fn::Select": Array [
@@ -1540,47 +1426,9 @@ Object {
               "Effect": "Allow",
               "Resource": "*",
             },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "GlueJobPolicyAEA4B94E",
-        "Roles": Array [
-          Object {
-            "Fn::Select": Array [
-              1,
-              Object {
-                "Fn::Split": Array [
-                  "/",
-                  Object {
-                    "Fn::Select": Array [
-                      5,
-                      Object {
-                        "Fn::Split": Array [
-                          ":",
-                          Object {
-                            "Fn::GetAtt": Array [
-                              "JobRole014917C6",
-                              "Arn",
-                            ],
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "GlueJobRolePolicy422D4F2E": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
             Object {
               "Action": Array [
+                "kinesis:DescribeStream",
                 "kinesis:DescribeStreamSummary",
                 "kinesis:GetRecords",
                 "kinesis:GetShardIterator",
@@ -1598,7 +1446,7 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "GlueJobRolePolicy422D4F2E",
+        "PolicyName": "GlueJobPolicyAEA4B94E",
         "Roles": Array [
           Object {
             "Fn::Select": Array [

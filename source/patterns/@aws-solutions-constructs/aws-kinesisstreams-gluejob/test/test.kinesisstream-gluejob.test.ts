@@ -88,26 +88,174 @@ test('Pattern minimal deployment', () => {
 
     // check policy to allow read access to Kinesis Stream
     expect(stack).toHaveResourceLike('AWS::IAM::Policy', {
-      PolicyDocument: {
-        Statement: [{
-          Action: [
-            "kinesis:DescribeStreamSummary",
-            "kinesis:GetRecords",
-            "kinesis:GetShardIterator",
-            "kinesis:ListShards",
-            "kinesis:SubscribeToShard",
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "glue:GetJob",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":glue:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":job/",
+                    {
+                      "Ref": "testkinesisstreamslambdaETLJob44B50676"
+                    }
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": "glue:GetSecurityConfiguration",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": "glue:GetTable",
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":glue:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Ref": "GlueDatabase"
+                      },
+                      "/",
+                      {
+                        "Ref": "GlueTable"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":glue:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":database/",
+                      {
+                        "Ref": "GlueDatabase"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":glue:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":catalog"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": "cloudwatch:PutMetricData",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "kinesis:DescribeStream",
+                "kinesis:DescribeStreamSummary",
+                "kinesis:GetRecords",
+                "kinesis:GetShardIterator",
+                "kinesis:ListShards",
+                "kinesis:SubscribeToShard"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testkinesisstreamslambdaKinesisStream374D6D56",
+                  "Arn"
+                ]
+              }
+            }
           ],
-          Effect: "Allow",
-          Resource: {
-            "Fn::GetAtt": [
-                "testkinesisstreamslambdaKinesisStream374D6D56",
-                "Arn",
-            ],
-          },
-        }],
-        Version: "2012-10-17"
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "GlueJobPolicyAEA4B94E",
+        "Roles": [
+          {
+            "Fn::Select": [
+              1,
+              {
+                "Fn::Split": [
+                  "/",
+                  {
+                    "Fn::Select": [
+                      5,
+                      {
+                        "Fn::Split": [
+                          ":",
+                          {
+                            "Fn::GetAtt": [
+                              "JobRole014917C6",
+                              "Arn"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       }
-    }, ResourcePart.Properties);
+    }, ResourcePart.CompleteDefinition);
 });
 
 // --------------------------------------------------------------
@@ -162,26 +310,174 @@ test('Test if existing Glue Job is provided', () => {
 
     // check policy to allow read access to Kinesis Stream
     expect(stack).toHaveResourceLike('AWS::IAM::Policy', {
-        PolicyDocument: {
-            Statement: [{
-                Action: [
-                    "kinesis:DescribeStreamSummary",
-                    "kinesis:GetRecords",
-                    "kinesis:GetShardIterator",
-                    "kinesis:ListShards",
-                    "kinesis:SubscribeToShard",
-                ],
-                Effect: "Allow",
-                Resource: {
-                    "Fn::GetAtt": [
-                        "testkinesisstreamslambdaKinesisStream374D6D56",
-                        "Arn",
-                    ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "glue:GetJob",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":glue:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":job/",
+                    {
+                      "Ref": "ExistingJob"
+                    }
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": "glue:GetSecurityConfiguration",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": "glue:GetTable",
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":glue:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Ref": "GlueDatabase"
+                      },
+                      "/",
+                      {
+                        "Ref": "GlueTable"
+                      }
+                    ]
+                  ]
                 },
-            }],
-            Version: "2012-10-17"
-        }
-    }, ResourcePart.Properties);
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":glue:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":database/",
+                      {
+                        "Ref": "GlueDatabase"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":glue:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":catalog"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": "cloudwatch:PutMetricData",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "kinesis:DescribeStream",
+                "kinesis:DescribeStreamSummary",
+                "kinesis:GetRecords",
+                "kinesis:GetShardIterator",
+                "kinesis:ListShards",
+                "kinesis:SubscribeToShard"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testkinesisstreamslambdaKinesisStream374D6D56",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "GlueJobPolicyAEA4B94E",
+        "Roles": [
+          {
+            "Fn::Select": [
+              1,
+              {
+                "Fn::Split": [
+                  "/",
+                  {
+                    "Fn::Select": [
+                      5,
+                      {
+                        "Fn::Split": [
+                          ":",
+                          {
+                            "Fn::GetAtt": [
+                              "JobRole014917C6",
+                              "Arn"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }, ResourcePart.CompleteDefinition);
 });
 
 // --------------------------------------------------------------
