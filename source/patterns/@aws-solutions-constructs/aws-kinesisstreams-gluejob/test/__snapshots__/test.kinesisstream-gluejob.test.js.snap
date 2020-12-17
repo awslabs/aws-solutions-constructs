@@ -153,6 +153,9 @@ Object {
             Object {
               "Action": "cloudwatch:PutMetricData",
               "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "true",
+                },
                 "StringEquals": Object {
                   "cloudwatch:namespace": "Glue",
                 },
@@ -702,6 +705,9 @@ Object {
             Object {
               "Action": "cloudwatch:PutMetricData",
               "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "true",
+                },
                 "StringEquals": Object {
                   "cloudwatch:namespace": "Glue",
                 },
@@ -1062,6 +1068,9 @@ Object {
             Object {
               "Action": "cloudwatch:PutMetricData",
               "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "true",
+                },
                 "StringEquals": Object {
                   "cloudwatch:namespace": "Glue",
                 },
@@ -1479,6 +1488,9 @@ Object {
             Object {
               "Action": "cloudwatch:PutMetricData",
               "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "true",
+                },
                 "StringEquals": Object {
                   "cloudwatch:namespace": "Glue",
                 },

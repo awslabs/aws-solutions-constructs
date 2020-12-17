@@ -26,8 +26,10 @@ to produce sample data into this data stream using the generator code in the `st
 python generate_data.py --region <region-name> --streanname <name-of-the-stream-obtained-from-the-CloudFormation-Output>
 ```
 
-This will generate data into the Kinesis Data Stream. The ETL transform in AWS Glue writes the data into an S3 bucket. This bucket ARN
-is published in the CloudFormation output. The job also publishes logs into Amazon CloudWatch Logs. Verify the job is running and data is
-being written into the output location.
+This will generate data into the Kinesis Data Stream. For this example the AWS Glue Job has to be manually triggered and stopped (either from the CLI or
+the AWS web console). This is to make sure that you control the time for which you want to run the job and its corresponding cost. Once triggerred
+the ETL transform in AWS Glue writes the data into an S3 bucket. This bucket ARN is published in the CloudFormation output. The job also publishes logs into Amazon CloudWatch Logs. You can also view the job metrics like below.
+
+![Glue CloudWatch Metrics](metrics.png)
 
 &copy; Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.

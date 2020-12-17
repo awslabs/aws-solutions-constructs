@@ -670,6 +670,9 @@
               "Condition": {
                 "StringEquals": {
                   "cloudwatch:namespace": "Glue"
+                },
+                "Bool": {
+                  "aws:SecureTransport": "true"
                 }
               },
               "Effect": "Allow",
@@ -803,6 +806,11 @@
           "S3Bucket07682993",
           "Arn"
         ]
+      }
+    },
+    "GlueJob": {
+      "Value": {
+        "Ref": "CustomETLETLJobE7CE5E27"
       }
     }
   }

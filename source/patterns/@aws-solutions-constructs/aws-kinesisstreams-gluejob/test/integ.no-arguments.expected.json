@@ -409,6 +409,9 @@
               "Condition": {
                 "StringEquals": {
                   "cloudwatch:namespace": "Glue"
+                },
+                "Bool": {
+                  "aws:SecureTransport": "true"
                 }
               },
               "Effect": "Allow",

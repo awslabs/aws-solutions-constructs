@@ -98,5 +98,9 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
     new CfnOutput(this, 'OutputBucket', {
       value: _outputBucket[0].bucketArn
     });
+
+    new CfnOutput(this, 'GlueJob', {
+      value: _customEtlJob.glueJob.ref
+    });
   }
 }
