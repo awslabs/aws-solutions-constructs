@@ -408,7 +408,7 @@
               "Action": "cloudwatch:PutMetricData",
               "Condition": {
                 "StringEquals": {
-                  "cloudwatch:namespace": "AWS/Glue"
+                  "cloudwatch:namespace": "Glue"
                 }
               },
               "Effect": "Allow",

@@ -125,7 +125,12 @@ export class KinesisStreamGlueJob extends Construct {
       }), new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'glue:GetSecurityConfiguration' ],
-        resources: [ '*' ] // Security Configurations have no resource ARNs
+        resources: [ '*' ], // Security Configurations have no resource ARNs
+        conditions: {
+          StringEquals: {
+            "": ""
+          }
+        }
       }), new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'glue:GetTable' ],
@@ -137,11 +142,15 @@ export class KinesisStreamGlueJob extends Construct {
         effect: Effect.ALLOW,
         actions: [ 'cloudwatch:PutMetricData' ],
         resources: [ '*' ], // Metrics do not have resource ARN and hence added conditions
-        conditions: {
+        conditions: [{
           StringEquals: {
-            "cloudwatch:namespace": "AWS/Glue"
+            "cloudwatch:namespace": "Glue"
           }
-        }
+        }, {
+          Bool: {
+            "aws:SecureTransport": "true"
+          }
+        }]
       }), new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'kinesis:DescribeStream', 'kinesis:DescribeStreamSummary', 'kinesis:GetRecords',
