@@ -68,13 +68,13 @@ test('Create a Glue Job outside the construct', () => {
   const stack = new Stack();
   const _existingCfnJob = new CfnJob(stack, 'ExistingJob', {
     command: {
-        name: 'pythonshell',
-        pythonVersion: '2',
-        scriptLocation: 's3://existingFakeLocation/existingScript'
+      name: 'pythonshell',
+      pythonVersion: '2',
+      scriptLocation: 's3://existingFakeLocation/existingScript'
     },
     role: new Role(stack, 'ExistingJobRole', {
-        assumedBy: new ServicePrincipal('glue.amazon.com'),
-        description: 'Existing role'
+      assumedBy: new ServicePrincipal('glue.amazon.com'),
+      description: 'Existing role'
     }).roleArn,
     glueVersion: '1',
     allocatedCapacity: 2,
@@ -84,7 +84,7 @@ test('Create a Glue Job outside the construct', () => {
   });
 
   defaults.buildGlueJob(stack, {
-      existingCfnJob: _existingCfnJob
+    existingCfnJob: _existingCfnJob
   });
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   expect(stack).toHaveResourceLike('AWS::Glue::Job', {
@@ -101,8 +101,8 @@ test('Create a Glue Job outside the construct', () => {
       NumberOfWorkers: 2,
       Role: {
         "Fn::GetAtt": [
-            "ExistingJobRole8F750976",
-            "Arn",
+          "ExistingJobRole8F750976",
+          "Arn",
         ],
       },
       WorkerType: "Standard",
@@ -173,7 +173,7 @@ test('Test custom deployment properties', () => {
             Action: "sts:AssumeRole",
             Effect: "Allow",
             Principal: {
-                Service: "glue.amazon.com"
+              Service: "glue.amazon.com"
             }
           }
         ],
@@ -193,13 +193,13 @@ test('Test custom deployment properties', () => {
             "Fn::Join": [
               "", [
                 "arn:", {
-                    Ref: "AWS::Partition",
+                  Ref: "AWS::Partition",
                 },
                 ":kms:", {
-                    Ref: "AWS::Region",
+                  Ref: "AWS::Region",
                 },
                 ":", {
-                    Ref: "AWS::AccountId",
+                  Ref: "AWS::AccountId",
                 },
                 ":alias/aws/glue",
               ],
@@ -207,7 +207,7 @@ test('Test custom deployment properties', () => {
           },
         },
         S3Encryptions: [{
-            S3EncryptionMode: "SSE-S3",
+          S3EncryptionMode: "SSE-S3",
         }],
       },
       Name: "ETLJobSecurityConfig",

@@ -25,7 +25,7 @@ import { Aws, Construct } from "@aws-cdk/core";
  *  as 'STREAM_NAME'. Example: {STREAM_NAME: 'KinesisStreamConstrct.streamName'}
  */
 export function DefaultGlueTable(scope: Construct, database: CfnDatabase, fieldSchema: CfnTable.ColumnProperty [],
-                                 sourceType: string, parameters?: any): CfnTable {
+  sourceType: string, parameters?: any): CfnTable {
   let _glueTable: CfnTable;
   if (sourceType === 'kinesis') {
     const kinesisStreamName = parameters.STREAM_NAME;

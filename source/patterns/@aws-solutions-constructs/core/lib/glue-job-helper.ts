@@ -82,7 +82,7 @@ export function deployGlueJob(scope: Construct, glueJobProps: CfnJobProps): CfnJ
   _glueJobPolicy.attachToRole(Role.fromRoleArn(scope, 'GlueJobRole', glueJobProps.role));
 
   const _glueJobProps: CfnJobProps = overrideProps(defaults.DefaultGlueJobProps(glueJobProps.role, glueJobProps.command,
-                                                                              _glueSecurityConfigName), glueJobProps);
+    _glueSecurityConfigName), glueJobProps);
 
   const _glueJob: CfnJob = new CfnJob(scope, _jobID, _glueJobProps);
   return _glueJob;

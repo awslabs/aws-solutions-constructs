@@ -21,4 +21,4 @@ export function DefaultGlueDatabase(scope: Construct): CfnDatabase {
       description: 'A Glue database table'
     }
   });
- }
+}

@@ -17,25 +17,23 @@ import * as defaults from '../';
 
 test('create default CfnTable', () => {
   const stack = new Stack();
-  defaults.DefaultGlueTable(stack, defaults.DefaultGlueDatabase(stack),
-  [{
-      name: "id",
-      type: "int",
-      comment: "Identifier for the record"
-    }, {
-      name: "name",
-      type: "string",
-      comment: "The name of the record"
-    }, {
-      name: "type",
-      type: "string",
-      comment: "The type of the record"
-    }, {
-      name: "numericvalue",
-      type: "int",
-      comment: "Some value associated with the record"
-    }]
-  , 'kinesis', {STREAM_NAME: 'fakeStreamName'});
+  defaults.DefaultGlueTable(stack, defaults.DefaultGlueDatabase(stack), [{
+    name: "id",
+    type: "int",
+    comment: "Identifier for the record"
+  }, {
+    name: "name",
+    type: "string",
+    comment: "The name of the record"
+  }, {
+    name: "type",
+    type: "string",
+    comment: "The type of the record"
+  }, {
+    name: "numericvalue",
+    type: "int",
+    comment: "Some value associated with the record"
+  }], 'kinesis', {STREAM_NAME: 'fakeStreamName'});
 
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
