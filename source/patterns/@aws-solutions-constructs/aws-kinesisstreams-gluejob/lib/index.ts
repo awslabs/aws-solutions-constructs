@@ -12,7 +12,7 @@
  */
 
 import { CfnDatabase, CfnJob, CfnJobProps, CfnTable } from '@aws-cdk/aws-glue';
-import { Effect, IRole, Policy, PolicyStatement, Role, ServicePrincipal } from '@aws-cdk/aws-iam';
+import { CfnPolicy, Effect, IRole, Policy, PolicyStatement, Role, ServicePrincipal } from '@aws-cdk/aws-iam';
 import { Stream, StreamProps } from '@aws-cdk/aws-kinesis';
 import { Asset } from '@aws-cdk/aws-s3-assets';
 import { Aws, Construct } from '@aws-cdk/core';
@@ -117,8 +117,7 @@ export class KinesisStreamGlueJob extends Construct {
   }
 
   private buildRolePolicy(scope: Construct, glueDatabase: CfnDatabase, glueTable: CfnTable, role: string): IRole {
-    const _glueJobRole = Role.fromRoleArn(scope, 'GlueJobRole', role);
-    _glueJobRole.attachInlinePolicy(new Policy(scope, 'GlueJobPolicy', {
+    const _glueJobPolicy = new Policy(scope, 'GlueJobPolicy', {
       statements: [ new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'glue:GetJob' ],
@@ -137,7 +136,7 @@ export class KinesisStreamGlueJob extends Construct {
       }), new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'cloudwatch:PutMetricData' ],
-        resources: [ '*' ],
+        resources: [ '*' ], // Metrics do not have resource ARN and hence added conditions
         conditions: {
           StringEquals: {
             "cloudwatch:namespace": "AWS/Glue"
@@ -149,7 +148,21 @@ export class KinesisStreamGlueJob extends Construct {
           'kinesis:GetShardIterator', 'kinesis:ListShards', 'kinesis:SubscribeToShard' ],
         resources: [ this.kinesisStream.streamArn ]
       })]
-    }));
+    });
+
+    (_glueJobPolicy.node.defaultChild as CfnPolicy).cfnOptions.metadata = {
+      cfn_nag: {
+        rules_to_suppress: [{
+          id: 'W12',
+          reason: 'Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.\
+            CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to\
+            publish metrics only for AWS Glue'
+        }]
+      }
+    };
+
+    const _glueJobRole = Role.fromRoleArn(scope, 'GlueJobRole', role);
+    _glueJobRole.attachInlinePolicy(_glueJobPolicy);
     return _glueJobRole;
   }
 
