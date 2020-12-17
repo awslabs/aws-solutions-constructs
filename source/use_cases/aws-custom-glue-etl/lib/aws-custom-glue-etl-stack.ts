@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { StreamEncryption } from '@aws-cdk/aws-kinesis';
 import * as cdk from '@aws-cdk/core';
 import { CfnOutput } from '@aws-cdk/core';
 import { KinesisStreamGlueJob } from '@aws-solutions-constructs/aws-kinesisstreams-gluejob';
@@ -30,48 +29,43 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
     _outputBucket[0].grantReadWrite(_glueJobRole);
 
     const _jobCommand = KinesisStreamGlueJob.createGlueJobCommand(this, 'gluestreaming', '3', _glueJobRole, undefined, `${__dirname}/../etl/transform.py`);
-    const _kinesisStream = defaults.buildKinesisStream(this, {
-      kinesisStreamProps: {
-        encryption: StreamEncryption.UNENCRYPTED
-      }
-    });
-
+    const _kinesisStream = defaults.buildKinesisStream(this, {});
     const _database = KinesisStreamGlueJob.createGlueDatabase(this);
     const _table = KinesisStreamGlueJob.createGlueTable(this, _database, [{
-				  "name": "ventilatorid",
-					"type": "int",
-					"comment": ""
-				},
-				{
-					"name": "eventtime",
-					"type": "string",
-					"comment": ""
-				},
-				{
-					"name": "serialnumber",
-					"type": "string",
-					"comment": ""
-				},
-				{
-					"name": "pressurecontrol",
-					"type": "int",
-					"comment": ""
-				},
-				{
-					"name": "o2stats",
-					"type": "int",
-					"comment": ""
-				},
-				{
-					"name": "minutevolume",
-					"type": "int",
-					"comment": ""
-				},
-				{
-					"name": "manufacturer",
-					"type": "string",
-					"comment": ""
-				}], 'kinesis', { STREAM_NAME: _kinesisStream.streamName });
+      "name": "ventilatorid",
+      "type": "int",
+      "comment": ""
+    },
+    {
+      "name": "eventtime",
+      "type": "string",
+      "comment": ""
+    },
+    {
+      "name": "serialnumber",
+      "type": "string",
+      "comment": ""
+    },
+    {
+      "name": "pressurecontrol",
+      "type": "int",
+      "comment": ""
+    },
+    {
+      "name": "o2stats",
+      "type": "int",
+      "comment": ""
+    },
+    {
+      "name": "minutevolume",
+      "type": "int",
+      "comment": ""
+    },
+    {
+      "name": "manufacturer",
+      "type": "string",
+      "comment": ""
+    }], 'kinesis', { STREAM_NAME: _kinesisStream.streamName });
 
     const _customEtlJob = new KinesisStreamGlueJob(this, 'CustomETL', {
       existingStreamObj: _kinesisStream,
