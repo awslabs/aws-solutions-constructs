@@ -6,6 +6,7 @@ This use case implements an example using the Kinesis Data Streams Glue Job cons
 
 The application architecture uses a custom ETL job defined in AWS Glue that takes in data from Amazon Kinesis Data Streams to
 process and store it in the target datastore as defined by the ETL script (for this example an S3 bucket location)
+
 ![Architecture Diagram](architecture.png)
 
 ## Deployment steps
