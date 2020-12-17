@@ -142,6 +142,11 @@ Object {
             },
             Object {
               "Action": "cloudwatch:PutMetricData",
+              "Condition": Object {
+                "StringEquals": Object {
+                  "cloudwatch:namespace": "AWS/Glue",
+                },
+              },
               "Effect": "Allow",
               "Resource": "*",
             },
@@ -676,6 +681,11 @@ Object {
             },
             Object {
               "Action": "cloudwatch:PutMetricData",
+              "Condition": Object {
+                "StringEquals": Object {
+                  "cloudwatch:namespace": "AWS/Glue",
+                },
+              },
               "Effect": "Allow",
               "Resource": "*",
             },
@@ -1021,6 +1031,11 @@ Object {
             },
             Object {
               "Action": "cloudwatch:PutMetricData",
+              "Condition": Object {
+                "StringEquals": Object {
+                  "cloudwatch:namespace": "AWS/Glue",
+                },
+              },
               "Effect": "Allow",
               "Resource": "*",
             },
@@ -1423,6 +1438,11 @@ Object {
             },
             Object {
               "Action": "cloudwatch:PutMetricData",
+              "Condition": Object {
+                "StringEquals": Object {
+                  "cloudwatch:namespace": "AWS/Glue",
+                },
+              },
               "Effect": "Allow",
               "Resource": "*",
             },

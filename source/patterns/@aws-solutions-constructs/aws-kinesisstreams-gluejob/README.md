@@ -46,11 +46,7 @@ const _jobCommand = KinesisStreamGlueJob.createGlueJobCommand(
     undefined,
     `${__dirname}/../python/transform.py`
 );
-const _kinesisStream = defaults.buildKinesisStream(this, {
-    kinesisStreamProps: {
-        encryption: StreamEncryption.UNENCRYPTED,
-    },
-});
+const _kinesisStream = defaults.buildKinesisStream(this, {});
 
 const _database = KinesisStreamGlueJob.createGlueDatabase(this);
 const _table = KinesisStreamGlueJob.createGlueTable(
@@ -143,6 +139,14 @@ Out of the box implementation of the Construct without any override will set the
 
 -   It creates an AWS S3 Bucket to which the custom ETL Job script can be uploaded
 -   Grants read access to AWS Glue Job Service Principal through S3 Bucket Policy
+
+### Glue Database
+
+-   A Glue database to add the table required to define the schema for the Kinesis stream
+
+### Glue Table
+
+-   A Table with storage descriptor and table input properties using the schema details provided for the records in the Kinesis Data Streams
 
 ## Architecture
 

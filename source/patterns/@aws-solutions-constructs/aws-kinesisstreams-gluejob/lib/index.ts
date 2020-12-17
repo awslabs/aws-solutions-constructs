@@ -137,7 +137,12 @@ export class KinesisStreamGlueJob extends Construct {
       }), new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'cloudwatch:PutMetricData' ],
-        resources: [ '*' ]
+        resources: [ '*' ],
+        conditions: {
+          StringEquals: {
+            "cloudwatch:namespace": "AWS/Glue"
+          }
+        }
       }), new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'kinesis:DescribeStream', 'kinesis:DescribeStreamSummary', 'kinesis:GetRecords',
