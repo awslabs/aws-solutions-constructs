@@ -186,10 +186,11 @@ export class KinesisStreamGlueJob extends Construct {
    * location can be retrieved using @Asset.s3ObjectUrl
    *
    * @param scope - The AWS Construct under the underlying construct should be created
-   * @param _commandName - The identifier/ name of the ETL Job
+   * @param _commandName - The identifier/ name of the ETL Job. The values are glueetl, gluestreaming, pythonshell.
+   * THere is no validation, but if valid values are not provided, the deployment may fail
    * @param pythonVersion - The values as for Glue Documentation are '2' and '3'. There is no validation in the
    * method to check for these values to be forward compatible with Glue API changes. If valid values are not provided
-   * the deployment would fail.
+   * the deployment may fail.
    * @param s3ObjectUrlForScript - If an S3 bucket location for the script exists, set this parameter. If the Bucket
    * is to be created, set the value as undefined. Setting this parameter will ignore @scriptLocationBucketProps as the
    * bucket already exists
