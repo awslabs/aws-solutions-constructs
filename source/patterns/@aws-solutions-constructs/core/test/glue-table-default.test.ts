@@ -59,7 +59,7 @@ test('error condition', () => {
         type: "int",
         comment: "Some value associated with the record"
       }], 'SomeSource', {STREAM_NAME: 'somefakestream'});
-  } catch(error) {
+  } catch (error) {
     expect(error).toBeInstanceOf(Error);
   }
 });
