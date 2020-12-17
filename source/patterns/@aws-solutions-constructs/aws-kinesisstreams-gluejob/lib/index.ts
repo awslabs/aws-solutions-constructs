@@ -117,9 +117,9 @@ export class KinesisStreamGlueJob extends Construct {
   }
 
   private buildRolePolicy(scope: Construct, glueDatabase: CfnDatabase, glueTable: CfnTable, role: string): IRole {
-  const _glueJobRole = Role.fromRoleArn(scope, 'GlueJobRole', role);
-  _glueJobRole.attachInlinePolicy(new Policy(scope, 'GlueJobPolicy', {
-    statements: [ new PolicyStatement({
+    const _glueJobRole = Role.fromRoleArn(scope, 'GlueJobRole', role);
+    _glueJobRole.attachInlinePolicy(new Policy(scope, 'GlueJobPolicy', {
+      statements: [ new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'glue:GetJob' ],
         resources: [ `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:job/${this.glueJob.ref}` ]
@@ -131,8 +131,8 @@ export class KinesisStreamGlueJob extends Construct {
         effect: Effect.ALLOW,
         actions: [ 'glue:GetTable' ],
         resources: [ `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:table/${glueDatabase.ref}/${glueTable.ref}`,
-                    `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:database/${glueDatabase.ref}`,
-                    `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:catalog`
+          `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:database/${glueDatabase.ref}`,
+          `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:catalog`
         ]
       }), new PolicyStatement({
         effect: Effect.ALLOW,
@@ -141,7 +141,7 @@ export class KinesisStreamGlueJob extends Construct {
       }), new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'kinesis:DescribeStream', 'kinesis:DescribeStreamSummary', 'kinesis:GetRecords',
-                  'kinesis:GetShardIterator', 'kinesis:ListShards', 'kinesis:SubscribeToShard' ],
+          'kinesis:GetShardIterator', 'kinesis:ListShards', 'kinesis:SubscribeToShard' ],
         resources: [ this.kinesisStream.streamArn ]
       })]
     }));
@@ -178,12 +178,8 @@ export class KinesisStreamGlueJob extends Construct {
    * @param scriptLocationPath - Set this parameter only if the bucket is to be created. If not then a new
    * Bucket location will be created to upload the ETL script asset
    */
-  public static createGlueJobCommand(scope: Construct,
-                                     _commandName: string,
-                                     pythonVersion: string,
-                                     glueJobRole: Role,
-                                     s3ObjectUrlForScript?: string,
-                                     scriptLocationPath?: string): [ CfnJob.JobCommandProperty, Asset? ] {
+  public static createGlueJobCommand(scope: Construct, _commandName: string, pythonVersion: string, glueJobRole: Role,
+    s3ObjectUrlForScript?: string, scriptLocationPath?: string): [ CfnJob.JobCommandProperty, Asset? ] {
     // create s3 bucket where script can be deployed
     let _scriptLocation: string;
     let _assetLocation: Asset;
@@ -209,8 +205,8 @@ export class KinesisStreamGlueJob extends Construct {
     }, _assetLocation! !== undefined ? _assetLocation! : undefined ];
   }
 
-  public static createGlueTable(scope: Construct, database: CfnDatabase, fieldSchema: CfnTable.ColumnProperty [],
-                                sourceType: string, parameters?: any): CfnTable {
+  public static createGlueTable(scope: Construct, database: CfnDatabase, fieldSchema: CfnTable.ColumnProperty [], sourceType: string,
+    parameters?: any): CfnTable {
     return defaults.DefaultGlueTable(scope, database, fieldSchema, sourceType, parameters);
   }
 

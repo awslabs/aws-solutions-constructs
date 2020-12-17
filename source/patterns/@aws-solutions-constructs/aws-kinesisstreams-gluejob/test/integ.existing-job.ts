@@ -30,7 +30,7 @@ const job = new CfnJob(stack, 'ExistingJob', {
     scriptLocation: new Bucket(stack, 'existingScriptLocation', {
       versioned: false,
       lifecycleRules: [{
-          expiration: Duration.days(30)
+        expiration: Duration.days(30)
       }]
     }).bucketArn,
   },
@@ -41,24 +41,24 @@ const job = new CfnJob(stack, 'ExistingJob', {
 
 // Definitions
 new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', {
-    existingGlueJob: job,
-    fieldSchema: [{
-      name: "id",
-      type: "int",
-      comment: "Identifier for the record"
-    }, {
-      name: "name",
-      type: "string",
-      comment: "The name of the record"
-    }, {
-      name: "type",
-      type: "string",
-      comment: "The type of the record"
-    }, {
-      name: "numericvalue",
-      type: "int",
-      comment: "Some value associated with the record"
-    }]
+  existingGlueJob: job,
+  fieldSchema: [{
+    name: "id",
+    type: "int",
+    comment: "Identifier for the record"
+  }, {
+    name: "name",
+    type: "string",
+    comment: "The name of the record"
+  }, {
+    name: "type",
+    type: "string",
+    comment: "The type of the record"
+  }, {
+    name: "numericvalue",
+    type: "int",
+    comment: "Some value associated with the record"
+  }]
 });
 
 // Synth
