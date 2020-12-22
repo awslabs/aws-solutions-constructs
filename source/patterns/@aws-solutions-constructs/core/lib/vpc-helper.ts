@@ -166,31 +166,3 @@ export function AddAwsServiceEndpoint(scope: Construct, vpc: ec2.Vpc, interfaceT
 
   return;
 }
-
-export function ReplaceEndpointDefaultSecurityGroup(scope: Construct, vpc: ec2.Vpc): ec2.SecurityGroup {
-  const endpointDefaultSecurityGroup = new ec2.SecurityGroup(scope, 'ReplaceEndpointDefaultSecurityGroup', {
-    vpc,
-    allowAllOutbound: true,
-  });
-
-  // Allow https traffic from within the VPC
-  endpointDefaultSecurityGroup.addIngressRule(ec2.Peer.ipv4(vpc.vpcCidrBlock), ec2.Port.tcp(443));
-
-  const cfnSecurityGroup = endpointDefaultSecurityGroup.node.findChild('Resource') as ec2.CfnSecurityGroup;
-  cfnSecurityGroup.cfnOptions.metadata = {
-    cfn_nag: {
-      rules_to_suppress: [
-        {
-          id: 'W5',
-          reason: 'Egress of 0.0.0.0/0 is default and generally considered OK',
-        },
-        {
-          id: 'W40',
-          reason: 'Egress IPProtocol of -1 is default and generally considered OK',
-        },
-      ],
-    },
-  };
-
-  return endpointDefaultSecurityGroup;
-}
