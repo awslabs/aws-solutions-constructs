@@ -11,15 +11,58 @@
  *  and limitations under the License.
  */
 
-import { CfnNotebookInstanceProps } from '@aws-cdk/aws-sagemaker';
+import {
+  CfnNotebookInstanceProps,
+  CfnModelProps,
+  CfnModel,
+  CfnEndpointConfigProps,
+  CfnEndpointProps,
+} from '@aws-cdk/aws-sagemaker';
 
-export function DefaultSagemakerNotebookProps(roleArn: string, kmsKeyId: string,
-  subnetId?: string, securityGroupIds?: string[]): CfnNotebookInstanceProps {
+export function DefaultSagemakerNotebookProps(
+  roleArn: string,
+  kmsKeyId: string,
+  subnetId?: string,
+  securityGroupIds?: string[]
+): CfnNotebookInstanceProps {
   return {
     instanceType: 'ml.t2.medium',
     roleArn,
     kmsKeyId,
-    ... subnetId && {subnetId, directInternetAccess: 'Disabled'},
-    ... securityGroupIds && {securityGroupIds},
+    ...(subnetId && { subnetId, directInternetAccess: 'Disabled' }),
+    ...(securityGroupIds && { securityGroupIds }),
   } as CfnNotebookInstanceProps;
+}
+
+export function DefaultSagemakerModelProps(
+  executionRoleArn: string,
+  primaryContainer: CfnModel.ContainerDefinitionProperty,
+  vpcConfig?: CfnModel.VpcConfigProperty
+): CfnModelProps {
+  return {
+    executionRoleArn,
+    primaryContainer,
+    ...(vpcConfig && { vpcConfig }),
+  } as CfnModelProps;
+}
+
+export function DefaultSagemakerEndpointConfigProps(modelName: string, kmsKeyId?: string): CfnEndpointConfigProps {
+  return {
+    productionVariants: [
+      {
+        modelName,
+        initialInstanceCount: 1,
+        initialVariantWeight: 1.0,
+        instanceType: 'ml.m4.xlarge',
+        variantName: 'AllTraffic',
+      },
+    ],
+    ...(kmsKeyId && { kmsKeyId }),
+  } as CfnEndpointConfigProps;
+}
+
+export function DefaultSagemakerEndpointProps(endpointConfigName: string): CfnEndpointProps {
+  return {
+    endpointConfigName,
+  } as CfnEndpointProps;
 }
