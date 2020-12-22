@@ -122,24 +122,24 @@ export class LambdaToSageMakerEndpoint extends cdk.Construct {
       // If deployNatGateway is true, create Public and Private subnets. Otherwise, create Isolated subnets only
       const subnetConfiguration: ec2.SubnetConfiguration[] = props.deployNatGateway
         ? [
-            {
-              cidrMask: 18,
-              name: 'Public',
-              subnetType: ec2.SubnetType.PUBLIC,
-            },
-            {
-              cidrMask: 18,
-              name: 'Private',
-              subnetType: ec2.SubnetType.PRIVATE,
-            },
-          ]
+          {
+            cidrMask: 18,
+            name: 'Public',
+            subnetType: ec2.SubnetType.PUBLIC,
+          },
+          {
+            cidrMask: 18,
+            name: 'Private',
+            subnetType: ec2.SubnetType.PRIVATE,
+          },
+        ]
         : [
-            {
-              cidrMask: 18,
-              name: 'Isolated',
-              subnetType: ec2.SubnetType.ISOLATED,
-            },
-          ];
+          {
+            cidrMask: 18,
+            name: 'Isolated',
+            subnetType: ec2.SubnetType.ISOLATED,
+          },
+        ];
 
       // create the VPC
       this.vpc = defaults.buildVpc(scope, {
