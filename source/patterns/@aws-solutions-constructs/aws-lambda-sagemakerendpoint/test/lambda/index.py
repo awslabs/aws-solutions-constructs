@@ -7,9 +7,7 @@ sagemaker_client = boto3.client("sagemaker-runtime")
 
 
 def handler(event, context):
-
-    # event_body = json.loads(event["body"])
-    event_body = event["body"]
+    event_body = json.loads(event["body"])
     endpoint_name = os.environ["ENDPOINT_NAME"]
     return invoke(event_body, endpoint_name)
 
