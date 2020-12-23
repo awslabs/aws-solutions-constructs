@@ -17,6 +17,7 @@ import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
 import '@aws-cdk/assert/jest';
+import { getPartitionKeyNameFromTable } from '../lib/dynamodb-table-helper';
 
 test('snapshot test TableProps default params', () => {
   const stack = new Stack();
@@ -341,4 +342,30 @@ test('test buildDynamoDBTableWithStream with existingTableObj', () => {
       StreamViewType: "NEW_IMAGE"
     }
   }));
+});
+
+test('test getPartitionKeyNameFromTable()', () => {
+  const partitionKeyName = 'testPartitionKey';
+
+  const stack = new Stack();
+
+  const defaultProps: dynamodb.TableProps = defaults.DefaultTableProps;
+
+  const inProps: dynamodb.TableProps = {
+    partitionKey: {
+      name: partitionKeyName,
+      type: dynamodb.AttributeType.STRING
+    },
+    sortKey: {
+      name: 'sort_key',
+      type: dynamodb.AttributeType.STRING
+    }
+  };
+
+  const outProps = overrideProps(defaultProps, inProps);
+  const newTable = new dynamodb.Table(stack, 'test-dynamo-override', outProps);
+
+  const testKeyName = getPartitionKeyNameFromTable(newTable);
+
+  expect(testKeyName).toEqual(partitionKeyName);
 });

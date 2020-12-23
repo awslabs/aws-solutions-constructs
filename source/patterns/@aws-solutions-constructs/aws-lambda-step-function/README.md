@@ -83,6 +83,9 @@ Out of the box implementation of the Construct without any override will set the
 * Configure limited privilege access IAM role for Lambda function
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
 * Enable X-Ray Tracing
+* Set Environment Variables
+  * STATE_MACHINE_ARN
+  * AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x and higher functions)
 
 ### AWS Step Function
 * Enable CloudWatch logging for API Gateway

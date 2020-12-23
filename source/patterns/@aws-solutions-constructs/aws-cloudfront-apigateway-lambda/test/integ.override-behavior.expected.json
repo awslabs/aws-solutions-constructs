@@ -13,8 +13,8 @@
             "CookiesConfig": {
               "CookieBehavior": "none"
             },
-            "EnableAcceptEncodingGzip": false,
             "EnableAcceptEncodingBrotli": false,
+            "EnableAcceptEncodingGzip": false,
             "HeadersConfig": {
               "HeaderBehavior": "none"
             },
@@ -37,8 +37,8 @@
             "CookiesConfig": {
               "CookieBehavior": "none"
             },
-            "EnableAcceptEncodingGzip": false,
             "EnableAcceptEncodingBrotli": false,
+            "EnableAcceptEncodingGzip": false,
             "HeadersConfig": {
               "HeaderBehavior": "none"
             },
@@ -810,7 +810,10 @@
           "Origins": [
             {
               "CustomOriginConfig": {
-                "OriginProtocolPolicy": "https-only"
+                "OriginProtocolPolicy": "https-only",
+                "OriginSSLProtocols": [
+                  "TLSv1.2"
+                ]
               },
               "DomainName": {
                 "Fn::Select": [
@@ -871,7 +874,10 @@
             },
             {
               "CustomOriginConfig": {
-                "OriginProtocolPolicy": "https-only"
+                "OriginProtocolPolicy": "https-only",
+                "OriginSSLProtocols": [
+                  "TLSv1.2"
+                ]
               },
               "DomainName": {
                 "Fn::Select": [

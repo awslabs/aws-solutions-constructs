@@ -16,7 +16,7 @@ import * as iam from '@aws-cdk/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
-import { overrideProps } from '@aws-solutions-constructs/core';
+import { getPartitionKeyNameFromTable, overrideProps } from '@aws-solutions-constructs/core';
 import { LogGroup } from '@aws-cdk/aws-logs';
 
 /**
@@ -29,6 +29,12 @@ export interface ApiGatewayToDynamoDBProps {
    * @default - Default props are used
    */
   readonly dynamoTableProps?: dynamodb.TableProps,
+  /**
+   * Existing instance of DynamoDB table object, If this is set then the dynamoTableProps is ignored
+   *
+   * @default - None
+   */
+  readonly existingTableObj?: dynamodb.Table,
   /**
    * Optional user-provided props to override the default props for the API Gateway.
    *
@@ -99,16 +105,25 @@ export class ApiGatewayToDynamoDB extends Construct {
   constructor(scope: Construct, id: string, props: ApiGatewayToDynamoDBProps) {
     super(scope, id);
     let partitionKeyName: string;
+    let dynamoTableProps: dynamodb.TableProps;
 
     // Set the default props for DynamoDB table
     if (props.dynamoTableProps) {
-      const dynamoTableProps: dynamodb.TableProps = overrideProps(defaults.DefaultTableProps, props.dynamoTableProps);
+      dynamoTableProps = overrideProps(defaults.DefaultTableProps, props.dynamoTableProps);
       partitionKeyName = dynamoTableProps.partitionKey.name;
-      this.dynamoTable = new dynamodb.Table(this, 'DynamoTable', dynamoTableProps);
     } else {
       partitionKeyName = defaults.DefaultTableProps.partitionKey.name;
-      this.dynamoTable = new dynamodb.Table(this, 'DynamoTable', defaults.DefaultTableProps);
+      dynamoTableProps = defaults.DefaultTableProps;
     }
+
+    if (props.existingTableObj) {
+      partitionKeyName = getPartitionKeyNameFromTable(props.existingTableObj);
+    }
+
+    this.dynamoTable = defaults.buildDynamoDBTable(this, {
+      existingTableObj: props.existingTableObj,
+      dynamoTableProps,
+    });
 
     // Setup the API Gateway
     [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] = defaults.GlobalRestApi(this, props.apiGatewayProps);

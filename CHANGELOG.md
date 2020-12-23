@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.78.0 (2020-12-22)
+
+### Changed
+- Upgraded all patterns to CDK v1.78.0
+- Allow for `existingTableObj?` for `aws-apigateway-dynamodb` pattern ([#53](https://github.com/awslabs/aws-solutions-constructs/issues/53))
+- Updated `aws-cloudfront-apigateway-*` and `aws-cloudfront-mediastore` patterns due to CDK v1.78.0 breaking change: `cloudfront-origins: Default minimum origin SSL protocol for HttpOrigin and LoadBalancerOrigin changed from SSLv3 to TLSv1.2.`
+
 ## 1.77.0 (2020-12-16)
 
 ### Added

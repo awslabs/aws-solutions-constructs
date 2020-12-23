@@ -75,6 +75,10 @@ Out of the box implementation of the Construct without any override will set the
 * Configure limited privilege access IAM role for Lambda function
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
 * Enable X-Ray Tracing
+* Set Environment Variables
+  * SNS_TOPIC_NAME
+  * SNS_TOPIC_ARN
+  * AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x and higher functions)
 
 ### Amazon SNS Topic
 * Configure least privilege access permissions for SNS Topic
