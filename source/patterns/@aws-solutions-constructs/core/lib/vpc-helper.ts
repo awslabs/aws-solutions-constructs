@@ -11,9 +11,9 @@
  *  and limitations under the License.
  */
 
-import * as ec2 from '@aws-cdk/aws-ec2';
-import { Construct } from '@aws-cdk/core';
-import { overrideProps } from './utils';
+import * as ec2 from "@aws-cdk/aws-ec2";
+import { Construct } from "@aws-cdk/core";
+import { overrideProps } from "./utils";
 import { DefaultVpcProps } from './vpc-defaults';
 
 export interface BuildVpcProps {
@@ -44,26 +44,27 @@ export function buildVpc(scope: Construct, props?: BuildVpcProps): ec2.Vpc {
   }
 
   if (props?.constructVpcProps) {
-    cumulativeProps = overrideProps(cumulativeProps, props?.constructVpcProps);
+    cumulativeProps = overrideProps(
+      cumulativeProps,
+      props?.constructVpcProps
+    );
   }
 
-  const vpc = new ec2.Vpc(scope, 'Vpc', cumulativeProps);
+  const vpc = new ec2.Vpc(scope, "Vpc", cumulativeProps);
 
   // Add VPC FlowLogs with the default setting of trafficType:ALL and destination: CloudWatch Logs
-  vpc.addFlowLog('FlowLog');
+  vpc.addFlowLog("FlowLog");
 
   // Add Cfn Nag suppression for PUBLIC subnets to suppress WARN W33: EC2 Subnet should not have MapPublicIpOnLaunch set to true
   vpc.publicSubnets.forEach((subnet) => {
     const cfnSubnet = subnet.node.defaultChild as ec2.CfnSubnet;
     cfnSubnet.cfnOptions.metadata = {
       cfn_nag: {
-        rules_to_suppress: [
-          {
-            id: 'W33',
-            reason: 'Allow Public Subnets to have MapPublicIpOnLaunch set to true',
-          },
-        ],
-      },
+        rules_to_suppress: [{
+          id: 'W33',
+          reason: 'Allow Public Subnets to have MapPublicIpOnLaunch set to true'
+        }]
+      }
     };
   });
 
@@ -71,17 +72,17 @@ export function buildVpc(scope: Construct, props?: BuildVpcProps): ec2.Vpc {
 }
 
 export enum ServiceEndpointTypes {
-  DYNAMODB = 'DDB',
-  SNS = 'SNS',
-  SQS = 'SQS',
-  S3 = 'S3',
-  STEPFUNCTIONS = 'STEPFUNCTIONS',
-  SAGEMAKER_RUNTIME = 'SAGEMAKER_RUNTIME',
+  DYNAMODB = "DDB",
+  SNS = "SNS",
+  SQS = "SQS",
+  S3 = "S3",
+  STEPFUNCTIONS = "STEPFUNCTIONS",
+  SAGEMAKER_RUNTIME = "SAGEMAKER_RUNTIME",
 }
 
 enum EndpointTypes {
-  GATEWAY = 'Gateway',
-  INTERFACE = 'Interface',
+  GATEWAY = "Gateway",
+  INTERFACE = "Interface",
 }
 
 interface EndpointDefinition {
@@ -119,12 +120,18 @@ const endpointSettings: EndpointDefinition[] = [
   },
 ];
 
-export function AddAwsServiceEndpoint(scope: Construct, vpc: ec2.Vpc, interfaceTag: ServiceEndpointTypes) {
+export function AddAwsServiceEndpoint(
+  scope: Construct,
+  vpc: ec2.Vpc,
+  interfaceTag: ServiceEndpointTypes
+) {
   if (!vpc.node.children.some((child) => child.node.id === interfaceTag)) {
-    const service = endpointSettings.find((endpoint) => endpoint.endpointName === interfaceTag);
+    const service = endpointSettings.find(
+      (endpoint) => endpoint.endpointName === interfaceTag
+    );
 
     if (!service) {
-      throw new Error('Unsupported Service sent to AddServiceEndpoint');
+      throw new Error("Unsupported Service sent to AddServiceEndpoint");
     }
 
     if (service.endpointType === EndpointTypes.GATEWAY) {
@@ -133,25 +140,37 @@ export function AddAwsServiceEndpoint(scope: Construct, vpc: ec2.Vpc, interfaceT
       });
     }
     if (service.endpointType === EndpointTypes.INTERFACE) {
-      const endpointDefaultSecurityGroup = new ec2.SecurityGroup(scope, 'ReplaceEndpointDefaultSecurityGroup', {
-        vpc,
-        allowAllOutbound: true,
-      });
+
+      const endpointDefaultSecurityGroup = new ec2.SecurityGroup(
+        scope,
+        "ReplaceEndpointDefaultSecurityGroup",
+        {
+          vpc,
+          allowAllOutbound: true,
+        }
+      );
 
       // Allow https traffic from within the VPC
-      endpointDefaultSecurityGroup.addIngressRule(ec2.Peer.ipv4(vpc.vpcCidrBlock), ec2.Port.tcp(443));
+      endpointDefaultSecurityGroup.addIngressRule(
+        ec2.Peer.ipv4(vpc.vpcCidrBlock),
+        ec2.Port.tcp(443),
+      );
 
-      const cfnSecurityGroup = endpointDefaultSecurityGroup.node.findChild('Resource') as ec2.CfnSecurityGroup;
+      const cfnSecurityGroup = endpointDefaultSecurityGroup.node.findChild(
+        "Resource"
+      ) as ec2.CfnSecurityGroup;
       cfnSecurityGroup.cfnOptions.metadata = {
         cfn_nag: {
           rules_to_suppress: [
             {
-              id: 'W5',
-              reason: 'Egress of 0.0.0.0/0 is default and generally considered OK',
+              id: "W5",
+              reason:
+                "Egress of 0.0.0.0/0 is default and generally considered OK",
             },
             {
-              id: 'W40',
-              reason: 'Egress IPProtocol of -1 is default and generally considered OK',
+              id: "W40",
+              reason:
+                "Egress IPProtocol of -1 is default and generally considered OK",
             },
           ],
         },
@@ -159,7 +178,7 @@ export function AddAwsServiceEndpoint(scope: Construct, vpc: ec2.Vpc, interfaceT
 
       vpc.addInterfaceEndpoint(interfaceTag, {
         service: service.endpointInterfaceService as ec2.InterfaceVpcEndpointAwsService,
-        securityGroups: [endpointDefaultSecurityGroup],
+        securityGroups: [ endpointDefaultSecurityGroup ],
       });
     }
   }
