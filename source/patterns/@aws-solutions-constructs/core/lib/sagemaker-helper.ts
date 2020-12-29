@@ -355,7 +355,7 @@ export function createSagemakerModel(
 
     return model;
   } else {
-    throw Error('You need to provide at least primnaryContainer to create Sagemaker Model');
+    throw Error('You need to provide at least primaryContainer to create Sagemaker Model');
   }
 }
 
