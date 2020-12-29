@@ -87,6 +87,8 @@ Out-of-the-box implementation of this Construct (without any overridden properti
 * Configure limited privilege access IAM role for Lambda functions.
 * Enable reusing connections with Keep-Alive for NodeJs Lambda functions.
 * Enable X-Ray Tracing
+* Set Environment Variables
+  * AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x and higher functions)
 
 ### Amazon SQS Queue
 * Deploy a dead letter queue for the primary queue.

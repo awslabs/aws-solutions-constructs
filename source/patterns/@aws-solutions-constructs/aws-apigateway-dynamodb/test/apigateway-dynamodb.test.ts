@@ -13,23 +13,23 @@
 
 // Imports
 import { Stack } from "@aws-cdk/core";
-import { ApiGatewayToDynamoDB, ApiGatewayToDynamoDBProps } from '../lib';
-import { SynthUtils } from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
-import { AttributeType } from "@aws-cdk/aws-dynamodb";
+import { ApiGatewayToDynamoDB, ApiGatewayToDynamoDBProps } from "../lib";
+import { SynthUtils } from "@aws-cdk/assert";
+import "@aws-cdk/assert/jest";
+import * as ddb from "@aws-cdk/aws-dynamodb";
 import * as api from "@aws-cdk/aws-apigateway";
 
-test('snapshot test ApiGatewayToDynamoDB default params', () => {
+test("snapshot test ApiGatewayToDynamoDB default params", () => {
   const stack = new Stack();
   const apiGatewayToDynamoDBProps: ApiGatewayToDynamoDBProps = {};
-  new ApiGatewayToDynamoDB(stack, 'test-api-gateway-dynamodb-default', apiGatewayToDynamoDBProps);
+  new ApiGatewayToDynamoDB( stack, "test-api-gateway-dynamodb-default", apiGatewayToDynamoDBProps);
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
-test('check properties', () => {
+test("check properties", () => {
   const stack = new Stack();
   const apiGatewayToDynamoDBProps: ApiGatewayToDynamoDBProps = {};
-  const construct = new ApiGatewayToDynamoDB(stack, 'test-api-gateway-dynamodb-default', apiGatewayToDynamoDBProps);
+  const construct = new ApiGatewayToDynamoDB( stack, "test-api-gateway-dynamodb-default", apiGatewayToDynamoDBProps);
 
   expect(construct.dynamoTable !== null);
   expect(construct.apiGateway !== null);
@@ -38,7 +38,7 @@ test('check properties', () => {
   expect(construct.apiGatewayLogGroup !== null);
 });
 
-test('check allow CRUD operations', () => {
+test("check allow CRUD operations", () => {
   const stack = new Stack();
   const apiGatewayToDynamoDBProps: ApiGatewayToDynamoDBProps = {
     allowReadOperation: true,
@@ -46,9 +46,9 @@ test('check allow CRUD operations', () => {
     createRequestTemplate: "{}",
     allowDeleteOperation: true,
     allowUpdateOperation: true,
-    updateRequestTemplate: "{}"
+    updateRequestTemplate: "{}",
   };
-  new ApiGatewayToDynamoDB(stack, 'test-api-gateway-dynamodb', apiGatewayToDynamoDBProps);
+  new ApiGatewayToDynamoDB(stack, "test-api-gateway-dynamodb", apiGatewayToDynamoDBProps);
 
   expect(stack).toHaveResource("AWS::IAM::Policy", {
     PolicyDocument: {
@@ -57,71 +57,59 @@ test('check allow CRUD operations', () => {
           Action: "dynamodb:PutItem",
           Effect: "Allow",
           Resource: {
-            "Fn::GetAtt": [
-              "testapigatewaydynamodbDynamoTableEEE3F463",
-              "Arn"
-            ]
-          }
+            "Fn::GetAtt": ["testapigatewaydynamodbDynamoTableEEE3F463", "Arn"],
+          },
         },
         {
           Action: "dynamodb:Query",
           Effect: "Allow",
           Resource: {
-            "Fn::GetAtt": [
-              "testapigatewaydynamodbDynamoTableEEE3F463",
-              "Arn"
-            ]
-          }
+            "Fn::GetAtt": ["testapigatewaydynamodbDynamoTableEEE3F463", "Arn"],
+          },
         },
         {
           Action: "dynamodb:UpdateItem",
           Effect: "Allow",
           Resource: {
-            "Fn::GetAtt": [
-              "testapigatewaydynamodbDynamoTableEEE3F463",
-              "Arn"
-            ]
-          }
+            "Fn::GetAtt": ["testapigatewaydynamodbDynamoTableEEE3F463", "Arn"],
+          },
         },
         {
           Action: "dynamodb:DeleteItem",
           Effect: "Allow",
           Resource: {
-            "Fn::GetAtt": [
-              "testapigatewaydynamodbDynamoTableEEE3F463",
-              "Arn"
-            ]
-          }
-        }
+            "Fn::GetAtt": ["testapigatewaydynamodbDynamoTableEEE3F463", "Arn"],
+          },
+        },
       ],
-      Version: "2012-10-17"
+      Version: "2012-10-17",
     },
     PolicyName: "testapigatewaydynamodbapigatewayroleDefaultPolicy43AC565D",
     Roles: [
       {
-        Ref: "testapigatewaydynamodbapigatewayrole961B19C4"
-      }
-    ]
+        Ref: "testapigatewaydynamodbapigatewayrole961B19C4",
+      },
+    ],
   });
 
   expect(stack).toHaveResource("AWS::ApiGateway::Method", {
     HttpMethod: "GET",
-    AuthorizationType: "AWS_IAM"
+    AuthorizationType: "AWS_IAM",
   });
 
   expect(stack).toHaveResource("AWS::ApiGateway::Method", {
     HttpMethod: "POST",
-    AuthorizationType: "AWS_IAM"
+    AuthorizationType: "AWS_IAM",
   });
 
   expect(stack).toHaveResource("AWS::ApiGateway::Method", {
     HttpMethod: "PUT",
-    AuthorizationType: "AWS_IAM"
+    AuthorizationType: "AWS_IAM",
   });
 
   expect(stack).toHaveResource("AWS::ApiGateway::Method", {
     HttpMethod: "DELETE",
-    AuthorizationType: "AWS_IAM"
+    AuthorizationType: "AWS_IAM",
   });
 
   expect(stack).toHaveResource("AWS::ApiGateway::Resource", {
@@ -129,13 +117,13 @@ test('check allow CRUD operations', () => {
   });
 });
 
-test('check allow read and update only', () => {
+test("check allow read and update only", () => {
   const stack = new Stack();
   const apiGatewayToDynamoDBProps: ApiGatewayToDynamoDBProps = {
     allowUpdateOperation: true,
-    updateRequestTemplate: "{}"
+    updateRequestTemplate: "{}",
   };
-  new ApiGatewayToDynamoDB(stack, 'test-api-gateway-dynamodb', apiGatewayToDynamoDBProps);
+  new ApiGatewayToDynamoDB(stack, "test-api-gateway-dynamodb", apiGatewayToDynamoDBProps);
 
   expect(stack).toHaveResource("AWS::IAM::Policy", {
     PolicyDocument: {
@@ -144,84 +132,108 @@ test('check allow read and update only', () => {
           Action: "dynamodb:Query",
           Effect: "Allow",
           Resource: {
-            "Fn::GetAtt": [
-              "testapigatewaydynamodbDynamoTableEEE3F463",
-              "Arn"
-            ]
-          }
+            "Fn::GetAtt": ["testapigatewaydynamodbDynamoTableEEE3F463", "Arn"],
+          },
         },
         {
           Action: "dynamodb:UpdateItem",
           Effect: "Allow",
           Resource: {
-            "Fn::GetAtt": [
-              "testapigatewaydynamodbDynamoTableEEE3F463",
-              "Arn"
-            ]
-          }
-        }
+            "Fn::GetAtt": ["testapigatewaydynamodbDynamoTableEEE3F463", "Arn"],
+          },
+        },
       ],
-      Version: "2012-10-17"
+      Version: "2012-10-17",
     },
     PolicyName: "testapigatewaydynamodbapigatewayroleDefaultPolicy43AC565D",
     Roles: [
       {
-        Ref: "testapigatewaydynamodbapigatewayrole961B19C4"
-      }
-    ]
+        Ref: "testapigatewaydynamodbapigatewayrole961B19C4",
+      },
+    ],
   });
 
   expect(stack).toHaveResource("AWS::ApiGateway::Method", {
     HttpMethod: "GET",
-    AuthorizationType: "AWS_IAM"
+    AuthorizationType: "AWS_IAM",
   });
 });
 
-test('check using custom partition key for dynamodb', () => {
+test("check using custom partition key for dynamodb", () => {
   const stack = new Stack();
   const apiGatewayToDynamoDBProps: ApiGatewayToDynamoDBProps = {
     dynamoTableProps: {
       partitionKey: {
-        name: 'page_id',
-        type: AttributeType.STRING
-      }
-    }
+        name: "page_id",
+        type: ddb.AttributeType.STRING,
+      },
+    },
   };
-  new ApiGatewayToDynamoDB(stack, 'test-api-gateway-dynamodb', apiGatewayToDynamoDBProps);
+  new ApiGatewayToDynamoDB(stack, "test-api-gateway-dynamodb", apiGatewayToDynamoDBProps);
 
   expect(stack).toHaveResource("AWS::ApiGateway::Resource", {
     PathPart: "{page_id}",
   });
-
 });
 
-test('override apiGatewayProps for api gateway', () => {
+test("override apiGatewayProps for api gateway", () => {
   const stack = new Stack();
   const apiGatewayToDynamoDBProps: ApiGatewayToDynamoDBProps = {
     apiGatewayProps: {
-      description: 'This is a sample description for api gateway'
-    }
+      description: "This is a sample description for api gateway",
+    },
   };
-  new ApiGatewayToDynamoDB(stack, 'test-api-gateway-dynamodb', apiGatewayToDynamoDBProps);
+  new ApiGatewayToDynamoDB(stack, "test-api-gateway-dynamodb", apiGatewayToDynamoDBProps);
 
   expect(stack).toHaveResource("AWS::ApiGateway::RestApi", {
-    Description: "This is a sample description for api gateway"
+    Description: "This is a sample description for api gateway",
   });
-
 });
 
-test('Test deployment ApiGateway AuthorizationType override', () => {
+test("Test deployment ApiGateway AuthorizationType override", () => {
   const stack = new Stack();
-  new ApiGatewayToDynamoDB(stack, 'api-gateway-dynamodb', {
+  new ApiGatewayToDynamoDB(stack, "api-gateway-dynamodb", {
     apiGatewayProps: {
       defaultMethodOptions: {
-        authorizationType: api.AuthorizationType.NONE
-      }
-    }
+        authorizationType: api.AuthorizationType.NONE,
+      },
+    },
   });
 
   expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
     HttpMethod: "GET",
-    AuthorizationType: "NONE"
+    AuthorizationType: "NONE",
+  });
+});
+
+test("Test deployment with existing DynamoDB table", () => {
+  const oddPartitionKeyName = 'oddName';
+  const oddReadCapacity = 23;
+
+  const stack = new Stack();
+  const table = new ddb.Table(stack, "existing-table", {
+    partitionKey: {
+      name: oddPartitionKeyName,
+      type: ddb.AttributeType.STRING,
+    },
+    readCapacity: oddReadCapacity
+  });
+
+  const apiGatewayToDynamoDBProps: ApiGatewayToDynamoDBProps = {
+    existingTableObj: table
+  };
+  new ApiGatewayToDynamoDB(stack, "test-api-gateway-dynamodb-default", apiGatewayToDynamoDBProps);
+  // Confirm there is only the one table
+  expect(stack).toCountResources("AWS::DynamoDB::Table", 1);
+
+  // Confirm that the one table is the one create here
+  expect(stack).toHaveResourceLike("AWS::DynamoDB::Table", {
+    ProvisionedThroughput: {
+      ReadCapacityUnits: oddReadCapacity,
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::ApiGateway::Resource", {
+    PathPart: `{${oddPartitionKeyName}}`,
   });
 });
