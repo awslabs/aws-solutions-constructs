@@ -2,9 +2,7 @@ import os
 import json
 import boto3
 
-
 sagemaker_client = boto3.client("sagemaker-runtime")
-
 
 def handler(event, context):
     event_body = json.loads(event["body"])
