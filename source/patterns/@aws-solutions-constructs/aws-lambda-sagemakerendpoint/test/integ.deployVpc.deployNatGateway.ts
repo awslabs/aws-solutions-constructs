@@ -14,9 +14,7 @@
 // Imports
 import { Stack, Duration, App } from '@aws-cdk/core';
 import { LambdaToSageMakerEndpoint, LambdaToSageMakerEndpointProps } from '../lib';
-import * as defaults from '@aws-solutions-constructs/core';
 import * as lambda from '@aws-cdk/aws-lambda';
-import * as ec2 from '@aws-cdk/aws-ec2';
 import * as iam from '@aws-cdk/aws-iam';
 
 // Setup
@@ -35,27 +33,6 @@ sagemakerRole.addToPolicy(
     resources: ['arn:aws:s3:::*'],
   })
 );
-
-const vpc = defaults.buildVpc(stack, {
-  constructVpcProps: {
-    enableDnsHostnames: true,
-    enableDnsSupport: true,
-    natGateways: 0,
-    subnetConfiguration: [
-      {
-        cidrMask: 18,
-        name: 'Isolated',
-        subnetType: ec2.SubnetType.ISOLATED,
-      },
-    ],
-  },
-});
-
-// Add S3 VPC Gateway Endpint, required by SageMaker to access Models artifacts via AWS private network
-defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.S3);
-// Add SAGEMAKER_RUNTIME VPC Interface Endpint, required by the lambda function to invoke the SageMaker endpoint
-defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.SAGEMAKER_RUNTIME);
-
 const props: LambdaToSageMakerEndpointProps = {
   modelProps: {
     executionRoleArn: sagemakerRole.roleArn,
@@ -64,7 +41,8 @@ const props: LambdaToSageMakerEndpointProps = {
       modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
     },
   },
-  existingVpc: vpc,
+  deployVpc: true,
+  deployNatGateway: true,
   lambdaFunctionProps: {
     runtime: lambda.Runtime.PYTHON_3_8,
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),

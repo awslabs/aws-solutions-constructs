@@ -40,7 +40,7 @@ const [sageMakerEndpoint] = defaults.deploySagemakerEndpoint(stack, {
     executionRoleArn: sagemakerRole.roleArn,
     primaryContainer: {
       image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
-      modelDataUrl: 's3://tarekaws-ca-central-1/models/model.tar.gz',
+      modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
     },
   },
   role: sagemakerRole,

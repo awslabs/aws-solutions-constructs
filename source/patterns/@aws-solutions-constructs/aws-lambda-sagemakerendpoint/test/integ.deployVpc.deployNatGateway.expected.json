@@ -140,13 +140,13 @@
           ],
           "Subnets": [
             {
-              "Ref": "VpcIsolatedSubnet1SubnetE48C5737"
+              "Ref": "VpcPrivateSubnet1Subnet536B997A"
             },
             {
-              "Ref": "VpcIsolatedSubnet2Subnet16364B91"
+              "Ref": "VpcPrivateSubnet2Subnet3788AAA1"
             },
             {
-              "Ref": "VpcIsolatedSubnet3Subnet6840A2D4"
+              "Ref": "VpcPrivateSubnet3SubnetF258B56E"
             }
           ]
         }
@@ -459,13 +459,13 @@
           ],
           "SubnetIds": [
             {
-              "Ref": "VpcIsolatedSubnet1SubnetE48C5737"
+              "Ref": "VpcPrivateSubnet1Subnet536B997A"
             },
             {
-              "Ref": "VpcIsolatedSubnet2Subnet16364B91"
+              "Ref": "VpcPrivateSubnet2Subnet3788AAA1"
             },
             {
-              "Ref": "VpcIsolatedSubnet3Subnet6840A2D4"
+              "Ref": "VpcPrivateSubnet3SubnetF258B56E"
             }
           ]
         }
@@ -500,10 +500,299 @@
         ]
       }
     },
-    "VpcIsolatedSubnet1SubnetE48C5737": {
+    "VpcPublicSubnet1Subnet5C2D37C4": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "CidrBlock": "10.0.0.0/18",
+        "CidrBlock": "10.0.0.0/20",
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "AvailabilityZone": "test-region-1a",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemakerendpoint/Vpc/PublicSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W33",
+              "reason": "Allow Public Subnets to have MapPublicIpOnLaunch set to true"
+            }
+          ]
+        }
+      }
+    },
+    "VpcPublicSubnet1RouteTable6C95E38E": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemakerendpoint/Vpc/PublicSubnet1"
+          }
+        ]
+      }
+    },
+    "VpcPublicSubnet1RouteTableAssociation97140677": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "VpcPublicSubnet1RouteTable6C95E38E"
+        },
+        "SubnetId": {
+          "Ref": "VpcPublicSubnet1Subnet5C2D37C4"
+        }
+      }
+    },
+    "VpcPublicSubnet1DefaultRoute3DA9E72A": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "VpcPublicSubnet1RouteTable6C95E38E"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "VpcIGWD7BA715C"
+        }
+      },
+      "DependsOn": [
+        "VpcVPCGWBF912B6E"
+      ]
+    },
+    "VpcPublicSubnet1EIPD7E02669": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemakerendpoint/Vpc/PublicSubnet1"
+          }
+        ]
+      }
+    },
+    "VpcPublicSubnet1NATGateway4D7517AA": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "VpcPublicSubnet1EIPD7E02669",
+            "AllocationId"
+          ]
+        },
+        "SubnetId": {
+          "Ref": "VpcPublicSubnet1Subnet5C2D37C4"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemakerendpoint/Vpc/PublicSubnet1"
+          }
+        ]
+      }
+    },
+    "VpcPublicSubnet2Subnet691E08A3": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.16.0/20",
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "AvailabilityZone": "test-region-1b",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemakerendpoint/Vpc/PublicSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W33",
+              "reason": "Allow Public Subnets to have MapPublicIpOnLaunch set to true"
+            }
+          ]
+        }
+      }
+    },
+    "VpcPublicSubnet2RouteTable94F7E489": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemakerendpoint/Vpc/PublicSubnet2"
+          }
+        ]
+      }
+    },
+    "VpcPublicSubnet2RouteTableAssociationDD5762D8": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "VpcPublicSubnet2RouteTable94F7E489"
+        },
+        "SubnetId": {
+          "Ref": "VpcPublicSubnet2Subnet691E08A3"
+        }
+      }
+    },
+    "VpcPublicSubnet2DefaultRoute97F91067": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "VpcPublicSubnet2RouteTable94F7E489"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "VpcIGWD7BA715C"
+        }
+      },
+      "DependsOn": [
+        "VpcVPCGWBF912B6E"
+      ]
+    },
+    "VpcPublicSubnet2EIP3C605A87": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemakerendpoint/Vpc/PublicSubnet2"
+          }
+        ]
+      }
+    },
+    "VpcPublicSubnet2NATGateway9182C01D": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "VpcPublicSubnet2EIP3C605A87",
+            "AllocationId"
+          ]
+        },
+        "SubnetId": {
+          "Ref": "VpcPublicSubnet2Subnet691E08A3"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemakerendpoint/Vpc/PublicSubnet2"
+          }
+        ]
+      }
+    },
+    "VpcPublicSubnet3SubnetBE12F0B6": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.32.0/20",
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "AvailabilityZone": "test-region-1c",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemakerendpoint/Vpc/PublicSubnet3"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W33",
+              "reason": "Allow Public Subnets to have MapPublicIpOnLaunch set to true"
+            }
+          ]
+        }
+      }
+    },
+    "VpcPublicSubnet3RouteTable93458DBB": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemakerendpoint/Vpc/PublicSubnet3"
+          }
+        ]
+      }
+    },
+    "VpcPublicSubnet3RouteTableAssociation1F1EDF02": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "VpcPublicSubnet3RouteTable93458DBB"
+        },
+        "SubnetId": {
+          "Ref": "VpcPublicSubnet3SubnetBE12F0B6"
+        }
+      }
+    },
+    "VpcPublicSubnet3DefaultRoute4697774F": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "VpcPublicSubnet3RouteTable93458DBB"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "VpcIGWD7BA715C"
+        }
+      },
+      "DependsOn": [
+        "VpcVPCGWBF912B6E"
+      ]
+    },
+    "VpcPrivateSubnet1Subnet536B997A": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.48.0/20",
         "VpcId": {
           "Ref": "Vpc8378EB38"
         },
@@ -512,20 +801,20 @@
         "Tags": [
           {
             "Key": "aws-cdk:subnet-name",
-            "Value": "Isolated"
+            "Value": "Private"
           },
           {
             "Key": "aws-cdk:subnet-type",
-            "Value": "Isolated"
+            "Value": "Private"
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/IsolatedSubnet1"
+            "Value": "test-lambda-sagemakerendpoint/Vpc/PrivateSubnet1"
           }
         ]
       }
     },
-    "VpcIsolatedSubnet1RouteTable4771E3E5": {
+    "VpcPrivateSubnet1RouteTableB2C5B500": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -534,26 +823,38 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/IsolatedSubnet1"
+            "Value": "test-lambda-sagemakerendpoint/Vpc/PrivateSubnet1"
           }
         ]
       }
     },
-    "VpcIsolatedSubnet1RouteTableAssociationD300FCBB": {
+    "VpcPrivateSubnet1RouteTableAssociation70C59FA6": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "VpcIsolatedSubnet1RouteTable4771E3E5"
+          "Ref": "VpcPrivateSubnet1RouteTableB2C5B500"
         },
         "SubnetId": {
-          "Ref": "VpcIsolatedSubnet1SubnetE48C5737"
+          "Ref": "VpcPrivateSubnet1Subnet536B997A"
         }
       }
     },
-    "VpcIsolatedSubnet2Subnet16364B91": {
+    "VpcPrivateSubnet1DefaultRouteBE02A9ED": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "VpcPrivateSubnet1RouteTableB2C5B500"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "VpcPublicSubnet1NATGateway4D7517AA"
+        }
+      }
+    },
+    "VpcPrivateSubnet2Subnet3788AAA1": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "CidrBlock": "10.0.64.0/18",
+        "CidrBlock": "10.0.64.0/20",
         "VpcId": {
           "Ref": "Vpc8378EB38"
         },
@@ -562,20 +863,20 @@
         "Tags": [
           {
             "Key": "aws-cdk:subnet-name",
-            "Value": "Isolated"
+            "Value": "Private"
           },
           {
             "Key": "aws-cdk:subnet-type",
-            "Value": "Isolated"
+            "Value": "Private"
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/IsolatedSubnet2"
+            "Value": "test-lambda-sagemakerendpoint/Vpc/PrivateSubnet2"
           }
         ]
       }
     },
-    "VpcIsolatedSubnet2RouteTable1D30AF7D": {
+    "VpcPrivateSubnet2RouteTableA678073B": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -584,26 +885,38 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/IsolatedSubnet2"
+            "Value": "test-lambda-sagemakerendpoint/Vpc/PrivateSubnet2"
           }
         ]
       }
     },
-    "VpcIsolatedSubnet2RouteTableAssociationF7B18CCA": {
+    "VpcPrivateSubnet2RouteTableAssociationA89CAD56": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "VpcIsolatedSubnet2RouteTable1D30AF7D"
+          "Ref": "VpcPrivateSubnet2RouteTableA678073B"
         },
         "SubnetId": {
-          "Ref": "VpcIsolatedSubnet2Subnet16364B91"
+          "Ref": "VpcPrivateSubnet2Subnet3788AAA1"
         }
       }
     },
-    "VpcIsolatedSubnet3Subnet6840A2D4": {
+    "VpcPrivateSubnet2DefaultRoute060D2087": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "VpcPrivateSubnet2RouteTableA678073B"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "VpcPublicSubnet2NATGateway9182C01D"
+        }
+      }
+    },
+    "VpcPrivateSubnet3SubnetF258B56E": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "CidrBlock": "10.0.128.0/18",
+        "CidrBlock": "10.0.80.0/20",
         "VpcId": {
           "Ref": "Vpc8378EB38"
         },
@@ -612,20 +925,20 @@
         "Tags": [
           {
             "Key": "aws-cdk:subnet-name",
-            "Value": "Isolated"
+            "Value": "Private"
           },
           {
             "Key": "aws-cdk:subnet-type",
-            "Value": "Isolated"
+            "Value": "Private"
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/IsolatedSubnet3"
+            "Value": "test-lambda-sagemakerendpoint/Vpc/PrivateSubnet3"
           }
         ]
       }
     },
-    "VpcIsolatedSubnet3RouteTableA34D73CB": {
+    "VpcPrivateSubnet3RouteTableD98824C7": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -634,19 +947,53 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/IsolatedSubnet3"
+            "Value": "test-lambda-sagemakerendpoint/Vpc/PrivateSubnet3"
           }
         ]
       }
     },
-    "VpcIsolatedSubnet3RouteTableAssociation04776B7F": {
+    "VpcPrivateSubnet3RouteTableAssociation16BDDC43": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "VpcIsolatedSubnet3RouteTableA34D73CB"
+          "Ref": "VpcPrivateSubnet3RouteTableD98824C7"
         },
         "SubnetId": {
-          "Ref": "VpcIsolatedSubnet3Subnet6840A2D4"
+          "Ref": "VpcPrivateSubnet3SubnetF258B56E"
+        }
+      }
+    },
+    "VpcPrivateSubnet3DefaultRoute94B74F0D": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "VpcPrivateSubnet3RouteTableD98824C7"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "VpcPublicSubnet1NATGateway4D7517AA"
+        }
+      }
+    },
+    "VpcIGWD7BA715C": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-lambda-sagemakerendpoint/Vpc"
+          }
+        ]
+      }
+    },
+    "VpcVPCGWBF912B6E": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "InternetGatewayId": {
+          "Ref": "VpcIGWD7BA715C"
         }
       }
     },
@@ -767,13 +1114,22 @@
         },
         "RouteTableIds": [
           {
-            "Ref": "VpcIsolatedSubnet1RouteTable4771E3E5"
+            "Ref": "VpcPrivateSubnet1RouteTableB2C5B500"
           },
           {
-            "Ref": "VpcIsolatedSubnet2RouteTable1D30AF7D"
+            "Ref": "VpcPrivateSubnet2RouteTableA678073B"
           },
           {
-            "Ref": "VpcIsolatedSubnet3RouteTableA34D73CB"
+            "Ref": "VpcPrivateSubnet3RouteTableD98824C7"
+          },
+          {
+            "Ref": "VpcPublicSubnet1RouteTable6C95E38E"
+          },
+          {
+            "Ref": "VpcPublicSubnet2RouteTable94F7E489"
+          },
+          {
+            "Ref": "VpcPublicSubnet3RouteTable93458DBB"
           }
         ],
         "VpcEndpointType": "Gateway"
@@ -808,13 +1164,13 @@
         ],
         "SubnetIds": [
           {
-            "Ref": "VpcIsolatedSubnet1SubnetE48C5737"
+            "Ref": "VpcPrivateSubnet1Subnet536B997A"
           },
           {
-            "Ref": "VpcIsolatedSubnet2Subnet16364B91"
+            "Ref": "VpcPrivateSubnet2Subnet3788AAA1"
           },
           {
-            "Ref": "VpcIsolatedSubnet3Subnet6840A2D4"
+            "Ref": "VpcPrivateSubnet3SubnetF258B56E"
           }
         ],
         "VpcEndpointType": "Interface"
