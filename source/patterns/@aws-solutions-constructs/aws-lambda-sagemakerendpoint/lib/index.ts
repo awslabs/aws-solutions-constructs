@@ -106,7 +106,7 @@ export class LambdaToSageMakerEndpoint extends cdk.Construct {
   /**
    * @summary Constructs a new instance of the LambdaToSageMakerEndpoint class.
    * @param {cdk.App} scope - represents the scope for all the resources.
-   * @param {string} id - this is a a scope-unique id.
+   * @param {string} id - this is a scope-unique id.
    * @param {LambdaToSageMakerEndpointProps} props - user provided props for the construct.
    * @since 1.76.0
    * @access public
@@ -123,12 +123,12 @@ export class LambdaToSageMakerEndpoint extends cdk.Construct {
       const subnetConfiguration: ec2.SubnetConfiguration[] = props.deployNatGateway
         ? [
           {
-            cidrMask: 18,
+            cidrMask: 20,
             name: 'Public',
             subnetType: ec2.SubnetType.PUBLIC,
           },
           {
-            cidrMask: 18,
+            cidrMask: 20,
             name: 'Private',
             subnetType: ec2.SubnetType.PRIVATE,
           },
