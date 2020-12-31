@@ -36,7 +36,7 @@ export interface BuildLambdaFunctionProps {
    *
    * @default - none
    */
-  readonly vpc?: ec2.Vpc;
+  readonly vpc?: ec2.IVpc;
 }
 
 export function buildLambdaFunction(scope: cdk.Construct, props: BuildLambdaFunctionProps): lambda.Function {
@@ -48,6 +48,11 @@ export function buildLambdaFunction(scope: cdk.Construct, props: BuildLambdaFunc
       throw Error('Either existingLambdaObj or lambdaFunctionProps is required');
     }
   } else {
+    if (props.vpc) {
+      if (!props.existingLambdaObj.isBoundToVpc) {
+        throw Error('A Lambda function must be bound to a VPC upon creation, it cannot be added to a VPC in a subsequent construct');
+      }
+    }
     return props.existingLambdaObj;
   }
 }
@@ -55,7 +60,7 @@ export function buildLambdaFunction(scope: cdk.Construct, props: BuildLambdaFunc
 export function deployLambdaFunction(scope: cdk.Construct,
   lambdaFunctionProps: lambda.FunctionProps,
   functionId?: string,
-  vpc?: ec2.Vpc): lambda.Function {
+  vpc?: ec2.IVpc): lambda.Function {
 
   const _functionId = functionId ? functionId : 'LambdaFunction';
   const _functionRoleId = _functionId + 'ServiceRole';
