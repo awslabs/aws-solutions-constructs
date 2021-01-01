@@ -324,3 +324,51 @@ test("Test for error if VPC in arguments AND in Lambda Function properties", () 
 
   expect(app).toThrowError();
 });
+
+test("Test minimal deployment with an existing VPC and existing Lambda function not in a VPC", () => {
+  // Stack
+  const stack = new Stack();
+
+  const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: "index.handler",
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
+
+  const app = () => {
+    defaults.buildLambdaFunction(stack, {
+      existingLambdaObj: testLambdaFunction,
+      vpc: testVpc,
+    });
+
+  };
+
+  // Assertion
+  expect(app).toThrowError();
+
+});
+
+test("Test minimal deployment with an existing VPC and existing Lambda function in a VPC", () => {
+  // Stack
+  const stack = new Stack();
+
+  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
+
+  const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: "index.handler",
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    vpc: testVpc,
+  });
+
+  defaults.buildLambdaFunction(stack, {
+    existingLambdaObj: testLambdaFunction,
+    vpc: testVpc,
+  });
+
+  // All we're doing here is confirming that buildLambdaFunction does NOT
+  // throw an exception when the existing Lambda function is in a VPCs
+
+});

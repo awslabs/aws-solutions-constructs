@@ -300,6 +300,38 @@ test("Test minimal deployment with an existing VPC", () => {
 });
 
 // --------------------------------------------------------------
+// Test minimal deployment with an existing VPC and existing Lambda function not in a VPCs
+//
+// buildLambdaFunction should throw an error if the Lambda function is not
+// attached to a VPC
+// --------------------------------------------------------------
+test("Test minimal deployment with an existing VPC and existing Lambda function not in a VPC", () => {
+  // Stack
+  const stack = new Stack();
+
+  const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: "index.handler",
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
+
+  // Helper declaration
+  const app = () => {
+    // Helper declaration
+    new LambdaToSqs(stack, "lambda-to-sqs-stack", {
+      existingLambdaObj: testLambdaFunction,
+      existingVpc: testVpc,
+    });
+  };
+
+  // Assertion
+  expect(app).toThrowError();
+
+});
+
+// --------------------------------------------------------------
 // Test bad call with existingVpc and deployVpc
 // --------------------------------------------------------------
 test("Test bad call with existingVpc and deployVpc", () => {

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.79.0 (2020-12-31)
+
+### Changed
+- Upgraded all patterns to CDK v1.79.0
+- Fixed the override warning bug for `aws-lambda-step-function` pattern ([#108](https://github.com/awslabs/aws-solutions-constructs/issues/108))
+- Updated `aws-lambda-sqs` construct props `existingVpc` from `ec2.Vpc` to `ec2.IVpc`
+
 ## 1.78.0 (2020-12-22)
 
 ### Changed

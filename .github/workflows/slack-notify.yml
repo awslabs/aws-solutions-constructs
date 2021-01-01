@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Issue Slack Notification
-        if: github.event_name == 'issues' || github.event_name == 'issue_comment'
+        if: ${{ github.event_name == 'issues' || (!github.event.issue.pull_request && github.event_name == 'issue_comment') }}
         uses: 8398a7/action-slack@v3
         with:
           status: custom
@@ -33,7 +33,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
       - name: PR Slack Notification
-        if: github.event_name == 'pull_request'
+        if: ${{ github.event_name == 'pull_request' || (github.event.issue.pull_request && github.event_name == 'issue_comment') }}
         uses: 8398a7/action-slack@v3
         with:
           status: custom
@@ -47,10 +47,10 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
           PR_NUMBER: ${{ github.event.number }}
       - name: Set env
-        if: github.event_name == 'release'
+        if: ${{ github.event_name == 'release' }}
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - name: Release Slack Notification
-        if: github.event_name == 'release'
+        if: ${{ github.event_name == 'release' }}
         uses: 8398a7/action-slack@v3
         with:
           status: custom

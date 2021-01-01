@@ -74,7 +74,7 @@ export interface LambdaToSqsProps {
   /**
    * An existing VPC for the construct to use (construct will NOT create a new VPC in this case)
    */
-  readonly existingVpc?: ec2.Vpc;
+  readonly existingVpc?: ec2.IVpc;
   /**
    * Properties to override default properties if deployVpc is true
    */
@@ -94,7 +94,7 @@ export class LambdaToSqs extends Construct {
     public readonly lambdaFunction: lambda.Function;
     public readonly sqsQueue: sqs.Queue;
     public readonly deadLetterQueue?: sqs.DeadLetterQueue;
-    public readonly vpc?: ec2.Vpc;
+    public readonly vpc?: ec2.IVpc;
 
     /**
      * @summary Constructs a new instance of the LambdaToSqs class.

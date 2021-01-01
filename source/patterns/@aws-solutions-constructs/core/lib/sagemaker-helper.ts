@@ -103,7 +103,7 @@ function addPermissions(_role: iam.Role) {
 
 }
 
-export function buildSagemakerNotebook(scope: cdk.Construct, props: BuildSagemakerNotebookProps): [sagemaker.CfnNotebookInstance, ec2.Vpc?,
+export function buildSagemakerNotebook(scope: cdk.Construct, props: BuildSagemakerNotebookProps): [sagemaker.CfnNotebookInstance, ec2.IVpc?,
                                         ec2.SecurityGroup?] {
   // Setup the notebook properties
   let sagemakerNotebookProps;

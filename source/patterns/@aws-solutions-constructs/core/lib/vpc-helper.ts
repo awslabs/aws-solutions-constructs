@@ -20,7 +20,7 @@ export interface BuildVpcProps {
   /**
    * Existing instance of a VPC, if this is set then the all Props are ignored
    */
-  readonly existingVpc?: ec2.Vpc;
+  readonly existingVpc?: ec2.IVpc;
   /**
    * User provided props to override the default props for the VPC.
    */
@@ -32,7 +32,7 @@ export interface BuildVpcProps {
   readonly constructVpcProps?: ec2.VpcProps;
 }
 
-export function buildVpc(scope: Construct, props?: BuildVpcProps): ec2.Vpc {
+export function buildVpc(scope: Construct, props?: BuildVpcProps): ec2.IVpc {
   if (props?.existingVpc) {
     return props?.existingVpc;
   }
@@ -116,7 +116,7 @@ const endpointSettings: EndpointDefinition[] = [
 
 export function AddAwsServiceEndpoint(
   scope: Construct,
-  vpc: ec2.Vpc,
+  vpc: ec2.IVpc,
   interfaceTag: ServiceEndpointTypes
 ) {
   if (!vpc.node.children.some((child) => child.node.id === interfaceTag)) {

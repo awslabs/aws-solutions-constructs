@@ -204,3 +204,30 @@ test('Test override warning on/off: undefined on', () => {
   // Assert
   expect(warn).toBeCalledTimes(1);
 });
+
+// --------------------------------------------------------------
+// Test current prefilters
+// --------------------------------------------------------------
+test('Test current prefilters', () => {
+  // Arrange
+  const a = {
+    destination: 'sampleDestinationValueA',
+    maxRecordAge: 'sampleMaxRecordAgeValueA',
+    expiration: 'sampleExpirationValueA',
+    transitionAfter: 'sampleTransitionValueA',
+    timeout: 'sampleTimeoutValueA'
+  };
+  const b = {
+    destination: 'sampleDestinationValueB',
+    maxRecordAge: 'sampleMaxRecordAgeValueB',
+    expiration: 'sampleExpirationValueB',
+    transitionAfter: 'sampleTransitionValueB',
+    timeout: 'sampleTimeoutValueB'
+  };
+  // Act
+  const warn = jest.spyOn(log, 'warn');
+  process.env.overrideWarningsEnabled = undefined;
+  overrideProps(a, b);
+  // Assert
+  expect(warn).toBeCalledTimes(0);
+});
