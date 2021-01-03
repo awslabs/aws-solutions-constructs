@@ -88,6 +88,8 @@ Out of the box implementation of the Construct without any override will set the
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
 * Enable X-Ray Tracing
 * Enable Failure-Handling features like enable bisect on function Error, set defaults for Maximum Record Age (24 hours) & Maximum Retry Attempts (500) and deploy SQS dead-letter queue as destination on failure
+* Set Environment Variables
+  * AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x and higher functions)
 
 ## Architecture
 ![Architecture Diagram](architecture.png)

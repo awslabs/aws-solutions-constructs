@@ -44,7 +44,7 @@ export function flagOverriddenDefaults(defaultProps: object, userProps: object) 
  * 'Argument to Intrinsic must be a plain value object', so such props are excluded from the diff check.
  */
 function _prefilter(_path: any[], _key: string): boolean {
-  const prefilters = ['maxRecordAge', 'expiration', 'transitionAfter'];
+  const prefilters = ['maxRecordAge', 'expiration', 'transitionAfter', 'destination', 'timeout'];
 
   if (prefilters.indexOf(_key) >= 0) {
     return true;

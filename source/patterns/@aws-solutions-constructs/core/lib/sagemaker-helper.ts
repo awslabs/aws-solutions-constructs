@@ -113,7 +113,7 @@ function addPermissions(_role: iam.Role) {
 export function buildSagemakerNotebook(
   scope: cdk.Construct,
   props: BuildSagemakerNotebookProps
-): [sagemaker.CfnNotebookInstance, ec2.Vpc?, ec2.SecurityGroup?] {
+): [sagemaker.CfnNotebookInstance, ec2.IVpc?, ec2.SecurityGroup?] {
   // Setup the notebook properties
   let sagemakerNotebookProps;
   let vpcInstance;
@@ -231,7 +231,7 @@ export interface BuildSageMakerEndpointProps {
    *
    * @default - None
    */
-  readonly vpc?: ec2.Vpc;
+  readonly vpc?: ec2.IVpc;
   /**
    * Whether to deploy a natgatway in the new VPC (if deployVpc is true).
    * If deployNatGateway is true, the construct creates Public and Private subnets.
@@ -297,7 +297,7 @@ export function createSagemakerModel(
   scope: cdk.Construct,
   modelProps: sagemaker.CfnModelProps,
   role: iam.Role,
-  vpc?: ec2.Vpc,
+  vpc?: ec2.IVpc,
   deployNatGateway?: boolean
 ): sagemaker.CfnModel {
   let finalModelProps: sagemaker.CfnModelProps;

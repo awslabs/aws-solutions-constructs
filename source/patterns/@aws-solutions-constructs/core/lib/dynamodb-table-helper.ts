@@ -61,3 +61,13 @@ export function buildDynamoDBTableWithStream(scope: cdk.Construct, props: BuildD
     return props.existingTableObj;
   }
 }
+
+export function getPartitionKeyNameFromTable(table: dynamodb.Table): string {
+  const cfnTable = table.node.findChild('Resource') as dynamodb.CfnTable;
+  const keySchema = cfnTable.keySchema as dynamodb.CfnTable.KeySchemaProperty[];
+  const partitionKey = keySchema.find( (keyPart: any) => keyPart.keyType === 'HASH');
+  if (!partitionKey) {
+    throw new Error('Partition key for table not defined');
+  }
+  return partitionKey.attributeName;
+}
