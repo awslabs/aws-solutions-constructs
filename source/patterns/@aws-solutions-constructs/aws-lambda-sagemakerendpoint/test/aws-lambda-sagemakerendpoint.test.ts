@@ -143,10 +143,10 @@ test('Pattern deployment with new Lambda function, new SageMaker endpoint, deplo
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
-// -----------------------------------------------------------------------------------------------------------------------
-// Pattern deployment with existing Lambda function, new SageMaker endpoint, deployVpc = true and deployNatGateway = false
-// -----------------------------------------------------------------------------------------------------------------------
-test('Pattern deployment with existing Lambda function, new SageMaker endpoint, deployVpc = true and deployNatGateway = false', () => {
+// ---------------------------------------------------------------------------------
+// Test for errot when existing Lambda function does not have vpc and deployVpc = true
+// ---------------------------------------------------------------------------------
+test('Test for errot when existing Lambda function does not have vpc and deployVpc = true ', () => {
   // Initial Setup
   const stack = new Stack();
   // Create IAM Role to be assumed by SageMaker
@@ -182,9 +182,12 @@ test('Pattern deployment with existing Lambda function, new SageMaker endpoint, 
     existingLambdaObj: fn,
     role: sagemakerRole,
   };
-  new LambdaToSageMakerEndpoint(stack, 'test-lambda-sagemaker', props);
+
+  const app = () => {
+    new LambdaToSageMakerEndpoint(stack, 'test-lambda-sagemaker', props);
+  };
   // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(app).toThrowError();
 });
 
 // -----------------------------------------------------------------------------------------------------------------------------------------
@@ -228,10 +231,10 @@ test('Pattern deployment with new Lambda function, new SageMaker endpoint, deplo
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
-// ----------------------------------------------------------------------------------------------------------------------
-// Pattern deployment with existing Lambda function, new SageMaker endpoint, deployVpc = true and deployNatGateway = true
-// ----------------------------------------------------------------------------------------------------------------------
-test('Pattern deployment with existing Lambda function, new SageMaker endpoint, deployVpc = true and deployNatGateway = true', () => {
+// -------------------------------------------------------------------------------------------------------
+// Pattern deployment with existing Lambda function (with VPC), new SageMaker endpoint, and existingVpc
+// -------------------------------------------------------------------------------------------------------
+test('Pattern deployment with existing Lambda function (with VPC), new SageMaker endpoint, and existingVpc', () => {
   // Initial Setup
   const stack = new Stack();
   // Create IAM Role to be assumed by SageMaker
@@ -246,6 +249,26 @@ test('Pattern deployment with existing Lambda function, new SageMaker endpoint, 
     })
   );
 
+  const vpc = defaults.buildVpc(stack, {
+    constructVpcProps: {
+      enableDnsHostnames: true,
+      enableDnsSupport: true,
+      natGateways: 0,
+      subnetConfiguration: [
+        {
+          cidrMask: 18,
+          name: 'Isolated',
+          subnetType: ec2.SubnetType.ISOLATED,
+        },
+      ],
+    },
+  });
+
+  // Add S3 VPC Gateway Endpint, required by SageMaker to access Models artifacts via AWS private network
+  defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.S3);
+  // Add SAGEMAKER_RUNTIME VPC Interface Endpint, required by the lambda function to invoke the SageMaker endpoint
+  defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.SAGEMAKER_RUNTIME);
+
   // deploy lambda function
   const fn = defaults.deployLambdaFunction(stack, {
     runtime: lambda.Runtime.PYTHON_3_8,
@@ -253,6 +276,7 @@ test('Pattern deployment with existing Lambda function, new SageMaker endpoint, 
     handler: 'index.handler',
     timeout: Duration.minutes(5),
     memorySize: 128,
+    vpc,
   });
 
   const props: LambdaToSageMakerEndpointProps = {
@@ -263,8 +287,7 @@ test('Pattern deployment with existing Lambda function, new SageMaker endpoint, 
         modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
       },
     },
-    deployVpc: true,
-    deployNatGateway: true,
+    existingVpc: vpc,
     existingLambdaObj: fn,
     role: sagemakerRole,
   };
@@ -308,10 +331,10 @@ test('Test for error with existingLambdaObj/lambdaFunctionProps=undefined (not s
   expect(app).toThrowError();
 });
 
-// -----------------------------------------------------------------------------------------
+// --------------------------------------------------------------------
 // Test for error with (props.deployVpc && props.existingVpc) is true
-// -----------------------------------------------------------------------------------------
-test('Test for error with existingLambdaObj/lambdaFunctionProps=undefined (not supplied by user)', () => {
+// --------------------------------------------------------------------
+test('Test for error with (props.deployVpc && props.existingVpc) is true', () => {
   // Initial Setup
   const stack = new Stack();
   // Create IAM Role to be assumed by SageMaker
@@ -409,7 +432,7 @@ test('Test for error with primaryContainer=undefined (not supplied by user)', ()
 });
 
 // --------------------------------------------------------------------------------------------------------------------
-// Pattern deployment with new Lambda function with new SageMaker endpoint, existingVpcObj and deployNatGateway = false
+// Pattern deployment with new Lambda function with new SageMaker endpoint, existingVpc and deployNatGateway = false
 // --------------------------------------------------------------------------------------------------------------------
 test('Pattern deployment with new Lambda function with existingVpcObj and deployNatGateway = false', () => {
   // Initial Setup
@@ -514,10 +537,10 @@ test('Pattern deployment with new Lambda function and existingSageMakerendpointO
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
-// -------------------------------------------------------------------------------------------------------------------
-// Test getter methods: existing Lambda function, new SageMaker endpoint, deployVpc = true and deployNatGateway = true
-// -------------------------------------------------------------------------------------------------------------------
-test('Test getter methods: existing Lambda function, new SageMaker endpoint, deployVpc = true and deployNatGateway = true', () => {
+// -------------------------------------------------------------------------------------------------
+// Test getter methods: existing Lambda function (with VPC), new SageMaker endpoint, and existingVpc
+// -------------------------------------------------------------------------------------------------
+test('Test getter methods: existing Lambda function (with VPC), new SageMaker endpoint, and existingVpc', () => {
   // Initial Setup
   const stack = new Stack();
   // Create IAM Role to be assumed by SageMaker
@@ -532,6 +555,26 @@ test('Test getter methods: existing Lambda function, new SageMaker endpoint, dep
     })
   );
 
+  const vpc = defaults.buildVpc(stack, {
+    constructVpcProps: {
+      enableDnsHostnames: true,
+      enableDnsSupport: true,
+      natGateways: 0,
+      subnetConfiguration: [
+        {
+          cidrMask: 18,
+          name: 'Isolated',
+          subnetType: ec2.SubnetType.ISOLATED,
+        },
+      ],
+    },
+  });
+
+  // Add S3 VPC Gateway Endpint, required by SageMaker to access Models artifacts via AWS private network
+  defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.S3);
+  // Add SAGEMAKER_RUNTIME VPC Interface Endpint, required by the lambda function to invoke the SageMaker endpoint
+  defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.SAGEMAKER_RUNTIME);
+
   // deploy lambda function
   const fn = defaults.deployLambdaFunction(stack, {
     runtime: lambda.Runtime.PYTHON_3_8,
@@ -539,6 +582,7 @@ test('Test getter methods: existing Lambda function, new SageMaker endpoint, dep
     handler: 'index.handler',
     timeout: Duration.minutes(5),
     memorySize: 128,
+    vpc,
   });
 
   const props: LambdaToSageMakerEndpointProps = {
@@ -549,8 +593,7 @@ test('Test getter methods: existing Lambda function, new SageMaker endpoint, dep
         modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
       },
     },
-    deployVpc: true,
-    deployNatGateway: true,
+    existingVpc: vpc,
     existingLambdaObj: fn,
     role: sagemakerRole,
   };
