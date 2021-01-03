@@ -63,7 +63,7 @@ export interface LambdaToSageMakerEndpointProps {
    *
    * @default - None
    */
-  readonly existingVpc?: ec2.Vpc;
+  readonly existingVpc?: ec2.IVpc;
   /**
    * Properties to override default properties if deployVpc is true
    *
@@ -101,7 +101,7 @@ export class LambdaToSageMakerEndpoint extends cdk.Construct {
   public readonly sageMakerEndpoint: sagemaker.CfnEndpoint;
   public readonly sageMakerEndpointConfig?: sagemaker.CfnEndpointConfig;
   public readonly sageMakerModel?: sagemaker.CfnModel;
-  public readonly vpc?: ec2.Vpc;
+  public readonly vpc?: ec2.IVpc;
 
   /**
    * @summary Constructs a new instance of the LambdaToSageMakerEndpoint class.
