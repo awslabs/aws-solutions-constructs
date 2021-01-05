@@ -30,30 +30,11 @@ This AWS Solutions Construct deploys a Kinesis Stream and configures a AWS Glue 
 Here is a minimal deployable pattern definition in Typescript:
 
 ```javascript
-const _glueJobRole = KinesisStreamGlueJob.createGlueJobRole(this);
-
 const _outputBucket = defaults.buildS3Bucket(this, {
     bucketProps: defaults.DefaultS3Props(),
 });
 
-_outputBucket[0].grantRead(_glueJobRole);
-
-const _jobCommand = KinesisStreamGlueJob.createGlueJobCommand(
-    this,
-    'gluestreaming',
-    '3',
-    _glueJobRole,
-    undefined,
-    `${__dirname}/../python/transform.py`
-);
-const _kinesisStream = defaults.buildKinesisStream(this, {});
-
-const _database = KinesisStreamGlueJob.createGlueDatabase(this);
-const _table = KinesisStreamGlueJob.createGlueTable(
-    this,
-    _database,
-    [
-        {
+const _fieldSchema: CfnTable.ColumnProperty [] = [{
             name: 'id',
             type: 'int',
             comment: '',
@@ -73,30 +54,24 @@ const _table = KinesisStreamGlueJob.createGlueTable(
             type: 'int',
             comment: '',
         },
-    ],
-    'kinesis',
-    {STREAM_NAME: _kinesisStream.streamName}
+    ]
 );
 
 const _customEtlJob = new KinesisStreamGlueJob(this, 'CustomETL', {
-    existingStreamObj: _kinesisStream,
-    glueJobProps: {
-        command: _jobCommand[0],
-        role: _glueJobRole.roleArn,
-        defaultArguments: {
-            '--job-bookmark-option': 'job-bookmark-enable',
-            '--enable-metrics': true,
-            '--enable-continuous-cloudwatch-log': true,
-            '--enable-glue-datacatalog': true,
-            '--output_path': `s3://${_outputBucket[0].bucketName}/output/`,
-            '--database_name': _database.ref,
-            '--table_name': _table.ref,
-        },
-        glueVersion: '1.0',
+    glueJobCommandProps: {
+        jobCommandName: 'gluestreaming',
+        pythonVersion: '3',
+        scriptPath: `${__dirname}/../etl/transform.py`,
     },
-    database: _database,
-    table: _table,
+    fieldSchema: _fieldSchema,
+    argumentList: {
+        '--job-bookmark-option': 'job-bookmark-enable',
+        '--output_path': `s3://${_outputBucket[0].bucketName}/output/`,
+    },
 });
+
+_outputBucket[0].grantReadWrite(Role.fromRoleArn(this, 'GlueJobRole',  _customEtlJob.glueJob.role));
+
 ```
 
 ## Initializer
