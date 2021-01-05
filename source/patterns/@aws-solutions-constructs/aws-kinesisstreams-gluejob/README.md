@@ -121,15 +121,10 @@ Out of the box implementation of the Construct without any override will set the
 -   Enable server-side encryption for Kinesis Stream using AWS Managed KMS Key
 -   Deploy best practices CloudWatch Alarms for the Kinesis Stream
 
-### AWS Glue Job
+### Glue Job
 
 -   Create a Glue Security Config that configures encryption for CloudWatch, Job Bookmarks, and S3. CloudWatch and Job Bookmarks are encrypted using AWS Managed KMS Key created for AWS Glue Service. The S3 bucket is configured with SSE-S3 encryption mode
--   Configure service role policies that allow AWS Glue to read from Kinesis Data Streams
-
-### S3 Bucket
-
--   It creates an AWS S3 Bucket to which the custom ETL Job script can be uploaded
--   Grants read access to AWS Glue Job Service Principal through S3 Bucket Policy
+-   Configure service role policies that allow AWS Glue to read from Kinesis Data Streams. It will use the GlueJobCommandProps to create the Glue Job
 
 ### Glue Database
 
@@ -138,6 +133,10 @@ Out of the box implementation of the Construct without any override will set the
 ### Glue Table
 
 -   A Table with storage descriptor and table input properties using the schema details provided for the records in the Kinesis Data Streams
+
+### IAM Role
+
+-   A job execution role that has privileges to read the ETL script from the S3 bucket location, read from the Kinesis Stream, and execute the Glue Job. The permissions to write to a specific location, is not configured by the construct.
 
 ## Architecture
 
