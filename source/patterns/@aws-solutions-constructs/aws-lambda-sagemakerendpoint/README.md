@@ -31,7 +31,10 @@ This AWS Solutions Construct implements an AWS Lambda function connected to an A
 Here is a minimal deployable pattern definition in Typescript:
 
 ```typescript
-import { LambdaToSqs, LambdaToSqsProps } from '@aws-solutions-constructs/aws-lambda-sagemakerendpoint';
+import {
+  LambdaToSagemakerEndpoint,
+  LambdaToSagemakerEndpointProps,
+} from '@aws-solutions-constructs/aws-lambda-sagemakerendpoint';
 
 // Create IAM Role to be assumed by Sagemaker. You may want to scope down the Role permissions
 const sagemakerRole = new iam.Role(stack, 'SagemakerRole', {
