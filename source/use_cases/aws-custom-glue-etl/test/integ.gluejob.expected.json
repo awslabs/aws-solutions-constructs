@@ -1,114 +1,6 @@
 {
   "Description": "Integration Test for sample application that uses aws-kineisstream-glue-job construct",
   "Resources": {
-    "JobRole014917C6": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "glue.amazonaws.com"
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "Description": "Service role that Glue custom ETL jobs will assume for exeuction"
-      }
-    },
-    "JobRoleDefaultPolicy5DE0D8F9": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*",
-                "s3:PutObject*",
-                "s3:Abort*"
-              ],
-              "Effect": "Allow",
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "S3Bucket07682993",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "S3Bucket07682993",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Action": [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*"
-              ],
-              "Effect": "Allow",
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":s3:::",
-                      {
-                        "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3Bucket96760533"
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":s3:::",
-                      {
-                        "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3Bucket96760533"
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "JobRoleDefaultPolicy5DE0D8F9",
-        "Roles": [
-          {
-            "Ref": "JobRole014917C6"
-          }
-        ]
-      }
-    },
     "S3LoggingBucket800A2B27": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
@@ -261,7 +153,7 @@
         }
       }
     },
-    "KinesisStream46752A3E": {
+    "CustomETLKinesisStreamB4F1869F": {
       "Type": "AWS::Kinesis::Stream",
       "Properties": {
         "ShardCount": 1,
@@ -272,102 +164,79 @@
         }
       }
     },
-    "GlueDatabase": {
-      "Type": "AWS::Glue::Database",
+    "CustomETLJobRole53A1671F": {
+      "Type": "AWS::IAM::Role",
       "Properties": {
-        "CatalogId": {
-          "Ref": "AWS::AccountId"
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "glue.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
         },
-        "DatabaseInput": {
-          "Description": "A Glue database table"
-        }
+        "Description": "Service role that Glue custom ETL jobs will assume for exeuction"
       }
     },
-    "GlueTable": {
-      "Type": "AWS::Glue::Table",
+    "CustomETLJobRoleDefaultPolicy564ADEA9": {
+      "Type": "AWS::IAM::Policy",
       "Properties": {
-        "CatalogId": {
-          "Ref": "AWS::AccountId"
-        },
-        "DatabaseName": {
-          "Ref": "GlueDatabase"
-        },
-        "TableInput": {
-          "Parameters": {
-            "classication": "json"
-          },
-          "StorageDescriptor": {
-            "Columns": [
-              {
-                "Comment": "",
-                "Name": "ventilatorid",
-                "Type": "int"
-              },
-              {
-                "Comment": "",
-                "Name": "eventtime",
-                "Type": "string"
-              },
-              {
-                "Comment": "",
-                "Name": "serialnumber",
-                "Type": "string"
-              },
-              {
-                "Comment": "",
-                "Name": "pressurecontrol",
-                "Type": "int"
-              },
-              {
-                "Comment": "",
-                "Name": "o2stats",
-                "Type": "int"
-              },
-              {
-                "Comment": "",
-                "Name": "minutevolume",
-                "Type": "int"
-              },
-              {
-                "Comment": "",
-                "Name": "manufacturer",
-                "Type": "string"
-              }
-            ],
-            "Compressed": false,
-            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
-            "Location": {
-              "Ref": "KinesisStream46752A3E"
-            },
-            "NumberOfBuckets": -1,
-            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
-            "Parameters": {
-              "endpointUrl": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "https://kinesis.",
-                    {
-                      "Ref": "AWS::Region"
-                    },
-                    ".amazonaws.com"
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3Bucket96760533"
+                      }
+                    ]
                   ]
-                ]
-              },
-              "streamName": {
-                "Ref": "KinesisStream46752A3E"
-              },
-              "typeOfData": "kinesis"
-            },
-            "SerdeInfo": {
-              "Parameters": {
-                "paths": "ventilatorid,eventtime,serialnumber,pressurecontrol,o2stats,minutevolume,manufacturer"
-              },
-              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe"
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3Bucket96760533"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
             }
-          },
-          "TableType": "EXTERNAL_TABLE"
-        }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "CustomETLJobRoleDefaultPolicy564ADEA9",
+        "Roles": [
+          {
+            "Ref": "CustomETLJobRole53A1671F"
+          }
+        ]
       }
     },
     "CustomETLGlueSecurityConfigDFE12B1C": {
@@ -458,7 +327,7 @@
                           ":",
                           {
                             "Fn::GetAtt": [
-                              "JobRole014917C6",
+                              "CustomETLJobRole53A1671F",
                               "Arn"
                             ]
                           }
@@ -520,15 +389,20 @@
         },
         "Role": {
           "Fn::GetAtt": [
-            "JobRole014917C6",
+            "CustomETLJobRole53A1671F",
             "Arn"
           ]
         },
         "DefaultArguments": {
-          "--job-bookmark-option": "job-bookmark-enable",
           "--enable-metrics": true,
           "--enable-continuous-cloudwatch-log": true,
-          "--enable-glue-datacatalog": true,
+          "--database_name": {
+            "Ref": "GlueDatabase"
+          },
+          "--table_name": {
+            "Ref": "GlueTable"
+          },
+          "--job-bookmark-option": "job-bookmark-enable",
           "--output_path": {
             "Fn::Join": [
               "",
@@ -540,16 +414,108 @@
                 "/output/"
               ]
             ]
-          },
-          "--database_name": {
-            "Ref": "GlueDatabase"
-          },
-          "--table_name": {
-            "Ref": "GlueTable"
           }
         },
         "GlueVersion": "1.0",
         "SecurityConfiguration": "ETLJobSecurityConfig"
+      }
+    },
+    "GlueDatabase": {
+      "Type": "AWS::Glue::Database",
+      "Properties": {
+        "CatalogId": {
+          "Ref": "AWS::AccountId"
+        },
+        "DatabaseInput": {
+          "Description": "A Glue database table"
+        }
+      }
+    },
+    "GlueTable": {
+      "Type": "AWS::Glue::Table",
+      "Properties": {
+        "CatalogId": {
+          "Ref": "AWS::AccountId"
+        },
+        "DatabaseName": {
+          "Ref": "GlueDatabase"
+        },
+        "TableInput": {
+          "Parameters": {
+            "classication": "json"
+          },
+          "StorageDescriptor": {
+            "Columns": [
+              {
+                "Comment": "",
+                "Name": "ventilatorid",
+                "Type": "int"
+              },
+              {
+                "Comment": "",
+                "Name": "eventtime",
+                "Type": "string"
+              },
+              {
+                "Comment": "",
+                "Name": "serialnumber",
+                "Type": "string"
+              },
+              {
+                "Comment": "",
+                "Name": "pressurecontrol",
+                "Type": "int"
+              },
+              {
+                "Comment": "",
+                "Name": "o2stats",
+                "Type": "int"
+              },
+              {
+                "Comment": "",
+                "Name": "minutevolume",
+                "Type": "int"
+              },
+              {
+                "Comment": "",
+                "Name": "manufacturer",
+                "Type": "string"
+              }
+            ],
+            "Compressed": false,
+            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+            "Location": {
+              "Ref": "CustomETLKinesisStreamB4F1869F"
+            },
+            "NumberOfBuckets": -1,
+            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+            "Parameters": {
+              "endpointUrl": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "https://kinesis.",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ".amazonaws.com"
+                  ]
+                ]
+              },
+              "streamName": {
+                "Ref": "CustomETLKinesisStreamB4F1869F"
+              },
+              "typeOfData": "kinesis"
+            },
+            "SerdeInfo": {
+              "Parameters": {
+                "paths": "ventilatorid,eventtime,serialnumber,pressurecontrol,o2stats,minutevolume,manufacturer"
+              },
+              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe"
+            }
+          },
+          "TableType": "EXTERNAL_TABLE"
+        }
       }
     },
     "GlueJobPolicyAEA4B94E": {
@@ -690,7 +656,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "KinesisStream46752A3E",
+                  "CustomETLKinesisStreamB4F1869F",
                   "Arn"
                 ]
               }
@@ -714,7 +680,7 @@
                           ":",
                           {
                             "Fn::GetAtt": [
-                              "JobRole014917C6",
+                              "CustomETLJobRole53A1671F",
                               "Arn"
                             ]
                           }
@@ -738,6 +704,78 @@
           ]
         }
       }
+    },
+    "GlueJobRoleForS3Policy338AF4F0": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "S3Bucket07682993",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "S3Bucket07682993",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "GlueJobRoleForS3Policy338AF4F0",
+        "Roles": [
+          {
+            "Fn::Select": [
+              1,
+              {
+                "Fn::Split": [
+                  "/",
+                  {
+                    "Fn::Select": [
+                      5,
+                      {
+                        "Fn::Split": [
+                          ":",
+                          {
+                            "Fn::GetAtt": [
+                              "CustomETLJobRole53A1671F",
+                              "Arn"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
     }
   },
   "Parameters": {
@@ -757,47 +795,7 @@
   "Outputs": {
     "KinesisStreamName": {
       "Value": {
-        "Ref": "KinesisStream46752A3E"
-      }
-    },
-    "ScripLocation": {
-      "Value": {
-        "Fn::Join": [
-          "",
-          [
-            "s3://",
-            {
-              "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3Bucket96760533"
-            },
-            "/",
-            {
-              "Fn::Select": [
-                0,
-                {
-                  "Fn::Split": [
-                    "||",
-                    {
-                      "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3VersionKey856519B9"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "Fn::Select": [
-                1,
-                {
-                  "Fn::Split": [
-                    "||",
-                    {
-                      "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3VersionKey856519B9"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        ]
+        "Ref": "CustomETLKinesisStreamB4F1869F"
       }
     },
     "OutputBucket": {

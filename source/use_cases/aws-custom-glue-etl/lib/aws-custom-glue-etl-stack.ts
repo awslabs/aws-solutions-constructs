@@ -63,20 +63,19 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
     }];
 
     const _customEtlJob = new KinesisStreamGlueJob(this, 'CustomETL', {
-      existingStreamObj: _kinesisStream,
       glueJobCommandProps: {
         jobCommandName: 'gluestreaming',
         pythonVersion: '3',
         scriptPath: `${__dirname}/../etl/transform.py`
       },
       fieldSchema: _fieldSchema,
-      argumentList: {
+      jobArgumentsList: {
         "--job-bookmark-option": "job-bookmark-enable",
         "--output_path": `s3://${_outputBucket[0].bucketName}/output/`,
       }
     });
 
-    _outputBucket[0].grantReadWrite(Role.fromRoleArn(this, 'GlueJobRole',  _customEtlJob.glueJob.role));
+    _outputBucket[0].grantReadWrite(Role.fromRoleArn(this, 'GlueJobRoleForS3',  _customEtlJob.glueJob.role));
 
     new CfnOutput(this, 'KinesisStreamName', {
       value: _customEtlJob.kinesisStream.streamName
