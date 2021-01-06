@@ -21,7 +21,7 @@ const app = new App();
 const stack = new Stack(app, 'test-kinesisstream-gluejob');
 stack.templateOptions.description = 'Integration Test for aws-kinesisstream-gluejob';
 
-const _jobCommand: GlueJobCommandProps= {
+const _jobCommand: GlueJobCommandProps = {
   jobCommandName: 'glueetl',
   pythonVersion: '3',
   s3ObjectUrlForScript: new Bucket(stack, 'existingScriptLocation', {
@@ -30,7 +30,7 @@ const _jobCommand: GlueJobCommandProps= {
       expiration: Duration.days(30)
     }]
   }).s3UrlForObject()
-}
+};
 
 // Definitions
 const props: KinesisStreamGlueJobProps = {
