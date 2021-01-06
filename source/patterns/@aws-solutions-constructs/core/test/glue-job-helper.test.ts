@@ -20,9 +20,19 @@ import { Stack } from "@aws-cdk/core";
 import * as defaults from '..';
 
 // --------------------------------------------------------------
-// Test minimal deployment with no properties
+// Test GlueJobCommandProperty creation
 // --------------------------------------------------------------
-test('Test minimal deployment with no properties', () => {
+test('Test GlueJobCommandProperty creation', () => {
+  const stack = new Stack();
+  defaults.createGlueJobCommand(stack, 'gluestreaming', '3',
+    defaults.createGlueJobRole(stack), 's3://fakelocation/script');
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+// --------------------------------------------------------------
+// Test deployment with role creation
+// --------------------------------------------------------------
+test('Test deployment with role creation', () => {
   // Stack
   const stack = new Stack();
   const _jobID = 'glueetl';
@@ -220,6 +230,57 @@ test('Do no supply glueJobProps or existingCfnJob and error out', () => {
   const stack = new Stack();
   try {
     defaults.buildGlueJob(stack, {});
+  } catch (error) {
+    expect(error).toBeInstanceOf(Error);
+  }
+});
+
+test('Create table', () => {
+  const stack = new Stack();
+  defaults.createGlueTable(stack, defaults.createGlueDatabase(stack), [{
+    name: 'id',
+    type: 'int',
+    comment: '',
+  },
+  {
+    name: 'name',
+    type: 'string',
+    comment: '',
+  },
+  {
+    name: 'address',
+    type: 'string',
+    comment: '',
+  },
+  {
+    name: 'value',
+    type: 'int',
+    comment: '',
+  },
+  ], 'kinesis', {
+    STREAM_NAME: 'testStream'
+  });
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+test('Create Database', () => {
+  const stack = new Stack();
+  defaults.createGlueDatabase(stack);
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+test('Provide script location directory location', () => {
+  const stack = new Stack();
+  defaults.createGlueJobCommand(stack, 'gluestreaming', '3',
+    defaults.createGlueJobRole(stack), undefined, `${__dirname}/lambda/index.js`);
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+test('Do not provide script location or s3 bucket url', () => {
+  const stack = new Stack();
+  try {
+    defaults.createGlueJobCommand(stack, 'gluestreaming', '3',
+      defaults.createGlueJobRole(stack), undefined, undefined);
   } catch (error) {
     expect(error).toBeInstanceOf(Error);
   }

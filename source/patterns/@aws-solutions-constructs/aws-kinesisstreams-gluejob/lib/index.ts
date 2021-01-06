@@ -12,11 +12,31 @@
  */
 
 import { CfnDatabase, CfnJob, CfnJobProps, CfnTable } from '@aws-cdk/aws-glue';
-import { CfnPolicy, Effect, IRole, Policy, PolicyStatement, Role, ServicePrincipal } from '@aws-cdk/aws-iam';
+import { CfnPolicy, Effect, IRole, Policy, PolicyStatement, Role } from '@aws-cdk/aws-iam';
 import { Stream, StreamProps } from '@aws-cdk/aws-kinesis';
-import { Asset } from '@aws-cdk/aws-s3-assets';
 import { Aws, Construct } from '@aws-cdk/core';
 import * as defaults from '@aws-solutions-constructs/core';
+
+export interface GlueJobCommandProps {
+  /**
+   * The command to execute the Glue Job, The name of the job command. For an Apache Spark ETL job, this must be glueetl.
+   * For a Python shell job, it must be pythonshell. For streaming job it must be gluestreaming
+   */
+  readonly jobCommandName: string,
+  /**
+   * The Python version being used to execute a Python shell job. Allowed values are 2 or 3.
+   */
+  readonly pythonVersion: string,
+  /**
+   * The location of the ETL script in your locat directory. If the @s3ObjectUrlForScript parameter is provided, this
+   * parmaeter is ignored.
+   */
+  readonly scriptPath?: string,
+  /**
+   * The S3 URL for the ETL script. If this parameter is provided, the @scriptPath parameter is ignored.
+   */
+  readonly s3ObjectUrlForScript?: string
+}
 
 export interface KinesisStreamGlueJobProps {
   /**
@@ -32,15 +52,21 @@ export interface KinesisStreamGlueJobProps {
   /**
    * User provides props to override the default props for Glue ETL Jobs. This parameter will be ignored if the
    * existingGlueJob parameter is set
-   *
-   * @default - Default props are used
    */
   readonly glueJobProps?: CfnJobProps;
   /**
-   * Existing GlueJob configuration. If not set, it will create the a CfnJob instance using the glueJobProps
+   * Existing GlueJob configuration. If this property is provided, any configuration provided through @glueJobProps
+   * and @glueJobCommandProps will be ignored.
    */
   readonly existingGlueJob?: CfnJob;
   /**
+   * @default - using this props the construct will create a default CfnGlueJobProps. This property will be ignored
+   * if either @existingGlueJob or @glueJobProps is provided
+   * Glue Job Command Props as defined in @GlueJobCommandProps.
+   */
+  readonly glueJobCommandProps: GlueJobCommandProps;
+  /**
+   * @default
    * A JSON document defining the schema structure of the records in the data stream. An example of such a
    * definition as below. Either @table or @fieldSchema is mandatory. If @table is provided then @fieldSchema is ignored
    * 	"FieldSchema": [{
@@ -64,7 +90,7 @@ export interface KinesisStreamGlueJobProps {
   readonly fieldSchema?: CfnTable.ColumnProperty [];
   /**
    * Glue Database for this construct. If not provided the construct will create a new Glue Database.
-   * The database is where the schema for the data in Kinesis Data Streams
+   * The database is where the schema for the data in Kinesis Data Streams is stored
    */
   readonly database?: CfnDatabase;
   /**
@@ -73,12 +99,35 @@ export interface KinesisStreamGlueJobProps {
    * Either @table or @fieldSchema is mandatory. If @table is provided then @fieldSchema is ignored
    */
   readonly table?: CfnTable;
+  /**
+   * @default
+   * List of arguments that can be passed to a CfnJob. This arguments will be augmented with the default
+   * arguments as below:
+   * {
+   *  "--enable-metrics" : true,
+   *  "--enable-continuous-cloudwatch-log" : true,
+   *  "--database_name": <database name>,
+   *  "--table_name": <table name>
+   * }
+   */
+  readonly jobArgumentsList: {};
+  /**
+   * Glue version as supported by the AWS Glue service. The value defaults to 1.0 in the construct, since
+   * glue streaming is not supported by version 2.0 and 1.0 is the only version that supports python 3.0.
+   * This property will only be used if @glueJobCommandProps is set. This property will be ingored if
+   * @glueJobProps or @existingGlueJob is set.
+   */
+  readonly glueVersion?: string;
 }
 
 export class KinesisStreamGlueJob extends Construct {
   public readonly kinesisStream: Stream;
 
   public readonly glueJob: CfnJob;
+
+  public readonly database: CfnDatabase;
+
+  public readonly table: CfnTable;
 
   constructor(scope: Construct, id: string, props: KinesisStreamGlueJobProps) {
     super(scope, id);
@@ -88,32 +137,58 @@ export class KinesisStreamGlueJob extends Construct {
       kinesisStreamProps: props.kinesisStreamProps,
     });
 
-    this.glueJob = defaults.buildGlueJob(this, {
-      existingCfnJob: props.existingGlueJob,
-      glueJobProps: props.glueJobProps
-    });
-
-    let _glueDatabase: CfnDatabase;
     if (props.database !== undefined) {
-      _glueDatabase = props.database!;
+      this.database = props.database!;
     } else {
-      _glueDatabase = KinesisStreamGlueJob.createGlueDatabase(scope);
+      this.database = defaults.createGlueDatabase(scope);
     }
 
     if (props.fieldSchema === undefined && props.table === undefined) {
       throw Error('Either fieldSchema or table property has to be set, both cannot be optional');
     }
 
-    let _glueTable: CfnTable;
     if (props.table !== undefined) {
-      _glueTable = props.table;
+      this.table = props.table;
     } else {
-      _glueTable = KinesisStreamGlueJob.createGlueTable(scope, _glueDatabase, props.fieldSchema!, 'kinesis', {
+      this.table = defaults.createGlueTable(scope, this.database, props.fieldSchema!, 'kinesis', {
         STREAM_NAME: this.kinesisStream.streamName
       });
     }
 
-    this.buildRolePolicy(scope, _glueDatabase, _glueTable, this.glueJob.role);
+    if (props.existingGlueJob === undefined && props.glueJobProps === undefined && props.glueJobCommandProps === undefined) {
+      throw Error('Either existingGlueJob or glueJobProps or glueJobCommandProps should be defined. All the attributes cannot be optional');
+    }
+
+    if (props.existingGlueJob !== undefined || props.glueJobProps !== undefined) {
+      this.glueJob = defaults.buildGlueJob(this, {
+        existingCfnJob: props.existingGlueJob,
+        glueJobProps: props.glueJobProps
+      });
+    } else {
+      // 'gluestreaming', '3', _glueJobRole, undefined, `${__dirname}/../etl/transform.py`
+      const _jobRole = defaults.createGlueJobRole(this);
+      const _jobCommand = defaults.createGlueJobCommand(this,
+        props.glueJobCommandProps.jobCommandName,
+        props.glueJobCommandProps.pythonVersion,
+        _jobRole,
+        props.glueJobCommandProps.scriptPath);
+
+      this.glueJob = defaults.buildGlueJob(this, {
+        glueJobProps: {
+          command: _jobCommand[0],
+          role: _jobRole.roleArn,
+          defaultArguments: {
+            "--enable-metrics" : true,
+            "--enable-continuous-cloudwatch-log" : true,
+            "--database_name": this.database.ref,
+            "--table_name": this.table.ref,
+            ...props.jobArgumentsList
+          },
+          glueVersion: props.glueVersion ? props.glueVersion : '1.0'
+        }
+      });
+    }
+    this.buildRolePolicy(scope, this.database, this.table, this.glueJob.role);
   }
 
   private buildRolePolicy(scope: Construct, glueDatabase: CfnDatabase, glueTable: CfnTable, role: string): IRole {
@@ -167,72 +242,5 @@ export class KinesisStreamGlueJob extends Construct {
     const _glueJobRole = Role.fromRoleArn(scope, 'GlueJobRole', role);
     _glueJobRole.attachInlinePolicy(_glueJobPolicy);
     return _glueJobRole;
-  }
-
-  /**
-   * This is a helper method to create the Role required for the Glue Job. If a role is already created then this
-   * method is not required to be called.
-   *
-   * @param scope - The AWS Construct under which the role is to be created
-   */
-  public static createGlueJobRole(scope: Construct): Role {
-    return new Role(scope, 'JobRole', {
-      assumedBy: new ServicePrincipal('glue.amazonaws.com'),
-      description: 'Service role that Glue custom ETL jobs will assume for exeuction',
-    });
-  }
-
-  /**
-   * This is a helper method to creates @CfnJob.JobCommandProperty for CfnJob. Based on the input parameters, If the
-   * @S3ObjectUrlForScript is passed, it will create only the JobCommandProperty. Instead if the @scriptLocationPath is
-   * passed it will an Asset from the @scriptLocationPath and returns the JobCommandProperty and the Asset. The script
-   * location can be retrieved using @Asset.s3ObjectUrl
-   *
-   * @param scope - The AWS Construct under the underlying construct should be created
-   * @param _commandName - The identifier/ name of the ETL Job. The values are glueetl, gluestreaming, pythonshell.
-   * THere is no validation, but if valid values are not provided, the deployment may fail
-   * @param pythonVersion - The values as for Glue Documentation are '2' and '3'. There is no validation in the
-   * method to check for these values to be forward compatible with Glue API changes. If valid values are not provided
-   * the deployment may fail.
-   * @param s3ObjectUrlForScript - If an S3 bucket location for the script exists, set this parameter. If the Bucket
-   * is to be created, set the value as undefined. Setting this parameter will ignore @scriptLocationBucketProps as the
-   * bucket already exists
-   * @param scriptLocationPath - Set this parameter only if the bucket is to be created. If not then a new
-   * Bucket location will be created to upload the ETL script asset
-   */
-  public static createGlueJobCommand(scope: Construct, _commandName: string, pythonVersion: string, glueJobRole: Role,
-    s3ObjectUrlForScript?: string, scriptLocationPath?: string): [ CfnJob.JobCommandProperty, Asset? ] {
-    // create s3 bucket where script can be deployed
-    let _scriptLocation: string;
-    let _assetLocation: Asset;
-    if (s3ObjectUrlForScript === undefined) {
-      if (scriptLocationPath === undefined) {
-        throw Error('Either s3ObjectUrlForScript or scriptLocationPath is required');
-      } else {
-        _assetLocation = new Asset(scope, 'ETLScriptLocation', {
-          path: scriptLocationPath!
-        });
-        _assetLocation.grantRead(glueJobRole);
-        _scriptLocation = _assetLocation.s3ObjectUrl;
-      }
-    } else {
-      // since bucket location was provided in the props, logger bucket is not created
-      _scriptLocation = s3ObjectUrlForScript;
-    }
-
-    return [{
-      name: _commandName,
-      pythonVersion,
-      scriptLocation: _scriptLocation
-    }, _assetLocation! !== undefined ? _assetLocation! : undefined ];
-  }
-
-  public static createGlueTable(scope: Construct, database: CfnDatabase, fieldSchema: CfnTable.ColumnProperty [], sourceType: string,
-    parameters?: any): CfnTable {
-    return defaults.DefaultGlueTable(scope, database, fieldSchema, sourceType, parameters);
-  }
-
-  public static createGlueDatabase(scope: Construct): CfnDatabase {
-    return defaults.DefaultGlueDatabase(scope);
   }
 }

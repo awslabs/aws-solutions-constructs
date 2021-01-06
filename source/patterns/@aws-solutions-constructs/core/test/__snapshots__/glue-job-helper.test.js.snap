@@ -1,5 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Create Database 1`] = `
+Object {
+  "Resources": Object {
+    "GlueDatabase": Object {
+      "Properties": Object {
+        "CatalogId": Object {
+          "Ref": "AWS::AccountId",
+        },
+        "DatabaseInput": Object {
+          "Description": "A Glue database table",
+        },
+      },
+      "Type": "AWS::Glue::Database",
+    },
+  },
+}
+`;
+
 exports[`Create a Glue Job outside the construct 1`] = `
 Object {
   "Resources": Object {
@@ -39,6 +57,213 @@ Object {
           "Version": "2012-10-17",
         },
         "Description": "Existing role",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+  },
+}
+`;
+
+exports[`Create table 1`] = `
+Object {
+  "Resources": Object {
+    "GlueDatabase": Object {
+      "Properties": Object {
+        "CatalogId": Object {
+          "Ref": "AWS::AccountId",
+        },
+        "DatabaseInput": Object {
+          "Description": "A Glue database table",
+        },
+      },
+      "Type": "AWS::Glue::Database",
+    },
+    "GlueTable": Object {
+      "Properties": Object {
+        "CatalogId": Object {
+          "Ref": "AWS::AccountId",
+        },
+        "DatabaseName": Object {
+          "Ref": "GlueDatabase",
+        },
+        "TableInput": Object {
+          "Parameters": Object {
+            "classication": "json",
+          },
+          "StorageDescriptor": Object {
+            "Columns": Array [
+              Object {
+                "Comment": "",
+                "Name": "id",
+                "Type": "int",
+              },
+              Object {
+                "Comment": "",
+                "Name": "name",
+                "Type": "string",
+              },
+              Object {
+                "Comment": "",
+                "Name": "address",
+                "Type": "string",
+              },
+              Object {
+                "Comment": "",
+                "Name": "value",
+                "Type": "int",
+              },
+            ],
+            "Compressed": false,
+            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+            "Location": "testStream",
+            "NumberOfBuckets": -1,
+            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+            "Parameters": Object {
+              "endpointUrl": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "https://kinesis.",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ".amazonaws.com",
+                  ],
+                ],
+              },
+              "streamName": "testStream",
+              "typeOfData": "kinesis",
+            },
+            "SerdeInfo": Object {
+              "Parameters": Object {
+                "paths": "id,name,address,value",
+              },
+              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
+            },
+          },
+          "TableType": "EXTERNAL_TABLE",
+        },
+      },
+      "Type": "AWS::Glue::Table",
+    },
+  },
+}
+`;
+
+exports[`Provide script location directory location 1`] = `
+Object {
+  "Parameters": Object {
+    "AssetParametersd683bbd12df11a4cc2038d55bd98ef859fb10f79b53aeb89145ac615a6671174ArtifactHashB7D5B24E": Object {
+      "Description": "Artifact hash for asset \\"d683bbd12df11a4cc2038d55bd98ef859fb10f79b53aeb89145ac615a6671174\\"",
+      "Type": "String",
+    },
+    "AssetParametersd683bbd12df11a4cc2038d55bd98ef859fb10f79b53aeb89145ac615a6671174S3Bucket770047E3": Object {
+      "Description": "S3 bucket for asset \\"d683bbd12df11a4cc2038d55bd98ef859fb10f79b53aeb89145ac615a6671174\\"",
+      "Type": "String",
+    },
+    "AssetParametersd683bbd12df11a4cc2038d55bd98ef859fb10f79b53aeb89145ac615a6671174S3VersionKey9115CE5E": Object {
+      "Description": "S3 key for asset version \\"d683bbd12df11a4cc2038d55bd98ef859fb10f79b53aeb89145ac615a6671174\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "JobRole014917C6": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "glue.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Service role that Glue custom ETL jobs will assume for exeuction",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "JobRoleDefaultPolicy5DE0D8F9": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      Object {
+                        "Ref": "AssetParametersd683bbd12df11a4cc2038d55bd98ef859fb10f79b53aeb89145ac615a6671174S3Bucket770047E3",
+                      },
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      Object {
+                        "Ref": "AssetParametersd683bbd12df11a4cc2038d55bd98ef859fb10f79b53aeb89145ac615a6671174S3Bucket770047E3",
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "JobRoleDefaultPolicy5DE0D8F9",
+        "Roles": Array [
+          Object {
+            "Ref": "JobRole014917C6",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+  },
+}
+`;
+
+exports[`Test GlueJobCommandProperty creation 1`] = `
+Object {
+  "Resources": Object {
+    "JobRole014917C6": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "glue.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Service role that Glue custom ETL jobs will assume for exeuction",
       },
       "Type": "AWS::IAM::Role",
     },
@@ -196,7 +421,7 @@ Object {
 }
 `;
 
-exports[`Test minimal deployment with no properties 1`] = `
+exports[`Test deployment with role creation 1`] = `
 Object {
   "Resources": Object {
     "CustomETLJobRole90A83A66": Object {
