@@ -110,7 +110,7 @@ export interface KinesisStreamGlueJobProps {
    *  "--table_name": <table name>
    * }
    */
-  readonly jobArgumentsList: {};
+  readonly jobArgumentsList: { [index: string]: string };
   /**
    * Glue version as supported by the AWS Glue service. The value defaults to 1.0 in the construct, since
    * glue streaming is not supported by version 2.0 and 1.0 is the only version that supports python 3.0.
