@@ -1,7 +1,33 @@
 {
   "Description": "Integration Test for aws-kinesisstream-gluejob",
   "Resources": {
-    "JobRole014917C6": {
+    "existingScriptLocation845F3C51": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "ExpirationInDays": 30,
+              "Status": "Enabled"
+            }
+          ]
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "testkinesisstreamslambdaKinesisStream374D6D56": {
+      "Type": "AWS::Kinesis::Stream",
+      "Properties": {
+        "ShardCount": 1,
+        "RetentionPeriodHours": 24,
+        "StreamEncryption": {
+          "EncryptionType": "KMS",
+          "KeyId": "alias/aws/kinesis"
+        }
+      }
+    },
+    "testkinesisstreamslambdaJobRole42199B9C": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -19,72 +45,40 @@
         "Description": "Service role that Glue custom ETL jobs will assume for exeuction"
       }
     },
-    "JobRoleDefaultPolicy5DE0D8F9": {
-      "Type": "AWS::IAM::Policy",
+    "testkinesisstreamslambdaGlueSecurityConfig3568178F": {
+      "Type": "AWS::Glue::SecurityConfiguration",
       "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*"
-              ],
-              "Effect": "Allow",
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":s3:::",
-                      {
-                        "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B"
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":s3:::",
-                      {
-                        "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B"
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
+        "EncryptionConfiguration": {
+          "JobBookmarksEncryption": {
+            "JobBookmarksEncryptionMode": "CSE-KMS",
+            "KmsKeyArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    "Ref": "AWS::Partition"
+                  },
+                  ":kms:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":alias/aws/glue"
+                ]
               ]
             }
-          ],
-          "Version": "2012-10-17"
+          },
+          "S3Encryptions": [
+            {
+              "S3EncryptionMode": "SSE-S3"
+            }
+          ]
         },
-        "PolicyName": "JobRoleDefaultPolicy5DE0D8F9",
-        "Roles": [
-          {
-            "Ref": "JobRole014917C6"
-          }
-        ]
-      }
-    },
-    "testkinesisstreamslambdaKinesisStream374D6D56": {
-      "Type": "AWS::Kinesis::Stream",
-      "Properties": {
-        "ShardCount": 1,
-        "RetentionPeriodHours": 24,
-        "StreamEncryption": {
-          "EncryptionType": "KMS",
-          "KeyId": "alias/aws/kinesis"
-        }
+        "Name": "ETLJobSecurityConfig"
       }
     },
     "testkinesisstreamslambdaLogPolicy5FB58427": {
@@ -139,7 +133,7 @@
                           ":",
                           {
                             "Fn::GetAtt": [
-                              "JobRole014917C6",
+                              "testkinesisstreamslambdaJobRole42199B9C",
                               "Arn"
                             ]
                           }
@@ -158,7 +152,7 @@
       "Type": "AWS::Glue::Job",
       "Properties": {
         "Command": {
-          "Name": "pythonshell",
+          "Name": "glueetl",
           "PythonVersion": "3",
           "ScriptLocation": {
             "Fn::Join": [
@@ -166,34 +160,7 @@
               [
                 "s3://",
                 {
-                  "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B"
-                },
-                "/",
-                {
-                  "Fn::Select": [
-                    0,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "Fn::Select": [
-                    1,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE"
-                        }
-                      ]
-                    }
-                  ]
+                  "Ref": "existingScriptLocation845F3C51"
                 }
               ]
             ]
@@ -201,11 +168,22 @@
         },
         "Role": {
           "Fn::GetAtt": [
-            "JobRole014917C6",
+            "testkinesisstreamslambdaJobRole42199B9C",
             "Arn"
           ]
         },
-        "SecurityConfiguration": "testSecConfig"
+        "DefaultArguments": {
+          "--enable-metrics": true,
+          "--enable-continuous-cloudwatch-log": true,
+          "--database_name": {
+            "Ref": "GlueDatabase"
+          },
+          "--table_name": {
+            "Ref": "GlueTable"
+          }
+        },
+        "GlueVersion": "1.0",
+        "SecurityConfiguration": "ETLJobSecurityConfig"
       }
     },
     "GlueDatabase": {
@@ -453,7 +431,7 @@
                           ":",
                           {
                             "Fn::GetAtt": [
-                              "JobRole014917C6",
+                              "testkinesisstreamslambdaJobRole42199B9C",
                               "Arn"
                             ]
                           }
@@ -476,62 +454,6 @@
             }
           ]
         }
-      }
-    }
-  },
-  "Parameters": {
-    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B": {
-      "Type": "String",
-      "Description": "S3 bucket for asset \"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\""
-    },
-    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE": {
-      "Type": "String",
-      "Description": "S3 key for asset version \"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\""
-    },
-    "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acArtifactHash2A1C2D40": {
-      "Type": "String",
-      "Description": "Artifact hash for asset \"13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303ac\""
-    }
-  },
-  "Outputs": {
-    "ScriptLocation": {
-      "Value": {
-        "Fn::Join": [
-          "",
-          [
-            "s3://",
-            {
-              "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3BucketCCACFC1B"
-            },
-            "/",
-            {
-              "Fn::Select": [
-                0,
-                {
-                  "Fn::Split": [
-                    "||",
-                    {
-                      "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "Fn::Select": [
-                1,
-                {
-                  "Fn::Split": [
-                    "||",
-                    {
-                      "Ref": "AssetParameters13d7b7f7fba24472b473a111e804308f745de51605e9730c69700262c57303acS3VersionKey753DB1DE"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        ]
       }
     }
   }
