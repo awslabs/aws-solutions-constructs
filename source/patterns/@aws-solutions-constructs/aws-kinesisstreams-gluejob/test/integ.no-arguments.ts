@@ -12,25 +12,29 @@
  */
 
 // Imports
-import { App, CfnOutput, Stack } from '@aws-cdk/core';
-import { KinesisStreamGlueJob, KinesisStreamGlueJobProps } from '../lib';
+import { Bucket } from '@aws-cdk/aws-s3';
+import { App, Duration, Stack } from '@aws-cdk/core';
+import { GlueJobCommandProps, KinesisStreamGlueJob, KinesisStreamGlueJobProps } from '../lib';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, 'test-kinesisstream-gluejob');
 stack.templateOptions.description = 'Integration Test for aws-kinesisstream-gluejob';
 
-const _jobRole = KinesisStreamGlueJob.createGlueJobRole(stack);
-const _createJobCommand = KinesisStreamGlueJob.createGlueJobCommand(stack, 'pythonshell', '3', _jobRole,
-  undefined, `${__dirname}/transform.py`);
+const _jobCommand: GlueJobCommandProps= {
+  jobCommandName: 'glueetl',
+  pythonVersion: '3',
+  s3ObjectUrlForScript: new Bucket(stack, 'existingScriptLocation', {
+    versioned: false,
+    lifecycleRules: [{
+      expiration: Duration.days(30)
+    }]
+  }).s3UrlForObject()
+}
 
 // Definitions
 const props: KinesisStreamGlueJobProps = {
-  glueJobProps: {
-    command: _createJobCommand[0],
-    role: _jobRole.roleArn,
-    securityConfiguration: 'testSecConfig'
-  },
+  glueJobCommandProps: _jobCommand,
   fieldSchema: [{
     name: "id",
     type: "int",
@@ -47,13 +51,11 @@ const props: KinesisStreamGlueJobProps = {
     name: "numericvalue",
     type: "int",
     comment: "Some value associated with the record"
-  }]
+  }],
+  jobArgumentsList: {}
 };
 
 new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
-new CfnOutput(stack, 'ScriptLocation', {
-  value: _createJobCommand[1]!.s3ObjectUrl
-});
 
 // Synth
 app.synth();

@@ -64,7 +64,7 @@ export interface KinesisStreamGlueJobProps {
    * if either @existingGlueJob or @glueJobProps is provided
    * Glue Job Command Props as defined in @GlueJobCommandProps.
    */
-  readonly glueJobCommandProps: GlueJobCommandProps;
+  readonly glueJobCommandProps?: GlueJobCommandProps;
   /**
    * @default
    * A JSON document defining the schema structure of the records in the data stream. An example of such a
@@ -165,13 +165,13 @@ export class KinesisStreamGlueJob extends Construct {
         glueJobProps: props.glueJobProps
       });
     } else {
-      // 'gluestreaming', '3', _glueJobRole, undefined, `${__dirname}/../etl/transform.py`
       const _jobRole = defaults.createGlueJobRole(this);
       const _jobCommand = defaults.createGlueJobCommand(this,
-        props.glueJobCommandProps.jobCommandName,
-        props.glueJobCommandProps.pythonVersion,
+        props.glueJobCommandProps!.jobCommandName,
+        props.glueJobCommandProps!.pythonVersion,
         _jobRole,
-        props.glueJobCommandProps.scriptPath);
+        props.glueJobCommandProps!.s3ObjectUrlForScript,
+        props.glueJobCommandProps!.scriptPath);
 
       this.glueJob = defaults.buildGlueJob(this, {
         glueJobProps: {

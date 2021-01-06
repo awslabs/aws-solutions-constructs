@@ -58,7 +58,8 @@ new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', {
     name: "numericvalue",
     type: "int",
     comment: "Some value associated with the record"
-  }]
+  }],
+  jobArgumentsList: {}
 });
 
 // Synth
