@@ -13,7 +13,7 @@
 
 // Imports
 import { Stack, Duration, App } from '@aws-cdk/core';
-import { LambdaToSageMakerEndpoint, LambdaToSageMakerEndpointProps } from '../lib';
+import { LambdaToSagemakerEndpoint, LambdaToSagemakerEndpointProps } from '../lib';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as iam from '@aws-cdk/aws-iam';
@@ -23,7 +23,7 @@ const app = new App();
 const stack = new Stack(app, 'test-lambda-sagemakerendpoint');
 stack.templateOptions.description = 'Integration Test for aws-lambda-sagemakerendpoint';
 
-// Create IAM Role to be assumed by SageMaker
+// Create IAM Role to be assumed by Sagemaker
 const sagemakerRole = new iam.Role(stack, 'SagemakerRole', {
   assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
 });
@@ -43,7 +43,7 @@ const fn = defaults.deployLambdaFunction(stack, {
   memorySize: 128,
 });
 
-const props: LambdaToSageMakerEndpointProps = {
+const props: LambdaToSagemakerEndpointProps = {
   modelProps: {
     executionRoleArn: sagemakerRole.roleArn,
     primaryContainer: {
@@ -55,7 +55,7 @@ const props: LambdaToSageMakerEndpointProps = {
   role: sagemakerRole,
 };
 
-new LambdaToSageMakerEndpoint(stack, 'test-lambda-sagemaker', props);
+new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', props);
 
 // Synth
 app.synth();

@@ -13,7 +13,7 @@
 
 // Imports
 import { Stack, Duration, App } from '@aws-cdk/core';
-import { LambdaToSageMakerEndpoint, LambdaToSageMakerEndpointProps } from '../lib';
+import { LambdaToSagemakerEndpoint, LambdaToSagemakerEndpointProps } from '../lib';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as ec2 from '@aws-cdk/aws-ec2';
@@ -24,7 +24,7 @@ const app = new App();
 const stack = new Stack(app, 'test-lambda-sagemakerendpoint');
 stack.templateOptions.description = 'Integration Test for aws-lambda-sagemakerendpoint';
 
-// Create IAM Role to be assumed by SageMaker
+// Create IAM Role to be assumed by Sagemaker
 const sagemakerRole = new iam.Role(stack, 'SagemakerRole', {
   assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
 });
@@ -51,12 +51,12 @@ const vpc = defaults.buildVpc(stack, {
   },
 });
 
-// Add S3 VPC Gateway Endpint, required by SageMaker to access Models artifacts via AWS private network
+// Add S3 VPC Gateway Endpint, required by Sagemaker to access Models artifacts via AWS private network
 defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.S3);
 // Add SAGEMAKER_RUNTIME VPC Interface Endpint, required by the lambda function to invoke the SageMaker endpoint
 defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.SAGEMAKER_RUNTIME);
 
-const props: LambdaToSageMakerEndpointProps = {
+const props: LambdaToSagemakerEndpointProps = {
   modelProps: {
     executionRoleArn: sagemakerRole.roleArn,
     primaryContainer: {
@@ -75,7 +75,7 @@ const props: LambdaToSageMakerEndpointProps = {
   role: sagemakerRole,
 };
 
-new LambdaToSageMakerEndpoint(stack, 'test-lambda-sagemaker', props);
+new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', props);
 
 // Synth
 app.synth();

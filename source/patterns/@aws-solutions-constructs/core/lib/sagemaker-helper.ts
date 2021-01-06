@@ -47,7 +47,7 @@ export interface BuildSagemakerNotebookProps {
    */
   readonly existingNotebookObj?: sagemaker.CfnNotebookInstance;
   /**
-   * IAM Role Arn for SageMaker NoteBookInstance
+   * IAM Role Arn for Sagemaker NoteBookInstance
    *
    * @default - None
    */
@@ -90,7 +90,7 @@ function addPermissions(_role: iam.Role) {
     })
   );
 
-  // Grant GetRole permissions to the SageMaker service
+  // Grant GetRole permissions to the Sagemaker service
   _role.addToPolicy(
     new iam.PolicyStatement({
       resources: [_role.roleArn],
@@ -98,7 +98,7 @@ function addPermissions(_role: iam.Role) {
     })
   );
 
-  // Grant PassRole permissions to the SageMaker service
+  // Grant PassRole permissions to the Sagemaker service
   _role.addToPolicy(
     new iam.PolicyStatement({
       resources: [_role.roleArn],
@@ -201,33 +201,33 @@ export function buildSagemakerNotebook(
   }
 }
 
-export interface BuildSageMakerEndpointProps {
+export interface BuildSagemakerEndpointProps {
   /**
-   * Existing SageMaker Enpoint object, if this is set then the modelProps, endpointConfigProps, and endpointProps are ignored
+   * Existing Sagemaker Enpoint object, if this is set then the modelProps, endpointConfigProps, and endpointProps are ignored
    *
    * @default - None
    */
-  readonly existingSageMakerEndpointObj?: sagemaker.CfnEndpoint;
+  readonly existingSagemakerEndpointObj?: sagemaker.CfnEndpoint;
   /**
-   * User provided props to create SageMaker Model
+   * User provided props to create Sagemaker Model
    *
    * @default - None
    */
   readonly modelProps?: sagemaker.CfnModelProps;
   /**
-   * User provided props to create SageMaker Endpoint Configuration
+   * User provided props to create Sagemaker Endpoint Configuration
    *
    * @default - None
    */
   readonly endpointConfigProps?: sagemaker.CfnEndpointConfigProps;
   /**
-   * User provided props to create SageMaker Endpoint
+   * User provided props to create Sagemaker Endpoint
    *
    * @default - None
    */
   readonly endpointProps?: sagemaker.CfnEndpointProps;
   /**
-   * A VPC where the SageMaker Endpoint will be placed
+   * A VPC where the Sagemaker Endpoint will be placed
    *
    * @default - None
    */
@@ -241,55 +241,55 @@ export interface BuildSageMakerEndpointProps {
    */
   readonly deployNatGateway?: boolean;
   /**
-   * IAM Rol, with all required permissions, to be assumed by SageMaker to create resources
-   * The Role is not required if existingSageMakerEndpointObj is provided.
+   * IAM Rol, with all required permissions, to be assumed by Sagemaker to create resources
+   * The Role is not required if existingSagemakerEndpointObj is provided.
    *
    * @default - None
    */
   readonly role?: iam.Role;
 }
 
-export function BuildSageMakerEndpoint(
+export function BuildSagemakerEndpoint(
   scope: cdk.Construct,
-  props: BuildSageMakerEndpointProps
+  props: BuildSagemakerEndpointProps
 ): [sagemaker.CfnEndpoint, sagemaker.CfnEndpointConfig?, sagemaker.CfnModel?] {
-  /** Conditional SageMaker endpoint creation */
-  if (!props.existingSageMakerEndpointObj) {
+  /** Conditional Sagemaker endpoint creation */
+  if (!props.existingSagemakerEndpointObj) {
     if (props.modelProps) {
       /** return [endpoint, endpointConfig, model] */
       return deploySagemakerEndpoint(scope, props);
     } else {
-      throw Error('Either existingSageMakerEndpointObj or at least modelProps is required');
+      throw Error('Either existingSagemakerEndpointObj or at least modelProps is required');
     }
   } else {
     /** Otherwise, return [endpoint] */
-    return [props.existingSageMakerEndpointObj];
+    return [props.existingSagemakerEndpointObj];
   }
 }
 
 export function deploySagemakerEndpoint(
   scope: cdk.Construct,
-  props: BuildSageMakerEndpointProps
+  props: BuildSagemakerEndpointProps
 ): [sagemaker.CfnEndpoint, sagemaker.CfnEndpointConfig?, sagemaker.CfnModel?] {
   let model: sagemaker.CfnModel;
   let endpointConfig: sagemaker.CfnEndpointConfig;
   let endpoint: sagemaker.CfnEndpoint;
 
-  // Create SageMaker's model, endpointConfig, and endpoint
+  // Create Sagemaker's model, endpointConfig, and endpoint
   if (props.modelProps && props.role) {
     model = createSagemakerModel(scope, props.modelProps, props.role, props.vpc, props.deployNatGateway);
     // Create SageMake EndpointConfig
     endpointConfig = createSagemakerEndpointConfig(scope, model.attrModelName, props.endpointConfigProps);
     // Add dependency on model
     endpointConfig.addDependsOn(model);
-    // Create SageMaker Endpoint
+    // Create Sagemaker Endpoint
     endpoint = createSagemakerEndpoint(scope, endpointConfig.attrEndpointConfigName, props.endpointProps);
     // Add dependency on EndpointConfig
     endpoint.addDependsOn(endpointConfig);
 
     return [endpoint, endpointConfig, model];
   } else {
-    throw Error('You need to provide at least modelProps and SageMaker IAM Role to create Sagemaker Endpoint');
+    throw Error('You need to provide at least modelProps and Sagemaker IAM Role to create Sagemaker Endpoint');
   }
 }
 
@@ -348,9 +348,9 @@ export function createSagemakerModel(
     // Overwrite default model properties
     finalModelProps = overrideProps(finalModelProps, modelProps);
 
-    // Create the SageMaker's Model
-    model = new sagemaker.CfnModel(scope, 'SageMakerModel', finalModelProps);
-    // Add dependency on the SageMaker's role
+    // Create the Sagemaker's Model
+    model = new sagemaker.CfnModel(scope, 'SagemakerModel', finalModelProps);
+    // Add dependency on the Sagemaker's role
     model.node.addDependency(role);
 
     return model;
@@ -381,8 +381,8 @@ export function createSagemakerEndpointConfig(
     finalEndpointConfigProps = overrideProps(finalEndpointConfigProps, endpointConfigProps);
   }
 
-  // Create the SageMaker's EndpointConfig
-  endpointConfig = new sagemaker.CfnEndpointConfig(scope, 'SageMakerEndpointConfig', finalEndpointConfigProps);
+  // Create the Sagemaker's EndpointConfig
+  endpointConfig = new sagemaker.CfnEndpointConfig(scope, 'SagemakerEndpointConfig', finalEndpointConfigProps);
 
   return endpointConfig;
 }
@@ -402,8 +402,8 @@ export function createSagemakerEndpoint(
     finalEndpointProps = overrideProps(finalEndpointProps, endpointProps);
   }
 
-  // Create the SageMaker's Endpoint
-  endpoint = new sagemaker.CfnEndpoint(scope, 'SageMakerEndpoint', finalEndpointProps);
+  // Create the Sagemaker's Endpoint
+  endpoint = new sagemaker.CfnEndpoint(scope, 'SagemakerEndpoint', finalEndpointProps);
 
   return endpoint;
 }

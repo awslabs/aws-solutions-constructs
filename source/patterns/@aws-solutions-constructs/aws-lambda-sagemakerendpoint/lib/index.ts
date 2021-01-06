@@ -19,9 +19,9 @@ import * as sagemaker from '@aws-cdk/aws-sagemaker';
 import * as defaults from '@aws-solutions-constructs/core';
 
 /**
- * @summary The properties for the LambdaToSageMakerEndpoint class
+ * @summary The properties for the LambdaToSagemakerEndpoint class
  */
-export interface LambdaToSageMakerEndpointProps {
+export interface LambdaToSagemakerEndpointProps {
   /**
    * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored
    *
@@ -35,25 +35,25 @@ export interface LambdaToSageMakerEndpointProps {
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
-   * Existing SageMaker Enpoint object, if this is set then the modelProps, endpointConfigProps, and endpointProps are ignored
+   * Existing Sagemaker Enpoint object, if this is set then the modelProps, endpointConfigProps, and endpointProps are ignored
    *
    * @default - None
    */
-  readonly existingSageMakerEndpointObj?: sagemaker.CfnEndpoint;
+  readonly existingSagemakerEndpointObj?: sagemaker.CfnEndpoint;
   /**
-   * User provided props to create SageMaker Model
+   * User provided props to create Sagemaker Model
    *
    * @default - None
    */
   readonly modelProps?: sagemaker.CfnModelProps;
   /**
-   * User provided props to create SageMaker Endpoint Configuration
+   * User provided props to create Sagemaker Endpoint Configuration
    *
    * @default - Default props are used
    */
   readonly endpointConfigProps?: sagemaker.CfnEndpointConfigProps;
   /**
-   * User provided props to create SageMaker Endpoint
+   * User provided props to create Sagemaker Endpoint
    *
    * @default - Default props are used
    */
@@ -85,8 +85,8 @@ export interface LambdaToSageMakerEndpointProps {
    */
   readonly deployNatGateway?: boolean;
   /**
-   * IAM Role, with all required permissions, to be assumed by SageMaker to create resources
-   * The Role is not required if existingSageMakerEndpointObj is provided.
+   * IAM Role, with all required permissions, to be assumed by Sagemaker to create resources
+   * The Role is not required if existingSagemakerEndpointObj is provided.
    *
    * @default - None
    */
@@ -94,24 +94,24 @@ export interface LambdaToSageMakerEndpointProps {
 }
 
 /**
- * @summary The LambdaToSageMakerEndpoint class.
+ * @summary The LambdaToSagemakerEndpoint class.
  */
-export class LambdaToSageMakerEndpoint extends cdk.Construct {
+export class LambdaToSagemakerEndpoint extends cdk.Construct {
   public readonly lambdaFunction: lambda.Function;
-  public readonly sageMakerEndpoint: sagemaker.CfnEndpoint;
-  public readonly sageMakerEndpointConfig?: sagemaker.CfnEndpointConfig;
-  public readonly sageMakerModel?: sagemaker.CfnModel;
+  public readonly sagemakerEndpoint: sagemaker.CfnEndpoint;
+  public readonly sagemakerEndpointConfig?: sagemaker.CfnEndpointConfig;
+  public readonly sagemakerModel?: sagemaker.CfnModel;
   public readonly vpc?: ec2.IVpc;
 
   /**
-   * @summary Constructs a new instance of the LambdaToSageMakerEndpoint class.
+   * @summary Constructs a new instance of the LambdaToSagemakerEndpoint class.
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a scope-unique id.
-   * @param {LambdaToSageMakerEndpointProps} props - user provided props for the construct.
+   * @param {LambdaToSagemakerEndpointProps} props - user provided props for the construct.
    * @since 1.76.0
    * @access public
    */
-  constructor(scope: cdk.Construct, id: string, props: LambdaToSageMakerEndpointProps) {
+  constructor(scope: cdk.Construct, id: string, props: LambdaToSagemakerEndpointProps) {
     super(scope, id);
 
     if (props.deployVpc || props.existingVpc) {
@@ -122,24 +122,24 @@ export class LambdaToSageMakerEndpoint extends cdk.Construct {
       // If deployNatGateway is true, create Public and Private subnets. Otherwise, create Isolated subnets only
       const subnetConfiguration: ec2.SubnetConfiguration[] = props.deployNatGateway
         ? [
-          {
-            cidrMask: 20,
-            name: 'Public',
-            subnetType: ec2.SubnetType.PUBLIC,
-          },
-          {
-            cidrMask: 20,
-            name: 'Private',
-            subnetType: ec2.SubnetType.PRIVATE,
-          },
-        ]
+            {
+              cidrMask: 20,
+              name: 'Public',
+              subnetType: ec2.SubnetType.PUBLIC,
+            },
+            {
+              cidrMask: 20,
+              name: 'Private',
+              subnetType: ec2.SubnetType.PRIVATE,
+            },
+          ]
         : [
-          {
-            cidrMask: 18,
-            name: 'Isolated',
-            subnetType: ec2.SubnetType.ISOLATED,
-          },
-        ];
+            {
+              cidrMask: 18,
+              name: 'Isolated',
+              subnetType: ec2.SubnetType.ISOLATED,
+            },
+          ];
 
       // create the VPC
       this.vpc = defaults.buildVpc(scope, {
@@ -154,14 +154,14 @@ export class LambdaToSageMakerEndpoint extends cdk.Construct {
         },
       });
 
-      // Add S3 VPC Gateway Endpint, required by SageMaker to access Models artifacts via AWS private network
+      // Add S3 VPC Gateway Endpint, required by Sagemaker to access Models artifacts via AWS private network
       defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.S3);
-      // Add SAGEMAKER_RUNTIME VPC Interface Endpint, required by the lambda function to invoke the SageMaker endpoint
+      // Add SAGEMAKER_RUNTIME VPC Interface Endpint, required by the lambda function to invoke the Sagemaker endpoint
       defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.SAGEMAKER_RUNTIME);
     }
 
-    // Build SageMaker Endpoint (inclduing SageMaker's Endpoint Configuration and Model)
-    [this.sageMakerEndpoint, this.sageMakerEndpointConfig, this.sageMakerModel] = defaults.BuildSageMakerEndpoint(
+    // Build Sagemaker Endpoint (inclduing Sagemaker's Endpoint Configuration and Model)
+    [this.sagemakerEndpoint, this.sagemakerEndpointConfig, this.sagemakerModel] = defaults.BuildSagemakerEndpoint(
       this,
       {
         ...props,
@@ -177,13 +177,13 @@ export class LambdaToSageMakerEndpoint extends cdk.Construct {
     });
 
     // Add ENDPOINT_NAME environment variable
-    this.lambdaFunction.addEnvironment('ENDPOINT_NAME', this.sageMakerEndpoint.attrEndpointName);
+    this.lambdaFunction.addEnvironment('ENDPOINT_NAME', this.sagemakerEndpoint.attrEndpointName);
 
     // Add permission to invoke the SageMaker endpoint
     this.lambdaFunction.addToRolePolicy(
       new iam.PolicyStatement({
         actions: ['sagemaker:InvokeEndpoint'],
-        resources: [this.sageMakerEndpoint.ref],
+        resources: [this.sagemakerEndpoint.ref],
       })
     );
   }
