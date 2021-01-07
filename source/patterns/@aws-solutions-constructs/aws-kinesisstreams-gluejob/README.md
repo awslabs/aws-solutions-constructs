@@ -30,10 +30,6 @@ This AWS Solutions Construct deploys a Kinesis Stream and configures a AWS Glue 
 Here is a minimal deployable pattern definition in Typescript:
 
 ```javascript
-const _outputBucket = defaults.buildS3Bucket(this, {
-    bucketProps: defaults.DefaultS3Props(),
-});
-
 const _fieldSchema: CfnTable.ColumnProperty [] = [{
             name: 'id',
             type: 'int',
@@ -63,14 +59,8 @@ const _customEtlJob = new KinesisStreamGlueJob(this, 'CustomETL', {
         pythonVersion: '3',
         scriptPath: `${__dirname}/../etl/transform.py`,
     },
-    fieldSchema: _fieldSchema,
-    argumentList: {
-        '--job-bookmark-option': 'job-bookmark-enable',
-        '--output_path': `s3://${_outputBucket[0].bucketName}/output/`,
-    },
+    fieldSchema: _fieldSchema
 });
-
-_outputBucket[0].grantReadWrite(Role.fromRoleArn(this, 'GlueJobRole',  _customEtlJob.glueJob.role));
 
 ```
 
@@ -137,6 +127,10 @@ Out of the box implementation of the Construct without any override will set the
 ### IAM Role
 
 -   A job execution role that has privileges to read the ETL script from the S3 bucket location, read from the Kinesis Stream, and execute the Glue Job. The permissions to write to a specific location, is not configured by the construct.
+
+### Output S3 Bucket
+
+-   An S3 bucket to store the output of the ETL transformation. This bucket will be passed as an argument to the created glue job so that it can be used in the ETL script to write data into it
 
 ## Architecture
 
