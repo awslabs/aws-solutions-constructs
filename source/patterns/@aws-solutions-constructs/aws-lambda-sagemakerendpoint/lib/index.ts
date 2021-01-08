@@ -45,7 +45,7 @@ export interface LambdaToSagemakerEndpointProps {
    *
    * @default - None
    */
-  readonly modelProps?: sagemaker.CfnModelProps;
+  readonly modelProps?: sagemaker.CfnModelProps | any;
   /**
    * User provided props to create Sagemaker Endpoint Configuration
    *
@@ -122,24 +122,24 @@ export class LambdaToSagemakerEndpoint extends cdk.Construct {
       // If deployNatGateway is true, create Public and Private subnets. Otherwise, create Isolated subnets only
       const subnetConfiguration: ec2.SubnetConfiguration[] = props.deployNatGateway
         ? [
-            {
-              cidrMask: 20,
-              name: 'Public',
-              subnetType: ec2.SubnetType.PUBLIC,
-            },
-            {
-              cidrMask: 20,
-              name: 'Private',
-              subnetType: ec2.SubnetType.PRIVATE,
-            },
-          ]
+          {
+            cidrMask: 20,
+            name: 'Public',
+            subnetType: ec2.SubnetType.PUBLIC,
+          },
+          {
+            cidrMask: 20,
+            name: 'Private',
+            subnetType: ec2.SubnetType.PRIVATE,
+          },
+        ]
         : [
-            {
-              cidrMask: 18,
-              name: 'Isolated',
-              subnetType: ec2.SubnetType.ISOLATED,
-            },
-          ];
+          {
+            cidrMask: 18,
+            name: 'Isolated',
+            subnetType: ec2.SubnetType.ISOLATED,
+          },
+        ];
 
       // create the VPC
       this.vpc = defaults.buildVpc(scope, {
@@ -176,7 +176,7 @@ export class LambdaToSagemakerEndpoint extends cdk.Construct {
       vpc: this.vpc,
     });
 
-    // Add ENDPOINT_NAME environment variable
+    // Add SAGEMAKER_ENDPOINT_NAME environment variable
     this.lambdaFunction.addEnvironment('SAGEMAKER_ENDPOINT_NAME', this.sagemakerEndpoint.attrEndpointName);
 
     // Add permission to invoke the SageMaker endpoint
