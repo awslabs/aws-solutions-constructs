@@ -31,6 +31,9 @@ This AWS Solutions Construct implements an AWS Lambda function connected to an A
 Here is a minimal deployable pattern definition in Typescript:
 
 ```typescript
+import * as iam from '@aws-cdk/aws-iam';
+import { Duration } from '@aws-cdk/core';
+import * as lambda from '@aws-cdk/aws-lambda';
 import {
   LambdaToSagemakerEndpoint,
   LambdaToSagemakerEndpointProps,
@@ -47,7 +50,7 @@ sagemakerRole.addToPolicy(
     resources: ['arn:aws:s3:::*'],
   })
 );
-const props: LambdaToSagemakerEndpointProps = {
+const patternProps: LambdaToSagemakerEndpointProps = {
   modelProps: {
     executionRoleArn: sagemakerRole.roleArn,
     primaryContainer: {
@@ -65,13 +68,13 @@ const props: LambdaToSagemakerEndpointProps = {
   role: sagemakerRole,
 };
 
-new LambdaToSagemakerEndpoint(stack, 'LambdaToSagemakerEndpointPattern', props);
+new LambdaToSagemakerEndpoint(this, 'LambdaToSagemakerEndpointPattern', props);
 ```
 
 ## Initializer
 
 ```text
-new LambdaToSagemakerEndpoint(stack, 'LambdaToSagemakerEndpointPattern', props);
+new LambdaToSagemakerEndpoint(this, 'LambdaToSagemakerEndpointPattern', props);
 ```
 
 _Parameters_
