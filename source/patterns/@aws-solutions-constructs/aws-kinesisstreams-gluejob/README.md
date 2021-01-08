@@ -106,9 +106,9 @@ _Parameters_
 | **Name**       | **Type**                                                                                | **Description**                                                                                                                                                               |
 | :------------- | :-------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | s3OutputBucket | [`Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html) | The output S3 location where the data should be written. The provided S3 bucket will be used to pass the output location to the etl script as an argument to the AWS Glue job |
-| datastoreStype | [`SinkStoreType`](<#sinkstoretype-(enum)>)                                              | Sink data store type                                                                                                                                                          |
+| datastoreStype | [`SinkStoreType`](#sinkstoretype)                                                       | Sink data store type                                                                                                                                                          |
 
-## SinkStoreType (enum)
+## SinkStoreType
 
 Enumeration of data store types that could include S3, DynamoDB, DocumentDB, RDS or Redshift. Current construct implementation only supports S3, but potential to add other output types in the future
 
