@@ -154,9 +154,9 @@ export class LambdaToSagemakerEndpoint extends cdk.Construct {
         },
       });
 
-      // Add S3 VPC Gateway Endpint, required by Sagemaker to access Models artifacts via AWS private network
+      // Add S3 VPC Gateway Endpoint, required by Sagemaker to access Models artifacts via AWS private network
       defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.S3);
-      // Add SAGEMAKER_RUNTIME VPC Interface Endpint, required by the lambda function to invoke the Sagemaker endpoint
+      // Add SAGEMAKER_RUNTIME VPC Interface Endpoint, required by the lambda function to invoke the Sagemaker endpoint
       defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.SAGEMAKER_RUNTIME);
     }
 
@@ -177,7 +177,7 @@ export class LambdaToSagemakerEndpoint extends cdk.Construct {
     });
 
     // Add ENDPOINT_NAME environment variable
-    this.lambdaFunction.addEnvironment('ENDPOINT_NAME', this.sagemakerEndpoint.attrEndpointName);
+    this.lambdaFunction.addEnvironment('SAGEMAKER_ENDPOINT_NAME', this.sagemakerEndpoint.attrEndpointName);
 
     // Add permission to invoke the SageMaker endpoint
     this.lambdaFunction.addToRolePolicy(
