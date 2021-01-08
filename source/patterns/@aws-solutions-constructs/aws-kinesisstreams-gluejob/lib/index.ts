@@ -40,10 +40,22 @@ export interface GlueJobCommandProps {
 }
 
 /**
+ * Enumeration of data store types that could include S3, DynamoDB, DocumentDB, RDS or Redshift. Current
+ * construct implementation only supports S3, but potential to add other output types in the future
+ */
+enum SinkStoreType {
+  S3 = 'S3'
+}
+
+/**
  * Interface to define potential outputs to allow the construct define additional output destinations for ETL
  * transformation
  */
 export interface SinkDataStoreProps {
+  /**
+   * Sink data store type
+   */
+  readonly datastoreStype: SinkStoreType;
   /**
    * The output S3 location where the data should be written. The provided S3 bucket will be used to pass
    * the output location to the etl script as an argument to the AWS Glue job.
@@ -56,7 +68,7 @@ export interface SinkDataStoreProps {
    *  getResolvedOptions(sys.argv, ["JOB_NAME", "output_path", <other arguments that are passed> ])
    *  output_path = args["output_path"]
    */
-  s3OutputBucket?: Bucket
+  readonly s3OutputBucket?: Bucket
 }
 
 export interface KinesisStreamGlueJobProps {
@@ -220,7 +232,8 @@ export class KinesisStreamGlueJob extends Construct {
             "--enable-continuous-cloudwatch-log" : true,
             "--database_name": this.database.ref,
             "--table_name": this.table.ref,
-            '--output_path': `s3://${this.outputBucket[0].bucketName}/output/`,
+            ...(props.outputDataStore?.datastoreStype === SinkStoreType.S3 &&
+              { '--output_path' : `s3://${this.outputBucket[0].bucketName}/output/` }),
             ...props.jobArgumentsList
           },
           glueVersion: props.glueVersion ? props.glueVersion : '1.0'
