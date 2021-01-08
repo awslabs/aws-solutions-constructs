@@ -345,7 +345,7 @@ export function createSagemakerModel(
     primaryContainer = modelProps.primaryContainer as sagemaker.CfnModel.ContainerDefinitionProperty;
     // Get default Model props
     finalModelProps = DefaultSagemakerModelProps(modelProps.executionRoleArn, primaryContainer, vpcConfig);
-    // Overwrite default model properties
+    // Override default model properties
     finalModelProps = overrideProps(finalModelProps, modelProps);
 
     // Create the Sagemaker's Model
