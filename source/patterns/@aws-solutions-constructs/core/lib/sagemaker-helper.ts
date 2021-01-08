@@ -72,6 +72,7 @@ function addPermissions(_role: iam.Role) {
         'sagemaker:DeleteEndpoint',
         'sagemaker:DeleteEndpointConfig',
         'sagemaker:InvokeEndpoint',
+        'sagemaker:UpdateEndpointWeightsAndCapacities',
       ],
     })
   );
@@ -87,6 +88,102 @@ function addPermissions(_role: iam.Role) {
         'logs:GetLogEvents',
         'logs:PutLogEvents',
       ],
+    })
+  );
+
+  // To place the Sagemaker model in a private VPC
+  _role.addToPolicy(
+    new iam.PolicyStatement({
+      resources: ['*'],
+      actions: [
+        'ec2:CreateNetworkInterface',
+        'ec2:CreateNetworkInterfacePermission',
+        'ec2:DeleteNetworkInterface',
+        'ec2:DeleteNetworkInterfacePermission',
+        'ec2:DescribeNetworkInterfaces',
+        'ec2:DescribeVpcs',
+        'ec2:DescribeDhcpOptions',
+        'ec2:DescribeSubnets',
+        'ec2:DescribeSecurityGroups',
+      ],
+    })
+  );
+
+  // To create a Sagemaker model using Bring-Your-Own-Model (BYOM) algorith image
+  _role.addToPolicy(
+    new iam.PolicyStatement({
+      resources: [`arn:${cdk.Aws.PARTITION}:ecr:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:repository/*`],
+      actions: [
+        'ecr:BatchCheckLayerAvailability',
+        'ecr:GetDownloadUrlForLayer',
+        'ecr:DescribeRepositories',
+        'ecr:DescribeImages',
+        'ecr:BatchGetImage',
+      ],
+    })
+  );
+
+  // Add GetAuthorizationToken (it can not be bound to resources other than *)
+  _role.addToPolicy(
+    new iam.PolicyStatement({
+      resources: ['*'],
+      actions: ['ecr:GetAuthorizationToken'],
+    })
+  );
+
+  // Add CloudWatch permission to for metrics/alarms
+  _role.addToPolicy(
+    new iam.PolicyStatement({
+      resources: ['*'],
+      actions: [
+        'cloudwatch:PutMetricData',
+        'cloudwatch:PutMetricAlarm',
+        'cloudwatch:DescribeAlarms',
+        'cloudwatch:DeleteAlarms',
+      ],
+    })
+  );
+
+  // add permission to use Elastic Inference accelerator
+  _role.addToPolicy(
+    new iam.PolicyStatement({
+      resources: ['*'],
+      actions: ['elastic-inference:Connect'],
+    })
+  );
+
+  // Add permissions to automatically scaling a Sagemaker real-time inference endpoint
+  _role.addToPolicy(
+    new iam.PolicyStatement({
+      resources: ['*'],
+      actions: [
+        'application-autoscaling:DeleteScalingPolicy',
+        'application-autoscaling:DeleteScheduledAction',
+        'application-autoscaling:DeregisterScalableTarget',
+        'application-autoscaling:DescribeScalableTargets',
+        'application-autoscaling:DescribeScalingActivities',
+        'application-autoscaling:DescribeScalingPolicies',
+        'application-autoscaling:DescribeScheduledActions',
+        'application-autoscaling:PutScalingPolicy',
+        'application-autoscaling:PutScheduledAction',
+        'application-autoscaling:RegisterScalableTarget',
+      ],
+    })
+  );
+
+  // add kms permissions
+  _role.addToPolicy(
+    new iam.PolicyStatement({
+      resources: ['*'],
+      actions: ['kms:DescribeKey', 'kms:ListAliases'],
+    })
+  );
+
+  // Add S3 permissions to get Model artifact, put data capture files, etc.
+  _role.addToPolicy(
+    new iam.PolicyStatement({
+      actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject', 's3:ListBucket'],
+      resources: ['arn:aws:s3:::*'],
     })
   );
 
