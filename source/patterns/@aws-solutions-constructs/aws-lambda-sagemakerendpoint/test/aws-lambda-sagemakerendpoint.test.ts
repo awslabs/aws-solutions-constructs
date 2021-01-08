@@ -144,7 +144,7 @@ test('Pattern deployment with new Lambda function, new Sagemaker endpoint, deplo
 });
 
 // ---------------------------------------------------------------------------------
-// Test for errot when existing Lambda function does not have vpc and deployVpc = true
+// Test for error when existing Lambda function does not have vpc and deployVpc = true
 // ---------------------------------------------------------------------------------
 test('Test for errot when existing Lambda function does not have vpc and deployVpc = true ', () => {
   // Initial Setup
@@ -819,7 +819,7 @@ test('Test getter methods: new Lambda function, existingSagemakerendpointObj, an
   expect(stack).toHaveResource('AWS::Lambda::Function', {
     Environment: {
       Variables: {
-        ENDPOINT_NAME: {
+        SAGEMAKER_ENDPOINT_NAME: {
           'Fn::GetAtt': ['SageMakerEndpoint', 'EndpointName'],
         },
       },
