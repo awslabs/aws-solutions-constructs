@@ -371,11 +371,30 @@ export function deploySagemakerEndpoint(
   let model: sagemaker.CfnModel;
   let endpointConfig: sagemaker.CfnEndpointConfig;
   let endpoint: sagemaker.CfnEndpoint;
+  let sagemakerRole: iam.Role;
 
   // Create Sagemaker's model, endpointConfig, and endpoint
-  if (props.modelProps && props.role) {
-    model = createSagemakerModel(scope, props.modelProps, props.role, props.vpc, props.deployNatGateway);
-    // Create SageMake EndpointConfig
+  if (props.modelProps) {
+    // Check if the client has provided executionRoleArn and Role
+    if (props.modelProps.executionRoleArn) {
+      // Check if the Role is also provided and matches the provided executionRoleArn
+      if (!props.role || (props.role && props.role.roleArn !== props.modelProps.executionRoleArn)) {
+        throw Error(`You need to provide the Sagemaker IAM Role with the arn ${props.modelProps.executionRoleArn}`);
+      }
+      // Use the client provided Role
+      sagemakerRole = props.role;
+    } else {
+      // Create the Sagemaker Role
+      sagemakerRole = new iam.Role(scope, 'SagemakerRole', {
+        assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
+      });
+      // Add required permissions
+      addPermissions(sagemakerRole);
+    }
+
+    // Create Sagemaker Model
+    model = createSagemakerModel(scope, props.modelProps, sagemakerRole, props.vpc, props.deployNatGateway);
+    // Create Sagemaker EndpointConfig
     endpointConfig = createSagemakerEndpointConfig(scope, model.attrModelName, props.endpointConfigProps);
     // Add dependency on model
     endpointConfig.addDependsOn(model);
@@ -386,7 +405,7 @@ export function deploySagemakerEndpoint(
 
     return [endpoint, endpointConfig, model];
   } else {
-    throw Error('You need to provide at least modelProps and Sagemaker IAM Role to create Sagemaker Endpoint');
+    throw Error('You need to provide at least modelProps to create Sagemaker Endpoint');
   }
 }
 
@@ -441,7 +460,7 @@ export function createSagemakerModel(
     // Get user provided Model's primary container
     primaryContainer = modelProps.primaryContainer as sagemaker.CfnModel.ContainerDefinitionProperty;
     // Get default Model props
-    finalModelProps = DefaultSagemakerModelProps(modelProps.executionRoleArn, primaryContainer, vpcConfig);
+    finalModelProps = DefaultSagemakerModelProps(role.roleArn, primaryContainer, vpcConfig);
     // Override default model properties
     finalModelProps = overrideProps(finalModelProps, modelProps);
 
