@@ -14,13 +14,16 @@
 import * as ec2 from "@aws-cdk/aws-ec2";
 import { Construct } from "@aws-cdk/core";
 import { overrideProps } from "./utils";
-import { DefaultVpcProps } from './vpc-defaults';
 
 export interface BuildVpcProps {
   /**
    * Existing instance of a VPC, if this is set then the all Props are ignored
    */
   readonly existingVpc?: ec2.IVpc;
+  /**
+   * One of the default VPC configurations available in vpc-defaults
+   */
+  readonly defaultVpcProps: ec2.VpcProps;
   /**
    * User provided props to override the default props for the VPC.
    */
@@ -32,12 +35,12 @@ export interface BuildVpcProps {
   readonly constructVpcProps?: ec2.VpcProps;
 }
 
-export function buildVpc(scope: Construct, props?: BuildVpcProps): ec2.IVpc {
+export function buildVpc(scope: Construct, props: BuildVpcProps): ec2.IVpc {
   if (props?.existingVpc) {
     return props?.existingVpc;
   }
 
-  let cumulativeProps: ec2.VpcProps = DefaultVpcProps();
+  let cumulativeProps: ec2.VpcProps = props?.defaultVpcProps;
 
   if (props?.userVpcProps) {
     cumulativeProps = overrideProps(cumulativeProps, props?.userVpcProps);

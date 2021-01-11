@@ -13,7 +13,26 @@
 
 import * as ec2 from "@aws-cdk/aws-ec2";
 
-export function DefaultVpcProps(): ec2.VpcProps {
+/**
+ * Default VPC with public and private subnets
+ */
+export function DefaultPublicPrivateVpcProps(): ec2.VpcProps {
   return {
+  } as ec2.VpcProps;
+}
+
+/**
+ * Default VPC with isolated subnets
+ */
+export function DefaultIsolatedVpcProps(): ec2.VpcProps {
+  return {
+    natGateways: 0,
+    subnetConfiguration: [
+      {
+        cidrMask: 18,
+        name: "isolated",
+        subnetType: ec2.SubnetType.ISOLATED,
+      }
+    ]
   } as ec2.VpcProps;
 }

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.80.0 (2021-01-11)
+
+### Changed
+- Upgraded all patterns to CDK v1.80.0
+- Fixed the `allowReadOperation` override bug for `aws-apigateway-dynamodb` pattern ([#115](https://github.com/awslabs/aws-solutions-constructs/issues/115))
+- Updated `vpc-defaults.ts` and `vpc-helper.ts` in `core` to allow different default VPCs
+
 ## 1.79.0 (2020-12-31)
 
 ### Changed
