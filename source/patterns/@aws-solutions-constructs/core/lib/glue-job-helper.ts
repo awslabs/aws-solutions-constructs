@@ -12,11 +12,43 @@
  */
 
 import { CfnDatabase, CfnJob, CfnJobProps, CfnSecurityConfiguration, CfnTable } from '@aws-cdk/aws-glue';
-import { Effect, Policy, PolicyStatement, Role, ServicePrincipal } from '@aws-cdk/aws-iam';
-import { Asset } from '@aws-cdk/aws-s3-assets';
-import { Aws, Construct } from '@aws-cdk/core';
+import { Effect, IRole, Policy, PolicyStatement, Role, ServicePrincipal } from '@aws-cdk/aws-iam';
+import { Bucket, IBucket } from '@aws-cdk/aws-s3';
+import { Aws, Construct, IResolvable } from '@aws-cdk/core';
 import * as defaults from '../';
 import { overrideProps } from './utils';
+
+/**
+ * Enumeration of data store types that could include S3, DynamoDB, DocumentDB, RDS or Redshift. Current
+ * construct implementation only supports S3, but potential to add other output types in the future
+ */
+export enum SinkStoreType {
+  S3 = 'S3'
+}
+
+/**
+ * Interface to define potential outputs to allow the construct define additional output destinations for ETL
+ * transformation
+ */
+export interface SinkDataStoreProps {
+  /**
+   * Sink data store type
+   */
+  readonly datastoreStype: SinkStoreType;
+  /**
+   * The output S3 location where the data should be written. The provided S3 bucket will be used to pass
+   * the output location to the etl script as an argument to the AWS Glue job.
+   *
+   * If no location is provided the construct will
+   * create a new S3 bucket location and pass it to the Glue job as arguments.
+   *
+   * The argument key is `output_path`. The value of the argument can be retrieve in the python script
+   * as follows:
+   *  getResolvedOptions(sys.argv, ["JOB_NAME", "output_path", <other arguments that are passed> ])
+   *  output_path = args["output_path"]
+   */
+  readonly s3OutputBucket?: Bucket
+}
 
 export interface BuildGlueJobProps {
   /**
@@ -24,29 +56,45 @@ export interface BuildGlueJobProps {
    * bucket location will be ignored and new location will be created. If a bucket location for the
    * ETL script exists, set it as the @scriptLocation parameter
    */
-  readonly glueJobProps?: CfnJobProps
+  readonly glueJobProps?: CfnJobProps | any
   /**
    * Existing instance of the S3 bucket object, if this is set then the script location is ignored.
    */
   readonly existingCfnJob?: CfnJob;
+
+  readonly table: CfnTable;
+
+  readonly database: CfnDatabase;
+
+  readonly outputDataStore: SinkDataStoreProps
 }
 
-export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): CfnJob {
+export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): [CfnJob, IRole] {
 
   if (!props.existingCfnJob) {
     if (props.glueJobProps) {
-      return deployGlueJob(scope, props.glueJobProps);
+      return deployGlueJob(scope, props.glueJobProps, props.database!, props.table!, props.outputDataStore!);
     } else {
       throw Error('Either glueJobProps or existingCfnJob is required');
     }
   } else {
-    // return properties are already supplied then bucket is not created and hence returns undefined
-    return props.existingCfnJob;
+    return [props.existingCfnJob, Role.fromRoleArn(scope, 'ExistingRole', props.existingCfnJob.role)];
   }
 }
 
-export function deployGlueJob(scope: Construct, glueJobProps: CfnJobProps): CfnJob {
-  const _jobID = 'ETLJob';
+function isJobCommandProperty(command: CfnJob.JobCommandProperty | IResolvable): command is CfnJob.JobCommandProperty {
+  if ((command as CfnJob.JobCommandProperty).name ||
+    (command as CfnJob.JobCommandProperty).pythonVersion ||
+    (command as CfnJob.JobCommandProperty).scriptLocation) {
+
+    return true;
+  } else {
+    return false;
+  }
+}
+
+export function deployGlueJob(scope: Construct, glueJobProps: CfnJobProps, database: CfnDatabase, table: CfnTable,
+  outputDataStore: SinkDataStoreProps): [CfnJob, IRole] {
 
   let _glueSecurityConfigName: string;
 
@@ -80,58 +128,49 @@ export function deployGlueJob(scope: Construct, glueJobProps: CfnJobProps): CfnJ
     ]
   });
 
-  _glueJobPolicy.attachToRole(Role.fromRoleArn(scope, 'GlueJobRole', glueJobProps.role));
-
-  const _glueJobProps: CfnJobProps = overrideProps(defaults.DefaultGlueJobProps(glueJobProps.role, glueJobProps.command,
-    _glueSecurityConfigName), glueJobProps);
-
-  const _glueJob: CfnJob = new CfnJob(scope, _jobID, _glueJobProps);
-  return _glueJob;
-}
-
-/**
- * This is a helper method to creates @CfnJob.JobCommandProperty for CfnJob. Based on the input parameters, If the
- * @S3ObjectUrlForScript is passed, it will create only the JobCommandProperty. Instead if the @scriptLocationPath is
- * passed it will an Asset from the @scriptLocationPath and returns the JobCommandProperty and the Asset. The script
- * location can be retrieved using @Asset.s3ObjectUrl
- *
- * @param scope - The AWS Construct under the underlying construct should be created
- * @param _commandName - The identifier/ name of the ETL Job. The values are glueetl, gluestreaming, pythonshell.
- * THere is no validation, but if valid values are not provided, the deployment may fail
- * @param pythonVersion - The values as for Glue Documentation are '2' and '3'. There is no validation in the
- * method to check for these values to be forward compatible with Glue API changes. If valid values are not provided
- * the deployment may fail.
- * @param s3ObjectUrlForScript - If an S3 bucket location for the script exists, set this parameter. If the Bucket
- * is to be created, set the value as undefined. Setting this parameter will ignore @scriptLocationBucketProps as the
- * bucket already exists
- * @param scriptLocationPath - Set this parameter only if the bucket is to be created. If not then a new
- * Bucket location will be created to upload the ETL script asset
- */
-export function createGlueJobCommand(scope: Construct, _commandName: string, pythonVersion: string, glueJobRole: Role,
-  s3ObjectUrlForScript?: string, scriptLocationPath?: string): [ CfnJob.JobCommandProperty, Asset? ] {
-  // create s3 bucket where script can be deployed
-  let _scriptLocation: string;
-  let _assetLocation: Asset;
-  if (s3ObjectUrlForScript === undefined) {
-    if (scriptLocationPath === undefined) {
-      throw Error('Either s3ObjectUrlForScript or scriptLocationPath is required');
-    } else {
-      _assetLocation = new Asset(scope, 'ETLScriptLocation', {
-        path: scriptLocationPath!
-      });
-      _assetLocation.grantRead(glueJobRole);
-      _scriptLocation = _assetLocation.s3ObjectUrl;
-    }
+  let _jobRole: IRole;
+  if (glueJobProps.role) {
+    _jobRole = Role.fromRoleArn(scope, 'JobRole', glueJobProps.role);
   } else {
-    // since bucket location was provided in the props, logger bucket is not created
-    _scriptLocation = s3ObjectUrlForScript;
+    _jobRole = defaults.createGlueJobRole(scope);
   }
 
-  return [{
-    name: _commandName,
-    pythonVersion,
-    scriptLocation: _scriptLocation
-  }, _assetLocation! !== undefined ? _assetLocation! : undefined ];
+  _glueJobPolicy.attachToRole(_jobRole);
+
+  let _outputLocation: [ Bucket, Bucket? ];
+  if (outputDataStore.s3OutputBucket !== undefined) {
+    _outputLocation = [ outputDataStore.s3OutputBucket, undefined ];
+  } else {
+    _outputLocation = defaults.buildS3Bucket(scope, {});
+  }
+
+  const _jobArgumentsList = {
+    "--enable-metrics" : true,
+    "--enable-continuous-cloudwatch-log" : true,
+    "--database_name": database.ref,
+    "--table_name": table.ref,
+    ...(outputDataStore.datastoreStype === SinkStoreType.S3 &&
+      { '--output_path' : `s3://${_outputLocation[0]}/output/` }),
+    ...glueJobProps.defaultArguments
+  };
+
+  const _newGlueJobProps: CfnJobProps = overrideProps(defaults.DefaultGlueJobProps(_jobRole!, glueJobProps.command,
+    _glueSecurityConfigName, _jobArgumentsList), glueJobProps);
+
+  let _scriptLocation: string;
+  if (isJobCommandProperty(_newGlueJobProps.command)) {
+    if (_newGlueJobProps.command.scriptLocation) {
+      _scriptLocation = _newGlueJobProps.command.scriptLocation;
+    } else {
+      throw Error('Script location has to be provided as an s3 Url location. Script location cannot be empty');
+    }
+  }
+
+  const _scriptBucketLocation: IBucket = Bucket.fromBucketArn(scope, 'ScriptLocaiton', getS3ArnfromS3Url(_scriptLocation!));
+  _scriptBucketLocation.grantRead(_jobRole);
+
+  const _glueJob: CfnJob = new CfnJob(scope, 'KinesisETLJob', _newGlueJobProps);
+  return [_glueJob, _jobRole];
 }
 
 /**
@@ -154,4 +193,9 @@ export function createGlueTable(scope: Construct, database: CfnDatabase, fieldSc
 
 export function createGlueDatabase(scope: Construct): CfnDatabase {
   return defaults.DefaultGlueDatabase(scope);
+}
+
+function getS3ArnfromS3Url(s3Url: string): string {
+  const splitString: string = s3Url.slice(5);
+  return `arn:${Aws.PARTITION}:s3:::${splitString}`;
 }

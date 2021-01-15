@@ -12,14 +12,16 @@
  */
 
 import { CfnJob, CfnJobProps } from '@aws-cdk/aws-glue';
+import { IRole } from '@aws-cdk/aws-iam';
 import { IResolvable } from '@aws-cdk/core';
 
-export function DefaultGlueJobProps(jobRole: string, jobCommand: CfnJob.JobCommandProperty | IResolvable,
-  glueSecurityConfigName: string ): CfnJobProps | any {
-  const defaultGlueJobProps: CfnJobProps | any = {
+export function DefaultGlueJobProps(jobRole: IRole, jobCommand: CfnJob.JobCommandProperty | IResolvable,
+  glueSecurityConfigName: string, _defaultArguments: {} ): CfnJobProps | any {
+  const defaultGlueJobProps: CfnJobProps = {
     command: jobCommand,
-    role: jobRole,
-    securityConfiguration: glueSecurityConfigName
+    role: jobRole.roleArn,
+    securityConfiguration: glueSecurityConfigName,
+    defaultArguments: _defaultArguments
   };
 
   return defaultGlueJobProps;

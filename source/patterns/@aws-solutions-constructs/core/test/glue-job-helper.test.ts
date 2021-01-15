@@ -16,18 +16,9 @@ import { ResourcePart, SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import { CfnJob, CfnJobProps } from '@aws-cdk/aws-glue';
 import { Role, ServicePrincipal } from '@aws-cdk/aws-iam';
+import { Bucket } from '@aws-cdk/aws-s3';
 import { Stack } from "@aws-cdk/core";
 import * as defaults from '..';
-
-// --------------------------------------------------------------
-// Test GlueJobCommandProperty creation
-// --------------------------------------------------------------
-test('Test GlueJobCommandProperty creation', () => {
-  const stack = new Stack();
-  defaults.createGlueJobCommand(stack, 'gluestreaming', '3',
-    defaults.createGlueJobRole(stack), 's3://fakelocation/script');
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 // --------------------------------------------------------------
 // Test deployment with role creation
@@ -41,13 +32,26 @@ test('Test deployment with role creation', () => {
     assumedBy: new ServicePrincipal('glue.amazonaws.com')
   });
 
-  const cfnJobProps: CfnJobProps = defaults.DefaultGlueJobProps(_jobRole.roleArn, {
+  const cfnJobProps: CfnJobProps = defaults.DefaultGlueJobProps(_jobRole, {
     name: _jobID,
     pythonVersion: '3',
     scriptLocation: 's3://fakelocation/script'
-  }, 'testETLJob');
+  }, 'testETLJob', {});
 
-  defaults.buildGlueJob(stack, { glueJobProps: cfnJobProps });
+  const _database = defaults.createGlueDatabase(stack);
+
+  defaults.buildGlueJob(stack, {
+    glueJobProps: cfnJobProps,
+    outputDataStore: {
+      datastoreStype: defaults.SinkStoreType.S3
+    },
+    database: _database,
+    table: defaults.createGlueTable(stack, _database, [{
+      name: "id",
+      type: "int",
+      comment: ""
+    }], 'kinesis', {STREAM_NAME: 'testStream'})
+  });
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   // Assertion 2
@@ -93,8 +97,19 @@ test('Create a Glue Job outside the construct', () => {
     workerType: 'Standard'
   });
 
+  const _database = defaults.createGlueDatabase(stack);
+
   defaults.buildGlueJob(stack, {
-    existingCfnJob: _existingCfnJob
+    existingCfnJob: _existingCfnJob,
+    outputDataStore: {
+      datastoreStype: defaults.SinkStoreType.S3
+    },
+    database: _database,
+    table: defaults.createGlueTable(stack, _database, [{
+      name: "id",
+      type: "int",
+      comment: ""
+    }], 'kinesis', {STREAM_NAME: 'testStream'})
   });
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   expect(stack).toHaveResourceLike('AWS::Glue::Job', {
@@ -145,7 +160,20 @@ test('Test custom deployment properties', () => {
     workerType: 'Standard'
   };
 
-  defaults.buildGlueJob(stack, { glueJobProps: cfnJobProps });
+  const _database = defaults.createGlueDatabase(stack);
+
+  defaults.buildGlueJob(stack, {
+    glueJobProps: cfnJobProps,
+    outputDataStore: {
+      datastoreStype: defaults.SinkStoreType.S3
+    },
+    database: _database,
+    table: defaults.createGlueTable(stack, _database, [{
+      name: "id",
+      type: "int",
+      comment: ""
+    }], 'kinesis', {STREAM_NAME: 'testStream'})
+  });
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
@@ -229,7 +257,18 @@ test('Test custom deployment properties', () => {
 test('Do no supply glueJobProps or existingCfnJob and error out', () => {
   const stack = new Stack();
   try {
-    defaults.buildGlueJob(stack, {});
+    const _database = defaults.createGlueDatabase(stack);
+    defaults.buildGlueJob(stack, {
+      outputDataStore: {
+        datastoreStype: defaults.SinkStoreType.S3
+      },
+      database: _database,
+      table: defaults.createGlueTable(stack, _database, [{
+        name: "id",
+        type: "int",
+        comment: ""
+      }], 'kinesis', {STREAM_NAME: 'testStream'})
+    });
   } catch (error) {
     expect(error).toBeInstanceOf(Error);
   }
@@ -269,19 +308,111 @@ test('Create Database', () => {
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
-test('Provide script location directory location', () => {
+// --------------------------------------------------------------
+// Test deployment without role creation
+// --------------------------------------------------------------
+test('Test deployment with role creation', () => {
+  // Stack
   const stack = new Stack();
-  defaults.createGlueJobCommand(stack, 'gluestreaming', '3',
-    defaults.createGlueJobRole(stack), undefined, `${__dirname}/lambda/index.js`);
+  const _jobID = 'glueetl';
+
+  const cfnJobProps = {
+    command: {
+      name: _jobID,
+      pythonVersion: '3',
+      scriptLocation: 's3://fakelocation/script'
+    }
+  };
+
+  const _database = defaults.createGlueDatabase(stack);
+
+  defaults.buildGlueJob(stack, {
+    glueJobProps: cfnJobProps,
+    outputDataStore: {
+      datastoreStype: defaults.SinkStoreType.S3
+    },
+    database: _database,
+    table: defaults.createGlueTable(stack, _database, [{
+      name: "id",
+      type: "int",
+      comment: ""
+    }], 'kinesis', {STREAM_NAME: 'testStream'})
+  });
+  // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
-test('Do not provide script location or s3 bucket url', () => {
+// --------------------------------------------------------------
+// Test deployment when output location is provided
+// --------------------------------------------------------------
+test('Test deployment with role creation', () => {
+  // Stack
   const stack = new Stack();
+  const _jobID = 'glueetl';
+
+  const cfnJobProps = {
+    command: {
+      name: _jobID,
+      pythonVersion: '3',
+      scriptLocation: 's3://fakelocation/script'
+    }
+  };
+
+  const _database = defaults.createGlueDatabase(stack);
+
+  defaults.buildGlueJob(stack, {
+    glueJobProps: cfnJobProps,
+    outputDataStore: {
+      datastoreStype: defaults.SinkStoreType.S3,
+      s3OutputBucket: new Bucket(stack, 'OutputBucket', {
+        versioned: false
+      })
+    },
+    database: _database,
+    table: defaults.createGlueTable(stack, _database, [{
+      name: "id",
+      type: "int",
+      comment: ""
+    }], 'kinesis', {STREAM_NAME: 'testStream'})
+  });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+// --------------------------------------------------------------
+// Test deployment when script location not provided - throw error
+// --------------------------------------------------------------
+test('Test deployment with role creation', () => {
+  // Stack
+  const stack = new Stack();
+  const _jobID = 'glueetl';
+
+  const cfnJobProps = {
+    command: {
+      name: _jobID,
+      pythonVersion: '3'
+    }
+  };
+
+  const _database = defaults.createGlueDatabase(stack);
   try {
-    defaults.createGlueJobCommand(stack, 'gluestreaming', '3',
-      defaults.createGlueJobRole(stack), undefined, undefined);
+    defaults.buildGlueJob(stack, {
+      glueJobProps: cfnJobProps,
+      outputDataStore: {
+        datastoreStype: defaults.SinkStoreType.S3,
+        s3OutputBucket: new Bucket(stack, 'OutputBucket', {
+          versioned: false
+        })
+      },
+      database: _database,
+      table: defaults.createGlueTable(stack, _database, [{
+        name: "id",
+        type: "int",
+        comment: ""
+      }], 'kinesis', {STREAM_NAME: 'testStream'})
+    });
   } catch (error) {
     expect(error).toBeInstanceOf(Error);
+    expect(error.message).toEqual('Script location has to be provided as an s3 Url location. Script location cannot be empty');
   }
 });

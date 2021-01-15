@@ -60,6 +60,70 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
+    "GlueDatabase": Object {
+      "Properties": Object {
+        "CatalogId": Object {
+          "Ref": "AWS::AccountId",
+        },
+        "DatabaseInput": Object {
+          "Description": "A Glue database table",
+        },
+      },
+      "Type": "AWS::Glue::Database",
+    },
+    "GlueTable": Object {
+      "Properties": Object {
+        "CatalogId": Object {
+          "Ref": "AWS::AccountId",
+        },
+        "DatabaseName": Object {
+          "Ref": "GlueDatabase",
+        },
+        "TableInput": Object {
+          "Parameters": Object {
+            "classication": "json",
+          },
+          "StorageDescriptor": Object {
+            "Columns": Array [
+              Object {
+                "Comment": "",
+                "Name": "id",
+                "Type": "int",
+              },
+            ],
+            "Compressed": false,
+            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+            "Location": "testStream",
+            "NumberOfBuckets": -1,
+            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+            "Parameters": Object {
+              "endpointUrl": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "https://kinesis.",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ".amazonaws.com",
+                  ],
+                ],
+              },
+              "streamName": "testStream",
+              "typeOfData": "kinesis",
+            },
+            "SerdeInfo": Object {
+              "Parameters": Object {
+                "paths": "id",
+              },
+              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
+            },
+          },
+          "TableType": "EXTERNAL_TABLE",
+        },
+      },
+      "Type": "AWS::Glue::Table",
+    },
   },
 }
 `;
@@ -150,152 +214,9 @@ Object {
 }
 `;
 
-exports[`Provide script location directory location 1`] = `
-Object {
-  "Parameters": Object {
-    "AssetParametersd683bbd12df11a4cc2038d55bd98ef859fb10f79b53aeb89145ac615a6671174ArtifactHashB7D5B24E": Object {
-      "Description": "Artifact hash for asset \\"d683bbd12df11a4cc2038d55bd98ef859fb10f79b53aeb89145ac615a6671174\\"",
-      "Type": "String",
-    },
-    "AssetParametersd683bbd12df11a4cc2038d55bd98ef859fb10f79b53aeb89145ac615a6671174S3Bucket770047E3": Object {
-      "Description": "S3 bucket for asset \\"d683bbd12df11a4cc2038d55bd98ef859fb10f79b53aeb89145ac615a6671174\\"",
-      "Type": "String",
-    },
-    "AssetParametersd683bbd12df11a4cc2038d55bd98ef859fb10f79b53aeb89145ac615a6671174S3VersionKey9115CE5E": Object {
-      "Description": "S3 key for asset version \\"d683bbd12df11a4cc2038d55bd98ef859fb10f79b53aeb89145ac615a6671174\\"",
-      "Type": "String",
-    },
-  },
-  "Resources": Object {
-    "JobRole014917C6": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "glue.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "Description": "Service role that Glue custom ETL jobs will assume for exeuction",
-      },
-      "Type": "AWS::IAM::Role",
-    },
-    "JobRoleDefaultPolicy5DE0D8F9": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-              ],
-              "Effect": "Allow",
-              "Resource": Array [
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":s3:::",
-                      Object {
-                        "Ref": "AssetParametersd683bbd12df11a4cc2038d55bd98ef859fb10f79b53aeb89145ac615a6671174S3Bucket770047E3",
-                      },
-                    ],
-                  ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":s3:::",
-                      Object {
-                        "Ref": "AssetParametersd683bbd12df11a4cc2038d55bd98ef859fb10f79b53aeb89145ac615a6671174S3Bucket770047E3",
-                      },
-                      "/*",
-                    ],
-                  ],
-                },
-              ],
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "JobRoleDefaultPolicy5DE0D8F9",
-        "Roles": Array [
-          Object {
-            "Ref": "JobRole014917C6",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-  },
-}
-`;
-
-exports[`Test GlueJobCommandProperty creation 1`] = `
-Object {
-  "Resources": Object {
-    "JobRole014917C6": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "glue.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "Description": "Service role that Glue custom ETL jobs will assume for exeuction",
-      },
-      "Type": "AWS::IAM::Role",
-    },
-  },
-}
-`;
-
 exports[`Test custom deployment properties 1`] = `
 Object {
   "Resources": Object {
-    "ETLJob": Object {
-      "Properties": Object {
-        "AllocatedCapacity": 2,
-        "Command": Object {
-          "Name": "glueetl",
-          "PythonVersion": "3",
-          "ScriptLocation": "s3://existingFakeLocation/existingScript",
-        },
-        "GlueVersion": "1",
-        "MaxCapacity": 4,
-        "NumberOfWorkers": 2,
-        "Role": Object {
-          "Fn::GetAtt": Array [
-            "ExistingJobRole8F750976",
-            "Arn",
-          ],
-        },
-        "SecurityConfiguration": "ETLJobSecurityConfig",
-        "WorkerType": "Standard",
-      },
-      "Type": "AWS::Glue::Job",
-    },
     "ExistingJobRole8F750976": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
@@ -313,6 +234,17 @@ Object {
         "Description": "Existing role",
       },
       "Type": "AWS::IAM::Role",
+    },
+    "GlueDatabase": Object {
+      "Properties": Object {
+        "CatalogId": Object {
+          "Ref": "AWS::AccountId",
+        },
+        "DatabaseInput": Object {
+          "Description": "A Glue database table",
+        },
+      },
+      "Type": "AWS::Glue::Database",
     },
     "GlueSecurityConfig": Object {
       "Properties": Object {
@@ -349,6 +281,165 @@ Object {
         "Name": "ETLJobSecurityConfig",
       },
       "Type": "AWS::Glue::SecurityConfiguration",
+    },
+    "GlueTable": Object {
+      "Properties": Object {
+        "CatalogId": Object {
+          "Ref": "AWS::AccountId",
+        },
+        "DatabaseName": Object {
+          "Ref": "GlueDatabase",
+        },
+        "TableInput": Object {
+          "Parameters": Object {
+            "classication": "json",
+          },
+          "StorageDescriptor": Object {
+            "Columns": Array [
+              Object {
+                "Comment": "",
+                "Name": "id",
+                "Type": "int",
+              },
+            ],
+            "Compressed": false,
+            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+            "Location": "testStream",
+            "NumberOfBuckets": -1,
+            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+            "Parameters": Object {
+              "endpointUrl": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "https://kinesis.",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ".amazonaws.com",
+                  ],
+                ],
+              },
+              "streamName": "testStream",
+              "typeOfData": "kinesis",
+            },
+            "SerdeInfo": Object {
+              "Parameters": Object {
+                "paths": "id",
+              },
+              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
+            },
+          },
+          "TableType": "EXTERNAL_TABLE",
+        },
+      },
+      "Type": "AWS::Glue::Table",
+    },
+    "JobRolePolicyE31720DC": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::existingFakeLocation/existingScript",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::existingFakeLocation/existingScript/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "JobRolePolicyE31720DC",
+        "Roles": Array [
+          Object {
+            "Fn::Select": Array [
+              1,
+              Object {
+                "Fn::Split": Array [
+                  "/",
+                  Object {
+                    "Fn::Select": Array [
+                      5,
+                      Object {
+                        "Fn::Split": Array [
+                          ":",
+                          Object {
+                            "Fn::GetAtt": Array [
+                              "ExistingJobRole8F750976",
+                              "Arn",
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "KinesisETLJob": Object {
+      "Properties": Object {
+        "AllocatedCapacity": 2,
+        "Command": Object {
+          "Name": "glueetl",
+          "PythonVersion": "3",
+          "ScriptLocation": "s3://existingFakeLocation/existingScript",
+        },
+        "DefaultArguments": Object {
+          "--database_name": Object {
+            "Ref": "GlueDatabase",
+          },
+          "--enable-continuous-cloudwatch-log": true,
+          "--enable-metrics": true,
+          "--output_path": "s3://Default/S3Bucket/output/",
+          "--table_name": Object {
+            "Ref": "GlueTable",
+          },
+        },
+        "GlueVersion": "1",
+        "MaxCapacity": 4,
+        "NumberOfWorkers": 2,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "ExistingJobRole8F750976",
+            "Arn",
+          ],
+        },
+        "SecurityConfiguration": "ETLJobSecurityConfig",
+        "WorkerType": "Standard",
+      },
+      "Type": "AWS::Glue::Job",
     },
     "LogPolicy9292E033": Object {
       "Properties": Object {
@@ -417,6 +508,158 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
+    "S3Bucket07682993": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "BucketEncryption": Object {
+          "ServerSideEncryptionConfiguration": Array [
+            Object {
+              "ServerSideEncryptionByDefault": Object {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "LifecycleConfiguration": Object {
+          "Rules": Array [
+            Object {
+              "NoncurrentVersionTransitions": Array [
+                Object {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90,
+                },
+              ],
+              "Status": "Enabled",
+            },
+          ],
+        },
+        "LoggingConfiguration": Object {
+          "DestinationBucketName": Object {
+            "Ref": "S3LoggingBucket800A2B27",
+          },
+        },
+        "PublicAccessBlockConfiguration": Object {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+        "VersioningConfiguration": Object {
+          "Status": "Enabled",
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "S3BucketPolicyF560589A": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "S3Bucket07682993",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "S3Bucket07682993",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "S3LoggingBucket800A2B27": Object {
+      "DeletionPolicy": "Retain",
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W35",
+              "reason": "This S3 bucket is used as the access logging bucket for another bucket",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "AccessControl": "LogDeliveryWrite",
+        "BucketEncryption": Object {
+          "ServerSideEncryptionConfiguration": Array [
+            Object {
+              "ServerSideEncryptionByDefault": Object {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "PublicAccessBlockConfiguration": Object {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "S3LoggingBucketPolicy6B3AA8AF": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "S3LoggingBucket800A2B27",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "S3LoggingBucket800A2B27",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
   },
 }
 `;
@@ -441,12 +684,160 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "ETLJob": Object {
+    "GlueDatabase": Object {
+      "Properties": Object {
+        "CatalogId": Object {
+          "Ref": "AWS::AccountId",
+        },
+        "DatabaseInput": Object {
+          "Description": "A Glue database table",
+        },
+      },
+      "Type": "AWS::Glue::Database",
+    },
+    "GlueTable": Object {
+      "Properties": Object {
+        "CatalogId": Object {
+          "Ref": "AWS::AccountId",
+        },
+        "DatabaseName": Object {
+          "Ref": "GlueDatabase",
+        },
+        "TableInput": Object {
+          "Parameters": Object {
+            "classication": "json",
+          },
+          "StorageDescriptor": Object {
+            "Columns": Array [
+              Object {
+                "Comment": "",
+                "Name": "id",
+                "Type": "int",
+              },
+            ],
+            "Compressed": false,
+            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+            "Location": "testStream",
+            "NumberOfBuckets": -1,
+            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+            "Parameters": Object {
+              "endpointUrl": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "https://kinesis.",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ".amazonaws.com",
+                  ],
+                ],
+              },
+              "streamName": "testStream",
+              "typeOfData": "kinesis",
+            },
+            "SerdeInfo": Object {
+              "Parameters": Object {
+                "paths": "id",
+              },
+              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
+            },
+          },
+          "TableType": "EXTERNAL_TABLE",
+        },
+      },
+      "Type": "AWS::Glue::Table",
+    },
+    "JobRolePolicyE31720DC": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::fakelocation/script",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::fakelocation/script/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "JobRolePolicyE31720DC",
+        "Roles": Array [
+          Object {
+            "Fn::Select": Array [
+              1,
+              Object {
+                "Fn::Split": Array [
+                  "/",
+                  Object {
+                    "Fn::Select": Array [
+                      5,
+                      Object {
+                        "Fn::Split": Array [
+                          ":",
+                          Object {
+                            "Fn::GetAtt": Array [
+                              "CustomETLJobRole90A83A66",
+                              "Arn",
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "KinesisETLJob": Object {
       "Properties": Object {
         "Command": Object {
           "Name": "glueetl",
           "PythonVersion": "3",
           "ScriptLocation": "s3://fakelocation/script",
+        },
+        "DefaultArguments": Object {
+          "--database_name": Object {
+            "Ref": "GlueDatabase",
+          },
+          "--enable-continuous-cloudwatch-log": true,
+          "--enable-metrics": true,
+          "--output_path": "s3://Default/S3Bucket/output/",
+          "--table_name": Object {
+            "Ref": "GlueTable",
+          },
         },
         "Role": Object {
           "Fn::GetAtt": Array [
@@ -524,6 +915,809 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+    "S3Bucket07682993": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "BucketEncryption": Object {
+          "ServerSideEncryptionConfiguration": Array [
+            Object {
+              "ServerSideEncryptionByDefault": Object {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "LifecycleConfiguration": Object {
+          "Rules": Array [
+            Object {
+              "NoncurrentVersionTransitions": Array [
+                Object {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90,
+                },
+              ],
+              "Status": "Enabled",
+            },
+          ],
+        },
+        "LoggingConfiguration": Object {
+          "DestinationBucketName": Object {
+            "Ref": "S3LoggingBucket800A2B27",
+          },
+        },
+        "PublicAccessBlockConfiguration": Object {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+        "VersioningConfiguration": Object {
+          "Status": "Enabled",
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "S3BucketPolicyF560589A": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "S3Bucket07682993",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "S3Bucket07682993",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "S3LoggingBucket800A2B27": Object {
+      "DeletionPolicy": "Retain",
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W35",
+              "reason": "This S3 bucket is used as the access logging bucket for another bucket",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "AccessControl": "LogDeliveryWrite",
+        "BucketEncryption": Object {
+          "ServerSideEncryptionConfiguration": Array [
+            Object {
+              "ServerSideEncryptionByDefault": Object {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "PublicAccessBlockConfiguration": Object {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "S3LoggingBucketPolicy6B3AA8AF": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "S3LoggingBucket800A2B27",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "S3LoggingBucket800A2B27",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+  },
+}
+`;
+
+exports[`Test deployment with role creation 2`] = `
+Object {
+  "Resources": Object {
+    "GlueDatabase": Object {
+      "Properties": Object {
+        "CatalogId": Object {
+          "Ref": "AWS::AccountId",
+        },
+        "DatabaseInput": Object {
+          "Description": "A Glue database table",
+        },
+      },
+      "Type": "AWS::Glue::Database",
+    },
+    "GlueSecurityConfig": Object {
+      "Properties": Object {
+        "EncryptionConfiguration": Object {
+          "JobBookmarksEncryption": Object {
+            "JobBookmarksEncryptionMode": "CSE-KMS",
+            "KmsKeyArn": Object {
+              "Fn::Join": Array [
+                "",
+                Array [
+                  "arn:",
+                  Object {
+                    "Ref": "AWS::Partition",
+                  },
+                  ":kms:",
+                  Object {
+                    "Ref": "AWS::Region",
+                  },
+                  ":",
+                  Object {
+                    "Ref": "AWS::AccountId",
+                  },
+                  ":alias/aws/glue",
+                ],
+              ],
+            },
+          },
+          "S3Encryptions": Array [
+            Object {
+              "S3EncryptionMode": "SSE-S3",
+            },
+          ],
+        },
+        "Name": "ETLJobSecurityConfig",
+      },
+      "Type": "AWS::Glue::SecurityConfiguration",
+    },
+    "GlueTable": Object {
+      "Properties": Object {
+        "CatalogId": Object {
+          "Ref": "AWS::AccountId",
+        },
+        "DatabaseName": Object {
+          "Ref": "GlueDatabase",
+        },
+        "TableInput": Object {
+          "Parameters": Object {
+            "classication": "json",
+          },
+          "StorageDescriptor": Object {
+            "Columns": Array [
+              Object {
+                "Comment": "",
+                "Name": "id",
+                "Type": "int",
+              },
+            ],
+            "Compressed": false,
+            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+            "Location": "testStream",
+            "NumberOfBuckets": -1,
+            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+            "Parameters": Object {
+              "endpointUrl": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "https://kinesis.",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ".amazonaws.com",
+                  ],
+                ],
+              },
+              "streamName": "testStream",
+              "typeOfData": "kinesis",
+            },
+            "SerdeInfo": Object {
+              "Parameters": Object {
+                "paths": "id",
+              },
+              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
+            },
+          },
+          "TableType": "EXTERNAL_TABLE",
+        },
+      },
+      "Type": "AWS::Glue::Table",
+    },
+    "JobRole014917C6": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "glue.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Service role that Glue custom ETL jobs will assume for exeuction",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "JobRoleDefaultPolicy5DE0D8F9": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::fakelocation/script",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::fakelocation/script/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "JobRoleDefaultPolicy5DE0D8F9",
+        "Roles": Array [
+          Object {
+            "Ref": "JobRole014917C6",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "KinesisETLJob": Object {
+      "Properties": Object {
+        "Command": Object {
+          "Name": "glueetl",
+          "PythonVersion": "3",
+          "ScriptLocation": "s3://fakelocation/script",
+        },
+        "DefaultArguments": Object {
+          "--database_name": Object {
+            "Ref": "GlueDatabase",
+          },
+          "--enable-continuous-cloudwatch-log": true,
+          "--enable-metrics": true,
+          "--output_path": "s3://Default/S3Bucket/output/",
+          "--table_name": Object {
+            "Ref": "GlueTable",
+          },
+        },
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "JobRole014917C6",
+            "Arn",
+          ],
+        },
+        "SecurityConfiguration": "ETLJobSecurityConfig",
+      },
+      "Type": "AWS::Glue::Job",
+    },
+    "LogPolicy9292E033": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":logs:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":log-group:/aws-glue/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "LogPolicy9292E033",
+        "Roles": Array [
+          Object {
+            "Ref": "JobRole014917C6",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "S3Bucket07682993": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "BucketEncryption": Object {
+          "ServerSideEncryptionConfiguration": Array [
+            Object {
+              "ServerSideEncryptionByDefault": Object {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "LifecycleConfiguration": Object {
+          "Rules": Array [
+            Object {
+              "NoncurrentVersionTransitions": Array [
+                Object {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90,
+                },
+              ],
+              "Status": "Enabled",
+            },
+          ],
+        },
+        "LoggingConfiguration": Object {
+          "DestinationBucketName": Object {
+            "Ref": "S3LoggingBucket800A2B27",
+          },
+        },
+        "PublicAccessBlockConfiguration": Object {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+        "VersioningConfiguration": Object {
+          "Status": "Enabled",
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "S3BucketPolicyF560589A": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "S3Bucket07682993",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "S3Bucket07682993",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "S3LoggingBucket800A2B27": Object {
+      "DeletionPolicy": "Retain",
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W35",
+              "reason": "This S3 bucket is used as the access logging bucket for another bucket",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "AccessControl": "LogDeliveryWrite",
+        "BucketEncryption": Object {
+          "ServerSideEncryptionConfiguration": Array [
+            Object {
+              "ServerSideEncryptionByDefault": Object {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "PublicAccessBlockConfiguration": Object {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "S3LoggingBucketPolicy6B3AA8AF": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "S3LoggingBucket800A2B27",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "S3LoggingBucket800A2B27",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+  },
+}
+`;
+
+exports[`Test deployment with role creation 3`] = `
+Object {
+  "Resources": Object {
+    "GlueDatabase": Object {
+      "Properties": Object {
+        "CatalogId": Object {
+          "Ref": "AWS::AccountId",
+        },
+        "DatabaseInput": Object {
+          "Description": "A Glue database table",
+        },
+      },
+      "Type": "AWS::Glue::Database",
+    },
+    "GlueSecurityConfig": Object {
+      "Properties": Object {
+        "EncryptionConfiguration": Object {
+          "JobBookmarksEncryption": Object {
+            "JobBookmarksEncryptionMode": "CSE-KMS",
+            "KmsKeyArn": Object {
+              "Fn::Join": Array [
+                "",
+                Array [
+                  "arn:",
+                  Object {
+                    "Ref": "AWS::Partition",
+                  },
+                  ":kms:",
+                  Object {
+                    "Ref": "AWS::Region",
+                  },
+                  ":",
+                  Object {
+                    "Ref": "AWS::AccountId",
+                  },
+                  ":alias/aws/glue",
+                ],
+              ],
+            },
+          },
+          "S3Encryptions": Array [
+            Object {
+              "S3EncryptionMode": "SSE-S3",
+            },
+          ],
+        },
+        "Name": "ETLJobSecurityConfig",
+      },
+      "Type": "AWS::Glue::SecurityConfiguration",
+    },
+    "GlueTable": Object {
+      "Properties": Object {
+        "CatalogId": Object {
+          "Ref": "AWS::AccountId",
+        },
+        "DatabaseName": Object {
+          "Ref": "GlueDatabase",
+        },
+        "TableInput": Object {
+          "Parameters": Object {
+            "classication": "json",
+          },
+          "StorageDescriptor": Object {
+            "Columns": Array [
+              Object {
+                "Comment": "",
+                "Name": "id",
+                "Type": "int",
+              },
+            ],
+            "Compressed": false,
+            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+            "Location": "testStream",
+            "NumberOfBuckets": -1,
+            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+            "Parameters": Object {
+              "endpointUrl": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "https://kinesis.",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ".amazonaws.com",
+                  ],
+                ],
+              },
+              "streamName": "testStream",
+              "typeOfData": "kinesis",
+            },
+            "SerdeInfo": Object {
+              "Parameters": Object {
+                "paths": "id",
+              },
+              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
+            },
+          },
+          "TableType": "EXTERNAL_TABLE",
+        },
+      },
+      "Type": "AWS::Glue::Table",
+    },
+    "JobRole014917C6": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "glue.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Service role that Glue custom ETL jobs will assume for exeuction",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "JobRoleDefaultPolicy5DE0D8F9": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::fakelocation/script",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::fakelocation/script/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "JobRoleDefaultPolicy5DE0D8F9",
+        "Roles": Array [
+          Object {
+            "Ref": "JobRole014917C6",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "KinesisETLJob": Object {
+      "Properties": Object {
+        "Command": Object {
+          "Name": "glueetl",
+          "PythonVersion": "3",
+          "ScriptLocation": "s3://fakelocation/script",
+        },
+        "DefaultArguments": Object {
+          "--database_name": Object {
+            "Ref": "GlueDatabase",
+          },
+          "--enable-continuous-cloudwatch-log": true,
+          "--enable-metrics": true,
+          "--output_path": "s3://Default/OutputBucket/output/",
+          "--table_name": Object {
+            "Ref": "GlueTable",
+          },
+        },
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "JobRole014917C6",
+            "Arn",
+          ],
+        },
+        "SecurityConfiguration": "ETLJobSecurityConfig",
+      },
+      "Type": "AWS::Glue::Job",
+    },
+    "LogPolicy9292E033": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":logs:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":log-group:/aws-glue/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "LogPolicy9292E033",
+        "Roles": Array [
+          Object {
+            "Ref": "JobRole014917C6",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "OutputBucket7114EB27": Object {
+      "DeletionPolicy": "Retain",
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
     },
   },
 }

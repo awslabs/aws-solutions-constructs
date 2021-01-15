@@ -12,64 +12,11 @@
  */
 
 import { CfnDatabase, CfnJob, CfnJobProps, CfnTable } from '@aws-cdk/aws-glue';
-import { CfnPolicy, Effect, IRole, Policy, PolicyStatement, Role } from '@aws-cdk/aws-iam';
+import { CfnPolicy, Effect, IRole, Policy, PolicyStatement } from '@aws-cdk/aws-iam';
 import { Stream, StreamProps } from '@aws-cdk/aws-kinesis';
 import { Bucket } from '@aws-cdk/aws-s3';
 import { Aws, Construct } from '@aws-cdk/core';
 import * as defaults from '@aws-solutions-constructs/core';
-
-export interface GlueJobCommandProps {
-  /**
-   * The command to execute the Glue Job, The name of the job command. For an Apache Spark ETL job, this must be glueetl.
-   * For a Python shell job, it must be pythonshell. For streaming job it must be gluestreaming
-   */
-  readonly jobCommandName: string,
-  /**
-   * The Python version being used to execute a Python shell job. Allowed values are 2 or 3.
-   */
-  readonly pythonVersion: string,
-  /**
-   * The location of the ETL script in your locat directory. If the @s3ObjectUrlForScript parameter is provided, this
-   * parmaeter is ignored.
-   */
-  readonly scriptPath?: string,
-  /**
-   * The S3 URL for the ETL script. If this parameter is provided, the @scriptPath parameter is ignored.
-   */
-  readonly s3ObjectUrlForScript?: string
-}
-
-/**
- * Enumeration of data store types that could include S3, DynamoDB, DocumentDB, RDS or Redshift. Current
- * construct implementation only supports S3, but potential to add other output types in the future
- */
-enum SinkStoreType {
-  S3 = 'S3'
-}
-
-/**
- * Interface to define potential outputs to allow the construct define additional output destinations for ETL
- * transformation
- */
-export interface SinkDataStoreProps {
-  /**
-   * Sink data store type
-   */
-  readonly datastoreStype: SinkStoreType;
-  /**
-   * The output S3 location where the data should be written. The provided S3 bucket will be used to pass
-   * the output location to the etl script as an argument to the AWS Glue job.
-   *
-   * If no location is provided the construct will
-   * create a new S3 bucket location and pass it to the Glue job as arguments.
-   *
-   * The argument key is `output_path`. The value of the argument can be retrieve in the python script
-   * as follows:
-   *  getResolvedOptions(sys.argv, ["JOB_NAME", "output_path", <other arguments that are passed> ])
-   *  output_path = args["output_path"]
-   */
-  readonly s3OutputBucket?: Bucket
-}
 
 export interface KinesisStreamGlueJobProps {
   /**
@@ -83,40 +30,17 @@ export interface KinesisStreamGlueJobProps {
    */
   readonly kinesisStreamProps?: StreamProps | any;
   /**
+   * @default
    * User provides props to override the default props for Glue ETL Jobs. This parameter will be ignored if the
    * existingGlueJob parameter is set
+   *
    */
-  readonly glueJobProps?: CfnJobProps;
+  readonly glueJobProps?: CfnJobProps | any;
   /**
    * Existing GlueJob configuration. If this property is provided, any configuration provided through @glueJobProps
    * and @glueJobCommandProps will be ignored.
    */
   readonly existingGlueJob?: CfnJob;
-  /**
-   * @default - using this props the construct will create a default CfnGlueJobProps. This property will be ignored
-   * if either @existingGlueJob or @glueJobProps is provided
-   * Glue Job Command Props as defined in @GlueJobCommandProps.
-   */
-  readonly glueJobCommandProps?: GlueJobCommandProps;
-  /**
-   * @default
-   * List of arguments that can be passed to a CfnJob. This arguments will be augmented with the default
-   * arguments as below:
-   * {
-   *  "--enable-metrics" : true,
-   *  "--enable-continuous-cloudwatch-log" : true,
-   *  "--database_name": <database name>,
-   *  "--table_name": <table name>
-   * }
-   */
-  readonly jobArgumentsList?: { [index: string]: string };
-  /**
-   * Glue version as supported by the AWS Glue service. The value defaults to 1.0 in the construct, since
-   * glue streaming is not supported by version 2.0 and 1.0 is the only version that supports python 3.0.
-   * This property will only be used if @glueJobCommandProps is set. This property will be ingored if
-   * @glueJobProps or @existingGlueJob is set.
-   */
-  readonly glueVersion?: string;
   /**
    * @default
    * A JSON document defining the schema structure of the records in the data stream. An example of such a
@@ -157,13 +81,13 @@ export interface KinesisStreamGlueJobProps {
    * only be used if @GlueJobCommandProps is set. When using @existingGlueJob or @glueJobCommandProps
    * this property will be ignored.
    */
-  readonly outputDataStore?: SinkDataStoreProps;
+  readonly outputDataStore: defaults.SinkDataStoreProps;
 }
 
 export class KinesisStreamGlueJob extends Construct {
   public readonly kinesisStream: Stream;
 
-  public readonly glueJob: CfnJob;
+  public readonly glueJob: [ CfnJob, IRole ];
 
   public readonly database: CfnDatabase;
 
@@ -197,53 +121,18 @@ export class KinesisStreamGlueJob extends Construct {
       });
     }
 
-    if (props.existingGlueJob === undefined && props.glueJobProps === undefined && props.glueJobCommandProps === undefined) {
-      throw Error('Either existingGlueJob or glueJobProps or glueJobCommandProps should be defined. All the attributes cannot be optional');
-    }
+    this.glueJob = defaults.buildGlueJob(this, {
+      existingCfnJob: props.existingGlueJob,
+      glueJobProps: props.glueJobProps,
+      table: this.table!,
+      database: this.database!,
+      outputDataStore: props.outputDataStore!
+    });
 
-    if (props.existingGlueJob !== undefined || props.glueJobProps !== undefined) {
-      this.glueJob = defaults.buildGlueJob(this, {
-        existingCfnJob: props.existingGlueJob,
-        glueJobProps: props.glueJobProps
-      });
-    } else {
-      const _jobRole = defaults.createGlueJobRole(this); // create role
-
-      // create command property for glue job
-      const _jobCommand = defaults.createGlueJobCommand(this,
-        props.glueJobCommandProps!.jobCommandName,
-        props.glueJobCommandProps!.pythonVersion,
-        _jobRole,
-        props.glueJobCommandProps!.s3ObjectUrlForScript,
-        props.glueJobCommandProps!.scriptPath);
-
-      if (props.outputDataStore !== undefined && props.outputDataStore.s3OutputBucket !== undefined) {
-        this.outputBucket = [ props.outputDataStore.s3OutputBucket, undefined ];
-      } else {
-        this.outputBucket = defaults.buildS3Bucket(this, {});
-      }
-
-      this.glueJob = defaults.buildGlueJob(this, {
-        glueJobProps: {
-          command: _jobCommand[0],
-          role: _jobRole.roleArn,
-          defaultArguments: {
-            "--enable-metrics" : true,
-            "--enable-continuous-cloudwatch-log" : true,
-            "--database_name": this.database.ref,
-            "--table_name": this.table.ref,
-            ...(props.outputDataStore?.datastoreStype === SinkStoreType.S3 &&
-              { '--output_path' : `s3://${this.outputBucket[0].bucketName}/output/` }),
-            ...props.jobArgumentsList
-          },
-          glueVersion: props.glueVersion ? props.glueVersion : '1.0'
-        }
-      });
-    }
-    this.buildRolePolicy(scope, this.database, this.table, this.glueJob.role);
+    this.buildRolePolicy(scope, this.database, this.table, this.glueJob[1]);
   }
 
-  private buildRolePolicy(scope: Construct, glueDatabase: CfnDatabase, glueTable: CfnTable, role: string): IRole {
+  private buildRolePolicy(scope: Construct, glueDatabase: CfnDatabase, glueTable: CfnTable, role: IRole): IRole {
     const _glueJobPolicy = new Policy(scope, 'GlueJobPolicy', {
       statements: [ new PolicyStatement({
         effect: Effect.ALLOW,
@@ -291,8 +180,7 @@ export class KinesisStreamGlueJob extends Construct {
       }
     };
 
-    const _glueJobRole = Role.fromRoleArn(scope, 'GlueJobRole', role);
-    _glueJobRole.attachInlinePolicy(_glueJobPolicy);
-    return _glueJobRole;
+    role.attachInlinePolicy(_glueJobPolicy);
+    return role;
   }
 }
