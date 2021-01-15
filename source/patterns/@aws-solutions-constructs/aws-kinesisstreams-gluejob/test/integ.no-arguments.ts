@@ -12,19 +12,20 @@
  */
 
 // Imports
+import { CfnJob } from '@aws-cdk/aws-glue';
 import { Bucket } from '@aws-cdk/aws-s3';
 import { App, Duration, Stack } from '@aws-cdk/core';
-import { GlueJobCommandProps, KinesisStreamGlueJob, KinesisStreamGlueJobProps } from '../lib';
+import { KinesisStreamGlueJob, KinesisStreamGlueJobProps } from '../lib';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, 'test-kinesisstream-gluejob');
 stack.templateOptions.description = 'Integration Test for aws-kinesisstream-gluejob';
 
-const _jobCommand: GlueJobCommandProps = {
-  jobCommandName: 'glueetl',
+const _jobCommand: CfnJob.JobCommandProperty = {
+  name: 'glueetl',
   pythonVersion: '3',
-  s3ObjectUrlForScript: new Bucket(stack, 'existingScriptLocation', {
+  scriptLocation: new Bucket(stack, 'existingScriptLocation', {
     versioned: false,
     lifecycleRules: [{
       expiration: Duration.days(30)
@@ -34,7 +35,7 @@ const _jobCommand: GlueJobCommandProps = {
 
 // Definitions
 const props: KinesisStreamGlueJobProps = {
-  glueJobCommandProps: _jobCommand,
+  glueJobProps: _jobCommand,
   fieldSchema: [{
     name: "id",
     type: "int",
@@ -52,7 +53,6 @@ const props: KinesisStreamGlueJobProps = {
     type: "int",
     comment: "Some value associated with the record"
   }],
-  jobArgumentsList: {}
 };
 
 new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);

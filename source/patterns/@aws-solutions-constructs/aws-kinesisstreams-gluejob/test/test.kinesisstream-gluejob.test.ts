@@ -16,6 +16,7 @@ import '@aws-cdk/assert/jest';
 import { CfnJob } from '@aws-cdk/aws-glue';
 import { Stack } from "@aws-cdk/core";
 import * as defaults from '@aws-solutions-constructs/core';
+import { SinkStoreType } from '@aws-solutions-constructs/core';
 import { KinesisStreamGlueJob, KinesisStreamGlueJobProps } from '../lib';
 
 // --------------------------------------------------------------
@@ -25,10 +26,12 @@ test('Pattern minimal deployment', () => {
   // Initial setup
   const stack = new Stack();
   const props: KinesisStreamGlueJobProps = {
-    glueJobCommandProps: {
-      jobCommandName: 'glueetl',
-      pythonVersion: '3',
-      scriptPath: `${__dirname}/transform.py`
+    glueJobProps: {
+      command: {
+        name: 'glueetl',
+        pythonVersion: '3',
+        scriptLocation: 's3://fakebucket/fakefolder/fakefolder/fakefile.py'
+      }
     },
     fieldSchema: [{
       name: "id",
@@ -47,7 +50,6 @@ test('Pattern minimal deployment', () => {
       type: "int",
       comment: "Some value associated with the record"
     }],
-    jobArgumentsList: {}
   };
   new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
   // Assertion 1
@@ -87,68 +89,68 @@ test('Pattern minimal deployment', () => {
   // check policy to allow read access to Kinesis Stream
   expect(stack).toHaveResourceLike('AWS::IAM::Policy', {
     Type: "AWS::IAM::Policy",
-    Properties: {
-      PolicyDocument: {
-        Statement: [
+    "Properties": {
+      "PolicyDocument": {
+        "Statement": [
           {
-            Action: "glue:GetJob",
-            Effect: "Allow",
-            Resource: {
+            "Action": "glue:GetJob",
+            "Effect": "Allow",
+            "Resource": {
               "Fn::Join": [
                 "",
                 [
                   "arn:",
                   {
-                    Ref: "AWS::Partition"
+                    "Ref": "AWS::Partition"
                   },
                   ":glue:",
                   {
-                    Ref: "AWS::Region"
+                    "Ref": "AWS::Region"
                   },
                   ":",
                   {
-                    Ref: "AWS::AccountId"
+                    "Ref": "AWS::AccountId"
                   },
                   ":job/",
                   {
-                    Ref: "testkinesisstreamslambdaETLJob44B50676"
+                    "Ref": "testkinesisstreamslambdaKinesisETLJobF9454612"
                   }
                 ]
               ]
             }
           },
           {
-            Action: "glue:GetSecurityConfiguration",
-            Effect: "Allow",
-            Resource: "*"
+            "Action": "glue:GetSecurityConfiguration",
+            "Effect": "Allow",
+            "Resource": "*"
           },
           {
-            Action: "glue:GetTable",
-            Effect: "Allow",
-            Resource: [
+            "Action": "glue:GetTable",
+            "Effect": "Allow",
+            "Resource": [
               {
                 "Fn::Join": [
                   "",
                   [
                     "arn:",
                     {
-                      Ref: "AWS::Partition"
+                      "Ref": "AWS::Partition"
                     },
                     ":glue:",
                     {
-                      Ref: "AWS::Region"
+                      "Ref": "AWS::Region"
                     },
                     ":",
                     {
-                      Ref: "AWS::AccountId"
+                      "Ref": "AWS::AccountId"
                     },
                     ":table/",
                     {
-                      Ref: "GlueDatabase"
+                      "Ref": "GlueDatabase"
                     },
                     "/",
                     {
-                      Ref: "GlueTable"
+                      "Ref": "GlueTable"
                     }
                   ]
                 ]
@@ -159,19 +161,19 @@ test('Pattern minimal deployment', () => {
                   [
                     "arn:",
                     {
-                      Ref: "AWS::Partition"
+                      "Ref": "AWS::Partition"
                     },
                     ":glue:",
                     {
-                      Ref: "AWS::Region"
+                      "Ref": "AWS::Region"
                     },
                     ":",
                     {
-                      Ref: "AWS::AccountId"
+                      "Ref": "AWS::AccountId"
                     },
                     ":database/",
                     {
-                      Ref: "GlueDatabase"
+                      "Ref": "GlueDatabase"
                     }
                   ]
                 ]
@@ -182,15 +184,15 @@ test('Pattern minimal deployment', () => {
                   [
                     "arn:",
                     {
-                      Ref: "AWS::Partition"
+                      "Ref": "AWS::Partition"
                     },
                     ":glue:",
                     {
-                      Ref: "AWS::Region"
+                      "Ref": "AWS::Region"
                     },
                     ":",
                     {
-                      Ref: "AWS::AccountId"
+                      "Ref": "AWS::AccountId"
                     },
                     ":catalog"
                   ]
@@ -199,20 +201,20 @@ test('Pattern minimal deployment', () => {
             ]
           },
           {
-            Action: "cloudwatch:PutMetricData",
-            Condition: {
-              StringEquals: {
+            "Action": "cloudwatch:PutMetricData",
+            "Condition": {
+              "StringEquals": {
                 "cloudwatch:namespace": "Glue"
               },
-              Bool: {
+              "Bool": {
                 "aws:SecureTransport": "true"
               }
             },
-            Effect: "Allow",
-            Resource: "*"
+            "Effect": "Allow",
+            "Resource": "*"
           },
           {
-            Action: [
+            "Action": [
               "kinesis:DescribeStream",
               "kinesis:DescribeStreamSummary",
               "kinesis:GetRecords",
@@ -220,8 +222,8 @@ test('Pattern minimal deployment', () => {
               "kinesis:ListShards",
               "kinesis:SubscribeToShard"
             ],
-            Effect: "Allow",
-            Resource: {
+            "Effect": "Allow",
+            "Resource": {
               "Fn::GetAtt": [
                 "testkinesisstreamslambdaKinesisStream374D6D56",
                 "Arn"
@@ -229,44 +231,21 @@ test('Pattern minimal deployment', () => {
             }
           }
         ],
-        Version: "2012-10-17"
+        "Version": "2012-10-17"
       },
-      PolicyName: "GlueJobPolicyAEA4B94E",
-      Roles: [
+      "PolicyName": "GlueJobPolicyAEA4B94E",
+      "Roles": [
         {
-          "Fn::Select": [
-            1,
-            {
-              "Fn::Split": [
-                "/",
-                {
-                  "Fn::Select": [
-                    5,
-                    {
-                      "Fn::Split": [
-                        ":",
-                        {
-                          "Fn::GetAtt": [
-                            "testkinesisstreamslambdaJobRole42199B9C",
-                            "Arn"
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+          "Ref": "testkinesisstreamslambdaJobRole42199B9C"
         }
       ]
     },
-    Metadata: {
-      cfn_nag: {
-        rules_to_suppress: [
+    "Metadata": {
+      "cfn_nag": {
+        "rules_to_suppress": [
           {
-            id: "W12",
-            reason: "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.            CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to            publish metrics only for AWS Glue"
+            "id": "W12",
+            "reason": "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.            CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to            publish metrics only for AWS Glue"
           }
         ]
       }
@@ -282,14 +261,13 @@ test('Test if existing Glue Job is provided', () => {
   const stack = new Stack();
   const _jobRole = defaults.createGlueJobRole(stack);
   const existingCfnJob = new CfnJob(stack, 'ExistingJob', {
-    command: defaults.createGlueJobCommand(stack, 'glueetl', '3', _jobRole,
-      undefined, `${__dirname}/transform.py`)[0],
+    command: {
+      name: 'glueetl',
+      pythonVersion: '3',
+      scriptLocation: 's3://fakebucket/fakepath/fakepath/fakefile.py'
+    },
     role: _jobRole.roleArn,
     securityConfiguration: 'testSecConfig'
-  });
-
-  const _outputBucket = defaults.buildS3Bucket(stack, {
-    bucketProps: defaults.DefaultS3Props(),
   });
 
   new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', {
@@ -311,10 +289,6 @@ test('Test if existing Glue Job is provided', () => {
       type: "int",
       comment: "Some value associated with the record"
     }],
-    jobArgumentsList: {
-      '--job-bookmark-option': 'job-bookmark-enable',
-      '--output_path': `s3://${_outputBucket[0].bucketName}/output/`,
-    }
   });
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
@@ -512,10 +486,12 @@ test('When S3 bucket location for script exists', () => {
   const stack = new Stack();
   const _s3ObjectUrl: string = 's3://fakelocation/etl/fakefile.py';
   const props: KinesisStreamGlueJobProps = {
-    glueJobCommandProps: {
-      jobCommandName: 'pythonshell',
-      pythonVersion: '3',
-      s3ObjectUrlForScript: _s3ObjectUrl
+    glueJobProps: {
+      command: {
+        name: 'pythonshell',
+        pythonVersion: '3',
+        scriptLocation: _s3ObjectUrl
+      }
     },
     fieldSchema: [{
       name: "id",
@@ -534,7 +510,9 @@ test('When S3 bucket location for script exists', () => {
       type: "int",
       comment: "Some value associated with the record"
     }],
-    jobArgumentsList: {}
+    outputDataStore: {
+      datastoreStype: SinkStoreType.S3
+    }
   };
   new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
   // Assertion 1
@@ -548,10 +526,12 @@ test('create glue job with existing kinesis stream', () => {
   const stack = new Stack();
   const _kinesisStream = defaults.buildKinesisStream(stack, {});
   new KinesisStreamGlueJob(stack, 'existingStreamJob', {
-    glueJobCommandProps: {
-      jobCommandName: 'pythonshell',
-      pythonVersion: '3',
-      scriptPath: `${__dirname}/transform.py`
+    glueJobProps: {
+      command: {
+        name: 'pythonshell',
+        pythonVersion: '3',
+        scriptLocation: 's3://fakes3bucket/fakepath/fakefile.py'
+      }
     },
     existingStreamObj: _kinesisStream,
     fieldSchema: [{
@@ -571,7 +551,9 @@ test('create glue job with existing kinesis stream', () => {
       type: "int",
       comment: "Some value associated with the record"
     }],
-    jobArgumentsList: {}
+    outputDataStore: {
+      datastoreStype: SinkStoreType.S3
+    }
   });
 
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
@@ -585,9 +567,11 @@ test('Do not pass s3ObjectUrlForScript or scriptLocationPath, error out', () => 
   try {
     const _kinesisStream = defaults.buildKinesisStream(stack, {});
     new KinesisStreamGlueJob(stack, 'existingStreamJob', {
-      glueJobCommandProps: {
-        jobCommandName: 'pythonshell',
-        pythonVersion: '3'
+      glueJobProps: {
+        command: {
+          name: 'pythonshell',
+          scriptLocation: 's3://fakebucket/fakepath/fakefile.py'
+        }
       },
       existingStreamObj: _kinesisStream,
       fieldSchema: [{
@@ -607,7 +591,9 @@ test('Do not pass s3ObjectUrlForScript or scriptLocationPath, error out', () => 
         type: "int",
         comment: "Some value associated with the record"
       }],
-      jobArgumentsList: {}
+      outputDataStore: {
+        datastoreStype: SinkStoreType.S3
+      }
     });
   } catch (error) {
     expect(error).toBeInstanceOf(Error);
@@ -622,15 +608,58 @@ test('Do not pass fieldSchame or table (CfnTable), error out', () => {
 
   try {
     const props: KinesisStreamGlueJobProps = {
-      glueJobCommandProps: {
-        jobCommandName: 'glueetl',
-        pythonVersion: '3',
-        scriptPath: `${__dirname}/transform.py`
+      glueJobProps: {
+        command: {
+          name: 'glueetl',
+          pythonVersion: '3',
+          scriptPath: `s3://fakebucket/fakepath/fakefile.py`
+        }
       },
-      jobArgumentsList: {}
+      outputDataStore: {
+        datastoreStype: SinkStoreType.S3
+      }
     };
     new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
   } catch (error) {
     expect(error).toBeInstanceOf(Error);
   }
+});
+
+// --------------------------------------------------------------
+// Provide a database and table
+// --------------------------------------------------------------
+test('When database and table are provided', () => {
+  // Initial setup
+  const stack = new Stack();
+  const _database = defaults.createGlueDatabase(stack);
+  const props: KinesisStreamGlueJobProps = {
+    glueJobProps: {
+      command: {
+        name: 'glueetl',
+        pythonVersion: '3',
+        scriptLocation: 's3://fakebucket/fakefolder/fakefolder/fakefile.py'
+      }
+    },
+    database: _database,
+    table: defaults.createGlueTable(stack, _database, [{
+      name: "id",
+      type: "int",
+      comment: "Identifier for the record"
+    }, {
+      name: "name",
+      type: "string",
+      comment: "The name of the record"
+    }, {
+      name: "type",
+      type: "string",
+      comment: "The type of the record"
+    }, {
+      name: "numericvalue",
+      type: "int",
+      comment: "Some value associated with the record"
+    }], 'kinesis', { STREAM_NAME: 'testStream' })
+  };
+  new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });

@@ -42,9 +42,6 @@ test('Test deployment with role creation', () => {
 
   defaults.buildGlueJob(stack, {
     glueJobProps: cfnJobProps,
-    outputDataStore: {
-      datastoreStype: defaults.SinkStoreType.S3
-    },
     database: _database,
     table: defaults.createGlueTable(stack, _database, [{
       name: "id",

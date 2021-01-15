@@ -81,7 +81,7 @@ export interface KinesisStreamGlueJobProps {
    * only be used if @GlueJobCommandProps is set. When using @existingGlueJob or @glueJobCommandProps
    * this property will be ignored.
    */
-  readonly outputDataStore: defaults.SinkDataStoreProps;
+  readonly outputDataStore?: defaults.SinkDataStoreProps;
 }
 
 export class KinesisStreamGlueJob extends Construct {
@@ -137,7 +137,7 @@ export class KinesisStreamGlueJob extends Construct {
       statements: [ new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'glue:GetJob' ],
-        resources: [ `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:job/${this.glueJob.ref}` ]
+        resources: [ `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:job/${this.glueJob[0].ref}` ]
       }), new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'glue:GetSecurityConfiguration' ],

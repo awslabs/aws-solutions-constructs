@@ -66,7 +66,7 @@ export interface BuildGlueJobProps {
 
   readonly database: CfnDatabase;
 
-  readonly outputDataStore: SinkDataStoreProps
+  readonly outputDataStore?: SinkDataStoreProps
 }
 
 export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): [CfnJob, IRole] {
@@ -79,17 +79,6 @@ export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): [CfnJo
     }
   } else {
     return [props.existingCfnJob, Role.fromRoleArn(scope, 'ExistingRole', props.existingCfnJob.role)];
-  }
-}
-
-function isJobCommandProperty(command: CfnJob.JobCommandProperty | IResolvable): command is CfnJob.JobCommandProperty {
-  if ((command as CfnJob.JobCommandProperty).name ||
-    (command as CfnJob.JobCommandProperty).pythonVersion ||
-    (command as CfnJob.JobCommandProperty).scriptLocation) {
-
-    return true;
-  } else {
-    return false;
   }
 }
 
@@ -138,7 +127,7 @@ export function deployGlueJob(scope: Construct, glueJobProps: CfnJobProps, datab
   _glueJobPolicy.attachToRole(_jobRole);
 
   let _outputLocation: [ Bucket, Bucket? ];
-  if (outputDataStore.s3OutputBucket !== undefined) {
+  if (outputDataStore !== undefined && outputDataStore.s3OutputBucket !== undefined) {
     _outputLocation = [ outputDataStore.s3OutputBucket, undefined ];
   } else {
     _outputLocation = defaults.buildS3Bucket(scope, {});
@@ -149,7 +138,7 @@ export function deployGlueJob(scope: Construct, glueJobProps: CfnJobProps, datab
     "--enable-continuous-cloudwatch-log" : true,
     "--database_name": database.ref,
     "--table_name": table.ref,
-    ...(outputDataStore.datastoreStype === SinkStoreType.S3 &&
+    ...(outputDataStore && outputDataStore.datastoreStype === SinkStoreType.S3 &&
       { '--output_path' : `s3://${_outputLocation[0]}/output/` }),
     ...glueJobProps.defaultArguments
   };
@@ -198,4 +187,15 @@ export function createGlueDatabase(scope: Construct): CfnDatabase {
 function getS3ArnfromS3Url(s3Url: string): string {
   const splitString: string = s3Url.slice(5);
   return `arn:${Aws.PARTITION}:s3:::${splitString}`;
+}
+
+function isJobCommandProperty(command: CfnJob.JobCommandProperty | IResolvable): command is CfnJob.JobCommandProperty {
+  if ((command as CfnJob.JobCommandProperty).name ||
+    (command as CfnJob.JobCommandProperty).pythonVersion ||
+    (command as CfnJob.JobCommandProperty).scriptLocation) {
+
+    return true;
+  } else {
+    return false;
+  }
 }

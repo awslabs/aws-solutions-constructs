@@ -16,6 +16,7 @@ import { CfnJob } from '@aws-cdk/aws-glue';
 import { Role, ServicePrincipal } from '@aws-cdk/aws-iam';
 import { Bucket } from '@aws-cdk/aws-s3';
 import { App, Duration, Stack } from '@aws-cdk/core';
+import { SinkStoreType } from '@aws-solutions-constructs/core';
 import { KinesisStreamGlueJob } from '../lib';
 
 // Setup
@@ -59,7 +60,9 @@ new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', {
     type: "int",
     comment: "Some value associated with the record"
   }],
-  jobArgumentsList: {}
+  outputDataStore: {
+    datastoreStype: SinkStoreType.S3
+  }
 });
 
 // Synth
