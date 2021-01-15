@@ -77,9 +77,7 @@ export interface KinesisStreamGlueJobProps {
   readonly table?: CfnTable;
   /**
    * The output data stores where the transformed data should be written. Current supported data stores
-   * include only S3, other potential stores may be added in the future. The @SinkDataStoreProps will
-   * only be used if @GlueJobCommandProps is set. When using @existingGlueJob or @glueJobCommandProps
-   * this property will be ignored.
+   * include only S3, other potential stores may be added in the future.
    */
   readonly outputDataStore?: defaults.SinkDataStoreProps;
 }

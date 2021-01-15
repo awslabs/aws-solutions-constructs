@@ -35,7 +35,9 @@ const _jobCommand: CfnJob.JobCommandProperty = {
 
 // Definitions
 const props: KinesisStreamGlueJobProps = {
-  glueJobProps: _jobCommand,
+  glueJobProps: {
+    command: _jobCommand,
+  },
   fieldSchema: [{
     name: "id",
     type: "int",

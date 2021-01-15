@@ -12,19 +12,15 @@
  */
 
 import { CfnTable } from '@aws-cdk/aws-glue';
-import { Role } from '@aws-cdk/aws-iam';
+import { Asset } from '@aws-cdk/aws-s3-assets';
 import * as cdk from '@aws-cdk/core';
 import { CfnOutput } from '@aws-cdk/core';
 import { KinesisStreamGlueJob } from '@aws-solutions-constructs/aws-kinesisstreams-gluejob';
-import * as defaults from '@aws-solutions-constructs/core';
+import { SinkStoreType } from '@aws-solutions-constructs/core';
 
 export class AwsCustomGlueEtlStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
-
-    const _outputBucket = defaults.buildS3Bucket(this, {
-      bucketProps: defaults.DefaultS3Props()
-    });
 
     const _fieldSchema: CfnTable.ColumnProperty [] = [{
       "name": "ventilatorid",
@@ -62,31 +58,34 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
       "comment": ""
     }];
 
-    const _customEtlJob = new KinesisStreamGlueJob(this, 'CustomETL', {
-      glueJobCommandProps: {
-        jobCommandName: 'gluestreaming',
-        pythonVersion: '3',
-        scriptPath: `${__dirname}/../etl/transform.py`
-      },
-      fieldSchema: _fieldSchema,
-      jobArgumentsList: {
-        "--job-bookmark-option": "job-bookmark-enable",
-        "--output_path": `s3://${_outputBucket[0].bucketName}/output/`,
-      }
-    });
 
-    _outputBucket[0].grantReadWrite(Role.fromRoleArn(this, 'GlueJobRoleForS3',  _customEtlJob.glueJob.role));
+
+    const _customEtlJob = new KinesisStreamGlueJob(this, 'CustomETL', {
+      glueJobProps: {
+        command: {
+          name: 'gluestreaming',
+          pythonVersion: '3',
+          scriptLocation: new Asset(this, 'ScriptLocation', {
+            path: `${__dirname}../etl/transform.py`
+          })
+        }
+      },
+      outputDataStore: {
+        datastoreStype: SinkStoreType.S3
+      },
+      fieldSchema: _fieldSchema
+    });
 
     new CfnOutput(this, 'KinesisStreamName', {
       value: _customEtlJob.kinesisStream.streamName
     });
 
-    new CfnOutput(this, 'OutputBucket', {
-      value: _outputBucket[0].bucketArn
+    new CfnOutput(this, 'GlueJob', {
+      value: _customEtlJob.glueJob[0].ref
     });
 
-    new CfnOutput(this, 'GlueJob', {
-      value: _customEtlJob.glueJob.ref
+    new CfnOutput(this, 'JobRole', {
+      value: _customEtlJob.glueJob[1].roleArn
     });
   }
 }

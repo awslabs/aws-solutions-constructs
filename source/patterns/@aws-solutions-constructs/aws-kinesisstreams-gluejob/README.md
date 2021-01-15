@@ -54,12 +54,17 @@ const _fieldSchema: CfnTable.ColumnProperty [] = [{
 );
 
 const _customEtlJob = new KinesisStreamGlueJob(this, 'CustomETL', {
-    glueJobCommandProps: {
-        jobCommandName: 'gluestreaming',
-        pythonVersion: '3',
-        scriptPath: `${__dirname}/../etl/transform.py`,
-    },
-    fieldSchema: _fieldSchema
+    glueJobProps: {
+        command: {
+                name: 'gluestreaming',
+                pythonVersion: '3',
+                scriptLocation: new Asset(this, 'ScriptLocation', {
+                    path: `${__dirname}../etl/transform.py`
+                }).s3ObjectUrl
+            }
+        },
+        fieldSchema: _fieldSchema
+    }
 });
 
 ```
@@ -78,35 +83,24 @@ _Parameters_
 
 ## Pattern Construct Props
 
-| **Name**             | **Type**                                                                                                                    | **Description**                                                                                                                                                                                                                                                                                                                                     |
-| :------------------- | :-------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| kinesisStreamProps?  | [`kinesis.StreamProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kinesis.StreamProps.html)              | Optional user-provided props to override the default props for the Kinesis stream.                                                                                                                                                                                                                                                                  |
-| existingStreamObj?   | [`kinesis.Stream`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kinesis.Stream.html)                        | Existing instance of Kinesis Stream, if this is set then kinesisStreamProps is ignored.                                                                                                                                                                                                                                                             |
-| glueJobProps?        | [`cfnJob.CfnJobProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnJobProps.html)                  | User provided props to override the default props for the CfnJob.                                                                                                                                                                                                                                                                                   |
-| existingGlueJob?     | [`cfnJob.CfnJob`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnJob.html)                            | Existing CfnJob configuration, if this this set then glueJobProps is ignored.                                                                                                                                                                                                                                                                       |
-| existingGlueJob?     | [`cfnJob.CfnJob`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnJob.html)                            | Existing CfnJob configuration, if this this set then glueJobProps is ignored.                                                                                                                                                                                                                                                                       |
-| glueJobCommandProps? | [`GlueJobCommandProps`](#gluejobcommandprops)                                                                               | @default - using this props the construct will create a default CfnGlueJobProps. This property will be ignored                                                                                                                                                                                                                                      |
-| fieldSchema?         | [`CfnTable.ColumnProperty`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnTable.ColumnProperty.html) | Glue Database for this construct. If not provided the construct will create a new Glue Database. The database is where the schema for the data in Kinesis Data Streams is stored                                                                                                                                                                    |
-| database?            | [`CfnDatabase`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnDatabase.html)                         | Glue Database for this construct. If not provided the construct will create a new Glue Database. The database is where the schema for the data in Kinesis Data Streams is stored                                                                                                                                                                    |
-| table?               | [`CfnTable`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnTable.html)                               | Glue Table for this construct, If not provided the construct will create a new Table in the database. This table should define the schema for the records in the Kinesis Data Streams. Either @table or @fieldSchema is mandatory. If @table is provided then @fieldSchema is ignored                                                               |
-| jobArgumentsList     | `{ [index:string] : string`                                                                                                 | List of arguments that can be passed to a CfnJob. This arguments will be augmented with the default                                                                                                                                                                                                                                                 |
-| glueVersion?         | [`string`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnJob.html)                                   | Glue version as supported by the AWS Glue service. The value defaults to 1.0 in the construct, since glue streaming is not supported by version 2.0 and 1.0 is the only version that supports python 3.0. This property will only be used if @glueJobCommandProps is set. This property will be ingored if @glueJobProps or @existingGlueJob is set |
-
-## GlueJobCommandProps
-
-| **Name**              | **Type** | **Description**                                                                                                                                                                                                 |
-| :-------------------- | :------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| jobCommandName        | `string` | The command to execute the Glue Job, The name of the job command. For an Apache Spark ETL job, this must be glueetl. For a Python shell job, it must be pythonshell. For streaming job it must be gluestreaming |
-| pythonVersion         | `string` | The Python version being used to execute a Python shell job. Allowed values are 2 or 3.                                                                                                                         |
-| scriptPath?           | `string` | The location of the ETL script in your locat directory. If the @s3ObjectUrlForScript parameter is provided, this parmaeter is ignored                                                                           |
-| s3ObjectUrlForScript? | `string` | The S3 URL for the ETL script. If this parameter is provided, the @scriptPath parameter is ignored.                                                                                                             |
+| **Name**            | **Type**                                                                                                                    | **Description**                                                                                                                                                                                                                                                                       |
+| :------------------ | :-------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| kinesisStreamProps? | [`kinesis.StreamProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kinesis.StreamProps.html)              | Optional user-provided props to override the default props for the Kinesis stream.                                                                                                                                                                                                    |
+| existingStreamObj?  | [`kinesis.Stream`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kinesis.Stream.html)                        | Existing instance of Kinesis Stream, if this is set then kinesisStreamProps is ignored.                                                                                                                                                                                               |
+| glueJobProps?       | [`cfnJob.CfnJobProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnJobProps.html)                  | User provided props to override the default props for the CfnJob.                                                                                                                                                                                                                     |
+| existingGlueJob?    | [`cfnJob.CfnJob`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnJob.html)                            | Existing CfnJob configuration, if this this set then glueJobProps is ignored.                                                                                                                                                                                                         |
+| existingGlueJob?    | [`cfnJob.CfnJob`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnJob.html)                            | Existing CfnJob configuration, if this this set then glueJobProps is ignored.                                                                                                                                                                                                         |
+| fieldSchema?        | [`CfnTable.ColumnProperty`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnTable.ColumnProperty.html) | Glue Database for this construct. If not provided the construct will create a new Glue Database. The database is where the schema for the data in Kinesis Data Streams is stored                                                                                                      |
+| database?           | [`CfnDatabase`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnDatabase.html)                         | Glue Database for this construct. If not provided the construct will create a new Glue Database. The database is where the schema for the data in Kinesis Data Streams is stored                                                                                                      |
+| table?              | [`CfnTable`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnTable.html)                               | Glue Table for this construct, If not provided the construct will create a new Table in the database. This table should define the schema for the records in the Kinesis Data Streams. Either @table or @fieldSchema is mandatory. If @table is provided then @fieldSchema is ignored |
+| outputDataStore?    | [`SinkDataStoreProps`](#sinkdatastoreprops)                                                                                 | The output datastore properties where the ETL output should be. Current datastore types suported is only S3. written                                                                                                                                                                  |
 
 ## SinkDataStoreProps
 
-| **Name**       | **Type**                                                                                | **Description**                                                                                                                                                               |
-| :------------- | :-------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| s3OutputBucket | [`Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html) | The output S3 location where the data should be written. The provided S3 bucket will be used to pass the output location to the etl script as an argument to the AWS Glue job |
-| datastoreStype | [`SinkStoreType`](#sinkstoretype)                                                       | Sink data store type                                                                                                                                                          |
+| **Name**        | **Type**                                                                                | **Description**                                                                                                                                                                                                               |
+| :-------------- | :-------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| s3OutputBucket? | [`Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html) | The output S3 location where the data should be written. The provided S3 bucket will be used to pass the output location to the etl script as an argument to the AWS Glue job. If not provided, the construct will create one |
+| datastoreStype  | [`SinkStoreType`](#sinkstoretype)                                                       | Sink data store type                                                                                                                                                                                                          |
 
 ## SinkStoreType
 
@@ -129,11 +123,11 @@ Out of the box implementation of the Construct without any override will set the
 ### Glue Job
 
 -   Create a Glue Security Config that configures encryption for CloudWatch, Job Bookmarks, and S3. CloudWatch and Job Bookmarks are encrypted using AWS Managed KMS Key created for AWS Glue Service. The S3 bucket is configured with SSE-S3 encryption mode
--   Configure service role policies that allow AWS Glue to read from Kinesis Data Streams. It will use the GlueJobCommandProps to create the Glue Job
+-   Configure service role policies that allow AWS Glue to read from Kinesis Data Streams.
 
 ### Glue Database
 
--   A Glue database to add the table required to define the schema for the Kinesis stream
+-   A Glue database to add the table required to define a Glue Table structure and schema for the Kinesis stream
 
 ### Glue Table
 
