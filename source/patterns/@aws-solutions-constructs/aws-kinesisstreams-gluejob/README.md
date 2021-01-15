@@ -59,7 +59,7 @@ const _customEtlJob = new KinesisStreamGlueJob(this, 'CustomETL', {
                 name: 'gluestreaming',
                 pythonVersion: '3',
                 scriptLocation: new Asset(this, 'ScriptLocation', {
-                    path: `${__dirname}../etl/transform.py`
+                    path: `${__dirname}/../etl/transform.py`
                 }).s3ObjectUrl
             }
         },
