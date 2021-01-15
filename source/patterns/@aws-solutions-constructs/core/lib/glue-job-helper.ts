@@ -193,9 +193,9 @@ function isJobCommandProperty(command: CfnJob.JobCommandProperty | IResolvable):
   if ((command as CfnJob.JobCommandProperty).name ||
     (command as CfnJob.JobCommandProperty).pythonVersion ||
     (command as CfnJob.JobCommandProperty).scriptLocation) {
-
     return true;
   } else {
+    defaults.printWarning('command not of type JobCommandProperty type');
     return false;
   }
 }

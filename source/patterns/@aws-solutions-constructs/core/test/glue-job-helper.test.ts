@@ -413,3 +413,24 @@ test('Test deployment with role creation', () => {
     expect(error.message).toEqual('Script location has to be provided as an s3 Url location. Script location cannot be empty');
   }
 });
+
+// --------------------------------------------------------------
+// Dont pass Job Command attributes and it should throw an error
+// --------------------------------------------------------------
+test('Test for incorrect Job Command property', () => {
+  const stack = new Stack();
+  try {
+    const _database = defaults.createGlueDatabase(stack);
+    defaults.buildGlueJob(stack, {
+      glueJobProps: {},
+      database: _database,
+      table: defaults.createGlueTable(stack, _database, [{
+        name: "id",
+        type: "int",
+        comment: ""
+      }], 'kinesis', {STREAM_NAME: 'testStream'})
+    });
+  } catch (error) {
+    expect(error).toBeInstanceOf(Error);
+  }
+});

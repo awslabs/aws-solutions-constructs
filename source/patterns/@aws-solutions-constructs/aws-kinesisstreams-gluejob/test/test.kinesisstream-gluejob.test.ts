@@ -19,6 +19,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 import { SinkStoreType } from '@aws-solutions-constructs/core';
 import { KinesisStreamGlueJob, KinesisStreamGlueJobProps } from '../lib';
 
+
 // --------------------------------------------------------------
 // Pattern minimal deployment
 // --------------------------------------------------------------
