@@ -58,8 +58,6 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
       "comment": ""
     }];
 
-
-
     const _customEtlJob = new KinesisStreamGlueJob(this, 'CustomETL', {
       glueJobProps: {
         command: {

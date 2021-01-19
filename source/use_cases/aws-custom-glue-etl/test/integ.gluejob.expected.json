@@ -1,158 +1,20 @@
 {
   "Description": "Integration Test for sample application that uses aws-kineisstream-glue-job construct",
+  "Parameters": {
+    "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3Bucket96760533": {
+      "Type": "String",
+      "Description": "S3 bucket for asset \"d4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4\""
+    },
+    "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3VersionKey856519B9": {
+      "Type": "String",
+      "Description": "S3 key for asset version \"d4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4\""
+    },
+    "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4ArtifactHashC026BAAB": {
+      "Type": "String",
+      "Description": "Artifact hash for asset \"d4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4\""
+    }
+  },
   "Resources": {
-    "S3LoggingBucket800A2B27": {
-      "Type": "AWS::S3::Bucket",
-      "Properties": {
-        "AccessControl": "LogDeliveryWrite",
-        "BucketEncryption": {
-          "ServerSideEncryptionConfiguration": [
-            {
-              "ServerSideEncryptionByDefault": {
-                "SSEAlgorithm": "AES256"
-              }
-            }
-          ]
-        },
-        "PublicAccessBlockConfiguration": {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true
-        }
-      },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W35",
-              "reason": "This S3 bucket is used as the access logging bucket for another bucket"
-            }
-          ]
-        }
-      }
-    },
-    "S3LoggingBucketPolicy6B3AA8AF": {
-      "Type": "AWS::S3::BucketPolicy",
-      "Properties": {
-        "Bucket": {
-          "Ref": "S3LoggingBucket800A2B27"
-        },
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": "*",
-              "Condition": {
-                "Bool": {
-                  "aws:SecureTransport": "false"
-                }
-              },
-              "Effect": "Deny",
-              "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "S3LoggingBucket800A2B27",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
-              },
-              "Sid": "HttpsOnly"
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      }
-    },
-    "S3Bucket07682993": {
-      "Type": "AWS::S3::Bucket",
-      "Properties": {
-        "BucketEncryption": {
-          "ServerSideEncryptionConfiguration": [
-            {
-              "ServerSideEncryptionByDefault": {
-                "SSEAlgorithm": "AES256"
-              }
-            }
-          ]
-        },
-        "LifecycleConfiguration": {
-          "Rules": [
-            {
-              "NoncurrentVersionTransitions": [
-                {
-                  "StorageClass": "GLACIER",
-                  "TransitionInDays": 90
-                }
-              ],
-              "Status": "Enabled"
-            }
-          ]
-        },
-        "LoggingConfiguration": {
-          "DestinationBucketName": {
-            "Ref": "S3LoggingBucket800A2B27"
-          }
-        },
-        "PublicAccessBlockConfiguration": {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true
-        },
-        "VersioningConfiguration": {
-          "Status": "Enabled"
-        }
-      },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
-    },
-    "S3BucketPolicyF560589A": {
-      "Type": "AWS::S3::BucketPolicy",
-      "Properties": {
-        "Bucket": {
-          "Ref": "S3Bucket07682993"
-        },
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": "*",
-              "Condition": {
-                "Bool": {
-                  "aws:SecureTransport": "false"
-                }
-              },
-              "Effect": "Deny",
-              "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "S3Bucket07682993",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
-              },
-              "Sid": "HttpsOnly"
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      }
-    },
     "CustomETLKinesisStreamB4F1869F": {
       "Type": "AWS::Kinesis::Stream",
       "Properties": {
@@ -162,81 +24,6 @@
           "EncryptionType": "KMS",
           "KeyId": "alias/aws/kinesis"
         }
-      }
-    },
-    "CustomETLJobRole53A1671F": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "glue.amazonaws.com"
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "Description": "Service role that Glue custom ETL jobs will assume for exeuction"
-      }
-    },
-    "CustomETLJobRoleDefaultPolicy564ADEA9": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*"
-              ],
-              "Effect": "Allow",
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":s3:::",
-                      {
-                        "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3Bucket96760533"
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":s3:::",
-                      {
-                        "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3Bucket96760533"
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "CustomETLJobRoleDefaultPolicy564ADEA9",
-        "Roles": [
-          {
-            "Ref": "CustomETLJobRole53A1671F"
-          }
-        ]
       }
     },
     "CustomETLGlueSecurityConfigDFE12B1C": {
@@ -314,35 +101,293 @@
         "PolicyName": "CustomETLLogPolicyA74138E8",
         "Roles": [
           {
-            "Fn::Select": [
-              1,
-              {
-                "Fn::Split": [
-                  "/",
-                  {
-                    "Fn::Select": [
-                      5,
+            "Ref": "CustomETLJobRole53A1671F"
+          }
+        ]
+      }
+    },
+    "CustomETLJobRole53A1671F": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "glue.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Description": "Service role that Glue custom ETL jobs will assume for exeuction"
+      }
+    },
+    "CustomETLJobRoleDefaultPolicy564ADEA9": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
                       {
-                        "Fn::Split": [
-                          ":",
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3Bucket96760533"
+                      },
+                      "/",
+                      {
+                        "Fn::Select": [
+                          0,
                           {
-                            "Fn::GetAtt": [
-                              "CustomETLJobRole53A1671F",
-                              "Arn"
+                            "Fn::Split": [
+                              "||",
+                              {
+                                "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3VersionKey856519B9"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "Fn::Select": [
+                          1,
+                          {
+                            "Fn::Split": [
+                              "||",
+                              {
+                                "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3VersionKey856519B9"
+                              }
                             ]
                           }
                         ]
                       }
                     ]
-                  }
-                ]
-              }
-            ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3Bucket96760533"
+                      },
+                      "/",
+                      {
+                        "Fn::Select": [
+                          0,
+                          {
+                            "Fn::Split": [
+                              "||",
+                              {
+                                "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3VersionKey856519B9"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "Fn::Select": [
+                          1,
+                          {
+                            "Fn::Split": [
+                              "||",
+                              {
+                                "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3VersionKey856519B9"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "CustomETLJobRoleDefaultPolicy564ADEA9",
+        "Roles": [
+          {
+            "Ref": "CustomETLJobRole53A1671F"
           }
         ]
       }
     },
-    "CustomETLETLJobE7CE5E27": {
+    "CustomETLS3LoggingBucketBBDD45CB": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "LogDeliveryWrite",
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W35",
+              "reason": "This S3 bucket is used as the access logging bucket for another bucket"
+            }
+          ]
+        }
+      }
+    },
+    "CustomETLS3LoggingBucketPolicy15C78253": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "CustomETLS3LoggingBucketBBDD45CB"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "CustomETLS3LoggingBucketBBDD45CB",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              },
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "CustomETLS3Bucket3EE58725": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "NoncurrentVersionTransitions": [
+                {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90
+                }
+              ],
+              "Status": "Enabled"
+            }
+          ]
+        },
+        "LoggingConfiguration": {
+          "DestinationBucketName": {
+            "Ref": "CustomETLS3LoggingBucketBBDD45CB"
+          }
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "CustomETLS3BucketPolicy20FB337A": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "CustomETLS3Bucket3EE58725"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "CustomETLS3Bucket3EE58725",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              },
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "CustomETLKinesisETLJob04F57BEF": {
       "Type": "AWS::Glue::Job",
       "Properties": {
         "Command": {
@@ -402,21 +447,8 @@
           "--table_name": {
             "Ref": "GlueTable"
           },
-          "--job-bookmark-option": "job-bookmark-enable",
-          "--output_path": {
-            "Fn::Join": [
-              "",
-              [
-                "s3://",
-                {
-                  "Ref": "S3Bucket07682993"
-                },
-                "/output/"
-              ]
-            ]
-          }
+          "--output_path": "s3://IntegTestGlueJob/CustomETL/S3Bucket/output/"
         },
-        "GlueVersion": "1.0",
         "SecurityConfiguration": "ETLJobSecurityConfig"
       }
     },
@@ -544,7 +576,7 @@
                     },
                     ":job/",
                     {
-                      "Ref": "CustomETLETLJobE7CE5E27"
+                      "Ref": "CustomETLKinesisETLJob04F57BEF"
                     }
                   ]
                 ]
@@ -667,30 +699,7 @@
         "PolicyName": "GlueJobPolicyAEA4B94E",
         "Roles": [
           {
-            "Fn::Select": [
-              1,
-              {
-                "Fn::Split": [
-                  "/",
-                  {
-                    "Fn::Select": [
-                      5,
-                      {
-                        "Fn::Split": [
-                          ":",
-                          {
-                            "Fn::GetAtt": [
-                              "CustomETLJobRole53A1671F",
-                              "Arn"
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
+            "Ref": "CustomETLJobRole53A1671F"
           }
         ]
       },
@@ -704,92 +713,6 @@
           ]
         }
       }
-    },
-    "GlueJobRoleForS3Policy338AF4F0": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*",
-                "s3:PutObject*",
-                "s3:Abort*"
-              ],
-              "Effect": "Allow",
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "S3Bucket07682993",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "S3Bucket07682993",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "GlueJobRoleForS3Policy338AF4F0",
-        "Roles": [
-          {
-            "Fn::Select": [
-              1,
-              {
-                "Fn::Split": [
-                  "/",
-                  {
-                    "Fn::Select": [
-                      5,
-                      {
-                        "Fn::Split": [
-                          ":",
-                          {
-                            "Fn::GetAtt": [
-                              "CustomETLJobRole53A1671F",
-                              "Arn"
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    }
-  },
-  "Parameters": {
-    "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3Bucket96760533": {
-      "Type": "String",
-      "Description": "S3 bucket for asset \"d4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4\""
-    },
-    "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3VersionKey856519B9": {
-      "Type": "String",
-      "Description": "S3 key for asset version \"d4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4\""
-    },
-    "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4ArtifactHashC026BAAB": {
-      "Type": "String",
-      "Description": "Artifact hash for asset \"d4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4\""
     }
   },
   "Outputs": {
@@ -798,17 +721,17 @@
         "Ref": "CustomETLKinesisStreamB4F1869F"
       }
     },
-    "OutputBucket": {
-      "Value": {
-        "Fn::GetAtt": [
-          "S3Bucket07682993",
-          "Arn"
-        ]
-      }
-    },
     "GlueJob": {
       "Value": {
-        "Ref": "CustomETLETLJobE7CE5E27"
+        "Ref": "CustomETLKinesisETLJob04F57BEF"
+      }
+    },
+    "JobRole": {
+      "Value": {
+        "Fn::GetAtt": [
+          "CustomETLJobRole53A1671F",
+          "Arn"
+        ]
       }
     }
   }
