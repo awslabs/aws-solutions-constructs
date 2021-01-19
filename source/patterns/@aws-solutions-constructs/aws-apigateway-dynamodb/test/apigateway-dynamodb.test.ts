@@ -237,3 +237,25 @@ test("Test deployment with existing DynamoDB table", () => {
     PathPart: `{${oddPartitionKeyName}}`,
   });
 });
+
+test("check setting allowReadOperation=false for dynamodb", () => {
+  const stack1 = new Stack();
+
+  new ApiGatewayToDynamoDB(stack1, "test-api-gateway-dynamodb1", {
+    allowReadOperation: true,
+    allowDeleteOperation: true
+  });
+
+  // Expect two APIG Methods (GET, DELETE) for allowReadOperation and allowDeleteOperation
+  expect(stack1).toCountResources("AWS::ApiGateway::Method", 2);
+
+  const stack2 = new Stack();
+
+  new ApiGatewayToDynamoDB(stack2, "test-api-gateway-dynamodb2", {
+    allowReadOperation: false,
+    allowDeleteOperation: true
+  });
+
+  // Expect only one APIG Method (DELETE) for allowDeleteOperation
+  expect(stack2).toCountResources("AWS::ApiGateway::Method", 1);
+});

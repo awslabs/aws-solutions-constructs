@@ -17,8 +17,10 @@ import { Stack } from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as mediastore from '@aws-cdk/aws-mediastore';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
+import * as lambda from '@aws-cdk/aws-lambda';
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
 import { CloudFrontDistributionForMediaStore, CloudFrontOriginAccessIdentity } from '../lib/cloudfront-distribution-helper';
+import { LambdaEdgeEventType } from '@aws-cdk/aws-cloudfront';
 
 test('CloudFront distribution for MediaStore with default params', () => {
   const stack = new Stack();
@@ -501,6 +503,125 @@ test('CloudFront distribution for MediaStore override params', () => {
             ]
           },
           Id: 'CloudFrontDistributionOrigin176EC3A12'
+        }
+      ]
+    }
+  });
+});
+
+test('test override cloudfront add custom lambda@edge', () => {
+  const stack = new Stack();
+  const mediaStoreContainerProps: mediastore.CfnContainerProps = {
+    containerName: 'TestContainer'
+  };
+  const mediaStoreContainer = new mediastore.CfnContainer(stack, 'MediaStoreContainer', mediaStoreContainerProps);
+
+  // custom lambda@edg function
+  const handler = new lambda.Function(stack, 'SomeHandler', {
+    functionName: 'SomeHandler',
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const handlerVersion = new lambda.Version(stack, 'SomeHandlerVersion', {
+    lambda: handler,
+  });
+
+  CloudFrontDistributionForMediaStore(stack, mediaStoreContainer, {
+    defaultBehavior: {
+      edgeLambdas: [
+        {
+          eventType: LambdaEdgeEventType.VIEWER_REQUEST,
+          includeBody: false,
+          functionVersion: handlerVersion,
+        }
+      ]
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+      DefaultCacheBehavior: {
+        AllowedMethods: [
+          "GET",
+          "HEAD",
+          "OPTIONS"
+        ],
+        CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
+        CachedMethods: [
+          "GET",
+          "HEAD",
+          "OPTIONS"
+        ],
+        Compress: true,
+        LambdaFunctionAssociations: [
+          {
+            EventType: "origin-response",
+            LambdaFunctionARN: {
+              Ref: "SetHttpSecurityHeadersVersion660E2F72"
+            }
+          },
+          {
+            EventType: "viewer-request",
+            IncludeBody: false,
+            LambdaFunctionARN: {
+              Ref: "SomeHandlerVersionDA986E41"
+            }
+          }
+        ],
+        OriginRequestPolicyId: {
+          Ref: "CloudfrontOriginRequestPolicy299A10DB"
+        },
+        TargetOriginId: "CloudFrontDistributionOrigin176EC3A12",
+        ViewerProtocolPolicy: "redirect-to-https"
+      },
+      Enabled: true,
+      HttpVersion: "http2",
+      IPV6Enabled: true,
+      Logging: {
+        Bucket: {
+          "Fn::GetAtt": [
+            "CloudfrontLoggingBucket3C3EFAA7",
+            "RegionalDomainName"
+          ]
+        }
+      },
+      Origins: [
+        {
+          CustomOriginConfig: {
+            OriginProtocolPolicy: "https-only",
+            OriginSSLProtocols: [
+              "TLSv1.2"
+            ]
+          },
+          DomainName: {
+            "Fn::Select": [
+              0,
+              {
+                "Fn::Split": [
+                  "/",
+                  {
+                    "Fn::Select": [
+                      1,
+                      {
+                        "Fn::Split": [
+                          "://",
+                          {
+                            "Fn::GetAtt": [
+                              "MediaStoreContainer",
+                              "Endpoint"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          Id: "CloudFrontDistributionOrigin176EC3A12"
         }
       ]
     }

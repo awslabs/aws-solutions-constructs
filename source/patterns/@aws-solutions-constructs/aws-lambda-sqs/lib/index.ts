@@ -113,19 +113,12 @@ export class LambdaToSqs extends Construct {
         }
 
         this.vpc = defaults.buildVpc(scope, {
+          defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
           existingVpc: props.existingVpc,
           userVpcProps: props.vpcProps,
           constructVpcProps: {
             enableDnsHostnames: true,
             enableDnsSupport: true,
-            natGateways: 0,
-            subnetConfiguration: [
-              {
-                cidrMask: 18,
-                name: "isolated",
-                subnetType: ec2.SubnetType.ISOLATED,
-              },
-            ],
           },
         });
 

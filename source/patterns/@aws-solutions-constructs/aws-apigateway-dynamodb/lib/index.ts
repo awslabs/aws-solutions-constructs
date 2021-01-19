@@ -151,7 +151,7 @@ export class ApiGatewayToDynamoDB extends Construct {
       });
     }
     // Read
-    if (!props.allowReadOperation || props.allowReadOperation === true) {
+    if (props.allowReadOperation === undefined || props.allowReadOperation === true) {
       const getRequestTemplate = "{\r\n\"TableName\": \"" + this.dynamoTable.tableName + "\",\r\n \"KeyConditionExpression\": \"" + partitionKeyName + " = :v1\",\r\n    \"ExpressionAttributeValues\": {\r\n        \":v1\": {\r\n            \"S\": \"$input.params('" + partitionKeyName + "')\"\r\n        }\r\n    }\r\n}";
       this.addActionToPolicy("dynamodb:Query");
       defaults.addProxyMethodToApiResource({

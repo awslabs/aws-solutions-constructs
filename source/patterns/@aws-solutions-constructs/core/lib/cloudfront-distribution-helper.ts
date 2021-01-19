@@ -120,9 +120,9 @@ export function CloudFrontDistributionForApiGateway(scope: cdk.Construct,
     });
   }
 
-  if (cloudFrontDistributionProps && cloudFrontDistributionProps.loggingConfig) {
+  if (cloudFrontDistributionProps && cloudFrontDistributionProps.enableLogging && cloudFrontDistributionProps.logBucket) {
     defaultprops = DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint,
-      cloudFrontDistributionProps.loggingConfig.bucket, _httpSecurityHeaders,
+      cloudFrontDistributionProps.logBucket, _httpSecurityHeaders,
       edgeLambdaVersion);
   } else {
     loggingBucket = createLoggingBucket(scope, 'CloudfrontLoggingBucket');
@@ -131,7 +131,7 @@ export function CloudFrontDistributionForApiGateway(scope: cdk.Construct,
       edgeLambdaVersion);
   }
 
-  const cfprops = cloudFrontDistributionProps ? overrideProps(defaultprops, cloudFrontDistributionProps) : defaultprops;
+  const cfprops = cloudFrontDistributionProps ? overrideProps(defaultprops, cloudFrontDistributionProps, true) : defaultprops;
   // Create the Cloudfront Distribution
   const cfDistribution: cloudfront.Distribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
   updateSecurityPolicy(cfDistribution);
@@ -156,16 +156,16 @@ export function CloudFrontDistributionForS3(scope: cdk.Construct,
     });
   }
 
-  if (cloudFrontDistributionProps && cloudFrontDistributionProps.loggingConfig) {
+  if (cloudFrontDistributionProps && cloudFrontDistributionProps.enableLogging && cloudFrontDistributionProps.logBucket) {
     defaultprops = DefaultCloudFrontWebDistributionForS3Props(sourceBucket,
-      cloudFrontDistributionProps.loggingConfig.bucket, _httpSecurityHeaders, edgeLambdaVersion);
+      cloudFrontDistributionProps.logBucket, _httpSecurityHeaders, edgeLambdaVersion);
   } else {
     loggingBucket = createLoggingBucket(scope, 'CloudfrontLoggingBucket');
     defaultprops = DefaultCloudFrontWebDistributionForS3Props(sourceBucket, loggingBucket,
       _httpSecurityHeaders, edgeLambdaVersion);
   }
 
-  const cfprops = cloudFrontDistributionProps ? overrideProps(defaultprops, cloudFrontDistributionProps) : defaultprops;
+  const cfprops = cloudFrontDistributionProps ? overrideProps(defaultprops, cloudFrontDistributionProps, true) : defaultprops;
   // Create the Cloudfront Distribution
   const cfDistribution: cloudfront.Distribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
   updateSecurityPolicy(cfDistribution);
@@ -248,7 +248,7 @@ export function CloudFrontDistributionForMediaStore(scope: cdk.Construct,
   let cfprops: cloudfront.DistributionProps;
 
   if (cloudFrontDistributionProps) {
-    cfprops = overrideProps(defaultprops, cloudFrontDistributionProps);
+    cfprops = overrideProps(defaultprops, cloudFrontDistributionProps, true);
   } else {
     cfprops = defaultprops;
   }

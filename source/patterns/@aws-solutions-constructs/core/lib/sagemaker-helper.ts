@@ -20,6 +20,7 @@ import { overrideProps } from "./utils";
 import { buildVpc } from './vpc-helper';
 import * as iam from '@aws-cdk/aws-iam';
 import { Aws } from "@aws-cdk/core";
+import { DefaultPublicPrivateVpcProps } from "./vpc-defaults";
 
 export interface BuildSagemakerNotebookProps {
   /**
@@ -129,7 +130,9 @@ export function buildSagemakerNotebook(scope: cdk.Construct, props: BuildSagemak
 
     if (props.deployInsideVpc === undefined || props.deployInsideVpc) {
       if (props.sagemakerNotebookProps?.subnetId === undefined && props.sagemakerNotebookProps?.securityGroupIds === undefined) {
-        vpcInstance = buildVpc(scope);
+        vpcInstance = buildVpc(scope, {
+          defaultVpcProps: DefaultPublicPrivateVpcProps()
+        });
         securityGroup = new ec2.SecurityGroup(scope, "SecurityGroup", {
           vpc: vpcInstance,
           allowAllOutbound: false
