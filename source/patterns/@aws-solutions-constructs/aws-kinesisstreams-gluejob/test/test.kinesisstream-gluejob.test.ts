@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020-2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -18,7 +18,6 @@ import { Stack } from "@aws-cdk/core";
 import * as defaults from '@aws-solutions-constructs/core';
 import { SinkStoreType } from '@aws-solutions-constructs/core';
 import { KinesisStreamGlueJob, KinesisStreamGlueJobProps } from '../lib';
-
 
 // --------------------------------------------------------------
 // Pattern minimal deployment
@@ -90,68 +89,68 @@ test('Pattern minimal deployment', () => {
   // check policy to allow read access to Kinesis Stream
   expect(stack).toHaveResourceLike('AWS::IAM::Policy', {
     Type: "AWS::IAM::Policy",
-    "Properties": {
-      "PolicyDocument": {
-        "Statement": [
+    Properties: {
+      PolicyDocument: {
+        Statement: [
           {
-            "Action": "glue:GetJob",
-            "Effect": "Allow",
-            "Resource": {
+            Action: "glue:GetJob",
+            Effect: "Allow",
+            Resource: {
               "Fn::Join": [
                 "",
                 [
                   "arn:",
                   {
-                    "Ref": "AWS::Partition"
+                    Ref: "AWS::Partition"
                   },
                   ":glue:",
                   {
-                    "Ref": "AWS::Region"
+                    Ref: "AWS::Region"
                   },
                   ":",
                   {
-                    "Ref": "AWS::AccountId"
+                    Ref: "AWS::AccountId"
                   },
                   ":job/",
                   {
-                    "Ref": "testkinesisstreamslambdaKinesisETLJobF9454612"
+                    Ref: "testkinesisstreamslambdaKinesisETLJobF9454612"
                   }
                 ]
               ]
             }
           },
           {
-            "Action": "glue:GetSecurityConfiguration",
-            "Effect": "Allow",
-            "Resource": "*"
+            Action: "glue:GetSecurityConfiguration",
+            Effect: "Allow",
+            Resource: "*"
           },
           {
-            "Action": "glue:GetTable",
-            "Effect": "Allow",
-            "Resource": [
+            Action: "glue:GetTable",
+            Effect: "Allow",
+            Resource: [
               {
                 "Fn::Join": [
                   "",
                   [
                     "arn:",
                     {
-                      "Ref": "AWS::Partition"
+                      Ref: "AWS::Partition"
                     },
                     ":glue:",
                     {
-                      "Ref": "AWS::Region"
+                      Ref: "AWS::Region"
                     },
                     ":",
                     {
-                      "Ref": "AWS::AccountId"
+                      Ref: "AWS::AccountId"
                     },
                     ":table/",
                     {
-                      "Ref": "GlueDatabase"
+                      Ref: "GlueDatabase"
                     },
                     "/",
                     {
-                      "Ref": "GlueTable"
+                      Ref: "GlueTable"
                     }
                   ]
                 ]
@@ -162,19 +161,19 @@ test('Pattern minimal deployment', () => {
                   [
                     "arn:",
                     {
-                      "Ref": "AWS::Partition"
+                      Ref: "AWS::Partition"
                     },
                     ":glue:",
                     {
-                      "Ref": "AWS::Region"
+                      Ref: "AWS::Region"
                     },
                     ":",
                     {
-                      "Ref": "AWS::AccountId"
+                      Ref: "AWS::AccountId"
                     },
                     ":database/",
                     {
-                      "Ref": "GlueDatabase"
+                      Ref: "GlueDatabase"
                     }
                   ]
                 ]
@@ -185,15 +184,15 @@ test('Pattern minimal deployment', () => {
                   [
                     "arn:",
                     {
-                      "Ref": "AWS::Partition"
+                      Ref: "AWS::Partition"
                     },
                     ":glue:",
                     {
-                      "Ref": "AWS::Region"
+                      Ref: "AWS::Region"
                     },
                     ":",
                     {
-                      "Ref": "AWS::AccountId"
+                      Ref: "AWS::AccountId"
                     },
                     ":catalog"
                   ]
@@ -202,20 +201,20 @@ test('Pattern minimal deployment', () => {
             ]
           },
           {
-            "Action": "cloudwatch:PutMetricData",
-            "Condition": {
-              "StringEquals": {
+            Action: "cloudwatch:PutMetricData",
+            Condition: {
+              StringEquals: {
                 "cloudwatch:namespace": "Glue"
               },
-              "Bool": {
+              Bool: {
                 "aws:SecureTransport": "true"
               }
             },
-            "Effect": "Allow",
-            "Resource": "*"
+            Effect: "Allow",
+            Resource: "*"
           },
           {
-            "Action": [
+            Action: [
               "kinesis:DescribeStream",
               "kinesis:DescribeStreamSummary",
               "kinesis:GetRecords",
@@ -223,8 +222,8 @@ test('Pattern minimal deployment', () => {
               "kinesis:ListShards",
               "kinesis:SubscribeToShard"
             ],
-            "Effect": "Allow",
-            "Resource": {
+            Effect: "Allow",
+            Resource: {
               "Fn::GetAtt": [
                 "testkinesisstreamslambdaKinesisStream374D6D56",
                 "Arn"
@@ -232,21 +231,21 @@ test('Pattern minimal deployment', () => {
             }
           }
         ],
-        "Version": "2012-10-17"
+        Version: "2012-10-17"
       },
-      "PolicyName": "GlueJobPolicyAEA4B94E",
-      "Roles": [
+      PolicyName: "GlueJobPolicyAEA4B94E",
+      Roles: [
         {
-          "Ref": "testkinesisstreamslambdaJobRole42199B9C"
+          Ref: "testkinesisstreamslambdaJobRole42199B9C"
         }
       ]
     },
-    "Metadata": {
-      "cfn_nag": {
-        "rules_to_suppress": [
+    Metadata: {
+      cfn_nag: {
+        rules_to_suppress: [
           {
-            "id": "W12",
-            "reason": "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.            CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to            publish metrics only for AWS Glue"
+            id: "W12",
+            reason: "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.            CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to            publish metrics only for AWS Glue"
           }
         ]
       }
