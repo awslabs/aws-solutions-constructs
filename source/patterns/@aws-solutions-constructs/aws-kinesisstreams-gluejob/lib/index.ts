@@ -34,6 +34,9 @@ export interface KinesisStreamGlueJobProps {
    * User provides props to override the default props for Glue ETL Jobs. This parameter will be ignored if the
    * existingGlueJob parameter is set
    *
+   * This parameter is defined as `any` to not enforce passing the Glue Job role which is a mandatory parameter
+   * for CfnJobProps. If a role is not passed, the construct creates one for you and attaches the appropriate
+   * role policies
    */
   readonly glueJobProps?: CfnJobProps | any;
   /**

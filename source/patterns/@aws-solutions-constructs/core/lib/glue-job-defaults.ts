@@ -16,12 +16,14 @@ import { IRole } from '@aws-cdk/aws-iam';
 import { IResolvable } from '@aws-cdk/core';
 
 export function DefaultGlueJobProps(jobRole: IRole, jobCommand: CfnJob.JobCommandProperty | IResolvable,
-  glueSecurityConfigName: string, _defaultArguments: {} ): CfnJobProps | any {
+  glueSecurityConfigName: string, _defaultArguments: {}, _glueVersion: string | undefined ): CfnJobProps | any {
   const defaultGlueJobProps: CfnJobProps = {
     command: jobCommand,
     role: jobRole.roleArn,
     securityConfiguration: glueSecurityConfigName,
-    defaultArguments: _defaultArguments
+    defaultArguments: _defaultArguments,
+    // glue version though optional is required for streaming etl jobs otherwise it throws an error that 'command not found'
+    ...(_glueVersion !== undefined ? { glueVersion: _glueVersion } : { glueVersion: '1.0' })
   };
 
   return defaultGlueJobProps;

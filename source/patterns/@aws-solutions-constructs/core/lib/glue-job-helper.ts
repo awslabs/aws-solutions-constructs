@@ -133,18 +133,20 @@ export function deployGlueJob(scope: Construct, glueJobProps: CfnJobProps, datab
     _outputLocation = defaults.buildS3Bucket(scope, {});
   }
 
+  _outputLocation[0].grantReadWrite(_jobRole);
+
   const _jobArgumentsList = {
     "--enable-metrics" : true,
     "--enable-continuous-cloudwatch-log" : true,
     "--database_name": database.ref,
     "--table_name": table.ref,
     ...(outputDataStore && outputDataStore.datastoreStype === SinkStoreType.S3 &&
-      { '--output_path' : `s3://${_outputLocation[0]}/output/` }),
+      { '--output_path' : `s3://${_outputLocation[0].bucketName}/output/` }),
     ...glueJobProps.defaultArguments
   };
 
   const _newGlueJobProps: CfnJobProps = overrideProps(defaults.DefaultGlueJobProps(_jobRole!, glueJobProps.command,
-    _glueSecurityConfigName, _jobArgumentsList), glueJobProps);
+    _glueSecurityConfigName, _jobArgumentsList, glueJobProps.glueVersion), glueJobProps);
 
   let _scriptLocation: string;
   if (isJobCommandProperty(_newGlueJobProps.command)) {

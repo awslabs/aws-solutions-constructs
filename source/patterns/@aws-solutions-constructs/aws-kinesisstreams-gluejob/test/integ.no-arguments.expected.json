@@ -134,6 +134,39 @@
               "Action": [
                 "s3:GetObject*",
                 "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testkinesisstreamslambdaS3Bucket54759F5C",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testkinesisstreamslambdaS3Bucket54759F5C",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
                 "s3:List*"
               ],
               "Effect": "Allow",
@@ -368,6 +401,7 @@
             "Ref": "GlueTable"
           }
         },
+        "GlueVersion": "1.0",
         "SecurityConfiguration": "ETLJobSecurityConfig"
       }
     },

@@ -313,6 +313,39 @@ Object {
                 "s3:GetObject*",
                 "s3:GetBucket*",
                 "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testkinesisstreamslambdaS3Bucket54759F5C",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testkinesisstreamslambdaS3Bucket54759F5C",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
               ],
               "Effect": "Allow",
               "Resource": Array [
@@ -371,6 +404,7 @@ Object {
             "Ref": "GlueTable",
           },
         },
+        "GlueVersion": "1.0",
         "Role": Object {
           "Fn::GetAtt": Array [
             "testkinesisstreamslambdaJobRole42199B9C",
@@ -1228,6 +1262,39 @@ Object {
                 "s3:GetObject*",
                 "s3:GetBucket*",
                 "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testkinesisstreamslambdaS3Bucket54759F5C",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testkinesisstreamslambdaS3Bucket54759F5C",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
               ],
               "Effect": "Allow",
               "Resource": Array [
@@ -1282,11 +1349,23 @@ Object {
           },
           "--enable-continuous-cloudwatch-log": true,
           "--enable-metrics": true,
-          "--output_path": "s3://Default/test-kinesisstreams-lambda/S3Bucket/output/",
+          "--output_path": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "s3://",
+                Object {
+                  "Ref": "testkinesisstreamslambdaS3Bucket54759F5C",
+                },
+                "/output/",
+              ],
+            ],
+          },
           "--table_name": Object {
             "Ref": "GlueTable",
           },
         },
+        "GlueVersion": "1.0",
         "Role": Object {
           "Fn::GetAtt": Array [
             "testkinesisstreamslambdaJobRole42199B9C",
@@ -1817,6 +1896,39 @@ Object {
                 "s3:GetObject*",
                 "s3:GetBucket*",
                 "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testkinesisstreamslambdaS3Bucket54759F5C",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testkinesisstreamslambdaS3Bucket54759F5C",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
               ],
               "Effect": "Allow",
               "Resource": Array [
@@ -1875,6 +1987,7 @@ Object {
             "Ref": "GlueTable",
           },
         },
+        "GlueVersion": "1.0",
         "Role": Object {
           "Fn::GetAtt": Array [
             "testkinesisstreamslambdaJobRole42199B9C",
@@ -2420,6 +2533,39 @@ Object {
                 "s3:GetObject*",
                 "s3:GetBucket*",
                 "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "existingStreamJobS3Bucket33C3F47E",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "existingStreamJobS3Bucket33C3F47E",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
               ],
               "Effect": "Allow",
               "Resource": Array [
@@ -2474,11 +2620,23 @@ Object {
           },
           "--enable-continuous-cloudwatch-log": true,
           "--enable-metrics": true,
-          "--output_path": "s3://Default/existingStreamJob/S3Bucket/output/",
+          "--output_path": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "s3://",
+                Object {
+                  "Ref": "existingStreamJobS3Bucket33C3F47E",
+                },
+                "/output/",
+              ],
+            ],
+          },
           "--table_name": Object {
             "Ref": "GlueTable",
           },
         },
+        "GlueVersion": "1.0",
         "Role": Object {
           "Fn::GetAtt": Array [
             "existingStreamJobJobRoleA1ADDA0A",

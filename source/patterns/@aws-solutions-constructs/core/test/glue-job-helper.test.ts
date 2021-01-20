@@ -36,7 +36,7 @@ test('Test deployment with role creation', () => {
     name: _jobID,
     pythonVersion: '3',
     scriptLocation: 's3://fakelocation/script'
-  }, 'testETLJob', {});
+  }, 'testETLJob', {}, '1.0');
 
   const _database = defaults.createGlueDatabase(stack);
 

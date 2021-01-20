@@ -133,6 +133,39 @@
               "Action": [
                 "s3:GetObject*",
                 "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "CustomETLS3Bucket3EE58725",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "CustomETLS3Bucket3EE58725",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
                 "s3:List*"
               ],
               "Effect": "Allow",
@@ -447,8 +480,20 @@
           "--table_name": {
             "Ref": "GlueTable"
           },
-          "--output_path": "s3://IntegTestGlueJob/CustomETL/S3Bucket/output/"
+          "--output_path": {
+            "Fn::Join": [
+              "",
+              [
+                "s3://",
+                {
+                  "Ref": "CustomETLS3Bucket3EE58725"
+                },
+                "/output/"
+              ]
+            ]
+          }
         },
+        "GlueVersion": "1.0",
         "SecurityConfiguration": "ETLJobSecurityConfig"
       }
     },
