@@ -22,7 +22,7 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const _fieldSchema: CfnTable.ColumnProperty [] = [{
+    const fieldSchema: CfnTable.ColumnProperty [] = [{
       "name": "ventilatorid",
       "type": "int",
       "comment": ""
@@ -58,7 +58,7 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
       "comment": ""
     }];
 
-    const _customEtlJob = new KinesisStreamGlueJob(this, 'CustomETL', {
+    const customEtlJob = new KinesisStreamGlueJob(this, 'CustomETL', {
       glueJobProps: {
         command: {
           name: 'gluestreaming',
@@ -71,19 +71,19 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
       outputDataStore: {
         datastoreStype: SinkStoreType.S3
       },
-      fieldSchema: _fieldSchema
+      fieldSchema: fieldSchema
     });
 
     new CfnOutput(this, 'KinesisStreamName', {
-      value: _customEtlJob.kinesisStream.streamName
+      value: customEtlJob.kinesisStream.streamName
     });
 
     new CfnOutput(this, 'GlueJob', {
-      value: _customEtlJob.glueJob[0].ref
+      value: customEtlJob.glueJob[0].ref
     });
 
     new CfnOutput(this, 'JobRole', {
-      value: _customEtlJob.glueJob[1].roleArn
+      value: customEtlJob.glueJob[1].roleArn
     });
   }
 }
