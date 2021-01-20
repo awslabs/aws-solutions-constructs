@@ -23,7 +23,7 @@ export function DefaultGlueJobProps(jobRole: IRole, jobCommand: CfnJob.JobComman
     securityConfiguration: glueSecurityConfigName,
     defaultArguments: _defaultArguments,
     // glue version though optional is required for streaming etl jobs otherwise it throws an error that 'command not found'
-    ...(_glueVersion !== undefined ? { glueVersion: _glueVersion } : { glueVersion: '1.0' })
+    ...(_glueVersion !== undefined ? { glueVersion: _glueVersion } : { glueVersion: '2.0' })
   };
 
   return defaultGlueJobProps;
