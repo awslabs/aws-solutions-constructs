@@ -14,7 +14,7 @@
 // Imports
 import { CfnJob } from '@aws-cdk/aws-glue';
 import { Role, ServicePrincipal } from '@aws-cdk/aws-iam';
-import { Bucket } from '@aws-cdk/aws-s3';
+import { Bucket, CfnBucket } from '@aws-cdk/aws-s3';
 import { App, Duration, Stack } from '@aws-cdk/core';
 import { SinkStoreType } from '@aws-solutions-constructs/core';
 import { KinesisStreamGlueJob } from '../lib';
@@ -24,16 +24,36 @@ const app = new App();
 const stack = new Stack(app, 'test-kinesisstream-gluejob');
 stack.templateOptions.description = 'Integration Test for aws-kinesisstream-gluejob';
 
+const scriptBucket = new Bucket(stack, 'existingScriptLocation', {
+  versioned: false,
+  lifecycleRules: [{
+    expiration: Duration.days(30)
+  }]
+});
+
+(scriptBucket.node.defaultChild as CfnBucket).cfnOptions.metadata = {
+  cfn_nag: {
+    rules_to_suppress: [{
+      id: 'W51',
+      reason: 'This S3 bucket is created for unit/ integration testing purposes only and not part of \
+      the actual construct implementation'
+    }, {
+      id: 'W35',
+      reason: 'This S3 bucket is created for unit/ integration testing purposes only and not part of \
+      the actual construct implementation'
+    }, {
+      id: 'W51',
+      reason: 'This S3 bucket is created for unit/ integration testing purposes only and not part of \
+      the actual construct'
+    }]
+  }
+};
+
 const job = new CfnJob(stack, 'ExistingJob', {
   command: {
     name: 'glueetl',
     pythonVersion: '3',
-    scriptLocation: new Bucket(stack, 'existingScriptLocation', {
-      versioned: false,
-      lifecycleRules: [{
-        expiration: Duration.days(30)
-      }]
-    }).bucketArn,
+    scriptLocation: scriptBucket.bucketArn,
   },
   role: new Role(stack, 'JobRole', {
     assumedBy: new ServicePrincipal('glue.amazonaws.com')
