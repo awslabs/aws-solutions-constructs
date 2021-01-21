@@ -40,7 +40,7 @@ const scriptBucket = new Bucket(stack, 'existingScriptLocation', {
       reason: 'This S3 bucket is created for unit/ integration testing purposes only and not part of \
       the actual construct implementation'
     }, {
-      id: 'W51',
+      id: 'W41',
       reason: 'This S3 bucket is created for unit/ integration testing purposes only and not part of \
       the actual construct'
     }]
