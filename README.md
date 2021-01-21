@@ -46,4 +46,4 @@ This library includes a collection of functional use case implementations to dem
   * Use case pattern: https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-serverless-web-app
 
 ***
-&copy; Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+&copy; Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
