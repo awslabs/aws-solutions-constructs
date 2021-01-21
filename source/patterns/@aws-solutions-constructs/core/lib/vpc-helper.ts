@@ -12,6 +12,7 @@
  */
 
 import * as ec2 from "@aws-cdk/aws-ec2";
+import { CfnLogGroup } from "@aws-cdk/aws-logs";
 import { Construct } from "@aws-cdk/core";
 import { overrideProps } from "./utils";
 
@@ -56,7 +57,7 @@ export function buildVpc(scope: Construct, props: BuildVpcProps): ec2.IVpc {
   const vpc = new ec2.Vpc(scope, "Vpc", cumulativeProps);
 
   // Add VPC FlowLogs with the default setting of trafficType:ALL and destination: CloudWatch Logs
-  vpc.addFlowLog("FlowLog");
+  const flowLog: ec2.FlowLog = vpc.addFlowLog("FlowLog");
 
   // Add Cfn Nag suppression for PUBLIC subnets to suppress WARN W33: EC2 Subnet should not have MapPublicIpOnLaunch set to true
   vpc.publicSubnets.forEach((subnet) => {
@@ -70,6 +71,18 @@ export function buildVpc(scope: Construct, props: BuildVpcProps): ec2.IVpc {
       }
     };
   });
+
+  // Add Cfn Nag suppression for CloudWatchLogs LogGroups data is encrypted
+  const cfnLogGroup: CfnLogGroup = flowLog.logGroup?.node.defaultChild as CfnLogGroup;
+
+  cfnLogGroup.cfnOptions.metadata = {
+    cfn_nag: {
+      rules_to_suppress: [{
+        id: 'W84',
+        reason: 'By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)'
+      }]
+    }
+  };
 
   return vpc;
 }

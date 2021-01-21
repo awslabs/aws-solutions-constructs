@@ -63,7 +63,7 @@ test('Test deployment w/ logging enabled', () => {
   // Step function definition
   const startState = new sfn.Pass(stack, 'StartState');
   // Log group
-  const logGroup = new LogGroup(stack, 'myLogGroup', defaults.DefaultLogGroupProps());
+  const logGroup = new LogGroup(stack, 'myLogGroup', defaults.buildLogGroup(stack));
   // Build state machine
   defaults.buildStateMachine(stack, {
     definition: startState,

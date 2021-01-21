@@ -59,6 +59,7 @@ _Parameters_
 |allowUpdateOperation|`boolean`|Whether to deploy API Gateway Method for Update operation on DynamoDB table.|
 |updateRequestTemplate|`string`|API Gateway Request template for Update method, required if allowUpdateOperation set to true|
 |allowDeleteOperation|`boolean`|Whether to deploy API Gateway Method for Delete operation on DynamoDB table.|
+|logGroupProps?|[`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-logs.LogGroupProps.html)|User provided props to override the default props for for the CloudWatchLogs LogGroup.|
 
 ## Pattern Properties
 

@@ -19,7 +19,7 @@ import { Construct } from '@aws-cdk/core';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import * as cloudtrail from '@aws-cdk/aws-cloudtrail';
 import * as events from '@aws-cdk/aws-events';
-import { LogGroup } from '@aws-cdk/aws-logs';
+import * as logs from '@aws-cdk/aws-logs';
 
 /**
  * @summary The properties for the S3ToStepFunction Construct
@@ -60,12 +60,18 @@ export interface S3ToStepFunctionProps {
    *
    * @default - Alarms are created
    */
-  readonly createCloudWatchAlarms?: boolean
+  readonly createCloudWatchAlarms?: boolean,
+  /**
+   * User provided props to override the default props for the CloudWatchLogs LogGroup.
+   *
+   * @default - Default props are used
+   */
+  readonly logGroupProps?: logs.LogGroupProps
 }
 
 export class S3ToStepFunction extends Construct {
   public readonly stateMachine: sfn.StateMachine;
-  public readonly stateMachineLogGroup: LogGroup;
+  public readonly stateMachineLogGroup: logs.LogGroup;
   public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
   public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
@@ -138,7 +144,8 @@ export class S3ToStepFunction extends Construct {
     const eventsRuleToStepFunction = new EventsRuleToStepFunction(this, 'test-events-rule-step-function-stack', {
       stateMachineProps: props.stateMachineProps,
       eventRuleProps: _eventRuleProps,
-      createCloudWatchAlarms: props.createCloudWatchAlarms
+      createCloudWatchAlarms: props.createCloudWatchAlarms,
+      logGroupProps: props.logGroupProps
     });
 
     this.stateMachine = eventsRuleToStepFunction.stateMachine;

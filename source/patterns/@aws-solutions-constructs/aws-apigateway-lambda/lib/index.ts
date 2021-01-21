@@ -15,7 +15,7 @@
 import * as api from '@aws-cdk/aws-apigateway';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as iam from '@aws-cdk/aws-iam';
-import { LogGroup } from '@aws-cdk/aws-logs';
+import * as logs from '@aws-cdk/aws-logs';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
 
@@ -23,54 +23,60 @@ import { Construct } from '@aws-cdk/core';
  * The properties for the ApiGatewayToLambda class.
  */
 export interface ApiGatewayToLambdaProps {
-    /**
-     * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
-     *
-     * @default - None
-     */
-    readonly existingLambdaObj?: lambda.Function,
-    /**
-     * User provided props to override the default props for the Lambda function.
-     *
-     * @default - Default props are used.
-     */
-    readonly lambdaFunctionProps?: lambda.FunctionProps,
-    /**
-     * Optional user-provided props to override the default props for the API.
-     *
-     * @default - Default props are used.
-     */
-    readonly apiGatewayProps?: api.LambdaRestApiProps | any
+  /**
+   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
+   *
+   * @default - None
+   */
+  readonly existingLambdaObj?: lambda.Function,
+  /**
+   * User provided props to override the default props for the Lambda function.
+   *
+   * @default - Default props are used.
+   */
+  readonly lambdaFunctionProps?: lambda.FunctionProps,
+  /**
+   * Optional user-provided props to override the default props for the API.
+   *
+   * @default - Default props are used.
+   */
+  readonly apiGatewayProps?: api.LambdaRestApiProps | any,
+  /**
+   * User provided props to override the default props for the CloudWatchLogs LogGroup.
+   *
+   * @default - Default props are used
+   */
+  readonly logGroupProps?: logs.LogGroupProps
 }
 
 /**
  * @summary The ApiGatewayToLambda class.
  */
 export class ApiGatewayToLambda extends Construct {
-    public readonly apiGateway: api.RestApi;
-    public readonly apiGatewayCloudWatchRole: iam.Role;
-    public readonly apiGatewayLogGroup: LogGroup;
-    public readonly lambdaFunction: lambda.Function;
+  public readonly apiGateway: api.RestApi;
+  public readonly apiGatewayCloudWatchRole: iam.Role;
+  public readonly apiGatewayLogGroup: logs.LogGroup;
+  public readonly lambdaFunction: lambda.Function;
 
-    /**
-     * @summary Constructs a new instance of the ApiGatewayToLambda class.
-     * @param {cdk.App} scope - represents the scope for all the resources.
-     * @param {string} id - this is a a scope-unique id.
-     * @param {CloudFrontToApiGatewayToLambdaProps} props - user provided props for the construct
-     * @since 0.8.0
-     * @access public
-     */
-    constructor(scope: Construct, id: string, props: ApiGatewayToLambdaProps) {
-      super(scope, id);
+  /**
+   * @summary Constructs a new instance of the ApiGatewayToLambda class.
+   * @param {cdk.App} scope - represents the scope for all the resources.
+   * @param {string} id - this is a a scope-unique id.
+   * @param {CloudFrontToApiGatewayToLambdaProps} props - user provided props for the construct
+   * @since 0.8.0
+   * @access public
+   */
+  constructor(scope: Construct, id: string, props: ApiGatewayToLambdaProps) {
+    super(scope, id);
 
-      // Setup the Lambda function
-      this.lambdaFunction = defaults.buildLambdaFunction(this, {
-        existingLambdaObj: props.existingLambdaObj,
-        lambdaFunctionProps: props.lambdaFunctionProps
-      });
+    // Setup the Lambda function
+    this.lambdaFunction = defaults.buildLambdaFunction(this, {
+      existingLambdaObj: props.existingLambdaObj,
+      lambdaFunctionProps: props.lambdaFunctionProps
+    });
 
-      // Setup the API Gateway
-      [this.apiGateway, this.apiGatewayCloudWatchRole,
-        this.apiGatewayLogGroup] = defaults.GlobalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps);
-    }
+    // Setup the API Gateway
+    [this.apiGateway, this.apiGatewayCloudWatchRole,
+      this.apiGatewayLogGroup] = defaults.GlobalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps, props.logGroupProps);
+  }
 }

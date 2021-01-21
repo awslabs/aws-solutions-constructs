@@ -75,6 +75,7 @@ _Parameters_
 |resourcePath|`string`|Resource path for the GET method. The variable defined here can be referenced in `requestMappingTemplate`.|
 |requestMappingTemplate|`string`|Mapping template to convert GET requests received on the REST API to POST requests expected by the SageMaker endpoint.|
 |responseMappingTemplate?|`string`|Optional mapping template to convert responses received from the SageMaker endpoint.|
+|logGroupProps?|[`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-logs.LogGroupProps.html)|User provided props to override the default props for for the CloudWatchLogs LogGroup.|
 
 ## Pattern Properties
 

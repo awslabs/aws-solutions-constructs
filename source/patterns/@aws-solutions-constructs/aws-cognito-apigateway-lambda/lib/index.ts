@@ -14,7 +14,7 @@
 import * as api from '@aws-cdk/aws-apigateway';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as cognito from '@aws-cdk/aws-cognito';
-import { LogGroup } from '@aws-cdk/aws-logs';
+import * as logs from '@aws-cdk/aws-logs';
 import * as iam from '@aws-cdk/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
@@ -52,7 +52,13 @@ export interface CognitoToApiGatewayToLambdaProps {
    *
    * @default - Default props are used
    */
-  readonly cognitoUserPoolClientProps?: cognito.UserPoolClientProps | any
+  readonly cognitoUserPoolClientProps?: cognito.UserPoolClientProps | any,
+  /**
+   * User provided props to override the default props for the CloudWatchLogs LogGroup.
+   *
+   * @default - Default props are used
+   */
+  readonly logGroupProps?: logs.LogGroupProps
 }
 
 export class CognitoToApiGatewayToLambda extends Construct {
@@ -60,7 +66,7 @@ export class CognitoToApiGatewayToLambda extends Construct {
   public readonly userPoolClient: cognito.UserPoolClient;
   public readonly apiGateway: api.RestApi;
   public readonly apiGatewayCloudWatchRole: iam.Role;
-  public readonly apiGatewayLogGroup: LogGroup;
+  public readonly apiGatewayLogGroup: logs.LogGroup;
   public readonly apiGatewayAuthorizer: api.CfnAuthorizer;
   public readonly lambdaFunction: lambda.Function;
 
@@ -98,7 +104,7 @@ export class CognitoToApiGatewayToLambda extends Construct {
       lambdaFunctionProps: props.lambdaFunctionProps
     });
     [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] =
-      defaults.GlobalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps);
+      defaults.GlobalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps, props.logGroupProps);
     this.userPool = defaults.buildUserPool(this, props.cognitoUserPoolProps);
     this.userPoolClient = defaults.buildUserPoolClient(this, this.userPool, props.cognitoUserPoolClientProps);
 

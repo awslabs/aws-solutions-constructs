@@ -17,7 +17,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import { getPartitionKeyNameFromTable, overrideProps } from '@aws-solutions-constructs/core';
-import { LogGroup } from '@aws-cdk/aws-logs';
+import * as logs from '@aws-cdk/aws-logs';
 
 /**
  * @summary The properties for the ApiGatewayToDynamoDB class.
@@ -41,48 +41,48 @@ export interface ApiGatewayToDynamoDBProps {
    * @default - Default properties are used.
    */
   readonly apiGatewayProps?: api.RestApiProps,
-
   /**
    * Whether to deploy API Gateway Method for Create operation on DynamoDB table.
    *
    * @default - false
    */
   readonly allowCreateOperation?: boolean,
-
   /**
    * API Gateway Request template for Create method, required if allowCreateOperation set to true
    *
    * @default - None
    */
   readonly createRequestTemplate?: string,
-
   /**
    * Whether to deploy API Gateway Method for Read operation on DynamoDB table.
    *
    * @default - true
    */
   readonly allowReadOperation?: boolean,
-
   /**
    * Whether to deploy API Gateway Method for Update operation on DynamoDB table.
    *
    * @default - false
    */
   readonly allowUpdateOperation?: boolean,
-
   /**
    * API Gateway Request template for Update method, required if allowUpdateOperation set to true
    *
    * @default - None
    */
   readonly updateRequestTemplate?: string,
-
   /**
    * Whether to deploy API Gateway Method for Delete operation on DynamoDB table.
    *
    * @default - false
    */
-  readonly allowDeleteOperation?: boolean
+  readonly allowDeleteOperation?: boolean,
+  /**
+   * User provided props to override the default props for the CloudWatchLogs LogGroup.
+   *
+   * @default - Default props are used
+   */
+  readonly logGroupProps?: logs.LogGroupProps
 }
 
 /**
@@ -93,7 +93,7 @@ export class ApiGatewayToDynamoDB extends Construct {
   public readonly apiGatewayRole: iam.Role;
   public readonly apiGateway: api.RestApi;
   public readonly apiGatewayCloudWatchRole: iam.Role;
-  public readonly apiGatewayLogGroup: LogGroup;
+  public readonly apiGatewayLogGroup: logs.LogGroup;
   /**
    * @summary Constructs a new instance of the ApiGatewayToDynamoDB class.
    * @param {cdk.App} scope - represents the scope for all the resources.
@@ -126,7 +126,8 @@ export class ApiGatewayToDynamoDB extends Construct {
     });
 
     // Setup the API Gateway
-    [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] = defaults.GlobalRestApi(this, props.apiGatewayProps);
+    [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] = defaults.GlobalRestApi(this,
+      props.apiGatewayProps, props.logGroupProps);
 
     // Setup the API Gateway role
     this.apiGatewayRole = new iam.Role(this, 'api-gateway-role', {
