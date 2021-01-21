@@ -18,7 +18,7 @@ import * as cdk from '@aws-cdk/core';
 import * as api from '@aws-cdk/aws-apigateway';
 import * as iam from '@aws-cdk/aws-iam';
 import * as apiDefaults from './apigateway-defaults';
-import { DefaultLogGroupProps } from './cloudwatch-log-group-defaults';
+import { buildLogGroup } from './cloudwatch-log-group-helper';
 import { overrideProps } from './utils';
 import { IRole } from '@aws-cdk/aws-iam';
 
@@ -170,10 +170,9 @@ function configureRestApi(scope: cdk.Construct, defaultApiGatewayProps: api.Rest
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 export function GlobalLambdaRestApi(scope: cdk.Construct, _existingLambdaObj: lambda.Function,
-  apiGatewayProps?: api.LambdaRestApiProps): [api.RestApi, iam.Role, logs.LogGroup] {
-
+  apiGatewayProps?: api.LambdaRestApiProps, logGroupProps?: logs.LogGroupProps): [api.RestApi, iam.Role, logs.LogGroup] {
   // Configure log group for API Gateway AccessLogging
-  const logGroup = new logs.LogGroup(scope, 'ApiAccessLogGroup', DefaultLogGroupProps());
+  const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
 
   const defaultProps = apiDefaults.DefaultGlobalLambdaRestApiProps(_existingLambdaObj, logGroup);
   const [restApi, apiCWRole] = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
@@ -187,9 +186,9 @@ export function GlobalLambdaRestApi(scope: cdk.Construct, _existingLambdaObj: la
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 export function RegionalLambdaRestApi(scope: cdk.Construct, _existingLambdaObj: lambda.Function,
-  apiGatewayProps?: api.LambdaRestApiProps): [api.RestApi, iam.Role, logs.LogGroup] {
+  apiGatewayProps?: api.LambdaRestApiProps, logGroupProps?: logs.LogGroupProps): [api.RestApi, iam.Role, logs.LogGroup] {
   // Configure log group for API Gateway AccessLogging
-  const logGroup = new logs.LogGroup(scope, 'ApiAccessLogGroup', DefaultLogGroupProps());
+  const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
 
   const defaultProps = apiDefaults.DefaultRegionalLambdaRestApiProps(_existingLambdaObj, logGroup);
   const [restApi, apiCWRole] = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
@@ -201,9 +200,10 @@ export function RegionalLambdaRestApi(scope: cdk.Construct, _existingLambdaObj: 
  * @param scope - the construct to which the RestApi should be attached to.
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
-export function GlobalRestApi(scope: cdk.Construct, apiGatewayProps?: api.RestApiProps): [api.RestApi, iam.Role, logs.LogGroup] {
+export function GlobalRestApi(scope: cdk.Construct, apiGatewayProps?: api.RestApiProps,
+  logGroupProps?: logs.LogGroupProps): [api.RestApi, iam.Role, logs.LogGroup] {
   // Configure log group for API Gateway AccessLogging
-  const logGroup = new logs.LogGroup(scope, 'ApiAccessLogGroup', DefaultLogGroupProps());
+  const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
 
   const defaultProps = apiDefaults.DefaultGlobalRestApiProps(logGroup);
   const [restApi, apiCWRole] = configureRestApi(scope, defaultProps, apiGatewayProps);
@@ -215,9 +215,10 @@ export function GlobalRestApi(scope: cdk.Construct, apiGatewayProps?: api.RestAp
  * @param scope - the construct to which the RestApi should be attached to.
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
-export function RegionalRestApi(scope: cdk.Construct, apiGatewayProps?: api.RestApiProps): [api.RestApi, iam.Role, logs.LogGroup] {
+export function RegionalRestApi(scope: cdk.Construct, apiGatewayProps?: api.RestApiProps,
+  logGroupProps?: logs.LogGroupProps): [api.RestApi, iam.Role, logs.LogGroup] {
   // Configure log group for API Gateway AccessLogging
-  const logGroup = new logs.LogGroup(scope, 'ApiAccessLogGroup', DefaultLogGroupProps());
+  const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
 
   const defaultProps = apiDefaults.DefaultRegionalRestApiProps(logGroup);
   const [restApi, apiCWRole] = configureRestApi(scope, defaultProps, apiGatewayProps);

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.82.0 (2021-01-21)
+
+### Changed
+- Upgraded all patterns to CDK v1.82.0
+- Fixed the issue related to Cfn Nag warnings related to CloudWatchLogs for all patterns ([#121](https://github.com/awslabs/aws-solutions-constructs/issues/121))
+
 ## 1.81.0 (2021-01-14)
 
 ### Changed

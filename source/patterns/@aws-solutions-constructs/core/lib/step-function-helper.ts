@@ -12,30 +12,25 @@
  */
 
 // Imports
-import { LogGroup } from '@aws-cdk/aws-logs';
+import * as logs from '@aws-cdk/aws-logs';
 import * as cdk from '@aws-cdk/core';
 import * as smDefaults from './step-function-defaults';
-import { DefaultLogGroupProps } from './cloudwatch-log-group-defaults';
 import * as sfn from '@aws-cdk/aws-stepfunctions';
 import { overrideProps } from './utils';
 import * as iam from '@aws-cdk/aws-iam';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+import { buildLogGroup } from './cloudwatch-log-group-helper';
 
 /**
  * Builds and returns a StateMachine.
  * @param scope - the construct to which the StateMachine should be attached to.
  * @param stateMachineProps - user-specified properties to override the default properties.
  */
-export function buildStateMachine(scope: cdk.Construct, stateMachineProps: sfn.StateMachineProps): [sfn.StateMachine, LogGroup] {
-
-  let logGroup: LogGroup;
+export function buildStateMachine(scope: cdk.Construct, stateMachineProps: sfn.StateMachineProps,
+  logGroupProps?: logs.LogGroupProps): [sfn.StateMachine, logs.LogGroup] {
 
   // Configure Cloudwatch log group for Step function State Machine
-  if (!stateMachineProps.logs) {
-    logGroup = new LogGroup(scope, 'StateMachineLogGroup', DefaultLogGroupProps());
-  } else {
-    logGroup = stateMachineProps.logs.destination as LogGroup;
-  }
+  const logGroup = buildLogGroup(scope, 'StateMachineLogGroup', logGroupProps);
 
   // Override the defaults with the user provided props
   const _smProps = overrideProps(smDefaults.DefaultStateMachineProps(logGroup), stateMachineProps);

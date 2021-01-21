@@ -48,7 +48,13 @@ export interface EventsRuleToKinesisFirehoseToS3Props {
    *
    * @default - Default props are used
    */
-  readonly bucketProps?: s3.BucketProps
+  readonly bucketProps?: s3.BucketProps,
+  /**
+   * User provided props to override the default props for the CloudWatchLogs LogGroup.
+   *
+   * @default - Default props are used
+   */
+  readonly logGroupProps?: logs.LogGroupProps
 }
 
 export class EventsRuleToKinesisFirehoseToS3 extends Construct {
@@ -75,7 +81,8 @@ export class EventsRuleToKinesisFirehoseToS3 extends Construct {
     const firehoseToS3 = new KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {
       kinesisFirehoseProps: props.kinesisFirehoseProps,
       existingBucketObj: props.existingBucketObj,
-      bucketProps: props.bucketProps
+      bucketProps: props.bucketProps,
+      logGroupProps: props.logGroupProps
     });
     this.kinesisFirehose = firehoseToS3.kinesisFirehose;
     this.s3Bucket = firehoseToS3.s3Bucket;

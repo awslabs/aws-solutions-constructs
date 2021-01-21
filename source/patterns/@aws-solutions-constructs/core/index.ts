@@ -16,6 +16,7 @@ export * from './lib/apigateway-helper';
 export * from './lib/cloudfront-distribution-defaults';
 export * from './lib/cloudfront-distribution-helper';
 export * from './lib/cloudwatch-log-group-defaults';
+export * from './lib/cloudwatch-log-group-helper';
 export * from './lib/cognito-defaults';
 export * from './lib/cognito-helper';
 export * from './lib/dynamodb-table-defaults';
