@@ -14,6 +14,7 @@
 // Imports
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as s3 from '@aws-cdk/aws-s3';
+import * as ec2 from '@aws-cdk/aws-ec2';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
 
@@ -21,37 +22,51 @@ import { Construct } from '@aws-cdk/core';
  * @summary The properties for the LambdaToS3 class.
  */
 export interface LambdaToS3Props {
-    /**
-     * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
-     *
-     * @default - None
-     */
-    readonly existingLambdaObj?: lambda.Function,
-    /**
-     * User provided props to override the default props for the Lambda function.
-     *
-     * @default - Default properties are used.
-     */
-    readonly lambdaFunctionProps?: lambda.FunctionProps
-    /**
-     * Existing instance of S3 Bucket object, if this is set then the bucketProps is ignored.
-     *
-     * @default - None
-     */
-    readonly existingBucketObj?: s3.IBucket,
-    /**
-     * User provided props to override the default props for the S3 Bucket.
-     *
-     * @default - Default props are used
-     */
-    readonly bucketProps?: s3.BucketProps
-    /**
-     * Optional bucket permissions to grant to the Lambda function.
-     * One or more of the following may be specified: "Delete", "Put", "Read", "ReadWrite", "Write".
-     *
-     * @default - Read/write access is given to the Lambda function if no value is specified.
-     */
-    readonly bucketPermissions?: string[]
+  /**
+   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
+   *
+   * @default - None
+   */
+  readonly existingLambdaObj?: lambda.Function,
+  /**
+   * User provided props to override the default props for the Lambda function.
+   *
+   * @default - Default properties are used.
+   */
+  readonly lambdaFunctionProps?: lambda.FunctionProps,
+  /**
+   * Existing instance of S3 Bucket object, if this is set then the bucketProps is ignored.
+   *
+   * @default - None
+   */
+  readonly existingBucketObj?: s3.IBucket,
+  /**
+   * User provided props to override the default props for the S3 Bucket.
+   *
+   * @default - Default props are used
+   */
+  readonly bucketProps?: s3.BucketProps,
+  /**
+   * Optional bucket permissions to grant to the Lambda function.
+   * One or more of the following may be specified: "Delete", "Put", "Read", "ReadWrite", "Write".
+   *
+   * @default - Read/write access is given to the Lambda function if no value is specified.
+   */
+  readonly bucketPermissions?: string[],
+  /**
+   * An existing VPC for the construct to use (construct will NOT create a new VPC in this case)
+   */
+  readonly existingVpc?: ec2.IVpc;
+  /**
+   * Properties to override default properties if deployVpc is true
+   */
+  readonly vpcProps?: ec2.VpcProps;
+  /**
+   * Whether to deploy a new VPC
+   *
+   * @default - false
+   */
+  readonly deployVpc?: boolean;
 }
 
 /**
@@ -61,6 +76,7 @@ export class LambdaToS3 extends Construct {
     public readonly lambdaFunction: lambda.Function;
     public readonly s3Bucket?: s3.Bucket;
     public readonly s3LoggingBucket?: s3.Bucket;
+    public readonly vpc?: ec2.IVpc;
 
     /**
      * @summary Constructs a new instance of the LambdaToS3 class.
@@ -74,10 +90,29 @@ export class LambdaToS3 extends Construct {
       super(scope, id);
       let bucket: s3.IBucket;
 
+      if (props.deployVpc || props.existingVpc) {
+        if (props.deployVpc && props.existingVpc) {
+          throw new Error("More than 1 VPC specified in the properties");
+        }
+
+        this.vpc = defaults.buildVpc(scope, {
+          defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
+          existingVpc: props.existingVpc,
+          userVpcProps: props.vpcProps,
+          constructVpcProps: {
+            enableDnsHostnames: true,
+            enableDnsSupport: true,
+          },
+        });
+
+        defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.S3);
+      }
+
       // Setup the Lambda function
       this.lambdaFunction = defaults.buildLambdaFunction(this, {
         existingLambdaObj: props.existingLambdaObj,
-        lambdaFunctionProps: props.lambdaFunctionProps
+        lambdaFunctionProps: props.lambdaFunctionProps,
+        vpc: this.vpc,
       });
 
       // Setup S3 Bucket

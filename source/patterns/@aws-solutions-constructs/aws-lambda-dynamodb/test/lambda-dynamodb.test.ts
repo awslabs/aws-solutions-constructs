@@ -192,6 +192,7 @@ test('check lambda function policy default table permissions', () => {
             "dynamodb:Query",
             "dynamodb:GetItem",
             "dynamodb:Scan",
+            "dynamodb:ConditionCheckItem",
             "dynamodb:BatchWriteItem",
             "dynamodb:PutItem",
             "dynamodb:UpdateItem",
@@ -354,7 +355,8 @@ test('check lambda function policy ReadOnly table permissions', () => {
             "dynamodb:GetShardIterator",
             "dynamodb:Query",
             "dynamodb:GetItem",
-            "dynamodb:Scan"
+            "dynamodb:Scan",
+            "dynamodb:ConditionCheckItem"
           ],
           Effect: "Allow",
           Resource: [
@@ -461,6 +463,7 @@ test('check lambda function policy ReadWrite table permissions', () => {
             "dynamodb:Query",
             "dynamodb:GetItem",
             "dynamodb:Scan",
+            "dynamodb:ConditionCheckItem",
             "dynamodb:BatchWriteItem",
             "dynamodb:PutItem",
             "dynamodb:UpdateItem",

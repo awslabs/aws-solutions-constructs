@@ -16,6 +16,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as sns from '@aws-cdk/aws-sns';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
+import * as ec2 from "@aws-cdk/aws-ec2";
 
 /**
  * @summary The properties for the LambdaToSns class.
@@ -45,6 +46,20 @@ export interface LambdaToSnsProps {
      * @default - Default properties are used.
      */
     readonly topicProps?: sns.TopicProps
+  /**
+   * An existing VPC for the construct to use (construct will NOT create a new VPC in this case)
+   */
+  readonly existingVpc?: ec2.IVpc;
+  /**
+   * Properties to override default properties if deployVpc is true
+   */
+  readonly vpcProps?: ec2.VpcProps;
+  /**
+   * Whether to deploy a new VPC
+   *
+   * @default - false
+   */
+  readonly deployVpc?: boolean;
 }
 
 /**
@@ -53,6 +68,7 @@ export interface LambdaToSnsProps {
 export class LambdaToSns extends Construct {
     public readonly lambdaFunction: lambda.Function;
     public readonly snsTopic: sns.Topic;
+    public readonly vpc?: ec2.IVpc;
 
     /**
      * @summary Constructs a new instance of the LambdaToSns class.
@@ -65,10 +81,29 @@ export class LambdaToSns extends Construct {
     constructor(scope: Construct, id: string, props: LambdaToSnsProps) {
       super(scope, id);
 
+      if (props.deployVpc || props.existingVpc) {
+        if (props.deployVpc && props.existingVpc) {
+          throw new Error("More than 1 VPC specified in the properties");
+        }
+
+        this.vpc = defaults.buildVpc(scope, {
+          defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
+          existingVpc: props.existingVpc,
+          userVpcProps: props.vpcProps,
+          constructVpcProps: {
+            enableDnsHostnames: true,
+            enableDnsSupport: true,
+          },
+        });
+
+        defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.SNS);
+      }
+
       // Setup the Lambda function
       this.lambdaFunction = defaults.buildLambdaFunction(this, {
         existingLambdaObj: props.existingLambdaObj,
-        lambdaFunctionProps: props.lambdaFunctionProps
+        lambdaFunctionProps: props.lambdaFunctionProps,
+        vpc: this.vpc,
       });
 
       // Setup the SNS topic
