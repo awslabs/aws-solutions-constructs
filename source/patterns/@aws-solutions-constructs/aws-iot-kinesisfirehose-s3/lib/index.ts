@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -25,91 +25,98 @@ import { KinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-kinesisfireho
  * @summary The properties for the IotToKinesisFirehoseToS3 Construct
  */
 export interface IotToKinesisFirehoseToS3Props {
-    /**
-     * User provided CfnTopicRuleProps to override the defaults
-     *
-     * @default - Default props are used
-     */
-    readonly iotTopicRuleProps: iot.CfnTopicRuleProps;
-    /**
-     * Optional user provided props to override the default props
-     *
-     * @default - Default props are used
-     */
-    readonly kinesisFirehoseProps?: kinesisfirehose.CfnDeliveryStreamProps | any;
-    /**
-     * Existing instance of S3 Bucket object, if this is set then the bucketProps is ignored.
-     *
-     * @default - None
-     */
-    readonly existingBucketObj?: s3.IBucket,
-    /**
-     * User provided props to override the default props for the S3 Bucket.
-     *
-     * @default - Default props are used
-     */
-    readonly bucketProps?: s3.BucketProps
+  /**
+   * User provided CfnTopicRuleProps to override the defaults
+   *
+   * @default - Default props are used
+   */
+  readonly iotTopicRuleProps: iot.CfnTopicRuleProps;
+  /**
+   * Optional user provided props to override the default props
+   *
+   * @default - Default props are used
+   */
+  readonly kinesisFirehoseProps?: kinesisfirehose.CfnDeliveryStreamProps | any;
+  /**
+   * Existing instance of S3 Bucket object, if this is set then the bucketProps is ignored.
+   *
+   * @default - None
+   */
+  readonly existingBucketObj?: s3.IBucket,
+  /**
+   * User provided props to override the default props for the S3 Bucket.
+   *
+   * @default - Default props are used
+   */
+  readonly bucketProps?: s3.BucketProps,
+  /**
+   * User provided props to override the default props for the CloudWatchLogs LogGroup.
+   *
+   * @default - Default props are used
+   */
+  readonly logGroupProps?: logs.LogGroupProps
 }
 
 export class IotToKinesisFirehoseToS3 extends Construct {
-    public readonly iotTopicRule: iot.CfnTopicRule;
-    public readonly kinesisFirehose: kinesisfirehose.CfnDeliveryStream;
-    public readonly kinesisFirehoseLogGroup: logs.LogGroup;
-    public readonly kinesisFirehoseRole: iam.Role;
-    public readonly s3Bucket?: s3.Bucket;
-    public readonly s3LoggingBucket?: s3.Bucket;
-    public readonly iotActionsRole: iam.Role;
+  public readonly iotTopicRule: iot.CfnTopicRule;
+  public readonly kinesisFirehose: kinesisfirehose.CfnDeliveryStream;
+  public readonly kinesisFirehoseLogGroup: logs.LogGroup;
+  public readonly kinesisFirehoseRole: iam.Role;
+  public readonly s3Bucket?: s3.Bucket;
+  public readonly s3LoggingBucket?: s3.Bucket;
+  public readonly iotActionsRole: iam.Role;
 
-    /**
-     * @summary Constructs a new instance of the IotToKinesisFirehoseToS3 class.
-     * @param {cdk.App} scope - represents the scope for all the resources.
-     * @param {string} id - this is a a scope-unique id.
-     * @param {CloudFrontToApiGatewayProps} props - user provided props for the construct
-     * @since 0.8.0
-     * @access public
-     */
-    constructor(scope: Construct, id: string, props: IotToKinesisFirehoseToS3Props) {
-      super(scope, id);
+  /**
+   * @summary Constructs a new instance of the IotToKinesisFirehoseToS3 class.
+   * @param {cdk.App} scope - represents the scope for all the resources.
+   * @param {string} id - this is a a scope-unique id.
+   * @param {CloudFrontToApiGatewayProps} props - user provided props for the construct
+   * @since 0.8.0
+   * @access public
+   */
+  constructor(scope: Construct, id: string, props: IotToKinesisFirehoseToS3Props) {
+    super(scope, id);
 
-      const firehoseToS3 = new KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {
-        kinesisFirehoseProps: props.kinesisFirehoseProps,
-        existingBucketObj: props.existingBucketObj,
-        bucketProps: props.bucketProps
-      });
-      this.kinesisFirehose = firehoseToS3.kinesisFirehose;
-      this.s3Bucket = firehoseToS3.s3Bucket;
+    const firehoseToS3 = new KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {
+      kinesisFirehoseProps: props.kinesisFirehoseProps,
+      existingBucketObj: props.existingBucketObj,
+      bucketProps: props.bucketProps,
+      logGroupProps: props.logGroupProps
+    });
+    this.kinesisFirehose = firehoseToS3.kinesisFirehose;
+    this.s3Bucket = firehoseToS3.s3Bucket;
 
-      // Setup the IAM Role for IoT Actions
-      this.iotActionsRole = new iam.Role(this, 'IotActionsRole', {
-        assumedBy: new iam.ServicePrincipal('iot.amazonaws.com'),
-      });
+    // Setup the IAM Role for IoT Actions
+    this.iotActionsRole = new iam.Role(this, 'IotActionsRole', {
+      assumedBy: new iam.ServicePrincipal('iot.amazonaws.com'),
+    });
 
-      // Setup the IAM policy for IoT Actions
-      const iotActionsPolicy = new iam.Policy(this, 'IotActionsPolicy', {
-        statements: [new iam.PolicyStatement({
-          actions: [
-            'firehose:PutRecord'
-          ],
-          resources: [this.kinesisFirehose.attrArn]
-        })
-        ]});
+    // Setup the IAM policy for IoT Actions
+    const iotActionsPolicy = new iam.Policy(this, 'IotActionsPolicy', {
+      statements: [new iam.PolicyStatement({
+        actions: [
+          'firehose:PutRecord'
+        ],
+        resources: [this.kinesisFirehose.attrArn]
+      })
+      ]});
 
-      // Attach policy to role
-      iotActionsPolicy.attachToRole(this.iotActionsRole);
+    // Attach policy to role
+    iotActionsPolicy.attachToRole(this.iotActionsRole);
 
-      const defaultIotTopicProps = defaults.DefaultCfnTopicRuleProps([{
-        firehose: {
-          deliveryStreamName: this.kinesisFirehose.ref,
-          roleArn: this.iotActionsRole.roleArn
-        }
-      }]);
-      const iotTopicProps = overrideProps(defaultIotTopicProps, props.iotTopicRuleProps, true);
+    const defaultIotTopicProps = defaults.DefaultCfnTopicRuleProps([{
+      firehose: {
+        deliveryStreamName: this.kinesisFirehose.ref,
+        roleArn: this.iotActionsRole.roleArn
+      }
+    }]);
+    const iotTopicProps = overrideProps(defaultIotTopicProps, props.iotTopicRuleProps, true);
 
-      // Create the IoT topic rule
-      this.iotTopicRule = new iot.CfnTopicRule(this, 'IotTopic', iotTopicProps);
+    // Create the IoT topic rule
+    this.iotTopicRule = new iot.CfnTopicRule(this, 'IotTopic', iotTopicProps);
 
-      this.kinesisFirehoseRole = firehoseToS3.kinesisFirehoseRole;
-      this.s3LoggingBucket = firehoseToS3.s3LoggingBucket;
-      this.kinesisFirehoseLogGroup = firehoseToS3.kinesisFirehoseLogGroup;
-    }
+    this.kinesisFirehoseRole = firehoseToS3.kinesisFirehoseRole;
+    this.s3LoggingBucket = firehoseToS3.s3LoggingBucket;
+    this.kinesisFirehoseLogGroup = firehoseToS3.kinesisFirehoseLogGroup;
+  }
 }

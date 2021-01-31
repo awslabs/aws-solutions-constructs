@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -14,12 +14,14 @@
 import { SynthUtils, ResourcePart } from '@aws-cdk/assert';
 import { Stack } from '@aws-cdk/core';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
+import * as lambda from '@aws-cdk/aws-lambda';
 import { CloudFrontDistributionForS3 } from '../lib/cloudfront-distribution-helper';
 import { buildS3Bucket } from '../lib/s3-bucket-helper';
 import '@aws-cdk/assert/jest';
 import { Bucket } from '@aws-cdk/aws-s3';
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
 import * as acm from '@aws-cdk/aws-certificatemanager';
+import { LambdaEdgeEventType } from '@aws-cdk/aws-cloudfront';
 
 test('cloudfront distribution with default params', () => {
   const stack = new Stack();
@@ -273,13 +275,11 @@ test('test cloudfront override cloudfront custom domain names ', () => {
 test('test cloudfront override cloudfront logging bucket ', () => {
   const stack = new Stack();
   const [sourceBucket] = buildS3Bucket(stack, {});
-  const loggingBucket = new Bucket(stack, 'loggingbucket');
+  const logBucket = new Bucket(stack, 'loggingbucket');
 
   const myprops = {
-    loggingConfig: {
-      bucket: loggingBucket,
-      includeCookies: true
-    }
+    enableLogging: true,
+    logBucket
   };
 
   CloudFrontDistributionForS3(stack, sourceBucket, myprops);
@@ -378,6 +378,183 @@ test('test cloudfront override properties', () => {
             EventType: "origin-response",
             LambdaFunctionARN: {
               Ref: "SetHttpSecurityHeadersVersion660E2F72"
+            }
+          }
+        ],
+        TargetOriginId: "CloudFrontDistributionOrigin176EC3A12",
+        ViewerProtocolPolicy: "redirect-to-https"
+      },
+      DefaultRootObject: "index.html",
+      Enabled: true,
+      HttpVersion: "http2",
+      IPV6Enabled: true,
+      Logging: {
+        Bucket: {
+          "Fn::GetAtt": [
+            "CloudfrontLoggingBucket3C3EFAA7",
+            "RegionalDomainName"
+          ]
+        }
+      },
+      Origins: [
+        {
+          DomainName: {
+            "Fn::GetAtt": [
+              "S3Bucket07682993",
+              "RegionalDomainName"
+            ]
+          },
+          Id: "CloudFrontDistributionOrigin176EC3A12",
+          S3OriginConfig: {
+            OriginAccessIdentity: {
+              "Fn::Join": [
+                "",
+                [
+                  "origin-access-identity/cloudfront/",
+                  {
+                    Ref: "CloudFrontDistributionOrigin1S3Origin3D9CA0E9"
+                  }
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    }
+  });
+});
+
+test('test override cloudfront add custom lambda@edge', () => {
+  const stack = new Stack();
+  const [sourceBucket] = buildS3Bucket(stack, {});
+
+  // custom lambda@edg function
+  const handler = new lambda.Function(stack, 'SomeHandler', {
+    functionName: 'SomeHandler',
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const handlerVersion = new lambda.Version(stack, 'SomeHandlerVersion', {
+    lambda: handler,
+  });
+
+  CloudFrontDistributionForS3(stack, sourceBucket, {
+    defaultBehavior: {
+      edgeLambdas: [
+        {
+          eventType: LambdaEdgeEventType.VIEWER_REQUEST,
+          includeBody: false,
+          functionVersion: handlerVersion,
+        }
+      ]
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+      DefaultCacheBehavior: {
+        CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
+        Compress: true,
+        LambdaFunctionAssociations: [
+          {
+            EventType: "origin-response",
+            LambdaFunctionARN: {
+              Ref: "SetHttpSecurityHeadersVersion660E2F72"
+            }
+          },
+          {
+            EventType: "viewer-request",
+            IncludeBody: false,
+            LambdaFunctionARN: {
+              Ref: "SomeHandlerVersionDA986E41"
+            }
+          }
+        ],
+        TargetOriginId: "CloudFrontDistributionOrigin176EC3A12",
+        ViewerProtocolPolicy: "redirect-to-https"
+      },
+      DefaultRootObject: "index.html",
+      Enabled: true,
+      HttpVersion: "http2",
+      IPV6Enabled: true,
+      Logging: {
+        Bucket: {
+          "Fn::GetAtt": [
+            "CloudfrontLoggingBucket3C3EFAA7",
+            "RegionalDomainName"
+          ]
+        }
+      },
+      Origins: [
+        {
+          DomainName: {
+            "Fn::GetAtt": [
+              "S3Bucket07682993",
+              "RegionalDomainName"
+            ]
+          },
+          Id: "CloudFrontDistributionOrigin176EC3A12",
+          S3OriginConfig: {
+            OriginAccessIdentity: {
+              "Fn::Join": [
+                "",
+                [
+                  "origin-access-identity/cloudfront/",
+                  {
+                    Ref: "CloudFrontDistributionOrigin1S3Origin3D9CA0E9"
+                  }
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    }
+  });
+});
+
+test('test override cloudfront replace custom lambda@edge', () => {
+  const stack = new Stack();
+  const [sourceBucket] = buildS3Bucket(stack, {});
+
+  // custom lambda@edg function
+  const handler = new lambda.Function(stack, 'SomeHandler', {
+    functionName: 'SomeHandler',
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const handlerVersion = new lambda.Version(stack, 'SomeHandlerVersion', {
+    lambda: handler,
+  });
+
+  CloudFrontDistributionForS3(stack, sourceBucket, {
+    defaultBehavior: {
+      edgeLambdas: [
+        {
+          eventType: LambdaEdgeEventType.VIEWER_REQUEST,
+          includeBody: false,
+          functionVersion: handlerVersion,
+        }
+      ]
+    }
+  },
+  false);
+
+  expect(stack).toHaveResource("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+      DefaultCacheBehavior: {
+        CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
+        Compress: true,
+        LambdaFunctionAssociations: [
+          {
+            EventType: "viewer-request",
+            IncludeBody: false,
+            LambdaFunctionARN: {
+              Ref: "SomeHandlerVersionDA986E41"
             }
           }
         ],

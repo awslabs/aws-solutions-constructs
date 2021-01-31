@@ -44,7 +44,7 @@ If there isn't one already, open an issue describing what you intend to contribu
 advance, because sometimes, someone is already working in this space, so maybe it's worth collaborating with them
 instead of duplicating the efforts.
 
-### Step 2: Design (optional)
+### Step 2: Design
 
 In some cases, it is useful to seek for feedback by iterating on a design document. This is useful
 when you plan a big change or feature, or you want advice on what would be the best path forward.
@@ -58,6 +58,12 @@ In such cases, use the GitHub issue description to collect **requirements** and
 
 Then, create a design document in markdown format under the `design/` directory
 and request feedback through a pull request. 
+
+If you are proposing a new Solutions Construct, the
+best way to do this is create the full README.md document for the Construct in advance (defining all interfaces, 
+the minimal deployment scenario, the architecture diagram, etc.). This will give us all the information we
+need to provide feedback and the document will live on as documentation (saving you that effort labor). Not all 
+groups of CDK L2 objects is a Solutions Construct - you will want to follow our [design guidelines](./DESIGN_GUIDELINES.md).
 
 Once the design is finalized, you can re-purpose this PR for the implementation,
 or open a new PR to that end.

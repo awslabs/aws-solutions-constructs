@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -63,7 +63,7 @@ test('Test deployment w/ logging enabled', () => {
   // Step function definition
   const startState = new sfn.Pass(stack, 'StartState');
   // Log group
-  const logGroup = new LogGroup(stack, 'myLogGroup', defaults.DefaultLogGroupProps());
+  const logGroup = new LogGroup(stack, 'myLogGroup', defaults.buildLogGroup(stack));
   // Build state machine
   defaults.buildStateMachine(stack, {
     definition: startState,

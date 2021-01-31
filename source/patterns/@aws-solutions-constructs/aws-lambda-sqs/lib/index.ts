@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -17,7 +17,6 @@ import * as lambda from "@aws-cdk/aws-lambda";
 import * as sqs from "@aws-cdk/aws-sqs";
 import * as ec2 from "@aws-cdk/aws-ec2";
 import { Construct } from "@aws-cdk/core";
-import { AddAwsServiceEndpoint } from "@aws-solutions-constructs/core";
 
 /**
  * @summary The properties for the LambdaToSqs class.
@@ -113,23 +112,16 @@ export class LambdaToSqs extends Construct {
         }
 
         this.vpc = defaults.buildVpc(scope, {
+          defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
           existingVpc: props.existingVpc,
           userVpcProps: props.vpcProps,
           constructVpcProps: {
             enableDnsHostnames: true,
             enableDnsSupport: true,
-            natGateways: 0,
-            subnetConfiguration: [
-              {
-                cidrMask: 18,
-                name: "isolated",
-                subnetType: ec2.SubnetType.ISOLATED,
-              },
-            ],
           },
         });
 
-        AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.SQS);
+        defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.SQS);
       }
 
       // Setup the Lambda function

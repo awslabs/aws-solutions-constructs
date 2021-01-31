@@ -499,7 +499,21 @@
     "testexistingstreamfirehoses3stackKinesisFirehoseToS3firehoseloggroupE425A6C8": {
       "Type": "AWS::Logs::LogGroup",
       "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
+            },
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+            }
+          ]
+        }
+      }
     },
     "testexistingstreamfirehoses3stackKinesisFirehoseToS3firehoseloggroupfirehoselogstream5F77A011": {
       "Type": "AWS::Logs::LogStream",

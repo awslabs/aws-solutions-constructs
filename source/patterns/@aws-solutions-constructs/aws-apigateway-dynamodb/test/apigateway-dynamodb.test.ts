@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -236,4 +236,26 @@ test("Test deployment with existing DynamoDB table", () => {
   expect(stack).toHaveResource("AWS::ApiGateway::Resource", {
     PathPart: `{${oddPartitionKeyName}}`,
   });
+});
+
+test("check setting allowReadOperation=false for dynamodb", () => {
+  const stack1 = new Stack();
+
+  new ApiGatewayToDynamoDB(stack1, "test-api-gateway-dynamodb1", {
+    allowReadOperation: true,
+    allowDeleteOperation: true
+  });
+
+  // Expect two APIG Methods (GET, DELETE) for allowReadOperation and allowDeleteOperation
+  expect(stack1).toCountResources("AWS::ApiGateway::Method", 2);
+
+  const stack2 = new Stack();
+
+  new ApiGatewayToDynamoDB(stack2, "test-api-gateway-dynamodb2", {
+    allowReadOperation: false,
+    allowDeleteOperation: true
+  });
+
+  // Expect only one APIG Method (DELETE) for allowDeleteOperation
+  expect(stack2).toCountResources("AWS::ApiGateway::Method", 1);
 });

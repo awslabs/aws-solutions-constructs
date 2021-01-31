@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -13,15 +13,11 @@
 
 import * as logs from '@aws-cdk/aws-logs';
 
-export function DefaultLogGroupProps(_logGroupName: string = ''): logs.LogGroupProps {
-  if (_logGroupName !== '') {
-    return {
-      logGroupName: _logGroupName,
-      retention: logs.RetentionDays.INFINITE
-    } as logs.LogGroupProps;
-  } else {
-    return {
-      retention: logs.RetentionDays.INFINITE
-    } as logs.LogGroupProps;
-  }
+export function DefaultLogGroupProps(): logs.LogGroupProps {
+
+  const logGroupProps: logs.LogGroupProps = {
+    retention: logs.RetentionDays.INFINITE
+  };
+
+  return logGroupProps;
 }

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -25,6 +25,7 @@ import { overrideProps } from './utils';
 import { buildVpc } from './vpc-helper';
 import * as iam from '@aws-cdk/aws-iam';
 import { Aws } from '@aws-cdk/core';
+import { DefaultPublicPrivateVpcProps } from './vpc-defaults';
 
 export interface BuildSagemakerNotebookProps {
   /**
@@ -240,7 +241,9 @@ export function buildSagemakerNotebook(
         props.sagemakerNotebookProps?.subnetId === undefined &&
         props.sagemakerNotebookProps?.securityGroupIds === undefined
       ) {
-        vpcInstance = buildVpc(scope);
+        vpcInstance = buildVpc(scope, {
+          defaultVpcProps: DefaultPublicPrivateVpcProps(),
+        });
         securityGroup = new ec2.SecurityGroup(scope, 'SecurityGroup', {
           vpc: vpcInstance,
           allowAllOutbound: false,

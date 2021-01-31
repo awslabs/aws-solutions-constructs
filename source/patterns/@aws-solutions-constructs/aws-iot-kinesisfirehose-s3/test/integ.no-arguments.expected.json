@@ -156,7 +156,21 @@
     "testiotfirehoses3KinesisFirehoseToS3firehoseloggroup4A2E4212": {
       "Type": "AWS::Logs::LogGroup",
       "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
+            },
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+            }
+          ]
+        }
+      }
     },
     "testiotfirehoses3KinesisFirehoseToS3firehoseloggroupfirehoselogstreamD1B6E670": {
       "Type": "AWS::Logs::LogStream",

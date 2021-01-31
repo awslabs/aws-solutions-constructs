@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -14,7 +14,7 @@
 import * as api from '@aws-cdk/aws-apigateway';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import { LogGroup } from '@aws-cdk/aws-logs';
+import * as logs from '@aws-cdk/aws-logs';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as iam from '@aws-cdk/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
@@ -55,7 +55,13 @@ export interface CloudFrontToApiGatewayToLambdaProps {
    *
    * @default - true
    */
-  readonly insertHttpSecurityHeaders?: boolean;
+  readonly insertHttpSecurityHeaders?: boolean,
+  /**
+   * User provided props to override the default props for the CloudWatchLogs LogGroup.
+   *
+   * @default - Default props are used
+   */
+  readonly logGroupProps?: logs.LogGroupProps
 }
 
 export class CloudFrontToApiGatewayToLambda extends Construct {
@@ -64,7 +70,7 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
   public readonly cloudFrontLoggingBucket?: s3.Bucket;
   public readonly apiGateway: api.RestApi;
   public readonly apiGatewayCloudWatchRole: iam.Role;
-  public readonly apiGatewayLogGroup: LogGroup;
+  public readonly apiGatewayLogGroup: logs.LogGroup;
   public readonly lambdaFunction: lambda.Function;
 
   /**
@@ -84,7 +90,7 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
     });
 
     [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] =
-      defaults.RegionalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps);
+      defaults.RegionalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps, props.logGroupProps);
 
     this.apiGateway.methods.forEach((apiMethod) => {
       // Override the API Gateway Authorization Type from AWS_IAM to NONE

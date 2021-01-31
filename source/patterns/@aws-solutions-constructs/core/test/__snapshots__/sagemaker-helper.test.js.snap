@@ -714,6 +714,16 @@ Object {
     },
     "VpcFlowLogLogGroup7B5C56B9": Object {
       "DeletionPolicy": "Retain",
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "RetentionInDays": 731,
       },
@@ -1453,6 +1463,16 @@ Object {
     },
     "VpcFlowLogLogGroup7B5C56B9": Object {
       "DeletionPolicy": "Retain",
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "RetentionInDays": 731,
       },

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -17,17 +17,42 @@ import * as ec2 from '@aws-cdk/aws-ec2';
 import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import { AddAwsServiceEndpoint, ServiceEndpointTypes } from '../lib/vpc-helper';
+import { DefaultPublicPrivateVpcProps, DefaultIsolatedVpcProps } from '../lib/vpc-defaults';
 
 // --------------------------------------------------------------
-// Test minimal deployment with no properties
+// Test minimal Public/Private deployment with no properties
 // --------------------------------------------------------------
 test('Test minimal deployment with no properties', () => {
   // Stack
   const stack = new Stack();
   // Build VPC
-  defaults.buildVpc(stack);
+  defaults.buildVpc(stack, {
+    defaultVpcProps: DefaultPublicPrivateVpcProps(),
+  });
   // Assertion
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+// --------------------------------------------------------------
+// Test minimal Isolated deployment with no properties
+// --------------------------------------------------------------
+test('Test minimal deployment with no properties', () => {
+  // Stack
+  const stack = new Stack();
+  // Build VPC
+  defaults.buildVpc(stack, {
+    defaultVpcProps: DefaultIsolatedVpcProps(),
+  });
+  // Assertion
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
+  expect(SynthUtils.toCloudFormation(stack)).toHaveResource('AWS::EC2::VPC', {
+    EnableDnsHostnames: true,
+    EnableDnsSupport: true,
+  });
+
+  expect(SynthUtils.toCloudFormation(stack)).toCountResources('AWS::EC2::Subnet', 2);
+  expect(SynthUtils.toCloudFormation(stack)).toCountResources('AWS::EC2::InternetGateway', 0);
 });
 
 // --------------------------------------------------------------
@@ -38,6 +63,7 @@ test('Test deployment w/ custom CIDR', () => {
   const stack = new Stack();
   // Build VPC
   defaults.buildVpc(stack, {
+    defaultVpcProps: DefaultPublicPrivateVpcProps(),
     userVpcProps: {
       cidr: '172.168.0.0/16',
     },
@@ -54,6 +80,7 @@ test('Test deployment w/ user provided custom properties', () => {
   const stack = new Stack();
   // Build VPC
   defaults.buildVpc(stack, {
+    defaultVpcProps: DefaultPublicPrivateVpcProps(),
     userVpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
@@ -75,6 +102,7 @@ test('Test deployment w/ construct provided custom properties', () => {
   const stack = new Stack();
   // Build VPC
   defaults.buildVpc(stack, {
+    defaultVpcProps: DefaultPublicPrivateVpcProps(),
     constructVpcProps: {
       enableDnsHostnames: true,
       enableDnsSupport: true,
@@ -96,6 +124,7 @@ test('Test deployment w/ construct and user provided custom properties', () => {
   const stack = new Stack();
   // Build VPC
   defaults.buildVpc(stack, {
+    defaultVpcProps: DefaultPublicPrivateVpcProps(),
     userVpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
@@ -122,6 +151,7 @@ test('Test deployment w/ construct and user provided custom properties', () => {
   const stack = new Stack();
   // Build VPC
   const v = defaults.buildVpc(stack, {
+    defaultVpcProps: DefaultPublicPrivateVpcProps(),
     userVpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
@@ -155,6 +185,7 @@ test('Test deployment w/ existing VPC provided', () => {
   const stack = new Stack();
   // Build VPC
   const testExistingVpc = defaults.buildVpc(stack, {
+    defaultVpcProps: DefaultPublicPrivateVpcProps(),
     constructVpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
@@ -163,6 +194,7 @@ test('Test deployment w/ existing VPC provided', () => {
   });
 
   const newVpc = defaults.buildVpc(stack, {
+    defaultVpcProps: DefaultPublicPrivateVpcProps(),
     existingVpc: testExistingVpc,
   });
 
@@ -176,7 +208,9 @@ test('Test adding Gateway Endpoint', () => {
   // Stack
   const stack = new Stack();
   // Build VPC
-  const testVpc = defaults.buildVpc(stack);
+  const testVpc = defaults.buildVpc(stack, {
+    defaultVpcProps: DefaultPublicPrivateVpcProps(),
+  });
 
   AddAwsServiceEndpoint(stack, testVpc, ServiceEndpointTypes.DYNAMODB);
 
@@ -193,7 +227,9 @@ test('Test adding Interface Endpoint', () => {
   // Stack
   const stack = new Stack();
   // Build VPC
-  const testVpc = defaults.buildVpc(stack);
+  const testVpc = defaults.buildVpc(stack, {
+    defaultVpcProps: DefaultPublicPrivateVpcProps(),
+  });
 
   AddAwsServiceEndpoint(stack, testVpc, ServiceEndpointTypes.SNS);
 
@@ -210,7 +246,9 @@ test('Test adding SAGEMAKER_RUNTIME Interface Endpoint', () => {
   // Stack
   const stack = new Stack();
   // Build VPC
-  const testVpc = defaults.buildVpc(stack);
+  const testVpc = defaults.buildVpc(stack, {
+    defaultVpcProps: DefaultPublicPrivateVpcProps(),
+  });
 
   AddAwsServiceEndpoint(stack, testVpc, ServiceEndpointTypes.SAGEMAKER_RUNTIME);
 
@@ -227,7 +265,9 @@ test('Test adding a second Endpoint of same service', () => {
   // Stack
   const stack = new Stack();
   // Build VPC
-  const testVpc = defaults.buildVpc(stack);
+  const testVpc = defaults.buildVpc(stack, {
+    defaultVpcProps: DefaultPublicPrivateVpcProps(),
+  });
 
   AddAwsServiceEndpoint(stack, testVpc, ServiceEndpointTypes.SNS);
 
@@ -242,7 +282,9 @@ test('Test adding bad Endpoint', () => {
   // Stack
   const stack = new Stack();
   // Build VPC
-  const testVpc = defaults.buildVpc(stack);
+  const testVpc = defaults.buildVpc(stack, {
+    defaultVpcProps: DefaultPublicPrivateVpcProps(),
+  });
 
   const app = () => {
     AddAwsServiceEndpoint(stack, testVpc, 'string' as ServiceEndpointTypes);

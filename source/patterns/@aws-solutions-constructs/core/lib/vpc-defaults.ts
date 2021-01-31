@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -13,7 +13,26 @@
 
 import * as ec2 from "@aws-cdk/aws-ec2";
 
-export function DefaultVpcProps(): ec2.VpcProps {
+/**
+ * Default VPC with public and private subnets
+ */
+export function DefaultPublicPrivateVpcProps(): ec2.VpcProps {
   return {
+  } as ec2.VpcProps;
+}
+
+/**
+ * Default VPC with isolated subnets
+ */
+export function DefaultIsolatedVpcProps(): ec2.VpcProps {
+  return {
+    natGateways: 0,
+    subnetConfiguration: [
+      {
+        cidrMask: 18,
+        name: "isolated",
+        subnetType: ec2.SubnetType.ISOLATED,
+      }
+    ]
   } as ec2.VpcProps;
 }

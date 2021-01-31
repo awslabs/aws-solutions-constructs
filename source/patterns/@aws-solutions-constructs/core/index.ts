@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -33,7 +33,6 @@ export * from './lib/sns-defaults';
 export * from './lib/sns-helper';
 export * from './lib/sqs-defaults';
 export * from './lib/sqs-helper';
-export * from './lib/cloudwatch-log-group-defaults';
 export * from './lib/cloudfront-distribution-helper';
 export * from './lib/cloudfront-distribution-defaults';
 export * from './lib/utils';
@@ -49,3 +48,4 @@ export * from './lib/vpc-defaults';
 export * from './lib/vpc-helper';
 export * from './lib/sagemaker-defaults';
 export * from './lib/sagemaker-helper';
+export * from './lib/cloudwatch-log-group-helper';

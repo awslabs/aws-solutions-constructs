@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -21,6 +21,7 @@ import * as s3 from '@aws-cdk/aws-s3';
 import { CloudFrontDistributionForApiGateway } from '../lib/cloudfront-distribution-helper';
 import '@aws-cdk/assert/jest';
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
+import { LambdaEdgeEventType } from '@aws-cdk/aws-cloudfront';
 
 test('cloudfront distribution for ApiGateway with default params', () => {
   const stack = new Stack();
@@ -59,7 +60,7 @@ test('cloudfront distribution for ApiGateway without security headers', () => {
 test('test cloudfront for Api Gateway with user provided logging bucket', () => {
   const stack = new Stack();
 
-  const loggingBucket: s3.Bucket = new s3.Bucket(stack, 'MyCloudfrontLoggingBucket', defaults.DefaultS3Props());
+  const logBucket: s3.Bucket = new s3.Bucket(stack, 'MyCloudfrontLoggingBucket', defaults.DefaultS3Props());
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda-test`),
@@ -68,9 +69,8 @@ test('test cloudfront for Api Gateway with user provided logging bucket', () => 
   };
 
   const cfdProps = {
-    loggingConfig: {
-      bucket: loggingBucket
-    }
+    enableLogging: true,
+    logBucket
   };
 
   const func = defaults.deployLambdaFunction(stack, inProps);
@@ -277,4 +277,283 @@ test('test cloudfront for Api Gateway override properties', () => {
     }
   });
 
+});
+
+test('test override cloudfront add custom lambda@edge', () => {
+  const stack = new Stack();
+
+  // custom lambda@edg function
+  const handler = new lambda.Function(stack, 'SomeHandler', {
+    functionName: 'SomeHandler',
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const handlerVersion = new lambda.Version(stack, 'SomeHandlerVersion', {
+    lambda: handler,
+  });
+
+  // APIG Lambda function
+  const lambdaFunctionProps: lambda.FunctionProps = {
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+  };
+
+  const func = new lambda.Function(stack, 'LambdaFunction', lambdaFunctionProps);
+  const _api = new api.LambdaRestApi(stack, 'RestApi', {
+    handler: func
+  });
+  CloudFrontDistributionForApiGateway(stack, _api, {
+    defaultBehavior: {
+      edgeLambdas: [
+        {
+          eventType: LambdaEdgeEventType.VIEWER_REQUEST,
+          includeBody: false,
+          functionVersion: handlerVersion,
+        }
+      ]
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+      DefaultCacheBehavior: {
+        CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
+        Compress: true,
+        LambdaFunctionAssociations: [
+          {
+            EventType: "origin-response",
+            LambdaFunctionARN: {
+              Ref: "SetHttpSecurityHeadersVersion660E2F72"
+            }
+          },
+          {
+            EventType: "viewer-request",
+            IncludeBody: false,
+            LambdaFunctionARN: {
+              Ref: "SomeHandlerVersionDA986E41"
+            }
+          }
+        ],
+        TargetOriginId: "CloudFrontDistributionOrigin176EC3A12",
+        ViewerProtocolPolicy: "redirect-to-https"
+      },
+      Enabled: true,
+      HttpVersion: "http2",
+      IPV6Enabled: true,
+      Logging: {
+        Bucket: {
+          "Fn::GetAtt": [
+            "CloudfrontLoggingBucket3C3EFAA7",
+            "RegionalDomainName"
+          ]
+        }
+      },
+      Origins: [
+        {
+          CustomOriginConfig: {
+            OriginProtocolPolicy: "https-only",
+            OriginSSLProtocols: [
+              "TLSv1.2"
+            ]
+          },
+          DomainName: {
+            "Fn::Select": [
+              0,
+              {
+                "Fn::Split": [
+                  "/",
+                  {
+                    "Fn::Select": [
+                      1,
+                      {
+                        "Fn::Split": [
+                          "://",
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "https://",
+                                {
+                                  Ref: "RestApi0C43BF4B"
+                                },
+                                ".execute-api.",
+                                {
+                                  Ref: "AWS::Region"
+                                },
+                                ".",
+                                {
+                                  Ref: "AWS::URLSuffix"
+                                },
+                                "/",
+                                {
+                                  Ref: "RestApiDeploymentStageprod3855DE66"
+                                },
+                                "/"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          Id: "CloudFrontDistributionOrigin176EC3A12",
+          OriginPath: {
+            "Fn::Join": [
+              "",
+              [
+                "/",
+                {
+                  Ref: "RestApiDeploymentStageprod3855DE66"
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  });
+});
+
+test('test override cloudfront replace custom lambda@edge', () => {
+  const stack = new Stack();
+
+  // custom lambda@edg function
+  const handler = new lambda.Function(stack, 'SomeHandler', {
+    functionName: 'SomeHandler',
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const handlerVersion = new lambda.Version(stack, 'SomeHandlerVersion', {
+    lambda: handler,
+  });
+
+  // APIG Lambda function
+  const lambdaFunctionProps: lambda.FunctionProps = {
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+  };
+
+  const func = new lambda.Function(stack, 'LambdaFunction', lambdaFunctionProps);
+  const _api = new api.LambdaRestApi(stack, 'RestApi', {
+    handler: func
+  });
+  CloudFrontDistributionForApiGateway(stack, _api, {
+    defaultBehavior: {
+      edgeLambdas: [
+        {
+          eventType: LambdaEdgeEventType.VIEWER_REQUEST,
+          includeBody: false,
+          functionVersion: handlerVersion,
+        }
+      ]
+    }
+  },
+  false);
+
+  expect(stack).toHaveResource("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+      DefaultCacheBehavior: {
+        CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
+        Compress: true,
+        LambdaFunctionAssociations: [
+          {
+            EventType: "viewer-request",
+            IncludeBody: false,
+            LambdaFunctionARN: {
+              Ref: "SomeHandlerVersionDA986E41"
+            }
+          }
+        ],
+        TargetOriginId: "CloudFrontDistributionOrigin176EC3A12",
+        ViewerProtocolPolicy: "redirect-to-https"
+      },
+      Enabled: true,
+      HttpVersion: "http2",
+      IPV6Enabled: true,
+      Logging: {
+        Bucket: {
+          "Fn::GetAtt": [
+            "CloudfrontLoggingBucket3C3EFAA7",
+            "RegionalDomainName"
+          ]
+        }
+      },
+      Origins: [
+        {
+          CustomOriginConfig: {
+            OriginProtocolPolicy: "https-only",
+            OriginSSLProtocols: [
+              "TLSv1.2"
+            ]
+          },
+          DomainName: {
+            "Fn::Select": [
+              0,
+              {
+                "Fn::Split": [
+                  "/",
+                  {
+                    "Fn::Select": [
+                      1,
+                      {
+                        "Fn::Split": [
+                          "://",
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "https://",
+                                {
+                                  Ref: "RestApi0C43BF4B"
+                                },
+                                ".execute-api.",
+                                {
+                                  Ref: "AWS::Region"
+                                },
+                                ".",
+                                {
+                                  Ref: "AWS::URLSuffix"
+                                },
+                                "/",
+                                {
+                                  Ref: "RestApiDeploymentStageprod3855DE66"
+                                },
+                                "/"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          Id: "CloudFrontDistributionOrigin176EC3A12",
+          OriginPath: {
+            "Fn::Join": [
+              "",
+              [
+                "/",
+                {
+                  Ref: "RestApiDeploymentStageprod3855DE66"
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  });
 });

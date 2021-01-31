@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -192,6 +192,7 @@ test('check lambda function policy default table permissions', () => {
             "dynamodb:Query",
             "dynamodb:GetItem",
             "dynamodb:Scan",
+            "dynamodb:ConditionCheckItem",
             "dynamodb:BatchWriteItem",
             "dynamodb:PutItem",
             "dynamodb:UpdateItem",
@@ -354,7 +355,8 @@ test('check lambda function policy ReadOnly table permissions', () => {
             "dynamodb:GetShardIterator",
             "dynamodb:Query",
             "dynamodb:GetItem",
-            "dynamodb:Scan"
+            "dynamodb:Scan",
+            "dynamodb:ConditionCheckItem"
           ],
           Effect: "Allow",
           Resource: [
@@ -461,6 +463,7 @@ test('check lambda function policy ReadWrite table permissions', () => {
             "dynamodb:Query",
             "dynamodb:GetItem",
             "dynamodb:Scan",
+            "dynamodb:ConditionCheckItem",
             "dynamodb:BatchWriteItem",
             "dynamodb:PutItem",
             "dynamodb:UpdateItem",
