@@ -77,14 +77,6 @@ export interface LambdaToSagemakerEndpointProps {
    */
   readonly deployVpc?: boolean;
   /**
-   * Whether to deploy a natgatway in the new VPC (if deployVpc is true).
-   * If deployNatGateway is true, the construct creates Public and Private subnets.
-   * Otherwise, it creates Isolated subnets only
-   *
-   * @default - false
-   */
-  readonly deployNatGateway?: boolean;
-  /**
    * IAM Role, with all required permissions, to be assumed by Sagemaker to create resources
    * The Role is not required if existingSagemakerEndpointObj is provided.
    *
@@ -119,38 +111,14 @@ export class LambdaToSagemakerEndpoint extends cdk.Construct {
         throw new Error('More than 1 VPC specified in the properties');
       }
 
-      // If deployNatGateway is true, create Public and Private subnets. Otherwise, create Isolated subnets only
-      const subnetConfiguration: ec2.SubnetConfiguration[] = props.deployNatGateway
-        ? [
-          {
-            cidrMask: 20,
-            name: 'Public',
-            subnetType: ec2.SubnetType.PUBLIC,
-          },
-          {
-            cidrMask: 20,
-            name: 'Private',
-            subnetType: ec2.SubnetType.PRIVATE,
-          },
-        ]
-        : [
-          {
-            cidrMask: 18,
-            name: 'Isolated',
-            subnetType: ec2.SubnetType.ISOLATED,
-          },
-        ];
-
       // create the VPC
       this.vpc = defaults.buildVpc(scope, {
+        defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
         existingVpc: props.existingVpc,
         userVpcProps: props.vpcProps,
         constructVpcProps: {
           enableDnsHostnames: true,
           enableDnsSupport: true,
-          // set # NatGateways to 2 if deployNatGateway is true. Otherwise, 0
-          natGateways: props.deployNatGateway ? 2 : 0,
-          subnetConfiguration,
         },
       });
 
