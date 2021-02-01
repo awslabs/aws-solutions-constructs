@@ -16,7 +16,7 @@ import { Stack, Duration } from '@aws-cdk/core';
 import { LambdaToSagemakerEndpoint, LambdaToSagemakerEndpointProps } from '../lib';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as lambda from '@aws-cdk/aws-lambda';
-import * as ec2 from '@aws-cdk/aws-ec2';
+// import * as ec2 from '@aws-cdk/aws-ec2';
 import * as iam from '@aws-cdk/aws-iam';
 import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
@@ -216,7 +216,6 @@ test('Pattern deployment with new Lambda function, new Sagemaker endpoint, deplo
       },
     },
     deployVpc: true,
-    deployNatGateway: true,
     lambdaFunctionProps: {
       runtime: lambda.Runtime.PYTHON_3_8,
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
@@ -250,17 +249,10 @@ test('Pattern deployment with existing Lambda function (with VPC), new Sagemaker
   );
 
   const vpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
     constructVpcProps: {
       enableDnsHostnames: true,
       enableDnsSupport: true,
-      natGateways: 0,
-      subnetConfiguration: [
-        {
-          cidrMask: 18,
-          name: 'Isolated',
-          subnetType: ec2.SubnetType.ISOLATED,
-        },
-      ],
     },
   });
 
@@ -350,17 +342,10 @@ test('Test for error with (props.deployVpc && props.existingVpc) is true', () =>
   );
 
   const vpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
     constructVpcProps: {
       enableDnsHostnames: true,
       enableDnsSupport: true,
-      natGateways: 0,
-      subnetConfiguration: [
-        {
-          cidrMask: 18,
-          name: 'Isolated',
-          subnetType: ec2.SubnetType.ISOLATED,
-        },
-      ],
     },
   });
 
@@ -420,7 +405,6 @@ test('Test for error with primaryContainer=undefined (not supplied by user)', ()
       executionRoleArn: sagemakerRole.roleArn,
     },
     deployVpc: true,
-    deployNatGateway: true,
     existingLambdaObj: fn,
     role: sagemakerRole,
   };
@@ -450,17 +434,10 @@ test('Pattern deployment with new Lambda function with existingVpcObj and deploy
   );
 
   const vpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
     constructVpcProps: {
       enableDnsHostnames: true,
       enableDnsSupport: true,
-      natGateways: 0,
-      subnetConfiguration: [
-        {
-          cidrMask: 18,
-          name: 'Isolated',
-          subnetType: ec2.SubnetType.ISOLATED,
-        },
-      ],
     },
   });
 
@@ -556,17 +533,10 @@ test('Test getter methods: existing Lambda function (with VPC), new Sagemaker en
   );
 
   const vpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
     constructVpcProps: {
       enableDnsHostnames: true,
       enableDnsSupport: true,
-      natGateways: 0,
-      subnetConfiguration: [
-        {
-          cidrMask: 18,
-          name: 'Isolated',
-          subnetType: ec2.SubnetType.ISOLATED,
-        },
-      ],
     },
   });
 
@@ -743,7 +713,6 @@ test('Test getter methods: new Lambda function, existingSagemakerendpointObj, de
       memorySize: 128,
     },
     deployVpc: true,
-    deployNatGateway: true,
   };
   const app = new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', props);
   // Assertions
@@ -784,17 +753,10 @@ test('Test getter methods: new Lambda function, existingSagemakerendpointObj, an
   });
 
   const vpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
     constructVpcProps: {
       enableDnsHostnames: true,
       enableDnsSupport: true,
-      natGateways: 0,
-      subnetConfiguration: [
-        {
-          cidrMask: 18,
-          name: 'Isolated',
-          subnetType: ec2.SubnetType.ISOLATED,
-        },
-      ],
     },
   });
 
