@@ -55,7 +55,7 @@ export interface BuildSagemakerNotebookProps {
   readonly role: iam.Role;
 }
 
-function addPermissions(_role: iam.Role) {
+function addPermissions(_role: iam.Role, props: BuildSagemakerEndpointProps) {
   // Grant permissions to NoteBookInstance for creating and training the model
   _role.addToPolicy(
     new iam.PolicyStatement({
@@ -73,7 +73,6 @@ function addPermissions(_role: iam.Role) {
         'sagemaker:DeleteEndpoint',
         'sagemaker:DeleteEndpointConfig',
         'sagemaker:InvokeEndpoint',
-        'sagemaker:UpdateEndpointWeightsAndCapacities',
       ],
     })
   );
@@ -93,24 +92,27 @@ function addPermissions(_role: iam.Role) {
   );
 
   // To place the Sagemaker model in a private VPC
-  _role.addToPolicy(
-    new iam.PolicyStatement({
-      resources: ['*'],
-      actions: [
-        'ec2:CreateNetworkInterface',
-        'ec2:CreateNetworkInterfacePermission',
-        'ec2:DeleteNetworkInterface',
-        'ec2:DeleteNetworkInterfacePermission',
-        'ec2:DescribeNetworkInterfaces',
-        'ec2:DescribeVpcs',
-        'ec2:DescribeDhcpOptions',
-        'ec2:DescribeSubnets',
-        'ec2:DescribeSecurityGroups',
-      ],
-    })
-  );
+  if (props.vpc) {
+    _role.addToPolicy(
+      new iam.PolicyStatement({
+        resources: ['*'],
+        actions: [
+          'ec2:CreateNetworkInterface',
+          'ec2:CreateNetworkInterfacePermission',
+          'ec2:DeleteNetworkInterface',
+          'ec2:DeleteNetworkInterfacePermission',
+          'ec2:DescribeNetworkInterfaces',
+          'ec2:DescribeVpcs',
+          'ec2:DescribeDhcpOptions',
+          'ec2:DescribeSubnets',
+          'ec2:DescribeSecurityGroups',
+        ],
+      })
+    );
+  }
 
   // To create a Sagemaker model using Bring-Your-Own-Model (BYOM) algorith image
+  // The image URL is specified in the modelProps
   _role.addToPolicy(
     new iam.PolicyStatement({
       resources: [`arn:${cdk.Aws.PARTITION}:ecr:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:repository/*`],
@@ -132,7 +134,7 @@ function addPermissions(_role: iam.Role) {
     })
   );
 
-  // Add CloudWatch permission to for metrics/alarms
+  // Add CloudWatch permissions for metrics/alarms
   _role.addToPolicy(
     new iam.PolicyStatement({
       resources: ['*'],
@@ -146,39 +148,27 @@ function addPermissions(_role: iam.Role) {
   );
 
   // add permission to use Elastic Inference accelerator
-  _role.addToPolicy(
-    new iam.PolicyStatement({
-      resources: ['*'],
-      actions: ['elastic-inference:Connect'],
-    })
-  );
+  if (props.endpointConfigProps) {
+    // Get the acceleratorType, if any
+    const acceleratorType = (props.endpointConfigProps
+      ?.productionVariants as sagemaker.CfnEndpointConfig.ProductionVariantProperty[])[0].acceleratorType;
+    if (acceleratorType != undefined) {
+      _role.addToPolicy(
+        new iam.PolicyStatement({
+          resources: ['*'],
+          actions: ['elastic-inference:Connect'],
+        })
+      );
+    }
+  }
 
-  // Add permissions to automatically scaling a Sagemaker real-time inference endpoint
-  _role.addToPolicy(
-    new iam.PolicyStatement({
-      resources: ['*'],
-      actions: [
-        'application-autoscaling:DeleteScalingPolicy',
-        'application-autoscaling:DeleteScheduledAction',
-        'application-autoscaling:DeregisterScalableTarget',
-        'application-autoscaling:DescribeScalableTargets',
-        'application-autoscaling:DescribeScalingActivities',
-        'application-autoscaling:DescribeScalingPolicies',
-        'application-autoscaling:DescribeScheduledActions',
-        'application-autoscaling:PutScalingPolicy',
-        'application-autoscaling:PutScheduledAction',
-        'application-autoscaling:RegisterScalableTarget',
-      ],
-    })
-  );
-
-  // add kms permissions
-  _role.addToPolicy(
-    new iam.PolicyStatement({
-      resources: ['*'],
-      actions: ['kms:DescribeKey', 'kms:ListAliases'],
-    })
-  );
+  // // add kms permissions
+  // _role.addToPolicy(
+  //   new iam.PolicyStatement({
+  //     resources: ['*'],
+  //     actions: ['kms:DescribeKey', 'kms:ListAliases'],
+  //   })
+  // );
 
   // Add S3 permissions to get Model artifact, put data capture files, etc.
   _role.addToPolicy(
@@ -228,7 +218,7 @@ export function buildSagemakerNotebook(
       throw new Error('Must define both sagemakerNotebookProps.subnetId and sagemakerNotebookProps.securityGroupIds');
     }
 
-    addPermissions(props.role);
+    addPermissions(props.role, {});
 
     if (props.sagemakerNotebookProps?.kmsKeyId === undefined) {
       kmsKeyId = buildEncryptionKey(scope).keyId;
@@ -333,14 +323,6 @@ export interface BuildSagemakerEndpointProps {
    */
   readonly vpc?: ec2.IVpc;
   /**
-   * Whether to deploy a natgatway in the new VPC (if deployVpc is true).
-   * If deployNatGateway is true, the construct creates Public and Private subnets.
-   * Otherwise, it creates Isolated subnets only
-   *
-   * @default - false
-   */
-  readonly deployNatGateway?: boolean;
-  /**
    * IAM Rol, with all required permissions, to be assumed by Sagemaker to create resources
    * The Role is not required if existingSagemakerEndpointObj is provided.
    *
@@ -392,11 +374,11 @@ export function deploySagemakerEndpoint(
         assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
       });
       // Add required permissions
-      addPermissions(sagemakerRole);
+      addPermissions(sagemakerRole, props);
     }
 
     // Create Sagemaker Model
-    model = createSagemakerModel(scope, props.modelProps, sagemakerRole, props.vpc, props.deployNatGateway);
+    model = createSagemakerModel(scope, props.modelProps, sagemakerRole, props.vpc);
     // Create Sagemaker EndpointConfig
     endpointConfig = createSagemakerEndpointConfig(scope, model.attrModelName, props.endpointConfigProps);
     // Add dependency on model
@@ -416,8 +398,7 @@ export function createSagemakerModel(
   scope: cdk.Construct,
   modelProps: sagemaker.CfnModelProps,
   role: iam.Role,
-  vpc?: ec2.IVpc,
-  deployNatGateway?: boolean
+  vpc?: ec2.IVpc
 ): sagemaker.CfnModel {
   let finalModelProps: sagemaker.CfnModelProps;
   let primaryContainer: sagemaker.CfnModel.ContainerDefinitionProperty;
@@ -449,11 +430,19 @@ export function createSagemakerModel(
       },
     };
 
+    // Check if the customer has changed the default isoloated subnets and provided private subnets
+    let subnetType: ec2.SubnetType;
+    if (vpc.privateSubnets != undefined) {
+      subnetType = ec2.SubnetType.PRIVATE;
+    } else if (vpc.isolatedSubnets != undefined) {
+      subnetType = ec2.SubnetType.ISOLATED;
+    } else {
+      throw new Error('VPC must contain isolated or private subnets to use for the Sagemaker Endpoint');
+    }
     // Get the subnetIds and securityGroup
     vpcConfig = {
       subnets: vpc.selectSubnets({
-        // if deployNatGateway is false and vpc contains isolated subnets, select isolated. Otherwise, select private subnets
-        subnetType: !deployNatGateway && vpc.isolatedSubnets ? ec2.SubnetType.ISOLATED : ec2.SubnetType.PRIVATE,
+        subnetType,
         onePerAz: true,
       }).subnetIds,
       securityGroupIds: [modelDefaultSecurityGroup.securityGroupId],
