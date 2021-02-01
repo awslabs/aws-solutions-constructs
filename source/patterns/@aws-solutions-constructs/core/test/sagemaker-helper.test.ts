@@ -228,17 +228,10 @@ test('Test minimal deployment with no properties', () => {
 
   // create a VPC with required VPC S3 gateway and SAGEMAKER_RUNTIME Interface
   const vpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
     constructVpcProps: {
       enableDnsHostnames: true,
       enableDnsSupport: true,
-      natGateways: 0,
-      subnetConfiguration: [
-        {
-          cidrMask: 18,
-          name: 'Isolated',
-          subnetType: ec2.SubnetType.ISOLATED,
-        },
-      ],
     },
   });
 
@@ -283,22 +276,10 @@ test('Test minimal deployment of Sagemaker Inference Endpoint with VPC/NatGatewa
 
   // create a VPC with required VPC S3 gateway and SAGEMAKER_RUNTIME Interface
   const vpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
     constructVpcProps: {
       enableDnsHostnames: true,
       enableDnsSupport: true,
-      natGateways: 2,
-      subnetConfiguration: [
-        {
-          cidrMask: 20,
-          name: 'Public',
-          subnetType: ec2.SubnetType.PUBLIC,
-        },
-        {
-          cidrMask: 20,
-          name: 'Private',
-          subnetType: ec2.SubnetType.PRIVATE,
-        },
-      ],
     },
   });
 
@@ -317,7 +298,6 @@ test('Test minimal deployment of Sagemaker Inference Endpoint with VPC/NatGatewa
       },
     },
     vpc,
-    deployNatGateway: true,
     role: sagemakerRole,
   });
   // Assertion
@@ -344,17 +324,10 @@ test('Test minimal deployment with no properties', () => {
 
   // create a VPC with required VPC S3 gateway and SAGEMAKER_RUNTIME Interface
   const vpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
     constructVpcProps: {
       enableDnsHostnames: true,
       enableDnsSupport: true,
-      natGateways: 0,
-      subnetConfiguration: [
-        {
-          cidrMask: 18,
-          name: 'Isolated',
-          subnetType: ec2.SubnetType.ISOLATED,
-        },
-      ],
     },
   });
 
