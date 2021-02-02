@@ -120,4 +120,4 @@ Out of the box implementation of the Construct without any override will set the
 
 ---
 
-&copy; Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+&copy; Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
