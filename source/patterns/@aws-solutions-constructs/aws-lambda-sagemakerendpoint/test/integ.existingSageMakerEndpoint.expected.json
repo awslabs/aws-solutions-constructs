@@ -15,21 +15,7 @@
             }
           ],
           "Version": "2012-10-17"
-        },
-        "ManagedPolicyArns": [
-          {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":iam::aws:policy/AmazonSageMakerFullAccess"
-              ]
-            ]
-          }
-        ]
+        }
       }
     },
     "SagemakerRoleDefaultPolicy9DD21C3C": {
@@ -39,6 +25,160 @@
           "Statement": [
             {
               "Action": [
+                "sagemaker:CreateTrainingJob",
+                "sagemaker:DescribeTrainingJob",
+                "sagemaker:CreateModel",
+                "sagemaker:DescribeModel",
+                "sagemaker:DeleteModel",
+                "sagemaker:CreateEndpoint",
+                "sagemaker:CreateEndpointConfig",
+                "sagemaker:DescribeEndpoint",
+                "sagemaker:DescribeEndpointConfig",
+                "sagemaker:DeleteEndpoint",
+                "sagemaker:DeleteEndpointConfig",
+                "sagemaker:InvokeEndpoint"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":sagemaker:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:DescribeLogStreams",
+                "logs:GetLogEvents",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":logs:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":log-group:/aws/sagemaker/*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:DescribeRepositories",
+                "ecr:DescribeImages",
+                "ecr:BatchGetImage"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":ecr:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":repository/*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "kms:Encrypt",
+                "kms:Decrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+                "kms:DescribeKey"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":kms:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":key/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":kms:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":alias/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
                 "s3:GetObject",
                 "s3:PutObject",
                 "s3:DeleteObject",
@@ -46,6 +186,31 @@
               ],
               "Effect": "Allow",
               "Resource": "arn:aws:s3:::*"
+            },
+            {
+              "Action": "iam:GetRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "SagemakerRole5FDB64E1",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "iam:PassRole",
+              "Condition": {
+                "StringLike": {
+                  "iam:PassedToService": "sagemaker.amazonaws.com"
+                }
+              },
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "SagemakerRole5FDB64E1",
+                  "Arn"
+                ]
+              }
             }
           ],
           "Version": "2012-10-17"
@@ -56,9 +221,23 @@
             "Ref": "SagemakerRole5FDB64E1"
           }
         ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Sagemaker needs the following minimum required permissions to access ENIs in a VPC, ECR for custom model images, and elastic inference."
+            },
+            {
+              "id": "W76",
+              "reason": "Complex role becuase Sagemaker needs permissions to access several services"
+            }
+          ]
+        }
       }
     },
-    "SageMakerModel": {
+    "SagemakerModel": {
       "Type": "AWS::SageMaker::Model",
       "Properties": {
         "ExecutionRoleArn": {
@@ -129,7 +308,7 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "SageMakerEndpointConfig": {
+    "SagemakerEndpointConfig": {
       "Type": "AWS::SageMaker::EndpointConfig",
       "Properties": {
         "ProductionVariants": [
@@ -139,7 +318,7 @@
             "InstanceType": "ml.m4.xlarge",
             "ModelName": {
               "Fn::GetAtt": [
-                "SageMakerModel",
+                "SagemakerModel",
                 "ModelName"
               ]
             },
@@ -151,21 +330,21 @@
         }
       },
       "DependsOn": [
-        "SageMakerModel"
+        "SagemakerModel"
       ]
     },
-    "SageMakerEndpoint": {
+    "SagemakerEndpoint": {
       "Type": "AWS::SageMaker::Endpoint",
       "Properties": {
         "EndpointConfigName": {
           "Fn::GetAtt": [
-            "SageMakerEndpointConfig",
+            "SagemakerEndpointConfig",
             "EndpointConfigName"
           ]
         }
       },
       "DependsOn": [
-        "SageMakerEndpointConfig"
+        "SagemakerEndpointConfig"
       ]
     },
     "testlambdasagemakerLambdaFunctionServiceRole4BA038CB": {
@@ -240,7 +419,7 @@
               "Action": "sagemaker:InvokeEndpoint",
               "Effect": "Allow",
               "Resource": {
-                "Ref": "SageMakerEndpoint"
+                "Ref": "SagemakerEndpoint"
               }
             }
           ],
@@ -269,7 +448,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": {
-            "Ref": "AssetParameters5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715S3Bucket396E7F33"
+            "Ref": "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15S3BucketE0481499"
           },
           "S3Key": {
             "Fn::Join": [
@@ -282,7 +461,7 @@
                       "Fn::Split": [
                         "||",
                         {
-                          "Ref": "AssetParameters5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715S3VersionKey5284C9B6"
+                          "Ref": "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15S3VersionKey9A1AB349"
                         }
                       ]
                     }
@@ -295,7 +474,7 @@
                       "Fn::Split": [
                         "||",
                         {
-                          "Ref": "AssetParameters5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715S3VersionKey5284C9B6"
+                          "Ref": "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15S3VersionKey9A1AB349"
                         }
                       ]
                     }
@@ -305,25 +484,25 @@
             ]
           }
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "testlambdasagemakerLambdaFunctionServiceRole4BA038CB",
             "Arn"
           ]
         },
-        "Runtime": "python3.8",
         "Environment": {
           "Variables": {
-            "ENDPOINT_NAME": {
+            "SAGEMAKER_ENDPOINT_NAME": {
               "Fn::GetAtt": [
-                "SageMakerEndpoint",
+                "SagemakerEndpoint",
                 "EndpointName"
               ]
             }
           }
         },
+        "Handler": "index.handler",
         "MemorySize": 128,
+        "Runtime": "python3.8",
         "Timeout": 300,
         "TracingConfig": {
           "Mode": "Active"
@@ -346,17 +525,17 @@
     }
   },
   "Parameters": {
-    "AssetParameters5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715S3Bucket396E7F33": {
+    "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15S3BucketE0481499": {
       "Type": "String",
-      "Description": "S3 bucket for asset \"5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715\""
+      "Description": "S3 bucket for asset \"d894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15\""
     },
-    "AssetParameters5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715S3VersionKey5284C9B6": {
+    "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15S3VersionKey9A1AB349": {
       "Type": "String",
-      "Description": "S3 key for asset version \"5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715\""
+      "Description": "S3 key for asset version \"d894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15\""
     },
-    "AssetParameters5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715ArtifactHash2EB86EAE": {
+    "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15ArtifactHash4C89D4A0": {
       "Type": "String",
-      "Description": "Artifact hash for asset \"5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715\""
+      "Description": "Artifact hash for asset \"d894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15\""
     }
   }
 }

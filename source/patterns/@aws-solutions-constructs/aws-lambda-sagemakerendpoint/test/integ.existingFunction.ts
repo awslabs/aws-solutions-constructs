@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -16,24 +16,12 @@ import { Stack, Duration, App } from '@aws-cdk/core';
 import { LambdaToSagemakerEndpoint, LambdaToSagemakerEndpointProps } from '../lib';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as lambda from '@aws-cdk/aws-lambda';
-import * as iam from '@aws-cdk/aws-iam';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, 'test-lambda-sagemakerendpoint');
 stack.templateOptions.description = 'Integration Test for aws-lambda-sagemakerendpoint';
 
-// Create IAM Role to be assumed by Sagemaker
-const sagemakerRole = new iam.Role(stack, 'SagemakerRole', {
-  assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
-});
-sagemakerRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSageMakerFullAccess'));
-sagemakerRole.addToPolicy(
-  new iam.PolicyStatement({
-    actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject', 's3:ListBucket'],
-    resources: ['arn:aws:s3:::*'],
-  })
-);
 // deploy lambda function
 const fn = defaults.deployLambdaFunction(stack, {
   runtime: lambda.Runtime.PYTHON_3_8,
@@ -43,19 +31,17 @@ const fn = defaults.deployLambdaFunction(stack, {
   memorySize: 128,
 });
 
-const props: LambdaToSagemakerEndpointProps = {
+const constructProps: LambdaToSagemakerEndpointProps = {
   modelProps: {
-    executionRoleArn: sagemakerRole.roleArn,
     primaryContainer: {
       image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
       modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
     },
   },
   existingLambdaObj: fn,
-  role: sagemakerRole,
 };
 
-new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', props);
+new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
 
 // Synth
 app.synth();

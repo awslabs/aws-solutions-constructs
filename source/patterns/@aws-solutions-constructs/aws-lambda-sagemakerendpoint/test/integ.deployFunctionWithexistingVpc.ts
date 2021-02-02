@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -16,38 +16,17 @@ import { Stack, Duration, App } from '@aws-cdk/core';
 import { LambdaToSagemakerEndpoint, LambdaToSagemakerEndpointProps } from '../lib';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as lambda from '@aws-cdk/aws-lambda';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as iam from '@aws-cdk/aws-iam';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, 'test-lambda-sagemakerendpoint');
 stack.templateOptions.description = 'Integration Test for aws-lambda-sagemakerendpoint';
 
-// Create IAM Role to be assumed by Sagemaker
-const sagemakerRole = new iam.Role(stack, 'SagemakerRole', {
-  assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
-});
-sagemakerRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSageMakerFullAccess'));
-sagemakerRole.addToPolicy(
-  new iam.PolicyStatement({
-    actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject', 's3:ListBucket'],
-    resources: ['arn:aws:s3:::*'],
-  })
-);
-
 const vpc = defaults.buildVpc(stack, {
+  defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
   constructVpcProps: {
     enableDnsHostnames: true,
     enableDnsSupport: true,
-    natGateways: 0,
-    subnetConfiguration: [
-      {
-        cidrMask: 18,
-        name: 'Isolated',
-        subnetType: ec2.SubnetType.ISOLATED,
-      },
-    ],
   },
 });
 
@@ -56,9 +35,8 @@ defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.S3);
 // Add SAGEMAKER_RUNTIME VPC Interface Endpint, required by the lambda function to invoke the SageMaker endpoint
 defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.SAGEMAKER_RUNTIME);
 
-const props: LambdaToSagemakerEndpointProps = {
+const constructProps: LambdaToSagemakerEndpointProps = {
   modelProps: {
-    executionRoleArn: sagemakerRole.roleArn,
     primaryContainer: {
       image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
       modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
@@ -72,10 +50,9 @@ const props: LambdaToSagemakerEndpointProps = {
     timeout: Duration.minutes(5),
     memorySize: 128,
   },
-  role: sagemakerRole,
 };
 
-new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', props);
+new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
 
 // Synth
 app.synth();

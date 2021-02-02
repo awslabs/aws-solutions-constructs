@@ -1,7 +1,7 @@
 {
   "Description": "Integration Test for aws-lambda-sagemakerendpoint",
   "Resources": {
-    "SagemakerRole5FDB64E1": {
+    "testlambdasagemakerSagemakerRoleD84546B8": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -15,28 +15,185 @@
             }
           ],
           "Version": "2012-10-17"
-        },
-        "ManagedPolicyArns": [
-          {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":iam::aws:policy/AmazonSageMakerFullAccess"
-              ]
-            ]
-          }
-        ]
+        }
       }
     },
-    "SagemakerRoleDefaultPolicy9DD21C3C": {
+    "testlambdasagemakerSagemakerRoleDefaultPolicy9909C0A0": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
           "Statement": [
+            {
+              "Action": [
+                "sagemaker:CreateTrainingJob",
+                "sagemaker:DescribeTrainingJob",
+                "sagemaker:CreateModel",
+                "sagemaker:DescribeModel",
+                "sagemaker:DeleteModel",
+                "sagemaker:CreateEndpoint",
+                "sagemaker:CreateEndpointConfig",
+                "sagemaker:DescribeEndpoint",
+                "sagemaker:DescribeEndpointConfig",
+                "sagemaker:DeleteEndpoint",
+                "sagemaker:DeleteEndpointConfig",
+                "sagemaker:InvokeEndpoint"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":sagemaker:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:DescribeLogStreams",
+                "logs:GetLogEvents",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":logs:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":log-group:/aws/sagemaker/*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "ec2:CreateNetworkInterface",
+                "ec2:CreateNetworkInterfacePermission",
+                "ec2:DeleteNetworkInterface",
+                "ec2:DeleteNetworkInterfacePermission",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:AssignPrivateIpAddresses",
+                "ec2:UnassignPrivateIpAddresses",
+                "ec2:DescribeVpcs",
+                "ec2:DescribeDhcpOptions",
+                "ec2:DescribeSubnets",
+                "ec2:DescribeSecurityGroups"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:DescribeRepositories",
+                "ecr:DescribeImages",
+                "ecr:BatchGetImage"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":ecr:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":repository/*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "kms:Encrypt",
+                "kms:Decrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+                "kms:DescribeKey"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":kms:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":key/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":kms:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":alias/*"
+                    ]
+                  ]
+                }
+              ]
+            },
             {
               "Action": [
                 "s3:GetObject",
@@ -46,16 +203,55 @@
               ],
               "Effect": "Allow",
               "Resource": "arn:aws:s3:::*"
+            },
+            {
+              "Action": "iam:GetRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testlambdasagemakerSagemakerRoleD84546B8",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "iam:PassRole",
+              "Condition": {
+                "StringLike": {
+                  "iam:PassedToService": "sagemaker.amazonaws.com"
+                }
+              },
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testlambdasagemakerSagemakerRoleD84546B8",
+                  "Arn"
+                ]
+              }
             }
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "SagemakerRoleDefaultPolicy9DD21C3C",
+        "PolicyName": "testlambdasagemakerSagemakerRoleDefaultPolicy9909C0A0",
         "Roles": [
           {
-            "Ref": "SagemakerRole5FDB64E1"
+            "Ref": "testlambdasagemakerSagemakerRoleD84546B8"
           }
         ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Sagemaker needs the following minimum required permissions to access ENIs in a VPC, ECR for custom model images, and elastic inference."
+            },
+            {
+              "id": "W76",
+              "reason": "Complex role becuase Sagemaker needs permissions to access several services"
+            }
+          ]
+        }
       }
     },
     "testlambdasagemakerReplaceModelDefaultSecurityGroup7284AA24": {
@@ -116,12 +312,12 @@
         }
       }
     },
-    "testlambdasagemakerSageMakerModel27C04CC7": {
+    "testlambdasagemakerSagemakerModelEC3E4E39": {
       "Type": "AWS::SageMaker::Model",
       "Properties": {
         "ExecutionRoleArn": {
           "Fn::GetAtt": [
-            "SagemakerRole5FDB64E1",
+            "testlambdasagemakerSagemakerRoleD84546B8",
             "Arn"
           ]
         },
@@ -140,20 +336,20 @@
           ],
           "Subnets": [
             {
-              "Ref": "VpcPrivateSubnet1Subnet536B997A"
+              "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
             },
             {
-              "Ref": "VpcPrivateSubnet2Subnet3788AAA1"
+              "Ref": "VpcisolatedSubnet2Subnet39217055"
             },
             {
-              "Ref": "VpcPrivateSubnet3SubnetF258B56E"
+              "Ref": "VpcisolatedSubnet3Subnet44F2537D"
             }
           ]
         }
       },
       "DependsOn": [
-        "SagemakerRoleDefaultPolicy9DD21C3C",
-        "SagemakerRole5FDB64E1"
+        "testlambdasagemakerSagemakerRoleDefaultPolicy9909C0A0",
+        "testlambdasagemakerSagemakerRoleD84546B8"
       ]
     },
     "testlambdasagemakerEncryptionKey2AACF9E0": {
@@ -208,7 +404,7 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "testlambdasagemakerSageMakerEndpointConfig56A24ED7": {
+    "testlambdasagemakerSagemakerEndpointConfig6BABA334": {
       "Type": "AWS::SageMaker::EndpointConfig",
       "Properties": {
         "ProductionVariants": [
@@ -218,7 +414,7 @@
             "InstanceType": "ml.m4.xlarge",
             "ModelName": {
               "Fn::GetAtt": [
-                "testlambdasagemakerSageMakerModel27C04CC7",
+                "testlambdasagemakerSagemakerModelEC3E4E39",
                 "ModelName"
               ]
             },
@@ -230,21 +426,21 @@
         }
       },
       "DependsOn": [
-        "testlambdasagemakerSageMakerModel27C04CC7"
+        "testlambdasagemakerSagemakerModelEC3E4E39"
       ]
     },
-    "testlambdasagemakerSageMakerEndpoint34AA4AB2": {
+    "testlambdasagemakerSagemakerEndpoint12803730": {
       "Type": "AWS::SageMaker::Endpoint",
       "Properties": {
         "EndpointConfigName": {
           "Fn::GetAtt": [
-            "testlambdasagemakerSageMakerEndpointConfig56A24ED7",
+            "testlambdasagemakerSagemakerEndpointConfig6BABA334",
             "EndpointConfigName"
           ]
         }
       },
       "DependsOn": [
-        "testlambdasagemakerSageMakerEndpointConfig56A24ED7"
+        "testlambdasagemakerSagemakerEndpointConfig6BABA334"
       ]
     },
     "testlambdasagemakerLambdaFunctionServiceRole4BA038CB": {
@@ -330,7 +526,7 @@
               "Action": "sagemaker:InvokeEndpoint",
               "Effect": "Allow",
               "Resource": {
-                "Ref": "testlambdasagemakerSageMakerEndpoint34AA4AB2"
+                "Ref": "testlambdasagemakerSagemakerEndpoint12803730"
               }
             }
           ],
@@ -389,7 +585,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": {
-            "Ref": "AssetParameters5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715S3Bucket396E7F33"
+            "Ref": "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15S3BucketE0481499"
           },
           "S3Key": {
             "Fn::Join": [
@@ -402,7 +598,7 @@
                       "Fn::Split": [
                         "||",
                         {
-                          "Ref": "AssetParameters5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715S3VersionKey5284C9B6"
+                          "Ref": "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15S3VersionKey9A1AB349"
                         }
                       ]
                     }
@@ -415,7 +611,7 @@
                       "Fn::Split": [
                         "||",
                         {
-                          "Ref": "AssetParameters5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715S3VersionKey5284C9B6"
+                          "Ref": "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15S3VersionKey9A1AB349"
                         }
                       ]
                     }
@@ -425,25 +621,25 @@
             ]
           }
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "testlambdasagemakerLambdaFunctionServiceRole4BA038CB",
             "Arn"
           ]
         },
-        "Runtime": "python3.8",
         "Environment": {
           "Variables": {
-            "ENDPOINT_NAME": {
+            "SAGEMAKER_ENDPOINT_NAME": {
               "Fn::GetAtt": [
-                "testlambdasagemakerSageMakerEndpoint34AA4AB2",
+                "testlambdasagemakerSagemakerEndpoint12803730",
                 "EndpointName"
               ]
             }
           }
         },
+        "Handler": "index.handler",
         "MemorySize": 128,
+        "Runtime": "python3.8",
         "Timeout": 300,
         "TracingConfig": {
           "Mode": "Active"
@@ -459,13 +655,13 @@
           ],
           "SubnetIds": [
             {
-              "Ref": "VpcPrivateSubnet1Subnet536B997A"
+              "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
             },
             {
-              "Ref": "VpcPrivateSubnet2Subnet3788AAA1"
+              "Ref": "VpcisolatedSubnet2Subnet39217055"
             },
             {
-              "Ref": "VpcPrivateSubnet3SubnetF258B56E"
+              "Ref": "VpcisolatedSubnet3Subnet44F2537D"
             }
           ]
         }
@@ -500,299 +696,10 @@
         ]
       }
     },
-    "VpcPublicSubnet1Subnet5C2D37C4": {
+    "VpcisolatedSubnet1SubnetE62B1B9B": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "CidrBlock": "10.0.0.0/20",
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "AvailabilityZone": "test-region-1a",
-        "MapPublicIpOnLaunch": true,
-        "Tags": [
-          {
-            "Key": "aws-cdk:subnet-name",
-            "Value": "Public"
-          },
-          {
-            "Key": "aws-cdk:subnet-type",
-            "Value": "Public"
-          },
-          {
-            "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/PublicSubnet1"
-          }
-        ]
-      },
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W33",
-              "reason": "Allow Public Subnets to have MapPublicIpOnLaunch set to true"
-            }
-          ]
-        }
-      }
-    },
-    "VpcPublicSubnet1RouteTable6C95E38E": {
-      "Type": "AWS::EC2::RouteTable",
-      "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/PublicSubnet1"
-          }
-        ]
-      }
-    },
-    "VpcPublicSubnet1RouteTableAssociation97140677": {
-      "Type": "AWS::EC2::SubnetRouteTableAssociation",
-      "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcPublicSubnet1RouteTable6C95E38E"
-        },
-        "SubnetId": {
-          "Ref": "VpcPublicSubnet1Subnet5C2D37C4"
-        }
-      }
-    },
-    "VpcPublicSubnet1DefaultRoute3DA9E72A": {
-      "Type": "AWS::EC2::Route",
-      "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcPublicSubnet1RouteTable6C95E38E"
-        },
-        "DestinationCidrBlock": "0.0.0.0/0",
-        "GatewayId": {
-          "Ref": "VpcIGWD7BA715C"
-        }
-      },
-      "DependsOn": [
-        "VpcVPCGWBF912B6E"
-      ]
-    },
-    "VpcPublicSubnet1EIPD7E02669": {
-      "Type": "AWS::EC2::EIP",
-      "Properties": {
-        "Domain": "vpc",
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/PublicSubnet1"
-          }
-        ]
-      }
-    },
-    "VpcPublicSubnet1NATGateway4D7517AA": {
-      "Type": "AWS::EC2::NatGateway",
-      "Properties": {
-        "AllocationId": {
-          "Fn::GetAtt": [
-            "VpcPublicSubnet1EIPD7E02669",
-            "AllocationId"
-          ]
-        },
-        "SubnetId": {
-          "Ref": "VpcPublicSubnet1Subnet5C2D37C4"
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/PublicSubnet1"
-          }
-        ]
-      }
-    },
-    "VpcPublicSubnet2Subnet691E08A3": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "CidrBlock": "10.0.16.0/20",
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "AvailabilityZone": "test-region-1b",
-        "MapPublicIpOnLaunch": true,
-        "Tags": [
-          {
-            "Key": "aws-cdk:subnet-name",
-            "Value": "Public"
-          },
-          {
-            "Key": "aws-cdk:subnet-type",
-            "Value": "Public"
-          },
-          {
-            "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/PublicSubnet2"
-          }
-        ]
-      },
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W33",
-              "reason": "Allow Public Subnets to have MapPublicIpOnLaunch set to true"
-            }
-          ]
-        }
-      }
-    },
-    "VpcPublicSubnet2RouteTable94F7E489": {
-      "Type": "AWS::EC2::RouteTable",
-      "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/PublicSubnet2"
-          }
-        ]
-      }
-    },
-    "VpcPublicSubnet2RouteTableAssociationDD5762D8": {
-      "Type": "AWS::EC2::SubnetRouteTableAssociation",
-      "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcPublicSubnet2RouteTable94F7E489"
-        },
-        "SubnetId": {
-          "Ref": "VpcPublicSubnet2Subnet691E08A3"
-        }
-      }
-    },
-    "VpcPublicSubnet2DefaultRoute97F91067": {
-      "Type": "AWS::EC2::Route",
-      "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcPublicSubnet2RouteTable94F7E489"
-        },
-        "DestinationCidrBlock": "0.0.0.0/0",
-        "GatewayId": {
-          "Ref": "VpcIGWD7BA715C"
-        }
-      },
-      "DependsOn": [
-        "VpcVPCGWBF912B6E"
-      ]
-    },
-    "VpcPublicSubnet2EIP3C605A87": {
-      "Type": "AWS::EC2::EIP",
-      "Properties": {
-        "Domain": "vpc",
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/PublicSubnet2"
-          }
-        ]
-      }
-    },
-    "VpcPublicSubnet2NATGateway9182C01D": {
-      "Type": "AWS::EC2::NatGateway",
-      "Properties": {
-        "AllocationId": {
-          "Fn::GetAtt": [
-            "VpcPublicSubnet2EIP3C605A87",
-            "AllocationId"
-          ]
-        },
-        "SubnetId": {
-          "Ref": "VpcPublicSubnet2Subnet691E08A3"
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/PublicSubnet2"
-          }
-        ]
-      }
-    },
-    "VpcPublicSubnet3SubnetBE12F0B6": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "CidrBlock": "10.0.32.0/20",
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "AvailabilityZone": "test-region-1c",
-        "MapPublicIpOnLaunch": true,
-        "Tags": [
-          {
-            "Key": "aws-cdk:subnet-name",
-            "Value": "Public"
-          },
-          {
-            "Key": "aws-cdk:subnet-type",
-            "Value": "Public"
-          },
-          {
-            "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/PublicSubnet3"
-          }
-        ]
-      },
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W33",
-              "reason": "Allow Public Subnets to have MapPublicIpOnLaunch set to true"
-            }
-          ]
-        }
-      }
-    },
-    "VpcPublicSubnet3RouteTable93458DBB": {
-      "Type": "AWS::EC2::RouteTable",
-      "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/PublicSubnet3"
-          }
-        ]
-      }
-    },
-    "VpcPublicSubnet3RouteTableAssociation1F1EDF02": {
-      "Type": "AWS::EC2::SubnetRouteTableAssociation",
-      "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcPublicSubnet3RouteTable93458DBB"
-        },
-        "SubnetId": {
-          "Ref": "VpcPublicSubnet3SubnetBE12F0B6"
-        }
-      }
-    },
-    "VpcPublicSubnet3DefaultRoute4697774F": {
-      "Type": "AWS::EC2::Route",
-      "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcPublicSubnet3RouteTable93458DBB"
-        },
-        "DestinationCidrBlock": "0.0.0.0/0",
-        "GatewayId": {
-          "Ref": "VpcIGWD7BA715C"
-        }
-      },
-      "DependsOn": [
-        "VpcVPCGWBF912B6E"
-      ]
-    },
-    "VpcPrivateSubnet1Subnet536B997A": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "CidrBlock": "10.0.48.0/20",
+        "CidrBlock": "10.0.0.0/18",
         "VpcId": {
           "Ref": "Vpc8378EB38"
         },
@@ -801,20 +708,20 @@
         "Tags": [
           {
             "Key": "aws-cdk:subnet-name",
-            "Value": "Private"
+            "Value": "isolated"
           },
           {
             "Key": "aws-cdk:subnet-type",
-            "Value": "Private"
+            "Value": "Isolated"
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/PrivateSubnet1"
+            "Value": "test-lambda-sagemakerendpoint/Vpc/isolatedSubnet1"
           }
         ]
       }
     },
-    "VpcPrivateSubnet1RouteTableB2C5B500": {
+    "VpcisolatedSubnet1RouteTableE442650B": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -823,38 +730,26 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/PrivateSubnet1"
+            "Value": "test-lambda-sagemakerendpoint/Vpc/isolatedSubnet1"
           }
         ]
       }
     },
-    "VpcPrivateSubnet1RouteTableAssociation70C59FA6": {
+    "VpcisolatedSubnet1RouteTableAssociationD259E31A": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "VpcPrivateSubnet1RouteTableB2C5B500"
+          "Ref": "VpcisolatedSubnet1RouteTableE442650B"
         },
         "SubnetId": {
-          "Ref": "VpcPrivateSubnet1Subnet536B997A"
+          "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
         }
       }
     },
-    "VpcPrivateSubnet1DefaultRouteBE02A9ED": {
-      "Type": "AWS::EC2::Route",
-      "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcPrivateSubnet1RouteTableB2C5B500"
-        },
-        "DestinationCidrBlock": "0.0.0.0/0",
-        "NatGatewayId": {
-          "Ref": "VpcPublicSubnet1NATGateway4D7517AA"
-        }
-      }
-    },
-    "VpcPrivateSubnet2Subnet3788AAA1": {
+    "VpcisolatedSubnet2Subnet39217055": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "CidrBlock": "10.0.64.0/20",
+        "CidrBlock": "10.0.64.0/18",
         "VpcId": {
           "Ref": "Vpc8378EB38"
         },
@@ -863,20 +758,20 @@
         "Tags": [
           {
             "Key": "aws-cdk:subnet-name",
-            "Value": "Private"
+            "Value": "isolated"
           },
           {
             "Key": "aws-cdk:subnet-type",
-            "Value": "Private"
+            "Value": "Isolated"
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/PrivateSubnet2"
+            "Value": "test-lambda-sagemakerendpoint/Vpc/isolatedSubnet2"
           }
         ]
       }
     },
-    "VpcPrivateSubnet2RouteTableA678073B": {
+    "VpcisolatedSubnet2RouteTable334F9764": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -885,38 +780,26 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/PrivateSubnet2"
+            "Value": "test-lambda-sagemakerendpoint/Vpc/isolatedSubnet2"
           }
         ]
       }
     },
-    "VpcPrivateSubnet2RouteTableAssociationA89CAD56": {
+    "VpcisolatedSubnet2RouteTableAssociation25A4716F": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "VpcPrivateSubnet2RouteTableA678073B"
+          "Ref": "VpcisolatedSubnet2RouteTable334F9764"
         },
         "SubnetId": {
-          "Ref": "VpcPrivateSubnet2Subnet3788AAA1"
+          "Ref": "VpcisolatedSubnet2Subnet39217055"
         }
       }
     },
-    "VpcPrivateSubnet2DefaultRoute060D2087": {
-      "Type": "AWS::EC2::Route",
-      "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcPrivateSubnet2RouteTableA678073B"
-        },
-        "DestinationCidrBlock": "0.0.0.0/0",
-        "NatGatewayId": {
-          "Ref": "VpcPublicSubnet2NATGateway9182C01D"
-        }
-      }
-    },
-    "VpcPrivateSubnet3SubnetF258B56E": {
+    "VpcisolatedSubnet3Subnet44F2537D": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "CidrBlock": "10.0.80.0/20",
+        "CidrBlock": "10.0.128.0/18",
         "VpcId": {
           "Ref": "Vpc8378EB38"
         },
@@ -925,20 +808,20 @@
         "Tags": [
           {
             "Key": "aws-cdk:subnet-name",
-            "Value": "Private"
+            "Value": "isolated"
           },
           {
             "Key": "aws-cdk:subnet-type",
-            "Value": "Private"
+            "Value": "Isolated"
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/PrivateSubnet3"
+            "Value": "test-lambda-sagemakerendpoint/Vpc/isolatedSubnet3"
           }
         ]
       }
     },
-    "VpcPrivateSubnet3RouteTableD98824C7": {
+    "VpcisolatedSubnet3RouteTableA2F6BBC0": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -947,53 +830,19 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/PrivateSubnet3"
+            "Value": "test-lambda-sagemakerendpoint/Vpc/isolatedSubnet3"
           }
         ]
       }
     },
-    "VpcPrivateSubnet3RouteTableAssociation16BDDC43": {
+    "VpcisolatedSubnet3RouteTableAssociationDC010BEB": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "VpcPrivateSubnet3RouteTableD98824C7"
+          "Ref": "VpcisolatedSubnet3RouteTableA2F6BBC0"
         },
         "SubnetId": {
-          "Ref": "VpcPrivateSubnet3SubnetF258B56E"
-        }
-      }
-    },
-    "VpcPrivateSubnet3DefaultRoute94B74F0D": {
-      "Type": "AWS::EC2::Route",
-      "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcPrivateSubnet3RouteTableD98824C7"
-        },
-        "DestinationCidrBlock": "0.0.0.0/0",
-        "NatGatewayId": {
-          "Ref": "VpcPublicSubnet1NATGateway4D7517AA"
-        }
-      }
-    },
-    "VpcIGWD7BA715C": {
-      "Type": "AWS::EC2::InternetGateway",
-      "Properties": {
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc"
-          }
-        ]
-      }
-    },
-    "VpcVPCGWBF912B6E": {
-      "Type": "AWS::EC2::VPCGatewayAttachment",
-      "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "InternetGatewayId": {
-          "Ref": "VpcIGWD7BA715C"
+          "Ref": "VpcisolatedSubnet3Subnet44F2537D"
         }
       }
     },
@@ -1066,7 +915,17 @@
         "RetentionInDays": 731
       },
       "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+            }
+          ]
+        }
+      }
     },
     "VpcFlowLog8FF33A73": {
       "Type": "AWS::EC2::FlowLog",
@@ -1114,22 +973,13 @@
         },
         "RouteTableIds": [
           {
-            "Ref": "VpcPrivateSubnet1RouteTableB2C5B500"
+            "Ref": "VpcisolatedSubnet1RouteTableE442650B"
           },
           {
-            "Ref": "VpcPrivateSubnet2RouteTableA678073B"
+            "Ref": "VpcisolatedSubnet2RouteTable334F9764"
           },
           {
-            "Ref": "VpcPrivateSubnet3RouteTableD98824C7"
-          },
-          {
-            "Ref": "VpcPublicSubnet1RouteTable6C95E38E"
-          },
-          {
-            "Ref": "VpcPublicSubnet2RouteTable94F7E489"
-          },
-          {
-            "Ref": "VpcPublicSubnet3RouteTable93458DBB"
+            "Ref": "VpcisolatedSubnet3RouteTableA2F6BBC0"
           }
         ],
         "VpcEndpointType": "Gateway"
@@ -1164,13 +1014,13 @@
         ],
         "SubnetIds": [
           {
-            "Ref": "VpcPrivateSubnet1Subnet536B997A"
+            "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
           },
           {
-            "Ref": "VpcPrivateSubnet2Subnet3788AAA1"
+            "Ref": "VpcisolatedSubnet2Subnet39217055"
           },
           {
-            "Ref": "VpcPrivateSubnet3SubnetF258B56E"
+            "Ref": "VpcisolatedSubnet3Subnet44F2537D"
           }
         ],
         "VpcEndpointType": "Interface"
@@ -1236,17 +1086,17 @@
     }
   },
   "Parameters": {
-    "AssetParameters5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715S3Bucket396E7F33": {
+    "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15S3BucketE0481499": {
       "Type": "String",
-      "Description": "S3 bucket for asset \"5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715\""
+      "Description": "S3 bucket for asset \"d894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15\""
     },
-    "AssetParameters5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715S3VersionKey5284C9B6": {
+    "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15S3VersionKey9A1AB349": {
       "Type": "String",
-      "Description": "S3 key for asset version \"5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715\""
+      "Description": "S3 key for asset version \"d894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15\""
     },
-    "AssetParameters5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715ArtifactHash2EB86EAE": {
+    "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15ArtifactHash4C89D4A0": {
       "Type": "String",
-      "Description": "Artifact hash for asset \"5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715\""
+      "Description": "Artifact hash for asset \"d894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15\""
     }
   }
 }

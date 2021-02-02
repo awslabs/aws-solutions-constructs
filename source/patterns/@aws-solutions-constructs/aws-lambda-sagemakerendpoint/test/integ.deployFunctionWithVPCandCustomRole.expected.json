@@ -32,32 +32,6 @@
         ]
       }
     },
-    "SagemakerRoleDefaultPolicy9DD21C3C": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "s3:GetObject",
-                "s3:PutObject",
-                "s3:DeleteObject",
-                "s3:ListBucket"
-              ],
-              "Effect": "Allow",
-              "Resource": "arn:aws:s3:::*"
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "SagemakerRoleDefaultPolicy9DD21C3C",
-        "Roles": [
-          {
-            "Ref": "SagemakerRole5FDB64E1"
-          }
-        ]
-      }
-    },
     "testlambdasagemakerReplaceModelDefaultSecurityGroup7284AA24": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
@@ -116,7 +90,7 @@
         }
       }
     },
-    "testlambdasagemakerSageMakerModel27C04CC7": {
+    "testlambdasagemakerSagemakerModelEC3E4E39": {
       "Type": "AWS::SageMaker::Model",
       "Properties": {
         "ExecutionRoleArn": {
@@ -140,19 +114,18 @@
           ],
           "Subnets": [
             {
-              "Ref": "VpcIsolatedSubnet1SubnetE48C5737"
+              "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
             },
             {
-              "Ref": "VpcIsolatedSubnet2Subnet16364B91"
+              "Ref": "VpcisolatedSubnet2Subnet39217055"
             },
             {
-              "Ref": "VpcIsolatedSubnet3Subnet6840A2D4"
+              "Ref": "VpcisolatedSubnet3Subnet44F2537D"
             }
           ]
         }
       },
       "DependsOn": [
-        "SagemakerRoleDefaultPolicy9DD21C3C",
         "SagemakerRole5FDB64E1"
       ]
     },
@@ -208,7 +181,7 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "testlambdasagemakerSageMakerEndpointConfig56A24ED7": {
+    "testlambdasagemakerSagemakerEndpointConfig6BABA334": {
       "Type": "AWS::SageMaker::EndpointConfig",
       "Properties": {
         "ProductionVariants": [
@@ -218,7 +191,7 @@
             "InstanceType": "ml.m4.xlarge",
             "ModelName": {
               "Fn::GetAtt": [
-                "testlambdasagemakerSageMakerModel27C04CC7",
+                "testlambdasagemakerSagemakerModelEC3E4E39",
                 "ModelName"
               ]
             },
@@ -230,21 +203,21 @@
         }
       },
       "DependsOn": [
-        "testlambdasagemakerSageMakerModel27C04CC7"
+        "testlambdasagemakerSagemakerModelEC3E4E39"
       ]
     },
-    "testlambdasagemakerSageMakerEndpoint34AA4AB2": {
+    "testlambdasagemakerSagemakerEndpoint12803730": {
       "Type": "AWS::SageMaker::Endpoint",
       "Properties": {
         "EndpointConfigName": {
           "Fn::GetAtt": [
-            "testlambdasagemakerSageMakerEndpointConfig56A24ED7",
+            "testlambdasagemakerSagemakerEndpointConfig6BABA334",
             "EndpointConfigName"
           ]
         }
       },
       "DependsOn": [
-        "testlambdasagemakerSageMakerEndpointConfig56A24ED7"
+        "testlambdasagemakerSagemakerEndpointConfig6BABA334"
       ]
     },
     "testlambdasagemakerLambdaFunctionServiceRole4BA038CB": {
@@ -330,7 +303,7 @@
               "Action": "sagemaker:InvokeEndpoint",
               "Effect": "Allow",
               "Resource": {
-                "Ref": "testlambdasagemakerSageMakerEndpoint34AA4AB2"
+                "Ref": "testlambdasagemakerSagemakerEndpoint12803730"
               }
             }
           ],
@@ -389,7 +362,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": {
-            "Ref": "AssetParameters5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715S3Bucket396E7F33"
+            "Ref": "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15S3BucketE0481499"
           },
           "S3Key": {
             "Fn::Join": [
@@ -402,7 +375,7 @@
                       "Fn::Split": [
                         "||",
                         {
-                          "Ref": "AssetParameters5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715S3VersionKey5284C9B6"
+                          "Ref": "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15S3VersionKey9A1AB349"
                         }
                       ]
                     }
@@ -415,7 +388,7 @@
                       "Fn::Split": [
                         "||",
                         {
-                          "Ref": "AssetParameters5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715S3VersionKey5284C9B6"
+                          "Ref": "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15S3VersionKey9A1AB349"
                         }
                       ]
                     }
@@ -425,25 +398,25 @@
             ]
           }
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "testlambdasagemakerLambdaFunctionServiceRole4BA038CB",
             "Arn"
           ]
         },
-        "Runtime": "python3.8",
         "Environment": {
           "Variables": {
-            "ENDPOINT_NAME": {
+            "SAGEMAKER_ENDPOINT_NAME": {
               "Fn::GetAtt": [
-                "testlambdasagemakerSageMakerEndpoint34AA4AB2",
+                "testlambdasagemakerSagemakerEndpoint12803730",
                 "EndpointName"
               ]
             }
           }
         },
+        "Handler": "index.handler",
         "MemorySize": 128,
+        "Runtime": "python3.8",
         "Timeout": 300,
         "TracingConfig": {
           "Mode": "Active"
@@ -459,13 +432,13 @@
           ],
           "SubnetIds": [
             {
-              "Ref": "VpcIsolatedSubnet1SubnetE48C5737"
+              "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
             },
             {
-              "Ref": "VpcIsolatedSubnet2Subnet16364B91"
+              "Ref": "VpcisolatedSubnet2Subnet39217055"
             },
             {
-              "Ref": "VpcIsolatedSubnet3Subnet6840A2D4"
+              "Ref": "VpcisolatedSubnet3Subnet44F2537D"
             }
           ]
         }
@@ -500,7 +473,7 @@
         ]
       }
     },
-    "VpcIsolatedSubnet1SubnetE48C5737": {
+    "VpcisolatedSubnet1SubnetE62B1B9B": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.0.0/18",
@@ -512,7 +485,7 @@
         "Tags": [
           {
             "Key": "aws-cdk:subnet-name",
-            "Value": "Isolated"
+            "Value": "isolated"
           },
           {
             "Key": "aws-cdk:subnet-type",
@@ -520,12 +493,12 @@
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/IsolatedSubnet1"
+            "Value": "test-lambda-sagemakerendpoint/Vpc/isolatedSubnet1"
           }
         ]
       }
     },
-    "VpcIsolatedSubnet1RouteTable4771E3E5": {
+    "VpcisolatedSubnet1RouteTableE442650B": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -534,23 +507,23 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/IsolatedSubnet1"
+            "Value": "test-lambda-sagemakerendpoint/Vpc/isolatedSubnet1"
           }
         ]
       }
     },
-    "VpcIsolatedSubnet1RouteTableAssociationD300FCBB": {
+    "VpcisolatedSubnet1RouteTableAssociationD259E31A": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "VpcIsolatedSubnet1RouteTable4771E3E5"
+          "Ref": "VpcisolatedSubnet1RouteTableE442650B"
         },
         "SubnetId": {
-          "Ref": "VpcIsolatedSubnet1SubnetE48C5737"
+          "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
         }
       }
     },
-    "VpcIsolatedSubnet2Subnet16364B91": {
+    "VpcisolatedSubnet2Subnet39217055": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.64.0/18",
@@ -562,7 +535,7 @@
         "Tags": [
           {
             "Key": "aws-cdk:subnet-name",
-            "Value": "Isolated"
+            "Value": "isolated"
           },
           {
             "Key": "aws-cdk:subnet-type",
@@ -570,12 +543,12 @@
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/IsolatedSubnet2"
+            "Value": "test-lambda-sagemakerendpoint/Vpc/isolatedSubnet2"
           }
         ]
       }
     },
-    "VpcIsolatedSubnet2RouteTable1D30AF7D": {
+    "VpcisolatedSubnet2RouteTable334F9764": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -584,23 +557,23 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/IsolatedSubnet2"
+            "Value": "test-lambda-sagemakerendpoint/Vpc/isolatedSubnet2"
           }
         ]
       }
     },
-    "VpcIsolatedSubnet2RouteTableAssociationF7B18CCA": {
+    "VpcisolatedSubnet2RouteTableAssociation25A4716F": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "VpcIsolatedSubnet2RouteTable1D30AF7D"
+          "Ref": "VpcisolatedSubnet2RouteTable334F9764"
         },
         "SubnetId": {
-          "Ref": "VpcIsolatedSubnet2Subnet16364B91"
+          "Ref": "VpcisolatedSubnet2Subnet39217055"
         }
       }
     },
-    "VpcIsolatedSubnet3Subnet6840A2D4": {
+    "VpcisolatedSubnet3Subnet44F2537D": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.128.0/18",
@@ -612,7 +585,7 @@
         "Tags": [
           {
             "Key": "aws-cdk:subnet-name",
-            "Value": "Isolated"
+            "Value": "isolated"
           },
           {
             "Key": "aws-cdk:subnet-type",
@@ -620,12 +593,12 @@
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/IsolatedSubnet3"
+            "Value": "test-lambda-sagemakerendpoint/Vpc/isolatedSubnet3"
           }
         ]
       }
     },
-    "VpcIsolatedSubnet3RouteTableA34D73CB": {
+    "VpcisolatedSubnet3RouteTableA2F6BBC0": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -634,19 +607,19 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-sagemakerendpoint/Vpc/IsolatedSubnet3"
+            "Value": "test-lambda-sagemakerendpoint/Vpc/isolatedSubnet3"
           }
         ]
       }
     },
-    "VpcIsolatedSubnet3RouteTableAssociation04776B7F": {
+    "VpcisolatedSubnet3RouteTableAssociationDC010BEB": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "VpcIsolatedSubnet3RouteTableA34D73CB"
+          "Ref": "VpcisolatedSubnet3RouteTableA2F6BBC0"
         },
         "SubnetId": {
-          "Ref": "VpcIsolatedSubnet3Subnet6840A2D4"
+          "Ref": "VpcisolatedSubnet3Subnet44F2537D"
         }
       }
     },
@@ -719,7 +692,17 @@
         "RetentionInDays": 731
       },
       "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+            }
+          ]
+        }
+      }
     },
     "VpcFlowLog8FF33A73": {
       "Type": "AWS::EC2::FlowLog",
@@ -767,13 +750,13 @@
         },
         "RouteTableIds": [
           {
-            "Ref": "VpcIsolatedSubnet1RouteTable4771E3E5"
+            "Ref": "VpcisolatedSubnet1RouteTableE442650B"
           },
           {
-            "Ref": "VpcIsolatedSubnet2RouteTable1D30AF7D"
+            "Ref": "VpcisolatedSubnet2RouteTable334F9764"
           },
           {
-            "Ref": "VpcIsolatedSubnet3RouteTableA34D73CB"
+            "Ref": "VpcisolatedSubnet3RouteTableA2F6BBC0"
           }
         ],
         "VpcEndpointType": "Gateway"
@@ -808,13 +791,13 @@
         ],
         "SubnetIds": [
           {
-            "Ref": "VpcIsolatedSubnet1SubnetE48C5737"
+            "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
           },
           {
-            "Ref": "VpcIsolatedSubnet2Subnet16364B91"
+            "Ref": "VpcisolatedSubnet2Subnet39217055"
           },
           {
-            "Ref": "VpcIsolatedSubnet3Subnet6840A2D4"
+            "Ref": "VpcisolatedSubnet3Subnet44F2537D"
           }
         ],
         "VpcEndpointType": "Interface"
@@ -880,17 +863,17 @@
     }
   },
   "Parameters": {
-    "AssetParameters5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715S3Bucket396E7F33": {
+    "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15S3BucketE0481499": {
       "Type": "String",
-      "Description": "S3 bucket for asset \"5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715\""
+      "Description": "S3 bucket for asset \"d894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15\""
     },
-    "AssetParameters5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715S3VersionKey5284C9B6": {
+    "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15S3VersionKey9A1AB349": {
       "Type": "String",
-      "Description": "S3 key for asset version \"5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715\""
+      "Description": "S3 key for asset version \"d894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15\""
     },
-    "AssetParameters5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715ArtifactHash2EB86EAE": {
+    "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15ArtifactHash4C89D4A0": {
       "Type": "String",
-      "Description": "Artifact hash for asset \"5427a7d8ba889cae10b5bd870f298fec8d1c16371fd0f7f898e9c4fe35ed6715\""
+      "Description": "Artifact hash for asset \"d894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15\""
     }
   }
 }
