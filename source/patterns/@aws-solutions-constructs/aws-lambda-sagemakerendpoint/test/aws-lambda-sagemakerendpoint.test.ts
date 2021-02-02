@@ -16,7 +16,6 @@ import { Stack, Duration } from '@aws-cdk/core';
 import { LambdaToSagemakerEndpoint, LambdaToSagemakerEndpointProps } from '../lib';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as lambda from '@aws-cdk/aws-lambda';
-// import * as ec2 from '@aws-cdk/aws-ec2';
 import * as iam from '@aws-cdk/aws-iam';
 import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
@@ -276,46 +275,6 @@ test('Test for errot when existing Lambda function does not have vpc and deployV
   expect(app).toThrowError();
 });
 
-// // -----------------------------------------------------------------------------------------------------------------------------------------
-// // Pattern deployment with new Lambda function, new Sagemaker endpoint, deployVpc = true and deployNatGateway = true
-// // -----------------------------------------------------------------------------------------------------------------------------------------
-// test('Pattern deployment with new Lambda function, new Sagemaker endpoint, deployVpc = true and deployNatGateway = true', () => {
-//   // Initial Setup
-//   const stack = new Stack();
-//   // Create IAM Role to be assumed by Sagemaker
-//   const sagemakerRole = new iam.Role(stack, 'SagemakerRole', {
-//     assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
-//   });
-//   sagemakerRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSageMakerFullAccess'));
-//   sagemakerRole.addToPolicy(
-//     new iam.PolicyStatement({
-//       actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject', 's3:ListBucket'],
-//       resources: ['arn:aws:s3:::*'],
-//     })
-//   );
-//   const props: LambdaToSagemakerEndpointProps = {
-//     modelProps: {
-//       executionRoleArn: sagemakerRole.roleArn,
-//       primaryContainer: {
-//         image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
-//         modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
-//       },
-//     },
-//     deployVpc: true,
-//     lambdaFunctionProps: {
-//       runtime: lambda.Runtime.PYTHON_3_8,
-//       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-//       handler: 'index.handler',
-//       timeout: Duration.minutes(5),
-//       memorySize: 128,
-//     },
-//     role: sagemakerRole,
-//   };
-//   new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', props);
-//   // Assertion 1
-//   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-// });
-
 // -------------------------------------------------------------------------------------------------------
 // Pattern deployment with existing Lambda function (with VPC), new Sagemaker endpoint, and existingVpc
 // -------------------------------------------------------------------------------------------------------
@@ -465,105 +424,6 @@ test('Test for error with primaryContainer=undefined (not supplied by user)', ()
   // Assertion 1
   expect(app).toThrowError();
 });
-
-// // --------------------------------------------------------------------------------------------------------------------
-// // Pattern deployment with new Lambda function with new Sagemaker endpoint, existingVpc and deployNatGateway = false
-// // --------------------------------------------------------------------------------------------------------------------
-// test('Pattern deployment with new Lambda function with existingVpcObj and deployNatGateway = false', () => {
-//   // Initial Setup
-//   const stack = new Stack();
-//   // Create IAM Role to be assumed by Sagemaker
-//   const sagemakerRole = new iam.Role(stack, 'SagemakerRole', {
-//     assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
-//   });
-//   sagemakerRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSageMakerFullAccess'));
-//   sagemakerRole.addToPolicy(
-//     new iam.PolicyStatement({
-//       actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject', 's3:ListBucket'],
-//       resources: ['arn:aws:s3:::*'],
-//     })
-//   );
-
-//   const vpc = defaults.buildVpc(stack, {
-//     defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
-//     constructVpcProps: {
-//       enableDnsHostnames: true,
-//       enableDnsSupport: true,
-//     },
-//   });
-
-//   // Add S3 VPC Gateway Endpint, required by Sagemaker to access Models artifacts via AWS private network
-//   defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.S3);
-//   // Add SAGEMAKER_RUNTIME VPC Interface Endpint, required by the lambda function to invoke the SageMaker endpoint
-//   defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.SAGEMAKER_RUNTIME);
-
-//   const props: LambdaToSagemakerEndpointProps = {
-//     modelProps: {
-//       executionRoleArn: sagemakerRole.roleArn,
-//       primaryContainer: {
-//         image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
-//         modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
-//       },
-//     },
-//     existingVpc: vpc,
-//     lambdaFunctionProps: {
-//       runtime: lambda.Runtime.PYTHON_3_8,
-//       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-//       handler: 'index.handler',
-//       timeout: Duration.minutes(5),
-//       memorySize: 128,
-//     },
-//     role: sagemakerRole,
-//   };
-//   new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', props);
-//   // Assertion 1
-//   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-// });
-
-// // --------------------------------------------------------------------------------------------
-// // Pattern deployment with new Lambda function and existingSagemakerendpointObj (no vpc)
-// // --------------------------------------------------------------------------------------------
-// test('Pattern deployment with new Lambda function and existingSagemakerendpointObj (no vpc)', () => {
-//   // Initial Setup
-//   const stack = new Stack();
-//   // Create IAM Role to be assumed by Sagemaker
-//   const sagemakerRole = new iam.Role(stack, 'SagemakerRole', {
-//     assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
-//   });
-//   sagemakerRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSageMakerFullAccess'));
-//   sagemakerRole.addToPolicy(
-//     new iam.PolicyStatement({
-//       actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject', 's3:ListBucket'],
-//       resources: ['arn:aws:s3:::*'],
-//     })
-//   );
-
-//   const [sagemakerEndpoint] = defaults.deploySagemakerEndpoint(stack, {
-//     modelProps: {
-//       executionRoleArn: sagemakerRole.roleArn,
-//       primaryContainer: {
-//         image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
-//         modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
-//       },
-//     },
-//     role: sagemakerRole,
-//   });
-
-//   const props: LambdaToSagemakerEndpointProps = {
-//     existingSagemakerEndpointObj: sagemakerEndpoint,
-//     lambdaFunctionProps: {
-//       runtime: lambda.Runtime.PYTHON_3_8,
-//       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-//       handler: 'index.handler',
-//       timeout: Duration.minutes(5),
-//       memorySize: 128,
-//     },
-//     role: sagemakerRole,
-//   };
-//   new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', props);
-//   // Assertion 1
-//   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-// });
 
 // -------------------------------------------------------------------------------------------------
 // Test getter methods: existing Lambda function (with VPC), new Sagemaker endpoint, and existingVpc

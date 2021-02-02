@@ -230,54 +230,6 @@ test('Test minimal deployment of Sagemaker Inference Endpoint with VPC', () => {
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
-// // ---------------------------------------------------------------------------
-// // Test minimal deployment of Sagemaker Inference Endpoint with VPC/NatGateway
-// // ---------------------------------------------------------------------------
-// test('Test minimal deployment of Sagemaker Inference Endpoint with VPC/NatGateway', () => {
-//   // Stack
-//   const stack = new Stack();
-//   // Create IAM Role to be assumed by Sagemaker
-//   const sagemakerRole = new iam.Role(stack, 'SagemakerRole', {
-//     assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
-//   });
-//   sagemakerRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSageMakerFullAccess'));
-//   sagemakerRole.addToPolicy(
-//     new iam.PolicyStatement({
-//       actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject', 's3:ListBucket'],
-//       resources: ['arn:aws:s3:::*'],
-//     })
-//   );
-
-//   // create a VPC with required VPC S3 gateway and SAGEMAKER_RUNTIME Interface
-//   const vpc = defaults.buildVpc(stack, {
-//     defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
-//     constructVpcProps: {
-//       enableDnsHostnames: true,
-//       enableDnsSupport: true,
-//     },
-//   });
-
-//   // Add S3 VPC Gateway Endpint, required by Sagemaker to access Models artifacts via AWS private network
-//   defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.S3);
-//   // Add SAGEMAKER_RUNTIME VPC Interface Endpint, required by the lambda function to invoke the SageMaker endpoint
-//   defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.SAGEMAKER_RUNTIME);
-
-//   // Build Sagemaker Inference Endpoint
-//   defaults.BuildSagemakerEndpoint(stack, {
-//     modelProps: {
-//       executionRoleArn: sagemakerRole.roleArn,
-//       primaryContainer: {
-//         image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
-//         modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
-//       },
-//     },
-//     vpc,
-//     role: sagemakerRole,
-//   });
-//   // Assertion
-//   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-// });
-
 // -------------------------------------------------------------------------
 // Test deployment of Sagemaker Inference Endpoint with properties overwrite
 // -------------------------------------------------------------------------
