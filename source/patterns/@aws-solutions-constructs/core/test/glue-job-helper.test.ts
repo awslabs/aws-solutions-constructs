@@ -38,12 +38,12 @@ test('Test deployment with role creation', () => {
     scriptLocation: 's3://fakelocation/script'
   }, 'testETLJob', {}, '1.0');
 
-  const _database = defaults.createGlueDatabase(stack);
+  const _database = defaults.createGlueDatabase(stack, defaults.DefaultGlueDatabaseProps());
 
   defaults.buildGlueJob(stack, {
     glueJobProps: cfnJobProps,
     database: _database,
-    table: defaults.createGlueTable(stack, _database, [{
+    table: defaults.createGlueTable(stack, _database, undefined, [{
       name: "id",
       type: "int",
       comment: ""
@@ -94,15 +94,15 @@ test('Create a Glue Job outside the construct', () => {
     workerType: 'Standard'
   });
 
-  const _database = defaults.createGlueDatabase(stack);
+  const _database = defaults.createGlueDatabase(stack, defaults.DefaultGlueDatabaseProps());
 
   defaults.buildGlueJob(stack, {
     existingCfnJob: _existingCfnJob,
     outputDataStore: {
-      datastoreStype: defaults.SinkStoreType.S3
+      datastoreType: defaults.SinkStoreType.S3
     },
     database: _database,
-    table: defaults.createGlueTable(stack, _database, [{
+    table: defaults.createGlueTable(stack, _database, undefined, [{
       name: "id",
       type: "int",
       comment: ""
@@ -162,10 +162,10 @@ test('Test custom deployment properties', () => {
   defaults.buildGlueJob(stack, {
     glueJobProps: cfnJobProps,
     outputDataStore: {
-      datastoreStype: defaults.SinkStoreType.S3
+      datastoreType: defaults.SinkStoreType.S3
     },
     database: _database,
-    table: defaults.createGlueTable(stack, _database, [{
+    table: defaults.createGlueTable(stack, _database, undefined, [{
       name: "id",
       type: "int",
       comment: ""
@@ -257,14 +257,14 @@ test('Do no supply glueJobProps or existingCfnJob and error out', () => {
     const _database = defaults.createGlueDatabase(stack);
     defaults.buildGlueJob(stack, {
       outputDataStore: {
-        datastoreStype: defaults.SinkStoreType.S3
+        datastoreType: defaults.SinkStoreType.S3
       },
       database: _database,
-      table: defaults.createGlueTable(stack, _database, [{
+      table: defaults.createGlueTable(stack, _database, defaults.DefaultGlueTableProps(_database, [{
         name: "id",
         type: "int",
         comment: ""
-      }], 'kinesis', {STREAM_NAME: 'testStream'})
+      }], 'kinesis', {STREAM_NAME: 'testStream'}))
     });
   } catch (error) {
     expect(error).toBeInstanceOf(Error);
@@ -273,7 +273,7 @@ test('Do no supply glueJobProps or existingCfnJob and error out', () => {
 
 test('Create table', () => {
   const stack = new Stack();
-  defaults.createGlueTable(stack, defaults.createGlueDatabase(stack), [{
+  defaults.createGlueTable(stack, defaults.createGlueDatabase(stack), undefined, [{
     name: 'id',
     type: 'int',
     comment: '',
@@ -326,10 +326,10 @@ test('Test deployment with role creation', () => {
   defaults.buildGlueJob(stack, {
     glueJobProps: cfnJobProps,
     outputDataStore: {
-      datastoreStype: defaults.SinkStoreType.S3
+      datastoreType: defaults.SinkStoreType.S3
     },
     database: _database,
-    table: defaults.createGlueTable(stack, _database, [{
+    table: defaults.createGlueTable(stack, _database, undefined, [{
       name: "id",
       type: "int",
       comment: ""
@@ -360,13 +360,13 @@ test('Test deployment with role creation', () => {
   defaults.buildGlueJob(stack, {
     glueJobProps: cfnJobProps,
     outputDataStore: {
-      datastoreStype: defaults.SinkStoreType.S3,
-      s3OutputBucket: new Bucket(stack, 'OutputBucket', {
+      datastoreType: defaults.SinkStoreType.S3,
+      existingS3OutputBucket: new Bucket(stack, 'OutputBucket', {
         versioned: false
       })
     },
     database: _database,
-    table: defaults.createGlueTable(stack, _database, [{
+    table: defaults.createGlueTable(stack, _database, undefined, [{
       name: "id",
       type: "int",
       comment: ""
@@ -396,13 +396,13 @@ test('Test deployment with role creation', () => {
     defaults.buildGlueJob(stack, {
       glueJobProps: cfnJobProps,
       outputDataStore: {
-        datastoreStype: defaults.SinkStoreType.S3,
-        s3OutputBucket: new Bucket(stack, 'OutputBucket', {
+        datastoreType: defaults.SinkStoreType.S3,
+        existingS3OutputBucket: new Bucket(stack, 'OutputBucket', {
           versioned: false
         })
       },
       database: _database,
-      table: defaults.createGlueTable(stack, _database, [{
+      table: defaults.createGlueTable(stack, _database, undefined, [{
         name: "id",
         type: "int",
         comment: ""
@@ -424,7 +424,32 @@ test('Test for incorrect Job Command property', () => {
     defaults.buildGlueJob(stack, {
       glueJobProps: {},
       database: _database,
-      table: defaults.createGlueTable(stack, _database, [{
+      table: defaults.createGlueTable(stack, _database, undefined, [{
+        name: "id",
+        type: "int",
+        comment: ""
+      }], 'kinesis', {STREAM_NAME: 'testStream'})
+    });
+  } catch (error) {
+    expect(error).toBeInstanceOf(Error);
+  }
+});
+
+// --------------------------------------------------------------
+// Check for CfnJob.JobCommandProperty type
+// --------------------------------------------------------------
+test('check for JobCommandProperty type', () => {
+  const stack = new Stack();
+  try {
+    const _database = defaults.createGlueDatabase(stack);
+    defaults.buildGlueJob(stack, {
+      glueJobProps: {
+        command: {
+          fakekey: 'fakevalue'
+        }
+      },
+      database: _database,
+      table: defaults.createGlueTable(stack, _database, undefined, [{
         name: "id",
         type: "int",
         comment: ""

@@ -11,34 +11,21 @@
  *  and limitations under the License.
  */
 
-import { CfnDatabase, CfnTable } from "@aws-cdk/aws-glue";
-import { Aws, Construct } from "@aws-cdk/core";
+import { CfnDatabase, CfnTable, CfnTableProps } from "@aws-cdk/aws-glue";
+import { Aws } from "@aws-cdk/core";
 
-/**
- * Method to build the default table props
- *
- * @param scope
- * @param database
- * @param fieldSchema
- * @param sourceType
- * @param parameters - Key value pairs of parmaeters. If source type is 'Kinesis', pass Kinesis Data Stream name with key
- *  as 'STREAM_NAME'. Example: {STREAM_NAME: 'KinesisStreamConstrct.streamName'}
- */
-export function DefaultGlueTable(scope: Construct, database: CfnDatabase, fieldSchema: CfnTable.ColumnProperty [],
-  sourceType: string, parameters?: any): CfnTable {
-  let _glueTable: CfnTable;
+export function DefaultGlueTableProps(database: CfnDatabase, fieldSchema: CfnTable.ColumnProperty [],
+  sourceType?: string, parameters?: any): CfnTableProps | any {
+  let _tableProps: CfnTableProps;
+
   if (sourceType === 'kinesis') {
     const kinesisStreamName = parameters.STREAM_NAME;
 
-    let _paths: string = '';
-    for (let index = 0; index < fieldSchema.length; ++index) {
-      _paths = _paths + fieldSchema[index].name;
-      if (index < fieldSchema.length - 1) {
-        _paths = _paths + ',';
-      }
-    }
+    const _paths: string = fieldSchema.map((item) => {
+      return item.name;
+    }).join(',');
 
-    _glueTable = new CfnTable(scope, 'GlueTable', {
+    _tableProps = {
       catalogId: database.catalogId,
       databaseName: database.ref,
       tableInput: {
@@ -66,10 +53,10 @@ export function DefaultGlueTable(scope: Construct, database: CfnDatabase, fieldS
           classication: 'json'
         }
       }
-    });
+    };
+
+    return _tableProps;
   } else {
     throw Error('Source Type not Supported. Valid Source Type not provided');
   }
-
-  return _glueTable!;
 }

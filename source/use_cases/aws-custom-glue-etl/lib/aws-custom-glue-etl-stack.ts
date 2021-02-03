@@ -69,7 +69,7 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
         }
       },
       outputDataStore: {
-        datastoreStype: SinkStoreType.S3
+        datastoreType: SinkStoreType.S3
       },
       fieldSchema: fieldSchema
     });
@@ -79,11 +79,11 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
     });
 
     new CfnOutput(this, 'GlueJob', {
-      value: customEtlJob.glueJob[0].ref
+      value: customEtlJob.glueJob.ref
     });
 
     new CfnOutput(this, 'JobRole', {
-      value: customEtlJob.glueJob[1].roleArn
+      value: customEtlJob.glueJobRole.roleArn
     });
   }
 }

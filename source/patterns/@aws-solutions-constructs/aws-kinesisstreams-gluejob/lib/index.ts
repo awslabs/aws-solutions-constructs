@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { CfnDatabase, CfnJob, CfnJobProps, CfnTable } from '@aws-cdk/aws-glue';
+import { CfnDatabase, CfnDatabaseProps, CfnJob, CfnJobProps, CfnTable, CfnTableProps } from '@aws-cdk/aws-glue';
 import { CfnPolicy, Effect, IRole, Policy, PolicyStatement } from '@aws-cdk/aws-iam';
 import { Stream, StreamProps } from '@aws-cdk/aws-kinesis';
 import { Bucket } from '@aws-cdk/aws-s3';
@@ -30,23 +30,23 @@ export interface KinesisStreamGlueJobProps {
    */
   readonly kinesisStreamProps?: StreamProps | any;
   /**
-   * @default
    * User provides props to override the default props for Glue ETL Jobs. This parameter will be ignored if the
    * existingGlueJob parameter is set
    *
    * This parameter is defined as `any` to not enforce passing the Glue Job role which is a mandatory parameter
    * for CfnJobProps. If a role is not passed, the construct creates one for you and attaches the appropriate
    * role policies
+   *
+   * @default
    */
   readonly glueJobProps?: CfnJobProps | any;
   /**
-   * Existing GlueJob configuration. If this property is provided, any configuration provided through @glueJobProps
+   * Existing GlueJob configuration. If this property is provided, any propertiers provided through @glueJobProps is ignored
    */
   readonly existingGlueJob?: CfnJob;
   /**
-   * @default
-   * A JSON document defining the schema structure of the records in the data stream. An example of such a
-   * definition as below. Either @table or @fieldSchema is mandatory. If @table is provided then @fieldSchema is ignored
+   * Structure of the records in the Amazon Kinesis Data Streams. An example of such a  definition is as below.
+   * Either @table or @fieldSchema is mandatory. If @table is provided then @fieldSchema is ignored
    * 	"FieldSchema": [{
    *  	"name": "id",
    *  	"type": "int",
@@ -64,19 +64,34 @@ export interface KinesisStreamGlueJobProps {
    *    "type": "int",
    *    "comment": "Some value associated with the record"
    *  },
+   *
+   * @default
    */
   readonly fieldSchema?: CfnTable.ColumnProperty [];
+  /**
+   * Glue Table for this construct, If not provided the construct will create a new Table in the
+   * database. This table should define the schema for the records in the Kinesis Data Streams.
+   * One of @tableprops or @table or @fieldSchema is mandatory. If @tableprops is provided then
+   * @table and @fieldSchema are ignored. If @table is provided, @fieldSchema is ignored
+   */
+  readonly existingTable?: CfnTable;
+  /**
+   * The table properties for the construct to create the table. One of @tableprops or @table
+   * or @fieldSchema is mandatory. If @tableprops is provided then @table and @fieldSchema
+   * are ignored. If @table is provided, @fieldSchema is ignored
+   */
+  readonly tableProps?: CfnTableProps;
   /**
    * Glue Database for this construct. If not provided the construct will create a new Glue Database.
    * The database is where the schema for the data in Kinesis Data Streams is stored
    */
-  readonly database?: CfnDatabase;
+  readonly existingDatabase?: CfnDatabase;
   /**
-   * Glue Table for this construct, If not provided the construct will create a new Table in the
-   * database. This table should define the schema for the records in the Kinesis Data Streams.
-   * Either @table or @fieldSchema is mandatory. If @table is provided then @fieldSchema is ignored
+   * The props for the Glue database that the construct should use to create. If @database is set
+   * then this property is ignored. If none of @database and @databaseprops is provided, the
+   * construct will define a GlueDatabase resoruce.
    */
-  readonly table?: CfnTable;
+  readonly databaseProps?: CfnDatabaseProps;
   /**
    * The output data stores where the transformed data should be written. Current supported data stores
    * include only S3, other potential stores may be added in the future.
@@ -86,15 +101,19 @@ export interface KinesisStreamGlueJobProps {
 
 export class KinesisStreamGlueJob extends Construct {
   public readonly kinesisStream: Stream;
-
-  public readonly glueJob: [ CfnJob, IRole ];
-
+  public readonly glueJob: CfnJob;
+  public readonly glueJobRole: IRole;
   public readonly database: CfnDatabase;
-
   public readonly table: CfnTable;
+  public readonly outputBucket?: [Bucket, (Bucket | undefined)?];
 
-  public readonly outputBucket!: [Bucket, (Bucket | undefined)?];
-
+  /**
+   * Constructs a new instalce of KinesisStreamGlueJob
+   *
+   * @param scope
+   * @param id
+   * @param props
+   */
   constructor(scope: Construct, id: string, props: KinesisStreamGlueJobProps) {
     super(scope, id);
 
@@ -103,25 +122,21 @@ export class KinesisStreamGlueJob extends Construct {
       kinesisStreamProps: props.kinesisStreamProps,
     });
 
-    if (props.database !== undefined) {
-      this.database = props.database!;
-    } else {
-      this.database = defaults.createGlueDatabase(scope);
-    }
+    this.database = props.existingDatabase !== undefined ? props.existingDatabase : defaults.createGlueDatabase(scope, props.databaseProps);
 
-    if (props.fieldSchema === undefined && props.table === undefined) {
+    if (props.fieldSchema === undefined && props.existingTable === undefined && props.tableProps === undefined) {
       throw Error('Either fieldSchema or table property has to be set, both cannot be optional');
     }
 
-    if (props.table !== undefined) {
-      this.table = props.table;
+    if (props.existingTable !== undefined) {
+      this.table = props.existingTable;
     } else {
-      this.table = defaults.createGlueTable(scope, this.database, props.fieldSchema!, 'kinesis', {
+      this.table = defaults.createGlueTable(scope, this.database, props.tableProps, props.fieldSchema, 'kinesis', {
         STREAM_NAME: this.kinesisStream.streamName
       });
     }
 
-    this.glueJob = defaults.buildGlueJob(this, {
+    [ this.glueJob, this.glueJobRole ] = defaults.buildGlueJob(this, {
       existingCfnJob: props.existingGlueJob,
       glueJobProps: props.glueJobProps,
       table: this.table!,
@@ -129,15 +144,24 @@ export class KinesisStreamGlueJob extends Construct {
       outputDataStore: props.outputDataStore!
     });
 
-    this.buildRolePolicy(scope, this.database, this.table, this.glueJob[1]);
+    this.glueJobRole = this.buildRolePolicy(scope, this.database, this.table, this.glueJob, this.glueJobRole);
   }
 
-  private buildRolePolicy(scope: Construct, glueDatabase: CfnDatabase, glueTable: CfnTable, role: IRole): IRole {
+  /**
+   * Updates the AWS Glue Job role to include additional policies required for the ETL job to execute
+   *
+   * @param scope
+   * @param glueDatabase
+   * @param glueTable
+   * @param glueJob
+   * @param role
+   */
+  private buildRolePolicy(scope: Construct, glueDatabase: CfnDatabase, glueTable: CfnTable, glueJob: CfnJob, role: IRole): IRole {
     const _glueJobPolicy = new Policy(scope, 'GlueJobPolicy', {
       statements: [ new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'glue:GetJob' ],
-        resources: [ `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:job/${this.glueJob[0].ref}` ]
+        resources: [ `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:job/${glueJob.ref}` ]
       }), new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'glue:GetSecurityConfiguration' ],

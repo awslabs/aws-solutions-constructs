@@ -511,7 +511,7 @@ test('When S3 bucket location for script exists', () => {
       comment: "Some value associated with the record"
     }],
     outputDataStore: {
-      datastoreStype: SinkStoreType.S3
+      datastoreType: SinkStoreType.S3
     }
   };
   new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
@@ -552,7 +552,7 @@ test('create glue job with existing kinesis stream', () => {
       comment: "Some value associated with the record"
     }],
     outputDataStore: {
-      datastoreStype: SinkStoreType.S3
+      datastoreType: SinkStoreType.S3
     }
   });
 
@@ -592,7 +592,7 @@ test('Do not pass s3ObjectUrlForScript or scriptLocationPath, error out', () => 
         comment: "Some value associated with the record"
       }],
       outputDataStore: {
-        datastoreStype: SinkStoreType.S3
+        datastoreType: SinkStoreType.S3
       }
     });
   } catch (error) {
@@ -616,7 +616,7 @@ test('Do not pass fieldSchame or table (CfnTable), error out', () => {
         }
       },
       outputDataStore: {
-        datastoreStype: SinkStoreType.S3
+        datastoreType: SinkStoreType.S3
       }
     };
     new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
@@ -640,8 +640,8 @@ test('When database and table are provided', () => {
         scriptLocation: 's3://fakebucket/fakefolder/fakefolder/fakefile.py'
       }
     },
-    database: _database,
-    table: defaults.createGlueTable(stack, _database, [{
+    existingDatabase: _database,
+    existingTable: defaults.createGlueTable(stack, _database, undefined, [{
       name: "id",
       type: "int",
       comment: "Identifier for the record"

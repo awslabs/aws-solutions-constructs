@@ -81,7 +81,7 @@ new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', {
     comment: "Some value associated with the record"
   }],
   outputDataStore: {
-    datastoreStype: SinkStoreType.S3
+    datastoreType: SinkStoreType.S3
   }
 });
 

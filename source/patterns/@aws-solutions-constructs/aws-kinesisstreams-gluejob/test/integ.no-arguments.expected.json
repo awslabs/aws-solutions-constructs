@@ -1,39 +1,20 @@
 {
   "Description": "Integration Test for aws-kinesisstream-gluejob",
-  "Resources": {
-    "existingScriptLocation845F3C51": {
-      "Type": "AWS::S3::Bucket",
-      "Properties": {
-        "LifecycleConfiguration": {
-          "Rules": [
-            {
-              "ExpirationInDays": 30,
-              "Status": "Enabled"
-            }
-          ]
-        }
-      },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W51",
-              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
-            },
-            {
-              "id": "W35",
-              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
-            },
-            {
-              "id": "W41",
-              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct"
-            }
-          ]
-        }
-      }
+  "Parameters": {
+    "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3Bucket4DB21A17": {
+      "Type": "String",
+      "Description": "S3 bucket for asset \"4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95\""
     },
+    "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3VersionKeyBC9CB88A": {
+      "Type": "String",
+      "Description": "S3 key for asset version \"4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95\""
+    },
+    "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95ArtifactHash0821F50E": {
+      "Type": "String",
+      "Description": "Artifact hash for asset \"4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95\""
+    }
+  },
+  "Resources": {
     "testkinesisstreamslambdaKinesisStream374D6D56": {
       "Type": "AWS::Kinesis::Stream",
       "Properties": {
@@ -199,7 +180,34 @@
                       },
                       ":s3:::",
                       {
-                        "Ref": "existingScriptLocation845F3C51"
+                        "Ref": "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3Bucket4DB21A17"
+                      },
+                      "/",
+                      {
+                        "Fn::Select": [
+                          0,
+                          {
+                            "Fn::Split": [
+                              "||",
+                              {
+                                "Ref": "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3VersionKeyBC9CB88A"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "Fn::Select": [
+                          1,
+                          {
+                            "Fn::Split": [
+                              "||",
+                              {
+                                "Ref": "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3VersionKeyBC9CB88A"
+                              }
+                            ]
+                          }
+                        ]
                       }
                     ]
                   ]
@@ -214,7 +222,34 @@
                       },
                       ":s3:::",
                       {
-                        "Ref": "existingScriptLocation845F3C51"
+                        "Ref": "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3Bucket4DB21A17"
+                      },
+                      "/",
+                      {
+                        "Fn::Select": [
+                          0,
+                          {
+                            "Fn::Split": [
+                              "||",
+                              {
+                                "Ref": "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3VersionKeyBC9CB88A"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "Fn::Select": [
+                          1,
+                          {
+                            "Fn::Split": [
+                              "||",
+                              {
+                                "Ref": "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3VersionKeyBC9CB88A"
+                              }
+                            ]
+                          }
+                        ]
                       },
                       "/*"
                     ]
@@ -389,7 +424,7 @@
       "Type": "AWS::Glue::Job",
       "Properties": {
         "Command": {
-          "Name": "glueetl",
+          "Name": "gluestreaming",
           "PythonVersion": "3",
           "ScriptLocation": {
             "Fn::Join": [
@@ -397,7 +432,34 @@
               [
                 "s3://",
                 {
-                  "Ref": "existingScriptLocation845F3C51"
+                  "Ref": "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3Bucket4DB21A17"
+                },
+                "/",
+                {
+                  "Fn::Select": [
+                    0,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3VersionKeyBC9CB88A"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Fn::Select": [
+                    1,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3VersionKeyBC9CB88A"
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             ]
@@ -430,7 +492,7 @@
           "Ref": "AWS::AccountId"
         },
         "DatabaseInput": {
-          "Description": "A Glue database table"
+          "Description": "An AWS Glue database generated by AWS Solutions Construct"
         }
       }
     },
