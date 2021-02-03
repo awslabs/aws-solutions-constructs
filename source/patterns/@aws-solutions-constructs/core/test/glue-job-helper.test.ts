@@ -271,34 +271,6 @@ test('Do no supply glueJobProps or existingCfnJob and error out', () => {
   }
 });
 
-test('Create table', () => {
-  const stack = new Stack();
-  defaults.createGlueTable(stack, defaults.createGlueDatabase(stack), undefined, [{
-    name: 'id',
-    type: 'int',
-    comment: '',
-  },
-  {
-    name: 'name',
-    type: 'string',
-    comment: '',
-  },
-  {
-    name: 'address',
-    type: 'string',
-    comment: '',
-  },
-  {
-    name: 'value',
-    type: 'int',
-    comment: '',
-  },
-  ], 'kinesis', {
-    STREAM_NAME: 'testStream'
-  });
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
 test('Create Database', () => {
   const stack = new Stack();
   defaults.createGlueDatabase(stack);
