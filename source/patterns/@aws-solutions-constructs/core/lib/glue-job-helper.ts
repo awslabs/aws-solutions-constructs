@@ -57,20 +57,24 @@ export interface SinkDataStoreProps {
 
 export interface BuildGlueJobProps {
   /**
-   * Glue ETL job properties. Do not pass the location of the script under the JobCommand. This
-   * bucket location will be ignored and new location will be created. If a bucket location for the
-   * ETL script exists, set it as the @scriptLocation parameter
+   * Glue ETL job properties.
    */
   readonly glueJobProps?: CfnJobProps | any
   /**
    * Existing instance of the S3 bucket object, if this is set then the script location is ignored.
    */
   readonly existingCfnJob?: CfnJob;
-
+  /**
+   * AWS Glue table
+   */
   readonly table: CfnTable;
-
+  /**
+   * AWS Glue database
+   */
   readonly database: CfnDatabase;
-
+  /**
+   * Output storage options
+   */
   readonly outputDataStore?: SinkDataStoreProps
 }
 
