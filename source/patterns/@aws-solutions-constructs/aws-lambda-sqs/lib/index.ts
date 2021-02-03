@@ -17,7 +17,6 @@ import * as lambda from "@aws-cdk/aws-lambda";
 import * as sqs from "@aws-cdk/aws-sqs";
 import * as ec2 from "@aws-cdk/aws-ec2";
 import { Construct } from "@aws-cdk/core";
-import { AddAwsServiceEndpoint } from "@aws-solutions-constructs/core";
 
 /**
  * @summary The properties for the LambdaToSqs class.
@@ -122,7 +121,7 @@ export class LambdaToSqs extends Construct {
           },
         });
 
-        AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.SQS);
+        defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.SQS);
       }
 
       // Setup the Lambda function
