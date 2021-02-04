@@ -16,8 +16,8 @@ import { ResourcePart, SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import { CfnJob, CfnJobProps } from '@aws-cdk/aws-glue';
 import { Role, ServicePrincipal } from '@aws-cdk/aws-iam';
-import { Bucket } from '@aws-cdk/aws-s3';
-import { Stack } from "@aws-cdk/core";
+import { Bucket, BucketEncryption } from '@aws-cdk/aws-s3';
+import { RemovalPolicy, Stack } from "@aws-cdk/core";
 import * as defaults from '..';
 
 // --------------------------------------------------------------
@@ -72,7 +72,7 @@ test('Test deployment with role creation', () => {
 });
 
 // --------------------------------------------------------------
-// Create a Glue job outside the construct, should not create a new one
+// Pass an existing Glue Job
 // --------------------------------------------------------------
 test('Create a Glue Job outside the construct', () => {
   // Stack
@@ -251,6 +251,9 @@ test('Test custom deployment properties', () => {
   }, ResourcePart.CompleteDefinition);
 });
 
+// --------------------------------------------------------------
+// Do not supply parameters and error out
+// --------------------------------------------------------------
 test('Do no supply glueJobProps or existingCfnJob and error out', () => {
   const stack = new Stack();
   try {
@@ -271,14 +274,8 @@ test('Do no supply glueJobProps or existingCfnJob and error out', () => {
   }
 });
 
-test('Create Database', () => {
-  const stack = new Stack();
-  defaults.createGlueDatabase(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
 // --------------------------------------------------------------
-// Test deployment without role creation
+// Allow the construct to create the job role required
 // --------------------------------------------------------------
 test('Test deployment with role creation', () => {
   // Stack
@@ -309,6 +306,22 @@ test('Test deployment with role creation', () => {
   });
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(stack).toHaveResourceLike('AWS::IAM::Role', {
+    Type: "AWS::IAM::Role",
+    Properties: {
+      AssumeRolePolicyDocument: {
+        Statement: [{
+          Action: "sts:AssumeRole",
+          Effect: "Allow",
+          Principal: {
+            Service: "glue.amazonaws.com"
+          }
+        }],
+        Version: "2012-10-17"
+      },
+      Description: "Service role that Glue custom ETL jobs will assume for exeuction"
+    }
+  }, ResourcePart.CompleteDefinition);
 });
 
 // --------------------------------------------------------------
@@ -334,7 +347,10 @@ test('Test deployment with role creation', () => {
     outputDataStore: {
       datastoreType: defaults.SinkStoreType.S3,
       existingS3OutputBucket: new Bucket(stack, 'OutputBucket', {
-        versioned: false
+        versioned: false,
+        bucketName: 'outputbucket',
+        encryption: BucketEncryption.S3_MANAGED,
+        removalPolicy: RemovalPolicy.DESTROY
       })
     },
     database: _database,
@@ -346,6 +362,21 @@ test('Test deployment with role creation', () => {
   });
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(stack).toHaveResourceLike('AWS::S3::Bucket', {
+    Type: 'AWS::S3::Bucket',
+    Properties: {
+      BucketEncryption: {
+        ServerSideEncryptionConfiguration: [{
+          ServerSideEncryptionByDefault: {
+            SSEAlgorithm: "AES256"
+          }
+        }]
+      },
+      BucketName: "outputbucket"
+    },
+    UpdateReplacePolicy: "Delete",
+    DeletionPolicy: "Delete"
+  }, ResourcePart.CompleteDefinition);
 });
 
 // --------------------------------------------------------------
