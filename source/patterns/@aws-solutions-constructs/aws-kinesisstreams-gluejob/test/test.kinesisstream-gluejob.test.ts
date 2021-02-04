@@ -13,8 +13,9 @@
 
 import { ResourcePart, SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
-import { CfnJob } from '@aws-cdk/aws-glue';
-import { Stack } from "@aws-cdk/core";
+import { CfnDatabase, CfnJob } from '@aws-cdk/aws-glue';
+import { Stream, StreamEncryption } from '@aws-cdk/aws-kinesis';
+import { Duration, Stack } from "@aws-cdk/core";
 import * as defaults from '@aws-solutions-constructs/core';
 import { SinkStoreType } from '@aws-solutions-constructs/core';
 import { KinesisStreamGlueJob, KinesisStreamGlueJobProps } from '../lib';
@@ -305,181 +306,10 @@ test('Test if existing Glue Job is provided', () => {
     },
     Type: "AWS::Kinesis::Stream"
   }, ResourcePart.CompleteDefinition);
-
-  // check policy to allow read access to Kinesis Stream
-  expect(stack).toHaveResourceLike('AWS::IAM::Policy', {
-    Type: "AWS::IAM::Policy",
-    Properties: {
-      PolicyDocument: {
-        Statement: [
-          {
-            Action: "glue:GetJob",
-            Effect: "Allow",
-            Resource: {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:",
-                  {
-                    Ref: "AWS::Partition"
-                  },
-                  ":glue:",
-                  {
-                    Ref: "AWS::Region"
-                  },
-                  ":",
-                  {
-                    Ref: "AWS::AccountId"
-                  },
-                  ":job/",
-                  {
-                    Ref: "ExistingJob"
-                  }
-                ]
-              ]
-            }
-          },
-          {
-            Action: "glue:GetSecurityConfiguration",
-            Effect: "Allow",
-            Resource: "*"
-          },
-          {
-            Action: "glue:GetTable",
-            Effect: "Allow",
-            Resource: [
-              {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:",
-                    {
-                      Ref: "AWS::Partition"
-                    },
-                    ":glue:",
-                    {
-                      Ref: "AWS::Region"
-                    },
-                    ":",
-                    {
-                      Ref: "AWS::AccountId"
-                    },
-                    ":table/",
-                    {
-                      Ref: "GlueDatabase"
-                    },
-                    "/",
-                    {
-                      Ref: "GlueTable"
-                    }
-                  ]
-                ]
-              },
-              {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:",
-                    {
-                      Ref: "AWS::Partition"
-                    },
-                    ":glue:",
-                    {
-                      Ref: "AWS::Region"
-                    },
-                    ":",
-                    {
-                      Ref: "AWS::AccountId"
-                    },
-                    ":database/",
-                    {
-                      Ref: "GlueDatabase"
-                    }
-                  ]
-                ]
-              },
-              {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:",
-                    {
-                      Ref: "AWS::Partition"
-                    },
-                    ":glue:",
-                    {
-                      Ref: "AWS::Region"
-                    },
-                    ":",
-                    {
-                      Ref: "AWS::AccountId"
-                    },
-                    ":catalog"
-                  ]
-                ]
-              }
-            ]
-          },
-          {
-            Action: "cloudwatch:PutMetricData",
-            Effect: "Allow",
-            Resource: "*"
-          },
-          {
-            Action: [
-              "kinesis:DescribeStream",
-              "kinesis:DescribeStreamSummary",
-              "kinesis:GetRecords",
-              "kinesis:GetShardIterator",
-              "kinesis:ListShards",
-              "kinesis:SubscribeToShard"
-            ],
-            Effect: "Allow",
-            Resource: {
-              "Fn::GetAtt": [
-                "testkinesisstreamslambdaKinesisStream374D6D56",
-                "Arn"
-              ]
-            }
-          }
-        ],
-        Version: "2012-10-17"
-      },
-      PolicyName: "GlueJobPolicyAEA4B94E",
-      Roles: [
-        {
-          "Fn::Select": [
-            1,
-            {
-              "Fn::Split": [
-                "/",
-                {
-                  "Fn::Select": [
-                    5,
-                    {
-                      "Fn::Split": [
-                        ":",
-                        {
-                          "Fn::GetAtt": [
-                            "JobRole014917C6",
-                            "Arn"
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  }, ResourcePart.CompleteDefinition);
 });
 
 // --------------------------------------------------------------
-// Test if existing S3 bucket location is provided
+// Test if existing S3 bucket location for script is provided
 // --------------------------------------------------------------
 test('When S3 bucket location for script exists', () => {
   // Initial setup
@@ -517,6 +347,16 @@ test('When S3 bucket location for script exists', () => {
   new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(stack).toHaveResourceLike('AWS::Glue::Job', {
+    Type: 'AWS::Glue::Job',
+    Properties: {
+      Command: {
+        Name: "pythonshell",
+        PythonVersion: "3",
+        ScriptLocation: "s3://fakelocation/etl/fakefile.py",
+      }
+    }
+  }, ResourcePart.CompleteDefinition);
 });
 
 // --------------------------------------------------------------
@@ -524,7 +364,13 @@ test('When S3 bucket location for script exists', () => {
 // --------------------------------------------------------------
 test('create glue job with existing kinesis stream', () => {
   const stack = new Stack();
-  const _kinesisStream = defaults.buildKinesisStream(stack, {});
+  const _kinesisStream = new Stream(stack, 'FakeStream', {
+    streamName: 'fakename',
+    encryption: StreamEncryption.UNENCRYPTED,
+    shardCount: 3,
+    retentionPeriod: Duration.hours(30)
+  });
+
   new KinesisStreamGlueJob(stack, 'existingStreamJob', {
     glueJobProps: {
       command: {
@@ -557,6 +403,14 @@ test('create glue job with existing kinesis stream', () => {
   });
 
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(stack).toHaveResourceLike('AWS::Kinesis::Stream', {
+    Type: 'AWS::Kinesis::Stream',
+    Properties: {
+      Name: 'fakename',
+      RetentionPeriodHours: 30,
+      ShardCount: 3
+    }
+  }, ResourcePart.CompleteDefinition);
 });
 
 // --------------------------------------------------------------
@@ -631,7 +485,12 @@ test('Do not pass fieldSchame or table (CfnTable), error out', () => {
 test('When database and table are provided', () => {
   // Initial setup
   const stack = new Stack();
-  const _database = defaults.createGlueDatabase(stack);
+  const _database = new CfnDatabase(stack, 'fakedb', {
+    catalogId: 'fakecatalogId',
+    databaseInput: {
+      description: 'a fake glue db'
+    }
+  });
   const props: KinesisStreamGlueJobProps = {
     glueJobProps: {
       command: {
@@ -662,4 +521,146 @@ test('When database and table are provided', () => {
   new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(stack).toHaveResourceLike('AWS::Glue::Database', {
+    Type: "AWS::Glue::Database",
+    Properties: {
+      CatalogId: "fakecatalogId",
+      DatabaseInput: {
+        Description: "a fake glue db"
+      }
+    }
+  }, ResourcePart.CompleteDefinition);
+});
+
+// --------------------------------------------------------------
+// When database and table are not provided
+// --------------------------------------------------------------
+test('When database and table are not provided', () => {
+  // Initial setup
+  const stack = new Stack();
+  const props: KinesisStreamGlueJobProps = {
+    glueJobProps: {
+      command: {
+        name: 'glueetl',
+        pythonVersion: '3',
+        scriptLocation: 's3://fakebucket/fakefolder/fakefolder/fakefile.py'
+      }
+    },
+    fieldSchema: [{
+      name: "id",
+      type: "int",
+      comment: "Identifier for the record"
+    }, {
+      name: "name",
+      type: "string",
+      comment: "The name of the record"
+    }, {
+      name: "type",
+      type: "string",
+      comment: "The type of the record"
+    }, {
+      name: "numericvalue",
+      type: "int",
+      comment: "Some value associated with the record"
+    }]
+  };
+  new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(stack).toHaveResourceLike('AWS::Glue::Database', {
+    Type: "AWS::Glue::Database",
+    Properties: {
+      CatalogId: {
+        Ref: "AWS::AccountId"
+      },
+      DatabaseInput: {
+        Description: "An AWS Glue database generated by AWS Solutions Construct"
+      }
+    }
+  }, ResourcePart.CompleteDefinition);
+
+  expect(stack).toHaveResourceLike('AWS::Glue::Table', {
+    Type: 'AWS::Glue::Table',
+    Properties: {
+      CatalogId: {
+        Ref: "AWS::AccountId"
+      },
+      DatabaseName: {
+        Ref: "GlueDatabase"
+      }
+    }
+  }, ResourcePart.CompleteDefinition);
+
+  expect(stack).toHaveResourceLike('AWS::Glue::Table', {
+    Type: "AWS::Glue::Table",
+    Properties: {
+      CatalogId: {
+        Ref: "AWS::AccountId"
+      },
+      DatabaseName: {
+        Ref: "GlueDatabase"
+      },
+      TableInput: {
+        Parameters: {
+          classication: "json"
+        },
+        StorageDescriptor: {
+          Columns: [
+            {
+              Comment: "Identifier for the record",
+              Name: "id",
+              Type: "int"
+            },
+            {
+              Comment: "The name of the record",
+              Name: "name",
+              Type: "string"
+            },
+            {
+              Comment: "The type of the record",
+              Name: "type",
+              Type: "string"
+            },
+            {
+              Comment: "Some value associated with the record",
+              Name: "numericvalue",
+              Type: "int"
+            }
+          ],
+          Compressed: false,
+          InputFormat: "org.apache.hadoop.mapred.TextInputFormat",
+          Location: {
+            Ref: "testkinesisstreamslambdaKinesisStream374D6D56"
+          },
+          NumberOfBuckets: -1,
+          OutputFormat: "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+          Parameters: {
+            endpointUrl: {
+              "Fn::Join": [
+                "",
+                [
+                  "https://kinesis.",
+                  {
+                    Ref: "AWS::Region"
+                  },
+                  ".amazonaws.com"
+                ]
+              ]
+            },
+            streamName: {
+              Ref: "testkinesisstreamslambdaKinesisStream374D6D56"
+            },
+            typeOfData: "kinesis"
+          },
+          SerdeInfo: {
+            Parameters: {
+              paths: "id,name,type,numericvalue"
+            },
+            SerializationLibrary: "org.openx.data.jsonserde.JsonSerDe"
+          }
+        },
+        TableType: "EXTERNAL_TABLE"
+      }
+    }
+  }, ResourcePart.CompleteDefinition);
 });
