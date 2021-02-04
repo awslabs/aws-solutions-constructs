@@ -75,7 +75,7 @@ test('create default CfnTable with default props', () => {
                 [
                   "https://kinesis.",
                   {
-                    "Ref": "AWS::Region"
+                    Ref: "AWS::Region"
                   },
                   ".amazonaws.com"
                 ]
