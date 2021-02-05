@@ -479,6 +479,18 @@
           },
           "--table_name": {
             "Ref": "GlueTable"
+          },
+          "--output_path": {
+            "Fn::Join": [
+              "",
+              [
+                "s3://",
+                {
+                  "Ref": "testkinesisstreamslambdaS3Bucket54759F5C"
+                },
+                "/output/"
+              ]
+            ]
           }
         },
         "GlueVersion": "2.0",

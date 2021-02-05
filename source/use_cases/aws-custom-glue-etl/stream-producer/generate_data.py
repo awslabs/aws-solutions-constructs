@@ -85,7 +85,7 @@ def main():
     # session = boto3.Session(
     #     aws_access_key_id="FAKE_ID_UPDATE_ACCESS_KEY_ID",
     #     aws_secret_access_key="FAKE_KEY_UPDATE_ACCESS_KEY",
-    #     aws_session_token="FACKE_TOKEN_UPDATE_SESSION_TOKEN",
+    #     aws_session_token="FAKE_TOKEN_UPDATE_SESSION_TOKEN",
     # )
 
     # OR

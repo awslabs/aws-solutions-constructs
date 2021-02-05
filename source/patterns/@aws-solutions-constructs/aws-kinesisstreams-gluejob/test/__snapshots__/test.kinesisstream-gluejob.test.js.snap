@@ -400,6 +400,18 @@ Object {
           },
           "--enable-continuous-cloudwatch-log": true,
           "--enable-metrics": true,
+          "--output_path": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "s3://",
+                Object {
+                  "Ref": "testkinesisstreamslambdaS3Bucket54759F5C",
+                },
+                "/output/",
+              ],
+            ],
+          },
           "--table_name": Object {
             "Ref": "GlueTable",
           },
@@ -1987,6 +1999,18 @@ Object {
           },
           "--enable-continuous-cloudwatch-log": true,
           "--enable-metrics": true,
+          "--output_path": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "s3://",
+                Object {
+                  "Ref": "testkinesisstreamslambdaS3Bucket54759F5C",
+                },
+                "/output/",
+              ],
+            ],
+          },
           "--table_name": Object {
             "Ref": "GlueTable",
           },
@@ -2605,6 +2629,18 @@ Object {
           },
           "--enable-continuous-cloudwatch-log": true,
           "--enable-metrics": true,
+          "--output_path": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "s3://",
+                Object {
+                  "Ref": "testkinesisstreamslambdaS3Bucket54759F5C",
+                },
+                "/output/",
+              ],
+            ],
+          },
           "--table_name": Object {
             "Ref": "GlueTable",
           },
