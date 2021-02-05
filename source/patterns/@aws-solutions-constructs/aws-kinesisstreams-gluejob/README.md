@@ -61,7 +61,7 @@ const customEtlJob = new KinesisstreamsToGluejob(this, 'CustomETL', {
             scriptLocation: new s3assets.Asset(this, 'ScriptLocation', {
                 path: `${__dirname}/../etl/transform.py`,
             }).s3ObjectUrl,
-        }
+        },
     },
     fieldSchema: fieldSchema,
 });
@@ -70,14 +70,14 @@ const customEtlJob = new KinesisstreamsToGluejob(this, 'CustomETL', {
 ## Initializer
 
 ```text
-new KinesisStreamGlueJob(scope: Construct, id: string, props: KinesisStreamsToLambdaProps);
+new KinesisstreamsToGluejob(scope: Construct, id: string, props: KinesisstreamsToGluejobProps);
 ```
 
 _Parameters_
 
 -   scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
 -   id `string`
--   props [`KinesisStreamGlueJobProps`](#pattern-construct-props)
+-   props [`KinesisstreamsToGluejobProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 
