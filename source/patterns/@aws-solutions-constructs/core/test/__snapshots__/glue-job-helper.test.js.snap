@@ -807,6 +807,18 @@ Object {
           },
           "--enable-continuous-cloudwatch-log": true,
           "--enable-metrics": true,
+          "--output_path": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "s3://",
+                Object {
+                  "Ref": "S3Bucket07682993",
+                },
+                "/output/",
+              ],
+            ],
+          },
           "--table_name": Object {
             "Ref": "GlueTable",
           },
