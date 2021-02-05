@@ -30,43 +30,41 @@ This AWS Solutions Construct deploys a Kinesis Stream and configures a AWS Glue 
 Here is a minimal deployable pattern definition in Typescript:
 
 ```javascript
-const fieldSchema: CfnTable.ColumnProperty [] = [{
-            name: 'id',
-            type: 'int',
-            comment: 'Identifier for the record',
-        },
-        {
-            name: 'name',
-            type: 'string',
-            comment: 'Name for the record',
-        },
-        {
-            name: 'address',
-            type: 'string',
-            comment: 'Address for the record',
-        },
-        {
-            name: 'value',
-            type: 'int',
-            comment: 'Value for the record',
-        },
-    ]
-);
+const fieldSchema: glue.CfnTable.ColumnProperty[] = [
+    {
+        name: 'id',
+        type: 'int',
+        comment: 'Identifier for the record',
+    },
+    {
+        name: 'name',
+        type: 'string',
+        comment: 'Name for the record',
+    },
+    {
+        name: 'address',
+        type: 'string',
+        comment: 'Address for the record',
+    },
+    {
+        name: 'value',
+        type: 'int',
+        comment: 'Value for the record',
+    },
+];
 
-const _customEtlJob = new KinesisStreamGlueJob(this, 'CustomETL', {
+const customEtlJob = new KinesisstreamsToGluejob(this, 'CustomETL', {
     glueJobProps: {
         command: {
-                name: 'gluestreaming',
-                pythonVersion: '3',
-                scriptLocation: new Asset(this, 'ScriptLocation', {
-                    path: `${__dirname}/../etl/transform.py`
-                }).s3ObjectUrl
-            }
-        },
-        fieldSchema: fieldSchema
-    }
+            name: 'gluestreaming',
+            pythonVersion: '3',
+            scriptLocation: new s3assets.Asset(this, 'ScriptLocation', {
+                path: `${__dirname}/../etl/transform.py`,
+            }).s3ObjectUrl,
+        }
+    },
+    fieldSchema: fieldSchema,
 });
-
 ```
 
 ## Initializer

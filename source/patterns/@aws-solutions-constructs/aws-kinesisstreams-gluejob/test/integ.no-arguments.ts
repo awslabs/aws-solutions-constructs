@@ -15,7 +15,7 @@
 import { CfnTable } from '@aws-cdk/aws-glue';
 import { Asset } from '@aws-cdk/aws-s3-assets';
 import { App, Stack } from '@aws-cdk/core';
-import { KinesisStreamGlueJob } from '../lib';
+import { KinesisstreamsToGluejob } from '../lib';
 
 // Setup
 const app = new App();
@@ -40,7 +40,7 @@ const fieldSchema: CfnTable.ColumnProperty [] = [{
   comment: "Some value associated with the record"
 }];
 
-new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', {
+new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', {
   glueJobProps: {
     command: {
       name: 'gluestreaming',

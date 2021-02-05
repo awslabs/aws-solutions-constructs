@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { CfnDatabase, CfnDatabaseProps, CfnJob, CfnJobProps, CfnSecurityConfiguration, CfnTable, CfnTableProps } from '@aws-cdk/aws-glue';
+import * as glue from '@aws-cdk/aws-glue';
 import { Effect, IRole, Policy, PolicyStatement, Role, ServicePrincipal } from '@aws-cdk/aws-iam';
 import { Bucket, BucketProps, IBucket } from '@aws-cdk/aws-s3';
 import { Aws, Construct, IResolvable } from '@aws-cdk/core';
@@ -59,26 +59,26 @@ export interface BuildGlueJobProps {
   /**
    * Glue ETL job properties.
    */
-  readonly glueJobProps?: CfnJobProps | any
+  readonly glueJobProps?: glue.CfnJobProps | any
   /**
    * Existing instance of the S3 bucket object, if this is set then the script location is ignored.
    */
-  readonly existingCfnJob?: CfnJob;
+  readonly existingCfnJob?: glue.CfnJob;
   /**
    * AWS Glue table
    */
-  readonly table: CfnTable;
+  readonly table: glue.CfnTable;
   /**
    * AWS Glue database
    */
-  readonly database: CfnDatabase;
+  readonly database: glue.CfnDatabase;
   /**
    * Output storage options
    */
   readonly outputDataStore?: SinkDataStoreProps
 }
 
-export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): [CfnJob, IRole] {
+export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): [glue.CfnJob, IRole] {
   if (!props.existingCfnJob) {
     if (props.glueJobProps) {
       return deployGlueJob(scope, props.glueJobProps, props.database!, props.table!, props.outputDataStore!);
@@ -90,8 +90,8 @@ export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): [CfnJo
   }
 }
 
-export function deployGlueJob(scope: Construct, glueJobProps: CfnJobProps, database: CfnDatabase, table: CfnTable,
-  outputDataStore: SinkDataStoreProps): [CfnJob, IRole] {
+export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, database: glue.CfnDatabase, table: glue.CfnTable,
+  outputDataStore: SinkDataStoreProps): [glue.CfnJob, IRole] {
 
   let _glueSecurityConfigName: string;
 
@@ -99,7 +99,7 @@ export function deployGlueJob(scope: Construct, glueJobProps: CfnJobProps, datab
     _glueSecurityConfigName = 'ETLJobSecurityConfig';
     const _glueKMSKey = `arn:${Aws.PARTITION}:kms:${Aws.REGION}:${Aws.ACCOUNT_ID}:alias/aws/glue`;
 
-    new CfnSecurityConfiguration(scope, 'GlueSecurityConfig', {
+    new glue.CfnSecurityConfiguration(scope, 'GlueSecurityConfig', {
       name: _glueSecurityConfigName,
       encryptionConfiguration: {
         jobBookmarksEncryption: {
@@ -157,7 +157,7 @@ export function deployGlueJob(scope: Construct, glueJobProps: CfnJobProps, datab
     ...glueJobProps.defaultArguments
   };
 
-  const _newGlueJobProps: CfnJobProps = overrideProps(defaults.DefaultGlueJobProps(_jobRole!, glueJobProps.command,
+  const _newGlueJobProps: glue.CfnJobProps = overrideProps(defaults.DefaultGlueJobProps(_jobRole!, glueJobProps.command,
     _glueSecurityConfigName, _jobArgumentsList, glueJobProps.glueVersion), glueJobProps);
 
   let _scriptLocation: string;
@@ -172,7 +172,7 @@ export function deployGlueJob(scope: Construct, glueJobProps: CfnJobProps, datab
   const _scriptBucketLocation: IBucket = Bucket.fromBucketArn(scope, 'ScriptLocaiton', getS3ArnfromS3Url(_scriptLocation!));
   _scriptBucketLocation.grantRead(_jobRole);
 
-  const _glueJob: CfnJob = new CfnJob(scope, 'KinesisETLJob', _newGlueJobProps);
+  const _glueJob: glue.CfnJob = new glue.CfnJob(scope, 'KinesisETLJob', _newGlueJobProps);
   return [_glueJob, _jobRole];
 }
 
@@ -192,8 +192,8 @@ export function createGlueJobRole(scope: Construct): Role {
 /**
  * This method creates an AWS Glue table. The method is called when an existing Glue table is not provided
  */
-export function createGlueTable(scope: Construct, database: CfnDatabase, tableProps?: CfnTableProps, fieldSchema?: CfnTable.ColumnProperty [],
-  sourceType?: string, parameters?: any): CfnTable {
+export function createGlueTable(scope: Construct, database: glue.CfnDatabase, tableProps?: glue.CfnTableProps,
+  fieldSchema?: glue.CfnTable.ColumnProperty [], sourceType?: string, parameters?: any): glue.CfnTable {
   return defaults.DefaultGlueTable(scope, tableProps !== undefined ? tableProps :
     defaults.DefaultGlueTableProps(database, fieldSchema!, sourceType, parameters));
 }
@@ -205,8 +205,8 @@ export function createGlueTable(scope: Construct, database: CfnDatabase, tablePr
  * @param scope
  * @param databaseProps
  */
-export function createGlueDatabase(scope: Construct,  databaseProps?: CfnDatabaseProps): CfnDatabase {
-  const _mergedDBProps: CfnDatabaseProps = (databaseProps !== undefined) ? overrideProps(defaults.DefaultGlueDatabaseProps(), databaseProps) :
+export function createGlueDatabase(scope: Construct,  databaseProps?: glue.CfnDatabaseProps): glue.CfnDatabase {
+  const _mergedDBProps: glue.CfnDatabaseProps = (databaseProps !== undefined) ? overrideProps(defaults.DefaultGlueDatabaseProps(), databaseProps) :
     defaults.DefaultGlueDatabaseProps();
   return defaults.DefaultGlueDatabase(scope, _mergedDBProps);
 }
@@ -226,10 +226,10 @@ function getS3ArnfromS3Url(s3Url: string): string {
  *
  * @param command
  */
-function isJobCommandProperty(command: CfnJob.JobCommandProperty | IResolvable): command is CfnJob.JobCommandProperty {
-  if ((command as CfnJob.JobCommandProperty).name ||
-    (command as CfnJob.JobCommandProperty).pythonVersion ||
-    (command as CfnJob.JobCommandProperty).scriptLocation) {
+function isJobCommandProperty(command: glue.CfnJob.JobCommandProperty | IResolvable): command is glue.CfnJob.JobCommandProperty {
+  if ((command as glue.CfnJob.JobCommandProperty).name ||
+    (command as glue.CfnJob.JobCommandProperty).pythonVersion ||
+    (command as glue.CfnJob.JobCommandProperty).scriptLocation) {
     return true;
   } else {
     defaults.printWarning('command not of type JobCommandProperty type');

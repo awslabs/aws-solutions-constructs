@@ -18,7 +18,7 @@ import { Stream, StreamEncryption } from '@aws-cdk/aws-kinesis';
 import { Duration, Stack } from "@aws-cdk/core";
 import * as defaults from '@aws-solutions-constructs/core';
 import { SinkStoreType } from '@aws-solutions-constructs/core';
-import { KinesisStreamGlueJob, KinesisStreamGlueJobProps } from '../lib';
+import { KinesisstreamsToGluejob, KinesisstreamsToGluejobProps } from '../lib';
 
 // --------------------------------------------------------------
 // Pattern minimal deployment
@@ -26,7 +26,7 @@ import { KinesisStreamGlueJob, KinesisStreamGlueJobProps } from '../lib';
 test('Pattern minimal deployment', () => {
   // Initial setup
   const stack = new Stack();
-  const props: KinesisStreamGlueJobProps = {
+  const props: KinesisstreamsToGluejobProps = {
     glueJobProps: {
       command: {
         name: 'glueetl',
@@ -52,7 +52,7 @@ test('Pattern minimal deployment', () => {
       comment: "Some value associated with the record"
     }],
   };
-  new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
+  new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', props);
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
@@ -271,7 +271,7 @@ test('Test if existing Glue Job is provided', () => {
     securityConfiguration: 'testSecConfig'
   });
 
-  new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', {
+  new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', {
     existingGlueJob: existingCfnJob,
     fieldSchema: [{
       name: "id",
@@ -315,7 +315,7 @@ test('When S3 bucket location for script exists', () => {
   // Initial setup
   const stack = new Stack();
   const _s3ObjectUrl: string = 's3://fakelocation/etl/fakefile.py';
-  const props: KinesisStreamGlueJobProps = {
+  const props: KinesisstreamsToGluejobProps = {
     glueJobProps: {
       command: {
         name: 'pythonshell',
@@ -344,7 +344,7 @@ test('When S3 bucket location for script exists', () => {
       datastoreType: SinkStoreType.S3
     }
   };
-  new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
+  new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', props);
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   expect(stack).toHaveResourceLike('AWS::Glue::Job', {
@@ -371,7 +371,7 @@ test('create glue job with existing kinesis stream', () => {
     retentionPeriod: Duration.hours(30)
   });
 
-  new KinesisStreamGlueJob(stack, 'existingStreamJob', {
+  new KinesisstreamsToGluejob(stack, 'existingStreamJob', {
     glueJobProps: {
       command: {
         name: 'pythonshell',
@@ -420,7 +420,7 @@ test('Do not pass s3ObjectUrlForScript or scriptLocationPath, error out', () => 
   const stack = new Stack();
   try {
     const _kinesisStream = defaults.buildKinesisStream(stack, {});
-    new KinesisStreamGlueJob(stack, 'existingStreamJob', {
+    new KinesisstreamsToGluejob(stack, 'existingStreamJob', {
       glueJobProps: {
         command: {
           name: 'pythonshell',
@@ -461,7 +461,7 @@ test('Do not pass fieldSchame or table (CfnTable), error out', () => {
   const stack = new Stack();
 
   try {
-    const props: KinesisStreamGlueJobProps = {
+    const props: KinesisstreamsToGluejobProps = {
       glueJobProps: {
         command: {
           name: 'glueetl',
@@ -473,7 +473,7 @@ test('Do not pass fieldSchame or table (CfnTable), error out', () => {
         datastoreType: SinkStoreType.S3
       }
     };
-    new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
+    new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', props);
   } catch (error) {
     expect(error).toBeInstanceOf(Error);
   }
@@ -491,7 +491,7 @@ test('When database and table are provided', () => {
       description: 'a fake glue db'
     }
   });
-  const props: KinesisStreamGlueJobProps = {
+  const props: KinesisstreamsToGluejobProps = {
     glueJobProps: {
       command: {
         name: 'glueetl',
@@ -518,7 +518,7 @@ test('When database and table are provided', () => {
       comment: "Some value associated with the record"
     }], 'kinesis', { STREAM_NAME: 'testStream' })
   };
-  new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
+  new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', props);
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   expect(stack).toHaveResourceLike('AWS::Glue::Database', {
@@ -538,7 +538,7 @@ test('When database and table are provided', () => {
 test('When database and table are not provided', () => {
   // Initial setup
   const stack = new Stack();
-  const props: KinesisStreamGlueJobProps = {
+  const props: KinesisstreamsToGluejobProps = {
     glueJobProps: {
       command: {
         name: 'glueetl',
@@ -564,7 +564,7 @@ test('When database and table are not provided', () => {
       comment: "Some value associated with the record"
     }]
   };
-  new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', props);
+  new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', props);
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   expect(stack).toHaveResourceLike('AWS::Glue::Database', {

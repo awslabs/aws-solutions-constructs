@@ -17,7 +17,7 @@ import { Role, ServicePrincipal } from '@aws-cdk/aws-iam';
 import { Bucket, CfnBucket } from '@aws-cdk/aws-s3';
 import { App, Duration, Stack } from '@aws-cdk/core';
 import { SinkStoreType } from '@aws-solutions-constructs/core';
-import { KinesisStreamGlueJob } from '../lib';
+import { KinesisstreamsToGluejob } from '../lib';
 
 // Setup
 const app = new App();
@@ -61,7 +61,7 @@ const job = new CfnJob(stack, 'ExistingJob', {
 });
 
 // Definitions
-new KinesisStreamGlueJob(stack, 'test-kinesisstreams-lambda', {
+new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', {
   existingGlueJob: job,
   fieldSchema: [{
     name: "id",

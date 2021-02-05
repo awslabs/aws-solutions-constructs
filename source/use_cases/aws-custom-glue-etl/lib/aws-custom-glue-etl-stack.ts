@@ -11,18 +11,17 @@
  *  and limitations under the License.
  */
 
-import { CfnTable } from '@aws-cdk/aws-glue';
-import { Asset } from '@aws-cdk/aws-s3-assets';
+import * as glue from '@aws-cdk/aws-glue';
+import * as s3assets from '@aws-cdk/aws-s3-assets';
 import * as cdk from '@aws-cdk/core';
 import { CfnOutput } from '@aws-cdk/core';
-import { KinesisStreamGlueJob } from '@aws-solutions-constructs/aws-kinesisstreams-gluejob';
-import { SinkStoreType } from '@aws-solutions-constructs/core';
+import { KinesisstreamsToGluejob } from '@aws-solutions-constructs/aws-kinesisstreams-gluejob';
 
 export class AwsCustomGlueEtlStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const fieldSchema: CfnTable.ColumnProperty [] = [{
+    const fieldSchema: glue.CfnTable.ColumnProperty [] = [{
       "name": "ventilatorid",
       "type": "int",
       "comment": ""
@@ -58,18 +57,15 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
       "comment": ""
     }];
 
-    const customEtlJob = new KinesisStreamGlueJob(this, 'CustomETL', {
+    const customEtlJob = new KinesisstreamsToGluejob(this, 'CustomETL', {
       glueJobProps: {
         command: {
           name: 'gluestreaming',
           pythonVersion: '3',
-          scriptLocation: new Asset(this, 'ScriptLocation', {
+          scriptLocation: new s3assets.Asset(this, 'ScriptLocation', {
             path: `${__dirname}/../etl/transform.py`
           }).s3ObjectUrl
         }
-      },
-      outputDataStore: {
-        datastoreType: SinkStoreType.S3
       },
       fieldSchema: fieldSchema
     });

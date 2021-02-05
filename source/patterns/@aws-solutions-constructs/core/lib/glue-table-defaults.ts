@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import { CfnDatabase, CfnTable, CfnTableProps } from "@aws-cdk/aws-glue";
+import * as glue from "@aws-cdk/aws-glue";
 import { Aws } from "@aws-cdk/core";
 
-export function DefaultGlueTableProps(database: CfnDatabase, fieldSchema: CfnTable.ColumnProperty [],
-  sourceType?: string, parameters?: any): CfnTableProps | any {
-  let _tableProps: CfnTableProps;
+export function DefaultGlueTableProps(database: glue.CfnDatabase, fieldSchema: glue.CfnTable.ColumnProperty [],
+  sourceType?: string, parameters?: any): glue.CfnTableProps | any {
+  let _tableProps: glue.CfnTableProps;
 
   if (sourceType === 'kinesis') {
     const kinesisStreamName = parameters.STREAM_NAME;
