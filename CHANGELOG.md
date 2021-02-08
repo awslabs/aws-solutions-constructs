@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.85.0 (2021-02-05)
+
+### Changed
+- Upgraded all patterns to CDK v1.85.0
+- Updated READMEs for all `aws-cloudfront-*` patterns to address ([#127](https://github.com/awslabs/aws-solutions-constructs/issues/127))
+- Fixed the bug related to lambda permission name collision when chaining two constructs that require to add LambdaInvokePermission
+
 ## 1.84.0 (2021-01-29)
 
 ### Changed

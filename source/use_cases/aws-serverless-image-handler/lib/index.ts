@@ -73,7 +73,7 @@ export interface ServerlessImageHandlerCustomProps {
      *
      * @default - false.
      */
-    readonly cloudFrontDistributionProps?: cloudFront.CloudFrontWebDistributionProps | any,
+    readonly cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
     /**
      * Optional user provided props to override the default props for the API Gateway REST API.
      *

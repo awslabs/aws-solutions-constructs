@@ -157,14 +157,12 @@
             ]
           }
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "testiotlambdadynamodbstackIotToLambdaLambdaFunctionServiceRoleC57F7FDA",
             "Arn"
           ]
         },
-        "Runtime": "nodejs10.x",
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
@@ -173,6 +171,8 @@
             }
           }
         },
+        "Handler": "index.handler",
+        "Runtime": "nodejs10.x",
         "TracingConfig": {
           "Mode": "Active"
         }
@@ -192,7 +192,7 @@
         }
       }
     },
-    "testiotlambdadynamodbstackIotToLambdaLambdaFunctionLambdaInvokePermissionBD47A3C8": {
+    "testiotlambdadynamodbstackIotToLambdaLambdaFunctionAwsIotLambdaInvokePermission1CF07890C": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",

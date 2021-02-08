@@ -130,19 +130,19 @@
             ]
           }
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "LambdaFunctionServiceRole0C4CDE0B",
             "Arn"
           ]
         },
-        "Runtime": "nodejs10.x",
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
           }
         },
+        "Handler": "index.handler",
+        "Runtime": "nodejs10.x",
         "TracingConfig": {
           "Mode": "Active"
         }
@@ -162,7 +162,7 @@
         }
       }
     },
-    "LambdaFunctionLambdaInvokePermissionC135C9F1": {
+    "LambdaFunctionAwsIotLambdaInvokePermission13FA2DACB": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
