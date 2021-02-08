@@ -72,7 +72,7 @@ export class IotToLambda extends Construct {
     // Create the IoT topic rule
     this.iotTopicRule = new iot.CfnTopicRule(this, 'IotTopic', iotTopicProps);
 
-    this.lambdaFunction.addPermission("LambdaInvokePermission", {
+    defaults.addPermission(this.lambdaFunction, "AwsIotLambdaInvokePermission", {
       principal: new iam.ServicePrincipal('iot.amazonaws.com'),
       sourceArn: this.iotTopicRule.attrArn
     });

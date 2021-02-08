@@ -74,7 +74,7 @@ export class EventsRuleToLambda extends Construct {
 
     this.eventsRule = new events.Rule(this, 'EventsRule', eventsRuleProps);
 
-    this.lambdaFunction.addPermission("LambdaInvokePermission", {
+    defaults.addPermission(this.lambdaFunction, "AwsEventsLambdaInvokePermission", {
       principal: new iam.ServicePrincipal('events.amazonaws.com'),
       sourceArn: this.eventsRule.ruleArn
     });

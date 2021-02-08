@@ -180,3 +180,35 @@ export function deployLambdaFunction(scope: cdk.Construct,
 
   return lambdafunction;
 }
+
+// A wrapper above Function.addPermision that
+// prevents two different calls to addPermission using
+// the same construct id.
+export function addPermission(targetFunction: lambda.Function, name: string, permission: lambda.Permission): any {
+  targetFunction.addPermission(GetNextId(targetFunction.permissionsNode.children, name), permission);
+}
+
+// Scan the current permissions for any entries with this core name and
+// return the first available synthesized name. Names are coreName-suffix.
+function GetNextId(children: cdk.IConstruct[], coreName: string): string {
+  let lastSuffix: number = 0;
+
+  children.forEach(child => {
+
+    // if (compare right side of string)
+    if (child.node.id.indexOf(coreName) === 0) {
+      const components = child.node.id.split('-');
+      if (components.length !== 2) {
+        throw new Error("Incorrectly formatted synthesized construct ID");
+      }
+
+      const usedSuffix = Number(components[1]);
+      if (usedSuffix > lastSuffix) {
+        lastSuffix = usedSuffix;
+      }
+    }
+
+  });
+
+  return `${coreName}-${lastSuffix + 1}`;
+}
