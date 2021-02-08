@@ -30,6 +30,10 @@ This AWS Solutions Construct deploys a Kinesis Stream and configures a AWS Glue 
 Here is a minimal deployable pattern definition in Typescript:
 
 ```javascript
+import * as glue from '@aws-cdk/aws-glue';
+import * as s3assets from '@aws-cdk/aws-s3-assets';
+import {KinesisstreamsToGluejob} from '@aws-solutions-constructs/aws-kinesisstreams-gluejob';
+
 const fieldSchema: glue.CfnTable.ColumnProperty[] = [
     {
         name: 'id',
