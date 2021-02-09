@@ -105,6 +105,9 @@ Out of the box implementation of the Construct without any override will set the
 - Allow the function to invoke the Sagemaker endpoint for Inferences.
 - Configure the function to access resources in the VPC, where the Sagemaker endpoint is deployed.
 - Enable X-Ray Tracing.
+- Set environment variables:
+  - `SAGEMAKER_ENDPOINT_NAME`.
+  - `AWS_NODEJS_CONNECTION_REUSE_ENABLED` (for Node 10.x and higher functions).
 
 ### Amazon Sagemaker Endpoint
 
@@ -112,7 +115,7 @@ Out of the box implementation of the Construct without any override will set the
 - Enable server-side encryption for Sagemaker Endpoint using customer managed AWS KMS Key.
 - Configure the Sagemaker endpoint to be deployed in a VPC.
 - Deploy S3 VPC Endpoint and Sagemaker Runtime VPC Interface.
-- Enforce encryption of data in transit
+- Enforce encryption of data in transit.
 
 ## Architecture
 
