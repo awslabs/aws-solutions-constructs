@@ -130,19 +130,19 @@
             ]
           }
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "testeventsrulelambdaLambdaFunctionServiceRole61DEA405",
             "Arn"
           ]
         },
-        "Runtime": "nodejs12.x",
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
           }
         },
+        "Handler": "index.handler",
+        "Runtime": "nodejs12.x",
         "TracingConfig": {
           "Mode": "Active"
         }
@@ -162,7 +162,7 @@
         }
       }
     },
-    "testeventsrulelambdaLambdaFunctionLambdaInvokePermission803B9778": {
+    "testeventsrulelambdaLambdaFunctionAwsEventsLambdaInvokePermission1CC45551C": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",

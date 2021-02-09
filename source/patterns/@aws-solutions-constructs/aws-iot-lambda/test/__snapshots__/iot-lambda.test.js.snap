@@ -39,6 +39,25 @@ Object {
       },
       "Type": "AWS::IoT::TopicRule",
     },
+    "testiotlambdaintegrationLambdaFunctionAwsIotLambdaInvokePermission184E45B6F": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "testiotlambdaintegrationLambdaFunctionC5329DBA",
+            "Arn",
+          ],
+        },
+        "Principal": "iot.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::GetAtt": Array [
+            "testiotlambdaintegrationIotTopic18B6A735",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
     "testiotlambdaintegrationLambdaFunctionC5329DBA": Object {
       "DependsOn": Array [
         "testiotlambdaintegrationLambdaFunctionServiceRoleDefaultPolicy0FB2AE4D",
@@ -111,25 +130,6 @@ Object {
         },
       },
       "Type": "AWS::Lambda::Function",
-    },
-    "testiotlambdaintegrationLambdaFunctionLambdaInvokePermissionC89CDD23": Object {
-      "Properties": Object {
-        "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
-            "testiotlambdaintegrationLambdaFunctionC5329DBA",
-            "Arn",
-          ],
-        },
-        "Principal": "iot.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::GetAtt": Array [
-            "testiotlambdaintegrationIotTopic18B6A735",
-            "Arn",
-          ],
-        },
-      },
-      "Type": "AWS::Lambda::Permission",
     },
     "testiotlambdaintegrationLambdaFunctionServiceRole27C3EE41": Object {
       "Properties": Object {

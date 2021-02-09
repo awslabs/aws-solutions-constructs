@@ -18,6 +18,7 @@ import * as lambda from "@aws-cdk/aws-lambda";
 import * as defaults from "../index";
 import "@aws-cdk/assert/jest";
 import { Duration } from "@aws-cdk/core";
+import * as iam from '@aws-cdk/aws-iam';
 
 test("snapshot test LambdaFunction default params", () => {
   const stack = new Stack();
@@ -371,4 +372,60 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   // All we're doing here is confirming that buildLambdaFunction does NOT
   // throw an exception when the existing Lambda function is in a VPCs
 
+});
+
+test("Test generating synthesized permission IDs", () => {
+  // Stack
+  const stack = new Stack();
+  const coreName = "TestInvokePermission";
+
+  const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: "index.handler",
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  defaults.addPermission(testLambdaFunction, coreName, {
+    principal: new iam.ServicePrincipal('iot.amazonaws.com'),
+    sourceArn: 'fake:arn'
+  });
+
+  defaults.addPermission(testLambdaFunction, coreName, {
+    principal: new iam.ServicePrincipal('iot.amazonaws.com'),
+    sourceArn: 'fake:arn:two'
+  });
+
+  // Synth on this stack masks the information we're looking for in
+  // a longer resource name, so we can't use expect.toHaveResource. We
+  // need to look at the value in the CDK structure.
+  expect(testLambdaFunction.permissionsNode.children.find(permission => permission.node.id === `${coreName}-1`)).toBeDefined();
+  expect(testLambdaFunction.permissionsNode.children.find(permission => permission.node.id === `${coreName}-2`)).toBeDefined();
+
+});
+
+test("Test invalid synthesized permission names", () => {
+  // Stack
+  const stack = new Stack();
+  const coreName = "TestInvokePermission";
+
+  const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: "index.handler",
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  testLambdaFunction.addPermission(coreName, {
+    principal: new iam.ServicePrincipal('iot.amazonaws.com'),
+    sourceArn: 'fake:arn'
+  });
+
+  const app = () => {
+    defaults.addPermission(testLambdaFunction, coreName, {
+      principal: new iam.ServicePrincipal('iot.amazonaws.com'),
+      sourceArn: 'fake:arn:two'
+    });
+  };
+
+  // Assertion
+  expect(app).toThrowError();
 });
