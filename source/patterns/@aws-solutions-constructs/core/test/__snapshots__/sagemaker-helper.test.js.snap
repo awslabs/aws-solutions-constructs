@@ -1161,7 +1161,7 @@ Object {
 }
 `;
 
-exports[`Test deployment of sagemaker endpoint with custom role 1`] = `
+exports[`Test deployment of sagemaker endpoint with a customer provided role 1`] = `
 Object {
   "Resources": Object {
     "EncryptionKey1B843E66": Object {
@@ -1256,9 +1256,6 @@ Object {
       "Type": "AWS::SageMaker::EndpointConfig",
     },
     "SagemakerModel": Object {
-      "DependsOn": Array [
-        "SagemakerRole5FDB64E1",
-      ],
       "Properties": Object {
         "ExecutionRoleArn": Object {
           "Fn::GetAtt": Array [
