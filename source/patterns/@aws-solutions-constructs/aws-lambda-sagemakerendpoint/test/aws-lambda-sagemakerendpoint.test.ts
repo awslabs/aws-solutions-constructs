@@ -201,7 +201,6 @@ test('Pattern deployment with new Lambda function, new Sagemaker endpoint, deplo
       timeout: Duration.minutes(5),
       memorySize: 128,
     },
-    role: sagemakerRole,
   };
   new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
   // Assertion 1
