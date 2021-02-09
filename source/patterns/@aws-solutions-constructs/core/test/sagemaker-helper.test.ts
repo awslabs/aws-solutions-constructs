@@ -311,9 +311,9 @@ test('Test deployment of existing Sagemaker Endpoint', () => {
 });
 
 // ------------------------------------------------------------------------
-// Test deployment of sagemaker endpoint with custom role
+// Test deployment of sagemaker endpoint with a customer provided role
 // ------------------------------------------------------------------------
-test('Test deployment of sagemaker endpoint with custom role', () => {
+test('Test deployment of sagemaker endpoint with a customer provided role', () => {
   // Stack
   const stack = new Stack();
   // Create IAM Role to be assumed by Sagemaker
@@ -331,7 +331,6 @@ test('Test deployment of sagemaker endpoint with custom role', () => {
         modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
       },
     },
-    role: sagemakerRole,
   });
 
   // Assertion 1
@@ -349,34 +348,6 @@ test('Test exception for not providing primaryContainer in modelProps', () => {
     // Build Sagemaker Inference Endpoint
     defaults.BuildSagemakerEndpoint(stack, {
       modelProps: {},
-    });
-  };
-  // Assertion 1
-  expect(app).toThrowError();
-});
-
-// ------------------------------------------------------------------------
-// Test exception for providing executionRoleArn without role
-// ------------------------------------------------------------------------
-test('Test exception for providing executionRoleArn without role ', () => {
-  // Stack
-  const stack = new Stack();
-  // Create IAM Role to be assumed by Sagemaker
-  const sagemakerRole = new iam.Role(stack, 'SagemakerRole', {
-    assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
-  });
-  sagemakerRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSageMakerFullAccess'));
-
-  const app = () => {
-    // Build Sagemaker Inference Endpoint
-    defaults.BuildSagemakerEndpoint(stack, {
-      modelProps: {
-        executionRoleArn: sagemakerRole.roleArn,
-        primaryContainer: {
-          image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
-          modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
-        },
-      },
     });
   };
   // Assertion 1
