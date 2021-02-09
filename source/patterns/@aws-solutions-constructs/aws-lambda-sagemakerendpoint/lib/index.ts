@@ -76,13 +76,6 @@ export interface LambdaToSagemakerEndpointProps {
    * @default - false
    */
   readonly deployVpc?: boolean;
-  /**
-   * IAM Role, with all required permissions, to be assumed by Sagemaker to create resources
-   * The Role is not required if existingSagemakerEndpointObj is provided.
-   *
-   * @default - None
-   */
-  readonly role?: iam.Role;
 }
 
 /**
@@ -100,7 +93,7 @@ export class LambdaToSagemakerEndpoint extends cdk.Construct {
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a scope-unique id.
    * @param {LambdaToSagemakerEndpointProps} props - user provided props for the construct.
-   * @since 1.76.0
+   * @since 1.86.0
    * @access public
    */
   constructor(scope: cdk.Construct, id: string, props: LambdaToSagemakerEndpointProps) {
