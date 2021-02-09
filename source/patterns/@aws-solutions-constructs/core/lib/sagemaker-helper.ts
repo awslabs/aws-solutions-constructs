@@ -339,13 +339,6 @@ export interface BuildSagemakerEndpointProps {
    * @default - None
    */
   readonly vpc?: ec2.IVpc;
-  /**
-   * IAM Rol, with all required permissions, to be assumed by Sagemaker to create resources
-   * The Role is not required if existingSagemakerEndpointObj is provided.
-   *
-   * @default - None
-   */
-  readonly role?: iam.Role;
 }
 
 export function BuildSagemakerEndpoint(
@@ -377,14 +370,13 @@ export function deploySagemakerEndpoint(
 
   // Create Sagemaker's model, endpointConfig, and endpoint
   if (props.modelProps) {
-    // Check if the client has provided executionRoleArn and Role
+    // Check if the client has provided executionRoleArn
     if (props.modelProps.executionRoleArn) {
-      // Check if the Role is also provided and matches the provided executionRoleArn
-      if (!props.role || (props.role && props.role.roleArn !== props.modelProps.executionRoleArn)) {
-        throw Error(`You need to provide the Sagemaker IAM Role with the arn ${props.modelProps.executionRoleArn}`);
-      }
-      // Use the client provided Role
-      sagemakerRole = props.role;
+      sagemakerRole = iam.Role.fromRoleArn(
+        scope,
+        'SagemakerRoleCustomer',
+        props.modelProps.executionRoleArn
+      ) as iam.Role;
     } else {
       // Create the Sagemaker Role
       sagemakerRole = new iam.Role(scope, 'SagemakerRole', {
