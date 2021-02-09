@@ -44,7 +44,6 @@ const constructProps: LambdaToSagemakerEndpointProps = {
     timeout: Duration.minutes(5),
     memorySize: 128,
   },
-  role: sagemakerRole,
 };
 
 new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
