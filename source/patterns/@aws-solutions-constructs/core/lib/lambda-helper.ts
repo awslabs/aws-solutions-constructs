@@ -17,6 +17,7 @@ import * as ec2 from "@aws-cdk/aws-ec2";
 import { DefaultLambdaFunctionProps } from './lambda-defaults';
 import * as cdk from '@aws-cdk/core';
 import { overrideProps } from './utils';
+import { buildSecurityGroup } from "./security-group-helper";
 
 export interface BuildLambdaFunctionProps {
   /**
@@ -110,34 +111,16 @@ export function deployLambdaFunction(scope: cdk.Construct,
 
     // This is literally setting up what would be the default SG, but
     // we need to to it explicitly to disable the cfn_nag error
-    const lambdaSecurityGroup = new ec2.SecurityGroup(
+    const lambdaSecurityGroup = buildSecurityGroup(
       scope,
       "ReplaceDefaultSecurityGroup",
       {
         vpc,
         allowAllOutbound: true,
-      }
-    );
-
-    const cfnSecurityGroup = lambdaSecurityGroup.node.findChild(
-      "Resource"
-    ) as ec2.CfnSecurityGroup;
-    cfnSecurityGroup.cfnOptions.metadata = {
-      cfn_nag: {
-        rules_to_suppress: [
-          {
-            id: "W5",
-            reason:
-              "Egress of 0.0.0.0/0 is default and generally considered OK",
-          },
-          {
-            id: "W40",
-            reason:
-              "Egress IPProtocol of -1 is default and generally considered OK",
-          },
-        ],
       },
-    };
+      [],
+      []
+    );
 
     finalLambdaFunctionProps = overrideProps(finalLambdaFunctionProps, {
       securityGroups: [ lambdaSecurityGroup ],

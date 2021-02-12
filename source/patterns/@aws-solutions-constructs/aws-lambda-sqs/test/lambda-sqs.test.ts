@@ -169,7 +169,7 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
       SecurityGroupIds: [
         {
           "Fn::GetAtt": [
-            "lambdatosqsstackReplaceDefaultSecurityGroup7FE5F431",
+            "lambdatosqsstackReplaceDefaultSecurityGroupsecuritygroupAED1D1EE",
             "GroupId",
           ],
         },
@@ -224,7 +224,7 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
       SecurityGroupIds: [
         {
           "Fn::GetAtt": [
-            "lambdatosqsstackReplaceDefaultSecurityGroup7FE5F431",
+            "lambdatosqsstackReplaceDefaultSecurityGroupsecuritygroupAED1D1EE",
             "GroupId",
           ],
         },
@@ -278,7 +278,7 @@ test("Test minimal deployment with an existing VPC", () => {
       SecurityGroupIds: [
         {
           "Fn::GetAtt": [
-            "lambdatosqsstackReplaceDefaultSecurityGroup7FE5F431",
+            "lambdatosqsstackReplaceDefaultSecurityGroupsecuritygroupAED1D1EE",
             "GroupId",
           ],
         },
