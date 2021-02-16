@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.87.0 (2021-02-12)
+
+### Changed
+- Upgraded all patterns to CDK v1.87.0
+
+## 1.86.0 (2021-02-12)
+
+### Added
+- aws-kinesisstreams-gluejob pattern added ([#40](https://github.com/awslabs/aws-solutions-constructs/issues/40))
+
+### Changed
+- Upgraded all patterns to CDK v1.86.0
+- Create security-group-helper.ts to consolidate security group code
+
 ## 1.85.0 (2021-02-05)
 
 ### Changed
@@ -15,7 +29,7 @@ All notable changes to this project will be documented in this file. See [standa
 - Upgraded all patterns to CDK v1.84.0
 - Updated `aws-lambda-sns` and `aws-lambs-s3` to support for VPC
 - Added [Design Guidelines](./DESIGN_GUIDELINES.md)
-
+ß
 ## 1.83.0 (2021-01-21)
 
 ### Changed

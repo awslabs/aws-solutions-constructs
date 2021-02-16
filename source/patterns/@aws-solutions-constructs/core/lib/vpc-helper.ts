@@ -14,6 +14,7 @@
 import * as ec2 from "@aws-cdk/aws-ec2";
 import { CfnLogGroup } from "@aws-cdk/aws-logs";
 import { Construct } from "@aws-cdk/core";
+import { buildSecurityGroup } from "./security-group-helper";
 import { overrideProps } from "./utils";
 
 export interface BuildVpcProps {
@@ -151,40 +152,16 @@ export function AddAwsServiceEndpoint(
     }
     if (service.endpointType === EndpointTypes.INTERFACE) {
 
-      const endpointDefaultSecurityGroup = new ec2.SecurityGroup(
+      const endpointDefaultSecurityGroup = buildSecurityGroup(
         scope,
         "ReplaceEndpointDefaultSecurityGroup",
         {
           vpc,
           allowAllOutbound: true,
-        }
-      );
-
-      // Allow https traffic from within the VPC
-      endpointDefaultSecurityGroup.addIngressRule(
-        ec2.Peer.ipv4(vpc.vpcCidrBlock),
-        ec2.Port.tcp(443),
-      );
-
-      const cfnSecurityGroup = endpointDefaultSecurityGroup.node.findChild(
-        "Resource"
-      ) as ec2.CfnSecurityGroup;
-      cfnSecurityGroup.cfnOptions.metadata = {
-        cfn_nag: {
-          rules_to_suppress: [
-            {
-              id: "W5",
-              reason:
-                "Egress of 0.0.0.0/0 is default and generally considered OK",
-            },
-            {
-              id: "W40",
-              reason:
-                "Egress IPProtocol of -1 is default and generally considered OK",
-            },
-          ],
         },
-      };
+        [{ peer: ec2.Peer.ipv4(vpc.vpcCidrBlock), connection: ec2.Port.tcp(443) }],
+        []
+      );
 
       vpc.addInterfaceEndpoint(interfaceTag, {
         service: service.endpointInterfaceService as ec2.InterfaceVpcEndpointAwsService,

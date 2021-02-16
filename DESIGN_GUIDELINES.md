@@ -43,6 +43,10 @@ The Construct should be restricted to deploying infrastructure. In general this 
 **Favor L2 CDK Constructs over L1**
 L1 CDK constructs are merely thin code wrappers over the raw CloudFormation definitions – they bring little if any additional value to the table. L2 CDK constructs provide additional functionality, security and interoperability. Whenever possible, Solutions Constructs interfaces should speak in terms of L2 CDK constructs. If your definition includes L1 constructs it may not be rejected, but you will be asked to explain the reasons requiring their use. 
 
+## VPCs
+
+Clients may choose to deploy their architectures for any number of reasons. VPC capability should be added to constructs when traffic within the construct can be restricted within a VPC. For instance, for the construct aws-lambda-sqs, traffic from the lambda function can be configured to use an ENI in a VPC, and an Interface Endpoint for SQS can accept those calls within that VPC - so the traffic stays within the VPC. Conversely, aws-sqs-lambda cannot be configured within a VPC because the traffic consists of Lambda polling SQS and invoking the Lambda function synchronously, none of which can be configured within a VPC (although calls between AWS resources stay on the AWS backbone and do not hit the open web).
+
 ## Naming
 
 The name of a Solutions Construct is composed by concatenating the names of the individual services or resources configured by the construct. When it is obvious what resource is being deployed by the service, use just the service name, such as SQS, SNS, DynamoDB, etc. When just the service name is ambiguous, append the specific resource type to the service name, such as SagemakerEndpoint (also do this for a different flavor of an already deployed service, such as DynamoDBStream).
@@ -289,7 +293,20 @@ Existing Inconsistencies would not be published, that’s for our internal use �
 
 | Name    | Type     | Notes    |
 | --- | --- | --- |
-| elasticsearchDomain	| elasticsearch.CfnDomain	||
-| elasticsearchDomainRole	| iam.Role	||
+| elasticsearchDomain | elasticsearch.CfnDomain ||
+| elasticsearchDomainRole | iam.Role ||
 
+## VPC
+**Required Attributes on Props** 
 
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| existingVpc? | ec2.IVpc |  |
+| deployVpc? | boolean| |
+| vpcProps? | ec2.VpcProps| |
+
+**Required Construct Properties** 
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| vpc? | ec2.IVpc |  |

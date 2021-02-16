@@ -29,6 +29,7 @@ export * from './lib/mediastore-defaults';
 export * from './lib/mediastore-helper';
 export * from './lib/s3-bucket-defaults';
 export * from './lib/s3-bucket-helper';
+export * from './lib/security-group-helper';
 export * from './lib/sns-defaults';
 export * from './lib/sns-helper';
 export * from './lib/sqs-defaults';

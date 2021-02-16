@@ -21,6 +21,7 @@ import { buildVpc } from './vpc-helper';
 import * as iam from '@aws-cdk/aws-iam';
 import { Aws } from "@aws-cdk/core";
 import { DefaultPublicPrivateVpcProps } from "./vpc-defaults";
+import { buildSecurityGroup } from "./security-group-helper";
 
 export interface BuildSagemakerNotebookProps {
   /**
@@ -133,22 +134,13 @@ export function buildSagemakerNotebook(scope: cdk.Construct, props: BuildSagemak
         vpcInstance = buildVpc(scope, {
           defaultVpcProps: DefaultPublicPrivateVpcProps()
         });
-        securityGroup = new ec2.SecurityGroup(scope, "SecurityGroup", {
+        securityGroup = buildSecurityGroup(scope, "SecurityGroup", {
           vpc: vpcInstance,
           allowAllOutbound: false
-        });
-        securityGroup.addEgressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(443));
-
-        // Add Cfn_Nag Suppression for WARN W5: Security Groups found with cidr open to world on egress
-        const cfnSecurityGroup = securityGroup.node.findChild('Resource') as ec2.CfnSecurityGroup;
-        cfnSecurityGroup.cfnOptions.metadata = {
-          cfn_nag: {
-            rules_to_suppress: [{
-              id: 'W5',
-              reason: 'Allow notebook users to access the Internet from the notebook'
-            }]
-          }
-        };
+        },
+        [],
+        [{ peer: ec2.Peer.anyIpv4(), connection: ec2.Port.tcp(443)}]
+        );
 
         subnetId = vpcInstance.privateSubnets[0].subnetId;
 
