@@ -25,7 +25,7 @@
 | ![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript | `@aws-solutions-constructs/aws-kinesisstreams-gluejob`         |
 | ![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java                   | `software.amazon.awsconstructs.services.kinesisstreamsgluejob` |
 
-This AWS Solutions Construct deploys a Kinesis Stream and configures a AWS Glue Job to perform custom ETL transformation with the appropriate resources/properties for interaction and security. It also creates an S3 bucket where the python script for the AWS Glue Job can be uploaded
+This AWS Solutions Construct deploys a Kinesis Stream and configures a AWS Glue Job to perform custom ETL transformation with the appropriate resources/properties for interaction and security. It also creates an S3 bucket where the python script for the AWS Glue Job can be uploaded.
 
 Here is a minimal deployable pattern definition in Typescript:
 
@@ -93,9 +93,9 @@ _Parameters_
 | existingGlueJob?    | [`cfnJob.CfnJob`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnJob.html)                              | Existing Existing instance of AWS Glue Job, if this is set then glueJobProps is ignored.                         |
 | existingDatabase?   | [`CfnDatabase`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnDatabase.html)                           | Existing instance of AWS Glue Database. If this is set, then databaseProps is ignored.                           |
 | databaseProps?      | [`CfnDatabaseProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnDatabaseProps.html)                 | User provided Glue Database Props to override the default props used to create the Glue Database.                |
-| existingTable?      | [`CfnTable`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnTable.html)                                 | Existing instance of AWS Glue Table. If this is set, tableProps and fieldSchema are ignored                      |
+| existingTable?      | [`CfnTable`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnTable.html)                                 | Existing instance of AWS Glue Table. If this is set, tableProps and fieldSchema are ignored.                     |
 | tableProps?         | [`CfnTableProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.TableProps.html)                          | User provided AWS Glue Table props to override default props used to create a Glue Table.                        |
-| fieldSchema?        | [`CfnTable.ColumnProperty[]`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnTable.ColumnProperty.html) | User provided schema structure to create an AWS Glue Table                                                       |
+| fieldSchema?        | [`CfnTable.ColumnProperty[]`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnTable.ColumnProperty.html) | User provided schema structure to create an AWS Glue Table.                                                      |
 | outputDataStore?    | [`SinkDataStoreProps`](#sinkdatastoreprops)                                                                                   | User provided properties for S3 bucket that stores Glue Job output. Current datastore types suported is only S3. |
 
 ## SinkDataStoreProps
@@ -103,12 +103,12 @@ _Parameters_
 | **Name**                | **Type**                                                                                          | **Description**                                                                                                |
 | :---------------------- | :------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
 | existingS3OutputBucket? | [`Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html)           | Existing instance of S3 bucket where the data should be written. If this is set, outputBucketProps is ignored. |
-| outputBucketProps       | [`BucketProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html) | User provided bucket properties to create the S3 bucket to store the output from the AWS Glue Job              |
-| datastoreType           | [`SinkStoreType`](#sinkstoretype)                                                                 | Sink data store type                                                                                           |
+| outputBucketProps       | [`BucketProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html) | User provided bucket properties to create the S3 bucket to store the output from the AWS Glue Job.             |
+| datastoreType           | [`SinkStoreType`](#sinkstoretype)                                                                 | Sink data store type.                                                                                          |
 
 ## SinkStoreType
 
-Enumeration of data store types that could include S3, DynamoDB, DocumentDB, RDS or Redshift. Current construct implementation only supports S3, but potential to add other output types in the future
+Enumeration of data store types that could include S3, DynamoDB, DocumentDB, RDS or Redshift. Current construct implementation only supports S3, but potential to add other output types in the future.
 
 | **Name** | **Type** | **Description** |
 | :------- | :------- | --------------- |
@@ -120,22 +120,22 @@ Out of the box implementation of the Construct without any override will set the
 
 ### Amazon Kinesis Stream
 
--   Configure least privilege access IAM role for Kinesis Stream
--   Enable server-side encryption for Kinesis Stream using AWS Managed KMS Key
--   Deploy best practices CloudWatch Alarms for the Kinesis Stream
+-   Configure least privilege access IAM role for Kinesis Stream.
+-   Enable server-side encryption for Kinesis Stream using AWS Managed KMS Key.
+-   Deploy best practices CloudWatch Alarms for the Kinesis Stream.
 
 ### Glue Job
 
--   Create a Glue Security Config that configures encryption for CloudWatch, Job Bookmarks, and S3. CloudWatch and Job Bookmarks are encrypted using AWS Managed KMS Key created for AWS Glue Service. The S3 bucket is configured with SSE-S3 encryption mode
+-   Create a Glue Security Config that configures encryption for CloudWatch, Job Bookmarks, and S3. CloudWatch and Job Bookmarks are encrypted using AWS Managed KMS Key created for AWS Glue Service. The S3 bucket is configured with SSE-S3 encryption mode.
 -   Configure service role policies that allow AWS Glue to read from Kinesis Data Streams.
 
 ### Glue Database
 
--   Create an AWS Glue database. An AWS Glue Table will be added to the database. This table defines the schema for the records buffered in the Amazon Kinesis Data Streams
+-   Create an AWS Glue database. An AWS Glue Table will be added to the database. This table defines the schema for the records buffered in the Amazon Kinesis Data Streams.
 
 ### Glue Table
 
--   Create an AWS Glue table. The table schema definition is based on the JSON structure of the records buffered in the Amazon Kinesis Data Streams
+-   Create an AWS Glue table. The table schema definition is based on the JSON structure of the records buffered in the Amazon Kinesis Data Streams.
 
 ### IAM Role
 
@@ -143,7 +143,7 @@ Out of the box implementation of the Construct without any override will set the
 
 ### Output S3 Bucket
 
--   An S3 bucket to store the output of the ETL transformation. This bucket will be passed as an argument to the created glue job so that it can be used in the ETL script to write data into it
+-   An S3 bucket to store the output of the ETL transformation. This bucket will be passed as an argument to the created glue job so that it can be used in the ETL script to write data into it.
 
 ## Architecture
 
