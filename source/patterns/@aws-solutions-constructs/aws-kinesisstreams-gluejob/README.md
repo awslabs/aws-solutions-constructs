@@ -120,30 +120,30 @@ Out of the box implementation of the Construct without any override will set the
 
 ### Amazon Kinesis Stream
 
--   Configure least privilege access IAM role for Kinesis Stream.
--   Enable server-side encryption for Kinesis Stream using AWS Managed KMS Key.
--   Deploy best practices CloudWatch Alarms for the Kinesis Stream.
+-   Configure least privilege access IAM role for Kinesis Stream
+-   Enable server-side encryption for Kinesis Stream using AWS Managed KMS Key
+-   Deploy best practices CloudWatch Alarms for the Kinesis Stream
 
 ### Glue Job
 
--   Create a Glue Security Config that configures encryption for CloudWatch, Job Bookmarks, and S3. CloudWatch and Job Bookmarks are encrypted using AWS Managed KMS Key created for AWS Glue Service. The S3 bucket is configured with SSE-S3 encryption mode.
--   Configure service role policies that allow AWS Glue to read from Kinesis Data Streams.
+-   Create a Glue Security Config that configures encryption for CloudWatch, Job Bookmarks, and S3. CloudWatch and Job Bookmarks are encrypted using AWS Managed KMS Key created for AWS Glue Service. The S3 bucket is configured with SSE-S3 encryption mode
+-   Configure service role policies that allow AWS Glue to read from Kinesis Data Streams
 
 ### Glue Database
 
--   Create an AWS Glue database. An AWS Glue Table will be added to the database. This table defines the schema for the records buffered in the Amazon Kinesis Data Streams.
+-   Create an AWS Glue database. An AWS Glue Table will be added to the database. This table defines the schema for the records buffered in the Amazon Kinesis Data Streams
 
 ### Glue Table
 
--   Create an AWS Glue table. The table schema definition is based on the JSON structure of the records buffered in the Amazon Kinesis Data Streams.
+-   Create an AWS Glue table. The table schema definition is based on the JSON structure of the records buffered in the Amazon Kinesis Data Streams
 
 ### IAM Role
 
--   A job execution role that has privileges to 1) read the ETL script from the S3 bucket location, 2) read records from the Kinesis Stream, and 3) execute the Glue Job.
+-   A job execution role that has privileges to 1) read the ETL script from the S3 bucket location, 2) read records from the Kinesis Stream, and 3) execute the Glue Job
 
 ### Output S3 Bucket
 
--   An S3 bucket to store the output of the ETL transformation. This bucket will be passed as an argument to the created glue job so that it can be used in the ETL script to write data into it.
+-   An S3 bucket to store the output of the ETL transformation. This bucket will be passed as an argument to the created glue job so that it can be used in the ETL script to write data into it
 
 ## Architecture
 
