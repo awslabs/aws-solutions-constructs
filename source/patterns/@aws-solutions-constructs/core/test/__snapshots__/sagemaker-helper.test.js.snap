@@ -54,7 +54,7 @@ Object {
       "Type": "AWS::KMS::Key",
       "UpdateReplacePolicy": "Retain",
     },
-    "ReplaceEndpointDefaultSecurityGroupCF0CCAF1": Object {
+    "ReplaceEndpointDefaultSecurityGroupsecuritygroupB97DD1AF": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -70,7 +70,7 @@ Object {
         },
       },
       "Properties": Object {
-        "GroupDescription": "Default/ReplaceEndpointDefaultSecurityGroup",
+        "GroupDescription": "Default/ReplaceEndpointDefaultSecurityGroup-security-group",
         "SecurityGroupEgress": Array [
           Object {
             "CidrIp": "0.0.0.0/0",
@@ -658,7 +658,7 @@ Object {
         "SecurityGroupIds": Array [
           Object {
             "Fn::GetAtt": Array [
-              "ReplaceEndpointDefaultSecurityGroupCF0CCAF1",
+              "ReplaceEndpointDefaultSecurityGroupsecuritygroupB97DD1AF",
               "GroupId",
             ],
           },
@@ -1686,7 +1686,7 @@ Object {
         "SecurityGroupIds": Array [
           Object {
             "Fn::GetAtt": Array [
-              "SecurityGroupDD263621",
+              "SecurityGroupsecuritygroup00653C55",
               "GroupId",
             ],
           },
@@ -1933,19 +1933,23 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
-    "SecurityGroupDD263621": Object {
+    "SecurityGroupsecuritygroup00653C55": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
             Object {
               "id": "W5",
-              "reason": "Allow notebook users to access the Internet from the notebook",
+              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK",
+            },
+            Object {
+              "id": "W40",
+              "reason": "Egress IPProtocol of -1 is default and generally considered OK",
             },
           ],
         },
       },
       "Properties": Object {
-        "GroupDescription": "Default/SecurityGroup",
+        "GroupDescription": "Default/SecurityGroup-security-group",
         "SecurityGroupEgress": Array [
           Object {
             "CidrIp": "0.0.0.0/0",
@@ -2546,7 +2550,7 @@ Object {
         "SecurityGroupIds": Array [
           Object {
             "Fn::GetAtt": Array [
-              "SecurityGroupDD263621",
+              "SecurityGroupsecuritygroup00653C55",
               "GroupId",
             ],
           },
@@ -2793,19 +2797,23 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
-    "SecurityGroupDD263621": Object {
+    "SecurityGroupsecuritygroup00653C55": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
             Object {
               "id": "W5",
-              "reason": "Allow notebook users to access the Internet from the notebook",
+              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK",
+            },
+            Object {
+              "id": "W40",
+              "reason": "Egress IPProtocol of -1 is default and generally considered OK",
             },
           ],
         },
       },
       "Properties": Object {
-        "GroupDescription": "Default/SecurityGroup",
+        "GroupDescription": "Default/SecurityGroup-security-group",
         "SecurityGroupEgress": Array [
           Object {
             "CidrIp": "0.0.0.0/0",
@@ -3390,7 +3398,7 @@ Object {
       "Type": "AWS::KMS::Key",
       "UpdateReplacePolicy": "Retain",
     },
-    "ReplaceEndpointDefaultSecurityGroupCF0CCAF1": Object {
+    "ReplaceEndpointDefaultSecurityGroupsecuritygroupB97DD1AF": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -3406,7 +3414,7 @@ Object {
         },
       },
       "Properties": Object {
-        "GroupDescription": "Default/ReplaceEndpointDefaultSecurityGroup",
+        "GroupDescription": "Default/ReplaceEndpointDefaultSecurityGroup-security-group",
         "SecurityGroupEgress": Array [
           Object {
             "CidrIp": "0.0.0.0/0",
@@ -3992,7 +4000,7 @@ Object {
         "SecurityGroupIds": Array [
           Object {
             "Fn::GetAtt": Array [
-              "ReplaceEndpointDefaultSecurityGroupCF0CCAF1",
+              "ReplaceEndpointDefaultSecurityGroupsecuritygroupB97DD1AF",
               "GroupId",
             ],
           },
@@ -4213,7 +4221,7 @@ Object {
         "SecurityGroupIds": Array [
           Object {
             "Fn::GetAtt": Array [
-              "SecurityGroupDD263621",
+              "SecurityGroupsecuritygroup00653C55",
               "GroupId",
             ],
           },
@@ -4460,19 +4468,23 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
-    "SecurityGroupDD263621": Object {
+    "SecurityGroupsecuritygroup00653C55": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
             Object {
               "id": "W5",
-              "reason": "Allow notebook users to access the Internet from the notebook",
+              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK",
+            },
+            Object {
+              "id": "W40",
+              "reason": "Egress IPProtocol of -1 is default and generally considered OK",
             },
           ],
         },
       },
       "Properties": Object {
-        "GroupDescription": "Default/SecurityGroup",
+        "GroupDescription": "Default/SecurityGroup-security-group",
         "SecurityGroupEgress": Array [
           Object {
             "CidrIp": "0.0.0.0/0",

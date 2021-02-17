@@ -134,10 +134,10 @@
         }
       }
     },
-    "testlambdas3ReplaceDefaultSecurityGroup39AA8943": {
+    "testlambdas3ReplaceDefaultSecurityGroupsecuritygroupA1E3F673": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "test-lambda-s3/test-lambda-s3/ReplaceDefaultSecurityGroup",
+        "GroupDescription": "test-lambda-s3/test-lambda-s3/ReplaceDefaultSecurityGroup-security-group",
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",
@@ -228,7 +228,7 @@
           "SecurityGroupIds": [
             {
               "Fn::GetAtt": [
-                "testlambdas3ReplaceDefaultSecurityGroup39AA8943",
+                "testlambdas3ReplaceDefaultSecurityGroupsecuritygroupA1E3F673",
                 "GroupId"
               ]
             }

@@ -115,10 +115,10 @@
         }
       }
     },
-    "testlambdasqsReplaceDefaultSecurityGroup53A5E043": {
+    "testlambdasqsReplaceDefaultSecurityGroupsecuritygroup2CA205C7": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "test-lambda-sqs/test-lambda-sqs/ReplaceDefaultSecurityGroup",
+        "GroupDescription": "test-lambda-sqs/test-lambda-sqs/ReplaceDefaultSecurityGroup-security-group",
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",
@@ -186,14 +186,12 @@
             ]
           }
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "testlambdasqsLambdaFunctionServiceRoleC0430CA8",
             "Arn"
           ]
         },
-        "Runtime": "nodejs10.x",
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
@@ -202,6 +200,8 @@
             }
           }
         },
+        "Handler": "index.handler",
+        "Runtime": "nodejs10.x",
         "TracingConfig": {
           "Mode": "Active"
         },
@@ -209,7 +209,7 @@
           "SecurityGroupIds": [
             {
               "Fn::GetAtt": [
-                "testlambdasqsReplaceDefaultSecurityGroup53A5E043",
+                "testlambdasqsReplaceDefaultSecurityGroupsecuritygroup2CA205C7",
                 "GroupId"
               ]
             }
@@ -695,7 +695,7 @@
         "SecurityGroupIds": [
           {
             "Fn::GetAtt": [
-              "ReplaceEndpointDefaultSecurityGroupCF0CCAF1",
+              "ReplaceEndpointDefaultSecurityGroupsecuritygroupB97DD1AF",
               "GroupId"
             ]
           }
@@ -714,10 +714,10 @@
         "VpcEndpointType": "Interface"
       }
     },
-    "ReplaceEndpointDefaultSecurityGroupCF0CCAF1": {
+    "ReplaceEndpointDefaultSecurityGroupsecuritygroupB97DD1AF": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "test-lambda-sqs/ReplaceEndpointDefaultSecurityGroup",
+        "GroupDescription": "test-lambda-sqs/ReplaceEndpointDefaultSecurityGroup-security-group",
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",
