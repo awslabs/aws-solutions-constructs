@@ -22,7 +22,7 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-route53-cloudfront`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.route53cloudfront`|
 
-This AWS Solutions Construct implements an AWS CloudFront distribution delivered over a custom domain and protected with SSL certificate. It lets you specify overrides for CloudFront distribution props so that you can use this pattern with different types of origins.
+This AWS Solutions Construct implements an AWS CloudFront distribution against a custom domain and protected with SSL certificate. It lets you specify overrides for CloudFront distribution props so that you can use this pattern with different types of origins.
 
 Here is a minimal deployable pattern definition in Typescript. It assumes that you have a domain purchased from Route53, and hence a corresponding hosted zone already existing.
 
@@ -59,7 +59,7 @@ _Parameters_
 |:-------------|:----------------|-----------------|
 |existingHostedZoneObj?|[`route53.HostedZone`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-route53.HostedZone.html)|Existing instance of Route53 hosted zone object. If it is not provided, a hosted zone will be created based on the given domainName.|
 |domainName?|`string`|The domain name to be used while creating the hosted zone. This is used only if existingHostedZoneObj is not provided.|
-|hostedZoneProps?|[`route53.HostedZoneProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-route53.HostedZoneProps.html)|User provided props to override the default props for the Route53 hosted zone.|
+|hostedZoneProps?|[`route53.HostedZoneProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-route53.HostedZoneProps.html)|Optional user provided props to override the default props for the Route53 hosted zone.|
 |certificateArn?|`string`|ARN of an existing certificate from us-east-1 region in ACM. If it is not provided, a certificate will be automatically provisioned for the domain using ACM's DNS based validation. <span style="color:orange">***Please note that the hosted zone needs to be reachabe from the internet in order for the automatic validation to be successful. Please see the [footnotes](#footnotes) for more details.***|</span>
 |cloudFrontDistributionProps?|[`cloudfront.DistributionProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudfront.DistributionProps.html)|Optional user provided props to override the default props for CloudFront Distribution|
 
@@ -75,7 +75,7 @@ _Parameters_
 
 ## Default settings
 
-Out of the box implementation of the Construct with only the domain name given, without any override will set the following defaults:
+Out of the box implementation of the Construct with only the existingHostedZoneObj given, without any override will set the following defaults:
 
 ### AWS CloudFront
 * Configure custom domain for the CloudFront WebDistribution
@@ -84,12 +84,11 @@ Out of the box implementation of the Construct with only the domain name given, 
 * Configure origin as HTTP endpoint of amazon.com
 
 ### AWS Certificate manager
-* Automatically provision an SSL certificate for the given domain. <span style="color:orange">***Please note that the hosted zone needs to be reachabe from the internet in order for the automatic validation to be successful. Please see the [footnotes](#footnotes) for more details.***</span>
-* Associate the newly provisioned or the provided certificate with the CloudFront distribution
+* Automatically provision and validate an SSL certificate for the given domain
 
 ### Amazon Route53
-* Create a hosted zone by the given domain name
 * Associate the domain with the CloudFront distribution
+* Configure Access logging for the hosted zone
 
 ## Architecture
 ![Architecture Diagram](architecture.png)
