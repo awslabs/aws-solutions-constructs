@@ -560,7 +560,7 @@ Object {
     },
   },
   "Resources": Object {
-    "ReplaceEndpointDefaultSecurityGroupCF0CCAF1": Object {
+    "ReplaceEndpointDefaultSecurityGroupsecuritygroupB97DD1AF": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -576,7 +576,7 @@ Object {
         },
       },
       "Properties": Object {
-        "GroupDescription": "Default/ReplaceEndpointDefaultSecurityGroup",
+        "GroupDescription": "Default/ReplaceEndpointDefaultSecurityGroup-security-group",
         "SecurityGroupEgress": Array [
           Object {
             "CidrIp": "0.0.0.0/0",
@@ -775,7 +775,7 @@ Object {
         "SecurityGroupIds": Array [
           Object {
             "Fn::GetAtt": Array [
-              "ReplaceEndpointDefaultSecurityGroupCF0CCAF1",
+              "ReplaceEndpointDefaultSecurityGroupsecuritygroupB97DD1AF",
               "GroupId",
             ],
           },
@@ -1054,7 +1054,7 @@ Object {
           "SecurityGroupIds": Array [
             Object {
               "Fn::GetAtt": Array [
-                "testlambdasagemakerReplaceDefaultSecurityGroup8B1F22EE",
+                "testlambdasagemakerReplaceDefaultSecurityGroupsecuritygroupB2FD7810",
                 "GroupId",
               ],
             },
@@ -1178,7 +1178,7 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
-    "testlambdasagemakerReplaceDefaultSecurityGroup8B1F22EE": Object {
+    "testlambdasagemakerReplaceDefaultSecurityGroupsecuritygroupB2FD7810": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -1194,7 +1194,7 @@ Object {
         },
       },
       "Properties": Object {
-        "GroupDescription": "Default/test-lambda-sagemaker/ReplaceDefaultSecurityGroup",
+        "GroupDescription": "Default/test-lambda-sagemaker/ReplaceDefaultSecurityGroup-security-group",
         "SecurityGroupEgress": Array [
           Object {
             "CidrIp": "0.0.0.0/0",

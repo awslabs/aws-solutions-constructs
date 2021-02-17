@@ -324,10 +324,10 @@
         }
       }
     },
-    "testlambdasagemakerReplaceDefaultSecurityGroup8B1F22EE": {
+    "testlambdasagemakerReplaceDefaultSecurityGroupsecuritygroupB2FD7810": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "test-lambda-sagemakerendpoint/test-lambda-sagemaker/ReplaceDefaultSecurityGroup",
+        "GroupDescription": "test-lambda-sagemakerendpoint/test-lambda-sagemaker/ReplaceDefaultSecurityGroup-security-group",
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",
@@ -422,7 +422,7 @@
           "SecurityGroupIds": [
             {
               "Fn::GetAtt": [
-                "testlambdasagemakerReplaceDefaultSecurityGroup8B1F22EE",
+                "testlambdasagemakerReplaceDefaultSecurityGroupsecuritygroupB2FD7810",
                 "GroupId"
               ]
             }
@@ -781,7 +781,7 @@
         "SecurityGroupIds": [
           {
             "Fn::GetAtt": [
-              "ReplaceEndpointDefaultSecurityGroupCF0CCAF1",
+              "ReplaceEndpointDefaultSecurityGroupsecuritygroupB97DD1AF",
               "GroupId"
             ]
           }
@@ -800,10 +800,10 @@
         "VpcEndpointType": "Interface"
       }
     },
-    "ReplaceEndpointDefaultSecurityGroupCF0CCAF1": {
+    "ReplaceEndpointDefaultSecurityGroupsecuritygroupB97DD1AF": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "test-lambda-sagemakerendpoint/ReplaceEndpointDefaultSecurityGroup",
+        "GroupDescription": "test-lambda-sagemakerendpoint/ReplaceEndpointDefaultSecurityGroup-security-group",
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",

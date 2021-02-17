@@ -57,7 +57,7 @@ test('Pattern deployment with new Lambda function, new Sagemaker endpoint, deplo
     VpcConfig: {
       SecurityGroupIds: [
         {
-          'Fn::GetAtt': ['testlambdasagemakerReplaceDefaultSecurityGroup8B1F22EE', 'GroupId'],
+          'Fn::GetAtt': ['testlambdasagemakerReplaceDefaultSecurityGroupsecuritygroupB2FD7810', 'GroupId'],
         },
       ],
       SubnetIds: [
