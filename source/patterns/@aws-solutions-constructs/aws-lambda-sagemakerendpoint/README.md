@@ -100,21 +100,21 @@ Out of the box implementation of the Construct without any override will set the
 
 ### AWS Lambda Function
 
-- Configure limited privilege access IAM role for Lambda function.
-- Enable reusing connections with Keep-Alive for NodeJs Lambda function.
-- Allow the function to invoke the Sagemaker endpoint for Inferences.
-- Configure the function to access resources in the VPC, where the Sagemaker endpoint is deployed.
-- Enable X-Ray Tracing.
+- Configure limited privilege access IAM role for Lambda function
+- Enable reusing connections with Keep-Alive for NodeJs Lambda function
+- Allow the function to invoke the Sagemaker endpoint for Inferences
+- Configure the function to access resources in the VPC, where the Sagemaker endpoint is deployed
+- Enable X-Ray Tracing
 - Set environment variables:
-  - `SAGEMAKER_ENDPOINT_NAME`.
-  - `AWS_NODEJS_CONNECTION_REUSE_ENABLED` (for Node 10.x and higher functions).
+  - SAGEMAKER_ENDPOINT_NAME
+  - AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x and higher functions).
 
 ### Amazon Sagemaker Endpoint
 
-- Configure limited privilege to create Sagemaker resources.
-- Deploy Sagemaker model, endpointConfig, and endpoint.
-- Configure the Sagemaker endpoint to be deployed in a VPC.
-- Deploy S3 VPC Endpoint and Sagemaker Runtime VPC Interface.
+- Configure limited privilege to create Sagemaker resources
+- Deploy Sagemaker model, endpointConfig, and endpoint
+- Configure the Sagemaker endpoint to be deployed in a VPC
+- Deploy S3 VPC Endpoint and Sagemaker Runtime VPC Interface
 
 ## Architecture
 
