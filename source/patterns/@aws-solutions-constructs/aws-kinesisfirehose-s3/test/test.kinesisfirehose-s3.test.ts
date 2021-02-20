@@ -11,25 +11,24 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
-import { KinesisFirehoseToS3, KinesisFirehoseToS3Props } from "../lib";
-import * as cdk from '@aws-cdk/core';
 import '@aws-cdk/assert/jest';
+import { SynthUtils } from '@aws-cdk/assert';
+import { Bucket, IBucket } from "@aws-cdk/aws-s3";
+import { Stack } from '@aws-cdk/core';
+import { KinesisFirehoseToS3, KinesisFirehoseToS3Props } from '../lib';
 
-function deploy(stack: cdk.Stack) {
-  const props = {} as KinesisFirehoseToS3Props;
-
+function deploy(stack: Stack, props: KinesisFirehoseToS3Props = {}) {
   return new KinesisFirehoseToS3(stack, 'test-firehose-s3', props);
 }
 
 test('snapshot test KinesisFirehoseToS3 default params', () => {
-  const stack = new cdk.Stack();
+  const stack = new Stack();
   deploy(stack);
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 test('check s3Bucket default encryption', () => {
-  const stack = new cdk.Stack();
+  const stack = new Stack();
   deploy(stack);
   expect(stack).toHaveResource('AWS::S3::Bucket', {
     BucketEncryption: {
@@ -43,7 +42,7 @@ test('check s3Bucket default encryption', () => {
 });
 
 test('check s3Bucket public access block configuration', () => {
-  const stack = new cdk.Stack();
+  const stack = new Stack();
   deploy(stack);
   expect(stack).toHaveResource('AWS::S3::Bucket', {
     PublicAccessBlockConfiguration: {
@@ -56,9 +55,9 @@ test('check s3Bucket public access block configuration', () => {
 });
 
 test('test s3Bucket override publicAccessBlockConfiguration', () => {
-  const stack = new cdk.Stack();
+  const stack = new Stack();
 
-  new KinesisFirehoseToS3(stack, 'test-firehose-s3', {
+  deploy(stack, {
     bucketProps: {
       blockPublicAccess: {
         blockPublicAcls: false,
@@ -80,9 +79,9 @@ test('test s3Bucket override publicAccessBlockConfiguration', () => {
 });
 
 test('test kinesisFirehose override ', () => {
-  const stack = new cdk.Stack();
+  const stack = new Stack();
 
-  new KinesisFirehoseToS3(stack, 'test-firehose-s3', {
+  deploy(stack, {
     kinesisFirehoseProps: {
       extendedS3DestinationConfiguration: {
         bufferingHints: {
@@ -102,14 +101,58 @@ test('test kinesisFirehose override ', () => {
     }});
 });
 
-test('check properties', () => {
-  const stack = new cdk.Stack();
-
+test('check default properties', () => {
+  const stack = new Stack();
   const construct: KinesisFirehoseToS3 = deploy(stack);
 
-  expect(construct.kinesisFirehose !== null);
-  expect(construct.s3Bucket !== null);
-  expect(construct.kinesisFirehoseRole !== null);
-  expect(construct.kinesisFirehoseLogGroup !== null);
-  expect(construct.s3LoggingBucket !== null);
+  expect(construct.kinesisFirehose).not.toEqual(undefined);
+  expect(construct.kinesisFirehoseRole).not.toEqual(undefined);
+  expect(construct.kinesisFirehoseLogGroup).not.toEqual(undefined);
+  expect(construct.s3Bucket).not.toEqual(undefined);
+  expect(construct.s3LoggingBucket).not.toEqual(undefined);
+});
+
+test('check properties with existing S3 bucket', () => {
+  const stack = new Stack();
+  const mybucket: IBucket = Bucket.fromBucketName(stack, 'mybucket', 'mybucket');
+  const construct: KinesisFirehoseToS3 = deploy(stack, {
+    existingBucketObj: mybucket
+  });
+
+  expect(construct.kinesisFirehose).not.toEqual(undefined);
+  expect(construct.kinesisFirehoseRole).not.toEqual(undefined);
+  expect(construct.kinesisFirehoseLogGroup).not.toEqual(undefined);
+  expect(construct.s3Bucket).toEqual(undefined);
+  expect(construct.s3LoggingBucket).toEqual(undefined);
+});
+
+test('check properties with existing logging S3 bucket', () => {
+  const stack = new Stack();
+  const myLoggingBucket: IBucket = Bucket.fromBucketName(stack, 'myLoggingBucket', 'myLoggingBucket');
+  const construct: KinesisFirehoseToS3 = deploy(stack, {
+    existingLoggingBucketObj: myLoggingBucket
+  });
+
+  expect(construct.kinesisFirehose).not.toEqual(undefined);
+  expect(construct.kinesisFirehoseRole).not.toEqual(undefined);
+  expect(construct.kinesisFirehoseLogGroup).not.toEqual(undefined);
+  expect(construct.s3Bucket).not.toEqual(undefined);
+  expect(construct.s3LoggingBucket).toEqual(undefined);
+});
+
+test('check properties with existing logging S3 bucket and S3 bucket props', () => {
+  const stack = new Stack();
+  const myLoggingBucket: IBucket = Bucket.fromBucketName(stack, 'myLoggingBucket', 'myLoggingBucket');
+  const construct: KinesisFirehoseToS3 = deploy(stack, {
+    bucketProps: {
+      serverAccessLogsPrefix: 'prefix/'
+    },
+    existingLoggingBucketObj: myLoggingBucket
+  });
+
+  expect(construct.kinesisFirehose).not.toEqual(undefined);
+  expect(construct.kinesisFirehoseRole).not.toEqual(undefined);
+  expect(construct.kinesisFirehoseLogGroup).not.toEqual(undefined);
+  expect(construct.s3Bucket).not.toEqual(undefined);
+  expect(construct.s3LoggingBucket).toEqual(undefined);
 });

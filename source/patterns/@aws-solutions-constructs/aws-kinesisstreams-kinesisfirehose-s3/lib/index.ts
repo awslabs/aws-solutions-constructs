@@ -27,29 +27,42 @@ import * as logs from '@aws-cdk/aws-logs';
  */
 export interface KinesisStreamsToKinesisFirehoseToS3Props {
   /**
-   * Optional user provided props to override the default props
-   *
-   * @default - Default props are used
-   */
-  readonly kinesisFirehoseProps?: kinesisfirehose.CfnDeliveryStreamProps | any,
-  /**
-   * Existing instance of S3 Bucket object, if this is set then the bucketProps is ignored.
-   *
-   * @default - None
-   */
-  readonly existingBucketObj?: s3.IBucket,
-  /**
-   * User provided props to override the default props for the S3 Bucket.
+   * Optional user provided props to override the default props for the S3 Bucket.
    *
    * @default - Default props are used
    */
   readonly bucketProps?: s3.BucketProps,
   /**
-   * Existing instance of Kinesis Stream, if this is set then kinesisStreamProps is ignored.
+   * Optional whether to create recommended CloudWatch alarms.
+   *
+   * @default - Alarms are created
+   */
+  readonly createCloudWatchAlarms?: boolean,
+  /**
+   * Optional existing instance of S3 Bucket,
+   * if this is set then bucketProps and existingLoggingBucketObj are ignored.
+   *
+   * @default - None
+   */
+  readonly existingBucketObj?: s3.IBucket,
+  /**
+   * Optional existing instance of logging S3 Bucket for the S3 Bucket created by the pattern.
+   *
+   * @default - None
+   */
+  readonly existingLoggingBucketObj?: s3.IBucket,
+  /**
+   * Optional existing instance of Kinesis Stream, if this is set then kinesisStreamProps is ignored.
    *
    * @default - None
    */
   readonly existingStreamObj?: kinesis.Stream;
+  /**
+   * Optional user provided props to override the default props.
+   *
+   * @default - Default props are used
+   */
+  readonly kinesisFirehoseProps?: kinesisfirehose.CfnDeliveryStreamProps | any,
   /**
    * Optional user-provided props to override the default props for the Kinesis stream.
    *
@@ -57,13 +70,7 @@ export interface KinesisStreamsToKinesisFirehoseToS3Props {
    */
   readonly kinesisStreamProps?: kinesis.StreamProps,
   /**
-   * Whether to create recommended CloudWatch alarms
-   *
-   * @default - Alarms are created
-   */
-  readonly createCloudWatchAlarms?: boolean,
-  /**
-   * User provided props to override the default props for the CloudWatchLogs LogGroup.
+   * Optional user provided props to override the default props for the CloudWatchLogs LogGroup.
    *
    * @default - Default props are used
    */
@@ -71,13 +78,14 @@ export interface KinesisStreamsToKinesisFirehoseToS3Props {
 }
 
 export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
+  public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
   public readonly kinesisFirehose: kinesisfirehose.CfnDeliveryStream;
-  public readonly kinesisFirehoseRole: iam.Role;
   public readonly kinesisFirehoseLogGroup: logs.LogGroup;
+  public readonly kinesisFirehoseRole: iam.Role;
+  public readonly kinesisStream: kinesis.Stream;
+  public readonly kinesisStreamRole: iam.Role;
   public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
-  public readonly kinesisStream: kinesis.Stream;
-  public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
 
   /**
    * @summary Constructs a new instance of the KinesisStreamsToKinesisFirehoseToS3 class.
@@ -96,7 +104,7 @@ export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
       kinesisStreamProps: props.kinesisStreamProps
     });
 
-    const kinesisStreamsRole = new iam.Role(scope, 'KinesisStreamsRole', {
+    this.kinesisStreamRole = new iam.Role(scope, 'KinesisStreamsRole', {
       assumedBy: new iam.ServicePrincipal('firehose.amazonaws.com'),
       inlinePolicies: {
         KinesisStreamsRoleRolePolicy: new iam.PolicyDocument({
@@ -128,13 +136,14 @@ export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
       deliveryStreamType: 'KinesisStreamAsSource',
       kinesisStreamSourceConfiguration: {
         kinesisStreamArn: this.kinesisStream.streamArn,
-        roleArn: kinesisStreamsRole.roleArn
+        roleArn: this.kinesisStreamRole.roleArn
       }
     };
 
     const kdfToS3Construct = new kdfToS3.KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {
       kinesisFirehoseProps: overrideProps(props.kinesisFirehoseProps, _kinesisFirehoseProps),
       existingBucketObj: props.existingBucketObj,
+      existingLoggingBucketObj: props.existingLoggingBucketObj,
       bucketProps: props.bucketProps,
       logGroupProps: props.logGroupProps
     });
@@ -142,6 +151,8 @@ export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
     this.kinesisFirehose = kdfToS3Construct.kinesisFirehose;
     this.kinesisFirehoseRole = kdfToS3Construct.kinesisFirehoseRole;
     this.kinesisFirehoseLogGroup = kdfToS3Construct.kinesisFirehoseLogGroup;
+    this.s3Bucket = kdfToS3Construct.s3Bucket;
+    this.s3LoggingBucket = kdfToS3Construct.s3LoggingBucket;
 
     if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
       // Deploy best practices CW Alarms for Kinesis Stream

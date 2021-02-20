@@ -26,25 +26,32 @@ import * as kms from '@aws-cdk/aws-kms';
  */
 export interface KinesisFirehoseToS3Props {
   /**
+   * Optional user provided props to override the default props for the S3 Bucket.
+   *
+   * @default - Default props are used
+   */
+  readonly bucketProps?: s3.BucketProps,
+  /**
+   * Optional existing instance of S3 Bucket,
+   * if this is set then bucketProps and existingLoggingBucketObj are ignored.
+   *
+   * @default - None
+   */
+  readonly existingBucketObj?: s3.IBucket,
+  /**
+   * Optional existing instance of logging S3 Bucket for the S3 Bucket created by the pattern.
+   *
+   * @default - None
+   */
+  readonly existingLoggingBucketObj?: s3.IBucket,
+  /**
    * Optional user provided props to override the default props
    *
    * @default - Default props are used
    */
   readonly kinesisFirehoseProps?: kinesisfirehose.CfnDeliveryStreamProps | any,
   /**
-   * Existing instance of S3 Bucket object, if this is set then the bucketProps is ignored.
-   *
-   * @default - None
-   */
-  readonly existingBucketObj?: s3.IBucket,
-  /**
-   * User provided props to override the default props for the S3 Bucket.
-   *
-   * @default - Default props are used
-   */
-  readonly bucketProps?: s3.BucketProps,
-  /**
-   * User provided props to override the default props for the CloudWatchLogs LogGroup.
+   * Optional user provided props to override the default props for the CloudWatchLogs LogGroup.
    *
    * @default - Default props are used
    */
@@ -53,13 +60,18 @@ export interface KinesisFirehoseToS3Props {
 
 export class KinesisFirehoseToS3 extends Construct {
   public readonly kinesisFirehose: kinesisfirehose.CfnDeliveryStream;
-  public readonly kinesisFirehoseRole: iam.Role;
   public readonly kinesisFirehoseLogGroup: logs.LogGroup;
+  public readonly kinesisFirehoseRole: iam.Role;
   public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
 
   /**
-   * Constructs a new instance of the IotToLambda class.
+   * Constructs a new instance of the KinesisFirehoseToS3 class.
+   * @param {cdk.App} scope - represents the scope for all the resources.
+   * @param {string} id - this is a a scope-unique id.
+   * @param {KinesisFirehoseToS3Props} props - user provided props for the construct.
+   * @since 0.8.0-beta
+   * @access public
    */
   constructor(scope: Construct, id: string, props: KinesisFirehoseToS3Props) {
     super(scope, id);
@@ -68,8 +80,24 @@ export class KinesisFirehoseToS3 extends Construct {
 
     // Setup S3 Bucket
     if (!props.existingBucketObj) {
+      let { bucketProps } = props;
+
+      // Setup logging S3 Bucket
+      if (props.existingLoggingBucketObj) {
+        if (!bucketProps) {
+          bucketProps = {
+            serverAccessLogsBucket: props.existingLoggingBucketObj
+          };
+        } else {
+          bucketProps = {
+            ...bucketProps,
+            serverAccessLogsBucket: props.existingLoggingBucketObj
+          };
+        }
+      }
+
       [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
-        bucketProps: props.bucketProps
+        bucketProps
       });
 
       bucket = this.s3Bucket;
@@ -88,24 +116,26 @@ export class KinesisFirehoseToS3 extends Construct {
 
     // Setup the IAM policy for Kinesis Firehose
     const firehosePolicy = new iam.Policy(this, 'KinesisFirehosePolicy', {
-      statements: [new iam.PolicyStatement({
-        actions: [
-          's3:AbortMultipartUpload',
-          's3:GetBucketLocation',
-          's3:GetObject',
-          's3:ListBucket',
-          's3:ListBucketMultipartUploads',
-          's3:PutObject'
-        ],
-        resources: [`${bucket.bucketArn}`, `${bucket.bucketArn}/*`]
-      }),
-      new iam.PolicyStatement({
-        actions: [
-          'logs:PutLogEvents'
-        ],
-        resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:log-group:${this.kinesisFirehoseLogGroup.logGroupName}:log-stream:${cwLogStream.logStreamName}`]
-      })
-      ]});
+      statements: [
+        new iam.PolicyStatement({
+          actions: [
+            's3:AbortMultipartUpload',
+            's3:GetBucketLocation',
+            's3:GetObject',
+            's3:ListBucket',
+            's3:ListBucketMultipartUploads',
+            's3:PutObject'
+          ],
+          resources: [`${bucket.bucketArn}`, `${bucket.bucketArn}/*`]
+        }),
+        new iam.PolicyStatement({
+          actions: [
+            'logs:PutLogEvents'
+          ],
+          resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:log-group:${this.kinesisFirehoseLogGroup.logGroupName}:log-stream:${cwLogStream.logStreamName}`]
+        })
+      ]
+    });
 
     // Attach policy to role
     firehosePolicy.attachToRole(this.kinesisFirehoseRole);
