@@ -36,6 +36,6 @@ export function DefaultCfnDeliveryStreamProps(_bucketArn: string, _roleArn: stri
           awskmsKeyArn: _kms.keyArn
         }
       }
-    }
+    },
   } as CfnDeliveryStreamProps;
 }

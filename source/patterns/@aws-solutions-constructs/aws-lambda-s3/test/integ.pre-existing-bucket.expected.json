@@ -1,6 +1,29 @@
 {
   "Description": "Integration Test for aws-lambda-s3",
   "Resources": {
+    "existingScriptLocation845F3C51": {
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W51",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
+            },
+            {
+              "id": "W35",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
+            },
+            {
+              "id": "W41",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct"
+            }
+          ]
+        }
+      }
+    },
     "testlambdas3preexistingbucketLambdaFunctionServiceRole9AC7CED0": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -88,7 +111,10 @@
                       {
                         "Ref": "AWS::Partition"
                       },
-                      ":s3:::cdktoolkit-stagingbucket-1cjqz1mn5psg3"
+                      ":s3:::",
+                      {
+                        "Ref": "existingScriptLocation845F3C51"
+                      }
                     ]
                   ]
                 },
@@ -100,7 +126,11 @@
                       {
                         "Ref": "AWS::Partition"
                       },
-                      ":s3:::cdktoolkit-stagingbucket-1cjqz1mn5psg3/*"
+                      ":s3:::",
+                      {
+                        "Ref": "existingScriptLocation845F3C51"
+                      },
+                      "/*"
                     ]
                   ]
                 }
@@ -177,7 +207,9 @@
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
-            "S3_BUCKET_NAME": "cdktoolkit-stagingbucket-1cjqz1mn5psg3"
+            "S3_BUCKET_NAME": {
+              "Ref": "existingScriptLocation845F3C51"
+            }
           }
         },
         "Handler": "index.handler",

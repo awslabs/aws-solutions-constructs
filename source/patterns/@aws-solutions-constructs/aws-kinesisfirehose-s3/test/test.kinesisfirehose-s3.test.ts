@@ -113,3 +113,35 @@ test('check properties', () => {
   expect(construct.kinesisFirehoseLogGroup !== null);
   expect(construct.s3LoggingBucket !== null);
 });
+
+test('check for SSE encryption for Direct put', () => {
+  const stack = new cdk.Stack();
+
+  new KinesisFirehoseToS3(stack, 'test-firehose-s3', {
+    kinesisFirehoseProps: {
+      deliveryStreamType: 'direct-put'
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::KinesisFirehose::DeliveryStream", {
+    DeliveryStreamEncryptionConfigurationInput: {
+      KeyType: "AWS_OWNED_CMK"
+    },
+  });
+});
+
+test('check for no SSE encryption for KinesisFirehoseToS3', () => {
+  const stack = new cdk.Stack();
+
+  new KinesisFirehoseToS3(stack, 'test-firehose-s3', {
+    kinesisFirehoseProps: {
+      deliveryStreamType: 'KinesisStreamAsSource'
+    }
+  });
+
+  expect(stack).not.toHaveResource("AWS::KinesisFirehose::DeliveryStream", {
+    DeliveryStreamEncryptionConfigurationInput: {
+      KeyType: "AWS_OWNED_CMK"
+    },
+  });
+});

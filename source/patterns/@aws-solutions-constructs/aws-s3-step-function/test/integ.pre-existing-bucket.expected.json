@@ -1,5 +1,28 @@
 {
   "Resources": {
+    "existingScriptLocation845F3C51": {
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W51",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
+            },
+            {
+              "id": "W35",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
+            },
+            {
+              "id": "W41",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct"
+            }
+          ]
+        }
+      }
+    },
     "tests3stepfunctionpreexistingbucketstackCloudTrailS3LoggingBucketB176B631": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
@@ -217,7 +240,11 @@
                         {
                           "Ref": "AWS::Partition"
                         },
-                        ":s3:::cdktoolkit-stagingbucket-1cjqz1mn5psg3/"
+                        ":s3:::",
+                        {
+                          "Ref": "existingScriptLocation845F3C51"
+                        },
+                        "/"
                       ]
                     ]
                   }
@@ -437,7 +464,9 @@
             ],
             "requestParameters": {
               "bucketName": [
-                "cdktoolkit-stagingbucket-1cjqz1mn5psg3"
+                {
+                  "Ref": "existingScriptLocation845F3C51"
+                }
               ]
             }
           }
