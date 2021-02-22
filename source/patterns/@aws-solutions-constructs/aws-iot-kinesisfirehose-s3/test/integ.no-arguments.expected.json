@@ -282,6 +282,9 @@
     "testiotfirehoses3KinesisFirehoseToS3KinesisFirehose68DB2BEE": {
       "Type": "AWS::KinesisFirehose::DeliveryStream",
       "Properties": {
+        "DeliveryStreamEncryptionConfigurationInput": {
+          "KeyType": "AWS_OWNED_CMK"
+        },
         "ExtendedS3DestinationConfiguration": {
           "BucketARN": {
             "Fn::GetAtt": [

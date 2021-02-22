@@ -31,26 +31,26 @@ export interface KinesisStreamsToKinesisFirehoseToS3Props {
    *
    * @default - Default props are used
    */
-  readonly bucketProps?: s3.BucketProps,
+  readonly bucketProps?: s3.BucketProps;
   /**
    * Optional whether to create recommended CloudWatch alarms.
    *
    * @default - Alarms are created
    */
-  readonly createCloudWatchAlarms?: boolean,
+  readonly createCloudWatchAlarms?: boolean;
   /**
    * Optional existing instance of S3 Bucket,
    * if this is set then bucketProps and existingLoggingBucketObj are ignored.
    *
    * @default - None
    */
-  readonly existingBucketObj?: s3.IBucket,
+  readonly existingBucketObj?: s3.IBucket;
   /**
    * Optional existing instance of logging S3 Bucket for the S3 Bucket created by the pattern.
    *
    * @default - None
    */
-  readonly existingLoggingBucketObj?: s3.IBucket,
+  readonly existingLoggingBucketObj?: s3.IBucket;
   /**
    * Optional existing instance of Kinesis Stream, if this is set then kinesisStreamProps is ignored.
    *
@@ -62,19 +62,19 @@ export interface KinesisStreamsToKinesisFirehoseToS3Props {
    *
    * @default - Default props are used
    */
-  readonly kinesisFirehoseProps?: kinesisfirehose.CfnDeliveryStreamProps | any,
+  readonly kinesisFirehoseProps?: kinesisfirehose.CfnDeliveryStreamProps | any;
   /**
    * Optional user-provided props to override the default props for the Kinesis stream.
    *
    * @default - Default props are used.
    */
-  readonly kinesisStreamProps?: kinesis.StreamProps,
+  readonly kinesisStreamProps?: kinesis.StreamProps;
   /**
    * Optional user provided props to override the default props for the CloudWatchLogs LogGroup.
    *
    * @default - Default props are used
    */
-  readonly logGroupProps?: logs.LogGroupProps
+  readonly logGroupProps?: logs.LogGroupProps;
 }
 
 export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {

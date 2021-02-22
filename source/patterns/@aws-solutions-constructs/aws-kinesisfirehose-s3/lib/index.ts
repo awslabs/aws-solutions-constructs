@@ -11,15 +11,15 @@
  *  and limitations under the License.
  */
 
-import * as kinesisfirehose from '@aws-cdk/aws-kinesisfirehose';
-import { Construct } from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as defaults from '@aws-solutions-constructs/core';
-import * as iam from '@aws-cdk/aws-iam';
-import { overrideProps } from '@aws-solutions-constructs/core';
-import * as logs from '@aws-cdk/aws-logs';
-import * as cdk from '@aws-cdk/core';
-import * as kms from '@aws-cdk/aws-kms';
+import * as kinesisfirehose from "@aws-cdk/aws-kinesisfirehose";
+import { Construct } from "@aws-cdk/core";
+import * as s3 from "@aws-cdk/aws-s3";
+import * as defaults from "@aws-solutions-constructs/core";
+import * as iam from "@aws-cdk/aws-iam";
+import { overrideProps, printWarning } from "@aws-solutions-constructs/core";
+import * as logs from "@aws-cdk/aws-logs";
+import * as cdk from "@aws-cdk/core";
+import * as kms from "@aws-cdk/aws-kms";
 
 /**
  * The properties for the KinesisFirehoseToS3 class.
@@ -30,32 +30,32 @@ export interface KinesisFirehoseToS3Props {
    *
    * @default - Default props are used
    */
-  readonly bucketProps?: s3.BucketProps,
+  readonly bucketProps?: s3.BucketProps;
   /**
    * Optional existing instance of S3 Bucket,
    * if this is set then bucketProps and existingLoggingBucketObj are ignored.
    *
    * @default - None
    */
-  readonly existingBucketObj?: s3.IBucket,
+  readonly existingBucketObj?: s3.IBucket;
   /**
    * Optional existing instance of logging S3 Bucket for the S3 Bucket created by the pattern.
    *
    * @default - None
    */
-  readonly existingLoggingBucketObj?: s3.IBucket,
+  readonly existingLoggingBucketObj?: s3.IBucket;
   /**
    * Optional user provided props to override the default props
    *
    * @default - Default props are used
    */
-  readonly kinesisFirehoseProps?: kinesisfirehose.CfnDeliveryStreamProps | any,
+  readonly kinesisFirehoseProps?: kinesisfirehose.CfnDeliveryStreamProps | any;
   /**
    * Optional user provided props to override the default props for the CloudWatchLogs LogGroup.
    *
    * @default - Default props are used
    */
-  readonly logGroupProps?: logs.LogGroupProps
+  readonly logGroupProps?: logs.LogGroupProps;
 }
 
 export class KinesisFirehoseToS3 extends Construct {
@@ -85,15 +85,12 @@ export class KinesisFirehoseToS3 extends Construct {
       // Setup logging S3 Bucket
       if (props.existingLoggingBucketObj) {
         if (!bucketProps) {
-          bucketProps = {
-            serverAccessLogsBucket: props.existingLoggingBucketObj
-          };
-        } else {
-          bucketProps = {
-            ...bucketProps,
-            serverAccessLogsBucket: props.existingLoggingBucketObj
-          };
+          bucketProps = {};
         }
+
+        bucketProps = overrideProps(bucketProps, {
+          serverAccessLogsBucket: props.existingLoggingBucketObj
+        });
       }
 
       [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
@@ -106,12 +103,18 @@ export class KinesisFirehoseToS3 extends Construct {
     }
 
     // Setup Cloudwatch Log group & stream for Kinesis Firehose
-    this.kinesisFirehoseLogGroup = defaults.buildLogGroup(this, 'firehose-log-group', props.logGroupProps);
-    const cwLogStream: logs.LogStream = this.kinesisFirehoseLogGroup.addStream('firehose-log-stream');
+    this.kinesisFirehoseLogGroup = defaults.buildLogGroup(
+      this,
+      "firehose-log-group",
+      props.logGroupProps
+    );
+    const cwLogStream: logs.LogStream = this.kinesisFirehoseLogGroup.addStream(
+      "firehose-log-stream"
+    );
 
     // Setup the IAM Role for Kinesis Firehose
-    this.kinesisFirehoseRole = new iam.Role(this, 'KinesisFirehoseRole', {
-      assumedBy: new iam.ServicePrincipal('firehose.amazonaws.com'),
+    this.kinesisFirehoseRole = new iam.Role(this, "KinesisFirehoseRole", {
+      assumedBy: new iam.ServicePrincipal("firehose.amazonaws.com"),
     });
 
     // Setup the IAM policy for Kinesis Firehose
@@ -119,39 +122,75 @@ export class KinesisFirehoseToS3 extends Construct {
       statements: [
         new iam.PolicyStatement({
           actions: [
-            's3:AbortMultipartUpload',
-            's3:GetBucketLocation',
-            's3:GetObject',
-            's3:ListBucket',
-            's3:ListBucketMultipartUploads',
-            's3:PutObject'
+            "s3:AbortMultipartUpload",
+            "s3:GetBucketLocation",
+            "s3:GetObject",
+            "s3:ListBucket",
+            "s3:ListBucketMultipartUploads",
+            "s3:PutObject",
           ],
-          resources: [`${bucket.bucketArn}`, `${bucket.bucketArn}/*`]
+          resources: [`${bucket.bucketArn}`, `${bucket.bucketArn}/*`],
         }),
         new iam.PolicyStatement({
-          actions: [
-            'logs:PutLogEvents'
+          actions: ["logs:PutLogEvents"],
+          resources: [
+            `arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:log-group:${this.kinesisFirehoseLogGroup.logGroupName}:log-stream:${cwLogStream.logStreamName}`,
           ],
-          resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:log-group:${this.kinesisFirehoseLogGroup.logGroupName}:log-stream:${cwLogStream.logStreamName}`]
-        })
-      ]
+        }),
+      ],
     });
 
     // Attach policy to role
     firehosePolicy.attachToRole(this.kinesisFirehoseRole);
 
-    const awsManagedKey: kms.IKey = kms.Alias.fromAliasName(scope, 'aws-managed-key', 'alias/aws/s3');
+    const awsManagedKey: kms.IKey = kms.Alias.fromAliasName(
+      scope,
+      "aws-managed-key",
+      "alias/aws/s3"
+    );
 
     // Setup the default Kinesis Firehose props
-    const defaultKinesisFirehoseProps: kinesisfirehose.CfnDeliveryStreamProps = defaults.DefaultCfnDeliveryStreamProps(bucket.bucketArn,
-      this.kinesisFirehoseRole.roleArn, this.kinesisFirehoseLogGroup.logGroupName, cwLogStream.logStreamName, awsManagedKey);
+    let defaultKinesisFirehoseProps: kinesisfirehose.CfnDeliveryStreamProps = defaults.DefaultCfnDeliveryStreamProps(
+      bucket.bucketArn,
+      this.kinesisFirehoseRole.roleArn,
+      this.kinesisFirehoseLogGroup.logGroupName,
+      cwLogStream.logStreamName,
+      awsManagedKey
+    );
+
+    printWarning(`kinesisFirehoseProps: ${JSON.stringify(props.kinesisFirehoseProps, null, 2)}`);
+    // if the client didn't explicity say it was a Kinesis client, then turn on encryption
+    if (!props.kinesisFirehoseProps ||
+        !props.kinesisFirehoseProps.deliveryStreamType ||
+        props.kinesisFirehoseProps.deliveryStreamType !== 'KinesisStreamAsSource'
+    ) {
+      defaultKinesisFirehoseProps = defaults.overrideProps(
+        defaultKinesisFirehoseProps,
+        {
+          deliveryStreamEncryptionConfigurationInput: {
+            keyType: "AWS_OWNED_CMK",
+          },
+        }
+      );
+    }
 
     // Override with the input props
     if (props.kinesisFirehoseProps) {
-      const kinesisFirehoseProps = overrideProps(defaultKinesisFirehoseProps, props.kinesisFirehoseProps);
-      this.kinesisFirehose = new kinesisfirehose.CfnDeliveryStream(this, 'KinesisFirehose', kinesisFirehoseProps);
+      const kinesisFirehoseProps = overrideProps(
+        defaultKinesisFirehoseProps,
+        props.kinesisFirehoseProps
+      );
+      this.kinesisFirehose = new kinesisfirehose.CfnDeliveryStream(
+        this,
+        "KinesisFirehose",
+        kinesisFirehoseProps
+      );
     } else {
-      this.kinesisFirehose = new kinesisfirehose.CfnDeliveryStream(this, 'KinesisFirehose', defaultKinesisFirehoseProps);
+      this.kinesisFirehose = new kinesisfirehose.CfnDeliveryStream(
+        this,
+        "KinesisFirehose",
+        defaultKinesisFirehoseProps
+      );
     }
   }
 }

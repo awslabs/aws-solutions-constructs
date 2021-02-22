@@ -1,6 +1,29 @@
 {
   "Description": "Integration Test for aws-kinesisstreams-kinesisfirehose-s3",
   "Resources": {
+    "existingScriptLocation845F3C51": {
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W51",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
+            },
+            {
+              "id": "W35",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
+            },
+            {
+              "id": "W41",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct"
+            }
+          ]
+        }
+      }
+    },
     "testexistingloggingbucketfirehoses3stackKinesisStreamB7F2D4DB": {
       "Type": "AWS::Kinesis::Stream",
       "Properties": {
@@ -38,7 +61,9 @@
           ]
         },
         "LoggingConfiguration": {
-          "DestinationBucketName": "myLoggingBucket"
+          "DestinationBucketName": {
+            "Ref": "existingScriptLocation845F3C51"
+          }
         },
         "PublicAccessBlockConfiguration": {
           "BlockPublicAcls": true,

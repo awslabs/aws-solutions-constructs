@@ -1,6 +1,29 @@
 {
   "Description": "Integration Test for aws-kinesisfirehose-s3",
   "Resources": {
+    "existingScriptLocation845F3C51": {
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W51",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
+            },
+            {
+              "id": "W35",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
+            },
+            {
+              "id": "W41",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct"
+            }
+          ]
+        }
+      }
+    },
     "testfirehoses3preexistingbucketstackfirehoseloggroupC6AF6572": {
       "Type": "AWS::Logs::LogGroup",
       "UpdateReplacePolicy": "Retain",
@@ -71,7 +94,10 @@
                       {
                         "Ref": "AWS::Partition"
                       },
-                      ":s3:::cdktoolkit-stagingbucket-1cjqz1mn5psg3"
+                      ":s3:::",
+                      {
+                        "Ref": "existingScriptLocation845F3C51"
+                      }
                     ]
                   ]
                 },
@@ -83,7 +109,11 @@
                       {
                         "Ref": "AWS::Partition"
                       },
-                      ":s3:::cdktoolkit-stagingbucket-1cjqz1mn5psg3/*"
+                      ":s3:::",
+                      {
+                        "Ref": "existingScriptLocation845F3C51"
+                      },
+                      "/*"
                     ]
                   ]
                 }
@@ -134,6 +164,9 @@
     "testfirehoses3preexistingbucketstackKinesisFirehoseCBFE01D6": {
       "Type": "AWS::KinesisFirehose::DeliveryStream",
       "Properties": {
+        "DeliveryStreamEncryptionConfigurationInput": {
+          "KeyType": "AWS_OWNED_CMK"
+        },
         "ExtendedS3DestinationConfiguration": {
           "BucketARN": {
             "Fn::Join": [
@@ -143,7 +176,10 @@
                 {
                   "Ref": "AWS::Partition"
                 },
-                ":s3:::cdktoolkit-stagingbucket-1cjqz1mn5psg3"
+                ":s3:::",
+                {
+                  "Ref": "existingScriptLocation845F3C51"
+                }
               ]
             ]
           },
@@ -167,7 +203,15 @@
                 "Fn::Join": [
                   "",
                   [
-                    "arn:aws:kms:us-west-2:",
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":kms:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
                     {
                       "Ref": "AWS::AccountId"
                     },

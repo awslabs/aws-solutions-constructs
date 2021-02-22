@@ -56,3 +56,4 @@ export * from './lib/glue-table-defaults';
 export * from './lib/glue-table-helper';
 export * from './lib/glue-database-defaults';
 export * from './lib/glue-database-helper';
+export * from './test/test-helper';

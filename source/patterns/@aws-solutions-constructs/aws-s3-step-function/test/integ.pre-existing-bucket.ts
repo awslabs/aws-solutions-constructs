@@ -16,11 +16,14 @@ import { App, Stack } from "@aws-cdk/core";
 import { S3ToStepFunction, S3ToStepFunctionProps } from "../lib";
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
 import * as s3 from '@aws-cdk/aws-s3';
+import { CreateScrapBucket } from '@aws-solutions-constructs/core';
 
 const app = new App();
 const stack = new Stack(app, 'test-s3-step-function-pre-existing-bucket-stack');
 
-const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', 'cdktoolkit-stagingbucket-1cjqz1mn5psg3');
+const existingBucket = CreateScrapBucket(stack, {});
+
+const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);
 const startState = new stepfunctions.Pass(stack, 'StartState');
 
 const props: S3ToStepFunctionProps = {

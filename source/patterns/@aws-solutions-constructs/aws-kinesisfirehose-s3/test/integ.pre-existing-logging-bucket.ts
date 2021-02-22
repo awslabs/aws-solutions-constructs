@@ -12,8 +12,9 @@
  */
 
 // Imports
-import { Bucket, IBucket } from '@aws-cdk/aws-s3';
+import * as s3 from '@aws-cdk/aws-s3';
 import { App, Stack } from '@aws-cdk/core';
+import { CreateScrapBucket } from '@aws-solutions-constructs/core';
 import { KinesisFirehoseToS3 } from '../lib';
 
 // Setup
@@ -21,7 +22,8 @@ const app = new App();
 const stack = new Stack(app, 'test-firehose-s3-pre-existing-logging-bucket-stack');
 stack.templateOptions.description = 'Integration Test for aws-kinesisfirehose-s3';
 
-const myLoggingBucket: IBucket = Bucket.fromBucketName(stack, 'myLoggingBucket', 'myLoggingBucket');
+const existingBucket = CreateScrapBucket(stack, {});
+const myLoggingBucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'myLoggingBucket', existingBucket.bucketName);
 new KinesisFirehoseToS3(stack, 'test-firehose-s3-pre-existing-logging-bucket-stack', {
   existingLoggingBucketObj: myLoggingBucket
 });

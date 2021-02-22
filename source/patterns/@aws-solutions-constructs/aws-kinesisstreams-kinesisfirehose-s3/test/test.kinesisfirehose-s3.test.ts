@@ -11,26 +11,26 @@
  *  and limitations under the License.
  */
 
-import '@aws-cdk/assert/jest';
 import { SynthUtils } from '@aws-cdk/assert';
-import { Role, ServicePrincipal } from '@aws-cdk/aws-iam';
-import { Bucket, IBucket } from '@aws-cdk/aws-s3';
-import { Stack } from '@aws-cdk/core';
-import { buildKinesisStream } from '@aws-solutions-constructs/core';
 import { KinesisStreamsToKinesisFirehoseToS3, KinesisStreamsToKinesisFirehoseToS3Props } from '../lib';
+import * as cdk from '@aws-cdk/core';
+import '@aws-cdk/assert/jest';
+import * as defaults from '@aws-solutions-constructs/core';
+import { Role, ServicePrincipal } from '@aws-cdk/aws-iam';
+import * as s3 from '@aws-cdk/aws-s3';
 
-function deploy(stack: Stack, props: KinesisStreamsToKinesisFirehoseToS3Props = {}) {
+function deploy(stack: cdk.Stack, props: KinesisStreamsToKinesisFirehoseToS3Props = {}) {
   return new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-stream-firehose-s3', props);
 }
 
 test('snapshot test KinesisStreamsToKinesisFirehoseToS3 default params', () => {
-  const stack = new Stack();
+  const stack = new cdk.Stack();
   deploy(stack);
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 test('test kinesisFirehose override ', () => {
-  const stack = new Stack();
+  const stack = new cdk.Stack();
   deploy(stack, {
     kinesisFirehoseProps: {
       extendedS3DestinationConfiguration: {
@@ -52,7 +52,7 @@ test('test kinesisFirehose override ', () => {
 });
 
 test('test kinesisFirehose.deliveryStreamType override ', () => {
-  const stack = new Stack();
+  const stack = new cdk.Stack();
   deploy(stack, {
     kinesisFirehoseProps: {
       deliveryStreamType: 'DirectPut'
@@ -65,9 +65,9 @@ test('test kinesisFirehose.deliveryStreamType override ', () => {
 });
 
 test('test kinesisFirehose.kinesisStreamSourceConfiguration override ', () => {
-  const stack = new Stack();
+  const stack = new cdk.Stack();
 
-  const kinesisStream = buildKinesisStream(stack, {
+  const kinesisStream = defaults.buildKinesisStream(stack, {
     existingStreamObj: undefined,
     kinesisStreamProps: undefined
   });
@@ -102,7 +102,7 @@ test('test kinesisFirehose.kinesisStreamSourceConfiguration override ', () => {
 });
 
 test('test kinesisStreamProps override ', () => {
-  const stack = new Stack();
+  const stack = new cdk.Stack();
 
   deploy(stack, {
     kinesisStreamProps: {
@@ -116,7 +116,7 @@ test('test kinesisStreamProps override ', () => {
 });
 
 test('Test All properties', () => {
-  const stack = new Stack();
+  const stack = new cdk.Stack();
   const construct: KinesisStreamsToKinesisFirehoseToS3 = deploy(stack);
 
   expect(construct.cloudwatchAlarms).not.toEqual(undefined);
@@ -130,7 +130,7 @@ test('Test All properties', () => {
 });
 
 test('Test properties with no CW Alarms', () => {
-  const stack = new Stack();
+  const stack = new cdk.Stack();
   const construct: KinesisStreamsToKinesisFirehoseToS3  = deploy(stack, {
     createCloudWatchAlarms: false
   });
@@ -139,8 +139,9 @@ test('Test properties with no CW Alarms', () => {
 });
 
 test('Test properties with existing S3 bucket', () => {
-  const stack = new Stack();
-  const mybucket: IBucket = Bucket.fromBucketName(stack, 'mybucket', 'mybucket');
+  const stack = new cdk.Stack();
+  const existingBucket = defaults.CreateScrapBucket(stack, {});
+  const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);
   const construct: KinesisStreamsToKinesisFirehoseToS3 = deploy(stack, {
     existingBucketObj: mybucket
   });
@@ -150,8 +151,9 @@ test('Test properties with existing S3 bucket', () => {
 });
 
 test('Test properties with existing logging S3 bucket', () => {
-  const stack = new Stack();
-  const myLoggingBucket: IBucket = Bucket.fromBucketName(stack, 'myLoggingBucket', 'myLoggingBucket');
+  const stack = new cdk.Stack();
+  const existingBucket = defaults.CreateScrapBucket(stack, {});
+  const myLoggingBucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'myLoggingBucket', existingBucket.bucketName);
   const construct: KinesisStreamsToKinesisFirehoseToS3  = deploy(stack, {
     existingLoggingBucketObj: myLoggingBucket
   });

@@ -11,24 +11,25 @@
  *  and limitations under the License.
  */
 
-import '@aws-cdk/assert/jest';
 import { SynthUtils } from '@aws-cdk/assert';
-import { Bucket, IBucket } from "@aws-cdk/aws-s3";
-import { Stack } from '@aws-cdk/core';
-import { KinesisFirehoseToS3, KinesisFirehoseToS3Props } from '../lib';
+import { KinesisFirehoseToS3, KinesisFirehoseToS3Props } from "../lib";
+import * as cdk from '@aws-cdk/core';
+import * as s3 from '@aws-cdk/aws-s3';
+import '@aws-cdk/assert/jest';
+import { CreateScrapBucket } from '@aws-solutions-constructs/core';
 
-function deploy(stack: Stack, props: KinesisFirehoseToS3Props = {}) {
+function deploy(stack: cdk.Stack, props: KinesisFirehoseToS3Props = {}) {
   return new KinesisFirehoseToS3(stack, 'test-firehose-s3', props);
 }
 
 test('snapshot test KinesisFirehoseToS3 default params', () => {
-  const stack = new Stack();
+  const stack = new cdk.Stack();
   deploy(stack);
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 test('check s3Bucket default encryption', () => {
-  const stack = new Stack();
+  const stack = new cdk.Stack();
   deploy(stack);
   expect(stack).toHaveResource('AWS::S3::Bucket', {
     BucketEncryption: {
@@ -42,7 +43,7 @@ test('check s3Bucket default encryption', () => {
 });
 
 test('check s3Bucket public access block configuration', () => {
-  const stack = new Stack();
+  const stack = new cdk.Stack();
   deploy(stack);
   expect(stack).toHaveResource('AWS::S3::Bucket', {
     PublicAccessBlockConfiguration: {
@@ -55,7 +56,7 @@ test('check s3Bucket public access block configuration', () => {
 });
 
 test('test s3Bucket override publicAccessBlockConfiguration', () => {
-  const stack = new Stack();
+  const stack = new cdk.Stack();
 
   deploy(stack, {
     bucketProps: {
@@ -79,7 +80,7 @@ test('test s3Bucket override publicAccessBlockConfiguration', () => {
 });
 
 test('test kinesisFirehose override ', () => {
-  const stack = new Stack();
+  const stack = new cdk.Stack();
 
   deploy(stack, {
     kinesisFirehoseProps: {
@@ -102,7 +103,7 @@ test('test kinesisFirehose override ', () => {
 });
 
 test('check default properties', () => {
-  const stack = new Stack();
+  const stack = new cdk.Stack();
   const construct: KinesisFirehoseToS3 = deploy(stack);
 
   expect(construct.kinesisFirehose).not.toEqual(undefined);
@@ -113,8 +114,9 @@ test('check default properties', () => {
 });
 
 test('check properties with existing S3 bucket', () => {
-  const stack = new Stack();
-  const mybucket: IBucket = Bucket.fromBucketName(stack, 'mybucket', 'mybucket');
+  const stack = new cdk.Stack();
+  const existingBucket = CreateScrapBucket(stack, {});
+  const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);
   const construct: KinesisFirehoseToS3 = deploy(stack, {
     existingBucketObj: mybucket
   });
@@ -127,8 +129,9 @@ test('check properties with existing S3 bucket', () => {
 });
 
 test('check properties with existing logging S3 bucket', () => {
-  const stack = new Stack();
-  const myLoggingBucket: IBucket = Bucket.fromBucketName(stack, 'myLoggingBucket', 'myLoggingBucket');
+  const stack = new cdk.Stack();
+  const existingBucket = CreateScrapBucket(stack, {});
+  const myLoggingBucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'myLoggingBucket', existingBucket.bucketName);
   const construct: KinesisFirehoseToS3 = deploy(stack, {
     existingLoggingBucketObj: myLoggingBucket
   });
@@ -141,8 +144,9 @@ test('check properties with existing logging S3 bucket', () => {
 });
 
 test('check properties with existing logging S3 bucket and S3 bucket props', () => {
-  const stack = new Stack();
-  const myLoggingBucket: IBucket = Bucket.fromBucketName(stack, 'myLoggingBucket', 'myLoggingBucket');
+  const stack = new cdk.Stack();
+  const existingBucket = CreateScrapBucket(stack, {});
+  const myLoggingBucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'myLoggingBucket', existingBucket.bucketName);
   const construct: KinesisFirehoseToS3 = deploy(stack, {
     bucketProps: {
       serverAccessLogsPrefix: 'prefix/'
@@ -155,4 +159,36 @@ test('check properties with existing logging S3 bucket and S3 bucket props', () 
   expect(construct.kinesisFirehoseLogGroup).not.toEqual(undefined);
   expect(construct.s3Bucket).not.toEqual(undefined);
   expect(construct.s3LoggingBucket).toEqual(undefined);
+});
+
+test('check for SSE encryption for Direct put', () => {
+  const stack = new cdk.Stack();
+
+  new KinesisFirehoseToS3(stack, 'test-firehose-s3', {
+    kinesisFirehoseProps: {
+      deliveryStreamType: 'direct-put'
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::KinesisFirehose::DeliveryStream", {
+    DeliveryStreamEncryptionConfigurationInput: {
+      KeyType: "AWS_OWNED_CMK"
+    },
+  });
+});
+
+test('check for no SSE encryption for KinesisFirehoseToS3', () => {
+  const stack = new cdk.Stack();
+
+  new KinesisFirehoseToS3(stack, 'test-firehose-s3', {
+    kinesisFirehoseProps: {
+      deliveryStreamType: 'KinesisStreamAsSource'
+    }
+  });
+
+  expect(stack).not.toHaveResource("AWS::KinesisFirehose::DeliveryStream", {
+    DeliveryStreamEncryptionConfigurationInput: {
+      KeyType: "AWS_OWNED_CMK"
+    },
+  });
 });

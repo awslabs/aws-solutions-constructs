@@ -282,6 +282,9 @@
     "testeventsrulekinesisfirehoses3KinesisFirehoseToS3KinesisFirehose8BD45033": {
       "Type": "AWS::KinesisFirehose::DeliveryStream",
       "Properties": {
+        "DeliveryStreamEncryptionConfigurationInput": {
+          "KeyType": "AWS_OWNED_CMK"
+        },
         "ExtendedS3DestinationConfiguration": {
           "BucketARN": {
             "Fn::GetAtt": [

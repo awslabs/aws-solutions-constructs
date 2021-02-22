@@ -1,6 +1,29 @@
 {
   "Description": "Integration Test for aws-kinesisfirehose-s3",
   "Resources": {
+    "existingScriptLocation845F3C51": {
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W51",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
+            },
+            {
+              "id": "W35",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
+            },
+            {
+              "id": "W41",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct"
+            }
+          ]
+        }
+      }
+    },
     "testfirehoses3preexistingloggingbucketstackS3BucketD14D0F4F": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
@@ -27,7 +50,9 @@
           ]
         },
         "LoggingConfiguration": {
-          "DestinationBucketName": "myLoggingBucket"
+          "DestinationBucketName": {
+            "Ref": "existingScriptLocation845F3C51"
+          }
         },
         "PublicAccessBlockConfiguration": {
           "BlockPublicAcls": true,
@@ -209,6 +234,9 @@
     "testfirehoses3preexistingloggingbucketstackKinesisFirehoseC4EC3B0E": {
       "Type": "AWS::KinesisFirehose::DeliveryStream",
       "Properties": {
+        "DeliveryStreamEncryptionConfigurationInput": {
+          "KeyType": "AWS_OWNED_CMK"
+        },
         "ExtendedS3DestinationConfiguration": {
           "BucketARN": {
             "Fn::GetAtt": [

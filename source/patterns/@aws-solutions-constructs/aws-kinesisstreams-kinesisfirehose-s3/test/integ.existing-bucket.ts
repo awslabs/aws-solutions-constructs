@@ -12,8 +12,9 @@
  */
 
 // Imports
-import { Bucket, IBucket } from '@aws-cdk/aws-s3';
+import * as s3 from '@aws-cdk/aws-s3';
 import { App, Stack } from '@aws-cdk/core';
+import { CreateScrapBucket } from '@aws-solutions-constructs/core';
 import { KinesisStreamsToKinesisFirehoseToS3 } from '../lib';
 
 // Setup
@@ -21,7 +22,8 @@ const app = new App();
 const stack = new Stack(app, 'test-existing-bucket-firehose-s3-stack');
 stack.templateOptions.description = 'Integration Test for aws-kinesisstreams-kinesisfirehose-s3';
 
-const mybucket: IBucket = Bucket.fromBucketName(stack, 'mybucket', 'mybucket');
+const existingBucket = CreateScrapBucket(stack, {});
+const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);
 new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-existing-bucket-firehose-s3-stack', {
   existingBucketObj: mybucket
 });

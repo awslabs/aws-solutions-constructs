@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 1.87.1 (2021-02-22)
+- Upgraded all patterns to CDK v1.87.1
+- Implemented SSE where appropriate on Firehose-S3 patterns
+- Updated integration tests to not depend upon specific buckets
+
 ## 1.87.0 (2021-02-12)
 
 ### Changed
