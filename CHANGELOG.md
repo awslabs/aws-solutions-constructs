@@ -2,7 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.88.0 (2021-02-22)
+
+### Added
+- aws-lambda-sagemakerendpoint pattern added ([#111](https://github.com/awslabs/aws-solutions-constructs/issues/111))
+
+### Changed
+- Upgraded all patterns to CDK v1.88.0
+
 ### 1.87.1 (2021-02-22)
+
+### Changed
 - Upgraded all patterns to CDK v1.87.1
 - Implemented SSE where appropriate on Firehose-S3 patterns
 - Updated integration tests to not depend upon specific buckets
