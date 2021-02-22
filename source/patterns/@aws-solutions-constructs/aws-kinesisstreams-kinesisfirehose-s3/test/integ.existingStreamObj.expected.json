@@ -182,19 +182,19 @@
             ]
           }
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "testkinesislambdaLambdaFunctionServiceRole965E2A08",
             "Arn"
           ]
         },
-        "Runtime": "nodejs10.x",
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
           }
         },
+        "Handler": "index.handler",
+        "Runtime": "nodejs10.x",
         "TracingConfig": {
           "Mode": "Active"
         }
@@ -217,12 +217,6 @@
     "testkinesislambdaLambdaFunctionKinesisEventSourcetestexistingstreamfirehoses3stacktestkinesislambdaKinesisStreamA03203A0C559479F": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
-        "EventSourceArn": {
-          "Fn::GetAtt": [
-            "testkinesislambdaKinesisStream00F67958",
-            "Arn"
-          ]
-        },
         "FunctionName": {
           "Ref": "testkinesislambdaLambdaFunction7F18F840"
         },
@@ -237,6 +231,12 @@
               ]
             }
           }
+        },
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "testkinesislambdaKinesisStream00F67958",
+            "Arn"
+          ]
         },
         "MaximumRecordAgeInSeconds": 86400,
         "MaximumRetryAttempts": 500,

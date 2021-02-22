@@ -16,13 +16,15 @@ import { App, Stack } from "@aws-cdk/core";
 import { LambdaToS3, LambdaToS3Props } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as s3 from '@aws-cdk/aws-s3';
+import { CreateScrapBucket } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, 'test-lambda-s3-pre-existing-bucket');
 stack.templateOptions.description = 'Integration Test for aws-lambda-s3';
-const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', 'cdktoolkit-stagingbucket-1cjqz1mn5psg3');
+const existingBucket = CreateScrapBucket(stack, {});
 
+const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);
 // Definitions
 const props: LambdaToS3Props = {
   existingBucketObj: mybucket,
