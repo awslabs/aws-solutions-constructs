@@ -118,7 +118,7 @@ export class KinesisFirehoseToS3 extends Construct {
     });
 
     // Setup the IAM policy for Kinesis Firehose
-    const firehosePolicy = new iam.Policy(this, 'KinesisFirehosePolicy', {
+    const firehosePolicy = new iam.Policy(this, "KinesisFirehosePolicy", {
       statements: [
         new iam.PolicyStatement({
           actions: [

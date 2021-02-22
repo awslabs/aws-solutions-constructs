@@ -12,8 +12,8 @@
  */
 
 // Imports
-import { App, Stack } from '@aws-cdk/core';
-import { KinesisFirehoseToS3 } from '../lib';
+import { App, Stack } from "@aws-cdk/core";
+import { KinesisFirehoseToS3 } from "../lib";
 
 // Setup
 const app = new App();
