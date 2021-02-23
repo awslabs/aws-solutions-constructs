@@ -281,6 +281,9 @@
     "testfirehoses3andanalyticsstackKinesisFirehoseToS3KinesisFirehose86F339C4": {
       "Type": "AWS::KinesisFirehose::DeliveryStream",
       "Properties": {
+        "DeliveryStreamEncryptionConfigurationInput": {
+          "KeyType": "AWS_OWNED_CMK"
+        },
         "ExtendedS3DestinationConfiguration": {
           "BucketARN": {
             "Fn::GetAtt": [

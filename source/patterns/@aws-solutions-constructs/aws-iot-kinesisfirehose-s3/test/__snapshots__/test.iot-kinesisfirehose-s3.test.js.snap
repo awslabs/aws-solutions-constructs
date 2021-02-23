@@ -73,6 +73,9 @@ Object {
     },
     "testiotfirehoses3KinesisFirehoseToS3KinesisFirehose68DB2BEE": Object {
       "Properties": Object {
+        "DeliveryStreamEncryptionConfigurationInput": Object {
+          "KeyType": "AWS_OWNED_CMK",
+        },
         "ExtendedS3DestinationConfiguration": Object {
           "BucketARN": Object {
             "Fn::GetAtt": Array [

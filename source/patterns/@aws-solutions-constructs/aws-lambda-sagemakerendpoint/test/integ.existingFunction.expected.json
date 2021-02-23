@@ -1,0 +1,541 @@
+{
+  "Description": "Integration Test for aws-lambda-sagemakerendpoint",
+  "Resources": {
+    "LambdaFunctionServiceRole0C4CDE0B": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":log-group:/aws/lambda/*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy"
+          }
+        ]
+      }
+    },
+    "LambdaFunctionServiceRoleDefaultPolicy126C8897": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": "sagemaker:InvokeEndpoint",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "testlambdasagemakerSagemakerEndpoint12803730"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "LambdaFunctionServiceRoleDefaultPolicy126C8897",
+        "Roles": [
+          {
+            "Ref": "LambdaFunctionServiceRole0C4CDE0B"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+            }
+          ]
+        }
+      }
+    },
+    "LambdaFunctionBF21E41F": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15S3BucketE0481499"
+          },
+          "S3Key": {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Fn::Select": [
+                    0,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15S3VersionKey9A1AB349"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Fn::Select": [
+                    1,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15S3VersionKey9A1AB349"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            ]
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaFunctionServiceRole0C4CDE0B",
+            "Arn"
+          ]
+        },
+        "Environment": {
+          "Variables": {
+            "SAGEMAKER_ENDPOINT_NAME": {
+              "Fn::GetAtt": [
+                "testlambdasagemakerSagemakerEndpoint12803730",
+                "EndpointName"
+              ]
+            }
+          }
+        },
+        "Handler": "index.handler",
+        "MemorySize": 128,
+        "Runtime": "python3.8",
+        "Timeout": 300,
+        "TracingConfig": {
+          "Mode": "Active"
+        }
+      },
+      "DependsOn": [
+        "LambdaFunctionServiceRoleDefaultPolicy126C8897",
+        "LambdaFunctionServiceRole0C4CDE0B"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions."
+            }
+          ]
+        }
+      }
+    },
+    "testlambdasagemakerSagemakerRoleD84546B8": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "sagemaker.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "testlambdasagemakerSagemakerRoleDefaultPolicy9909C0A0": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "sagemaker:CreateTrainingJob",
+                "sagemaker:DescribeTrainingJob",
+                "sagemaker:CreateModel",
+                "sagemaker:DescribeModel",
+                "sagemaker:DeleteModel",
+                "sagemaker:CreateEndpoint",
+                "sagemaker:CreateEndpointConfig",
+                "sagemaker:DescribeEndpoint",
+                "sagemaker:DescribeEndpointConfig",
+                "sagemaker:DeleteEndpoint",
+                "sagemaker:DeleteEndpointConfig",
+                "sagemaker:InvokeEndpoint"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":sagemaker:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:DescribeLogStreams",
+                "logs:GetLogEvents",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":logs:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":log-group:/aws/sagemaker/*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:DescribeRepositories",
+                "ecr:DescribeImages",
+                "ecr:BatchGetImage"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":ecr:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":repository/*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "kms:Encrypt",
+                "kms:Decrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+                "kms:DescribeKey"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":kms:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":key/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":kms:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":alias/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:DeleteObject",
+                "s3:ListBucket"
+              ],
+              "Effect": "Allow",
+              "Resource": "arn:aws:s3:::*"
+            },
+            {
+              "Action": "iam:GetRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testlambdasagemakerSagemakerRoleD84546B8",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "iam:PassRole",
+              "Condition": {
+                "StringLike": {
+                  "iam:PassedToService": "sagemaker.amazonaws.com"
+                }
+              },
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testlambdasagemakerSagemakerRoleD84546B8",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testlambdasagemakerSagemakerRoleDefaultPolicy9909C0A0",
+        "Roles": [
+          {
+            "Ref": "testlambdasagemakerSagemakerRoleD84546B8"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Sagemaker needs the following minimum required permissions to access ENIs in a VPC, ECR for custom model images, and elastic inference."
+            },
+            {
+              "id": "W76",
+              "reason": "Complex role becuase Sagemaker needs permissions to access several services"
+            }
+          ]
+        }
+      }
+    },
+    "testlambdasagemakerSagemakerModelEC3E4E39": {
+      "Type": "AWS::SageMaker::Model",
+      "Properties": {
+        "ExecutionRoleArn": {
+          "Fn::GetAtt": [
+            "testlambdasagemakerSagemakerRoleD84546B8",
+            "Arn"
+          ]
+        },
+        "PrimaryContainer": {
+          "Image": "<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest",
+          "ModelDataUrl": "s3://<bucket-name>/<prefix>/model.tar.gz"
+        }
+      },
+      "DependsOn": [
+        "testlambdasagemakerSagemakerRoleDefaultPolicy9909C0A0",
+        "testlambdasagemakerSagemakerRoleD84546B8"
+      ]
+    },
+    "testlambdasagemakerEncryptionKey2AACF9E0": {
+      "Type": "AWS::KMS::Key",
+      "Properties": {
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion",
+                "kms:GenerateDataKey",
+                "kms:TagResource",
+                "kms:UntagResource"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              },
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "EnableKeyRotation": true
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "testlambdasagemakerSagemakerEndpointConfig6BABA334": {
+      "Type": "AWS::SageMaker::EndpointConfig",
+      "Properties": {
+        "ProductionVariants": [
+          {
+            "InitialInstanceCount": 1,
+            "InitialVariantWeight": 1,
+            "InstanceType": "ml.m4.xlarge",
+            "ModelName": {
+              "Fn::GetAtt": [
+                "testlambdasagemakerSagemakerModelEC3E4E39",
+                "ModelName"
+              ]
+            },
+            "VariantName": "AllTraffic"
+          }
+        ],
+        "KmsKeyId": {
+          "Ref": "testlambdasagemakerEncryptionKey2AACF9E0"
+        }
+      },
+      "DependsOn": [
+        "testlambdasagemakerSagemakerModelEC3E4E39"
+      ]
+    },
+    "testlambdasagemakerSagemakerEndpoint12803730": {
+      "Type": "AWS::SageMaker::Endpoint",
+      "Properties": {
+        "EndpointConfigName": {
+          "Fn::GetAtt": [
+            "testlambdasagemakerSagemakerEndpointConfig6BABA334",
+            "EndpointConfigName"
+          ]
+        }
+      },
+      "DependsOn": [
+        "testlambdasagemakerSagemakerEndpointConfig6BABA334"
+      ]
+    }
+  },
+  "Parameters": {
+    "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15S3BucketE0481499": {
+      "Type": "String",
+      "Description": "S3 bucket for asset \"d894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15\""
+    },
+    "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15S3VersionKey9A1AB349": {
+      "Type": "String",
+      "Description": "S3 key for asset version \"d894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15\""
+    },
+    "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15ArtifactHash4C89D4A0": {
+      "Type": "String",
+      "Description": "Artifact hash for asset \"d894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15\""
+    }
+  }
+}

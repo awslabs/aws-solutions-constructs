@@ -94,6 +94,7 @@ export enum ServiceEndpointTypes {
   SQS = "SQS",
   S3 = "S3",
   STEPFUNCTIONS = "STEPFUNCTIONS",
+  SAGEMAKER_RUNTIME = "SAGEMAKER_RUNTIME",
 }
 
 enum EndpointTypes {
@@ -128,6 +129,11 @@ const endpointSettings: EndpointDefinition[] = [
     endpointName: ServiceEndpointTypes.SQS,
     endpointType: EndpointTypes.INTERFACE,
     endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.SQS,
+  },
+  {
+    endpointName: ServiceEndpointTypes.SAGEMAKER_RUNTIME,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.SAGEMAKER_RUNTIME,
   },
 ];
 
