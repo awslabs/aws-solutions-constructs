@@ -1,0 +1,386 @@
+{
+  "Description": "Integration Test for aws-kinesisstreams-kinesisfirehose-s3",
+  "Resources": {
+    "existingScriptLocation845F3C51": {
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W51",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
+            },
+            {
+              "id": "W35",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
+            },
+            {
+              "id": "W41",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct"
+            }
+          ]
+        }
+      }
+    },
+    "testexistingloggingbucketfirehoses3stackKinesisStreamB7F2D4DB": {
+      "Type": "AWS::Kinesis::Stream",
+      "Properties": {
+        "ShardCount": 1,
+        "RetentionPeriodHours": 24,
+        "StreamEncryption": {
+          "EncryptionType": "KMS",
+          "KeyId": "alias/aws/kinesis"
+        }
+      }
+    },
+    "testexistingloggingbucketfirehoses3stackKinesisFirehoseToS3S3Bucket41EFA1B0": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "NoncurrentVersionTransitions": [
+                {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90
+                }
+              ],
+              "Status": "Enabled"
+            }
+          ]
+        },
+        "LoggingConfiguration": {
+          "DestinationBucketName": {
+            "Ref": "existingScriptLocation845F3C51"
+          }
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "testexistingloggingbucketfirehoses3stackKinesisFirehoseToS3S3BucketPolicy03F492FD": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "testexistingloggingbucketfirehoses3stackKinesisFirehoseToS3S3Bucket41EFA1B0"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "testexistingloggingbucketfirehoses3stackKinesisFirehoseToS3S3Bucket41EFA1B0",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              },
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "testexistingloggingbucketfirehoses3stackKinesisFirehoseToS3firehoseloggroupD9F798A5": {
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
+            },
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+            }
+          ]
+        }
+      }
+    },
+    "testexistingloggingbucketfirehoses3stackKinesisFirehoseToS3firehoseloggroupfirehoselogstreamDC37347C": {
+      "Type": "AWS::Logs::LogStream",
+      "Properties": {
+        "LogGroupName": {
+          "Ref": "testexistingloggingbucketfirehoses3stackKinesisFirehoseToS3firehoseloggroupD9F798A5"
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "testexistingloggingbucketfirehoses3stackKinesisFirehoseToS3KinesisFirehoseRole7392E86B": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "firehose.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "testexistingloggingbucketfirehoses3stackKinesisFirehoseToS3KinesisFirehosePolicy898281BC": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:AbortMultipartUpload",
+                "s3:GetBucketLocation",
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:ListBucketMultipartUploads",
+                "s3:PutObject"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testexistingloggingbucketfirehoses3stackKinesisFirehoseToS3S3Bucket41EFA1B0",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testexistingloggingbucketfirehoses3stackKinesisFirehoseToS3S3Bucket41EFA1B0",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": "logs:PutLogEvents",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":logs:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":log-group:",
+                    {
+                      "Ref": "testexistingloggingbucketfirehoses3stackKinesisFirehoseToS3firehoseloggroupD9F798A5"
+                    },
+                    ":log-stream:",
+                    {
+                      "Ref": "testexistingloggingbucketfirehoses3stackKinesisFirehoseToS3firehoseloggroupfirehoselogstreamDC37347C"
+                    }
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testexistingloggingbucketfirehoses3stackKinesisFirehoseToS3KinesisFirehosePolicy898281BC",
+        "Roles": [
+          {
+            "Ref": "testexistingloggingbucketfirehoses3stackKinesisFirehoseToS3KinesisFirehoseRole7392E86B"
+          }
+        ]
+      }
+    },
+    "testexistingloggingbucketfirehoses3stackKinesisFirehoseToS3KinesisFirehose3531029E": {
+      "Type": "AWS::KinesisFirehose::DeliveryStream",
+      "Properties": {
+        "DeliveryStreamType": "KinesisStreamAsSource",
+        "ExtendedS3DestinationConfiguration": {
+          "BucketARN": {
+            "Fn::GetAtt": [
+              "testexistingloggingbucketfirehoses3stackKinesisFirehoseToS3S3Bucket41EFA1B0",
+              "Arn"
+            ]
+          },
+          "BufferingHints": {
+            "IntervalInSeconds": 300,
+            "SizeInMBs": 5
+          },
+          "CloudWatchLoggingOptions": {
+            "Enabled": true,
+            "LogGroupName": {
+              "Ref": "testexistingloggingbucketfirehoses3stackKinesisFirehoseToS3firehoseloggroupD9F798A5"
+            },
+            "LogStreamName": {
+              "Ref": "testexistingloggingbucketfirehoses3stackKinesisFirehoseToS3firehoseloggroupfirehoselogstreamDC37347C"
+            }
+          },
+          "CompressionFormat": "GZIP",
+          "EncryptionConfiguration": {
+            "KMSEncryptionConfig": {
+              "AWSKMSKeyARN": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":kms:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":alias/aws/s3"
+                  ]
+                ]
+              }
+            }
+          },
+          "RoleARN": {
+            "Fn::GetAtt": [
+              "testexistingloggingbucketfirehoses3stackKinesisFirehoseToS3KinesisFirehoseRole7392E86B",
+              "Arn"
+            ]
+          }
+        },
+        "KinesisStreamSourceConfiguration": {
+          "KinesisStreamARN": {
+            "Fn::GetAtt": [
+              "testexistingloggingbucketfirehoses3stackKinesisStreamB7F2D4DB",
+              "Arn"
+            ]
+          },
+          "RoleARN": {
+            "Fn::GetAtt": [
+              "KinesisStreamsRole2BFD39A5",
+              "Arn"
+            ]
+          }
+        }
+      }
+    },
+    "testexistingloggingbucketfirehoses3stackKinesisStreamGetRecordsIteratorAgeAlarmF33C4C94": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
+        "MetricName": "GetRecords.IteratorAgeMilliseconds",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 2592000
+      }
+    },
+    "testexistingloggingbucketfirehoses3stackKinesisStreamReadProvisionedThroughputExceededAlarmD77D8FB1": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
+        "MetricName": "ReadProvisionedThroughputExceeded",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Average",
+        "Threshold": 0
+      }
+    },
+    "KinesisStreamsRole2BFD39A5": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "firehose.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "kinesis:DescribeStream",
+                    "kinesis:GetShardIterator",
+                    "kinesis:GetRecords",
+                    "kinesis:ListShards"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "testexistingloggingbucketfirehoses3stackKinesisStreamB7F2D4DB",
+                      "Arn"
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "KinesisStreamsRoleRolePolicy"
+          }
+        ]
+      }
+    }
+  }
+}

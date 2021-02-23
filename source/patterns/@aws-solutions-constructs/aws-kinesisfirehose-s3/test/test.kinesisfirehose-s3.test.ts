@@ -14,11 +14,11 @@
 import { SynthUtils } from '@aws-cdk/assert';
 import { KinesisFirehoseToS3, KinesisFirehoseToS3Props } from "../lib";
 import * as cdk from '@aws-cdk/core';
+import * as s3 from '@aws-cdk/aws-s3';
 import '@aws-cdk/assert/jest';
+import { CreateScrapBucket } from '@aws-solutions-constructs/core';
 
-function deploy(stack: cdk.Stack) {
-  const props = {} as KinesisFirehoseToS3Props;
-
+function deploy(stack: cdk.Stack, props: KinesisFirehoseToS3Props = {}) {
   return new KinesisFirehoseToS3(stack, 'test-firehose-s3', props);
 }
 
@@ -58,7 +58,7 @@ test('check s3Bucket public access block configuration', () => {
 test('test s3Bucket override publicAccessBlockConfiguration', () => {
   const stack = new cdk.Stack();
 
-  new KinesisFirehoseToS3(stack, 'test-firehose-s3', {
+  deploy(stack, {
     bucketProps: {
       blockPublicAccess: {
         blockPublicAcls: false,
@@ -82,7 +82,7 @@ test('test s3Bucket override publicAccessBlockConfiguration', () => {
 test('test kinesisFirehose override ', () => {
   const stack = new cdk.Stack();
 
-  new KinesisFirehoseToS3(stack, 'test-firehose-s3', {
+  deploy(stack, {
     kinesisFirehoseProps: {
       extendedS3DestinationConfiguration: {
         bufferingHints: {
@@ -102,16 +102,63 @@ test('test kinesisFirehose override ', () => {
     }});
 });
 
-test('check properties', () => {
+test('check default properties', () => {
   const stack = new cdk.Stack();
-
   const construct: KinesisFirehoseToS3 = deploy(stack);
 
-  expect(construct.kinesisFirehose !== null);
-  expect(construct.s3Bucket !== null);
-  expect(construct.kinesisFirehoseRole !== null);
-  expect(construct.kinesisFirehoseLogGroup !== null);
-  expect(construct.s3LoggingBucket !== null);
+  expect(construct.kinesisFirehose).not.toEqual(undefined);
+  expect(construct.kinesisFirehoseRole).not.toEqual(undefined);
+  expect(construct.kinesisFirehoseLogGroup).not.toEqual(undefined);
+  expect(construct.s3Bucket).not.toEqual(undefined);
+  expect(construct.s3LoggingBucket).not.toEqual(undefined);
+});
+
+test('check properties with existing S3 bucket', () => {
+  const stack = new cdk.Stack();
+  const existingBucket = CreateScrapBucket(stack, {});
+  const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);
+  const construct: KinesisFirehoseToS3 = deploy(stack, {
+    existingBucketObj: mybucket
+  });
+
+  expect(construct.kinesisFirehose).not.toEqual(undefined);
+  expect(construct.kinesisFirehoseRole).not.toEqual(undefined);
+  expect(construct.kinesisFirehoseLogGroup).not.toEqual(undefined);
+  expect(construct.s3Bucket).toEqual(undefined);
+  expect(construct.s3LoggingBucket).toEqual(undefined);
+});
+
+test('check properties with existing logging S3 bucket', () => {
+  const stack = new cdk.Stack();
+  const existingBucket = CreateScrapBucket(stack, {});
+  const myLoggingBucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'myLoggingBucket', existingBucket.bucketName);
+  const construct: KinesisFirehoseToS3 = deploy(stack, {
+    existingLoggingBucketObj: myLoggingBucket
+  });
+
+  expect(construct.kinesisFirehose).not.toEqual(undefined);
+  expect(construct.kinesisFirehoseRole).not.toEqual(undefined);
+  expect(construct.kinesisFirehoseLogGroup).not.toEqual(undefined);
+  expect(construct.s3Bucket).not.toEqual(undefined);
+  expect(construct.s3LoggingBucket).toEqual(undefined);
+});
+
+test('check properties with existing logging S3 bucket and S3 bucket props', () => {
+  const stack = new cdk.Stack();
+  const existingBucket = CreateScrapBucket(stack, {});
+  const myLoggingBucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'myLoggingBucket', existingBucket.bucketName);
+  const construct: KinesisFirehoseToS3 = deploy(stack, {
+    bucketProps: {
+      serverAccessLogsPrefix: 'prefix/'
+    },
+    existingLoggingBucketObj: myLoggingBucket
+  });
+
+  expect(construct.kinesisFirehose).not.toEqual(undefined);
+  expect(construct.kinesisFirehoseRole).not.toEqual(undefined);
+  expect(construct.kinesisFirehoseLogGroup).not.toEqual(undefined);
+  expect(construct.s3Bucket).not.toEqual(undefined);
+  expect(construct.s3LoggingBucket).toEqual(undefined);
 });
 
 test('check for SSE encryption for Direct put', () => {
