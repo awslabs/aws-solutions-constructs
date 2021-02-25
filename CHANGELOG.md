@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.89.0 (2021-02-23)
+
+### Changed
+- Upgraded all patterns to CDK v1.89.0
+- Fixed aws-kinesisfirehose-s3 to populate bucket property ([#133](https://github.com/awslabs/aws-solutions-constructs/issues/133))
+
 ## 1.88.0 (2021-02-22)
 
 ### Added
