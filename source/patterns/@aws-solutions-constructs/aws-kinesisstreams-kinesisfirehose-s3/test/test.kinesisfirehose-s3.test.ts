@@ -15,13 +15,11 @@ import { SynthUtils } from '@aws-cdk/assert';
 import { KinesisStreamsToKinesisFirehoseToS3, KinesisStreamsToKinesisFirehoseToS3Props } from '../lib';
 import * as cdk from '@aws-cdk/core';
 import '@aws-cdk/assert/jest';
-import { Stack } from '@aws-cdk/core';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Role, ServicePrincipal } from '@aws-cdk/aws-iam';
+import * as s3 from '@aws-cdk/aws-s3';
 
-function deploy(stack: cdk.Stack) {
-  const props = {} as KinesisStreamsToKinesisFirehoseToS3Props;
-
+function deploy(stack: cdk.Stack, props: KinesisStreamsToKinesisFirehoseToS3Props = {}) {
   return new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-stream-firehose-s3', props);
 }
 
@@ -33,8 +31,7 @@ test('snapshot test KinesisStreamsToKinesisFirehoseToS3 default params', () => {
 
 test('test kinesisFirehose override ', () => {
   const stack = new cdk.Stack();
-
-  new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-stream-firehose-s3', {
+  deploy(stack, {
     kinesisFirehoseProps: {
       extendedS3DestinationConfiguration: {
         bufferingHints: {
@@ -56,8 +53,7 @@ test('test kinesisFirehose override ', () => {
 
 test('test kinesisFirehose.deliveryStreamType override ', () => {
   const stack = new cdk.Stack();
-
-  new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-stream-firehose-s3', {
+  deploy(stack, {
     kinesisFirehoseProps: {
       deliveryStreamType: 'DirectPut'
     }
@@ -76,7 +72,7 @@ test('test kinesisFirehose.kinesisStreamSourceConfiguration override ', () => {
     kinesisStreamProps: undefined
   });
 
-  new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-stream-firehose-s3', {
+  deploy(stack, {
     kinesisFirehoseProps: {
       kinesisStreamSourceConfiguration: {
         kinesisStreamArn: kinesisStream.streamArn,
@@ -108,7 +104,7 @@ test('test kinesisFirehose.kinesisStreamSourceConfiguration override ', () => {
 test('test kinesisStreamProps override ', () => {
   const stack = new cdk.Stack();
 
-  new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-stream-firehose-s3', {
+  deploy(stack, {
     kinesisStreamProps: {
       shardCount: 3
     }
@@ -121,24 +117,47 @@ test('test kinesisStreamProps override ', () => {
 
 test('Test All properties', () => {
   const stack = new cdk.Stack();
-
   const construct: KinesisStreamsToKinesisFirehoseToS3 = deploy(stack);
 
-  expect(construct.kinesisFirehose !== null);
-  expect(construct.s3Bucket !== null);
-  expect(construct.kinesisFirehoseRole !== null);
-  expect(construct.kinesisFirehoseLogGroup !== null);
-  expect(construct.s3LoggingBucket !== null);
-  expect(construct.kinesisStream !== null);
-  expect(construct.cloudwatchAlarms !== null);
+  expect(construct.cloudwatchAlarms).not.toEqual(undefined);
+  expect(construct.kinesisFirehose).not.toEqual(undefined);
+  expect(construct.kinesisFirehoseRole).not.toEqual(undefined);
+  expect(construct.kinesisFirehoseLogGroup).not.toEqual(undefined);
+  expect(construct.kinesisStream).not.toEqual(undefined);
+  expect(construct.kinesisStreamRole).not.toEqual(undefined);
+  expect(construct.s3Bucket).not.toEqual(undefined);
+  expect(construct.s3LoggingBucket).not.toEqual(undefined);
 });
 
 test('Test properties with no CW Alarms', () => {
-  const stack = new Stack();
-  const props: KinesisStreamsToKinesisFirehoseToS3Props = {
+  const stack = new cdk.Stack();
+  const construct: KinesisStreamsToKinesisFirehoseToS3  = deploy(stack, {
     createCloudWatchAlarms: false
-  };
-  const app = new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-stream-firehose-s3', props);
+  });
 
-  expect(app.cloudwatchAlarms === null);
+  expect(construct.cloudwatchAlarms).toEqual(undefined);
+});
+
+test('Test properties with existing S3 bucket', () => {
+  const stack = new cdk.Stack();
+  const existingBucket = defaults.CreateScrapBucket(stack, {});
+  const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);
+  const construct: KinesisStreamsToKinesisFirehoseToS3 = deploy(stack, {
+    existingBucketObj: mybucket
+  });
+
+  expect(construct.s3Bucket).toEqual(undefined);
+  expect(construct.s3LoggingBucket).toEqual(undefined);
+});
+
+test('Test properties with existing logging S3 bucket', () => {
+  const stack = new cdk.Stack();
+  const existingBucket = defaults.CreateScrapBucket(stack, {});
+  const myLoggingBucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'myLoggingBucket', existingBucket.bucketName);
+  const construct: KinesisStreamsToKinesisFirehoseToS3  = deploy(stack, {
+    existingLoggingBucketObj: myLoggingBucket
+  });
+
+  expect(construct.s3Bucket).not.toEqual(undefined);
+  expect(construct.s3LoggingBucket).toEqual(undefined);
 });
