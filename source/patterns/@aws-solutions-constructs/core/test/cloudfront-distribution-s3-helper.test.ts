@@ -97,44 +97,6 @@ test('test cloudfront check bucket policy', () => {
               ]
             ]
           }
-        },
-        {
-          Action: [
-            "s3:GetObject*",
-            "s3:GetBucket*",
-            "s3:List*"
-          ],
-          Effect: "Allow",
-          Principal: {
-            CanonicalUser: {
-              "Fn::GetAtt": [
-                "CloudFrontDistributionOrigin1S3Origin3D9CA0E9",
-                "S3CanonicalUserId"
-              ]
-            }
-          },
-          Resource: [
-            {
-              "Fn::GetAtt": [
-                "S3Bucket07682993",
-                "Arn"
-              ]
-            },
-            {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Fn::GetAtt": [
-                      "S3Bucket07682993",
-                      "Arn"
-                    ]
-                  },
-                  "/*"
-                ]
-              ]
-            }
-          ]
         }
       ],
       Version: "2012-10-17"
