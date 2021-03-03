@@ -364,3 +364,42 @@ test('Test the public pattern props', () => {
   // Assertion 4: get the consumer function
   expect(pattern.consumerLambdaFunction).toBeDefined();
 });
+
+// --------------------------------------------------------------
+// Test lambda function custom environment variable
+// --------------------------------------------------------------
+test('Test lambda function custom environment variable', () => {
+  // Stack
+  const stack = new Stack();
+
+  // Helper declaration
+  const props: LambdaToSqsToLambdaProps = {
+    producerLambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
+      functionName: 'producer-function'
+    },
+    consumerLambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
+      functionName: 'consumer-function'
+    },
+    queueEnvironmentVariableName: 'CUSTOM_QUEUE_NAME'
+  };
+  new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
+
+  // Assertion
+  expect(stack).toHaveResource('AWS::Lambda::Function', {
+    FunctionName: 'producer-function',
+    Environment: {
+      Variables: {
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+        CUSTOM_QUEUE_NAME: {
+          Ref: 'lambdasqslambdalambdatosqsqueue49588D68'
+        }
+      }
+    }
+  });
+});

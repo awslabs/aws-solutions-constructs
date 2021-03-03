@@ -66,6 +66,7 @@ _Parameters_
 |stateMachineProps|[`sfn.StateMachineProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-stepfunctions.StateMachineProps.html)|User provided props for the sfn.StateMachine.|
 |createCloudWatchAlarms|`boolean`|Whether to create recommended CloudWatch alarms|
 |logGroupProps?|[`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-logs.LogGroupProps.html)|User provided props to override the default props for for the CloudWatchLogs LogGroup.|
+|stateMachineEnvironmentVariableName?|`string`|Optional Lambda function environment variable for the Step Functions state machine.|
 
 ## Pattern Properties
 
@@ -85,7 +86,7 @@ Out of the box implementation of the Construct without any override will set the
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
 * Enable X-Ray Tracing
 * Set Environment Variables
-  * STATE_MACHINE_ARN
+  * (default) STATE_MACHINE_ARN
   * AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x and higher functions)
 
 ### AWS Step Function

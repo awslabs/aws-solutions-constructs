@@ -62,6 +62,7 @@ _Parameters_
 |dynamoTableProps?|[`dynamodb.TableProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-dynamodb.TableProps.html)|Optional user provided props to override the default props for DynamoDB Table|
 |existingTableObj?|[`dynamodb.Table`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-dynamodb.Table.html)|Existing instance of DynamoDB table object, If this is set then the dynamoTableProps is ignored|
 |tablePermissions?|`string`|Optional table permissions to grant to the Lambda function. One of the following may be specified: `All`, `Read`, `ReadWrite`, `Write`.|
+|tableEnvironmentVariableName?|`string`|Optional Lambda function environment variable for the DynamoDB table.|
 
 ## Pattern Properties
 
@@ -79,7 +80,7 @@ Out of the box implementation of the Construct without any override will set the
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
 * Enable X-Ray Tracing
 * Set Environment Variables
-  * DDB_TABLE_NAME
+  * (default) DDB_TABLE_NAME
   * AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x and higher functions)
 
 ### Amazon DynamoDB Table

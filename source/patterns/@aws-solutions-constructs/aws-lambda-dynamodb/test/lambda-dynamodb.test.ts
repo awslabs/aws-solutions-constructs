@@ -535,3 +535,30 @@ test('check lambda function policy All table permissions', () => {
   }));
 
 });
+
+test('check lambda function custom environment variable', () => {
+  const stack = new cdk.Stack();
+  const props: LambdaToDynamoDBProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler'
+    },
+    tableEnvironmentVariableName: 'CUSTOM_DYNAMODB_TABLE'
+  };
+
+  new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', props);
+
+  expectCDK(stack).to(haveResource('AWS::Lambda::Function', {
+    Handler: 'index.handler',
+    Runtime: 'nodejs14.x',
+    Environment: {
+      Variables: {
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+        CUSTOM_DYNAMODB_TABLE: {
+          Ref: 'testlambdadynamodbstackDynamoTable8138E93B'
+        }
+      }
+    }
+  }));
+});

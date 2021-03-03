@@ -466,11 +466,11 @@ test('Test getter methods: existing Lambda function (with VPC), new Sagemaker en
   };
   const app = new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
   // Assertions
-  expect(app.lambdaFunction !== null);
-  expect(app.sagemakerEndpoint !== null);
-  expect(app.sagemakerEndpointConfig !== null);
-  expect(app.sagemakerModel !== null);
-  expect(app.vpc !== null);
+  expect(app.lambdaFunction).toBeDefined();
+  expect(app.sagemakerEndpoint).toBeDefined();
+  expect(app.sagemakerEndpointConfig).toBeDefined();
+  expect(app.sagemakerModel).toBeDefined();
+  expect(app.vpc).toBeDefined();
 });
 
 // --------------------------------------------------------------------------------------------
@@ -501,11 +501,11 @@ test('Test getter methods: new Lambda function, existingSagemakerendpointObj (no
   };
   const app = new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
   // Assertions
-  expect(app.lambdaFunction !== null);
-  expect(app.sagemakerEndpoint !== null);
-  expect(app.sagemakerEndpointConfig === null);
-  expect(app.sagemakerModel === null);
-  expect(app.vpc === null);
+  expect(app.lambdaFunction).toBeDefined();
+  expect(app.sagemakerEndpoint).toBeDefined();
+  expect(app.sagemakerEndpointConfig).toBeUndefined();
+  expect(app.sagemakerModel).toBeUndefined();
+  expect(app.vpc).toBeUndefined();
 });
 
 // --------------------------------------------------------------------------------------------
@@ -537,9 +537,52 @@ test('Test getter methods: new Lambda function, existingSagemakerendpointObj and
   };
   const app = new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
   // Assertions
-  expect(app.lambdaFunction !== null);
-  expect(app.sagemakerEndpoint !== null);
-  expect(app.sagemakerEndpointConfig === null);
-  expect(app.sagemakerModel === null);
-  expect(app.vpc !== null);
+  expect(app.lambdaFunction).toBeDefined();
+  expect(app.sagemakerEndpoint).toBeDefined();
+  expect(app.sagemakerEndpointConfig).toBeUndefined();
+  expect(app.sagemakerModel).toBeUndefined();
+  expect(app.vpc).toBeDefined();
+});
+
+// --------------------------------------------------------------
+// Test lambda function custom environment variable
+// --------------------------------------------------------------
+test('Test lambda function custom environment variable', () => {
+  // Stack
+  const stack = new Stack();
+
+  // Helper declaration
+  const [sagemakerEndpoint] = defaults.deploySagemakerEndpoint(stack, {
+    modelProps: {
+      primaryContainer: {
+        image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
+        modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
+      },
+    },
+  });
+  new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', {
+    existingSagemakerEndpointObj: sagemakerEndpoint,
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.PYTHON_3_8,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    sagemakerEnvironmentVariableName: 'CUSTOM_SAGEMAKER_ENDPOINT'
+  });
+
+  // Assertion
+  expect(stack).toHaveResource('AWS::Lambda::Function', {
+    Handler: 'index.handler',
+    Runtime: 'python3.8',
+    Environment: {
+      Variables: {
+        CUSTOM_SAGEMAKER_ENDPOINT: {
+          'Fn::GetAtt': [
+            'SagemakerEndpoint',
+            'EndpointName'
+          ]
+        }
+      }
+    }
+  });
 });

@@ -69,6 +69,7 @@ _Parameters_
 |maxReceiveCount?|`number`|The number of times a message can be unsuccessfully dequeued before being moved to the dead letter queue. Defaults to `15`.|
 |existingConsumerLambdaObj?|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)|An optional, existing Lambda function to be used instead of the default function for receiving/consuming messages from the queue. If an existing function is provided, the `consumerLambdaFunctionProps` property will be ignored. |
 |consumerLambdaFunctionProps?|[`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.FunctionProps.html)|Optional user-provided properties to override the default properties for the consumer Lambda function. Ignored if an `existingConsumerLambdaObj` is provided. |
+|queueEnvironmentVariableName?|`string`|Optional producer Lambda function environment variable for the SQS queue.|
 
 ## Pattern Properties
 

@@ -28,31 +28,37 @@ export interface LambdaToStepFunctionProps {
    *
    * @default - None
    */
-  readonly existingLambdaObj?: lambda.Function,
+  readonly existingLambdaObj?: lambda.Function;
   /**
    * User provided props to override the default props for the Lambda function.
    *
    * @default - Default properties are used.
    */
-  readonly lambdaFunctionProps?: lambda.FunctionProps
+  readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
    * User provided StateMachineProps to override the defaults
    *
    * @default - None
    */
-  readonly stateMachineProps: sfn.StateMachineProps,
+  readonly stateMachineProps: sfn.StateMachineProps;
   /**
    * Whether to create recommended CloudWatch alarms
    *
    * @default - Alarms are created
    */
-  readonly createCloudWatchAlarms?: boolean,
+  readonly createCloudWatchAlarms?: boolean;
   /**
    * User provided props to override the default props for the CloudWatchLogs LogGroup.
    *
    * @default - Default props are used
    */
-  readonly logGroupProps?: logs.LogGroupProps
+  readonly logGroupProps?: logs.LogGroupProps;
+  /**
+   * Optional Lambda function environment variable for the Step Functions state machine.
+   *
+   * @default - None
+   */
+  readonly stateMachineEnvironmentVariableName?: string;
 }
 
 /**
@@ -86,7 +92,8 @@ export class LambdaToStepFunction extends Construct {
     });
 
     // Assign the state machine ARN as an environment variable
-    this.lambdaFunction.addEnvironment('STATE_MACHINE_ARN', this.stateMachine.stateMachineArn);
+    const stateMachineEnvironmentVariableName = props.stateMachineEnvironmentVariableName || 'STATE_MACHINE_ARN';
+    this.lambdaFunction.addEnvironment(stateMachineEnvironmentVariableName, this.stateMachine.stateMachineArn);
 
     // Grant the start execution permission to the Lambda function
     this.stateMachine.grantStartExecution(this.lambdaFunction);

@@ -22,30 +22,30 @@ import * as ec2 from "@aws-cdk/aws-ec2";
  * @summary The properties for the LambdaToSns class.
  */
 export interface LambdaToSnsProps {
-    /**
-     * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
-     *
-     * @default - None
-     */
-    readonly existingLambdaObj?: lambda.Function,
-    /**
-     * User provided props to override the default props for the Lambda function.
-     *
-     * @default - Default properties are used.
-     */
-    readonly lambdaFunctionProps?: lambda.FunctionProps,
-    /**
-     * Existing instance of SNS Topic object, if this is set then topicProps is ignored.
-     *
-     * @default - Default props are used
-     */
-    readonly existingTopicObj?: sns.Topic,
-    /**
-     * Optional user provided properties to override the default properties for the SNS topic.
-     *
-     * @default - Default properties are used.
-     */
-    readonly topicProps?: sns.TopicProps
+  /**
+   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
+   *
+   * @default - None
+   */
+  readonly existingLambdaObj?: lambda.Function;
+  /**
+   * User provided props to override the default props for the Lambda function.
+   *
+   * @default - Default properties are used.
+   */
+  readonly lambdaFunctionProps?: lambda.FunctionProps;
+  /**
+   * Existing instance of SNS Topic object, if this is set then topicProps is ignored.
+   *
+   * @default - Default props are used
+   */
+  readonly existingTopicObj?: sns.Topic;
+  /**
+   * Optional user provided properties to override the default properties for the SNS topic.
+   *
+   * @default - Default properties are used.
+   */
+  readonly topicProps?: sns.TopicProps;
   /**
    * An existing VPC for the construct to use (construct will NOT create a new VPC in this case)
    */
@@ -60,6 +60,18 @@ export interface LambdaToSnsProps {
    * @default - false
    */
   readonly deployVpc?: boolean;
+  /**
+   * Optional Lambda function environment variable for the SNS topic arn.
+   *
+   * @default - None
+   */
+  readonly topicArnEnvironmentVariableName?: string;
+  /**
+   * Optional Lambda function environment variable for the SNS topic name.
+   *
+   * @default - None
+   */
+  readonly topicNameEnvironmentVariableName?: string;
 }
 
 /**
@@ -113,8 +125,10 @@ export class LambdaToSns extends Construct {
       });
 
       // Configure environment variables
-      this.lambdaFunction.addEnvironment('SNS_TOPIC_NAME', this.snsTopic.topicName);
-      this.lambdaFunction.addEnvironment('SNS_TOPIC_ARN', this.snsTopic.topicArn);
+      const topicArnEnvironmentVariableName = props.topicArnEnvironmentVariableName || 'SNS_TOPIC_ARN';
+      this.lambdaFunction.addEnvironment(topicArnEnvironmentVariableName, this.snsTopic.topicArn);
+      const topicNameEnvironmentVariableName = props.topicNameEnvironmentVariableName || 'SNS_TOPIC_NAME';
+      this.lambdaFunction.addEnvironment(topicNameEnvironmentVariableName, this.snsTopic.topicName);
 
       // Add publishing permissions to the function
       this.snsTopic.grantPublish(this.lambdaFunction.grantPrincipal);

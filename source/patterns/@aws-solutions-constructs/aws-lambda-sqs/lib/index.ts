@@ -84,6 +84,12 @@ export interface LambdaToSqsProps {
    * @default - false
    */
   readonly deployVpc?: boolean;
+  /**
+   * Optional Lambda function environment variable for the SQS queue.
+   *
+   * @default - None
+   */
+  readonly queueEnvironmentVariableName?: string;
 }
 
 /**
@@ -147,7 +153,8 @@ export class LambdaToSqs extends Construct {
       });
 
       // Configure environment variables
-      this.lambdaFunction.addEnvironment('SQS_QUEUE_URL', this.sqsQueue.queueUrl);
+      const queueEnvironmentVariableName = props.queueEnvironmentVariableName || 'SQS_QUEUE_URL';
+      this.lambdaFunction.addEnvironment(queueEnvironmentVariableName, this.sqsQueue.queueUrl);
 
       // Enable queue purging permissions for the Lambda function, if enabled
       if (props.enableQueuePurging) {
