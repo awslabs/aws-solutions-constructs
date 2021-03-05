@@ -76,6 +76,12 @@ export interface LambdaToSagemakerEndpointProps {
    * @default - false
    */
   readonly deployVpc?: boolean;
+  /**
+   * Optional Name for the SageMaker endpoint environment variable set for the Lambda function.
+   *
+   * @default - None
+   */
+  readonly sagemakerEnvironmentVariableName?: string;
 }
 
 /**
@@ -137,8 +143,9 @@ export class LambdaToSagemakerEndpoint extends cdk.Construct {
       vpc: this.vpc,
     });
 
-    // Add SAGEMAKER_ENDPOINT_NAME environment variable
-    this.lambdaFunction.addEnvironment('SAGEMAKER_ENDPOINT_NAME', this.sagemakerEndpoint.attrEndpointName);
+    // Configure environment variables
+    const sagemakerEnvironmentVariableName = props.sagemakerEnvironmentVariableName || 'SAGEMAKER_ENDPOINT_NAME';
+    this.lambdaFunction.addEnvironment(sagemakerEnvironmentVariableName, this.sagemakerEndpoint.attrEndpointName);
 
     // Add permission to invoke the SageMaker endpoint
     this.lambdaFunction.addToRolePolicy(

@@ -43,7 +43,16 @@ test('Test deployment with new Lambda function', () => {
   expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
     Environment: {
       Variables: {
-        LAMBDA_NAME: 'deployed-function'
+        LAMBDA_NAME: 'deployed-function',
+        SNS_TOPIC_ARN: {
+          Ref: 'lambdatosnsstackSnsTopic6292A14A'
+        },
+        SNS_TOPIC_NAME: {
+          'Fn::GetAtt': [
+            'lambdatosnsstackSnsTopic6292A14A',
+            'TopicName'
+          ]
+        }
       }
     }
   });
@@ -142,10 +151,10 @@ test('Test the properties', () => {
   });
     // Assertion 1
   const func = pattern.lambdaFunction;
-  expect(func !== null);
+  expect(func).toBeDefined();
   // Assertion 2
   const topic = pattern.snsTopic;
-  expect(topic !== null);
+  expect(topic).toBeDefined();
 });
 
 // --------------------------------------------------------------
@@ -354,4 +363,43 @@ test("Test bad call with existingVpc and deployVpc", () => {
   };
   // Assertion
   expect(app).toThrowError();
+});
+
+// --------------------------------------------------------------
+// Test lambda function custom environment variable
+// --------------------------------------------------------------
+test('Test lambda function custom environment variable', () => {
+  // Stack
+  const stack = new Stack();
+
+  // Helper declaration
+  new LambdaToSns(stack, 'lambda-to-sns-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    topicArnEnvironmentVariableName: 'CUSTOM_TOPIC_ARN',
+    topicNameEnvironmentVariableName: 'CUSTOM_TOPIC_NAME'
+  });
+
+  // Assertion
+  expect(stack).toHaveResource('AWS::Lambda::Function', {
+    Handler: 'index.handler',
+    Runtime: 'nodejs14.x',
+    Environment: {
+      Variables: {
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+        CUSTOM_TOPIC_ARN: {
+          Ref: 'lambdatosnsstackSnsTopic6292A14A'
+        },
+        CUSTOM_TOPIC_NAME: {
+          'Fn::GetAtt': [
+            'lambdatosnsstackSnsTopic6292A14A',
+            'TopicName'
+          ]
+        }
+      }
+    }
+  });
 });

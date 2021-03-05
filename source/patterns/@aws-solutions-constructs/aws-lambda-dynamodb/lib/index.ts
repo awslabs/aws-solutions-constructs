@@ -25,32 +25,38 @@ export interface LambdaToDynamoDBProps {
    *
    * @default - None
    */
-  readonly existingLambdaObj?: lambda.Function,
+  readonly existingLambdaObj?: lambda.Function;
   /**
    * User provided props to override the default props for the Lambda function.
    *
    * @default - Default props are used
    */
-  readonly lambdaFunctionProps?: lambda.FunctionProps,
+  readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
    * Optional user provided props to override the default props
    *
    * @default - Default props are used
    */
-  readonly dynamoTableProps?: dynamodb.TableProps,
+  readonly dynamoTableProps?: dynamodb.TableProps;
   /**
    * Existing instance of DynamoDB table object, If this is set then the dynamoTableProps is ignored
    *
    * @default - None
    */
-  readonly existingTableObj?: dynamodb.Table,
+  readonly existingTableObj?: dynamodb.Table;
   /**
    * Optional table permissions to grant to the Lambda function.
    * One of the following may be specified: "All", "Read", "ReadWrite", "Write".
    *
    * @default - Read/write access is given to the Lambda function if no value is specified.
    */
-  readonly tablePermissions?: string
+  readonly tablePermissions?: string;
+  /**
+   * Optional Name for the DynamoDB table environment variable set for the Lambda function.
+   *
+   * @default - None
+   */
+  readonly tableEnvironmentVariableName?: string;
 }
 
 export class LambdaToDynamoDB extends Construct {
@@ -78,7 +84,9 @@ export class LambdaToDynamoDB extends Construct {
       existingTableObj: props.existingTableObj
     });
 
-    this.lambdaFunction.addEnvironment('DDB_TABLE_NAME', this.dynamoTable.tableName);
+    // Configure environment variables
+    const tableEnvironmentVariableName = props.tableEnvironmentVariableName || 'DDB_TABLE_NAME';
+    this.lambdaFunction.addEnvironment(tableEnvironmentVariableName, this.dynamoTable.tableName);
 
     // Add the requested or default table permissions
     if (props.tablePermissions) {

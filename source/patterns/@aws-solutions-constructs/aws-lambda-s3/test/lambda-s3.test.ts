@@ -15,8 +15,10 @@
 import { Stack } from "@aws-cdk/core";
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as ec2 from "@aws-cdk/aws-ec2";
+import * as s3 from "@aws-cdk/aws-s3";
 import { LambdaToS3 } from '../lib';
 import { SynthUtils } from '@aws-cdk/assert';
+import { CreateScrapBucket } from '@aws-solutions-constructs/core';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------
@@ -408,4 +410,39 @@ test("Test bad call with existingVpc and deployVpc", () => {
   };
   // Assertion
   expect(app).toThrowError();
+});
+
+// --------------------------------------------------------------
+// Test lambda function custom environment variable
+// --------------------------------------------------------------
+test('Test lambda function custom environment variable', () => {
+  // Stack
+  const stack = new Stack();
+
+  // Helper declaration
+  const existingBucket = CreateScrapBucket(stack, {});
+  const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);
+  new LambdaToS3(stack, 'lambda-to-s3-stack', {
+    existingBucketObj: mybucket,
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    bucketEnvironmentVariableName: 'CUSTOM_BUCKET_NAME'
+  });
+
+  // Assertion
+  expect(stack).toHaveResource('AWS::Lambda::Function', {
+    Handler: 'index.handler',
+    Runtime: 'nodejs14.x',
+    Environment: {
+      Variables: {
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+        CUSTOM_BUCKET_NAME: {
+          Ref: 'existingScriptLocation845F3C51'
+        }
+      }
+    }
+  });
 });

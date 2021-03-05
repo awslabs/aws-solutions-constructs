@@ -47,7 +47,10 @@ test('Test deployment with new Lambda function', () => {
   expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
     Environment: {
       Variables: {
-        LAMBDA_NAME: 'deploy-function'
+        LAMBDA_NAME: 'deploy-function',
+        STATE_MACHINE_ARN: {
+          Ref: 'lambdatostepfunctionstackStateMachine98EE8EFB'
+        }
       }
     }
   });
@@ -161,14 +164,14 @@ test('Test the properties', () => {
   });
     // Assertion 1
   const func = pattern.lambdaFunction;
-  expect(func !== null);
+  expect(func).toBeDefined();
   // Assertion 2
   const stateMachine = pattern.stateMachine;
-  expect(stateMachine !== null);
+  expect(stateMachine).toBeDefined();
   // Assertion 3
   const cwAlarm = pattern.cloudwatchAlarms;
-  expect(cwAlarm !== null);
-  expect(pattern.stateMachineLogGroup !== null);
+  expect(cwAlarm).toBeDefined();
+  expect(pattern.stateMachineLogGroup).toBeDefined();
 });
 
 // --------------------------------------------------------------
@@ -194,10 +197,46 @@ test('Test the properties with no CW Alarms', () => {
     createCloudWatchAlarms: false
   });
   // Assertion 1
-  expect(pattern.lambdaFunction !== null);
+  expect(pattern.lambdaFunction).toBeDefined();
   // Assertion 2
-  expect(pattern.stateMachine !== null);
+  expect(pattern.stateMachine).toBeDefined();
   // Assertion 3
-  expect(pattern.cloudwatchAlarms === null);
-  expect(pattern.stateMachineLogGroup !== null);
+  expect(pattern.cloudwatchAlarms).toBeUndefined();
+  expect(pattern.stateMachineLogGroup).toBeDefined();
+});
+
+// --------------------------------------------------------------
+// Test lambda function custom environment variable
+// --------------------------------------------------------------
+test('Test lambda function custom environment variable', () => {
+  // Stack
+  const stack = new Stack();
+
+  // Helper declaration
+  const startState = new stepfunctions.Pass(stack, 'StartState');
+  new LambdaToStepFunction(stack, 'lambda-to-step-function-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    stateMachineProps: {
+      definition: startState
+    },
+    stateMachineEnvironmentVariableName: 'CUSTOM_STATE_MAHINCE'
+  });
+
+  // Assertion
+  expect(stack).toHaveResourceLike('AWS::Lambda::Function', {
+    Handler: 'index.handler',
+    Runtime: 'nodejs14.x',
+    Environment: {
+      Variables: {
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+        CUSTOM_STATE_MAHINCE: {
+          Ref: 'lambdatostepfunctionstackStateMachine98EE8EFB'
+        }
+      }
+    }
+  });
 });

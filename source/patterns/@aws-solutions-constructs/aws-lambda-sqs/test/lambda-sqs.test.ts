@@ -93,13 +93,13 @@ test('Test the properties', () => {
   });
   // Assertion 1
   const func = pattern.lambdaFunction;
-  expect(func !== null);
+  expect(func).toBeDefined();
   // Assertion 2
   const queue = pattern.sqsQueue;
-  expect(queue !== null);
+  expect(queue).toBeDefined();
   // Assertion 3
   const dlq = pattern.deadLetterQueue;
-  expect(dlq !== null);
+  expect(dlq).toBeDefined();
 });
 
 // --------------------------------------------------------------
@@ -354,4 +354,36 @@ test("Test bad call with existingVpc and deployVpc", () => {
   };
   // Assertion
   expect(app).toThrowError();
+});
+
+// --------------------------------------------------------------
+// Test lambda function custom environment variable
+// --------------------------------------------------------------
+test('Test lambda function custom environment variable', () => {
+  // Stack
+  const stack = new Stack();
+
+  // Helper declaration
+  new LambdaToSqs(stack, 'lambda-to-sqs-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    queueEnvironmentVariableName: 'CUSTOM_QUEUE_NAME'
+  });
+
+  // Assertion
+  expect(stack).toHaveResource('AWS::Lambda::Function', {
+    Handler: 'index.handler',
+    Runtime: 'nodejs14.x',
+    Environment: {
+      Variables: {
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+        CUSTOM_QUEUE_NAME: {
+          Ref: 'lambdatosqsstackqueueFDDEE3DB'
+        }
+      }
+    }
+  });
 });

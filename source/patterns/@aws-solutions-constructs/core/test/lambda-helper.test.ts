@@ -429,3 +429,65 @@ test("Test invalid synthesized permission names", () => {
   // Assertion
   expect(app).toThrowError();
 });
+
+test('Test environment variable for NodeJS 14.x', () => {
+  // Stack
+  const stack = new Stack();
+
+  const inProps: lambda.FunctionProps = {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler'
+  };
+
+  defaults.deployLambdaFunction(stack, inProps);
+
+  // Assertion
+  expect(stack).toHaveResource('AWS::Lambda::Function', {
+    Handler: 'index.handler',
+    Role: {
+      'Fn::GetAtt': ['LambdaFunctionServiceRole0C4CDE0B', 'Arn']
+    },
+    Runtime: 'nodejs14.x',
+    Environment: {
+      Variables: {
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
+      }
+    }
+  });
+});
+
+test('Test minimum deployment with an existing VPC as a vpc parameter in deployLambdaFunction', () => {
+  // Stack
+  const stack = new Stack();
+  const inProps: lambda.FunctionProps = {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler'
+  };
+  const fakeVpc: ec2.Vpc = new ec2.Vpc(stack, 'vpc', {});
+
+  defaults.deployLambdaFunction(stack, inProps, undefined, fakeVpc);
+
+  // Assertion
+  expect(stack).toHaveResourceLike('AWS::Lambda::Function', {
+    VpcConfig: {
+      SecurityGroupIds: [
+        {
+          'Fn::GetAtt': [
+            'ReplaceDefaultSecurityGroupsecuritygroup8F9FCFA1',
+            'GroupId'
+          ]
+        }
+      ],
+      SubnetIds: [
+        {
+          Ref: 'vpcPrivateSubnet1Subnet934893E8'
+        },
+        {
+          Ref: 'vpcPrivateSubnet2Subnet7031C2BA'
+        }
+      ]
+    }
+  });
+});
