@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.90.1 (2021-03-05)
+
+### Changed
+- Upgraded all patterns to CDK v1.90.1
+- Allow clients to specify names of Lambda environment variable ([#132](https://github.com/awslabs/aws-solutions-constructs/issues/132))
+- Minor documentation updates
+
 ## 1.90.0 (2021-03-01)
 
 ### Changed
@@ -21,7 +28,7 @@ All notable changes to this project will be documented in this file. See [standa
 ### Changed
 - Upgraded all patterns to CDK v1.88.0
 
-### 1.87.1 (2021-02-22)
+## 1.87.1 (2021-02-22)
 
 ### Changed
 - Upgraded all patterns to CDK v1.87.1
