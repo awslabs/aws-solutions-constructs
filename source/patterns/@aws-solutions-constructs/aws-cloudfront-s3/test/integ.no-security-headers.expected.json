@@ -149,11 +149,7 @@
               "Sid": "HttpsOnly"
             },
             {
-              "Action": [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*"
-              ],
+              "Action": "s3:GetObject",
               "Effect": "Allow",
               "Principal": {
                 "CanonicalUser": {
@@ -163,28 +159,20 @@
                   ]
                 }
               },
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "testcloudfronts3nosecurityheadersS3Bucket4D06173D",
-                    "Arn"
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "testcloudfronts3nosecurityheadersS3Bucket4D06173D",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
                   ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "testcloudfronts3nosecurityheadersS3Bucket4D06173D",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
+                ]
+              }
             }
           ],
           "Version": "2012-10-17"

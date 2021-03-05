@@ -235,11 +235,7 @@ Object {
               "Sid": "HttpsOnly",
             },
             Object {
-              "Action": Array [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-              ],
+              "Action": "s3:GetObject",
               "Effect": "Allow",
               "Principal": Object {
                 "CanonicalUser": Object {
@@ -249,28 +245,20 @@ Object {
                   ],
                 },
               },
-              "Resource": Array [
-                Object {
-                  "Fn::GetAtt": Array [
-                    "S3Bucket07682993",
-                    "Arn",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "S3Bucket07682993",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
                   ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      Object {
-                        "Fn::GetAtt": Array [
-                          "S3Bucket07682993",
-                          "Arn",
-                        ],
-                      },
-                      "/*",
-                    ],
-                  ],
-                },
-              ],
+                ],
+              },
             },
           ],
           "Version": "2012-10-17",
