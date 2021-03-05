@@ -52,7 +52,7 @@ export interface LambdaToDynamoDBProps {
    */
   readonly tablePermissions?: string;
   /**
-   * Optional Lambda function environment variable for the DynamoDB table.
+   * Optional Name for the DynamoDB table environment variable set for the Lambda function.
    *
    * @default - None
    */

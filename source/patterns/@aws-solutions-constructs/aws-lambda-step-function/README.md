@@ -66,7 +66,7 @@ _Parameters_
 |stateMachineProps|[`sfn.StateMachineProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-stepfunctions.StateMachineProps.html)|User provided props for the sfn.StateMachine.|
 |createCloudWatchAlarms|`boolean`|Whether to create recommended CloudWatch alarms|
 |logGroupProps?|[`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-logs.LogGroupProps.html)|User provided props to override the default props for for the CloudWatchLogs LogGroup.|
-|stateMachineEnvironmentVariableName?|`string`|Optional Lambda function environment variable for the Step Functions state machine.|
+|stateMachineEnvironmentVariableName?|`string`|Optional Name for the Step Functions state machine environment variable set for the producer Lambda function.|
 
 ## Pattern Properties
 

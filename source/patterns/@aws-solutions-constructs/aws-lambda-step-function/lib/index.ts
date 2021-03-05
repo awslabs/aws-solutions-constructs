@@ -54,7 +54,7 @@ export interface LambdaToStepFunctionProps {
    */
   readonly logGroupProps?: logs.LogGroupProps;
   /**
-   * Optional Lambda function environment variable for the Step Functions state machine.
+   * Optional Name for the Step Functions state machine environment variable set for the producer Lambda function.
    *
    * @default - None
    */

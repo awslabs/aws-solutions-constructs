@@ -67,7 +67,7 @@ _Parameters_
 |domainName|`string`|Domain name for the Cognito and the Elasticsearch Service|
 |cognitoDomainName?|`string`|Optional Cognito Domain Name, if provided it will be used for Cognito Domain, and domainName will be used for the Elasticsearch Domain|
 |createCloudWatchAlarms|`boolean`|Whether to create recommended CloudWatch alarms|
-|domainEndpointEnvironmentVariableName?|`string`|Optional Lambda function environment variable for the ElasticSearch domain endpoint.|
+|domainEndpointEnvironmentVariableName?|`string`|Optional Name for the ElasticSearch domain endpoint environment variable set for the Lambda function.|
 
 ## Pattern Properties
 
