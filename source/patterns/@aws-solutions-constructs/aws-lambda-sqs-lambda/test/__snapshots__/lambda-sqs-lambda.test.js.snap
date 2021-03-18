@@ -209,10 +209,12 @@ Object {
       "Type": "AWS::IAM::Policy",
     },
     "lambdasqslambdalambdatosqsqueue49588D68": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "lambdasqslambdalambdatosqsqueuePolicy2E3032D3": Object {
       "Properties": Object {
@@ -688,10 +690,12 @@ Object {
       "Type": "AWS::IAM::Policy",
     },
     "lambdasqslambdalambdatosqsdeadLetterQueue46E7302E": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "lambdasqslambdalambdatosqsdeadLetterQueuePolicyF51B6C4C": Object {
       "Properties": Object {
@@ -763,6 +767,7 @@ Object {
       "Type": "AWS::SQS::QueuePolicy",
     },
     "lambdasqslambdalambdatosqsqueue49588D68": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
         "RedrivePolicy": Object {
@@ -776,6 +781,7 @@ Object {
         },
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "lambdasqslambdalambdatosqsqueuePolicy2E3032D3": Object {
       "Properties": Object {
@@ -1445,10 +1451,12 @@ Object {
       "Type": "AWS::IAM::Policy",
     },
     "lambdasqslambdalambdatosqsdeadLetterQueue46E7302E": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "lambdasqslambdalambdatosqsdeadLetterQueuePolicyF51B6C4C": Object {
       "Properties": Object {
@@ -1520,6 +1528,7 @@ Object {
       "Type": "AWS::SQS::QueuePolicy",
     },
     "lambdasqslambdalambdatosqsqueue49588D68": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
         "RedrivePolicy": Object {
@@ -1533,6 +1542,7 @@ Object {
         },
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "lambdasqslambdalambdatosqsqueuePolicy2E3032D3": Object {
       "Properties": Object {
@@ -1817,10 +1827,12 @@ Object {
       "Type": "AWS::IAM::Policy",
     },
     "lambdasqslambdalambdatosqsdeadLetterQueue46E7302E": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "lambdasqslambdalambdatosqsdeadLetterQueuePolicyF51B6C4C": Object {
       "Properties": Object {
@@ -1892,6 +1904,7 @@ Object {
       "Type": "AWS::SQS::QueuePolicy",
     },
     "lambdasqslambdalambdatosqsqueue49588D68": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
         "RedrivePolicy": Object {
@@ -1905,6 +1918,7 @@ Object {
         },
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "lambdasqslambdalambdatosqsqueuePolicy2E3032D3": Object {
       "Properties": Object {
@@ -2202,11 +2216,13 @@ Object {
   },
   "Resources": Object {
     "existingqueue03D57A53": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
         "QueueName": "existing-queue",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "existingqueuePolicy8BCB024D": Object {
       "Properties": Object {
@@ -2864,10 +2880,12 @@ Object {
       "Type": "AWS::IAM::Policy",
     },
     "lambdasqslambdalambdatosqsdeadLetterQueue46E7302E": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "lambdasqslambdalambdatosqsdeadLetterQueuePolicyF51B6C4C": Object {
       "Properties": Object {
@@ -2939,6 +2957,7 @@ Object {
       "Type": "AWS::SQS::QueuePolicy",
     },
     "lambdasqslambdalambdatosqsqueue49588D68": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
         "RedrivePolicy": Object {
@@ -2952,6 +2971,7 @@ Object {
         },
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "lambdasqslambdalambdatosqsqueuePolicy2E3032D3": Object {
       "Properties": Object {
@@ -3429,10 +3449,12 @@ Object {
       "Type": "AWS::IAM::Policy",
     },
     "lambdasqslambdalambdatosqsdeadLetterQueue46E7302E": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "lambdasqslambdalambdatosqsdeadLetterQueuePolicyF51B6C4C": Object {
       "Properties": Object {
@@ -3504,6 +3526,7 @@ Object {
       "Type": "AWS::SQS::QueuePolicy",
     },
     "lambdasqslambdalambdatosqsqueue49588D68": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
         "RedrivePolicy": Object {
@@ -3517,6 +3540,7 @@ Object {
         },
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "lambdasqslambdalambdatosqsqueuePolicy2E3032D3": Object {
       "Properties": Object {

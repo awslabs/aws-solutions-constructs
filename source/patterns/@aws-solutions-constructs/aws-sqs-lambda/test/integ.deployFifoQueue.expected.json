@@ -147,19 +147,19 @@
             ]
           }
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "testsqslambdafifoLambdaFunctionServiceRole74463822",
             "Arn"
           ]
         },
-        "Runtime": "nodejs10.x",
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
           }
         },
+        "Handler": "index.handler",
+        "Runtime": "nodejs10.x",
         "TracingConfig": {
           "Mode": "Active"
         }
@@ -182,14 +182,14 @@
     "testsqslambdafifoLambdaFunctionSqsEventSourcetestsqslambdafifoqueue2EDECAD03B39CEA5": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
+        "FunctionName": {
+          "Ref": "testsqslambdafifoLambdaFunction0F3AE705"
+        },
         "EventSourceArn": {
           "Fn::GetAtt": [
             "testsqslambdafifoqueue45DD24D7",
             "Arn"
           ]
-        },
-        "FunctionName": {
-          "Ref": "testsqslambdafifoLambdaFunction0F3AE705"
         }
       }
     },
@@ -199,7 +199,9 @@
         "FifoQueue": true,
         "KmsMasterKeyId": "alias/aws/sqs",
         "QueueName": "myDLQueue.fifo"
-      }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "testsqslambdafifodeadLetterQueuePolicy32FA63A7": {
       "Type": "AWS::SQS::QueuePolicy",
@@ -285,7 +287,9 @@
           },
           "maxReceiveCount": 15
         }
-      }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "testsqslambdafifoqueuePolicyCCA7CAF9": {
       "Type": "AWS::SQS::QueuePolicy",

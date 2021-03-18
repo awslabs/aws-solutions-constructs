@@ -130,14 +130,12 @@
             ]
           }
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleA59E9EBF",
             "Arn"
           ]
         },
-        "Runtime": "nodejs12.x",
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
@@ -149,6 +147,8 @@
             }
           }
         },
+        "Handler": "index.handler",
+        "Runtime": "nodejs12.x",
         "TracingConfig": {
           "Mode": "Active"
         }
@@ -198,7 +198,9 @@
           "EmailSubject": "Verify your new account",
           "SmsMessage": "The verification code to your new account is {####}"
         }
-      }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
     },
     "testlambdaelasticsearchkibana2CognitoUserPoolClientB0F3872A": {
       "Type": "AWS::Cognito::UserPoolClient",
@@ -249,7 +251,7 @@
     "testlambdaelasticsearchkibana2UserPoolDomainF6BF7A6F": {
       "Type": "AWS::Cognito::UserPoolDomain",
       "Properties": {
-        "Domain": "globallyuniquedomain",
+        "Domain": "domainargumentsdomain",
         "UserPoolId": {
           "Ref": "testlambdaelasticsearchkibana2CognitoUserPool9D73D9DA"
         }
@@ -306,7 +308,7 @@
                         {
                           "Ref": "AWS::AccountId"
                         },
-                        ":domain/globallyuniquedomain/*"
+                        ":domain/domainargumentsdomain/*"
                       ]
                     ]
                   }

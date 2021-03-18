@@ -163,14 +163,12 @@
             ]
           }
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaLambdaFunctionServiceRole7284FB59",
             "Arn"
           ]
         },
-        "Runtime": "nodejs12.x",
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
@@ -182,6 +180,8 @@
             }
           }
         },
+        "Handler": "index.handler",
+        "Runtime": "nodejs12.x",
         "TracingConfig": {
           "Mode": "Active"
         }
@@ -204,12 +204,6 @@
     "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaLambdaFunctionDynamoDBEventSourcetestdynamodbstreamlambdaelasticsearchkibanastacktestdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaDynamoTableEF5268D56B07EBC2": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
-        "EventSourceArn": {
-          "Fn::GetAtt": [
-            "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaDynamoTable90CA17D8",
-            "StreamArn"
-          ]
-        },
         "FunctionName": {
           "Ref": "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaLambdaFunctionE4694B84"
         },
@@ -224,6 +218,12 @@
               ]
             }
           }
+        },
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaDynamoTable90CA17D8",
+            "StreamArn"
+          ]
         },
         "MaximumRecordAgeInSeconds": 86400,
         "MaximumRetryAttempts": 500,
@@ -263,7 +263,9 @@
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": "alias/aws/sqs"
-      }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaSqsDlqQueuePolicyD5959B81": {
       "Type": "AWS::SQS::QueuePolicy",
@@ -364,7 +366,9 @@
           "EmailSubject": "Verify your new account",
           "SmsMessage": "The verification code to your new account is {####}"
         }
-      }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
     },
     "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoUserPoolClientA7156AE5": {
       "Type": "AWS::Cognito::UserPoolClient",
@@ -415,7 +419,7 @@
     "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchUserPoolDomain0A904A18": {
       "Type": "AWS::Cognito::UserPoolDomain",
       "Properties": {
-        "Domain": "myconstructsdomain1",
+        "Domain": "testdomainconstructs",
         "UserPoolId": {
           "Ref": "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoUserPool77221A72"
         }
@@ -472,7 +476,7 @@
                         {
                           "Ref": "AWS::AccountId"
                         },
-                        ":domain/myconstructsdomain1/*"
+                        ":domain/testdomainconstructs/*"
                       ]
                     ]
                   }
@@ -577,7 +581,7 @@
                       {
                         "Ref": "AWS::AccountId"
                       },
-                      ":domain/myconstructsdomain1"
+                      ":domain/testdomainconstructs"
                     ]
                   ]
                 }
@@ -645,7 +649,7 @@
                     {
                       "Ref": "AWS::AccountId"
                     },
-                    ":domain/myconstructsdomain1/*"
+                    ":domain/testdomainconstructs/*"
                   ]
                 ]
               }
@@ -668,7 +672,7 @@
             "Ref": "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoUserPool77221A72"
           }
         },
-        "DomainName": "myconstructsdomain1",
+        "DomainName": "testdomainconstructs",
         "EBSOptions": {
           "EBSEnabled": true,
           "VolumeSize": 10

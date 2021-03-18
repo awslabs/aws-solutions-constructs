@@ -74,7 +74,9 @@
             "Arn"
           ]
         }
-      }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "MyQueuePolicy6BBEDDAC": {
       "Type": "AWS::SQS::QueuePolicy",

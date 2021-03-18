@@ -147,14 +147,14 @@
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "SNS_TOPIC_ARN": {
+              "Ref": "testlambdasnsSnsTopic57DFED98"
+            },
             "SNS_TOPIC_NAME": {
               "Fn::GetAtt": [
                 "testlambdasnsSnsTopic57DFED98",
                 "TopicName"
               ]
-            },
-            "SNS_TOPIC_ARN": {
-              "Ref": "testlambdasnsSnsTopic57DFED98"
             }
           }
         },

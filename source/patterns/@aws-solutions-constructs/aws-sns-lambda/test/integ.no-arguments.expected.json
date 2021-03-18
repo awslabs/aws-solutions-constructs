@@ -131,19 +131,19 @@
             ]
           }
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "testsnslambdaLambdaFunctionServiceRole23794781",
             "Arn"
           ]
         },
-        "Runtime": "nodejs12.x",
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
           }
         },
+        "Handler": "index.handler",
+        "Runtime": "nodejs12.x",
         "TracingConfig": {
           "Mode": "Active"
         }

@@ -271,10 +271,12 @@ Object {
       "Type": "AWS::IAM::Policy",
     },
     "testlambdadynamodbstackSqsDlqQueue4CC9868B": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "testlambdadynamodbstackSqsDlqQueuePolicy192E20FD": Object {
       "Properties": Object {

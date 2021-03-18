@@ -153,13 +153,13 @@
             ]
           }
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "testroleB50A37BE",
             "Arn"
           ]
         },
+        "Handler": "index.handler",
         "Runtime": "nodejs10.x"
       },
       "DependsOn": [
@@ -170,12 +170,6 @@
     "testfnKinesisEventSourcetestksexistinglambdastackteststream12C1A0467DF707DE": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
-        "EventSourceArn": {
-          "Fn::GetAtt": [
-            "teststream04374A09",
-            "Arn"
-          ]
-        },
         "FunctionName": {
           "Ref": "testfn76BCC25C"
         },
@@ -190,6 +184,12 @@
               ]
             }
           }
+        },
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "teststream04374A09",
+            "Arn"
+          ]
         },
         "MaximumRecordAgeInSeconds": 86400,
         "MaximumRetryAttempts": 500,
@@ -211,7 +211,9 @@
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": "alias/aws/sqs"
-      }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "testkslambdaSqsDlqQueuePolicy48897D8E": {
       "Type": "AWS::SQS::QueuePolicy",

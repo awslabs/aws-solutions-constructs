@@ -22,7 +22,10 @@ const app = new App();
 const stack = new Stack(app, 'test-existing-logging-bucket-firehose-s3-stack');
 stack.templateOptions.description = 'Integration Test for aws-kinesisstreams-kinesisfirehose-s3';
 
-const existingBucket = CreateScrapBucket(stack, {});
+const existingBucket = CreateScrapBucket(stack, {
+  accessControl: s3.BucketAccessControl.LOG_DELIVERY_WRITE,
+});
+
 const myLoggingBucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'myLoggingBucket', existingBucket.bucketName);
 new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-existing-logging-bucket-firehose-s3-stack', {
   existingLoggingBucketObj: myLoggingBucket

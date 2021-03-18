@@ -286,10 +286,12 @@ Object {
       "Type": "AWS::IAM::Policy",
     },
     "testkinesisstreamslambdaSqsDlqQueueDCC12D0A": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "testkinesisstreamslambdaSqsDlqQueuePolicyB865E539": Object {
       "Properties": Object {
@@ -579,10 +581,12 @@ Object {
       "Type": "AWS::CloudWatch::Alarm",
     },
     "testkinesisstreamslambdaSqsDlqQueueDCC12D0A": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "testkinesisstreamslambdaSqsDlqQueuePolicyB865E539": Object {
       "Properties": Object {

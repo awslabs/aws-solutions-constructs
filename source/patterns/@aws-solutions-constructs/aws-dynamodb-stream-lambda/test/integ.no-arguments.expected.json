@@ -163,19 +163,19 @@
             ]
           }
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "testdynamodbstreamlambdaLambdaFunctionServiceRole034E525C",
             "Arn"
           ]
         },
-        "Runtime": "nodejs12.x",
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
           }
         },
+        "Handler": "index.handler",
+        "Runtime": "nodejs12.x",
         "TracingConfig": {
           "Mode": "Active"
         }
@@ -198,12 +198,6 @@
     "testdynamodbstreamlambdaLambdaFunctionDynamoDBEventSourcetestdynamodbstreamlambdastacktestdynamodbstreamlambdaDynamoTable99DF9824801A5BEE": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
-        "EventSourceArn": {
-          "Fn::GetAtt": [
-            "testdynamodbstreamlambdaDynamoTable6EB2ED0F",
-            "StreamArn"
-          ]
-        },
         "FunctionName": {
           "Ref": "testdynamodbstreamlambdaLambdaFunction99034597"
         },
@@ -218,6 +212,12 @@
               ]
             }
           }
+        },
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "testdynamodbstreamlambdaDynamoTable6EB2ED0F",
+            "StreamArn"
+          ]
         },
         "MaximumRecordAgeInSeconds": 86400,
         "MaximumRetryAttempts": 5,
@@ -257,7 +257,9 @@
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": "alias/aws/sqs"
-      }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "testdynamodbstreamlambdaSqsDlqQueuePolicy6BA0E667": {
       "Type": "AWS::SQS::QueuePolicy",

@@ -95,7 +95,9 @@
             "Arn"
           ]
         }
-      }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "testexistingqueuePolicy4D8E287E": {
       "Type": "AWS::SQS::QueuePolicy",

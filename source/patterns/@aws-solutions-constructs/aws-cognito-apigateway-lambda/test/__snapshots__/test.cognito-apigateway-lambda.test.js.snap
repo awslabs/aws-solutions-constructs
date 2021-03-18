@@ -110,6 +110,7 @@ Object {
       "Type": "AWS::Cognito::UserPoolClient",
     },
     "testcognitoapigatewaylambdaCognitoUserPoolD5E74489": Object {
+      "DeletionPolicy": "Retain",
       "Properties": Object {
         "AccountRecoverySetting": Object {
           "RecoveryMechanisms": Array [
@@ -140,6 +141,7 @@ Object {
         },
       },
       "Type": "AWS::Cognito::UserPool",
+      "UpdateReplacePolicy": "Retain",
     },
     "testcognitoapigatewaylambdaLambdaFunction0C8EAC23": Object {
       "DependsOn": Array [

@@ -130,14 +130,12 @@
             ]
           }
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "testlambdaelasticsearchkibanaLambdaFunctionServiceRole3AFFEAA2",
             "Arn"
           ]
         },
-        "Runtime": "nodejs12.x",
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
@@ -149,6 +147,8 @@
             }
           }
         },
+        "Handler": "index.handler",
+        "Runtime": "nodejs12.x",
         "TracingConfig": {
           "Mode": "Active"
         }
@@ -198,7 +198,9 @@
           "EmailSubject": "Verify your new account",
           "SmsMessage": "The verification code to your new account is {####}"
         }
-      }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
     },
     "testlambdaelasticsearchkibanaCognitoUserPoolClient8F70A2AA": {
       "Type": "AWS::Cognito::UserPoolClient",
@@ -249,7 +251,7 @@
     "testlambdaelasticsearchkibanaUserPoolDomainB9BDF063": {
       "Type": "AWS::Cognito::UserPoolDomain",
       "Properties": {
-        "Domain": "myconstructsdomain",
+        "Domain": "noargumentstest",
         "UserPoolId": {
           "Ref": "testlambdaelasticsearchkibanaCognitoUserPool9537802B"
         }
@@ -306,7 +308,7 @@
                         {
                           "Ref": "AWS::AccountId"
                         },
-                        ":domain/myconstructsdomain/*"
+                        ":domain/noargumentstest/*"
                       ]
                     ]
                   }
@@ -411,7 +413,7 @@
                       {
                         "Ref": "AWS::AccountId"
                       },
-                      ":domain/myconstructsdomain"
+                      ":domain/noargumentstest"
                     ]
                   ]
                 }
@@ -479,7 +481,7 @@
                     {
                       "Ref": "AWS::AccountId"
                     },
-                    ":domain/myconstructsdomain/*"
+                    ":domain/noargumentstest/*"
                   ]
                 ]
               }
@@ -502,7 +504,7 @@
             "Ref": "testlambdaelasticsearchkibanaCognitoUserPool9537802B"
           }
         },
-        "DomainName": "myconstructsdomain",
+        "DomainName": "noargumentstest",
         "EBSOptions": {
           "EBSEnabled": true,
           "VolumeSize": 10

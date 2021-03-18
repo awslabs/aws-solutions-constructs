@@ -277,10 +277,12 @@ Object {
       "Type": "AWS::IAM::Policy",
     },
     "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaSqsDlqQueue2AC67B0B": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaSqsDlqQueuePolicyEB0A0B8A": Object {
       "Properties": Object {
@@ -593,6 +595,7 @@ Object {
       "Type": "AWS::Cognito::UserPoolClient",
     },
     "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoUserPoolF99F93E5": Object {
+      "DeletionPolicy": "Retain",
       "Properties": Object {
         "AccountRecoverySetting": Object {
           "RecoveryMechanisms": Array [
@@ -623,6 +626,7 @@ Object {
         },
       },
       "Type": "AWS::Cognito::UserPool",
+      "UpdateReplacePolicy": "Retain",
     },
     "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchElasticsearchDomainD539E435": Object {
       "Metadata": Object {

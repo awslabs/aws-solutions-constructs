@@ -3,6 +3,9 @@
   "Resources": {
     "existingScriptLocation845F3C51": {
       "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "LogDeliveryWrite"
+      },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
       "Metadata": {

@@ -92,10 +92,12 @@ Object {
       "Type": "AWS::Events::Rule",
     },
     "testeventsrulesqsdeadLetterQueueA4A15A1C": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "testeventsrulesqsdeadLetterQueuePolicyB769DC48": Object {
       "Properties": Object {
@@ -167,6 +169,7 @@ Object {
       "Type": "AWS::SQS::QueuePolicy",
     },
     "testeventsrulesqsqueueAACD0364": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": Object {
           "Fn::GetAtt": Array [
@@ -185,6 +188,7 @@ Object {
         },
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "testeventsrulesqsqueuePolicy6D46CF4A": Object {
       "Properties": Object {

@@ -247,7 +247,9 @@
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": "alias/aws/sqs"
-      }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "testkinesislambdaSqsDlqQueuePolicy38A92DE9": {
       "Type": "AWS::SQS::QueuePolicy",

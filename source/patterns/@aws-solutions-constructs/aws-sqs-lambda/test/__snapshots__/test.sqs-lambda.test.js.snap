@@ -150,10 +150,12 @@ Object {
       "Type": "AWS::Lambda::EventSourceMapping",
     },
     "testapigatewaylambdaqueue1FFAE03C": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "testapigatewaylambdaqueuePolicyD735D909": Object {
       "Properties": Object {
@@ -438,10 +440,12 @@ Object {
       "Type": "AWS::Lambda::EventSourceMapping",
     },
     "testsqslambdadeadLetterQueue85BDB0A3": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "testsqslambdadeadLetterQueuePolicy8C08D1A5": Object {
       "Properties": Object {
@@ -513,6 +517,7 @@ Object {
       "Type": "AWS::SQS::QueuePolicy",
     },
     "testsqslambdaqueue601203B8": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
         "RedrivePolicy": Object {
@@ -526,6 +531,7 @@ Object {
         },
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "testsqslambdaqueuePolicy29B871D4": Object {
       "Properties": Object {
@@ -618,10 +624,12 @@ Object {
   },
   "Resources": Object {
     "existingqueueobjF8AF0ED1": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "QueueName": "existing-queue-obj",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "lambdatosqsstackLambdaFunctionDAB62CB1": Object {
       "DependsOn": Array [

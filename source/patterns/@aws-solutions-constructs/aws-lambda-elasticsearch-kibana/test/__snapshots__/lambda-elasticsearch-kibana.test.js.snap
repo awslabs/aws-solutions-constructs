@@ -233,6 +233,7 @@ Object {
       "Type": "AWS::IAM::Policy",
     },
     "testlambdaelasticsearchstackCognitoUserPool05D1387E": Object {
+      "DeletionPolicy": "Retain",
       "Properties": Object {
         "AccountRecoverySetting": Object {
           "RecoveryMechanisms": Array [
@@ -263,6 +264,7 @@ Object {
         },
       },
       "Type": "AWS::Cognito::UserPool",
+      "UpdateReplacePolicy": "Retain",
     },
     "testlambdaelasticsearchstackCognitoUserPoolClient6610371B": Object {
       "Properties": Object {
