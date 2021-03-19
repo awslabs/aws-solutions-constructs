@@ -11,17 +11,21 @@ This document defines the ways in which Constructs are consistent. These rules h
 ## Overall Guidelines
 
 **Constructs Can Be Self Contained**
+
 While passing an existing resource to Construct is essential to the ability to link Constructs together, it should never be required. If your Construct requires the client to create a resource to pass in as an argument to the constructor then you have probably not defined your Construct correctly or what you are designing is not a good fit for the Solutions Constructs library.
 
 **Constructs should be decomposed to their smallest architecture**
+
 To make a Construct as flexible as possible, it should perform a single architectural task. For instance, a consistent Solutions Construct would not combine an Event rule with a Lambda function with an DynamoDB table because that would not be a single architectural task. These three services would be used to create 2 Solutions Constructs, an Event Rules with a Lambda function, and a Lambda function with a DynamoDB table. A client could use these constructs to perform the original task, but other constructs could use either construct in completely different workloads. While this rule often means a Construct deploys 2 services, there may be situations where the smallest architectural task requires 3 or more services.
 
 **Use CDK definitions to define a service or resource**
+
 The construct should not create new classes or interfaces to describe services or resources. Although the new class may seem simpler now, as new capabilities are added to the construct the new class will acquire new properties – the ultimate result would be something equivalent to the CDK definition, but not compatible. The CDK definitions are well thought out and interact predictably with other CDK constructs, use them. If you want a client the ability to specify a few attributes of a ConstructProps without specifying every required value, then make the type of that attribute ConstructProps | any. This pattern exists several places in the Solutions Constructs library.
 
 Another practice that this rule prohibits is putting specific attributes of sub resources in your Solutions Constructs Props object. For instance - if your VPC needs an Internet Gateway, then the client should send VPC Props that create the Internet Gateway, don't create a property at in your Construct Props object of InternetGateway: true. 
 
 **The client should have the option (but not requirement) to provide any props used within the construct**
+
 When you supply a CDK defined props object to any CDK constructor within your construct (L1 or L2), your construct should be able to generate all the default values required to create that L1 or L2 construct. Alternatively, the client should be able to override any or all of those default props values to completely customize the construct.
 
 There are exceptions to this rule. The Lambda Function L2 construct, for instance, cannot specify a default value for the Lambda code – the client must provide this. Also, at times the workings of the construct require specific props values to work. In this situation, those values will override user provided values. In general, the props values sent to a CDK constructor are generated like this:
@@ -34,13 +38,16 @@ actualProps = overrideProps(actualProps, constructRequiredProps)
 Construct required props should be minimized and listed in the README.md file for the Construct.
 There is a possibility that the client could specify some props values that are incompatible with default props values.  That is the responsibility of the client – if they choose to not use the default implementation then they take responsibility for the configuration they specify.
 
-**The Minimal Deployable Pattern Definition should be minimal **
+**The Minimal Deployable Pattern Definition should be minimal**
+
 While a client should have great flexibility to fully specify how a Construct is deployed, the minimal deployment should consist of a single new statement. At times things like table schema might require some additional code – but if your minimal deployable solution is more than a couple lines long or requires creating one or more services first then your construct is outside the patterns for the library.
 
 **No Business Logic**
+
 The Construct should be restricted to deploying infrastructure. In general this means no schema and no code (eg – no implemented Lambda functions). We don’t rule out the idea that some future use case will require a Lambda function to accomplish an architectural need, but we have not seen that yet. Avoid including coded Lambda functions in your construct unless you’ve talked to us in advance to avoid disappointment.
 
 **Favor L2 CDK Constructs over L1**
+
 L1 CDK constructs are merely thin code wrappers over the raw CloudFormation definitions – they bring little if any additional value to the table. L2 CDK constructs provide additional functionality, security and interoperability. Whenever possible, Solutions Constructs interfaces should speak in terms of L2 CDK constructs. If your definition includes L1 constructs it may not be rejected, but you will be asked to explain the reasons requiring their use. 
 
 ## VPCs
@@ -109,7 +116,9 @@ Existing Inconsistencies would not be published, that’s for our internal use �
 | apiGateway	| api.RestApi	| |
 |apiGatewayCloudwatchRole	| iam.Role	||
 | apiGatewayLogGroup	| logs.LogGroup	||
-| apiGatewayRol	| iam.Role	||
+| apiGatewayRole	| iam.Role	||
+
+
 ## IoT
 **Required Attributes on Props** 
 
@@ -273,6 +282,7 @@ Existing Inconsistencies would not be published, that’s for our internal use �
 
 
 **Required Construct Properties** 
+
 | Name    | Type     | Notes    |
 | --- | --- | --- |
 | stateMachine		| sfn.StateMachine	||
@@ -287,7 +297,6 @@ Existing Inconsistencies would not be published, that’s for our internal use �
 | --- | --- | --- |
 | esDomainProps?	| elasticsearch.CfnDomainProps	||
 | domainName	| string	||
-
 
 
 **Required Construct Properties** 

@@ -126,18 +126,17 @@ Examples:
 * [integ.deployFunction.ts](https://github.com/awslabs/aws-solutions-constructs/blob/master/source/patterns/%40aws-solutions-constructs/aws-apigateway-lambda/test/integ.deployFunction.ts)
 * [integ.existingFunction.ts](https://github.com/awslabs/aws-solutions-constructs/blob/master/source/patterns/%40aws-solutions-constructs/aws-apigateway-lambda/test/integ.existingFunction.ts)
 
-#### How Initialize Integration Tests Snapshots
+#### How To Initialize Integration Test .expected Result
 
-Each integration test generates an expected snapshot by actually deploying the construct and extracting the template snapshot from the CFN stack. Once you’ve written your integration test, follow these steps to generate the snapshot:
+Each integration test generates a .expected.json file by actually deploying the construct and extracting the template from the CFN stack. Once you’ve written your integration test, follow these steps to generate these files:
 
-1. In the docker build container, go to the folder for the construct you are working on (the folder with the package.json file).
-2. Configure the CLI within the docker container using aws configure. You will need an access key with enough privileges to launch everything in 
-   your stack and call Cloudformation – admin access is probably the surest way to get this.
+1. In the Docker build container, go to the folder for the construct you are working on (the folder with the package.json file).
+2. Configure the CLI within the Docker container using `aws configure`. You will need an access key with enough privileges to launch everything in
+   your stack and call CloudFormation – admin access is probably the surest way to get this.
 3. Run the commands `npm run build && npm run integ`. The code will be compiled and each integration test stack will
-   be deployed, the snapshot gathered and the stack destroyed. You will see integ.your-test-name.expected.json
-   files appear in the project for each test.
+   be deployed, the template gathered from CloudFormation as the expected result and the stack destroyed. You will see `integ.your-test-name.expected.json` files appear in the project for each test.
 
-The standard `npm run build+lint+test` command will compare the cdk synth output against this snapshot. The Solutions Constructs team will run `npm run integ` in each construct periodically to guard against drift and ensure each construct still deploys.
+The standard `npm run build+lint+test` command will compare the cdk synth output against the .expected.json file. The Solutions Constructs team will run `npm run integ` in each construct periodically to guard against drift and ensure each construct still deploys.
 
 ### Step 4: Commit
 
