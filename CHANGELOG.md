@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.92.0 (2021-03-19)
+
+### Changed
+- Upgraded all patterns to CDK v1.92.0
+- Altered aws-cognito-apigateway-lambda construct integration test to clean up user pool
+- Fixed jsii output location for aws-lambda-sagemakerendpoint Java tar files
+
 ## 1.91.0 (2021-03-14)
 
 ### Changed

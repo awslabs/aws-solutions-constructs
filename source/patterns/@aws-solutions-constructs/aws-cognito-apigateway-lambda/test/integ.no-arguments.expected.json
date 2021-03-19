@@ -626,8 +626,8 @@
           "SmsMessage": "The verification code to your new account is {####}"
         }
       },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "testcognitoapigatewaylambdaCognitoUserPoolClientDA118627": {
       "Type": "AWS::Cognito::UserPoolClient",

@@ -15,6 +15,7 @@
 import { App, Stack } from "@aws-cdk/core";
 import { CognitoToApiGatewayToLambda } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
+import * as cdk from '@aws-cdk/core';
 
 // Setup
 const app = new App();
@@ -28,6 +29,9 @@ const lambdaProps: lambda.FunctionProps = {
 
 new CognitoToApiGatewayToLambda(stack, 'test-cognito-apigateway-lambda', {
   lambdaFunctionProps: lambdaProps,
+  cognitoUserPoolProps: {
+    removalPolicy: cdk.RemovalPolicy.DESTROY
+  }
 });
 
 // Synth
