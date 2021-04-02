@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.94.0 (2021-04-01)
+
+### Changed
+- Upgraded all patterns to CDK v1.94.0
+- Documentation changes in minimal deployment examples ([#94](https://github.com/awslabs/aws-solutions-constructs/issues/94))
+- Documentation changes in Python code in Walkthroughs
+- Fixed alarm threshold for Elasticsearch constructs ([#153](https://github.com/awslabs/aws-solutions-constructs/issues/153))
+
 ## 1.93.0 (2021-03-19)
 
 ### Changed

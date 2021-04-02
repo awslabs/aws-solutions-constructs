@@ -122,7 +122,7 @@ export function buildElasticSearchCWAlarms(scope: cdk.Construct): cloudwatch.Ala
       namespace: 'AWS/ES',
       metricName: 'FreeStorageSpace'
     }),
-    threshold: 2000,
+    threshold: 20000,
     evaluationPeriods: 1,
     statistic: 'Minimum',
     period: cdk.Duration.seconds(60),
