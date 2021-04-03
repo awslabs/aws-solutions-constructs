@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.95.2 (2021-04-03)
+
+### Changed
+- Upgraded all patterns to CDK v1.95.2
+
 ## 1.95.1 (2021-04-02)
 
 ### Changed
