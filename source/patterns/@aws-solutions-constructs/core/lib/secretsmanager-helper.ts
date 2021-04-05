@@ -14,7 +14,7 @@
 import { Secret, SecretProps } from '@aws-cdk/aws-secretsmanager';
 import { Construct } from '@aws-cdk/core';
 import { DefaultSecretProps } from './secretsmanager-defaults';
-import { overrideProps } from "./utils";
+import { overrideProps } from './utils';
 
 /**
  * Method to build the default AWS Secrets Manager Secret
