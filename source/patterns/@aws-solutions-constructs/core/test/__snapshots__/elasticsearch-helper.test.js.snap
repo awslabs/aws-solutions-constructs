@@ -261,6 +261,10 @@ Object {
               "id": "W28",
               "reason": "The ES Domain is passed dynamically as as parameter and explicitly specified to ensure that IAM policies are configured to lockdown access to this specific ES instance only",
             },
+            Object {
+              "id": "W90",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries",
+            },
           ],
         },
       },

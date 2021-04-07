@@ -57,6 +57,26 @@ for dir in $(find $source_dir/patterns/\@aws-solutions-constructs/ -name dist | 
 done
 
 echo "------------------------------------------------------------------------------"
+echo "[Create] build.json file"
+echo "------------------------------------------------------------------------------"
+# Get commit hash from CodePipeline env variable CODEBUILD_RESOLVED_SOURCE_VERSION
+echo $deployment_dir
+version=$(node -p "require('$deployment_dir/get-version.js')")
+commit="${CODEBUILD_RESOLVED_SOURCE_VERSION:-}"
+
+cat > ${dist_dir}/build.json <<HERE
+{
+  "name": "aws-solutions-constructs",
+  "version": "${version}",
+  "commit": "${commit}"
+}
+HERE
+
+# copy CHANGELOG.md to dist/ for github releases
+changelog_file=$deployment_dir/../CHANGELOG.md
+cp ${changelog_file} ${dist_dir}/CHANGELOG.md
+
+echo "------------------------------------------------------------------------------"
 echo "[List] deployment/dist contents"
 echo "------------------------------------------------------------------------------"
 

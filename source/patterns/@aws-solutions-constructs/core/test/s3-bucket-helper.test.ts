@@ -313,7 +313,11 @@ test('Suppress cfn-nag warning for s3 bucket notification', () => {
         rules_to_suppress: [
           {
             id: "W58",
-            reason: "Lambda function has permission to write CloudWatch Logs via AWSLambdaBasicExecutionRole policy attached to the lambda role"
+            reason: "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+          },
+          {
+            id: 'W89',
+            reason: `This is not a rule for the general case, just for specific use cases/industries`
           }
         ]
       }
