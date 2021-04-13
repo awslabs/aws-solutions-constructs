@@ -1,0 +1,81 @@
+{
+  "name": "@aws-solutions-constructs/aws-lambda-secretsmanager",
+  "version": "0.0.0",
+  "description": "CDK constructs for defining an interaction between an AWS Lambda function and AWS Secrets Manager.",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/awslabs/aws-solutions-constructs.git",
+    "directory": "source/patterns/@aws-solutions-constructs/aws-lambda-secretsmanager"
+  },
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com",
+    "organization": true
+  },
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc -b .",
+    "lint": "eslint -c ../eslintrc.yml --ext=.js,.ts . && tslint --project .",
+    "lint-fix": "eslint -c ../eslintrc.yml --ext=.js,.ts --fix .",
+    "test": "jest --coverage",
+    "clean": "tsc -b --clean",
+    "watch": "tsc -b -w",
+    "integ": "cdk-integ",
+    "integ-assert": "cdk-integ-assert",
+    "integ-no-clean": "cdk-integ --no-clean",
+    "jsii": "jsii",
+    "jsii-pacmak": "jsii-pacmak",
+    "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
+    "snapshot-update": "npm run jsii && npm test -- -u && npm run integ-assert"
+  },
+  "jsii": {
+    "outdir": "dist",
+    "targets": {
+      "java": {
+        "package": "software.amazon.awsconstructs.services.lambdasecretsmanager",
+        "maven": {
+          "groupId": "software.amazon.awsconstructs",
+          "artifactId": "lambdasecretsmanager"
+        }
+      },
+      "dotnet": {
+        "namespace": "Amazon.Constructs.AWS.LambdaSecretsManager",
+        "packageId": "Amazon.Constructs.AWS.LambdaSecretsManager",
+        "signAssembly": true,
+        "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
+      },
+      "python": {
+        "distName": "aws-solutions-constructs.aws-lambda-secretsmanager",
+        "module": "aws_solutions_constructs.aws_lambda_secretsmanager"
+      }
+    }
+  },
+  "dependencies": {
+    "@aws-cdk/aws-ec2": "1.96.0",
+    "@aws-cdk/aws-lambda": "1.96.0",
+    "@aws-cdk/aws-secretsmanager": "1.96.0",
+    "@aws-cdk/core": "1.96.0",
+    "@aws-solutions-constructs/core": "1.96.0",
+    "constructs": "^3.2.0"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "1.96.0",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^10.3.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ]
+  },
+  "peerDependencies": {
+    "@aws-cdk/aws-ec2": "1.96.0",
+    "@aws-cdk/aws-lambda": "1.96.0",
+    "@aws-cdk/aws-secretsmanager": "1.96.0",
+    "@aws-cdk/core": "1.96.0",
+    "@aws-solutions-constructs/core": "1.96.0",
+    "constructs": "^3.2.0"
+  }
+}
