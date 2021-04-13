@@ -19,9 +19,9 @@ import * as ec2 from "@aws-cdk/aws-ec2";
 import { Construct } from "@aws-cdk/core";
 
 /**
- * @summary The properties for the LambdaSecretsManager class.
+ * @summary The properties for the LambdaSecretsmanager class.
  */
-export interface LambdaSecretsManagerProps {
+export interface LambdaSecretsmanagerProps {
   /**
    * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
    *
@@ -35,7 +35,7 @@ export interface LambdaSecretsManagerProps {
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
-   * Existing instance of Secret object, if this is set then queueProps is ignored.
+   * Existing instance of Secret object, if this is set then secretProps is ignored.
    *
    * @default - Default props are used
    */
@@ -77,7 +77,7 @@ export interface LambdaSecretsManagerProps {
 /**
  * @summary The LambdaToSqs class.
  */
-export class LambdaToSqs extends Construct {
+export class LambdaSeretsmanager extends Construct {
     public readonly lambdaFunction: lambda.Function;
     public readonly secret: secretsmanager.Secret;
     public readonly vpc?: ec2.IVpc;
@@ -86,11 +86,11 @@ export class LambdaToSqs extends Construct {
      * @summary Constructs a new instance of the LambdaToSqs class.
      * @param {cdk.App} scope - represents the scope for all the resources.
      * @param {string} id - this is a a scope-unique id.
-     * @param {LambdaToSqsProps} props - user provided props for the construct.
+     * @param {LambdaSecretsmanagerProps} props - user provided props for the construct.
      * @since 1.49.0
      * @access public
      */
-    constructor(scope: Construct, id: string, props: LambdaSecretsManagerProps) {
+    constructor(scope: Construct, id: string, props: LambdaSecretsmanagerProps) {
       super(scope, id);
 
       if (props.deployVpc || props.existingVpc) {
@@ -108,7 +108,7 @@ export class LambdaToSqs extends Construct {
           },
         });
 
-        defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.SECRETS_MANAGER);
+        defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.SECRETSMANAGER);
       }
 
       // Setup the Lambda function
