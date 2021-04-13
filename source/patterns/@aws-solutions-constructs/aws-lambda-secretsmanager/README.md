@@ -1,4 +1,4 @@
-# aws-lambda-secrets-manager module
+# aws-lambda-secretsmanager module
 <!--BEGIN STABILITY BANNER-->
 
 ---
@@ -22,36 +22,37 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-lambda-secretsmanager`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.lambdasecretsmanager`|
 
-This AWS Solutions Construct implements the AWS Lambda function and Amazon SecretsManager secret with the least privileged permissions.
+This AWS Solutions Construct implements the AWS Lambda function and AWS Secrets Manager secret with the least privileged permissions.
 
 Here is a minimal deployable pattern definition in Typescript:
 
 ``` javascript
-const { LambdaToSecretsManagerProps,  LambdaToSecretsManager } from '@aws-solutions-constructs/aws-lambda-secretsmanager';
+const { LambdaToSecretsmanagerProps,  LambdaToSecretsmanager } from '@aws-solutions-constructs/aws-lambda-secretsmanager';
 
-const props: LambdaToSecretsManagerProps = {
+const props: LambdaToSecretsmanagerProps = {
     lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_12_X,
-        handler: 'index.handler'
+      runtime: lambda.Runtime.NODEJS_14_X,
+      // This assumes a handler function in lib/lambda/index.js
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      handler: 'index.handler'
     },
 };
 
-new LambdaToSecretsManager(this, 'test-lambda-secretsmanager-stack', props);
+new LambdaToSecretsmanager(this, 'test-lambda-secretsmanager-stack', props);
 
 ```
 
 ## Initializer
 
 ``` text
-new LambdaToSecretsManager(scope: Construct, id: string, props: LambdaToSecretsManagerProps);
+new LambdaToSecretsmanager(scope: Construct, id: string, props: LambdaToSecretsmanagerProps);
 ```
 
 _Parameters_
 
 * scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
 * id `string`
-* props [`LambdaToSecretsManagerProps`](#pattern-construct-props)
+* props [`LambdaToSecretsmanagerProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 
