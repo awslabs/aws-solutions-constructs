@@ -167,6 +167,10 @@
             {
               "id": "W89",
               "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            },
+            {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients"
             }
           ]
         }
@@ -552,14 +556,16 @@
       },
       "Metadata": {
         "cfn_nag": {
-          "rules_to_suppress": [{
-            "id": "W28",
-            "reason": "The ES Domain is passed dynamically as as parameter and explicitly specified to ensure that IAM policies are configured to lockdown access to this specific ES instance only"
-          },
-          {
-            "id": "W90",
-            "reason": "This is not a rule for the general case, just for specific use cases/industries"
-          }]
+          "rules_to_suppress": [
+            {
+              "id": "W28",
+              "reason": "The ES Domain is passed dynamically as as parameter and explicitly specified to ensure that IAM policies are configured to lockdown access to this specific ES instance only"
+            },
+            {
+              "id": "W90",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            }
+          ]
         }
       }
     },

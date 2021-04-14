@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { IotToKinesisFirehoseToS3, IotToKinesisFirehoseToS3Props } from "../lib";
 
 // Setup
@@ -29,6 +29,9 @@ const props: IotToKinesisFirehoseToS3Props = {
       sql: "SELECT * FROM 'connectedcar/telemetry/#'",
       actions: []
     }
+  },
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY
   }
 };
 

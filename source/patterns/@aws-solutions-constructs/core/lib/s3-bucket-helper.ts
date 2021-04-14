@@ -20,6 +20,7 @@ import { overrideProps } from './utils';
 import { PolicyStatement, Effect, AnyPrincipal } from '@aws-cdk/aws-iam';
 import { StorageClass } from '@aws-cdk/aws-s3/lib/rule';
 import { Duration } from '@aws-cdk/core/lib/duration';
+import { RemovalPolicy } from '@aws-cdk/core';
 export interface BuildS3BucketProps {
   /**
    * User provided props to override the default props for the S3 Bucket.
@@ -60,9 +61,17 @@ export function applySecureBucketPolicy(s3Bucket: s3.Bucket): void {
   );
 }
 
-export function createLoggingBucket(scope: cdk.Construct, bucketId: string): s3.Bucket {
+export function createLoggingBucket(scope: cdk.Construct, bucketId: string, removalPolicy?: RemovalPolicy): s3.Bucket {
+  let loggingBucketProps;
+
+  if (removalPolicy) {
+    loggingBucketProps = overrideProps(DefaultS3Props(), { removalPolicy });
+  } else {
+    loggingBucketProps = DefaultS3Props();
+  }
+
   // Create the Logging Bucket
-  const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, DefaultS3Props());
+  const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, loggingBucketProps);
 
   applySecureBucketPolicy(loggingBucket);
 
@@ -121,7 +130,7 @@ function s3BucketWithLogging(scope: cdk.Construct, s3BucketProps?: s3.BucketProp
     }
   } else {
     // Create the Logging Bucket
-    loggingBucket = createLoggingBucket(scope, _loggingBucketId);
+    loggingBucket = createLoggingBucket(scope, _loggingBucketId, s3BucketProps?.removalPolicy);
 
     // Attach the Default Life Cycle policy ONLY IF the versioning is ENABLED
     if (s3BucketProps?.versioned === undefined || s3BucketProps.versioned) {
@@ -159,6 +168,10 @@ export function addCfnNagS3BucketNotificationRulesToSuppress(stackRoot: cdk.Stac
       {
         id: 'W89',
         reason: `This is not a rule for the general case, just for specific use cases/industries`
+      },
+      {
+        id: 'W92',
+        reason: `Impossible for us to define the correct concurrency for clients`
       }]
     }
   };

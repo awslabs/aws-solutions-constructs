@@ -19,7 +19,11 @@ import '@aws-cdk/assert/jest';
 import * as acm from '@aws-cdk/aws-certificatemanager';
 
 function deploy(stack: cdk.Stack) {
-  return new CloudFrontToS3(stack, 'test-cloudfront-s3', {});
+  return new CloudFrontToS3(stack, 'test-cloudfront-s3', {
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    }
+  });
 }
 
 test('snapshot test CloudFrontToS3 default params', () => {

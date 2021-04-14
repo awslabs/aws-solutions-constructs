@@ -13,7 +13,7 @@
 
 // Imports
 import * as s3 from '@aws-cdk/aws-s3';
-import { App, Stack } from '@aws-cdk/core';
+import { App, Stack, RemovalPolicy } from '@aws-cdk/core';
 import { CreateScrapBucket } from '@aws-solutions-constructs/core';
 import { KinesisFirehoseToS3 } from '../lib';
 
@@ -28,7 +28,10 @@ const existingBucket = CreateScrapBucket(stack, {
 
 const myLoggingBucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'myLoggingBucket', existingBucket.bucketName);
 new KinesisFirehoseToS3(stack, 'test-firehose-s3-pre-existing-logging-bucket-stack', {
-  existingLoggingBucketObj: myLoggingBucket
+  existingLoggingBucketObj: myLoggingBucket,
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+  }
 });
 
 // Synth

@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { KinesisFirehoseToAnalyticsAndS3, KinesisFirehoseToAnalyticsAndS3Props } from "../lib";
 
 // Setup
@@ -48,6 +48,9 @@ const props: KinesisFirehoseToAnalyticsAndS3Props = {
       },
       namePrefix: 'SOURCE_SQL_STREAM'
     }]
+  },
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
   }
 };
 

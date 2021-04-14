@@ -39,6 +39,9 @@ test('test kinesisFirehose override ', () => {
           sizeInMBs: 55
         },
       }
+    },
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
     }
   });
 

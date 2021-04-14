@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { LambdaToS3, LambdaToS3Props } from "../lib";
 import * as lambda from "@aws-cdk/aws-lambda";
 
@@ -29,6 +29,9 @@ const props: LambdaToS3Props = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   },
   deployVpc: true,
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+  }
 };
 
 new LambdaToS3(stack, "test-lambda-s3", props);
