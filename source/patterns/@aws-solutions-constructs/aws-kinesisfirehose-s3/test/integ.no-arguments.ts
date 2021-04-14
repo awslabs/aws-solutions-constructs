@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { KinesisFirehoseToS3 } from "../lib";
 
 // Setup
@@ -20,7 +20,11 @@ const app = new App();
 const stack = new Stack(app, 'test-firehose-s3-stack');
 stack.templateOptions.description = 'Integration Test for aws-cdk-apl-kinesisfirehose-s3';
 
-new KinesisFirehoseToS3(stack, 'test-firehose-s3', {});
+new KinesisFirehoseToS3(stack, 'test-firehose-s3', {
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+  }
+});
 
 // Synth
 app.synth();

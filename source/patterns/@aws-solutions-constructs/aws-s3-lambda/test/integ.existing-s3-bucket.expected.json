@@ -1,120 +1,29 @@
 {
   "Resources": {
-    "S3LoggingBucket800A2B27": {
+    "existingScriptLocation845F3C51": {
       "Type": "AWS::S3::Bucket",
-      "Properties": {
-        "AccessControl": "LogDeliveryWrite",
-        "BucketEncryption": {
-          "ServerSideEncryptionConfiguration": [
-            {
-              "ServerSideEncryptionByDefault": {
-                "SSEAlgorithm": "AES256"
-              }
-            }
-          ]
-        },
-        "PublicAccessBlockConfiguration": {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true
-        }
-      },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
             {
+              "id": "W51",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
+            },
+            {
               "id": "W35",
-              "reason": "This S3 bucket is used as the access logging bucket for another bucket"
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
+            },
+            {
+              "id": "W41",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct"
             }
           ]
         }
       }
     },
-    "S3LoggingBucketPolicy6B3AA8AF": {
-      "Type": "AWS::S3::BucketPolicy",
-      "Properties": {
-        "Bucket": {
-          "Ref": "S3LoggingBucket800A2B27"
-        },
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": "*",
-              "Condition": {
-                "Bool": {
-                  "aws:SecureTransport": "false"
-                }
-              },
-              "Effect": "Deny",
-              "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "S3LoggingBucket800A2B27",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
-              },
-              "Sid": "HttpsOnly"
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      }
-    },
-    "S3Bucket07682993": {
-      "Type": "AWS::S3::Bucket",
-      "Properties": {
-        "BucketEncryption": {
-          "ServerSideEncryptionConfiguration": [
-            {
-              "ServerSideEncryptionByDefault": {
-                "SSEAlgorithm": "AES256"
-              }
-            }
-          ]
-        },
-        "LifecycleConfiguration": {
-          "Rules": [
-            {
-              "NoncurrentVersionTransitions": [
-                {
-                  "StorageClass": "GLACIER",
-                  "TransitionInDays": 90
-                }
-              ],
-              "Status": "Enabled"
-            }
-          ]
-        },
-        "LoggingConfiguration": {
-          "DestinationBucketName": {
-            "Ref": "S3LoggingBucket800A2B27"
-          }
-        },
-        "PublicAccessBlockConfiguration": {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true
-        },
-        "VersioningConfiguration": {
-          "Status": "Enabled"
-        }
-      },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
-    },
-    "S3BucketNotifications58B5AD06": {
+    "existingScriptLocationNotificationsC550EA17": {
       "Type": "Custom::S3BucketNotifications",
       "Properties": {
         "ServiceToken": {
@@ -124,7 +33,7 @@
           ]
         },
         "BucketName": {
-          "Ref": "S3Bucket07682993"
+          "Ref": "existingScriptLocation845F3C51"
         },
         "NotificationConfiguration": {
           "LambdaFunctionConfigurations": [
@@ -143,48 +52,10 @@
         }
       },
       "DependsOn": [
-        "S3BucketAllowBucketNotificationsTotests3lambdaexistingbucketstacktests3lambdaLambdaFunctionA42D14CC3F8CB11C"
+        "existingScriptLocationAllowBucketNotificationsTotests3lambdaexistingbucketstacktests3lambdaLambdaFunctionA42D14CC8B2D6025"
       ]
     },
-    "S3BucketPolicyF560589A": {
-      "Type": "AWS::S3::BucketPolicy",
-      "Properties": {
-        "Bucket": {
-          "Ref": "S3Bucket07682993"
-        },
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": "*",
-              "Condition": {
-                "Bool": {
-                  "aws:SecureTransport": "false"
-                }
-              },
-              "Effect": "Deny",
-              "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "S3Bucket07682993",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
-              },
-              "Sid": "HttpsOnly"
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      }
-    },
-    "S3BucketAllowBucketNotificationsTotests3lambdaexistingbucketstacktests3lambdaLambdaFunctionA42D14CC3F8CB11C": {
+    "existingScriptLocationAllowBucketNotificationsTotests3lambdaexistingbucketstacktests3lambdaLambdaFunctionA42D14CC8B2D6025": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
@@ -200,7 +71,7 @@
         },
         "SourceArn": {
           "Fn::GetAtt": [
-            "S3Bucket07682993",
+            "existingScriptLocation845F3C51",
             "Arn"
           ]
         }
@@ -367,6 +238,10 @@
             {
               "id": "W89",
               "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            },
+            {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients"
             }
           ]
         }
@@ -465,6 +340,10 @@
             {
               "id": "W89",
               "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            },
+            {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients"
             }
           ]
         }

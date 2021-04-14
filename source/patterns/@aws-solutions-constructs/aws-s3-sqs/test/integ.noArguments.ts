@@ -12,7 +12,7 @@
  */
 
 /// !cdk-integ *
-import {App, Stack} from "@aws-cdk/core";
+import {App, Stack, RemovalPolicy} from "@aws-cdk/core";
 import {S3ToSqs} from "../lib";
 
 const app = new App();
@@ -20,5 +20,9 @@ const app = new App();
 // Empty arguments
 const stack = new Stack(app, 'test-s3-sqs-no-arguments');
 
-new S3ToSqs(stack, 'test-s3-sqs', {});
+new S3ToSqs(stack, 'test-s3-sqs', {
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+  }
+});
 app.synth();

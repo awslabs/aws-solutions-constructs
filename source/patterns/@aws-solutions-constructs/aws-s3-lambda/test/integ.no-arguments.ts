@@ -12,7 +12,7 @@
  */
 
 /// !cdk-integ *
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { S3ToLambda, S3ToLambdaProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 const app = new App();
@@ -26,6 +26,9 @@ const props: S3ToLambdaProps = {
     runtime: lambda.Runtime.NODEJS_12_X,
     handler: 'index.handler'
   },
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+  }
 };
 
 new S3ToLambda(stack, 'test-s3-lambda', props);

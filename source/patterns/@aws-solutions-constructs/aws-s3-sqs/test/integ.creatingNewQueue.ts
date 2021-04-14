@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { S3ToSqs, S3ToSqsProps } from "../lib";
 import * as kms from '@aws-cdk/aws-kms';
 import * as s3 from '@aws-cdk/aws-s3';
@@ -44,7 +44,10 @@ const props: S3ToSqsProps = {
     queueName: `myDLQueue`
   },
   s3EventTypes: [s3.EventType.OBJECT_REMOVED],
-  s3EventFilters: [filter]
+  s3EventFilters: [filter],
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+  }
 };
 
 new S3ToSqs(stack, 'test-s3-sqs', props);

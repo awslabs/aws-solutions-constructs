@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.97.0 (2021-04-14)
+
+### Changed
+- Upgraded all patterns to CDK v1.97.0
+- Made changes to accomodate cfn_nag rule W92
+- Updated integration tests to destroy S3 buckets when tearing down the test stack
+
 ## 1.96.0 (2021-04-07)
 
 ### Changed

@@ -13,7 +13,7 @@
 
 // Imports
 import { SynthUtils } from '@aws-cdk/assert';
-import { Stack } from '@aws-cdk/core';
+import { Stack, RemovalPolicy } from '@aws-cdk/core';
 import { KinesisFirehoseToAnalyticsAndS3, KinesisFirehoseToAnalyticsAndS3Props } from '../lib';
 import '@aws-cdk/assert/jest';
 
@@ -51,6 +51,9 @@ test('Pattern deployment w/ default properties', () => {
         },
         namePrefix: 'SOURCE_SQL_STREAM'
       }]
+    },
+    bucketProps: {
+      removalPolicy: RemovalPolicy.DESTROY,
     }
   };
   new KinesisFirehoseToAnalyticsAndS3(stack, 'test-firehose-s3-and-analytics-stack', props);

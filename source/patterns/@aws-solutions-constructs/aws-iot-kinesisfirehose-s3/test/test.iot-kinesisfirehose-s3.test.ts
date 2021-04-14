@@ -25,6 +25,9 @@ function deploy(stack: cdk.Stack) {
         sql: "SELECT * FROM 'connectedcar/telemetry/#'",
         actions: []
       }
+    },
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY
     }
   };
 

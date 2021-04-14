@@ -229,7 +229,7 @@ Object {
       "Type": "AWS::IAM::Role",
     },
     "testiotfirehoses3KinesisFirehoseToS3S3Bucket19C97D09": Object {
-      "DeletionPolicy": "Retain",
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "BucketEncryption": Object {
           "ServerSideEncryptionConfiguration": Array [
@@ -269,7 +269,7 @@ Object {
         },
       },
       "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Retain",
+      "UpdateReplacePolicy": "Delete",
     },
     "testiotfirehoses3KinesisFirehoseToS3S3BucketPolicy39975CE7": Object {
       "Properties": Object {
@@ -310,7 +310,7 @@ Object {
       "Type": "AWS::S3::BucketPolicy",
     },
     "testiotfirehoses3KinesisFirehoseToS3S3LoggingBucketC786B050": Object {
-      "DeletionPolicy": "Retain",
+      "DeletionPolicy": "Delete",
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -340,7 +340,7 @@ Object {
         },
       },
       "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Retain",
+      "UpdateReplacePolicy": "Delete",
     },
     "testiotfirehoses3KinesisFirehoseToS3S3LoggingBucketPolicyE5A94728": Object {
       "Properties": Object {

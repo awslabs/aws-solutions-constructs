@@ -24,6 +24,9 @@ function deployNewFunc(stack: cdk.Stack) {
       runtime: lambda.Runtime.NODEJS_12_X,
       handler: 'index.handler'
     },
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    }
   };
 
   return new S3ToLambda(stack, 'test-s3-lambda', props);

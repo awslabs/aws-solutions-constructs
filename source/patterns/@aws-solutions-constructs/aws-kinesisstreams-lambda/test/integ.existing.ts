@@ -53,6 +53,10 @@ cfnLambdafunction.cfnOptions.metadata = {
     rules_to_suppress: [{
       id: 'W89',
       reason: `This is not a rule for the general case, just for specific use cases/industries`
+    },
+    {
+      id: 'W92',
+      reason: `Impossible for us to define the correct concurrency for clients`
     }]
   }
 };

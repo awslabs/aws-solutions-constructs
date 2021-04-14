@@ -66,20 +66,20 @@
     "@types/jest": "^26.0.22",
     "@types/node": "^10.3.0"
   },
-   "jest": {
-     "moduleFileExtensions": [
-       "js"
-     ],
-     "coverageReporters": [
-       "text",
-       [
-         "lcov",
-         {
-           "projectRoot": "../../../../"
-         }
-       ]
-     ]
-   },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "coverageReporters": [
+      "text",
+      [
+        "lcov",
+        {
+          "projectRoot": "../../../../"
+        }
+      ]
+    ]
+  },
   "peerDependencies": {
     "@aws-cdk/core": "0.0.0",
     "@aws-cdk/aws-apigateway": "0.0.0",

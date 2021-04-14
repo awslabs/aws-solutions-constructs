@@ -68,20 +68,20 @@
     "@types/jest": "^26.0.22",
     "@types/node": "^10.3.0"
   },
-   "jest": {
-     "moduleFileExtensions": [
-       "js"
-     ],
-     "coverageReporters": [
-       "text",
-       [
-         "lcov",
-         {
-           "projectRoot": "../../../../"
-         }
-       ]
-     ]
-   },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "coverageReporters": [
+      "text",
+      [
+        "lcov",
+        {
+          "projectRoot": "../../../../"
+        }
+      ]
+    ]
+  },
   "peerDependencies": {
     "@aws-solutions-constructs/aws-cloudfront-apigateway-lambda": "0.0.0",
     "@aws-solutions-constructs/aws-lambda-s3": "0.0.0",

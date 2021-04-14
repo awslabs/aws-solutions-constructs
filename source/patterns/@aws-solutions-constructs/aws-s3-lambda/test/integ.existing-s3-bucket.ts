@@ -15,13 +15,13 @@
 import { App, Stack } from "@aws-cdk/core";
 import { S3ToLambda, S3ToLambdaProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
-import * as defaults from '@aws-solutions-constructs/core';
+import { CreateScrapBucket } from "@aws-solutions-constructs/core";
 const app = new App();
 
 // Empty arguments
 const stack = new Stack(app, 'test-s3-lambda-existing-bucket-stack');
 
-const [myBucket] = defaults.buildS3Bucket(stack, {});
+const myBucket = CreateScrapBucket(stack, {});
 
 const props: S3ToLambdaProps = {
   lambdaFunctionProps: {
