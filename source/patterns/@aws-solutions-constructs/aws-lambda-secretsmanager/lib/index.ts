@@ -19,9 +19,9 @@ import * as ec2 from "@aws-cdk/aws-ec2";
 import { Construct } from "@aws-cdk/core";
 
 /**
- * @summary The properties for the LambdaSecretsmanager class.
+ * @summary The properties for the LambdaToSecretsmanager class.
  */
-export interface LambdaSecretsmanagerProps {
+export interface LambdaToSecretsmanagerProps {
   /**
    * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
    *
@@ -68,29 +68,29 @@ export interface LambdaSecretsmanagerProps {
   readonly secretEnvironmentVariableName?: string;
   /**
    * Optional write access to the Secret for the Lambda function (Read-Only by default)
-   * 
+   *
    * @default - false
    */
   readonly grantWriteAccess?: boolean;
 }
 
 /**
- * @summary The LambdaToSqs class.
+ * @summary The LambdaToSecretsmanager class.
  */
-export class LambdaSeretsmanager extends Construct {
+export class LambdaToSecretsmanager extends Construct {
     public readonly lambdaFunction: lambda.Function;
     public readonly secret: secretsmanager.Secret;
     public readonly vpc?: ec2.IVpc;
 
     /**
-     * @summary Constructs a new instance of the LambdaToSqs class.
+     * @summary Constructs a new instance of the LambdaToSecretsmanager class.
      * @param {cdk.App} scope - represents the scope for all the resources.
      * @param {string} id - this is a a scope-unique id.
-     * @param {LambdaSecretsmanagerProps} props - user provided props for the construct.
+     * @param {LambdaToSecretsmanagerProps} props - user provided props for the construct.
      * @since 1.49.0
      * @access public
      */
-    constructor(scope: Construct, id: string, props: LambdaSecretsmanagerProps) {
+    constructor(scope: Construct, id: string, props: LambdaToSecretsmanagerProps) {
       super(scope, id);
 
       if (props.deployVpc || props.existingVpc) {
@@ -108,7 +108,7 @@ export class LambdaSeretsmanager extends Construct {
           },
         });
 
-        defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.SECRETSMANAGER);
+        defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.SECRETS_MANAGER);
       }
 
       // Setup the Lambda function
@@ -118,23 +118,22 @@ export class LambdaSeretsmanager extends Construct {
         vpc: this.vpc,
       });
 
-
       // Setup the Secret
-      [this.secret] = defaults.buildSecret(this, 'secret', {
-        existingSecretObj: props.existingSecretObj,
-        secretProps: props.secretProps,
-      });
+      if (props.existingSecretObj) {
+        this.secret = props.existingSecretObj;
+      } else {
+        this.secret = defaults.buildSecretsManagerSecret(this, 'secret', props.secretProps);
+      }
 
       // Configure environment variables
       const secretEnvironmentVariableName = props.secretEnvironmentVariableName || 'SECRET_NAME';
       this.lambdaFunction.addEnvironment(secretEnvironmentVariableName, this.secret.secretName);
 
-
       // Enable read permissions for the Lambda function by default
       this.secret.grantRead(this.lambdaFunction);
 
       if (props.grantWriteAccess) {
-          this.secret.grantWrite(this.lambdaFunction);
+        this.secret.grantWrite(this.lambdaFunction);
       }
     }
 }

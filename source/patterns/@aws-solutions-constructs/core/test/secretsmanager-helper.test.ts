@@ -26,7 +26,7 @@ test('Test minimal deployment with no properties', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  defaults.buildSecretsManagerSecret(stack, {});
+  defaults.buildSecretsManagerSecret(stack, 'secret', {});
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   // Assertion 2
@@ -44,7 +44,7 @@ test('Test deployment with custom properties', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  defaults.buildSecretsManagerSecret(stack, {
+  defaults.buildSecretsManagerSecret(stack, 'secret', {
     secretName: SECRET_NAME,
     description: DESCRIPTION,
     removalPolicy: RemovalPolicy.DESTROY,
