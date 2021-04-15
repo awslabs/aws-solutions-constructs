@@ -67,8 +67,8 @@
           "Status": "Enabled"
         }
       },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "testfirehoses3preexistingloggingbucketstackS3BucketPolicyB1086848": {
       "Type": "AWS::S3::BucketPolicy",

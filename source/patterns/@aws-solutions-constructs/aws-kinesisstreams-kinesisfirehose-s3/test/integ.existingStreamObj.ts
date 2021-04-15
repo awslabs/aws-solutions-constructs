@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { KinesisStreamsToKinesisFirehoseToS3 } from '../lib';
 import { KinesisStreamsToLambda } from '@aws-solutions-constructs/aws-kinesisstreams-lambda';
 import * as lambda from '@aws-cdk/aws-lambda';
@@ -27,12 +27,15 @@ const construct = new KinesisStreamsToLambda(stack, 'test-kinesis-lambda', {
     runtime: lambda.Runtime.NODEJS_10_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-  }
+  },
 });
 
 new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-existing-stream-firehose-s3-stack', {
   existingStreamObj: construct.kinesisStream,
-  createCloudWatchAlarms: false
+  createCloudWatchAlarms: false,
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+  }
 });
 
 // Synth

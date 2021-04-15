@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { CloudFrontToS3 } from "../lib";
 
 // Setup
@@ -20,7 +20,11 @@ const app = new App();
 const stack = new Stack(app, 'test-cloudfront-s3-stack');
 stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3';
 
-new CloudFrontToS3(stack, 'test-cloudfront-s3', {});
+new CloudFrontToS3(stack, 'test-cloudfront-s3', {
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+  }
+});
 
 // Synth
 app.synth();

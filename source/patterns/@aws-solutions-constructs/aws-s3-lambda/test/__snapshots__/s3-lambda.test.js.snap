@@ -27,7 +27,15 @@ Object {
           "rules_to_suppress": Array [
             Object {
               "id": "W58",
-              "reason": "Lambda function has permission to write CloudWatch Logs via AWSLambdaBasicExecutionRole policy attached to the lambda role",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.",
+            },
+            Object {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries",
+            },
+            Object {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients",
             },
           ],
         },
@@ -108,7 +116,7 @@ Object {
             "Arn",
           ],
         },
-        "Runtime": "nodejs10.x",
+        "Runtime": "nodejs12.x",
         "Timeout": 300,
       },
       "Type": "AWS::Lambda::Function",
@@ -185,7 +193,15 @@ Object {
           "rules_to_suppress": Array [
             Object {
               "id": "W58",
-              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions.",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.",
+            },
+            Object {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries",
+            },
+            Object {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients",
             },
           ],
         },
@@ -360,7 +376,7 @@ Object {
       "Type": "AWS::Lambda::Permission",
     },
     "tests3lambdaS3BucketBE7C1B8E": Object {
-      "DeletionPolicy": "Retain",
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "BucketEncryption": Object {
           "ServerSideEncryptionConfiguration": Array [
@@ -400,7 +416,7 @@ Object {
         },
       },
       "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Retain",
+      "UpdateReplacePolicy": "Delete",
     },
     "tests3lambdaS3BucketNotifications1943E9B3": Object {
       "DependsOn": Array [
@@ -473,7 +489,7 @@ Object {
       "Type": "AWS::S3::BucketPolicy",
     },
     "tests3lambdaS3LoggingBucket0C3BBFDC": Object {
-      "DeletionPolicy": "Retain",
+      "DeletionPolicy": "Delete",
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -503,7 +519,7 @@ Object {
         },
       },
       "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Retain",
+      "UpdateReplacePolicy": "Delete",
     },
     "tests3lambdaS3LoggingBucketPolicyC349F74C": Object {
       "Properties": Object {
@@ -574,7 +590,15 @@ Object {
           "rules_to_suppress": Array [
             Object {
               "id": "W58",
-              "reason": "Lambda function has permission to write CloudWatch Logs via AWSLambdaBasicExecutionRole policy attached to the lambda role",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.",
+            },
+            Object {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries",
+            },
+            Object {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients",
             },
           ],
         },
@@ -655,7 +679,7 @@ Object {
             "Arn",
           ],
         },
-        "Runtime": "nodejs10.x",
+        "Runtime": "nodejs12.x",
         "Timeout": 300,
       },
       "Type": "AWS::Lambda::Function",
@@ -732,7 +756,15 @@ Object {
           "rules_to_suppress": Array [
             Object {
               "id": "W58",
-              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions.",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.",
+            },
+            Object {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries",
+            },
+            Object {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients",
             },
           ],
         },

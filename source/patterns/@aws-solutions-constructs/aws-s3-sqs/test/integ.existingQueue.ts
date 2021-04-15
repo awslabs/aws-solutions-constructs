@@ -12,7 +12,7 @@
  */
 
 /// !cdk-integ *
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { S3ToSqs, S3ToSqsProps } from "../lib";
 import * as defaults from '@aws-solutions-constructs/core';
 const app = new App();
@@ -24,7 +24,10 @@ const [myQueue] = defaults.buildQueue(stack, 'test-existing-queue', {
 });
 
 const props: S3ToSqsProps = {
-  existingQueueObj: myQueue
+  existingQueueObj: myQueue,
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+  }
 };
 
 new S3ToSqs(stack, 'test-s3-sqs', props);

@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { LambdaToS3, LambdaToS3Props } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
@@ -32,7 +32,10 @@ const lambdaFunctionProps = {
 const func = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 
 const props: LambdaToS3Props = {
-  existingLambdaObj: func
+  existingLambdaObj: func,
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+  }
 };
 
 new LambdaToS3(stack, 'test-lambda-s3', props);

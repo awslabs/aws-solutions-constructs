@@ -63,13 +63,22 @@
   },
   "devDependencies": {
     "@aws-cdk/assert": "0.0.0",
-    "@types/jest": "^24.0.23",
+    "@types/jest": "^26.0.22",
     "@types/node": "^10.3.0",
     "eslint-plugin-import": "^2.22.0"
   },
   "jest": {
     "moduleFileExtensions": [
       "js"
+    ],
+    "coverageReporters": [
+      "text",
+      [
+        "lcov",
+        {
+          "projectRoot": "../../../../"
+        }
+      ]
     ]
   },
   "peerDependencies": {

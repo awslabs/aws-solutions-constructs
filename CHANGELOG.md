@@ -2,6 +2,47 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.97.0 (2021-04-14)
+
+### Changed
+- Upgraded all patterns to CDK v1.97.0
+- Made changes to accomodate cfn_nag rule W92
+- Updated integration tests to destroy S3 buckets when tearing down the test stack
+
+## 1.96.0 (2021-04-07)
+
+### Changed
+- Upgraded all patterns to CDK v1.96.0
+- Made changes to accomodate cfn_nag rules W89 and W90
+
+## 1.95.2 (2021-04-03)
+
+### Changed
+- Upgraded all patterns to CDK v1.95.2
+
+## 1.95.1 (2021-04-02)
+
+### Changed
+- Upgraded all patterns to CDK v1.95.1
+
+## 1.95.0 (2021-04-02)
+
+### Changed
+- Upgraded all patterns to CDK v1.95.0
+
+## 1.94.1 (2021-04-02)
+
+### Changed
+- Upgraded all patterns to CDK v1.94.1
+
+## 1.94.0 (2021-04-01)
+
+### Changed
+- Upgraded all patterns to CDK v1.94.0
+- Documentation changes in minimal deployment examples ([#94](https://github.com/awslabs/aws-solutions-constructs/issues/94))
+- Documentation changes in Python code in Walkthroughs
+- Fixed alarm threshold for Elasticsearch constructs ([#153](https://github.com/awslabs/aws-solutions-constructs/issues/153))
+
 ## 1.93.0 (2021-03-19)
 
 ### Changed

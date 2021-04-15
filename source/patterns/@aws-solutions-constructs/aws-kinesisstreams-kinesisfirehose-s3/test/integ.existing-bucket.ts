@@ -13,7 +13,7 @@
 
 // Imports
 import * as s3 from '@aws-cdk/aws-s3';
-import { App, Stack } from '@aws-cdk/core';
+import { App, Stack, RemovalPolicy } from '@aws-cdk/core';
 import { CreateScrapBucket } from '@aws-solutions-constructs/core';
 import { KinesisStreamsToKinesisFirehoseToS3 } from '../lib';
 
@@ -25,7 +25,10 @@ stack.templateOptions.description = 'Integration Test for aws-kinesisstreams-kin
 const existingBucket = CreateScrapBucket(stack, {});
 const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);
 new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-existing-bucket-firehose-s3-stack', {
-  existingBucketObj: mybucket
+  existingBucketObj: mybucket,
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+  }
 });
 
 // Synth
