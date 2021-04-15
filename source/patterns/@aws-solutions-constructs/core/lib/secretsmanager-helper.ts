@@ -20,12 +20,13 @@ import { overrideProps } from './utils';
  * Method to build the default AWS Secrets Manager Secret
  *
  * @param scope
+ * @param id
  * @param secretProps
  */
-export function buildSecretsManagerSecret(scope: Construct, secretProps: SecretProps): Secret {
+export function buildSecretsManagerSecret(scope: Construct, id: string, secretProps?: SecretProps): Secret {
   if (secretProps) {
-    return new Secret(scope, 'Secret', overrideProps(DefaultSecretProps, secretProps));
+    return new Secret(scope, id, overrideProps(DefaultSecretProps, secretProps));
   } else {
-    return new Secret(scope, 'Secret', DefaultSecretProps);
+    return new Secret(scope, id, DefaultSecretProps);
   }
 }
