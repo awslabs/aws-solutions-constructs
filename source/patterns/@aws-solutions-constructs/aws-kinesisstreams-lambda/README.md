@@ -30,7 +30,7 @@ Here is a minimal deployable pattern definition in Typescript:
 const { KinesisStreamsToLambda } from '@aws-solutions-constructs/aws-kinesisstreams-lambda';
 
 new KinesisStreamsToLambda(this, 'KinesisToLambdaPattern', {
-    eventSourceProps: {
+    kinesisEventSourceProps: {
         startingPosition: lambda.StartingPosition.TRIM_HORIZON,
         batchSize: 1
     },
