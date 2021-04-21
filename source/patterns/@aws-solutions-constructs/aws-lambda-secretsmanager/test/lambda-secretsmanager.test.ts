@@ -311,14 +311,15 @@ test('Test lambda function custom environment variable', () => {
     Runtime: 'nodejs14.x',
     Environment: {
       Variables: {
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
         CUSTOM_SECRET_NAME: {
-          "Fn::Select": [
+          'Fn::Select': [
             6,
             {
-              "Fn::Split": [
-                ":",
+              'Fn::Split': [
+                ':',
                 {
-                  Ref: "lambdatosecretsmanagerstacksecretBA684E34"
+                  Ref: 'lambdatosecretsmanagerstacksecretBA684E34'
                 }
               ]
             }
