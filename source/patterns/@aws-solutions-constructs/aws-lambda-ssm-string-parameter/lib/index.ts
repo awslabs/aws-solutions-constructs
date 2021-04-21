@@ -92,5 +92,51 @@ export class LambdaToSsmStringParameter extends Construct {
      */
     constructor(scope: Construct, id: string, props: LambdaToSsmStringParameterProps) {
       super(scope, id);
+
+      if (props.deployVpc || props.existingVpc) {
+        if (props.deployVpc && props.existingVpc) {
+          throw new Error("More than 1 VPC specified in the properties");
+        }
+  
+        this.vpc = defaults.buildVpc(scope, {
+          defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
+          existingVpc: props.existingVpc,
+          userVpcProps: props.vpcProps,
+          constructVpcProps: {
+            enableDnsHostnames: true,
+            enableDnsSupport: true,
+          },
+        });
+  
+        defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.); 
+      }
+
+      // Setup the Lambda function
+      this.lambdaFunction = defaults.buildLambdaFunction(this, {
+        existingLambdaObj: props.existingLambdaObj,
+        lambdaFunctionProps: props.lambdaFunctionProps,
+        vpc: this.vpc,
+      });
+
+      // Setup the Secret
+      if (props.existingStringParameterObj) {
+        this.stringParameter = props.existingStringParameterObj;
+      } else {
+        this.stringParameter = defaults.buildSsmStringParamter(this, 'stringParameter', props.stringParameterProps);
+      }
+
+      // Configure environment variables
+      const secretEnvironmentVariableName = props.secretEnvironmentVariableName || 'SECRET_NAME';
+      this.lambdaFunction.addEnvironment(secretEnvironmentVariableName, this.stringParameter.secretName);
+
+      // Enable read permissions for the Lambda function by default
+      this.secret.grantRead(this.lambdaFunction);
+
+      if (props.grantWriteAccess) {
+        this.secret.grantWrite(this.lambdaFunction);
+      }      
     }
+
+
+
 }
