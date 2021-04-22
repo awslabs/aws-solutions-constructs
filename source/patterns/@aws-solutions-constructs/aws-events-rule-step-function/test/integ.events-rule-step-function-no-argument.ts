@@ -12,7 +12,7 @@
  */
 
 /// !cdk-integ *
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { EventsRuleToStepFunction, EventsRuleToStepFunctionProps } from "../lib";
 import { Duration } from '@aws-cdk/core';
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
@@ -29,8 +29,11 @@ const props: EventsRuleToStepFunctionProps = {
   },
   eventRuleProps: {
     schedule: events.Schedule.rate(Duration.minutes(5))
-  }
+  },
+  logGroupProps: {
+    removalPolicy: RemovalPolicy.DESTROY
+  },
 };
 
-new EventsRuleToStepFunction(stack, 'test-events-rule-step-function-stack', props);
+new EventsRuleToStepFunction(stack, 'test-events-rule-step-function-construct', props);
 app.synth();
