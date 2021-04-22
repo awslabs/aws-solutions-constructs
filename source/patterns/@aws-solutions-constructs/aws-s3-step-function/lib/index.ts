@@ -141,7 +141,7 @@ export class S3ToStepFunction extends Construct {
       };
     }
 
-    const eventsRuleToStepFunction = new EventsRuleToStepFunction(this, 'test-events-rule-step-function-stack', {
+    const eventsRuleToStepFunction = new EventsRuleToStepFunction(this, `${id}-event-rule-step-function-construct`, {
       stateMachineProps: props.stateMachineProps,
       eventRuleProps: _eventRuleProps,
       createCloudWatchAlarms: props.createCloudWatchAlarms,

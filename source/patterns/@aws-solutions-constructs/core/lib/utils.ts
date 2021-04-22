@@ -14,6 +14,7 @@
 import * as deepmerge from 'deepmerge';
 import { flagOverriddenDefaults } from './override-warning-service';
 import * as log from 'npmlog';
+import * as crypto from 'crypto';
 
 function isObject(val: object) {
   return val != null && typeof val === 'object'
@@ -85,4 +86,40 @@ export function printWarning(message: string) {
   log.prefixStyle.fg = 'red';
   log.enableColor();
   log.warn('AWS_SOLUTIONS_CONSTRUCTS_WARNING: ', message);
+}
+
+/**
+ * @summary Creates a resource name in the style of the CDK (string+hash)
+ * @param {string[]} parts - the various string components of the name (eg - stackName, solutions construct ID, L2 construct ID)
+ * @param {number} maxLength - the longest string that can be returned
+ * @returns {string} - a string with concatenated parts (truncated if neccessary) + a hash of the full concatenated parts
+ *
+ * This is based upon this discussion - https://github.com/aws/aws-cdk/issues/1424
+ */
+export function generateResourceName(
+  parts: string[],
+  maxLength: number
+): string {
+  const hashLength = 12;
+
+  const maxPartLength = Math.floor( (maxLength -  hashLength) / parts.length);
+
+  const sha256 = crypto.createHash("sha256");
+  let finalName: string = '';
+
+  parts.forEach((part) => {
+    sha256.update(part);
+    finalName += removeNonAlphanumeric(part.slice(0, maxPartLength));
+  });
+
+  const hash = sha256.digest("hex").slice(0, hashLength);
+  finalName += hash;
+  return finalName.toLowerCase();
+}
+
+/**
+ * Removes all non-alphanumeric characters in a string.
+ */
+function removeNonAlphanumeric(s: string) {
+  return s.replace(/[^A-Za-z0-9]/g, '');
 }
