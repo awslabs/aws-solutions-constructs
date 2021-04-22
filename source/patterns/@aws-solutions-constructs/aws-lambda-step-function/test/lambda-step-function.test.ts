@@ -74,7 +74,7 @@ test('Test deployment with existing Lambda function', () => {
   };
   const fn = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
   // Add the pattern
-  new LambdaToStepFunction(stack, 'test-lambda-step-function-stack', {
+  new LambdaToStepFunction(stack, 'test-lambda-step-function-construct', {
     existingLambdaObj: fn,
     stateMachineProps: {
       definition: startState
