@@ -68,11 +68,12 @@ export interface LambdaToSsmStringParameterProps {
    */
   readonly stringParameterEnvironmentVariableName?: string;
   /**
-   * Optional write access to the Secret for the Lambda function (Read-Only by default)
+   * Optional SSM String parameter permissions to grant to the Lambda function.
+   * One of the following may be specified: "Read", "ReadWrite".
    *
-   * @default - false
+   * @default - Read access is given to the Lambda function if no value is specified.
    */
-  readonly grantWriteAccess?: boolean;
+  readonly stringParameterPermissions?: string;
 }
 
 /**
@@ -119,7 +120,7 @@ export class LambdaToSsmStringParameter extends Construct {
       vpc: this.vpc,
     });
 
-    // Setup the Secret
+    // Setup the SSM String parameter
     if (props.existingStringParameterObj) {
       this.stringParameter = props.existingStringParameterObj;
     } else {
@@ -133,11 +134,14 @@ export class LambdaToSsmStringParameter extends Construct {
     const stringParameterEnvironmentVariableName = props.stringParameterEnvironmentVariableName || 'SSM_STRING_PARAMETER_NAME';
     this.lambdaFunction.addEnvironment(stringParameterEnvironmentVariableName, this.stringParameter.parameterName);
 
-    // Enable read permissions for the Lambda function by default
+    // Add the requested or default SSM String parameter permissions
     this.stringParameter.grantRead(this.lambdaFunction);
+    if (props.stringParameterPermissions) {
+      const _permissions = props.stringParameterPermissions.toUpperCase();
 
-    if (props.grantWriteAccess) {
-      this.stringParameter.grantWrite(this.lambdaFunction);
+      if (_permissions === 'READWRITE') {
+        this.stringParameter.grantWrite(this.lambdaFunction);
+      }
     }
   }
 }
