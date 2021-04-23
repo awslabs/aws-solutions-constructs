@@ -16,7 +16,7 @@ import * as defaults from "@aws-solutions-constructs/core";
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as ssm from "@aws-cdk/aws-ssm";
 import * as ec2 from "@aws-cdk/aws-ec2";
-import { Construct } from "@aws-cdk/core";
+import {Construct} from "@aws-cdk/core";
 
 /**
  * @summary The properties for the LambdaToSsmStringParameter class.
@@ -41,7 +41,8 @@ export interface LambdaToSsmStringParameterProps {
    */
   readonly existingStringParameterObj?: ssm.StringParameter;
   /**
-   * Optional user provided props to override the default props for SSM String parameter
+   * Optional user provided props to override the default props for SSM String parameter. If existingStringParameterObj
+   * is not set stringParameterProps is required.
    *
    * @default - Default props are used
    */
@@ -78,65 +79,65 @@ export interface LambdaToSsmStringParameterProps {
  * @summary The LambdaToSsmStringParameter class.
  */
 export class LambdaToSsmStringParameter extends Construct {
-    public readonly lambdaFunction: lambda.Function;
-    public readonly stringParameter: ssm.StringParameter;
-    public readonly vpc?: ec2.IVpc;
+  public readonly lambdaFunction: lambda.Function;
+  public readonly stringParameter: ssm.StringParameter;
+  public readonly vpc?: ec2.IVpc;
 
-    /**
-     * @summary Constructs a new instance of the LambdaToSsmStringParameter class.
-     * @param {cdk.App} scope - represents the scope for all the resources.
-     * @param {string} id - this is a a scope-unique id.
-     * @param {LambdaToSsmStringParameterProps} props - user provided props for the construct.
-     * @since 1.49.0
-     * @access public
-     */
-    constructor(scope: Construct, id: string, props: LambdaToSsmStringParameterProps) {
-      super(scope, id);
+  /**
+   * @summary Constructs a new instance of the LambdaToSsmStringParameter class.
+   * @param {cdk.App} scope - represents the scope for all the resources.
+   * @param {string} id - this is a a scope-unique id.
+   * @param {LambdaToSsmStringParameterProps} props - user provided props for the construct.
+   * @since 1.49.0
+   * @access public
+   */
+  constructor(scope: Construct, id: string, props: LambdaToSsmStringParameterProps) {
+    super(scope, id);
 
-      if (props.deployVpc || props.existingVpc) {
-        if (props.deployVpc && props.existingVpc) {
-          throw new Error("More than 1 VPC specified in the properties");
-        }
-  
-        this.vpc = defaults.buildVpc(scope, {
-          defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
-          existingVpc: props.existingVpc,
-          userVpcProps: props.vpcProps,
-          constructVpcProps: {
-            enableDnsHostnames: true,
-            enableDnsSupport: true,
-          },
-        });
-  
-        defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.); 
+    if (props.deployVpc || props.existingVpc) {
+      if (props.deployVpc && props.existingVpc) {
+        throw new Error("More than 1 VPC specified in the properties");
       }
 
-      // Setup the Lambda function
-      this.lambdaFunction = defaults.buildLambdaFunction(this, {
-        existingLambdaObj: props.existingLambdaObj,
-        lambdaFunctionProps: props.lambdaFunctionProps,
-        vpc: this.vpc,
+      this.vpc = defaults.buildVpc(scope, {
+        defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
+        existingVpc: props.existingVpc,
+        userVpcProps: props.vpcProps,
+        constructVpcProps: {
+          enableDnsHostnames: true,
+          enableDnsSupport: true,
+        },
       });
 
-      // Setup the Secret
-      if (props.existingStringParameterObj) {
-        this.stringParameter = props.existingStringParameterObj;
-      } else {
-        this.stringParameter = defaults.buildSsmStringParamter(this, 'stringParameter', props.stringParameterProps);
-      }
-
-      // Configure environment variables
-      const secretEnvironmentVariableName = props.secretEnvironmentVariableName || 'SECRET_NAME';
-      this.lambdaFunction.addEnvironment(secretEnvironmentVariableName, this.stringParameter.secretName);
-
-      // Enable read permissions for the Lambda function by default
-      this.secret.grantRead(this.lambdaFunction);
-
-      if (props.grantWriteAccess) {
-        this.secret.grantWrite(this.lambdaFunction);
-      }      
+      defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.SSM);
     }
 
+    // Setup the Lambda function
+    this.lambdaFunction = defaults.buildLambdaFunction(this, {
+      existingLambdaObj: props.existingLambdaObj,
+      lambdaFunctionProps: props.lambdaFunctionProps,
+      vpc: this.vpc,
+    });
 
+    // Setup the Secret
+    if (props.existingStringParameterObj) {
+      this.stringParameter = props.existingStringParameterObj;
+    } else {
+      if (!props.stringParameterProps) {
+        throw new Error("More than 1 VPC specified in the properties");
+      }
+      this.stringParameter = defaults.buildSsmStringParamter(this, 'stringParameter', props.stringParameterProps);
+    }
 
+    // Configure environment variables
+    const stringParameterEnvironmentVariableName = props.stringParameterEnvironmentVariableName || 'SSM_STRING_PARAMETER_NAME';
+    this.lambdaFunction.addEnvironment(stringParameterEnvironmentVariableName, this.stringParameter.parameterName);
+
+    // Enable read permissions for the Lambda function by default
+    this.stringParameter.grantRead(this.lambdaFunction);
+
+    if (props.grantWriteAccess) {
+      this.stringParameter.grantWrite(this.lambdaFunction);
+    }
+  }
 }
