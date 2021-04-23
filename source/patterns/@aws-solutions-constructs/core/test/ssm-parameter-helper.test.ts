@@ -11,53 +11,25 @@
  *  and limitations under the License.
  */
 
- import {Stack} from '@aws-cdk/core';
- import * as defaults from '../';
- import {ResourcePart, SynthUtils} from '@aws-cdk/assert';
- import '@aws-cdk/assert/jest';
- 
-//  const DESCRIPTION = 'test secret description';
-//  const SECRET_NAME = 'test secret name';
- 
- // --------------------------------------------------------------
- // Test minimal deployment with no properties
- // --------------------------------------------------------------
- test('Test minimal deployment with no properties', () => {
-   // Stack
-   const stack = new Stack();
-   // Helper declaration
-   defaults.buildSsmStringParamter(stack, 'parameterName', {stringValue : "test-val"});
-   // Assertion 1
-   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-   // Assertion 2
-   expect(stack).toHaveResourceLike('AWS::SSM::Parameter', {
-     Type: 'AWS::SSM::Parameter',
-   }, ResourcePart.CompleteDefinition);
- });
- 
-//  // --------------------------------------------------------------
-//  // Test deployment w/ custom properties
-//  // --------------------------------------------------------------
-//  test('Test deployment with custom properties', () => {
-//    // Stack
-//    const stack = new Stack();
-//    // Helper declaration
-//    defaults.buildSecretsManagerSecret(stack, 'secret', {
-//      secretName: SECRET_NAME,
-//      description: DESCRIPTION,
-//      removalPolicy: RemovalPolicy.DESTROY,
-//    });
-//    // Assertion 1
-//    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-//    // Assertion 2
-//    expect(stack).toHaveResourceLike('AWS::SecretsManager::Secret', {
-//      Type: 'AWS::SecretsManager::Secret',
-//      UpdateReplacePolicy: 'Delete',
-//      DeletionPolicy: 'Delete',
-//      Properties: {
-//        Name: SECRET_NAME,
-//        Description: DESCRIPTION
-//      }
-//    }, ResourcePart.CompleteDefinition);
-// });
- 
+import {Stack} from '@aws-cdk/core';
+import * as defaults from '../';
+import {SynthUtils} from '@aws-cdk/assert';
+import '@aws-cdk/assert/jest';
+
+// --------------------------------------------------------------
+// Test minimal deployment with no properties
+// --------------------------------------------------------------
+test('Test minimal deployment with required properties', () => {
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  const parameterValue = "test-val";
+  defaults.buildSsmStringParamter(stack, 'parameterName', { stringValue: parameterValue });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Assertion 2
+  expect(stack).toHaveResourceLike('AWS::SSM::Parameter', {
+    Type: 'String',
+    Value: parameterValue
+  });
+});

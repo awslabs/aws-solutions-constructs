@@ -11,19 +11,16 @@
  *  and limitations under the License.
  */
 
- import { StringParameter, StringParameterProps } from '@aws-cdk/aws-ssm';
- import { Construct } from '@aws-cdk/core';
- 
- 
- 
- /**
-  * Method to build the default AWS SSM Paramter Store
-  *
-  * @param scope
-  * @param id
-  * @param stringParameterProps
-  */
- export function buildSsmStringParamter(scope: Construct, id: string, stringParameterProps: StringParameterProps): StringParameter {
-    return new StringParameter(scope, id, stringParameterProps);
- }
- 
+import {StringParameter, StringParameterProps} from '@aws-cdk/aws-ssm';
+import {Construct} from '@aws-cdk/core';
+
+/**
+ * Method to build the default AWS SSM Parameter Store
+ *
+ * @param scope
+ * @param id
+ * @param stringParameterProps
+ */
+export function buildSsmStringParamter(scope: Construct, id: string, stringParameterProps: StringParameterProps): StringParameter {
+  return new StringParameter(scope, id, stringParameterProps);
+}
