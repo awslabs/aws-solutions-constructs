@@ -144,7 +144,7 @@ export class LambdaToSecretsmanager extends Construct {
       // Enable read permissions for the Lambda function by default
       this.secret.grantRead(this.lambdaFunction);
 
-      if (props.grantWriteAccess) {
+      if (props.grantWriteAccess === 'ReadWrite') {
         this.secret.grantWrite(this.lambdaFunction);
       }
     }

@@ -301,6 +301,9 @@ test('Test lambda function custom environment variable', () => {
       runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      }
     },
     secretEnvironmentVariableName: 'CUSTOM_SECRET_NAME'
   });
