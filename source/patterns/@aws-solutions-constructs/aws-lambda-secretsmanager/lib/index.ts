@@ -67,11 +67,12 @@ export interface LambdaToSecretsmanagerProps {
    */
   readonly secretEnvironmentVariableName?: string;
   /**
-   * Optional write access to the Secret for the Lambda function (Read-Only by default)
+   * Optional secret permissions to grant to the Lambda function.
+   * One of the following may be specified: "Read" or "ReadWrite".
    *
-   * @default - false
+   * @default - Read only acess is given to the Lambda function if no value is specified.
    */
-  readonly grantWriteAccess?: boolean;
+  readonly grantWriteAccess?: string;
 }
 
 /**
@@ -87,7 +88,7 @@ export class LambdaToSecretsmanager extends Construct {
      * @param {cdk.App} scope - represents the scope for all the resources.
      * @param {string} id - this is a a scope-unique id.
      * @param {LambdaToSecretsmanagerProps} props - user provided props for the construct.
-     * @since 1.49.0
+     * @since 1.101.0
      * @access public
      */
     constructor(scope: Construct, id: string, props: LambdaToSecretsmanagerProps) {
