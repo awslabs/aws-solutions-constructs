@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
+import { Stack, RemovalPolicy } from "@aws-cdk/core";
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as ec2 from "@aws-cdk/aws-ec2";
 import * as s3 from "@aws-cdk/aws-s3";
@@ -445,4 +445,31 @@ test('Test lambda function custom environment variable', () => {
       }
     }
   });
+});
+
+// --------------------------------------------------------------
+// Test bad call with existingBucket and bucketProps
+// --------------------------------------------------------------
+test("Test bad call with existingBucket and bucketProps", () => {
+  // Stack
+  const stack = new Stack();
+
+  const testBucket = new s3.Bucket(stack, 'test-bucket', {});
+
+  const app = () => {
+    // Helper declaration
+    new LambdaToS3(stack, "bad-s3-args", {
+      lambdaFunctionProps: {
+        runtime: lambda.Runtime.NODEJS_14_X,
+        handler: 'index.handler',
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      },
+      existingBucketObj: testBucket,
+      bucketProps: {
+        removalPolicy: RemovalPolicy.DESTROY
+      },
+    });
+  };
+  // Assertion
+  expect(app).toThrowError();
 });

@@ -17,6 +17,7 @@ import * as cdk from "@aws-cdk/core";
 import * as s3 from '@aws-cdk/aws-s3';
 import '@aws-cdk/assert/jest';
 import * as acm from '@aws-cdk/aws-certificatemanager';
+import { RemovalPolicy } from '@aws-cdk/core';
 
 function deploy(stack: cdk.Stack) {
   return new CloudFrontToS3(stack, 'test-cloudfront-s3', {
@@ -199,4 +200,26 @@ test('check properties', () => {
 
   expect(construct.cloudFrontWebDistribution !== null);
   expect(construct.s3Bucket  !== null);
+});
+
+// --------------------------------------------------------------
+// Test bad call with existingBucket and bucketProps
+// --------------------------------------------------------------
+test("Test bad call with existingBucket and bucketProps", () => {
+  // Stack
+  const stack = new cdk.Stack();
+
+  const testBucket = new s3.Bucket(stack, 'test-bucket', {});
+
+  const app = () => {
+    // Helper declaration
+    new CloudFrontToS3(stack, "bad-s3-args", {
+      existingBucketObj: testBucket,
+      bucketProps: {
+        removalPolicy: RemovalPolicy.DESTROY
+      },
+    });
+  };
+  // Assertion
+  expect(app).toThrowError();
 });
