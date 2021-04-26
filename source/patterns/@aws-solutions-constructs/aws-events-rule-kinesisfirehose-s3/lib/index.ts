@@ -77,6 +77,10 @@ export class EventsRuleToKinesisFirehoseToS3 extends Construct {
   constructor(scope: Construct, id: string, props: EventsRuleToKinesisFirehoseToS3Props) {
     super(scope, id);
 
+    if (props.existingBucketObj && props.bucketProps) {
+      throw new Error('Cannot specify both bucket properties and an existing bucket');
+    }
+
     // Set up the Kinesis Firehose using KinesisFirehoseToS3 construct
     const firehoseToS3 = new KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {
       kinesisFirehoseProps: props.kinesisFirehoseProps,
