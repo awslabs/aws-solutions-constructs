@@ -77,6 +77,10 @@ export class IotToKinesisFirehoseToS3 extends Construct {
   constructor(scope: Construct, id: string, props: IotToKinesisFirehoseToS3Props) {
     super(scope, id);
 
+    if (props.existingBucketObj && props.bucketProps) {
+      throw new Error('Cannot specify both bucket properties and an existing bucket');
+    }
+
     const firehoseToS3 = new KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {
       kinesisFirehoseProps: props.kinesisFirehoseProps,
       existingBucketObj: props.existingBucketObj,

@@ -122,6 +122,10 @@ export class S3ToSqs extends Construct {
       let bucket: s3.Bucket;
       let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
 
+      if (props.existingBucketObj && props.bucketProps) {
+        throw new Error('Cannot specify both bucket properties and an existing bucket');
+      }
+
       if (props.enableEncryptionWithCustomerManagedKey === undefined ||
           props.enableEncryptionWithCustomerManagedKey === true) {
         enableEncryptionParam = true;

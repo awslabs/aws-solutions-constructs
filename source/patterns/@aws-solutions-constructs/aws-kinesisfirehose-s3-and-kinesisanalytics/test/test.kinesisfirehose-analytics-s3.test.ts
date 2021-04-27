@@ -14,6 +14,7 @@
 // Imports
 import { SynthUtils } from '@aws-cdk/assert';
 import { Stack, RemovalPolicy } from '@aws-cdk/core';
+import * as s3 from '@aws-cdk/aws-s3';
 import { KinesisFirehoseToAnalyticsAndS3, KinesisFirehoseToAnalyticsAndS3Props } from '../lib';
 import '@aws-cdk/assert/jest';
 
@@ -143,4 +144,26 @@ test('test kinesisFirehose override ', () => {
         SizeInMBs: 55
       }
     }});
+});
+
+// --------------------------------------------------------------
+// Test bad call with existingBucket and bucketProps
+// --------------------------------------------------------------
+test("Test bad call with existingBucket and bucketProps", () => {
+  // Stack
+  const stack = new Stack();
+
+  const testBucket = new s3.Bucket(stack, 'test-bucket', {});
+
+  const app = () => {
+    // Helper declaration
+    new KinesisFirehoseToAnalyticsAndS3(stack, "bad-s3-args", {
+      existingBucketObj: testBucket,
+      bucketProps: {
+        removalPolicy: RemovalPolicy.DESTROY
+      },
+    });
+  };
+  // Assertion
+  expect(app).toThrowError();
 });

@@ -71,6 +71,10 @@ export class S3ToLambda extends Construct {
     super(scope, id);
     let bucket: s3.Bucket;
 
+    if (props.existingBucketObj && props.bucketProps) {
+      throw new Error('Cannot specify both bucket properties and an existing bucket');
+    }
+
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps

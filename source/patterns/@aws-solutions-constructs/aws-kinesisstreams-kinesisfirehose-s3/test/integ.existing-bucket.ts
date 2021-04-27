@@ -22,13 +22,10 @@ const app = new App();
 const stack = new Stack(app, 'test-existing-bucket-firehose-s3-stack');
 stack.templateOptions.description = 'Integration Test for aws-kinesisstreams-kinesisfirehose-s3';
 
-const existingBucket = CreateScrapBucket(stack, {});
+const existingBucket = CreateScrapBucket(stack, { removalPolicy: RemovalPolicy.DESTROY });
 const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);
 new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-existing-bucket-firehose-s3-stack', {
   existingBucketObj: mybucket,
-  bucketProps: {
-    removalPolicy: RemovalPolicy.DESTROY,
-  }
 });
 
 // Synth
