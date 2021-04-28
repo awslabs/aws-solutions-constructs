@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [1.100.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.99.0...v1.100.0) (2021-04-28)
 
+### Changed
+- Upgraded all patterns to CDK v1.100.0
+- Fixed issue with refreshing Integration Tests leaving Resources Behind in Account ([#164](https://github.com/awslabs/aws-solutions-constructs/pull/164))
+
 ## [1.99.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.98.0...v1.99.0) (2021-04-22)
 
 ### Changed
