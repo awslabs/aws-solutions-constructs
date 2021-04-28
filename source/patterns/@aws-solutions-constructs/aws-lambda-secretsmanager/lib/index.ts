@@ -88,7 +88,6 @@ export class LambdaToSecretsmanager extends Construct {
      * @param {cdk.App} scope - represents the scope for all the resources.
      * @param {string} id - this is a a scope-unique id.
      * @param {LambdaToSecretsmanagerProps} props - user provided props for the construct.
-     * @since 1.101.0
      * @access public
      */
     constructor(scope: Construct, id: string, props: LambdaToSecretsmanagerProps) {
@@ -124,17 +123,6 @@ export class LambdaToSecretsmanager extends Construct {
         this.secret = props.existingSecretObj;
       } else {
         this.secret = defaults.buildSecretsManagerSecret(this, 'secret', props.secretProps);
-
-        // suppress warning on build
-        const cfnSecret: secretsmanager.CfnSecret = this.secret.node.findChild('Resource') as secretsmanager.CfnSecret;
-        cfnSecret.cfnOptions.metadata = {
-          cfn_nag: {
-            rules_to_suppress: [{
-              id: 'W77',
-              reason: `Secrets Manager Secret should explicitly specify KmsKeyId. Besides control of the key this will allow the secret to be shared cross-account`
-            }]
-          }
-        };
       }
 
       // Configure environment variables

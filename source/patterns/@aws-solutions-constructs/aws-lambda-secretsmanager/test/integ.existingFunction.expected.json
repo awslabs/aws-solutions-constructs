@@ -199,8 +199,18 @@
       "Properties": {
         "GenerateSecretString": {}
       },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W77",
+              "reason": "We allow the use of the AWS account default key aws/secretsmanager for secret encryption."
+            }
+          ]
+        }
+      }
     }
   },
   "Parameters": {

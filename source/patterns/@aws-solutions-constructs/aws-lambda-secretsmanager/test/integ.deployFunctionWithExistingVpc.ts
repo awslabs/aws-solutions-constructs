@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import {App, RemovalPolicy, Stack} from "@aws-cdk/core";
 import { LambdaToSecretsmanagerProps, LambdaToSecretsmanager } from '../lib';
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as defaults from '@aws-solutions-constructs/core';
@@ -30,7 +30,6 @@ const vpc = defaults.buildVpc(stack, {
     enableDnsSupport: true,
   },
 });
-defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.SECRETS_MANAGER);
 
 // Definitions
 const props: LambdaToSecretsmanagerProps = {
@@ -38,6 +37,9 @@ const props: LambdaToSecretsmanagerProps = {
     runtime: lambda.Runtime.NODEJS_10_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  },
+  secretProps: {
+    removalPolicy: RemovalPolicy.DESTROY
   },
   existingVpc: vpc
 };

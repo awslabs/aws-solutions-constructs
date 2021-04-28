@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import {App, RemovalPolicy, Stack} from "@aws-cdk/core";
 import { LambdaToSecretsmanagerProps, LambdaToSecretsmanager } from '../lib';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
@@ -32,7 +32,10 @@ const lambdaFunctionProps = {
 const func = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 
 const props: LambdaToSecretsmanagerProps = {
-  existingLambdaObj: func
+  existingLambdaObj: func,
+  secretProps: {
+    removalPolicy: RemovalPolicy.DESTROY
+  }
 };
 
 new LambdaToSecretsmanager(stack, 'test-lambda-secretsmanager', props);

@@ -50,8 +50,6 @@ test('Test deployment with custom properties', () => {
     removalPolicy: RemovalPolicy.DESTROY,
   });
   // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
   expect(stack).toHaveResourceLike('AWS::SecretsManager::Secret', {
     Type: 'AWS::SecretsManager::Secret',
     UpdateReplacePolicy: 'Delete',
