@@ -98,6 +98,10 @@ export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
   constructor(scope: Construct, id: string, props: KinesisStreamsToKinesisFirehoseToS3Props) {
     super(scope, id);
 
+    if (props.existingBucketObj && props.bucketProps) {
+      throw new Error('Cannot specify both bucket properties and an existing bucket');
+    }
+
     // Setup the Kinesis Stream
     this.kinesisStream = defaults.buildKinesisStream(this, {
       existingStreamObj: props.existingStreamObj,

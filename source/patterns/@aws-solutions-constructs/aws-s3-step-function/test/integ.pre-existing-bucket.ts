@@ -31,9 +31,6 @@ const props: S3ToStepFunctionProps = {
   stateMachineProps: {
     definition: startState
   },
-  bucketProps: {
-    removalPolicy: RemovalPolicy.DESTROY,
-  },
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY
   },
