@@ -19,6 +19,7 @@ import * as ec2 from "@aws-cdk/aws-ec2";
 import { LambdaToSecretsmanager } from '../lib';
 import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
+import * as defaults from "@aws-solutions-constructs/core";
 
 // --------------------------------------------------------------
 // Test minimal deployment with new Lambda function
@@ -67,17 +68,68 @@ test('Test deployment w/ existing secret', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  const secret = new Secret(stack, 'secret', {});
-  new LambdaToSecretsmanager(stack, 'lambda-to-secretsmanager-stack', {
+  const existingSecret = new Secret(stack, 'secret', {});
+  const pattern = new LambdaToSecretsmanager(stack, 'lambda-to-secretsmanager-stack', {
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
-    existingSecretObj: secret
+    existingSecretObj: existingSecret
   });
   // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(stack).toHaveResource("AWS::SecretsManager::Secret", {
+    GenerateSecretString: {},
+  });
+  // Assertion 2
+  expect(pattern.secret).toBe(existingSecret);
+});
+
+// --------------------------------------------------------------
+// Test deployment w/ existing function
+// --------------------------------------------------------------
+test('Test deployment w/ existing function', () => {
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  const lambdaFunctionProps = {
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+  };
+  const existingFuntion = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
+
+  const pattern = new LambdaToSecretsmanager(stack, 'lambda-to-secretsmanager-stack', {
+    existingLambdaObj: existingFuntion
+  });
+  // Assertion 1
+  expect(stack).toHaveResource("AWS::SecretsManager::Secret", {
+    GenerateSecretString: {},
+  });
+  // Assertion 2
+  expect(pattern.lambdaFunction).toBe(existingFuntion);
+});
+
+// --------------------------------------------------------------
+// Test minimal deployment with write access to Secret
+// --------------------------------------------------------------
+test('Test minimal deployment write access to Secret', () => {
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  new LambdaToSecretsmanager(stack, 'lambda-to-secretsmanager-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    grantWriteAccess: 'ReadWrite'
+  });
+  // Assertion 1
+  expect(stack).toHaveResource("AWS::SecretsManager::Secret", {
+    GenerateSecretString: {},
+  });
+
 });
 
 // --------------------------------------------------------------
