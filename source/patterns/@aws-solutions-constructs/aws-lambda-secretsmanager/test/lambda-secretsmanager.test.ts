@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
+import { RemovalPolicy, Stack } from "@aws-cdk/core";
 import * as lambda from "@aws-cdk/aws-lambda";
 import { Secret } from '@aws-cdk/aws-secretsmanager';
 import * as ec2 from "@aws-cdk/aws-ec2";
@@ -33,7 +33,8 @@ test('Test minimal deployment with new Lambda function', () => {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    }
+    },
+    secretProps: { removalPolicy: RemovalPolicy.DESTROY },
   });
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
@@ -51,7 +52,8 @@ test('Test the properties', () => {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    }
+    },
+    secretProps: { removalPolicy: RemovalPolicy.DESTROY },
   });
   // Assertion 1
   const func = pattern.lambdaFunction;
@@ -75,6 +77,7 @@ test('Test deployment w/ existing secret', () => {
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
+    secretProps: { removalPolicy: RemovalPolicy.DESTROY },
     existingSecretObj: existingSecret
   });
   // Assertion 1
@@ -100,7 +103,8 @@ test('Test deployment w/ existing function', () => {
   const existingFuntion = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 
   const pattern = new LambdaToSecretsmanager(stack, 'lambda-to-secretsmanager-stack', {
-    existingLambdaObj: existingFuntion
+    existingLambdaObj: existingFuntion,
+    secretProps: { removalPolicy: RemovalPolicy.DESTROY },
   });
   // Assertion 1
   expect(stack).toHaveResource("AWS::SecretsManager::Secret", {
@@ -123,6 +127,7 @@ test('Test minimal deployment write access to Secret', () => {
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
+    secretProps: { removalPolicy: RemovalPolicy.DESTROY },
     grantWriteAccess: 'ReadWrite'
   });
   // Assertion 1
@@ -145,6 +150,7 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
+    secretProps: { removalPolicy: RemovalPolicy.DESTROY },
     deployVpc: true,
   });
 
@@ -195,6 +201,7 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
+    secretProps: { removalPolicy: RemovalPolicy.DESTROY },
     vpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
@@ -254,6 +261,7 @@ test("Test minimal deployment with an existing VPC", () => {
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
+    secretProps: { removalPolicy: RemovalPolicy.DESTROY },
     existingVpc: testVpc,
   });
 
@@ -307,6 +315,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
     new LambdaToSecretsmanager(stack, "lambda-to-secretsmanager-stack", {
       existingLambdaObj: testLambdaFunction,
       existingVpc: testVpc,
+      secretProps: { removalPolicy: RemovalPolicy.DESTROY },
     });
   };
 
@@ -332,6 +341,7 @@ test("Test bad call with existingVpc and deployVpc", () => {
         handler: "index.handler",
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       },
+      secretProps: { removalPolicy: RemovalPolicy.DESTROY },
       existingVpc: testVpc,
       deployVpc: true,
     });
@@ -357,6 +367,7 @@ test('Test lambda function custom environment variable', () => {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       }
     },
+    secretProps: { removalPolicy: RemovalPolicy.DESTROY },
     secretEnvironmentVariableName: 'CUSTOM_SECRET_NAME'
   });
 
