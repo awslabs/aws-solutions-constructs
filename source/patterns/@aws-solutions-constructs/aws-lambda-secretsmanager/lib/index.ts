@@ -126,8 +126,8 @@ export class LambdaToSecretsmanager extends Construct {
       }
 
       // Configure environment variables
-      const secretEnvironmentVariableName = props.secretEnvironmentVariableName || 'SECRET_NAME';
-      this.lambdaFunction.addEnvironment(secretEnvironmentVariableName, this.secret.secretName);
+      const secretEnvironmentVariableName = props.secretEnvironmentVariableName || 'SECRET_ARN';
+      this.lambdaFunction.addEnvironment(secretEnvironmentVariableName, this.secret.secretArn);
 
       // Enable read permissions for the Lambda function by default
       this.secret.grantRead(this.lambdaFunction);

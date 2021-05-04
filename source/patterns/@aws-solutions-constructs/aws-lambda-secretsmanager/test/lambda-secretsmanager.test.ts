@@ -379,17 +379,7 @@ test('Test lambda function custom environment variable', () => {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
         CUSTOM_SECRET_NAME: {
-          'Fn::Select': [
-            6,
-            {
-              'Fn::Split': [
-                ':',
-                {
-                  Ref: 'lambdatosecretsmanagerstacksecretBA684E34'
-                }
-              ]
-            }
-          ],
+          Ref: 'lambdatosecretsmanagerstacksecretBA684E34'
         }
       }
     }

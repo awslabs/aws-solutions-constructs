@@ -85,7 +85,7 @@ Out of the box implementation of the Construct without any override will set the
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
 * Enable X-Ray Tracing
 * Set Environment Variables
-  * (default) SECRET_NAME containing the name of the secret. Unless the [secretName property](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-secretsmanager.Secret.html#secretname) is set, this will be the full resource name (secret name + suffix).
+  * (default) SECRET_ARN containing the ARN of the secret as return by CDK [secretArn property](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-secretsmanager.Secret.html#secretarn).
   * AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x and higher functions)
 
 ### Amazon SecretsManager Secret

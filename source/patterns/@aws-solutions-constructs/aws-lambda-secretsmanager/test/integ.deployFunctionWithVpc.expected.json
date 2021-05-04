@@ -191,18 +191,8 @@
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
-            "SECRET_NAME": {
-              "Fn::Select": [
-                6,
-                {
-                  "Fn::Split": [
-                    ":",
-                    {
-                      "Ref": "testlambdasecretsmanagersecret4C99E6BF"
-                    }
-                  ]
-                }
-              ]
+            "SECRET_ARN": {
+              "Ref": "testlambdasecretsmanagersecret4C99E6BF"
             }
           }
         },
