@@ -20,8 +20,8 @@
           "RestrictPublicBuckets": true
         }
       },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
@@ -111,8 +111,8 @@
           "Status": "Enabled"
         }
       },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "S3BucketNotifications58B5AD06": {
       "Type": "Custom::S3BucketNotifications",

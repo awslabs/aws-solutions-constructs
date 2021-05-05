@@ -79,6 +79,10 @@ export class KinesisFirehoseToAnalyticsAndS3 extends Construct {
   constructor(scope: Construct, id: string, props: KinesisFirehoseToAnalyticsAndS3Props) {
     super(scope, id);
 
+    if (props.existingBucketObj && props.bucketProps) {
+      throw new Error('Cannot specify both bucket properties and an existing bucket');
+    }
+
     // Setup the kinesisfirehose-s3 pattern
     const kinesisFirehoseToS3Props: KinesisFirehoseToS3Props = {
       kinesisFirehoseProps: props.kinesisFirehoseProps,
