@@ -145,3 +145,29 @@ test('check properties', () => {
   expect(construct.cloudtrailBucket !== null);
   expect(construct.cloudtrailLoggingBucket !== null);
 });
+
+// --------------------------------------------------------------
+// Test bad call with existingBucket and bucketProps
+// --------------------------------------------------------------
+test("Test bad call with existingBucket and bucketProps", () => {
+  // Stack
+  const stack = new cdk.Stack();
+
+  const testBucket = new Bucket(stack, 'test-bucket', {});
+  const startState = new sfn.Pass(stack, 'StartState');
+
+  const app = () => {
+    // Helper declaration
+    new S3ToStepFunction(stack, "bad-s3-args", {
+      stateMachineProps: {
+        definition: startState
+      },
+      existingBucketObj: testBucket,
+      bucketProps: {
+        removalPolicy: cdk.RemovalPolicy.DESTROY
+      },
+    });
+  };
+  // Assertion
+  expect(app).toThrowError();
+});

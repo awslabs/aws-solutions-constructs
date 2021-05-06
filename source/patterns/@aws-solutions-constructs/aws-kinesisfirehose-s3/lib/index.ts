@@ -78,6 +78,10 @@ export class KinesisFirehoseToS3 extends Construct {
 
     let bucket: s3.IBucket;
 
+    if (props.existingBucketObj && props.bucketProps) {
+      throw new Error('Cannot specify both bucket properties and an existing bucket');
+    }
+
     // Setup S3 Bucket
     if (!props.existingBucketObj) {
       let { bucketProps } = props;

@@ -19,15 +19,12 @@ const app = new App();
 
 const stack = new Stack(app, 'test-s3-sqs-existing-bucket');
 
-const [myBucket] = defaults.buildS3Bucket(stack, {});
+const [myBucket] = defaults.buildS3Bucket(stack, { bucketProps: { removalPolicy: RemovalPolicy.DESTROY }, });
 
 // Currently there is no way to customize the logging bucket, so this
 // test will leave a bucket behind
 const props: S3ToSqsProps = {
   existingBucketObj: myBucket,
-  bucketProps: {
-    removalPolicy: RemovalPolicy.DESTROY,
-  }
 };
 
 new S3ToSqs(stack, 'test-s3-sqs', props);

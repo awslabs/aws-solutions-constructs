@@ -96,6 +96,10 @@ export class LambdaToS3 extends Construct {
       super(scope, id);
       let bucket: s3.IBucket;
 
+      if (props.existingBucketObj && props.bucketProps) {
+        throw new Error('Cannot specify both bucket properties and an existing bucket');
+      }
+
       if (props.deployVpc || props.existingVpc) {
         if (props.deployVpc && props.existingVpc) {
           throw new Error("More than 1 VPC specified in the properties");
