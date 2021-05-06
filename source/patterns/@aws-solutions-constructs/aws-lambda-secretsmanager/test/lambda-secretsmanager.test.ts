@@ -385,3 +385,220 @@ test('Test lambda function custom environment variable', () => {
     }
   });
 });
+
+// --------------------------------------------------------------
+// Test overriding secretProps to pass a customer provided CMK
+// --------------------------------------------------------------
+test('Test overriding secretProps to pass a customer provided CMK', () => {
+  // Stack
+  const stack = new Stack();
+
+  const encryptionKey = defaults.buildEncryptionKey(stack, {
+    description: 'secret-key'
+  });
+
+  // Helper declaration
+  new LambdaToSecretsmanager(stack, 'lambda-to-secretsmanager-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      }
+    },
+    secretProps: {
+      encryptionKey
+    }
+  });
+
+  // Assertion 1
+  expect(stack).toHaveResource('AWS::Lambda::Function', {
+    Handler: 'index.handler',
+    Runtime: 'nodejs14.x',
+    Environment: {
+      Variables: {
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+        SECRET_ARN: {
+          Ref: 'lambdatosecretsmanagerstacksecretBA684E34'
+        }
+      }
+    }
+  });
+
+  // Assertion 2
+  expect(stack).toHaveResource("AWS::SecretsManager::Secret", {
+    GenerateSecretString: {},
+    KmsKeyId: {
+      "Fn::GetAtt": [
+        "EncryptionKey1B843E66",
+        "Arn"
+      ]
+    }
+  });
+
+  // Assertion 3
+  expect(stack).toHaveResource('AWS::KMS::Key', {
+    KeyPolicy: {
+      Statement: [
+        {
+          Action: [
+            "kms:Create*",
+            "kms:Describe*",
+            "kms:Enable*",
+            "kms:List*",
+            "kms:Put*",
+            "kms:Update*",
+            "kms:Revoke*",
+            "kms:Disable*",
+            "kms:Get*",
+            "kms:Delete*",
+            "kms:ScheduleKeyDeletion",
+            "kms:CancelKeyDeletion",
+            "kms:GenerateDataKey",
+            "kms:TagResource",
+            "kms:UntagResource"
+          ],
+          Effect: "Allow",
+          Principal: {
+            AWS: {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    Ref: "AWS::Partition"
+                  },
+                  ":iam::",
+                  {
+                    Ref: "AWS::AccountId"
+                  },
+                  ":root"
+                ]
+              ]
+            }
+          },
+          Resource: "*"
+        },
+        {
+          Action: [
+            "kms:Decrypt",
+            "kms:Encrypt",
+            "kms:ReEncrypt*",
+            "kms:GenerateDataKey*"
+          ],
+          Condition: {
+            StringEquals: {
+              "kms:ViaService": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "secretsmanager.",
+                    {
+                      Ref: "AWS::Region"
+                    },
+                    ".amazonaws.com"
+                  ]
+                ]
+              }
+            }
+          },
+          Effect: "Allow",
+          Principal: {
+            AWS: {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    Ref: "AWS::Partition"
+                  },
+                  ":iam::",
+                  {
+                    Ref: "AWS::AccountId"
+                  },
+                  ":root"
+                ]
+              ]
+            }
+          },
+          Resource: "*"
+        },
+        {
+          Action: [
+            "kms:CreateGrant",
+            "kms:DescribeKey"
+          ],
+          Condition: {
+            StringEquals: {
+              "kms:ViaService": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "secretsmanager.",
+                    {
+                      Ref: "AWS::Region"
+                    },
+                    ".amazonaws.com"
+                  ]
+                ]
+              }
+            }
+          },
+          Effect: "Allow",
+          Principal: {
+            AWS: {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    Ref: "AWS::Partition"
+                  },
+                  ":iam::",
+                  {
+                    Ref: "AWS::AccountId"
+                  },
+                  ":root"
+                ]
+              ]
+            }
+          },
+          Resource: "*"
+        },
+        {
+          Action: "kms:Decrypt",
+          Condition: {
+            StringEquals: {
+              "kms:ViaService": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "secretsmanager.",
+                    {
+                      Ref: "AWS::Region"
+                    },
+                    ".amazonaws.com"
+                  ]
+                ]
+              }
+            }
+          },
+          Effect: "Allow",
+          Principal: {
+            AWS: {
+              "Fn::GetAtt": [
+                "lambdatosecretsmanagerstackLambdaFunctionServiceRole035B2C55",
+                "Arn"
+              ]
+            }
+          },
+          Resource: "*"
+        }
+      ],
+      Version: "2012-10-17"
+    },
+    Description: "secret-key",
+    EnableKeyRotation: true
+  });
+});
