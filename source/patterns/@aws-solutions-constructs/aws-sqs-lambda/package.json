@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-sqs-lambda",
-  "version": "0.0.0",
+  "version": "1.98.0",
   "description": "CDK constructs for defining an interaction between an Amazon SQS queue and an AWS Lambda function.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -53,16 +53,16 @@
     }
   },
   "dependencies": {
-    "@aws-cdk/aws-lambda": "0.0.0",
-    "@aws-cdk/aws-lambda-event-sources": "0.0.0",
-    "@aws-cdk/aws-sqs": "0.0.0",
-    "@aws-cdk/aws-kms": "0.0.0",
-    "@aws-cdk/core": "0.0.0",
-    "@aws-solutions-constructs/core": "0.0.0",
+    "@aws-cdk/aws-lambda": "1.98.0",
+    "@aws-cdk/aws-lambda-event-sources": "1.98.0",
+    "@aws-cdk/aws-sqs": "1.98.0",
+    "@aws-cdk/aws-kms": "1.98.0",
+    "@aws-cdk/core": "1.98.0",
+    "@aws-solutions-constructs/core": "1.98.0",
     "constructs": "^3.2.0"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "0.0.0",
+    "@aws-cdk/assert": "1.98.0",
     "@types/jest": "^26.0.22",
     "@types/node": "^10.3.0"
   },
@@ -81,12 +81,12 @@
     ]
   },
   "peerDependencies": {
-    "@aws-cdk/aws-lambda": "0.0.0",
-    "@aws-cdk/aws-lambda-event-sources": "0.0.0",
-    "@aws-cdk/aws-sqs": "0.0.0",
-    "@aws-cdk/aws-kms": "0.0.0",
-    "@aws-cdk/core": "0.0.0",
-    "@aws-solutions-constructs/core": "0.0.0",
+    "@aws-cdk/aws-lambda": "1.98.0",
+    "@aws-cdk/aws-lambda-event-sources": "1.98.0",
+    "@aws-cdk/aws-sqs": "1.98.0",
+    "@aws-cdk/aws-kms": "1.98.0",
+    "@aws-cdk/core": "1.98.0",
+    "@aws-solutions-constructs/core": "1.98.0",
     "constructs": "^3.2.0"
   }
 }
