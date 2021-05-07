@@ -22,13 +22,13 @@ const app = new App();
 const stack = new Stack(app, 'test-lambda-sagemakerendpoint');
 stack.templateOptions.description = 'Integration Test for aws-lambda-sagemakerendpoint';
 
-const [containerMap, sourceBucket, modelDeployment] = getSagemakerModel(stack);
+const [containerMap, modelAsset ] = getSagemakerModel(stack);
 
 const constructProps: LambdaToSagemakerEndpointProps = {
   modelProps: {
     primaryContainer: {
       image: containerMap.findInMap(Stack.of(stack).region, "containerArn"),
-      modelDataUrl: sourceBucket.s3UrlForObject("model.tar.gz"),
+      modelDataUrl: modelAsset.s3ObjectUrl
     },
   },
   lambdaFunctionProps: {
@@ -42,7 +42,7 @@ const constructProps: LambdaToSagemakerEndpointProps = {
 
 const lambdaToSagemakerConstruct = new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
 
-lambdaToSagemakerConstruct.node.addDependency(modelDeployment);
+lambdaToSagemakerConstruct.node.addDependency(modelAsset);
 
 // Synth
 app.synth();

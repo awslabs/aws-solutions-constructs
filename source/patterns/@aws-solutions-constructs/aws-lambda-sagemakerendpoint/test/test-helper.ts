@@ -11,13 +11,15 @@
  *  and limitations under the License.
  */
 
-import * as s3 from '@aws-cdk/aws-s3';
-import * as s3d from '@aws-cdk/aws-s3-deployment';
-import { Stack, RemovalPolicy, CfnMapping } from '@aws-cdk/core';
+// import * as s3 from '@aws-cdk/aws-s3';
+// import * as lambda from '@aws-cdk/aws-lambda';
+import * as s3a from '@aws-cdk/aws-s3-assets';
+import { Stack, CfnMapping } from '@aws-cdk/core';
+// import { CreateScrapBucket } from '@aws-solutions-constructs/core';
 
 // linear learner ECR images can be found here:
 // https://github.com/awsdocs/amazon-sagemaker-developer-guide/blob/master/doc_source/sagemaker-algo-docker-registry-paths.md
-export function getSagemakerModel(stack: Stack): [CfnMapping, s3.Bucket, s3d.BucketDeployment] {
+export function getSagemakerModel(stack: Stack): [CfnMapping, s3a.Asset ] {
 
   const containerMap = new CfnMapping(stack, 'mappings', {
     mapping: {
@@ -87,17 +89,46 @@ export function getSagemakerModel(stack: Stack): [CfnMapping, s3.Bucket, s3d.Buc
     }
   });
 
-  const sourceBucket = new s3.Bucket(stack, 'source-bucket', {
-    removalPolicy: RemovalPolicy.DESTROY,
-    autoDeleteObjects: true
+  // const sourceBucket = new s3.Bucket(stack, 'source-bucket', {
+  //   removalPolicy: RemovalPolicy.DESTROY,
+  //   autoDeleteObjects: true
+  // });
+
+  // const sourceBucket = CreateScrapBucket(stack, { autoDeleteObjects: true });
+
+  // const customResourceLambda = stack.node.findChild('Custom::S3AutoDeleteObjectsCustomResourceProvider').node.findChild('Handler') as lambda.CfnFunction;
+
+  // customResourceLambda.cfnOptions.metadata = {
+  //   cfn_nag: {
+  //     rules_to_suppress: [{
+  //       id: 'W58',
+  //       reason: `Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.`
+  //     },
+  //     {
+  //       id: 'W89',
+  //       reason: `This is not a rule for the general case, just for specific use cases/industries`
+  //     },
+  //     {
+  //       id: 'W92',
+  //       reason: `Impossible for us to define the correct concurrency for clients`
+  //     }]
+  //   }
+  // };
+
+  // const modelDeployment = new s3d.BucketDeployment(stack, 'bucket-deployment', {
+  //   destinationBucket: sourceBucket,
+  //   sources: [
+  //     s3d.Source.asset(`${__dirname}/model`)
+  //   ]
+  // });
+
+//   return [containerMap, sourceBucket, modelDeployment];
+
+  const modelAsset = new s3a.Asset(stack, 'SampleAsset', {
+    path: 'model/model.tar.gz',
   });
 
-  const modelDeployment = new s3d.BucketDeployment(stack, 'bucket-deployment', {
-    destinationBucket: sourceBucket,
-    sources: [
-      s3d.Source.asset(`${__dirname}/model`)
-    ]
-  });
 
-  return [containerMap, sourceBucket, modelDeployment];
+  return [containerMap, modelAsset]
+
 }
