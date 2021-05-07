@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [1.101.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.100.0...v1.101.0) (2021-05-07)
 
+### Changed
+- Upgraded all patterns to CDK v1.101.0
+
+### Added
+- aws-lambda-secrets-manager pattern added ([#162](https://github.com/awslabs/aws-solutions-constructs/pull/162))
+
 ## [1.100.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.99.0...v1.100.0) (2021-04-28)
 
 ### Changed
