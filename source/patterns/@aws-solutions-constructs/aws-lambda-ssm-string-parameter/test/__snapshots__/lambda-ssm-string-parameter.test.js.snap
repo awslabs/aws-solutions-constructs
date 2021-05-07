@@ -17,10 +17,10 @@ Object {
     },
   },
   "Resources": Object {
-    "lambdatossmstringparametersstackLambdaFunctionFFD71479": Object {
+    "lambdatossmstackLambdaFunctionD5C9EDB6": Object {
       "DependsOn": Array [
-        "lambdatossmstringparametersstackLambdaFunctionServiceRoleDefaultPolicy9DA883B3",
-        "lambdatossmstringparametersstackLambdaFunctionServiceRoleC95994FA",
+        "lambdatossmstackLambdaFunctionServiceRoleDefaultPolicyC682BFD6",
+        "lambdatossmstackLambdaFunctionServiceRoleD0A34D48",
       ],
       "Metadata": Object {
         "cfn_nag": Object {
@@ -83,14 +83,14 @@ Object {
           "Variables": Object {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "SSM_STRING_PARAMETER_NAME": Object {
-              "Ref": "lambdatossmstringparametersstackstringParameter45CA3EBC",
+              "Ref": "lambdatossmstackstringParameterA6E27D57",
             },
           },
         },
         "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "lambdatossmstringparametersstackLambdaFunctionServiceRoleC95994FA",
+            "lambdatossmstackLambdaFunctionServiceRoleD0A34D48",
             "Arn",
           ],
         },
@@ -101,7 +101,7 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "lambdatossmstringparametersstackLambdaFunctionServiceRoleC95994FA": Object {
+    "lambdatossmstackLambdaFunctionServiceRoleD0A34D48": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -156,7 +156,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "lambdatossmstringparametersstackLambdaFunctionServiceRoleDefaultPolicy9DA883B3": Object {
+    "lambdatossmstackLambdaFunctionServiceRoleDefaultPolicyC682BFD6": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -204,7 +204,7 @@ Object {
                     },
                     ":parameter/",
                     Object {
-                      "Ref": "lambdatossmstringparametersstackstringParameter45CA3EBC",
+                      "Ref": "lambdatossmstackstringParameterA6E27D57",
                     },
                   ],
                 ],
@@ -213,19 +213,19 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "lambdatossmstringparametersstackLambdaFunctionServiceRoleDefaultPolicy9DA883B3",
+        "PolicyName": "lambdatossmstackLambdaFunctionServiceRoleDefaultPolicyC682BFD6",
         "Roles": Array [
           Object {
-            "Ref": "lambdatossmstringparametersstackLambdaFunctionServiceRoleC95994FA",
+            "Ref": "lambdatossmstackLambdaFunctionServiceRoleD0A34D48",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
     },
-    "lambdatossmstringparametersstackstringParameter45CA3EBC": Object {
+    "lambdatossmstackstringParameterA6E27D57": Object {
       "Properties": Object {
         "Type": "String",
-        "Value": "parameter-value",
+        "Value": "test-string-value",
       },
       "Type": "AWS::SSM::Parameter",
     },

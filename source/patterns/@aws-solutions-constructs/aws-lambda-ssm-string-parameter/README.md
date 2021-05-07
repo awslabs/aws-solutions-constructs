@@ -35,7 +35,8 @@ const props: LambdaToSsmStringParameterProps = {
       // This assumes a handler function in lib/lambda/index.js
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       handler: 'index.handler'
-    },
+    }, 
+    stringParameterProps: { stringValue: "test-string-value" }
 };
 
 new LambdaToSsmStringParameter(this, 'test-lambda-ssm-string-parameter-stack', props);
