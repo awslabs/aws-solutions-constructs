@@ -431,8 +431,53 @@
           ]
         },
         "PrimaryContainer": {
-          "Image": "<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest",
-          "ModelDataUrl": "s3://<bucket-name>/<prefix>/model.tar.gz"
+          "Image": {
+            "Fn::FindInMap": [
+              "mappings",
+              {
+                "Ref": "AWS::Region"
+              },
+              "containerArn"
+            ]
+          },
+          "ModelDataUrl": {
+            "Fn::Join": [
+              "",
+              [
+                "s3://",
+                {
+                  "Ref": "AssetParameterse4dc8c22c79add1b62eb2b2d313770cba3dc11a6a8f8e386dd8723853be0265dS3BucketB08A768F"
+                },
+                "/",
+                {
+                  "Fn::Select": [
+                    0,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParameterse4dc8c22c79add1b62eb2b2d313770cba3dc11a6a8f8e386dd8723853be0265dS3VersionKey660A39C3"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Fn::Select": [
+                    1,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParameterse4dc8c22c79add1b62eb2b2d313770cba3dc11a6a8f8e386dd8723853be0265dS3VersionKey660A39C3"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            ]
+          }
         }
       },
       "DependsOn": [
@@ -544,6 +589,85 @@
     "AssetParametersd894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15ArtifactHash4C89D4A0": {
       "Type": "String",
       "Description": "Artifact hash for asset \"d894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15\""
+    },
+    "AssetParameterse4dc8c22c79add1b62eb2b2d313770cba3dc11a6a8f8e386dd8723853be0265dS3BucketB08A768F": {
+      "Type": "String",
+      "Description": "S3 bucket for asset \"e4dc8c22c79add1b62eb2b2d313770cba3dc11a6a8f8e386dd8723853be0265d\""
+    },
+    "AssetParameterse4dc8c22c79add1b62eb2b2d313770cba3dc11a6a8f8e386dd8723853be0265dS3VersionKey660A39C3": {
+      "Type": "String",
+      "Description": "S3 key for asset version \"e4dc8c22c79add1b62eb2b2d313770cba3dc11a6a8f8e386dd8723853be0265d\""
+    },
+    "AssetParameterse4dc8c22c79add1b62eb2b2d313770cba3dc11a6a8f8e386dd8723853be0265dArtifactHashBE6BED27": {
+      "Type": "String",
+      "Description": "Artifact hash for asset \"e4dc8c22c79add1b62eb2b2d313770cba3dc11a6a8f8e386dd8723853be0265d\""
+    }
+  },
+  "Mappings": {
+    "mappings": {
+      "us-east-1": {
+        "containerArn": "382416733822.dkr.ecr.us-east-1.amazonaws.com/linear-learner:latest"
+      },
+      "us-east-2": {
+        "containerArn": "404615174143.dkr.ecr.us-east-2.amazonaws.com/linear-learner:latest"
+      },
+      "us-west-1": {
+        "containerArn": "632365934929.dkr.ecr.us-west-1.amazonaws.com/linear-learner:latest"
+      },
+      "us-west-2": {
+        "containerArn": "174872318107.dkr.ecr.us-west-2.amazonaws.com/linear-learner:latest"
+      },
+      "af-south-1": {
+        "containerArn": "455444449433.dkr.ecr.af-south-1.amazonaws.com/linear-learner:latest"
+      },
+      "ap-east-1": {
+        "containerArn": "286214385809.dkr.ecr.ap-east-1.amazonaws.com/linear-learner:latest"
+      },
+      "ap-south-1": {
+        "containerArn": "991648021394.dkr.ecr.ap-south-1.amazonaws.com/linear-learner:latest"
+      },
+      "ap-northeast-2": {
+        "containerArn": "835164637446.dkr.ecr.ap-northeast-2.amazonaws.com/linear-learner:latest"
+      },
+      "ap-southeast-1": {
+        "containerArn": "475088953585.dkr.ecr.ap-southeast-1.amazonaws.com/linear-learner:latest"
+      },
+      "ap-southeast-2": {
+        "containerArn": "712309505854.dkr.ecr.ap-southeast-2.amazonaws.com/linear-learner:latest"
+      },
+      "ap-northeast-1": {
+        "containerArn": "351501993468.dkr.ecr.ap-northeast-1.amazonaws.com/linear-learner:latest"
+      },
+      "ca-central-1": {
+        "containerArn": "469771592824.dkr.ecr.ca-central-1.amazonaws.com/linear-learner:latest"
+      },
+      "eu-central-1": {
+        "containerArn": "664544806723.dkr.ecr.eu-central-1.amazonaws.com/linear-learner:latest"
+      },
+      "eu-west-1": {
+        "containerArn": "438346466558.dkr.ecr.eu-west-1.amazonaws.com/linear-learner:latest"
+      },
+      "eu-west-2": {
+        "containerArn": "644912444149.dkr.ecr.eu-west-2.amazonaws.com/linear-learner:latest"
+      },
+      "eu-west-3": {
+        "containerArn": "749696950732.dkr.ecr.eu-west-3.amazonaws.com/linear-learner:latest"
+      },
+      "eu-north-1": {
+        "containerArn": "669576153137.dkr.ecr.eu-north-1.amazonaws.com/linear-learner:latest"
+      },
+      "eu-south-1": {
+        "containerArn": "257386234256.dkr.ecr.eu-south-1.amazonaws.com/linear-learner:latest"
+      },
+      "me-south-1": {
+        "containerArn": "249704162688.dkr.ecr.me-south-1.amazonaws.com/linear-learner:latest"
+      },
+      "sa-east-1": {
+        "containerArn": "855470959533.dkr.ecr.sa-east-1.amazonaws.com/linear-learner:latest"
+      },
+      "us-gov-west-1": {
+        "containerArn": "226302683700.dkr.ecr.us-gov-west-1.amazonaws.com/linear-learner:latest"
+      }
     }
   }
 }
