@@ -11,23 +11,28 @@
  *  and limitations under the License.
  */
 
-/// !cdk-integ *
-import { App, Stack } from "@aws-cdk/core";
-import { LambdaToSsmStringParameter, LambdaToSsmStringParameterProps } from "../lib";
+// Imports
+import {App, Stack} from "@aws-cdk/core";
+import {LambdaToSsmStringParameter, LambdaToSsmStringParameterProps} from '../lib';
 import * as lambda from '@aws-cdk/aws-lambda';
+
+// Setup
 const app = new App();
+const stack = new Stack(app, "test-lambda-ssm-string-parameter");
+stack.templateOptions.description = "Integration Test for aws-lambda-ssm-string-parameter";
 
-// Empty arguments
-const stack = new Stack(app, 'test-lambda-ssm-stack');
-
+// Definitions
 const props: LambdaToSsmStringParameterProps = {
   lambdaFunctionProps: {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     runtime: lambda.Runtime.NODEJS_10_X,
-    handler: 'index.handler'
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   },
-  stringParameterProps: { stringValue: "test-string-value" }
+  stringParameterProps: { stringValue: "test-string-value" },
+  deployVpc: true,
 };
 
-new LambdaToSsmStringParameter(stack, 'test-lambda-ssm-stack', props);
+new LambdaToSsmStringParameter(stack, 'test-lambda-ssm-string-parameter', props);
+
+// Synth
 app.synth();

@@ -125,7 +125,7 @@ export class LambdaToSsmStringParameter extends Construct {
       this.stringParameter = props.existingStringParameterObj;
     } else {
       if (!props.stringParameterProps) {
-        throw new Error("More than 1 String Parameter specified in the properties");
+        throw new Error("existingStringParameterObj or stringParameterProps needs to be provided.");
       }
       this.stringParameter = defaults.buildSsmStringParamter(this, 'stringParameter', props.stringParameterProps);
     }
