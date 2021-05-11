@@ -49,20 +49,20 @@ test('Test fail DynamoDB table check', () => {
   expect(app).toThrowError('Error - Either provide existingTableObj or dynamoTableProps, but not both.\n');
 });
 
-test('Test fail Lambda function check', () => {
+test("Test fail Lambda function check", () => {
   const stack = new Stack();
 
   const props: defaults.VerifiedProps = {
     lambdaFunctionProps: {
-       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-       runtime: lambda.Runtime.NODEJS_14_X,
-       handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: "index.handler",
     },
-    existingLambdaObj: new lambda.Function(stack, 'placeholder', {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler',
-     }),
+    existingLambdaObj: new lambda.Function(stack, "placeholder", {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: "index.handler",
+    }),
   };
 
   const app = () => {
@@ -70,7 +70,9 @@ test('Test fail Lambda function check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrowError(
+    "Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n"
+  );
 });
 
 test("Test fail SQS Queue check", () => {
@@ -115,11 +117,14 @@ test('Test fail Dead Letter Queue check with no deployDeadLetterQueue flag', () 
 
 });
 
-test('Test fail MediaStore container check', () => {
+test("Test fail MediaStore container check", () => {
   const stack = new Stack();
 
-  const mediaStoreContainer = new mediastore.CfnContainer(stack, 'placeholder',
-  MediaStoreContainerProps());
+  const mediaStoreContainer = new mediastore.CfnContainer(
+    stack,
+    "placeholder",
+    MediaStoreContainerProps()
+  );
 
   const props: defaults.VerifiedProps = {
     mediaStoreContainerProps: MediaStoreContainerProps(),
@@ -131,7 +136,9 @@ test('Test fail MediaStore container check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide mediaStoreContainerProps or existingMediaStoreContainerObj, but not both.\n');
+  expect(app).toThrowError(
+    "Error - Either provide mediaStoreContainerProps or existingMediaStoreContainerObj, but not both.\n"
+  );
 });
 
 test('Test fail Kinesis stream check', () => {
