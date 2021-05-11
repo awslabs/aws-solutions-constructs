@@ -497,7 +497,7 @@ test('Test that CheckProps() is flagging errors correctly', () => {
 
   // Assertion
   expect(app).toThrowError(
-    "Cannot specify an existing Lambda function AND Lambda function props\n"
+    'Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n'
   );
 
 });

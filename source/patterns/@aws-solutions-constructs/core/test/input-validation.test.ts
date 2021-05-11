@@ -46,7 +46,7 @@ test('Test fail DynamoDB table check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Cannot specify an existing DDB table AND DDB table props\n');
+  expect(app).toThrowError('Error - Either provide existingTableObj or dynamoTableProps, but not both.\n');
 });
 
 test('Test fail Lambda function check', () => {
@@ -70,7 +70,7 @@ test('Test fail Lambda function check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Cannot specify an existing Lambda function AND Lambda function props\n');
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });
 
 test("Test fail SQS Queue check", () => {
@@ -86,7 +86,7 @@ test("Test fail SQS Queue check", () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Cannot specify an existing SQS queue AND SQS queue props\n');
+  expect(app).toThrowError('Error - Either provide queueProps or existingQueueObj, but not both.\n');
 });
 
 test('Test fail Dead Letter Queue check', () => {
@@ -101,7 +101,7 @@ test('Test fail Dead Letter Queue check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Cannot specify no Dead Letter Queue AND Dead Letter Queue props\n');
+  expect(app).toThrowError('Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n');
 });
 
 test('Test fail Dead Letter Queue check with no deployDeadLetterQueue flag', () => {
@@ -131,7 +131,7 @@ test('Test fail MediaStore container check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Cannot specify an existing MediaStore container AND MediaStore container props\n');
+  expect(app).toThrowError('Error - Either provide mediaStoreContainerProps or existingMediaStoreContainerObj, but not both.\n');
 });
 
 test('Test fail Kinesis stream check', () => {
@@ -151,7 +151,7 @@ test('Test fail Kinesis stream check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Cannot specify an existing Stream table AND Stream props\n');
+  expect(app).toThrowError('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
 });
 
 test('Test fail S3 check', () => {
@@ -167,7 +167,7 @@ test('Test fail S3 check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Cannot specify an existing S3 bucket AND S3 bucket props\n');
+  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
 });
 
 test('Test fail SNS topic check', () => {
@@ -183,7 +183,7 @@ test('Test fail SNS topic check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Cannot specify an existing SNS topic AND SNS topic props\n');
+  expect(app).toThrowError('Error - Either provide topicProps or existingTopicObj, but not both.\n');
 });
 
 test('Test fail SNS topic check with bad topic attribute name', () => {
@@ -199,7 +199,7 @@ test('Test fail SNS topic check with bad topic attribute name', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Cannot specify an existing SNS topic AND SNS topic props\n');
+  expect(app).toThrowError('Error - Either provide topicProps or existingTopicObj, but not both.\n');
 });
 
 test('Test fail Glue job check', () => {
@@ -227,7 +227,7 @@ test('Test fail Glue job check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Cannot specify an existing Glue job AND Glue job props\n');
+  expect(app).toThrowError('Error - Either provide glueJobProps or existingGlueJob, but not both.\n');
 });
 
 test('Test fail SageMaker endpoint check', () => {
@@ -255,7 +255,7 @@ test('Test fail SageMaker endpoint check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Cannot specify an existing SageMaker endpoint AND SageMaker endpoint props\n');
+  expect(app).toThrowError('Error - Either provide endpointProps or existingSagemakerEndpointObj, but not both.\n');
 });
 
 test('Test fail Secret check', () => {
@@ -271,7 +271,43 @@ test('Test fail Secret check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Cannot specify an existing Secret AND Secret props\n');
+  expect(app).toThrowError('Error - Either provide secretProps or existingSecretObj, but not both.\n');
+});
+
+test('Test fail Vpc check with deployVpc', () => {
+  const stack = new Stack();
+
+  const props: defaults.VerifiedProps = {
+    deployVpc: true,
+    existingVpc:   defaults.buildVpc(stack, {
+      defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
+    }),
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});
+
+test('Test fail Vpc check with vpcProps', () => {
+  const stack = new Stack();
+
+  const props: defaults.VerifiedProps = {
+    vpcProps: defaults.DefaultPublicPrivateVpcProps(),
+    existingVpc:   defaults.buildVpc(stack, {
+      defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
+    }),
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 test('Test fail multiple failures message', () => {
@@ -290,8 +326,9 @@ test('Test fail multiple failures message', () => {
 
   // Assertion
   expect(app).toThrowError(
-    'Cannot specify an existing SNS topic AND SNS topic props\n' +
-    'Cannot specify an existing Secret AND Secret props\n'
+    'Error - Either provide topicProps or existingTopicObj, but not both.\n' +
+    'Error - Either provide secretProps or existingSecretObj, but not both.\n'
   );
 });
+
 
