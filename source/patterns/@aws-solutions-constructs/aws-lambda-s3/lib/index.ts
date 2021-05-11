@@ -94,6 +94,8 @@ export class LambdaToS3 extends Construct {
      */
     constructor(scope: Construct, id: string, props: LambdaToS3Props) {
       super(scope, id);
+      defaults.CheckProps(props);
+
       let bucket: s3.IBucket;
 
       if (props.existingBucketObj && props.bucketProps) {

@@ -473,3 +473,31 @@ test("Test bad call with existingBucket and bucketProps", () => {
   // Assertion
   expect(app).toThrowError();
 });
+
+test('Test that CheckProps() is flagging errors correctly', () => {
+  // Stack
+  const stack = new Stack();
+
+  const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: "index.handler",
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const app = () => {
+    new LambdaToS3(stack, "lambda-to-s3-stack", {
+      existingLambdaObj: testLambdaFunction,
+      lambdaFunctionProps: {
+        runtime: lambda.Runtime.NODEJS_10_X,
+        handler: "index.handler",
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      },
+    });
+  };
+
+  // Assertion
+  expect(app).toThrowError(
+    "Cannot specify an existing Lambda function AND Lambda function props\n"
+  );
+
+});
