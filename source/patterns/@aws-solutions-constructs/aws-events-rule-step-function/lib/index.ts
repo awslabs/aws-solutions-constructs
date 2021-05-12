@@ -66,6 +66,7 @@ export class EventsRuleToStepFunction extends Construct {
    */
   constructor(scope: Construct, id: string, props: EventsRuleToStepFunctionProps) {
     super(scope, id);
+    defaults.CheckProps(props);
 
     [this.stateMachine, this.stateMachineLogGroup] = defaults.buildStateMachine(this, props.stateMachineProps,
       props.logGroupProps);

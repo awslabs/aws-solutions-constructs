@@ -281,6 +281,26 @@ test('Test fail Secret check', () => {
   expect(app).toThrowError('Error - Either provide secretProps or existingSecretObj, but not both.\n');
 });
 
+test('Test fail encryption key check', () => {
+  const stack = new Stack();
+
+  const key =  defaults.buildEncryptionKey(stack, {
+    enableKeyRotation: false
+  });
+
+  const props: defaults.VerifiedProps = {
+    encryptionKey: key,
+    encryptionKeyProps: {},
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n');
+});
+
 test('Test fail Vpc check with deployVpc', () => {
   const stack = new Stack();
 
@@ -337,5 +357,3 @@ test('Test fail multiple failures message', () => {
     'Error - Either provide secretProps or existingSecretObj, but not both.\n'
   );
 });
-
-

@@ -23,7 +23,7 @@ import * as sqs from '@aws-cdk/aws-sqs';
  */
 export interface DynamoDBStreamToLambdaProps {
   /**
-   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
+   * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
    * @default - None
    */
@@ -41,7 +41,7 @@ export interface DynamoDBStreamToLambdaProps {
    */
   readonly dynamoTableProps?: dynamodb.TableProps,
   /**
-   * Existing instance of DynamoDB table object, If this is set then the dynamoTableProps is ignored
+   * Existing instance of DynamoDB table object, providing both this and `dynamoTableProps` will cause an error.
    *
    * @default - None
    */
@@ -81,6 +81,7 @@ export class DynamoDBStreamToLambda extends Construct {
    */
   constructor(scope: Construct, id: string, props: DynamoDBStreamToLambdaProps) {
     super(scope, id);
+    defaults.CheckProps(props);
 
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,

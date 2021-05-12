@@ -22,7 +22,7 @@ import { Construct } from '@aws-cdk/core';
  */
 export interface LambdaToDynamoDBProps {
   /**
-   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
+   * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
    * @default - None
    */
@@ -40,7 +40,7 @@ export interface LambdaToDynamoDBProps {
    */
   readonly dynamoTableProps?: dynamodb.TableProps;
   /**
-   * Existing instance of DynamoDB table object, If this is set then the dynamoTableProps is ignored
+   * Existing instance of DynamoDB table object, providing both this and `dynamoTableProps` will cause an error.
    *
    * @default - None
    */
@@ -89,6 +89,7 @@ export class LambdaToDynamoDB extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToDynamoDBProps) {
     super(scope, id);
+    defaults.CheckProps(props);
 
     if (props.deployVpc || props.existingVpc) {
       if (props.deployVpc && props.existingVpc) {

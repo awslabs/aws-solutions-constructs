@@ -77,7 +77,6 @@ test('Test deployment w/ existing secret', () => {
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
-    secretProps: { removalPolicy: RemovalPolicy.DESTROY },
     existingSecretObj: existingSecret
   });
   // Assertion 1

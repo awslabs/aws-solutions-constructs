@@ -21,7 +21,7 @@ import { buildSecurityGroup } from "./security-group-helper";
 
 export interface BuildLambdaFunctionProps {
   /**
-   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored
+   * Existing instance of Lambda Function object, Providing both this and lambdaFunctionProps will cause an error. 
    *
    * @default - None
    */

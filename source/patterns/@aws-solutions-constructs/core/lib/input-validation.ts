@@ -22,6 +22,7 @@ import * as sns from '@aws-cdk/aws-sns';
 import * as glue from '@aws-cdk/aws-glue';
 import * as sagemaker from '@aws-cdk/aws-sagemaker';
 import * as secretsmanager from "@aws-cdk/aws-secretsmanager";
+import * as kms from "@aws-cdk/aws-kms";
 
 export interface VerifiedProps {
   readonly dynamoTableProps?: dynamodb.TableProps,
@@ -44,11 +45,11 @@ export interface VerifiedProps {
   readonly existingBucketObj?: s3.Bucket,
   readonly bucketProps?: s3.BucketProps,
 
-  // topicsProps is an incorrect attribute used in event-rule-sns that 
+  // topicsProps is an incorrect attribute used in event-rule-sns that
   // we need to support
   readonly topicProps?: sns.TopicProps,
   readonly topicsProps?: sns.TopicProps,
-  readonly existingTopicObj?: sns.Topic,  
+  readonly existingTopicObj?: sns.Topic,
 
   readonly glueJobProps?: glue.CfnJobProps,
   readonly existingGlueJob?: glue.CfnJob,
@@ -62,6 +63,10 @@ export interface VerifiedProps {
   readonly existingVpc?: ec2.IVpc;
   readonly vpcProps?: ec2.VpcProps;
   readonly deployVpc?: boolean;
+
+  readonly encryptionKey?: kms.Key,
+  readonly encryptionKeyProps?: kms.KeyProps
+
 }
 
 export function CheckProps(propsObject: VerifiedProps | any) {
@@ -87,8 +92,8 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorMessages += 'Error - Either provide queueProps or existingQueueObj, but not both.\n';
     errorFound = true;
   }
-  
-  if ((propsObject?.deployDeadLetterQueue == false) && propsObject.deadLetterQueueProps) {
+
+  if ((propsObject?.deployDeadLetterQueue === false) && propsObject.deadLetterQueueProps) {
     errorMessages += 'Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n';
     errorFound = true;
   }
@@ -126,6 +131,11 @@ export function CheckProps(propsObject: VerifiedProps | any) {
   // if (deployVpc || vpcProp) and existingVpc
   if ((propsObject.deployVpc || propsObject.vpcProps) && propsObject.existingVpc) {
     errorMessages += 'Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.encryptionKey && propsObject.encryptionKeyProps) {
+    errorMessages += 'Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n';
     errorFound = true;
   }
 
