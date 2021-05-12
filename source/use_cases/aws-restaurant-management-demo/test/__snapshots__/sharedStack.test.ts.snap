@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test-shared-stack 1`] = `
+Object {
+  "Resources": Object {
+    "databaseEBDE4557": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "AttributeDefinitions": Array [
+          Object {
+            "AttributeName": "id",
+            "AttributeType": "S",
+          },
+          Object {
+            "AttributeName": "orderStatus",
+            "AttributeType": "S",
+          },
+          Object {
+            "AttributeName": "timeOpened",
+            "AttributeType": "S",
+          },
+          Object {
+            "AttributeName": "username",
+            "AttributeType": "S",
+          },
+        ],
+        "GlobalSecondaryIndexes": Array [
+          Object {
+            "IndexName": "orderStatus_index",
+            "KeySchema": Array [
+              Object {
+                "AttributeName": "id",
+                "KeyType": "HASH",
+              },
+              Object {
+                "AttributeName": "orderStatus",
+                "KeyType": "RANGE",
+              },
+            ],
+            "Projection": Object {
+              "ProjectionType": "ALL",
+            },
+            "ProvisionedThroughput": Object {
+              "ReadCapacityUnits": 5,
+              "WriteCapacityUnits": 5,
+            },
+          },
+          Object {
+            "IndexName": "timeOpened_index",
+            "KeySchema": Array [
+              Object {
+                "AttributeName": "id",
+                "KeyType": "HASH",
+              },
+              Object {
+                "AttributeName": "timeOpened",
+                "KeyType": "RANGE",
+              },
+            ],
+            "Projection": Object {
+              "ProjectionType": "ALL",
+            },
+            "ProvisionedThroughput": Object {
+              "ReadCapacityUnits": 5,
+              "WriteCapacityUnits": 5,
+            },
+          },
+          Object {
+            "IndexName": "username_index",
+            "KeySchema": Array [
+              Object {
+                "AttributeName": "id",
+                "KeyType": "HASH",
+              },
+              Object {
+                "AttributeName": "username",
+                "KeyType": "RANGE",
+              },
+            ],
+            "Projection": Object {
+              "ProjectionType": "ALL",
+            },
+            "ProvisionedThroughput": Object {
+              "ReadCapacityUnits": 5,
+              "WriteCapacityUnits": 5,
+            },
+          },
+        ],
+        "KeySchema": Array [
+          Object {
+            "AttributeName": "id",
+            "KeyType": "HASH",
+          },
+        ],
+        "ProvisionedThroughput": Object {
+          "ReadCapacityUnits": 5,
+          "WriteCapacityUnits": 5,
+        },
+      },
+      "Type": "AWS::DynamoDB::Table",
+      "UpdateReplacePolicy": "Retain",
+    },
+  },
+}
+`;

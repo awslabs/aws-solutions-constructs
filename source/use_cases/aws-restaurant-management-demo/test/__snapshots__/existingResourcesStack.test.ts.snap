@@ -1,0 +1,630 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ExistingResourcesStack 1`] = `
+Object {
+  "Resources": Object {
+    "existingredshiftclusterE9A74187": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "AllowVersionUpgrade": true,
+        "AutomatedSnapshotRetentionPeriod": 1,
+        "ClusterSubnetGroupName": Object {
+          "Ref": "existingredshiftclusterSubnetsE5B36D7F",
+        },
+        "ClusterType": "multi-node",
+        "DBName": "default_db",
+        "Encrypted": true,
+        "MasterUserPassword": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "{{resolve:secretsmanager:",
+              Object {
+                "Ref": "existingredshiftclusterSecret56B31187",
+              },
+              ":SecretString:password::}}",
+            ],
+          ],
+        },
+        "MasterUsername": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "{{resolve:secretsmanager:",
+              Object {
+                "Ref": "existingredshiftclusterSecret56B31187",
+              },
+              ":SecretString:username::}}",
+            ],
+          ],
+        },
+        "NodeType": "dc2.large",
+        "NumberOfNodes": 2,
+        "PubliclyAccessible": false,
+        "VpcSecurityGroupIds": Array [
+          Object {
+            "Fn::GetAtt": Array [
+              "existingredshiftclusterSecurityGroupA9767B62",
+              "GroupId",
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::Redshift::Cluster",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "existingredshiftclusterSecret56B31187": Object {
+      "Properties": Object {
+        "GenerateSecretString": Object {
+          "ExcludeCharacters": "\\"@/\\\\ '",
+          "GenerateStringKey": "password",
+          "PasswordLength": 30,
+          "SecretStringTemplate": "{\\"username\\":\\"admin\\"}",
+        },
+      },
+      "Type": "AWS::SecretsManager::Secret",
+    },
+    "existingredshiftclusterSecretAttachment06F548CB": Object {
+      "Properties": Object {
+        "SecretId": Object {
+          "Ref": "existingredshiftclusterSecret56B31187",
+        },
+        "TargetId": Object {
+          "Ref": "existingredshiftclusterE9A74187",
+        },
+        "TargetType": "AWS::Redshift::Cluster",
+      },
+      "Type": "AWS::SecretsManager::SecretTargetAttachment",
+    },
+    "existingredshiftclusterSecurityGroupA9767B62": Object {
+      "Properties": Object {
+        "GroupDescription": "Redshift security group",
+        "SecurityGroupEgress": Array [
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "existingredshiftvpc5F23EDCB",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "existingredshiftclusterSubnetsE5B36D7F": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "Description": "Subnets for existing-redshift-cluster Redshift cluster",
+        "SubnetIds": Array [
+          Object {
+            "Ref": "existingredshiftvpcPrivateSubnet1SubnetCC61B034",
+          },
+          Object {
+            "Ref": "existingredshiftvpcPrivateSubnet2Subnet16CAFA7A",
+          },
+          Object {
+            "Ref": "existingredshiftvpcPrivateSubnet3Subnet209F74F8",
+          },
+        ],
+      },
+      "Type": "AWS::Redshift::ClusterSubnetGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "existingredshiftvpc5F23EDCB": Object {
+      "Properties": Object {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "ExistingResourcesStack/existing-redshift-vpc",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::VPC",
+    },
+    "existingredshiftvpcIGWE88A9BE6": Object {
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "ExistingResourcesStack/existing-redshift-vpc",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::InternetGateway",
+    },
+    "existingredshiftvpcPrivateSubnet1DefaultRoute386C8A50": Object {
+      "Properties": Object {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": Object {
+          "Ref": "existingredshiftvpcPublicSubnet1NATGateway67AC4F86",
+        },
+        "RouteTableId": Object {
+          "Ref": "existingredshiftvpcPrivateSubnet1RouteTable5B47E41E",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "existingredshiftvpcPrivateSubnet1RouteTable5B47E41E": Object {
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "ExistingResourcesStack/existing-redshift-vpc/PrivateSubnet1",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "existingredshiftvpc5F23EDCB",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "existingredshiftvpcPrivateSubnet1RouteTableAssociationC8994F04": Object {
+      "Properties": Object {
+        "RouteTableId": Object {
+          "Ref": "existingredshiftvpcPrivateSubnet1RouteTable5B47E41E",
+        },
+        "SubnetId": Object {
+          "Ref": "existingredshiftvpcPrivateSubnet1SubnetCC61B034",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "existingredshiftvpcPrivateSubnet1SubnetCC61B034": Object {
+      "Properties": Object {
+        "AvailabilityZone": "dummy1a",
+        "CidrBlock": "10.0.96.0/19",
+        "MapPublicIpOnLaunch": false,
+        "Tags": Array [
+          Object {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private",
+          },
+          Object {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private",
+          },
+          Object {
+            "Key": "Name",
+            "Value": "ExistingResourcesStack/existing-redshift-vpc/PrivateSubnet1",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "existingredshiftvpc5F23EDCB",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "existingredshiftvpcPrivateSubnet2DefaultRouteE71FD3F8": Object {
+      "Properties": Object {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": Object {
+          "Ref": "existingredshiftvpcPublicSubnet2NATGateway6C03215F",
+        },
+        "RouteTableId": Object {
+          "Ref": "existingredshiftvpcPrivateSubnet2RouteTableE34AAA3A",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "existingredshiftvpcPrivateSubnet2RouteTableAssociationF24907DE": Object {
+      "Properties": Object {
+        "RouteTableId": Object {
+          "Ref": "existingredshiftvpcPrivateSubnet2RouteTableE34AAA3A",
+        },
+        "SubnetId": Object {
+          "Ref": "existingredshiftvpcPrivateSubnet2Subnet16CAFA7A",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "existingredshiftvpcPrivateSubnet2RouteTableE34AAA3A": Object {
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "ExistingResourcesStack/existing-redshift-vpc/PrivateSubnet2",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "existingredshiftvpc5F23EDCB",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "existingredshiftvpcPrivateSubnet2Subnet16CAFA7A": Object {
+      "Properties": Object {
+        "AvailabilityZone": "dummy1b",
+        "CidrBlock": "10.0.128.0/19",
+        "MapPublicIpOnLaunch": false,
+        "Tags": Array [
+          Object {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private",
+          },
+          Object {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private",
+          },
+          Object {
+            "Key": "Name",
+            "Value": "ExistingResourcesStack/existing-redshift-vpc/PrivateSubnet2",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "existingredshiftvpc5F23EDCB",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "existingredshiftvpcPrivateSubnet3DefaultRoute123E9144": Object {
+      "Properties": Object {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": Object {
+          "Ref": "existingredshiftvpcPublicSubnet3NATGateway86AE5A23",
+        },
+        "RouteTableId": Object {
+          "Ref": "existingredshiftvpcPrivateSubnet3RouteTableF920578D",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "existingredshiftvpcPrivateSubnet3RouteTableAssociationBBDBE248": Object {
+      "Properties": Object {
+        "RouteTableId": Object {
+          "Ref": "existingredshiftvpcPrivateSubnet3RouteTableF920578D",
+        },
+        "SubnetId": Object {
+          "Ref": "existingredshiftvpcPrivateSubnet3Subnet209F74F8",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "existingredshiftvpcPrivateSubnet3RouteTableF920578D": Object {
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "ExistingResourcesStack/existing-redshift-vpc/PrivateSubnet3",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "existingredshiftvpc5F23EDCB",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "existingredshiftvpcPrivateSubnet3Subnet209F74F8": Object {
+      "Properties": Object {
+        "AvailabilityZone": "dummy1c",
+        "CidrBlock": "10.0.160.0/19",
+        "MapPublicIpOnLaunch": false,
+        "Tags": Array [
+          Object {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private",
+          },
+          Object {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private",
+          },
+          Object {
+            "Key": "Name",
+            "Value": "ExistingResourcesStack/existing-redshift-vpc/PrivateSubnet3",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "existingredshiftvpc5F23EDCB",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "existingredshiftvpcPublicSubnet1DefaultRouteAA7A75E4": Object {
+      "DependsOn": Array [
+        "existingredshiftvpcVPCGWC992EC5E",
+      ],
+      "Properties": Object {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": Object {
+          "Ref": "existingredshiftvpcIGWE88A9BE6",
+        },
+        "RouteTableId": Object {
+          "Ref": "existingredshiftvpcPublicSubnet1RouteTableF025F03E",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "existingredshiftvpcPublicSubnet1EIPBB0E9613": Object {
+      "Properties": Object {
+        "Domain": "vpc",
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "ExistingResourcesStack/existing-redshift-vpc/PublicSubnet1",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::EIP",
+    },
+    "existingredshiftvpcPublicSubnet1NATGateway67AC4F86": Object {
+      "Properties": Object {
+        "AllocationId": Object {
+          "Fn::GetAtt": Array [
+            "existingredshiftvpcPublicSubnet1EIPBB0E9613",
+            "AllocationId",
+          ],
+        },
+        "SubnetId": Object {
+          "Ref": "existingredshiftvpcPublicSubnet1Subnet44B435D3",
+        },
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "ExistingResourcesStack/existing-redshift-vpc/PublicSubnet1",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::NatGateway",
+    },
+    "existingredshiftvpcPublicSubnet1RouteTableAssociationABCDAE6C": Object {
+      "Properties": Object {
+        "RouteTableId": Object {
+          "Ref": "existingredshiftvpcPublicSubnet1RouteTableF025F03E",
+        },
+        "SubnetId": Object {
+          "Ref": "existingredshiftvpcPublicSubnet1Subnet44B435D3",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "existingredshiftvpcPublicSubnet1RouteTableF025F03E": Object {
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "ExistingResourcesStack/existing-redshift-vpc/PublicSubnet1",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "existingredshiftvpc5F23EDCB",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "existingredshiftvpcPublicSubnet1Subnet44B435D3": Object {
+      "Properties": Object {
+        "AvailabilityZone": "dummy1a",
+        "CidrBlock": "10.0.0.0/19",
+        "MapPublicIpOnLaunch": true,
+        "Tags": Array [
+          Object {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public",
+          },
+          Object {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public",
+          },
+          Object {
+            "Key": "Name",
+            "Value": "ExistingResourcesStack/existing-redshift-vpc/PublicSubnet1",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "existingredshiftvpc5F23EDCB",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "existingredshiftvpcPublicSubnet2DefaultRoute0EA82DED": Object {
+      "DependsOn": Array [
+        "existingredshiftvpcVPCGWC992EC5E",
+      ],
+      "Properties": Object {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": Object {
+          "Ref": "existingredshiftvpcIGWE88A9BE6",
+        },
+        "RouteTableId": Object {
+          "Ref": "existingredshiftvpcPublicSubnet2RouteTableD352EB40",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "existingredshiftvpcPublicSubnet2EIP2FB693E2": Object {
+      "Properties": Object {
+        "Domain": "vpc",
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "ExistingResourcesStack/existing-redshift-vpc/PublicSubnet2",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::EIP",
+    },
+    "existingredshiftvpcPublicSubnet2NATGateway6C03215F": Object {
+      "Properties": Object {
+        "AllocationId": Object {
+          "Fn::GetAtt": Array [
+            "existingredshiftvpcPublicSubnet2EIP2FB693E2",
+            "AllocationId",
+          ],
+        },
+        "SubnetId": Object {
+          "Ref": "existingredshiftvpcPublicSubnet2Subnet65BB52B4",
+        },
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "ExistingResourcesStack/existing-redshift-vpc/PublicSubnet2",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::NatGateway",
+    },
+    "existingredshiftvpcPublicSubnet2RouteTableAssociation153522A3": Object {
+      "Properties": Object {
+        "RouteTableId": Object {
+          "Ref": "existingredshiftvpcPublicSubnet2RouteTableD352EB40",
+        },
+        "SubnetId": Object {
+          "Ref": "existingredshiftvpcPublicSubnet2Subnet65BB52B4",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "existingredshiftvpcPublicSubnet2RouteTableD352EB40": Object {
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "ExistingResourcesStack/existing-redshift-vpc/PublicSubnet2",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "existingredshiftvpc5F23EDCB",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "existingredshiftvpcPublicSubnet2Subnet65BB52B4": Object {
+      "Properties": Object {
+        "AvailabilityZone": "dummy1b",
+        "CidrBlock": "10.0.32.0/19",
+        "MapPublicIpOnLaunch": true,
+        "Tags": Array [
+          Object {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public",
+          },
+          Object {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public",
+          },
+          Object {
+            "Key": "Name",
+            "Value": "ExistingResourcesStack/existing-redshift-vpc/PublicSubnet2",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "existingredshiftvpc5F23EDCB",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "existingredshiftvpcPublicSubnet3DefaultRouteED45217C": Object {
+      "DependsOn": Array [
+        "existingredshiftvpcVPCGWC992EC5E",
+      ],
+      "Properties": Object {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": Object {
+          "Ref": "existingredshiftvpcIGWE88A9BE6",
+        },
+        "RouteTableId": Object {
+          "Ref": "existingredshiftvpcPublicSubnet3RouteTableE314F732",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "existingredshiftvpcPublicSubnet3EIPCB871263": Object {
+      "Properties": Object {
+        "Domain": "vpc",
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "ExistingResourcesStack/existing-redshift-vpc/PublicSubnet3",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::EIP",
+    },
+    "existingredshiftvpcPublicSubnet3NATGateway86AE5A23": Object {
+      "Properties": Object {
+        "AllocationId": Object {
+          "Fn::GetAtt": Array [
+            "existingredshiftvpcPublicSubnet3EIPCB871263",
+            "AllocationId",
+          ],
+        },
+        "SubnetId": Object {
+          "Ref": "existingredshiftvpcPublicSubnet3SubnetCE9B9E8B",
+        },
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "ExistingResourcesStack/existing-redshift-vpc/PublicSubnet3",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::NatGateway",
+    },
+    "existingredshiftvpcPublicSubnet3RouteTableAssociationBC5B5A91": Object {
+      "Properties": Object {
+        "RouteTableId": Object {
+          "Ref": "existingredshiftvpcPublicSubnet3RouteTableE314F732",
+        },
+        "SubnetId": Object {
+          "Ref": "existingredshiftvpcPublicSubnet3SubnetCE9B9E8B",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "existingredshiftvpcPublicSubnet3RouteTableE314F732": Object {
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "ExistingResourcesStack/existing-redshift-vpc/PublicSubnet3",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "existingredshiftvpc5F23EDCB",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "existingredshiftvpcPublicSubnet3SubnetCE9B9E8B": Object {
+      "Properties": Object {
+        "AvailabilityZone": "dummy1c",
+        "CidrBlock": "10.0.64.0/19",
+        "MapPublicIpOnLaunch": true,
+        "Tags": Array [
+          Object {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public",
+          },
+          Object {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public",
+          },
+          Object {
+            "Key": "Name",
+            "Value": "ExistingResourcesStack/existing-redshift-vpc/PublicSubnet3",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "existingredshiftvpc5F23EDCB",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "existingredshiftvpcVPCGWC992EC5E": Object {
+      "Properties": Object {
+        "InternetGatewayId": Object {
+          "Ref": "existingredshiftvpcIGWE88A9BE6",
+        },
+        "VpcId": Object {
+          "Ref": "existingredshiftvpc5F23EDCB",
+        },
+      },
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+    },
+  },
+}
+`;
