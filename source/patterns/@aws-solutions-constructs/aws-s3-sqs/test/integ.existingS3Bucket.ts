@@ -12,17 +12,19 @@
  */
 
 /// !cdk-integ *
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { S3ToSqs, S3ToSqsProps } from "../lib";
 import * as defaults from '@aws-solutions-constructs/core';
 const app = new App();
 
 const stack = new Stack(app, 'test-s3-sqs-existing-bucket');
 
-const [myBucket] = defaults.buildS3Bucket(stack, {});
+const [myBucket] = defaults.buildS3Bucket(stack, { bucketProps: { removalPolicy: RemovalPolicy.DESTROY }, });
 
+// Currently there is no way to customize the logging bucket, so this
+// test will leave a bucket behind
 const props: S3ToSqsProps = {
-  existingBucketObj: myBucket
+  existingBucketObj: myBucket,
 };
 
 new S3ToSqs(stack, 'test-s3-sqs', props);

@@ -131,7 +131,8 @@ export function deployLambdaFunction(scope: cdk.Construct,
   const lambdafunction = new lambda.Function(scope, _functionId, finalLambdaFunctionProps);
 
   if (lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_10_X ||
-    lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_12_X) {
+    lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_12_X ||
+    lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_14_X) {
     lambdafunction.addEnvironment('AWS_NODEJS_CONNECTION_REUSE_ENABLED', '1', { removeInEdge: true });
   }
 
@@ -141,7 +142,15 @@ export function deployLambdaFunction(scope: cdk.Construct,
     cfn_nag: {
       rules_to_suppress: [{
         id: 'W58',
-        reason: `Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions.`
+        reason: `Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.`
+      },
+      {
+        id: 'W89',
+        reason: `This is not a rule for the general case, just for specific use cases/industries`
+      },
+      {
+        id: 'W92',
+        reason: `Impossible for us to define the correct concurrency for clients`
       }]
     }
   };

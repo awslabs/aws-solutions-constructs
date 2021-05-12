@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { LambdaToS3, LambdaToS3Props } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as s3 from '@aws-cdk/aws-s3';
@@ -22,7 +22,7 @@ import { CreateScrapBucket } from '@aws-solutions-constructs/core';
 const app = new App();
 const stack = new Stack(app, 'test-lambda-s3-pre-existing-bucket');
 stack.templateOptions.description = 'Integration Test for aws-lambda-s3';
-const existingBucket = CreateScrapBucket(stack, {});
+const existingBucket = CreateScrapBucket(stack, { removalPolicy: RemovalPolicy.DESTROY });
 
 const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);
 // Definitions
@@ -32,7 +32,7 @@ const props: LambdaToS3Props = {
     runtime: lambda.Runtime.NODEJS_10_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-  }
+  },
 };
 
 new LambdaToS3(stack, 'test-lambda-s3-pre-existing-bucket', props);

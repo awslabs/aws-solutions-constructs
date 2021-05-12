@@ -150,7 +150,7 @@ Object {
       "Type": "AWS::S3::BucketPolicy",
     },
     "testcloudfronts3S3BucketE0C5F76E": Object {
-      "DeletionPolicy": "Retain",
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "BucketEncryption": Object {
           "ServerSideEncryptionConfiguration": Array [
@@ -190,7 +190,7 @@ Object {
         },
       },
       "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Retain",
+      "UpdateReplacePolicy": "Delete",
     },
     "testcloudfronts3S3BucketPolicy250F1F61": Object {
       "Metadata": Object {
@@ -267,7 +267,7 @@ Object {
       "Type": "AWS::S3::BucketPolicy",
     },
     "testcloudfronts3S3LoggingBucket90D239DD": Object {
-      "DeletionPolicy": "Retain",
+      "DeletionPolicy": "Delete",
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -297,7 +297,7 @@ Object {
         },
       },
       "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Retain",
+      "UpdateReplacePolicy": "Delete",
     },
     "testcloudfronts3S3LoggingBucketPolicy529D4CFF": Object {
       "Properties": Object {
@@ -347,7 +347,15 @@ Object {
           "rules_to_suppress": Array [
             Object {
               "id": "W58",
-              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions.",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.",
+            },
+            Object {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries",
+            },
+            Object {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients",
             },
           ],
         },

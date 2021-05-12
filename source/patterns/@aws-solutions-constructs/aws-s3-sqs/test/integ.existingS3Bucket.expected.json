@@ -20,8 +20,8 @@
           "RestrictPublicBuckets": true
         }
       },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
@@ -111,8 +111,8 @@
           "Status": "Enabled"
         }
       },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "S3BucketNotifications58B5AD06": {
       "Type": "Custom::S3BucketNotifications",
@@ -189,7 +189,9 @@
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": "alias/aws/sqs"
-      }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "tests3sqsdeadLetterQueuePolicy35D7CFE3": {
       "Type": "AWS::SQS::QueuePolicy",
@@ -364,7 +366,9 @@
           },
           "maxReceiveCount": 15
         }
-      }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "tests3sqsqueuePolicyDDC0D745": {
       "Type": "AWS::SQS::QueuePolicy",
@@ -538,7 +542,7 @@
             "Arn"
           ]
         },
-        "Runtime": "nodejs10.x",
+        "Runtime": "nodejs12.x",
         "Timeout": 300
       },
       "DependsOn": [
@@ -550,7 +554,15 @@
           "rules_to_suppress": [
             {
               "id": "W58",
-              "reason": "Lambda function has permission to write CloudWatch Logs via AWSLambdaBasicExecutionRole policy attached to the lambda role"
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+            },
+            {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            },
+            {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients"
             }
           ]
         }

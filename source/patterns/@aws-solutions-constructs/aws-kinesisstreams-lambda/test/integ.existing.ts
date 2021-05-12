@@ -46,6 +46,21 @@ const lambdaFn = new lambda.Function(stack, 'test-fn', {
   role: lambdaRole,
 });
 
+const cfnLambdafunction: lambda.CfnFunction = lambdaFn.node.findChild('Resource') as lambda.CfnFunction;
+
+cfnLambdafunction.cfnOptions.metadata = {
+  cfn_nag: {
+    rules_to_suppress: [{
+      id: 'W89',
+      reason: `This is not a rule for the general case, just for specific use cases/industries`
+    },
+    {
+      id: 'W92',
+      reason: `Impossible for us to define the correct concurrency for clients`
+    }]
+  }
+};
+
 const stream = new kinesis.Stream(stack, 'test-stream', {
   shardCount: 2,
   encryption: kinesis.StreamEncryption.MANAGED

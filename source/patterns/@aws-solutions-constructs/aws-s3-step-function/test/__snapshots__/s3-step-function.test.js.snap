@@ -392,7 +392,7 @@ Object {
       },
       "Type": "AWS::S3::BucketPolicy",
     },
-    "tests3stepfunctiontesteventsrulestepfunctionstackEventsRule05BF80D3": Object {
+    "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructEventsRule4CC9BDCA": Object {
       "Properties": Object {
         "EventPattern": Object {
           "detail": Object {
@@ -421,12 +421,12 @@ Object {
         "Targets": Array [
           Object {
             "Arn": Object {
-              "Ref": "tests3stepfunctiontesteventsrulestepfunctionstackStateMachine5A6C0DFF",
+              "Ref": "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructStateMachineA4D4F2B0",
             },
             "Id": "Target0",
             "RoleArn": Object {
               "Fn::GetAtt": Array [
-                "tests3stepfunctiontesteventsrulestepfunctionstackEventsRuleRoleF447A174",
+                "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructEventsRuleRole07FD7EC1",
                 "Arn",
               ],
             },
@@ -435,30 +435,7 @@ Object {
       },
       "Type": "AWS::Events::Rule",
     },
-    "tests3stepfunctiontesteventsrulestepfunctionstackEventsRuleRoleDefaultPolicy9B31B120": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "states:StartExecution",
-              "Effect": "Allow",
-              "Resource": Object {
-                "Ref": "tests3stepfunctiontesteventsrulestepfunctionstackStateMachine5A6C0DFF",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "tests3stepfunctiontesteventsrulestepfunctionstackEventsRuleRoleDefaultPolicy9B31B120",
-        "Roles": Array [
-          Object {
-            "Ref": "tests3stepfunctiontesteventsrulestepfunctionstackEventsRuleRoleF447A174",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "tests3stepfunctiontesteventsrulestepfunctionstackEventsRuleRoleF447A174": Object {
+    "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructEventsRuleRole07FD7EC1": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -475,7 +452,30 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "tests3stepfunctiontesteventsrulestepfunctionstackExecutionAbortedAlarm2467E717": Object {
+    "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructEventsRuleRoleDefaultPolicyC6A243E9": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "states:StartExecution",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Ref": "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructStateMachineA4D4F2B0",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructEventsRuleRoleDefaultPolicyC6A243E9",
+        "Roles": Array [
+          Object {
+            "Ref": "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructEventsRuleRole07FD7EC1",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructExecutionAbortedAlarmD4ED8C15": Object {
       "Properties": Object {
         "AlarmDescription": "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -483,7 +483,7 @@ Object {
           Object {
             "Name": "StateMachineArn",
             "Value": Object {
-              "Ref": "tests3stepfunctiontesteventsrulestepfunctionstackStateMachine5A6C0DFF",
+              "Ref": "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructStateMachineA4D4F2B0",
             },
           },
         ],
@@ -496,7 +496,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "tests3stepfunctiontesteventsrulestepfunctionstackExecutionFailedAlarmABAAA96A": Object {
+    "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructExecutionFailedAlarmE48142D4": Object {
       "Properties": Object {
         "AlarmDescription": "Alarm for the number of executions that failed exceeded the threshold of 1. ",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -504,7 +504,7 @@ Object {
           Object {
             "Name": "StateMachineArn",
             "Value": Object {
-              "Ref": "tests3stepfunctiontesteventsrulestepfunctionstackStateMachine5A6C0DFF",
+              "Ref": "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructStateMachineA4D4F2B0",
             },
           },
         ],
@@ -517,7 +517,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "tests3stepfunctiontesteventsrulestepfunctionstackExecutionThrottledAlarm1D666C22": Object {
+    "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructExecutionThrottledAlarmE9CD423E": Object {
       "Properties": Object {
         "AlarmDescription": "Alarm for the number of executions that throttled exceeded the threshold of 1. ",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -525,7 +525,7 @@ Object {
           Object {
             "Name": "StateMachineArn",
             "Value": Object {
-              "Ref": "tests3stepfunctiontesteventsrulestepfunctionstackStateMachine5A6C0DFF",
+              "Ref": "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructStateMachineA4D4F2B0",
             },
           },
         ],
@@ -538,10 +538,10 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "tests3stepfunctiontesteventsrulestepfunctionstackStateMachine5A6C0DFF": Object {
+    "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructStateMachineA4D4F2B0": Object {
       "DependsOn": Array [
-        "tests3stepfunctiontesteventsrulestepfunctionstackStateMachineRoleDefaultPolicy4B8FDFDA",
-        "tests3stepfunctiontesteventsrulestepfunctionstackStateMachineRole9C9F9AAC",
+        "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructStateMachineRoleDefaultPolicy0163149E",
+        "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructStateMachineRole97FB7201",
       ],
       "Properties": Object {
         "DefinitionString": "{\\"StartAt\\":\\"StartState\\",\\"States\\":{\\"StartState\\":{\\"Type\\":\\"Pass\\",\\"End\\":true}}}",
@@ -551,7 +551,7 @@ Object {
               "CloudWatchLogsLogGroup": Object {
                 "LogGroupArn": Object {
                   "Fn::GetAtt": Array [
-                    "tests3stepfunctiontesteventsrulestepfunctionstackStateMachineLogGroupDA892B18",
+                    "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructStateMachineLogGroup5A6ABD22",
                     "Arn",
                   ],
                 },
@@ -562,14 +562,14 @@ Object {
         },
         "RoleArn": Object {
           "Fn::GetAtt": Array [
-            "tests3stepfunctiontesteventsrulestepfunctionstackStateMachineRole9C9F9AAC",
+            "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructStateMachineRole97FB7201",
             "Arn",
           ],
         },
       },
       "Type": "AWS::StepFunctions::StateMachine",
     },
-    "tests3stepfunctiontesteventsrulestepfunctionstackStateMachineLogGroupDA892B18": Object {
+    "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructStateMachineLogGroup5A6ABD22": Object {
       "DeletionPolicy": "Retain",
       "Metadata": Object {
         "cfn_nag": Object {
@@ -585,10 +585,13 @@ Object {
           ],
         },
       },
+      "Properties": Object {
+        "LogGroupName": "/aws/vendedlogs/states/defaulttests3stepfunctioneventrulestepfunctionconstructstatemachinelog2d5375f14660",
+      },
       "Type": "AWS::Logs::LogGroup",
       "UpdateReplacePolicy": "Retain",
     },
-    "tests3stepfunctiontesteventsrulestepfunctionstackStateMachineRole9C9F9AAC": Object {
+    "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructStateMachineRole97FB7201": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -616,7 +619,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "tests3stepfunctiontesteventsrulestepfunctionstackStateMachineRoleDefaultPolicy4B8FDFDA": Object {
+    "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructStateMachineRoleDefaultPolicy0163149E": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -672,10 +675,10 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "tests3stepfunctiontesteventsrulestepfunctionstackStateMachineRoleDefaultPolicy4B8FDFDA",
+        "PolicyName": "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructStateMachineRoleDefaultPolicy0163149E",
         "Roles": Array [
           Object {
-            "Ref": "tests3stepfunctiontesteventsrulestepfunctionstackStateMachineRole9C9F9AAC",
+            "Ref": "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructStateMachineRole97FB7201",
           },
         ],
       },

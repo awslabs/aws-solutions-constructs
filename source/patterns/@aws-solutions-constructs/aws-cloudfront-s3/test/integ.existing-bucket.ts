@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import * as s3 from "@aws-cdk/aws-s3";
 import * as defaults from "@aws-solutions-constructs/core";
 import { CloudFrontToS3 } from "../lib";
@@ -25,10 +25,10 @@ const app = new App();
 const stack = new Stack(app, 'test-cloudfront-s3-existing-bucket-stack');
 
 let mybucket: s3.Bucket;
-[mybucket] = defaults.buildS3Bucket(stack, {});
+mybucket = defaults.CreateScrapBucket(stack, { removalPolicy: RemovalPolicy.DESTROY });
 
 const _construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {
-  existingBucketObj: mybucket
+  existingBucketObj: mybucket,
 });
 
 // Add Cache Policy

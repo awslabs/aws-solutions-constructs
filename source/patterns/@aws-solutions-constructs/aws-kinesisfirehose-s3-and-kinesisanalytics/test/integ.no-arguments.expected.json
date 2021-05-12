@@ -20,8 +20,8 @@
           "RestrictPublicBuckets": true
         }
       },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
@@ -111,8 +111,8 @@
           "Status": "Enabled"
         }
       },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "testfirehoses3andanalyticsstackKinesisFirehoseToS3S3BucketPolicyAD03F319": {
       "Type": "AWS::S3::BucketPolicy",

@@ -37,7 +37,7 @@
         "package": "software.amazon.awsconstructs.services.lambdasagemakerendpoint",
         "maven": {
           "groupId": "software.amazon.awsconstructs",
-          "artifactId": "lambdasqs"
+          "artifactId": "lambdasagemakerendpoint"
         }
       },
       "dotnet": {
@@ -54,6 +54,8 @@
   },
   "dependencies": {
     "@aws-cdk/aws-ec2": "0.0.0",
+    "@aws-cdk/aws-s3": "0.0.0",
+    "@aws-cdk/aws-s3-assets": "0.0.0",
     "@aws-cdk/aws-iam": "0.0.0",
     "@aws-cdk/aws-lambda": "0.0.0",
     "@aws-cdk/aws-sagemaker": "0.0.0",
@@ -63,16 +65,27 @@
   },
   "devDependencies": {
     "@aws-cdk/assert": "0.0.0",
-    "@types/jest": "^24.0.23",
+    "@types/jest": "^26.0.22",
     "@types/node": "^10.3.0"
   },
   "jest": {
     "moduleFileExtensions": [
       "js"
+    ],
+    "coverageReporters": [
+      "text",
+      [
+        "lcov",
+        {
+          "projectRoot": "../../../../"
+        }
+      ]
     ]
   },
   "peerDependencies": {
     "@aws-cdk/aws-ec2": "0.0.0",
+    "@aws-cdk/aws-s3": "0.0.0",
+    "@aws-cdk/aws-s3-assets": "0.0.0",
     "@aws-cdk/aws-iam": "0.0.0",
     "@aws-cdk/aws-lambda": "0.0.0",
     "@aws-cdk/aws-sagemaker": "0.0.0",

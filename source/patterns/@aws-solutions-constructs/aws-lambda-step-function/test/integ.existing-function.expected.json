@@ -72,7 +72,7 @@
               "Action": "states:StartExecution",
               "Effect": "Allow",
               "Resource": {
-                "Ref": "testlambdastepfunctionstackStateMachine373C0BB9"
+                "Ref": "testlambdastepfunctionconstructStateMachine3D4830AD"
               }
             }
           ],
@@ -137,22 +137,22 @@
             ]
           }
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "LambdaFunctionServiceRole0C4CDE0B",
             "Arn"
           ]
         },
-        "Runtime": "nodejs10.x",
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "STATE_MACHINE_ARN": {
-              "Ref": "testlambdastepfunctionstackStateMachine373C0BB9"
+              "Ref": "testlambdastepfunctionconstructStateMachine3D4830AD"
             }
           }
         },
+        "Handler": "index.handler",
+        "Runtime": "nodejs10.x",
         "TracingConfig": {
           "Mode": "Active"
         }
@@ -166,16 +166,27 @@
           "rules_to_suppress": [
             {
               "id": "W58",
-              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions."
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+            },
+            {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            },
+            {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients"
             }
           ]
         }
       }
     },
-    "testlambdastepfunctionstackStateMachineLogGroup42D53E65": {
+    "testlambdastepfunctionconstructStateMachineLogGroup08972C3B": {
       "Type": "AWS::Logs::LogGroup",
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
+      "Properties": {
+        "LogGroupName": "/aws/vendedlogs/states/testlambdastepfunctionstacktestlambdastepfunctionconstructstatemachinelog2d6f164db466"
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
@@ -191,7 +202,7 @@
         }
       }
     },
-    "testlambdastepfunctionstackStateMachineRoleF5EE1C78": {
+    "testlambdastepfunctionconstructStateMachineRoleC3777C02": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -219,7 +230,7 @@
         }
       }
     },
-    "testlambdastepfunctionstackStateMachineRoleDefaultPolicy1FFD5CB1": {
+    "testlambdastepfunctionconstructStateMachineRoleDefaultPolicy226F91C6": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -266,10 +277,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testlambdastepfunctionstackStateMachineRoleDefaultPolicy1FFD5CB1",
+        "PolicyName": "testlambdastepfunctionconstructStateMachineRoleDefaultPolicy226F91C6",
         "Roles": [
           {
-            "Ref": "testlambdastepfunctionstackStateMachineRoleF5EE1C78"
+            "Ref": "testlambdastepfunctionconstructStateMachineRoleC3777C02"
           }
         ]
       },
@@ -284,12 +295,12 @@
         }
       }
     },
-    "testlambdastepfunctionstackStateMachine373C0BB9": {
+    "testlambdastepfunctionconstructStateMachine3D4830AD": {
       "Type": "AWS::StepFunctions::StateMachine",
       "Properties": {
         "RoleArn": {
           "Fn::GetAtt": [
-            "testlambdastepfunctionstackStateMachineRoleF5EE1C78",
+            "testlambdastepfunctionconstructStateMachineRoleC3777C02",
             "Arn"
           ]
         },
@@ -300,7 +311,7 @@
               "CloudWatchLogsLogGroup": {
                 "LogGroupArn": {
                   "Fn::GetAtt": [
-                    "testlambdastepfunctionstackStateMachineLogGroup42D53E65",
+                    "testlambdastepfunctionconstructStateMachineLogGroup08972C3B",
                     "Arn"
                   ]
                 }
@@ -311,11 +322,11 @@
         }
       },
       "DependsOn": [
-        "testlambdastepfunctionstackStateMachineRoleDefaultPolicy1FFD5CB1",
-        "testlambdastepfunctionstackStateMachineRoleF5EE1C78"
+        "testlambdastepfunctionconstructStateMachineRoleDefaultPolicy226F91C6",
+        "testlambdastepfunctionconstructStateMachineRoleC3777C02"
       ]
     },
-    "testlambdastepfunctionstackExecutionFailedAlarm15D73A68": {
+    "testlambdastepfunctionconstructExecutionFailedAlarmC55FFDEE": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -325,7 +336,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "testlambdastepfunctionstackStateMachine373C0BB9"
+              "Ref": "testlambdastepfunctionconstructStateMachine3D4830AD"
             }
           }
         ],
@@ -336,7 +347,7 @@
         "Threshold": 1
       }
     },
-    "testlambdastepfunctionstackExecutionThrottledAlarmB7EC1213": {
+    "testlambdastepfunctionconstructExecutionThrottledAlarm8C5110D9": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -346,7 +357,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "testlambdastepfunctionstackStateMachine373C0BB9"
+              "Ref": "testlambdastepfunctionconstructStateMachine3D4830AD"
             }
           }
         ],
@@ -357,7 +368,7 @@
         "Threshold": 1
       }
     },
-    "testlambdastepfunctionstackExecutionAbortedAlarmFF10BB21": {
+    "testlambdastepfunctionconstructExecutionAbortedAlarmC2BA974A": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -367,7 +378,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "testlambdastepfunctionstackStateMachine373C0BB9"
+              "Ref": "testlambdastepfunctionconstructStateMachine3D4830AD"
             }
           }
         ],

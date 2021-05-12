@@ -536,10 +536,12 @@ Object {
       "Type": "AWS::IAM::Policy",
     },
     "apigatewaysqsdeadLetterQueue25B510FA": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "apigatewaysqsdeadLetterQueuePolicy55247071": Object {
       "Properties": Object {
@@ -611,6 +613,7 @@ Object {
       "Type": "AWS::SQS::QueuePolicy",
     },
     "apigatewaysqsqueueE186B895": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
         "RedrivePolicy": Object {
@@ -624,6 +627,7 @@ Object {
         },
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "apigatewaysqsqueuePolicy2A16DE42": Object {
       "Properties": Object {
@@ -1045,10 +1049,12 @@ Object {
       "Type": "AWS::IAM::Policy",
     },
     "apigatewaysqsdeadLetterQueue25B510FA": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "apigatewaysqsdeadLetterQueuePolicy55247071": Object {
       "Properties": Object {
@@ -1120,6 +1126,7 @@ Object {
       "Type": "AWS::SQS::QueuePolicy",
     },
     "apigatewaysqsqueueE186B895": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
         "RedrivePolicy": Object {
@@ -1133,6 +1140,7 @@ Object {
         },
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "apigatewaysqsqueuePolicy2A16DE42": Object {
       "Properties": Object {
@@ -1554,10 +1562,12 @@ Object {
       "Type": "AWS::IAM::Policy",
     },
     "apigatewaysqsqueueE186B895": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "apigatewaysqsqueuePolicy2A16DE42": Object {
       "Properties": Object {
@@ -1979,10 +1989,12 @@ Object {
       "Type": "AWS::IAM::Policy",
     },
     "apigatewaysqsdeadLetterQueue25B510FA": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "apigatewaysqsdeadLetterQueuePolicy55247071": Object {
       "Properties": Object {
@@ -2054,6 +2066,7 @@ Object {
       "Type": "AWS::SQS::QueuePolicy",
     },
     "apigatewaysqsqueueE186B895": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
         "RedrivePolicy": Object {
@@ -2067,6 +2080,7 @@ Object {
         },
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "apigatewaysqsqueuePolicy2A16DE42": Object {
       "Properties": Object {
@@ -2488,10 +2502,12 @@ Object {
       "Type": "AWS::IAM::Policy",
     },
     "apigatewaysqsdeadLetterQueue25B510FA": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "apigatewaysqsdeadLetterQueuePolicy55247071": Object {
       "Properties": Object {
@@ -2563,6 +2579,7 @@ Object {
       "Type": "AWS::SQS::QueuePolicy",
     },
     "apigatewaysqsqueueE186B895": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
         "RedrivePolicy": Object {
@@ -2576,6 +2593,7 @@ Object {
         },
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "apigatewaysqsqueuePolicy2A16DE42": Object {
       "Properties": Object {

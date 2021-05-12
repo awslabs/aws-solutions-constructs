@@ -56,10 +56,12 @@ Object {
       "UpdateReplacePolicy": "Retain",
     },
     "deadLetterQueue3F848E28": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "deadLetterQueuePolicy14A9D269": Object {
       "Properties": Object {
@@ -131,6 +133,7 @@ Object {
       "Type": "AWS::SQS::QueuePolicy",
     },
     "primaryqueue045A5712": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": Object {
           "Fn::GetAtt": Array [
@@ -150,6 +153,7 @@ Object {
         },
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "primaryqueuePolicy3A8A9471": Object {
       "Properties": Object {
@@ -280,10 +284,12 @@ Object {
       "UpdateReplacePolicy": "Retain",
     },
     "deadLetterQueue3F848E28": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "deadLetterQueuePolicy14A9D269": Object {
       "Properties": Object {
@@ -355,6 +361,7 @@ Object {
       "Type": "AWS::SQS::QueuePolicy",
     },
     "primaryqueue045A5712": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": Object {
           "Fn::GetAtt": Array [
@@ -374,6 +381,7 @@ Object {
         },
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "primaryqueuePolicy3A8A9471": Object {
       "Properties": Object {
@@ -504,6 +512,7 @@ Object {
       "UpdateReplacePolicy": "Retain",
     },
     "primaryqueue045A5712": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": Object {
           "Fn::GetAtt": Array [
@@ -514,6 +523,7 @@ Object {
         "QueueName": "custom-queue-props",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "primaryqueuePolicy3A8A9471": Object {
       "Properties": Object {
@@ -644,6 +654,7 @@ Object {
       "UpdateReplacePolicy": "Retain",
     },
     "existingqueue03D57A53": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": Object {
           "Fn::GetAtt": Array [
@@ -654,6 +665,7 @@ Object {
         "QueueName": "existing-queue",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "existingqueuePolicy8BCB024D": Object {
       "Properties": Object {
@@ -732,11 +744,13 @@ exports[`Test deployment without imported encryption key 1`] = `
 Object {
   "Resources": Object {
     "existingqueue03D57A53": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
         "QueueName": "existing-queue",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "existingqueuePolicy8BCB024D": Object {
       "Properties": Object {
@@ -815,11 +829,13 @@ exports[`Test existingQueueObj 1`] = `
 Object {
   "Resources": Object {
     "existingqueue03D57A53": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
         "QueueName": "existing-queue",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "existingqueuePolicy8BCB024D": Object {
       "Properties": Object {
@@ -898,10 +914,12 @@ exports[`Test minimal deployment with no properties 1`] = `
 Object {
   "Resources": Object {
     "primaryqueue045A5712": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "primaryqueuePolicy3A8A9471": Object {
       "Properties": Object {

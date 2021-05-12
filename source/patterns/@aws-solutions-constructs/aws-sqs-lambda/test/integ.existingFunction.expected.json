@@ -147,19 +147,19 @@
             ]
           }
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "LambdaFunctionServiceRole0C4CDE0B",
             "Arn"
           ]
         },
-        "Runtime": "nodejs10.x",
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
           }
         },
+        "Handler": "index.handler",
+        "Runtime": "nodejs10.x",
         "TracingConfig": {
           "Mode": "Active"
         }
@@ -173,7 +173,15 @@
           "rules_to_suppress": [
             {
               "id": "W58",
-              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions."
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+            },
+            {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            },
+            {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients"
             }
           ]
         }
@@ -182,14 +190,14 @@
     "LambdaFunctionSqsEventSourcetestsqslambdaqueue0C6435537BE28DB1": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
+        "FunctionName": {
+          "Ref": "LambdaFunctionBF21E41F"
+        },
         "EventSourceArn": {
           "Fn::GetAtt": [
             "testsqslambdaqueue601203B8",
             "Arn"
           ]
-        },
-        "FunctionName": {
-          "Ref": "LambdaFunctionBF21E41F"
         }
       }
     },
@@ -197,7 +205,9 @@
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": "alias/aws/sqs"
-      }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "testsqslambdadeadLetterQueuePolicy8C08D1A5": {
       "Type": "AWS::SQS::QueuePolicy",
@@ -281,7 +291,9 @@
           },
           "maxReceiveCount": 3
         }
-      }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "testsqslambdaqueuePolicy29B871D4": {
       "Type": "AWS::SQS::QueuePolicy",

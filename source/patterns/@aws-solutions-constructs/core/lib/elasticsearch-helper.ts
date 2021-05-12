@@ -77,6 +77,10 @@ export function buildElasticSearch(scope: cdk.Construct, domainName: string,
       rules_to_suppress: [{
         id: 'W28',
         reason: `The ES Domain is passed dynamically as as parameter and explicitly specified to ensure that IAM policies are configured to lockdown access to this specific ES instance only`
+      },
+      {
+        id: 'W90',
+        reason: `This is not a rule for the general case, just for specific use cases/industries`
       }]
     }
   };
@@ -122,7 +126,7 @@ export function buildElasticSearchCWAlarms(scope: cdk.Construct): cloudwatch.Ala
       namespace: 'AWS/ES',
       metricName: 'FreeStorageSpace'
     }),
-    threshold: 2000,
+    threshold: 20000,
     evaluationPeriods: 1,
     statistic: 'Minimum',
     period: cdk.Duration.seconds(60),

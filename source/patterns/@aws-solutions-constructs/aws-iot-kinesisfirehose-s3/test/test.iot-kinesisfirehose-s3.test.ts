@@ -14,6 +14,7 @@
 import { SynthUtils } from '@aws-cdk/assert';
 import { IotToKinesisFirehoseToS3, IotToKinesisFirehoseToS3Props } from "../lib";
 import * as cdk from "@aws-cdk/core";
+import * as s3 from "@aws-cdk/aws-s3";
 import '@aws-cdk/assert/jest';
 
 function deploy(stack: cdk.Stack) {
@@ -25,6 +26,9 @@ function deploy(stack: cdk.Stack) {
         sql: "SELECT * FROM 'connectedcar/telemetry/#'",
         actions: []
       }
+    },
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY
     }
   };
 
@@ -126,4 +130,34 @@ test('check properties', () => {
   expect(construct.kinesisFirehoseRole !== null);
   expect(construct.kinesisFirehoseLogGroup !== null);
   expect(construct.s3LoggingBucket !== null);
+});
+
+// --------------------------------------------------------------
+// Test bad call with existingBucket and bucketProps
+// --------------------------------------------------------------
+test("Test bad call with existingBucket and bucketProps", () => {
+  // Stack
+  const stack = new cdk.Stack();
+
+  const testBucket = new s3.Bucket(stack, 'test-bucket', {});
+
+  const app = () => {
+    // Helper declaration
+    new IotToKinesisFirehoseToS3(stack, "bad-s3-args", {
+      iotTopicRuleProps: {
+        topicRulePayload: {
+          ruleDisabled: false,
+          description: "Persistent storage of connected vehicle telematics data",
+          sql: "SELECT * FROM 'connectedcar/telemetry/#'",
+          actions: []
+        }
+      },
+      existingBucketObj: testBucket,
+      bucketProps: {
+        removalPolicy: cdk.RemovalPolicy.DESTROY
+      },
+    });
+  };
+  // Assertion
+  expect(app).toThrowError();
 });

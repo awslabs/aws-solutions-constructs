@@ -14,6 +14,7 @@
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as defaults from '@aws-solutions-constructs/core';
+import * as ec2 from "@aws-cdk/aws-ec2";
 import { Construct } from '@aws-cdk/core';
 
 /**
@@ -25,37 +26,58 @@ export interface LambdaToDynamoDBProps {
    *
    * @default - None
    */
-  readonly existingLambdaObj?: lambda.Function,
+  readonly existingLambdaObj?: lambda.Function;
   /**
    * User provided props to override the default props for the Lambda function.
    *
    * @default - Default props are used
    */
-  readonly lambdaFunctionProps?: lambda.FunctionProps,
+  readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
    * Optional user provided props to override the default props
    *
    * @default - Default props are used
    */
-  readonly dynamoTableProps?: dynamodb.TableProps,
+  readonly dynamoTableProps?: dynamodb.TableProps;
   /**
    * Existing instance of DynamoDB table object, If this is set then the dynamoTableProps is ignored
    *
    * @default - None
    */
-  readonly existingTableObj?: dynamodb.Table,
+  readonly existingTableObj?: dynamodb.Table;
   /**
    * Optional table permissions to grant to the Lambda function.
    * One of the following may be specified: "All", "Read", "ReadWrite", "Write".
    *
    * @default - Read/write access is given to the Lambda function if no value is specified.
    */
-  readonly tablePermissions?: string
+  readonly tablePermissions?: string;
+  /**
+   * Optional Name for the DynamoDB table environment variable set for the Lambda function.
+   *
+   * @default - None
+   */
+  readonly tableEnvironmentVariableName?: string;
+  /**
+   * An existing VPC for the construct to use (construct will NOT create a new VPC in this case)
+   */
+  readonly existingVpc?: ec2.IVpc;
+  /**
+   * Properties to override default properties if deployVpc is true
+   */
+  readonly vpcProps?: ec2.VpcProps;
+  /**
+   * Whether to deploy a new VPC
+   *
+   * @default - false
+   */
+  readonly deployVpc?: boolean;
 }
 
 export class LambdaToDynamoDB extends Construct {
   public readonly lambdaFunction: lambda.Function;
   public readonly dynamoTable: dynamodb.Table;
+  public readonly vpc?: ec2.IVpc;
 
   /**
    * @summary Constructs a new instance of the LambdaToDynamoDB class.
@@ -68,9 +90,28 @@ export class LambdaToDynamoDB extends Construct {
   constructor(scope: Construct, id: string, props: LambdaToDynamoDBProps) {
     super(scope, id);
 
+    if (props.deployVpc || props.existingVpc) {
+      if (props.deployVpc && props.existingVpc) {
+        throw new Error("More than 1 VPC specified in the properties");
+      }
+
+      this.vpc = defaults.buildVpc(scope, {
+        defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
+        existingVpc: props.existingVpc,
+        userVpcProps: props.vpcProps,
+        constructVpcProps: {
+          enableDnsHostnames: true,
+          enableDnsSupport: true,
+        },
+      });
+
+      defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.DYNAMODB);
+    }
+
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,
-      lambdaFunctionProps: props.lambdaFunctionProps
+      lambdaFunctionProps: props.lambdaFunctionProps,
+      vpc: this.vpc
     });
 
     this.dynamoTable = defaults.buildDynamoDBTable(this, {
@@ -78,7 +119,9 @@ export class LambdaToDynamoDB extends Construct {
       existingTableObj: props.existingTableObj
     });
 
-    this.lambdaFunction.addEnvironment('DDB_TABLE_NAME', this.dynamoTable.tableName);
+    // Configure environment variables
+    const tableEnvironmentVariableName = props.tableEnvironmentVariableName || 'DDB_TABLE_NAME';
+    this.lambdaFunction.addEnvironment(tableEnvironmentVariableName, this.dynamoTable.tableName);
 
     // Add the requested or default table permissions
     if (props.tablePermissions) {

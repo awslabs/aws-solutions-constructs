@@ -193,6 +193,7 @@ Object {
       "Type": "AWS::IAM::Policy",
     },
     "CognitoUserPool53E37E69": Object {
+      "DeletionPolicy": "Retain",
       "Properties": Object {
         "AccountRecoverySetting": Object {
           "RecoveryMechanisms": Array [
@@ -223,6 +224,7 @@ Object {
         },
       },
       "Type": "AWS::Cognito::UserPool",
+      "UpdateReplacePolicy": "Retain",
     },
     "CognitoUserPoolClient5AB59AE4": Object {
       "Properties": Object {
@@ -258,6 +260,10 @@ Object {
             Object {
               "id": "W28",
               "reason": "The ES Domain is passed dynamically as as parameter and explicitly specified to ensure that IAM policies are configured to lockdown access to this specific ES instance only",
+            },
+            Object {
+              "id": "W90",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries",
             },
           ],
         },

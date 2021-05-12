@@ -12,7 +12,7 @@
  */
 
 import { SynthUtils, expect as expectCDK, haveResource, ResourcePart } from '@aws-cdk/assert';
-import { Duration, Stack } from '@aws-cdk/core';
+import { Duration, RemovalPolicy, Stack } from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as s3n from '@aws-cdk/aws-s3-notifications';
 import * as sqs from '@aws-cdk/aws-sqs';
@@ -248,6 +248,18 @@ test('s3 bucket versioning turned off', () => {
   }));
 });
 
+test('s3 bucket and logging bucket withe delete removal policy', () => {
+  const stack = new Stack();
+
+  defaults.buildS3Bucket(stack, {
+    bucketProps: {
+      removalPolicy: RemovalPolicy.DESTROY,
+    }
+  });
+
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
 test('s3 bucket versioning turned on', () => {
   const stack = new Stack();
 
@@ -313,7 +325,15 @@ test('Suppress cfn-nag warning for s3 bucket notification', () => {
         rules_to_suppress: [
           {
             id: "W58",
-            reason: "Lambda function has permission to write CloudWatch Logs via AWSLambdaBasicExecutionRole policy attached to the lambda role"
+            reason: "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+          },
+          {
+            id: 'W89',
+            reason: `This is not a rule for the general case, just for specific use cases/industries`
+          },
+          {
+            id: 'W92',
+            reason: `Impossible for us to define the correct concurrency for clients`
           }
         ]
       }

@@ -59,13 +59,13 @@ test('check properties', () => {
 
   const construct: LambdaToElasticSearchAndKibana = deployNewFunc(stack);
 
-  expect(construct.lambdaFunction !== null);
-  expect(construct.elasticsearchDomain !== null);
-  expect(construct.identityPool !== null);
-  expect(construct.userPool !== null);
-  expect(construct.userPoolClient !== null);
-  expect(construct.cloudwatchAlarms !== null);
-  expect(construct.elasticsearchRole !== null);
+  expect(construct.lambdaFunction).toBeDefined();
+  expect(construct.elasticsearchDomain).toBeDefined();
+  expect(construct.identityPool).toBeDefined();
+  expect(construct.userPool).toBeDefined();
+  expect(construct.userPoolClient).toBeDefined();
+  expect(construct.cloudwatchAlarms).toBeDefined();
+  expect(construct.elasticsearchRole).toBeDefined();
 });
 
 test('check exception for Missing existingObj from props for deploy = false', () => {
@@ -97,11 +97,61 @@ test('check properties with no CW Alarms ', () => {
 
   const construct = new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-stack', props);
 
-  expect(construct.lambdaFunction !== null);
-  expect(construct.elasticsearchDomain !== null);
-  expect(construct.identityPool !== null);
-  expect(construct.userPool !== null);
-  expect(construct.userPoolClient !== null);
-  expect(construct.cloudwatchAlarms === null);
-  expect(construct.elasticsearchRole !== null);
+  expect(construct.lambdaFunction).toBeDefined();
+  expect(construct.elasticsearchDomain).toBeDefined();
+  expect(construct.identityPool).toBeDefined();
+  expect(construct.userPool).toBeDefined();
+  expect(construct.userPoolClient).toBeDefined();
+  expect(construct.cloudwatchAlarms).toBeUndefined();
+  expect(construct.elasticsearchRole).toBeDefined();
+});
+
+test('check lambda function ustom environment variable', () => {
+  const stack = new cdk.Stack();
+  const props: LambdaToElasticSearchAndKibanaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler'
+    },
+    domainName: 'test-domain',
+    domainEndpointEnvironmentVariableName: 'CUSTOM_DOMAIN_ENDPOINT'
+  };
+
+  new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-stack', props);
+
+  expect(stack).toHaveResource('AWS::Lambda::Function', {
+    Handler: 'index.handler',
+    Runtime: 'nodejs14.x',
+    Environment: {
+      Variables: {
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+        CUSTOM_DOMAIN_ENDPOINT: {
+          'Fn::GetAtt': [
+            'testlambdaelasticsearchstackElasticsearchDomain2DE7011B',
+            'DomainEndpoint'
+          ]
+        }
+      }
+    }
+  });
+});
+
+test('check override cognito domain name with provided cognito domain name', () => {
+  const stack = new cdk.Stack();
+  const props: LambdaToElasticSearchAndKibanaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler'
+    },
+    domainName: 'test-domain',
+    cognitoDomainName: 'test-cognito-domain'
+  };
+
+  new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-stack', props);
+
+  expect(stack).toHaveResource('AWS::Cognito::UserPoolDomain', {
+    Domain: 'test-cognito-domain'
+  });
 });

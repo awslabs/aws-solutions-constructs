@@ -27,32 +27,32 @@ export interface LambdaToS3Props {
    *
    * @default - None
    */
-  readonly existingLambdaObj?: lambda.Function,
+  readonly existingLambdaObj?: lambda.Function;
   /**
    * User provided props to override the default props for the Lambda function.
    *
    * @default - Default properties are used.
    */
-  readonly lambdaFunctionProps?: lambda.FunctionProps,
+  readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
    * Existing instance of S3 Bucket object, if this is set then the bucketProps is ignored.
    *
    * @default - None
    */
-  readonly existingBucketObj?: s3.IBucket,
+  readonly existingBucketObj?: s3.IBucket;
   /**
    * User provided props to override the default props for the S3 Bucket.
    *
    * @default - Default props are used
    */
-  readonly bucketProps?: s3.BucketProps,
+  readonly bucketProps?: s3.BucketProps;
   /**
    * Optional bucket permissions to grant to the Lambda function.
    * One or more of the following may be specified: "Delete", "Put", "Read", "ReadWrite", "Write".
    *
    * @default - Read/write access is given to the Lambda function if no value is specified.
    */
-  readonly bucketPermissions?: string[],
+  readonly bucketPermissions?: string[];
   /**
    * An existing VPC for the construct to use (construct will NOT create a new VPC in this case)
    */
@@ -67,6 +67,12 @@ export interface LambdaToS3Props {
    * @default - false
    */
   readonly deployVpc?: boolean;
+  /**
+   * Optional Name for the S3 bucket environment variable set for the Lambda function.
+   *
+   * @default - None
+   */
+  readonly bucketEnvironmentVariableName?: string;
 }
 
 /**
@@ -89,6 +95,10 @@ export class LambdaToS3 extends Construct {
     constructor(scope: Construct, id: string, props: LambdaToS3Props) {
       super(scope, id);
       let bucket: s3.IBucket;
+
+      if (props.existingBucketObj && props.bucketProps) {
+        throw new Error('Cannot specify both bucket properties and an existing bucket');
+      }
 
       if (props.deployVpc || props.existingVpc) {
         if (props.deployVpc && props.existingVpc) {
@@ -126,7 +136,8 @@ export class LambdaToS3 extends Construct {
       }
 
       // Configure environment variables
-      this.lambdaFunction.addEnvironment('S3_BUCKET_NAME', bucket.bucketName);
+      const bucketEnvironmentVariableName = props.bucketEnvironmentVariableName || 'S3_BUCKET_NAME';
+      this.lambdaFunction.addEnvironment(bucketEnvironmentVariableName, bucket.bucketName);
 
       // Add the requested or default bucket permissions
       if (props.bucketPermissions) {

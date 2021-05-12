@@ -130,14 +130,12 @@
             ]
           }
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "testlambdaelasticsearchkibanaLambdaFunctionServiceRole3AFFEAA2",
             "Arn"
           ]
         },
-        "Runtime": "nodejs12.x",
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
@@ -149,6 +147,8 @@
             }
           }
         },
+        "Handler": "index.handler",
+        "Runtime": "nodejs12.x",
         "TracingConfig": {
           "Mode": "Active"
         }
@@ -162,7 +162,15 @@
           "rules_to_suppress": [
             {
               "id": "W58",
-              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions."
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+            },
+            {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            },
+            {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients"
             }
           ]
         }
@@ -198,7 +206,9 @@
           "EmailSubject": "Verify your new account",
           "SmsMessage": "The verification code to your new account is {####}"
         }
-      }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
     },
     "testlambdaelasticsearchkibanaCognitoUserPoolClient8F70A2AA": {
       "Type": "AWS::Cognito::UserPoolClient",
@@ -249,7 +259,7 @@
     "testlambdaelasticsearchkibanaUserPoolDomainB9BDF063": {
       "Type": "AWS::Cognito::UserPoolDomain",
       "Properties": {
-        "Domain": "myconstructsdomain",
+        "Domain": "noargumentstest",
         "UserPoolId": {
           "Ref": "testlambdaelasticsearchkibanaCognitoUserPool9537802B"
         }
@@ -306,7 +316,7 @@
                         {
                           "Ref": "AWS::AccountId"
                         },
-                        ":domain/myconstructsdomain/*"
+                        ":domain/noargumentstest/*"
                       ]
                     ]
                   }
@@ -411,7 +421,7 @@
                       {
                         "Ref": "AWS::AccountId"
                       },
-                      ":domain/myconstructsdomain"
+                      ":domain/noargumentstest"
                     ]
                   ]
                 }
@@ -479,7 +489,7 @@
                     {
                       "Ref": "AWS::AccountId"
                     },
-                    ":domain/myconstructsdomain/*"
+                    ":domain/noargumentstest/*"
                   ]
                 ]
               }
@@ -502,7 +512,7 @@
             "Ref": "testlambdaelasticsearchkibanaCognitoUserPool9537802B"
           }
         },
-        "DomainName": "myconstructsdomain",
+        "DomainName": "noargumentstest",
         "EBSOptions": {
           "EBSEnabled": true,
           "VolumeSize": 10
@@ -533,6 +543,10 @@
             {
               "id": "W28",
               "reason": "The ES Domain is passed dynamically as as parameter and explicitly specified to ensure that IAM policies are configured to lockdown access to this specific ES instance only"
+            },
+            {
+              "id": "W90",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries"
             }
           ]
         }
@@ -574,7 +588,7 @@
         "Namespace": "AWS/ES",
         "Period": 60,
         "Statistic": "Minimum",
-        "Threshold": 2000
+        "Threshold": 20000
       }
     },
     "testlambdaelasticsearchkibanaIndexWritesBlockedTooHighAlarmB8C0E99C": {

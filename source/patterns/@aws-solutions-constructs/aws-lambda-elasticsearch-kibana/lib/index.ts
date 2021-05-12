@@ -29,37 +29,43 @@ export interface LambdaToElasticSearchAndKibanaProps {
    *
    * @default - None
    */
-  readonly existingLambdaObj?: lambda.Function,
+  readonly existingLambdaObj?: lambda.Function;
   /**
    * User provided props to override the default props for the Lambda function.
    *
    * @default - Default props are used
    */
-  readonly lambdaFunctionProps?: lambda.FunctionProps
+  readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
    * Optional user provided props to override the default props for the Elasticsearch Service.
    *
    * @default - Default props are used
    */
-  readonly esDomainProps?: elasticsearch.CfnDomainProps,
+  readonly esDomainProps?: elasticsearch.CfnDomainProps;
   /**
    * Cognito & ES Domain Name
    *
    * @default - None
    */
-  readonly domainName: string,
+  readonly domainName: string;
   /**
    * Optional Cognito Domain Name, if provided it will be used for Cognito Domain, and domainName will be used for the Elasticsearch Domain
    *
    * @default - None
    */
-  readonly cognitoDomainName?: string,
+  readonly cognitoDomainName?: string;
   /**
    * Whether to create recommended CloudWatch alarms
    *
    * @default - Alarms are created
    */
-  readonly createCloudWatchAlarms?: boolean
+  readonly createCloudWatchAlarms?: boolean;
+  /**
+   * Optional Name for the ElasticSearch domain endpoint environment variable set for the Lambda function.
+   *
+   * @default - None
+   */
+  readonly domainEndpointEnvironmentVariableName?: string;
 }
 
 export class LambdaToElasticSearchAndKibana extends Construct {
@@ -113,7 +119,8 @@ export class LambdaToElasticSearchAndKibana extends Construct {
       serviceRoleARN: lambdaFunctionRoleARN}, props.esDomainProps);
 
     // Add ES Domain to lambda envrionment variable
-    this.lambdaFunction.addEnvironment('DOMAIN_ENDPOINT', this.elasticsearchDomain.attrDomainEndpoint);
+    const domainEndpointEnvironmentVariableName = props.domainEndpointEnvironmentVariableName || 'DOMAIN_ENDPOINT';
+    this.lambdaFunction.addEnvironment(domainEndpointEnvironmentVariableName, this.elasticsearchDomain.attrDomainEndpoint);
 
     if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
       // Deploy best practices CW Alarms for ES

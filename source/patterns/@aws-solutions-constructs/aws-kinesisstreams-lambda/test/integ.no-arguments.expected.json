@@ -182,19 +182,19 @@
             ]
           }
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "testkinesisstreamslambdaLambdaFunctionServiceRoleAD98836E",
             "Arn"
           ]
         },
-        "Runtime": "nodejs10.x",
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
           }
         },
+        "Handler": "index.handler",
+        "Runtime": "nodejs10.x",
         "TracingConfig": {
           "Mode": "Active"
         }
@@ -208,7 +208,15 @@
           "rules_to_suppress": [
             {
               "id": "W58",
-              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions."
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+            },
+            {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            },
+            {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients"
             }
           ]
         }
@@ -217,12 +225,6 @@
     "testkinesisstreamslambdaLambdaFunctionKinesisEventSourcetestkinesisstreamslambdaKinesisStream3F6E86FB8D4996E6": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
-        "EventSourceArn": {
-          "Fn::GetAtt": [
-            "testkinesisstreamslambdaKinesisStream374D6D56",
-            "Arn"
-          ]
-        },
         "FunctionName": {
           "Ref": "testkinesisstreamslambdaLambdaFunctionB9A91CA7"
         },
@@ -238,6 +240,12 @@
             }
           }
         },
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "testkinesisstreamslambdaKinesisStream374D6D56",
+            "Arn"
+          ]
+        },
         "MaximumRecordAgeInSeconds": 86400,
         "MaximumRetryAttempts": 5,
         "StartingPosition": "TRIM_HORIZON"
@@ -247,7 +255,9 @@
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": "alias/aws/sqs"
-      }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "testkinesisstreamslambdaSqsDlqQueuePolicy670A2EC7": {
       "Type": "AWS::SQS::QueuePolicy",

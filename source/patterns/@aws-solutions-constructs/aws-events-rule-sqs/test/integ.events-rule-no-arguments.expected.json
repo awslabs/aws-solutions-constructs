@@ -4,7 +4,9 @@
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": "alias/aws/sqs"
-      }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "constructdeadLetterQueuePolicyBA602BC6": {
       "Type": "AWS::SQS::QueuePolicy",
@@ -158,7 +160,9 @@
           },
           "maxReceiveCount": 15
         }
-      }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "constructqueuePolicy5B0256B1": {
       "Type": "AWS::SQS::QueuePolicy",

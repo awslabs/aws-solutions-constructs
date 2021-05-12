@@ -102,8 +102,9 @@ Integration tests perform a few functions in the CDK code base -
 2. Allows for a way to verify if the stacks are still valid CloudFormation templates, as part of an intrusive change.
    This is done by running `yarn integ` which will run `cdk deploy` across all of the integration tests in that package.
    Remember to set up AWS credentials before doing this.
-3. (Optionally) Acts as a way to validate that constructs set up the CloudFormation resources as expected. A successful
-   CloudFormation deployment does not mean that the resources are set up correctly.
+3. Provides a method to validates that constructs deploy successfully. While a successful CloudFormation deployment does not
+   mean that the construct functions correctly, it does protect against problems introduced by drift in the CDK or
+   services themselves.
 
 If you are working on a new feature that is using previously unused CloudFormation resource types, or involves
 configuring resource types across services, you need to write integration tests that use these resource types or
@@ -124,6 +125,18 @@ The steps here are usually AWS CLI commands but they need not be.
 Examples:
 * [integ.deployFunction.ts](https://github.com/awslabs/aws-solutions-constructs/blob/master/source/patterns/%40aws-solutions-constructs/aws-apigateway-lambda/test/integ.deployFunction.ts)
 * [integ.existingFunction.ts](https://github.com/awslabs/aws-solutions-constructs/blob/master/source/patterns/%40aws-solutions-constructs/aws-apigateway-lambda/test/integ.existingFunction.ts)
+
+#### How To Initialize Integration Test .expected Result
+
+Each integration test generates a .expected.json file by actually deploying the construct and extracting the template from the CFN stack. Once you’ve written your integration test, follow these steps to generate these files:
+
+1. In the Docker build container, go to the folder for the construct you are working on (the folder with the package.json file).
+2. Configure the CLI within the Docker container using `aws configure`. You will need an access key with enough privileges to launch everything in
+   your stack and call CloudFormation – admin access is probably the surest way to get this.
+3. Run the commands `npm run build && npm run integ`. The code will be compiled and each integration test stack will
+   be deployed, the template gathered from CloudFormation as the expected result and the stack destroyed. You will see `integ.your-test-name.expected.json` files appear in the project for each test.
+
+The standard `npm run build+lint+test` command will compare the cdk synth output against the .expected.json file. The Solutions Constructs team will run `npm run integ` in each construct periodically to guard against drift and ensure each construct still deploys.
 
 ### Step 4: Commit
 

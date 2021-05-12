@@ -39,6 +39,9 @@ test('test kinesisFirehose override ', () => {
           sizeInMBs: 55
         },
       }
+    },
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
     }
   });
 
@@ -160,4 +163,26 @@ test('Test properties with existing logging S3 bucket', () => {
 
   expect(construct.s3Bucket).not.toEqual(undefined);
   expect(construct.s3LoggingBucket).toEqual(undefined);
+});
+
+// --------------------------------------------------------------
+// Test bad call with existingBucket and bucketProps
+// --------------------------------------------------------------
+test("Test bad call with existingBucket and bucketProps", () => {
+  // Stack
+  const stack = new cdk.Stack();
+
+  const testBucket = new s3.Bucket(stack, 'test-bucket', {});
+
+  const app = () => {
+    // Helper declaration
+    new KinesisStreamsToKinesisFirehoseToS3(stack, "bad-s3-args", {
+      existingBucketObj: testBucket,
+      bucketProps: {
+        removalPolicy: cdk.RemovalPolicy.DESTROY
+      },
+    });
+  };
+  // Assertion
+  expect(app).toThrowError();
 });

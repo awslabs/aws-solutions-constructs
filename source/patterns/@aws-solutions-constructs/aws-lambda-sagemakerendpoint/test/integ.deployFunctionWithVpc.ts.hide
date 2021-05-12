@@ -15,25 +15,20 @@
 import { Stack, Duration, App } from '@aws-cdk/core';
 import { LambdaToSagemakerEndpoint, LambdaToSagemakerEndpointProps } from '../lib';
 import * as lambda from '@aws-cdk/aws-lambda';
-import * as iam from '@aws-cdk/aws-iam';
+import { getSagemakerModel } from './test-helper';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, 'test-lambda-sagemakerendpoint');
 stack.templateOptions.description = 'Integration Test for aws-lambda-sagemakerendpoint';
 
-// Create IAM Role to be assumed by Sagemaker
-const sagemakerRole = new iam.Role(stack, 'SagemakerRole', {
-  assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
-});
-sagemakerRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSageMakerFullAccess'));
+const [containerMap, sourceBucket, modelDeployment] = getSagemakerModel(stack);
 
 const constructProps: LambdaToSagemakerEndpointProps = {
   modelProps: {
-    executionRoleArn: sagemakerRole.roleArn,
     primaryContainer: {
-      image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
-      modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
+      image: containerMap.findInMap(Stack.of(stack).region, "containerArn"),
+      modelDataUrl: sourceBucket.s3UrlForObject("model.tar.gz"),
     },
   },
   deployVpc: true,
@@ -46,7 +41,9 @@ const constructProps: LambdaToSagemakerEndpointProps = {
   },
 };
 
-new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
+const lambdaToSagemakerConstruct = new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
+
+lambdaToSagemakerConstruct.node.addDependency(modelDeployment);
 
 // Synth
 app.synth();

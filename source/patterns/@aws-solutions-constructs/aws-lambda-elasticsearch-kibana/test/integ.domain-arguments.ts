@@ -27,7 +27,7 @@ const lambdaProps: lambda.FunctionProps = {
 };
 
 const esDomain = 'domain-' + Aws.ACCOUNT_ID;
-const cognitoDomain = 'globallyuniquedomain';
+const cognitoDomain = 'domainargumentsdomain';
 
 new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana2', {
   lambdaFunctionProps: lambdaProps,

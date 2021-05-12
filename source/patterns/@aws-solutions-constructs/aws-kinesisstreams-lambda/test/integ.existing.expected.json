@@ -153,29 +153,37 @@
             ]
           }
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "testroleB50A37BE",
             "Arn"
           ]
         },
+        "Handler": "index.handler",
         "Runtime": "nodejs10.x"
       },
       "DependsOn": [
         "testroleDefaultPolicy884631E2",
         "testroleB50A37BE"
-      ]
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            },
+            {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients"
+            }
+          ]
+        }
+      }
     },
     "testfnKinesisEventSourcetestksexistinglambdastackteststream12C1A0467DF707DE": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
-        "EventSourceArn": {
-          "Fn::GetAtt": [
-            "teststream04374A09",
-            "Arn"
-          ]
-        },
         "FunctionName": {
           "Ref": "testfn76BCC25C"
         },
@@ -190,6 +198,12 @@
               ]
             }
           }
+        },
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "teststream04374A09",
+            "Arn"
+          ]
         },
         "MaximumRecordAgeInSeconds": 86400,
         "MaximumRetryAttempts": 500,
@@ -211,7 +225,9 @@
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": "alias/aws/sqs"
-      }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "testkslambdaSqsDlqQueuePolicy48897D8E": {
       "Type": "AWS::SQS::QueuePolicy",

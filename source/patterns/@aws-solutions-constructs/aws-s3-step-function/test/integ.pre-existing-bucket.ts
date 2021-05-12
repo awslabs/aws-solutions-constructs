@@ -12,7 +12,7 @@
  */
 
 /// !cdk-integ *
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { S3ToStepFunction, S3ToStepFunctionProps } from "../lib";
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
 import * as s3 from '@aws-cdk/aws-s3';
@@ -30,8 +30,11 @@ const props: S3ToStepFunctionProps = {
   existingBucketObj: mybucket,
   stateMachineProps: {
     definition: startState
-  }
+  },
+  logGroupProps: {
+    removalPolicy: RemovalPolicy.DESTROY
+  },
 };
 
-new S3ToStepFunction(stack, 'test-s3-step-function-pre-existing-bucket-stack', props);
+new S3ToStepFunction(stack, 'test-s3-step-function-pre-existing-bucket-construct', props);
 app.synth();

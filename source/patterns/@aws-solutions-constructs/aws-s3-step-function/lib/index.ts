@@ -91,6 +91,10 @@ export class S3ToStepFunction extends Construct {
     super(scope, id);
     let bucket: s3.IBucket;
 
+    if (props.existingBucketObj && props.bucketProps) {
+      throw new Error('Cannot specify both bucket properties and an existing bucket');
+    }
+
     if (!props.existingBucketObj) {
       [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
         bucketProps: props.bucketProps
@@ -141,7 +145,7 @@ export class S3ToStepFunction extends Construct {
       };
     }
 
-    const eventsRuleToStepFunction = new EventsRuleToStepFunction(this, 'test-events-rule-step-function-stack', {
+    const eventsRuleToStepFunction = new EventsRuleToStepFunction(this, `${id}-event-rule-step-function-construct`, {
       stateMachineProps: props.stateMachineProps,
       eventRuleProps: _eventRuleProps,
       createCloudWatchAlarms: props.createCloudWatchAlarms,

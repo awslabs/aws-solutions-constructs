@@ -4,6 +4,7 @@ exports[`snapshot test buildUserPool default params 1`] = `
 Object {
   "Resources": Object {
     "CognitoUserPool53E37E69": Object {
+      "DeletionPolicy": "Retain",
       "Properties": Object {
         "AccountRecoverySetting": Object {
           "RecoveryMechanisms": Array [
@@ -34,6 +35,7 @@ Object {
         },
       },
       "Type": "AWS::Cognito::UserPool",
+      "UpdateReplacePolicy": "Retain",
     },
   },
 }
@@ -43,6 +45,7 @@ exports[`snapshot test buildUserPoolClient default params 1`] = `
 Object {
   "Resources": Object {
     "CognitoUserPool53E37E69": Object {
+      "DeletionPolicy": "Retain",
       "Properties": Object {
         "AccountRecoverySetting": Object {
           "RecoveryMechanisms": Array [
@@ -73,6 +76,7 @@ Object {
         },
       },
       "Type": "AWS::Cognito::UserPool",
+      "UpdateReplacePolicy": "Retain",
     },
     "CognitoUserPoolClient5AB59AE4": Object {
       "Properties": Object {

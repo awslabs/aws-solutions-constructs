@@ -13,19 +13,28 @@
 
 // Imports
 import * as s3 from '@aws-cdk/aws-s3';
-import { App, Stack } from '@aws-cdk/core';
+import { App, Stack, RemovalPolicy } from '@aws-cdk/core';
 import { CreateScrapBucket } from '@aws-solutions-constructs/core';
 import { KinesisStreamsToKinesisFirehoseToS3 } from '../lib';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-existing-logging-bucket-firehose-s3-stack');
+const stack = new Stack(app, 'test-existing-logging-bucket-streams-firehose-s3-stack');
 stack.templateOptions.description = 'Integration Test for aws-kinesisstreams-kinesisfirehose-s3';
 
-const existingBucket = CreateScrapBucket(stack, {});
+const existingBucket = CreateScrapBucket(stack, {
+  accessControl: s3.BucketAccessControl.LOG_DELIVERY_WRITE,
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+  }
+});
+
 const myLoggingBucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'myLoggingBucket', existingBucket.bucketName);
-new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-existing-logging-bucket-firehose-s3-stack', {
-  existingLoggingBucketObj: myLoggingBucket
+new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-existing-logging-bucket-streams-firehose-s3-stack', {
+  existingLoggingBucketObj: myLoggingBucket,
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+  }
 });
 
 // Synth

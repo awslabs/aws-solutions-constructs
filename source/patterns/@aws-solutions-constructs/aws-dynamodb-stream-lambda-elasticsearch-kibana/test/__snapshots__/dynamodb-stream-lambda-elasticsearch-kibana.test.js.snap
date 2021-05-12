@@ -56,7 +56,15 @@ Object {
           "rules_to_suppress": Array [
             Object {
               "id": "W58",
-              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions.",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.",
+            },
+            Object {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries",
+            },
+            Object {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients",
             },
           ],
         },
@@ -277,10 +285,12 @@ Object {
       "Type": "AWS::IAM::Policy",
     },
     "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaSqsDlqQueue2AC67B0B": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
       },
       "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
     },
     "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaSqsDlqQueuePolicyEB0A0B8A": Object {
       "Properties": Object {
@@ -593,6 +603,7 @@ Object {
       "Type": "AWS::Cognito::UserPoolClient",
     },
     "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoUserPoolF99F93E5": Object {
+      "DeletionPolicy": "Retain",
       "Properties": Object {
         "AccountRecoverySetting": Object {
           "RecoveryMechanisms": Array [
@@ -623,6 +634,7 @@ Object {
         },
       },
       "Type": "AWS::Cognito::UserPool",
+      "UpdateReplacePolicy": "Retain",
     },
     "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchElasticsearchDomainD539E435": Object {
       "Metadata": Object {
@@ -631,6 +643,10 @@ Object {
             Object {
               "id": "W28",
               "reason": "The ES Domain is passed dynamically as as parameter and explicitly specified to ensure that IAM policies are configured to lockdown access to this specific ES instance only",
+            },
+            Object {
+              "id": "W90",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries",
             },
           ],
         },
@@ -728,7 +744,7 @@ Object {
         "Namespace": "AWS/ES",
         "Period": 60,
         "Statistic": "Minimum",
-        "Threshold": 2000,
+        "Threshold": 20000,
       },
       "Type": "AWS::CloudWatch::Alarm",
     },

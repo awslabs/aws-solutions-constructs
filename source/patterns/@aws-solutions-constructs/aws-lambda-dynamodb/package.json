@@ -55,23 +55,34 @@
   "dependencies": {
     "@aws-cdk/aws-lambda": "0.0.0",
     "@aws-cdk/aws-dynamodb": "0.0.0",
+    "@aws-cdk/aws-ec2": "0.0.0",
     "@aws-cdk/core": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
     "constructs": "^3.2.0"
   },
   "devDependencies": {
     "@aws-cdk/assert": "0.0.0",
-    "@types/jest": "^24.0.23",
+    "@types/jest": "^26.0.22",
     "@types/node": "^10.3.0"
   },
   "jest": {
     "moduleFileExtensions": [
       "js"
+    ],
+    "coverageReporters": [
+      "text",
+      [
+        "lcov",
+        {
+          "projectRoot": "../../../../"
+        }
+      ]
     ]
   },
   "peerDependencies": {
     "@aws-cdk/aws-lambda": "0.0.0",
     "@aws-cdk/aws-dynamodb": "0.0.0",
+    "@aws-cdk/aws-ec2": "0.0.0",
     "@aws-cdk/core": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
     "constructs": "^3.2.0"

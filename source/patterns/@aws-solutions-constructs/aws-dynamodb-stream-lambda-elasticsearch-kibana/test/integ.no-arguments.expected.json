@@ -163,14 +163,12 @@
             ]
           }
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaLambdaFunctionServiceRole7284FB59",
             "Arn"
           ]
         },
-        "Runtime": "nodejs12.x",
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
@@ -182,6 +180,8 @@
             }
           }
         },
+        "Handler": "index.handler",
+        "Runtime": "nodejs12.x",
         "TracingConfig": {
           "Mode": "Active"
         }
@@ -195,7 +195,15 @@
           "rules_to_suppress": [
             {
               "id": "W58",
-              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with more tighter permissions."
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+            },
+            {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            },
+            {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients"
             }
           ]
         }
@@ -204,12 +212,6 @@
     "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaLambdaFunctionDynamoDBEventSourcetestdynamodbstreamlambdaelasticsearchkibanastacktestdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaDynamoTableEF5268D56B07EBC2": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
-        "EventSourceArn": {
-          "Fn::GetAtt": [
-            "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaDynamoTable90CA17D8",
-            "StreamArn"
-          ]
-        },
         "FunctionName": {
           "Ref": "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaLambdaFunctionE4694B84"
         },
@@ -224,6 +226,12 @@
               ]
             }
           }
+        },
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaDynamoTable90CA17D8",
+            "StreamArn"
+          ]
         },
         "MaximumRecordAgeInSeconds": 86400,
         "MaximumRetryAttempts": 500,
@@ -263,7 +271,9 @@
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": "alias/aws/sqs"
-      }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "testdynamodbstreamlambdaelasticsearchkibanaDynamoDBStreamToLambdaSqsDlqQueuePolicyD5959B81": {
       "Type": "AWS::SQS::QueuePolicy",
@@ -364,7 +374,9 @@
           "EmailSubject": "Verify your new account",
           "SmsMessage": "The verification code to your new account is {####}"
         }
-      }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
     },
     "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoUserPoolClientA7156AE5": {
       "Type": "AWS::Cognito::UserPoolClient",
@@ -415,7 +427,7 @@
     "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchUserPoolDomain0A904A18": {
       "Type": "AWS::Cognito::UserPoolDomain",
       "Properties": {
-        "Domain": "myconstructsdomain1",
+        "Domain": "testdomainconstructs",
         "UserPoolId": {
           "Ref": "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoUserPool77221A72"
         }
@@ -472,7 +484,7 @@
                         {
                           "Ref": "AWS::AccountId"
                         },
-                        ":domain/myconstructsdomain1/*"
+                        ":domain/testdomainconstructs/*"
                       ]
                     ]
                   }
@@ -577,7 +589,7 @@
                       {
                         "Ref": "AWS::AccountId"
                       },
-                      ":domain/myconstructsdomain1"
+                      ":domain/testdomainconstructs"
                     ]
                   ]
                 }
@@ -645,7 +657,7 @@
                     {
                       "Ref": "AWS::AccountId"
                     },
-                    ":domain/myconstructsdomain1/*"
+                    ":domain/testdomainconstructs/*"
                   ]
                 ]
               }
@@ -668,7 +680,7 @@
             "Ref": "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchCognitoUserPool77221A72"
           }
         },
-        "DomainName": "myconstructsdomain1",
+        "DomainName": "testdomainconstructs",
         "EBSOptions": {
           "EBSEnabled": true,
           "VolumeSize": 10
@@ -699,6 +711,10 @@
             {
               "id": "W28",
               "reason": "The ES Domain is passed dynamically as as parameter and explicitly specified to ensure that IAM policies are configured to lockdown access to this specific ES instance only"
+            },
+            {
+              "id": "W90",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries"
             }
           ]
         }
@@ -740,7 +756,7 @@
         "Namespace": "AWS/ES",
         "Period": 60,
         "Statistic": "Minimum",
-        "Threshold": 2000
+        "Threshold": 20000
       }
     },
     "testdynamodbstreamlambdaelasticsearchkibanaLambdaToElasticSearchIndexWritesBlockedTooHighAlarmDEF471CE": {

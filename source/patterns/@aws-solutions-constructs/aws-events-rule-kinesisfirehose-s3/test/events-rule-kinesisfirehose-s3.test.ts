@@ -13,6 +13,7 @@
 
 import { SynthUtils } from '@aws-cdk/assert';
 import * as cdk from "@aws-cdk/core";
+import * as s3 from "@aws-cdk/aws-s3";
 import * as events from "@aws-cdk/aws-events";
 import '@aws-cdk/assert/jest';
 import {EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props} from '../lib';
@@ -123,4 +124,30 @@ test('Test property override', () => {
         SizeInMBs: 55
       }
     }});
+});
+
+// --------------------------------------------------------------
+// Test bad call with existingBucket and bucketProps
+// --------------------------------------------------------------
+test("Test bad call with existingBucket and bucketProps", () => {
+  // Stack
+  const stack = new cdk.Stack();
+
+  const testBucket = new s3.Bucket(stack, 'test-bucket', {});
+
+  const app = () => {
+    // Helper declaration
+    new EventsRuleToKinesisFirehoseToS3(stack, "bad-s3-args", {
+      eventRuleProps: {
+        description: 'event rule props',
+        schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+      },
+      existingBucketObj: testBucket,
+      bucketProps: {
+        removalPolicy: cdk.RemovalPolicy.DESTROY
+      },
+    });
+  };
+  // Assertion
+  expect(app).toThrowError();
 });
