@@ -30,8 +30,8 @@ export interface KinesisstreamsToGluejobProps {
    */
   readonly kinesisStreamProps?: StreamProps | any;
   /**
-   * User provides props to override the default props for Glue ETL Jobs. This parameter will be ignored if the
-   * existingGlueJob parameter is set
+   * User provides props to override the default props for Glue ETL Jobs. Providing both this and
+   * existingGlueJob will cause an error.
    *
    * This parameter is defined as `any` to not enforce passing the Glue Job role which is a mandatory parameter
    * for CfnJobProps. If a role is not passed, the construct creates one for you and attaches the appropriate
@@ -41,7 +41,7 @@ export interface KinesisstreamsToGluejobProps {
    */
   readonly glueJobProps?: glue.CfnJobProps | any;
   /**
-   * Existing GlueJob configuration. If this property is provided, any propertiers provided through @glueJobProps is ignored
+   * Existing GlueJob configuration. If this property is provided, any properties provided through @glueJobProps is ignored
    */
   readonly existingGlueJob?: glue.CfnJob;
   /**
@@ -127,6 +127,7 @@ export class KinesisstreamsToGluejob extends Construct {
    */
   constructor(scope: Construct, id: string, props: KinesisstreamsToGluejobProps) {
     super(scope, id);
+    defaults.CheckProps(props);
 
     this.kinesisStream = defaults.buildKinesisStream(this, {
       existingStreamObj: props.existingStreamObj,

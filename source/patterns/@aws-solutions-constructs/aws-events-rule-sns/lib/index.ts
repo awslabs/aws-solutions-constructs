@@ -33,7 +33,7 @@ export interface EventsRuleToSnsProps {
      */
     readonly eventRuleProps: events.RuleProps
     /**
-     * Existing instance of SNS Topic object, if this is set then topicProps is ignored.
+     * Existing instance of SNS Topic object, providing both this and topicProps will cause an error..
      *
      * @default - Default props are used
      */
@@ -74,6 +74,7 @@ export class EventsRuleToSns extends Construct {
      */
     constructor(scope: Construct, id: string, props: EventsRuleToSnsProps) {
       super(scope, id);
+      defaults.CheckProps(props);
 
       let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
       if (props.enableEncryptionWithCustomerManagedKey === undefined ||

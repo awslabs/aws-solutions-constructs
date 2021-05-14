@@ -25,7 +25,7 @@ import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
  */
 export interface LambdaToElasticSearchAndKibanaProps {
   /**
-   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
+   * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
    * @default - None
    */
@@ -87,6 +87,7 @@ export class LambdaToElasticSearchAndKibana extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToElasticSearchAndKibanaProps) {
     super(scope, id);
+    defaults.CheckProps(props);
 
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,

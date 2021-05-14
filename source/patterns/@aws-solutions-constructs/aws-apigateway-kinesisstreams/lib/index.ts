@@ -63,7 +63,7 @@ export interface ApiGatewayToKinesisStreamsProps {
    */
   readonly putRecordsRequestModel?: api.ModelOptions;
   /**
-   * Existing instance of Kinesis Stream, if this is set then kinesisStreamProps is ignored.
+   * Existing instance of Kinesis Stream, providing both this and `kinesisStreamProps` will cause an error.
    *
    * @default - None
    */
@@ -102,6 +102,7 @@ export class ApiGatewayToKinesisStreams extends Construct {
    */
   constructor(scope: Construct, id: string, props: ApiGatewayToKinesisStreamsProps) {
     super(scope, id);
+    defaults.CheckProps(props);
 
     // Setup the Kinesis stream
     this.kinesisStream = defaults.buildKinesisStream(scope, {

@@ -22,7 +22,7 @@ import * as defaults from '@aws-solutions-constructs/core';
  */
 export interface CloudFrontToS3Props {
   /**
-   * Existing instance of S3 Bucket object, if this is set then the bucketProps is ignored.
+   * Existing instance of S3 Bucket object, providing both this and `bucketProps` will cause an error.
    *
    * @default - None
    */
@@ -65,6 +65,8 @@ export class CloudFrontToS3 extends Construct {
      */
     constructor(scope: Construct, id: string, props: CloudFrontToS3Props) {
       super(scope, id);
+      defaults.CheckProps(props);
+
       let bucket: s3.Bucket;
 
       if (props.existingBucketObj && props.bucketProps) {

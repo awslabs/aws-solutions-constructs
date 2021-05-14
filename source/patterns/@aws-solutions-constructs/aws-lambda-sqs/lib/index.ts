@@ -23,7 +23,7 @@ import { Construct } from "@aws-cdk/core";
  */
 export interface LambdaToSqsProps {
   /**
-   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
+   * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
    * @default - None
    */
@@ -35,7 +35,7 @@ export interface LambdaToSqsProps {
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
-   * Existing instance of SQS queue object, if this is set then queueProps is ignored.
+   * Existing instance of SQS queue object, Providing both this and queueProps will cause an error.
    *
    * @default - Default props are used
    */
@@ -111,6 +111,7 @@ export class LambdaToSqs extends Construct {
      */
     constructor(scope: Construct, id: string, props: LambdaToSqsProps) {
       super(scope, id);
+      defaults.CheckProps(props);
 
       if (props.deployVpc || props.existingVpc) {
         if (props.deployVpc && props.existingVpc) {

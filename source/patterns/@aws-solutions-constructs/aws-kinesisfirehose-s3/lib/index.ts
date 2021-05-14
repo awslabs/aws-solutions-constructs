@@ -33,7 +33,7 @@ export interface KinesisFirehoseToS3Props {
   readonly bucketProps?: s3.BucketProps;
   /**
    * Optional existing instance of S3 Bucket,
-   * if this is set then bucketProps and existingLoggingBucketObj are ignored.
+   * providing both this and bucketProps will cause an error. Providing both this and bucketProps will cause an error.
    *
    * @default - None
    */
@@ -75,6 +75,7 @@ export class KinesisFirehoseToS3 extends Construct {
    */
   constructor(scope: Construct, id: string, props: KinesisFirehoseToS3Props) {
     super(scope, id);
+    defaults.CheckProps(props);
 
     let bucket: s3.IBucket;
 

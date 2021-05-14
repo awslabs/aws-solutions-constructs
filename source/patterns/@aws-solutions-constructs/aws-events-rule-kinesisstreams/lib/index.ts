@@ -30,7 +30,7 @@ export interface EventsRuleToKinesisStreamsProps {
  */
 readonly eventRuleProps: events.RuleProps
 /**
- * Existing instance of Kinesis Stream object, if this is set then the KinesisStreamProps is ignored.
+ * Existing instance of Kinesis Stream object, providing both this and KinesisStreamProps will cause an error.
  *
  * @default - Default props are used
  */
@@ -65,6 +65,7 @@ export class EventsRuleToKinesisStreams extends Construct {
      */
     constructor(scope: Construct, id: string, props: EventsRuleToKinesisStreamsProps) {
       super(scope, id);
+      defaults.CheckProps(props);
 
       // Set up the Kinesis Stream
       this.kinesisStream = defaults.buildKinesisStream(this, {
