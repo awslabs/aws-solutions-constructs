@@ -602,7 +602,7 @@ test('When database and table are not provided', () => {
       },
       TableInput: {
         Parameters: {
-          classication: "json"
+          classfication: "json"
         },
         StorageDescriptor: {
           Columns: [
