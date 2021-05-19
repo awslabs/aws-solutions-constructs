@@ -14,7 +14,7 @@
 import * as glue from "@aws-cdk/aws-glue";
 import { Aws } from "@aws-cdk/core";
 
-export function DefaultGlueTableProps(database: glue.CfnDatabase, fieldSchema: glue.CfnTable.ColumnProperty [],
+export function DefaultGlueTableProps(database: glue.CfnDatabase, fieldSchema: glue.CfnTable.ColumnProperty[],
   sourceType?: string, parameters?: any): glue.CfnTableProps | any {
   let _tableProps: glue.CfnTableProps;
 
@@ -50,7 +50,7 @@ export function DefaultGlueTableProps(database: glue.CfnDatabase, fieldSchema: g
         },
         tableType: 'EXTERNAL_TABLE',
         parameters: {
-          classication: 'json'
+          classification: 'json'
         }
       }
     };
