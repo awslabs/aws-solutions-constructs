@@ -15,6 +15,7 @@ import {Stack} from '@aws-cdk/core';
 import * as defaults from '../';
 import {SynthUtils} from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
+import {ParameterType} from '@aws-cdk/aws-ssm';
 
 // --------------------------------------------------------------
 // Test minimal deployment with no properties
@@ -24,7 +25,29 @@ test('Test minimal deployment with required properties', () => {
   const stack = new Stack();
   // Helper declaration
   const parameterValue = "test-val";
-  defaults.buildSsmStringParamter(stack, 'parameterName', { stringValue: parameterValue });
+  defaults.buildSsmStringParameter(stack, 'parameterName', {stringValue: parameterValue});
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Assertion 2
+  expect(stack).toHaveResourceLike('AWS::SSM::Parameter', {
+    Type: 'String',
+    Value: parameterValue
+  });
+});
+
+// --------------------------------------------------------------
+// Test minimal deployment overriding parameter type
+// --------------------------------------------------------------
+test('Test minimal deployment with required properties', () => {
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  const parameterValue = "test-val";
+  defaults.buildSsmStringParameter(stack, 'parameterName',
+    {
+      stringValue: parameterValue,
+      type: ParameterType.STRING_LIST,
+    });
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   // Assertion 2

@@ -19,9 +19,9 @@ import * as ec2 from "@aws-cdk/aws-ec2";
 import {Construct} from "@aws-cdk/core";
 
 /**
- * @summary The properties for the LambdaToSsmStringParameter class.
+ * @summary The properties for the LambdaToSsmstringparameter class.
  */
-export interface LambdaToSsmStringParameterProps {
+export interface LambdaToSsmstringparameterProps {
   /**
    * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
    *
@@ -42,7 +42,7 @@ export interface LambdaToSsmStringParameterProps {
   readonly existingStringParameterObj?: ssm.StringParameter;
   /**
    * Optional user provided props to override the default props for SSM String parameter. If existingStringParameterObj
-   * is not set stringParameterProps is required.
+   * is not set stringParameterProps is required. The only supported string parameter type is ParameterType.STRING.
    *
    * @default - Default props are used
    */
@@ -77,29 +77,26 @@ export interface LambdaToSsmStringParameterProps {
 }
 
 /**
- * @summary The LambdaToSsmStringParameter class.
+ * @summary The LambdaToSsmstringparameter class.
  */
-export class LambdaToSsmStringParameter extends Construct {
+export class LambdaToSsmstringparameter extends Construct {
   public readonly lambdaFunction: lambda.Function;
   public readonly stringParameter: ssm.StringParameter;
   public readonly vpc?: ec2.IVpc;
 
   /**
-   * @summary Constructs a new instance of the LambdaToSsmStringParameter class.
+   * @summary Constructs a new instance of the LambdaToSsmstringparameter class.
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
-   * @param {LambdaToSsmStringParameterProps} props - user provided props for the construct.
+   * @param {LambdaToSsmstringparameterProps} props - user provided props for the construct.
    * @since 1.49.0
    * @access public
    */
-  constructor(scope: Construct, id: string, props: LambdaToSsmStringParameterProps) {
+  constructor(scope: Construct, id: string, props: LambdaToSsmstringparameterProps) {
     super(scope, id);
+    defaults.CheckProps(props);
 
     if (props.deployVpc || props.existingVpc) {
-      if (props.deployVpc && props.existingVpc) {
-        throw new Error("More than 1 VPC specified in the properties");
-      }
-
       this.vpc = defaults.buildVpc(scope, {
         defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
         existingVpc: props.existingVpc,
@@ -127,7 +124,7 @@ export class LambdaToSsmStringParameter extends Construct {
       if (!props.stringParameterProps) {
         throw new Error("existingStringParameterObj or stringParameterProps needs to be provided.");
       }
-      this.stringParameter = defaults.buildSsmStringParamter(this, 'stringParameter', props.stringParameterProps);
+      this.stringParameter = defaults.buildSsmStringParameter(this, 'stringParameter', props.stringParameterProps);
     }
 
     // Configure environment variables

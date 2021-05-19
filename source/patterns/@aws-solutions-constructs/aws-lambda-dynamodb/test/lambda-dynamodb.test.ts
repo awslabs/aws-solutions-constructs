@@ -716,7 +716,7 @@ test("Test minimal deployment with an existing VPC", () => {
 });
 
 // --------------------------------------------------------------
-// Test minimal deployment with an existing VPC and existing Lambda function not in a VPCs
+// Test minimal deployment with an existing VPC and existing Lambda function not in a VPC
 //
 // buildLambdaFunction should throw an error if the Lambda function is not
 // attached to a VPC

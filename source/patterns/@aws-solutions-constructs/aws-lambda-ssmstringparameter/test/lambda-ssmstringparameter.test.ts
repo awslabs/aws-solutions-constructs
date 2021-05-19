@@ -15,7 +15,7 @@
 import { Stack } from "@aws-cdk/core";
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as ec2 from "@aws-cdk/aws-ec2";
-import { LambdaToSsmStringParameter } from '../lib';
+import { LambdaToSsmstringparameter } from '../lib';
 import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import { StringParameter } from "@aws-cdk/aws-ssm";
@@ -28,9 +28,9 @@ test('Test minimal deployment with new Lambda function', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  new LambdaToSsmStringParameter(stack, 'lambda-to-ssm-stack', {
+  new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -48,7 +48,7 @@ test('Test lambda function custom environment variable', () => {
   const stack = new Stack();
 
   // Helper declaration
-  new LambdaToSsmStringParameter(stack, 'lambda-to-ssm-stack', {
+  new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
@@ -83,9 +83,9 @@ test('Test the properties', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  const pattern = new LambdaToSsmStringParameter(stack, 'lambda-to-ssm-stack', {
+  const pattern = new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -107,9 +107,9 @@ test('Test deployment w/ existing String Parameter', () => {
   const stack = new Stack();
   // Helper declaration
   const existingStringParam = new StringParameter(stack, 'myNewStringParameter', {stringValue: "test-string-value" });
-  const pattern = new LambdaToSsmStringParameter(stack, 'lambda-to-ssm-stack', {
+  const pattern = new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -133,14 +133,14 @@ test('Test deployment w/ existing function', () => {
   const stack = new Stack();
   // Helper declaration
   const lambdaFunctionProps = {
-    runtime: lambda.Runtime.NODEJS_10_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
-  const existingFuntion = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
+  const existingFunction = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 
-  const pattern = new LambdaToSsmStringParameter(stack, 'lambda-to-ssm-stack', {
-    existingLambdaObj: existingFuntion,
+  const pattern = new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
+    existingLambdaObj: existingFunction,
     stringParameterProps: { stringValue: "test-string-value" },
   });
   // Assertion 1
@@ -149,7 +149,7 @@ test('Test deployment w/ existing function', () => {
     Value: "test-string-value"
   });
   // Assertion 2
-  expect(pattern.lambdaFunction).toBe(existingFuntion);
+  expect(pattern.lambdaFunction).toBe(existingFunction);
 });
 
 // --------------------------------------------------------------
@@ -159,9 +159,9 @@ test('Test minimal deployment write access to String Parameter ', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  new LambdaToSsmStringParameter(stack, 'lambda-to-ssm-stack', {
+  new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -183,9 +183,9 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  new LambdaToSsmStringParameter(stack, 'lambda-to-ssm-stack', {
+  new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -234,9 +234,9 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  new LambdaToSsmStringParameter(stack, 'lambda-to-ssm-stack', {
+  new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -294,9 +294,9 @@ test("Test minimal deployment with an existing VPC", () => {
   const testVpc = new ec2.Vpc(stack, "test-vpc", {});
 
   // Helper declaration
-  new LambdaToSsmStringParameter(stack, 'lambda-to-ssm-stack', {
+  new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -331,7 +331,7 @@ test("Test minimal deployment with an existing VPC", () => {
 });
 
 // --------------------------------------------------------------
-// Test minimal deployment with an existing VPC and existing Lambda function not in a VPCs
+// Test minimal deployment with an existing VPC and existing Lambda function not in a VPC
 //
 // buildLambdaFunction should throw an error if the Lambda function is not
 // attached to a VPC
@@ -341,7 +341,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   const stack = new Stack();
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
-    runtime: lambda.Runtime.NODEJS_10_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -351,7 +351,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   // Helper declaration
   const app = () => {
     // Helper declaration
-    new LambdaToSsmStringParameter(stack, "lambda-to-ssm-stack", {
+    new LambdaToSsmstringparameter(stack, "lambda-to-ssm-stack", {
       existingLambdaObj: testLambdaFunction,
       existingVpc: testVpc,
       stringParameterProps: { stringValue: "test-string-value" }
@@ -374,9 +374,9 @@ test("Test bad call with existingVpc and deployVpc", () => {
 
   const app = () => {
     // Helper declaration
-    new LambdaToSsmStringParameter(stack, "lambda-to-ssm-stack", {
+    new LambdaToSsmstringparameter(stack, "lambda-to-ssm-stack", {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
+        runtime: lambda.Runtime.NODEJS_14_X,
         handler: "index.handler",
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       },

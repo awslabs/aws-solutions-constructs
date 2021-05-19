@@ -13,26 +13,36 @@
 
 // Imports
 import {App, Stack} from "@aws-cdk/core";
-import {LambdaToSsmStringParameter, LambdaToSsmStringParameterProps} from '../lib';
-import * as lambda from '@aws-cdk/aws-lambda';
+import {LambdaToSsmstringparameter, LambdaToSsmstringparameterProps} from '../lib';
+import * as lambda from "@aws-cdk/aws-lambda";
+import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, "test-lambda-ssm-string-parameter");
-stack.templateOptions.description = "Integration Test for aws-lambda-ssm-string-parameter";
+const stack = new Stack(app, "test-lambda-ssmstringparameter-stack");
+stack.templateOptions.description = "Integration Test for test-lambda-ssmstringparameter";
+
+// Create VPC
+const vpc = defaults.buildVpc(stack, {
+  defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
+  constructVpcProps: {
+    enableDnsHostnames: true,
+    enableDnsSupport: true,
+  },
+});
 
 // Definitions
-const props: LambdaToSsmStringParameterProps = {
+const props: LambdaToSsmstringparameterProps = {
   lambdaFunctionProps: {
     runtime: lambda.Runtime.NODEJS_10_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   },
   stringParameterProps: { stringValue: "test-string-value" },
-  deployVpc: true,
+  existingVpc: vpc
 };
 
-new LambdaToSsmStringParameter(stack, 'test-lambda-ssm-string-parameter', props);
+new LambdaToSsmstringparameter(stack, 'test-lambda-ssmstringparameter', props);
 
 // Synth
 app.synth();

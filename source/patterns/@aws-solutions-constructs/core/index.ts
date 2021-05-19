@@ -60,4 +60,4 @@ export * from './lib/glue-database-defaults';
 export * from './lib/glue-database-helper';
 export * from './lib/input-validation';
 export * from './test/test-helper';
-export * from './lib/ssm-parameter-helper';
+export * from './lib/ssm-string-parameter-helper';

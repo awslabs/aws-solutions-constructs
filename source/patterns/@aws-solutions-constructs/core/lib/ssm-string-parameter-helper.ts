@@ -11,8 +11,9 @@
  *  and limitations under the License.
  */
 
-import {StringParameter, StringParameterProps} from '@aws-cdk/aws-ssm';
+import {ParameterType, StringParameter, StringParameterProps} from '@aws-cdk/aws-ssm';
 import {Construct} from '@aws-cdk/core';
+import {printWarning} from "./utils";
 
 /**
  * Method to build the default AWS SSM Parameter Store
@@ -21,6 +22,15 @@ import {Construct} from '@aws-cdk/core';
  * @param id
  * @param stringParameterProps
  */
-export function buildSsmStringParamter(scope: Construct, id: string, stringParameterProps: StringParameterProps): StringParameter {
-  return new StringParameter(scope, id, stringParameterProps);
+export function buildSsmStringParameter(scope: Construct, id: string, stringParameterProps: StringParameterProps): StringParameter {
+  let props: StringParameterProps = stringParameterProps;
+
+  if (stringParameterProps.type && stringParameterProps.type !== ParameterType.STRING) {
+    printWarning('Overriding SSM String Parameter type to be ParameterType.STRING');
+    props = {
+      ...stringParameterProps,
+      type: ParameterType.STRING
+    };
+  }
+  return new StringParameter(scope, id, props);
 }

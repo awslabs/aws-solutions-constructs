@@ -13,25 +13,29 @@
 
 // Imports
 import {App, Stack} from "@aws-cdk/core";
-import {LambdaToSsmStringParameter, LambdaToSsmStringParameterProps} from '../lib';
+import {LambdaToSsmstringparameter, LambdaToSsmstringparameterProps} from '../lib';
 import * as lambda from '@aws-cdk/aws-lambda';
+import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-lambda-ssm-string-parameter');
-stack.templateOptions.description = 'Integration Test for aws-lambda-ssm-string-parameter';
+const stack = new Stack(app, 'test-lambda-ssmstringparameter');
+stack.templateOptions.description = 'Integration Test for aws-lambda-ssmstringparameter';
 
 // Definitions
-const props: LambdaToSsmStringParameterProps = {
-  lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_10_X,
-    handler: 'index.handler',
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-  },
+const lambdaFunctionProps = {
+  runtime: lambda.Runtime.NODEJS_10_X,
+  handler: 'index.handler',
+  code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+};
+
+const func = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
+const props: LambdaToSsmstringparameterProps = {
+  existingLambdaObj: func,
   stringParameterProps: { stringValue: "test-string-value" }
 };
 
-new LambdaToSsmStringParameter(stack, 'test-lambda-ssm-string-parameter', props);
+new LambdaToSsmstringparameter(stack, 'test-lambda-ssmstringparameter', props);
 
 // Synth
 app.synth();
