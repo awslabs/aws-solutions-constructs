@@ -22,13 +22,14 @@ import * as cognito from '@aws-cdk/aws-cognito';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import { Construct } from '@aws-cdk/core';
 import * as sqs from '@aws-cdk/aws-sqs';
+import * as defaults from '@aws-solutions-constructs/core';
 
 /**
  * @summary The properties for the DynamoDBStreamToLambdaToElastciSearchAndKibana Construct
  */
 export interface DynamoDBStreamToLambdaToElasticSearchAndKibanaProps {
   /**
-   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
+   * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
    * @default - None
    */
@@ -46,7 +47,7 @@ export interface DynamoDBStreamToLambdaToElasticSearchAndKibanaProps {
    */
   readonly dynamoTableProps?: dynamodb.TableProps,
   /**
-   * Existing instance of DynamoDB table object, If this is set then the dynamoTableProps is ignored
+   * Existing instance of DynamoDB table object, providing both this and `dynamoTableProps` will cause an error.
    *
    * @default - None
    */
@@ -118,6 +119,7 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
    */
   constructor(scope: Construct, id: string, props: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps) {
     super(scope, id);
+    defaults.CheckProps(props);
 
     const _props1: DynamoDBStreamToLambdaProps = {
       existingLambdaObj: props.existingLambdaObj,

@@ -24,7 +24,7 @@ import { Construct } from '@aws-cdk/core';
  */
 export interface CognitoToApiGatewayToLambdaProps {
   /**
-   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
+   * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
    * @default - None
    */
@@ -80,6 +80,7 @@ export class CognitoToApiGatewayToLambda extends Construct {
    */
   constructor(scope: Construct, id: string, props: CognitoToApiGatewayToLambdaProps) {
     super(scope, id);
+    defaults.CheckProps(props);
 
     // This Construct requires that the auth type be COGNITO regardless of what is specified in the props
     if (props.apiGatewayProps) {

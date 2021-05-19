@@ -26,7 +26,7 @@ import * as logs from '@aws-cdk/aws-logs';
  */
 export interface S3ToStepFunctionProps {
   /**
-   * Existing instance of S3 Bucket object, if this is set then the bucketProps is ignored.
+   * Existing instance of S3 Bucket object, providing both this and `bucketProps` will cause an error.
    *
    * @default - None
    */
@@ -89,6 +89,8 @@ export class S3ToStepFunction extends Construct {
    */
   constructor(scope: Construct, id: string, props: S3ToStepFunctionProps) {
     super(scope, id);
+    defaults.CheckProps(props);
+
     let bucket: s3.IBucket;
 
     if (props.existingBucketObj && props.bucketProps) {

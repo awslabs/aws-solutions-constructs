@@ -26,7 +26,7 @@ import {buildEncryptionKey} from "@aws-solutions-constructs/core";
  */
 export interface SnsToSqsProps {
     /**
-     * Existing instance of SNS topic object, if this is set then topicProps is ignored.
+     * Existing instance of SNS topic object, providing both this and topicProps will cause an error..
      *
      * @default - Default props are used
      */
@@ -38,7 +38,7 @@ export interface SnsToSqsProps {
      */
     readonly topicProps?: sns.TopicProps,
     /**
-     * Existing instance of SQS queue object, if this is set then queueProps is ignored.
+     * Existing instance of SQS queue object, Providing both this and queueProps will cause an error.
      *
      * @default - Default props are used
      */
@@ -107,6 +107,7 @@ export class SnsToSqs extends Construct {
      */
     constructor(scope: Construct, id: string, props: SnsToSqsProps) {
       super(scope, id);
+      defaults.CheckProps(props);
 
       // Setup the dead letter queue, if applicable
       this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {

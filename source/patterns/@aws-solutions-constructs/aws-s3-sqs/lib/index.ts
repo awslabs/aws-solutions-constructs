@@ -25,7 +25,7 @@ import {addCfnNagS3BucketNotificationRulesToSuppress} from "@aws-solutions-const
  */
 export interface S3ToSqsProps {
     /**
-     * Existing instance of S3 Bucket object, if this is set then the bucketProps is ignored.
+     * Existing instance of S3 Bucket object, providing both this and `bucketProps` will cause an error.
      *
      * @default - None
      */
@@ -49,7 +49,7 @@ export interface S3ToSqsProps {
      */
     readonly s3EventFilters?: s3.NotificationKeyFilter[]
     /**
-     * Existing instance of SQS queue object, if this is set then queueProps is ignored.
+     * Existing instance of SQS queue object, Providing both this and queueProps will cause an error.
      *
      * @default - Default props are used
      */
@@ -119,6 +119,8 @@ export class S3ToSqs extends Construct {
      */
     constructor(scope: Construct, id: string, props: S3ToSqsProps) {
       super(scope, id);
+      defaults.CheckProps(props);
+
       let bucket: s3.Bucket;
       let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
 

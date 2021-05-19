@@ -15,17 +15,20 @@
 import { Stack, Duration, App } from '@aws-cdk/core';
 import { LambdaToSagemakerEndpoint, LambdaToSagemakerEndpointProps } from '../lib';
 import * as lambda from '@aws-cdk/aws-lambda';
+import { getSagemakerModel } from './test-helper';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, 'test-lambda-sagemakerendpoint');
 stack.templateOptions.description = 'Integration Test for aws-lambda-sagemakerendpoint';
 
+const [containerMap, modelAsset ] = getSagemakerModel(stack);
+
 const constructProps: LambdaToSagemakerEndpointProps = {
   modelProps: {
     primaryContainer: {
-      image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
-      modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
+      image: containerMap.findInMap(Stack.of(stack).region, "containerArn"),
+      modelDataUrl: modelAsset.s3ObjectUrl
     },
   },
   lambdaFunctionProps: {
@@ -37,7 +40,9 @@ const constructProps: LambdaToSagemakerEndpointProps = {
   },
 };
 
-new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
+const lambdaToSagemakerConstruct = new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
+
+lambdaToSagemakerConstruct.node.addDependency(modelAsset);
 
 // Synth
 app.synth();
