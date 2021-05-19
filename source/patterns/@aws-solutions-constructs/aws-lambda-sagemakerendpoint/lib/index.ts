@@ -23,7 +23,7 @@ import * as defaults from '@aws-solutions-constructs/core';
  */
 export interface LambdaToSagemakerEndpointProps {
   /**
-   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored
+   * Existing instance of Lambda Function object, Providing both this and lambdaFunctionProps will cause an error.
    *
    * @default - None
    */
@@ -35,7 +35,7 @@ export interface LambdaToSagemakerEndpointProps {
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
-   * Existing Sagemaker Enpoint object, if this is set then the modelProps, endpointConfigProps, and endpointProps are ignored
+   * Existing Sagemaker Enpoint object, providing both this and endpointProps will cause an error.
    *
    * @default - None
    */
@@ -104,6 +104,7 @@ export class LambdaToSagemakerEndpoint extends cdk.Construct {
    */
   constructor(scope: cdk.Construct, id: string, props: LambdaToSagemakerEndpointProps) {
     super(scope, id);
+    defaults.CheckProps(props);
 
     if (props.deployVpc || props.existingVpc) {
       if (props.deployVpc && props.existingVpc) {

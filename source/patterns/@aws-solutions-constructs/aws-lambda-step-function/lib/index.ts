@@ -24,7 +24,7 @@ import * as logs from '@aws-cdk/aws-logs';
  */
 export interface LambdaToStepFunctionProps {
   /**
-   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
+   * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
    * @default - None
    */
@@ -80,6 +80,7 @@ export class LambdaToStepFunction extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToStepFunctionProps) {
     super(scope, id);
+    defaults.CheckProps(props);
 
     // Setup the state machine
     [this.stateMachine, this.stateMachineLogGroup] = defaults.buildStateMachine(this, props.stateMachineProps,

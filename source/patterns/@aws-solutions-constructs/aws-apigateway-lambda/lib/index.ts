@@ -24,7 +24,7 @@ import { Construct } from '@aws-cdk/core';
  */
 export interface ApiGatewayToLambdaProps {
   /**
-   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
+   * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
    * @default - None
    */
@@ -68,6 +68,7 @@ export class ApiGatewayToLambda extends Construct {
    */
   constructor(scope: Construct, id: string, props: ApiGatewayToLambdaProps) {
     super(scope, id);
+    defaults.CheckProps(props);
 
     // Setup the Lambda function
     this.lambdaFunction = defaults.buildLambdaFunction(this, {

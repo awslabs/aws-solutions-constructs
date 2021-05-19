@@ -23,7 +23,7 @@ import * as ec2 from "@aws-cdk/aws-ec2";
  */
 export interface LambdaToSnsProps {
   /**
-   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
+   * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
    * @default - None
    */
@@ -35,7 +35,7 @@ export interface LambdaToSnsProps {
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
-   * Existing instance of SNS Topic object, if this is set then topicProps is ignored.
+   * Existing instance of SNS Topic object, providing both this and topicProps will cause an error..
    *
    * @default - Default props are used
    */
@@ -92,6 +92,7 @@ export class LambdaToSns extends Construct {
      */
     constructor(scope: Construct, id: string, props: LambdaToSnsProps) {
       super(scope, id);
+      defaults.CheckProps(props);
 
       if (props.deployVpc || props.existingVpc) {
         if (props.deployVpc && props.existingVpc) {

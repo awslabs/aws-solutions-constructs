@@ -22,7 +22,7 @@ import { SnsEventSource } from '@aws-cdk/aws-lambda-event-sources';
  */
 export interface SnsToLambdaProps {
   /**
-   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
+   * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
    * @default - None
    */
@@ -34,7 +34,7 @@ export interface SnsToLambdaProps {
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps,
   /**
-   * Existing instance of SNS Topic object, if this is set then topicProps is ignored.
+   * Existing instance of SNS Topic object, providing both this and topicProps will cause an error..
    *
    * @default - Default props are used
    */
@@ -64,6 +64,7 @@ export class SnsToLambda extends Construct {
    */
   constructor(scope: Construct, id: string, props: SnsToLambdaProps) {
     super(scope, id);
+    defaults.CheckProps(props);
 
     // Setup the Lambda function
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
