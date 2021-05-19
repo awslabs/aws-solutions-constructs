@@ -14,11 +14,12 @@
 // Imports
 import { Stack } from "@aws-cdk/core";
 import * as lambda from "@aws-cdk/aws-lambda";
-import * as sqs from "@aws-cdk/aws-sqs";
 import * as ec2 from "@aws-cdk/aws-ec2";
-import { LambdaToSqs } from '../lib';
+import { LambdaToSsmstringparameter } from '../lib';
 import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
+import { StringParameter } from "@aws-cdk/aws-ssm";
+import * as defaults from "@aws-solutions-constructs/core";
 
 // --------------------------------------------------------------
 // Test minimal deployment with new Lambda function
@@ -27,54 +28,52 @@ test('Test minimal deployment with new Lambda function', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  new LambdaToSqs(stack, 'lambda-to-sqs-stack', {
+  new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    stringParameterProps: { stringValue: "test-string-value" }
+  });
+  // Assertion 1
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+// --------------------------------------------------------------
+// Test lambda function custom environment variable
+// --------------------------------------------------------------
+test('Test lambda function custom environment variable', () => {
+  // Stack
+  const stack = new Stack();
+
+  // Helper declaration
+  new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      }
+    },
+    stringParameterProps: { stringValue: "test-string-value" },
+    stringParameterEnvironmentVariableName: 'CUSTOM_SSM_PARAMETER_NAME'
+  });
+
+  // Assertion
+  expect(stack).toHaveResource('AWS::Lambda::Function', {
+    Handler: 'index.handler',
+    Runtime: 'nodejs14.x',
+    Environment: {
+      Variables: {
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+        CUSTOM_SSM_PARAMETER_NAME: {
+          Ref: 'lambdatossmstackstringParameterA6E27D57'
+        }
+      }
     }
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
-// --------------------------------------------------------------
-// Test deployment w/ DLQ and purging explicitly enabled
-// --------------------------------------------------------------
-test('Test deployment w/ DLQ and purging enabled', () => {
-  // Stack
-  const stack = new Stack();
-  // Helper declaration
-  new LambdaToSqs(stack, 'lambda-to-sqs-stack', {
-    lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    },
-    enableQueuePurging: true,
-    deployDeadLetterQueue: true
-  });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
-// --------------------------------------------------------------
-// Test deployment w/ purging explicitly disabled
-// --------------------------------------------------------------
-test('Test deployment w/ purging disabled', () => {
-  // Stack
-  const stack = new Stack();
-  // Helper declaration
-  new LambdaToSqs(stack, 'lambda-to-sqs-stack', {
-    lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    },
-    enableQueuePurging: false
-  });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
@@ -84,68 +83,97 @@ test('Test the properties', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  const pattern = new LambdaToSqs(stack, 'lambda-to-sqs-stack', {
+  const pattern = new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
+    stringParameterProps: { stringValue: "test-string-value" },
   });
   // Assertion 1
   const func = pattern.lambdaFunction;
   expect(func).toBeDefined();
   // Assertion 2
-  const queue = pattern.sqsQueue;
-  expect(queue).toBeDefined();
-  // Assertion 3
-  const dlq = pattern.deadLetterQueue;
-  expect(dlq).toBeDefined();
+  const stringParam = pattern.stringParameter;
+  expect(stringParam).toBeDefined();
 });
 
 // --------------------------------------------------------------
-// Test deployment w/ DLQ disabled
+// Test deployment w/ existing String Parameter
 // --------------------------------------------------------------
-test('Test deployment w/ DLQ disabled', () => {
+test('Test deployment w/ existing String Parameter', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  new LambdaToSqs(stack, 'lambda-to-sqs-stack', {
+  const existingStringParam = new StringParameter(stack, 'myNewStringParameter', {stringValue: "test-string-value" });
+  const pattern = new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
-    enableQueuePurging: true,
-    deployDeadLetterQueue: false,
-    queueProps: {
-      queueName: 'queue-with-dlq-disabled'
-    }
+    existingStringParameterObj: existingStringParam
   });
   // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(stack).toHaveResource("AWS::SSM::Parameter", {
+    Type: "String",
+    Value: "test-string-value"
+  });
+
+  // Assertion 2
+  expect(pattern.stringParameter).toBe(existingStringParam);
 });
 
 // --------------------------------------------------------------
-// Test deployment w/ existing queue
+// Test deployment w/ existing function
 // --------------------------------------------------------------
-test('Test deployment w/ existing queue', () => {
+test('Test deployment w/ existing function', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  const queue = new sqs.Queue(stack, 'existing-queue-obj', {
-    queueName: 'existing-queue-obj'
-  });
-  new LambdaToSqs(stack, 'lambda-to-sqs-stack', {
-    lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    },
-    enableQueuePurging: true,
-    existingQueueObj: queue
+  const lambdaFunctionProps = {
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+  };
+  const existingFunction = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
+
+  const pattern = new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
+    existingLambdaObj: existingFunction,
+    stringParameterProps: { stringValue: "test-string-value" },
   });
   // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(stack).toHaveResource("AWS::SSM::Parameter", {
+    Type: "String",
+    Value: "test-string-value"
+  });
+  // Assertion 2
+  expect(pattern.lambdaFunction).toBe(existingFunction);
+});
+
+// --------------------------------------------------------------
+// Test minimal deployment with write access to String Parameter.
+// --------------------------------------------------------------
+test('Test minimal deployment write access to String Parameter ', () => {
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    stringParameterProps: { stringValue: "test-string-value" },
+    stringParameterPermissions: 'ReadWrite'
+  });
+  // Assertion 1
+  expect(stack).toHaveResource("AWS::SSM::Parameter", {
+    Type: "String",
+    Value: "test-string-value"
+  });
+
 });
 
 // --------------------------------------------------------------
@@ -155,12 +183,13 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  new LambdaToSqs(stack, "lambda-to-sqs-stack", {
+  new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
-      handler: "index.handler",
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
+    stringParameterProps: { stringValue: "test-string-value" },
     deployVpc: true,
   });
 
@@ -169,7 +198,7 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
       SecurityGroupIds: [
         {
           "Fn::GetAtt": [
-            "lambdatosqsstackReplaceDefaultSecurityGroupsecuritygroupAED1D1EE",
+            "lambdatossmstackReplaceDefaultSecurityGroupsecuritygroupD1E88D13",
             "GroupId",
           ],
         },
@@ -205,12 +234,13 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  new LambdaToSqs(stack, "lambda-to-sqs-stack", {
+  new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
-      handler: "index.handler",
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
+    stringParameterProps: { stringValue: "test-string-value" },
     vpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
@@ -224,7 +254,7 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
       SecurityGroupIds: [
         {
           "Fn::GetAtt": [
-            "lambdatosqsstackReplaceDefaultSecurityGroupsecuritygroupAED1D1EE",
+            "lambdatossmstackReplaceDefaultSecurityGroupsecuritygroupD1E88D13",
             "GroupId",
           ],
         },
@@ -264,12 +294,13 @@ test("Test minimal deployment with an existing VPC", () => {
   const testVpc = new ec2.Vpc(stack, "test-vpc", {});
 
   // Helper declaration
-  new LambdaToSqs(stack, "lambda-to-sqs-stack", {
+  new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
-      handler: "index.handler",
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
+    stringParameterProps: { stringValue: "test-string-value" },
     existingVpc: testVpc,
   });
 
@@ -278,7 +309,7 @@ test("Test minimal deployment with an existing VPC", () => {
       SecurityGroupIds: [
         {
           "Fn::GetAtt": [
-            "lambdatosqsstackReplaceDefaultSecurityGroupsecuritygroupAED1D1EE",
+            "lambdatossmstackReplaceDefaultSecurityGroupsecuritygroupD1E88D13",
             "GroupId",
           ],
         },
@@ -310,7 +341,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   const stack = new Stack();
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
-    runtime: lambda.Runtime.NODEJS_10_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -320,9 +351,10 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   // Helper declaration
   const app = () => {
     // Helper declaration
-    new LambdaToSqs(stack, "lambda-to-sqs-stack", {
+    new LambdaToSsmstringparameter(stack, "lambda-to-ssm-stack", {
       existingLambdaObj: testLambdaFunction,
       existingVpc: testVpc,
+      stringParameterProps: { stringValue: "test-string-value" }
     });
   };
 
@@ -342,48 +374,17 @@ test("Test bad call with existingVpc and deployVpc", () => {
 
   const app = () => {
     // Helper declaration
-    new LambdaToSqs(stack, "lambda-to-sqs-stack", {
+    new LambdaToSsmstringparameter(stack, "lambda-to-ssm-stack", {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
+        runtime: lambda.Runtime.NODEJS_14_X,
         handler: "index.handler",
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       },
+      stringParameterProps: { stringValue: "test-string-value" },
       existingVpc: testVpc,
       deployVpc: true,
     });
   };
   // Assertion
   expect(app).toThrowError();
-});
-
-// --------------------------------------------------------------
-// Test lambda function custom environment variable
-// --------------------------------------------------------------
-test('Test lambda function custom environment variable', () => {
-  // Stack
-  const stack = new Stack();
-
-  // Helper declaration
-  new LambdaToSqs(stack, 'lambda-to-sqs-stack', {
-    lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    },
-    queueEnvironmentVariableName: 'CUSTOM_QUEUE_NAME'
-  });
-
-  // Assertion
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
-    Handler: 'index.handler',
-    Runtime: 'nodejs14.x',
-    Environment: {
-      Variables: {
-        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
-        CUSTOM_QUEUE_NAME: {
-          Ref: 'lambdatosqsstackqueueFDDEE3DB'
-        }
-      }
-    }
-  });
 });

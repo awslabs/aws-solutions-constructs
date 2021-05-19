@@ -96,6 +96,7 @@ export enum ServiceEndpointTypes {
   STEPFUNCTIONS = "STEPFUNCTIONS",
   SAGEMAKER_RUNTIME = "SAGEMAKER_RUNTIME",
   SECRETS_MANAGER = "SECRETS_MANAGER",
+  SSM = "SSM",
 }
 
 enum EndpointTypes {
@@ -140,6 +141,11 @@ const endpointSettings: EndpointDefinition[] = [
     endpointName: ServiceEndpointTypes.SECRETS_MANAGER,
     endpointType: EndpointTypes.INTERFACE,
     endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.SECRETS_MANAGER,
+  },
+  {
+    endpointName: ServiceEndpointTypes.SSM,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.SSM,
   },
 ];
 
