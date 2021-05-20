@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.102.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.101.0...v1.102.0) (2021-05-20)
+
+
+### Features
+
+* **aws-lambda-ssm-string-parameter:** New aws-lambda-ssm-string-parameter pattern implementation ([#64](https://github.com/awslabs/aws-solutions-constructs/issues/64)) ([#175](https://github.com/awslabs/aws-solutions-constructs/issues/175)) ([b0567e4](https://github.com/awslabs/aws-solutions-constructs/commit/b0567e4bd5f5204c7441a4036fdd8b8aa2472975))
+
 ## [1.101.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.100.0...v1.101.0) (2021-05-07)
 
 ### Changed
