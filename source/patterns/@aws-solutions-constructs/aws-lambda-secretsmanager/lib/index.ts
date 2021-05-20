@@ -23,7 +23,7 @@ import { Construct } from "@aws-cdk/core";
  */
 export interface LambdaToSecretsmanagerProps {
   /**
-   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
+   * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
    * @default - None
    */
@@ -35,7 +35,7 @@ export interface LambdaToSecretsmanagerProps {
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
-   * Existing instance of Secret object, if this is set then secretProps is ignored.
+   * Existing instance of Secret object, providing both this and secretProps will cause an error.
    *
    * @default - Default props are used
    */
@@ -92,6 +92,7 @@ export class LambdaToSecretsmanager extends Construct {
      */
     constructor(scope: Construct, id: string, props: LambdaToSecretsmanagerProps) {
       super(scope, id);
+      defaults.CheckProps(props);
 
       if (props.deployVpc || props.existingVpc) {
         if (props.deployVpc && props.existingVpc) {

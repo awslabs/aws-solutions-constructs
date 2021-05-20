@@ -23,7 +23,7 @@ import { Stack } from '@aws-cdk/core';
 
 export interface BuildTopicProps {
     /**
-     * Existing instance of SNS Topic object, if this is set then the TopicProps is ignored.
+     * Existing instance of SNS Topic object, providing both this and `topicProps` will cause an error.
      *
      * @default - None.
      */

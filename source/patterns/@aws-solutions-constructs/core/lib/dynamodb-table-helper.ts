@@ -25,7 +25,7 @@ export interface BuildDynamoDBTableProps {
   readonly dynamoTableProps?: dynamodb.TableProps,
   /**
    * Existing instance of dynamodb table object.
-   * If this is set then the dynamoTableProps is ignored
+   * Providing both this and `dynamoTableProps` will cause an error.
    *
    * @default - None
    */

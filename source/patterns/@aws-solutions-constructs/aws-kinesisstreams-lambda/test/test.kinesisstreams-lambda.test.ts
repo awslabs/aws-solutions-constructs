@@ -83,17 +83,6 @@ test('Test existing resources', () => {
     existingLambdaObj: fn,
     existingStreamObj: stream,
 
-    // These properties will be ignored as existing objects were provided
-    lambdaFunctionProps: {
-      runtime: lambda.Runtime.PYTHON_3_8,
-      handler: 'lambda_function.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    },
-    kinesisStreamProps: {
-      streamName: 'other-name-stream',
-      shardCount: 1,
-      retentionPeriod: Duration.hours(24)
-    }
   });
 
   // Assertions

@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.102.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.101.0...v1.102.0) (2021-05-20)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.102.0
+* Fixed key name typo on aws-kinesisstreams-gluejob [#185](https://github.com/awslabs/aws-solutions-constructs/pull/185)
+* BREAKING CHANGE: Added a check for redundant Prop values. If you send an existing resource and props for a new resource, the construct will now throw an error. In the past it ignored one of the values. Will only be a problem if you depended upon the earlier behavior. [#177](https://github.com/awslabs/aws-solutions-constructs/pull/177)
+* BREAKING CHANGE: Updated Sagemaker integration tests to create stacks via cdk-integ. This may affect some snapshot based integration tests. [172](https://github.com/awslabs/aws-solutions-constructs/pull/172/files)
+
+### Added
+
+* **aws-lambda-ssm-string-parameter:** New aws-lambda-ssm-string-parameter pattern implementation ([#64](https://github.com/awslabs/aws-solutions-constructs/issues/64)) ([#175](https://github.com/awslabs/aws-solutions-constructs/issues/175)) ([b0567e4](https://github.com/awslabs/aws-solutions-constructs/commit/b0567e4bd5f5204c7441a4036fdd8b8aa2472975))
+
 ## [1.101.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.100.0...v1.101.0) (2021-05-07)
 
 ### Changed
