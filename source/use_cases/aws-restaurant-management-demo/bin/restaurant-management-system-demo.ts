@@ -27,29 +27,33 @@ const app = new cdk.App();
 // Environment configuration
 const config = { 
   env: {
-    account: 'ACCOUNT_NUMBER_HERE', 
+    account: '782585028338', 
     region: 'us-east-1' // default region selection
   }
 };
 
-// Stack containing shared resources across all functions
-const existingResources = new ExistingResources(app, `ExistingResourcesStack`, config);
+// Stack name suffix
+const sfx = '57980ccf22d1';
 
 // Stack containing shared resources across all functions
-const sharedStack = new SharedStack(app, `SharedStack`, config);
+const existingResources = new ExistingResources(app, `ExistingResourcesStack-${sfx}`, config);
+
+// Stack containing shared resources across all functions
+const sharedStack = new SharedStack(app, `SharedStack-${sfx}`, config);
 
 // Stack containing resources that enable Service Staff functions
-new ServiceStaffStack(app, `ServiceStaffStack`, config, {
+new ServiceStaffStack(app, `ServiceStaffStack-${sfx}`, config, {
   db: sharedStack.database
 });
 
 // Stack containing resources that enable Kitchen Staff functions
-new KitchenStaffStack(app, `KitchenStaffStack`, config, {
+new KitchenStaffStack(app, `KitchenStaffStack-${sfx}`, config, {
   db: sharedStack.database
 });
 
 // Stack containing resources that enable Manager functions
-new ManagerStack(app, 'ManagerStack', config, {
+new ManagerStack(app, `ManagerStack-${sfx}`, config, {
   db: sharedStack.database,
+  layer: sharedStack.layer,
   archiveBucket: existingResources.archiveBucket,
 });

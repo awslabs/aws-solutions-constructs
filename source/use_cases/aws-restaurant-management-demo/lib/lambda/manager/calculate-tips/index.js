@@ -13,39 +13,20 @@
 
 // Imports
 const aws = require('aws-sdk');
-const ddb = new aws.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
 const sns = new aws.SNS();
+const db_access = require('/opt/db-access');
 
 // Handler
 exports.handler = async (event) => {
     
-  // Setup the parameters
-  const params = {
-    TableName: process.env.DDB_TABLE_NAME
-  };
-
   // Hold the scan results in an array
   let scanResults = [];
-  let items;
 
-  // Perform the query
+  // Execute the operation
   try {
-    do {
-        items = await ddb.scan(params).promise();
-        items.Items.forEach((item) => scanResults.push(item));
-        params.ExclusiveStartKey = items.LastEvaluatedKey;
-    } while (typeof items.LastEvaluatedKey != "undefined");
-  }
-  catch (err) {
+    scanResults = await db_access.scanTable();
+  } catch (err) {
     console.log(err);
-    return {
-      statusCode: 500,
-      isBase64Encoded: false,
-      body: 'Internal server error',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
   }
 
   // Get all of the servers who worked the service and calculate their tips
@@ -58,8 +39,6 @@ exports.handler = async (event) => {
       tips[r.createdBy] = Number(tips[r.createdBy]) + Number(r.tipAmount)
     }
   });
-  
-  console.log(tips);
 
   // Send a notification to each active server with tip information
   Object.keys(tips).forEach((t) => {

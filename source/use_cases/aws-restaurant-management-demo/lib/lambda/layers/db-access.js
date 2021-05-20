@@ -15,45 +15,34 @@
 const aws = require('aws-sdk');
 const ddb = new aws.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
 
-// Handler
-exports.handler = async (event) => {
-    
+/**
+ * Common function for scanning the database and getting all entries. Supports multiple functions within the system.
+ * @returns - an array of items from the database, with all properties and attributes.
+ */
+exports.scanTable = async () => {
   // Setup the parameters
   const params = {
     TableName: process.env.DDB_TABLE_NAME
   };
 
+  console.log(params);
+
   // Hold the scan results in an array
   let scanResults = [];
   let items;
 
-  // Perform the query
+  // Perform the scan
   try {
     do {
         items = await ddb.scan(params).promise();
-        items.Items.forEach((item) => scanResults.push(item));
+        items.Items.forEach((item) => scanResults.push(JSON.parse(item)));
         params.ExclusiveStartKey = items.LastEvaluatedKey;
     } while (typeof items.LastEvaluatedKey != "undefined");
   }
   catch (err) {
-    console.log(err);
-    return {
-      statusCode: 500,
-      isBase64Encoded: false,
-      body: 'Internal server error',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
+    return err;
   }
 
   // Return the array of orders
-  return {
-    statusCode: 200,
-    isBase64Encoded: false,
-    body: JSON.stringify(scanResults, null, 2),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }
-};
+  return scanResults;
+}

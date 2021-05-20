@@ -13,8 +13,8 @@
 
 // Imports
 const aws = require('aws-sdk');
-const ddb = new aws.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
 const s3 = new aws.S3();
+const db_access = require('/opt/db-access');
 
 exports.handler = async (event) => {
   
@@ -22,27 +22,13 @@ exports.handler = async (event) => {
   // Gather order records from the table
   // ---------------------------------------------------------------------------
   
-  // Parameters for DynamoDB
-  const ddb_params = {
-    TableName: process.env.DDB_TABLE_NAME
-  };
-  
   // Create an array for storing the output of the database scan
   let scanResults = [];
-  let items;
-  
-  // Execute the scan
+
+  // Execute the operation
   try {
-    do {
-        items = await ddb.scan(ddb_params).promise();
-        items.Items.forEach((item) => scanResults.push(item));
-        ddb_params.ExclusiveStartKey = items.LastEvaluatedKey;
-    } while (typeof items.LastEvaluatedKey != "undefined");
-    console.log(`Successfully gathered ${scanResults.length} orders from "${process.env.DDB_TABLE_NAME}"`);
-  }
-  catch (err) {
-    console.log('An error occurred while gathering the report data.');
-    console.log('Log output provided below:');
+    scanResults = await db_access.scanTable();
+  } catch (err) {
     console.log(err);
   }
 
@@ -60,7 +46,6 @@ exports.handler = async (event) => {
     totalSales: totalSales,
     totalOrders: totalOrders
   };
-
   
   // ---------------------------------------------------------------------------
   // Save the report to S3

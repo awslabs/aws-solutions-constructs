@@ -42,9 +42,7 @@ export class ServiceStaffStack extends cdk.Stack {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/service-staff/create-order`),
         handler: 'index.handler',
-        environment: {
-          DDB_TABLE_NAME: resources.db.tableName
-        }
+        timeout: cdk.Duration.seconds(15)
       },
       existingTableObj: resources.db
     });
@@ -55,9 +53,7 @@ export class ServiceStaffStack extends cdk.Stack {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/service-staff/process-payment`),
         handler: 'index.handler',
-        environment: {
-          DDB_TABLE_NAME: resources.db.tableName
-        }
+        timeout: cdk.Duration.seconds(15)
       },
       existingTableObj: resources.db
     });

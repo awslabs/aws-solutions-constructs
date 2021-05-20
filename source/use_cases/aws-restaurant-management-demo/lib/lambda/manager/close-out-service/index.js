@@ -23,8 +23,6 @@ exports.handler = async (event) => {
     stateMachineArn: process.env.STATE_MACHINE_ARN
   };
   
-  console.log(params);
-  
   // Start the process
   try {
     const res = await sfn.startExecution(params).promise();

@@ -37,14 +37,12 @@ export class KitchenStaffStack extends cdk.Stack {
     super(scope, id, props);
 
     // Create a Lambda function that lists all open orders in the database
-    const listOpenOrders = new LambdaToDynamoDB(this, 'list-open-orders', {
+    const getOpenOrders = new LambdaToDynamoDB(this, 'get-open-orders', {
       lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_14_X,
-        code: lambda.Code.fromAsset(`${__dirname}/lambda/kitchen-staff/list-open-orders`),
-        handler: 'index.handler',
-        environment: {
-          DDB_TABLE_NAME: resources.db.tableName
-        }
+        code: lambda.Code.fromAsset(`${__dirname}/lambda/kitchen-staff/get-open-orders`),
+        handler: 'get-open-orders.handler',
+        timeout: cdk.Duration.seconds(15)
       },
       existingTableObj: resources.db
     });
@@ -54,17 +52,15 @@ export class KitchenStaffStack extends cdk.Stack {
       lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/kitchen-staff/complete-order`),
-        handler: 'index.handler',
-        environment: {
-          DDB_TABLE_NAME: resources.db.tableName
-        }
+        handler: 'complete-order.handler',
+        timeout: cdk.Duration.seconds(15)
       },
       existingTableObj: resources.db
     });
 
     // Setup the kitchen staff API with Cognito user pool
     const kitchenStaffApi = new CognitoToApiGatewayToLambda(this, 'kitchen-staff-api', {
-      existingLambdaObj: listOpenOrders.lambdaFunction,
+      existingLambdaObj: getOpenOrders.lambdaFunction,
       apiGatewayProps: {
         proxy: false,
         description: 'Demo: Kitchen staff API'
@@ -72,7 +68,7 @@ export class KitchenStaffStack extends cdk.Stack {
     });
 
     // Add a resource to the API for listing all open orders
-    const listOpenOrdersResource = kitchenStaffApi.apiGateway.root.addResource('list-open-orders');
+    const listOpenOrdersResource = kitchenStaffApi.apiGateway.root.addResource('get-open-orders');
     listOpenOrdersResource.addProxy({
       defaultIntegration: new apigateway.LambdaIntegration(kitchenStaffApi.lambdaFunction),
       anyMethod: true

@@ -35,6 +35,7 @@
   const stack = new ManagerStack(app, 'ManagerStack', config, {
     db: sharedStack.database,
     archiveBucket: existingResources.archiveBucket,
+    layer: sharedStack.layer
   });
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
  });

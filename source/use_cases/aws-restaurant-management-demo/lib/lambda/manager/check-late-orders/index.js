@@ -18,49 +18,41 @@ const sns = new aws.SNS();
 
 // Handler
 exports.handler = async (event) => {
+
+  // Any order created more than LATE_ORDER_THRESHOLD minutes ago
+  // that is still open is overdue
+  const lateInterval = process.env.LATE_ORDER_THRESHOLD * 60 * 1000;
+  const lateThreshold = new Date().getTime() - lateInterval;
     
   // Setup the parameters
-  const currentTime = new Date().getTime();
   const params = {
-    TableName: process.env.DDB_TABLE_NAME
+    KeyConditionExpression:
+      "gsi1pk = :type and gsi1sk between :sortStart and :sortEnd",
+    ExpressionAttributeValues: {
+      ":type": "order",
+      ":sortStart": "OPEN#",
+      ":sortEnd": `OPEN#${lateThreshold}`,
+    },
+    TableName: process.env.DDB_TABLE_NAME,
+    IndexName: 'gsi1pk-gsi1sk-index'
   };
 
-  // Hold the scan results in an array
-  let scanResults = [];
-  let items;
+  // Hold the late orders in an array
+  let lateOrders = [];
 
-  // Perform the query
+  // Query all late orders from the table
   try {
-    do {
-        items = await ddb.scan(params).promise();
-        items.Items.forEach((item) => scanResults.push(item));
-        params.ExclusiveStartKey = items.LastEvaluatedKey;
-    } while (typeof items.LastEvaluatedKey != "undefined");
+    const result = await ddb.query(params).promise();
+    // Extract the order JSON objects
+    const orders = Array.from(result.Items, item => JSON.parse(item.orderData.S));
+    // Save the open orders to the array
+    lateOrders = orders;
+  } catch (error) {
+    console.error(error);
   }
-  catch (err) {
-    console.log(err);
-    return {
-      statusCode: 500,
-      isBase64Encoded: false,
-      body: 'Internal server error',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
-  }
-
-  // Filter by entries over the threshold
-  let lateOrders = false;
-  scanResults.forEach((r) => {
-    // If the current time minus the timeCreated is greater than the threshold, the order is running late
-    const isOverThreshold = ((Number(currentTime) - Number(r.timeOpened))/60000) > Number(process.env.OPEN_ORDER_THRESHOLD_MINS);
-    if (r.orderStatus === 'OPEN' && isOverThreshold) {
-      lateOrders = true;
-    }
-  });
 
   // Send a notification if there is one or more orders running late
-  if (lateOrders) {
+  if (lateOrders.length > 0) {
     // Message parameters
     const sns_params = {
       Message: 'One or more orders are running late!',

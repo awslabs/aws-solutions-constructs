@@ -32,7 +32,9 @@ export interface Resources {
   // The main database created in the shared-stack
   readonly db: dynamodb.Table,
   // The existing S3 bucket for orders to be archived to upon close-out
-  readonly archiveBucket: s3.Bucket
+  readonly archiveBucket: s3.Bucket,
+  // The Lambda layer for sharing database access functions
+  readonly layer: lambda.ILayerVersion
 }
 
 // Stack
@@ -43,14 +45,13 @@ export class ManagerStack extends cdk.Stack {
     super(scope, id, props);
 
     // Create a Lambda function that lists all orders from the database
-    const listOrders = new LambdaToDynamoDB(this, 'list-orders', {
+    const getAllOrders = new LambdaToDynamoDB(this, 'get-all-orders', {
       lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_14_X,
-        code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/list-orders`),
+        code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/get-all-orders`),
         handler: 'index.handler',
-        environment: {
-          DDB_TABLE_NAME: resources.db.tableName
-        }
+        timeout: cdk.Duration.seconds(15),
+        layers: [ resources.layer ]
       },
       existingTableObj: resources.db
     });
@@ -62,9 +63,7 @@ export class ManagerStack extends cdk.Stack {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/create-report`),
         handler: 'index.handler',
-        environment: {
-          DDB_TABLE_NAME: resources.db.tableName
-        }
+        timeout: cdk.Duration.seconds(15)
       },
       existingTableObj: resources.db
     });
@@ -73,10 +72,6 @@ export class ManagerStack extends cdk.Stack {
     const reports = new LambdaToS3(this, 'reports-bucket', {
     	existingLambdaObj: createReport.lambdaFunction,
     });
-
-    // Add the bucket name to the Lambda environment variables
-    createReport.lambdaFunction.addEnvironment('S3_BUCKET_NAME', reports.s3Bucket?.bucketName || `reports-bucket-${new Date().getTime().toString(16)}`);
-    
     
     // Create a Lambda function that will calculate tips based on orders in the database
     // Runs as part of the close-out process
@@ -85,14 +80,12 @@ export class ManagerStack extends cdk.Stack {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/calculate-tips`),
         handler: 'index.handler',
-        environment: {
-          DDB_TABLE_NAME: resources.db.tableName
-        }
+        timeout: cdk.Duration.seconds(15)
       },
       existingTableObj: resources.db
     });
     // Create a topic for tip reports to be sent to -> sends an email to service staff workers
-    new LambdaToSns(this, 'calculated-tips-topic', {
+    new LambdaToSns(this, 'calculate-tips-topic', {
       existingLambdaObj: calculateTips.lambdaFunction
     });
 
@@ -103,8 +96,8 @@ export class ManagerStack extends cdk.Stack {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/archive-orders`),
         handler: 'index.handler',
+        timeout: cdk.Duration.seconds(15),
         environment: {
-          DDB_TABLE_NAME: resources.db.tableName,
           ARCHIVE_BUCKET_NAME: resources.archiveBucket.bucketName,
         }
       },
@@ -122,6 +115,7 @@ export class ManagerStack extends cdk.Stack {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/get-report`),
         handler: 'index.handler',
+        timeout: cdk.Duration.seconds(15)
       },
       existingBucketObj: reports.s3Bucket
     });
@@ -148,7 +142,8 @@ export class ManagerStack extends cdk.Stack {
       lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/close-out-service`),
-        handler: 'index.handler'
+        handler: 'index.handler',
+        timeout: cdk.Duration.seconds(15)
       },
       stateMachineProps: {
     	  definition: chain
@@ -159,7 +154,7 @@ export class ManagerStack extends cdk.Stack {
     
     // Setup the manager API with Cognito user pool
     const managerApi = new CognitoToApiGatewayToLambda(this, 'manager-api', {
-    	existingLambdaObj: listOrders.lambdaFunction,
+    	existingLambdaObj: getAllOrders.lambdaFunction,
 		  apiGatewayProps: {
 	      proxy: false,
         description: 'Demo: Manager API'
@@ -167,7 +162,7 @@ export class ManagerStack extends cdk.Stack {
     });
     
     // Add a resource to the API for listing all orders
-    const listOrdersResource = managerApi.apiGateway.root.addResource('list-orders');
+    const listOrdersResource = managerApi.apiGateway.root.addResource('get-all-orders');
     listOrdersResource.addProxy({
     	defaultIntegration: new apigateway.LambdaIntegration(managerApi.lambdaFunction),
     	anyMethod: true
@@ -191,33 +186,30 @@ export class ManagerStack extends cdk.Stack {
     managerApi.addAuthorizers();
     
     // Create a Lambda function for identifying orders that have been open for too long
-    const checkDelayedOrders = new LambdaToDynamoDB(this, 'check-delayed-orders', {
+    const checkLateOrders = new LambdaToDynamoDB(this, 'check-late-orders', {
       lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_14_X,
-        code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/check-delayed-orders`),
+        code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/check-late-orders`),
         handler: 'index.handler',
         environment: {
-          OPEN_ORDER_THRESHOLD_MINS: '30',
-          DDB_TABLE_NAME: resources.db.tableName
-        }
+          LATE_ORDER_THRESHOLD: '30'
+        },
+        timeout: cdk.Duration.seconds(15)
       },
       existingTableObj: resources.db
     });
     
-    // Create a CloudWatch Events rule to run the delayed orders function every minute
-    new EventsRuleToLambda(this, 'check-delayed-orders-scheduler', {
-    	existingLambdaObj: checkDelayedOrders.lambdaFunction,
+    // Create a CloudWatch Events rule to check for late orders every minute
+    new EventsRuleToLambda(this, 'check-late-orders-scheduler', {
+    	existingLambdaObj: checkLateOrders.lambdaFunction,
     	eventRuleProps: {
 	      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
 	    }
     });
     
-    // Create an SNS topic to send notifications to the manager when an order is delayed
-    const checkDelayedOrdersNotifier = new LambdaToSns(this, 'check-delayed-orders-notifier', {
-    	existingLambdaObj: checkDelayedOrders.lambdaFunction
+    // Create an SNS topic to send notifications to the manager when one or more orders are late
+    new LambdaToSns(this, 'check-late-orders-notifier', {
+    	existingLambdaObj: checkLateOrders.lambdaFunction
     });
-
-    // Add SNS topic name to Lambda environment variables
-    checkDelayedOrders.lambdaFunction.addEnvironment('SNS_TOPIC_ARN', checkDelayedOrdersNotifier.snsTopic.topicArn);
   }
 }

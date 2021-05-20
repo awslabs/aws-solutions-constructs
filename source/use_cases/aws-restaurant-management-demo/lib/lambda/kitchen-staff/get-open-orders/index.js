@@ -20,43 +20,33 @@ exports.handler = async (event) => {
     
   // Setup the parameters
   const params = {
-    TableName: process.env.DDB_TABLE_NAME
+    KeyConditionExpression:
+      "gsi1pk = :type and begins_with (gsi1sk, :sort)",
+    ExpressionAttributeValues: {
+      ":type": "order",
+      ":sort": "OPEN#",
+    },
+    TableName: process.env.DDB_TABLE_NAME,
+    IndexName: 'gsi1pk-gsi1sk-index'
   };
-
-  // Hold the scan results in an array
-  let scanResults = [];
-  let items;
 
   // Perform the query
   try {
-    do {
-        items = await ddb.scan(params).promise();
-        items.Items.forEach((item) => scanResults.push(item));
-        params.ExclusiveStartKey = items.LastEvaluatedKey;
-    } while (typeof items.LastEvaluatedKey != "undefined");
+    const result = await ddb.query(params).promise();
+    // Extract the order JSON objects
+    const orders = Array.from(result.Items, item => JSON.parse(item.orderData.S));
+    // Return the open orders
+    return {
+      statusCode: 200,
+      isBase64Encoded: false,
+      body: orders,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
   }
   catch (err) {
     console.log(err);
-    return {
-      statusCode: 500,
-      isBase64Encoded: false,
-      body: 'Internal server error',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
-  }
-
-  // Filter only open orders
-  const openOrders = scanResults.filter(order => order.orderStatus === "OPEN");
-
-  // Return the array of open orders
-  return {
-    statusCode: 200,
-    isBase64Encoded: false,
-    body: JSON.stringify(openOrders, null, 2),
-    headers: {
-      'Content-Type': 'application/json'
-    }
   }
 };

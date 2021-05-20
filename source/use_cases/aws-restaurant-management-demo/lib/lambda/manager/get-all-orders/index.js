@@ -12,38 +12,22 @@
  */
 
 // Imports
-const aws = require('aws-sdk');
-const ddb = new aws.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
+const db_access = require('/opt/db-access');
 
 // Handler
 exports.handler = async (event) => {
-    
-  // Setup the parameters
-  const req = JSON.parse(event.body);
-  const params = {
-    TableName: process.env.DDB_TABLE_NAME,
-    Key: {
-        "id": req.orderId
-    },
-    UpdateExpression: "set orderStatus = :orderStatus",
-    ExpressionAttributeValues: {
-        ":orderStatus": 'CLOSED',
-    }
-  };
-
-  // Add the item to the database
+  // Execute the operation
   try {
-    const result = await ddb.update(params).promise();
+    const orders = await db_access.scanTable();
     return {
       statusCode: 200,
       isBase64Encoded: false,
-      body: result,
+      body: orders,
       headers: {
         'Content-Type': 'application/json'
       }
     }
-  }
-  catch (err) {
+  } catch (err) {
     console.log(err);
   }
 };

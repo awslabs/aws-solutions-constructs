@@ -50,4 +50,5 @@ new KitchenStaffStack(app, `KitchenStaffStack`, config, {
 new ManagerStack(app, 'ManagerStack', config, {
   db: sharedStack.database,
   archiveBucket: existingResources.archiveBucket,
+  layer: sharedStack.layer
 });
