@@ -22,7 +22,7 @@ export class ExistingResources extends cdk.Stack {
   public readonly archiveBucket: s3.Bucket;
 
   // Constructor
-  constructor(scope: cdk.Construct, id: string, props: cdk.StackProps) {
+  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     // An "existing" Amazon S3 bucket that holds archived orders

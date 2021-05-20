@@ -24,7 +24,7 @@ import {
 } from '@aws-solutions-constructs/aws-lambda-dynamodb';
 
 // Properties for the kitchen-staff-stack
-export interface Resources {
+export interface KitchenStaffStackProps {
   // The main database created in the shared-stack
   readonly db: dynamodb.Table,
 }
@@ -33,8 +33,8 @@ export interface Resources {
 export class KitchenStaffStack extends cdk.Stack {
 
   // Constructor
-  constructor(scope: cdk.Construct, id: string, props: cdk.StackProps, resources: Resources) {
-    super(scope, id, props);
+  constructor(scope: cdk.Construct, id: string, props: KitchenStaffStackProps) {
+    super(scope, id);
 
     // Create a Lambda function that lists all open orders in the database
     const getOpenOrders = new LambdaToDynamoDB(this, 'get-open-orders', {
@@ -44,7 +44,7 @@ export class KitchenStaffStack extends cdk.Stack {
         handler: 'get-open-orders.handler',
         timeout: cdk.Duration.seconds(15)
       },
-      existingTableObj: resources.db
+      existingTableObj: props.db
     });
 
     // Create a Lambda function that marks an order as completed in the database
@@ -55,7 +55,7 @@ export class KitchenStaffStack extends cdk.Stack {
         handler: 'complete-order.handler',
         timeout: cdk.Duration.seconds(15)
       },
-      existingTableObj: resources.db
+      existingTableObj: props.db
     });
 
     // Setup the kitchen staff API with Cognito user pool

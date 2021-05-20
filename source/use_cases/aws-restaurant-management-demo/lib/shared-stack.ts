@@ -24,7 +24,7 @@ export class SharedStack extends cdk.Stack {
   public readonly layer: lambda.ILayerVersion;
 
   // Constructor
-  constructor(scope: cdk.Construct, id: string, props: cdk.StackProps) {
+  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     // Setup the database ----------------------------------------------------------------------------------------------

@@ -28,7 +28,7 @@ import { EventsRuleToLambda } from '@aws-solutions-constructs/aws-events-rule-la
 import { LambdaToStepFunction } from '@aws-solutions-constructs/aws-lambda-step-function';
 
 // Properties for the manager-stack
-export interface Resources {
+export interface ManagerStackProps {
   // The main database created in the shared-stack
   readonly db: dynamodb.Table,
   // The existing S3 bucket for orders to be archived to upon close-out
@@ -41,8 +41,8 @@ export interface Resources {
 export class ManagerStack extends cdk.Stack {
 
   // Constructor
-  constructor(scope: cdk.Construct, id: string, props: cdk.StackProps, resources: Resources) {
-    super(scope, id, props);
+  constructor(scope: cdk.Construct, id: string, props: ManagerStackProps) {
+    super(scope, id);
 
     // Create a Lambda function that lists all orders from the database
     const getAllOrders = new LambdaToDynamoDB(this, 'get-all-orders', {
@@ -51,9 +51,9 @@ export class ManagerStack extends cdk.Stack {
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/get-all-orders`),
         handler: 'index.handler',
         timeout: cdk.Duration.seconds(15),
-        layers: [ resources.layer ]
+        layers: [ props.layer ]
       },
-      existingTableObj: resources.db
+      existingTableObj: props.db
     });
 
     // Create a Lambda function that will generate a report from information in the database
@@ -65,7 +65,7 @@ export class ManagerStack extends cdk.Stack {
         handler: 'index.handler',
         timeout: cdk.Duration.seconds(15)
       },
-      existingTableObj: resources.db
+      existingTableObj: props.db
     });
 
     // Create an S3 bucket for storing generated reports
@@ -82,7 +82,7 @@ export class ManagerStack extends cdk.Stack {
         handler: 'index.handler',
         timeout: cdk.Duration.seconds(15)
       },
-      existingTableObj: resources.db
+      existingTableObj: props.db
     });
     // Create a topic for tip reports to be sent to -> sends an email to service staff workers
     new LambdaToSns(this, 'calculate-tips-topic', {
@@ -98,14 +98,14 @@ export class ManagerStack extends cdk.Stack {
         handler: 'index.handler',
         timeout: cdk.Duration.seconds(15),
         environment: {
-          ARCHIVE_BUCKET_NAME: resources.archiveBucket.bucketName,
+          ARCHIVE_BUCKET_NAME: props.archiveBucket.bucketName,
         }
       },
-      existingTableObj: resources.db
+      existingTableObj: props.db
     });
     // Use the LambdaToS3 construct to connect the archiveOrders function with the existing bucket
     new LambdaToS3(this, 'archive-orders-to-bucket', {
-      existingBucketObj: resources.archiveBucket,
+      existingBucketObj: props.archiveBucket,
       existingLambdaObj: archiveOrders.lambdaFunction
     });
 
@@ -196,7 +196,7 @@ export class ManagerStack extends cdk.Stack {
         },
         timeout: cdk.Duration.seconds(15)
       },
-      existingTableObj: resources.db
+      existingTableObj: props.db
     });
     
     // Create a CloudWatch Events rule to check for late orders every minute

@@ -24,7 +24,7 @@ import {
 } from '@aws-solutions-constructs/aws-lambda-dynamodb';
 
 // Properties for the service-staff-stack
-export interface Resources {
+export interface ServiceStaffStackProps {
   // The main database created in the shared-stack
   readonly db: dynamodb.Table,
 }
@@ -33,8 +33,8 @@ export interface Resources {
 export class ServiceStaffStack extends cdk.Stack {
   
   // Constructor
-  constructor(scope: cdk.Construct, id: string, props: cdk.StackProps, resources: Resources) {
-    super(scope, id, props);
+  constructor(scope: cdk.Construct, id: string, props: ServiceStaffStackProps) {
+    super(scope, id);
 
     // Create a Lambda function that adds a new order to the database
     const createOrder = new LambdaToDynamoDB(this, 'create-order', {
@@ -44,7 +44,7 @@ export class ServiceStaffStack extends cdk.Stack {
         handler: 'index.handler',
         timeout: cdk.Duration.seconds(15)
       },
-      existingTableObj: resources.db
+      existingTableObj: props.db
     });
 
     // Create a Lambda function that marks orders as paid in the database
@@ -55,7 +55,7 @@ export class ServiceStaffStack extends cdk.Stack {
         handler: 'index.handler',
         timeout: cdk.Duration.seconds(15)
       },
-      existingTableObj: resources.db
+      existingTableObj: props.db
     });
 
     // Setup the service staff API with Cognito user pool

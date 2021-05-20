@@ -22,32 +22,24 @@ import { ManagerStack } from '../lib/manager-stack';
 // App
 const app = new cdk.App();
 
-// Environment configuration
-const config = { 
-  env: {
-    account: 'ACCOUNT_NUMBER_HERE', 
-    region: 'us-east-1' // default region selection
-  }
-};
+// Stack containing shared resources across all functions
+const existingResources = new ExistingResources(app, `ExistingResourcesStack`);
 
 // Stack containing shared resources across all functions
-const existingResources = new ExistingResources(app, `ExistingResourcesStack`, config);
-
-// Stack containing shared resources across all functions
-const sharedStack = new SharedStack(app, `SharedStack`, config);
+const sharedStack = new SharedStack(app, `SharedStack`);
 
 // Stack containing resources that enable Service Staff functions
-new ServiceStaffStack(app, `ServiceStaffStack`, config, {
+new ServiceStaffStack(app, `ServiceStaffStack`, {
   db: sharedStack.database
 });
 
 // Stack containing resources that enable Kitchen Staff functions
-new KitchenStaffStack(app, `KitchenStaffStack`, config, {
+new KitchenStaffStack(app, `KitchenStaffStack`, {
   db: sharedStack.database
 });
 
 // Stack containing resources that enable Manager functions
-new ManagerStack(app, 'ManagerStack', config, {
+new ManagerStack(app, 'ManagerStack', {
   db: sharedStack.database,
   archiveBucket: existingResources.archiveBucket,
   layer: sharedStack.layer

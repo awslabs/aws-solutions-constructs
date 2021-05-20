@@ -16,16 +16,8 @@ import { ExistingResources } from '../lib/existing-resources';
 import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
-// Environment configuration
-const config = { 
-  env: {
-    account: 'ACCOUNT_NUMBER_HERE', 
-    region: 'us-east-1' // default region selection
-  }
-};
-
 test('ExistingResourcesStack', () => {
   const app = new cdk.App();
-  const stack = new ExistingResources(app, `ExistingResourcesStack`, config);
+  const stack = new ExistingResources(app, `ExistingResourcesStack`);
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });

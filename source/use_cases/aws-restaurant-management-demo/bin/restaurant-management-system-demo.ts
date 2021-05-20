@@ -24,35 +24,27 @@ import { ManagerStack } from '../lib/manager-stack';
 // App
 const app = new cdk.App();
 
-// Environment configuration
-const config = { 
-  env: {
-    account: '782585028338', 
-    region: 'us-east-1' // default region selection
-  }
-};
-
 // Stack name suffix
 const sfx = '57980ccf22d1';
 
 // Stack containing shared resources across all functions
-const existingResources = new ExistingResources(app, `ExistingResourcesStack-${sfx}`, config);
+const existingResources = new ExistingResources(app, `ExistingResourcesStack-${sfx}`);
 
 // Stack containing shared resources across all functions
-const sharedStack = new SharedStack(app, `SharedStack-${sfx}`, config);
+const sharedStack = new SharedStack(app, `SharedStack-${sfx}`);
 
 // Stack containing resources that enable Service Staff functions
-new ServiceStaffStack(app, `ServiceStaffStack-${sfx}`, config, {
+new ServiceStaffStack(app, `ServiceStaffStack-${sfx}`, {
   db: sharedStack.database
 });
 
 // Stack containing resources that enable Kitchen Staff functions
-new KitchenStaffStack(app, `KitchenStaffStack-${sfx}`, config, {
+new KitchenStaffStack(app, `KitchenStaffStack-${sfx}`, {
   db: sharedStack.database
 });
 
 // Stack containing resources that enable Manager functions
-new ManagerStack(app, `ManagerStack-${sfx}`, config, {
+new ManagerStack(app, `ManagerStack-${sfx}`, {
   db: sharedStack.database,
   layer: sharedStack.layer,
   archiveBucket: existingResources.archiveBucket,

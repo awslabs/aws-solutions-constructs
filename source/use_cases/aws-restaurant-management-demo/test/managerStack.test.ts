@@ -18,21 +18,13 @@
  import { SynthUtils } from '@aws-cdk/assert';
  import '@aws-cdk/assert/jest';
  
- // Environment configuration
- const config = { 
-   env: {
-     account: 'ACCOUNT_NUMBER_HERE', 
-     region: 'us-east-1' // default region selection
-   }
- };
- 
  test('test-manager-stack', () => {
   const app = new cdk.App();
   // Dependent stacks
-  const existingResources = new ExistingResources(app, `ExistingResourcesStack`, config);
-  const sharedStack = new SharedStack(app, `SharedStack`, config);
+  const existingResources = new ExistingResources(app, `ExistingResourcesStack`);
+  const sharedStack = new SharedStack(app, `SharedStack`);
   // ----
-  const stack = new ManagerStack(app, 'ManagerStack', config, {
+  const stack = new ManagerStack(app, 'ManagerStack', {
     db: sharedStack.database,
     archiveBucket: existingResources.archiveBucket,
     layer: sharedStack.layer

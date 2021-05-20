@@ -17,20 +17,12 @@
  import { SynthUtils } from '@aws-cdk/assert';
  import '@aws-cdk/assert/jest';
  
- // Environment configuration
- const config = { 
-   env: {
-     account: 'ACCOUNT_NUMBER_HERE', 
-     region: 'us-east-1' // default region selection
-   }
- };
- 
  test('test-service-staff-stack', () => {
   const app = new cdk.App();
   // Dependent stacks
-  const sharedStack = new SharedStack(app, `SharedStack`, config);
+  const sharedStack = new SharedStack(app, `SharedStack`);
   // ----
-  const stack = new ServiceStaffStack(app, `ServiceStaffStack`, config, {
+  const stack = new ServiceStaffStack(app, `ServiceStaffStack`, {
     db: sharedStack.database
   });
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
