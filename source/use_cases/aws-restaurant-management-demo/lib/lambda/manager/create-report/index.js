@@ -64,8 +64,6 @@ exports.handler = async (event) => {
     console.log(`Successfully saved the report to "${process.env.S3_BUCKET_NAME}"`);
     console.log(`Report filename: "${s3_params.Key}"`);
   } catch (err) {
-    console.log('An error occurred while saving the report');
-    console.log('Log output provided below:');
     console.log(err);
   }
 };

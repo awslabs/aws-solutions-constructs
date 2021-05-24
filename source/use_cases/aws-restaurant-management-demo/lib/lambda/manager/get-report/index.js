@@ -43,16 +43,6 @@ exports.handler = async (event) => {
     }
   }
   catch (err) {
-    console.log('An error occurred while retrieving the report.');
-    console.log('Log output provided below:');
     console.log(err);
-    return {
-      statusCode: 200,
-      isBase64Encoded: false,
-      body: JSON.stringify('Internal server error', null, 2),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
   }
 }

@@ -24,27 +24,24 @@ import { ManagerStack } from '../lib/manager-stack';
 // App
 const app = new cdk.App();
 
-// Stack name suffix
-const sfx = '57980ccf22d1';
+// Stack containing existing resources
+const existingResources = new ExistingResources(app, `ExistingResourcesStack`);
 
 // Stack containing shared resources across all functions
-const existingResources = new ExistingResources(app, `ExistingResourcesStack-${sfx}`);
-
-// Stack containing shared resources across all functions
-const sharedStack = new SharedStack(app, `SharedStack-${sfx}`);
+const sharedStack = new SharedStack(app, `SharedStack`);
 
 // Stack containing resources that enable Service Staff functions
-new ServiceStaffStack(app, `ServiceStaffStack-${sfx}`, {
+new ServiceStaffStack(app, `ServiceStaffStack`, {
   db: sharedStack.database
 });
 
 // Stack containing resources that enable Kitchen Staff functions
-new KitchenStaffStack(app, `KitchenStaffStack-${sfx}`, {
+new KitchenStaffStack(app, `KitchenStaffStack`, {
   db: sharedStack.database
 });
 
 // Stack containing resources that enable Manager functions
-new ManagerStack(app, `ManagerStack-${sfx}`, {
+new ManagerStack(app, `ManagerStack`, {
   db: sharedStack.database,
   layer: sharedStack.layer,
   archiveBucket: existingResources.archiveBucket,

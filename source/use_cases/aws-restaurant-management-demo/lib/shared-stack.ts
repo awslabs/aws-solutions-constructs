@@ -21,7 +21,7 @@ export class SharedStack extends cdk.Stack {
 
   // Public variables
   public readonly database: ddb.Table;
-  public readonly layer: lambda.ILayerVersion;
+  public readonly layer: lambda.LayerVersion;
 
   // Constructor
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -61,17 +61,11 @@ export class SharedStack extends cdk.Stack {
     });
 
     // Setup a Lambda layer for sharing database functions -------------------------------------------------------------
-    const dbAccessBaseLayer = new lambda.LayerVersion(this, 'shared-db-functions-layer', {
-      code: lambda.Code.fromAsset(`${__dirname}/lambda/layers`),
+    this.layer = new lambda.LayerVersion(this, 'shared-db-functions-layer', {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/layer`),
       compatibleRuntimes: [ lambda.Runtime.NODEJS_14_X ],
       license: 'Apache-2.0',
-      description: 'A layer to test the L2 construct',
+      description: 'Layer for common database access functions',
     });
-
-    this.layer = lambda.LayerVersion.fromLayerVersionArn(
-      this,
-      'BaseLayerFromArn',
-      dbAccessBaseLayer.layerVersionArn
-    );
   }
 }

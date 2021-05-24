@@ -45,13 +45,5 @@ exports.handler = async (event) => {
   }
   catch (err) {
     console.log(err);
-    return {
-      statusCode: 500,
-      isBase64Encoded: false,
-      body: 'Internal server error',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
   }
 };

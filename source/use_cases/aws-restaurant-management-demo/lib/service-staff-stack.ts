@@ -14,7 +14,7 @@
 // Imports
 import * as cdk from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
+import * as ddb from '@aws-cdk/aws-dynamodb';
 import * as apigateway from '@aws-cdk/aws-apigateway';
 import {
   CognitoToApiGatewayToLambda
@@ -26,7 +26,7 @@ import {
 // Properties for the service-staff-stack
 export interface ServiceStaffStackProps {
   // The main database created in the shared-stack
-  readonly db: dynamodb.Table,
+  readonly db: ddb.Table,
 }
 
 // Stack
@@ -47,7 +47,7 @@ export class ServiceStaffStack extends cdk.Stack {
       existingTableObj: props.db
     });
 
-    // Create a Lambda function that marks orders as paid in the database
+    // Create a Lambda function that closes out an order in the table
     const processPayment = new LambdaToDynamoDB(this, 'process-payment', {
       lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_14_X,

@@ -14,7 +14,7 @@
 // Imports
 import * as cdk from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
+import * as ddb from '@aws-cdk/aws-dynamodb';
 import * as apigateway from '@aws-cdk/aws-apigateway';
 import * as events from '@aws-cdk/aws-events';
 import * as sfn from '@aws-cdk/aws-stepfunctions';
@@ -30,11 +30,11 @@ import { LambdaToStepFunction } from '@aws-solutions-constructs/aws-lambda-step-
 // Properties for the manager-stack
 export interface ManagerStackProps {
   // The main database created in the shared-stack
-  readonly db: dynamodb.Table,
+  readonly db: ddb.Table,
   // The existing S3 bucket for orders to be archived to upon close-out
   readonly archiveBucket: s3.Bucket,
   // The Lambda layer for sharing database access functions
-  readonly layer: lambda.ILayerVersion
+  readonly layer: lambda.LayerVersion
 }
 
 // Stack
@@ -149,8 +149,6 @@ export class ManagerStack extends cdk.Stack {
     	  definition: chain
       }
     });
-    // 6. Add the state machine ARN to the Lambda function environment variables
-    closeOutService.lambdaFunction.addEnvironment('STATE_MACHINE_ARN', closeOutService.stateMachine.stateMachineArn);
     
     // Setup the manager API with Cognito user pool
     const managerApi = new CognitoToApiGatewayToLambda(this, 'manager-api', {

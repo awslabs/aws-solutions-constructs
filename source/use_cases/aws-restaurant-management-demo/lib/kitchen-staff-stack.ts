@@ -14,7 +14,7 @@
 // Imports
 import * as cdk from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
+import * as ddb from '@aws-cdk/aws-dynamodb';
 import * as apigateway from '@aws-cdk/aws-apigateway';
 import {
   CognitoToApiGatewayToLambda
@@ -26,7 +26,7 @@ import {
 // Properties for the kitchen-staff-stack
 export interface KitchenStaffStackProps {
   // The main database created in the shared-stack
-  readonly db: dynamodb.Table,
+  readonly db: ddb.Table,
 }
 
 // Stack
@@ -41,7 +41,7 @@ export class KitchenStaffStack extends cdk.Stack {
       lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/kitchen-staff/get-open-orders`),
-        handler: 'get-open-orders.handler',
+        handler: 'index.handler',
         timeout: cdk.Duration.seconds(15)
       },
       existingTableObj: props.db
@@ -52,7 +52,7 @@ export class KitchenStaffStack extends cdk.Stack {
       lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/kitchen-staff/complete-order`),
-        handler: 'complete-order.handler',
+        handler: 'index.handler',
         timeout: cdk.Duration.seconds(15)
       },
       existingTableObj: props.db

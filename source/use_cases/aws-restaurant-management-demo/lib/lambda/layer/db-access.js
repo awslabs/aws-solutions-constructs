@@ -25,8 +25,6 @@ exports.scanTable = async () => {
     TableName: process.env.DDB_TABLE_NAME
   };
 
-  console.log(params);
-
   // Hold the scan results in an array
   let scanResults = [];
   let items;
