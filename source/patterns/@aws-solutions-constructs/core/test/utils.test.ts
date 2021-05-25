@@ -50,3 +50,12 @@ test('Test with non Aphanumeric', () => {
 
   expect(result).toContain('partoneparttwo');
 });
+
+// --------------------------------------------------------------
+// Test generateIntegStackName
+// --------------------------------------------------------------
+test('Test generateIntegStackName', () => {
+  const result = defaults.generateIntegStackName('integ.apigateway-dynamodb-CRUD.js');
+
+  expect(result).toContain('apigateway-dynamodb-CRUD');
+});
