@@ -15,6 +15,7 @@
 import { Bucket, CfnBucket, BucketProps } from "@aws-cdk/aws-s3";
 import { Construct, RemovalPolicy } from "@aws-cdk/core";
 import { overrideProps } from "../lib/utils";
+import * as path from 'path';
 
 // Creates a bucket used for testing - minimal properties, destroyed after test
 export function CreateScrapBucket(scope: Construct, props?: BucketProps | any) {
@@ -62,4 +63,16 @@ export function CreateScrapBucket(scope: Construct, props?: BucketProps | any) {
   };
 
   return scriptBucket;
+}
+
+/**
+ * @summary Creates a stack name for Integration tests
+ * @param {string} filename - the filename of the integ test
+ * @returns {string} - a string with current filename after removing anything before the prefix '.' and suffix '.js'
+ * e.g. 'integ.apigateway-dynamodb-CRUD.js' will return 'apigateway-dynamodb-CRUD'
+ */
+export function generateIntegStackName(filename: string): string {
+  const file = path.basename(filename, path.extname(filename));
+  const stackname = file.slice(file.lastIndexOf('.') + 1);
+  return stackname;
 }

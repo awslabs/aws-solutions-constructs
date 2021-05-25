@@ -15,7 +15,6 @@ import * as deepmerge from 'deepmerge';
 import { flagOverriddenDefaults } from './override-warning-service';
 import * as log from 'npmlog';
 import * as crypto from 'crypto';
-import * as path from 'path';
 
 function isObject(val: object) {
   return val != null && typeof val === 'object'
@@ -123,16 +122,4 @@ export function generateResourceName(
  */
 function removeNonAlphanumeric(s: string) {
   return s.replace(/[^A-Za-z0-9]/g, '');
-}
-
-/**
- * @summary Creates a stack name for Integration tests
- * @param {string} filename - the filename of the integ test
- * @returns {string} - a string with current filename after removing anything before the prefix '.' and suffix '.js'
- * e.g. 'integ.apigateway-dynamodb-CRUD.js' will return 'apigateway-dynamodb-CRUD'
- */
-export function generateIntegStackName(filename: string): string {
-  const file = path.basename(filename, path.extname(filename));
-  const stackname = file.slice(file.lastIndexOf('.') + 1);
-  return stackname;
 }
