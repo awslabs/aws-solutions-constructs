@@ -16,10 +16,11 @@ import { App, Stack } from "@aws-cdk/core";
 import { ApiGatewayToDynamoDBProps, ApiGatewayToDynamoDB } from "../lib";
 import * as dynamodb from "@aws-cdk/aws-dynamodb";
 import { BillingMode } from "@aws-cdk/aws-dynamodb";
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-apigateway-dynamodb-default');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-apigateway-dynamodb';
 
 const oddPartitionKeyName = 'oddName';

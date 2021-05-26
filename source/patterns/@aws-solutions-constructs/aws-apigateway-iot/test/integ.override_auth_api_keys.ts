@@ -15,10 +15,11 @@
 import { App, Stack } from "@aws-cdk/core";
 import { ApiGatewayToIot, ApiGatewayToIotProps } from "../lib";
 import { AuthorizationType } from "@aws-cdk/aws-apigateway";
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-apigateway-iot-apikeys-params');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-apigateway-iot with default params';
 
 // Definitions

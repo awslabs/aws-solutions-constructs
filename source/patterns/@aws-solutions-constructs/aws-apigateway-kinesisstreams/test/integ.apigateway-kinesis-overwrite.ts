@@ -14,10 +14,11 @@
 // Imports
 import { App, Stack, Duration } from '@aws-cdk/core';
 import { ApiGatewayToKinesisStreams, ApiGatewayToKinesisStreamsProps } from '../lib';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-apigateway-kinesis-overwrite');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-apigateway-kinesis';
 
 // Definitions
