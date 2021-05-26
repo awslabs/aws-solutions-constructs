@@ -153,7 +153,7 @@ export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, 
     "--database_name": database.ref,
     "--table_name": table.ref,
     ...((outputDataStore === undefined || (outputDataStore && outputDataStore.datastoreType === SinkStoreType.S3)) &&
-      { '--output_path' : `s3://${_outputLocation[0].bucketName}/output/` }),
+      { '--output_path' : `s3a://${_outputLocation[0].bucketName}/output/` }),
     ...glueJobProps.defaultArguments
   };
 
