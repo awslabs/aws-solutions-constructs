@@ -73,6 +73,6 @@ export function CreateScrapBucket(scope: Construct, props?: BucketProps | any) {
  */
 export function generateIntegStackName(filename: string): string {
   const file = path.basename(filename, path.extname(filename));
-  const stackname = file.slice(file.lastIndexOf('.') + 1);
+  const stackname = file.slice(file.lastIndexOf('.') + 1).replace(/_/g, '-');
   return stackname;
 }

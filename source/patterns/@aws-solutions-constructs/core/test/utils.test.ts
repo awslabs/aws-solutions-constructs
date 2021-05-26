@@ -56,6 +56,8 @@ test('Test with non Aphanumeric', () => {
 // --------------------------------------------------------------
 test('Test generateIntegStackName', () => {
   const result = defaults.generateIntegStackName('integ.apigateway-dynamodb-CRUD.js');
-
   expect(result).toContain('apigateway-dynamodb-CRUD');
+
+  const result1 = defaults.generateIntegStackName('integ.override_auth_api_keys.ts');
+  expect(result1).toContain('override-auth-api-keys');
 });
