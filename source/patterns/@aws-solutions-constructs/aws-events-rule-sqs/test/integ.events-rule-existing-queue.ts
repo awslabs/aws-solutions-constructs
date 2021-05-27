@@ -17,9 +17,10 @@ import * as events from '@aws-cdk/aws-events';
 import { App, Stack } from '@aws-cdk/core';
 import * as sqs from '@aws-cdk/aws-sqs';
 import * as kms from '@aws-cdk/aws-kms';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
-const stack = new Stack(app, 'test-rule-exist-sqs');
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 const existingQueueObj = new sqs.Queue(stack, 'MyQueue', {
   encryption: sqs.QueueEncryption.KMS,

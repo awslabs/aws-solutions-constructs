@@ -15,10 +15,11 @@
 import { App, Stack } from "@aws-cdk/core";
 import { LambdaToElasticSearchAndKibana } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-lambda-elasticsearch-kibana-stack');
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 const lambdaProps: lambda.FunctionProps = {
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
