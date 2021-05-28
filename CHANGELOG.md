@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.105.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.104.0...v1.105.0) (2021-05-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* any testing snapshots will need to be refreshed.
+
+* Merge pull request #197 from knihit/master ([69f7fbd](https://github.com/awslabs/aws-solutions-constructs/commit/69f7fbdde5d3d7cf699ee2098db42ade676073d8)), closes [#197](https://github.com/awslabs/aws-solutions-constructs/issues/197) [#196](https://github.com/awslabs/aws-solutions-constructs/issues/196)
+
 ## [1.104.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.103.0...v1.104.0) (2021-05-21)
 
 ### Changed
