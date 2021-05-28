@@ -17,10 +17,11 @@ import { LambdaToSagemakerEndpoint, LambdaToSagemakerEndpointProps } from '../li
 import * as defaults from '@aws-solutions-constructs/core';
 import * as lambda from '@aws-cdk/aws-lambda';
 import { getSagemakerModel } from './test-helper';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-lambda-sagemakerendpoint');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-lambda-sagemakerendpoint';
 
 const [containerMap, modelAsset ] = getSagemakerModel(stack);

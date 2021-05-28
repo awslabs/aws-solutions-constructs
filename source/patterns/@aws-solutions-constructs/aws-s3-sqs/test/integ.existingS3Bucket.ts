@@ -15,9 +15,11 @@
 import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { S3ToSqs, S3ToSqsProps } from "../lib";
 import * as defaults from '@aws-solutions-constructs/core';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
+
 const app = new App();
 
-const stack = new Stack(app, 'test-s3-sqs-existing-bucket');
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 const [myBucket] = defaults.buildS3Bucket(stack, { bucketProps: { removalPolicy: RemovalPolicy.DESTROY }, });
 
