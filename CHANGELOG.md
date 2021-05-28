@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.105.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.104.0...v1.105.0) (2021-05-28)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.105.0
+* aws-s3-step-function now triggers for Mulitpart uploads and Copy Object [#198](https://github.com/awslabs/aws-solutions-constructs/pull/198)
+* Change S3 protocol in glue to use s3a:// [#197](https://github.com/awslabs/aws-solutions-constructs/pull/197)
+* Change policy name in for glue so multiple constructs can be included in a single stack [#197](https://github.com/awslabs/aws-solutions-constructs/pull/197)
+
+### ⚠ BREAKING CHANGES
+
+* Existing testing snapshots for aws-s3-step-function and aws-kinesisstreams-gluejob may need to be refreshed.
+
 ## [1.104.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.103.0...v1.104.0) (2021-05-21)
 
 ### Changed

@@ -156,7 +156,7 @@ export class KinesisstreamsToGluejob extends Construct {
       outputDataStore: props.outputDataStore!
     });
 
-    this.glueJobRole = this.buildRolePolicy(scope, this.database, this.table, this.glueJob, this.glueJobRole);
+    this.glueJobRole = this.buildRolePolicy(scope, id, this.database, this.table, this.glueJob, this.glueJobRole);
   }
 
   /**
@@ -168,8 +168,9 @@ export class KinesisstreamsToGluejob extends Construct {
    * @param glueJob
    * @param role
    */
-  private buildRolePolicy(scope: Construct, glueDatabase: glue.CfnDatabase, glueTable: glue.CfnTable, glueJob: glue.CfnJob, role: IRole): IRole {
-    const _glueJobPolicy = new Policy(scope, 'GlueJobPolicy', {
+  private buildRolePolicy(scope: Construct, id: string, glueDatabase: glue.CfnDatabase, glueTable: glue.CfnTable,
+    glueJob: glue.CfnJob, role: IRole): IRole {
+    const _glueJobPolicy = new Policy(scope, `${id}GlueJobPolicy`, {
       statements: [ new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [ 'glue:GetJob' ],
