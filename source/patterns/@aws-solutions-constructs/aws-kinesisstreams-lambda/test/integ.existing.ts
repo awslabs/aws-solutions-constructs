@@ -17,10 +17,11 @@ import { Stack, App, Aws } from '@aws-cdk/core';
 import * as kinesis from '@aws-cdk/aws-kinesis';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as iam from '@aws-cdk/aws-iam';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-ks-existing-lambda-stack');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-kinesisstreams-lambda';
 
 const lambdaRole = new iam.Role(stack, 'test-role', {

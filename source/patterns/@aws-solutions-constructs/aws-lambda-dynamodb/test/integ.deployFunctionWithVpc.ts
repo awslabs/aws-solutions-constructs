@@ -15,10 +15,11 @@
 import { App, Stack } from "@aws-cdk/core";
 import {LambdaToDynamoDB, LambdaToDynamoDBProps} from "../lib";
 import * as lambda from "@aws-cdk/aws-lambda";
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, "test-lambda-dynamodb-stack");
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = "Integration Test for aws-lambda-dynamodb";
 
 // Definitions

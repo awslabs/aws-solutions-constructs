@@ -16,10 +16,12 @@ import { App, Stack } from "@aws-cdk/core";
 import { LambdaToDynamoDB } from "../lib";
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as lambda from '@aws-cdk/aws-lambda';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
+
 const app = new App();
 
 // Change the billing mode to PROVISIONED
-const stack = new Stack(app, 'test-lambda-dynamodb-stack');
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 const construct: LambdaToDynamoDB = new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', {
   lambdaFunctionProps: {
