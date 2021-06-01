@@ -22,7 +22,7 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration test for aws-cloudfront-mediastore with existing mediastore container';
 const mediaStoreContainerObject = new mediastore.CfnContainer(stack, 'MyMediaStoreContainer', {
-  containerName: 'MyMediaStoreContainer2'
+  containerName: 'MyExistingMediaStoreContainer'
 });
 
 // Instantiate construct
