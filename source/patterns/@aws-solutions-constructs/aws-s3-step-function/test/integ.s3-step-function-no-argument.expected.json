@@ -590,7 +590,9 @@
               "s3.amazonaws.com"
             ],
             "eventName": [
-              "PutObject"
+              "PutObject",
+              "CopyObject",
+              "CompleteMultipartUpload"
             ],
             "requestParameters": {
               "bucketName": [

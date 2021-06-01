@@ -4,7 +4,7 @@
     "testcloudfrontmediastoreMediaStoreContainerF60A96BB": {
       "Type": "AWS::MediaStore::Container",
       "Properties": {
-        "ContainerName": "MyMediaStoreContainer",
+        "ContainerName": "MyOwnMediaStoreContainer",
         "AccessLoggingEnabled": true,
         "CorsPolicy": [
           {
@@ -39,7 +39,7 @@
               {
                 "Ref": "AWS::AccountId"
               },
-              ":container/MyMediaStoreContainer/*\",\"Condition\":{\"Bool\":{\"aws:SecureTransport\":\"true\"}}}]}"
+              ":container/MyOwnMediaStoreContainer/*\",\"Condition\":{\"Bool\":{\"aws:SecureTransport\":\"true\"}}}]}"
             ]
           ]
         }

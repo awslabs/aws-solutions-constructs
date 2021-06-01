@@ -23,7 +23,7 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration test for aws-cloudfront-mediastore override properties';
 const mediaStoreContainerProps: mediastore.CfnContainerProps = {
-  containerName: 'MyMediaStoreContainer',
+  containerName: 'MyOwnMediaStoreContainer',
   policy: JSON.stringify({
     Version: '2012-10-17',
     Statement: [{
@@ -31,7 +31,7 @@ const mediaStoreContainerProps: mediastore.CfnContainerProps = {
       Effect: 'Allow',
       Principal: '*',
       Action: 'mediastore:*',
-      Resource: `arn:aws:mediastore:${Aws.REGION}:${Aws.ACCOUNT_ID}:container/MyMediaStoreContainer/*`,
+      Resource: `arn:aws:mediastore:${Aws.REGION}:${Aws.ACCOUNT_ID}:container/MyOwnMediaStoreContainer/*`,
       Condition: {
         Bool: { "aws:SecureTransport": "true" }
       }
