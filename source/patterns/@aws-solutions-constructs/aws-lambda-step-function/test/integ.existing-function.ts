@@ -17,10 +17,11 @@ import { LambdaToStepFunction, LambdaToStepFunctionProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
 import * as defaults from '@aws-solutions-constructs/core';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup the app and stack
 const app = new App();
-const stack = new Stack(app, 'test-lambda-step-function-stack');
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 // Create a start state for the state machine
 const startState = new stepfunctions.Pass(stack, 'StartState');

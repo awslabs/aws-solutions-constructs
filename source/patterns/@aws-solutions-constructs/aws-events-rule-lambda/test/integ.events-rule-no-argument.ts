@@ -17,9 +17,10 @@ import { EventsRuleToLambda, EventsRuleToLambdaProps } from "../lib";
 import { Duration } from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as events from '@aws-cdk/aws-events';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
-const stack = new Stack(app, 'test-events-rule-lambda-stack');
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 const props: EventsRuleToLambdaProps = {
   lambdaFunctionProps: {

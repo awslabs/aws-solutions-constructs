@@ -114,7 +114,7 @@
     "testlambdasecretsmanagerReplaceDefaultSecurityGroupsecuritygroupF837FD37": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "test-lambda-secretsmanager/test-lambda-secretsmanager/ReplaceDefaultSecurityGroup-security-group",
+        "GroupDescription": "deployFunctionWithVpc/test-lambda-secretsmanager/ReplaceDefaultSecurityGroup-security-group",
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",
@@ -274,7 +274,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-secretsmanager/Vpc"
+            "Value": "deployFunctionWithVpc/Vpc"
           }
         ]
       }
@@ -299,7 +299,7 @@
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-secretsmanager/Vpc/isolatedSubnet1"
+            "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet1"
           }
         ]
       }
@@ -313,7 +313,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-secretsmanager/Vpc/isolatedSubnet1"
+            "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet1"
           }
         ]
       }
@@ -349,7 +349,7 @@
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-secretsmanager/Vpc/isolatedSubnet2"
+            "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet2"
           }
         ]
       }
@@ -363,7 +363,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-secretsmanager/Vpc/isolatedSubnet2"
+            "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet2"
           }
         ]
       }
@@ -399,7 +399,7 @@
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-secretsmanager/Vpc/isolatedSubnet3"
+            "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet3"
           }
         ]
       }
@@ -413,7 +413,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-secretsmanager/Vpc/isolatedSubnet3"
+            "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet3"
           }
         ]
       }
@@ -447,7 +447,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-secretsmanager/Vpc"
+            "Value": "deployFunctionWithVpc/Vpc"
           }
         ]
       }
@@ -531,7 +531,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-secretsmanager/Vpc"
+            "Value": "deployFunctionWithVpc/Vpc"
           }
         ]
       }
@@ -580,7 +580,7 @@
     "ReplaceEndpointDefaultSecurityGroupsecuritygroupB97DD1AF": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "test-lambda-secretsmanager/ReplaceEndpointDefaultSecurityGroup-security-group",
+        "GroupDescription": "deployFunctionWithVpc/ReplaceEndpointDefaultSecurityGroup-security-group",
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",

@@ -318,7 +318,7 @@
       "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
       "Properties": {
         "CloudFrontOriginAccessIdentityConfig": {
-          "Comment": "Identity for testcloudfronts3existingbucketstacktestcloudfronts3CloudFrontDistributionOrigin1797491E4"
+          "Comment": "Identity for existingbuckettestcloudfronts3CloudFrontDistributionOrigin1F40EF14E"
         }
       }
     },
@@ -333,7 +333,7 @@
               },
               "Compress": true,
               "PathPattern": "/images/*.jpg",
-              "TargetOriginId": "testcloudfronts3existingbucketstacktestcloudfronts3CloudFrontDistributionOrigin2DE0DE37C",
+              "TargetOriginId": "existingbuckettestcloudfronts3CloudFrontDistributionOrigin2EB6A4DC9",
               "ViewerProtocolPolicy": "allow-all"
             }
           ],
@@ -348,7 +348,7 @@
                 }
               }
             ],
-            "TargetOriginId": "testcloudfronts3existingbucketstacktestcloudfronts3CloudFrontDistributionOrigin1797491E4",
+            "TargetOriginId": "existingbuckettestcloudfronts3CloudFrontDistributionOrigin1F40EF14E",
             "ViewerProtocolPolicy": "redirect-to-https"
           },
           "DefaultRootObject": "index.html",
@@ -371,7 +371,7 @@
                   "RegionalDomainName"
                 ]
               },
-              "Id": "testcloudfronts3existingbucketstacktestcloudfronts3CloudFrontDistributionOrigin1797491E4",
+              "Id": "existingbuckettestcloudfronts3CloudFrontDistributionOrigin1F40EF14E",
               "S3OriginConfig": {
                 "OriginAccessIdentity": {
                   "Fn::Join": [
@@ -393,7 +393,7 @@
                   "RegionalDomainName"
                 ]
               },
-              "Id": "testcloudfronts3existingbucketstacktestcloudfronts3CloudFrontDistributionOrigin2DE0DE37C",
+              "Id": "existingbuckettestcloudfronts3CloudFrontDistributionOrigin2EB6A4DC9",
               "S3OriginConfig": {
                 "OriginAccessIdentity": {
                   "Fn::Join": [
@@ -426,7 +426,7 @@
       "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
       "Properties": {
         "CloudFrontOriginAccessIdentityConfig": {
-          "Comment": "Identity for testcloudfronts3existingbucketstacktestcloudfronts3CloudFrontDistributionOrigin2DE0DE37C"
+          "Comment": "Identity for existingbuckettestcloudfronts3CloudFrontDistributionOrigin2EB6A4DC9"
         }
       }
     },

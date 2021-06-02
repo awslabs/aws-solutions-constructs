@@ -17,9 +17,10 @@ import { S3ToStepFunction, S3ToStepFunctionProps } from "../lib";
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
 import * as s3 from '@aws-cdk/aws-s3';
 import { CreateScrapBucket } from '@aws-solutions-constructs/core';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
-const stack = new Stack(app, 'test-s3-step-function-pre-existing-bucket-stack');
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 const existingBucket = CreateScrapBucket(stack, {});
 

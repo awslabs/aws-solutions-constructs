@@ -15,9 +15,10 @@ import { Duration } from '@aws-cdk/core';
 import { EventsRuleToSns, EventsRuleToSnsProps } from '../lib';
 import * as events from '@aws-cdk/aws-events';
 import { App, Stack } from '@aws-cdk/core';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
-const stack = new Stack(app, 'test-rule-sns');
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 const props: EventsRuleToSnsProps = {
   eventRuleProps: {

@@ -20,9 +20,10 @@ import * as events from '@aws-cdk/aws-events';
 import * as lambda from '@aws-cdk/aws-lambda';
 import { deployLambdaFunction } from '@aws-solutions-constructs/core';
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
-const stack = new Stack(app, 'test-events-rule-step-function-and-lambda-stack');
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 const submitLambda = deployLambdaFunction(stack, {
   runtime: lambda.Runtime.NODEJS_12_X,

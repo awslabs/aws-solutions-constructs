@@ -259,7 +259,7 @@
     "testlambdaelasticsearchkibana2UserPoolDomainF6BF7A6F": {
       "Type": "AWS::Cognito::UserPoolDomain",
       "Properties": {
-        "Domain": "domainargumentsdomain",
+        "Domain": "mydomainfortesting",
         "UserPoolId": {
           "Ref": "testlambdaelasticsearchkibana2CognitoUserPool9D73D9DA"
         }
@@ -316,7 +316,7 @@
                         {
                           "Ref": "AWS::AccountId"
                         },
-                        ":domain/domainargumentsdomain/*"
+                        ":domain/mydomainfortesting/*"
                       ]
                     ]
                   }

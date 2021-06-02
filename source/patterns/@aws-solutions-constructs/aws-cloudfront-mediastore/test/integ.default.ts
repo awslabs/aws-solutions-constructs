@@ -14,10 +14,11 @@
 // Imports
 import { App, Stack } from '@aws-cdk/core';
 import { CloudFrontToMediaStore } from '../lib';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-cloudfront-mediastore');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration test for aws-cloudfront-mediastore with default properties';
 
 // Instantiate construct

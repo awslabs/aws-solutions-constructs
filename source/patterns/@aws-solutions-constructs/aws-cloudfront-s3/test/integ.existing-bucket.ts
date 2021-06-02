@@ -19,10 +19,11 @@ import { CloudFrontToS3 } from "../lib";
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import { Duration } from "@aws-cdk/core/lib/duration";
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-cloudfront-s3-existing-bucket-stack');
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 let mybucket: s3.Bucket;
 mybucket = defaults.CreateScrapBucket(stack, { removalPolicy: RemovalPolicy.DESTROY });

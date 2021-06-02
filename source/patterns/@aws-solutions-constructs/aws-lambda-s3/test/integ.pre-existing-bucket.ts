@@ -17,10 +17,11 @@ import { LambdaToS3, LambdaToS3Props } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as s3 from '@aws-cdk/aws-s3';
 import { CreateScrapBucket } from '@aws-solutions-constructs/core';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-lambda-s3-pre-existing-bucket');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-lambda-s3';
 const existingBucket = CreateScrapBucket(stack, { removalPolicy: RemovalPolicy.DESTROY });
 
