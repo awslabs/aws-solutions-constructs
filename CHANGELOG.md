@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [1.106.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.105.0...v1.106.0) (2021-06-02)
 
+### Changed
+
+* Upgraded all patterns to CDK v1.106.0
+* Fixed stack name duplication for ALL integ tests [#183](https://github.com/awslabs/aws-solutions-constructs/issues/183)
+* Fixed aws-cloudfront-mediastore integ tests failure [#194](https://github.com/awslabs/aws-solutions-constructs/issues/194)
+
 ## [1.105.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.104.0...v1.105.0) (2021-05-28)
 
 ### Changed
