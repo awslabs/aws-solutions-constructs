@@ -16,10 +16,11 @@ import { App, Stack } from "@aws-cdk/core";
 import { SqsToLambda, SqsToLambdaProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-sqs-lambda');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-sqs-lambda';
 
 // Definitions

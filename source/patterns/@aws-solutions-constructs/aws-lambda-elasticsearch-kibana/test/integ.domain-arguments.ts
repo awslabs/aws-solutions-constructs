@@ -15,10 +15,11 @@
 import { App, Stack, Aws } from "@aws-cdk/core";
 import { LambdaToElasticSearchAndKibana } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-lambda-elasticsearch-kibana-stack2');
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 const lambdaProps: lambda.FunctionProps = {
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
@@ -27,7 +28,7 @@ const lambdaProps: lambda.FunctionProps = {
 };
 
 const esDomain = 'domain-' + Aws.ACCOUNT_ID;
-const cognitoDomain = 'domainargumentsdomain';
+const cognitoDomain = 'mydomainfortesting';
 
 new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana2', {
   lambdaFunctionProps: lambdaProps,

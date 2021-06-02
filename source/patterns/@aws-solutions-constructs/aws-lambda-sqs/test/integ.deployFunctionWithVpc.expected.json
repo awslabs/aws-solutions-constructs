@@ -118,7 +118,7 @@
     "testlambdasqsReplaceDefaultSecurityGroupsecuritygroup2CA205C7": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "test-lambda-sqs/test-lambda-sqs/ReplaceDefaultSecurityGroup-security-group",
+        "GroupDescription": "deployFunctionWithVpc/test-lambda-sqs/ReplaceDefaultSecurityGroup-security-group",
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",
@@ -423,7 +423,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-sqs/Vpc"
+            "Value": "deployFunctionWithVpc/Vpc"
           }
         ]
       }
@@ -448,7 +448,7 @@
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-sqs/Vpc/isolatedSubnet1"
+            "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet1"
           }
         ]
       }
@@ -462,7 +462,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-sqs/Vpc/isolatedSubnet1"
+            "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet1"
           }
         ]
       }
@@ -498,7 +498,7 @@
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-sqs/Vpc/isolatedSubnet2"
+            "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet2"
           }
         ]
       }
@@ -512,7 +512,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-sqs/Vpc/isolatedSubnet2"
+            "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet2"
           }
         ]
       }
@@ -548,7 +548,7 @@
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-sqs/Vpc/isolatedSubnet3"
+            "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet3"
           }
         ]
       }
@@ -562,7 +562,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-sqs/Vpc/isolatedSubnet3"
+            "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet3"
           }
         ]
       }
@@ -596,7 +596,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-sqs/Vpc"
+            "Value": "deployFunctionWithVpc/Vpc"
           }
         ]
       }
@@ -680,7 +680,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-sqs/Vpc"
+            "Value": "deployFunctionWithVpc/Vpc"
           }
         ]
       }
@@ -729,7 +729,7 @@
     "ReplaceEndpointDefaultSecurityGroupsecuritygroupB97DD1AF": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "test-lambda-sqs/ReplaceEndpointDefaultSecurityGroup-security-group",
+        "GroupDescription": "deployFunctionWithVpc/ReplaceEndpointDefaultSecurityGroup-security-group",
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",

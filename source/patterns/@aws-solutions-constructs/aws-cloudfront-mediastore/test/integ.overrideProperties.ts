@@ -16,10 +16,11 @@ import { App, Aws, Stack } from '@aws-cdk/core';
 import * as mediastore from '@aws-cdk/aws-mediastore';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import { CloudFrontToMediaStore } from '../lib';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-cloudfront-mediastore-override');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration test for aws-cloudfront-mediastore override properties';
 const mediaStoreContainerProps: mediastore.CfnContainerProps = {
   containerName: 'MyOwnMediaStoreContainer',

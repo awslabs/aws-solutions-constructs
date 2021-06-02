@@ -18,10 +18,11 @@ import { Bucket, CfnBucket } from '@aws-cdk/aws-s3';
 import { App, Duration, Stack } from '@aws-cdk/core';
 import { SinkStoreType } from '@aws-solutions-constructs/core';
 import { KinesisstreamsToGluejob } from '../lib';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-kinesisstream-gluejob');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-kinesisstream-gluejob';
 
 const scriptBucket = new Bucket(stack, 'existingScriptLocation', {

@@ -16,10 +16,11 @@ import {App, RemovalPolicy, Stack} from "@aws-cdk/core";
 import { LambdaToSecretsmanagerProps, LambdaToSecretsmanager } from '../lib';
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as defaults from '@aws-solutions-constructs/core';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, "test-lambda-secretsmanager-stack");
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = "Integration Test for aws-lambda-secretsmanager";
 
 // Create VPC

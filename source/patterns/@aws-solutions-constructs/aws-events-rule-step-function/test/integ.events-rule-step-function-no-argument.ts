@@ -17,9 +17,10 @@ import { EventsRuleToStepFunction, EventsRuleToStepFunctionProps } from "../lib"
 import { Duration } from '@aws-cdk/core';
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
 import * as events from '@aws-cdk/aws-events';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
-const stack = new Stack(app, 'test-events-rule-step-function-stack');
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 const startState = new stepfunctions.Pass(stack, 'StartState');
 

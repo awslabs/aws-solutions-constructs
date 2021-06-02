@@ -15,9 +15,11 @@
 import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { S3ToSqs, S3ToSqsProps } from "../lib";
 import * as defaults from '@aws-solutions-constructs/core';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
+
 const app = new App();
 
-const stack = new Stack(app, 'test-s3-sqs-existing-queue');
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 const [myQueue] = defaults.buildQueue(stack, 'test-existing-queue', {
   enableEncryptionWithCustomerManagedKey: true
