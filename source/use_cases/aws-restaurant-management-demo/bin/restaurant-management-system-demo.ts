@@ -24,6 +24,9 @@ import { ManagerStack } from '../lib/manager-stack';
 // App
 const app = new cdk.App();
 
+// For more info on deploying multiple stacks in an app, go to:
+// https://docs.aws.amazon.com/cdk/latest/guide/stack_how_to_create_multiple_stacks.html
+
 // Stack containing existing resources
 const existingResources = new ExistingResources(app, `ExistingResourcesStack`);
 

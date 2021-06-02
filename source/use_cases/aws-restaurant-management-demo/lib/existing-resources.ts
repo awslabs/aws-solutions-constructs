@@ -16,6 +16,15 @@ import * as cdk from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
 
 // Stack
+// -
+// This stack provisions an "existing resource" that simulates use of the restaurant management system with a piece of
+// the restaurant's existing infrastructure. In this case, this stack provisions an order archive bucket to which
+// the contents of the table in the use case example will output closed orders to.
+// -
+// In your environment, use the static method fromBucketName() to include an actual existing
+// bucket from your environment in this stack. More info:
+// https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html#static-fromwbrbucketwbrnamescope-id-bucketname
+// -
 export class ExistingResources extends cdk.Stack {
 
   // Public variables
@@ -26,9 +35,6 @@ export class ExistingResources extends cdk.Stack {
     super(scope, id, props);
 
     // An "existing" Amazon S3 bucket that holds archived orders
-    const archiveBucket = new s3.Bucket(this, 'existing-order-archive-bucket');
-
-    // Set to public variable
-    this.archiveBucket = archiveBucket
+    this.archiveBucket = new s3.Bucket(this, 'existing-order-archive-bucket');
   }
 }

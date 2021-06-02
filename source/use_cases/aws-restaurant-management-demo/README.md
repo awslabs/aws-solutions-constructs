@@ -2,18 +2,20 @@
 
 ## Overview
 
-This example demonstrates how to build a complex, real-world system using AWS Solutions Constructs. It will implement
-a demo restaurant management system for three user types with the various capabilities:
+This example demonstrates how to build a complex, real-world system using AWS Solutions Constructs. It is designed to 
+accompany the webinar titled "Beyond Prototypes: Real-World Applications with AWS Solutions Constructs", which 
+can be found [here](#) (coming soon!). On its own, this use case will provision a demo restaurant management system for three user types 
+with the various capabilities:
 
-### Service staff
+#### Service staff
 - Create a new order
 - Close-out an order
 
-### Kitchen staff
+#### Kitchen staff
 - View all open orders
 - Complete/fulfill an order
 
-### Managers
+#### Managers
 - List all orders (all statuses)
 - Close-out service
   - Generate sales report
@@ -22,10 +24,18 @@ a demo restaurant management system for three user types with the various capabi
 - Automatic delayed order detection
 - View report(s)
 
+## CDK project structure
+This CDK project will deploy a total of five (5) stacks into your AWS account using CloudFormation:
+- `ExistingResources` - provisions an Amazon S3 bucket into your account that simulates/demonstrates using the project with existing infrastructure.
+- `SharedStack` - provisions resources that are used across the following three stacks, including a central DynamoDB table (with configuration) and a Lambda layer for common database access functions (i.e. using a table scan to get all orders, archive the table, etc.).
+- `ServiceStaffStack` - provisions resources that are used by service staff to access the system. Provides functions that allow users to create a new order and close out an order.
+- `KitchenStaffStack` - provisions resources that are used by kitchen staff to access the system. Provides functions that allow users to view all open orders and mark a specific order as filled by the kitchen.
+- `ManagerStack` - provisions resources that are used by one or more managers to access the system. Provides functions that allow users to view all orders (regardless of status), close-out the service for a day, and retrieve a specific report saved from a previous day's close-out.
+
 ## Business logic
 This demo features multiple Lambda functions, one assigned to each function for each user role. The business logic that
 each of these functions runs can be found organized under the `lib/lambda` folder. Each function is decoupled and managed
-within its own folder, with its own package.json file and dependencies.
+within its own folder.
 
 ## API
 This demo implements three REST APIs using AWS Gateway, one for each user type. Mappings are provided as follows:
@@ -53,6 +63,22 @@ This demo implements three REST APIs using AWS Gateway, one for each user type. 
 - `/reports` - POST - get a specific sales report from the static assets bucket.  
   - `filename` - the filename of the report.
 
+## Using the API
+This demo provisions an architecture that is ready to be hooked up to a front-end application of your choice/design. 
+Since the three API endpoints provisioned by this architecture are secured by Cognito, it is recommended to review the
+steps listed [here](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-invoke-api-integrated-with-cognito-user-pool.html) 
+to call a REST API that has been integrated with a Cognito user pool.
+
+You can also find more information on how to integrate these APIs with an application powered by AWS Amplify using 
+multiple languages [here](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-integrate-apps.html).
+
+## Testing the API
+Testing the API and working directly with the database for development purposes can be done using the API Gateway
+Management Console. Although each API is deployed with a unique resource name, they can be distinguished using the 
+descriptions that are auto-provided by this use case. Simply open the API of your choice, select Resources from the left-hand sidebar,
+open the ANY method of the resource of your choice, and click the TEST button in the Client box. Here, you can provide 
+structured requests using API model above to interact with the system.
+
 ## Database
 This demo will implement a main database from which all functions read/write to/from. This database will be used for 
 managing orders for a specific service. When the restaurant opens, the database should be empty. Throughout the service 
@@ -64,7 +90,8 @@ out and archived to the data warehouse.
  - `tableNumber` - the table number for the order to be delivered to.
  - `items` - an array of items that comprise the order.
  - `orderStatus` - the status of the order, can be either 'OPEN', 'FILLED', or 'CLOSED'
- - `orderTotal` - the order total in USD.
+ - `orderTotal` - the order total in USD.  
+ - `tipAmount` - the amount tipped to the server.
  - `timeOpened` - the date/time in UTC milliseconds that the order was created.
  - `timeClosed` - the date/time in UTC milliseconds that the order was closed.
 
@@ -77,3 +104,7 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
  * `cdk deploy`      deploy this stack to your default AWS account/region
  * `cdk diff`        compare deployed stack with current state
  * `cdk synth`       emits the synthesized CloudFormation template
+
+
+## Architecture
+![Architecture Diagram](architecture.png)

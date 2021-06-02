@@ -82,7 +82,7 @@ export class ManagerStack extends cdk.Stack {
         handler: 'index.handler',
         timeout: cdk.Duration.seconds(15)
       },
-      existingTableObj: props.db
+      existingTableObj: props.db 
     });
     // Create a topic for tip reports to be sent to -> sends an email to service staff workers
     new LambdaToSns(this, 'calculate-tips-topic', {
@@ -97,9 +97,7 @@ export class ManagerStack extends cdk.Stack {
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/archive-orders`),
         handler: 'index.handler',
         timeout: cdk.Duration.seconds(15),
-        environment: {
-          ARCHIVE_BUCKET_NAME: props.archiveBucket.bucketName,
-        }
+        layers: [ props.layer ]
       },
       existingTableObj: props.db
     });
@@ -107,17 +105,6 @@ export class ManagerStack extends cdk.Stack {
     new LambdaToS3(this, 'archive-orders-to-bucket', {
       existingBucketObj: props.archiveBucket,
       existingLambdaObj: archiveOrders.lambdaFunction
-    });
-
-    // Create a Lambda function that will retrieve a specific report from the bucket
-    const getReport = new LambdaToS3(this, 'get-report', {
-      lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
-        code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/get-report`),
-        handler: 'index.handler',
-        timeout: cdk.Duration.seconds(15)
-      },
-      existingBucketObj: reports.s3Bucket
     });
 
     // Setup the chain of events for the close-out process (via Step Function)
@@ -148,6 +135,17 @@ export class ManagerStack extends cdk.Stack {
       stateMachineProps: {
     	  definition: chain
       }
+    });
+
+    // Create a Lambda function that will retrieve a specific report from the bucket
+    const getReport = new LambdaToS3(this, 'get-report', {
+      lambdaFunctionProps: {
+        runtime: lambda.Runtime.NODEJS_14_X,
+        code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/get-report`),
+        handler: 'index.handler',
+        timeout: cdk.Duration.seconds(15)
+      },
+      existingBucketObj: reports.s3Bucket
     });
     
     // Setup the manager API with Cognito user pool
@@ -201,7 +199,7 @@ export class ManagerStack extends cdk.Stack {
     new EventsRuleToLambda(this, 'check-late-orders-scheduler', {
     	existingLambdaObj: checkLateOrders.lambdaFunction,
     	eventRuleProps: {
-	      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+	      schedule: events.Schedule.rate(cdk.Duration.minutes(1))
 	    }
     });
     
