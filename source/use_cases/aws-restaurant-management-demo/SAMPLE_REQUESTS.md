@@ -53,7 +53,7 @@ This GET request will return an array of all entries in the table.
 This POST request will return a specific report entry from the reporting bucket.
 ```
 {
-	"filename": "123412040912.json"
+	"filename": "//REPORT_FILENAME_HERE//.json"
 }
 ```
 
