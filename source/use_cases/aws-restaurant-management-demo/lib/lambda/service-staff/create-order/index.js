@@ -31,7 +31,7 @@ exports.handler = async (event) => {
       orderStatus: 'OPEN',
       orderTotal: req.orderTotal,
       tipAmount: req.tipAmount,
-      timeOpened: req.timeOpened,
+      timeOpened: new Date.getTime(),
       timeClosed: undefined,
       gsi1pk: 'order',
       gsi1sk: `OPEN#${req.timeOpened}`,

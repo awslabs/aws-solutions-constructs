@@ -32,6 +32,17 @@ This CDK project will deploy a total of five (5) stacks into your AWS account us
 - `KitchenStaffStack` - provisions resources that are used by kitchen staff to access the system. Provides functions that allow users to view all open orders and mark a specific order as filled by the kitchen.
 - `ManagerStack` - provisions resources that are used by one or more managers to access the system. Provides functions that allow users to view all orders (regardless of status), close-out the service for a day, and retrieve a specific report saved from a previous day's close-out.
 
+## Setting up
+After cloning this project into your local environment, we recommend performing the following steps to deploy it into 
+your account:
+- Run `npm install` at the root level of the project, to install all dependencies.
+- Run `npm run build` at the root level of the project, to build the project.
+- Run `cdk deploy --all` at the root level of the project, to initiate the deployment.
+
+Note: If you are working on a clean instance or development environment, you will need to perform initial configuration
+steps for the CDK in order to deploy the project. Click [here](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html) for 
+more information on getting started with the CDK.
+
 ## Business logic
 This demo features multiple Lambda functions, one assigned to each function for each user role. The business logic that
 each of these functions runs can be found organized under the `lib/lambda` folder. Each function is decoupled and managed
@@ -95,6 +106,8 @@ out and archived to the data warehouse.
  - `tipAmount` - the amount tipped to the server.
  - `timeOpened` - the date/time in UTC milliseconds that the order was created.
  - `timeClosed` - the date/time in UTC milliseconds that the order was closed.
+ - `gsi1pk` - global secondary index partition key.
+ - `gsi1sk` - global secondary index sort key.
 
 ## Useful commands
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
@@ -106,10 +119,8 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
  * `cdk diff`        compare deployed stack with current state
  * `cdk synth`       emits the synthesized CloudFormation template
 
-
 ## Architecture
 ![Architecture Diagram](architecture.png)
-
 
 ***
 &copy; Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.

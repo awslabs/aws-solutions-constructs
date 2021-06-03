@@ -15,8 +15,7 @@ This POST request will create a new entry in the table with the below attributes
 	"createdBy": "serverNameHere",
 	"tableNumber": "12",
 	"items": ["Caesar Salad", "Mozzarella Sticks"],
-	"orderTotal": "13.50",
-	"timeOpened": "1622686057569" // milliseconds since Unix Epoch
+	"orderTotal": "13.50"
 }
 ```
 This request will create a new entry in the table with the above attributes, as well as an orderStatus set to `OPEN`.
