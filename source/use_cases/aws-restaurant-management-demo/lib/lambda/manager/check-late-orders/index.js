@@ -21,17 +21,16 @@ exports.handler = async (event) => {
 
   // Any order created more than LATE_ORDER_THRESHOLD minutes ago
   // that is still open is overdue
-  const lateInterval = process.env.LATE_ORDER_THRESHOLD * 60 * 1000;
-  const lateThreshold = new Date().getTime() - lateInterval;
+  const lateInterval = Number(process.env.LATE_ORDER_THRESHOLD) * 60000;
+  const lateThreshold = Number(new Date().getTime()) - lateInterval;
     
   // Setup the parameters
   const params = {
     KeyConditionExpression:
-      "gsi1pk = :type and gsi1sk between :sortStart and :sortEnd",
+      "gsi1pk = :type and gsi1sk < :sortEnd",
     ExpressionAttributeValues: {
       ":type": "order",
-      ":sortStart": "OPEN#",
-      ":sortEnd": `OPEN#${lateThreshold}`,
+      ":sortEnd": `OPEN#${lateThreshold}`
     },
     TableName: process.env.DDB_TABLE_NAME,
     IndexName: 'gsi1pk-gsi1sk-index'
@@ -39,12 +38,13 @@ exports.handler = async (event) => {
 
   // Hold the late orders in an array
   let lateOrders = [];
+  console.log(lateOrders);
 
   // Query all late orders from the table
   try {
     const result = await ddb.query(params).promise();
     // Extract the order JSON objects
-    const orders = Array.from(result.Items, item => JSON.parse(item.orderData.S));
+    const orders = Array.from(result.Items);
     // Save the open orders to the array
     lateOrders = orders;
   } catch (error) {

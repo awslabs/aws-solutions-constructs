@@ -32,7 +32,9 @@ exports.handler = async (event) => {
       orderTotal: req.orderTotal,
       tipAmount: req.tipAmount,
       timeOpened: req.timeOpened,
-      timeClosed: undefined
+      timeClosed: undefined,
+      gsi1pk: 'order',
+      gsi1sk: `OPEN#${req.timeOpened}`,
     }
   };
 

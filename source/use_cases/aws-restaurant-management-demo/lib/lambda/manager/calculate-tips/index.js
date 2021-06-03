@@ -33,10 +33,12 @@ exports.handler = async (event) => {
   const servers = [];
   const tips = {};
   scanResults.forEach((r) => {
-    if (!servers.includes(r.createdBy)) {
-      tips[r.createdBy] = Number(r.tipAmount)
-    } else {
-      tips[r.createdBy] = Number(tips[r.createdBy]) + Number(r.tipAmount)
+    if (r.tipAmount !== undefined) {
+      if (!servers.includes(r.createdBy)) {
+        tips[r.createdBy] = Number(r.tipAmount)
+      } else {
+        tips[r.createdBy] = Number(tips[r.createdBy]) + Number(r.tipAmount)
+      }
     }
   });
 

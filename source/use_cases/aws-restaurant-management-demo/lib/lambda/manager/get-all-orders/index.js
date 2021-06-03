@@ -22,7 +22,7 @@ exports.handler = async (event) => {
     return {
       statusCode: 200,
       isBase64Encoded: false,
-      body: orders,
+      body: JSON.stringify(orders),
       headers: {
         'Content-Type': 'application/json'
       }

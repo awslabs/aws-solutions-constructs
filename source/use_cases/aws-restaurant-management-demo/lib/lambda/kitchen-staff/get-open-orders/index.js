@@ -34,12 +34,12 @@ exports.handler = async (event) => {
   try {
     const result = await ddb.query(params).promise();
     // Extract the order JSON objects
-    const orders = Array.from(result.Items, item => JSON.parse(item.orderData.S));
+    const orders = Array.from(result.Items);
     // Return the open orders
     return {
       statusCode: 200,
       isBase64Encoded: false,
-      body: orders,
+      body: JSON.stringify(orders),
       headers: {
         "Content-Type": "application/json",
       },

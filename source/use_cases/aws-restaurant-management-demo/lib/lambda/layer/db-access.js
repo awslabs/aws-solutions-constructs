@@ -33,7 +33,7 @@ exports.scanTable = async () => {
   try {
     do {
         items = await ddb.scan(params).promise();
-        items.Items.forEach((item) => scanResults.push(JSON.parse(item)));
+        items.Items.forEach((item) => scanResults.push(item));
         params.ExclusiveStartKey = items.LastEvaluatedKey;
     } while (typeof items.LastEvaluatedKey != "undefined");
   }

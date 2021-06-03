@@ -25,12 +25,13 @@ exports.handler = async (event) => {
     Key: {
         "id": req.orderId
     },
-    UpdateExpression: "SET orderStatus = :orderStatus, orderTotal = :orderTotal, tipAmount = :tipAmount, timeClosed = :timeClosed",
+    UpdateExpression: "SET orderStatus = :orderStatus, orderTotal = :orderTotal, tipAmount = :tipAmount, timeClosed = :timeClosed, gsi1sk = :gsi1sk",
     ExpressionAttributeValues: {
         ":orderStatus": 'CLOSED',
         ":orderTotal": req.orderTotal,
         ":tipAmount": req.tipAmount,
-        ":timeClosed": new Date().getTime()
+        ":timeClosed": new Date().getTime(),
+        ":gsi1sk": 'CLOSED#'
     }
   };
 
@@ -40,7 +41,7 @@ exports.handler = async (event) => {
     return {
       statusCode: 200,
       isBase64Encoded: false,
-      body: result,
+      body: JSON.stringify(result),
       headers: {
         'Content-Type': 'application/json'
       }

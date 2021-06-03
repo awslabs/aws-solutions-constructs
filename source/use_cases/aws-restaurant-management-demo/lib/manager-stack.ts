@@ -63,7 +63,8 @@ export class ManagerStack extends cdk.Stack {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/create-report`),
         handler: 'index.handler',
-        timeout: cdk.Duration.seconds(15)
+        timeout: cdk.Duration.seconds(15),
+        layers: [ props.layer ]
       },
       existingTableObj: props.db
     });
@@ -80,7 +81,8 @@ export class ManagerStack extends cdk.Stack {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/calculate-tips`),
         handler: 'index.handler',
-        timeout: cdk.Duration.seconds(15)
+        timeout: cdk.Duration.seconds(15),
+        layers: [ props.layer ]
       },
       existingTableObj: props.db 
     });

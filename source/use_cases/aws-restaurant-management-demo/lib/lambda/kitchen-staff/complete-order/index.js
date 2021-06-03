@@ -25,9 +25,10 @@ exports.handler = async (event) => {
     Key: {
         "id": req.orderId
     },
-    UpdateExpression: "set orderStatus = :orderStatus",
+    UpdateExpression: "set orderStatus = :orderStatus, gsi1sk = :gsi1sk",
     ExpressionAttributeValues: {
         ":orderStatus": 'FILLED',
+        ":gsi1sk": 'FILLED#'
     }
   };
 

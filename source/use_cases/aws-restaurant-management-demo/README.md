@@ -16,13 +16,13 @@ with the various capabilities:
 - Complete/fulfill an order
 
 #### Managers
-- List all orders (all statuses)
+- View all orders (all statuses)
 - Close-out service
   - Generate sales report
   - Calculate tips for servers
-  - Archive orders to the data warehouse
+  - Archive orders to the data warehouse (and clear out the table)
 - Automatic delayed order detection
-- View report(s)
+- View a specific sales report
 
 ## CDK project structure
 This CDK project will deploy a total of five (5) stacks into your AWS account using CloudFormation:
@@ -38,7 +38,8 @@ each of these functions runs can be found organized under the `lib/lambda` folde
 within its own folder.
 
 ## API
-This demo implements three REST APIs using AWS Gateway, one for each user type. Mappings are provided as follows:
+This demo implements three REST APIs using AWS Gateway, one for each user type. For sample requests of each type, please
+refer to the `SAMPLE_REQUESTS.md` file. Mappings are provided as follows:
 
 ### Service staff
 - `/create-order` - POST- creates a new order with status set to 'OPEN'. Request parameters:
@@ -52,15 +53,15 @@ This demo implements three REST APIs using AWS Gateway, one for each user type. 
   - `orderId` - the unique order id.
 
 ### Kitchen staff
-- `/list-open-orders` - GET - lists all orders that have a status of 'OPEN'.
+- `/get-open-orders` - GET - lists all orders that have a status of 'OPEN'.
 - `/complete-order` - POST - updates the status of an order to 'FILLED'. Request parameters:
   - `orderId` - the unique order id.
 
 ### Managers
-- `/list-orders` - GET - lists all orders, regardless of status.
-- `/close-out-service` - POST - triggers the close-out process, invoking a Step Functions workflow that generates a 
+- `/get-all-orders` - GET - lists all orders, regardless of status.
+- `/close-out-service` - ANY - triggers the close-out process, invoking a Step Functions workflow that generates a 
   sales report, calculates tips for all servers, and archives orders from DynamoDB to Redshift.
-- `/reports` - POST - get a specific sales report from the static assets bucket.  
+- `/get-report` - POST - get a specific sales report from the static assets bucket.  
   - `filename` - the filename of the report.
 
 ## Using the API
@@ -108,3 +109,7 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
 ## Architecture
 ![Architecture Diagram](architecture.png)
+
+
+***
+&copy; Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.

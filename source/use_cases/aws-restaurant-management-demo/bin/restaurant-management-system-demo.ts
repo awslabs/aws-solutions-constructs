@@ -28,23 +28,23 @@ const app = new cdk.App();
 // https://docs.aws.amazon.com/cdk/latest/guide/stack_how_to_create_multiple_stacks.html
 
 // Stack containing existing resources
-const existingResources = new ExistingResources(app, `ExistingResourcesStack`);
+const existingResources = new ExistingResources(app, `ExistingResourcesStack12`);
 
 // Stack containing shared resources across all functions
-const sharedStack = new SharedStack(app, `SharedStack`);
+const sharedStack = new SharedStack(app, `SharedStack12`);
 
 // Stack containing resources that enable Service Staff functions
-new ServiceStaffStack(app, `ServiceStaffStack`, {
+new ServiceStaffStack(app, `ServiceStaffStack12`, {
   db: sharedStack.database
 });
 
 // Stack containing resources that enable Kitchen Staff functions
-new KitchenStaffStack(app, `KitchenStaffStack`, {
+new KitchenStaffStack(app, `KitchenStaffStack12`, {
   db: sharedStack.database
 });
 
 // Stack containing resources that enable Manager functions
-new ManagerStack(app, `ManagerStack`, {
+new ManagerStack(app, `ManagerStack12`, {
   db: sharedStack.database,
   layer: sharedStack.layer,
   archiveBucket: existingResources.archiveBucket,
