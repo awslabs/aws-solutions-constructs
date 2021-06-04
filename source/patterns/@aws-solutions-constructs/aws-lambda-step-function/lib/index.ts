@@ -67,7 +67,7 @@ export interface LambdaToStepFunctionProps {
 export class LambdaToStepFunction extends Construct {
   public readonly lambdaFunction: lambda.Function;
   public readonly stateMachine: sfn.StateMachine;
-  public readonly stateMachineLogGroup: logs.LogGroup;
+  public readonly stateMachineLogGroup: logs.ILogGroup;
   public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
 
   /**
