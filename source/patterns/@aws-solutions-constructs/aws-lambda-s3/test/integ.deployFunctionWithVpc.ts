@@ -15,10 +15,11 @@
 import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { LambdaToS3, LambdaToS3Props } from "../lib";
 import * as lambda from "@aws-cdk/aws-lambda";
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, "test-lambda-s3");
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = "Integration Test for aws-lambda-s3";
 
 // Definitions

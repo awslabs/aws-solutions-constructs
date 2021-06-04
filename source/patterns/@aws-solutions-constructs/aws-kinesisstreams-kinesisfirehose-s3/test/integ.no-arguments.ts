@@ -14,10 +14,11 @@
 // Imports
 import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { KinesisStreamsToKinesisFirehoseToS3 } from '../lib';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-stream-firehose-s3-stack');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-kinesisstreams-kinesisfirehose-s3';
 
 new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-stream-firehose-s3', {

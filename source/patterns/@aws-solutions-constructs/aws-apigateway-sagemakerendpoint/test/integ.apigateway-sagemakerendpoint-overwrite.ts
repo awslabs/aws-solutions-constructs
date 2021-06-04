@@ -15,10 +15,11 @@
 import { App, Stack, Aws } from '@aws-cdk/core';
 import { ApiGatewayToSageMakerEndpoint, ApiGatewayToSageMakerEndpointProps } from '../lib';
 import * as iam from '@aws-cdk/aws-iam';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-apigateway-sagemakerendpoint-overwrite');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-apigateway-sagemakerendpoint';
 
 const existingRole = new iam.Role(stack, 'api-gateway-role', {

@@ -16,10 +16,11 @@ import * as cdk from "@aws-cdk/core";
 import { ApiGatewayToIot, ApiGatewayToIotProps } from "../lib";
 import * as api from '@aws-cdk/aws-apigateway';
 import * as iam from '@aws-cdk/aws-iam';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // App setup
 const app = new cdk.App();
-const stack = new cdk.Stack(app, 'test-apigateway-iot-overriden-params');
+const stack = new cdk.Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-apigateway-iot with overriden params';
 
 const apiGatewayProps = {

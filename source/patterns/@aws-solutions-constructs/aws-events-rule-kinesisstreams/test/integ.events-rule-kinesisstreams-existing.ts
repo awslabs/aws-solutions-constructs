@@ -15,9 +15,10 @@ import * as events from '@aws-cdk/aws-events';
 import * as kinesis from '@aws-cdk/aws-kinesis';
 import { App, Stack, Duration } from '@aws-cdk/core';
 import { EventsRuleToKinesisStreams, EventsRuleToKinesisStreamsProps } from '../lib';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
-const stack = new Stack(app, 'test-existing-rule-kinesisstream');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-events-rule-kinesisstreams with existing kinesis stream';
 
 const stream = new kinesis.Stream(stack, 'test-stream', {

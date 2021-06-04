@@ -135,7 +135,9 @@ export class S3ToStepFunction extends Construct {
               "s3.amazonaws.com"
             ],
             eventName: [
-              "PutObject"
+              "PutObject",
+              "CopyObject",
+              "CompleteMultipartUpload"
             ],
             requestParameters: {
               bucketName: [

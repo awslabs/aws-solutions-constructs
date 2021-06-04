@@ -14,10 +14,11 @@
 // Imports
 import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-cloudfront-s3-no-security-headers');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3';
 
 // Definitions

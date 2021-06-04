@@ -16,10 +16,11 @@ import { App, Stack } from "@aws-cdk/core";
 import { ApiGatewayToLambda, ApiGatewayToLambdaProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // App setup
 const app = new App();
-const stack = new Stack(app, 'test-apigateway-lambda');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-apigateway-lambda';
 
 // Lambda function setup

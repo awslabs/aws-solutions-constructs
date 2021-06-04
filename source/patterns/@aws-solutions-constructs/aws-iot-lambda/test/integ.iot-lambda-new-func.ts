@@ -15,9 +15,10 @@
 import { App, Stack } from "@aws-cdk/core";
 import { IotToLambda, IotToLambdaProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
-const stack = new Stack(app, 'test-iot-lambda-stack');
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 const props: IotToLambdaProps = {
   lambdaFunctionProps: {

@@ -392,7 +392,7 @@
     "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructStateMachineLogGroupEA0C99B8": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/vendedlogs/states/tests3stepfunctionstacktests3stepfunctionconstructeventrulestepfunctionconstructstatemachineloga6c75e57392e"
+        "LogGroupName": "/aws/vendedlogs/states/s3stepfunctionnoargumenttests3stepfunctionconstructeventrulestepfunctionconstructstatemachinelog4bfaa95a6924"
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
@@ -590,7 +590,9 @@
               "s3.amazonaws.com"
             ],
             "eventName": [
-              "PutObject"
+              "PutObject",
+              "CopyObject",
+              "CompleteMultipartUpload"
             ],
             "requestParameters": {
               "bucketName": [

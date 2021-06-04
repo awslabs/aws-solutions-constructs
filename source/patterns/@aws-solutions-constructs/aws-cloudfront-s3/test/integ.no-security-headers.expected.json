@@ -264,7 +264,7 @@
       "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
       "Properties": {
         "CloudFrontOriginAccessIdentityConfig": {
-          "Comment": "Identity for testcloudfronts3nosecurityheadersCloudFrontDistributionOrigin1BB2D7D46"
+          "Comment": "Identity for nosecurityheaderstestcloudfronts3nosecurityheadersCloudFrontDistributionOrigin10FDD9A1E"
         }
       }
     },
@@ -275,7 +275,7 @@
           "DefaultCacheBehavior": {
             "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
             "Compress": true,
-            "TargetOriginId": "testcloudfronts3nosecurityheadersCloudFrontDistributionOrigin1BB2D7D46",
+            "TargetOriginId": "nosecurityheaderstestcloudfronts3nosecurityheadersCloudFrontDistributionOrigin10FDD9A1E",
             "ViewerProtocolPolicy": "redirect-to-https"
           },
           "DefaultRootObject": "index.html",
@@ -298,7 +298,7 @@
                   "RegionalDomainName"
                 ]
               },
-              "Id": "testcloudfronts3nosecurityheadersCloudFrontDistributionOrigin1BB2D7D46",
+              "Id": "nosecurityheaderstestcloudfronts3nosecurityheadersCloudFrontDistributionOrigin10FDD9A1E",
               "S3OriginConfig": {
                 "OriginAccessIdentity": {
                   "Fn::Join": [
