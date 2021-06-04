@@ -71,7 +71,7 @@ export interface S3ToStepFunctionProps {
 
 export class S3ToStepFunction extends Construct {
   public readonly stateMachine: sfn.StateMachine;
-  public readonly stateMachineLogGroup: logs.LogGroup;
+  public readonly stateMachineLogGroup: logs.ILogGroup;
   public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
   public readonly cloudwatchAlarms?: cloudwatch.Alarm[];

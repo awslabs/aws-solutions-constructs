@@ -12,9 +12,9 @@
  */
 
 import * as sfn from '@aws-cdk/aws-stepfunctions';
-import { LogGroup } from '@aws-cdk/aws-logs';
+import { ILogGroup } from '@aws-cdk/aws-logs';
 
-export function DefaultStateMachineProps(_logGroup: LogGroup): sfn.StateMachineProps | any {
+export function DefaultStateMachineProps(_logGroup: ILogGroup): sfn.StateMachineProps | any {
 
   const stateMachineProps: sfn.StateMachineProps | any = {
     logs: {
