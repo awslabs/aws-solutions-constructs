@@ -44,6 +44,9 @@ This library includes a collection of functional use case implementations to dem
   * Use case pattern: https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-serverless-image-handler
 * __aws-serverless-web-app__ - implements a simple serverless web application that enables users to request unicorn rides from the Wild Rydes fleet. The application will present users with an HTML based user interface for indicating the location where they would like to be picked up and will interface on the backend with a RESTful web service to submit the request and dispatch a nearby unicorn. The application will also provide facilities for users to register with the service and log in before requesting rides.
   * Use case pattern: https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-serverless-web-app
+* __aws-restaurant-management-demo__ - implements a complex, multi-stack architecture that models a restaurant management system. This use case will provision a stack for service/wait staff to open/close orders, a stack for kitchen staff to view/complete orders, and a stack for managers to perform various business functions. It will also provision a stack
+containing a central DynamoDB table for managing orders, as well as a Lambda layer for sharing common database access patterns.
+  * Use case pattern: https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-restaurant-management-demo
 
 ***
 &copy; Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
