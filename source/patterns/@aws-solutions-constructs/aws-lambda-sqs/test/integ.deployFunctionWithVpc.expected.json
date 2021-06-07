@@ -707,7 +707,7 @@
         "SecurityGroupIds": [
           {
             "Fn::GetAtt": [
-              "ReplaceEndpointDefaultSecurityGroupsecuritygroupB97DD1AF",
+              "deployFunctionWithVpcSQSsecuritygroup2E4E2685",
               "GroupId"
             ]
           }
@@ -726,10 +726,10 @@
         "VpcEndpointType": "Interface"
       }
     },
-    "ReplaceEndpointDefaultSecurityGroupsecuritygroupB97DD1AF": {
+    "deployFunctionWithVpcSQSsecuritygroup2E4E2685": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "deployFunctionWithVpc/ReplaceEndpointDefaultSecurityGroup-security-group",
+        "GroupDescription": "deployFunctionWithVpc/deployFunctionWithVpc-SQS-security-group",
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",
