@@ -3,6 +3,64 @@
 exports[`Test deployment of Sagemaker Inference Endpoint with properties overwrite 1`] = `
 Object {
   "Resources": Object {
+    "DefaultSAGEMAKERRUNTIMEsecuritygroup32609E8C": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W5",
+              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK",
+            },
+            Object {
+              "id": "W40",
+              "reason": "Egress IPProtocol of -1 is default and generally considered OK",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "GroupDescription": "Default/Default-SAGEMAKER_RUNTIME-security-group",
+        "SecurityGroupEgress": Array [
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "SecurityGroupIngress": Array [
+          Object {
+            "CidrIp": Object {
+              "Fn::GetAtt": Array [
+                "Vpc8378EB38",
+                "CidrBlock",
+              ],
+            },
+            "Description": Object {
+              "Fn::Join": Array [
+                "",
+                Array [
+                  "from ",
+                  Object {
+                    "Fn::GetAtt": Array [
+                      "Vpc8378EB38",
+                      "CidrBlock",
+                    ],
+                  },
+                  ":443",
+                ],
+              ],
+            },
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "Vpc8378EB38",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
     "MyEndpointConfigEncryptionKey42E27FFC": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
@@ -53,64 +111,6 @@ Object {
       },
       "Type": "AWS::KMS::Key",
       "UpdateReplacePolicy": "Retain",
-    },
-    "ReplaceEndpointDefaultSecurityGroupsecuritygroupB97DD1AF": Object {
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W5",
-              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK",
-            },
-            Object {
-              "id": "W40",
-              "reason": "Egress IPProtocol of -1 is default and generally considered OK",
-            },
-          ],
-        },
-      },
-      "Properties": Object {
-        "GroupDescription": "Default/ReplaceEndpointDefaultSecurityGroup-security-group",
-        "SecurityGroupEgress": Array [
-          Object {
-            "CidrIp": "0.0.0.0/0",
-            "Description": "Allow all outbound traffic by default",
-            "IpProtocol": "-1",
-          },
-        ],
-        "SecurityGroupIngress": Array [
-          Object {
-            "CidrIp": Object {
-              "Fn::GetAtt": Array [
-                "Vpc8378EB38",
-                "CidrBlock",
-              ],
-            },
-            "Description": Object {
-              "Fn::Join": Array [
-                "",
-                Array [
-                  "from ",
-                  Object {
-                    "Fn::GetAtt": Array [
-                      "Vpc8378EB38",
-                      "CidrBlock",
-                    ],
-                  },
-                  ":443",
-                ],
-              ],
-            },
-            "FromPort": 443,
-            "IpProtocol": "tcp",
-            "ToPort": 443,
-          },
-        ],
-        "VpcId": Object {
-          "Ref": "Vpc8378EB38",
-        },
-      },
-      "Type": "AWS::EC2::SecurityGroup",
     },
     "ReplaceModelDefaultSecurityGroup38936A39": Object {
       "Metadata": Object {
@@ -658,7 +658,7 @@ Object {
         "SecurityGroupIds": Array [
           Object {
             "Fn::GetAtt": Array [
-              "ReplaceEndpointDefaultSecurityGroupsecuritygroupB97DD1AF",
+              "DefaultSAGEMAKERRUNTIMEsecuritygroup32609E8C",
               "GroupId",
             ],
           },
@@ -3346,6 +3346,64 @@ Object {
 exports[`Test minimal deployment of Sagemaker Inference Endpoint with VPC 1`] = `
 Object {
   "Resources": Object {
+    "DefaultSAGEMAKERRUNTIMEsecuritygroup32609E8C": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W5",
+              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK",
+            },
+            Object {
+              "id": "W40",
+              "reason": "Egress IPProtocol of -1 is default and generally considered OK",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "GroupDescription": "Default/Default-SAGEMAKER_RUNTIME-security-group",
+        "SecurityGroupEgress": Array [
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "SecurityGroupIngress": Array [
+          Object {
+            "CidrIp": Object {
+              "Fn::GetAtt": Array [
+                "Vpc8378EB38",
+                "CidrBlock",
+              ],
+            },
+            "Description": Object {
+              "Fn::Join": Array [
+                "",
+                Array [
+                  "from ",
+                  Object {
+                    "Fn::GetAtt": Array [
+                      "Vpc8378EB38",
+                      "CidrBlock",
+                    ],
+                  },
+                  ":443",
+                ],
+              ],
+            },
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "Vpc8378EB38",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
     "EncryptionKey1B843E66": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
@@ -3397,64 +3455,6 @@ Object {
       },
       "Type": "AWS::KMS::Key",
       "UpdateReplacePolicy": "Retain",
-    },
-    "ReplaceEndpointDefaultSecurityGroupsecuritygroupB97DD1AF": Object {
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W5",
-              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK",
-            },
-            Object {
-              "id": "W40",
-              "reason": "Egress IPProtocol of -1 is default and generally considered OK",
-            },
-          ],
-        },
-      },
-      "Properties": Object {
-        "GroupDescription": "Default/ReplaceEndpointDefaultSecurityGroup-security-group",
-        "SecurityGroupEgress": Array [
-          Object {
-            "CidrIp": "0.0.0.0/0",
-            "Description": "Allow all outbound traffic by default",
-            "IpProtocol": "-1",
-          },
-        ],
-        "SecurityGroupIngress": Array [
-          Object {
-            "CidrIp": Object {
-              "Fn::GetAtt": Array [
-                "Vpc8378EB38",
-                "CidrBlock",
-              ],
-            },
-            "Description": Object {
-              "Fn::Join": Array [
-                "",
-                Array [
-                  "from ",
-                  Object {
-                    "Fn::GetAtt": Array [
-                      "Vpc8378EB38",
-                      "CidrBlock",
-                    ],
-                  },
-                  ":443",
-                ],
-              ],
-            },
-            "FromPort": 443,
-            "IpProtocol": "tcp",
-            "ToPort": 443,
-          },
-        ],
-        "VpcId": Object {
-          "Ref": "Vpc8378EB38",
-        },
-      },
-      "Type": "AWS::EC2::SecurityGroup",
     },
     "ReplaceModelDefaultSecurityGroup38936A39": Object {
       "Metadata": Object {
@@ -4000,7 +4000,7 @@ Object {
         "SecurityGroupIds": Array [
           Object {
             "Fn::GetAtt": Array [
-              "ReplaceEndpointDefaultSecurityGroupsecuritygroupB97DD1AF",
+              "DefaultSAGEMAKERRUNTIMEsecuritygroup32609E8C",
               "GroupId",
             ],
           },

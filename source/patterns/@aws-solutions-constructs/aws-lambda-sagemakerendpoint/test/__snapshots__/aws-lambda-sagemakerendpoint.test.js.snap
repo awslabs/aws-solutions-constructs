@@ -568,7 +568,7 @@ Object {
     },
   },
   "Resources": Object {
-    "ReplaceEndpointDefaultSecurityGroupsecuritygroupB97DD1AF": Object {
+    "DefaultSAGEMAKERRUNTIMEsecuritygroup32609E8C": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -584,7 +584,7 @@ Object {
         },
       },
       "Properties": Object {
-        "GroupDescription": "Default/ReplaceEndpointDefaultSecurityGroup-security-group",
+        "GroupDescription": "Default/Default-SAGEMAKER_RUNTIME-security-group",
         "SecurityGroupEgress": Array [
           Object {
             "CidrIp": "0.0.0.0/0",
@@ -783,7 +783,7 @@ Object {
         "SecurityGroupIds": Array [
           Object {
             "Fn::GetAtt": Array [
-              "ReplaceEndpointDefaultSecurityGroupsecuritygroupB97DD1AF",
+              "DefaultSAGEMAKERRUNTIMEsecuritygroup32609E8C",
               "GroupId",
             ],
           },

@@ -49,10 +49,7 @@ export function buildVpc(scope: Construct, props: BuildVpcProps): ec2.IVpc {
   }
 
   if (props?.constructVpcProps) {
-    cumulativeProps = overrideProps(
-      cumulativeProps,
-      props?.constructVpcProps
-    );
+    cumulativeProps = overrideProps(cumulativeProps, props?.constructVpcProps);
   }
 
   const vpc = new ec2.Vpc(scope, "Vpc", cumulativeProps);
@@ -172,7 +169,7 @@ export function AddAwsServiceEndpoint(
 
       const endpointDefaultSecurityGroup = buildSecurityGroup(
         scope,
-        "ReplaceEndpointDefaultSecurityGroup",
+        `${scope.node.id}-${service.endpointName}`,
         {
           vpc,
           allowAllOutbound: true,

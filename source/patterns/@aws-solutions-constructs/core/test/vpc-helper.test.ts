@@ -36,7 +36,7 @@ test('Test minimal deployment with no properties', () => {
 // --------------------------------------------------------------
 // Test minimal Isolated deployment with no properties
 // --------------------------------------------------------------
-test('Test minimal deployment with no properties', () => {
+test("Test minimal deployment with no properties", () => {
   // Stack
   const stack = new Stack();
   // Build VPC
@@ -213,11 +213,17 @@ test('Test adding Gateway Endpoint', () => {
   });
 
   AddAwsServiceEndpoint(stack, testVpc, ServiceEndpointTypes.DYNAMODB);
+  AddAwsServiceEndpoint(stack, testVpc, ServiceEndpointTypes.SQS);
+  AddAwsServiceEndpoint(stack, testVpc, ServiceEndpointTypes.SNS);
 
   // Assertion
   expect(stack).toHaveResource('AWS::EC2::VPCEndpoint', {
     VpcEndpointType: 'Gateway',
   });
+  expect(stack).toHaveResource('AWS::EC2::VPCEndpoint', {
+    VpcEndpointType: 'Interface',
+  });
+  expect(stack).toCountResources('AWS::EC2::VPCEndpoint', 3);
 });
 
 // --------------------------------------------------------------
@@ -269,6 +275,7 @@ test('Test adding a second Endpoint of same service', () => {
     defaultVpcProps: DefaultPublicPrivateVpcProps(),
   });
 
+  AddAwsServiceEndpoint(stack, testVpc, ServiceEndpointTypes.SNS);
   AddAwsServiceEndpoint(stack, testVpc, ServiceEndpointTypes.SNS);
 
   // Assertion
