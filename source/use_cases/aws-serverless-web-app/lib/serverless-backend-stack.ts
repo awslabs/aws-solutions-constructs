@@ -35,7 +35,11 @@ export class ServerlessBackendStack extends Stack {
       },
       cognitoUserPoolProps: {
         userPoolName: 'WileRydes',
-        userVerification: {}
+        userVerification: {},
+        autoVerify: {
+          email: true
+        },
+        selfSignUpEnabled: true
       },
       apiGatewayProps: {
         defaultCorsPreflightOptions: {
