@@ -32,6 +32,22 @@ export interface BuildDynamoDBTableProps {
   readonly existingTableObj?: dynamodb.Table
 }
 
+export interface BuildDynamoDBTableWithStreamProps {
+  /**
+   * Optional user provided props to override the default props
+   *
+   * @default - Default props are used
+   */
+  readonly dynamoTableProps?: dynamodb.TableProps,
+  /**
+   * Existing instance of dynamodb table object.
+   * Providing both this and `dynamoTableProps` will cause an error.
+   *
+   * @default - None
+   */
+  readonly existingTableObj?: dynamodb.ITable
+}
+
 export function buildDynamoDBTable(scope: cdk.Construct, props: BuildDynamoDBTableProps): dynamodb.Table {
   // Conditional DynamoDB Table creation
   if (!props.existingTableObj) {
@@ -47,7 +63,7 @@ export function buildDynamoDBTable(scope: cdk.Construct, props: BuildDynamoDBTab
   }
 }
 
-export function buildDynamoDBTableWithStream(scope: cdk.Construct, props: BuildDynamoDBTableProps): dynamodb.Table {
+export function buildDynamoDBTableWithStream(scope: cdk.Construct, props: BuildDynamoDBTableWithStreamProps): dynamodb.ITable {
   // Conditional DynamoDB Table creation
   if (!props.existingTableObj) {
     // Set the default props for DynamoDB table

@@ -51,7 +51,7 @@ export interface DynamoDBStreamToLambdaToElasticSearchAndKibanaProps {
    *
    * @default - None
    */
-  readonly existingTableObj?: dynamodb.Table,
+  readonly existingTableObj?: dynamodb.ITable,
   /**
    * Optional user provided props to override the default props
    *
@@ -101,7 +101,7 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
   private dynamoDBStreamToLambda: DynamoDBStreamToLambda;
   private lambdaToElasticSearchAndKibana: LambdaToElasticSearchAndKibana;
   public readonly lambdaFunction: lambda.Function;
-  public readonly dynamoTable: dynamodb.Table;
+  public readonly dynamoTable?: dynamodb.Table;
   public readonly userPool: cognito.UserPool;
   public readonly userPoolClient: cognito.UserPoolClient;
   public readonly identityPool: cognito.CfnIdentityPool;

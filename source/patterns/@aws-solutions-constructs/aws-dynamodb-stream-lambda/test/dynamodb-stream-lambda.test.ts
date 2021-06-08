@@ -206,3 +206,69 @@ test('check exception for Missing existingObj from props', () => {
     expect(e).toBeInstanceOf(Error);
   }
 });
+
+test('check dynamodb table stream override with ITable', () => {
+  const stack = new cdk.Stack();
+  const existingTableObj = dynamodb.Table.fromTableAttributes(stack, 'existingtable', {
+    tableArn: 'arn:aws:dynamodb:us-east-1:xxxxxxxxxxxxx:table/existing-table',
+    tableStreamArn: 'arn:aws:dynamodb:us-east-1:xxxxxxxxxxxxx:table/existing-table/stream/2020-06-22T18:34:05.824'
+  });
+  const props: DynamoDBStreamToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    existingTableObj
+  };
+
+  new DynamoDBStreamToLambda(stack, 'test-lambda-dynamodb-stack', props);
+
+  expect(stack).toHaveResource('AWS::Lambda::EventSourceMapping', {
+    EventSourceArn: "arn:aws:dynamodb:us-east-1:xxxxxxxxxxxxx:table/existing-table/stream/2020-06-22T18:34:05.824",
+  });
+
+  expect(stack).toHaveResource('AWS::IAM::Policy', {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: [
+            "xray:PutTraceSegments",
+            "xray:PutTelemetryRecords"
+          ],
+          Effect: "Allow",
+          Resource: "*"
+        },
+        {
+          Action: "dynamodb:ListStreams",
+          Effect: "Allow",
+          Resource: "*"
+        },
+        {
+          Action: [
+            "dynamodb:DescribeStream",
+            "dynamodb:GetRecords",
+            "dynamodb:GetShardIterator"
+          ],
+          Effect: "Allow",
+          Resource: "arn:aws:dynamodb:us-east-1:xxxxxxxxxxxxx:table/existing-table/stream/2020-06-22T18:34:05.824"
+        },
+        {
+          Action: [
+            "sqs:SendMessage",
+            "sqs:GetQueueAttributes",
+            "sqs:GetQueueUrl"
+          ],
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              "testlambdadynamodbstackSqsDlqQueue4CC9868B",
+              "Arn"
+            ]
+          }
+        }
+      ],
+      Version: "2012-10-17"
+    }
+  });
+});
