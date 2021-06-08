@@ -82,7 +82,7 @@ export function createLoggingBucket(scope: cdk.Construct, bucketId: string, remo
   loggingBucketResource.addPropertyOverride('AccessControl', 'LogDeliveryWrite');
 
   // Turn off Versioning for the logging bucket as objects will be written only ONCE
-  loggingBucketResource.addPropertyDeletionOverride('VersioningConfiguration.Status');
+//  loggingBucketResource.addPropertyDeletionOverride('VersioningConfiguration.Status');
 
   // Remove the default LifecycleConfiguration for the Logging Bucket
   loggingBucketResource.addPropertyDeletionOverride('LifecycleConfiguration.Rules');
