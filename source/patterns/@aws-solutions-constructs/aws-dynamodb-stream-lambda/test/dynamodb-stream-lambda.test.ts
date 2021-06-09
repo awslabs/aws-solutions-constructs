@@ -185,13 +185,37 @@ test('check dynamodb table stream override', () => {
 
 });
 
-test('check getter methods', () => {
+test('check getter methods without existingTableInterface', () => {
   const stack = new cdk.Stack();
 
   const construct: DynamoDBStreamToLambda = deployNewFunc(stack);
 
-  expect(construct.lambdaFunction !== null);
-  expect(construct.dynamoTable !== null);
+  expect(construct.lambdaFunction).toBeInstanceOf(lambda.Function);
+  expect(construct.dynamoTableInterface).toHaveProperty('tableName');
+  expect(construct.dynamoTable).toBeInstanceOf(dynamodb.Table);
+  expect(construct.dynamoTable).toHaveProperty('addGlobalSecondaryIndex');
+});
+
+test('check getter methods with existingTableInterface', () => {
+  const stack = new cdk.Stack();
+
+  const construct: DynamoDBStreamToLambda = new DynamoDBStreamToLambda(stack, 'test', {
+    existingTableInterface: new dynamodb.Table(stack, 'table', {
+      partitionKey: {
+        name: 'id',
+        type: dynamodb.AttributeType.STRING
+      },
+      stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES
+    }),
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+  });
+
+  expect(construct.lambdaFunction).toBeInstanceOf(lambda.Function);
+  expect(construct.dynamoTable).toBeUndefined();
 });
 
 test('check exception for Missing existingObj from props', () => {
@@ -209,7 +233,7 @@ test('check exception for Missing existingObj from props', () => {
 
 test('check dynamodb table stream override with ITable', () => {
   const stack = new cdk.Stack();
-  const existingTableObj = dynamodb.Table.fromTableAttributes(stack, 'existingtable', {
+  const existingTableInterface = dynamodb.Table.fromTableAttributes(stack, 'existingtable', {
     tableArn: 'arn:aws:dynamodb:us-east-1:xxxxxxxxxxxxx:table/existing-table',
     tableStreamArn: 'arn:aws:dynamodb:us-east-1:xxxxxxxxxxxxx:table/existing-table/stream/2020-06-22T18:34:05.824'
   });
@@ -219,7 +243,7 @@ test('check dynamodb table stream override with ITable', () => {
       runtime: lambda.Runtime.NODEJS_12_X,
       handler: 'index.handler'
     },
-    existingTableObj
+    existingTableInterface
   };
 
   new DynamoDBStreamToLambda(stack, 'test-lambda-dynamodb-stack', props);

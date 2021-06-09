@@ -45,7 +45,7 @@ export interface BuildDynamoDBTableWithStreamProps {
    *
    * @default - None
    */
-  readonly existingTableObj?: dynamodb.ITable
+  readonly existingTableInterface?: dynamodb.ITable
 }
 
 export function buildDynamoDBTable(scope: cdk.Construct, props: BuildDynamoDBTableProps): dynamodb.Table {
@@ -63,9 +63,9 @@ export function buildDynamoDBTable(scope: cdk.Construct, props: BuildDynamoDBTab
   }
 }
 
-export function buildDynamoDBTableWithStream(scope: cdk.Construct, props: BuildDynamoDBTableWithStreamProps): dynamodb.ITable {
+export function buildDynamoDBTableWithStream(scope: cdk.Construct, props: BuildDynamoDBTableWithStreamProps): dynamodb.Table | dynamodb.ITable {
   // Conditional DynamoDB Table creation
-  if (!props.existingTableObj) {
+  if (!props.existingTableInterface) {
     // Set the default props for DynamoDB table
     if (props.dynamoTableProps) {
       const dynamoTableProps = overrideProps(DefaultTableWithStreamProps, props.dynamoTableProps);
@@ -74,7 +74,7 @@ export function buildDynamoDBTableWithStream(scope: cdk.Construct, props: BuildD
       return new dynamodb.Table(scope, 'DynamoTable', DefaultTableWithStreamProps);
     }
   } else {
-    return props.existingTableObj;
+    return props.existingTableInterface;
   }
 }
 

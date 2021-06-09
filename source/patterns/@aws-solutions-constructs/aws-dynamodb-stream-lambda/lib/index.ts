@@ -45,7 +45,7 @@ export interface DynamoDBStreamToLambdaProps {
    *
    * @default - None
    */
-  readonly existingTableObj?: dynamodb.ITable,
+  readonly existingTableInterface?: dynamodb.ITable,
   /**
    * Optional user provided props to override the default props
    *
@@ -69,6 +69,7 @@ export interface DynamoDBStreamToLambdaProps {
 
 export class DynamoDBStreamToLambda extends Construct {
   public readonly lambdaFunction: lambda.Function;
+  public readonly dynamoTableInterface: dynamodb.ITable;
   public readonly dynamoTable?: dynamodb.Table;
 
   /**
@@ -90,11 +91,12 @@ export class DynamoDBStreamToLambda extends Construct {
 
     const table: dynamodb.ITable = defaults.buildDynamoDBTableWithStream(this, {
       dynamoTableProps: props.dynamoTableProps,
-      existingTableObj: props.existingTableObj
+      existingTableInterface: props.existingTableInterface
     });
 
-    if (table instanceof dynamodb.Table) {
-      this.dynamoTable = table;
+    this.dynamoTableInterface = table;
+    if (!props.existingTableInterface) {
+      this.dynamoTable = table as dynamodb.Table;
     }
 
     // Grant DynamoDB Stream read perimssion for lambda function
