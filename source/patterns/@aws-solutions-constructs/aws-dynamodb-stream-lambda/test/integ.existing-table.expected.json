@@ -15,9 +15,12 @@
             "AttributeType": "S"
           }
         ],
-        "ProvisionedThroughput": {
-          "ReadCapacityUnits": 5,
-          "WriteCapacityUnits": 5
+        "BillingMode": "PAY_PER_REQUEST",
+        "PointInTimeRecoverySpecification": {
+          "PointInTimeRecoveryEnabled": true
+        },
+        "SSESpecification": {
+          "SSEEnabled": true
         },
         "StreamSpecification": {
           "StreamViewType": "NEW_AND_OLD_IMAGES"

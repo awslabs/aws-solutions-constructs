@@ -23,6 +23,9 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
 const table = new dynamodb.Table(stack, 'mytable', {
+  billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+  encryption: dynamodb.TableEncryption.AWS_MANAGED,
+  pointInTimeRecovery: true,
   partitionKey: {
     name: 'id',
     type: dynamodb.AttributeType.STRING
