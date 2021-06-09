@@ -89,18 +89,13 @@ export class DynamoDBStreamToLambda extends Construct {
       lambdaFunctionProps: props.lambdaFunctionProps
     });
 
-    const table: dynamodb.ITable = defaults.buildDynamoDBTableWithStream(this, {
+    [this.dynamoTableInterface, this.dynamoTable] = defaults.buildDynamoDBTableWithStream(this, {
       dynamoTableProps: props.dynamoTableProps,
       existingTableInterface: props.existingTableInterface
     });
 
-    this.dynamoTableInterface = table;
-    if (!props.existingTableInterface) {
-      this.dynamoTable = table as dynamodb.Table;
-    }
-
     // Grant DynamoDB Stream read perimssion for lambda function
-    table.grantStreamRead(this.lambdaFunction.grantPrincipal);
+    this.dynamoTableInterface.grantStreamRead(this.lambdaFunction.grantPrincipal);
 
     // Add the Lambda event source mapping
     const eventSourceProps = defaults.DynamoEventSourceProps(this, {
@@ -108,6 +103,6 @@ export class DynamoDBStreamToLambda extends Construct {
       deploySqsDlqQueue: props.deploySqsDlqQueue,
       sqsDlqQueueProps: props.sqsDlqQueueProps
     });
-    this.lambdaFunction.addEventSource(new DynamoEventSource(table, eventSourceProps));
+    this.lambdaFunction.addEventSource(new DynamoEventSource(this.dynamoTableInterface, eventSourceProps));
   }
 }

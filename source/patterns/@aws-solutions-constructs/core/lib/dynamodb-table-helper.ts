@@ -63,18 +63,20 @@ export function buildDynamoDBTable(scope: cdk.Construct, props: BuildDynamoDBTab
   }
 }
 
-export function buildDynamoDBTableWithStream(scope: cdk.Construct, props: BuildDynamoDBTableWithStreamProps): dynamodb.Table | dynamodb.ITable {
+export function buildDynamoDBTableWithStream(scope: cdk.Construct, props: BuildDynamoDBTableWithStreamProps): [dynamodb.ITable, dynamodb.Table?] {
   // Conditional DynamoDB Table creation
   if (!props.existingTableInterface) {
     // Set the default props for DynamoDB table
     if (props.dynamoTableProps) {
       const dynamoTableProps = overrideProps(DefaultTableWithStreamProps, props.dynamoTableProps);
-      return new dynamodb.Table(scope, 'DynamoTable', dynamoTableProps);
+      const dynamoTable: dynamodb.Table = new dynamodb.Table(scope, 'DynamoTable', dynamoTableProps);
+      return [dynamoTable as dynamodb.ITable, dynamoTable];
     } else {
-      return new dynamodb.Table(scope, 'DynamoTable', DefaultTableWithStreamProps);
+      const dynamoTable: dynamodb.Table = new dynamodb.Table(scope, 'DynamoTable', DefaultTableWithStreamProps);
+      return [dynamoTable as dynamodb.ITable, dynamoTable];
     }
   } else {
-    return props.existingTableInterface;
+    return [props.existingTableInterface, undefined];
   }
 }
 
