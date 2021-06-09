@@ -81,26 +81,8 @@ export function createLoggingBucket(scope: cdk.Construct, bucketId: string, remo
   // Override accessControl configuration and add metadata for the logging bucket
   loggingBucketResource.addPropertyOverride('AccessControl', 'LogDeliveryWrite');
 
-  // Turn off Versioning for the logging bucket as objects will be written only ONCE
-//  loggingBucketResource.addPropertyDeletionOverride('VersioningConfiguration.Status');
-
   // Remove the default LifecycleConfiguration for the Logging Bucket
   loggingBucketResource.addPropertyDeletionOverride('LifecycleConfiguration.Rules');
-
-  let _reason = "This S3 bucket is used as the access logging bucket for another bucket";
-
-  if (bucketId === 'CloudfrontLoggingBucket') {
-    _reason = "This S3 bucket is used as the access logging bucket for CloudFront Distribution";
-  }
-
-  loggingBucketResource.cfnOptions.metadata = {
-    cfn_nag: {
-      rules_to_suppress: [{
-        id: 'W35',
-        reason: _reason
-      }]
-    }
-  };
 
   return loggingBucket;
 }
