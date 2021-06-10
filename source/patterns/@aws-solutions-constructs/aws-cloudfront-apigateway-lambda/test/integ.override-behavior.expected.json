@@ -294,7 +294,7 @@
         },
         "MethodSettings": [
           {
-            "DataTraceEnabled": false,
+            "DataTraceEnabled": true,
             "HttpMethod": "*",
             "LoggingLevel": "INFO",
             "ResourcePath": "/*"
@@ -742,20 +742,13 @@
           "BlockPublicPolicy": true,
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
         }
       },
       "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W35",
-              "reason": "This S3 bucket is used as the access logging bucket for CloudFront Distribution"
-            }
-          ]
-        }
-      }
+      "DeletionPolicy": "Retain"
     },
     "cfapilambdaoverrideCloudFrontToApiGatewayCloudfrontLoggingBucketPolicyC3092436": {
       "Type": "AWS::S3::BucketPolicy",

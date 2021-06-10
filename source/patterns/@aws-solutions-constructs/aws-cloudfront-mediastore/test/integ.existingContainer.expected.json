@@ -170,20 +170,13 @@
           "BlockPublicPolicy": true,
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
         }
       },
       "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W35",
-              "reason": "This S3 bucket is used as the access logging bucket for CloudFront Distribution"
-            }
-          ]
-        }
-      }
+      "DeletionPolicy": "Retain"
     },
     "testcloudfrontmediastoreCloudfrontLoggingBucketPolicyF3B44DFD": {
       "Type": "AWS::S3::BucketPolicy",
