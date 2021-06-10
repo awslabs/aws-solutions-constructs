@@ -40,7 +40,7 @@ export interface KinesisStreamsToKinesisFirehoseToS3Props {
   readonly createCloudWatchAlarms?: boolean;
   /**
    * Optional existing instance of S3 Bucket,
-   * if this is set then bucketProps and existingLoggingBucketObj are ignored.
+   * providing both this and bucketProps will cause an error. Providing both this and bucketProps will cause an error.
    *
    * @default - None
    */
@@ -52,7 +52,7 @@ export interface KinesisStreamsToKinesisFirehoseToS3Props {
    */
   readonly existingLoggingBucketObj?: s3.IBucket;
   /**
-   * Optional existing instance of Kinesis Stream, if this is set then kinesisStreamProps is ignored.
+   * Optional existing instance of Kinesis Stream, providing both this and `kinesisStreamProps` will cause an error.
    *
    * @default - None
    */
@@ -97,6 +97,11 @@ export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
    */
   constructor(scope: Construct, id: string, props: KinesisStreamsToKinesisFirehoseToS3Props) {
     super(scope, id);
+    defaults.CheckProps(props);
+
+    if (props.existingBucketObj && props.bucketProps) {
+      throw new Error('Cannot specify both bucket properties and an existing bucket');
+    }
 
     // Setup the Kinesis Stream
     this.kinesisStream = defaults.buildKinesisStream(this, {

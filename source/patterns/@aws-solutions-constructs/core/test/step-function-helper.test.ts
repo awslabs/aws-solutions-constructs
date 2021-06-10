@@ -17,7 +17,7 @@ import * as defaults from '../';
 import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import * as sfn from '@aws-cdk/aws-stepfunctions';
-import { LogGroup } from "@aws-cdk/aws-logs";
+import { buildLogGroup } from '../lib/cloudwatch-log-group-helper';
 
 // --------------------------------------------------------------
 // Test minimal deployment with no properties
@@ -49,6 +49,8 @@ test('Test deployment w/ custom properties', () => {
     stateMachineName: 'myStateMachine'
   });
   // Assertion
+  expect(stack).toCountResources("AWS::Logs::LogGroup", 1);
+
   expect(stack).toHaveResource("AWS::StepFunctions::StateMachine", {
     StateMachineName: "myStateMachine"
   });
@@ -63,7 +65,9 @@ test('Test deployment w/ logging enabled', () => {
   // Step function definition
   const startState = new sfn.Pass(stack, 'StartState');
   // Log group
-  const logGroup = new LogGroup(stack, 'myLogGroup', defaults.buildLogGroup(stack));
+  // const logGroup = new LogGroup(stack, 'myLogGroup', defaults.buildLogGroup(stack));
+  const logGroup = buildLogGroup(stack, 'StateMachineLogGroup');
+
   // Build state machine
   defaults.buildStateMachine(stack, {
     definition: startState,
@@ -73,13 +77,15 @@ test('Test deployment w/ logging enabled', () => {
     }
   });
   // Assertion
+  expect(stack).toCountResources("AWS::Logs::LogGroup", 1);
+
   expect(stack).toHaveResource("AWS::StepFunctions::StateMachine", {
     LoggingConfiguration: {
       Destinations: [{
         CloudWatchLogsLogGroup: {
           LogGroupArn: {
             "Fn::GetAtt": [
-              "myLogGroup46524CAB",
+              "StateMachineLogGroup15B91BCB",
               "Arn"
             ]
           }
@@ -91,9 +97,9 @@ test('Test deployment w/ logging enabled', () => {
 });
 
 // --------------------------------------------------------------
-// Check default Cloudwatch perissions
+// Check default Cloudwatch permissions
 // --------------------------------------------------------------
-test('Test deployment w/ logging enabled', () => {
+test('Check default Cloudwatch permissions', () => {
   // Stack
   const stack = new Stack();
   // Step function definition

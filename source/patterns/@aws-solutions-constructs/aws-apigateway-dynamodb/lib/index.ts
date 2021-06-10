@@ -30,7 +30,7 @@ export interface ApiGatewayToDynamoDBProps {
    */
   readonly dynamoTableProps?: dynamodb.TableProps,
   /**
-   * Existing instance of DynamoDB table object, If this is set then the dynamoTableProps is ignored
+   * Existing instance of DynamoDB table object, providing both this and `dynamoTableProps` will cause an error.
    *
    * @default - None
    */
@@ -104,6 +104,8 @@ export class ApiGatewayToDynamoDB extends Construct {
    */
   constructor(scope: Construct, id: string, props: ApiGatewayToDynamoDBProps) {
     super(scope, id);
+    defaults.CheckProps(props);
+
     let partitionKeyName: string;
     let dynamoTableProps: dynamodb.TableProps;
 

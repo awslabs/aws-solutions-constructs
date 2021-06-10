@@ -12,14 +12,15 @@
  */
 
 /// !cdk-integ *
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { LambdaToStepFunction, LambdaToStepFunctionProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup the app and stack
 const app = new App();
-const stack = new Stack(app, 'test-lambda-step-function-stack');
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 // Create a start state for the state machine
 const startState = new stepfunctions.Pass(stack, 'StartState');
@@ -33,11 +34,14 @@ const props: LambdaToStepFunctionProps = {
   },
   stateMachineProps: {
     definition: startState
-  }
+  },
+  logGroupProps: {
+    removalPolicy: RemovalPolicy.DESTROY
+  },
 };
 
 // Add the pattern
-new LambdaToStepFunction(stack, 'test-lambda-step-function-stack', props);
+new LambdaToStepFunction(stack, 'test-lambda-step-function-construct', props);
 
 // Synth the app
 app.synth();

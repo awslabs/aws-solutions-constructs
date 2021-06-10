@@ -16,10 +16,11 @@ import { App, Stack } from "@aws-cdk/core";
 import { CognitoToApiGatewayToLambda } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as cdk from '@aws-cdk/core';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-cognito-apigateway-lambda-stack');
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 const lambdaProps: lambda.FunctionProps = {
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),

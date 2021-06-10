@@ -23,7 +23,7 @@ import {addCfnNagS3BucketNotificationRulesToSuppress} from "@aws-solutions-const
  */
 export interface S3ToLambdaProps {
   /**
-   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
+   * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
    * @default - None
    */
@@ -35,7 +35,7 @@ export interface S3ToLambdaProps {
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps,
   /**
-   * Existing instance of S3 Bucket object, if this is set then the bucketProps is ignored.
+   * Existing instance of S3 Bucket object, providing both this and `bucketProps` will cause an error.
    *
    * @default - None
    */
@@ -69,7 +69,13 @@ export class S3ToLambda extends Construct {
    */
   constructor(scope: Construct, id: string, props: S3ToLambdaProps) {
     super(scope, id);
+    defaults.CheckProps(props);
+
     let bucket: s3.Bucket;
+
+    if (props.existingBucketObj && props.bucketProps) {
+      throw new Error('Cannot specify both bucket properties and an existing bucket');
+    }
 
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,

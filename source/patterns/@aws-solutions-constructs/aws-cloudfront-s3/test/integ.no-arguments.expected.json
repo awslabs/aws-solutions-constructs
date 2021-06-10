@@ -409,7 +409,7 @@
       "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
       "Properties": {
         "CloudFrontOriginAccessIdentityConfig": {
-          "Comment": "Identity for testcloudfronts3stacktestcloudfronts3CloudFrontDistributionOrigin1572F5BE9"
+          "Comment": "Identity for noargumentstestcloudfronts3CloudFrontDistributionOrigin1E8A0111C"
         }
       }
     },
@@ -428,7 +428,7 @@
                 }
               }
             ],
-            "TargetOriginId": "testcloudfronts3stacktestcloudfronts3CloudFrontDistributionOrigin1572F5BE9",
+            "TargetOriginId": "noargumentstestcloudfronts3CloudFrontDistributionOrigin1E8A0111C",
             "ViewerProtocolPolicy": "redirect-to-https"
           },
           "DefaultRootObject": "index.html",
@@ -451,7 +451,7 @@
                   "RegionalDomainName"
                 ]
               },
-              "Id": "testcloudfronts3stacktestcloudfronts3CloudFrontDistributionOrigin1572F5BE9",
+              "Id": "noargumentstestcloudfronts3CloudFrontDistributionOrigin1E8A0111C",
               "S3OriginConfig": {
                 "OriginAccessIdentity": {
                   "Fn::Join": [

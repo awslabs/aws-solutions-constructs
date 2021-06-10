@@ -16,10 +16,12 @@ import { App, Stack } from "@aws-cdk/core";
 import { S3ToLambda, S3ToLambdaProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import { CreateScrapBucket } from "@aws-solutions-constructs/core";
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
+
 const app = new App();
 
 // Empty arguments
-const stack = new Stack(app, 'test-s3-lambda-existing-bucket-stack');
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 const myBucket = CreateScrapBucket(stack, {});
 

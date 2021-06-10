@@ -16,7 +16,7 @@ import * as logs from '@aws-cdk/aws-logs';
 import * as cdk from '@aws-cdk/core';
 import * as smDefaults from './step-function-defaults';
 import * as sfn from '@aws-cdk/aws-stepfunctions';
-import { overrideProps } from './utils';
+import { overrideProps, generateResourceName } from './utils';
 import * as iam from '@aws-cdk/aws-iam';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import { buildLogGroup } from './cloudwatch-log-group-helper';
@@ -27,13 +27,44 @@ import { buildLogGroup } from './cloudwatch-log-group-helper';
  * @param stateMachineProps - user-specified properties to override the default properties.
  */
 export function buildStateMachine(scope: cdk.Construct, stateMachineProps: sfn.StateMachineProps,
-  logGroupProps?: logs.LogGroupProps): [sfn.StateMachine, logs.LogGroup] {
+  logGroupProps?: logs.LogGroupProps): [sfn.StateMachine, logs.ILogGroup] {
 
-  // Configure Cloudwatch log group for Step function State Machine
-  const logGroup = buildLogGroup(scope, 'StateMachineLogGroup', logGroupProps);
+  let logGroup: logs.ILogGroup;
+  let _smProps;
 
-  // Override the defaults with the user provided props
-  const _smProps = overrideProps(smDefaults.DefaultStateMachineProps(logGroup), stateMachineProps);
+  // If they sent a logGroup in stateMachineProps
+  if (stateMachineProps.logs?.destination) {
+    logGroup = stateMachineProps.logs?.destination;
+    _smProps = stateMachineProps;
+  } else {
+    // Three possibilities
+    // 1) logGroupProps not provided - create logGroupProps with just logGroupName
+    // 2) logGroupProps provided with no logGroupName - override logGroupProps.logGroupName
+    // 3) logGroupProps provided with logGroupName - pass unaltered logGroupProps
+    let consolidatedLogGroupProps = logGroupProps;
+
+    if (!consolidatedLogGroupProps) {
+      consolidatedLogGroupProps = {};
+    }
+    if (!consolidatedLogGroupProps?.logGroupName) {
+      const logGroupPrefix = '/aws/vendedlogs/states/';
+      const maxResourceNameLength = 255 - logGroupPrefix.length;
+      const nameParts: string[] = [
+        cdk.Stack.of(scope).stackName, // Name of the stack
+        scope.node.id,                 // Construct ID
+        'StateMachineLog'              // Literal string for log group name portion
+      ];
+
+      const logGroupName = logGroupPrefix + generateResourceName(nameParts, maxResourceNameLength);
+      consolidatedLogGroupProps = overrideProps(consolidatedLogGroupProps, { logGroupName });
+    }
+
+    // Create new Cloudwatch log group for Step function State Machine
+    logGroup = buildLogGroup(scope, 'StateMachineLogGroup', consolidatedLogGroupProps);
+
+    // Override the defaults with the user provided props
+    _smProps = overrideProps(smDefaults.DefaultStateMachineProps(logGroup), stateMachineProps);
+  }
 
   // Override the Cloudwatch permissions to make it more fine grained
   const _sm = new sfn.StateMachine(scope, 'StateMachine', _smProps);

@@ -14,9 +14,10 @@
 import * as events from '@aws-cdk/aws-events';
 import { App, Stack, Duration } from '@aws-cdk/core';
 import {EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props} from '../lib';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
-const stack = new Stack(app, 'test-events-rule-kinesisfirehose-s3');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-events-rule-kinesisfirehose-s3';
 
 const props: EventsRuleToKinesisFirehoseToS3Props = {

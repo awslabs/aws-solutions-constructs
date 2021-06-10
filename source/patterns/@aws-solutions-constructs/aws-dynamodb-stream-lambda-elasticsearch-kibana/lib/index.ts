@@ -22,13 +22,14 @@ import * as cognito from '@aws-cdk/aws-cognito';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import { Construct } from '@aws-cdk/core';
 import * as sqs from '@aws-cdk/aws-sqs';
+import * as defaults from '@aws-solutions-constructs/core';
 
 /**
  * @summary The properties for the DynamoDBStreamToLambdaToElastciSearchAndKibana Construct
  */
 export interface DynamoDBStreamToLambdaToElasticSearchAndKibanaProps {
   /**
-   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
+   * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
    * @default - None
    */
@@ -46,11 +47,11 @@ export interface DynamoDBStreamToLambdaToElasticSearchAndKibanaProps {
    */
   readonly dynamoTableProps?: dynamodb.TableProps,
   /**
-   * Existing instance of DynamoDB table object, If this is set then the dynamoTableProps is ignored
+   * Existing instance of DynamoDB table object, providing both this and `dynamoTableProps` will cause an error.
    *
    * @default - None
    */
-  readonly existingTableObj?: dynamodb.Table,
+  readonly existingTableInterface?: dynamodb.ITable,
   /**
    * Optional user provided props to override the default props
    *
@@ -100,7 +101,8 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
   private dynamoDBStreamToLambda: DynamoDBStreamToLambda;
   private lambdaToElasticSearchAndKibana: LambdaToElasticSearchAndKibana;
   public readonly lambdaFunction: lambda.Function;
-  public readonly dynamoTable: dynamodb.Table;
+  public readonly dynamoTableInterface: dynamodb.ITable;
+  public readonly dynamoTable?: dynamodb.Table;
   public readonly userPool: cognito.UserPool;
   public readonly userPoolClient: cognito.UserPoolClient;
   public readonly identityPool: cognito.CfnIdentityPool;
@@ -118,13 +120,14 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
    */
   constructor(scope: Construct, id: string, props: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps) {
     super(scope, id);
+    defaults.CheckProps(props);
 
     const _props1: DynamoDBStreamToLambdaProps = {
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps,
       dynamoEventSourceProps: props.dynamoEventSourceProps,
       dynamoTableProps: props.dynamoTableProps,
-      existingTableObj: props.existingTableObj,
+      existingTableInterface: props.existingTableInterface,
       deploySqsDlqQueue: props.deploySqsDlqQueue,
       sqsDlqQueueProps: props.sqsDlqQueueProps
     };
@@ -144,6 +147,7 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
     this.lambdaToElasticSearchAndKibana = new LambdaToElasticSearchAndKibana(this, 'LambdaToElasticSearch', _props2);
 
     this.dynamoTable = this.dynamoDBStreamToLambda.dynamoTable;
+    this.dynamoTableInterface = this.dynamoDBStreamToLambda.dynamoTableInterface;
     this.userPool = this.lambdaToElasticSearchAndKibana.userPool;
     this.userPoolClient = this.lambdaToElasticSearchAndKibana.userPoolClient;
     this.identityPool = this.lambdaToElasticSearchAndKibana.identityPool;

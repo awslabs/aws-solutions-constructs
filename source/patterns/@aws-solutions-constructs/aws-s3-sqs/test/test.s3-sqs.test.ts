@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
+import { Stack, RemovalPolicy } from "@aws-cdk/core";
 import { S3ToSqs, S3ToSqsProps } from "../lib";
 import * as sqs from '@aws-cdk/aws-sqs';
 import * as kms from '@aws-cdk/aws-kms';
@@ -289,4 +289,26 @@ test('Test deployment w/ SSE encryption enabled using customer managed KMS CMK',
     },
     EnableKeyRotation: true
   });
+});
+
+// --------------------------------------------------------------
+// Test bad call with existingBucket and bucketProps
+// --------------------------------------------------------------
+test("Test bad call with existingBucket and bucketProps", () => {
+  // Stack
+  const stack = new Stack();
+
+  const testBucket = new s3.Bucket(stack, 'test-bucket', {});
+
+  const app = () => {
+    // Helper declaration
+    new S3ToSqs(stack, "bad-s3-args", {
+      existingBucketObj: testBucket,
+      bucketProps: {
+        removalPolicy: RemovalPolicy.DESTROY
+      },
+    });
+  };
+  // Assertion
+  expect(app).toThrowError();
 });

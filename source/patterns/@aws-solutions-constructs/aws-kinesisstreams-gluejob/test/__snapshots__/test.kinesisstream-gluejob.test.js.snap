@@ -14,7 +14,79 @@ Object {
       },
       "Type": "AWS::Glue::Database",
     },
-    "GlueJobPolicyAEA4B94E": Object {
+    "GlueTable": Object {
+      "Properties": Object {
+        "CatalogId": Object {
+          "Ref": "AWS::AccountId",
+        },
+        "DatabaseName": Object {
+          "Ref": "GlueDatabase",
+        },
+        "TableInput": Object {
+          "Parameters": Object {
+            "classification": "json",
+          },
+          "StorageDescriptor": Object {
+            "Columns": Array [
+              Object {
+                "Comment": "Identifier for the record",
+                "Name": "id",
+                "Type": "int",
+              },
+              Object {
+                "Comment": "The name of the record",
+                "Name": "name",
+                "Type": "string",
+              },
+              Object {
+                "Comment": "The type of the record",
+                "Name": "type",
+                "Type": "string",
+              },
+              Object {
+                "Comment": "Some value associated with the record",
+                "Name": "numericvalue",
+                "Type": "int",
+              },
+            ],
+            "Compressed": false,
+            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+            "Location": Object {
+              "Ref": "testkinesisstreamslambdaKinesisStream374D6D56",
+            },
+            "NumberOfBuckets": -1,
+            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+            "Parameters": Object {
+              "endpointUrl": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "https://kinesis.",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ".amazonaws.com",
+                  ],
+                ],
+              },
+              "streamName": Object {
+                "Ref": "testkinesisstreamslambdaKinesisStream374D6D56",
+              },
+              "typeOfData": "kinesis",
+            },
+            "SerdeInfo": Object {
+              "Parameters": Object {
+                "paths": "id,name,type,numericvalue",
+              },
+              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
+            },
+          },
+          "TableType": "EXTERNAL_TABLE",
+        },
+      },
+      "Type": "AWS::Glue::Table",
+    },
+    "testkinesisstreamslambdaGlueJobPolicy10DEE7DE": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -169,7 +241,7 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "GlueJobPolicyAEA4B94E",
+        "PolicyName": "testkinesisstreamslambdaGlueJobPolicy10DEE7DE",
         "Roles": Array [
           Object {
             "Ref": "testkinesisstreamslambdaJobRole42199B9C",
@@ -177,78 +249,6 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Policy",
-    },
-    "GlueTable": Object {
-      "Properties": Object {
-        "CatalogId": Object {
-          "Ref": "AWS::AccountId",
-        },
-        "DatabaseName": Object {
-          "Ref": "GlueDatabase",
-        },
-        "TableInput": Object {
-          "Parameters": Object {
-            "classication": "json",
-          },
-          "StorageDescriptor": Object {
-            "Columns": Array [
-              Object {
-                "Comment": "Identifier for the record",
-                "Name": "id",
-                "Type": "int",
-              },
-              Object {
-                "Comment": "The name of the record",
-                "Name": "name",
-                "Type": "string",
-              },
-              Object {
-                "Comment": "The type of the record",
-                "Name": "type",
-                "Type": "string",
-              },
-              Object {
-                "Comment": "Some value associated with the record",
-                "Name": "numericvalue",
-                "Type": "int",
-              },
-            ],
-            "Compressed": false,
-            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
-            "Location": Object {
-              "Ref": "testkinesisstreamslambdaKinesisStream374D6D56",
-            },
-            "NumberOfBuckets": -1,
-            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
-            "Parameters": Object {
-              "endpointUrl": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "https://kinesis.",
-                    Object {
-                      "Ref": "AWS::Region",
-                    },
-                    ".amazonaws.com",
-                  ],
-                ],
-              },
-              "streamName": Object {
-                "Ref": "testkinesisstreamslambdaKinesisStream374D6D56",
-              },
-              "typeOfData": "kinesis",
-            },
-            "SerdeInfo": Object {
-              "Parameters": Object {
-                "paths": "id,name,type,numericvalue",
-              },
-              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
-            },
-          },
-          "TableType": "EXTERNAL_TABLE",
-        },
-      },
-      "Type": "AWS::Glue::Table",
     },
     "testkinesisstreamslambdaGlueSecurityConfig3568178F": Object {
       "Properties": Object {
@@ -404,7 +404,7 @@ Object {
             "Fn::Join": Array [
               "",
               Array [
-                "s3://",
+                "s3a://",
                 Object {
                   "Ref": "testkinesisstreamslambdaS3Bucket54759F5C",
                 },
@@ -669,7 +669,97 @@ Object {
       },
       "Type": "AWS::Glue::Database",
     },
-    "GlueJobPolicyAEA4B94E": Object {
+    "GlueTable": Object {
+      "Properties": Object {
+        "CatalogId": Object {
+          "Ref": "AWS::AccountId",
+        },
+        "DatabaseName": Object {
+          "Ref": "GlueDatabase",
+        },
+        "TableInput": Object {
+          "Parameters": Object {
+            "classification": "json",
+          },
+          "StorageDescriptor": Object {
+            "Columns": Array [
+              Object {
+                "Comment": "Identifier for the record",
+                "Name": "id",
+                "Type": "int",
+              },
+              Object {
+                "Comment": "The name of the record",
+                "Name": "name",
+                "Type": "string",
+              },
+              Object {
+                "Comment": "The type of the record",
+                "Name": "type",
+                "Type": "string",
+              },
+              Object {
+                "Comment": "Some value associated with the record",
+                "Name": "numericvalue",
+                "Type": "int",
+              },
+            ],
+            "Compressed": false,
+            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+            "Location": Object {
+              "Ref": "testkinesisstreamslambdaKinesisStream374D6D56",
+            },
+            "NumberOfBuckets": -1,
+            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+            "Parameters": Object {
+              "endpointUrl": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "https://kinesis.",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ".amazonaws.com",
+                  ],
+                ],
+              },
+              "streamName": Object {
+                "Ref": "testkinesisstreamslambdaKinesisStream374D6D56",
+              },
+              "typeOfData": "kinesis",
+            },
+            "SerdeInfo": Object {
+              "Parameters": Object {
+                "paths": "id,name,type,numericvalue",
+              },
+              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
+            },
+          },
+          "TableType": "EXTERNAL_TABLE",
+        },
+      },
+      "Type": "AWS::Glue::Table",
+    },
+    "JobRole014917C6": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "glue.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Service role that Glue custom ETL jobs will assume for exeuction",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testkinesisstreamslambdaGlueJobPolicy10DEE7DE": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -824,7 +914,7 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "GlueJobPolicyAEA4B94E",
+        "PolicyName": "testkinesisstreamslambdaGlueJobPolicy10DEE7DE",
         "Roles": Array [
           Object {
             "Fn::Select": Array [
@@ -856,6 +946,35 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
+    "testkinesisstreamslambdaKinesisStream374D6D56": Object {
+      "Properties": Object {
+        "RetentionPeriodHours": 24,
+        "ShardCount": 1,
+        "StreamEncryption": Object {
+          "EncryptionType": "KMS",
+          "KeyId": "alias/aws/kinesis",
+        },
+      },
+      "Type": "AWS::Kinesis::Stream",
+    },
+  },
+}
+`;
+
+exports[`When S3 bucket location for script exists 1`] = `
+Object {
+  "Resources": Object {
+    "GlueDatabase": Object {
+      "Properties": Object {
+        "CatalogId": Object {
+          "Ref": "AWS::AccountId",
+        },
+        "DatabaseInput": Object {
+          "Description": "An AWS Glue database generated by AWS Solutions Construct",
+        },
+      },
+      "Type": "AWS::Glue::Database",
+    },
     "GlueTable": Object {
       "Properties": Object {
         "CatalogId": Object {
@@ -866,7 +985,7 @@ Object {
         },
         "TableInput": Object {
           "Parameters": Object {
-            "classication": "json",
+            "classification": "json",
           },
           "StorageDescriptor": Object {
             "Columns": Array [
@@ -928,54 +1047,7 @@ Object {
       },
       "Type": "AWS::Glue::Table",
     },
-    "JobRole014917C6": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "glue.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "Description": "Service role that Glue custom ETL jobs will assume for exeuction",
-      },
-      "Type": "AWS::IAM::Role",
-    },
-    "testkinesisstreamslambdaKinesisStream374D6D56": Object {
-      "Properties": Object {
-        "RetentionPeriodHours": 24,
-        "ShardCount": 1,
-        "StreamEncryption": Object {
-          "EncryptionType": "KMS",
-          "KeyId": "alias/aws/kinesis",
-        },
-      },
-      "Type": "AWS::Kinesis::Stream",
-    },
-  },
-}
-`;
-
-exports[`When S3 bucket location for script exists 1`] = `
-Object {
-  "Resources": Object {
-    "GlueDatabase": Object {
-      "Properties": Object {
-        "CatalogId": Object {
-          "Ref": "AWS::AccountId",
-        },
-        "DatabaseInput": Object {
-          "Description": "An AWS Glue database generated by AWS Solutions Construct",
-        },
-      },
-      "Type": "AWS::Glue::Database",
-    },
-    "GlueJobPolicyAEA4B94E": Object {
+    "testkinesisstreamslambdaGlueJobPolicy10DEE7DE": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -1130,7 +1202,7 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "GlueJobPolicyAEA4B94E",
+        "PolicyName": "testkinesisstreamslambdaGlueJobPolicy10DEE7DE",
         "Roles": Array [
           Object {
             "Ref": "testkinesisstreamslambdaJobRole42199B9C",
@@ -1138,78 +1210,6 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Policy",
-    },
-    "GlueTable": Object {
-      "Properties": Object {
-        "CatalogId": Object {
-          "Ref": "AWS::AccountId",
-        },
-        "DatabaseName": Object {
-          "Ref": "GlueDatabase",
-        },
-        "TableInput": Object {
-          "Parameters": Object {
-            "classication": "json",
-          },
-          "StorageDescriptor": Object {
-            "Columns": Array [
-              Object {
-                "Comment": "Identifier for the record",
-                "Name": "id",
-                "Type": "int",
-              },
-              Object {
-                "Comment": "The name of the record",
-                "Name": "name",
-                "Type": "string",
-              },
-              Object {
-                "Comment": "The type of the record",
-                "Name": "type",
-                "Type": "string",
-              },
-              Object {
-                "Comment": "Some value associated with the record",
-                "Name": "numericvalue",
-                "Type": "int",
-              },
-            ],
-            "Compressed": false,
-            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
-            "Location": Object {
-              "Ref": "testkinesisstreamslambdaKinesisStream374D6D56",
-            },
-            "NumberOfBuckets": -1,
-            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
-            "Parameters": Object {
-              "endpointUrl": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "https://kinesis.",
-                    Object {
-                      "Ref": "AWS::Region",
-                    },
-                    ".amazonaws.com",
-                  ],
-                ],
-              },
-              "streamName": Object {
-                "Ref": "testkinesisstreamslambdaKinesisStream374D6D56",
-              },
-              "typeOfData": "kinesis",
-            },
-            "SerdeInfo": Object {
-              "Parameters": Object {
-                "paths": "id,name,type,numericvalue",
-              },
-              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
-            },
-          },
-          "TableType": "EXTERNAL_TABLE",
-        },
-      },
-      "Type": "AWS::Glue::Table",
     },
     "testkinesisstreamslambdaGlueSecurityConfig3568178F": Object {
       "Properties": Object {
@@ -1365,7 +1365,7 @@ Object {
             "Fn::Join": Array [
               "",
               Array [
-                "s3://",
+                "s3a://",
                 Object {
                   "Ref": "testkinesisstreamslambdaS3Bucket54759F5C",
                 },
@@ -1613,7 +1613,79 @@ Object {
       },
       "Type": "AWS::Glue::Database",
     },
-    "GlueJobPolicyAEA4B94E": Object {
+    "GlueTable": Object {
+      "Properties": Object {
+        "CatalogId": Object {
+          "Ref": "AWS::AccountId",
+        },
+        "DatabaseName": Object {
+          "Ref": "GlueDatabase",
+        },
+        "TableInput": Object {
+          "Parameters": Object {
+            "classification": "json",
+          },
+          "StorageDescriptor": Object {
+            "Columns": Array [
+              Object {
+                "Comment": "Identifier for the record",
+                "Name": "id",
+                "Type": "int",
+              },
+              Object {
+                "Comment": "The name of the record",
+                "Name": "name",
+                "Type": "string",
+              },
+              Object {
+                "Comment": "The type of the record",
+                "Name": "type",
+                "Type": "string",
+              },
+              Object {
+                "Comment": "Some value associated with the record",
+                "Name": "numericvalue",
+                "Type": "int",
+              },
+            ],
+            "Compressed": false,
+            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+            "Location": Object {
+              "Ref": "testkinesisstreamslambdaKinesisStream374D6D56",
+            },
+            "NumberOfBuckets": -1,
+            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+            "Parameters": Object {
+              "endpointUrl": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "https://kinesis.",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ".amazonaws.com",
+                  ],
+                ],
+              },
+              "streamName": Object {
+                "Ref": "testkinesisstreamslambdaKinesisStream374D6D56",
+              },
+              "typeOfData": "kinesis",
+            },
+            "SerdeInfo": Object {
+              "Parameters": Object {
+                "paths": "id,name,type,numericvalue",
+              },
+              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
+            },
+          },
+          "TableType": "EXTERNAL_TABLE",
+        },
+      },
+      "Type": "AWS::Glue::Table",
+    },
+    "testkinesisstreamslambdaGlueJobPolicy10DEE7DE": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -1768,7 +1840,7 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "GlueJobPolicyAEA4B94E",
+        "PolicyName": "testkinesisstreamslambdaGlueJobPolicy10DEE7DE",
         "Roles": Array [
           Object {
             "Ref": "testkinesisstreamslambdaJobRole42199B9C",
@@ -1776,78 +1848,6 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Policy",
-    },
-    "GlueTable": Object {
-      "Properties": Object {
-        "CatalogId": Object {
-          "Ref": "AWS::AccountId",
-        },
-        "DatabaseName": Object {
-          "Ref": "GlueDatabase",
-        },
-        "TableInput": Object {
-          "Parameters": Object {
-            "classication": "json",
-          },
-          "StorageDescriptor": Object {
-            "Columns": Array [
-              Object {
-                "Comment": "Identifier for the record",
-                "Name": "id",
-                "Type": "int",
-              },
-              Object {
-                "Comment": "The name of the record",
-                "Name": "name",
-                "Type": "string",
-              },
-              Object {
-                "Comment": "The type of the record",
-                "Name": "type",
-                "Type": "string",
-              },
-              Object {
-                "Comment": "Some value associated with the record",
-                "Name": "numericvalue",
-                "Type": "int",
-              },
-            ],
-            "Compressed": false,
-            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
-            "Location": Object {
-              "Ref": "testkinesisstreamslambdaKinesisStream374D6D56",
-            },
-            "NumberOfBuckets": -1,
-            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
-            "Parameters": Object {
-              "endpointUrl": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "https://kinesis.",
-                    Object {
-                      "Ref": "AWS::Region",
-                    },
-                    ".amazonaws.com",
-                  ],
-                ],
-              },
-              "streamName": Object {
-                "Ref": "testkinesisstreamslambdaKinesisStream374D6D56",
-              },
-              "typeOfData": "kinesis",
-            },
-            "SerdeInfo": Object {
-              "Parameters": Object {
-                "paths": "id,name,type,numericvalue",
-              },
-              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
-            },
-          },
-          "TableType": "EXTERNAL_TABLE",
-        },
-      },
-      "Type": "AWS::Glue::Table",
     },
     "testkinesisstreamslambdaGlueSecurityConfig3568178F": Object {
       "Properties": Object {
@@ -2003,7 +2003,7 @@ Object {
             "Fn::Join": Array [
               "",
               Array [
-                "s3://",
+                "s3a://",
                 Object {
                   "Ref": "testkinesisstreamslambdaS3Bucket54759F5C",
                 },
@@ -2240,7 +2240,82 @@ Object {
 exports[`When database and table are provided 1`] = `
 Object {
   "Resources": Object {
-    "GlueJobPolicyAEA4B94E": Object {
+    "GlueTable": Object {
+      "Properties": Object {
+        "CatalogId": "fakecatalogId",
+        "DatabaseName": Object {
+          "Ref": "fakedb",
+        },
+        "TableInput": Object {
+          "Parameters": Object {
+            "classification": "json",
+          },
+          "StorageDescriptor": Object {
+            "Columns": Array [
+              Object {
+                "Comment": "Identifier for the record",
+                "Name": "id",
+                "Type": "int",
+              },
+              Object {
+                "Comment": "The name of the record",
+                "Name": "name",
+                "Type": "string",
+              },
+              Object {
+                "Comment": "The type of the record",
+                "Name": "type",
+                "Type": "string",
+              },
+              Object {
+                "Comment": "Some value associated with the record",
+                "Name": "numericvalue",
+                "Type": "int",
+              },
+            ],
+            "Compressed": false,
+            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+            "Location": "testStream",
+            "NumberOfBuckets": -1,
+            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+            "Parameters": Object {
+              "endpointUrl": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "https://kinesis.",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ".amazonaws.com",
+                  ],
+                ],
+              },
+              "streamName": "testStream",
+              "typeOfData": "kinesis",
+            },
+            "SerdeInfo": Object {
+              "Parameters": Object {
+                "paths": "id,name,type,numericvalue",
+              },
+              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
+            },
+          },
+          "TableType": "EXTERNAL_TABLE",
+        },
+      },
+      "Type": "AWS::Glue::Table",
+    },
+    "fakedb": Object {
+      "Properties": Object {
+        "CatalogId": "fakecatalogId",
+        "DatabaseInput": Object {
+          "Description": "a fake glue db",
+        },
+      },
+      "Type": "AWS::Glue::Database",
+    },
+    "testkinesisstreamslambdaGlueJobPolicy10DEE7DE": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -2395,7 +2470,7 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "GlueJobPolicyAEA4B94E",
+        "PolicyName": "testkinesisstreamslambdaGlueJobPolicy10DEE7DE",
         "Roles": Array [
           Object {
             "Ref": "testkinesisstreamslambdaJobRole42199B9C",
@@ -2403,81 +2478,6 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Policy",
-    },
-    "GlueTable": Object {
-      "Properties": Object {
-        "CatalogId": "fakecatalogId",
-        "DatabaseName": Object {
-          "Ref": "fakedb",
-        },
-        "TableInput": Object {
-          "Parameters": Object {
-            "classication": "json",
-          },
-          "StorageDescriptor": Object {
-            "Columns": Array [
-              Object {
-                "Comment": "Identifier for the record",
-                "Name": "id",
-                "Type": "int",
-              },
-              Object {
-                "Comment": "The name of the record",
-                "Name": "name",
-                "Type": "string",
-              },
-              Object {
-                "Comment": "The type of the record",
-                "Name": "type",
-                "Type": "string",
-              },
-              Object {
-                "Comment": "Some value associated with the record",
-                "Name": "numericvalue",
-                "Type": "int",
-              },
-            ],
-            "Compressed": false,
-            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
-            "Location": "testStream",
-            "NumberOfBuckets": -1,
-            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
-            "Parameters": Object {
-              "endpointUrl": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "https://kinesis.",
-                    Object {
-                      "Ref": "AWS::Region",
-                    },
-                    ".amazonaws.com",
-                  ],
-                ],
-              },
-              "streamName": "testStream",
-              "typeOfData": "kinesis",
-            },
-            "SerdeInfo": Object {
-              "Parameters": Object {
-                "paths": "id,name,type,numericvalue",
-              },
-              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
-            },
-          },
-          "TableType": "EXTERNAL_TABLE",
-        },
-      },
-      "Type": "AWS::Glue::Table",
-    },
-    "fakedb": Object {
-      "Properties": Object {
-        "CatalogId": "fakecatalogId",
-        "DatabaseInput": Object {
-          "Description": "a fake glue db",
-        },
-      },
-      "Type": "AWS::Glue::Database",
     },
     "testkinesisstreamslambdaGlueSecurityConfig3568178F": Object {
       "Properties": Object {
@@ -2633,7 +2633,7 @@ Object {
             "Fn::Join": Array [
               "",
               Array [
-                "s3://",
+                "s3a://",
                 Object {
                   "Ref": "testkinesisstreamslambdaS3Bucket54759F5C",
                 },
@@ -2889,7 +2889,79 @@ Object {
       },
       "Type": "AWS::Glue::Database",
     },
-    "GlueJobPolicyAEA4B94E": Object {
+    "GlueTable": Object {
+      "Properties": Object {
+        "CatalogId": Object {
+          "Ref": "AWS::AccountId",
+        },
+        "DatabaseName": Object {
+          "Ref": "GlueDatabase",
+        },
+        "TableInput": Object {
+          "Parameters": Object {
+            "classification": "json",
+          },
+          "StorageDescriptor": Object {
+            "Columns": Array [
+              Object {
+                "Comment": "Identifier for the record",
+                "Name": "id",
+                "Type": "int",
+              },
+              Object {
+                "Comment": "The name of the record",
+                "Name": "name",
+                "Type": "string",
+              },
+              Object {
+                "Comment": "The type of the record",
+                "Name": "type",
+                "Type": "string",
+              },
+              Object {
+                "Comment": "Some value associated with the record",
+                "Name": "numericvalue",
+                "Type": "int",
+              },
+            ],
+            "Compressed": false,
+            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+            "Location": Object {
+              "Ref": "FakeStreamAC5F518E",
+            },
+            "NumberOfBuckets": -1,
+            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+            "Parameters": Object {
+              "endpointUrl": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "https://kinesis.",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ".amazonaws.com",
+                  ],
+                ],
+              },
+              "streamName": Object {
+                "Ref": "FakeStreamAC5F518E",
+              },
+              "typeOfData": "kinesis",
+            },
+            "SerdeInfo": Object {
+              "Parameters": Object {
+                "paths": "id,name,type,numericvalue",
+              },
+              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
+            },
+          },
+          "TableType": "EXTERNAL_TABLE",
+        },
+      },
+      "Type": "AWS::Glue::Table",
+    },
+    "existingStreamJobGlueJobPolicy7D9DFD94": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -3044,7 +3116,7 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "GlueJobPolicyAEA4B94E",
+        "PolicyName": "existingStreamJobGlueJobPolicy7D9DFD94",
         "Roles": Array [
           Object {
             "Ref": "existingStreamJobJobRoleA1ADDA0A",
@@ -3052,78 +3124,6 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Policy",
-    },
-    "GlueTable": Object {
-      "Properties": Object {
-        "CatalogId": Object {
-          "Ref": "AWS::AccountId",
-        },
-        "DatabaseName": Object {
-          "Ref": "GlueDatabase",
-        },
-        "TableInput": Object {
-          "Parameters": Object {
-            "classication": "json",
-          },
-          "StorageDescriptor": Object {
-            "Columns": Array [
-              Object {
-                "Comment": "Identifier for the record",
-                "Name": "id",
-                "Type": "int",
-              },
-              Object {
-                "Comment": "The name of the record",
-                "Name": "name",
-                "Type": "string",
-              },
-              Object {
-                "Comment": "The type of the record",
-                "Name": "type",
-                "Type": "string",
-              },
-              Object {
-                "Comment": "Some value associated with the record",
-                "Name": "numericvalue",
-                "Type": "int",
-              },
-            ],
-            "Compressed": false,
-            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
-            "Location": Object {
-              "Ref": "FakeStreamAC5F518E",
-            },
-            "NumberOfBuckets": -1,
-            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
-            "Parameters": Object {
-              "endpointUrl": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "https://kinesis.",
-                    Object {
-                      "Ref": "AWS::Region",
-                    },
-                    ".amazonaws.com",
-                  ],
-                ],
-              },
-              "streamName": Object {
-                "Ref": "FakeStreamAC5F518E",
-              },
-              "typeOfData": "kinesis",
-            },
-            "SerdeInfo": Object {
-              "Parameters": Object {
-                "paths": "id,name,type,numericvalue",
-              },
-              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe",
-            },
-          },
-          "TableType": "EXTERNAL_TABLE",
-        },
-      },
-      "Type": "AWS::Glue::Table",
     },
     "existingStreamJobGlueSecurityConfig88E060CD": Object {
       "Properties": Object {
@@ -3279,7 +3279,7 @@ Object {
             "Fn::Join": Array [
               "",
               Array [
-                "s3://",
+                "s3a://",
                 Object {
                   "Ref": "existingStreamJobS3Bucket33C3F47E",
                 },

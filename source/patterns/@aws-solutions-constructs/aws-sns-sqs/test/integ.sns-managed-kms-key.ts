@@ -16,10 +16,11 @@ import { App, Stack } from "@aws-cdk/core";
 import { SnsToSqs, SnsToSqsProps } from "../lib";
 import { KeyProps } from '@aws-cdk/aws-kms';
 import * as kms from '@aws-cdk/aws-kms';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-sns-sqs');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-sns-sqs with SNS managed KMS key';
 
 // Definitions

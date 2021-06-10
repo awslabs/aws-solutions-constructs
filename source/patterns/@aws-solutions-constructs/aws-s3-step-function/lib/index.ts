@@ -26,7 +26,7 @@ import * as logs from '@aws-cdk/aws-logs';
  */
 export interface S3ToStepFunctionProps {
   /**
-   * Existing instance of S3 Bucket object, if this is set then the bucketProps is ignored.
+   * Existing instance of S3 Bucket object, providing both this and `bucketProps` will cause an error.
    *
    * @default - None
    */
@@ -71,7 +71,7 @@ export interface S3ToStepFunctionProps {
 
 export class S3ToStepFunction extends Construct {
   public readonly stateMachine: sfn.StateMachine;
-  public readonly stateMachineLogGroup: logs.LogGroup;
+  public readonly stateMachineLogGroup: logs.ILogGroup;
   public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
   public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
@@ -89,7 +89,13 @@ export class S3ToStepFunction extends Construct {
    */
   constructor(scope: Construct, id: string, props: S3ToStepFunctionProps) {
     super(scope, id);
+    defaults.CheckProps(props);
+
     let bucket: s3.IBucket;
+
+    if (props.existingBucketObj && props.bucketProps) {
+      throw new Error('Cannot specify both bucket properties and an existing bucket');
+    }
 
     if (!props.existingBucketObj) {
       [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
@@ -129,7 +135,9 @@ export class S3ToStepFunction extends Construct {
               "s3.amazonaws.com"
             ],
             eventName: [
-              "PutObject"
+              "PutObject",
+              "CopyObject",
+              "CompleteMultipartUpload"
             ],
             requestParameters: {
               bucketName: [
@@ -141,7 +149,7 @@ export class S3ToStepFunction extends Construct {
       };
     }
 
-    const eventsRuleToStepFunction = new EventsRuleToStepFunction(this, 'test-events-rule-step-function-stack', {
+    const eventsRuleToStepFunction = new EventsRuleToStepFunction(this, `${id}-event-rule-step-function-construct`, {
       stateMachineProps: props.stateMachineProps,
       eventRuleProps: _eventRuleProps,
       createCloudWatchAlarms: props.createCloudWatchAlarms,

@@ -31,7 +31,7 @@ export interface ApiGatewayToSqsProps {
    */
   readonly apiGatewayProps?: api.RestApiProps | any
   /**
-   * Existing instance of SQS queue object, if this is set then the queueProps is ignored.
+   * Existing instance of SQS queue object, providing both this  and queueProps will cause an error
    *
    * @default - None
    */
@@ -125,6 +125,7 @@ export class ApiGatewayToSqs extends Construct {
    */
   constructor(scope: Construct, id: string, props: ApiGatewayToSqsProps) {
     super(scope, id);
+    defaults.CheckProps(props);
 
     // Setup the dead letter queue, if applicable
     this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {

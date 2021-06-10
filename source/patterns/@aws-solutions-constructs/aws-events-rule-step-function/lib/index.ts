@@ -52,7 +52,7 @@ export interface EventsRuleToStepFunctionProps {
 
 export class EventsRuleToStepFunction extends Construct {
   public readonly stateMachine: sfn.StateMachine;
-  public readonly stateMachineLogGroup: logs.LogGroup;
+  public readonly stateMachineLogGroup: logs.ILogGroup;
   public readonly eventsRule: events.Rule;
   public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
 
@@ -66,6 +66,7 @@ export class EventsRuleToStepFunction extends Construct {
    */
   constructor(scope: Construct, id: string, props: EventsRuleToStepFunctionProps) {
     super(scope, id);
+    defaults.CheckProps(props);
 
     [this.stateMachine, this.stateMachineLogGroup] = defaults.buildStateMachine(this, props.stateMachineProps,
       props.logGroupProps);

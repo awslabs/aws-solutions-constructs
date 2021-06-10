@@ -270,7 +270,7 @@
         }
       }
     },
-    "LambdaRestApiproxyANYApiPermissiontestcloudfrontapigatewaystackLambdaRestApi5373EC8AANYproxyFC995DCC": {
+    "LambdaRestApiproxyANYApiPermissionnoargumentsLambdaRestApi1B816FD2ANYproxyBDE6648C": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
@@ -311,7 +311,7 @@
         }
       }
     },
-    "LambdaRestApiproxyANYApiPermissionTesttestcloudfrontapigatewaystackLambdaRestApi5373EC8AANYproxy5F059360": {
+    "LambdaRestApiproxyANYApiPermissionTestnoargumentsLambdaRestApi1B816FD2ANYproxyC33E886D": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
@@ -398,7 +398,7 @@
         }
       }
     },
-    "LambdaRestApiANYApiPermissiontestcloudfrontapigatewaystackLambdaRestApi5373EC8AANY4A60D941": {
+    "LambdaRestApiANYApiPermissionnoargumentsLambdaRestApi1B816FD2ANYA28D6642": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
@@ -439,7 +439,7 @@
         }
       }
     },
-    "LambdaRestApiANYApiPermissionTesttestcloudfrontapigatewaystackLambdaRestApi5373EC8AANY77697066": {
+    "LambdaRestApiANYApiPermissionTestnoargumentsLambdaRestApi1B816FD2ANY084A62B7": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
@@ -849,7 +849,7 @@
                 }
               }
             ],
-            "TargetOriginId": "testcloudfrontapigatewaystacktestcloudfrontapigatewayCloudFrontDistributionOrigin1D5DE2087",
+            "TargetOriginId": "noargumentstestcloudfrontapigatewayCloudFrontDistributionOrigin154FE4EF8",
             "ViewerProtocolPolicy": "redirect-to-https"
           },
           "Enabled": true,
@@ -915,7 +915,7 @@
                   }
                 ]
               },
-              "Id": "testcloudfrontapigatewaystacktestcloudfrontapigatewayCloudFrontDistributionOrigin1D5DE2087",
+              "Id": "noargumentstestcloudfrontapigatewayCloudFrontDistributionOrigin154FE4EF8",
               "OriginPath": {
                 "Fn::Join": [
                   "",

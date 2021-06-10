@@ -15,9 +15,10 @@
 import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { S3ToStepFunction, S3ToStepFunctionProps } from "../lib";
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
-const stack = new Stack(app, 'test-s3-step-function-stack');
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 const startState = new stepfunctions.Pass(stack, 'StartState');
 
@@ -27,8 +28,11 @@ const props: S3ToStepFunctionProps = {
   },
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-  }
+  },
+  logGroupProps: {
+    removalPolicy: RemovalPolicy.DESTROY
+  },
 };
 
-new S3ToStepFunction(stack, 'test-s3-step-function-stack', props);
+new S3ToStepFunction(stack, 'test-s3-step-function-construct', props);
 app.synth();

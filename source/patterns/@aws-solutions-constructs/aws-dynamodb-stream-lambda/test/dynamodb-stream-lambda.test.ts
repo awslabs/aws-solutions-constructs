@@ -185,13 +185,37 @@ test('check dynamodb table stream override', () => {
 
 });
 
-test('check getter methods', () => {
+test('check getter methods without existingTableInterface', () => {
   const stack = new cdk.Stack();
 
   const construct: DynamoDBStreamToLambda = deployNewFunc(stack);
 
-  expect(construct.lambdaFunction !== null);
-  expect(construct.dynamoTable !== null);
+  expect(construct.lambdaFunction).toBeInstanceOf(lambda.Function);
+  expect(construct.dynamoTableInterface).toHaveProperty('tableName');
+  expect(construct.dynamoTable).toBeInstanceOf(dynamodb.Table);
+  expect(construct.dynamoTable).toHaveProperty('addGlobalSecondaryIndex');
+});
+
+test('check getter methods with existingTableInterface', () => {
+  const stack = new cdk.Stack();
+
+  const construct: DynamoDBStreamToLambda = new DynamoDBStreamToLambda(stack, 'test', {
+    existingTableInterface: new dynamodb.Table(stack, 'table', {
+      partitionKey: {
+        name: 'id',
+        type: dynamodb.AttributeType.STRING
+      },
+      stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES
+    }),
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+  });
+
+  expect(construct.lambdaFunction).toBeInstanceOf(lambda.Function);
+  expect(construct.dynamoTable).toBeUndefined();
 });
 
 test('check exception for Missing existingObj from props', () => {
@@ -205,4 +229,70 @@ test('check exception for Missing existingObj from props', () => {
   } catch (e) {
     expect(e).toBeInstanceOf(Error);
   }
+});
+
+test('check dynamodb table stream override with ITable', () => {
+  const stack = new cdk.Stack();
+  const existingTableInterface = dynamodb.Table.fromTableAttributes(stack, 'existingtable', {
+    tableArn: 'arn:aws:dynamodb:us-east-1:xxxxxxxxxxxxx:table/existing-table',
+    tableStreamArn: 'arn:aws:dynamodb:us-east-1:xxxxxxxxxxxxx:table/existing-table/stream/2020-06-22T18:34:05.824'
+  });
+  const props: DynamoDBStreamToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    existingTableInterface
+  };
+
+  new DynamoDBStreamToLambda(stack, 'test-lambda-dynamodb-stack', props);
+
+  expect(stack).toHaveResource('AWS::Lambda::EventSourceMapping', {
+    EventSourceArn: "arn:aws:dynamodb:us-east-1:xxxxxxxxxxxxx:table/existing-table/stream/2020-06-22T18:34:05.824",
+  });
+
+  expect(stack).toHaveResource('AWS::IAM::Policy', {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: [
+            "xray:PutTraceSegments",
+            "xray:PutTelemetryRecords"
+          ],
+          Effect: "Allow",
+          Resource: "*"
+        },
+        {
+          Action: "dynamodb:ListStreams",
+          Effect: "Allow",
+          Resource: "*"
+        },
+        {
+          Action: [
+            "dynamodb:DescribeStream",
+            "dynamodb:GetRecords",
+            "dynamodb:GetShardIterator"
+          ],
+          Effect: "Allow",
+          Resource: "arn:aws:dynamodb:us-east-1:xxxxxxxxxxxxx:table/existing-table/stream/2020-06-22T18:34:05.824"
+        },
+        {
+          Action: [
+            "sqs:SendMessage",
+            "sqs:GetQueueAttributes",
+            "sqs:GetQueueUrl"
+          ],
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              "testlambdadynamodbstackSqsDlqQueue4CC9868B",
+              "Arn"
+            ]
+          }
+        }
+      ],
+      Version: "2012-10-17"
+    }
+  });
 });

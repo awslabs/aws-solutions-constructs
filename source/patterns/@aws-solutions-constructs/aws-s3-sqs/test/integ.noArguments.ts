@@ -14,11 +14,12 @@
 /// !cdk-integ *
 import {App, Stack, RemovalPolicy} from "@aws-cdk/core";
 import {S3ToSqs} from "../lib";
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
 
 // Empty arguments
-const stack = new Stack(app, 'test-s3-sqs-no-arguments');
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 new S3ToSqs(stack, 'test-s3-sqs', {
   bucketProps: {

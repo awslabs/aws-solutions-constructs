@@ -25,11 +25,27 @@ export interface BuildDynamoDBTableProps {
   readonly dynamoTableProps?: dynamodb.TableProps,
   /**
    * Existing instance of dynamodb table object.
-   * If this is set then the dynamoTableProps is ignored
+   * Providing both this and `dynamoTableProps` will cause an error.
    *
    * @default - None
    */
   readonly existingTableObj?: dynamodb.Table
+}
+
+export interface BuildDynamoDBTableWithStreamProps {
+  /**
+   * Optional user provided props to override the default props
+   *
+   * @default - Default props are used
+   */
+  readonly dynamoTableProps?: dynamodb.TableProps,
+  /**
+   * Existing instance of dynamodb table object.
+   * Providing both this and `dynamoTableProps` will cause an error.
+   *
+   * @default - None
+   */
+  readonly existingTableInterface?: dynamodb.ITable
 }
 
 export function buildDynamoDBTable(scope: cdk.Construct, props: BuildDynamoDBTableProps): dynamodb.Table {
@@ -47,18 +63,20 @@ export function buildDynamoDBTable(scope: cdk.Construct, props: BuildDynamoDBTab
   }
 }
 
-export function buildDynamoDBTableWithStream(scope: cdk.Construct, props: BuildDynamoDBTableProps): dynamodb.Table {
+export function buildDynamoDBTableWithStream(scope: cdk.Construct, props: BuildDynamoDBTableWithStreamProps): [dynamodb.ITable, dynamodb.Table?] {
   // Conditional DynamoDB Table creation
-  if (!props.existingTableObj) {
+  if (!props.existingTableInterface) {
     // Set the default props for DynamoDB table
     if (props.dynamoTableProps) {
       const dynamoTableProps = overrideProps(DefaultTableWithStreamProps, props.dynamoTableProps);
-      return new dynamodb.Table(scope, 'DynamoTable', dynamoTableProps);
+      const dynamoTable: dynamodb.Table = new dynamodb.Table(scope, 'DynamoTable', dynamoTableProps);
+      return [dynamoTable as dynamodb.ITable, dynamoTable];
     } else {
-      return new dynamodb.Table(scope, 'DynamoTable', DefaultTableWithStreamProps);
+      const dynamoTable: dynamodb.Table = new dynamodb.Table(scope, 'DynamoTable', DefaultTableWithStreamProps);
+      return [dynamoTable as dynamodb.ITable, dynamoTable];
     }
   } else {
-    return props.existingTableObj;
+    return [props.existingTableInterface, undefined];
   }
 }
 
