@@ -80,15 +80,6 @@ Object {
     },
     "testcloudfronts3CloudfrontLoggingBucket985C0FE8": Object {
       "DeletionPolicy": "Retain",
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W35",
-              "reason": "This S3 bucket is used as the access logging bucket for CloudFront Distribution",
-            },
-          ],
-        },
       },
       "Properties": Object {
         "AccessControl": "LogDeliveryWrite",
@@ -106,6 +97,9 @@ Object {
           "BlockPublicPolicy": true,
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true,
+        },
+        "VersioningConfiguration": Object {
+          "Status": "Enabled",
         },
       },
       "Type": "AWS::S3::Bucket",
@@ -268,15 +262,6 @@ Object {
     },
     "testcloudfronts3S3LoggingBucket90D239DD": Object {
       "DeletionPolicy": "Delete",
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W35",
-              "reason": "This S3 bucket is used as the access logging bucket for another bucket",
-            },
-          ],
-        },
       },
       "Properties": Object {
         "AccessControl": "LogDeliveryWrite",
@@ -294,6 +279,9 @@ Object {
           "BlockPublicPolicy": true,
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true,
+        },
+        "VersioningConfiguration": Object {
+          "Status": "Enabled",
         },
       },
       "Type": "AWS::S3::Bucket",
