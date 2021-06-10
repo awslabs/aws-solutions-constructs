@@ -25,7 +25,7 @@ import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
  */
 export interface KinesisStreamsToLambdaProps {
     /**
-     * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
+     * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
      *
      * @default - None
      */
@@ -37,7 +37,7 @@ export interface KinesisStreamsToLambdaProps {
      */
     readonly lambdaFunctionProps?: lambda.FunctionProps,
     /**
-     * Existing instance of Kinesis Stream, if this is set then kinesisStreamProps is ignored.
+     * Existing instance of Kinesis Stream, providing both this and `kinesisStreamProps` will cause an error.
      *
      * @default - None
      */
@@ -93,6 +93,7 @@ export class KinesisStreamsToLambda extends Construct {
      */
     constructor(scope: Construct, id: string, props: KinesisStreamsToLambdaProps) {
       super(scope, id);
+      defaults.CheckProps(props);
 
       // Setup the Kinesis Stream
       this.kinesisStream = defaults.buildKinesisStream(this, {

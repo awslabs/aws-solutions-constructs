@@ -116,12 +116,12 @@ test('override eventRuleProps', () => {
     Targets: [
       {
         Arn: {
-          Ref: "tests3stepfunctiontesteventsrulestepfunctionstackStateMachine5A6C0DFF"
+          Ref: "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructStateMachineA4D4F2B0"
         },
         Id: "Target0",
         RoleArn: {
           "Fn::GetAtt": [
-            "tests3stepfunctiontesteventsrulestepfunctionstackEventsRuleRoleF447A174",
+            "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructEventsRuleRole07FD7EC1",
             "Arn"
           ]
         }
@@ -144,4 +144,30 @@ test('check properties', () => {
   expect(construct.cloudtrail !== null);
   expect(construct.cloudtrailBucket !== null);
   expect(construct.cloudtrailLoggingBucket !== null);
+});
+
+// --------------------------------------------------------------
+// Test bad call with existingBucket and bucketProps
+// --------------------------------------------------------------
+test("Test bad call with existingBucket and bucketProps", () => {
+  // Stack
+  const stack = new cdk.Stack();
+
+  const testBucket = new Bucket(stack, 'test-bucket', {});
+  const startState = new sfn.Pass(stack, 'StartState');
+
+  const app = () => {
+    // Helper declaration
+    new S3ToStepFunction(stack, "bad-s3-args", {
+      stateMachineProps: {
+        definition: startState
+      },
+      existingBucketObj: testBucket,
+      bucketProps: {
+        removalPolicy: cdk.RemovalPolicy.DESTROY
+      },
+    });
+  };
+  // Assertion
+  expect(app).toThrowError();
 });

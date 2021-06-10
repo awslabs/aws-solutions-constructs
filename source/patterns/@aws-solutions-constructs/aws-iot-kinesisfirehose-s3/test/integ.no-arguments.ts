@@ -14,10 +14,11 @@
 // Imports
 import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { IotToKinesisFirehoseToS3, IotToKinesisFirehoseToS3Props } from "../lib";
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-iot-firehose-s3-stack');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-iot-kinesisfirehose-s3';
 
 // Definitions

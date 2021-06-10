@@ -38,7 +38,7 @@ export interface EventsRuleToKinesisFirehoseToS3Props {
    */
   readonly kinesisFirehoseProps?: kinesisfirehose.CfnDeliveryStreamProps | any
   /**
-   * Existing instance of S3 Bucket object, if this is set then the bucketProps is ignored.
+   * Existing instance of S3 Bucket object, providing both this and `bucketProps` will cause an error.
    *
    * @default - None
    */
@@ -76,6 +76,11 @@ export class EventsRuleToKinesisFirehoseToS3 extends Construct {
    */
   constructor(scope: Construct, id: string, props: EventsRuleToKinesisFirehoseToS3Props) {
     super(scope, id);
+    defaults.CheckProps(props);
+
+    if (props.existingBucketObj && props.bucketProps) {
+      throw new Error('Cannot specify both bucket properties and an existing bucket');
+    }
 
     // Set up the Kinesis Firehose using KinesisFirehoseToS3 construct
     const firehoseToS3 = new KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {

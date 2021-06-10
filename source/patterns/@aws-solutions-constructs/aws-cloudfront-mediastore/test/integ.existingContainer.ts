@@ -15,13 +15,14 @@
 import { App, Stack } from '@aws-cdk/core';
 import * as mediastore from '@aws-cdk/aws-mediastore';
 import { CloudFrontToMediaStore } from '../lib';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-cloudfront-mediastore');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration test for aws-cloudfront-mediastore with existing mediastore container';
 const mediaStoreContainerObject = new mediastore.CfnContainer(stack, 'MyMediaStoreContainer', {
-  containerName: 'MyMediaStoreContainer'
+  containerName: 'MyExistingMediaStoreContainer'
 });
 
 // Instantiate construct

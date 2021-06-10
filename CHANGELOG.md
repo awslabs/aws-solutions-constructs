@@ -2,6 +2,85 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.106.1](https://github.com/awslabs/aws-solutions-constructs/compare/v1.106.0...v1.106.1) (2021-06-03)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.106.1
+
+## [1.106.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.105.0...v1.106.0) (2021-06-02)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.106.0
+* Fixed stack name duplication for ALL integ tests [#183](https://github.com/awslabs/aws-solutions-constructs/issues/183)
+* Fixed aws-cloudfront-mediastore integ tests failure [#194](https://github.com/awslabs/aws-solutions-constructs/issues/194)
+
+## [1.105.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.104.0...v1.105.0) (2021-05-28)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.105.0
+* aws-s3-step-function now triggers for Mulitpart uploads and Copy Object [#198](https://github.com/awslabs/aws-solutions-constructs/pull/198)
+* Change S3 protocol in glue to use s3a:// [#197](https://github.com/awslabs/aws-solutions-constructs/pull/197)
+* Change policy name in for glue so multiple constructs can be included in a single stack [#197](https://github.com/awslabs/aws-solutions-constructs/pull/197)
+
+### ⚠ BREAKING CHANGES
+
+* Existing testing snapshots for aws-s3-step-function and aws-kinesisstreams-gluejob may need to be refreshed.
+
+## [1.104.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.103.0...v1.104.0) (2021-05-21)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.104.0
+
+## [1.103.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.102.0...v1.103.0) (2021-05-21)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.103.0
+
+## [1.102.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.101.0...v1.102.0) (2021-05-20)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.102.0
+* Fixed key name typo on aws-kinesisstreams-gluejob [#185](https://github.com/awslabs/aws-solutions-constructs/pull/185)
+* BREAKING CHANGE: Added a check for redundant Prop values. If you send an existing resource and props for a new resource, the construct will now throw an error. In the past it ignored one of the values. Will only be a problem if you depended upon the earlier behavior. [#177](https://github.com/awslabs/aws-solutions-constructs/pull/177)
+* BREAKING CHANGE: Updated Sagemaker integration tests to create stacks via cdk-integ. This may affect some snapshot based integration tests. [172](https://github.com/awslabs/aws-solutions-constructs/pull/172/files)
+
+### Added
+
+* **aws-lambda-ssm-string-parameter:** New aws-lambda-ssm-string-parameter pattern implementation ([#64](https://github.com/awslabs/aws-solutions-constructs/issues/64)) ([#175](https://github.com/awslabs/aws-solutions-constructs/issues/175)) ([b0567e4](https://github.com/awslabs/aws-solutions-constructs/commit/b0567e4bd5f5204c7441a4036fdd8b8aa2472975))
+
+## [1.101.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.100.0...v1.101.0) (2021-05-07)
+
+### Changed
+- Upgraded all patterns to CDK v1.101.0
+
+### Added
+- aws-lambda-secrets-manager pattern added ([#162](https://github.com/awslabs/aws-solutions-constructs/pull/162))
+
+## [1.100.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.99.0...v1.100.0) (2021-04-28)
+
+### Changed
+- Upgraded all patterns to CDK v1.100.0
+- BREAKING CHANGE: Fixed issue with refreshing Integration Tests leaving Resources Behind in Account ([#164](https://github.com/awslabs/aws-solutions-constructs/pull/164))
+
+## [1.99.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.98.0...v1.99.0) (2021-04-22)
+
+### Changed
+- Upgraded all patterns to CDK v1.99.0
+- Fixed CloudWatch Log Policy Size in Step Functions construct ([#160](https://github.com/awslabs/aws-solutions-constructs/pull/160))
+
+## 1.98.0 (2021-04-16)
+
+### Changed
+- Upgraded all patterns to CDK v1.98.0
+- Added VPC support to aws-lambda-dynamodb ([#148](https://github.com/awslabs/aws-solutions-constructs/issues/148))
+- Documentation correction ([#158](https://github.com/awslabs/aws-solutions-constructs/pull/158))
+
 ## 1.97.0 (2021-04-14)
 
 ### Changed

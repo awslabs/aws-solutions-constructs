@@ -52,7 +52,10 @@ test('Pattern minimal deployment', () => {
       comment: "Some value associated with the record"
     }],
   };
-  new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', props);
+
+  const id = 'test-kinesisstreams-lambda';
+
+  new KinesisstreamsToGluejob(stack, id, props);
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
@@ -234,7 +237,7 @@ test('Pattern minimal deployment', () => {
         ],
         Version: "2012-10-17"
       },
-      PolicyName: "GlueJobPolicyAEA4B94E",
+      PolicyName: "testkinesisstreamslambdaGlueJobPolicy10DEE7DE",
       Roles: [
         {
           Ref: "testkinesisstreamslambdaJobRole42199B9C"
@@ -602,7 +605,7 @@ test('When database and table are not provided', () => {
       },
       TableInput: {
         Parameters: {
-          classication: "json"
+          classification: "json"
         },
         StorageDescriptor: {
           Columns: [

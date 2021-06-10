@@ -12,33 +12,30 @@
  */
 
 // Imports
-import { Stack, Duration, App } from '@aws-cdk/core';
-import { LambdaToSagemakerEndpoint, LambdaToSagemakerEndpointProps } from '../lib';
+import {App, RemovalPolicy, Stack} from "@aws-cdk/core";
+import { LambdaToSecretsmanagerProps, LambdaToSecretsmanager } from '../lib';
 import * as lambda from '@aws-cdk/aws-lambda';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-lambda-sagemakerendpoint');
-stack.templateOptions.description = 'Integration Test for aws-lambda-sagemakerendpoint';
+const stack = new Stack(app, generateIntegStackName(__filename));
+stack.templateOptions.description = "Integration Test for aws-lambda-secretsmanager";
 
-const constructProps: LambdaToSagemakerEndpointProps = {
-  modelProps: {
-    primaryContainer: {
-      image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
-      modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
-    },
+// Definitions
+const props: LambdaToSecretsmanagerProps = {
+  lambdaFunctionProps: {
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: "index.handler",
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  },
+  secretProps: {
+    removalPolicy: RemovalPolicy.DESTROY
   },
   deployVpc: true,
-  lambdaFunctionProps: {
-    runtime: lambda.Runtime.PYTHON_3_8,
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    handler: 'index.handler',
-    timeout: Duration.minutes(5),
-    memorySize: 128,
-  },
 };
 
-new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
+new LambdaToSecretsmanager(stack, "test-lambda-secretsmanager", props);
 
 // Synth
 app.synth();

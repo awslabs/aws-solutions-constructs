@@ -17,13 +17,14 @@ import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import { IotToLambda } from '@aws-solutions-constructs/aws-iot-lambda';
 import { LambdaToDynamoDB } from '@aws-solutions-constructs/aws-lambda-dynamodb';
 import { Construct } from '@aws-cdk/core';
+import * as defaults from '@aws-solutions-constructs/core';
 
 /**
  * @summary The properties for the IotToLambdaToDynamoDB class.
  */
 export interface IotToLambdaToDynamoDBProps {
   /**
-   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
+   * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
    * @default - None
    */
@@ -70,6 +71,7 @@ export class IotToLambdaToDynamoDB extends Construct {
    */
   constructor(scope: Construct, id: string, props: IotToLambdaToDynamoDBProps) {
     super(scope, id);
+    defaults.CheckProps(props);
 
     // Setup the IotToLambda
     const iotToLambda = new IotToLambda(this, 'IotToLambda', props);

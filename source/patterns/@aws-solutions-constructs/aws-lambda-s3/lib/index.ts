@@ -23,7 +23,7 @@ import { Construct } from '@aws-cdk/core';
  */
 export interface LambdaToS3Props {
   /**
-   * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
+   * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
    * @default - None
    */
@@ -35,7 +35,7 @@ export interface LambdaToS3Props {
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
-   * Existing instance of S3 Bucket object, if this is set then the bucketProps is ignored.
+   * Existing instance of S3 Bucket object, providing both this and `bucketProps` will cause an error.
    *
    * @default - None
    */
@@ -94,7 +94,13 @@ export class LambdaToS3 extends Construct {
      */
     constructor(scope: Construct, id: string, props: LambdaToS3Props) {
       super(scope, id);
+      defaults.CheckProps(props);
+
       let bucket: s3.IBucket;
+
+      if (props.existingBucketObj && props.bucketProps) {
+        throw new Error('Cannot specify both bucket properties and an existing bucket');
+      }
 
       if (props.deployVpc || props.existingVpc) {
         if (props.deployVpc && props.existingVpc) {

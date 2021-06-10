@@ -12,7 +12,7 @@
  */
 
 /// !cdk-integ *
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { EventsRuleToStepFunction, EventsRuleToStepFunctionProps } from "../lib";
 import { Duration } from '@aws-cdk/core';
 import * as tasks from '@aws-cdk/aws-stepfunctions-tasks';
@@ -20,9 +20,10 @@ import * as events from '@aws-cdk/aws-events';
 import * as lambda from '@aws-cdk/aws-lambda';
 import { deployLambdaFunction } from '@aws-solutions-constructs/core';
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
-const stack = new Stack(app, 'test-events-rule-step-function-and-lambda-stack');
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 const submitLambda = deployLambdaFunction(stack, {
   runtime: lambda.Runtime.NODEJS_12_X,
@@ -43,8 +44,11 @@ const props: EventsRuleToStepFunctionProps = {
   },
   eventRuleProps: {
     schedule: events.Schedule.rate(Duration.minutes(5))
-  }
+  },
+  logGroupProps: {
+    removalPolicy: RemovalPolicy.DESTROY
+  },
 };
 
-new EventsRuleToStepFunction(stack, 'test-events-rule-step-function-and-lambda-stack', props);
+new EventsRuleToStepFunction(stack, 'test-events-rule-step-function-and-lambda-construct', props);
 app.synth();

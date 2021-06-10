@@ -15,10 +15,12 @@
 import { App, Stack } from "@aws-cdk/core";
 import { LambdaToDynamoDB, LambdaToDynamoDBProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
+
 const app = new App();
 
 // Empty arguments
-const stack = new Stack(app, 'test-lambda-dynamodb-stack');
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 const props: LambdaToDynamoDBProps = {
   lambdaFunctionProps: {

@@ -38,7 +38,7 @@ export interface KinesisFirehoseToAnalyticsAndS3Props {
    */
   readonly kinesisAnalyticsProps?: kinesisAnalytics.CfnApplicationProps,
   /**
-   * Existing instance of S3 Bucket object, if this is set then the bucketProps is ignored.
+   * Existing instance of S3 Bucket object, providing both this and `bucketProps` will cause an error.
    *
    * @default - None
    */
@@ -78,6 +78,11 @@ export class KinesisFirehoseToAnalyticsAndS3 extends Construct {
    */
   constructor(scope: Construct, id: string, props: KinesisFirehoseToAnalyticsAndS3Props) {
     super(scope, id);
+    defaults.CheckProps(props);
+
+    if (props.existingBucketObj && props.bucketProps) {
+      throw new Error('Cannot specify both bucket properties and an existing bucket');
+    }
 
     // Setup the kinesisfirehose-s3 pattern
     const kinesisFirehoseToS3Props: KinesisFirehoseToS3Props = {

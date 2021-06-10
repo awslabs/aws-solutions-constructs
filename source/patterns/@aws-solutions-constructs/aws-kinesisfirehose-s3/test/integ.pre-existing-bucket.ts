@@ -16,11 +16,12 @@ import { App, Stack } from "@aws-cdk/core";
 import { KinesisFirehoseToS3 } from "../lib";
 import { CreateScrapBucket } from '@aws-solutions-constructs/core';
 import * as s3 from "@aws-cdk/aws-s3";
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
 
-const stack = new Stack(app, 'test-firehose-s3-pre-existing-bucket-stack');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-kinesisfirehose-s3';
 
 const existingBucket = CreateScrapBucket(stack, {});

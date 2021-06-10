@@ -23,7 +23,7 @@ import {buildEncryptionKey} from "./kms-helper";
 
 export interface BuildQueueProps {
     /**
-     * Existing instance of SQS queue object, if this is set then the queueProps is ignored.
+     * Existing instance of SQS queue object, providing both this and queueProps will cause an error.
      *
      * @default - None.
      */
@@ -102,7 +102,7 @@ export function buildQueue(scope: cdk.Construct, id: string, props: BuildQueuePr
 
 export interface BuildDeadLetterQueueProps {
   /**
-   * Existing instance of SQS queue object, if this is set then the queueProps is ignored.
+   * Existing instance of SQS queue object, providing both this and queueProps will cause an error.
    *
    * @default - None.
    */

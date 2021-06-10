@@ -30,7 +30,7 @@ export interface EventsRuleToSqsProps {
    */
   readonly eventRuleProps: events.RuleProps
   /**
-   * Existing instance of SQS queue object, if this is set then the queueProps is ignored.
+   * Existing instance of SQS queue object, providing both this and queueProps will cause an error.
    *
    * @default - None
    */
@@ -102,6 +102,7 @@ export class EventsRuleToSqs extends Construct {
    */
   constructor(scope: Construct, id: string, props: EventsRuleToSqsProps) {
     super(scope, id);
+    defaults.CheckProps(props);
 
     // Setup the dead letter queue, if applicable
     this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {

@@ -20,10 +20,11 @@ import * as apigateway from '@aws-cdk/aws-apigateway';
 import * as cdk from '@aws-cdk/core';
 import { Duration } from "@aws-cdk/core/lib/duration";
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-cf-api-lambda-override-stack');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-cloudfront-apigateway-lambda';
 
 const lambdaProps: lambda.FunctionProps = {

@@ -17,6 +17,7 @@ import * as sqs from '@aws-cdk/aws-sqs';
 import { LambdaToSqs } from '@aws-solutions-constructs/aws-lambda-sqs';
 import { SqsToLambda } from '@aws-solutions-constructs/aws-sqs-lambda';
 import { Construct } from '@aws-cdk/core';
+import * as defaults from '@aws-solutions-constructs/core';
 
 /**
  * @summary The properties for the LambdaToSqsToLambda class.
@@ -24,28 +25,26 @@ import { Construct } from '@aws-cdk/core';
 export interface LambdaToSqsToLambdaProps {
   /**
    * An optional, existing Lambda function to be used instead of the default function for sending messages to the
-   * queue. If an existing function is provided, the `producerLambdaFunctionProps` property will be ignored.
+   * queue. Providing both this and `producerLambdaFunctionProps` property will cause an error.
    *
    * @default - None.
    */
   readonly existingProducerLambdaObj?: lambda.Function;
   /**
-   * Optional user-provided properties to override the default properties for the producer Lambda function. Ignored if
-   * an `existingProducerLambdaObj` is provided.
+   * Optional user-provided properties to override the default properties for the producer Lambda function.
    *
    * @default - Default properties are used.
    */
   readonly producerLambdaFunctionProps?: lambda.FunctionProps;
   /**
-   * An optional, existing SQS queue to be used instead of the default queue. If an existing queue is provided, the
-   * `queueProps` property will be ignored.
+   * An optional, existing SQS queue to be used instead of the default queue. Providing both this and `queueProps`
+   * will cause an error.
    *
    * @default - None.
    */
   readonly existingQueueObj?: sqs.Queue;
   /**
-   * Optional user-provided properties to override the default properties for the SQS queue. Ignored if an
-   * `existingQueueObj` is provided.
+   * Optional user-provided properties to override the default properties for the SQS queue.
    *
    * @default - Default props are used.
    */
@@ -72,15 +71,13 @@ export interface LambdaToSqsToLambdaProps {
   readonly maxReceiveCount?: number;
   /**
    * An optional, existing Lambda function to be used instead of the default function for receiving/consuming messages
-   * from the queue. If an existing function is provided, the `consumerLambdaFunctionProps` property will be ignored.
+   * from the queue. Providing both this and `consumerLambdaFunctionProps` will cause an error.
    *
    * @default - None.
    */
   readonly existingConsumerLambdaObj?: lambda.Function;
   /**
-   * Optional user-provided properties to override the default properties for the consumer Lambda function. Ignored if
-   * an `existingConsumerLambdaObj` is provided.
-   *
+   * Optional user-provided properties to override the default properties for the consumer Lambda function.
    * @default - Default properties are used.
    */
   readonly consumerLambdaFunctionProps?: lambda.FunctionProps;
@@ -111,6 +108,7 @@ export class LambdaToSqsToLambda extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToSqsToLambdaProps) {
     super(scope, id);
+    defaults.CheckProps(props);
 
     // Setup the aws-lambda-sqs pattern
     const lambdaToSqs = new LambdaToSqs(this, 'lambda-to-sqs', {

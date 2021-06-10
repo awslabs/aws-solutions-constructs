@@ -15,10 +15,11 @@
 import { KinesisStreamsToLambda, KinesisStreamsToLambdaProps } from '../lib';
 import { Stack, App } from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-kinesisstreams-lambda');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-kinesisstreams-lambda';
 
 // Definitions

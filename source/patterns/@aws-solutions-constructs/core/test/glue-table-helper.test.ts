@@ -121,7 +121,7 @@ test('Create table', () => {
       },
       TableInput: {
         Parameters: {
-          classication: "json"
+          classification: "json"
         },
         StorageDescriptor: {
           Columns: [

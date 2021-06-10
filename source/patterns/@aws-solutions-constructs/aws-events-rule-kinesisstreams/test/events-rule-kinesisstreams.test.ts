@@ -84,12 +84,6 @@ test('Test existing resources', () => {
 
   new EventsRuleToKinesisStreams(stack, 'test-events-rule-kinesis-stream-existing-resource', {
     existingStreamObj: existingStream,
-    // These properties will be ignored as existing object was provided
-    kinesisStreamProps: {
-      streamName: 'other-name-stream',
-      shardCount: 1,
-      retentionPeriod: cdk.Duration.hours(24)
-    },
     eventRuleProps: {
       description: 'event rule props',
       schedule: events.Schedule.rate(cdk.Duration.minutes(5))

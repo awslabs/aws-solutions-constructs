@@ -23,7 +23,7 @@ import { SqsEventSource, SqsEventSourceProps } from '@aws-cdk/aws-lambda-event-s
  */
 export interface SqsToLambdaProps {
     /**
-     * Existing instance of Lambda Function object, if this is set then the lambdaFunctionProps is ignored.
+     * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
      *
      * @default - None
      */
@@ -35,7 +35,7 @@ export interface SqsToLambdaProps {
      */
     readonly lambdaFunctionProps?: lambda.FunctionProps,
     /**
-     * Existing instance of SQS queue object, if this is set then queueProps is ignored.
+     * Existing instance of SQS queue object, Providing both this and queueProps will cause an error.
      *
      * @default - Default props are used
      */
@@ -90,6 +90,7 @@ export class SqsToLambda extends Construct {
      */
     constructor(scope: Construct, id: string, props: SqsToLambdaProps) {
       super(scope, id);
+      defaults.CheckProps(props);
 
       // Setup the Lambda function
       this.lambdaFunction = defaults.buildLambdaFunction(this, {

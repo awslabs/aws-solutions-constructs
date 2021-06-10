@@ -91,6 +91,7 @@ export class ApiGatewayToSageMakerEndpoint extends Construct {
    */
   constructor(scope: Construct, id: string, props: ApiGatewayToSageMakerEndpointProps) {
     super(scope, id);
+    defaults.CheckProps(props);
 
     // Setup the API Gateway
     [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] = defaults.GlobalRestApi(this,

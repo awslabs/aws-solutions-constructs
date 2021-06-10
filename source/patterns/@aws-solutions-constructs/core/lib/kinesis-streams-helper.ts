@@ -20,7 +20,7 @@ import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 
 export interface BuildKinesisStreamProps {
   /**
-   * Existing instance of Kinesis Stream, if this is set then kinesisStreamProps is ignored.
+   * Existing instance of Kinesis Stream, providing both this and `kinesisStreamProps` will cause an error.
    *
    * @default - None
    */

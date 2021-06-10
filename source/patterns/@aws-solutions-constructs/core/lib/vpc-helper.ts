@@ -49,10 +49,7 @@ export function buildVpc(scope: Construct, props: BuildVpcProps): ec2.IVpc {
   }
 
   if (props?.constructVpcProps) {
-    cumulativeProps = overrideProps(
-      cumulativeProps,
-      props?.constructVpcProps
-    );
+    cumulativeProps = overrideProps(cumulativeProps, props?.constructVpcProps);
   }
 
   const vpc = new ec2.Vpc(scope, "Vpc", cumulativeProps);
@@ -95,6 +92,8 @@ export enum ServiceEndpointTypes {
   S3 = "S3",
   STEPFUNCTIONS = "STEPFUNCTIONS",
   SAGEMAKER_RUNTIME = "SAGEMAKER_RUNTIME",
+  SECRETS_MANAGER = "SECRETS_MANAGER",
+  SSM = "SSM",
 }
 
 enum EndpointTypes {
@@ -135,6 +134,16 @@ const endpointSettings: EndpointDefinition[] = [
     endpointType: EndpointTypes.INTERFACE,
     endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.SAGEMAKER_RUNTIME,
   },
+  {
+    endpointName: ServiceEndpointTypes.SECRETS_MANAGER,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.SECRETS_MANAGER,
+  },
+  {
+    endpointName: ServiceEndpointTypes.SSM,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.SSM,
+  },
 ];
 
 export function AddAwsServiceEndpoint(
@@ -160,7 +169,7 @@ export function AddAwsServiceEndpoint(
 
       const endpointDefaultSecurityGroup = buildSecurityGroup(
         scope,
-        "ReplaceEndpointDefaultSecurityGroup",
+        `${scope.node.id}-${service.endpointName}`,
         {
           vpc,
           allowAllOutbound: true,

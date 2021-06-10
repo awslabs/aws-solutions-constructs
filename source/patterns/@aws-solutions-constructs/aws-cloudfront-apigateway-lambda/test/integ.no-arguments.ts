@@ -15,10 +15,11 @@
 import { App, Stack } from "@aws-cdk/core";
 import { CloudFrontToApiGatewayToLambda } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-cloudfront-apigateway-lambda-stack');
+const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-cloudfront-apigateway-lambda';
 
 const lambdaProps: lambda.FunctionProps = {
