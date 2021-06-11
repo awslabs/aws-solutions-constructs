@@ -2,6 +2,11 @@
   "Resources": {
     "existingScriptLocation845F3C51": {
       "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
       "Metadata": {
@@ -261,6 +266,9 @@
           "BlockPublicPolicy": true,
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
         }
       },
       "UpdateReplacePolicy": "Retain",
