@@ -74,7 +74,7 @@ test('Test deployment w/ overwritten properties', () => {
   expect(stack).toHaveResourceLike('AWS::ApiGateway::Stage', {
     MethodSettings: [
       {
-        DataTraceEnabled: true,
+        DataTraceEnabled: false,
         HttpMethod: '*',
         LoggingLevel: 'INFO',
         ResourcePath: '/*'
