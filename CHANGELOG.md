@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [1.107.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.106.1...v1.107.0) (2021-06-15)
 
+### Changed
+
+* Upgraded all patterns to CDK v1.107.0
+* Eliminate name collision for Security Groups on VPC endpoints [212](https://github.com/awslabs/aws-solutions-constructs/pull/212)
+* Allow users to pass ITable to existingTableObj for DynamoDB Stream constructs [214](https://github.com/awslabs/aws-solutions-constructs/pull/214)
+* Add versioning to Logging Buckets as default behavior [220](https://github.com/awslabs/aws-solutions-constructs/pull/220)
+* Set DataTraceEnabled to false default on API Gateway as default behavior [222](https://github.com/awslabs/aws-solutions-constructs/pull/222)
+* Add 'period' to prefilter attributes for deep-diff [224](https://github.com/awslabs/aws-solutions-constructs/pull/224)
+
+### ⚠ BREAKING CHANGES
+
+* Change the log group attribute of Step Functions constructs from LogGroup to ILogGroup [211](https://github.com/awslabs/aws-solutions-constructs/pull/211)
+* Other changes may require unit and integration snapshots refresh
+
 ## [1.106.1](https://github.com/awslabs/aws-solutions-constructs/compare/v1.106.0...v1.106.1) (2021-06-03)
 
 ### Changed
