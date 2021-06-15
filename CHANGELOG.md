@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file. See [standa
 * Add versioning to Logging Buckets as default behavior [220](https://github.com/awslabs/aws-solutions-constructs/pull/220)
 * Set DataTraceEnabled to false default on API Gateway as default behavior [222](https://github.com/awslabs/aws-solutions-constructs/pull/222)
 * Add 'period' to prefilter attributes for deep-diff [224](https://github.com/awslabs/aws-solutions-constructs/pull/224)
+* Added Restaurant Management System example to Use Cases
 
 ### ⚠ BREAKING CHANGES
 
