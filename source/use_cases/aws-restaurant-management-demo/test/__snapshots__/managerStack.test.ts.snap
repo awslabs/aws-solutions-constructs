@@ -1,0 +1,2646 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test-manager-stack 1`] = `
+Object {
+  "Outputs": Object {
+    "managerapiLambdaRestApiEndpointD1A41897": Object {
+      "Value": Object {
+        "Fn::Join": Array [
+          "",
+          Array [
+            "https://",
+            Object {
+              "Ref": "managerapiLambdaRestApi62BEEAC7",
+            },
+            ".execute-api.us-east-1.",
+            Object {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            Object {
+              "Ref": "managerapiLambdaRestApiDeploymentStageprod59C4A8D4",
+            },
+            "/",
+          ],
+        ],
+      },
+    },
+  },
+  "Parameters": Object {
+    "AssetParameters082c093d0decaeaf11ada975331e1e2e077c188737c9c1672ca3dac35a434cf2ArtifactHashCAFDB577": Object {
+      "Description": "Artifact hash for asset \\"082c093d0decaeaf11ada975331e1e2e077c188737c9c1672ca3dac35a434cf2\\"",
+      "Type": "String",
+    },
+    "AssetParameters082c093d0decaeaf11ada975331e1e2e077c188737c9c1672ca3dac35a434cf2S3Bucket2D3D7D82": Object {
+      "Description": "S3 bucket for asset \\"082c093d0decaeaf11ada975331e1e2e077c188737c9c1672ca3dac35a434cf2\\"",
+      "Type": "String",
+    },
+    "AssetParameters082c093d0decaeaf11ada975331e1e2e077c188737c9c1672ca3dac35a434cf2S3VersionKey882A94CB": Object {
+      "Description": "S3 key for asset version \\"082c093d0decaeaf11ada975331e1e2e077c188737c9c1672ca3dac35a434cf2\\"",
+      "Type": "String",
+    },
+    "AssetParameters2f0da58e411ab6b0549e6ad40bf1c54171752a646b89e453c5c3803ff20c254cArtifactHash04148482": Object {
+      "Description": "Artifact hash for asset \\"2f0da58e411ab6b0549e6ad40bf1c54171752a646b89e453c5c3803ff20c254c\\"",
+      "Type": "String",
+    },
+    "AssetParameters2f0da58e411ab6b0549e6ad40bf1c54171752a646b89e453c5c3803ff20c254cS3Bucket1B8C7DD7": Object {
+      "Description": "S3 bucket for asset \\"2f0da58e411ab6b0549e6ad40bf1c54171752a646b89e453c5c3803ff20c254c\\"",
+      "Type": "String",
+    },
+    "AssetParameters2f0da58e411ab6b0549e6ad40bf1c54171752a646b89e453c5c3803ff20c254cS3VersionKey6C2FB92E": Object {
+      "Description": "S3 key for asset version \\"2f0da58e411ab6b0549e6ad40bf1c54171752a646b89e453c5c3803ff20c254c\\"",
+      "Type": "String",
+    },
+    "AssetParameters3579f3ba4ed0a2e2a89e25a539f1b17dc8fe7d795e0e4cd6e93d875c48f3ecfbArtifactHash4C9AF59C": Object {
+      "Description": "Artifact hash for asset \\"3579f3ba4ed0a2e2a89e25a539f1b17dc8fe7d795e0e4cd6e93d875c48f3ecfb\\"",
+      "Type": "String",
+    },
+    "AssetParameters3579f3ba4ed0a2e2a89e25a539f1b17dc8fe7d795e0e4cd6e93d875c48f3ecfbS3Bucket9ED6F329": Object {
+      "Description": "S3 bucket for asset \\"3579f3ba4ed0a2e2a89e25a539f1b17dc8fe7d795e0e4cd6e93d875c48f3ecfb\\"",
+      "Type": "String",
+    },
+    "AssetParameters3579f3ba4ed0a2e2a89e25a539f1b17dc8fe7d795e0e4cd6e93d875c48f3ecfbS3VersionKey32CA5343": Object {
+      "Description": "S3 key for asset version \\"3579f3ba4ed0a2e2a89e25a539f1b17dc8fe7d795e0e4cd6e93d875c48f3ecfb\\"",
+      "Type": "String",
+    },
+    "AssetParameters5dc0666f057bc99738d8505d74a8f25576fc501d98f95ea7e69b36b3a7dd6ad1ArtifactHash152A2A15": Object {
+      "Description": "Artifact hash for asset \\"5dc0666f057bc99738d8505d74a8f25576fc501d98f95ea7e69b36b3a7dd6ad1\\"",
+      "Type": "String",
+    },
+    "AssetParameters5dc0666f057bc99738d8505d74a8f25576fc501d98f95ea7e69b36b3a7dd6ad1S3BucketF5B31E9E": Object {
+      "Description": "S3 bucket for asset \\"5dc0666f057bc99738d8505d74a8f25576fc501d98f95ea7e69b36b3a7dd6ad1\\"",
+      "Type": "String",
+    },
+    "AssetParameters5dc0666f057bc99738d8505d74a8f25576fc501d98f95ea7e69b36b3a7dd6ad1S3VersionKey4A579976": Object {
+      "Description": "S3 key for asset version \\"5dc0666f057bc99738d8505d74a8f25576fc501d98f95ea7e69b36b3a7dd6ad1\\"",
+      "Type": "String",
+    },
+    "AssetParametersc82a6fa188f5986a76f5d3bc6ddbcf1647ce70fd9411698e1d8d694ea91f688aArtifactHash84A7F12F": Object {
+      "Description": "Artifact hash for asset \\"c82a6fa188f5986a76f5d3bc6ddbcf1647ce70fd9411698e1d8d694ea91f688a\\"",
+      "Type": "String",
+    },
+    "AssetParametersc82a6fa188f5986a76f5d3bc6ddbcf1647ce70fd9411698e1d8d694ea91f688aS3BucketD8C1F551": Object {
+      "Description": "S3 bucket for asset \\"c82a6fa188f5986a76f5d3bc6ddbcf1647ce70fd9411698e1d8d694ea91f688a\\"",
+      "Type": "String",
+    },
+    "AssetParametersc82a6fa188f5986a76f5d3bc6ddbcf1647ce70fd9411698e1d8d694ea91f688aS3VersionKey10E0E95D": Object {
+      "Description": "S3 key for asset version \\"c82a6fa188f5986a76f5d3bc6ddbcf1647ce70fd9411698e1d8d694ea91f688a\\"",
+      "Type": "String",
+    },
+    "AssetParametersef2fb7a3c1a9327e753c7c4087c65e8ad44e35b19ac3cbb1879b7d74a4f0ae16ArtifactHash9A8A3080": Object {
+      "Description": "Artifact hash for asset \\"ef2fb7a3c1a9327e753c7c4087c65e8ad44e35b19ac3cbb1879b7d74a4f0ae16\\"",
+      "Type": "String",
+    },
+    "AssetParametersef2fb7a3c1a9327e753c7c4087c65e8ad44e35b19ac3cbb1879b7d74a4f0ae16S3Bucket68E56E73": Object {
+      "Description": "S3 bucket for asset \\"ef2fb7a3c1a9327e753c7c4087c65e8ad44e35b19ac3cbb1879b7d74a4f0ae16\\"",
+      "Type": "String",
+    },
+    "AssetParametersef2fb7a3c1a9327e753c7c4087c65e8ad44e35b19ac3cbb1879b7d74a4f0ae16S3VersionKey9E7EB7BC": Object {
+      "Description": "S3 key for asset version \\"ef2fb7a3c1a9327e753c7c4087c65e8ad44e35b19ac3cbb1879b7d74a4f0ae16\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "archiveordersLambdaFunction66659E04": Object {
+      "DependsOn": Array [
+        "archiveordersLambdaFunctionServiceRoleDefaultPolicyDB67FB52",
+        "archiveordersLambdaFunctionServiceRoleE513ACF7",
+      ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.",
+            },
+            Object {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries",
+            },
+            Object {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParameters082c093d0decaeaf11ada975331e1e2e077c188737c9c1672ca3dac35a434cf2S3Bucket2D3D7D82",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters082c093d0decaeaf11ada975331e1e2e077c188737c9c1672ca3dac35a434cf2S3VersionKey882A94CB",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters082c093d0decaeaf11ada975331e1e2e077c188737c9c1672ca3dac35a434cf2S3VersionKey882A94CB",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "DDB_TABLE_NAME": Object {
+              "Fn::ImportValue": "SharedStack:ExportsOutputRefdatabaseEBDE4557157C00B6",
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "archiveordersLambdaFunctionServiceRoleE513ACF7",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "TracingConfig": Object {
+          "Mode": "Active",
+        },
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "archiveordersLambdaFunctionServiceRoleDefaultPolicyDB67FB52": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "dynamodb:BatchGetItem",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::ImportValue": "SharedStack:ExportsOutputFnGetAttdatabaseEBDE4557ArnC01D766F",
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::ImportValue": "SharedStack:ExportsOutputFnGetAttdatabaseEBDE4557ArnC01D766F",
+                      },
+                      "/index/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "archiveordersLambdaFunctionServiceRoleDefaultPolicyDB67FB52",
+        "Roles": Array [
+          Object {
+            "Ref": "archiveordersLambdaFunctionServiceRoleE513ACF7",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "archiveordersLambdaFunctionServiceRoleE513ACF7": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": Array [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        "arn:",
+                        Object {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":logs:",
+                        Object {
+                          "Ref": "AWS::Region",
+                        },
+                        ":",
+                        Object {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":log-group:/aws/lambda/*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "calculatedtipstopicSnsTopicD6D93D2C": Object {
+      "Properties": Object {
+        "KmsMasterKeyId": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":kms:us-east-1:ACCOUNT_NUMBER_HERE:alias/aws/sns",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::SNS::Topic",
+    },
+    "calculatedtipstopicSnsTopicPolicy092A0B4B": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "SNS:Publish",
+                "SNS:RemovePermission",
+                "SNS:SetTopicAttributes",
+                "SNS:DeleteTopic",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:GetTopicAttributes",
+                "SNS:Receive",
+                "SNS:AddPermission",
+                "SNS:Subscribe",
+              ],
+              "Condition": Object {
+                "StringEquals": Object {
+                  "AWS:SourceOwner": "ACCOUNT_NUMBER_HERE",
+                },
+              },
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::ACCOUNT_NUMBER_HERE:root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": Object {
+                "Ref": "calculatedtipstopicSnsTopicD6D93D2C",
+              },
+              "Sid": "TopicOwnerOnlyAccess",
+            },
+            Object {
+              "Action": Array [
+                "SNS:Publish",
+                "SNS:RemovePermission",
+                "SNS:SetTopicAttributes",
+                "SNS:DeleteTopic",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:GetTopicAttributes",
+                "SNS:Receive",
+                "SNS:AddPermission",
+                "SNS:Subscribe",
+              ],
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Ref": "calculatedtipstopicSnsTopicD6D93D2C",
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Topics": Array [
+          Object {
+            "Ref": "calculatedtipstopicSnsTopicD6D93D2C",
+          },
+        ],
+      },
+      "Type": "AWS::SNS::TopicPolicy",
+    },
+    "calculatetipsLambdaFunction9F2FE033": Object {
+      "DependsOn": Array [
+        "calculatetipsLambdaFunctionServiceRoleDefaultPolicyED27C928",
+        "calculatetipsLambdaFunctionServiceRoleDE97A87F",
+      ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.",
+            },
+            Object {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries",
+            },
+            Object {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParametersef2fb7a3c1a9327e753c7c4087c65e8ad44e35b19ac3cbb1879b7d74a4f0ae16S3Bucket68E56E73",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersef2fb7a3c1a9327e753c7c4087c65e8ad44e35b19ac3cbb1879b7d74a4f0ae16S3VersionKey9E7EB7BC",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersef2fb7a3c1a9327e753c7c4087c65e8ad44e35b19ac3cbb1879b7d74a4f0ae16S3VersionKey9E7EB7BC",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "DDB_TABLE_NAME": Object {
+              "Fn::ImportValue": "SharedStack:ExportsOutputRefdatabaseEBDE4557157C00B6",
+            },
+            "SNS_TOPIC_ARN": Object {
+              "Ref": "calculatedtipstopicSnsTopicD6D93D2C",
+            },
+            "SNS_TOPIC_NAME": Object {
+              "Fn::GetAtt": Array [
+                "calculatedtipstopicSnsTopicD6D93D2C",
+                "TopicName",
+              ],
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "calculatetipsLambdaFunctionServiceRoleDE97A87F",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "TracingConfig": Object {
+          "Mode": "Active",
+        },
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "calculatetipsLambdaFunctionServiceRoleDE97A87F": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": Array [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        "arn:",
+                        Object {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":logs:",
+                        Object {
+                          "Ref": "AWS::Region",
+                        },
+                        ":",
+                        Object {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":log-group:/aws/lambda/*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "calculatetipsLambdaFunctionServiceRoleDefaultPolicyED27C928": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "dynamodb:BatchGetItem",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::ImportValue": "SharedStack:ExportsOutputFnGetAttdatabaseEBDE4557ArnC01D766F",
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::ImportValue": "SharedStack:ExportsOutputFnGetAttdatabaseEBDE4557ArnC01D766F",
+                      },
+                      "/index/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": "sns:Publish",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Ref": "calculatedtipstopicSnsTopicD6D93D2C",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "calculatetipsLambdaFunctionServiceRoleDefaultPolicyED27C928",
+        "Roles": Array [
+          Object {
+            "Ref": "calculatetipsLambdaFunctionServiceRoleDE97A87F",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "checkdelayedordersLambdaFunction2EC54227": Object {
+      "DependsOn": Array [
+        "checkdelayedordersLambdaFunctionServiceRoleDefaultPolicyF409BC18",
+        "checkdelayedordersLambdaFunctionServiceRole513277E0",
+      ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.",
+            },
+            Object {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries",
+            },
+            Object {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParametersc82a6fa188f5986a76f5d3bc6ddbcf1647ce70fd9411698e1d8d694ea91f688aS3BucketD8C1F551",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersc82a6fa188f5986a76f5d3bc6ddbcf1647ce70fd9411698e1d8d694ea91f688aS3VersionKey10E0E95D",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersc82a6fa188f5986a76f5d3bc6ddbcf1647ce70fd9411698e1d8d694ea91f688aS3VersionKey10E0E95D",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "DDB_TABLE_NAME": Object {
+              "Fn::ImportValue": "SharedStack:ExportsOutputRefdatabaseEBDE4557157C00B6",
+            },
+            "OPEN_ORDER_THRESHOLD_MINS": "30",
+            "SNS_TOPIC_ARN": Object {
+              "Ref": "checkdelayedordersnotifierSnsTopic66813909",
+            },
+            "SNS_TOPIC_NAME": Object {
+              "Fn::GetAtt": Array [
+                "checkdelayedordersnotifierSnsTopic66813909",
+                "TopicName",
+              ],
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "checkdelayedordersLambdaFunctionServiceRole513277E0",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "TracingConfig": Object {
+          "Mode": "Active",
+        },
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "checkdelayedordersLambdaFunctionAwsEventsLambdaInvokePermission165AA4438": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "checkdelayedordersLambdaFunction2EC54227",
+            "Arn",
+          ],
+        },
+        "Principal": "events.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::GetAtt": Array [
+            "checkdelayedordersschedulerEventsRule980E5207",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "checkdelayedordersLambdaFunctionServiceRole513277E0": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": Array [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        "arn:",
+                        Object {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":logs:",
+                        Object {
+                          "Ref": "AWS::Region",
+                        },
+                        ":",
+                        Object {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":log-group:/aws/lambda/*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "checkdelayedordersLambdaFunctionServiceRoleDefaultPolicyF409BC18": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "dynamodb:BatchGetItem",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::ImportValue": "SharedStack:ExportsOutputFnGetAttdatabaseEBDE4557ArnC01D766F",
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::ImportValue": "SharedStack:ExportsOutputFnGetAttdatabaseEBDE4557ArnC01D766F",
+                      },
+                      "/index/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": "sns:Publish",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Ref": "checkdelayedordersnotifierSnsTopic66813909",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "checkdelayedordersLambdaFunctionServiceRoleDefaultPolicyF409BC18",
+        "Roles": Array [
+          Object {
+            "Ref": "checkdelayedordersLambdaFunctionServiceRole513277E0",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "checkdelayedordersnotifierSnsTopic66813909": Object {
+      "Properties": Object {
+        "KmsMasterKeyId": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":kms:us-east-1:ACCOUNT_NUMBER_HERE:alias/aws/sns",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::SNS::Topic",
+    },
+    "checkdelayedordersnotifierSnsTopicPolicy673080E4": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "SNS:Publish",
+                "SNS:RemovePermission",
+                "SNS:SetTopicAttributes",
+                "SNS:DeleteTopic",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:GetTopicAttributes",
+                "SNS:Receive",
+                "SNS:AddPermission",
+                "SNS:Subscribe",
+              ],
+              "Condition": Object {
+                "StringEquals": Object {
+                  "AWS:SourceOwner": "ACCOUNT_NUMBER_HERE",
+                },
+              },
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::ACCOUNT_NUMBER_HERE:root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": Object {
+                "Ref": "checkdelayedordersnotifierSnsTopic66813909",
+              },
+              "Sid": "TopicOwnerOnlyAccess",
+            },
+            Object {
+              "Action": Array [
+                "SNS:Publish",
+                "SNS:RemovePermission",
+                "SNS:SetTopicAttributes",
+                "SNS:DeleteTopic",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:GetTopicAttributes",
+                "SNS:Receive",
+                "SNS:AddPermission",
+                "SNS:Subscribe",
+              ],
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Ref": "checkdelayedordersnotifierSnsTopic66813909",
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Topics": Array [
+          Object {
+            "Ref": "checkdelayedordersnotifierSnsTopic66813909",
+          },
+        ],
+      },
+      "Type": "AWS::SNS::TopicPolicy",
+    },
+    "checkdelayedordersschedulerEventsRule980E5207": Object {
+      "Properties": Object {
+        "ScheduleExpression": "rate(5 minutes)",
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "checkdelayedordersLambdaFunction2EC54227",
+                "Arn",
+              ],
+            },
+            "Id": "Target0",
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "closeoutserviceExecutionAbortedAlarm861B143E": Object {
+      "Properties": Object {
+        "AlarmDescription": "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "Dimensions": Array [
+          Object {
+            "Name": "StateMachineArn",
+            "Value": Object {
+              "Ref": "closeoutserviceStateMachineC9DD68A8",
+            },
+          },
+        ],
+        "EvaluationPeriods": 1,
+        "MetricName": "ExecutionsAborted",
+        "Namespace": "AWS/States",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 1,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "closeoutserviceExecutionFailedAlarm7495D8BE": Object {
+      "Properties": Object {
+        "AlarmDescription": "Alarm for the number of executions that failed exceeded the threshold of 1. ",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "Dimensions": Array [
+          Object {
+            "Name": "StateMachineArn",
+            "Value": Object {
+              "Ref": "closeoutserviceStateMachineC9DD68A8",
+            },
+          },
+        ],
+        "EvaluationPeriods": 1,
+        "MetricName": "ExecutionsFailed",
+        "Namespace": "AWS/States",
+        "Period": 300,
+        "Statistic": "Sum",
+        "Threshold": 1,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "closeoutserviceExecutionThrottledAlarmC5A6E612": Object {
+      "Properties": Object {
+        "AlarmDescription": "Alarm for the number of executions that throttled exceeded the threshold of 1. ",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "Dimensions": Array [
+          Object {
+            "Name": "StateMachineArn",
+            "Value": Object {
+              "Ref": "closeoutserviceStateMachineC9DD68A8",
+            },
+          },
+        ],
+        "EvaluationPeriods": 1,
+        "MetricName": "ExecutionThrottled",
+        "Namespace": "AWS/States",
+        "Period": 300,
+        "Statistic": "Sum",
+        "Threshold": 1,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "closeoutserviceLambdaFunction684B26D3": Object {
+      "DependsOn": Array [
+        "closeoutserviceLambdaFunctionServiceRoleDefaultPolicy95A79CC3",
+        "closeoutserviceLambdaFunctionServiceRoleB49E9696",
+      ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.",
+            },
+            Object {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries",
+            },
+            Object {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParameters5dc0666f057bc99738d8505d74a8f25576fc501d98f95ea7e69b36b3a7dd6ad1S3BucketF5B31E9E",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters5dc0666f057bc99738d8505d74a8f25576fc501d98f95ea7e69b36b3a7dd6ad1S3VersionKey4A579976",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters5dc0666f057bc99738d8505d74a8f25576fc501d98f95ea7e69b36b3a7dd6ad1S3VersionKey4A579976",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "STATE_MACHINE_ARN": Object {
+              "Ref": "closeoutserviceStateMachineC9DD68A8",
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "closeoutserviceLambdaFunctionServiceRoleB49E9696",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "TracingConfig": Object {
+          "Mode": "Active",
+        },
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "closeoutserviceLambdaFunctionServiceRoleB49E9696": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": Array [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        "arn:",
+                        Object {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":logs:",
+                        Object {
+                          "Ref": "AWS::Region",
+                        },
+                        ":",
+                        Object {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":log-group:/aws/lambda/*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "closeoutserviceLambdaFunctionServiceRoleDefaultPolicy95A79CC3": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": "states:StartExecution",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Ref": "closeoutserviceStateMachineC9DD68A8",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "closeoutserviceLambdaFunctionServiceRoleDefaultPolicy95A79CC3",
+        "Roles": Array [
+          Object {
+            "Ref": "closeoutserviceLambdaFunctionServiceRoleB49E9696",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "closeoutserviceStateMachineC9DD68A8": Object {
+      "DependsOn": Array [
+        "closeoutserviceStateMachineRoleDefaultPolicy5F05BEB8",
+        "closeoutserviceStateMachineRoleCA7F9A09",
+      ],
+      "Properties": Object {
+        "DefinitionString": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "{\\"StartAt\\":\\"create-reports-task\\",\\"States\\":{\\"create-reports-task\\":{\\"Next\\":\\"calculate-tips-task\\",\\"Type\\":\\"Task\\",\\"Resource\\":\\"",
+              Object {
+                "Fn::GetAtt": Array [
+                  "createreportLambdaFunctionB37EBE52",
+                  "Arn",
+                ],
+              },
+              "\\"},\\"calculate-tips-task\\":{\\"Next\\":\\"archive-orders-task\\",\\"Type\\":\\"Task\\",\\"Resource\\":\\"",
+              Object {
+                "Fn::GetAtt": Array [
+                  "calculatetipsLambdaFunction9F2FE033",
+                  "Arn",
+                ],
+              },
+              "\\"},\\"archive-orders-task\\":{\\"End\\":true,\\"Type\\":\\"Task\\",\\"Resource\\":\\"",
+              Object {
+                "Fn::GetAtt": Array [
+                  "archiveordersLambdaFunction66659E04",
+                  "Arn",
+                ],
+              },
+              "\\"}}}",
+            ],
+          ],
+        },
+        "LoggingConfiguration": Object {
+          "Destinations": Array [
+            Object {
+              "CloudWatchLogsLogGroup": Object {
+                "LogGroupArn": Object {
+                  "Fn::GetAtt": Array [
+                    "closeoutserviceStateMachineLogGroup56CA2C8F",
+                    "Arn",
+                  ],
+                },
+              },
+            },
+          ],
+          "Level": "ERROR",
+        },
+        "RoleArn": Object {
+          "Fn::GetAtt": Array [
+            "closeoutserviceStateMachineRoleCA7F9A09",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::StepFunctions::StateMachine",
+    },
+    "closeoutserviceStateMachineLogGroup56CA2C8F": Object {
+      "DeletionPolicy": "Retain",
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely",
+            },
+            Object {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "LogGroupName": "/aws/vendedlogs/states/managerstackcloseoutservicestatemachinelog5da3d5b2d585",
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "closeoutserviceStateMachineRoleCA7F9A09": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "states.us-east-1.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "closeoutserviceStateMachineRoleDefaultPolicy5F05BEB8": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "The 'LogDelivery' actions do not support resource-level authorizations",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "logs:CreateLogDelivery",
+                "logs:GetLogDelivery",
+                "logs:UpdateLogDelivery",
+                "logs:DeleteLogDelivery",
+                "logs:ListLogDeliveries",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "createreportLambdaFunctionB37EBE52",
+                  "Arn",
+                ],
+              },
+            },
+            Object {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "calculatetipsLambdaFunction9F2FE033",
+                  "Arn",
+                ],
+              },
+            },
+            Object {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "archiveordersLambdaFunction66659E04",
+                  "Arn",
+                ],
+              },
+            },
+            Object {
+              "Action": Array [
+                "logs:PutResourcePolicy",
+                "logs:DescribeResourcePolicies",
+                "logs:DescribeLogGroups",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":logs:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "closeoutserviceStateMachineRoleDefaultPolicy5F05BEB8",
+        "Roles": Array [
+          Object {
+            "Ref": "closeoutserviceStateMachineRoleCA7F9A09",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "createreportLambdaFunctionB37EBE52": Object {
+      "DependsOn": Array [
+        "createreportLambdaFunctionServiceRoleDefaultPolicy5A317B6C",
+        "createreportLambdaFunctionServiceRole33C78256",
+      ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.",
+            },
+            Object {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries",
+            },
+            Object {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParameters2f0da58e411ab6b0549e6ad40bf1c54171752a646b89e453c5c3803ff20c254cS3Bucket1B8C7DD7",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters2f0da58e411ab6b0549e6ad40bf1c54171752a646b89e453c5c3803ff20c254cS3VersionKey6C2FB92E",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters2f0da58e411ab6b0549e6ad40bf1c54171752a646b89e453c5c3803ff20c254cS3VersionKey6C2FB92E",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "DDB_TABLE_NAME": Object {
+              "Fn::ImportValue": "SharedStack:ExportsOutputRefdatabaseEBDE4557157C00B6",
+            },
+            "S3_BUCKET_NAME": Object {
+              "Ref": "reportsbucketS3BucketCC334898",
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "createreportLambdaFunctionServiceRole33C78256",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "TracingConfig": Object {
+          "Mode": "Active",
+        },
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "createreportLambdaFunctionServiceRole33C78256": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": Array [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        "arn:",
+                        Object {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":logs:",
+                        Object {
+                          "Ref": "AWS::Region",
+                        },
+                        ":",
+                        Object {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":log-group:/aws/lambda/*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "createreportLambdaFunctionServiceRoleDefaultPolicy5A317B6C": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "dynamodb:BatchGetItem",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::ImportValue": "SharedStack:ExportsOutputFnGetAttdatabaseEBDE4557ArnC01D766F",
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::ImportValue": "SharedStack:ExportsOutputFnGetAttdatabaseEBDE4557ArnC01D766F",
+                      },
+                      "/index/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "reportsbucketS3BucketCC334898",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "reportsbucketS3BucketCC334898",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "createreportLambdaFunctionServiceRoleDefaultPolicy5A317B6C",
+        "Roles": Array [
+          Object {
+            "Ref": "createreportLambdaFunctionServiceRole33C78256",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "listordersLambdaFunction78C3BA19": Object {
+      "DependsOn": Array [
+        "listordersLambdaFunctionServiceRoleDefaultPolicyA214985E",
+        "listordersLambdaFunctionServiceRole3371D255",
+      ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.",
+            },
+            Object {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries",
+            },
+            Object {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParameters3579f3ba4ed0a2e2a89e25a539f1b17dc8fe7d795e0e4cd6e93d875c48f3ecfbS3Bucket9ED6F329",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters3579f3ba4ed0a2e2a89e25a539f1b17dc8fe7d795e0e4cd6e93d875c48f3ecfbS3VersionKey32CA5343",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters3579f3ba4ed0a2e2a89e25a539f1b17dc8fe7d795e0e4cd6e93d875c48f3ecfbS3VersionKey32CA5343",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "DDB_TABLE_NAME": Object {
+              "Fn::ImportValue": "SharedStack:ExportsOutputRefdatabaseEBDE4557157C00B6",
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "listordersLambdaFunctionServiceRole3371D255",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "TracingConfig": Object {
+          "Mode": "Active",
+        },
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "listordersLambdaFunctionServiceRole3371D255": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": Array [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        "arn:",
+                        Object {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":logs:",
+                        Object {
+                          "Ref": "AWS::Region",
+                        },
+                        ":",
+                        Object {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":log-group:/aws/lambda/*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "listordersLambdaFunctionServiceRoleDefaultPolicyA214985E": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "dynamodb:BatchGetItem",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::ImportValue": "SharedStack:ExportsOutputFnGetAttdatabaseEBDE4557ArnC01D766F",
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::ImportValue": "SharedStack:ExportsOutputFnGetAttdatabaseEBDE4557ArnC01D766F",
+                      },
+                      "/index/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "listordersLambdaFunctionServiceRoleDefaultPolicyA214985E",
+        "Roles": Array [
+          Object {
+            "Ref": "listordersLambdaFunctionServiceRole3371D255",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "managerapiApiAccessLogGroup35F9537B": Object {
+      "DeletionPolicy": "Retain",
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely",
+            },
+            Object {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)",
+            },
+          ],
+        },
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "managerapiCognitoAuthorizer5745AF8D": Object {
+      "Properties": Object {
+        "IdentitySource": "method.request.header.Authorization",
+        "Name": "authorizer",
+        "ProviderARNs": Array [
+          Object {
+            "Fn::GetAtt": Array [
+              "managerapiCognitoUserPool03946196",
+              "Arn",
+            ],
+          },
+        ],
+        "RestApiId": Object {
+          "Ref": "managerapiLambdaRestApi62BEEAC7",
+        },
+        "Type": "COGNITO_USER_POOLS",
+      },
+      "Type": "AWS::ApiGateway::Authorizer",
+    },
+    "managerapiCognitoUserPool03946196": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "AccountRecoverySetting": Object {
+          "RecoveryMechanisms": Array [
+            Object {
+              "Name": "verified_phone_number",
+              "Priority": 1,
+            },
+            Object {
+              "Name": "verified_email",
+              "Priority": 2,
+            },
+          ],
+        },
+        "AdminCreateUserConfig": Object {
+          "AllowAdminCreateUserOnly": true,
+        },
+        "EmailVerificationMessage": "The verification code to your new account is {####}",
+        "EmailVerificationSubject": "Verify your new account",
+        "SmsVerificationMessage": "The verification code to your new account is {####}",
+        "UserPoolAddOns": Object {
+          "AdvancedSecurityMode": "ENFORCED",
+        },
+        "VerificationMessageTemplate": Object {
+          "DefaultEmailOption": "CONFIRM_WITH_CODE",
+          "EmailMessage": "The verification code to your new account is {####}",
+          "EmailSubject": "Verify your new account",
+          "SmsMessage": "The verification code to your new account is {####}",
+        },
+      },
+      "Type": "AWS::Cognito::UserPool",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "managerapiCognitoUserPoolClientB3BC933D": Object {
+      "Properties": Object {
+        "AllowedOAuthFlows": Array [
+          "implicit",
+          "code",
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": Array [
+          "profile",
+          "phone",
+          "email",
+          "openid",
+          "aws.cognito.signin.user.admin",
+        ],
+        "CallbackURLs": Array [
+          "https://example.com",
+        ],
+        "SupportedIdentityProviders": Array [
+          "COGNITO",
+        ],
+        "UserPoolId": Object {
+          "Ref": "managerapiCognitoUserPool03946196",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolClient",
+    },
+    "managerapiLambdaRestApi62BEEAC7": Object {
+      "Properties": Object {
+        "EndpointConfiguration": Object {
+          "Types": Array [
+            "EDGE",
+          ],
+        },
+        "Name": "LambdaRestApi",
+      },
+      "Type": "AWS::ApiGateway::RestApi",
+    },
+    "managerapiLambdaRestApiAccount350A78F5": Object {
+      "DependsOn": Array [
+        "managerapiLambdaRestApi62BEEAC7",
+      ],
+      "Properties": Object {
+        "CloudWatchRoleArn": Object {
+          "Fn::GetAtt": Array [
+            "managerapiLambdaRestApiCloudWatchRole43F48235",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::ApiGateway::Account",
+    },
+    "managerapiLambdaRestApiCloudWatchRole43F48235": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "apigateway.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": Array [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:DescribeLogGroups",
+                    "logs:DescribeLogStreams",
+                    "logs:PutLogEvents",
+                    "logs:GetLogEvents",
+                    "logs:FilterLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        "arn:",
+                        Object {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":logs:",
+                        Object {
+                          "Ref": "AWS::Region",
+                        },
+                        ":",
+                        Object {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "LambdaRestApiCloudWatchRolePolicy",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "managerapiLambdaRestApiDeployment719D102Af9d615a7825f1f2f2844015860433cab": Object {
+      "DependsOn": Array [
+        "managerapiLambdaRestApicloseoutserviceproxyANY182BEB46",
+        "managerapiLambdaRestApicloseoutserviceproxyECAF0FA1",
+        "managerapiLambdaRestApicloseoutservice2D3987E6",
+        "managerapiLambdaRestApilistordersproxyANY9C43AA89",
+        "managerapiLambdaRestApilistordersproxy3993085F",
+        "managerapiLambdaRestApilistorders017D1C2F",
+        "managerapiLambdaRestApireportsGET3B0B072F",
+        "managerapiLambdaRestApireportsA438BAFD",
+      ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W45",
+              "reason": "ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checkes for it in AWS::ApiGateway::Deployment resource",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "Description": "Automatically created by the RestApi construct",
+        "RestApiId": Object {
+          "Ref": "managerapiLambdaRestApi62BEEAC7",
+        },
+      },
+      "Type": "AWS::ApiGateway::Deployment",
+    },
+    "managerapiLambdaRestApiDeploymentStageprod59C4A8D4": Object {
+      "Properties": Object {
+        "AccessLogSetting": Object {
+          "DestinationArn": Object {
+            "Fn::GetAtt": Array [
+              "managerapiApiAccessLogGroup35F9537B",
+              "Arn",
+            ],
+          },
+          "Format": "{\\"requestId\\":\\"$context.requestId\\",\\"ip\\":\\"$context.identity.sourceIp\\",\\"user\\":\\"$context.identity.user\\",\\"caller\\":\\"$context.identity.caller\\",\\"requestTime\\":\\"$context.requestTime\\",\\"httpMethod\\":\\"$context.httpMethod\\",\\"resourcePath\\":\\"$context.resourcePath\\",\\"status\\":\\"$context.status\\",\\"protocol\\":\\"$context.protocol\\",\\"responseLength\\":\\"$context.responseLength\\"}",
+        },
+        "DeploymentId": Object {
+          "Ref": "managerapiLambdaRestApiDeployment719D102Af9d615a7825f1f2f2844015860433cab",
+        },
+        "MethodSettings": Array [
+          Object {
+            "DataTraceEnabled": true,
+            "HttpMethod": "*",
+            "LoggingLevel": "INFO",
+            "ResourcePath": "/*",
+          },
+        ],
+        "RestApiId": Object {
+          "Ref": "managerapiLambdaRestApi62BEEAC7",
+        },
+        "StageName": "prod",
+        "TracingEnabled": true,
+      },
+      "Type": "AWS::ApiGateway::Stage",
+    },
+    "managerapiLambdaRestApiUsagePlanF10CE619": Object {
+      "Properties": Object {
+        "ApiStages": Array [
+          Object {
+            "ApiId": Object {
+              "Ref": "managerapiLambdaRestApi62BEEAC7",
+            },
+            "Stage": Object {
+              "Ref": "managerapiLambdaRestApiDeploymentStageprod59C4A8D4",
+            },
+            "Throttle": Object {},
+          },
+        ],
+      },
+      "Type": "AWS::ApiGateway::UsagePlan",
+    },
+    "managerapiLambdaRestApicloseoutservice2D3987E6": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Fn::GetAtt": Array [
+            "managerapiLambdaRestApi62BEEAC7",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "close-out-service",
+        "RestApiId": Object {
+          "Ref": "managerapiLambdaRestApi62BEEAC7",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "managerapiLambdaRestApicloseoutserviceproxyANY182BEB46": Object {
+      "Properties": Object {
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": Object {
+          "Ref": "managerapiCognitoAuthorizer5745AF8D",
+        },
+        "HttpMethod": "ANY",
+        "Integration": Object {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+                Object {
+                  "Fn::GetAtt": Array [
+                    "closeoutserviceLambdaFunction684B26D3",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": Object {
+          "Ref": "managerapiLambdaRestApicloseoutserviceproxyECAF0FA1",
+        },
+        "RestApiId": Object {
+          "Ref": "managerapiLambdaRestApi62BEEAC7",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "managerapiLambdaRestApicloseoutserviceproxyANYApiPermissionManagerStackmanagerapiLambdaRestApi386CA826ANYcloseoutserviceproxy132F7E1D": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "closeoutserviceLambdaFunction684B26D3",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-east-1:ACCOUNT_NUMBER_HERE:",
+              Object {
+                "Ref": "managerapiLambdaRestApi62BEEAC7",
+              },
+              "/",
+              Object {
+                "Ref": "managerapiLambdaRestApiDeploymentStageprod59C4A8D4",
+              },
+              "/*/close-out-service/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "managerapiLambdaRestApicloseoutserviceproxyANYApiPermissionTestManagerStackmanagerapiLambdaRestApi386CA826ANYcloseoutserviceproxy8A25C882": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "closeoutserviceLambdaFunction684B26D3",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-east-1:ACCOUNT_NUMBER_HERE:",
+              Object {
+                "Ref": "managerapiLambdaRestApi62BEEAC7",
+              },
+              "/test-invoke-stage/*/close-out-service/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "managerapiLambdaRestApicloseoutserviceproxyECAF0FA1": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Ref": "managerapiLambdaRestApicloseoutservice2D3987E6",
+        },
+        "PathPart": "{proxy+}",
+        "RestApiId": Object {
+          "Ref": "managerapiLambdaRestApi62BEEAC7",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "managerapiLambdaRestApilistorders017D1C2F": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Fn::GetAtt": Array [
+            "managerapiLambdaRestApi62BEEAC7",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "list-orders",
+        "RestApiId": Object {
+          "Ref": "managerapiLambdaRestApi62BEEAC7",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "managerapiLambdaRestApilistordersproxy3993085F": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Ref": "managerapiLambdaRestApilistorders017D1C2F",
+        },
+        "PathPart": "{proxy+}",
+        "RestApiId": Object {
+          "Ref": "managerapiLambdaRestApi62BEEAC7",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "managerapiLambdaRestApilistordersproxyANY9C43AA89": Object {
+      "Properties": Object {
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": Object {
+          "Ref": "managerapiCognitoAuthorizer5745AF8D",
+        },
+        "HttpMethod": "ANY",
+        "Integration": Object {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+                Object {
+                  "Fn::GetAtt": Array [
+                    "listordersLambdaFunction78C3BA19",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": Object {
+          "Ref": "managerapiLambdaRestApilistordersproxy3993085F",
+        },
+        "RestApiId": Object {
+          "Ref": "managerapiLambdaRestApi62BEEAC7",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "managerapiLambdaRestApilistordersproxyANYApiPermissionManagerStackmanagerapiLambdaRestApi386CA826ANYlistordersproxyF55EE737": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "listordersLambdaFunction78C3BA19",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-east-1:ACCOUNT_NUMBER_HERE:",
+              Object {
+                "Ref": "managerapiLambdaRestApi62BEEAC7",
+              },
+              "/",
+              Object {
+                "Ref": "managerapiLambdaRestApiDeploymentStageprod59C4A8D4",
+              },
+              "/*/list-orders/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "managerapiLambdaRestApilistordersproxyANYApiPermissionTestManagerStackmanagerapiLambdaRestApi386CA826ANYlistordersproxyA58F4DD8": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "listordersLambdaFunction78C3BA19",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-east-1:ACCOUNT_NUMBER_HERE:",
+              Object {
+                "Ref": "managerapiLambdaRestApi62BEEAC7",
+              },
+              "/test-invoke-stage/*/list-orders/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "managerapiLambdaRestApireportsA438BAFD": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Fn::GetAtt": Array [
+            "managerapiLambdaRestApi62BEEAC7",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "reports",
+        "RestApiId": Object {
+          "Ref": "managerapiLambdaRestApi62BEEAC7",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "managerapiLambdaRestApireportsGET3B0B072F": Object {
+      "Properties": Object {
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": Object {
+          "Ref": "managerapiCognitoAuthorizer5745AF8D",
+        },
+        "HttpMethod": "GET",
+        "Integration": Object {
+          "Credentials": Object {
+            "Fn::GetAtt": Array [
+              "roleC7B7E775",
+              "Arn",
+            ],
+          },
+          "IntegrationHttpMethod": "GET",
+          "Type": "AWS",
+          "Uri": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:us-east-1:s3:path/{bucket}",
+              ],
+            ],
+          },
+        },
+        "MethodResponses": Array [
+          Object {
+            "StatusCode": "200",
+          },
+        ],
+        "ResourceId": Object {
+          "Ref": "managerapiLambdaRestApireportsA438BAFD",
+        },
+        "RestApiId": Object {
+          "Ref": "managerapiLambdaRestApi62BEEAC7",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "reportsbucketS3BucketCC334898": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "BucketEncryption": Object {
+          "ServerSideEncryptionConfiguration": Array [
+            Object {
+              "ServerSideEncryptionByDefault": Object {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "LifecycleConfiguration": Object {
+          "Rules": Array [
+            Object {
+              "NoncurrentVersionTransitions": Array [
+                Object {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90,
+                },
+              ],
+              "Status": "Enabled",
+            },
+          ],
+        },
+        "LoggingConfiguration": Object {
+          "DestinationBucketName": Object {
+            "Ref": "reportsbucketS3LoggingBucket088F7E0E",
+          },
+        },
+        "PublicAccessBlockConfiguration": Object {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+        "VersioningConfiguration": Object {
+          "Status": "Enabled",
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "reportsbucketS3BucketPolicyCF9C1527": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "reportsbucketS3BucketCC334898",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "reportsbucketS3BucketCC334898",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "reportsbucketS3LoggingBucket088F7E0E": Object {
+      "DeletionPolicy": "Retain",
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W35",
+              "reason": "This S3 bucket is used as the access logging bucket for another bucket",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "AccessControl": "LogDeliveryWrite",
+        "BucketEncryption": Object {
+          "ServerSideEncryptionConfiguration": Array [
+            Object {
+              "ServerSideEncryptionByDefault": Object {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "PublicAccessBlockConfiguration": Object {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "reportsbucketS3LoggingBucketPolicy82A7D267": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "reportsbucketS3LoggingBucket088F7E0E",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "reportsbucketS3LoggingBucket088F7E0E",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "roleC7B7E775": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "apigateway.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Path": "/service-role/",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "roleDefaultPolicy7C980EBA": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "reportsbucketS3BucketCC334898",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "reportsbucketS3BucketCC334898",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "roleDefaultPolicy7C980EBA",
+        "Roles": Array [
+          Object {
+            "Ref": "roleC7B7E775",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+  },
+}
+`;
