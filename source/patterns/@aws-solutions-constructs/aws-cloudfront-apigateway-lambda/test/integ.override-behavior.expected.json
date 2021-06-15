@@ -294,7 +294,7 @@
         },
         "MethodSettings": [
           {
-            "DataTraceEnabled": true,
+            "DataTraceEnabled": false,
             "HttpMethod": "*",
             "LoggingLevel": "INFO",
             "ResourcePath": "/*"
@@ -742,6 +742,9 @@
           "BlockPublicPolicy": true,
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
         }
       },
       "UpdateReplacePolicy": "Retain",

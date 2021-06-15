@@ -20,7 +20,7 @@ import * as path from 'path';
 // Creates a bucket used for testing - minimal properties, destroyed after test
 export function CreateScrapBucket(scope: Construct, props?: BucketProps | any) {
   const defaultProps = {
-    versioned: false,
+    versioned: true,
     removalPolicy: RemovalPolicy.DESTROY,
   };
 

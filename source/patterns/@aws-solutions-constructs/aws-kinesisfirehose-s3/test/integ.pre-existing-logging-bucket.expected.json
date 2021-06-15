@@ -4,7 +4,10 @@
     "existingScriptLocation845F3C51": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
-        "AccessControl": "LogDeliveryWrite"
+        "AccessControl": "LogDeliveryWrite",
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",

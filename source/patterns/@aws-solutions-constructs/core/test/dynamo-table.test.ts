@@ -322,10 +322,10 @@ test('test buildDynamoDBTableWithStream with existingTableObj', () => {
     stream: dynamodb.StreamViewType.NEW_IMAGE
   };
 
-  const existingTableObj = new dynamodb.Table(stack, 'DynamoTable', tableProps);
+  const existingTableInterface = new dynamodb.Table(stack, 'DynamoTable', tableProps);
 
   defaults.buildDynamoDBTableWithStream(stack, {
-    existingTableObj
+    existingTableInterface
   });
 
   expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {

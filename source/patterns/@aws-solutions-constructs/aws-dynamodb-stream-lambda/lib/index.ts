@@ -45,7 +45,7 @@ export interface DynamoDBStreamToLambdaProps {
    *
    * @default - None
    */
-  readonly existingTableObj?: dynamodb.Table,
+  readonly existingTableInterface?: dynamodb.ITable,
   /**
    * Optional user provided props to override the default props
    *
@@ -69,7 +69,8 @@ export interface DynamoDBStreamToLambdaProps {
 
 export class DynamoDBStreamToLambda extends Construct {
   public readonly lambdaFunction: lambda.Function;
-  public readonly dynamoTable: dynamodb.Table;
+  public readonly dynamoTableInterface: dynamodb.ITable;
+  public readonly dynamoTable?: dynamodb.Table;
 
   /**
    * @summary Constructs a new instance of the LambdaToDynamoDB class.
@@ -88,13 +89,13 @@ export class DynamoDBStreamToLambda extends Construct {
       lambdaFunctionProps: props.lambdaFunctionProps
     });
 
-    this.dynamoTable = defaults.buildDynamoDBTableWithStream(this, {
+    [this.dynamoTableInterface, this.dynamoTable] = defaults.buildDynamoDBTableWithStream(this, {
       dynamoTableProps: props.dynamoTableProps,
-      existingTableObj: props.existingTableObj
+      existingTableInterface: props.existingTableInterface
     });
 
     // Grant DynamoDB Stream read perimssion for lambda function
-    this.dynamoTable.grantStreamRead(this.lambdaFunction.grantPrincipal);
+    this.dynamoTableInterface.grantStreamRead(this.lambdaFunction.grantPrincipal);
 
     // Add the Lambda event source mapping
     const eventSourceProps = defaults.DynamoEventSourceProps(this, {
@@ -102,6 +103,6 @@ export class DynamoDBStreamToLambda extends Construct {
       deploySqsDlqQueue: props.deploySqsDlqQueue,
       sqsDlqQueueProps: props.sqsDlqQueueProps
     });
-    this.lambdaFunction.addEventSource(new DynamoEventSource(this.dynamoTable, eventSourceProps));
+    this.lambdaFunction.addEventSource(new DynamoEventSource(this.dynamoTableInterface, eventSourceProps));
   }
 }
