@@ -68,7 +68,7 @@ export interface LambdaToElasticSearchAndKibanaProps {
    */
   readonly domainEndpointEnvironmentVariableName?: string;
   /**
-   * An existing VPC for the construct to use (construct will NOT create a new VPC in this case)
+   * An existing VPC for the lambda to connect (construct will NOT create a new VPC in this case)
    */
   readonly existingVpc?: ec2.IVpc;
   /**
@@ -105,11 +105,17 @@ export class LambdaToElasticSearchAndKibana extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
 
-    if (props.deployVpc || props.existingVpc) {
-      if (props.deployVpc && props.existingVpc) {
-        throw new Error("More than 1 VPC specified in the properties");
-      }
+    // @ts-ignore
+    if ((props.deployVpc || props.vpcProps || props.existingVpc) && (props.lambdaFunctionProps && (props.lambdaFunctionProps.vpc || props.lambdaFunctionProps.vpcSubnets))) {
+      throw new Error("Error - More than 1 VPC specified for lambda");
+    }
 
+    // @ts-ignore
+    if ((props.deployVpc || props.vpcProps || props.existingVpc) && props.esDomainProps && props.esDomainProps.vpcOptions) {
+      throw new Error("Error - More than 1 VPC specified in the properties")
+    }
+
+    if (props.deployVpc || props.existingVpc) {
       this.vpc = defaults.buildVpc(scope, {
         defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
         existingVpc: props.existingVpc,
@@ -119,8 +125,8 @@ export class LambdaToElasticSearchAndKibana extends Construct {
           enableDnsSupport: true,
         },
       });
-
     }
+
 
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,
