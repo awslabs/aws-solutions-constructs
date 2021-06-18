@@ -105,13 +105,13 @@ export class LambdaToElasticSearchAndKibana extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
 
-    // @ts-ignore
-    if ((props.deployVpc || props.vpcProps || props.existingVpc) && (props.lambdaFunctionProps && (props.lambdaFunctionProps.vpc || props.lambdaFunctionProps.vpcSubnets))) {
-      throw new Error("Error - More than 1 VPC specified for lambda");
+    if ((props.deployVpc || props.vpcProps || props.existingVpc) &&
+        (props.lambdaFunctionProps && (props.lambdaFunctionProps.vpc || props.lambdaFunctionProps.vpcSubnets))) {
+      throw new Error("Error - More than 1 VPC specified for Lambda function");
     }
 
-    // @ts-ignore
-    if ((props.deployVpc || props.vpcProps || props.existingVpc) && props.esDomainProps && props.esDomainProps.vpcOptions) {
+    if ((props.deployVpc || props.vpcProps || props.existingVpc) &&
+        props.esDomainProps && props.esDomainProps.vpcOptions) {
       throw new Error("Error - More than 1 VPC specified in the properties")
     }
 
@@ -126,7 +126,6 @@ export class LambdaToElasticSearchAndKibana extends Construct {
         },
       });
     }
-
 
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,

@@ -157,7 +157,6 @@ test('check override cognito domain name with provided cognito domain name', () 
   });
 });
 
-
 // --------------------------------------------------------------
 // Test minimal deployment that deploys a VPC w/vpcProps
 // --------------------------------------------------------------
@@ -285,8 +284,6 @@ test("Test minimal deployment with an existing VPC", () => {
       ],
     },
   });
-
-
 });
 
 // --------------------------------------------------------------
