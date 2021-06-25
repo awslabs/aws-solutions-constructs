@@ -137,7 +137,7 @@ Object {
       },
       "Type": "AWS::ApiGateway::RestApi",
     },
-    "testapigatewayiotdefaultsnapshotRestApiDeployment8CB27899537da871680d57f38fb52e034f331e99": Object {
+    "testapigatewayiotdefaultsnapshotRestApiDeployment8CB27899b39b7c498e943e0a0f3f9dedcc29368d": Object {
       "DependsOn": Array [
         "testapigatewayiotdefaultsnapshotawsapigatewayiotreqval7E4DADB3",
         "testapigatewayiotdefaultsnapshotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6topiclevel7POST12FA075B",
@@ -191,7 +191,7 @@ Object {
           "Format": "{\\"requestId\\":\\"$context.requestId\\",\\"ip\\":\\"$context.identity.sourceIp\\",\\"user\\":\\"$context.identity.user\\",\\"caller\\":\\"$context.identity.caller\\",\\"requestTime\\":\\"$context.requestTime\\",\\"httpMethod\\":\\"$context.httpMethod\\",\\"resourcePath\\":\\"$context.resourcePath\\",\\"status\\":\\"$context.status\\",\\"protocol\\":\\"$context.protocol\\",\\"responseLength\\":\\"$context.responseLength\\"}",
         },
         "DeploymentId": Object {
-          "Ref": "testapigatewayiotdefaultsnapshotRestApiDeployment8CB27899537da871680d57f38fb52e034f331e99",
+          "Ref": "testapigatewayiotdefaultsnapshotRestApiDeployment8CB27899b39b7c498e943e0a0f3f9dedcc29368d",
         },
         "MethodSettings": Array [
           Object {
@@ -1149,7 +1149,7 @@ Object {
                 Object {
                   "Ref": "AWS::Region",
                 },
-                ":a1234567890123-ats.iotdata:path/topics/$aws/things/{thingName}/shadow/name/{shadowName}/update",
+                ":a1234567890123-ats.iotdata:path/things/{thingName}/shadow?name={shadowName}",
               ],
             ],
           },
@@ -1426,7 +1426,7 @@ Object {
       },
       "Type": "AWS::ApiGateway::RestApi",
     },
-    "testapigatewayiotdefaultparams1RestApiDeploymentA41826E842fdfa87f4c5fd8d102b65b5d57315bf": Object {
+    "testapigatewayiotdefaultparams1RestApiDeploymentA41826E8e39ca7e089a812d3e472c9f3a4f54ab6": Object {
       "DependsOn": Array [
         "testapigatewayiotdefaultparams1awsapigatewayiotreqval77A8A6B3",
         "testapigatewayiotdefaultparams1RestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6topiclevel7POSTEA8D5DCC",
@@ -1480,7 +1480,7 @@ Object {
           "Format": "{\\"requestId\\":\\"$context.requestId\\",\\"ip\\":\\"$context.identity.sourceIp\\",\\"user\\":\\"$context.identity.user\\",\\"caller\\":\\"$context.identity.caller\\",\\"requestTime\\":\\"$context.requestTime\\",\\"httpMethod\\":\\"$context.httpMethod\\",\\"resourcePath\\":\\"$context.resourcePath\\",\\"status\\":\\"$context.status\\",\\"protocol\\":\\"$context.protocol\\",\\"responseLength\\":\\"$context.responseLength\\"}",
         },
         "DeploymentId": Object {
-          "Ref": "testapigatewayiotdefaultparams1RestApiDeploymentA41826E842fdfa87f4c5fd8d102b65b5d57315bf",
+          "Ref": "testapigatewayiotdefaultparams1RestApiDeploymentA41826E8e39ca7e089a812d3e472c9f3a4f54ab6",
         },
         "MethodSettings": Array [
           Object {
@@ -2438,7 +2438,7 @@ Object {
                 Object {
                   "Ref": "AWS::Region",
                 },
-                ":a1234567890123-ats.iotdata:path/topics/$aws/things/{thingName}/shadow/name/{shadowName}/update",
+                ":a1234567890123-ats.iotdata:path/things/{thingName}/shadow?name={shadowName}",
               ],
             ],
           },
@@ -2654,7 +2654,7 @@ Object {
       },
       "Type": "AWS::ApiGateway::RestApi",
     },
-    "testapigatewayiotdefaultparamsRestApiDeployment6F0A726491c3cebaebe16e6aef9f0e18c9bad829": Object {
+    "testapigatewayiotdefaultparamsRestApiDeployment6F0A72642be191b13419704d5b213ba9355d9e2c": Object {
       "DependsOn": Array [
         "testapigatewayiotdefaultparamsawsapigatewayiotreqval9B598042",
         "testapigatewayiotdefaultparamsRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6topiclevel7POST9DC33B4A",
@@ -2708,7 +2708,7 @@ Object {
           "Format": "{\\"requestId\\":\\"$context.requestId\\",\\"ip\\":\\"$context.identity.sourceIp\\",\\"user\\":\\"$context.identity.user\\",\\"caller\\":\\"$context.identity.caller\\",\\"requestTime\\":\\"$context.requestTime\\",\\"httpMethod\\":\\"$context.httpMethod\\",\\"resourcePath\\":\\"$context.resourcePath\\",\\"status\\":\\"$context.status\\",\\"protocol\\":\\"$context.protocol\\",\\"responseLength\\":\\"$context.responseLength\\"}",
         },
         "DeploymentId": Object {
-          "Ref": "testapigatewayiotdefaultparamsRestApiDeployment6F0A726491c3cebaebe16e6aef9f0e18c9bad829",
+          "Ref": "testapigatewayiotdefaultparamsRestApiDeployment6F0A72642be191b13419704d5b213ba9355d9e2c",
         },
         "MethodSettings": Array [
           Object {
@@ -3666,7 +3666,7 @@ Object {
                 Object {
                   "Ref": "AWS::Region",
                 },
-                ":a1234567890123-ats.iotdata:path/topics/$aws/things/{thingName}/shadow/name/{shadowName}/update",
+                ":a1234567890123-ats.iotdata:path/things/{thingName}/shadow?name={shadowName}",
               ],
             ],
           },
@@ -4003,7 +4003,7 @@ Object {
       },
       "Type": "AWS::ApiGateway::ApiKey",
     },
-    "testapigatewayiotoverridenparamsRestApiDeployment447F79B713a23a348620407d37bb49f3e581de39": Object {
+    "testapigatewayiotoverridenparamsRestApiDeployment447F79B761c5af75443406b18218017d90499171": Object {
       "DependsOn": Array [
         "testapigatewayiotoverridenparamsawsapigatewayiotreqval6F651A38",
         "testapigatewayiotoverridenparamsRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6topiclevel7POST78BF6C48",
@@ -4057,7 +4057,7 @@ Object {
           "Format": "{\\"requestId\\":\\"$context.requestId\\",\\"ip\\":\\"$context.identity.sourceIp\\",\\"user\\":\\"$context.identity.user\\",\\"caller\\":\\"$context.identity.caller\\",\\"requestTime\\":\\"$context.requestTime\\",\\"httpMethod\\":\\"$context.httpMethod\\",\\"resourcePath\\":\\"$context.resourcePath\\",\\"status\\":\\"$context.status\\",\\"protocol\\":\\"$context.protocol\\",\\"responseLength\\":\\"$context.responseLength\\"}",
         },
         "DeploymentId": Object {
-          "Ref": "testapigatewayiotoverridenparamsRestApiDeployment447F79B713a23a348620407d37bb49f3e581de39",
+          "Ref": "testapigatewayiotoverridenparamsRestApiDeployment447F79B761c5af75443406b18218017d90499171",
         },
         "MethodSettings": Array [
           Object {
@@ -5126,7 +5126,7 @@ Object {
                 Object {
                   "Ref": "AWS::Region",
                 },
-                ":a1234567890123-ats.iotdata:path/topics/$aws/things/{thingName}/shadow/name/{shadowName}/update",
+                ":a1234567890123-ats.iotdata:path/things/{thingName}/shadow?name={shadowName}",
               ],
             ],
           },
