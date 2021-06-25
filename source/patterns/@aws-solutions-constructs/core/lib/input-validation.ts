@@ -45,10 +45,7 @@ export interface VerifiedProps {
   readonly existingBucketObj?: s3.Bucket,
   readonly bucketProps?: s3.BucketProps,
 
-  // topicsProps is an incorrect attribute used in event-rule-sns that
-  // we need to support
   readonly topicProps?: sns.TopicProps,
-  readonly topicsProps?: sns.TopicProps,
   readonly existingTopicObj?: sns.Topic,
 
   readonly glueJobProps?: glue.CfnJobProps,
@@ -108,7 +105,7 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
-  if ((propsObject.topicProps || propsObject.topicsProps) && propsObject.existingTopicObj) {
+  if ((propsObject.topicProps) && propsObject.existingTopicObj) {
     errorMessages += 'Error - Either provide topicProps or existingTopicObj, but not both.\n';
     errorFound = true;
   }
