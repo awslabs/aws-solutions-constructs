@@ -197,7 +197,7 @@ test('Test fail SNS topic check with bad topic attribute name', () => {
   const stack = new Stack();
 
   const props: defaults.VerifiedProps = {
-    topicsProps: {},
+    topicProps: {},
     existingTopicObj: new sns.Topic(stack, 'placeholder', {})
   };
 
