@@ -112,7 +112,7 @@ export class LambdaToElasticSearchAndKibana extends Construct {
 
     if ((props.deployVpc || props.vpcProps || props.existingVpc) &&
         props.esDomainProps && props.esDomainProps.vpcOptions) {
-      throw new Error("Error - More than 1 VPC specified in the properties")
+      throw new Error("Error - More than 1 VPC specified in the properties");
     }
 
     if (props.deployVpc || props.existingVpc) {

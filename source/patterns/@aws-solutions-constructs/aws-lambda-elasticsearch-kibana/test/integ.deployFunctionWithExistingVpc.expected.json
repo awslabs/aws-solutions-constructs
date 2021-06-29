@@ -13,9 +13,6 @@
             "Value": "test-lambda-elasticsearch-kibana-stack4/Vpc"
           }
         ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/Resource"
       }
     },
     "VpcprivateSubnet1SubnetCEAD3716": {
@@ -25,14 +22,7 @@
         "VpcId": {
           "Ref": "Vpc8378EB38"
         },
-        "AvailabilityZone": {
-          "Fn::Select": [
-            0,
-            {
-              "Fn::GetAZs": ""
-            }
-          ]
-        },
+        "AvailabilityZone": "test-region-1a",
         "MapPublicIpOnLaunch": false,
         "Tags": [
           {
@@ -48,9 +38,6 @@
             "Value": "test-lambda-elasticsearch-kibana-stack4/Vpc/privateSubnet1"
           }
         ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/privateSubnet1/Subnet"
       }
     },
     "VpcprivateSubnet1RouteTable1979EACB": {
@@ -65,9 +52,6 @@
             "Value": "test-lambda-elasticsearch-kibana-stack4/Vpc/privateSubnet1"
           }
         ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/privateSubnet1/RouteTable"
       }
     },
     "VpcprivateSubnet1RouteTableAssociationEEBD93CE": {
@@ -79,9 +63,6 @@
         "SubnetId": {
           "Ref": "VpcprivateSubnet1SubnetCEAD3716"
         }
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/privateSubnet1/RouteTableAssociation"
       }
     },
     "VpcprivateSubnet1DefaultRouteB506891A": {
@@ -94,107 +75,16 @@
         "NatGatewayId": {
           "Ref": "VpcpublicSubnet1NATGatewayA036E8A6"
         }
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/privateSubnet1/DefaultRoute"
       }
     },
-    "VpcprivateSubnet2Subnet2DE7549C": {
+    "VpcpublicSubnet1Subnet2BB74ED7": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.64.0/18",
         "VpcId": {
           "Ref": "Vpc8378EB38"
         },
-        "AvailabilityZone": {
-          "Fn::Select": [
-            1,
-            {
-              "Fn::GetAZs": ""
-            }
-          ]
-        },
-        "MapPublicIpOnLaunch": false,
-        "Tags": [
-          {
-            "Key": "aws-cdk:subnet-name",
-            "Value": "private"
-          },
-          {
-            "Key": "aws-cdk:subnet-type",
-            "Value": "Private"
-          },
-          {
-            "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack4/Vpc/privateSubnet2"
-          }
-        ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/privateSubnet2/Subnet"
-      }
-    },
-    "VpcprivateSubnet2RouteTable4D0FFC8C": {
-      "Type": "AWS::EC2::RouteTable",
-      "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack4/Vpc/privateSubnet2"
-          }
-        ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/privateSubnet2/RouteTable"
-      }
-    },
-    "VpcprivateSubnet2RouteTableAssociationB691E645": {
-      "Type": "AWS::EC2::SubnetRouteTableAssociation",
-      "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcprivateSubnet2RouteTable4D0FFC8C"
-        },
-        "SubnetId": {
-          "Ref": "VpcprivateSubnet2Subnet2DE7549C"
-        }
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/privateSubnet2/RouteTableAssociation"
-      }
-    },
-    "VpcprivateSubnet2DefaultRouteBAC3C1C3": {
-      "Type": "AWS::EC2::Route",
-      "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcprivateSubnet2RouteTable4D0FFC8C"
-        },
-        "DestinationCidrBlock": "0.0.0.0/0",
-        "NatGatewayId": {
-          "Ref": "VpcpublicSubnet1NATGatewayA036E8A6"
-        }
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/privateSubnet2/DefaultRoute"
-      }
-    },
-    "VpcpublicSubnet1Subnet2BB74ED7": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "CidrBlock": "10.0.128.0/18",
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "AvailabilityZone": {
-          "Fn::Select": [
-            0,
-            {
-              "Fn::GetAZs": ""
-            }
-          ]
-        },
+        "AvailabilityZone": "test-region-1a",
         "MapPublicIpOnLaunch": true,
         "Tags": [
           {
@@ -234,9 +124,6 @@
             "Value": "test-lambda-elasticsearch-kibana-stack4/Vpc/publicSubnet1"
           }
         ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/publicSubnet1/RouteTable"
       }
     },
     "VpcpublicSubnet1RouteTableAssociation4E83B6E4": {
@@ -248,9 +135,6 @@
         "SubnetId": {
           "Ref": "VpcpublicSubnet1Subnet2BB74ED7"
         }
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/publicSubnet1/RouteTableAssociation"
       }
     },
     "VpcpublicSubnet1DefaultRouteB88F9E93": {
@@ -266,10 +150,7 @@
       },
       "DependsOn": [
         "VpcVPCGWBF912B6E"
-      ],
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/publicSubnet1/DefaultRoute"
-      }
+      ]
     },
     "VpcpublicSubnet1EIP411541E6": {
       "Type": "AWS::EC2::EIP",
@@ -281,9 +162,6 @@
             "Value": "test-lambda-elasticsearch-kibana-stack4/Vpc/publicSubnet1"
           }
         ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/publicSubnet1/EIP"
       }
     },
     "VpcpublicSubnet1NATGatewayA036E8A6": {
@@ -304,100 +182,6 @@
             "Value": "test-lambda-elasticsearch-kibana-stack4/Vpc/publicSubnet1"
           }
         ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/publicSubnet1/NATGateway"
-      }
-    },
-    "VpcpublicSubnet2SubnetE34B022A": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "CidrBlock": "10.0.192.0/18",
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "AvailabilityZone": {
-          "Fn::Select": [
-            1,
-            {
-              "Fn::GetAZs": ""
-            }
-          ]
-        },
-        "MapPublicIpOnLaunch": true,
-        "Tags": [
-          {
-            "Key": "aws-cdk:subnet-name",
-            "Value": "public"
-          },
-          {
-            "Key": "aws-cdk:subnet-type",
-            "Value": "Public"
-          },
-          {
-            "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack4/Vpc/publicSubnet2"
-          }
-        ]
-      },
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W33",
-              "reason": "Allow Public Subnets to have MapPublicIpOnLaunch set to true"
-            }
-          ]
-        }
-      }
-    },
-    "VpcpublicSubnet2RouteTableC5A6DF77": {
-      "Type": "AWS::EC2::RouteTable",
-      "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack4/Vpc/publicSubnet2"
-          }
-        ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/publicSubnet2/RouteTable"
-      }
-    },
-    "VpcpublicSubnet2RouteTableAssociationCCE257FF": {
-      "Type": "AWS::EC2::SubnetRouteTableAssociation",
-      "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcpublicSubnet2RouteTableC5A6DF77"
-        },
-        "SubnetId": {
-          "Ref": "VpcpublicSubnet2SubnetE34B022A"
-        }
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/publicSubnet2/RouteTableAssociation"
-      }
-    },
-    "VpcpublicSubnet2DefaultRoute732F0BEB": {
-      "Type": "AWS::EC2::Route",
-      "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcpublicSubnet2RouteTableC5A6DF77"
-        },
-        "DestinationCidrBlock": "0.0.0.0/0",
-        "GatewayId": {
-          "Ref": "VpcIGWD7BA715C"
-        }
-      },
-      "DependsOn": [
-        "VpcVPCGWBF912B6E"
-      ],
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/publicSubnet2/DefaultRoute"
       }
     },
     "VpcIGWD7BA715C": {
@@ -409,9 +193,6 @@
             "Value": "test-lambda-elasticsearch-kibana-stack4/Vpc"
           }
         ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/IGW"
       }
     },
     "VpcVPCGWBF912B6E": {
@@ -423,9 +204,6 @@
         "InternetGatewayId": {
           "Ref": "VpcIGWD7BA715C"
         }
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/VPCGW"
       }
     },
     "VpcFlowLogIAMRole6A475D41": {
@@ -449,9 +227,6 @@
             "Value": "test-lambda-elasticsearch-kibana-stack4/Vpc"
           }
         ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/FlowLog/IAMRole/Resource"
       }
     },
     "VpcFlowLogIAMRoleDefaultPolicy406FB995": {
@@ -492,9 +267,6 @@
             "Ref": "VpcFlowLogIAMRole6A475D41"
           }
         ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource"
       }
     },
     "VpcFlowLogLogGroup7B5C56B9": {
@@ -539,9 +311,6 @@
             "Value": "test-lambda-elasticsearch-kibana-stack4/Vpc"
           }
         ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/Vpc/FlowLog/FlowLog"
       }
     },
     "testlambdaelasticsearchkibana4LambdaFunctionServiceRoleA52BB7F9": {
@@ -597,9 +366,6 @@
             "PolicyName": "LambdaFunctionServiceRolePolicy"
           }
         ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/test-lambda-elasticsearch-kibana4/LambdaFunctionServiceRole/Resource"
       }
     },
     "testlambdaelasticsearchkibana4LambdaFunctionServiceRoleDefaultPolicyA5AD88E5": {
@@ -752,9 +518,6 @@
           "SubnetIds": [
             {
               "Ref": "VpcprivateSubnet1SubnetCEAD3716"
-            },
-            {
-              "Ref": "VpcprivateSubnet2Subnet2DE7549C"
             }
           ]
         }
@@ -814,10 +577,7 @@
         }
       },
       "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/test-lambda-elasticsearch-kibana4/CognitoUserPool/Resource"
-      }
+      "DeletionPolicy": "Retain"
     },
     "testlambdaelasticsearchkibana4CognitoUserPoolClientABBF34C4": {
       "Type": "AWS::Cognito::UserPoolClient",
@@ -843,9 +603,6 @@
         "SupportedIdentityProviders": [
           "COGNITO"
         ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/test-lambda-elasticsearch-kibana4/CognitoUserPoolClient/Resource"
       }
     },
     "testlambdaelasticsearchkibana4CognitoIdentityPool76EE9793": {
@@ -866,9 +623,6 @@
             "ServerSideTokenCheck": true
           }
         ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/test-lambda-elasticsearch-kibana4/CognitoIdentityPool"
       }
     },
     "testlambdaelasticsearchkibana4UserPoolDomain4CAAF2F6": {
@@ -881,10 +635,7 @@
       },
       "DependsOn": [
         "testlambdaelasticsearchkibana4CognitoUserPool37A5CDE1"
-      ],
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/test-lambda-elasticsearch-kibana4/UserPoolDomain"
-      }
+      ]
     },
     "testlambdaelasticsearchkibana4CognitoAuthorizedRoleA7D6B392": {
       "Type": "AWS::IAM::Role",
@@ -945,9 +696,6 @@
             "PolicyName": "CognitoAccessPolicy"
           }
         ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/test-lambda-elasticsearch-kibana4/CognitoAuthorizedRole/Resource"
       }
     },
     "testlambdaelasticsearchkibana4IdentityPoolRoleMapping9378D177": {
@@ -964,9 +712,6 @@
             ]
           }
         }
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/test-lambda-elasticsearch-kibana4/IdentityPoolRoleMapping"
       }
     },
     "testlambdaelasticsearchkibana4CognitoKibanaConfigureRole6A058B80": {
@@ -984,9 +729,6 @@
           ],
           "Version": "2012-10-17"
         }
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/test-lambda-elasticsearch-kibana4/CognitoKibanaConfigureRole/Resource"
       }
     },
     "testlambdaelasticsearchkibana4CognitoKibanaConfigureRolePolicy1615E937": {
@@ -1078,9 +820,6 @@
             "Ref": "testlambdaelasticsearchkibana4CognitoKibanaConfigureRole6A058B80"
           }
         ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/test-lambda-elasticsearch-kibana4/CognitoKibanaConfigureRolePolicy/Resource"
       }
     },
     "testlambdaelasticsearchkibana4ElasticsearchDomainC32C1BE6": {
@@ -1193,9 +932,6 @@
         "Period": 60,
         "Statistic": "Maximum",
         "Threshold": 1
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/test-lambda-elasticsearch-kibana4/StatusRedAlarm/Resource"
       }
     },
     "testlambdaelasticsearchkibana4StatusYellowAlarm810B4F9E": {
@@ -1209,9 +945,6 @@
         "Period": 60,
         "Statistic": "Maximum",
         "Threshold": 1
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/test-lambda-elasticsearch-kibana4/StatusYellowAlarm/Resource"
       }
     },
     "testlambdaelasticsearchkibana4FreeStorageSpaceTooLowAlarmF3FB31EA": {
@@ -1225,9 +958,6 @@
         "Period": 60,
         "Statistic": "Minimum",
         "Threshold": 20000
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/test-lambda-elasticsearch-kibana4/FreeStorageSpaceTooLowAlarm/Resource"
       }
     },
     "testlambdaelasticsearchkibana4IndexWritesBlockedTooHighAlarmF2968C92": {
@@ -1241,9 +971,6 @@
         "Period": 300,
         "Statistic": "Maximum",
         "Threshold": 1
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/test-lambda-elasticsearch-kibana4/IndexWritesBlockedTooHighAlarm/Resource"
       }
     },
     "testlambdaelasticsearchkibana4AutomatedSnapshotFailureTooHighAlarm53EB1ABB": {
@@ -1257,9 +984,6 @@
         "Period": 60,
         "Statistic": "Maximum",
         "Threshold": 1
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/test-lambda-elasticsearch-kibana4/AutomatedSnapshotFailureTooHighAlarm/Resource"
       }
     },
     "testlambdaelasticsearchkibana4CPUUtilizationTooHighAlarm29B67D10": {
@@ -1273,9 +997,6 @@
         "Period": 900,
         "Statistic": "Average",
         "Threshold": 80
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/test-lambda-elasticsearch-kibana4/CPUUtilizationTooHighAlarm/Resource"
       }
     },
     "testlambdaelasticsearchkibana4JVMMemoryPressureTooHighAlarm9DDED711": {
@@ -1289,9 +1010,6 @@
         "Period": 900,
         "Statistic": "Average",
         "Threshold": 80
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/test-lambda-elasticsearch-kibana4/JVMMemoryPressureTooHighAlarm/Resource"
       }
     },
     "testlambdaelasticsearchkibana4MasterCPUUtilizationTooHighAlarmE66867F2": {
@@ -1305,9 +1023,6 @@
         "Period": 900,
         "Statistic": "Average",
         "Threshold": 50
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/test-lambda-elasticsearch-kibana4/MasterCPUUtilizationTooHighAlarm/Resource"
       }
     },
     "testlambdaelasticsearchkibana4MasterJVMMemoryPressureTooHighAlarm83E1822E": {
@@ -1321,20 +1036,7 @@
         "Period": 900,
         "Statistic": "Average",
         "Threshold": 50
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/test-lambda-elasticsearch-kibana4/MasterJVMMemoryPressureTooHighAlarm/Resource"
       }
-    },
-    "CDKMetadata": {
-      "Type": "AWS::CDK::Metadata",
-      "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAAE11STW/CMAz9LbuHsG7TzkNsIKRpqsrG3U1NCaQxygcVivrflxRKEac8P9vPz1Yynj2/8+zpA1o7EdVhGgQZ5GHtQBxYgZa8EcjmpK0zXjg2sxZdzNZS12y+1TkYaNChScFYv9WxpZJOku5Y0g4oXnjYHEXKbfI5y408gcO1LzW6RI6oIO/wF0qFIz9y0QEJCUn6VsxyXyopRomvVZ6eH3DLOKSFc4pWOvqMBXdUdHKNZi6uvGtQO7ZQ1H5Tv94A1yi8ke68NOSPvat7omMSGh4Kujju35yioX7GBXVMUW15iGo3kQHHHDRlBTwsvBbDZgPumH2dQLq75f35maBaS0c8/Fk0OZFK5Tc8gLmSaZu71Misqgii/cfmT2pA6seKtNB4n46hAuuksAhG7HgsvrYJRb5qwUUyzBSYJgn1oOs6pqlCvrfTU/bGs/Tp9lbKifFxTIO8uLz/eroBopECAAA="
-      },
-      "Metadata": {
-        "aws:cdk:path": "test-lambda-elasticsearch-kibana-stack4/CDKMetadata/Default"
-      },
-      "Condition": "CDKMetadataAvailable"
     }
   },
   "Parameters": {
@@ -1349,200 +1051,6 @@
     "AssetParameters67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682dbArtifactHash322F5E2F": {
       "Type": "String",
       "Description": "Artifact hash for asset \"67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682db\""
-    }
-  },
-  "Conditions": {
-    "CDKMetadataAvailable": {
-      "Fn::Or": [
-        {
-          "Fn::Or": [
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "af-south-1"
-              ]
-            },
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "ap-east-1"
-              ]
-            },
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "ap-northeast-1"
-              ]
-            },
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "ap-northeast-2"
-              ]
-            },
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "ap-south-1"
-              ]
-            },
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "ap-southeast-1"
-              ]
-            },
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "ap-southeast-2"
-              ]
-            },
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "ca-central-1"
-              ]
-            },
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "cn-north-1"
-              ]
-            },
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "cn-northwest-1"
-              ]
-            }
-          ]
-        },
-        {
-          "Fn::Or": [
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "eu-central-1"
-              ]
-            },
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "eu-north-1"
-              ]
-            },
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "eu-south-1"
-              ]
-            },
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "eu-west-1"
-              ]
-            },
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "eu-west-2"
-              ]
-            },
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "eu-west-3"
-              ]
-            },
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "me-south-1"
-              ]
-            },
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "sa-east-1"
-              ]
-            },
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "us-east-1"
-              ]
-            },
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "us-east-2"
-              ]
-            }
-          ]
-        },
-        {
-          "Fn::Or": [
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "us-west-1"
-              ]
-            },
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "us-west-2"
-              ]
-            }
-          ]
-        }
-      ]
     }
   }
 }
