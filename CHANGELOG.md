@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.110.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.109.0...v1.110.0) (2021-06-26)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.110.0
+
+## [1.109.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.108.1...v1.109.0) (2021-06-26)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.109.0
+
+## [1.108.1](https://github.com/awslabs/aws-solutions-constructs/compare/v1.108.0...v1.108.1) (2021-06-26)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.108.1
+
+## [1.108.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.107.0...v1.108.0) (2021-06-26)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.108.0
+
+### ⚠ BREAKING CHANGES
+
+* [291](https://github.com/awslabs/aws-solutions-constructs/issues/219) Changed the attribute name in for EventsRuleToSnsProps from topicsProps to topicProps to match other constructs and documentation. Clients using EventsRuleToSns will need to change this attribute name where it appears in their code.
+
 ## [1.107.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.106.1...v1.107.0) (2021-06-15)
 
 ### Changed

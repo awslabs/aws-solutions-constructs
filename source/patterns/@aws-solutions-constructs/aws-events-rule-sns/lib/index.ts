@@ -25,7 +25,7 @@ export interface EventsRuleToSnsProps {
      *
      * @default - Default props are used
      */
-    readonly topicsProps?: sns.TopicProps
+    readonly topicProps?: sns.TopicProps
     /**
      * User provided eventRuleProps to override the defaults
      *
@@ -85,7 +85,7 @@ export class EventsRuleToSns extends Construct {
       // Setup the sns topic.
       [this.snsTopic, this.encryptionKey] = defaults.buildTopic(this, {
         existingTopicObj: props.existingTopicObj,
-        topicProps: props.topicsProps,
+        topicProps: props.topicProps,
         enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
         encryptionKey: props.encryptionKey,
         encryptionKeyProps: props.encryptionKeyProps
