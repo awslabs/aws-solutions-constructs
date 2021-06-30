@@ -42,71 +42,108 @@ Object {
       },
       "Properties": Object {
         "Code": Object {
-          "ZipFile": "exports.handler = (event, context) => {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports, import/no-extraneous-dependencies
-    const s3 = new (require('aws-sdk').S3)();
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const https = require('https');
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const url = require('url');
-    log(JSON.stringify(event, undefined, 2));
-    const props = event.ResourceProperties;
-    if (event.RequestType === 'Delete') {
-        props.NotificationConfiguration = {}; // this is how you clean out notifications
-    }
-    const req = {
-        Bucket: props.BucketName,
-        NotificationConfiguration: props.NotificationConfiguration,
-    };
-    return s3.putBucketNotificationConfiguration(req, (err, data) => {
-        log({ err, data });
-        if (err) {
-            return submitResponse('FAILED', err.message + \`\\\\nMore information in CloudWatch Log Stream: \${context.logStreamName}\`);
+          "ZipFile": "import boto3  # type: ignore
+import json
+import logging
+import urllib.request
+
+s3 = boto3.client(\\"s3\\")
+
+CONFIGURATION_TYPES = [\\"TopicConfigurations\\", \\"QueueConfigurations\\", \\"LambdaFunctionConfigurations\\"]
+
+def handler(event: dict, context):
+    response_status = \\"SUCCESS\\"
+    error_message = \\"\\"
+    try:
+        props = event[\\"ResourceProperties\\"]
+        bucket = props[\\"BucketName\\"]
+        notification_configuration = props[\\"NotificationConfiguration\\"]
+        request_type = event[\\"RequestType\\"]
+        managed = props.get('Managed', 'true').lower() == 'true'
+        stack_id = event['StackId']
+
+        if managed:
+          config = handle_managed(request_type, notification_configuration)
+        else:
+          config = handle_unmanaged(bucket, stack_id, request_type, notification_configuration)
+
+        put_bucket_notification_configuration(bucket, config)
+    except Exception as e:
+        logging.exception(\\"Failed to put bucket notification configuration\\")
+        response_status = \\"FAILED\\"
+        error_message = f\\"Error: {str(e)}. \\"
+    finally:
+        submit_response(event, context, response_status, error_message)
+
+
+def handle_managed(request_type, notification_configuration):
+  if request_type == 'Delete':
+    return {}
+  return notification_configuration
+
+
+def handle_unmanaged(bucket, stack_id, request_type, notification_configuration):
+
+  # find external notifications
+  external_notifications = find_external_notifications(bucket, stack_id)
+
+  # if delete, that's all we need
+  if request_type == 'Delete':
+    return external_notifications
+
+  def with_id(notification):
+    notification['Id'] = f\\"{stack_id}-{hash(json.dumps(notification, sort_keys=True))}\\"
+    return notification
+
+  # otherwise, merge external with incoming config and augment with id
+  notifications = {}
+  for t in CONFIGURATION_TYPES:
+    external = external_notifications.get(t, [])
+    incoming = [with_id(n) for n in notification_configuration.get(t, [])]
+    notifications[t] = external + incoming
+  return notifications
+
+
+def find_external_notifications(bucket, stack_id):
+  existing_notifications = get_bucket_notification_configuration(bucket)
+  external_notifications = {}
+  for t in CONFIGURATION_TYPES:
+    # if the notification was created by us, we know what id to expect
+    # so we can filter by it.
+    external_notifications[t] = [n for n in existing_notifications.get(t, []) if not n['Id'].startswith(f\\"{stack_id}-\\")]
+
+  return external_notifications
+
+
+def get_bucket_notification_configuration(bucket):
+  return s3.get_bucket_notification_configuration(Bucket=bucket)
+
+
+def put_bucket_notification_configuration(bucket, notification_configuration):
+  s3.put_bucket_notification_configuration(Bucket=bucket, NotificationConfiguration=notification_configuration)
+
+
+def submit_response(event: dict, context, response_status: str, error_message: str):
+    response_body = json.dumps(
+        {
+            \\"Status\\": response_status,
+            \\"Reason\\": f\\"{error_message}See the details in CloudWatch Log Stream: {context.log_stream_name}\\",
+            \\"PhysicalResourceId\\": event.get(\\"PhysicalResourceId\\") or event[\\"LogicalResourceId\\"],
+            \\"StackId\\": event[\\"StackId\\"],
+            \\"RequestId\\": event[\\"RequestId\\"],
+            \\"LogicalResourceId\\": event[\\"LogicalResourceId\\"],
+            \\"NoEcho\\": False,
         }
-        else {
-            return submitResponse('SUCCESS');
-        }
-    });
-    function log(obj) {
-        console.error(event.RequestId, event.StackId, event.LogicalResourceId, obj);
-    }
-    // eslint-disable-next-line max-len
-    // adapted from https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-lambda-function-code.html#cfn-lambda-function-code-cfnresponsemodule
-    // to allow sending an error message as a reason.
-    function submitResponse(responseStatus, reason) {
-        const responseBody = JSON.stringify({
-            Status: responseStatus,
-            Reason: reason || 'See the details in CloudWatch Log Stream: ' + context.logStreamName,
-            PhysicalResourceId: event.PhysicalResourceId || event.LogicalResourceId,
-            StackId: event.StackId,
-            RequestId: event.RequestId,
-            LogicalResourceId: event.LogicalResourceId,
-            NoEcho: false,
-        });
-        log({ responseBody });
-        const parsedUrl = url.parse(event.ResponseURL);
-        const options = {
-            hostname: parsedUrl.hostname,
-            port: 443,
-            path: parsedUrl.path,
-            method: 'PUT',
-            headers: {
-                'content-type': '',
-                'content-length': responseBody.length,
-            },
-        };
-        const request = https.request(options, (r) => {
-            log({ statusCode: r.statusCode, statusMessage: r.statusMessage });
-            context.done();
-        });
-        request.on('error', (error) => {
-            log({ sendError: error });
-            context.done();
-        });
-        request.write(responseBody);
-        request.end();
-    }
-};",
+    ).encode(\\"utf-8\\")
+    headers = {\\"content-type\\": \\"\\", \\"content-length\\": str(len(response_body))}
+    try:
+        req = urllib.request.Request(url=event[\\"ResponseURL\\"], headers=headers, data=response_body, method=\\"PUT\\")
+        with urllib.request.urlopen(req) as response:
+            print(response.read().decode(\\"utf-8\\"))
+        print(\\"Status code: \\" + response.reason)
+    except Exception as e:
+        print(\\"send(..) failed executing request.urlopen(..): \\" + str(e))
+",
         },
         "Description": "AWS CloudFormation handler for \\"Custom::S3BucketNotifications\\" resources (@aws-cdk/aws-s3)",
         "Handler": "index.handler",
@@ -116,7 +153,7 @@ Object {
             "Arn",
           ],
         },
-        "Runtime": "nodejs12.x",
+        "Runtime": "python3.8",
         "Timeout": 300,
       },
       "Type": "AWS::Lambda::Function",
@@ -426,6 +463,7 @@ Object {
         "BucketName": Object {
           "Ref": "tests3lambdaS3BucketBE7C1B8E",
         },
+        "Managed": true,
         "NotificationConfiguration": Object {
           "LambdaFunctionConfigurations": Array [
             Object {
@@ -608,71 +646,108 @@ Object {
       },
       "Properties": Object {
         "Code": Object {
-          "ZipFile": "exports.handler = (event, context) => {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports, import/no-extraneous-dependencies
-    const s3 = new (require('aws-sdk').S3)();
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const https = require('https');
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const url = require('url');
-    log(JSON.stringify(event, undefined, 2));
-    const props = event.ResourceProperties;
-    if (event.RequestType === 'Delete') {
-        props.NotificationConfiguration = {}; // this is how you clean out notifications
-    }
-    const req = {
-        Bucket: props.BucketName,
-        NotificationConfiguration: props.NotificationConfiguration,
-    };
-    return s3.putBucketNotificationConfiguration(req, (err, data) => {
-        log({ err, data });
-        if (err) {
-            return submitResponse('FAILED', err.message + \`\\\\nMore information in CloudWatch Log Stream: \${context.logStreamName}\`);
+          "ZipFile": "import boto3  # type: ignore
+import json
+import logging
+import urllib.request
+
+s3 = boto3.client(\\"s3\\")
+
+CONFIGURATION_TYPES = [\\"TopicConfigurations\\", \\"QueueConfigurations\\", \\"LambdaFunctionConfigurations\\"]
+
+def handler(event: dict, context):
+    response_status = \\"SUCCESS\\"
+    error_message = \\"\\"
+    try:
+        props = event[\\"ResourceProperties\\"]
+        bucket = props[\\"BucketName\\"]
+        notification_configuration = props[\\"NotificationConfiguration\\"]
+        request_type = event[\\"RequestType\\"]
+        managed = props.get('Managed', 'true').lower() == 'true'
+        stack_id = event['StackId']
+
+        if managed:
+          config = handle_managed(request_type, notification_configuration)
+        else:
+          config = handle_unmanaged(bucket, stack_id, request_type, notification_configuration)
+
+        put_bucket_notification_configuration(bucket, config)
+    except Exception as e:
+        logging.exception(\\"Failed to put bucket notification configuration\\")
+        response_status = \\"FAILED\\"
+        error_message = f\\"Error: {str(e)}. \\"
+    finally:
+        submit_response(event, context, response_status, error_message)
+
+
+def handle_managed(request_type, notification_configuration):
+  if request_type == 'Delete':
+    return {}
+  return notification_configuration
+
+
+def handle_unmanaged(bucket, stack_id, request_type, notification_configuration):
+
+  # find external notifications
+  external_notifications = find_external_notifications(bucket, stack_id)
+
+  # if delete, that's all we need
+  if request_type == 'Delete':
+    return external_notifications
+
+  def with_id(notification):
+    notification['Id'] = f\\"{stack_id}-{hash(json.dumps(notification, sort_keys=True))}\\"
+    return notification
+
+  # otherwise, merge external with incoming config and augment with id
+  notifications = {}
+  for t in CONFIGURATION_TYPES:
+    external = external_notifications.get(t, [])
+    incoming = [with_id(n) for n in notification_configuration.get(t, [])]
+    notifications[t] = external + incoming
+  return notifications
+
+
+def find_external_notifications(bucket, stack_id):
+  existing_notifications = get_bucket_notification_configuration(bucket)
+  external_notifications = {}
+  for t in CONFIGURATION_TYPES:
+    # if the notification was created by us, we know what id to expect
+    # so we can filter by it.
+    external_notifications[t] = [n for n in existing_notifications.get(t, []) if not n['Id'].startswith(f\\"{stack_id}-\\")]
+
+  return external_notifications
+
+
+def get_bucket_notification_configuration(bucket):
+  return s3.get_bucket_notification_configuration(Bucket=bucket)
+
+
+def put_bucket_notification_configuration(bucket, notification_configuration):
+  s3.put_bucket_notification_configuration(Bucket=bucket, NotificationConfiguration=notification_configuration)
+
+
+def submit_response(event: dict, context, response_status: str, error_message: str):
+    response_body = json.dumps(
+        {
+            \\"Status\\": response_status,
+            \\"Reason\\": f\\"{error_message}See the details in CloudWatch Log Stream: {context.log_stream_name}\\",
+            \\"PhysicalResourceId\\": event.get(\\"PhysicalResourceId\\") or event[\\"LogicalResourceId\\"],
+            \\"StackId\\": event[\\"StackId\\"],
+            \\"RequestId\\": event[\\"RequestId\\"],
+            \\"LogicalResourceId\\": event[\\"LogicalResourceId\\"],
+            \\"NoEcho\\": False,
         }
-        else {
-            return submitResponse('SUCCESS');
-        }
-    });
-    function log(obj) {
-        console.error(event.RequestId, event.StackId, event.LogicalResourceId, obj);
-    }
-    // eslint-disable-next-line max-len
-    // adapted from https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-lambda-function-code.html#cfn-lambda-function-code-cfnresponsemodule
-    // to allow sending an error message as a reason.
-    function submitResponse(responseStatus, reason) {
-        const responseBody = JSON.stringify({
-            Status: responseStatus,
-            Reason: reason || 'See the details in CloudWatch Log Stream: ' + context.logStreamName,
-            PhysicalResourceId: event.PhysicalResourceId || event.LogicalResourceId,
-            StackId: event.StackId,
-            RequestId: event.RequestId,
-            LogicalResourceId: event.LogicalResourceId,
-            NoEcho: false,
-        });
-        log({ responseBody });
-        const parsedUrl = url.parse(event.ResponseURL);
-        const options = {
-            hostname: parsedUrl.hostname,
-            port: 443,
-            path: parsedUrl.path,
-            method: 'PUT',
-            headers: {
-                'content-type': '',
-                'content-length': responseBody.length,
-            },
-        };
-        const request = https.request(options, (r) => {
-            log({ statusCode: r.statusCode, statusMessage: r.statusMessage });
-            context.done();
-        });
-        request.on('error', (error) => {
-            log({ sendError: error });
-            context.done();
-        });
-        request.write(responseBody);
-        request.end();
-    }
-};",
+    ).encode(\\"utf-8\\")
+    headers = {\\"content-type\\": \\"\\", \\"content-length\\": str(len(response_body))}
+    try:
+        req = urllib.request.Request(url=event[\\"ResponseURL\\"], headers=headers, data=response_body, method=\\"PUT\\")
+        with urllib.request.urlopen(req) as response:
+            print(response.read().decode(\\"utf-8\\"))
+        print(\\"Status code: \\" + response.reason)
+    except Exception as e:
+        print(\\"send(..) failed executing request.urlopen(..): \\" + str(e))
+",
         },
         "Description": "AWS CloudFormation handler for \\"Custom::S3BucketNotifications\\" resources (@aws-cdk/aws-s3)",
         "Handler": "index.handler",
@@ -682,7 +757,7 @@ Object {
             "Arn",
           ],
         },
-        "Runtime": "nodejs12.x",
+        "Runtime": "python3.8",
         "Timeout": 300,
       },
       "Type": "AWS::Lambda::Function",
@@ -976,6 +1051,7 @@ Object {
         "BucketName": Object {
           "Ref": "tests3lambdaS3BucketBE7C1B8E",
         },
+        "Managed": true,
         "NotificationConfiguration": Object {
           "LambdaFunctionConfigurations": Array [
             Object {
