@@ -285,11 +285,11 @@ Object {
               Object {
                 "Ref": "AWS::StackName",
               },
-              "/*\\",\\"Condition\\":{\\"Bool\\":{\\"aws:UserAgent\\":\\"",
+              "/*\\",\\"Condition\\":{\\"StringEquals\\":{\\"aws:UserAgent\\":\\"",
               Object {
                 "Ref": "testcloudfrontmediastoreCloudFrontOriginAccessIdentity966405A0",
               },
-              "\\",\\"aws:SecureTransport\\":\\"true\\"}}}]}",
+              "\\"},\\"Bool\\":{\\"aws:SecureTransport\\":\\"true\\"}}}]}",
             ],
           ],
         },
