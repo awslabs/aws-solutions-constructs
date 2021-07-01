@@ -2,7 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [1.110.1](https://github.com/awslabs/aws-solutions-constructs/compare/v1.110.0...v1.110.1) (2021-07-01)
+## [1.110.1](https://github.com/awslabs/aws-solutions-constructs/compare/v1.110.0...v1.110.1) (2021-07-01)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.110.1
+
+### ⚠ BREAKING CHANGES
+
+* [253](https://github.com/awslabs/aws-solutions-constructs/pull/253) The construct docs say Mediastore requests are only accepted from CloudFront. The policy as written did not enforce this. If your app relied on the undocumented behavior and made Mediastore requests directly this change will break your app as the policy is now implemented as documented - only calls through CloudFront are accepted.
 
 ## [1.110.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.109.0...v1.110.0) (2021-06-26)
 
