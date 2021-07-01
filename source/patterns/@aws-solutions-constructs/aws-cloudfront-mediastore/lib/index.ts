@@ -95,8 +95,10 @@ export class CloudFrontToMediaStore extends Construct {
               ],
               Resource: `arn:${Aws.PARTITION}:mediastore:${Aws.REGION}:${Aws.ACCOUNT_ID}:container/${Aws.STACK_NAME}/*`,
               Condition: {
+                StringEquals: {
+                  'aws:UserAgent': this.cloudFrontOriginAccessIdentity.originAccessIdentityName
+                },
                 Bool: {
-                  'aws:UserAgent': this.cloudFrontOriginAccessIdentity.originAccessIdentityName,
                   'aws:SecureTransport': 'true'
                 }
               }
