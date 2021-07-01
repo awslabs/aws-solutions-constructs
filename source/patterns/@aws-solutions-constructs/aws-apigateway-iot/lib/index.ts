@@ -192,8 +192,7 @@ export class ApiGatewayToIot extends Construct {
     shadowReqParams);
     const methodNamedShadowReqParams = Object.assign({
       'method.request.path.shadowName': true}, methodShadowReqParams);
-      // For some reason path mapping to 'things/{thingName}/shadow/name/{shadowName}' results in 403 error, hence this shortcut
-    this.addResourceMethod(namedShadowResource, props, 'topics/$aws/things/{thingName}/shadow/name/{shadowName}/update',
+    this.addResourceMethod(namedShadowResource, props, 'things/{thingName}/shadow?name={shadowName}',
       namedShadowReqParams, methodNamedShadowReqParams);
   }
 

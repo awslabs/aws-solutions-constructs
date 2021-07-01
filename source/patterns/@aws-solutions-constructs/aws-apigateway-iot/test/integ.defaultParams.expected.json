@@ -102,7 +102,7 @@
         "Name": "RestApi"
       }
     },
-    "testapigatewayiotRestApiDeploymentA8FCF505535c339e7b0d42f80425dcbceee2ad80": {
+    "testapigatewayiotRestApiDeploymentA8FCF5057ffc77ee6fd9f35b0f1c353f67d36988": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -160,7 +160,7 @@
           "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "testapigatewayiotRestApiDeploymentA8FCF505535c339e7b0d42f80425dcbceee2ad80"
+          "Ref": "testapigatewayiotRestApiDeploymentA8FCF5057ffc77ee6fd9f35b0f1c353f67d36988"
         },
         "MethodSettings": [
           {
@@ -1105,7 +1105,7 @@
                 {
                   "Ref": "AWS::Region"
                 },
-                ":a1234567890123-ats.iotdata:path/topics/$aws/things/{thingName}/shadow/name/{shadowName}/update"
+                ":a1234567890123-ats.iotdata:path/things/{thingName}/shadow?name={shadowName}"
               ]
             ]
           }
