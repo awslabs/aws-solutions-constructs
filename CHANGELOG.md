@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file. See [standa
 ### Changed
 
 * Upgraded all patterns to CDK v1.110.1
+* Changed URL used to access IoT in aws-apigateway-iot [232](https://github.com/awslabs/aws-solutions-constructs/pull/232)
 
 ### ⚠ BREAKING CHANGES
 
