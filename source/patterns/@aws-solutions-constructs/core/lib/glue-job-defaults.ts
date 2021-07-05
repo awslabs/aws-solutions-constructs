@@ -11,20 +11,35 @@
  *  and limitations under the License.
  */
 
-import { CfnJob, CfnJobProps } from '@aws-cdk/aws-glue';
-import { IRole } from '@aws-cdk/aws-iam';
-import { IResolvable } from '@aws-cdk/core';
+import * as glue from '@aws-cdk/aws-glue';
+import * as iam from '@aws-cdk/aws-iam';
 
-export function DefaultGlueJobProps(jobRole: IRole, jobCommand: CfnJob.JobCommandProperty | IResolvable,
-  glueSecurityConfigName: string, _defaultArguments: {}, _glueVersion: string | undefined ): CfnJobProps | any {
-  const defaultGlueJobProps: CfnJobProps = {
-    command: jobCommand,
-    role: jobRole.roleArn,
-    securityConfiguration: glueSecurityConfigName,
-    defaultArguments: _defaultArguments,
-    // glue version though optional is required for streaming etl jobs otherwise it throws an error that 'command not found'
-    ...(_glueVersion !== undefined ? { glueVersion: _glueVersion } : { glueVersion: '2.0' })
-  };
+export function DefaultGlueJobProps(jobRole: iam.IRole, userProvidedGlueJobProps: Partial<glue.CfnJobProps>,
+  glueSecurityConfigName: string, _defaultArguments: {} ): glue.CfnJobProps {
+  const _glueVersion: string | undefined = userProvidedGlueJobProps.glueVersion;
+
+  let defaultGlueJobProps: glue.CfnJobProps;
+
+  if (userProvidedGlueJobProps.workerType !== undefined && userProvidedGlueJobProps.numberOfWorkers !== undefined) {
+    defaultGlueJobProps = {
+      command: userProvidedGlueJobProps.command!,
+      role: jobRole.roleArn,
+      securityConfiguration: glueSecurityConfigName,
+      defaultArguments: _defaultArguments,
+      maxCapacity: 2, // setting default to 2 to ensure customers don't pay for something they don't need
+      // glue version though optional is required for streaming etl jobs otherwise it throws an error that 'command not found'
+      ...(_glueVersion !== undefined ? { glueVersion: _glueVersion } : { glueVersion: '2.0' })
+    };
+  } else {
+    defaultGlueJobProps = {
+      command: userProvidedGlueJobProps.command!,
+      role: jobRole.roleArn,
+      securityConfiguration: glueSecurityConfigName,
+      defaultArguments: _defaultArguments,
+      // glue version though optional is required for streaming etl jobs otherwise it throws an error that 'command not found'
+      ...(_glueVersion !== undefined ? { glueVersion: _glueVersion } : { glueVersion: '2.0' })
+    };
+  }
 
   return defaultGlueJobProps;
 }

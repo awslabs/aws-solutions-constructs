@@ -32,11 +32,15 @@ test('Test deployment with role creation', () => {
     assumedBy: new ServicePrincipal('glue.amazonaws.com')
   });
 
-  const cfnJobProps: CfnJobProps = defaults.DefaultGlueJobProps(_jobRole, {
-    name: _jobID,
-    pythonVersion: '3',
-    scriptLocation: 's3://fakelocation/script'
-  }, 'testETLJob', {}, '1.0');
+  const _userProvidedCfnJobProps: Partial<CfnJobProps> = {
+    command: {
+      name: _jobID,
+      pythonVersion: '3',
+      scriptLocation: 's3://fakelocation/script'
+    }
+  };
+
+  const cfnJobProps: CfnJobProps = defaults.DefaultGlueJobProps(_jobRole, _userProvidedCfnJobProps, 'testETLJob', {});
 
   const _database = defaults.createGlueDatabase(stack, defaults.DefaultGlueDatabaseProps());
 
@@ -448,7 +452,7 @@ test('check for JobCommandProperty type', () => {
     defaults.buildGlueJob(stack, {
       glueJobProps: {
         command: {
-          fakekey: 'fakevalue'
+          name: 'fakevalue'
         }
       },
       database: _database,
