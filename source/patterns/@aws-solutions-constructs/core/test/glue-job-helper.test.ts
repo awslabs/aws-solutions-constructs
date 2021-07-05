@@ -452,7 +452,7 @@ test('check for JobCommandProperty type', () => {
     defaults.buildGlueJob(stack, {
       glueJobProps: {
         command: {
-          name: 'fakevalue'
+          fakekey: 'fakevalue'
         }
       },
       database: _database,

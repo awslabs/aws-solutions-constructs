@@ -468,7 +468,8 @@ test('Do not pass fieldSchame or table (CfnTable), error out', () => {
       glueJobProps: {
         command: {
           name: 'glueetl',
-          pythonVersion: '3'
+          pythonVersion: '3',
+          scriptPath: `s3://fakebucket/fakepath/fakefile.py`
         }
       },
       outputDataStore: {

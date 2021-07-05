@@ -28,7 +28,7 @@ export interface KinesisstreamsToGluejobProps {
    *
    * @default - Default props are used
    */
-   readonly kinesisStreamProps?: StreamProps | any;
+  readonly kinesisStreamProps?: StreamProps | any;
   /**
    * User provides props to override the default props for Glue ETL Jobs. Providing both this and
    * existingGlueJob will cause an error.
