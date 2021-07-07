@@ -35,7 +35,7 @@ test('Test deployment with role creation', () => {
     command: {
       name: 'glueetl',
       pythonVersion: '3',
-      scriptLocation: new Bucket(stack, 'ScriptBucket').bucketArn,
+      scriptLocation: 's3://fakescriptlocation/fakebucket',
     },
     role: _jobRole.roleArn
   }, 'testETLJob', {});
