@@ -249,7 +249,7 @@ test('Pattern minimal deployment', () => {
         rules_to_suppress: [
           {
             id: "W12",
-            reason: "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.          CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to          publish metrics only for AWS Glue"
+            reason: "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.            CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to            publish metrics only for AWS Glue"
           }
         ]
       }

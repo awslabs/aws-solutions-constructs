@@ -163,7 +163,7 @@ export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, 
     "--database_name": database.ref,
     "--table_name": table.ref,
     ...((outputDataStore === undefined || (outputDataStore && outputDataStore.datastoreType === SinkStoreType.S3)) &&
-    { '--output_path' : `s3a://${_outputLocation[0].bucketName}/output/` }),
+      { '--output_path' : `s3a://${_outputLocation[0].bucketName}/output/` }),
     ...glueJobProps.defaultArguments
   };
 
@@ -238,8 +238,8 @@ function getS3ArnfromS3Url(s3Url: string): string {
  */
 function isJobCommandProperty(command: glue.CfnJob.JobCommandProperty | IResolvable): command is glue.CfnJob.JobCommandProperty {
   if ((command as glue.CfnJob.JobCommandProperty).name ||
-  (command as glue.CfnJob.JobCommandProperty).pythonVersion ||
-  (command as glue.CfnJob.JobCommandProperty).scriptLocation) {
+    (command as glue.CfnJob.JobCommandProperty).pythonVersion ||
+    (command as glue.CfnJob.JobCommandProperty).scriptLocation) {
     return true;
   } else {
     defaults.printWarning('command not of type JobCommandProperty type');

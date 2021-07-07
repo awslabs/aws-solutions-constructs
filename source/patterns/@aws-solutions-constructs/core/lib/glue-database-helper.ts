@@ -11,8 +11,10 @@
  *  and limitations under the License.
  */
 
-import * as glue from "@aws-cdk/aws-glue";
-import * as cdk from "@aws-cdk/core";
+import { CfnDatabase, CfnDatabaseProps } from "@aws-cdk/aws-glue";
+import { Construct } from "@aws-cdk/core";
+
+
 
 /**
  * Create an AWS Glue database with the properties provided
@@ -20,6 +22,6 @@ import * as cdk from "@aws-cdk/core";
  * @param scope
  * @param databaseProps
  */
-export function DefaultGlueDatabase(scope: cdk.Construct, databaseProps: glue.CfnDatabaseProps): glue.CfnDatabase {
-  return new glue.CfnDatabase(scope, 'GlueDatabase', databaseProps);
+export function DefaultGlueDatabase(scope: Construct, databaseProps: CfnDatabaseProps): CfnDatabase {
+  return new CfnDatabase(scope, 'GlueDatabase', databaseProps);
 }
