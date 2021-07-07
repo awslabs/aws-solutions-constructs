@@ -1190,7 +1190,7 @@ Object {
                       Object {
                         "Ref": "AWS::Partition",
                       },
-                      ":s3:::en[TOKEN.78]}",
+                      ":s3:::fakescriptlocation/fakebucket",
                     ],
                   ],
                 },
@@ -1202,7 +1202,7 @@ Object {
                       Object {
                         "Ref": "AWS::Partition",
                       },
-                      ":s3:::en[TOKEN.78]}/*",
+                      ":s3:::fakescriptlocation/fakebucket/*",
                     ],
                   ],
                 },
@@ -1248,12 +1248,7 @@ Object {
         "Command": Object {
           "Name": "glueetl",
           "PythonVersion": "3",
-          "ScriptLocation": Object {
-            "Fn::GetAtt": Array [
-              "ScriptBucketAAD020DD",
-              "Arn",
-            ],
-          },
+          "ScriptLocation": "s3://fakescriptlocation/fakebucket",
         },
         "DefaultArguments": Object {
           "--database_name": Object {
@@ -1511,11 +1506,6 @@ Object {
         },
       },
       "Type": "AWS::S3::BucketPolicy",
-    },
-    "ScriptBucketAAD020DD": Object {
-      "DeletionPolicy": "Retain",
-      "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Retain",
     },
   },
 }

@@ -60,12 +60,7 @@ test('Test deployment with role creation', () => {
       Command: {
         Name: "glueetl",
         PythonVersion: "3",
-        ScriptLocation: {
-          "Fn::GetAtt": [
-            "ScriptBucketAAD020DD",
-            "Arn"
-          ]
-        }
+        ScriptLocation: "s3://fakescriptlocation/fakebucket"
       },
       Role: {
         "Fn::GetAtt": [
