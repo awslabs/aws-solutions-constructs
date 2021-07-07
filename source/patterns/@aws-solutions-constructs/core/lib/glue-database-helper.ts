@@ -14,8 +14,6 @@
 import { CfnDatabase, CfnDatabaseProps } from "@aws-cdk/aws-glue";
 import { Construct } from "@aws-cdk/core";
 
-
-
 /**
  * Create an AWS Glue database with the properties provided
  *
