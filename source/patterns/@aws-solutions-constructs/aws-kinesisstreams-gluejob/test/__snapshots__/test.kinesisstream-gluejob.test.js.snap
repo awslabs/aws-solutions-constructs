@@ -417,6 +417,7 @@ Object {
           },
         },
         "GlueVersion": "2.0",
+        "NumberOfWorkers": 2,
         "Role": Object {
           "Fn::GetAtt": Array [
             "testkinesisstreamslambdaJobRole42199B9C",
@@ -424,6 +425,7 @@ Object {
           ],
         },
         "SecurityConfiguration": "ETLJobSecurityConfig",
+        "WorkerType": "G.1X",
       },
       "Type": "AWS::Glue::Job",
     },
@@ -1381,6 +1383,7 @@ Object {
           },
         },
         "GlueVersion": "2.0",
+        "NumberOfWorkers": 2,
         "Role": Object {
           "Fn::GetAtt": Array [
             "testkinesisstreamslambdaJobRole42199B9C",
@@ -1388,6 +1391,7 @@ Object {
           ],
         },
         "SecurityConfiguration": "ETLJobSecurityConfig",
+        "WorkerType": "G.1X",
       },
       "Type": "AWS::Glue::Job",
     },
@@ -2022,6 +2026,7 @@ Object {
           },
         },
         "GlueVersion": "2.0",
+        "NumberOfWorkers": 2,
         "Role": Object {
           "Fn::GetAtt": Array [
             "testkinesisstreamslambdaJobRole42199B9C",
@@ -2029,6 +2034,7 @@ Object {
           ],
         },
         "SecurityConfiguration": "ETLJobSecurityConfig",
+        "WorkerType": "G.1X",
       },
       "Type": "AWS::Glue::Job",
     },
@@ -2655,6 +2661,7 @@ Object {
           },
         },
         "GlueVersion": "2.0",
+        "NumberOfWorkers": 2,
         "Role": Object {
           "Fn::GetAtt": Array [
             "testkinesisstreamslambdaJobRole42199B9C",
@@ -2662,6 +2669,7 @@ Object {
           ],
         },
         "SecurityConfiguration": "ETLJobSecurityConfig",
+        "WorkerType": "G.1X",
       },
       "Type": "AWS::Glue::Job",
     },
@@ -3304,6 +3312,7 @@ Object {
           },
         },
         "GlueVersion": "2.0",
+        "NumberOfWorkers": 2,
         "Role": Object {
           "Fn::GetAtt": Array [
             "existingStreamJobJobRoleA1ADDA0A",
@@ -3311,6 +3320,7 @@ Object {
           ],
         },
         "SecurityConfiguration": "ETLJobSecurityConfig",
+        "WorkerType": "G.1X",
       },
       "Type": "AWS::Glue::Job",
     },

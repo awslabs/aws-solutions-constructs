@@ -11,19 +11,27 @@
  *  and limitations under the License.
  */
 
-import { CfnJob, CfnJobProps } from '@aws-cdk/aws-glue';
+import { CfnJobProps } from '@aws-cdk/aws-glue';
 import { IRole } from '@aws-cdk/aws-iam';
-import { IResolvable } from '@aws-cdk/core';
 
-export function DefaultGlueJobProps(jobRole: IRole, jobCommand: CfnJob.JobCommandProperty | IResolvable,
-  glueSecurityConfigName: string, _defaultArguments: {}, _glueVersion: string | undefined ): CfnJobProps | any {
+export function DefaultGlueJobProps(jobRole: IRole, userProvidedGlueJobProps: CfnJobProps,
+  glueSecurityConfigName: string, defaultArguments: {}): CfnJobProps {
+  const glueVersion: string | undefined = userProvidedGlueJobProps.glueVersion;
+
+  // setting default to 2 to reduce cost
+  const maxCapacity = glueVersion === "1.0" && !(userProvidedGlueJobProps.workerType
+    || userProvidedGlueJobProps.numberOfWorkers) ? 2 : undefined;
+
   const defaultGlueJobProps: CfnJobProps = {
-    command: jobCommand,
+    command: userProvidedGlueJobProps.command!,
     role: jobRole.roleArn,
     securityConfiguration: glueSecurityConfigName,
-    defaultArguments: _defaultArguments,
+    defaultArguments,
+    maxCapacity,
+    numberOfWorkers: (!glueVersion || glueVersion === "2.0") ? 2 : undefined, // defaulting to 2 workers,
+    workerType: (!glueVersion || glueVersion === "2.0") ? 'G.1X' : undefined, // defaulting to G.1X as it is preferred with glue version 2.0
     // glue version though optional is required for streaming etl jobs otherwise it throws an error that 'command not found'
-    ...(_glueVersion !== undefined ? { glueVersion: _glueVersion } : { glueVersion: '2.0' })
+    glueVersion: glueVersion ? glueVersion : '2.0'
   };
 
   return defaultGlueJobProps;
