@@ -92,7 +92,7 @@ Object {
           "rules_to_suppress": Array [
             Object {
               "id": "W12",
-              "reason": "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.            CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to            publish metrics only for AWS Glue",
+              "reason": "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.          CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to          publish metrics only for AWS Glue",
             },
           ],
         },
@@ -417,6 +417,7 @@ Object {
           },
         },
         "GlueVersion": "2.0",
+        "NumberOfWorkers": 2,
         "Role": Object {
           "Fn::GetAtt": Array [
             "testkinesisstreamslambdaJobRole42199B9C",
@@ -424,6 +425,7 @@ Object {
           ],
         },
         "SecurityConfiguration": "ETLJobSecurityConfig",
+        "WorkerType": "G.1X",
       },
       "Type": "AWS::Glue::Job",
     },
@@ -768,7 +770,7 @@ Object {
           "rules_to_suppress": Array [
             Object {
               "id": "W12",
-              "reason": "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.            CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to            publish metrics only for AWS Glue",
+              "reason": "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.          CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to          publish metrics only for AWS Glue",
             },
           ],
         },
@@ -1056,7 +1058,7 @@ Object {
           "rules_to_suppress": Array [
             Object {
               "id": "W12",
-              "reason": "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.            CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to            publish metrics only for AWS Glue",
+              "reason": "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.          CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to          publish metrics only for AWS Glue",
             },
           ],
         },
@@ -1381,6 +1383,7 @@ Object {
           },
         },
         "GlueVersion": "2.0",
+        "NumberOfWorkers": 2,
         "Role": Object {
           "Fn::GetAtt": Array [
             "testkinesisstreamslambdaJobRole42199B9C",
@@ -1388,6 +1391,7 @@ Object {
           ],
         },
         "SecurityConfiguration": "ETLJobSecurityConfig",
+        "WorkerType": "G.1X",
       },
       "Type": "AWS::Glue::Job",
     },
@@ -1697,7 +1701,7 @@ Object {
           "rules_to_suppress": Array [
             Object {
               "id": "W12",
-              "reason": "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.            CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to            publish metrics only for AWS Glue",
+              "reason": "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.          CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to          publish metrics only for AWS Glue",
             },
           ],
         },
@@ -2022,6 +2026,7 @@ Object {
           },
         },
         "GlueVersion": "2.0",
+        "NumberOfWorkers": 2,
         "Role": Object {
           "Fn::GetAtt": Array [
             "testkinesisstreamslambdaJobRole42199B9C",
@@ -2029,6 +2034,7 @@ Object {
           ],
         },
         "SecurityConfiguration": "ETLJobSecurityConfig",
+        "WorkerType": "G.1X",
       },
       "Type": "AWS::Glue::Job",
     },
@@ -2330,7 +2336,7 @@ Object {
           "rules_to_suppress": Array [
             Object {
               "id": "W12",
-              "reason": "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.            CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to            publish metrics only for AWS Glue",
+              "reason": "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.          CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to          publish metrics only for AWS Glue",
             },
           ],
         },
@@ -2655,6 +2661,7 @@ Object {
           },
         },
         "GlueVersion": "2.0",
+        "NumberOfWorkers": 2,
         "Role": Object {
           "Fn::GetAtt": Array [
             "testkinesisstreamslambdaJobRole42199B9C",
@@ -2662,6 +2669,7 @@ Object {
           ],
         },
         "SecurityConfiguration": "ETLJobSecurityConfig",
+        "WorkerType": "G.1X",
       },
       "Type": "AWS::Glue::Job",
     },
@@ -2979,7 +2987,7 @@ Object {
           "rules_to_suppress": Array [
             Object {
               "id": "W12",
-              "reason": "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.            CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to            publish metrics only for AWS Glue",
+              "reason": "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.          CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to          publish metrics only for AWS Glue",
             },
           ],
         },
@@ -3304,6 +3312,7 @@ Object {
           },
         },
         "GlueVersion": "2.0",
+        "NumberOfWorkers": 2,
         "Role": Object {
           "Fn::GetAtt": Array [
             "existingStreamJobJobRoleA1ADDA0A",
@@ -3311,6 +3320,7 @@ Object {
           ],
         },
         "SecurityConfiguration": "ETLJobSecurityConfig",
+        "WorkerType": "G.1X",
       },
       "Type": "AWS::Glue::Job",
     },

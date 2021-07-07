@@ -26,21 +26,19 @@ import * as defaults from '..';
 test('Test deployment with role creation', () => {
   // Stack
   const stack = new Stack();
-  const _jobID = 'glueetl';
 
   const _jobRole = new Role(stack, 'CustomETLJobRole', {
     assumedBy: new ServicePrincipal('glue.amazonaws.com')
   });
 
-  const _userProvidedCfnJobProps: Partial<CfnJobProps> = {
+  const cfnJobProps: CfnJobProps = defaults.DefaultGlueJobProps(_jobRole, {
     command: {
-      name: _jobID,
+      name: 'glueetl',
       pythonVersion: '3',
-      scriptLocation: 's3://fakelocation/script'
-    }
-  };
-
-  const cfnJobProps: CfnJobProps = defaults.DefaultGlueJobProps(_jobRole, _userProvidedCfnJobProps, 'testETLJob', {});
+      scriptLocation: new Bucket(stack, 'ScriptBucket').bucketArn,
+    },
+    role: _jobRole.roleArn
+  }, 'testETLJob', {});
 
   const _database = defaults.createGlueDatabase(stack, defaults.DefaultGlueDatabaseProps());
 
@@ -62,7 +60,12 @@ test('Test deployment with role creation', () => {
       Command: {
         Name: "glueetl",
         PythonVersion: "3",
-        ScriptLocation: "s3://fakelocation/script"
+        ScriptLocation: {
+          "Fn::GetAtt": [
+            "ScriptBucketAAD020DD",
+            "Arn"
+          ]
+        }
       },
       Role: {
         "Fn::GetAtt": [
@@ -70,7 +73,10 @@ test('Test deployment with role creation', () => {
           "Arn"
         ]
       },
-      SecurityConfiguration: "testETLJob"
+      GlueVersion: "2.0",
+      NumberOfWorkers: 2,
+      SecurityConfiguration: "testETLJob",
+      WorkerType: "G.1X"
     }
   }, ResourcePart.CompleteDefinition);
 });
@@ -155,8 +161,6 @@ test('Test custom deployment properties', () => {
       description: 'Existing role'
     }).roleArn,
     glueVersion: '1',
-    allocatedCapacity: 2,
-    maxCapacity: 4,
     numberOfWorkers: 2,
     workerType: 'Standard'
   };
@@ -181,14 +185,12 @@ test('Test custom deployment properties', () => {
   // check if Glue Job Resource was created correctly
   expect(stack).toHaveResourceLike('AWS::Glue::Job', {
     Properties: {
-      AllocatedCapacity: 2,
       Command: {
         Name: "glueetl",
         PythonVersion: "3",
         ScriptLocation: "s3://existingFakeLocation/existingScript",
       },
       GlueVersion: "1",
-      MaxCapacity: 4,
       NumberOfWorkers: 2,
       Role: {
         "Fn::GetAtt": [
@@ -461,6 +463,153 @@ test('check for JobCommandProperty type', () => {
         type: "int",
         comment: ""
       }], 'kinesis', {STREAM_NAME: 'testStream'})
+    });
+  } catch (error) {
+    expect(error).toBeInstanceOf(Error);
+  }
+});
+
+// --------------------------------------------------------------
+// Supply maxCapacity with GlueVersion 2.0 and error out
+// --------------------------------------------------------------
+test('GlueJob configuration with glueVersion 2.0 should not support maxCapacity and error out', () => {
+  const stack = new Stack();
+  try {
+    const _database = defaults.createGlueDatabase(stack);
+    defaults.buildGlueJob(stack, {
+      outputDataStore: {
+        datastoreType: defaults.SinkStoreType.S3
+      },
+      database: _database,
+      table: defaults.createGlueTable(stack, _database, defaults.DefaultGlueTableProps(_database, [{
+        name: "id",
+        type: "int",
+        comment: ""
+      }], 'kinesis', {STREAM_NAME: 'testStream'})),
+      glueJobProps: {
+        glueVersion: '2.0',
+        maxCapacity: '2'
+      }
+    });
+  } catch (error) {
+    expect(error).toBeInstanceOf(Error);
+  }
+});
+
+// --------------------------------------------------------------
+// Supply maxCapacity with GlueVersion 1.0
+// --------------------------------------------------------------
+test('GlueJob configuration with glueVersion 1.0 should support maxCapacity', () => {
+  const stack = new Stack();
+  const _database = defaults.createGlueDatabase(stack);
+  defaults.buildGlueJob(stack, {
+    outputDataStore: {
+      datastoreType: defaults.SinkStoreType.S3
+    },
+    database: _database,
+    table: defaults.createGlueTable(stack, _database, defaults.DefaultGlueTableProps(_database, [{
+      name: "id",
+      type: "int",
+      comment: ""
+    }], 'kinesis', {STREAM_NAME: 'testStream'})),
+    glueJobProps: {
+      command: {
+        name: "gluejob1.0",
+        pythonVersion: '3',
+        scriptLocation: 's3://fakelocation/script'
+      },
+      glueVersion: '1.0',
+      maxCapacity: 2
+    }
+  });
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+// --------------------------------------------------------------
+// Fail if setting maxCapacity and WorkerType/ NumberOfWorkers
+// --------------------------------------------------------------
+test('Cannot use maxCapacity and WorkerType, so error out', () => {
+  const stack = new Stack();
+  try {
+    const _database = defaults.createGlueDatabase(stack);
+    defaults.buildGlueJob(stack, {
+      outputDataStore: {
+        datastoreType: defaults.SinkStoreType.S3
+      },
+      database: _database,
+      table: defaults.createGlueTable(stack, _database, defaults.DefaultGlueTableProps(_database, [{
+        name: "id",
+        type: "int",
+        comment: ""
+      }], 'kinesis', {STREAM_NAME: 'testStream'})),
+      glueJobProps: {
+        command: {
+          name: "gluejob1.0",
+          pythonVersion: '3'
+        },
+        glueVersion: '1.0',
+        maxCapacity: '2',
+        workerType: 'Standard'
+      }
+    });
+  } catch (error) {
+    expect(error).toBeInstanceOf(Error);
+  }
+});
+
+test('Cannot use maxCapacity and WorkerType, so error out', () => {
+  const stack = new Stack();
+  try {
+    const _database = defaults.createGlueDatabase(stack);
+    defaults.buildGlueJob(stack, {
+      outputDataStore: {
+        datastoreType: defaults.SinkStoreType.S3
+      },
+      database: _database,
+      table: defaults.createGlueTable(stack, _database, defaults.DefaultGlueTableProps(_database, [{
+        name: "id",
+        type: "int",
+        comment: ""
+      }], 'kinesis', {STREAM_NAME: 'testStream'})),
+      glueJobProps: {
+        command: {
+          name: "gluejob1.0",
+          pythonVersion: '3'
+        },
+        glueVersion: '1.0',
+        maxCapacity: '2',
+        numberOfWorkers: 2
+      }
+    });
+  } catch (error) {
+    expect(error).toBeInstanceOf(Error);
+  }
+});
+
+test('Cannot use maxCapacity and WorkerType, so error out', () => {
+  const stack = new Stack();
+  try {
+    const _database = defaults.createGlueDatabase(stack);
+    defaults.buildGlueJob(stack, {
+      outputDataStore: {
+        datastoreType: defaults.SinkStoreType.S3
+      },
+      database: _database,
+      table: defaults.createGlueTable(stack, _database, defaults.DefaultGlueTableProps(_database, [{
+        name: "id",
+        type: "int",
+        comment: ""
+      }], 'kinesis', {STREAM_NAME: 'testStream'})),
+      glueJobProps: {
+        command: {
+          name: "gluejob1.0",
+          pythonVersion: '3'
+        },
+        glueVersion: '1.0',
+        maxCapacity: '2',
+        numberOfWorkers: 2,
+        workerType: 'G1.X'
+      }
     });
   } catch (error) {
     expect(error).toBeInstanceOf(Error);

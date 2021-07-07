@@ -37,11 +37,14 @@ export interface KinesisstreamsToGluejobProps {
    * for CfnJobProps. If a role is not passed, the construct creates one for you and attaches the appropriate
    * role policies
    *
+   * The default props would set the Glue Version 2.0, with 2 Workers and WorkerType as G1.X. For details on
+   * defining job, please refer the following link for documentation - https://docs.aws.amazon.com/glue/latest/webapi/API_Job.html
+   *
    * @default - None
    */
   readonly glueJobProps?: glue.CfnJobProps | any;
   /**
-   * Existing GlueJob configuration. If this property is provided, any properties provided through @glueJobProps is ignored.
+   * Existing GlueJob configuration. If this property is provided, any properties provided through @glueJobProps is ignored
    */
   readonly existingGlueJob?: glue.CfnJob;
   /**
@@ -211,8 +214,8 @@ export class KinesisstreamsToGluejob extends Construct {
         rules_to_suppress: [{
           id: 'W12',
           reason: 'Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.\
-            CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to\
-            publish metrics only for AWS Glue'
+          CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to\
+          publish metrics only for AWS Glue'
         }]
       }
     };
