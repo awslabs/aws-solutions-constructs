@@ -37,8 +37,8 @@ export interface KinesisstreamsToGluejobProps {
    * for CfnJobProps. If a role is not passed, the construct creates one for you and attaches the appropriate
    * role policies
    *
-   * The default props would set the Glue Version 2.0, with 2 Workers and WorkerType as G1.X. For details on
-   * defining job, please refer the following link for documentation - https://docs.aws.amazon.com/glue/latest/webapi/API_Job.html
+   * The default props will set the Glue Version 2.0, with 2 Workers and WorkerType as G1.X. For details on
+   * defining a Glue Job, please refer the following link for documentation - https://docs.aws.amazon.com/glue/latest/webapi/API_Job.html
    *
    * @default - None
    */
