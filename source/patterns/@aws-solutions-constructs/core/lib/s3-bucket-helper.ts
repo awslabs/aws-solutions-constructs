@@ -46,7 +46,8 @@ export function applySecureBucketPolicy(s3Bucket: s3.Bucket): void {
     new PolicyStatement({
       sid: 'HttpsOnly',
       resources: [
-        `${s3Bucket.bucketArn}/*`
+        `${s3Bucket.bucketArn}/*`,
+        `${s3Bucket.bucketArn}`
       ],
       actions: ['*'],
       principals: [new AnyPrincipal()],
