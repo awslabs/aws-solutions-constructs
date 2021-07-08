@@ -513,7 +513,9 @@
           }
         },
         "GlueVersion": "2.0",
-        "SecurityConfiguration": "ETLJobSecurityConfig"
+        "NumberOfWorkers": 2,
+        "SecurityConfiguration": "ETLJobSecurityConfig",
+        "WorkerType": "G.1X"
       }
     },
     "GlueDatabase": {

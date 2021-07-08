@@ -12,19 +12,20 @@
  */
 
 // Imports
-import * as defaults from '../';
-import { Stack } from '@aws-cdk/core';
-import { CreateScrapBucket } from './test-helper';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as sqs from '@aws-cdk/aws-sqs';
-import { MediaStoreContainerProps } from '../lib/mediastore-defaults';
-import * as mediastore from '@aws-cdk/aws-mediastore';
-import * as kinesis from '@aws-cdk/aws-kinesis';
-import * as sns from '@aws-cdk/aws-sns';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as glue from '@aws-cdk/aws-glue';
 import * as iam from '@aws-cdk/aws-iam';
+import * as kinesis from '@aws-cdk/aws-kinesis';
+import * as lambda from '@aws-cdk/aws-lambda';
+import * as mediastore from '@aws-cdk/aws-mediastore';
+import * as s3 from '@aws-cdk/aws-s3';
+import * as sns from '@aws-cdk/aws-sns';
+import * as sqs from '@aws-cdk/aws-sqs';
+import { Stack } from '@aws-cdk/core';
+import * as defaults from '../';
+import { MediaStoreContainerProps } from '../lib/mediastore-defaults';
 import { BuildSagemakerEndpoint } from '../lib/sagemaker-helper';
+import { CreateScrapBucket } from './test-helper';
 
 test('Test with valid props', () => {
   const props: defaults.VerifiedProps = {
@@ -217,10 +218,14 @@ test('Test fail Glue job check', () => {
   });
 
   const jobProps: glue.CfnJobProps = defaults.DefaultGlueJobProps(_jobRole, {
-    name: 'placeholder',
-    pythonVersion: '3',
-    scriptLocation: 's3://fakelocation/script'
-  }, 'testETLJob', {}, '1.0');
+    command: {
+      name: 'glueetl',
+      pythonVersion: '3',
+      scriptLocation: new s3.Bucket(stack, 'ScriptBucket').bucketArn,
+    },
+    role: new iam.Role(stack, 'JobRole', {
+      assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
+    }).roleArn}, 'testETLJob', {});
 
   const job = new glue.CfnJob(stack, 'placeholder', jobProps);
 
