@@ -224,20 +224,28 @@ Object {
               },
               "Effect": "Deny",
               "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucket7F467421",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucket7F467421",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
                   ],
-                ],
-              },
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucket7F467421",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],

@@ -777,20 +777,28 @@
               },
               "Effect": "Deny",
               "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "cfapilambdaoverrideCloudFrontToApiGatewayCloudfrontLoggingBucket3A71B9E0",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "cfapilambdaoverrideCloudFrontToApiGatewayCloudfrontLoggingBucket3A71B9E0",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
                   ]
-                ]
-              },
+                },
+                {
+                  "Fn::GetAtt": [
+                    "cfapilambdaoverrideCloudFrontToApiGatewayCloudfrontLoggingBucket3A71B9E0",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             }
           ],

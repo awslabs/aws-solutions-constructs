@@ -53,20 +53,28 @@
               },
               "Effect": "Deny",
               "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "testfirehoses3andanalyticsstackKinesisFirehoseToS3S3LoggingBucket887A5000",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testfirehoses3andanalyticsstackKinesisFirehoseToS3S3LoggingBucket887A5000",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
                   ]
-                ]
-              },
+                },
+                {
+                  "Fn::GetAtt": [
+                    "testfirehoses3andanalyticsstackKinesisFirehoseToS3S3LoggingBucket887A5000",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             }
           ],
@@ -134,20 +142,28 @@
               },
               "Effect": "Deny",
               "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "testfirehoses3andanalyticsstackKinesisFirehoseToS3S3BucketAE659354",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testfirehoses3andanalyticsstackKinesisFirehoseToS3S3BucketAE659354",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
                   ]
-                ]
-              },
+                },
+                {
+                  "Fn::GetAtt": [
+                    "testfirehoses3andanalyticsstackKinesisFirehoseToS3S3BucketAE659354",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             }
           ],

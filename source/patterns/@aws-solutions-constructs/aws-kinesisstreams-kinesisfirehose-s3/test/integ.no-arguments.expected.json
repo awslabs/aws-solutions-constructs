@@ -65,20 +65,28 @@
               },
               "Effect": "Deny",
               "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "teststreamfirehoses3KinesisFirehoseToS3S3LoggingBucketFB87BEBC",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "teststreamfirehoses3KinesisFirehoseToS3S3LoggingBucketFB87BEBC",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
                   ]
-                ]
-              },
+                },
+                {
+                  "Fn::GetAtt": [
+                    "teststreamfirehoses3KinesisFirehoseToS3S3LoggingBucketFB87BEBC",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             }
           ],
@@ -146,20 +154,28 @@
               },
               "Effect": "Deny",
               "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "teststreamfirehoses3KinesisFirehoseToS3S3Bucket315B67A3",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "teststreamfirehoses3KinesisFirehoseToS3S3Bucket315B67A3",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
                   ]
-                ]
-              },
+                },
+                {
+                  "Fn::GetAtt": [
+                    "teststreamfirehoses3KinesisFirehoseToS3S3Bucket315B67A3",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             }
           ],

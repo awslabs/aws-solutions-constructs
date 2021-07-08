@@ -219,20 +219,28 @@ Object {
               },
               "Effect": "Deny",
               "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "testfirehoses3S3Bucket93480488",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testfirehoses3S3Bucket93480488",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
                   ],
-                ],
-              },
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testfirehoses3S3Bucket93480488",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -293,20 +301,28 @@ Object {
               },
               "Effect": "Deny",
               "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "testfirehoses3S3LoggingBucket31BFDC22",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testfirehoses3S3LoggingBucket31BFDC22",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
                   ],
-                ],
-              },
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testfirehoses3S3LoggingBucket31BFDC22",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],

@@ -301,20 +301,28 @@
               },
               "Effect": "Deny",
               "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
                   ]
-                ]
-              },
+                },
+                {
+                  "Fn::GetAtt": [
+                    "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             }
           ],
