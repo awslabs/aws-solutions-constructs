@@ -26,7 +26,7 @@ export interface CloudFrontToS3Props {
    *
    * @default - None
    */
-  readonly existingBucketObj?: s3.Bucket,
+  readonly existingBucketInterface?: s3.IBucket,
   /**
    * User provided props to override the default props for the S3 Bucket.
    *
@@ -52,6 +52,7 @@ export class CloudFrontToS3 extends Construct {
     public readonly cloudFrontWebDistribution: cloudfront.Distribution;
     public readonly edgeLambdaFunctionVersion?: lambda.Version;
     public readonly cloudFrontLoggingBucket?: s3.Bucket;
+    public readonly s3BucketInterface: s3.IBucket;
     public readonly s3Bucket?: s3.Bucket;
     public readonly s3LoggingBucket?: s3.Bucket;
 
@@ -67,23 +68,17 @@ export class CloudFrontToS3 extends Construct {
       super(scope, id);
       defaults.CheckProps(props);
 
-      let bucket: s3.Bucket;
-
-      if (props.existingBucketObj && props.bucketProps) {
-        throw new Error('Cannot specify both bucket properties and an existing bucket');
-      }
-
-      if (!props.existingBucketObj) {
+      if (!props.existingBucketInterface) {
         [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
           bucketProps: props.bucketProps
         });
-        bucket = this.s3Bucket;
+        this.s3BucketInterface = this.s3Bucket;
       } else {
-        bucket = props.existingBucketObj;
+        this.s3BucketInterface = props.existingBucketInterface;
       }
 
       [this.cloudFrontWebDistribution, this.edgeLambdaFunctionVersion, this.cloudFrontLoggingBucket] =
-          defaults.CloudFrontDistributionForS3(this, bucket,
+          defaults.CloudFrontDistributionForS3(this, this.s3BucketInterface,
             props.cloudFrontDistributionProps, props.insertHttpSecurityHeaders);
     }
 }
