@@ -94,7 +94,7 @@ test('check existing bucket', () => {
   });
 
   const props: CloudFrontToS3Props = {
-    existingBucketObj: existingBucket
+    existingBucketInterface: existingBucket
   };
 
   new CloudFrontToS3(stack, 'test-cloudfront-s3', props);
@@ -214,7 +214,7 @@ test("Test bad call with existingBucket and bucketProps", () => {
   const app = () => {
     // Helper declaration
     new CloudFrontToS3(stack, "bad-s3-args", {
-      existingBucketObj: testBucket,
+      existingBucketInterface: testBucket,
       bucketProps: {
         removalPolicy: RemovalPolicy.DESTROY
       },

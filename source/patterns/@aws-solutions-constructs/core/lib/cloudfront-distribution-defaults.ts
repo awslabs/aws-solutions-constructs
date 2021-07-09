@@ -58,7 +58,7 @@ export function DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint: 
   }
 }
 
-export function DefaultCloudFrontWebDistributionForS3Props(sourceBucket: s3.Bucket, loggingBucket: s3.Bucket,
+export function DefaultCloudFrontWebDistributionForS3Props(sourceBucket: s3.IBucket, loggingBucket: s3.Bucket,
   setHttpSecurityHeaders: boolean,
   edgeLambda?: lambda.Version): cloudfront.DistributionProps {
 
