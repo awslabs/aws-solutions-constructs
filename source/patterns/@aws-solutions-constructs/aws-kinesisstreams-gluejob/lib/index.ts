@@ -12,7 +12,7 @@
  */
 
 import * as glue from '@aws-cdk/aws-glue';
-import { CfnPolicy, Effect, IRole, Policy, PolicyStatement } from '@aws-cdk/aws-iam';
+import { Effect, IRole, Policy, PolicyStatement } from '@aws-cdk/aws-iam';
 import { Stream, StreamProps } from '@aws-cdk/aws-kinesis';
 import { Bucket } from '@aws-cdk/aws-s3';
 import { Aws, Construct } from '@aws-cdk/core';
@@ -209,16 +209,12 @@ export class KinesisstreamsToGluejob extends Construct {
       })]
     });
 
-    (_glueJobPolicy.node.defaultChild as CfnPolicy).cfnOptions.metadata = {
-      cfn_nag: {
-        rules_to_suppress: [{
-          id: 'W12',
-          reason: 'Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.\
-            CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to\
-            publish metrics only for AWS Glue'
-        }]
-      }
-    };
+    defaults.addCfnSuppressRules(_glueJobPolicy, [
+      {
+        id: 'W12',
+        reason: "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.            CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to            publish metrics only for AWS Glue"
+      },
+    ]);
 
     role.attachInlinePolicy(_glueJobPolicy);
     return role;

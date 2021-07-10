@@ -11,10 +11,10 @@
  *  and limitations under the License.
  */
 
-import { Secret, SecretProps, CfnSecret } from '@aws-cdk/aws-secretsmanager';
+import { Secret, SecretProps } from '@aws-cdk/aws-secretsmanager';
 import { Construct } from '@aws-cdk/core';
 import { DefaultSecretProps } from './secretsmanager-defaults';
-import { overrideProps } from './utils';
+import { overrideProps, addCfnSuppressRules } from './utils';
 
 /**
  * Method to build the default AWS Secrets Manager Secret
@@ -33,15 +33,12 @@ export function buildSecretsManagerSecret(scope: Construct, id: string, secretPr
   }
 
   // suppress warning on build
-  const cfnSecret: CfnSecret = secret.node.findChild('Resource') as CfnSecret;
-  cfnSecret.cfnOptions.metadata = {
-    cfn_nag: {
-      rules_to_suppress: [{
-        id: 'W77',
-        reason: `We allow the use of the AWS account default key aws/secretsmanager for secret encryption.`
-      }]
+  addCfnSuppressRules(secret, [
+    {
+      id: 'W77',
+      reason: `We allow the use of the AWS account default key aws/secretsmanager for secret encryption.`
     }
-  };
+  ]);
 
   return secret;
 }

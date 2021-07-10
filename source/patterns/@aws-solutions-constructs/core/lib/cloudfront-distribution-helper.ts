@@ -23,21 +23,19 @@ import {
   DefaultCloudFrontWebDistributionForApiGatewayProps,
   DefaultCloudFrontDisributionForMediaStoreProps
 } from './cloudfront-distribution-defaults';
-import { overrideProps } from './utils';
+import { overrideProps, addCfnSuppressRules } from './utils';
 import { deployLambdaFunction } from './lambda-helper';
 import { createLoggingBucket } from './s3-bucket-helper';
 
 // Override Cfn_Nag rule: Cloudfront TLS-1.2 rule (https://github.com/stelligent/cfn_nag/issues/384)
 function updateSecurityPolicy(cfDistribution: cloudfront.Distribution) {
-  const cfnCfDistribution = cfDistribution.node.defaultChild as cloudfront.CfnDistribution;
-  cfnCfDistribution.cfnOptions.metadata = {
-    cfn_nag: {
-      rules_to_suppress: [{
-        id: 'W70',
-        reason: `Since the distribution uses the CloudFront domain name, CloudFront automatically sets the security policy to TLSv1 regardless of the value of MinimumProtocolVersion`
-      }]
+  addCfnSuppressRules(cfDistribution, [
+    {
+      id: 'W70',
+      reason: `Since the distribution uses the CloudFront domain name, CloudFront automatically sets the security policy to TLSv1 regardless of the value of MinimumProtocolVersion`
     }
-  };
+  ]);
+
   return cfDistribution;
 }
 
@@ -172,15 +170,13 @@ export function CloudFrontDistributionForS3(scope: cdk.Construct,
 
   // Extract the CfnBucketPolicy from the sourceBucket
   const bucketPolicy = sourceBucket.policy as s3.BucketPolicy;
-  const sourceBucketPolicy = bucketPolicy.node.findChild('Resource') as s3.CfnBucketPolicy;
-  sourceBucketPolicy.cfnOptions.metadata = {
-    cfn_nag: {
-      rules_to_suppress: [{
-        id: 'F16',
-        reason: `Public website bucket policy requires a wildcard principal`
-      }]
+  addCfnSuppressRules(bucketPolicy, [
+    {
+      id: 'F16',
+      reason: `Public website bucket policy requires a wildcard principal`
     }
-  };
+  ]);
+
   return [cfDistribution, edgeLambdaVersion, loggingBucket];
 }
 
