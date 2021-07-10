@@ -29,7 +29,7 @@ let mybucket: s3.Bucket;
 mybucket = defaults.CreateScrapBucket(stack, { removalPolicy: RemovalPolicy.DESTROY });
 
 const _construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {
-  existingBucketObj: mybucket,
+  existingBucketInterface: mybucket,
 });
 
 // Add Cache Policy

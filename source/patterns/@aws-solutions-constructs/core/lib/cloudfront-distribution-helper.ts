@@ -138,7 +138,7 @@ export function CloudFrontDistributionForApiGateway(scope: cdk.Construct,
 }
 
 export function CloudFrontDistributionForS3(scope: cdk.Construct,
-  sourceBucket: s3.Bucket,
+  sourceBucket: s3.IBucket,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
   httpSecurityHeaders?: boolean): [cloudfront.Distribution,
                                             lambda.Version?, s3.Bucket?] {
