@@ -19,7 +19,7 @@ import * as api from '@aws-cdk/aws-apigateway';
 import * as iam from '@aws-cdk/aws-iam';
 import * as apiDefaults from './apigateway-defaults';
 import { buildLogGroup } from './cloudwatch-log-group-helper';
-import { overrideProps } from './utils';
+import { overrideProps, addCfnSuppressRules } from './utils';
 import { IRole } from '@aws-cdk/aws-iam';
 
 /**
@@ -57,14 +57,12 @@ function configureCloudwatchRoleForApi(scope: cdk.Construct, _api: api.RestApi):
 
   // Suppress Cfn Nag warning for APIG
   const deployment: api.CfnDeployment = _api.latestDeployment?.node.findChild('Resource') as api.CfnDeployment;
-  deployment.cfnOptions.metadata = {
-    cfn_nag: {
-      rules_to_suppress: [{
-        id: 'W45',
-        reason: `ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checkes for it in AWS::ApiGateway::Deployment resource`
-      }]
+  addCfnSuppressRules(deployment, [
+    {
+      id: 'W45',
+      reason: `ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checkes for it in AWS::ApiGateway::Deployment resource`
     }
-  };
+  ]);
 
   // Return the CW Role
   return restApiCloudwatchRole;

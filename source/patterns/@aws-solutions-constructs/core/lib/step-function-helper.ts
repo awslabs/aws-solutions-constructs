@@ -16,7 +16,7 @@ import * as logs from '@aws-cdk/aws-logs';
 import * as cdk from '@aws-cdk/core';
 import * as smDefaults from './step-function-defaults';
 import * as sfn from '@aws-cdk/aws-stepfunctions';
-import { overrideProps, generateResourceName } from './utils';
+import { overrideProps, generateResourceName, addCfnSuppressRules } from './utils';
 import * as iam from '@aws-cdk/aws-iam';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import { buildLogGroup } from './cloudwatch-log-group-helper';
@@ -82,14 +82,12 @@ export function buildStateMachine(scope: cdk.Construct, stateMachineProps: sfn.S
     ]);
 
   // Override Cfn Nag warning W12: IAM policy should not allow * resource
-  cfnDefaultPolicy.cfnOptions.metadata = {
-    cfn_nag: {
-      rules_to_suppress: [{
-        id: 'W12',
-        reason: `The 'LogDelivery' actions do not support resource-level authorizations`
-      }]
+  addCfnSuppressRules(cfnDefaultPolicy, [
+    {
+      id: 'W12',
+      reason: `The 'LogDelivery' actions do not support resource-level authorizations`
     }
-  };
+  ]);
 
   // Add a new policy with logging permissions for the given cloudwatch log group
   _sm.addToRolePolicy(new iam.PolicyStatement({
