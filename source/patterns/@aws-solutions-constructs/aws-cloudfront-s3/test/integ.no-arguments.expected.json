@@ -54,20 +54,28 @@
               },
               "Effect": "Deny",
               "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "testcloudfronts3S3LoggingBucket90D239DD",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testcloudfronts3S3LoggingBucket90D239DD",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
                   ]
-                ]
-              },
+                },
+                {
+                  "Fn::GetAtt": [
+                    "testcloudfronts3S3LoggingBucket90D239DD",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             }
           ],
@@ -135,20 +143,28 @@
               },
               "Effect": "Deny",
               "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "testcloudfronts3S3BucketE0C5F76E",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testcloudfronts3S3BucketE0C5F76E",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
                   ]
-                ]
-              },
+                },
+                {
+                  "Fn::GetAtt": [
+                    "testcloudfronts3S3BucketE0C5F76E",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             },
             {
@@ -390,20 +406,28 @@
               },
               "Effect": "Deny",
               "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
                   ]
-                ]
-              },
+                },
+                {
+                  "Fn::GetAtt": [
+                    "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             }
           ],

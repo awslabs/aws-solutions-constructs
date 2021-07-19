@@ -83,20 +83,25 @@ test('test cloudfront check bucket policy', () => {
           },
           Effect: "Deny",
           Principal: "*",
-          Resource: {
-            "Fn::Join": [
-              "",
-              [
-                {
-                  "Fn::GetAtt": [
-                    "S3Bucket07682993",
-                    "Arn"
-                  ]
-                },
-                "/*"
+          Resource: [
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": ["S3Bucket07682993", "Arn"],
+                  },
+                  "/*",
+                ],
+              ],
+            },
+            {
+              "Fn::GetAtt": [
+                "S3Bucket07682993",
+                "Arn"
               ]
-            ]
-          }
+            }
+          ]
         }
       ],
       Version: "2012-10-17"

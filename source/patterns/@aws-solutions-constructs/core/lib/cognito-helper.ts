@@ -14,7 +14,7 @@
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as iam from '@aws-cdk/aws-iam';
 import * as cdk from '@aws-cdk/core';
-import { overrideProps } from './utils';
+import { overrideProps, addCfnSuppressRules } from './utils';
 import { DefaultUserPoolProps, DefaultUserPoolClientProps, DefaultIdentityPoolProps } from './cognito-defaults';
 
 export interface CognitoOptions {
@@ -45,16 +45,12 @@ export function buildUserPool(scope: cdk.Construct, userPoolProps?: cognito.User
   const userPoolSmsRole = userPool.node.tryFindChild('smsRole') as iam.Role;
 
   if (userPoolSmsRole) {
-    const cfnuserPoolSmsRole = userPoolSmsRole.node.defaultChild as iam.CfnRole;
-
-    cfnuserPoolSmsRole.cfnOptions.metadata = {
-      cfn_nag: {
-        rules_to_suppress: [{
-          id: 'W11',
-          reason: `Allowing * resource on permissions policy since its used by Cognito to send SMS messages via sns:Publish`
-        }]
+    addCfnSuppressRules(userPool, [
+      {
+        id: 'W11',
+        reason: `Allowing * resource on permissions policy since its used by Cognito to send SMS messages via sns:Publish`
       }
-    };
+    ]);
   }
 
   return userPool;

@@ -13,7 +13,7 @@
 
 import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
 import { CfnDomainOptions, DefaultCfnDomainProps } from './elasticsearch-defaults';
-import { overrideProps } from './utils';
+import { overrideProps, addCfnSuppressRules } from './utils';
 import * as iam from '@aws-cdk/aws-iam';
 import * as cdk from '@aws-cdk/core';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
@@ -70,20 +70,17 @@ export function buildElasticSearch(scope: cdk.Construct, domainName: string,
     _cfnDomainProps = overrideProps(_cfnDomainProps, cfnDomainProps);
   }
 
-  const esDomain = new elasticsearch.CfnDomain(scope, 'ElasticsearchDomain', _cfnDomainProps);
-
-  esDomain.cfnOptions.metadata = {
-    cfn_nag: {
-      rules_to_suppress: [{
-        id: 'W28',
-        reason: `The ES Domain is passed dynamically as as parameter and explicitly specified to ensure that IAM policies are configured to lockdown access to this specific ES instance only`
-      },
-      {
-        id: 'W90',
-        reason: `This is not a rule for the general case, just for specific use cases/industries`
-      }]
-    }
-  };
+  const esDomain = new elasticsearch.CfnDomain(scope, "ElasticsearchDomain", _cfnDomainProps);
+  addCfnSuppressRules(esDomain, [
+    {
+      id: "W28",
+      reason: `The ES Domain is passed dynamically as as parameter and explicitly specified to ensure that IAM policies are configured to lockdown access to this specific ES instance only`,
+    },
+    {
+      id: "W90",
+      reason: `This is not a rule for the general case, just for specific use cases/industries`,
+    },
+  ]);
 
   return [esDomain, cognitoKibanaConfigureRole];
 }

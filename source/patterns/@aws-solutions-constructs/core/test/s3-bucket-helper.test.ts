@@ -140,38 +140,45 @@ test('Check S3 Bucket policy', () => {
   const stack = new Stack();
   defaults.buildS3Bucket(stack, {});
 
-  expectCDK(stack).to(haveResource("AWS::S3::BucketPolicy", {
-    PolicyDocument: {
-      Statement: [
-        {
-          Sid: 'HttpsOnly',
-          Action: "*",
-          Condition: {
-            Bool: {
-              "aws:SecureTransport": "false"
-            }
-          },
-          Effect: "Deny",
-          Principal: "*",
-          Resource: {
-            "Fn::Join": [
-              "",
-              [
-                {
-                  "Fn::GetAtt": [
-                    "S3Bucket07682993",
-                    "Arn"
-                  ]
-                },
-                "/*"
-              ]
+  expectCDK(stack).to(
+    haveResource("AWS::S3::BucketPolicy", {
+      PolicyDocument: {
+        Statement: [
+          {
+            Sid: "HttpsOnly",
+            Action: "*",
+            Condition: {
+              Bool: {
+                "aws:SecureTransport": "false",
+              },
+            },
+            Effect: "Deny",
+            Principal: "*",
+            Resource: [
+              {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": ["S3Bucket07682993", "Arn"],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+              {
+                "Fn::GetAtt": [
+                  "S3Bucket07682993",
+                  "Arn"
+                ]
+              }
             ]
           }
-        }
-      ],
-      Version: "2012-10-17"
-    }
-  }));
+        ],
+        Version: "2012-10-17",
+      },
+    })
+  );
 });
 
 test('s3 bucket with LoggingBucket and versioning turned off', () => {

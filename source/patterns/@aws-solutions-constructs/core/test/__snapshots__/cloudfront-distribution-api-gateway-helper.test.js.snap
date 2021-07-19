@@ -205,20 +205,28 @@ Object {
               },
               "Effect": "Deny",
               "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "CloudfrontLoggingBucket3C3EFAA7",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "CloudfrontLoggingBucket3C3EFAA7",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
                   ],
-                ],
-              },
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "CloudfrontLoggingBucket3C3EFAA7",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -989,20 +997,28 @@ Object {
               },
               "Effect": "Deny",
               "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "CloudfrontLoggingBucket3C3EFAA7",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "CloudfrontLoggingBucket3C3EFAA7",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
                   ],
-                ],
-              },
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "CloudfrontLoggingBucket3C3EFAA7",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],

@@ -291,20 +291,28 @@ Object {
               },
               "Effect": "Deny",
               "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "testeventsrulekinesisfirehoses3defaultparametersKinesisFirehoseToS3S3Bucket6EC968FC",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testeventsrulekinesisfirehoses3defaultparametersKinesisFirehoseToS3S3Bucket6EC968FC",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
                   ],
-                ],
-              },
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testeventsrulekinesisfirehoses3defaultparametersKinesisFirehoseToS3S3Bucket6EC968FC",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -365,20 +373,28 @@ Object {
               },
               "Effect": "Deny",
               "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "testeventsrulekinesisfirehoses3defaultparametersKinesisFirehoseToS3S3LoggingBucket4233ECBF",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testeventsrulekinesisfirehoses3defaultparametersKinesisFirehoseToS3S3LoggingBucket4233ECBF",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
                   ],
-                ],
-              },
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testeventsrulekinesisfirehoses3defaultparametersKinesisFirehoseToS3S3LoggingBucket4233ECBF",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],

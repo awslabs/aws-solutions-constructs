@@ -81,20 +81,28 @@
               },
               "Effect": "Deny",
               "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "tests3stepfunctionpreexistingbucketconstructCloudTrailS3LoggingBucket4FB012B4",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "tests3stepfunctionpreexistingbucketconstructCloudTrailS3LoggingBucket4FB012B4",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
                   ]
-                ]
-              },
+                },
+                {
+                  "Fn::GetAtt": [
+                    "tests3stepfunctionpreexistingbucketconstructCloudTrailS3LoggingBucket4FB012B4",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             }
           ],
@@ -162,20 +170,28 @@
               },
               "Effect": "Deny",
               "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "tests3stepfunctionpreexistingbucketconstructCloudTrailS3Bucket51B89B99",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "tests3stepfunctionpreexistingbucketconstructCloudTrailS3Bucket51B89B99",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
                   ]
-                ]
-              },
+                },
+                {
+                  "Fn::GetAtt": [
+                    "tests3stepfunctionpreexistingbucketconstructCloudTrailS3Bucket51B89B99",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             },
             {

@@ -11,8 +11,10 @@
  *  and limitations under the License.
  */
 
+// import { countResources } from "@aws-cdk/assert";
 import * as ec2 from "@aws-cdk/aws-ec2";
 import { Construct } from "@aws-cdk/core";
+import { addCfnSuppressRules } from './utils';
 
 export interface SecurityGroupRuleDefinition {
   readonly peer: ec2.IPeer // example: ec2.Peer.ipV4(vpc.vpcCiderBlock)
@@ -38,25 +40,18 @@ export function buildSecurityGroup(
     newSecurityGroup.addEgressRule(rule.peer, rule.connection, rule.description, rule.remoteRule);
   });
 
-  const cfnSecurityGroup = newSecurityGroup.node.findChild(
-    "Resource"
-  ) as ec2.CfnSecurityGroup;
-  cfnSecurityGroup.cfnOptions.metadata = {
-    cfn_nag: {
-      rules_to_suppress: [
-        {
-          id: "W5",
-          reason:
-            "Egress of 0.0.0.0/0 is default and generally considered OK",
-        },
-        {
-          id: "W40",
-          reason:
-            "Egress IPProtocol of -1 is default and generally considered OK",
-        },
-      ],
+  addCfnSuppressRules(newSecurityGroup, [
+    {
+      id: "W5",
+      reason:
+        "Egress of 0.0.0.0/0 is default and generally considered OK",
     },
-  };
+    {
+      id: "W40",
+      reason:
+        "Egress IPProtocol of -1 is default and generally considered OK",
+    },
+  ]);
 
   return newSecurityGroup;
 }
