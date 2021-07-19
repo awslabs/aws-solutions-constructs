@@ -344,6 +344,17 @@
             {
               "Action": [
                 "kms:Decrypt",
+                "kms:GenerateDataKey"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "sns.amazonaws.com"
+              },
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "kms:Decrypt",
                 "kms:GenerateDataKey*"
               ],
               "Effect": "Allow",

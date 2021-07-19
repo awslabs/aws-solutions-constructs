@@ -51,6 +51,17 @@ Object {
             Object {
               "Action": Array [
                 "kms:Decrypt",
+                "kms:GenerateDataKey",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "sns.amazonaws.com",
+              },
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "kms:Decrypt",
                 "kms:GenerateDataKey*",
               ],
               "Effect": "Allow",
@@ -746,6 +757,17 @@ Object {
             Object {
               "Action": Array [
                 "kms:Decrypt",
+                "kms:GenerateDataKey",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "sns.amazonaws.com",
+              },
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "kms:Decrypt",
                 "kms:GenerateDataKey*",
               ],
               "Effect": "Allow",
@@ -914,6 +936,17 @@ Object {
                     ],
                   ],
                 },
+              },
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "kms:Decrypt",
+                "kms:GenerateDataKey",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "sns.amazonaws.com",
               },
               "Resource": "*",
             },
