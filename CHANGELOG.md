@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Changed
 
-* Upgraded all patterns to CDK v1.110.1
+* Upgraded all patterns to CDK v1.111.0
 * Reduced default worker nodes from 10 to 2 on aws-kinesisstreams-gluejob to reduce costs for the default installation (may require refreshing test snapshots)
 * Added bucketname (to the current bucketname/*) in the bucket policy conditions requiring secure transport for greater control  (may require refreshing test snapshots).
 * Updated constructs to add cfn_nag rule suppression to metadata rather than replace the metadata section. [228](https://github.com/awslabs/aws-solutions-constructs/issues/228)
