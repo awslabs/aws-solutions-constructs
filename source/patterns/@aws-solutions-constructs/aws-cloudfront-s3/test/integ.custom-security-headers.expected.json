@@ -1,6 +1,38 @@
 {
   "Description": "Integration Test for aws-cloudfront-s3",
   "Resources": {
+    "MyFunction3BAA72D1": {
+      "Type": "AWS::CloudFront::Function",
+      "Properties": {
+        "Name": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "AWS::Region"
+              },
+              "customsecurityheadersMyFunctionFAC550FB"
+            ]
+          ]
+        },
+        "AutoPublish": true,
+        "FunctionCode": "function handler(event) { var response = event.response;     var headers = response.headers;     headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'};     headers['content-security-policy'] = { value: \"default-src 'none'; base-uri 'self'; img-src 'self'; script-src 'self'; style-src 'self' https:; object-src 'none'; frame-ancestors 'none'; font-src 'self' https:; form-action 'self'; manifest-src 'self'; connect-src 'self'\" };     headers['x-content-type-options'] = { value: 'nosniff'};     headers['x-frame-options'] = {value: 'DENY'};     headers['x-xss-protection'] = {value: '1; mode=block'};     headers['referrer-policy'] = { value: 'same-origin' };     return response;   }",
+        "FunctionConfig": {
+          "Comment": {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "customsecurityheadersMyFunctionFAC550FB"
+              ]
+            ]
+          },
+          "Runtime": "cloudfront-js-1.0"
+        }
+      }
+    },
     "testcloudfronts3S3LoggingBucket90D239DD": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
@@ -218,7 +250,7 @@
               {
                 "Ref": "AWS::Region"
               },
-              "noarguments3SetHttpSecurityHeaders6A000F68"
+              "customsecs3SetHttpSecurityHeaders0AD30771"
             ]
           ]
         },
@@ -232,7 +264,7 @@
                 {
                   "Ref": "AWS::Region"
                 },
-                "noarguments3SetHttpSecurityHeaders6A000F68"
+                "customsecs3SetHttpSecurityHeaders0AD30771"
               ]
             ]
           },
@@ -326,7 +358,7 @@
       "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
       "Properties": {
         "CloudFrontOriginAccessIdentityConfig": {
-          "Comment": "Identity for noargumentstestcloudfronts3CloudFrontDistributionOrigin1E8A0111C"
+          "Comment": "Identity for customsecurityheaderstestcloudfronts3CloudFrontDistributionOrigin1FCAF9C77"
         }
       }
     },
@@ -342,13 +374,13 @@
                 "EventType": "viewer-response",
                 "FunctionARN": {
                   "Fn::GetAtt": [
-                    "testcloudfronts3SetHttpSecurityHeaders6C5A1E69",
+                    "MyFunction3BAA72D1",
                     "FunctionARN"
                   ]
                 }
               }
             ],
-            "TargetOriginId": "noargumentstestcloudfronts3CloudFrontDistributionOrigin1E8A0111C",
+            "TargetOriginId": "customsecurityheaderstestcloudfronts3CloudFrontDistributionOrigin1FCAF9C77",
             "ViewerProtocolPolicy": "redirect-to-https"
           },
           "DefaultRootObject": "index.html",
@@ -371,7 +403,7 @@
                   "RegionalDomainName"
                 ]
               },
-              "Id": "noargumentstestcloudfronts3CloudFrontDistributionOrigin1E8A0111C",
+              "Id": "customsecurityheaderstestcloudfronts3CloudFrontDistributionOrigin1FCAF9C77",
               "S3OriginConfig": {
                 "OriginAccessIdentity": {
                   "Fn::Join": [
