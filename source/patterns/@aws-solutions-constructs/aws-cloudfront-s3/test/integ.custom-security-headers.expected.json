@@ -243,31 +243,11 @@
     "testcloudfronts3SetHttpSecurityHeaders6C5A1E69": {
       "Type": "AWS::CloudFront::Function",
       "Properties": {
-        "Name": {
-          "Fn::Join": [
-            "",
-            [
-              {
-                "Ref": "AWS::Region"
-              },
-              "customsecs3SetHttpSecurityHeaders0AD30771"
-            ]
-          ]
-        },
+        "Name": "SetHttpSecurityHeadersc8132e0ba07d4c8fdbdb431ae46eef456c0589cb21",
         "AutoPublish": true,
         "FunctionCode": "function handler(event) { var response = event.response;       var headers = response.headers;       headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'};       headers['content-security-policy'] = { value: \"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\"};       headers['x-content-type-options'] = { value: 'nosniff'};       headers['x-frame-options'] = {value: 'DENY'};       headers['x-xss-protection'] = {value: '1; mode=block'};       return response;     }",
         "FunctionConfig": {
-          "Comment": {
-            "Fn::Join": [
-              "",
-              [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "customsecs3SetHttpSecurityHeaders0AD30771"
-              ]
-            ]
-          },
+          "Comment": "SetHttpSecurityHeadersc8132e0ba07d4c8fdbdb431ae46eef456c0589cb21",
           "Runtime": "cloudfront-js-1.0"
         }
       }

@@ -103,7 +103,14 @@ function defaultLambdaEdgeFunction(scope: cdk.Construct): lambda.Function {
 // Cloudfront function to insert the HTTP Security Headers into the response coming from the origin servers
 // and before it is sent to the client
 function defaultCloudfrontFunction(scope: cdk.Construct): cloudfront.Function {
+  // generate a stable unique id for the cloudfront function and use it
+  // both for the function name and the logical id of the function so if
+  // it is changed the function will be recreated.
+  // see https://github.com/aws/aws-cdk/issues/15523
+  const functionId = `SetHttpSecurityHeaders${scope.node.addr}`;
+
   return new cloudfront.Function(scope, "SetHttpSecurityHeaders", {
+    functionName: functionId,
     code: cloudfront.FunctionCode.fromInline("function handler(event) { var response = event.response; \
       var headers = response.headers; \
       headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'}; \
