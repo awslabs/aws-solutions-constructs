@@ -127,11 +127,14 @@ test('test cloudfront with custom domain names', () => {
       DefaultCacheBehavior: {
         CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
         Compress: true,
-        LambdaFunctionAssociations: [
+        FunctionAssociations: [
           {
-            EventType: "origin-response",
-            LambdaFunctionARN: {
-              Ref: "testcloudfronts3SetHttpSecurityHeadersVersionF1C744BB"
+            EventType: "viewer-response",
+            FunctionARN: {
+              "Fn::GetAtt": [
+                "testcloudfronts3SetHttpSecurityHeaders6C5A1E69",
+                "FunctionARN"
+              ]
             }
           }
         ],

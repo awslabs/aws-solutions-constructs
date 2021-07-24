@@ -13,7 +13,6 @@
 
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as s3 from '@aws-cdk/aws-s3';
-import * as lambda from '@aws-cdk/aws-lambda';
 import { Construct } from '@aws-cdk/core';
 import * as defaults from '@aws-solutions-constructs/core';
 
@@ -50,7 +49,7 @@ export interface CloudFrontToS3Props {
 
 export class CloudFrontToS3 extends Construct {
     public readonly cloudFrontWebDistribution: cloudfront.Distribution;
-    public readonly edgeLambdaFunctionVersion?: lambda.Version;
+    public readonly cloudFrontFunction?: cloudfront.Function;
     public readonly cloudFrontLoggingBucket?: s3.Bucket;
     public readonly s3BucketInterface: s3.IBucket;
     public readonly s3Bucket?: s3.Bucket;
@@ -77,7 +76,7 @@ export class CloudFrontToS3 extends Construct {
         this.s3BucketInterface = props.existingBucketInterface;
       }
 
-      [this.cloudFrontWebDistribution, this.edgeLambdaFunctionVersion, this.cloudFrontLoggingBucket] =
+      [this.cloudFrontWebDistribution, this.cloudFrontFunction, this.cloudFrontLoggingBucket] =
           defaults.CloudFrontDistributionForS3(this, this.s3BucketInterface,
             props.cloudFrontDistributionProps, props.insertHttpSecurityHeaders);
     }
