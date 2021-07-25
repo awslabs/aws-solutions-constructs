@@ -100,7 +100,9 @@ test('check if the event rule has permission/policy in place in sns for it to be
             }
           },
           Effect: "Deny",
-          Principal: "*",
+          Principal: {
+            AWS: "*"
+          },
           Resource: {
             Ref: "testSnsTopic42942701"
           },

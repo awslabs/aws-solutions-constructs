@@ -82,7 +82,9 @@ test('test cloudfront check bucket policy', () => {
             }
           },
           Effect: "Deny",
-          Principal: "*",
+          Principal: {
+            AWS: "*"
+          },
           Resource: [
             {
               "Fn::Join": [
