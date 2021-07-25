@@ -144,7 +144,7 @@ export function addCfnSuppressRules(resource: cdk.Resource | cdk.CfnResource, ru
     resource = resource.node.defaultChild as cdk.CfnResource;
   }
 
-  if (resource.cfnOptions.metadata?.cfn_nag.rules_to_suppress) {
+  if (resource.cfnOptions.metadata?.cfn_nag?.rules_to_suppress) {
     resource.cfnOptions.metadata?.cfn_nag.rules_to_suppress.push(...rules);
   } else {
     resource.addMetadata('cfn_nag', {

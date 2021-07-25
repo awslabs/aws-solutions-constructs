@@ -273,7 +273,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "lambdasqslambdalambdatosqsqueue49588D68",
@@ -770,7 +772,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "lambdasqslambdalambdatosqsdeadLetterQueue46E7302E",
@@ -856,7 +860,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "lambdasqslambdalambdatosqsqueue49588D68",
@@ -1555,7 +1561,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "lambdasqslambdalambdatosqsdeadLetterQueue46E7302E",
@@ -1641,7 +1649,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "lambdasqslambdalambdatosqsqueue49588D68",
@@ -1939,7 +1949,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "lambdasqslambdalambdatosqsdeadLetterQueue46E7302E",
@@ -2025,7 +2037,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "lambdasqslambdalambdatosqsqueue49588D68",
@@ -2337,7 +2351,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "existingqueue03D57A53",
@@ -3024,7 +3040,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "lambdasqslambdalambdatosqsdeadLetterQueue46E7302E",
@@ -3110,7 +3128,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "lambdasqslambdalambdatosqsqueue49588D68",
@@ -3609,7 +3629,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "lambdasqslambdalambdatosqsdeadLetterQueue46E7302E",
@@ -3695,7 +3717,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "lambdasqslambdalambdatosqsqueue49588D68",

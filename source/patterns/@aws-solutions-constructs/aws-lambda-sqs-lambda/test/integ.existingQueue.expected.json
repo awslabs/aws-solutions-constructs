@@ -59,7 +59,9 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": {
+                "AWS": "*"
+              },
               "Resource": {
                 "Fn::GetAtt": [
                   "existingsqsqueue6AE880F4",

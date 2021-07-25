@@ -309,7 +309,9 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": {
+                "AWS": "*"
+              },
               "Resource": {
                 "Fn::GetAtt": [
                   "testkinesisstreamslambdaSqsDlqQueue5971C9BA",

@@ -206,7 +206,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "testapigatewaylambdaqueue1FFAE03C",
@@ -504,7 +506,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "testsqslambdadeadLetterQueue85BDB0A3",
@@ -590,7 +594,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "testsqslambdaqueue601203B8",

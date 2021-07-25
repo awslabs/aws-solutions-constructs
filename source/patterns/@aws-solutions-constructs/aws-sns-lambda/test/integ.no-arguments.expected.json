@@ -293,7 +293,9 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": {
+                "AWS": "*"
+              },
               "Resource": {
                 "Ref": "testsnslambdaSnsTopic52CA159E"
               },

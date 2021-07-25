@@ -503,7 +503,9 @@ def submit_response(event: dict, context, response_status: str, error_message: s
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Array [
                 Object {
                   "Fn::Join": Array [
@@ -585,7 +587,9 @@ def submit_response(event: dict, context, response_status: str, error_message: s
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Array [
                 Object {
                   "Fn::Join": Array [
@@ -1107,7 +1111,9 @@ def submit_response(event: dict, context, response_status: str, error_message: s
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Array [
                 Object {
                   "Fn::Join": Array [
@@ -1189,7 +1195,9 @@ def submit_response(event: dict, context, response_status: str, error_message: s
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Array [
                 Object {
                   "Fn::Join": Array [
