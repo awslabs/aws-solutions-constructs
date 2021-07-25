@@ -308,7 +308,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Ref": "testsnslambdaSnsTopic52CA159E",
               },

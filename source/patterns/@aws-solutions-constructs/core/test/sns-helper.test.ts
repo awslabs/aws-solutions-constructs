@@ -175,7 +175,9 @@ test('Check SNS Topic policy', () => {
             }
           },
           Effect: "Deny",
-          Principal: "*",
+          Principal: {
+            AWS: "*"
+          },
           Resource: {
             Ref: "SnsTopic2C1570A4"
           },

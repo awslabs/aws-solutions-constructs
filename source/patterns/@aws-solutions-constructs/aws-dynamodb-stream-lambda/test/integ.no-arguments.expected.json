@@ -319,7 +319,9 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": {
+                "AWS": "*"
+              },
               "Resource": {
                 "Fn::GetAtt": [
                   "testdynamodbstreamlambdaSqsDlqQueueF47B6B9A",

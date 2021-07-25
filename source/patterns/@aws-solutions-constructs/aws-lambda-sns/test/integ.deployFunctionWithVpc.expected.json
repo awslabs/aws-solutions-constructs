@@ -340,7 +340,9 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": {
+                "AWS": "*"
+              },
               "Resource": {
                 "Ref": "testlambdasnsSnsTopic57DFED98"
               },

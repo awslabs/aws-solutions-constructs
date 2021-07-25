@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.112.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.111.0...v1.112.0) (2021-07-24)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.112.0
+* Correct rules_to_suppress error in utils.ts [273](https://github.com/awslabs/aws-solutions-constructs/issues/273)
+
+### ⚠ BREAKING CHANGES
+
+* Use cloudfront function instead of lambda@edge for response security headers . [233](https://github.com/awslabs/aws-solutions-constructs/issues/233). The construct property edgeLambdaFunctionVersion is replaced by cloudFrontFunction, only stacks that reference that property will be affected.
+
 ## [1.111.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.110.1...v1.111.0) (2021-07-19)
 
 ### Changed

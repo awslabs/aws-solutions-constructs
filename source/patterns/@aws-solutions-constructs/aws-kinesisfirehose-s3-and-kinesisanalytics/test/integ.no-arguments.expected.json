@@ -52,7 +52,9 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": {
+                "AWS": "*"
+              },
               "Resource": [
                 {
                   "Fn::Join": [
@@ -141,7 +143,9 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": {
+                "AWS": "*"
+              },
               "Resource": [
                 {
                   "Fn::Join": [
