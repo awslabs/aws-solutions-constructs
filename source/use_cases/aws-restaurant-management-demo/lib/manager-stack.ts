@@ -25,7 +25,7 @@ import { LambdaToDynamoDB } from '@aws-solutions-constructs/aws-lambda-dynamodb'
 import { LambdaToS3 } from '@aws-solutions-constructs/aws-lambda-s3';
 import { LambdaToSns } from '@aws-solutions-constructs/aws-lambda-sns';
 import { EventsRuleToLambda } from '@aws-solutions-constructs/aws-events-rule-lambda';
-import { LambdaToStepFunction } from '@aws-solutions-constructs/aws-lambda-step-function';
+import { LambdaToStepFunctions } from '@aws-solutions-constructs/aws-lambda-stepfunctions';
 
 // Properties for the manager-stack
 export interface ManagerStackProps {
@@ -127,7 +127,7 @@ export class ManagerStack extends cdk.Stack {
     	.next(calculateTipsTask)
     	.next(archiveOrdersTask);
     // 5. Setup the Step Functions integration with Lambda trigger
-    const closeOutService = new LambdaToStepFunction(this, 'close-out-service', {
+    const closeOutService = new LambdaToStepFunctions(this, 'close-out-service', {
       lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/close-out-service`),
