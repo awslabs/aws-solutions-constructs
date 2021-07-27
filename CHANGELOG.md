@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.113.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.112.0...v1.113.0) (2021-07-27)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.113.0
+* Added keywords to each construct to appear as tags in NPM registry [278](https://github.com/awslabs/aws-solutions-constructs/issues/278)
+
 ## [1.112.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.111.0...v1.112.0) (2021-07-24)
 
 ### Changed
