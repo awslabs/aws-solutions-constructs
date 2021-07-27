@@ -26,7 +26,7 @@
 | ![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java                   | `software.amazon.awsconstructs.services.stepfunctionstasksqs` |
 
 This AWS Solutions Construct implements an AWS Step Functions state machine task that is backed by an Amazon SQS queue. This queue can be integrated with any
-compute option (not implemented within this construct); AWS Lambda, Amazon Fargate, Amazon EC2, Amazon EKS or Amazon ECS.
+compute option (not implemented within this construct); AWS Lambda, Amazon Fargate, Amazon EC2, Amazon EKS or Amazon ECS. This construct builds the foundation pieces for the [`Service Integration - Callback with Task Token pattern`](https://docs.aws.amazon.com/step-functions/latest/dg/connect-to-resource.html) defined for AWS Step Functions
 
 Here is a minimal deployable pattern definition in Typesciprt:
 
