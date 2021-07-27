@@ -20,9 +20,9 @@ import { Construct } from '@aws-cdk/core';
 import * as logs from '@aws-cdk/aws-logs';
 
 /**
- * @summary Properties for the LambdaToStepFunction class.
+ * @summary Properties for the LambdaToStepFunctions class.
  */
-export interface LambdaToStepFunctionProps {
+export interface LambdaToStepFunctionsProps {
   /**
    * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
@@ -62,23 +62,23 @@ export interface LambdaToStepFunctionProps {
 }
 
 /**
- * @summary The LambdaToStepFunctionProps class.
+ * @summary The LambdaToStepFunctionsProps class.
  */
-export class LambdaToStepFunction extends Construct {
+export class LambdaToStepFunctions extends Construct {
   public readonly lambdaFunction: lambda.Function;
   public readonly stateMachine: sfn.StateMachine;
   public readonly stateMachineLogGroup: logs.ILogGroup;
   public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
 
   /**
-   * @summary Constructs a new instance of the LambdaToStepFunctionProps class.
+   * @summary Constructs a new instance of the LambdaToStepFunctionsProps class.
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
-   * @param {LambdaToStepFunctionProps} props - user provided props for the construct.
+   * @param {LambdaToStepFunctionsProps} props - user provided props for the construct.
    * @since 0.8.0
    * @access public
    */
-  constructor(scope: Construct, id: string, props: LambdaToStepFunctionProps) {
+  constructor(scope: Construct, id: string, props: LambdaToStepFunctionsProps) {
     super(scope, id);
     defaults.CheckProps(props);
 

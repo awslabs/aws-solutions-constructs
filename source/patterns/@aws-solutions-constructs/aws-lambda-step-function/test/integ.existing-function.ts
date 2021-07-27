@@ -13,7 +13,7 @@
 
 /// !cdk-integ *
 import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
-import { LambdaToStepFunction, LambdaToStepFunctionProps } from "../lib";
+import { LambdaToStepFunctions, LambdaToStepFunctionsProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
 import * as defaults from '@aws-solutions-constructs/core';
@@ -37,7 +37,7 @@ const lambdaFunctionProps = {
 const fn = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 
 // Setup the pattern props
-const props: LambdaToStepFunctionProps = {
+const props: LambdaToStepFunctionsProps = {
   existingLambdaObj: fn,
   stateMachineProps: {
     definition: startState
@@ -48,7 +48,7 @@ const props: LambdaToStepFunctionProps = {
 };
 
 // Add the pattern
-new LambdaToStepFunction(stack, 'test-lambda-step-function-construct', props);
+new LambdaToStepFunctions(stack, 'test-lambda-step-function-construct', props);
 
 // Synth the app
 app.synth();
