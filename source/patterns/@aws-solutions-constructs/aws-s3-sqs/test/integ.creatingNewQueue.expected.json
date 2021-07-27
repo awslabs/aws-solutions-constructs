@@ -105,21 +105,31 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "tests3sqsS3LoggingBucket0B0BC86A",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
+              "Principal": {
+                "AWS": "*"
               },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "tests3sqsS3LoggingBucket0B0BC86A",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "tests3sqsS3LoggingBucket0B0BC86A",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             }
           ],
@@ -234,21 +244,31 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "tests3sqsS3BucketFF76CDA6",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
+              "Principal": {
+                "AWS": "*"
               },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "tests3sqsS3BucketFF76CDA6",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "tests3sqsS3BucketFF76CDA6",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             }
           ],
@@ -315,7 +335,9 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": {
+                "AWS": "*"
+              },
               "Resource": {
                 "Fn::GetAtt": [
                   "tests3sqsdeadLetterQueueEABBC814",
@@ -493,7 +515,9 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": {
+                "AWS": "*"
+              },
               "Resource": {
                 "Fn::GetAtt": [
                   "tests3sqsqueue810CCE19",

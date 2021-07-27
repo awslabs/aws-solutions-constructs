@@ -350,7 +350,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "testkinesisstreamslambdaSqsDlqQueueDCC12D0A",
@@ -645,7 +647,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "testkinesisstreamslambdaSqsDlqQueueDCC12D0A",

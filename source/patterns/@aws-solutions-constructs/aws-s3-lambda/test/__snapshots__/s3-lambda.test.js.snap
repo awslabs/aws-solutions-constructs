@@ -503,21 +503,31 @@ def submit_response(event: dict, context, response_status: str, error_message: s
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "tests3lambdaS3BucketBE7C1B8E",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "tests3lambdaS3BucketBE7C1B8E",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "tests3lambdaS3BucketBE7C1B8E",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -577,21 +587,31 @@ def submit_response(event: dict, context, response_status: str, error_message: s
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "tests3lambdaS3LoggingBucket0C3BBFDC",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "tests3lambdaS3LoggingBucket0C3BBFDC",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "tests3lambdaS3LoggingBucket0C3BBFDC",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -1091,21 +1111,31 @@ def submit_response(event: dict, context, response_status: str, error_message: s
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "tests3lambdaS3BucketBE7C1B8E",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "tests3lambdaS3BucketBE7C1B8E",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "tests3lambdaS3BucketBE7C1B8E",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -1165,21 +1195,31 @@ def submit_response(event: dict, context, response_status: str, error_message: s
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "tests3lambdaS3LoggingBucket0C3BBFDC",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "tests3lambdaS3LoggingBucket0C3BBFDC",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "tests3lambdaS3LoggingBucket0C3BBFDC",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],

@@ -23,21 +23,19 @@ import {
   DefaultCloudFrontWebDistributionForApiGatewayProps,
   DefaultCloudFrontDisributionForMediaStoreProps
 } from './cloudfront-distribution-defaults';
-import { overrideProps } from './utils';
+import { overrideProps, addCfnSuppressRules } from './utils';
 import { deployLambdaFunction } from './lambda-helper';
 import { createLoggingBucket } from './s3-bucket-helper';
 
 // Override Cfn_Nag rule: Cloudfront TLS-1.2 rule (https://github.com/stelligent/cfn_nag/issues/384)
 function updateSecurityPolicy(cfDistribution: cloudfront.Distribution) {
-  const cfnCfDistribution = cfDistribution.node.defaultChild as cloudfront.CfnDistribution;
-  cfnCfDistribution.cfnOptions.metadata = {
-    cfn_nag: {
-      rules_to_suppress: [{
-        id: 'W70',
-        reason: `Since the distribution uses the CloudFront domain name, CloudFront automatically sets the security policy to TLSv1 regardless of the value of MinimumProtocolVersion`
-      }]
+  addCfnSuppressRules(cfDistribution, [
+    {
+      id: 'W70',
+      reason: `Since the distribution uses the CloudFront domain name, CloudFront automatically sets the security policy to TLSv1 regardless of the value of MinimumProtocolVersion`
     }
-  };
+  ]);
+
   return cfDistribution;
 }
 
@@ -102,6 +100,29 @@ function defaultLambdaEdgeFunction(scope: cdk.Construct): lambda.Function {
   return edgeLambdaFunc;
 }
 
+// Cloudfront function to insert the HTTP Security Headers into the response coming from the origin servers
+// and before it is sent to the client
+function defaultCloudfrontFunction(scope: cdk.Construct): cloudfront.Function {
+  // generate a stable unique id for the cloudfront function and use it
+  // both for the function name and the logical id of the function so if
+  // it is changed the function will be recreated.
+  // see https://github.com/aws/aws-cdk/issues/15523
+  const functionId = `SetHttpSecurityHeaders${scope.node.addr}`;
+
+  return new cloudfront.Function(scope, "SetHttpSecurityHeaders", {
+    functionName: functionId,
+    code: cloudfront.FunctionCode.fromInline("function handler(event) { var response = event.response; \
+      var headers = response.headers; \
+      headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'}; \
+      headers['content-security-policy'] = { value: \"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\"}; \
+      headers['x-content-type-options'] = { value: 'nosniff'}; \
+      headers['x-frame-options'] = {value: 'DENY'}; \
+      headers['x-xss-protection'] = {value: '1; mode=block'}; \
+      return response; \
+    }")
+  });
+}
+
 export function CloudFrontDistributionForApiGateway(scope: cdk.Construct,
   apiEndPoint: api.RestApi,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
@@ -140,48 +161,45 @@ export function CloudFrontDistributionForApiGateway(scope: cdk.Construct,
 }
 
 export function CloudFrontDistributionForS3(scope: cdk.Construct,
-  sourceBucket: s3.Bucket,
+  sourceBucket: s3.IBucket,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
   httpSecurityHeaders?: boolean): [cloudfront.Distribution,
-                                            lambda.Version?, s3.Bucket?] {
+    cloudfront.Function?, s3.Bucket?] {
 
   let defaultprops: cloudfront.DistributionProps;
-  let edgeLambdaVersion;
+  // let edgeLambdaVersion;
+  let cloudfrontFunction;
   let loggingBucket;
   const _httpSecurityHeaders = (httpSecurityHeaders !== undefined && httpSecurityHeaders === false) ? false : true;
 
   if (_httpSecurityHeaders) {
-    edgeLambdaVersion = new lambda.Version(scope, "SetHttpSecurityHeadersVersion", {
-      lambda: defaultLambdaEdgeFunction(scope)
-    });
+    cloudfrontFunction = defaultCloudfrontFunction(scope);
   }
 
   if (cloudFrontDistributionProps && cloudFrontDistributionProps.enableLogging && cloudFrontDistributionProps.logBucket) {
     defaultprops = DefaultCloudFrontWebDistributionForS3Props(sourceBucket,
-      cloudFrontDistributionProps.logBucket, _httpSecurityHeaders, edgeLambdaVersion);
+      cloudFrontDistributionProps.logBucket, _httpSecurityHeaders, cloudfrontFunction);
   } else {
     loggingBucket = createLoggingBucket(scope, 'CloudfrontLoggingBucket');
     defaultprops = DefaultCloudFrontWebDistributionForS3Props(sourceBucket, loggingBucket,
-      _httpSecurityHeaders, edgeLambdaVersion);
+      _httpSecurityHeaders, cloudfrontFunction);
   }
 
-  const cfprops = cloudFrontDistributionProps ? overrideProps(defaultprops, cloudFrontDistributionProps, true) : defaultprops;
+  const cfprops = cloudFrontDistributionProps ? overrideProps(defaultprops, cloudFrontDistributionProps, false) : defaultprops;
   // Create the Cloudfront Distribution
   const cfDistribution: cloudfront.Distribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
   updateSecurityPolicy(cfDistribution);
 
   // Extract the CfnBucketPolicy from the sourceBucket
   const bucketPolicy = sourceBucket.policy as s3.BucketPolicy;
-  const sourceBucketPolicy = bucketPolicy.node.findChild('Resource') as s3.CfnBucketPolicy;
-  sourceBucketPolicy.cfnOptions.metadata = {
-    cfn_nag: {
-      rules_to_suppress: [{
-        id: 'F16',
-        reason: `Public website bucket policy requires a wildcard principal`
-      }]
+  addCfnSuppressRules(bucketPolicy, [
+    {
+      id: 'F16',
+      reason: `Public website bucket policy requires a wildcard principal`
     }
-  };
-  return [cfDistribution, edgeLambdaVersion, loggingBucket];
+  ]);
+
+  return [cfDistribution, cloudfrontFunction, loggingBucket];
 }
 
 export function CloudFrontDistributionForMediaStore(scope: cdk.Construct,

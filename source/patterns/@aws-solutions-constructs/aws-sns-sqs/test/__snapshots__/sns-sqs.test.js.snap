@@ -51,6 +51,17 @@ Object {
             Object {
               "Action": Array [
                 "kms:Decrypt",
+                "kms:GenerateDataKey",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "sns.amazonaws.com",
+              },
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "kms:Decrypt",
                 "kms:GenerateDataKey*",
               ],
               "Effect": "Allow",
@@ -142,7 +153,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Ref": "testsnssqsSnsTopic2CD0065B",
               },
@@ -216,7 +229,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "testsnssqsdeadLetterQueue8DACC0A1",
@@ -307,7 +322,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "testsnssqsqueueB02504BF",
@@ -582,7 +599,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Ref": "snstosqsstackSnsTopicB387685B",
               },
@@ -656,7 +675,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "snstosqsstackdeadLetterQueueA02EB1B1",
@@ -746,6 +767,17 @@ Object {
             Object {
               "Action": Array [
                 "kms:Decrypt",
+                "kms:GenerateDataKey",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "sns.amazonaws.com",
+              },
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "kms:Decrypt",
                 "kms:GenerateDataKey*",
               ],
               "Effect": "Allow",
@@ -810,7 +842,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "snstosqsstackqueue262BCE03",
@@ -920,6 +954,17 @@ Object {
             Object {
               "Action": Array [
                 "kms:Decrypt",
+                "kms:GenerateDataKey",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "sns.amazonaws.com",
+              },
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "kms:Decrypt",
                 "kms:GenerateDataKey*",
               ],
               "Effect": "Allow",
@@ -1011,7 +1056,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Ref": "snstosqsstackSnsTopicB387685B",
               },
@@ -1085,7 +1132,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "snstosqsstackdeadLetterQueueA02EB1B1",
@@ -1176,7 +1225,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "snstosqsstackqueue262BCE03",

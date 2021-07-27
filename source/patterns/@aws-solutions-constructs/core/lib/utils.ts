@@ -15,6 +15,7 @@ import * as deepmerge from 'deepmerge';
 import { flagOverriddenDefaults } from './override-warning-service';
 import * as log from 'npmlog';
 import * as crypto from 'crypto';
+import * as cdk from '@aws-cdk/core';
 
 function isObject(val: object) {
   return val != null && typeof val === 'object'
@@ -122,4 +123,33 @@ export function generateResourceName(
  */
 function removeNonAlphanumeric(s: string) {
   return s.replace(/[^A-Za-z0-9]/g, '');
+}
+
+/**
+ * The CFN NAG suppress rule interface
+ * @interface CfnNagSuppressRule
+ */
+export interface CfnNagSuppressRule {
+  readonly id: string;
+  readonly reason: string;
+}
+
+/**
+ * Adds CFN NAG suppress rules to the CDK resource.
+ * @param resource The CDK resource
+ * @param rules The CFN NAG suppress rules
+ */
+export function addCfnSuppressRules(resource: cdk.Resource | cdk.CfnResource, rules: CfnNagSuppressRule[]) {
+  if (resource instanceof cdk.Resource) {
+    resource = resource.node.defaultChild as cdk.CfnResource;
+  }
+
+  if (resource.cfnOptions.metadata?.cfn_nag?.rules_to_suppress) {
+    resource.cfnOptions.metadata?.cfn_nag.rules_to_suppress.push(...rules);
+  } else {
+    resource.addMetadata('cfn_nag', {
+      rules_to_suppress: rules
+    });
+  }
+
 }

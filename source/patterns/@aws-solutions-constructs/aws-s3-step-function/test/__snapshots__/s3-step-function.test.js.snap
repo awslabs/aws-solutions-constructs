@@ -61,21 +61,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "tests3stepfunctionCloudTrailS3Bucket826F62C0",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "tests3stepfunctionCloudTrailS3Bucket826F62C0",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "tests3stepfunctionCloudTrailS3Bucket826F62C0",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
             Object {
@@ -178,21 +188,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "tests3stepfunctionCloudTrailS3LoggingBucket4FA5C122",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "tests3stepfunctionCloudTrailS3LoggingBucket4FA5C122",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "tests3stepfunctionCloudTrailS3LoggingBucket4FA5C122",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -259,21 +279,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "tests3stepfunctionS3Bucket57D6600C",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "tests3stepfunctionS3Bucket57D6600C",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "tests3stepfunctionS3Bucket57D6600C",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -375,21 +405,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "tests3stepfunctionS3LoggingBucketF58651AD",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "tests3stepfunctionS3LoggingBucketF58651AD",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "tests3stepfunctionS3LoggingBucketF58651AD",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],

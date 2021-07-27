@@ -286,21 +286,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "testiotfirehoses3KinesisFirehoseToS3S3Bucket19C97D09",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testiotfirehoses3KinesisFirehoseToS3S3Bucket19C97D09",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testiotfirehoses3KinesisFirehoseToS3S3Bucket19C97D09",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -360,21 +370,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "testiotfirehoses3KinesisFirehoseToS3S3LoggingBucketC786B050",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testiotfirehoses3KinesisFirehoseToS3S3LoggingBucketC786B050",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testiotfirehoses3KinesisFirehoseToS3S3LoggingBucketC786B050",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],

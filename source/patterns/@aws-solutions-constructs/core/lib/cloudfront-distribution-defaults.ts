@@ -18,6 +18,7 @@ import * as api from '@aws-cdk/aws-apigateway';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as mediastore from '@aws-cdk/aws-mediastore';
 import * as cdk from '@aws-cdk/core';
+import { FunctionEventType } from '@aws-cdk/aws-cloudfront';
 
 export function DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint: api.RestApi,
   loggingBucket: s3.Bucket,
@@ -58,18 +59,18 @@ export function DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint: 
   }
 }
 
-export function DefaultCloudFrontWebDistributionForS3Props(sourceBucket: s3.Bucket, loggingBucket: s3.Bucket,
+export function DefaultCloudFrontWebDistributionForS3Props(sourceBucket: s3.IBucket, loggingBucket: s3.Bucket,
   setHttpSecurityHeaders: boolean,
-  edgeLambda?: lambda.Version): cloudfront.DistributionProps {
+  cfFunction?: cloudfront.IFunction): cloudfront.DistributionProps {
 
   if (setHttpSecurityHeaders) {
     return {
       defaultBehavior: {
         origin: new origins.S3Origin(sourceBucket),
-        edgeLambdas: [
+        functionAssociations: [
           {
-            eventType: cloudfront.LambdaEdgeEventType.ORIGIN_RESPONSE,
-            functionVersion: edgeLambda
+            eventType: FunctionEventType.VIEWER_RESPONSE,
+            function: cfFunction
           }
         ],
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS

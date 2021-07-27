@@ -272,21 +272,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "teststreamfirehoses3KinesisFirehoseToS3S3Bucket315B67A3",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "teststreamfirehoses3KinesisFirehoseToS3S3Bucket315B67A3",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "teststreamfirehoses3KinesisFirehoseToS3S3Bucket315B67A3",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -346,21 +356,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "teststreamfirehoses3KinesisFirehoseToS3S3LoggingBucketFB87BEBC",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "teststreamfirehoses3KinesisFirehoseToS3S3LoggingBucketFB87BEBC",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "teststreamfirehoses3KinesisFirehoseToS3S3LoggingBucketFB87BEBC",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],

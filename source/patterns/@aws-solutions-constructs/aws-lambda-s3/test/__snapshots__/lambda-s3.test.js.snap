@@ -296,21 +296,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "lambdatos3stackS3BucketB9FD9B29",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "lambdatos3stackS3BucketB9FD9B29",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "lambdatos3stackS3BucketB9FD9B29",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -370,21 +380,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "lambdatos3stackS3LoggingBucketB82C3492",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "lambdatos3stackS3LoggingBucketB82C3492",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "lambdatos3stackS3LoggingBucketB82C3492",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -663,21 +683,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "lambdatos3stackS3BucketB9FD9B29",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "lambdatos3stackS3BucketB9FD9B29",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "lambdatos3stackS3BucketB9FD9B29",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -737,21 +767,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "lambdatos3stackS3LoggingBucketB82C3492",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "lambdatos3stackS3LoggingBucketB82C3492",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "lambdatos3stackS3LoggingBucketB82C3492",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -1033,21 +1073,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "lambdatos3stackS3BucketB9FD9B29",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "lambdatos3stackS3BucketB9FD9B29",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "lambdatos3stackS3BucketB9FD9B29",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -1107,21 +1157,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "lambdatos3stackS3LoggingBucketB82C3492",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "lambdatos3stackS3LoggingBucketB82C3492",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "lambdatos3stackS3LoggingBucketB82C3492",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -1412,21 +1472,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "lambdatos3stackS3BucketB9FD9B29",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "lambdatos3stackS3BucketB9FD9B29",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "lambdatos3stackS3BucketB9FD9B29",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -1486,21 +1556,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "lambdatos3stackS3LoggingBucketB82C3492",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "lambdatos3stackS3LoggingBucketB82C3492",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "lambdatos3stackS3LoggingBucketB82C3492",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -1794,21 +1874,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "lambdatos3stackS3BucketB9FD9B29",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "lambdatos3stackS3BucketB9FD9B29",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "lambdatos3stackS3BucketB9FD9B29",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -1868,21 +1958,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "lambdatos3stackS3LoggingBucketB82C3492",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "lambdatos3stackS3LoggingBucketB82C3492",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "lambdatos3stackS3LoggingBucketB82C3492",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -2173,21 +2273,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "lambdatos3stackS3BucketB9FD9B29",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "lambdatos3stackS3BucketB9FD9B29",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "lambdatos3stackS3BucketB9FD9B29",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -2247,21 +2357,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "lambdatos3stackS3LoggingBucketB82C3492",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "lambdatos3stackS3LoggingBucketB82C3492",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "lambdatos3stackS3LoggingBucketB82C3492",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -2555,21 +2675,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "lambdatos3stackS3BucketB9FD9B29",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "lambdatos3stackS3BucketB9FD9B29",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "lambdatos3stackS3BucketB9FD9B29",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -2629,21 +2759,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "lambdatos3stackS3LoggingBucketB82C3492",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "lambdatos3stackS3LoggingBucketB82C3492",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "lambdatos3stackS3LoggingBucketB82C3492",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -2940,21 +3080,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "lambdatos3stackS3BucketB9FD9B29",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "lambdatos3stackS3BucketB9FD9B29",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "lambdatos3stackS3BucketB9FD9B29",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],
@@ -3014,21 +3164,31 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "lambdatos3stackS3LoggingBucketB82C3492",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
+              "Principal": Object {
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "lambdatos3stackS3LoggingBucketB82C3492",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "lambdatos3stackS3LoggingBucketB82C3492",
+                    "Arn",
+                  ],
+                },
+              ],
               "Sid": "HttpsOnly",
             },
           ],

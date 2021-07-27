@@ -21,7 +21,7 @@ import {
   DefaultSagemakerEndpointProps,
 } from './sagemaker-defaults';
 import * as cdk from '@aws-cdk/core';
-import { overrideProps } from './utils';
+import { overrideProps, addCfnSuppressRules } from './utils';
 import { buildVpc } from './vpc-helper';
 import * as iam from '@aws-cdk/aws-iam';
 import { Aws } from '@aws-cdk/core';
@@ -199,21 +199,17 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   // Add CFN NAG uppress to allow for "Resource": "*" for ENI access in VPC,
   // ECR authorization token for custom model images, and elastic inference
   // Add CFN NAG for Complex Role because Sagmaker needs permissions to access several services
-  const roleDefualtPolicy = _role.node.tryFindChild('DefaultPolicy')?.node.findChild('Resource') as iam.CfnPolicy;
-  roleDefualtPolicy.cfnOptions.metadata = {
-    cfn_nag: {
-      rules_to_suppress: [
-        {
-          id: 'W12',
-          reason: `Sagemaker needs the following minimum required permissions to access ENIs in a VPC, ECR for custom model images, and elastic inference.`,
-        },
-        {
-          id: 'W76',
-          reason: 'Complex role becuase Sagemaker needs permissions to access several services',
-        },
-      ],
+  const roleDefaultPolicy = _role.node.tryFindChild('DefaultPolicy')?.node.findChild('Resource') as iam.CfnPolicy;
+  addCfnSuppressRules(roleDefaultPolicy, [
+    {
+      id: 'W12',
+      reason: `Sagemaker needs the following minimum required permissions to access ENIs in a VPC, ECR for custom model images, and elastic inference.`,
     },
-  };
+    {
+      id: 'W76',
+      reason: 'Complex role becuase Sagemaker needs permissions to access several services',
+    }
+  ]);
 }
 
 export function buildSagemakerNotebook(
@@ -417,20 +413,16 @@ export function createSagemakerModel(
     modelDefaultSecurityGroup.addIngressRule(ec2.Peer.ipv4(vpc.vpcCidrBlock), ec2.Port.tcp(443));
 
     const cfnSecurityGroup = modelDefaultSecurityGroup.node.findChild('Resource') as ec2.CfnSecurityGroup;
-    cfnSecurityGroup.cfnOptions.metadata = {
-      cfn_nag: {
-        rules_to_suppress: [
-          {
-            id: 'W5',
-            reason: 'Egress of 0.0.0.0/0 is default and generally considered OK',
-          },
-          {
-            id: 'W40',
-            reason: 'Egress IPProtocol of -1 is default and generally considered OK',
-          },
-        ],
+    addCfnSuppressRules(cfnSecurityGroup, [
+      {
+        id: 'W5',
+        reason: 'Egress of 0.0.0.0/0 is default and generally considered OK',
       },
-    };
+      {
+        id: 'W40',
+        reason: 'Egress IPProtocol of -1 is default and generally considered OK',
+      }
+    ]);
 
     // Throw an error if the VPC does not contain private or isolated subnets
     if (vpc.privateSubnets.length === 0 && vpc.isolatedSubnets.length === 0) {

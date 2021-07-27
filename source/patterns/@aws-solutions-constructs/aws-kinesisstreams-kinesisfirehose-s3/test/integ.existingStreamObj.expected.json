@@ -309,7 +309,9 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": {
+                "AWS": "*"
+              },
               "Resource": {
                 "Fn::GetAtt": [
                   "testkinesislambdaSqsDlqQueueA754ACEA",
@@ -406,21 +408,31 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "testexistingstreamfirehoses3stackKinesisFirehoseToS3S3LoggingBucketBE173630",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
+              "Principal": {
+                "AWS": "*"
               },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testexistingstreamfirehoses3stackKinesisFirehoseToS3S3LoggingBucketBE173630",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "testexistingstreamfirehoses3stackKinesisFirehoseToS3S3LoggingBucketBE173630",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             }
           ],
@@ -487,21 +499,31 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "testexistingstreamfirehoses3stackKinesisFirehoseToS3S3BucketF4CE72AB",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
+              "Principal": {
+                "AWS": "*"
               },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testexistingstreamfirehoses3stackKinesisFirehoseToS3S3BucketF4CE72AB",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "testexistingstreamfirehoses3stackKinesisFirehoseToS3S3BucketF4CE72AB",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             }
           ],

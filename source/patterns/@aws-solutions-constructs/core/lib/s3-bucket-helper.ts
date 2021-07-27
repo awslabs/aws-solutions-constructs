@@ -16,7 +16,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as cdk from '@aws-cdk/core';
 import { DefaultS3Props } from './s3-bucket-defaults';
-import { overrideProps } from './utils';
+import { overrideProps, addCfnSuppressRules } from './utils';
 import { PolicyStatement, Effect, AnyPrincipal } from '@aws-cdk/aws-iam';
 import { StorageClass } from '@aws-cdk/aws-s3/lib/rule';
 import { Duration } from '@aws-cdk/core/lib/duration';
@@ -46,7 +46,8 @@ export function applySecureBucketPolicy(s3Bucket: s3.Bucket): void {
     new PolicyStatement({
       sid: 'HttpsOnly',
       resources: [
-        `${s3Bucket.bucketArn}/*`
+        `${s3Bucket.bucketArn}/*`,
+        `${s3Bucket.bucketArn}`
       ],
       actions: ['*'],
       principals: [new AnyPrincipal()],
@@ -90,14 +91,12 @@ export function createLoggingBucket(scope: cdk.Construct, bucketId: string, remo
     _reason = "This S3 bucket is used as the access logging bucket for CloudFront Distribution";
   }
 
-  loggingBucketResource.cfnOptions.metadata = {
-    cfn_nag: {
-      rules_to_suppress: [{
-        id: 'W35',
-        reason: _reason
-      }]
+  addCfnSuppressRules(loggingBucketResource, [
+    {
+      id: 'W35',
+      reason: _reason
     }
-  };
+  ]);
 
   return loggingBucket;
 }
@@ -155,33 +154,27 @@ export function addCfnNagS3BucketNotificationRulesToSuppress(stackRoot: cdk.Stac
 
   // Extract the CfnFunction from the Function
   const fnResource = notificationsResourceHandler.node.findChild('Resource') as lambda.CfnFunction;
-
-  fnResource.cfnOptions.metadata = {
-    cfn_nag: {
-      rules_to_suppress: [{
-        id: 'W58',
-        reason: `Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.`
-      },
-      {
-        id: 'W89',
-        reason: `This is not a rule for the general case, just for specific use cases/industries`
-      },
-      {
-        id: 'W92',
-        reason: `Impossible for us to define the correct concurrency for clients`
-      }]
+  addCfnSuppressRules(fnResource, [
+    {
+      id: 'W58',
+      reason: `Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.`
+    },
+    {
+      id: 'W89',
+      reason: `This is not a rule for the general case, just for specific use cases/industries`
+    },
+    {
+      id: 'W92',
+      reason: `Impossible for us to define the correct concurrency for clients`
     }
-  };
+  ]);
 
   // Extract the CfnPolicy from the iam.Policy
   const policyResource = notificationsResourceHandlerRolePolicy.node.findChild('Resource') as iam.CfnPolicy;
-
-  policyResource.cfnOptions.metadata = {
-    cfn_nag: {
-      rules_to_suppress: [{
-        id: 'W12',
-        reason: `Bucket resource is '*' due to circular dependency with bucket and role creation at the same time`
-      }]
+  addCfnSuppressRules(policyResource, [
+    {
+      id: 'W12',
+      reason: `Bucket resource is '*' due to circular dependency with bucket and role creation at the same time`
     }
-  };
+  ]);
 }

@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.112.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.111.0...v1.112.0) (2021-07-24)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.112.0
+* Correct rules_to_suppress error in utils.ts [273](https://github.com/awslabs/aws-solutions-constructs/issues/273)
+
+### ⚠ BREAKING CHANGES
+
+* Use cloudfront function instead of lambda@edge for response security headers . [233](https://github.com/awslabs/aws-solutions-constructs/issues/233). The construct property edgeLambdaFunctionVersion is replaced by cloudFrontFunction, only stacks that reference that property will be affected.
+
+## [1.111.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.110.1...v1.111.0) (2021-07-19)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.111.0
+* Reduced default worker nodes from 10 to 2 on aws-kinesisstreams-gluejob to reduce costs for the default installation (may require refreshing test snapshots)
+* Added bucketname (to the current bucketname/*) in the bucket policy conditions requiring secure transport for greater control  (may require refreshing test snapshots).
+* Updated constructs to add cfn_nag rule suppression to metadata rather than replace the metadata section. [228](https://github.com/awslabs/aws-solutions-constructs/issues/228)
+* Support IBucket for the existingBucketObj prop in the aws-cloudfront-s3 pattern. [139](https://github.com/awslabs/aws-solutions-constructs/issues/139)
+
 ## [1.110.1](https://github.com/awslabs/aws-solutions-constructs/compare/v1.110.0...v1.110.1) (2021-07-01)
 
 ### Changed
