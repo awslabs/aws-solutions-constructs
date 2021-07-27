@@ -25,12 +25,22 @@
 | ![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript | `@aws-solutions-constructs/aws-stepfunctionstask-sqs`         |
 | ![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java                   | `software.amazon.awsconstructs.services.stepfunctionstasksqs` |
 
-This AWS Solutions Construct implements an Amazon SQS queue connected to an AWS Lambda function.
+This AWS Solutions Construct implements an AWS Step Functions state machine task that is backed by an Amazon SQS queue. This queue can be integrated with any
+compute option (not implemented within this construct); AWS Lambda, Amazon Fargate, Amazon EC2, Amazon EKS or Amazon ECS.
 
-Here is a minimal deployable pattern definition in Typescipr:
+Here is a minimal deployable pattern definition in Typesciprt:
 
 ```typescript
-TBD;
+import { StepfunctionstaskSqs } from "@aws-solutions-constructs/aws-stepfunctionstask-sqs";
+import * as sfn from "@aws-cdk/aws-stepfunctions";
+
+const asyncTask = new StepfunctionstaskSqs(this, "SqsAsyncTask", {});
+asyncTask.next(new sfn.Succeed(this, "Success"));
+
+const workflowChain = sfn.Chain.start(asyncTask);
+new StateMachine(this, "WorkflowEngine", {
+    definition: workflowChain,
+});
 ```
 
 ## Initializer
