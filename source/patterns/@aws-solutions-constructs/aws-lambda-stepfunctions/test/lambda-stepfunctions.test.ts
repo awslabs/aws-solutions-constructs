@@ -16,7 +16,7 @@ import { Stack } from "@aws-cdk/core";
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as defaults from '@aws-solutions-constructs/core';
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
-import { LambdaToStepFunctions } from '../lib';
+import { LambdaToStepfunctions } from '../lib';
 import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
@@ -28,7 +28,7 @@ test('Test deployment with new Lambda function', () => {
   const stack = new Stack();
   // Helper declaration
   const startState = new stepfunctions.Pass(stack, 'StartState');
-  new LambdaToStepFunctions(stack, 'lambda-to-step-function-stack', {
+  new LambdaToStepfunctions(stack, 'lambda-to-stepfunctions-stack', {
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
@@ -74,7 +74,7 @@ test('Test deployment with existing Lambda function', () => {
   };
   const fn = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
   // Add the pattern
-  new LambdaToStepFunctions(stack, 'test-lambda-step-function-construct', {
+  new LambdaToStepfunctions(stack, 'test-lambda-stepfunctions-construct', {
     existingLambdaObj: fn,
     stateMachineProps: {
       definition: startState
@@ -110,7 +110,7 @@ test('Test invocation permissions', () => {
   };
   const fn = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
   // Add the pattern
-  new LambdaToStepFunctions(stack, 'test-lambda-step-function-stack', {
+  new LambdaToStepfunctions(stack, 'test-lambda-stepfunctions-stack', {
     existingLambdaObj: fn,
     stateMachineProps: {
       definition: startState
@@ -149,7 +149,7 @@ test('Test the properties', () => {
   const stack = new Stack();
   // Helper declaration
   const startState = new stepfunctions.Pass(stack, 'StartState');
-  const pattern = new LambdaToStepFunctions(stack, 'lambda-to-step-function-stack', {
+  const pattern = new LambdaToStepfunctions(stack, 'lambda-to-stepfunctions-stack', {
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
@@ -182,7 +182,7 @@ test('Test the properties with no CW Alarms', () => {
   const stack = new Stack();
   // Helper declaration
   const startState = new stepfunctions.Pass(stack, 'StartState');
-  const pattern = new LambdaToStepFunctions(stack, 'lambda-to-step-function-stack', {
+  const pattern = new LambdaToStepfunctions(stack, 'lambda-to-stepfunctions-stack', {
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
@@ -214,7 +214,7 @@ test('Test lambda function custom environment variable', () => {
 
   // Helper declaration
   const startState = new stepfunctions.Pass(stack, 'StartState');
-  new LambdaToStepFunctions(stack, 'lambda-to-step-function-stack', {
+  new LambdaToStepfunctions(stack, 'lambda-to-stepfunctions-stack', {
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',

@@ -27,12 +27,12 @@ This AWS Solutions Construct implements an AWS Lambda function connected to an A
 Here is a minimal deployable pattern definition in Typescript:
 
 ``` typescript
-import { LambdaToStepFunctions } from '@aws-solutions-constructs/aws-lambda-stepfunctions';
+import { LambdaToStepfunctions } from '@aws-solutions-constructs/aws-lambda-stepfunctions';
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
 
 const startState = new stepfunctions.Pass(stack, 'StartState');
 
-new LambdaToStepFunctions(this, 'LambdaToStepFunctionsPattern', {
+new LambdaToStepfunctions(this, 'LambdaToStepfunctionsPattern', {
     lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_12_X,
         handler: 'index.handler',
@@ -48,14 +48,14 @@ new LambdaToStepFunctions(this, 'LambdaToStepFunctionsPattern', {
 ## Initializer
 
 ``` text
-new LambdaToStepFunctions(scope: Construct, id: string, props: LambdaToStepFunctionsProps);
+new LambdaToStepfunctions(scope: Construct, id: string, props: LambdaToStepfunctionsProps);
 ```
 
 _Parameters_
 
 * scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
 * id `string`
-* props [`LambdaToStepFunctionsProps`](#pattern-construct-props)
+* props [`LambdaToStepfunctionsProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

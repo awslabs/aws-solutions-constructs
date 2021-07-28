@@ -15,14 +15,14 @@
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as sfn from '@aws-cdk/aws-stepfunctions';
-import * as defaults from '@aws-solutions-constructs/core';
+import { LambdaToStepfunctions } from "@aws-solutions-constructs/aws-lambda-stepfunctions";
 import { Construct } from '@aws-cdk/core';
 import * as logs from '@aws-cdk/aws-logs';
 
 /**
- * @summary Properties for the LambdaToStepFunctions class.
+ * @summary Properties for the LambdaToStepFunction class.
  */
-export interface LambdaToStepFunctionsProps {
+export interface LambdaToStepFunctionProps {
   /**
    * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
@@ -62,46 +62,30 @@ export interface LambdaToStepFunctionsProps {
 }
 
 /**
- * @summary The LambdaToStepFunctionsProps class.
+ * @summary The LambdaToStepFunctionProps class.
  */
-export class LambdaToStepFunctions extends Construct {
+export class LambdaToStepFunction extends Construct {
   public readonly lambdaFunction: lambda.Function;
   public readonly stateMachine: sfn.StateMachine;
   public readonly stateMachineLogGroup: logs.ILogGroup;
   public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
 
   /**
-   * @summary Constructs a new instance of the LambdaToStepFunctionsProps class.
+   * @summary Constructs a new instance of the LambdaToStepFunctionProps class.
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
-   * @param {LambdaToStepFunctionsProps} props - user provided props for the construct.
+   * @param {LambdaToStepFunctionProps} props - user provided props for the construct.
    * @since 0.8.0
    * @access public
    */
-  constructor(scope: Construct, id: string, props: LambdaToStepFunctionsProps) {
+  constructor(scope: Construct, id: string, props: LambdaToStepFunctionProps) {
     super(scope, id);
-    defaults.CheckProps(props);
-
-    // Setup the state machine
-    [this.stateMachine, this.stateMachineLogGroup] = defaults.buildStateMachine(this, props.stateMachineProps,
-      props.logGroupProps);
-
-    // Setup the Lambda function
-    this.lambdaFunction = defaults.buildLambdaFunction(this, {
-      existingLambdaObj: props.existingLambdaObj,
-      lambdaFunctionProps: props.lambdaFunctionProps,
-    });
-
-    // Assign the state machine ARN as an environment variable
-    const stateMachineEnvironmentVariableName = props.stateMachineEnvironmentVariableName || 'STATE_MACHINE_ARN';
-    this.lambdaFunction.addEnvironment(stateMachineEnvironmentVariableName, this.stateMachine.stateMachineArn);
-
-    // Grant the start execution permission to the Lambda function
-    this.stateMachine.grantStartExecution(this.lambdaFunction);
-
-    if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
-      // Deploy best-practice CloudWatch Alarm for state machine
-      this.cloudwatchAlarms = defaults.buildStepFunctionCWAlarms(this, this.stateMachine);
-    }
+    const convertedProps: LambdaToStepFunctionProps = { ...props };
+    const wrappedConstruct: LambdaToStepFunction = new LambdaToStepfunctions(this, `${id}-wrapped`, convertedProps);
+  
+    this.lambdaFunction = wrappedConstruct.lambdaFunction;
+    this.stateMachine = wrappedConstruct.stateMachine;
+    this.stateMachineLogGroup = wrappedConstruct.stateMachineLogGroup;
+    this.cloudwatchAlarms = wrappedConstruct.cloudwatchAlarms;
   }
 }
