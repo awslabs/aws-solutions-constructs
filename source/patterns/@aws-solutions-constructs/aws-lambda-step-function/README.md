@@ -5,7 +5,7 @@
 
 ![Stability: Deprecated](https://img.shields.io/badge/STABILITY-DEPRECATED-red?style=for-the-badge)
 
-> Construct will be deprecated in favor of aws-lambda-stepfunctions in v2.x, but will be supported in v1.x as long as v1.x is supported.
+> Some of our early constructs don’t meet the naming standards that evolved for the library. We are releasing completely feature compatible versions with corrected names. The underlying implementation code is the same regardless of whether you deploy the construct using the old or new name. We will support both names for all 1.x releases, but in 2.x we will only publish the correctly named constructs.
 
 > All classes are under active development and subject to non-backward compatible changes or removal in any
 > future version. These are not subject to the [Semantic Versioning](https://semver.org/) model.
