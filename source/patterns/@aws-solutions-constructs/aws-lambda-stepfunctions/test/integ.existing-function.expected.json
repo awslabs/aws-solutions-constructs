@@ -1,152 +1,6 @@
 {
   "Resources": {
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineLogGroupA191FCAA": {
-      "Type": "AWS::Logs::LogGroup",
-      "Properties": {
-        "LogGroupName": "/aws/vendedlogs/states/deploylambdatestlambdastepfunctionconstructwrappedstatemachinelog3e0189e9e7e0"
-      },
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete",
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W86",
-              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
-            },
-            {
-              "id": "W84",
-              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
-            }
-          ]
-        }
-      }
-    },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineRole07DDAA06": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "states.",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ".amazonaws.com"
-                    ]
-                  ]
-                }
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      }
-    },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineRoleDefaultPolicyCED4BF48": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "logs:CreateLogDelivery",
-                "logs:GetLogDelivery",
-                "logs:UpdateLogDelivery",
-                "logs:DeleteLogDelivery",
-                "logs:ListLogDeliveries"
-              ],
-              "Effect": "Allow",
-              "Resource": "*"
-            },
-            {
-              "Action": [
-                "logs:PutResourcePolicy",
-                "logs:DescribeResourcePolicies",
-                "logs:DescribeLogGroups"
-              ],
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:",
-                    {
-                      "Ref": "AWS::Partition"
-                    },
-                    ":logs:",
-                    {
-                      "Ref": "AWS::Region"
-                    },
-                    ":",
-                    {
-                      "Ref": "AWS::AccountId"
-                    },
-                    ":*"
-                  ]
-                ]
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineRoleDefaultPolicyCED4BF48",
-        "Roles": [
-          {
-            "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineRole07DDAA06"
-          }
-        ]
-      },
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W12",
-              "reason": "The 'LogDelivery' actions do not support resource-level authorizations"
-            }
-          ]
-        }
-      }
-    },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineD7DA108D": {
-      "Type": "AWS::StepFunctions::StateMachine",
-      "Properties": {
-        "RoleArn": {
-          "Fn::GetAtt": [
-            "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineRole07DDAA06",
-            "Arn"
-          ]
-        },
-        "DefinitionString": "{\"StartAt\":\"StartState\",\"States\":{\"StartState\":{\"Type\":\"Pass\",\"End\":true}}}",
-        "LoggingConfiguration": {
-          "Destinations": [
-            {
-              "CloudWatchLogsLogGroup": {
-                "LogGroupArn": {
-                  "Fn::GetAtt": [
-                    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineLogGroupA191FCAA",
-                    "Arn"
-                  ]
-                }
-              }
-            }
-          ],
-          "Level": "ERROR"
-        }
-      },
-      "DependsOn": [
-        "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineRoleDefaultPolicyCED4BF48",
-        "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineRole07DDAA06"
-      ]
-    },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedLambdaFunctionServiceRoleFC82B03A": {
+    "LambdaFunctionServiceRole0C4CDE0B": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -201,7 +55,7 @@
         ]
       }
     },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedLambdaFunctionServiceRoleDefaultPolicy9EA25B7D": {
+    "LambdaFunctionServiceRoleDefaultPolicy126C8897": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -218,16 +72,16 @@
               "Action": "states:StartExecution",
               "Effect": "Allow",
               "Resource": {
-                "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineD7DA108D"
+                "Ref": "testlambdastepfunctionsconstructStateMachineE1526513"
               }
             }
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedLambdaFunctionServiceRoleDefaultPolicy9EA25B7D",
+        "PolicyName": "LambdaFunctionServiceRoleDefaultPolicy126C8897",
         "Roles": [
           {
-            "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedLambdaFunctionServiceRoleFC82B03A"
+            "Ref": "LambdaFunctionServiceRole0C4CDE0B"
           }
         ]
       },
@@ -242,7 +96,7 @@
         }
       }
     },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedLambdaFunction1021BDBD": {
+    "LambdaFunctionBF21E41F": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -285,7 +139,7 @@
         },
         "Role": {
           "Fn::GetAtt": [
-            "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedLambdaFunctionServiceRoleFC82B03A",
+            "LambdaFunctionServiceRole0C4CDE0B",
             "Arn"
           ]
         },
@@ -293,7 +147,7 @@
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "STATE_MACHINE_ARN": {
-              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineD7DA108D"
+              "Ref": "testlambdastepfunctionsconstructStateMachineE1526513"
             }
           }
         },
@@ -304,8 +158,8 @@
         }
       },
       "DependsOn": [
-        "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedLambdaFunctionServiceRoleDefaultPolicy9EA25B7D",
-        "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedLambdaFunctionServiceRoleFC82B03A"
+        "LambdaFunctionServiceRoleDefaultPolicy126C8897",
+        "LambdaFunctionServiceRole0C4CDE0B"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -326,7 +180,153 @@
         }
       }
     },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedExecutionFailedAlarmD6BB272D": {
+    "testlambdastepfunctionsconstructStateMachineLogGroup1FD4C0D4": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/vendedlogs/states/existingfunctiontestlambdastepfunctionsconstructstatemachinelog9e0bca5b4cd6"
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
+            },
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+            }
+          ]
+        }
+      }
+    },
+    "testlambdastepfunctionsconstructStateMachineRoleD2891199": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "states.",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ".amazonaws.com"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "testlambdastepfunctionsconstructStateMachineRoleDefaultPolicyE8456E47": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogDelivery",
+                "logs:GetLogDelivery",
+                "logs:UpdateLogDelivery",
+                "logs:DeleteLogDelivery",
+                "logs:ListLogDeliveries"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "logs:PutResourcePolicy",
+                "logs:DescribeResourcePolicies",
+                "logs:DescribeLogGroups"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":logs:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testlambdastepfunctionsconstructStateMachineRoleDefaultPolicyE8456E47",
+        "Roles": [
+          {
+            "Ref": "testlambdastepfunctionsconstructStateMachineRoleD2891199"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "The 'LogDelivery' actions do not support resource-level authorizations"
+            }
+          ]
+        }
+      }
+    },
+    "testlambdastepfunctionsconstructStateMachineE1526513": {
+      "Type": "AWS::StepFunctions::StateMachine",
+      "Properties": {
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "testlambdastepfunctionsconstructStateMachineRoleD2891199",
+            "Arn"
+          ]
+        },
+        "DefinitionString": "{\"StartAt\":\"StartState\",\"States\":{\"StartState\":{\"Type\":\"Pass\",\"End\":true}}}",
+        "LoggingConfiguration": {
+          "Destinations": [
+            {
+              "CloudWatchLogsLogGroup": {
+                "LogGroupArn": {
+                  "Fn::GetAtt": [
+                    "testlambdastepfunctionsconstructStateMachineLogGroup1FD4C0D4",
+                    "Arn"
+                  ]
+                }
+              }
+            }
+          ],
+          "Level": "ERROR"
+        }
+      },
+      "DependsOn": [
+        "testlambdastepfunctionsconstructStateMachineRoleDefaultPolicyE8456E47",
+        "testlambdastepfunctionsconstructStateMachineRoleD2891199"
+      ]
+    },
+    "testlambdastepfunctionsconstructExecutionFailedAlarm47C759E2": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -336,7 +336,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineD7DA108D"
+              "Ref": "testlambdastepfunctionsconstructStateMachineE1526513"
             }
           }
         ],
@@ -347,7 +347,7 @@
         "Threshold": 1
       }
     },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedExecutionThrottledAlarmE8079CC5": {
+    "testlambdastepfunctionsconstructExecutionThrottledAlarm23275AB5": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -357,7 +357,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineD7DA108D"
+              "Ref": "testlambdastepfunctionsconstructStateMachineE1526513"
             }
           }
         ],
@@ -368,7 +368,7 @@
         "Threshold": 1
       }
     },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedExecutionAbortedAlarm3410672A": {
+    "testlambdastepfunctionsconstructExecutionAbortedAlarm6DBA2A2E": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -378,7 +378,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineD7DA108D"
+              "Ref": "testlambdastepfunctionsconstructStateMachineE1526513"
             }
           }
         ],

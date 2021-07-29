@@ -1,11 +1,9 @@
-# aws-lambda-step-function module
+# aws-lambda-stepfunctions module
 <!--BEGIN STABILITY BANNER-->
 
 ---
 
-![Stability: Deprecated](https://img.shields.io/badge/STABILITY-DEPRECATED-red?style=for-the-badge)
-
-> Some of our early constructs don’t meet the naming standards that evolved for the library. We are releasing completely feature compatible versions with corrected names. The underlying implementation code is the same regardless of whether you deploy the construct using the old or new name. We will support both names for all 1.x releases, but in 2.x we will only publish the correctly named constructs.
+![Stability: Experimental](https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge)
 
 > All classes are under active development and subject to non-backward compatible changes or removal in any
 > future version. These are not subject to the [Semantic Versioning](https://semver.org/) model.
@@ -20,21 +18,21 @@
 
 | **Language**     | **Package**        |
 |:-------------|-----------------|
-|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_lambda_step_function`|
-|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-lambda-step-function`|
-|![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.lambdastepfunction`|
+|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_lambda_stepfunctions`|
+|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-lambda-stepfunctions`|
+|![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.lambdastepfunctions`|
 
-This AWS Solutions Construct implements an AWS Lambda function connected to an AWS Step Function.
+This AWS Solutions Construct implements an AWS Lambda function connected to an AWS Step Functions.
 
 Here is a minimal deployable pattern definition in Typescript:
 
 ``` typescript
-import { LambdaToStepFunction } from '@aws-solutions-constructs/aws-lambda-step-function';
+import { LambdaToStepfunctions } from '@aws-solutions-constructs/aws-lambda-stepfunctions';
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
 
 const startState = new stepfunctions.Pass(stack, 'StartState');
 
-new LambdaToStepFunction(this, 'LambdaToStepFunctionPattern', {
+new LambdaToStepfunctions(this, 'LambdaToStepfunctionsPattern', {
     lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_12_X,
         handler: 'index.handler',
@@ -50,14 +48,14 @@ new LambdaToStepFunction(this, 'LambdaToStepFunctionPattern', {
 ## Initializer
 
 ``` text
-new LambdaToStepFunction(scope: Construct, id: string, props: LambdaToStepFunctionProps);
+new LambdaToStepfunctions(scope: Construct, id: string, props: LambdaToStepfunctionsProps);
 ```
 
 _Parameters_
 
 * scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
 * id `string`
-* props [`LambdaToStepFunctionProps`](#pattern-construct-props)
+* props [`LambdaToStepfunctionsProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 
@@ -91,9 +89,9 @@ Out of the box implementation of the Construct without any override will set the
   * (default) STATE_MACHINE_ARN
   * AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x and higher functions)
 
-### AWS Step Function
+### AWS Step Functions
 * Enable CloudWatch logging for API Gateway
-* Deploy best practices CloudWatch Alarms for the Step Function
+* Deploy best practices CloudWatch Alarms for the Step Functions
 
 ## Architecture
 ![Architecture Diagram](architecture.png)
