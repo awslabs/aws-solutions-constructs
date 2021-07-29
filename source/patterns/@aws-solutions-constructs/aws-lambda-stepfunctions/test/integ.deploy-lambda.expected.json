@@ -1,9 +1,9 @@
 {
   "Resources": {
-    "testlambdastepfunctionconstructStateMachineLogGroup08972C3B": {
+    "testlambdastepfunctionsconstructStateMachineLogGroup1FD4C0D4": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/vendedlogs/states/deploylambdatestlambdastepfunctionconstructstatemachinelog627db2f772f6"
+        "LogGroupName": "/aws/vendedlogs/states/deploylambdatestlambdastepfunctionsconstructstatemachinelogb258d52dbe27"
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
@@ -22,7 +22,7 @@
         }
       }
     },
-    "testlambdastepfunctionconstructStateMachineRoleC3777C02": {
+    "testlambdastepfunctionsconstructStateMachineRoleD2891199": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -50,7 +50,7 @@
         }
       }
     },
-    "testlambdastepfunctionconstructStateMachineRoleDefaultPolicy226F91C6": {
+    "testlambdastepfunctionsconstructStateMachineRoleDefaultPolicyE8456E47": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -97,10 +97,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testlambdastepfunctionconstructStateMachineRoleDefaultPolicy226F91C6",
+        "PolicyName": "testlambdastepfunctionsconstructStateMachineRoleDefaultPolicyE8456E47",
         "Roles": [
           {
-            "Ref": "testlambdastepfunctionconstructStateMachineRoleC3777C02"
+            "Ref": "testlambdastepfunctionsconstructStateMachineRoleD2891199"
           }
         ]
       },
@@ -115,12 +115,12 @@
         }
       }
     },
-    "testlambdastepfunctionconstructStateMachine3D4830AD": {
+    "testlambdastepfunctionsconstructStateMachineE1526513": {
       "Type": "AWS::StepFunctions::StateMachine",
       "Properties": {
         "RoleArn": {
           "Fn::GetAtt": [
-            "testlambdastepfunctionconstructStateMachineRoleC3777C02",
+            "testlambdastepfunctionsconstructStateMachineRoleD2891199",
             "Arn"
           ]
         },
@@ -131,7 +131,7 @@
               "CloudWatchLogsLogGroup": {
                 "LogGroupArn": {
                   "Fn::GetAtt": [
-                    "testlambdastepfunctionconstructStateMachineLogGroup08972C3B",
+                    "testlambdastepfunctionsconstructStateMachineLogGroup1FD4C0D4",
                     "Arn"
                   ]
                 }
@@ -142,11 +142,11 @@
         }
       },
       "DependsOn": [
-        "testlambdastepfunctionconstructStateMachineRoleDefaultPolicy226F91C6",
-        "testlambdastepfunctionconstructStateMachineRoleC3777C02"
+        "testlambdastepfunctionsconstructStateMachineRoleDefaultPolicyE8456E47",
+        "testlambdastepfunctionsconstructStateMachineRoleD2891199"
       ]
     },
-    "testlambdastepfunctionconstructLambdaFunctionServiceRole57BEAADE": {
+    "testlambdastepfunctionsconstructLambdaFunctionServiceRole2D3C3FD0": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -201,7 +201,7 @@
         ]
       }
     },
-    "testlambdastepfunctionconstructLambdaFunctionServiceRoleDefaultPolicyE27F2D22": {
+    "testlambdastepfunctionsconstructLambdaFunctionServiceRoleDefaultPolicyB6E73348": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -218,16 +218,16 @@
               "Action": "states:StartExecution",
               "Effect": "Allow",
               "Resource": {
-                "Ref": "testlambdastepfunctionconstructStateMachine3D4830AD"
+                "Ref": "testlambdastepfunctionsconstructStateMachineE1526513"
               }
             }
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testlambdastepfunctionconstructLambdaFunctionServiceRoleDefaultPolicyE27F2D22",
+        "PolicyName": "testlambdastepfunctionsconstructLambdaFunctionServiceRoleDefaultPolicyB6E73348",
         "Roles": [
           {
-            "Ref": "testlambdastepfunctionconstructLambdaFunctionServiceRole57BEAADE"
+            "Ref": "testlambdastepfunctionsconstructLambdaFunctionServiceRole2D3C3FD0"
           }
         ]
       },
@@ -242,7 +242,7 @@
         }
       }
     },
-    "testlambdastepfunctionconstructLambdaFunction50F66B71": {
+    "testlambdastepfunctionsconstructLambdaFunction561377BC": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -285,7 +285,7 @@
         },
         "Role": {
           "Fn::GetAtt": [
-            "testlambdastepfunctionconstructLambdaFunctionServiceRole57BEAADE",
+            "testlambdastepfunctionsconstructLambdaFunctionServiceRole2D3C3FD0",
             "Arn"
           ]
         },
@@ -293,7 +293,7 @@
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "STATE_MACHINE_ARN": {
-              "Ref": "testlambdastepfunctionconstructStateMachine3D4830AD"
+              "Ref": "testlambdastepfunctionsconstructStateMachineE1526513"
             }
           }
         },
@@ -304,8 +304,8 @@
         }
       },
       "DependsOn": [
-        "testlambdastepfunctionconstructLambdaFunctionServiceRoleDefaultPolicyE27F2D22",
-        "testlambdastepfunctionconstructLambdaFunctionServiceRole57BEAADE"
+        "testlambdastepfunctionsconstructLambdaFunctionServiceRoleDefaultPolicyB6E73348",
+        "testlambdastepfunctionsconstructLambdaFunctionServiceRole2D3C3FD0"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -326,7 +326,7 @@
         }
       }
     },
-    "testlambdastepfunctionconstructExecutionFailedAlarmC55FFDEE": {
+    "testlambdastepfunctionsconstructExecutionFailedAlarm47C759E2": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -336,7 +336,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "testlambdastepfunctionconstructStateMachine3D4830AD"
+              "Ref": "testlambdastepfunctionsconstructStateMachineE1526513"
             }
           }
         ],
@@ -347,7 +347,7 @@
         "Threshold": 1
       }
     },
-    "testlambdastepfunctionconstructExecutionThrottledAlarm8C5110D9": {
+    "testlambdastepfunctionsconstructExecutionThrottledAlarm23275AB5": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -357,7 +357,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "testlambdastepfunctionconstructStateMachine3D4830AD"
+              "Ref": "testlambdastepfunctionsconstructStateMachineE1526513"
             }
           }
         ],
@@ -368,7 +368,7 @@
         "Threshold": 1
       }
     },
-    "testlambdastepfunctionconstructExecutionAbortedAlarmC2BA974A": {
+    "testlambdastepfunctionsconstructExecutionAbortedAlarm6DBA2A2E": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -378,7 +378,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "testlambdastepfunctionconstructStateMachine3D4830AD"
+              "Ref": "testlambdastepfunctionsconstructStateMachineE1526513"
             }
           }
         ],
