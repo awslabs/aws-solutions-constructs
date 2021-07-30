@@ -1,13 +1,13 @@
 {
-  "name": "@aws-solutions-constructs/aws-eventbridge-stepfunctions",
+  "name": "@aws-solutions-constructs/aws-s3-stepfunctions",
   "version": "0.0.0",
-  "description": "CDK Constructs for deploying AWS Events Rule that invokes AWS Step Functions",
+  "description": "CDK Constructs for AWS S3 to AWS Step Functions integration",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/awslabs/aws-solutions-constructs.git",
-    "directory": "source/patterns/@aws-solutions-constructs/aws-eventbridge-stepfunctions"
+    "directory": "source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions"
   },
   "author": {
     "name": "Amazon Web Services",
@@ -34,21 +34,21 @@
     "outdir": "dist",
     "targets": {
       "java": {
-        "package": "software.amazon.awsconstructs.services.eventbridgestepfunctions",
+        "package": "software.amazon.awsconstructs.services.s3stepfunctions",
         "maven": {
           "groupId": "software.amazon.awsconstructs",
-          "artifactId": "eventbridgestepfunctions"
+          "artifactId": "s3stepfunctions"
         }
       },
       "dotnet": {
-        "namespace": "Amazon.Constructs.AWS.EventbridgeStepfunctions",
-        "packageId": "Amazon.Constructs.AWS.EventbridgeStepfunctions",
+        "namespace": "Amazon.Constructs.AWS.S3Stepfunctions",
+        "packageId": "Amazon.Constructs.AWS.S3Stepfunctions",
         "signAssembly": true,
         "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
       },
       "python": {
-        "distName": "aws-solutions-constructs.aws-eventbridge-stepfunctions",
-        "module": "aws_solutions_constructs.aws_eventbridge_stepfunctions"
+        "distName": "aws-solutions-constructs.aws-s3-stepfunctions",
+        "module": "aws_solutions_constructs.aws_s3_stepfunctions"
       }
     }
   },
@@ -56,12 +56,15 @@
     "@aws-cdk/aws-stepfunctions": "0.0.0",
     "@aws-cdk/aws-stepfunctions-tasks": "0.0.0",
     "@aws-cdk/core": "0.0.0",
-    "@aws-cdk/aws-events": "0.0.0",
+    "@aws-cdk/aws-s3": "0.0.0",
     "@aws-cdk/aws-iam": "0.0.0",
     "@aws-cdk/aws-lambda": "0.0.0",
-    "@aws-cdk/aws-logs": "0.0.0",
     "@aws-cdk/aws-cloudwatch": "0.0.0",
+    "@aws-cdk/aws-cloudtrail": "0.0.0",
+    "@aws-cdk/aws-events": "0.0.0",
+    "@aws-cdk/aws-logs": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
+    "@aws-solutions-constructs/aws-eventbridge-stepfunctions": "0.0.0",
     "constructs": "^3.2.0"
   },
   "devDependencies": {
@@ -85,14 +88,17 @@
   },
   "peerDependencies": {
     "@aws-cdk/aws-stepfunctions": "0.0.0",
+    "@aws-cdk/aws-stepfunctions-tasks": "0.0.0",
     "@aws-cdk/core": "0.0.0",
-    "@aws-cdk/aws-events": "0.0.0",
+    "@aws-cdk/aws-s3": "0.0.0",
     "@aws-cdk/aws-iam": "0.0.0",
-    "@aws-solutions-constructs/core": "0.0.0",
-    "constructs": "^3.2.0",
     "@aws-cdk/aws-lambda": "0.0.0",
     "@aws-cdk/aws-cloudwatch": "0.0.0",
-    "@aws-cdk/aws-stepfunctions-tasks": "0.0.0",
+    "@aws-cdk/aws-cloudtrail": "0.0.0",
+    "@aws-cdk/aws-events": "0.0.0",
+    "@aws-solutions-constructs/core": "0.0.0",
+    "@aws-solutions-constructs/aws-eventbridge-stepfunctions": "0.0.0",
+    "constructs": "^3.2.0",
     "@aws-cdk/aws-logs": "0.0.0"
   },
   "keywords": [
@@ -100,7 +106,7 @@
     "cdk",
     "awscdk",
     "AWS Solutions Constructs",
-    "Amazon EventBridge",
+    "Amazon S3",
     "AWS Step Functions"
   ]
 }

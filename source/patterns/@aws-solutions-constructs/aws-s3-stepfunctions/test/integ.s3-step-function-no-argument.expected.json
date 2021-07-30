@@ -1,0 +1,733 @@
+{
+  "Resources": {
+    "tests3stepfunctionconstructS3LoggingBucketE65663A6": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "LogDeliveryWrite",
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W35",
+              "reason": "This S3 bucket is used as the access logging bucket for another bucket"
+            }
+          ]
+        }
+      }
+    },
+    "tests3stepfunctionconstructS3LoggingBucketPolicy6D0EBFC8": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "tests3stepfunctionconstructS3LoggingBucketE65663A6"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "tests3stepfunctionconstructS3LoggingBucketE65663A6",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "tests3stepfunctionconstructS3LoggingBucketE65663A6",
+                    "Arn"
+                  ]
+                }
+              ],
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "tests3stepfunctionconstructS3BucketE9791EAE": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "NoncurrentVersionTransitions": [
+                {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90
+                }
+              ],
+              "Status": "Enabled"
+            }
+          ]
+        },
+        "LoggingConfiguration": {
+          "DestinationBucketName": {
+            "Ref": "tests3stepfunctionconstructS3LoggingBucketE65663A6"
+          }
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "tests3stepfunctionconstructS3BucketPolicyF485D2A9": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "tests3stepfunctionconstructS3BucketE9791EAE"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "tests3stepfunctionconstructS3BucketE9791EAE",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "tests3stepfunctionconstructS3BucketE9791EAE",
+                    "Arn"
+                  ]
+                }
+              ],
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "tests3stepfunctionconstructCloudTrailS3LoggingBucket9F91E5B8": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "LogDeliveryWrite",
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W35",
+              "reason": "This S3 bucket is used as the access logging bucket for another bucket"
+            }
+          ]
+        }
+      }
+    },
+    "tests3stepfunctionconstructCloudTrailS3LoggingBucketPolicyFEFD6915": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "tests3stepfunctionconstructCloudTrailS3LoggingBucket9F91E5B8"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "tests3stepfunctionconstructCloudTrailS3LoggingBucket9F91E5B8",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "tests3stepfunctionconstructCloudTrailS3LoggingBucket9F91E5B8",
+                    "Arn"
+                  ]
+                }
+              ],
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "tests3stepfunctionconstructCloudTrailS3Bucket5720C055": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "NoncurrentVersionTransitions": [
+                {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90
+                }
+              ],
+              "Status": "Enabled"
+            }
+          ]
+        },
+        "LoggingConfiguration": {
+          "DestinationBucketName": {
+            "Ref": "tests3stepfunctionconstructCloudTrailS3LoggingBucket9F91E5B8"
+          }
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "tests3stepfunctionconstructCloudTrailS3BucketPolicy1F9D9BDB": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "tests3stepfunctionconstructCloudTrailS3Bucket5720C055"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "tests3stepfunctionconstructCloudTrailS3Bucket5720C055",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "tests3stepfunctionconstructCloudTrailS3Bucket5720C055",
+                    "Arn"
+                  ]
+                }
+              ],
+              "Sid": "HttpsOnly"
+            },
+            {
+              "Action": "s3:GetBucketAcl",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "cloudtrail.amazonaws.com"
+              },
+              "Resource": {
+                "Fn::GetAtt": [
+                  "tests3stepfunctionconstructCloudTrailS3Bucket5720C055",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "s3:PutObject",
+              "Condition": {
+                "StringEquals": {
+                  "s3:x-amz-acl": "bucket-owner-full-control"
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "cloudtrail.amazonaws.com"
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "tests3stepfunctionconstructCloudTrailS3Bucket5720C055",
+                        "Arn"
+                      ]
+                    },
+                    "/AWSLogs/",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "tests3stepfunctionconstructS3EventsTrail1D9B4A4E": {
+      "Type": "AWS::CloudTrail::Trail",
+      "Properties": {
+        "IsLogging": true,
+        "S3BucketName": {
+          "Ref": "tests3stepfunctionconstructCloudTrailS3Bucket5720C055"
+        },
+        "EnableLogFileValidation": true,
+        "EventSelectors": [
+          {
+            "DataResources": [
+              {
+                "Type": "AWS::S3::Object",
+                "Values": [
+                  {
+                    "Fn::Join": [
+                      "",
+                      [
+                        {
+                          "Fn::GetAtt": [
+                            "tests3stepfunctionconstructS3BucketE9791EAE",
+                            "Arn"
+                          ]
+                        },
+                        "/"
+                      ]
+                    ]
+                  }
+                ]
+              }
+            ],
+            "IncludeManagementEvents": false,
+            "ReadWriteType": "All"
+          }
+        ],
+        "IncludeGlobalServiceEvents": true,
+        "IsMultiRegionTrail": true
+      },
+      "DependsOn": [
+        "tests3stepfunctionconstructCloudTrailS3BucketPolicy1F9D9BDB"
+      ]
+    },
+    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedStateMachineLogGroupB6BD8A97": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/vendedlogs/states/s3stepfunctionnoargumenttests3stepfunctionconstructeventrulestepfunctionconstructwrappestatemachinelog9f4f26868f40"
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
+            },
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+            }
+          ]
+        }
+      }
+    },
+    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedStateMachineRoleEEE08E4C": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "states.",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ".amazonaws.com"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedStateMachineRoleDefaultPolicyD280DCBB": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogDelivery",
+                "logs:GetLogDelivery",
+                "logs:UpdateLogDelivery",
+                "logs:DeleteLogDelivery",
+                "logs:ListLogDeliveries"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "logs:PutResourcePolicy",
+                "logs:DescribeResourcePolicies",
+                "logs:DescribeLogGroups"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":logs:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "ntrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedStateMachineRoleDefaultPolicyD280DCBB",
+        "Roles": [
+          {
+            "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedStateMachineRoleEEE08E4C"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "The 'LogDelivery' actions do not support resource-level authorizations"
+            }
+          ]
+        }
+      }
+    },
+    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedStateMachine87A065F2": {
+      "Type": "AWS::StepFunctions::StateMachine",
+      "Properties": {
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedStateMachineRoleEEE08E4C",
+            "Arn"
+          ]
+        },
+        "DefinitionString": "{\"StartAt\":\"StartState\",\"States\":{\"StartState\":{\"Type\":\"Pass\",\"End\":true}}}",
+        "LoggingConfiguration": {
+          "Destinations": [
+            {
+              "CloudWatchLogsLogGroup": {
+                "LogGroupArn": {
+                  "Fn::GetAtt": [
+                    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedStateMachineLogGroupB6BD8A97",
+                    "Arn"
+                  ]
+                }
+              }
+            }
+          ],
+          "Level": "ERROR"
+        }
+      },
+      "DependsOn": [
+        "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedStateMachineRoleDefaultPolicyD280DCBB",
+        "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedStateMachineRoleEEE08E4C"
+      ]
+    },
+    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedEventsRuleRole9C877AD8": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedEventsRuleRoleDefaultPolicy2082A05F": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "states:StartExecution",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedStateMachine87A065F2"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "ventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedEventsRuleRoleDefaultPolicy2082A05F",
+        "Roles": [
+          {
+            "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedEventsRuleRole9C877AD8"
+          }
+        ]
+      }
+    },
+    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedEventsRule22694C96": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "EventPattern": {
+          "source": [
+            "aws.s3"
+          ],
+          "detail-type": [
+            "AWS API Call via CloudTrail"
+          ],
+          "detail": {
+            "eventSource": [
+              "s3.amazonaws.com"
+            ],
+            "eventName": [
+              "PutObject",
+              "CopyObject",
+              "CompleteMultipartUpload"
+            ],
+            "requestParameters": {
+              "bucketName": [
+                {
+                  "Ref": "tests3stepfunctionconstructS3BucketE9791EAE"
+                }
+              ]
+            }
+          }
+        },
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedStateMachine87A065F2"
+            },
+            "Id": "Target0",
+            "RoleArn": {
+              "Fn::GetAtt": [
+                "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedEventsRuleRole9C877AD8",
+                "Arn"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedExecutionFailedAlarm9510D7C7": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Alarm for the number of executions that failed exceeded the threshold of 1. ",
+        "Dimensions": [
+          {
+            "Name": "StateMachineArn",
+            "Value": {
+              "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedStateMachine87A065F2"
+            }
+          }
+        ],
+        "MetricName": "ExecutionsFailed",
+        "Namespace": "AWS/States",
+        "Period": 300,
+        "Statistic": "Sum",
+        "Threshold": 1
+      }
+    },
+    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedExecutionThrottledAlarm648C128B": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Alarm for the number of executions that throttled exceeded the threshold of 1. ",
+        "Dimensions": [
+          {
+            "Name": "StateMachineArn",
+            "Value": {
+              "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedStateMachine87A065F2"
+            }
+          }
+        ],
+        "MetricName": "ExecutionThrottled",
+        "Namespace": "AWS/States",
+        "Period": 300,
+        "Statistic": "Sum",
+        "Threshold": 1
+      }
+    },
+    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedExecutionAbortedAlarm9691D5A2": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
+        "Dimensions": [
+          {
+            "Name": "StateMachineArn",
+            "Value": {
+              "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructwrappedStateMachine87A065F2"
+            }
+          }
+        ],
+        "MetricName": "ExecutionsAborted",
+        "Namespace": "AWS/States",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 1
+      }
+    }
+  }
+}
