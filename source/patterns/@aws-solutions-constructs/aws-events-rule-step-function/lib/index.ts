@@ -13,7 +13,7 @@
 
 import * as sfn from '@aws-cdk/aws-stepfunctions';
 import * as events from '@aws-cdk/aws-events';
-import * as { EventbridgeToStepfunctions } from '@aws-solutions-constructs/aws-eventbridge-stepfunctions';
+import { EventbridgeToStepfunctions } from '@aws-solutions-constructs/aws-eventbridge-stepfunctions';
 import { Construct } from '@aws-cdk/core';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import * as logs from '@aws-cdk/aws-logs';
