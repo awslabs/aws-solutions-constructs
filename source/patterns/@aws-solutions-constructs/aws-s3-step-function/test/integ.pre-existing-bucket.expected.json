@@ -290,10 +290,10 @@
         "tests3stepfunctionpreexistingbucketconstructCloudTrailS3BucketPolicy791F8B41"
       ]
     },
-    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructStateMachineLogGroup9E1E4D8F": {
+    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedStateMachineLogGroup21B2A6FC": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/vendedlogs/states/preexistingbuckettests3stepfunctionpreexistingbucketconstructeventrulestepfunctstatemachinelogd46d7e326a0d"
+        "LogGroupName": "/aws/vendedlogs/states/preexistingbuckettests3stepfunctionpreexistingbucketconstructeventrulestepfunctstatemachinelog9afdec89c101"
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
@@ -312,7 +312,7 @@
         }
       }
     },
-    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructStateMachineRole1538A928": {
+    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedStateMachineRole5AD41CAD": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -340,7 +340,7 @@
         }
       }
     },
-    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructStateMachineRoleDefaultPolicy6F3D61F5": {
+    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedStateMachineRoleDefaultPolicyAAF76B92": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -387,10 +387,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "ngbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructStateMachineRoleDefaultPolicy6F3D61F5",
+        "PolicyName": "nconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedStateMachineRoleDefaultPolicyAAF76B92",
         "Roles": [
           {
-            "Ref": "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructStateMachineRole1538A928"
+            "Ref": "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedStateMachineRole5AD41CAD"
           }
         ]
       },
@@ -405,12 +405,12 @@
         }
       }
     },
-    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructStateMachine8A25FD7E": {
+    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedStateMachineBA836E56": {
       "Type": "AWS::StepFunctions::StateMachine",
       "Properties": {
         "RoleArn": {
           "Fn::GetAtt": [
-            "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructStateMachineRole1538A928",
+            "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedStateMachineRole5AD41CAD",
             "Arn"
           ]
         },
@@ -421,7 +421,7 @@
               "CloudWatchLogsLogGroup": {
                 "LogGroupArn": {
                   "Fn::GetAtt": [
-                    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructStateMachineLogGroup9E1E4D8F",
+                    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedStateMachineLogGroup21B2A6FC",
                     "Arn"
                   ]
                 }
@@ -432,11 +432,11 @@
         }
       },
       "DependsOn": [
-        "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructStateMachineRoleDefaultPolicy6F3D61F5",
-        "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructStateMachineRole1538A928"
+        "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedStateMachineRoleDefaultPolicyAAF76B92",
+        "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedStateMachineRole5AD41CAD"
       ]
     },
-    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructEventsRuleRole196D0D34": {
+    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedEventsRuleRoleDC1938E7": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -453,7 +453,7 @@
         }
       }
     },
-    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructEventsRuleRoleDefaultPolicy7897C947": {
+    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedEventsRuleRoleDefaultPolicyB04B1E39": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -462,21 +462,21 @@
               "Action": "states:StartExecution",
               "Effect": "Allow",
               "Resource": {
-                "Ref": "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructStateMachine8A25FD7E"
+                "Ref": "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedStateMachineBA836E56"
               }
             }
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "tingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructEventsRuleRoleDefaultPolicy7897C947",
+        "PolicyName": "ionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedEventsRuleRoleDefaultPolicyB04B1E39",
         "Roles": [
           {
-            "Ref": "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructEventsRuleRole196D0D34"
+            "Ref": "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedEventsRuleRoleDC1938E7"
           }
         ]
       }
     },
-    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructEventsRule921109ED": {
+    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedEventsRuleF3C0FA74": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "EventPattern": {
@@ -508,12 +508,12 @@
         "Targets": [
           {
             "Arn": {
-              "Ref": "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructStateMachine8A25FD7E"
+              "Ref": "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedStateMachineBA836E56"
             },
             "Id": "Target0",
             "RoleArn": {
               "Fn::GetAtt": [
-                "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructEventsRuleRole196D0D34",
+                "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedEventsRuleRoleDC1938E7",
                 "Arn"
               ]
             }
@@ -521,7 +521,7 @@
         ]
       }
     },
-    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructExecutionFailedAlarmACB47134": {
+    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedExecutionFailedAlarm8AEBFF5D": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -531,7 +531,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructStateMachine8A25FD7E"
+              "Ref": "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedStateMachineBA836E56"
             }
           }
         ],
@@ -542,7 +542,7 @@
         "Threshold": 1
       }
     },
-    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructExecutionThrottledAlarm2891E7CD": {
+    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedExecutionThrottledAlarm69363EA1": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -552,7 +552,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructStateMachine8A25FD7E"
+              "Ref": "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedStateMachineBA836E56"
             }
           }
         ],
@@ -563,7 +563,7 @@
         "Threshold": 1
       }
     },
-    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructExecutionAbortedAlarm6BA8005C": {
+    "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedExecutionAbortedAlarmB3133CE8": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -573,7 +573,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructStateMachine8A25FD7E"
+              "Ref": "tests3stepfunctionpreexistingbucketconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructtests3stepfunctionpreexistingbucketconstructeventrulestepfunctionconstructwrappedStateMachineBA836E56"
             }
           }
         ],
