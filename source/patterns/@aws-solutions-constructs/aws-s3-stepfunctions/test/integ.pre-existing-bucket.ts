@@ -37,5 +37,5 @@ const props: S3ToStepfunctionsProps = {
   },
 };
 
-new S3ToStepfunctions(stack, 'test-s3-step-function-pre-existing-bucket-construct', props);
+new S3ToStepfunctions(stack, 'test-s3-stepfunctions-pre-existing-bucket-construct', props);
 app.synth();

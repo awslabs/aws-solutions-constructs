@@ -34,5 +34,5 @@ const props: S3ToStepfunctionsProps = {
   },
 };
 
-new S3ToStepfunctions(stack, 'test-s3-step-function-construct', props);
+new S3ToStepfunctions(stack, 'test-s3-stepfunctions-construct', props);
 app.synth();

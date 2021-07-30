@@ -28,7 +28,7 @@ function deployNewStateMachine(stack: cdk.Stack) {
     }
   };
 
-  return new S3ToStepfunctions(stack, 'test-s3-step-function', props);
+  return new S3ToStepfunctions(stack, 'test-s3-stepfunctions', props);
 }
 
 test('snapshot test S3ToStepfunctions default params', () => {
@@ -49,7 +49,7 @@ test('check deployCloudTrail = false', () => {
     deployCloudTrail: false
   };
 
-  const construct = new S3ToStepfunctions(stack, 'test-s3-step-function', props);
+  const construct = new S3ToStepfunctions(stack, 'test-s3-stepfunctions', props);
 
   expect(construct.cloudtrail === undefined);
 });
@@ -86,7 +86,7 @@ test('override eventRuleProps', () => {
     }
   };
 
-  new S3ToStepfunctions(stack, 'test-s3-step-function', props);
+  new S3ToStepfunctions(stack, 'test-s3-stepfunctions', props);
 
   expect(stack).toHaveResource('AWS::Events::Rule', {
     EventPattern: {
