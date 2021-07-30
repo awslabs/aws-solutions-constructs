@@ -1,0 +1,274 @@
+{
+  "Resources": {
+    "testeventsrulestepfunctionconstructStateMachineLogGroup9F23A0FB": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/vendedlogs/states/eventsrulestepfunctionnoargumenttesteventsrulestepfunctionconstructstatemachinelog6b27e015d9e8"
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
+            },
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+            }
+          ]
+        }
+      }
+    },
+    "testeventsrulestepfunctionconstructStateMachineRoleBC40499F": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "states.",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ".amazonaws.com"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "testeventsrulestepfunctionconstructStateMachineRoleDefaultPolicy121FE5E3": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogDelivery",
+                "logs:GetLogDelivery",
+                "logs:UpdateLogDelivery",
+                "logs:DeleteLogDelivery",
+                "logs:ListLogDeliveries"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "logs:PutResourcePolicy",
+                "logs:DescribeResourcePolicies",
+                "logs:DescribeLogGroups"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":logs:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testeventsrulestepfunctionconstructStateMachineRoleDefaultPolicy121FE5E3",
+        "Roles": [
+          {
+            "Ref": "testeventsrulestepfunctionconstructStateMachineRoleBC40499F"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "The 'LogDelivery' actions do not support resource-level authorizations"
+            }
+          ]
+        }
+      }
+    },
+    "testeventsrulestepfunctionconstructStateMachineEC649FB0": {
+      "Type": "AWS::StepFunctions::StateMachine",
+      "Properties": {
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "testeventsrulestepfunctionconstructStateMachineRoleBC40499F",
+            "Arn"
+          ]
+        },
+        "DefinitionString": "{\"StartAt\":\"StartState\",\"States\":{\"StartState\":{\"Type\":\"Pass\",\"End\":true}}}",
+        "LoggingConfiguration": {
+          "Destinations": [
+            {
+              "CloudWatchLogsLogGroup": {
+                "LogGroupArn": {
+                  "Fn::GetAtt": [
+                    "testeventsrulestepfunctionconstructStateMachineLogGroup9F23A0FB",
+                    "Arn"
+                  ]
+                }
+              }
+            }
+          ],
+          "Level": "ERROR"
+        }
+      },
+      "DependsOn": [
+        "testeventsrulestepfunctionconstructStateMachineRoleDefaultPolicy121FE5E3",
+        "testeventsrulestepfunctionconstructStateMachineRoleBC40499F"
+      ]
+    },
+    "testeventsrulestepfunctionconstructEventsRuleRole17E8002D": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "testeventsrulestepfunctionconstructEventsRuleRoleDefaultPolicy0E65F6F0": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "states:StartExecution",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "testeventsrulestepfunctionconstructStateMachineEC649FB0"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testeventsrulestepfunctionconstructEventsRuleRoleDefaultPolicy0E65F6F0",
+        "Roles": [
+          {
+            "Ref": "testeventsrulestepfunctionconstructEventsRuleRole17E8002D"
+          }
+        ]
+      }
+    },
+    "testeventsrulestepfunctionconstructEventsRule4ACA1995": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "ScheduleExpression": "rate(5 minutes)",
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Ref": "testeventsrulestepfunctionconstructStateMachineEC649FB0"
+            },
+            "Id": "Target0",
+            "RoleArn": {
+              "Fn::GetAtt": [
+                "testeventsrulestepfunctionconstructEventsRuleRole17E8002D",
+                "Arn"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "testeventsrulestepfunctionconstructExecutionFailedAlarm9BA37D4B": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Alarm for the number of executions that failed exceeded the threshold of 1. ",
+        "Dimensions": [
+          {
+            "Name": "StateMachineArn",
+            "Value": {
+              "Ref": "testeventsrulestepfunctionconstructStateMachineEC649FB0"
+            }
+          }
+        ],
+        "MetricName": "ExecutionsFailed",
+        "Namespace": "AWS/States",
+        "Period": 300,
+        "Statistic": "Sum",
+        "Threshold": 1
+      }
+    },
+    "testeventsrulestepfunctionconstructExecutionThrottledAlarmF36B7E20": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Alarm for the number of executions that throttled exceeded the threshold of 1. ",
+        "Dimensions": [
+          {
+            "Name": "StateMachineArn",
+            "Value": {
+              "Ref": "testeventsrulestepfunctionconstructStateMachineEC649FB0"
+            }
+          }
+        ],
+        "MetricName": "ExecutionThrottled",
+        "Namespace": "AWS/States",
+        "Period": 300,
+        "Statistic": "Sum",
+        "Threshold": 1
+      }
+    },
+    "testeventsrulestepfunctionconstructExecutionAbortedAlarm4EC52091": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
+        "Dimensions": [
+          {
+            "Name": "StateMachineArn",
+            "Value": {
+              "Ref": "testeventsrulestepfunctionconstructStateMachineEC649FB0"
+            }
+          }
+        ],
+        "MetricName": "ExecutionsAborted",
+        "Namespace": "AWS/States",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 1
+      }
+    }
+  }
+}
