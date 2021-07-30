@@ -32,7 +32,7 @@ function deployNewStateMachine(stack: cdk.Stack) {
     }
   };
 
-  return new EventbridgeToStepfunctions(stack, 'test-events-rule-step-function', props);
+  return new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions', props);
 }
 
 test('snapshot test EventbridgeToStepfunctions default params', () => {
@@ -53,7 +53,7 @@ test('check events rule role policy permissions', () => {
           Action: "states:StartExecution",
           Effect: "Allow",
           Resource: {
-            Ref: "testeventsrulestepfunctionStateMachineBB26627E"
+            Ref: "testeventbridgestepfunctionsStateMachineDD09BCB6"
           }
         }
       ],
@@ -73,12 +73,12 @@ test('check events rule properties', () => {
     Targets: [
       {
         Arn: {
-          Ref: "testeventsrulestepfunctionStateMachineBB26627E"
+          Ref: "testeventbridgestepfunctionsStateMachineDD09BCB6"
         },
         Id: "Target0",
         RoleArn: {
           "Fn::GetAtt": [
-            "testeventsrulestepfunctionEventsRuleRole5AC0B2DC",
+            "testeventbridgestepfunctionsEventsRuleRoleFFAAD2A8",
             "Arn"
           ]
         }
@@ -112,7 +112,7 @@ test('check properties with no CW Alarms', () => {
     createCloudWatchAlarms: false
   };
 
-  const construct: EventbridgeToStepfunctions =  new EventbridgeToStepfunctions(stack, 'test-events-rule-step-function', props);
+  const construct: EventbridgeToStepfunctions =  new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions', props);
 
   expect(construct.cloudwatchAlarms === null);
   expect(construct.stateMachine !== null);

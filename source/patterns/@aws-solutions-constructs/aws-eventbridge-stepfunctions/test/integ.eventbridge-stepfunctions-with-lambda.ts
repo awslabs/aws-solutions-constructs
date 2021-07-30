@@ -50,5 +50,5 @@ const props: EventbridgeToStepfunctionsProps = {
   },
 };
 
-new EventbridgeToStepfunctions(stack, 'test-events-rule-step-function-and-lambda-construct', props);
+new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions-and-lambda-construct', props);
 app.synth();

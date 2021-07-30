@@ -36,5 +36,5 @@ const props: EventbridgeToStepfunctionsProps = {
   },
 };
 
-new EventbridgeToStepfunctions(stack, 'test-events-rule-step-function-construct', props);
+new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions-construct', props);
 app.synth();
