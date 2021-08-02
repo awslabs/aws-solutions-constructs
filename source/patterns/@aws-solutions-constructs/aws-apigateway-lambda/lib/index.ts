@@ -40,7 +40,7 @@ export interface ApiGatewayToLambdaProps {
    *
    * @default - Default props are used.
    */
-  readonly apiGatewayProps?: api.LambdaRestApiProps | any,
+  readonly apiGatewayProps?: Partial<api.LambdaRestApiProps>,
   /**
    * User provided props to override the default props for the CloudWatchLogs LogGroup.
    *
