@@ -116,12 +116,12 @@ test('override eventRuleProps', () => {
     Targets: [
       {
         Arn: {
-          Ref: "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructtests3stepfunctioneventrulestepfunctionconstructwrappedStateMachineF3747B34"
+          Ref: "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructStateMachine6874E63D"
         },
         Id: "Target0",
         RoleArn: {
           "Fn::GetAtt": [
-            "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructtests3stepfunctioneventrulestepfunctionconstructwrappedEventsRuleRole489F0EEF",
+            "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructEventsRuleRole0706EB34",
             "Arn"
           ]
         }
