@@ -97,7 +97,7 @@ export class S3ToStepFunction extends Construct {
     this.s3LoggingBucket = wrappedConstruct.s3LoggingBucket;
     this.cloudwatchAlarms = wrappedConstruct.cloudwatchAlarms;
     this.cloudtrail = wrappedConstruct.cloudtrail;
-    this.cloudtrailBucket = wrappedConstruct.cloudtrail;
+    this.cloudtrailBucket = wrappedConstruct.cloudtrailBucket;
     this.cloudtrailLoggingBucket = wrappedConstruct.cloudtrailLoggingBucket;
   }
 }
