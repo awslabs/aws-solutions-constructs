@@ -25,7 +25,7 @@ stack.templateOptions.description = 'Integration Test for aws-iot-sqs';
 // Definitions
 const props: IotToSqsProps = {
   encryptionKeyProps: {
-    enableKeyRotation: false,
+    enableKeyRotation: true,
     alias: 'new-key-alias-from-props'
   },
   iotTopicRuleProps: {

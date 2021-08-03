@@ -4,6 +4,7 @@
     "existingqueueobjF8AF0ED1": {
       "Type": "AWS::SQS::Queue",
       "Properties": {
+        "KmsMasterKeyId": "alias/aws/sqs",
         "QueueName": "existing-queue-obj"
       },
       "UpdateReplacePolicy": "Delete",

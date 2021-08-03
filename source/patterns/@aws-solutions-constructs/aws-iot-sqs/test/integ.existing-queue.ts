@@ -17,6 +17,7 @@ import { IotToSqs, IotToSqsProps } from "../lib";
 import * as iam from '@aws-cdk/aws-iam';
 import * as sqs from '@aws-cdk/aws-sqs';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { QueueEncryption } from "@aws-cdk/aws-sqs";
 
 // Setup
 const app = new App();
@@ -25,7 +26,8 @@ stack.templateOptions.description = 'Integration Test for aws-iot-sqs';
 
 // Definitions
 const queue = new sqs.Queue(stack, 'existing-queue-obj', {
-  queueName: 'existing-queue-obj'
+  queueName: 'existing-queue-obj',
+  encryption: QueueEncryption.KMS_MANAGED
 });
 
 const props: IotToSqsProps = {

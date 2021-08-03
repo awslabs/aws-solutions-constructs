@@ -25,7 +25,7 @@ stack.templateOptions.description = 'Integration Test for aws-iot-sqs';
 
 // Definitions
 const kmsKey = new kms.Key(stack, 'existing-key', {
-  enableKeyRotation: false,
+  enableKeyRotation: true,
   alias: 'existing-key-alias'
 });
 
