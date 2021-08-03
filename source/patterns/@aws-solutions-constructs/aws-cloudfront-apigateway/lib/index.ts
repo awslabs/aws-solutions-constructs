@@ -54,7 +54,6 @@ export class CloudFrontToApiGateway extends Construct {
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {CloudFrontToApiGatewayProps} props - user provided props for the construct
-   * @since 0.8.0
    * @access public
    */
   constructor(scope: Construct, id: string, props: CloudFrontToApiGatewayProps) {

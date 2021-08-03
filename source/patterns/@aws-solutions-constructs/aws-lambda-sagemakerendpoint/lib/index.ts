@@ -99,7 +99,6 @@ export class LambdaToSagemakerEndpoint extends cdk.Construct {
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a scope-unique id.
    * @param {LambdaToSagemakerEndpointProps} props - user provided props for the construct.
-   * @since 1.87.1
    * @access public
    */
   constructor(scope: cdk.Construct, id: string, props: LambdaToSagemakerEndpointProps) {

@@ -114,7 +114,6 @@ export class ServerlessImageHandler extends Construct {
      * @param {cdk.App} scope - represents the scope for all the resources.
      * @param {string} id - this is a a scope-unique id.
      * @param {ServerlessImageHandlerProps} props - user provided props for the construct
-     * @since 0.8.0
      * @access public
      */
     constructor(scope: Construct, id: string, props: ServerlessImageHandlerProps) {
@@ -202,7 +201,6 @@ export class ServerlessImageHandler extends Construct {
     /**
      * @summary Returns an instance of cloudFront.CloudFrontWebDistribution created by the construct.
      * @returns { cloudFront.CloudFrontWebDistribution } Instance of CloudFrontWebDistribution created by the construct.
-     * @since 0.8.0
      * @access public
      */
     public cloudFrontDistribution(): cloudFront.CloudFrontWebDistribution {
@@ -212,7 +210,6 @@ export class ServerlessImageHandler extends Construct {
     /**
      * @summary Returns an instance of apiGateway.RestApi created by the construct.
      * @returns { apiGateway.RestApi } Instance of RestApi created by the construct.
-     * @since 0.8.0
      * @access public
      */
     public apiGateway(): apiGateway.RestApi {
@@ -222,7 +219,6 @@ export class ServerlessImageHandler extends Construct {
     /**
      * @summary Returns an instance of lambda.Function created by the construct.
      * @returns { lambda.Function } Instance of Function created by the construct
-     * @since 0.8.0
      * @access public
      */
     public lambdaFunction(): lambda.Function {
@@ -232,7 +228,6 @@ export class ServerlessImageHandler extends Construct {
     /**
      * @summary Returns an instance of s3.Bucket created by the construct.
      * @returns { s3.Bucket } Instance of Bucket created by the construct
-     * @since 0.8.0
      * @access public
      */
     public s3Bucket(): s3.Bucket {

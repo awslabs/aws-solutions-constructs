@@ -73,7 +73,6 @@ export class KinesisFirehoseToAnalyticsAndS3 extends Construct {
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {KinesisFirehoseToAnalyticsAndS3Props} props - user provided props for the construct
-   * @since 0.8.0
    * @access public
    */
   constructor(scope: Construct, id: string, props: KinesisFirehoseToAnalyticsAndS3Props) {

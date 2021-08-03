@@ -89,7 +89,6 @@ export class LambdaToSsmstringparameter extends Construct {
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {LambdaToSsmstringparameterProps} props - user provided props for the construct.
-   * @since 1.49.0
    * @access public
    */
   constructor(scope: Construct, id: string, props: LambdaToSsmstringparameterProps) {
