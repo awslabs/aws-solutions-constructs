@@ -1,13 +1,13 @@
 {
-  "name": "@aws-solutions-constructs/aws-events-rule-step-function",
+  "name": "@aws-solutions-constructs/aws-eventbridge-stepfunctions",
   "version": "0.0.0",
-  "description": "CDK Constructs for deploying AWS Events Rule that invokes AWS Step Function",
+  "description": "CDK Constructs for deploying AWS Events Rule that invokes AWS Step Functions",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/awslabs/aws-solutions-constructs.git",
-    "directory": "source/patterns/@aws-solutions-constructs/aws-events-rule-step-function"
+    "directory": "source/patterns/@aws-solutions-constructs/aws-eventbridge-stepfunctions"
   },
   "author": {
     "name": "Amazon Web Services",
@@ -34,21 +34,21 @@
     "outdir": "dist",
     "targets": {
       "java": {
-        "package": "software.amazon.awsconstructs.services.eventsrulestepfunction",
+        "package": "software.amazon.awsconstructs.services.eventbridgestepfunctions",
         "maven": {
           "groupId": "software.amazon.awsconstructs",
-          "artifactId": "eventsrulestepfunction"
+          "artifactId": "eventbridgestepfunctions"
         }
       },
       "dotnet": {
-        "namespace": "Amazon.Constructs.AWS.EventsRuleStepFunction",
-        "packageId": "Amazon.Constructs.AWS.EventsRuleStepFunction",
+        "namespace": "Amazon.Constructs.AWS.EventbridgeStepfunctions",
+        "packageId": "Amazon.Constructs.AWS.EventbridgeStepfunctions",
         "signAssembly": true,
         "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
       },
       "python": {
-        "distName": "aws-solutions-constructs.aws-events-rule-step-function",
-        "module": "aws_solutions_constructs.aws_events_rule_step_function"
+        "distName": "aws-solutions-constructs.aws-eventbridge-stepfunctions",
+        "module": "aws_solutions_constructs.aws_eventbridge_stepfunctions"
       }
     }
   },
@@ -62,7 +62,6 @@
     "@aws-cdk/aws-logs": "0.0.0",
     "@aws-cdk/aws-cloudwatch": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-eventbridge-stepfunctions": "0.0.0",
     "constructs": "^3.2.0"
   },
   "devDependencies": {
@@ -94,8 +93,7 @@
     "@aws-cdk/aws-lambda": "0.0.0",
     "@aws-cdk/aws-cloudwatch": "0.0.0",
     "@aws-cdk/aws-stepfunctions-tasks": "0.0.0",
-    "@aws-cdk/aws-logs": "0.0.0",
-    "@aws-solutions-constructs/aws-eventbridge-stepfunctions": "0.0.0"
+    "@aws-cdk/aws-logs": "0.0.0"
   },
   "keywords": [
     "aws",

@@ -12,7 +12,7 @@
  */
 
 import { SynthUtils } from '@aws-cdk/assert';
-import { S3ToStepFunction, S3ToStepFunctionProps } from '../lib/index';
+import { S3ToStepfunctions, S3ToStepfunctionsProps } from '../lib/index';
 import * as sfn from '@aws-cdk/aws-stepfunctions';
 import '@aws-cdk/assert/jest';
 import * as cdk from '@aws-cdk/core';
@@ -22,16 +22,16 @@ function deployNewStateMachine(stack: cdk.Stack) {
 
   const startState = new sfn.Pass(stack, 'StartState');
 
-  const props: S3ToStepFunctionProps = {
+  const props: S3ToStepfunctionsProps = {
     stateMachineProps: {
       definition: startState
     }
   };
 
-  return new S3ToStepFunction(stack, 'test-s3-step-function', props);
+  return new S3ToStepfunctions(stack, 'test-s3-stepfunctions', props);
 }
 
-test('snapshot test S3ToStepFunction default params', () => {
+test('snapshot test S3ToStepfunctions default params', () => {
   const stack = new cdk.Stack();
   deployNewStateMachine(stack);
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
@@ -42,14 +42,14 @@ test('check deployCloudTrail = false', () => {
 
   const startState = new sfn.Pass(stack, 'StartState');
 
-  const props: S3ToStepFunctionProps = {
+  const props: S3ToStepfunctionsProps = {
     stateMachineProps: {
       definition: startState
     },
     deployCloudTrail: false
   };
 
-  const construct = new S3ToStepFunction(stack, 'test-s3-step-function', props);
+  const construct = new S3ToStepfunctions(stack, 'test-s3-stepfunctions', props);
 
   expect(construct.cloudtrail === undefined);
 });
@@ -60,7 +60,7 @@ test('override eventRuleProps', () => {
   const mybucket = new Bucket(stack, 'mybucket');
   const startState = new sfn.Pass(stack, 'StartState');
 
-  const props: S3ToStepFunctionProps = {
+  const props: S3ToStepfunctionsProps = {
     stateMachineProps: {
       definition: startState
     },
@@ -86,7 +86,7 @@ test('override eventRuleProps', () => {
     }
   };
 
-  new S3ToStepFunction(stack, 'test-s3-step-function', props);
+  new S3ToStepfunctions(stack, 'test-s3-stepfunctions', props);
 
   expect(stack).toHaveResource('AWS::Events::Rule', {
     EventPattern: {
@@ -116,12 +116,12 @@ test('override eventRuleProps', () => {
     Targets: [
       {
         Arn: {
-          Ref: "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructStateMachine6874E63D"
+          Ref: "tests3stepfunctionstests3stepfunctionseventrulestepfunctionconstructStateMachine67197269"
         },
         Id: "Target0",
         RoleArn: {
           "Fn::GetAtt": [
-            "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructEventsRuleRole0706EB34",
+            "tests3stepfunctionstests3stepfunctionseventrulestepfunctionconstructEventsRuleRoleE7CAD359",
             "Arn"
           ]
         }
@@ -133,7 +133,7 @@ test('override eventRuleProps', () => {
 test('check properties', () => {
   const stack = new cdk.Stack();
 
-  const construct: S3ToStepFunction = deployNewStateMachine(stack);
+  const construct: S3ToStepfunctions = deployNewStateMachine(stack);
 
   expect(construct.cloudtrail !== null);
   expect(construct.stateMachine !== null);
@@ -158,7 +158,7 @@ test("Test bad call with existingBucket and bucketProps", () => {
 
   const app = () => {
     // Helper declaration
-    new S3ToStepFunction(stack, "bad-s3-args", {
+    new S3ToStepfunctions(stack, "bad-s3-args", {
       stateMachineProps: {
         definition: startState
       },
