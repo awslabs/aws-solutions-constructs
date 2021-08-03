@@ -202,7 +202,9 @@ test('check if the event rule has permission/policy in place in sqs queue for it
             },
           },
           Effect: "Deny",
-          Principal: "*",
+          Principal: {
+            AWS: "*"
+          },
           Resource:  {
             "Fn::GetAtt": [
               "testeventsrulesqsqueueAACD0364",
@@ -290,7 +292,9 @@ test('check if the dead letter queue policy is setup', () => {
             },
           },
           Effect: "Deny",
-          Principal: "*",
+          Principal: {
+            AWS: "*"
+          },
           Resource:  {
             "Fn::GetAtt": [
               "testeventsrulesqsdeadLetterQueueA4A15A1C",

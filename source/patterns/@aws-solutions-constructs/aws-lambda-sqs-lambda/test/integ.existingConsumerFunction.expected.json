@@ -446,7 +446,9 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": {
+                "AWS": "*"
+              },
               "Resource": {
                 "Fn::GetAtt": [
                   "testlambdasqslambdalambdatosqsdeadLetterQueue016B6E58",
@@ -532,7 +534,9 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": {
+                "AWS": "*"
+              },
               "Resource": {
                 "Fn::GetAtt": [
                   "testlambdasqslambdalambdatosqsqueueF2ED40D2",

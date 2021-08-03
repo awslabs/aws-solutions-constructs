@@ -15,7 +15,7 @@
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as sfn from '@aws-cdk/aws-stepfunctions';
-import * as defaults from '@aws-solutions-constructs/core';
+import { LambdaToStepfunctions } from "@aws-solutions-constructs/aws-lambda-stepfunctions";
 import { Construct } from '@aws-cdk/core';
 import * as logs from '@aws-cdk/aws-logs';
 
@@ -80,28 +80,12 @@ export class LambdaToStepFunction extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToStepFunctionProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    const convertedProps: LambdaToStepFunctionProps = { ...props };
+    const wrappedConstruct: LambdaToStepFunction = new LambdaToStepfunctions(this, `${id}-wrapped`, convertedProps);
 
-    // Setup the state machine
-    [this.stateMachine, this.stateMachineLogGroup] = defaults.buildStateMachine(this, props.stateMachineProps,
-      props.logGroupProps);
-
-    // Setup the Lambda function
-    this.lambdaFunction = defaults.buildLambdaFunction(this, {
-      existingLambdaObj: props.existingLambdaObj,
-      lambdaFunctionProps: props.lambdaFunctionProps,
-    });
-
-    // Assign the state machine ARN as an environment variable
-    const stateMachineEnvironmentVariableName = props.stateMachineEnvironmentVariableName || 'STATE_MACHINE_ARN';
-    this.lambdaFunction.addEnvironment(stateMachineEnvironmentVariableName, this.stateMachine.stateMachineArn);
-
-    // Grant the start execution permission to the Lambda function
-    this.stateMachine.grantStartExecution(this.lambdaFunction);
-
-    if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
-      // Deploy best-practice CloudWatch Alarm for state machine
-      this.cloudwatchAlarms = defaults.buildStepFunctionCWAlarms(this, this.stateMachine);
-    }
+    this.lambdaFunction = wrappedConstruct.lambdaFunction;
+    this.stateMachine = wrappedConstruct.stateMachine;
+    this.stateMachineLogGroup = wrappedConstruct.stateMachineLogGroup;
+    this.cloudwatchAlarms = wrappedConstruct.cloudwatchAlarms;
   }
 }

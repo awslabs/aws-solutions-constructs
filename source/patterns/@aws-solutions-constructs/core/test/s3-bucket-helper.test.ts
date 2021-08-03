@@ -153,7 +153,9 @@ test('Check S3 Bucket policy', () => {
               },
             },
             Effect: "Deny",
-            Principal: "*",
+            Principal: {
+              AWS: "*"
+            },
             Resource: [
               {
                 "Fn::Join": [

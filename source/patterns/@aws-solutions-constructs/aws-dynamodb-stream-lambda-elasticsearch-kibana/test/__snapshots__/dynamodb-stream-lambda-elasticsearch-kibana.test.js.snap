@@ -341,7 +341,9 @@ Object {
                 },
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": Object {
+                "AWS": "*",
+              },
               "Resource": Object {
                 "Fn::GetAtt": Array [
                   "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaSqsDlqQueue2AC67B0B",
