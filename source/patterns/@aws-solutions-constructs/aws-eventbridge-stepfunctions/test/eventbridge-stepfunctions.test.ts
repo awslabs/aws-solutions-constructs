@@ -13,7 +13,7 @@
 
 import { SynthUtils } from '@aws-cdk/assert';
 import * as events from '@aws-cdk/aws-events';
-import { EventsRuleToStepFunction, EventsRuleToStepFunctionProps } from '../lib/index';
+import { EventbridgeToStepfunctions, EventbridgeToStepfunctionsProps } from '../lib/index';
 import { Duration } from '@aws-cdk/core';
 import * as sfn from '@aws-cdk/aws-stepfunctions';
 import '@aws-cdk/assert/jest';
@@ -23,7 +23,7 @@ function deployNewStateMachine(stack: cdk.Stack) {
 
   const startState = new sfn.Pass(stack, 'StartState');
 
-  const props: EventsRuleToStepFunctionProps = {
+  const props: EventbridgeToStepfunctionsProps = {
     stateMachineProps: {
       definition: startState
     },
@@ -32,10 +32,10 @@ function deployNewStateMachine(stack: cdk.Stack) {
     }
   };
 
-  return new EventsRuleToStepFunction(stack, 'test-events-rule-step-function', props);
+  return new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions', props);
 }
 
-test('snapshot test EventsRuleToStepFunction default params', () => {
+test('snapshot test EventbridgeToStepfunctions default params', () => {
   const stack = new cdk.Stack();
   deployNewStateMachine(stack);
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
@@ -53,7 +53,7 @@ test('check events rule role policy permissions', () => {
           Action: "states:StartExecution",
           Effect: "Allow",
           Resource: {
-            Ref: "testeventsrulestepfunctiontesteventsrulestepfunctionwrappedStateMachine630E5B8C"
+            Ref: "testeventbridgestepfunctionsStateMachineDD09BCB6"
           }
         }
       ],
@@ -73,12 +73,12 @@ test('check events rule properties', () => {
     Targets: [
       {
         Arn: {
-          Ref: "testeventsrulestepfunctiontesteventsrulestepfunctionwrappedStateMachine630E5B8C"
+          Ref: "testeventbridgestepfunctionsStateMachineDD09BCB6"
         },
         Id: "Target0",
         RoleArn: {
           "Fn::GetAtt": [
-            "testeventsrulestepfunctiontesteventsrulestepfunctionwrappedEventsRuleRole30B14737",
+            "testeventbridgestepfunctionsEventsRuleRoleFFAAD2A8",
             "Arn"
           ]
         }
@@ -90,7 +90,7 @@ test('check events rule properties', () => {
 test('check properties', () => {
   const stack = new cdk.Stack();
 
-  const construct: EventsRuleToStepFunction = deployNewStateMachine(stack);
+  const construct: EventbridgeToStepfunctions = deployNewStateMachine(stack);
 
   expect(construct.cloudwatchAlarms !== null);
   expect(construct.stateMachine !== null);
@@ -102,7 +102,7 @@ test('check properties with no CW Alarms', () => {
   const stack = new cdk.Stack();
   const startState = new sfn.Pass(stack, 'StartState');
 
-  const props: EventsRuleToStepFunctionProps = {
+  const props: EventbridgeToStepfunctionsProps = {
     stateMachineProps: {
       definition: startState
     },
@@ -112,7 +112,7 @@ test('check properties with no CW Alarms', () => {
     createCloudWatchAlarms: false
   };
 
-  const construct: EventsRuleToStepFunction =  new EventsRuleToStepFunction(stack, 'test-events-rule-step-function', props);
+  const construct: EventbridgeToStepfunctions =  new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions', props);
 
   expect(construct.cloudwatchAlarms === null);
   expect(construct.stateMachine !== null);

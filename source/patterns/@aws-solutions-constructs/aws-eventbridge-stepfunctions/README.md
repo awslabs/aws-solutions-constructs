@@ -1,11 +1,9 @@
-# aws-events-rule-step-function module
+# aws-eventbridge-stepfunctions module
 <!--BEGIN STABILITY BANNER-->
 
 ---
 
-![Stability: Deprecated](https://img.shields.io/badge/STABILITY-DEPRECATED-red?style=for-the-badge)
-
-> Some of our early constructs don’t meet the naming standards that evolved for the library. We are releasing completely feature compatible versions with corrected names. The underlying implementation code is the same regardless of whether you deploy the construct using the old or new name. We will support both names for all 1.x releases, but in 2.x we will only publish the correctly named constructs.
+![Stability: Experimental](https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge)
 
 > All classes are under active development and subject to non-backward compatible changes or removal in any
 > future version. These are not subject to the [Semantic Versioning](https://semver.org/) model.
@@ -20,20 +18,20 @@
 
 | **Language**     | **Package**        |
 |:-------------|-----------------|
-|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_events_rule_step_function`|
-|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-events-rule-step-function`|
-|![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.eventsrulestepfunction`|
+|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_eventbridge_stepfunctions`|
+|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-eventbridge-stepfunctions`|
+|![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.eventbridgestepfunctions`|
 
-This AWS Solutions Construct implements an AWS Events rule and an AWS Step function.
+This AWS Solutions Construct implements an AWS Events rule and an AWS Step Functions State Machine
 
 Here is a minimal deployable pattern definition in Typescript:
 
 ``` javascript
-const { EventsRuleToStepFunction, EventsRuleToStepFunctionProps } from '@aws-solutions-constructs/aws-events-rule-step-function';
+const { EventbridgeToStepfunctions, EventbridgeToStepfunctionsProps } from '@aws-solutions-constructs/aws-eventbridge-stepfunctions';
 
 const startState = new stepfunctions.Pass(this, 'StartState');
 
-const props: EventsRuleToStepFunctionProps = {
+const props: EventbridgeToStepfunctionsProps = {
     stateMachineProps: {
       definition: startState
     },
@@ -42,20 +40,20 @@ const props: EventsRuleToStepFunctionProps = {
     }
 };
 
-new EventsRuleToStepFunction(stack, 'test-events-rule-step-function-stack', props);
+new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions-stack', props);
 ```
 
 ## Initializer
 
 ``` text
-new EventsRuleToStepFunction(scope: Construct, id: string, props: EventsRuleToStepFunctionProps);
+new EventbridgeToStepfunctions(scope: Construct, id: string, props: EventbridgeToStepfunctionsProps);
 ```
 
 _Parameters_
 
 * scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
 * id `string`
-* props [`EventsRuleToStepFunctionProps`](#pattern-construct-props)
+* props [`EventbridgeToStepfunctionsProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 
