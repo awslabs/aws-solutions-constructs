@@ -51,7 +51,7 @@ export interface CloudFrontToMediaStoreProps {
 export class CloudFrontToMediaStore extends Construct {
   public readonly cloudFrontWebDistribution: cloudfront.Distribution;
   public readonly mediaStoreContainer: mediastore.CfnContainer;
-  public readonly cloudFrontLoggingBucket: s3.Bucket;
+  public readonly cloudFrontLoggingBucket?: s3.Bucket;
   public readonly cloudFrontOriginRequestPolicy: cloudfront.OriginRequestPolicy;
   public readonly cloudFrontOriginAccessIdentity?: cloudfront.OriginAccessIdentity;
   public readonly cloudFrontFunction?: cloudfront.Function;
