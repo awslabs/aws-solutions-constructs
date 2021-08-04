@@ -11,13 +11,12 @@
  *  and limitations under the License.
  */
 
-import { Queue, QueueProps, DeadLetterQueue } from '@aws-cdk/aws-sqs';
-import { CfnTopicRule, CfnTopicRuleProps } from '@aws-cdk/aws-iot';
-import { IKey, Key, KeyProps } from '@aws-cdk/aws-kms';
-import { Role, ServicePrincipal } from '@aws-cdk/aws-iam';
-import { Construct } from '@aws-cdk/core';
-import { CheckProps, overrideProps } from '@aws-solutions-constructs/core';
-import { buildDeadLetterQueue, buildQueue, DefaultCfnTopicRuleProps } from '@aws-solutions-constructs/core';
+import * as cdk from '@aws-cdk/core';
+import * as sqs from '@aws-cdk/aws-sqs';
+import * as iot from '@aws-cdk/aws-iot';
+import * as kms from '@aws-cdk/aws-kms';
+import * as iam from '@aws-cdk/aws-iam';
+import * as defaults from '@aws-solutions-constructs/core';
 
 /**
  * @summary The properties for the IotToSqs class.
@@ -28,21 +27,21 @@ export interface IotToSqsProps {
    *
    * @default - None
    */
-  readonly existingQueueObj?: Queue;
+  readonly existingQueueObj?: sqs.Queue;
 
   /**
    * User provided props to override the default props for the SQS queue.
    *
    * @default - Default props are used
    */
-  readonly queueProps?: QueueProps;
+  readonly queueProps?: sqs.QueueProps;
 
   /**
    * Optional user provided properties for the dead letter queue
    *
    * @default - Default props are used
    */
-  readonly deadLetterQueueProps?: QueueProps;
+  readonly deadLetterQueueProps?: sqs.QueueProps;
 
   /**
    * Whether to deploy a secondary queue to be used as a dead letter queue.
@@ -71,44 +70,43 @@ export interface IotToSqsProps {
    *
    * @default - not specified.
    */
-  readonly encryptionKey?: Key;
+  readonly encryptionKey?: kms.Key;
 
   /**
    * Optional user-provided props to override the default props for the encryption key.
    *
    * @default - Default props are used.
    */
-  readonly encryptionKeyProps?: KeyProps;
+  readonly encryptionKeyProps?: kms.KeyProps;
 
   /**
    * User provided CfnTopicRuleProps to override the defaults
    *
    * @default - None
    */
-  readonly iotTopicRuleProps: CfnTopicRuleProps;
+  readonly iotTopicRuleProps: iot.CfnTopicRuleProps;
 }
 
-export class IotToSqs extends Construct {
-  public readonly sqsQueue: Queue;
-  public readonly deadLetterQueue?: DeadLetterQueue;
-  public readonly encryptionKey?: IKey;
-  public readonly iotActionsRole: Role;
-  public readonly iotTopicRule: CfnTopicRule;
+export class IotToSqs extends cdk.Construct {
+  public readonly sqsQueue: sqs.Queue;
+  public readonly deadLetterQueue?: sqs.DeadLetterQueue;
+  public readonly encryptionKey?: kms.IKey;
+  public readonly iotActionsRole: iam.Role;
+  public readonly iotTopicRule: iot.CfnTopicRule;
 
   /**
    * @summary Constructs a new instance of the IotToSqs class.
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {IotToSqsProps} props - user provided props for the construct
-   * @since 1.110.1
    * @access public
    */
-  constructor(scope: Construct, id: string, props: IotToSqsProps) {
+  constructor(scope: cdk.Construct, id: string, props: IotToSqsProps) {
     super(scope, id);
-    CheckProps(props);
+    defaults.CheckProps(props);
 
     // Setup the dead letter queue, if applicable
-    this.deadLetterQueue = buildDeadLetterQueue(this, {
+    this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
       existingQueueObj: props.existingQueueObj,
       deployDeadLetterQueue: props.deployDeadLetterQueue,
       deadLetterQueueProps: props.deadLetterQueueProps,
@@ -122,7 +120,7 @@ export class IotToSqs extends Construct {
     }
 
     // Setup the queue
-    [this.sqsQueue, this.encryptionKey] = buildQueue(this, 'queue', {
+    [this.sqsQueue, this.encryptionKey] = defaults.buildQueue(this, 'queue', {
       existingQueueObj: props.existingQueueObj,
       queueProps: props.queueProps,
       deadLetterQueue: this.deadLetterQueue,
@@ -136,8 +134,8 @@ export class IotToSqs extends Construct {
     }
 
     // Role to allow IoT to send messages to the SQS Queue
-    this.iotActionsRole = new Role(this, 'iot-actions-role', {
-      assumedBy: new ServicePrincipal('iot.amazonaws.com')
+    this.iotActionsRole = new iam.Role(this, 'iot-actions-role', {
+      assumedBy: new iam.ServicePrincipal('iot.amazonaws.com')
     });
     this.sqsQueue.grantSendMessages(this.iotActionsRole);
 
@@ -145,15 +143,15 @@ export class IotToSqs extends Construct {
       this.encryptionKey.grantEncrypt(this.iotActionsRole);
     }
 
-    const defaultIotTopicProps = DefaultCfnTopicRuleProps([{
+    const defaultIotTopicProps = defaults.DefaultCfnTopicRuleProps([{
       sqs: {
         queueUrl: this.sqsQueue.queueUrl,
         roleArn: this.iotActionsRole.roleArn
       }
     }]);
-    const iotTopicProps = overrideProps(defaultIotTopicProps, props.iotTopicRuleProps, true);
+    const iotTopicProps = defaults.overrideProps(defaultIotTopicProps, props.iotTopicRuleProps, true);
 
     // Create the IoT topic rule
-    this.iotTopicRule = new CfnTopicRule(this, 'IotTopicRule', iotTopicProps);
+    this.iotTopicRule = new iot.CfnTopicRule(this, 'IotTopicRule', iotTopicProps);
   }
 }
