@@ -1,7 +1,7 @@
 {
   "Description": "Integration Test for aws-eventbridge-kinesisstreams",
   "Resources": {
-    "testeventsrulekinesisstreamKinesisStream969B0ACC": {
+    "testeventbridgekinesisstreamKinesisStream2A352C09": {
       "Type": "AWS::Kinesis::Stream",
       "Properties": {
         "ShardCount": 1,
@@ -12,7 +12,7 @@
         }
       }
     },
-    "testeventsrulekinesisstreameventsRole6E6DBF4D": {
+    "testeventbridgekinesisstreameventsRole43473E44": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -30,7 +30,7 @@
         "Description": "Events Rule Role"
       }
     },
-    "testeventsrulekinesisstreameventsRoleDefaultPolicy1918648D": {
+    "testeventbridgekinesisstreameventsRoleDefaultPolicy51F5A4FA": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -44,7 +44,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "testeventsrulekinesisstreamKinesisStream969B0ACC",
+                  "testeventbridgekinesisstreamKinesisStream2A352C09",
                   "Arn"
                 ]
               }
@@ -52,15 +52,15 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testeventsrulekinesisstreameventsRoleDefaultPolicy1918648D",
+        "PolicyName": "testeventbridgekinesisstreameventsRoleDefaultPolicy51F5A4FA",
         "Roles": [
           {
-            "Ref": "testeventsrulekinesisstreameventsRole6E6DBF4D"
+            "Ref": "testeventbridgekinesisstreameventsRole43473E44"
           }
         ]
       }
     },
-    "testeventsrulekinesisstreamEventsRule4154831A": {
+    "testeventbridgekinesisstreamEventsRuleC4E74981": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "ScheduleExpression": "rate(5 minutes)",
@@ -69,14 +69,14 @@
           {
             "Arn": {
               "Fn::GetAtt": [
-                "testeventsrulekinesisstreamKinesisStream969B0ACC",
+                "testeventbridgekinesisstreamKinesisStream2A352C09",
                 "Arn"
               ]
             },
             "Id": "Target0",
             "RoleArn": {
               "Fn::GetAtt": [
-                "testeventsrulekinesisstreameventsRole6E6DBF4D",
+                "testeventbridgekinesisstreameventsRole43473E44",
                 "Arn"
               ]
             }
@@ -84,7 +84,7 @@
         ]
       }
     },
-    "testeventsrulekinesisstreamKinesisStreamGetRecordsIteratorAgeAlarm61DF64E6": {
+    "testeventbridgekinesisstreamKinesisStreamGetRecordsIteratorAgeAlarm5FD9545D": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -97,7 +97,7 @@
         "Threshold": 2592000
       }
     },
-    "testeventsrulekinesisstreamKinesisStreamReadProvisionedThroughputExceededAlarmCEDB1659": {
+    "testeventbridgekinesisstreamKinesisStreamReadProvisionedThroughputExceededAlarm600B4281": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanThreshold",

@@ -12,7 +12,7 @@
         }
       }
     },
-    "testeventsrulekinesisstreamexistingeventsRole6BFA3F09": {
+    "testeventbridgekinesisstreamexistingeventsRoleDFC1450E": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -30,7 +30,7 @@
         "Description": "Events Rule Role"
       }
     },
-    "testeventsrulekinesisstreamexistingeventsRoleDefaultPolicy7B842A0C": {
+    "testeventbridgekinesisstreamexistingeventsRoleDefaultPolicyAEF2E56D": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -52,15 +52,15 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testeventsrulekinesisstreamexistingeventsRoleDefaultPolicy7B842A0C",
+        "PolicyName": "testeventbridgekinesisstreamexistingeventsRoleDefaultPolicyAEF2E56D",
         "Roles": [
           {
-            "Ref": "testeventsrulekinesisstreamexistingeventsRole6BFA3F09"
+            "Ref": "testeventbridgekinesisstreamexistingeventsRoleDFC1450E"
           }
         ]
       }
     },
-    "testeventsrulekinesisstreamexistingEventsRule07EC6002": {
+    "testeventbridgekinesisstreamexistingEventsRuleEB7F3817": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "ScheduleExpression": "rate(5 minutes)",
@@ -76,7 +76,7 @@
             "Id": "Target0",
             "RoleArn": {
               "Fn::GetAtt": [
-                "testeventsrulekinesisstreamexistingeventsRole6BFA3F09",
+                "testeventbridgekinesisstreamexistingeventsRoleDFC1450E",
                 "Arn"
               ]
             }
@@ -84,7 +84,7 @@
         ]
       }
     },
-    "testeventsrulekinesisstreamexistingKinesisStreamGetRecordsIteratorAgeAlarm6BBE2CE5": {
+    "testeventbridgekinesisstreamexistingKinesisStreamGetRecordsIteratorAgeAlarmA1800C3D": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -97,7 +97,7 @@
         "Threshold": 2592000
       }
     },
-    "testeventsrulekinesisstreamexistingKinesisStreamReadProvisionedThroughputExceededAlarmEFD57259": {
+    "testeventbridgekinesisstreamexistingKinesisStreamReadProvisionedThroughputExceededAlarm078FEB59": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanThreshold",
