@@ -22,7 +22,7 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-eventbridge-kinesisfirehose-s3`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.eventbridgekinesisfirehoses3`|
 
-This AWS Solutions Construct implements an Amazon CloudWatch Events rule to send data to an Amazon Kinesis Data Firehose delivery stream connected to an Amazon S3 bucket.
+This AWS Solutions Construct implements an Amazon EventBridge Rule to send data to an Amazon Kinesis Data Firehose delivery stream connected to an Amazon S3 bucket.
 
 Here is a minimal deployable pattern definition in Typescript:
 
@@ -31,9 +31,9 @@ import * as cdk from '@aws-cdk/core';
 import { EventbridgeToKinesisFirehoseToS3, EventbridgeToKinesisFirehoseToS3Props } from '@aws-solutions-constructs/aws-eventbridge-kinesisfirehose-s3';
 
 const EventbridgeToKinesisFirehoseToS3Props: EventbridgeToKinesisFirehoseToS3Props = {
-    eventRuleProps: {
-    schedule: events.Schedule.rate(cdk.Duration.minutes(5))
-    }
+  eventRuleProps: {
+  schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+  }
 };
 
 new EventbridgeToKinesisFirehoseToS3(this, 'test-eventbridge-firehose-s3', EventbridgeToKinesisFirehoseToS3Props);
@@ -78,8 +78,8 @@ _Parameters_
 
 Out of the box implementation of the Construct without any override will set the following defaults:
 
-### Amazon CloudWatch Events Rule
-* Configure least privilege access IAM role for Events Rule to publish to the Kinesis Firehose Delivery Stream.
+### Amazon EventBridge Rule
+* Configure least privilege access IAM role for Amazon EventBridge Rule to publish to the Kinesis Firehose Delivery Stream.
 
 ### Amazon Kinesis Firehose
 * Enable CloudWatch logging for Kinesis Firehose
