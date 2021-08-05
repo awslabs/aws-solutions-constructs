@@ -24,7 +24,7 @@
 
 This AWS Solutions Construct implements an Amazon S3 bucket connected to an AWS Step Functions.
 
-*Note - This construct uses Amazon EventBridge (Amazon CloudWatch Events) to trigger AWS Step Functions. EventBridge is more flexible, but triggering Step Functions with S3 Event Notifications has less latency and is more cost effective. If cost and/or latency is an issue, you should consider deploy aws-s3-lambda and aws-lambda-stepfunctions in place of this construct.*
+*Note - This construct uses Amazon EventBridge (Amazon CloudWatch Events) to trigger AWS Step Functions State Machine executions. EventBridge is more flexible, but triggering executions with S3 Event Notifications has less latency and is more cost effective. If cost and/or latency is an issue, you should consider deploying aws-s3-lambda and aws-lambda-stepfunctions in place of this construct.*
 
 Here is a minimal deployable pattern definition in Typescript:
 
