@@ -1,6 +1,6 @@
 {
   "Resources": {
-    "testconstructEncryptionKey6153B053": {
+    "testEncryptionKey7058DF17": {
       "Type": "AWS::KMS::Key",
       "Properties": {
         "KeyPolicy": {
@@ -65,18 +65,18 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "testconstructSnsTopic44188529": {
+    "testSnsTopic431DB510": {
       "Type": "AWS::SNS::Topic",
       "Properties": {
         "KmsMasterKeyId": {
           "Fn::GetAtt": [
-            "testconstructEncryptionKey6153B053",
+            "testEncryptionKey7058DF17",
             "Arn"
           ]
         }
       }
     },
-    "testconstructSnsTopicPolicy72FFD530": {
+    "testSnsTopicPolicyC811A1C0": {
       "Type": "AWS::SNS::TopicPolicy",
       "Properties": {
         "PolicyDocument": {
@@ -120,7 +120,7 @@
                 }
               },
               "Resource": {
-                "Ref": "testconstructSnsTopic44188529"
+                "Ref": "testSnsTopic431DB510"
               },
               "Sid": "TopicOwnerOnlyAccess"
             },
@@ -146,7 +146,7 @@
                 "AWS": "*"
               },
               "Resource": {
-                "Ref": "testconstructSnsTopic44188529"
+                "Ref": "testSnsTopic431DB510"
               },
               "Sid": "HttpsOnly"
             },
@@ -157,7 +157,7 @@
                 "Service": "events.amazonaws.com"
               },
               "Resource": {
-                "Ref": "testconstructSnsTopic44188529"
+                "Ref": "testSnsTopic431DB510"
               },
               "Sid": "2"
             }
@@ -166,12 +166,12 @@
         },
         "Topics": [
           {
-            "Ref": "testconstructSnsTopic44188529"
+            "Ref": "testSnsTopic431DB510"
           }
         ]
       }
     },
-    "testconstructEventsRule145DBA20": {
+    "testEventsRuleC345F4C7": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "ScheduleExpression": "rate(5 minutes)",
@@ -179,11 +179,11 @@
         "Targets": [
           {
             "Arn": {
-              "Ref": "testconstructSnsTopic44188529"
+              "Ref": "testSnsTopic431DB510"
             },
             "Id": {
               "Fn::GetAtt": [
-                "testconstructSnsTopic44188529",
+                "testSnsTopic431DB510",
                 "TopicName"
               ]
             }

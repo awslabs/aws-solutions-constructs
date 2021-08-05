@@ -72,7 +72,7 @@ export class EventsRuleToSns extends Construct {
   constructor(scope: Construct, id: string, props: EventsRuleToSnsProps) {
     super(scope, id);
     const convertedProps: EventsRuleToSnsProps = { ...props };
-    const wrappedConstruct: EventsRuleToSns = new EventbridgeToSns(this, `${id}-wrapped`, convertedProps);
+    const wrappedConstruct: EventsRuleToSns = new EventbridgeToSns(this, `${id}`, convertedProps);
 
     this.snsTopic = wrappedConstruct.snsTopic;
     this.eventsRule = wrappedConstruct.eventsRule;

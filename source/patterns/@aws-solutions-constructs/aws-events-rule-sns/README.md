@@ -87,8 +87,8 @@ _Parameters_
 
 Out of the box implementation of the Construct without any override will set the following defaults:
 
-### Amazon CloudWatch Events Rule
-* Grant least privilege permissions to CloudWatch Events to publish to the SNS Topic.
+### Amazon EventBridge Rule
+* Grant least privilege permissions to EventBridge Rule to publish to the SNS Topic.
 
 ### Amazon SNS Topic
 * Configure least privilege access permissions for SNS Topic.
