@@ -74,8 +74,8 @@ _Parameters_
 
 Out of the box implementation of the Construct without any override will set the following defaults:
 
-### Amazon CloudWatch Events Rule
-* Grant least privilege permissions to CloudWatch Events to trigger the Lambda Function
+### Amazon EventBridge Rule
+* Grant least privilege permissions to EventBridge rule to trigger the Lambda Function
 
 ### AWS Lambda Function
 * Configure limited privilege access IAM role for Lambda function
