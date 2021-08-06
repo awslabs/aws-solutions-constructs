@@ -1,5 +1,5 @@
 {
-  "name": "@aws-solutions-constructs/aws-events-rule-sns",
+  "name": "@aws-solutions-constructs/aws-eventbridge-sns",
   "version": "0.0.0",
   "description": "CDK Constructs for deploying AWS Events Rule that invokes AWS SNS",
   "main": "lib/index.js",
@@ -22,7 +22,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/awslabs/aws-solutions-constructs.git",
-    "directory": "source/patterns/@aws-solutions-constructs/aws-events-rule-sns"
+    "directory": "source/patterns/@aws-solutions-constructs/aws-eventbridge-sns"
   },
   "author": {
     "name": "Amazon Web Services",
@@ -34,21 +34,21 @@
     "outdir": "dist",
     "targets": {
       "java": {
-        "package": "software.amazon.awsconstructs.services.eventsrulesns",
+        "package": "software.amazon.awsconstructs.services.eventbridgesns",
         "maven": {
           "groupId": "software.amazon.awsconstructs",
-          "artifactId": "eventsrulesns"
+          "artifactId": "eventbridgesns"
         }
       },
       "dotnet": {
-        "namespace": "Amazon.Constructs.AWS.EventsRuleSns",
-        "packageId": "Amazon.Constructs.AWS.EventsRuleSns",
+        "namespace": "Amazon.Constructs.AWS.EventbridgeSns",
+        "packageId": "Amazon.Constructs.AWS.EventbridgeSns",
         "signAssembly": true,
         "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
       },
       "python": {
-        "distName": "aws-solutions-constructs.aws-events-rule-sns",
-        "module": "aws_solutions_constructs.aws_events_rule_sns"
+        "distName": "aws-solutions-constructs.aws-eventbridge-sns",
+        "module": "aws_solutions_constructs.aws_eventbridge_sns"
       }
     }
   },
@@ -59,7 +59,6 @@
     "@aws-cdk/aws-kms": "0.0.0",
     "@aws-cdk/core": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-eventbridge-sns": "0.0.0",
     "constructs": "^3.2.0"
   },
   "devDependencies": {
@@ -88,7 +87,6 @@
     "@aws-cdk/aws-iam": "0.0.0",
     "@aws-cdk/aws-kms": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-eventbridge-sns": "0.0.0",
     "constructs": "^3.2.0"
   },
   "keywords": [

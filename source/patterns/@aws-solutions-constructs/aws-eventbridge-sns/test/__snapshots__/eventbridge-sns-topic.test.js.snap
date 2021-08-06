@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`snapshot test EventsRuleToSns default params 1`] = `
+exports[`snapshot test EventbridgeToSns default params 1`] = `
 Object {
   "Resources": Object {
-    "testEncryptionKey7058DF17": Object {
+    "testEncryptionKeyB55BFDBC": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
         "EnableKeyRotation": true,
@@ -68,18 +68,18 @@ Object {
       "Type": "AWS::KMS::Key",
       "UpdateReplacePolicy": "Retain",
     },
-    "testEventsRuleC345F4C7": Object {
+    "testEventsRuleE75BC9BA": Object {
       "Properties": Object {
         "ScheduleExpression": "rate(5 minutes)",
         "State": "ENABLED",
         "Targets": Array [
           Object {
             "Arn": Object {
-              "Ref": "testSnsTopic431DB510",
+              "Ref": "testSnsTopic42942701",
             },
             "Id": Object {
               "Fn::GetAtt": Array [
-                "testSnsTopic431DB510",
+                "testSnsTopic42942701",
                 "TopicName",
               ],
             },
@@ -88,18 +88,18 @@ Object {
       },
       "Type": "AWS::Events::Rule",
     },
-    "testSnsTopic431DB510": Object {
+    "testSnsTopic42942701": Object {
       "Properties": Object {
         "KmsMasterKeyId": Object {
           "Fn::GetAtt": Array [
-            "testEncryptionKey7058DF17",
+            "testEncryptionKeyB55BFDBC",
             "Arn",
           ],
         },
       },
       "Type": "AWS::SNS::Topic",
     },
-    "testSnsTopicPolicyC811A1C0": Object {
+    "testSnsTopicPolicyCF3F7399": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -142,7 +142,7 @@ Object {
                 },
               },
               "Resource": Object {
-                "Ref": "testSnsTopic431DB510",
+                "Ref": "testSnsTopic42942701",
               },
               "Sid": "TopicOwnerOnlyAccess",
             },
@@ -168,7 +168,7 @@ Object {
                 "AWS": "*",
               },
               "Resource": Object {
-                "Ref": "testSnsTopic431DB510",
+                "Ref": "testSnsTopic42942701",
               },
               "Sid": "HttpsOnly",
             },
@@ -179,7 +179,7 @@ Object {
                 "Service": "events.amazonaws.com",
               },
               "Resource": Object {
-                "Ref": "testSnsTopic431DB510",
+                "Ref": "testSnsTopic42942701",
               },
               "Sid": "2",
             },
@@ -188,7 +188,7 @@ Object {
         },
         "Topics": Array [
           Object {
-            "Ref": "testSnsTopic431DB510",
+            "Ref": "testSnsTopic42942701",
           },
         ],
       },
