@@ -16,8 +16,7 @@ import * as kinesis from '@aws-cdk/aws-kinesis';
 import * as iam from '@aws-cdk/aws-iam';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import { Construct } from '@aws-cdk/core';
-import * as defaults from '@aws-solutions-constructs/core';
-import { overrideProps } from '@aws-solutions-constructs/core';
+import { EventbridgeToKinesisStreams } from '@aws-solutions-constructs/aws-eventbridge-kinesisstreams';
 
 /**
  * @summary The properties for the EventsRuleToKinesisStreams Construct
@@ -60,47 +59,16 @@ export class EventsRuleToKinesisStreams extends Construct {
      * @param {cdk.App} scope - represents the scope for all the resources.
      * @param {string} id - this is a a scope-unique id.
      * @param {EventsRuleToKinesisStreamsProps} props - user provided props for the construct
-     * @since 0.8.0
      * @access public
      */
     constructor(scope: Construct, id: string, props: EventsRuleToKinesisStreamsProps) {
       super(scope, id);
-      defaults.CheckProps(props);
+      const convertedProps: EventsRuleToKinesisStreamsProps = { ...props };
+      const wrappedConstruct: EventsRuleToKinesisStreams = new EventbridgeToKinesisStreams(this, `${id}-wrapped`, convertedProps);
 
-      // Set up the Kinesis Stream
-      this.kinesisStream = defaults.buildKinesisStream(this, {
-        existingStreamObj: props.existingStreamObj,
-        kinesisStreamProps: props.kinesisStreamProps,
-      });
-
-      // Create an events service role
-      this.eventsRole = new iam.Role(this, 'eventsRole', {
-        assumedBy: new iam.ServicePrincipal('events.amazonaws.com'),
-        description: 'Events Rule Role',
-      });
-
-      // Grant permission to events service role to allow event rule to send events data to the kinesis stream
-      this.kinesisStream.grantWrite(this.eventsRole);
-
-      // Set up the Kinesis Stream as the target for event rule
-      const kinesisStreamEventTarget: events.IRuleTarget = {
-        bind: () => ({
-          id: '',
-          arn: this.kinesisStream.streamArn,
-          role: this.eventsRole
-        })
-      };
-
-      // Set up the events rule props
-      const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([kinesisStreamEventTarget]);
-      const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);
-
-      // Setup up the event rule
-      this.eventsRule = new events.Rule(this, 'EventsRule', eventsRuleProps);
-
-      if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
-        // Deploy best practices CW Alarms for Kinesis Stream
-        this.cloudwatchAlarms = defaults.buildKinesisStreamCWAlarms(this);
-      }
+      this.kinesisStream = wrappedConstruct.kinesisStream;
+      this.eventsRule = wrappedConstruct.eventsRule;
+      this.eventsRole = wrappedConstruct.eventsRole;
+      this.cloudwatchAlarms = wrappedConstruct.cloudwatchAlarms;
     }
 }

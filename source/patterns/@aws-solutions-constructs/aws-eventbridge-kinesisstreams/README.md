@@ -1,11 +1,9 @@
-# aws-events-rule-kinesisstreams module
+# aws-eventbridge-kinesisstreams module
 <!--BEGIN STABILITY BANNER-->
 
 ---
 
-![Stability: Deprecated](https://img.shields.io/badge/STABILITY-DEPRECATED-red?style=for-the-badge)
-
-> Some of our early constructs don’t meet the naming standards that evolved for the library. We are releasing completely feature compatible versions with corrected names. The underlying implementation code is the same regardless of whether you deploy the construct using the old or new name. We will support both names for all 1.x releases, but in 2.x we will only publish the correctly named constructs.
+![Stability: Experimental](https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge)
 
 > All classes are under active development and subject to non-backward compatible changes or removal in any
 > future version. These are not subject to the [Semantic Versioning](https://semver.org/) model.
@@ -20,38 +18,38 @@
 
 | **Language**     | **Package**        |
 |:-------------|-----------------|
-|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_events_rule_kinesisstreams`|
-|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-events-rule-kinesisstreams`|
-|![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.eventsrulekinesisstreams`|
+|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_eventbridge_kinesisstreams`|
+|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-eventbridge-kinesisstreams`|
+|![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.eventbridgekinesisstreams`|
 
-This AWS Solutions Construct implements an Amazon CloudWatch Events rule to send data to an Amazon Kinesis Data Streams
+This AWS Solutions Construct implements an Amazon CloudWatch Events rule to send data to an Amazon Kinesis Data Stream
 
 Here is a minimal deployable pattern definition in Typescript:
 
 ``` typescript
 import * as cdk from '@aws-cdk/core';
-import {EventsRuleToKinesisStreams, EventsRuleToKinesisStreamsProps} from "@aws-solutions-constructs/aws-events-rule-kinesisstreams";
+import {EventbridgeToKinesisStreams, EventbridgeToKinesisStreamsProps} from "@aws-solutions-constructs/aws-eventbridge-kinesisstreams";
 
-const props: EventsRuleToKinesisStreamsProps = {
+const props: EventbridgeToKinesisStreamsProps = {
     eventRuleProps: {
       schedule: events.Schedule.rate(Duration.minutes(5)),
     }
 };
 
-new EventsRuleToKinesisStreams(this, 'test-events-rule-kinesis-streams', props);
+new EventbridgeToKinesisStreams(this, 'test-eventbridge-kinesis-streams', props);
 ```
 
 ## Initializer
 
 ``` text
-new EventsRuleToKinesisStreams(scope: Construct, id: string, props: EventsRuleToKinesisStreamsProps);
+new EventbridgeToKinesisStreams(scope: Construct, id: string, props: EventbridgeToKinesisStreamsProps);
 ```
 
 _Parameters_
 
 * scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
 * id `string`
-* props [`EventsRuleToKinesisStreamsProps`](#pattern-construct-props)
+* props [`EventbridgeToKinesisStreamsProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

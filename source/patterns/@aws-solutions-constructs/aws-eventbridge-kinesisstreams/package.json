@@ -1,5 +1,5 @@
 {
-  "name": "@aws-solutions-constructs/aws-events-rule-kinesisstreams",
+  "name": "@aws-solutions-constructs/aws-eventbridge-kinesisstreams",
   "version": "0.0.0",
   "description": "CDK Constructs for deploying Amazon CloudWatch Events Rule that invokes Amazon Kinesis Data Stream",
   "main": "lib/index.js",
@@ -22,7 +22,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/awslabs/aws-solutions-constructs.git",
-    "directory": "source/patterns/@aws-solutions-constructs/aws-events-rule-kinesisstreams"
+    "directory": "source/patterns/@aws-solutions-constructs/aws-eventbridge-kinesisstreams"
   },
   "author": {
     "name": "Amazon Web Services",
@@ -34,21 +34,21 @@
     "outdir": "dist",
     "targets": {
       "java": {
-        "package": "software.amazon.awsconstructs.services.eventsrulekinesisstreams",
+        "package": "software.amazon.awsconstructs.services.eventbridgekinesisstreams",
         "maven": {
           "groupId": "software.amazon.awsconstructs",
-          "artifactId": "eventsrulekinesisstreams"
+          "artifactId": "eventbridgekinesisstreams"
         }
       },
       "dotnet": {
-        "namespace": "Amazon.Constructs.AWS.EventsRuleKinesisStreams",
-        "packageId": "Amazon.Constructs.AWS.EventsRuleKinesisStreams",
+        "namespace": "Amazon.Constructs.AWS.EventbridgeKinesisStreams",
+        "packageId": "Amazon.Constructs.AWS.EventbridgeKinesisStreams",
         "signAssembly": true,
         "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
       },
       "python": {
-        "distName": "aws-solutions-constructs.aws-events-rule-kinesis-streams",
-        "module": "aws_solutions_constructs.aws_events_rule_kinesis_streams"
+        "distName": "aws-solutions-constructs.aws-eventbridge-kinesis-streams",
+        "module": "aws_solutions_constructs.aws_eventbridge_kinesis_streams"
       }
     }
   },
@@ -59,7 +59,6 @@
     "@aws-cdk/aws-cloudwatch": "0.0.0",
     "@aws-cdk/core": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-eventbridge-kinesisstreams": "0.0.0",
     "constructs": "^3.2.0"
   },
   "devDependencies": {
@@ -88,7 +87,6 @@
     "@aws-cdk/aws-cloudwatch": "0.0.0",
     "@aws-cdk/core": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-eventbridge-kinesisstreams": "0.0.0",
     "constructs": "^3.2.0"
   },
   "keywords": [
