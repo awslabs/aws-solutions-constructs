@@ -14,12 +14,12 @@
 import { SynthUtils } from '@aws-cdk/assert';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as events from '@aws-cdk/aws-events';
-import { EventsRuleToLambdaProps, EventsRuleToLambda } from '../lib/index';
+import { EventbridgeToLambdaProps, EventbridgeToLambda } from '../lib/index';
 import '@aws-cdk/assert/jest';
 import * as cdk from '@aws-cdk/core';
 
 function deployNewFunc(stack: cdk.Stack) {
-  const props: EventsRuleToLambdaProps = {
+  const props: EventbridgeToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       runtime: lambda.Runtime.NODEJS_12_X,
@@ -30,10 +30,10 @@ function deployNewFunc(stack: cdk.Stack) {
     }
   };
 
-  return new EventsRuleToLambda(stack, 'test-events-rule-lambda', props);
+  return new EventbridgeToLambda(stack, 'test-eventbridge-lambda', props);
 }
 
-test('snapshot test EventsRuleToLambda default params', () => {
+test('snapshot test EventbridgeToLambda default params', () => {
   const stack = new cdk.Stack();
   deployNewFunc(stack);
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
@@ -48,7 +48,7 @@ test('check lambda function properties for deploy: true', () => {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": [
-        "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunctionServiceRole9A954D10",
+        "testeventbridgelambdaLambdaFunctionServiceRole6D02CEEE",
         "Arn"
       ]
     },
@@ -70,14 +70,14 @@ test('check lambda function permission for deploy: true', () => {
     Action: "lambda:InvokeFunction",
     FunctionName: {
       "Fn::GetAtt": [
-        "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunction0635FA98",
+        "testeventbridgelambdaLambdaFunction475423FD",
         "Arn"
       ]
     },
     Principal: "events.amazonaws.com",
     SourceArn: {
       "Fn::GetAtt": [
-        "testeventsrulelambdatesteventsrulelambdawrappedEventsRuleC19DAE50",
+        "testeventbridgelambdaEventsRule7DB0954D",
         "Arn"
       ]
     }
@@ -155,7 +155,7 @@ test('check events rule properties for deploy: true', () => {
       {
         Arn: {
           "Fn::GetAtt": [
-            "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunction0635FA98",
+            "testeventbridgelambdaLambdaFunction475423FD",
             "Arn"
           ]
         },
@@ -168,7 +168,7 @@ test('check events rule properties for deploy: true', () => {
 test('check properties', () => {
   const stack = new cdk.Stack();
 
-  const construct: EventsRuleToLambda = deployNewFunc(stack);
+  const construct: EventbridgeToLambda = deployNewFunc(stack);
 
   expect(construct.eventsRule !== null);
   expect(construct.lambdaFunction !== null);
@@ -177,14 +177,14 @@ test('check properties', () => {
 test('check exception for Missing existingObj from props', () => {
   const stack = new cdk.Stack();
 
-  const props: EventsRuleToLambdaProps = {
+  const props: EventbridgeToLambdaProps = {
     eventRuleProps: {
       schedule: events.Schedule.rate(cdk.Duration.minutes(5))
     }
   };
 
   try {
-    new EventsRuleToLambda(stack, 'test-events-rule-lambda', props);
+    new EventbridgeToLambda(stack, 'test-eventbridge-lambda', props);
   } catch (e) {
     expect(e).toBeInstanceOf(Error);
   }

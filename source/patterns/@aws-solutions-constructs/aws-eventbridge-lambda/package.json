@@ -1,5 +1,5 @@
 {
-  "name": "@aws-solutions-constructs/aws-events-rule-lambda",
+  "name": "@aws-solutions-constructs/aws-eventbridge-lambda",
   "version": "0.0.0",
   "description": "CDK Constructs for deploying AWS Events Rule that inveokes AWS Lambda",
   "main": "lib/index.js",
@@ -7,7 +7,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/awslabs/aws-solutions-constructs.git",
-    "directory": "source/patterns/@aws-solutions-constructs/aws-events-rule-lambda"
+    "directory": "source/patterns/@aws-solutions-constructs/aws-eventbridge-lambda"
   },
   "author": {
     "name": "Amazon Web Services",
@@ -34,21 +34,21 @@
     "outdir": "dist",
     "targets": {
       "java": {
-        "package": "software.amazon.awsconstructs.services.eventsrulelambda",
+        "package": "software.amazon.awsconstructs.services.eventbridgelambda",
         "maven": {
           "groupId": "software.amazon.awsconstructs",
-          "artifactId": "eventsrulelambda"
+          "artifactId": "eventbridgelambda"
         }
       },
       "dotnet": {
-        "namespace": "Amazon.Constructs.AWS.EventsRuleLambda",
-        "packageId": "Amazon.Constructs.AWS.EventsRuleLambda",
+        "namespace": "Amazon.Constructs.AWS.EventbridgeLambda",
+        "packageId": "Amazon.Constructs.AWS.EventbridgeLambda",
         "signAssembly": true,
         "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
       },
       "python": {
-        "distName": "aws-solutions-constructs.aws-events-rule-lambda",
-        "module": "aws_solutions_constructs.aws_events_rule_lambda"
+        "distName": "aws-solutions-constructs.aws-eventbridge-lambda",
+        "module": "aws_solutions_constructs.aws_eventbridge_lambda"
       }
     }
   },
@@ -58,7 +58,6 @@
     "@aws-cdk/aws-events": "0.0.0",
     "@aws-cdk/aws-iam": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-eventbridge-lambda": "0.0.0",
     "constructs": "^3.2.0"
   },
   "devDependencies": {
@@ -86,7 +85,6 @@
     "@aws-cdk/aws-events": "0.0.0",
     "@aws-cdk/aws-iam": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-eventbridge-lambda": "0.0.0",
     "constructs": "^3.2.0"
   },
   "keywords": [

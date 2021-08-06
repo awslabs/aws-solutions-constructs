@@ -13,13 +13,15 @@
 
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as events from '@aws-cdk/aws-events';
+import * as defaults from '@aws-solutions-constructs/core';
+import * as iam from '@aws-cdk/aws-iam';
 import { Construct } from '@aws-cdk/core';
-import { EventbridgeToLambda } from '@aws-solutions-constructs/aws-eventbridge-lambda';
+import { overrideProps } from '@aws-solutions-constructs/core';
 
 /**
  * @summary The properties for the CloudFrontToApiGateway Construct
  */
-export interface EventsRuleToLambdaProps {
+export interface EventbridgeToLambdaProps {
   /**
    * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
@@ -40,23 +42,41 @@ export interface EventsRuleToLambdaProps {
   readonly eventRuleProps: events.RuleProps
 }
 
-export class EventsRuleToLambda extends Construct {
+export class EventbridgeToLambda extends Construct {
   public readonly lambdaFunction: lambda.Function;
   public readonly eventsRule: events.Rule;
 
   /**
-   * @summary Constructs a new instance of the EventsRuleToLambda class.
+   * @summary Constructs a new instance of the EventbridgeToLambda class.
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
-   * @param {EventsRuleToLambdaProps} props - user provided props for the construct
+   * @param {EventbridgeToLambdaProps} props - user provided props for the construct
    * @access public
    */
-  constructor(scope: Construct, id: string, props: EventsRuleToLambdaProps) {
+  constructor(scope: Construct, id: string, props: EventbridgeToLambdaProps) {
     super(scope, id);
-    const convertedProps: EventsRuleToLambdaProps = { ...props };
-    const wrappedConstruct: EventsRuleToLambda = new EventbridgeToLambda(this, `${id}-wrapped`, convertedProps);
+    defaults.CheckProps(props);
 
-    this.lambdaFunction = wrappedConstruct.lambdaFunction;
-    this.eventsRule = wrappedConstruct.eventsRule;
+    this.lambdaFunction = defaults.buildLambdaFunction(this, {
+      existingLambdaObj: props.existingLambdaObj,
+      lambdaFunctionProps: props.lambdaFunctionProps
+    });
+
+    const lambdaFunc: events.IRuleTarget = {
+      bind: () => ({
+        id: '',
+        arn: this.lambdaFunction.functionArn
+      })
+    };
+
+    const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([lambdaFunc]);
+    const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);
+
+    this.eventsRule = new events.Rule(this, 'EventsRule', eventsRuleProps);
+
+    defaults.addPermission(this.lambdaFunction, "AwsEventsLambdaInvokePermission", {
+      principal: new iam.ServicePrincipal('events.amazonaws.com'),
+      sourceArn: this.eventsRule.ruleArn
+    });
   }
 }
