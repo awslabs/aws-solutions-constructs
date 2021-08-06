@@ -16,18 +16,18 @@ import * as cdk from "@aws-cdk/core";
 import * as events from "@aws-cdk/aws-events";
 import * as defaults from '@aws-solutions-constructs/core';
 import '@aws-cdk/assert/jest';
-import { EventsRuleToSns, EventsRuleToSnsProps } from "../lib";
+import { EventbridgeToSns, EventbridgeToSnsProps } from "../lib";
 
 function deployNewStack(stack: cdk.Stack) {
-  const props: EventsRuleToSnsProps = {
+  const props: EventbridgeToSnsProps = {
     eventRuleProps: {
       schedule: events.Schedule.rate(cdk.Duration.minutes(5))
     }
   };
-  return new EventsRuleToSns(stack, 'test', props);
+  return new EventbridgeToSns(stack, 'test', props);
 }
 
-test('snapshot test EventsRuleToSns default params', () => {
+test('snapshot test EventbridgeToSns default params', () => {
   const stack = new cdk.Stack();
   deployNewStack(stack);
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
@@ -78,7 +78,7 @@ test('check if the event rule has permission/policy in place in sns for it to be
             }
           },
           Resource: {
-            Ref: "testSnsTopic431DB510"
+            Ref: "testSnsTopic42942701"
           },
           Sid: "TopicOwnerOnlyAccess"
         },
@@ -104,7 +104,7 @@ test('check if the event rule has permission/policy in place in sns for it to be
             AWS: "*"
           },
           Resource: {
-            Ref: "testSnsTopic431DB510"
+            Ref: "testSnsTopic42942701"
           },
           Sid: "HttpsOnly"
         },
@@ -115,7 +115,7 @@ test('check if the event rule has permission/policy in place in sns for it to be
             Service: "events.amazonaws.com"
           },
           Resource: {
-            Ref: "testSnsTopic431DB510"
+            Ref: "testSnsTopic42942701"
           },
           Sid: "2"
         }
@@ -124,7 +124,7 @@ test('check if the event rule has permission/policy in place in sns for it to be
     },
     Topics: [
       {
-        Ref: "testSnsTopic431DB510"
+        Ref: "testSnsTopic42942701"
       }
     ]
   }
@@ -141,11 +141,11 @@ test('check events rule properties', () => {
     Targets: [
       {
         Arn: {
-          Ref: "testSnsTopic431DB510"
+          Ref: "testSnsTopic42942701"
         },
         Id: {
           "Fn::GetAtt": [
-            "testSnsTopic431DB510",
+            "testSnsTopic42942701",
             "TopicName"
           ]
         }
@@ -156,7 +156,7 @@ test('check events rule properties', () => {
 
 test('check properties', () => {
   const stack = new cdk.Stack();
-  const construct: EventsRuleToSns = deployNewStack(stack);
+  const construct: EventbridgeToSns = deployNewStack(stack);
 
   expect(construct.eventsRule !== null);
   expect(construct.snsTopic !== null);
@@ -169,7 +169,7 @@ test('check the sns topic properties', () => {
   expect(stack).toHaveResource('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "testEncryptionKey7058DF17",
+        "testEncryptionKeyB55BFDBC",
         "Arn"
       ]
     }
@@ -182,14 +182,14 @@ test('check the sns topic properties with existing KMS key', () => {
     description: 'my-key'
   });
 
-  const props: EventsRuleToSnsProps = {
+  const props: EventbridgeToSnsProps = {
     eventRuleProps: {
       schedule: events.Schedule.rate(cdk.Duration.minutes(5))
     },
     encryptionKey: key
   };
 
-  new EventsRuleToSns(stack, 'test-events-rule-sqs', props);
+  new EventbridgeToSns(stack, 'test-events-rule-sqs', props);
 
   expect(stack).toHaveResource('AWS::SNS::Topic', {
     KmsMasterKeyId: {
