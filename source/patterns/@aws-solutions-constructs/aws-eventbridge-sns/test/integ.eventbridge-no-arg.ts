@@ -12,7 +12,7 @@
  */
 
 import { Duration } from '@aws-cdk/core';
-import { EventsRuleToSns, EventsRuleToSnsProps } from '../lib';
+import { EventbridgeToSns, EventbridgeToSnsProps } from '../lib';
 import * as events from '@aws-cdk/aws-events';
 import { App, Stack } from '@aws-cdk/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
@@ -20,12 +20,12 @@ import { generateIntegStackName } from '@aws-solutions-constructs/core';
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const props: EventsRuleToSnsProps = {
+const props: EventbridgeToSnsProps = {
   eventRuleProps: {
     schedule: events.Schedule.rate(Duration.minutes(5))
   }
 };
 
-new EventsRuleToSns(stack, 'test', props);
+new EventbridgeToSns(stack, 'test-construct', props);
 
 app.synth();
