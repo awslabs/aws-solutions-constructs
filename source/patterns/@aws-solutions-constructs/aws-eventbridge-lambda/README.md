@@ -22,7 +22,7 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-eventbridge-lambda`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.eventbridgelambda`|
 
-This AWS Solutions Construct implements an AWS Events rule and an AWS Lambda function.
+This AWS Solutions Construct implements an AWS EventBridge rule and an AWS Lambda function.
 
 Here is a minimal deployable pattern definition in Typescript:
 
