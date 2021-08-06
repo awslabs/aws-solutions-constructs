@@ -65,7 +65,7 @@ export class EventbridgeToSns extends Construct {
     public readonly encryptionKey?: kms.Key;
 
     /**
-     * @summary Constructs a new instance of the EventRuleToSns class.
+     * @summary Constructs a new instance of the EventbridgeToSns class.
      * @param {cdk.App} scope - represents the scope for all the resources.
      * @param {string} id - this is a a scope-unique id.
      * @param {EventbridgeToSnsProps} props - user provided props for the construct.
