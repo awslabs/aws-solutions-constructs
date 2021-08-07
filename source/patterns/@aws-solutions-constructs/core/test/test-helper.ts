@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { Bucket, BucketProps } from "@aws-cdk/aws-s3";
+import { Bucket, BucketProps, BucketEncryption } from "@aws-cdk/aws-s3";
 import { Construct, RemovalPolicy } from "@aws-cdk/core";
 import { overrideProps, addCfnSuppressRules } from "../lib/utils";
 import * as path from 'path';
@@ -22,6 +22,7 @@ export function CreateScrapBucket(scope: Construct, props?: BucketProps | any) {
   const defaultProps = {
     versioned: true,
     removalPolicy: RemovalPolicy.DESTROY,
+    encryption: BucketEncryption.S3_MANAGED,
   };
 
   let synthesizedProps: BucketProps;
