@@ -101,7 +101,7 @@ export class EventsRuleToSqs extends Construct {
   constructor(scope: Construct, id: string, props: EventsRuleToSqsProps) {
     super(scope, id);
     const convertedProps: EventsRuleToSqsProps = { ...props };
-    const wrappedConstruct: EventsRuleToSqs = new EventbridgeToSqs(this, `${id}-wrapped`, convertedProps);
+    const wrappedConstruct: EventsRuleToSqs = new EventbridgeToSqs(this, `${id}`, convertedProps);
 
     this.sqsQueue = wrappedConstruct.sqsQueue;
     this.deadLetterQueue = wrappedConstruct.deadLetterQueue;
