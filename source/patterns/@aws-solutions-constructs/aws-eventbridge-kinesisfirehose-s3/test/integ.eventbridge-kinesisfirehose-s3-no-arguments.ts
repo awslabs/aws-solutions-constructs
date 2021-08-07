@@ -11,21 +11,21 @@
  *  and limitations under the License.
  */
 
-import { Duration } from '@aws-cdk/core';
-import { EventsRuleToSns, EventsRuleToSnsProps } from '../lib';
 import * as events from '@aws-cdk/aws-events';
-import { App, Stack } from '@aws-cdk/core';
+import { App, Stack, Duration } from '@aws-cdk/core';
+import { EventbridgeToKinesisFirehoseToS3, EventbridgeToKinesisFirehoseToS3Props } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+stack.templateOptions.description = 'Integration Test for aws-eventbridge-kinesisfirehose-s3';
 
-const props: EventsRuleToSnsProps = {
+const props: EventbridgeToKinesisFirehoseToS3Props = {
   eventRuleProps: {
     schedule: events.Schedule.rate(Duration.minutes(5))
   }
 };
 
-new EventsRuleToSns(stack, 'test', props);
+new EventbridgeToKinesisFirehoseToS3(stack, 'test-eventbridge-kinesisfirehose-s3', props);
 
 app.synth();

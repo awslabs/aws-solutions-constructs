@@ -1,7 +1,7 @@
 {
-  "Description": "Integration Test for aws-events-rule-kinesisfirehose-s3",
+  "Description": "Integration Test for aws-eventbridge-kinesisfirehose-s3",
   "Resources": {
-    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3S3LoggingBucketC8D377B4": {
+    "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3LoggingBucket703E6C44": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "AccessControl": "LogDeliveryWrite",
@@ -37,11 +37,11 @@
         }
       }
     },
-    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3S3LoggingBucketPolicyC5D94659": {
+    "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketPolicy1A5A1E6B": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3S3LoggingBucketC8D377B4"
+          "Ref": "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3LoggingBucket703E6C44"
         },
         "PolicyDocument": {
           "Statement": [
@@ -63,7 +63,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3S3LoggingBucketC8D377B4",
+                          "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3LoggingBucket703E6C44",
                           "Arn"
                         ]
                       },
@@ -73,7 +73,7 @@
                 },
                 {
                   "Fn::GetAtt": [
-                    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3S3LoggingBucketC8D377B4",
+                    "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3LoggingBucket703E6C44",
                     "Arn"
                   ]
                 }
@@ -85,7 +85,7 @@
         }
       }
     },
-    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3S3BucketCD527E9F": {
+    "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3BucketF3A3F845": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -112,7 +112,7 @@
         },
         "LoggingConfiguration": {
           "DestinationBucketName": {
-            "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3S3LoggingBucketC8D377B4"
+            "Ref": "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3LoggingBucket703E6C44"
           }
         },
         "PublicAccessBlockConfiguration": {
@@ -128,11 +128,11 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3S3BucketPolicyE692149F": {
+    "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3BucketPolicy6ECA7017": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3S3BucketCD527E9F"
+          "Ref": "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3BucketF3A3F845"
         },
         "PolicyDocument": {
           "Statement": [
@@ -154,7 +154,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3S3BucketCD527E9F",
+                          "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3BucketF3A3F845",
                           "Arn"
                         ]
                       },
@@ -164,7 +164,7 @@
                 },
                 {
                   "Fn::GetAtt": [
-                    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3S3BucketCD527E9F",
+                    "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3BucketF3A3F845",
                     "Arn"
                   ]
                 }
@@ -176,7 +176,7 @@
         }
       }
     },
-    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3firehoseloggroup6B531CEB": {
+    "testeventbridgekinesisfirehoses3KinesisFirehoseToS3firehoseloggroupA843D276": {
       "Type": "AWS::Logs::LogGroup",
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain",
@@ -195,17 +195,17 @@
         }
       }
     },
-    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3firehoseloggroupfirehoselogstreamC13E36D9": {
+    "testeventbridgekinesisfirehoses3KinesisFirehoseToS3firehoseloggroupfirehoselogstream443A77D5": {
       "Type": "AWS::Logs::LogStream",
       "Properties": {
         "LogGroupName": {
-          "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3firehoseloggroup6B531CEB"
+          "Ref": "testeventbridgekinesisfirehoses3KinesisFirehoseToS3firehoseloggroupA843D276"
         }
       },
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3KinesisFirehoseRole064D0492": {
+    "testeventbridgekinesisfirehoses3KinesisFirehoseToS3KinesisFirehoseRoleBCE20D0B": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -222,7 +222,7 @@
         }
       }
     },
-    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3KinesisFirehosePolicyD9FDA11C": {
+    "testeventbridgekinesisfirehoses3KinesisFirehoseToS3KinesisFirehosePolicy9DC1B594": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -240,7 +240,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3S3BucketCD527E9F",
+                    "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3BucketF3A3F845",
                     "Arn"
                   ]
                 },
@@ -250,7 +250,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3S3BucketCD527E9F",
+                          "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3BucketF3A3F845",
                           "Arn"
                         ]
                       },
@@ -281,11 +281,11 @@
                     },
                     ":log-group:",
                     {
-                      "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3firehoseloggroup6B531CEB"
+                      "Ref": "testeventbridgekinesisfirehoses3KinesisFirehoseToS3firehoseloggroupA843D276"
                     },
                     ":log-stream:",
                     {
-                      "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3firehoseloggroupfirehoselogstreamC13E36D9"
+                      "Ref": "testeventbridgekinesisfirehoses3KinesisFirehoseToS3firehoseloggroupfirehoselogstream443A77D5"
                     }
                   ]
                 ]
@@ -294,15 +294,15 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3KinesisFirehosePolicyD9FDA11C",
+        "PolicyName": "testeventbridgekinesisfirehoses3KinesisFirehoseToS3KinesisFirehosePolicy9DC1B594",
         "Roles": [
           {
-            "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3KinesisFirehoseRole064D0492"
+            "Ref": "testeventbridgekinesisfirehoses3KinesisFirehoseToS3KinesisFirehoseRoleBCE20D0B"
           }
         ]
       }
     },
-    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3KinesisFirehose7127034D": {
+    "testeventbridgekinesisfirehoses3KinesisFirehoseToS3KinesisFirehoseA91109C4": {
       "Type": "AWS::KinesisFirehose::DeliveryStream",
       "Properties": {
         "DeliveryStreamEncryptionConfigurationInput": {
@@ -311,7 +311,7 @@
         "ExtendedS3DestinationConfiguration": {
           "BucketARN": {
             "Fn::GetAtt": [
-              "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3S3BucketCD527E9F",
+              "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3BucketF3A3F845",
               "Arn"
             ]
           },
@@ -322,10 +322,10 @@
           "CloudWatchLoggingOptions": {
             "Enabled": true,
             "LogGroupName": {
-              "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3firehoseloggroup6B531CEB"
+              "Ref": "testeventbridgekinesisfirehoses3KinesisFirehoseToS3firehoseloggroupA843D276"
             },
             "LogStreamName": {
-              "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3firehoseloggroupfirehoselogstreamC13E36D9"
+              "Ref": "testeventbridgekinesisfirehoses3KinesisFirehoseToS3firehoseloggroupfirehoselogstream443A77D5"
             }
           },
           "CompressionFormat": "GZIP",
@@ -355,14 +355,14 @@
           },
           "RoleARN": {
             "Fn::GetAtt": [
-              "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3KinesisFirehoseRole064D0492",
+              "testeventbridgekinesisfirehoses3KinesisFirehoseToS3KinesisFirehoseRoleBCE20D0B",
               "Arn"
             ]
           }
         }
       }
     },
-    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedEventsRuleInvokeKinesisFirehoseRole781B6418": {
+    "testeventbridgekinesisfirehoses3EventsRuleInvokeKinesisFirehoseRole2BA50856": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -380,7 +380,7 @@
         "Description": "Events Rule To Kinesis Firehose Role"
       }
     },
-    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedEventsRuleInvokeKinesisFirehosePolicyA729EDC6": {
+    "testeventbridgekinesisfirehoses3EventsRuleInvokeKinesisFirehosePolicyFD82B8D9": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -393,7 +393,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3KinesisFirehose7127034D",
+                  "testeventbridgekinesisfirehoses3KinesisFirehoseToS3KinesisFirehoseA91109C4",
                   "Arn"
                 ]
               }
@@ -401,15 +401,15 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedEventsRuleInvokeKinesisFirehosePolicyA729EDC6",
+        "PolicyName": "testeventbridgekinesisfirehoses3EventsRuleInvokeKinesisFirehosePolicyFD82B8D9",
         "Roles": [
           {
-            "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedEventsRuleInvokeKinesisFirehoseRole781B6418"
+            "Ref": "testeventbridgekinesisfirehoses3EventsRuleInvokeKinesisFirehoseRole2BA50856"
           }
         ]
       }
     },
-    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedEventsRule26228C8C": {
+    "testeventbridgekinesisfirehoses3EventsRule9641436B": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "ScheduleExpression": "rate(5 minutes)",
@@ -418,14 +418,14 @@
           {
             "Arn": {
               "Fn::GetAtt": [
-                "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedKinesisFirehoseToS3KinesisFirehose7127034D",
+                "testeventbridgekinesisfirehoses3KinesisFirehoseToS3KinesisFirehoseA91109C4",
                 "Arn"
               ]
             },
             "Id": "Target0",
             "RoleArn": {
               "Fn::GetAtt": [
-                "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3wrappedEventsRuleInvokeKinesisFirehoseRole781B6418",
+                "testeventbridgekinesisfirehoses3EventsRuleInvokeKinesisFirehoseRole2BA50856",
                 "Arn"
               ]
             }

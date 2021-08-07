@@ -1,20 +1,9 @@
 {
-  "name": "@aws-solutions-constructs/aws-events-rule-kinesisfirehose-s3",
+  "name": "@aws-solutions-constructs/aws-eventbridge-sns",
   "version": "0.0.0",
-  "description": "CDK Constructs for Amazon CloudWatch Events Rule to Amazon Kinesis Firehose to Amazon S3 integration.",
+  "description": "CDK Constructs for deploying AWS Events Rule that invokes AWS SNS",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/awslabs/aws-solutions-constructs.git",
-    "directory": "source/patterns/@aws-solutions-constructs/aws-events-rule-kinesisfirehose-s3"
-  },
-  "author": {
-    "name": "Amazon Web Services",
-    "url": "https://aws.amazon.com",
-    "organization": true
-  },
-  "license": "Apache-2.0",
   "scripts": {
     "build": "tsc -b .",
     "lint": "eslint -c ../eslintrc.yml --ext=.js,.ts . && tslint --project .",
@@ -23,44 +12,53 @@
     "clean": "tsc -b --clean",
     "watch": "tsc -b -w",
     "integ": "cdk-integ",
-    "integ-assert": "cdk-integ-assert",
     "integ-no-clean": "cdk-integ --no-clean",
+    "integ-assert": "cdk-integ-assert",
     "jsii": "jsii",
     "jsii-pacmak": "jsii-pacmak",
     "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
     "snapshot-update": "npm run jsii && npm test -- -u && npm run integ-assert"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/awslabs/aws-solutions-constructs.git",
+    "directory": "source/patterns/@aws-solutions-constructs/aws-eventbridge-sns"
+  },
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com",
+    "organization": true
+  },
+  "license": "Apache-2.0",
   "jsii": {
     "outdir": "dist",
     "targets": {
       "java": {
-        "package": "software.amazon.awsconstructs.services.eventsrulekinesisfirehoses3",
+        "package": "software.amazon.awsconstructs.services.eventbridgesns",
         "maven": {
           "groupId": "software.amazon.awsconstructs",
-          "artifactId": "eventsrulekinesisfirehoses3"
+          "artifactId": "eventbridgesns"
         }
       },
       "dotnet": {
-        "namespace": "Amazon.Constructs.AWS.EventsRuleKinesisFirehoseS3",
-        "packageId": "Amazon.Constructs.AWS.EventsRuleKinesisFirehoseS3",
+        "namespace": "Amazon.Constructs.AWS.EventbridgeSns",
+        "packageId": "Amazon.Constructs.AWS.EventbridgeSns",
         "signAssembly": true,
         "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
       },
       "python": {
-        "distName": "aws-solutions-constructs.aws-events-rule-kinesis-firehose-s3",
-        "module": "aws_solutions_constructs.aws_events_rule_kinesis_firehose_s3"
+        "distName": "aws-solutions-constructs.aws-eventbridge-sns",
+        "module": "aws_solutions_constructs.aws_eventbridge_sns"
       }
     }
   },
   "dependencies": {
-    "@aws-cdk/aws-iam": "0.0.0",
-    "@aws-cdk/aws-kinesisfirehose": "0.0.0",
     "@aws-cdk/aws-events": "0.0.0",
+    "@aws-cdk/aws-iam": "0.0.0",
+    "@aws-cdk/aws-sns": "0.0.0",
+    "@aws-cdk/aws-kms": "0.0.0",
     "@aws-cdk/core": "0.0.0",
-    "@aws-cdk/aws-s3": "0.0.0",
-    "@aws-cdk/aws-logs": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-eventbridge-kinesisfirehose-s3": "0.0.0",
     "constructs": "^3.2.0"
   },
   "devDependencies": {
@@ -83,15 +81,13 @@
     ]
   },
   "peerDependencies": {
-    "@aws-cdk/aws-iam": "0.0.0",
-    "@aws-cdk/aws-kinesisfirehose": "0.0.0",
-    "@aws-cdk/aws-events": "0.0.0",
-    "@aws-cdk/aws-s3": "0.0.0",
+    "@aws-cdk/aws-sns": "0.0.0",
     "@aws-cdk/core": "0.0.0",
+    "@aws-cdk/aws-events": "0.0.0",
+    "@aws-cdk/aws-iam": "0.0.0",
+    "@aws-cdk/aws-kms": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-eventbridge-kinesisfirehose-s3": "0.0.0",
-    "constructs": "^3.2.0",
-    "@aws-cdk/aws-logs": "0.0.0"
+    "constructs": "^3.2.0"
   },
   "keywords": [
     "aws",
@@ -99,7 +95,6 @@
     "awscdk",
     "AWS Solutions Constructs",
     "Amazon EventBridge",
-    "Amazon Kinesis Data Firehose",
-    "Amazon S3"
+    "Amazon SNS"
   ]
 }
