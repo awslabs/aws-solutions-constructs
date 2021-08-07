@@ -127,37 +127,35 @@ export function CloudFrontDistributionForApiGateway(scope: cdk.Construct,
   apiEndPoint: api.RestApi,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
   httpSecurityHeaders?: boolean): [cloudfront.Distribution,
-                                                    lambda.Version?, s3.Bucket?] {
+    cloudfront.Function?, s3.Bucket?] {
 
   const _httpSecurityHeaders = (httpSecurityHeaders !== undefined && httpSecurityHeaders === false) ? false : true;
 
   let defaultprops: cloudfront.DistributionProps;
-  let edgeLambdaVersion;
+  let cloudfrontFunction;
   let loggingBucket;
 
   if (_httpSecurityHeaders) {
-    edgeLambdaVersion = new lambda.Version(scope, "SetHttpSecurityHeadersVersion", {
-      lambda: defaultLambdaEdgeFunction(scope)
-    });
+    cloudfrontFunction = defaultCloudfrontFunction(scope);
   }
 
   if (cloudFrontDistributionProps && cloudFrontDistributionProps.enableLogging && cloudFrontDistributionProps.logBucket) {
     defaultprops = DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint,
       cloudFrontDistributionProps.logBucket, _httpSecurityHeaders,
-      edgeLambdaVersion);
+      cloudfrontFunction);
   } else {
     loggingBucket = createLoggingBucket(scope, 'CloudfrontLoggingBucket');
     defaultprops = DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint,
       loggingBucket, _httpSecurityHeaders,
-      edgeLambdaVersion);
+      cloudfrontFunction);
   }
 
-  const cfprops = cloudFrontDistributionProps ? overrideProps(defaultprops, cloudFrontDistributionProps, true) : defaultprops;
+  const cfprops = cloudFrontDistributionProps ? overrideProps(defaultprops, cloudFrontDistributionProps, false) : defaultprops;
   // Create the Cloudfront Distribution
   const cfDistribution: cloudfront.Distribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
   updateSecurityPolicy(cfDistribution);
 
-  return [cfDistribution, edgeLambdaVersion, loggingBucket];
+  return [cfDistribution, cloudfrontFunction, loggingBucket];
 }
 
 export function CloudFrontDistributionForS3(scope: cdk.Construct,

@@ -23,7 +23,7 @@ import { FunctionEventType } from '@aws-cdk/aws-cloudfront';
 export function DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint: api.RestApi,
   loggingBucket: s3.Bucket,
   setHttpSecurityHeaders: boolean,
-  edgeLambda?: lambda.Version): cloudfront.DistributionProps {
+  cfFunction?: cloudfront.IFunction): cloudfront.DistributionProps {
 
   const apiEndPointUrlWithoutProtocol = cdk.Fn.select(1, cdk.Fn.split("://", apiEndPoint.url));
   const apiEndPointDomainName = cdk.Fn.select(0, cdk.Fn.split("/", apiEndPointUrlWithoutProtocol));
@@ -34,10 +34,10 @@ export function DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint: 
         origin: new origins.HttpOrigin(apiEndPointDomainName, {
           originPath: `/${apiEndPoint.deploymentStage.stageName}`
         }),
-        edgeLambdas: [
+        functionAssociations: [
           {
-            eventType: cloudfront.LambdaEdgeEventType.ORIGIN_RESPONSE,
-            functionVersion: edgeLambda
+            eventType: FunctionEventType.VIEWER_RESPONSE,
+            function: cfFunction
           }
         ],
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS
