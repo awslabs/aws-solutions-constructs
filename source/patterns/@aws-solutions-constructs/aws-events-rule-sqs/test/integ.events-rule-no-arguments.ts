@@ -18,7 +18,7 @@ import { App, Stack } from '@aws-cdk/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
-const stack = new Stack(app, generateIntegStackName(__filename));
+const stack = new Stack(app, generateIntegStackName('events-rule-no-arg'));
 
 const props: EventsRuleToSqsProps = {
   eventRuleProps: {
@@ -26,5 +26,5 @@ const props: EventsRuleToSqsProps = {
   }
 };
 
-new EventsRuleToSqs(stack, 'construct', props);
+new EventsRuleToSqs(stack, 'test', props);
 app.synth();
