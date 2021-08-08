@@ -24,19 +24,14 @@
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.apigateways3`|
 
 ## Overview
-This AWS Solutions Construct implements an Amazon API Gateway REST API connected to Amazon S3 bucket(s).
+This AWS Solutions Construct implements an Amazon API Gateway REST API connected to Amazon S3 bucket(s). The maximum object size is 10MB.
 
 Here is a minimal deployable pattern definition in Typescript:
 
 ``` typescript
 import { ApiGatewayToS3Props, ApiGatewayToS3 } from "@aws-solutions-constructs/aws-apigateway-s3";
 
-new ApiGatewayToS3(this, 'test-api-gateway-s3-default', {
-    apiGatewayProps: {
-        restApiName: 'S3 Proxy Service',
-        description: "S3 Actions Proxy API"
-    }
-});
+new ApiGatewayToS3(this, 'test-api-gateway-s3-default', {});
 
 ```
 
@@ -56,11 +51,15 @@ _Parameters_
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
+|existingBucketInterface?|[`s3.IBucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.IBucket.html)|Existing instance of S3 Bucket object or interface. If this is provided, then also providing bucketProps will cause an error.|
 |bucketProps|[`s3.BucketProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html)|Optional user provided props to override the default props for S3 Bucket|
 |apiGatewayProps?|[`api.RestApiProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.RestApiProps.html)|Optional user-provided props to override the default props for the API Gateway.|
-|allowCreateOperation|`boolean`|Whether to deploy API Gateway Method for Upload operation on S3 Bucket.|
-|allowReadOperation|`boolean`|Whether to deploy API Gateway Method for Read operation on S3 Bucket.|
-|allowDeleteOperation|`boolean`|Whether to deploy API Gateway Method for Delete operation on S3 Bucket.|
+|allowCreateObjectOperation|`boolean`|Whether to deploy API Gateway Method for Upload operation on S3 Bucket. Default is 'true'|
+|allowListBucketsOperation|`boolean`|Whether to deploy API Gateway Method for List operation on all of caller's S3 Buckets. Default is 'true'|
+|allowListObjectsOperation|`boolean`|Whether to deploy API Gateway Method for List operation on all objects in an S3 Bucket. Default is 'true'|
+|allowReadObjectOperation|`boolean`|Whether to deploy API Gateway Method for Read operation on S3 Bucket. Default is 'true'|
+|allowReadMetadataOperation|`boolean`|Whether to deploy API Gateway Method for Read Object Metadata operation on S3 Bucket. Default is 'true'|
+|allowDeleteObjectOperation|`boolean`|Whether to deploy API Gateway Method for Delete operation on S3 Bucket. Default is 'false'|
 |logGroupProps?|[`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-logs.LogGroupProps.html)|User provided props to override the default props for for the CloudWatchLogs LogGroup.|
 
 ## Pattern Properties
@@ -70,6 +69,7 @@ _Parameters_
 |apiGateway|[`api.RestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.RestApi.html)|Returns an instance of the api.RestApi created by the construct.|
 |apiGatewayRole|[`iam.Role`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)|Returns an instance of the iam.Role created by the construct for API Gateway.|
 |s3Bucket|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html)|Returns an instance of s3.Bucket created by the construct.|
+|s3LoggingBucket?|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html)|Returns an instance of s3.Bucket created by the construct as the logging bucket for the primary bucket.|
 |apiGatewayCloudWatchRole|[`iam.Role`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)|Returns an instance of the iam.Role created by the construct for API Gateway for CloudWatch access.|
 |apiGatewayLogGroup|[`logs.LogGroup`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-logs.LogGroup.html)|Returns an instance of the LogGroup created by the construct for API Gateway access logging to CloudWatch.|
 
