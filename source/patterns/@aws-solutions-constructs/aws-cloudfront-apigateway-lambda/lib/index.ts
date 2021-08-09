@@ -66,7 +66,7 @@ export interface CloudFrontToApiGatewayToLambdaProps {
 
 export class CloudFrontToApiGatewayToLambda extends Construct {
   public readonly cloudFrontWebDistribution: cloudfront.Distribution;
-  public readonly edgeLambdaFunctionVersion?: lambda.Version;
+  public readonly cloudFrontFunction?: cloudfront.Function;
   public readonly cloudFrontLoggingBucket?: s3.Bucket;
   public readonly apiGateway: api.RestApi;
   public readonly apiGatewayCloudWatchRole: iam.Role;
@@ -116,7 +116,7 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
     });
 
     this.cloudFrontWebDistribution = apiCloudfront.cloudFrontWebDistribution;
-    this.edgeLambdaFunctionVersion = apiCloudfront.edgeLambdaFunctionVersion;
+    this.cloudFrontFunction = apiCloudfront.cloudFrontFunction;
     this.cloudFrontLoggingBucket = apiCloudfront.cloudFrontLoggingBucket;
   }
 }
