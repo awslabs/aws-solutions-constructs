@@ -13,7 +13,7 @@
 
 /// !cdk-integ *
 import { App, Stack } from "@aws-cdk/core";
-import { DynamoDBStreamToLambdaToElasticSearchAndKibanaProps, DynamoDBStreamToLambdaToElasticSearchAndKibana } from "../lib";
+import { DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps, DynamoDBStreamsToLambdaToElasticSearchAndKibana } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
@@ -22,7 +22,7 @@ const app = new App();
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const props: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps = {
+const props: DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps = {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     runtime: lambda.Runtime.NODEJS_12_X,
@@ -31,5 +31,5 @@ const props: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps = {
   domainName: 'testdomainconstructs'
 };
 
-new DynamoDBStreamToLambdaToElasticSearchAndKibana(stack, 'test-dynamodb-stream-lambda-elasticsearch-kibana', props);
+new DynamoDBStreamsToLambdaToElasticSearchAndKibana(stack, 'test-dynamodb-stream-lambda-elasticsearch-kibana', props);
 app.synth();

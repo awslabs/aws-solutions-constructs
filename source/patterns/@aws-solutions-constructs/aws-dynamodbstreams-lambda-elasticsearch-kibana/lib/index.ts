@@ -15,7 +15,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
 import * as iam from '@aws-cdk/aws-iam';
 import { DynamoEventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
-import { DynamoDBStreamsToLambdaProps, DynamoDBStreamsToLambda } from '@aws-solutions-constructs/aws-dynamodb-stream-lambda';
+import { DynamoDBStreamsToLambdaProps, DynamoDBStreamsToLambda } from '@aws-solutions-constructs/aws-dynamodbstreams-lambda';
 import { LambdaToElasticSearchAndKibanaProps, LambdaToElasticSearchAndKibana } from '@aws-solutions-constructs/aws-lambda-elasticsearch-kibana';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as cognito from '@aws-cdk/aws-cognito';

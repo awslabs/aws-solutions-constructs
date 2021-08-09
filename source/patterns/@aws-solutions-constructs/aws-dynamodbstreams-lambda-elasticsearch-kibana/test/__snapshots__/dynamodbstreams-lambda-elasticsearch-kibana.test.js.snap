@@ -17,7 +17,7 @@ Object {
     },
   },
   "Resources": Object {
-    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedDynamoTable27512EB0": Object {
+    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaDynamoTable67C553C4": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
         "AttributeDefinitions": Array [
@@ -46,10 +46,39 @@ Object {
       "Type": "AWS::DynamoDB::Table",
       "UpdateReplacePolicy": "Retain",
     },
-    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedLambdaFunction34F221BD": Object {
+    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaLambdaFunctionDynamoDBEventSourcetestdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaDynamoTable6A4F9DC02AF01B05": Object {
+      "Properties": Object {
+        "BatchSize": 100,
+        "BisectBatchOnFunctionError": true,
+        "DestinationConfig": Object {
+          "OnFailure": Object {
+            "Destination": Object {
+              "Fn::GetAtt": Array [
+                "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaSqsDlqQueueFAD2DB2B",
+                "Arn",
+              ],
+            },
+          },
+        },
+        "EventSourceArn": Object {
+          "Fn::GetAtt": Array [
+            "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaDynamoTable67C553C4",
+            "StreamArn",
+          ],
+        },
+        "FunctionName": Object {
+          "Ref": "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaLambdaFunctionEDB5804F",
+        },
+        "MaximumRecordAgeInSeconds": 86400,
+        "MaximumRetryAttempts": 500,
+        "StartingPosition": "TRIM_HORIZON",
+      },
+      "Type": "AWS::Lambda::EventSourceMapping",
+    },
+    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaLambdaFunctionEDB5804F": Object {
       "DependsOn": Array [
-        "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedLambdaFunctionServiceRoleDefaultPolicy52E15FEC",
-        "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedLambdaFunctionServiceRole58F8802B",
+        "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaLambdaFunctionServiceRoleDefaultPolicyF376BD92",
+        "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaLambdaFunctionServiceRoleFA900D4B",
       ],
       "Metadata": Object {
         "cfn_nag": Object {
@@ -122,7 +151,7 @@ Object {
         "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedLambdaFunctionServiceRole58F8802B",
+            "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaLambdaFunctionServiceRoleFA900D4B",
             "Arn",
           ],
         },
@@ -133,36 +162,74 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedLambdaFunctionDynamoDBEventSourcetestdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedDynamoTable5F2603CD2342951E": Object {
-      "Properties": Object {
-        "BatchSize": 100,
-        "BisectBatchOnFunctionError": true,
-        "DestinationConfig": Object {
-          "OnFailure": Object {
-            "Destination": Object {
-              "Fn::GetAtt": Array [
-                "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedSqsDlqQueueCC19E214",
-                "Arn",
-              ],
+    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaLambdaFunctionServiceRoleDefaultPolicyF376BD92": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.",
             },
-          },
-        },
-        "EventSourceArn": Object {
-          "Fn::GetAtt": Array [
-            "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedDynamoTable27512EB0",
-            "StreamArn",
           ],
         },
-        "FunctionName": Object {
-          "Ref": "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedLambdaFunction34F221BD",
-        },
-        "MaximumRecordAgeInSeconds": 86400,
-        "MaximumRetryAttempts": 500,
-        "StartingPosition": "TRIM_HORIZON",
       },
-      "Type": "AWS::Lambda::EventSourceMapping",
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": "dynamodb:ListStreams",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "dynamodb:DescribeStream",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaDynamoTable67C553C4",
+                  "StreamArn",
+                ],
+              },
+            },
+            Object {
+              "Action": Array [
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaSqsDlqQueueFAD2DB2B",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaLambdaFunctionServiceRoleDefaultPolicyF376BD92",
+        "Roles": Array [
+          Object {
+            "Ref": "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaLambdaFunctionServiceRoleFA900D4B",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
-    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedLambdaFunctionServiceRole58F8802B": Object {
+    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaLambdaFunctionServiceRoleFA900D4B": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -217,74 +284,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedLambdaFunctionServiceRoleDefaultPolicy52E15FEC": Object {
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W12",
-              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.",
-            },
-          ],
-        },
-      },
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "xray:PutTraceSegments",
-                "xray:PutTelemetryRecords",
-              ],
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-            Object {
-              "Action": "dynamodb:ListStreams",
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-            Object {
-              "Action": Array [
-                "dynamodb:DescribeStream",
-                "dynamodb:GetRecords",
-                "dynamodb:GetShardIterator",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedDynamoTable27512EB0",
-                  "StreamArn",
-                ],
-              },
-            },
-            Object {
-              "Action": Array [
-                "sqs:SendMessage",
-                "sqs:GetQueueAttributes",
-                "sqs:GetQueueUrl",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedSqsDlqQueueCC19E214",
-                  "Arn",
-                ],
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "bstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedLambdaFunctionServiceRoleDefaultPolicy52E15FEC",
-        "Roles": Array [
-          Object {
-            "Ref": "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedLambdaFunctionServiceRole58F8802B",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedSqsDlqQueueCC19E214": Object {
+    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaSqsDlqQueueFAD2DB2B": Object {
       "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
@@ -292,7 +292,7 @@ Object {
       "Type": "AWS::SQS::Queue",
       "UpdateReplacePolicy": "Delete",
     },
-    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedSqsDlqQueuePolicy76EB54B9": Object {
+    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaSqsDlqQueuePolicyD13AC750": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -327,7 +327,7 @@ Object {
               },
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedSqsDlqQueueCC19E214",
+                  "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaSqsDlqQueueFAD2DB2B",
                   "Arn",
                 ],
               },
@@ -346,7 +346,7 @@ Object {
               },
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedSqsDlqQueueCC19E214",
+                  "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaSqsDlqQueueFAD2DB2B",
                   "Arn",
                 ],
               },
@@ -357,7 +357,7 @@ Object {
         },
         "Queues": Array [
           Object {
-            "Ref": "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedSqsDlqQueueCC19E214",
+            "Ref": "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaSqsDlqQueueFAD2DB2B",
           },
         ],
       },
@@ -669,7 +669,7 @@ Object {
                   },
                   Object {
                     "Fn::GetAtt": Array [
-                      "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoDBStreamToLambdawrappedLambdaFunctionServiceRole58F8802B",
+                      "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamsToLambdaLambdaFunctionServiceRoleFA900D4B",
                       "Arn",
                     ],
                   },
