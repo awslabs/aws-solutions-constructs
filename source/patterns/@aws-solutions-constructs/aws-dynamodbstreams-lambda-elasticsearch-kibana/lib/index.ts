@@ -15,7 +15,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
 import * as iam from '@aws-cdk/aws-iam';
 import { DynamoEventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
-import { DynamoDBStreamToLambdaProps, DynamoDBStreamToLambda } from '@aws-solutions-constructs/aws-dynamodb-stream-lambda';
+import { DynamoDBStreamsToLambdaProps, DynamoDBStreamsToLambda } from '@aws-solutions-constructs/aws-dynamodb-stream-lambda';
 import { LambdaToElasticSearchAndKibanaProps, LambdaToElasticSearchAndKibana } from '@aws-solutions-constructs/aws-lambda-elasticsearch-kibana';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as cognito from '@aws-cdk/aws-cognito';
@@ -25,9 +25,9 @@ import * as sqs from '@aws-cdk/aws-sqs';
 import * as defaults from '@aws-solutions-constructs/core';
 
 /**
- * @summary The properties for the DynamoDBStreamToLambdaToElastciSearchAndKibana Construct
+ * @summary The properties for the DynamoDBStreamsToLambdaToElastciSearchAndKibana Construct
  */
-export interface DynamoDBStreamToLambdaToElasticSearchAndKibanaProps {
+export interface DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps {
   /**
    * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
@@ -97,8 +97,8 @@ export interface DynamoDBStreamToLambdaToElasticSearchAndKibanaProps {
   readonly createCloudWatchAlarms?: boolean
 }
 
-export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
-  private dynamoDBStreamToLambda: DynamoDBStreamToLambda;
+export class DynamoDBStreamsToLambdaToElasticSearchAndKibana extends Construct {
+  private DynamoDBStreamsToLambda: DynamoDBStreamsToLambda;
   private lambdaToElasticSearchAndKibana: LambdaToElasticSearchAndKibana;
   public readonly lambdaFunction: lambda.Function;
   public readonly dynamoTableInterface: dynamodb.ITable;
@@ -114,14 +114,14 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
    * @summary Constructs a new instance of the LambdaToDynamoDB class.
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
-   * @param {DynamoDBStreamToLambdaToElasticSearchAndKibanaProps} props - user provided props for the construct
+   * @param {DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps} props - user provided props for the construct
    * @access public
    */
-  constructor(scope: Construct, id: string, props: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps) {
+  constructor(scope: Construct, id: string, props: DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps) {
     super(scope, id);
     defaults.CheckProps(props);
 
-    const _props1: DynamoDBStreamToLambdaProps = {
+    const _props1: DynamoDBStreamsToLambdaProps = {
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps,
       dynamoEventSourceProps: props.dynamoEventSourceProps,
@@ -131,9 +131,9 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
       sqsDlqQueueProps: props.sqsDlqQueueProps
     };
 
-    this.dynamoDBStreamToLambda = new DynamoDBStreamToLambda(this, 'DynamoDBStreamToLambda', _props1);
+    this.DynamoDBStreamsToLambda = new DynamoDBStreamsToLambda(this, 'DynamoDBStreamsToLambda', _props1);
 
-    this.lambdaFunction = this.dynamoDBStreamToLambda.lambdaFunction;
+    this.lambdaFunction = this.DynamoDBStreamsToLambda.lambdaFunction;
 
     const _props2: LambdaToElasticSearchAndKibanaProps = {
       existingLambdaObj: this.lambdaFunction,
@@ -145,8 +145,8 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
 
     this.lambdaToElasticSearchAndKibana = new LambdaToElasticSearchAndKibana(this, 'LambdaToElasticSearch', _props2);
 
-    this.dynamoTable = this.dynamoDBStreamToLambda.dynamoTable;
-    this.dynamoTableInterface = this.dynamoDBStreamToLambda.dynamoTableInterface;
+    this.dynamoTable = this.DynamoDBStreamsToLambda.dynamoTable;
+    this.dynamoTableInterface = this.DynamoDBStreamsToLambda.dynamoTableInterface;
     this.userPool = this.lambdaToElasticSearchAndKibana.userPool;
     this.userPoolClient = this.lambdaToElasticSearchAndKibana.userPoolClient;
     this.identityPool = this.lambdaToElasticSearchAndKibana.identityPool;
