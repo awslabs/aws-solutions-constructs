@@ -24,7 +24,7 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-events-rule-kinesisstreams`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.eventsrulekinesisstreams`|
 
-This AWS Solutions Construct implements an Amazon CloudWatch Events rule to send data to an Amazon Kinesis Data Stream.
+This AWS Solutions Construct implements an Amazon CloudWatch Events rule to send data to an Amazon Kinesis data stream.
 
 Here is a minimal deployable pattern definition in Typescript:
 
@@ -75,7 +75,7 @@ _Parameters_
 Out of the box implementation of the Construct without any override will set the following defaults:
 
 ### Amazon CloudWatch Events Rule
-* Configure least privilege access IAM role for Events Rule to publish to the Kinesis data stream.
+* Configure least privilege access IAM role for Events Rule to publish to the Kinesis Data Stream.
 
 ### Amazon Kinesis Stream
 * Enable server-side encryption for Kinesis Data Stream using AWS Managed KMS Key.
