@@ -13,10 +13,8 @@
 
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as events from '@aws-cdk/aws-events';
-import * as defaults from '@aws-solutions-constructs/core';
-import * as iam from '@aws-cdk/aws-iam';
 import { Construct } from '@aws-cdk/core';
-import { overrideProps } from '@aws-solutions-constructs/core';
+import { EventbridgeToLambda } from '@aws-solutions-constructs/aws-eventbridge-lambda';
 
 /**
  * @summary The properties for the CloudFrontToApiGateway Construct
@@ -51,33 +49,14 @@ export class EventsRuleToLambda extends Construct {
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {EventsRuleToLambdaProps} props - user provided props for the construct
-   * @since 0.8.0
    * @access public
    */
   constructor(scope: Construct, id: string, props: EventsRuleToLambdaProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    const convertedProps: EventsRuleToLambdaProps = { ...props };
+    const wrappedConstruct: EventsRuleToLambda = new EventbridgeToLambda(this, `${id}-wrapped`, convertedProps);
 
-    this.lambdaFunction = defaults.buildLambdaFunction(this, {
-      existingLambdaObj: props.existingLambdaObj,
-      lambdaFunctionProps: props.lambdaFunctionProps
-    });
-
-    const lambdaFunc: events.IRuleTarget = {
-      bind: () => ({
-        id: '',
-        arn: this.lambdaFunction.functionArn
-      })
-    };
-
-    const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([lambdaFunc]);
-    const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);
-
-    this.eventsRule = new events.Rule(this, 'EventsRule', eventsRuleProps);
-
-    defaults.addPermission(this.lambdaFunction, "AwsEventsLambdaInvokePermission", {
-      principal: new iam.ServicePrincipal('events.amazonaws.com'),
-      sourceArn: this.eventsRule.ruleArn
-    });
+    this.lambdaFunction = wrappedConstruct.lambdaFunction;
+    this.eventsRule = wrappedConstruct.eventsRule;
   }
 }

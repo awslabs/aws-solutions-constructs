@@ -80,11 +80,14 @@ Object {
           "DefaultCacheBehavior": Object {
             "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
             "Compress": true,
-            "LambdaFunctionAssociations": Array [
+            "FunctionAssociations": Array [
               Object {
-                "EventType": "origin-response",
-                "LambdaFunctionARN": Object {
-                  "Ref": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeadersVersion1946ABC2",
+                "EventType": "viewer-response",
+                "FunctionARN": Object {
+                  "Fn::GetAtt": Array [
+                    "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeaders6945414A",
+                    "FunctionARN",
+                  ],
                 },
               },
             ],
@@ -257,149 +260,16 @@ Object {
       "Type": "AWS::S3::BucketPolicy",
     },
     "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeaders6945414A": Object {
-      "DependsOn": Array [
-        "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRoleDefaultPolicy2016F196",
-        "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRoleCA39BFFF",
-      ],
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W58",
-              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.",
-            },
-            Object {
-              "id": "W89",
-              "reason": "This is not a rule for the general case, just for specific use cases/industries",
-            },
-            Object {
-              "id": "W92",
-              "reason": "Impossible for us to define the correct concurrency for clients",
-            },
-          ],
-        },
-      },
       "Properties": Object {
-        "Code": Object {
-          "ZipFile": "exports.handler = (event, context, callback) => {           const response = event.Records[0].cf.response;           const headers = response.headers;           headers['x-xss-protection'] = [             {               key: 'X-XSS-Protection',               value: '1; mode=block'             }           ];           headers['x-frame-options'] = [             {               key: 'X-Frame-Options',               value: 'DENY'             }           ];           headers['x-content-type-options'] = [             {               key: 'X-Content-Type-Options',               value: 'nosniff'             }           ];           headers['strict-transport-security'] = [             {               key: 'Strict-Transport-Security',               value: 'max-age=63072000; includeSubdomains; preload'             }           ];           headers['referrer-policy'] = [             {               key: 'Referrer-Policy',               value: 'same-origin'             }           ];           headers['content-security-policy'] = [             {               key: 'Content-Security-Policy',               value: \\"default-src 'none'; base-uri 'self'; img-src 'self'; script-src 'self'; style-src 'self' https:; object-src 'none'; frame-ancestors 'none'; font-src 'self' https:; form-action 'self'; manifest-src 'self'; connect-src 'self'\\"              }           ];           callback(null, response);         };",
+        "AutoPublish": true,
+        "FunctionCode": "function handler(event) { var response = event.response;       var headers = response.headers;       headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'};       headers['content-security-policy'] = { value: \\"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\\"};       headers['x-content-type-options'] = { value: 'nosniff'};       headers['x-frame-options'] = {value: 'DENY'};       headers['x-xss-protection'] = {value: '1; mode=block'};       return response;     }",
+        "FunctionConfig": Object {
+          "Comment": "SetHttpSecurityHeadersc8921a01111335c3cb09d76a1618677328b11c1cb8",
+          "Runtime": "cloudfront-js-1.0",
         },
-        "Handler": "index.handler",
-        "Role": Object {
-          "Fn::GetAtt": Array [
-            "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRoleCA39BFFF",
-            "Arn",
-          ],
-        },
-        "Runtime": "nodejs12.x",
-        "TracingConfig": Object {
-          "Mode": "Active",
-        },
+        "Name": "SetHttpSecurityHeadersc8921a01111335c3cb09d76a1618677328b11c1cb8",
       },
-      "Type": "AWS::Lambda::Function",
-    },
-    "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRoleCA39BFFF": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "lambda.amazonaws.com",
-              },
-            },
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "edgelambda.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "Policies": Array [
-          Object {
-            "PolicyDocument": Object {
-              "Statement": Array [
-                Object {
-                  "Action": Array [
-                    "logs:CreateLogGroup",
-                    "logs:CreateLogStream",
-                    "logs:PutLogEvents",
-                  ],
-                  "Effect": "Allow",
-                  "Resource": Object {
-                    "Fn::Join": Array [
-                      "",
-                      Array [
-                        "arn:",
-                        Object {
-                          "Ref": "AWS::Partition",
-                        },
-                        ":logs:",
-                        Object {
-                          "Ref": "AWS::Region",
-                        },
-                        ":",
-                        Object {
-                          "Ref": "AWS::AccountId",
-                        },
-                        ":log-group:/aws/lambda/*",
-                      ],
-                    ],
-                  },
-                },
-              ],
-              "Version": "2012-10-17",
-            },
-            "PolicyName": "LambdaFunctionServiceRolePolicy",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Role",
-    },
-    "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRoleDefaultPolicy2016F196": Object {
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W12",
-              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.",
-            },
-          ],
-        },
-      },
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "xray:PutTraceSegments",
-                "xray:PutTelemetryRecords",
-              ],
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRoleDefaultPolicy2016F196",
-        "Roles": Array [
-          Object {
-            "Ref": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRoleCA39BFFF",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeadersVersion1946ABC2": Object {
-      "Properties": Object {
-        "FunctionName": Object {
-          "Ref": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeaders6945414A",
-        },
-      },
-      "Type": "AWS::Lambda::Version",
+      "Type": "AWS::CloudFront::Function",
     },
     "testcloudfrontapigatewaylambdaLambdaFunction17A55E65": Object {
       "DependsOn": Array [
