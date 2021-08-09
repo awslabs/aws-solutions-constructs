@@ -1,5 +1,5 @@
 {
-  "name": "@aws-solutions-constructs/aws-events-rule-kinesisfirehose-s3",
+  "name": "@aws-solutions-constructs/aws-eventbridge-kinesisfirehose-s3",
   "version": "0.0.0",
   "description": "CDK Constructs for Amazon CloudWatch Events Rule to Amazon Kinesis Firehose to Amazon S3 integration.",
   "main": "lib/index.js",
@@ -7,7 +7,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/awslabs/aws-solutions-constructs.git",
-    "directory": "source/patterns/@aws-solutions-constructs/aws-events-rule-kinesisfirehose-s3"
+    "directory": "source/patterns/@aws-solutions-constructs/aws-eventbridge-kinesisfirehose-s3"
   },
   "author": {
     "name": "Amazon Web Services",
@@ -34,21 +34,21 @@
     "outdir": "dist",
     "targets": {
       "java": {
-        "package": "software.amazon.awsconstructs.services.eventsrulekinesisfirehoses3",
+        "package": "software.amazon.awsconstructs.services.eventbridgekinesisfirehoses3",
         "maven": {
           "groupId": "software.amazon.awsconstructs",
-          "artifactId": "eventsrulekinesisfirehoses3"
+          "artifactId": "eventbridgekinesisfirehoses3"
         }
       },
       "dotnet": {
-        "namespace": "Amazon.Constructs.AWS.EventsRuleKinesisFirehoseS3",
-        "packageId": "Amazon.Constructs.AWS.EventsRuleKinesisFirehoseS3",
+        "namespace": "Amazon.Constructs.AWS.EventbridgeKinesisFirehoseS3",
+        "packageId": "Amazon.Constructs.AWS.EventbridgeKinesisFirehoseS3",
         "signAssembly": true,
         "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
       },
       "python": {
-        "distName": "aws-solutions-constructs.aws-events-rule-kinesis-firehose-s3",
-        "module": "aws_solutions_constructs.aws_events_rule_kinesis_firehose_s3"
+        "distName": "aws-solutions-constructs.aws-eventbridge-kinesis-firehose-s3",
+        "module": "aws_solutions_constructs.aws_eventbridge_kinesis_firehose_s3"
       }
     }
   },
@@ -60,7 +60,7 @@
     "@aws-cdk/aws-s3": "0.0.0",
     "@aws-cdk/aws-logs": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-eventbridge-kinesisfirehose-s3": "0.0.0",
+    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "0.0.0",
     "constructs": "^3.2.0"
   },
   "devDependencies": {
@@ -89,7 +89,7 @@
     "@aws-cdk/aws-s3": "0.0.0",
     "@aws-cdk/core": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-eventbridge-kinesisfirehose-s3": "0.0.0",
+    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "0.0.0",
     "constructs": "^3.2.0",
     "@aws-cdk/aws-logs": "0.0.0"
   },
