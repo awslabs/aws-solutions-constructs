@@ -75,7 +75,7 @@ _Parameters_
 Out of the box implementation of the Construct without any override will set the following defaults:
 
 ### Amazon CloudWatch Events Rule
-* Configure least privilege access IAM role for Events Rule to publish to the Kinesis Data Stream.
+* Configure least privilege access IAM role for Events Rule to publish to the Kinesis data stream.
 
 ### Amazon Kinesis Stream
 * Enable server-side encryption for Kinesis Data Stream using AWS Managed KMS Key.
