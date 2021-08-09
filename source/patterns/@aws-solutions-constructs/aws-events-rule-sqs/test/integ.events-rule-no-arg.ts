@@ -18,7 +18,7 @@ import { App, Stack } from '@aws-cdk/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
-const stack = new Stack(app, generateIntegStackName('events-rule-no-arg'));
+const stack = new Stack(app, generateIntegStackName(__filename));
 
 const props: EventsRuleToSqsProps = {
   eventRuleProps: {

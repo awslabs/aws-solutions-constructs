@@ -39,14 +39,14 @@ test('check the sqs queue properties', () => {
   expect(stack).toHaveResource('AWS::SQS::Queue', {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "testeventsrulesqsEncryptionKeyBE286B75",
+        "testeventsrulesqstesteventsrulesqswrappedEncryptionKey55835B42",
         "Arn"
       ]
     },
     RedrivePolicy: {
       deadLetterTargetArn: {
         "Fn::GetAtt": [
-          "testeventsrulesqsdeadLetterQueue3597FD50",
+          "testeventsrulesqstesteventsrulesqswrappeddeadLetterQueue6B3B63F7",
           "Arn"
         ]
       },
@@ -80,7 +80,7 @@ test('check the sqs queue properties with existing KMS key', () => {
     RedrivePolicy: {
       deadLetterTargetArn: {
         "Fn::GetAtt": [
-          "testeventsrulesqsdeadLetterQueue3597FD50",
+          "testeventsrulesqstesteventsrulesqswrappeddeadLetterQueue6B3B63F7",
           "Arn"
         ]
       },
@@ -188,7 +188,7 @@ test('check if the event rule has permission/policy in place in sqs queue for it
           },
           Resource:  {
             "Fn::GetAtt": [
-              "testeventsrulesqsqueue3AC8B87A",
+              "testeventsrulesqstesteventsrulesqswrappedqueue3820F81B",
               "Arn",
             ],
           },
@@ -207,7 +207,7 @@ test('check if the event rule has permission/policy in place in sqs queue for it
           },
           Resource:  {
             "Fn::GetAtt": [
-              "testeventsrulesqsqueue3AC8B87A",
+              "testeventsrulesqstesteventsrulesqswrappedqueue3820F81B",
               "Arn",
             ],
           },
@@ -225,7 +225,7 @@ test('check if the event rule has permission/policy in place in sqs queue for it
           },
           Resource: {
             "Fn::GetAtt": [
-              "testeventsrulesqsqueue3AC8B87A",
+              "testeventsrulesqstesteventsrulesqswrappedqueue3820F81B",
               "Arn"
             ]
           }
@@ -235,7 +235,7 @@ test('check if the event rule has permission/policy in place in sqs queue for it
     },
     Queues: [
       {
-        Ref: "testeventsrulesqsqueue3AC8B87A",
+        Ref: "testeventsrulesqstesteventsrulesqswrappedqueue3820F81B",
       }
     ]
   });
@@ -278,7 +278,7 @@ test('check if the dead letter queue policy is setup', () => {
           },
           Resource:  {
             "Fn::GetAtt": [
-              "testeventsrulesqsdeadLetterQueue3597FD50",
+              "testeventsrulesqstesteventsrulesqswrappeddeadLetterQueue6B3B63F7",
               "Arn",
             ],
           },
@@ -297,7 +297,7 @@ test('check if the dead letter queue policy is setup', () => {
           },
           Resource:  {
             "Fn::GetAtt": [
-              "testeventsrulesqsdeadLetterQueue3597FD50",
+              "testeventsrulesqstesteventsrulesqswrappeddeadLetterQueue6B3B63F7",
               "Arn",
             ],
           },
@@ -308,7 +308,7 @@ test('check if the dead letter queue policy is setup', () => {
     },
     Queues: [
       {
-        Ref: "testeventsrulesqsdeadLetterQueue3597FD50",
+        Ref: "testeventsrulesqstesteventsrulesqswrappeddeadLetterQueue6B3B63F7",
       },
     ]
   });
