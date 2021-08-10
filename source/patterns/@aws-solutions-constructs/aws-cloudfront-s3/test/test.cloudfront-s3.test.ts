@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
+import { ResourcePart, SynthUtils } from '@aws-cdk/assert';
 import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
 import * as cdk from "@aws-cdk/core";
 import * as s3 from '@aws-cdk/aws-s3';
@@ -103,6 +103,18 @@ test('check existing bucket', () => {
     BucketName: "my-bucket"
   });
 
+  expect(stack).toHaveResource("AWS::S3::BucketPolicy", {
+    Metadata: {
+      cfn_nag: {
+        rules_to_suppress: [
+          {
+            id: "F16",
+            reason: "Public website bucket policy requires a wildcard principal"
+          }
+        ]
+      }
+    }
+  }, ResourcePart.CompleteDefinition);
 });
 
 test('test cloudfront with custom domain names', () => {
@@ -225,4 +237,51 @@ test("Test bad call with existingBucket and bucketProps", () => {
   };
   // Assertion
   expect(app).toThrowError();
+});
+
+test("Test existingBucketInterface", () => {
+  // Stack
+  const stack = new cdk.Stack();
+  const construct: CloudFrontToS3 = new CloudFrontToS3(stack, "existingIBucket", {
+    existingBucketInterface: s3.Bucket.fromBucketName(stack, 'mybucket', 'mybucket')
+  });
+  // Assertion
+  expect(construct.cloudFrontWebDistribution !== null);
+  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+      Origins: [
+        {
+          DomainName: {
+            "Fn::Join": [
+              "",
+              [
+                "mybucket.s3.",
+                {
+                  Ref: "AWS::Region"
+                },
+                ".",
+                {
+                  Ref: "AWS::URLSuffix"
+                }
+              ]
+            ]
+          },
+          Id: "existingIBucketCloudFrontDistributionOrigin1D5849125",
+          S3OriginConfig: {
+            OriginAccessIdentity: {
+              "Fn::Join": [
+                "",
+                [
+                  "origin-access-identity/cloudfront/",
+                  {
+                    Ref: "existingIBucketCloudFrontDistributionOrigin1S3OriginDDDB1606"
+                  }
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    }
+  });
 });

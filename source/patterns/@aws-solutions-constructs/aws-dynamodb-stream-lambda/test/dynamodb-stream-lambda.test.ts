@@ -43,12 +43,12 @@ test('check lambda EventSourceMapping', () => {
   expect(stack).toHaveResource('AWS::Lambda::EventSourceMapping', {
     EventSourceArn: {
       "Fn::GetAtt": [
-        "testlambdadynamodbstackDynamoTable8138E93B",
+        "testlambdadynamodbstacktestlambdadynamodbstackwrappedDynamoTable93A88343",
         "StreamArn"
       ]
     },
     FunctionName: {
-      Ref: "testlambdadynamodbstackLambdaFunction5DDB3E8D"
+      Ref: "testlambdadynamodbstacktestlambdadynamodbstackwrappedLambdaFunction3A45417B"
     },
     BatchSize: 100,
     StartingPosition: "TRIM_HORIZON",
@@ -77,12 +77,12 @@ test('check DynamoEventSourceProps override', () => {
   expect(stack).toHaveResource('AWS::Lambda::EventSourceMapping', {
     EventSourceArn: {
       "Fn::GetAtt": [
-        "testlambdadynamodbstackDynamoTable8138E93B",
+        "testlambdadynamodbstacktestlambdadynamodbstackwrappedDynamoTable93A88343",
         "StreamArn"
       ]
     },
     FunctionName: {
-      Ref: "testlambdadynamodbstackLambdaFunction5DDB3E8D"
+      Ref: "testlambdadynamodbstacktestlambdadynamodbstackwrappedLambdaFunction3A45417B"
     },
     BatchSize: 55,
     StartingPosition: "LATEST"
@@ -118,7 +118,7 @@ test('check lambda permission to read dynamodb stream', () => {
           Effect: "Allow",
           Resource: {
             "Fn::GetAtt": [
-              "testlambdadynamodbstackDynamoTable8138E93B",
+              "testlambdadynamodbstacktestlambdadynamodbstackwrappedDynamoTable93A88343",
               "StreamArn"
             ]
           }
@@ -132,7 +132,7 @@ test('check lambda permission to read dynamodb stream', () => {
           Effect: "Allow",
           Resource: {
             "Fn::GetAtt": [
-              "testlambdadynamodbstackSqsDlqQueue4CC9868B",
+              "testlambdadynamodbstacktestlambdadynamodbstackwrappedSqsDlqQueue391BFBC7",
               "Arn"
             ]
           }
@@ -286,7 +286,7 @@ test('check dynamodb table stream override with ITable', () => {
           Effect: "Allow",
           Resource: {
             "Fn::GetAtt": [
-              "testlambdadynamodbstackSqsDlqQueue4CC9868B",
+              "testlambdadynamodbstacktestlambdadynamodbstackwrappedSqsDlqQueue391BFBC7",
               "Arn"
             ]
           }

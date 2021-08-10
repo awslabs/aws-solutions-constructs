@@ -27,7 +27,7 @@ function deployNewFunc(stack: cdk.Stack) {
     domainName: 'test-domain'
   };
 
-  return new DynamoDBStreamToLambdaToElasticSearchAndKibana(stack, 'test-dynamodb-stream-lambda-elasticsearch-stack', props);
+  return new DynamoDBStreamToLambdaToElasticSearchAndKibana(stack, 'test--stack', props);
 }
 
 test('snapshot test default params', () => {
@@ -45,7 +45,7 @@ test('check domain names', () => {
   expect(stack).toHaveResource('AWS::Cognito::UserPoolDomain', {
     Domain: "test-domain",
     UserPoolId: {
-      Ref: "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoUserPoolF99F93E5"
+      Ref: "teststackteststackwrappedLambdaToElasticSearchCognitoUserPoolBA16EA97"
     }
   });
 
