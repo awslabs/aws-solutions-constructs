@@ -1,20 +1,9 @@
 {
-  "name": "@aws-solutions-constructs/aws-events-rule-lambda",
+  "name": "@aws-solutions-constructs/aws-eventbridge-kinesisstreams",
   "version": "0.0.0",
-  "description": "CDK Constructs for deploying AWS Events Rule that inveokes AWS Lambda",
+  "description": "CDK Constructs for deploying Amazon CloudWatch Events Rule that invokes Amazon Kinesis Data Stream",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/awslabs/aws-solutions-constructs.git",
-    "directory": "source/patterns/@aws-solutions-constructs/aws-events-rule-lambda"
-  },
-  "author": {
-    "name": "Amazon Web Services",
-    "url": "https://aws.amazon.com",
-    "organization": true
-  },
-  "license": "Apache-2.0",
   "scripts": {
     "build": "tsc -b .",
     "lint": "eslint -c ../eslintrc.yml --ext=.js,.ts . && tslint --project .",
@@ -30,35 +19,46 @@
     "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
     "snapshot-update": "npm run jsii && npm test -- -u && npm run integ-assert"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/awslabs/aws-solutions-constructs.git",
+    "directory": "source/patterns/@aws-solutions-constructs/aws-eventbridge-kinesisstreams"
+  },
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com",
+    "organization": true
+  },
+  "license": "Apache-2.0",
   "jsii": {
     "outdir": "dist",
     "targets": {
       "java": {
-        "package": "software.amazon.awsconstructs.services.eventsrulelambda",
+        "package": "software.amazon.awsconstructs.services.eventbridgekinesisstreams",
         "maven": {
           "groupId": "software.amazon.awsconstructs",
-          "artifactId": "eventsrulelambda"
+          "artifactId": "eventbridgekinesisstreams"
         }
       },
       "dotnet": {
-        "namespace": "Amazon.Constructs.AWS.EventsRuleLambda",
-        "packageId": "Amazon.Constructs.AWS.EventsRuleLambda",
+        "namespace": "Amazon.Constructs.AWS.EventbridgeKinesisStreams",
+        "packageId": "Amazon.Constructs.AWS.EventbridgeKinesisStreams",
         "signAssembly": true,
         "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
       },
       "python": {
-        "distName": "aws-solutions-constructs.aws-events-rule-lambda",
-        "module": "aws_solutions_constructs.aws_events_rule_lambda"
+        "distName": "aws-solutions-constructs.aws-eventbridge-kinesis-streams",
+        "module": "aws_solutions_constructs.aws_eventbridge_kinesis_streams"
       }
     }
   },
   "dependencies": {
-    "@aws-cdk/aws-lambda": "0.0.0",
-    "@aws-cdk/core": "0.0.0",
     "@aws-cdk/aws-events": "0.0.0",
+    "@aws-cdk/aws-kinesis": "0.0.0",
     "@aws-cdk/aws-iam": "0.0.0",
+    "@aws-cdk/aws-cloudwatch": "0.0.0",
+    "@aws-cdk/core": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-eventbridge-lambda": "0.0.0",
     "constructs": "^3.2.0"
   },
   "devDependencies": {
@@ -81,12 +81,12 @@
     ]
   },
   "peerDependencies": {
-    "@aws-cdk/aws-lambda": "0.0.0",
-    "@aws-cdk/core": "0.0.0",
     "@aws-cdk/aws-events": "0.0.0",
+    "@aws-cdk/aws-kinesis": "0.0.0",
     "@aws-cdk/aws-iam": "0.0.0",
+    "@aws-cdk/aws-cloudwatch": "0.0.0",
+    "@aws-cdk/core": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-eventbridge-lambda": "0.0.0",
     "constructs": "^3.2.0"
   },
   "keywords": [
@@ -95,6 +95,6 @@
     "awscdk",
     "AWS Solutions Constructs",
     "Amazon EventBridge",
-    "AWS Lambda"
+    "Amazon Kinesis Data Streams"
   ]
 }

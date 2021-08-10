@@ -1,11 +1,9 @@
-# aws-events-rule-lambda module
+# aws-eventbridge-lambda module
 <!--BEGIN STABILITY BANNER-->
 
 ---
 
-![Stability: Deprecated](https://img.shields.io/badge/STABILITY-DEPRECATED-red?style=for-the-badge)
-
-> Some of our early constructs don’t meet the naming standards that evolved for the library. We are releasing completely feature compatible versions with corrected names. The underlying implementation code is the same regardless of whether you deploy the construct using the old or new name. We will support both names for all 1.x releases, but in 2.x we will only publish the correctly named constructs.
+![Stability: Experimental](https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge)
 
 > All classes are under active development and subject to non-backward compatible changes or removal in any
 > future version. These are not subject to the [Semantic Versioning](https://semver.org/) model.
@@ -20,18 +18,18 @@
 
 | **Language**     | **Package**        |
 |:-------------|-----------------|
-|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_events_rule_lambda`|
-|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-events-rule-lambda`|
-|![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.eventsrulelambda`|
+|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_eventbridge_lambda`|
+|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-eventbridge-lambda`|
+|![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.eventbridgelambda`|
 
-This AWS Solutions Construct implements an AWS Events rule and an AWS Lambda function.
+This AWS Solutions Construct implements an AWS EventBridge rule and an AWS Lambda function.
 
 Here is a minimal deployable pattern definition in Typescript:
 
 ``` javascript
-import { EventsRuleToLambdaProps, EventsRuleToLambda } from '@aws-solutions-constructs/aws-events-rule-lambda';
+const { EventbridgeToLambdaProps, EventbridgeToLambda } from '@aws-solutions-constructs/aws-eventbridge-lambda';
 
-const props: EventsRuleToLambdaProps = {
+const props: EventbridgeToLambdaProps = {
     lambdaFunctionProps: {
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
         runtime: lambda.Runtime.NODEJS_12_X,
@@ -42,20 +40,20 @@ const props: EventsRuleToLambdaProps = {
     }
 };
 
-new EventsRuleToLambda(this, 'test-events-rule-lambda', props);
+new EventbridgeToLambda(this, 'test-eventbridge-lambda', props);
 ```
 
 ## Initializer
 
 ``` text
-new EventsRuleToLambda(scope: Construct, id: string, props: EventsRuleToLambdaProps);
+new EventbridgeToLambda(scope: Construct, id: string, props: EventbridgeToLambdaProps);
 ```
 
 _Parameters_
 
 * scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
 * id `string`
-* props [`EventsRuleToLambdaProps`](#pattern-construct-props)
+* props [`EventbridgeToLambdaProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 
@@ -76,8 +74,8 @@ _Parameters_
 
 Out of the box implementation of the Construct without any override will set the following defaults:
 
-### Amazon CloudWatch Events Rule
-* Grant least privilege permissions to CloudWatch Events to trigger the Lambda Function
+### Amazon EventBridge Rule
+* Grant least privilege permissions to EventBridge rule to trigger the Lambda Function
 
 ### AWS Lambda Function
 * Configure limited privilege access IAM role for Lambda function
