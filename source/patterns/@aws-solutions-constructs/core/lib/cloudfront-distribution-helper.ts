@@ -125,13 +125,15 @@ export function CloudFrontDistributionForS3(scope: cdk.Construct,
 
   // Extract the CfnBucketPolicy from the sourceBucket
   const bucketPolicy = sourceBucket.policy as s3.BucketPolicy;
-  addCfnSuppressRules(bucketPolicy, [
-    {
-      id: 'F16',
-      reason: `Public website bucket policy requires a wildcard principal`
-    }
-  ]);
-
+  // the lack of a bucketPolicy means the bucket was imported from outside the stack so the lack of cfn_nag suppression is not an issue
+  if (bucketPolicy) {
+    addCfnSuppressRules(bucketPolicy, [
+      {
+        id: 'F16',
+        reason: `Public website bucket policy requires a wildcard principal`
+      }
+    ]);
+  }
   return [cfDistribution, cloudfrontFunction, loggingBucket];
 }
 
