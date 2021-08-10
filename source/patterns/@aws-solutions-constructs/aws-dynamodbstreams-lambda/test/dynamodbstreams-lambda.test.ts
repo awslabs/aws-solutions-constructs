@@ -12,14 +12,14 @@
  */
 
 import { SynthUtils } from '@aws-cdk/assert';
-import { DynamoDBStreamToLambda, DynamoDBStreamToLambdaProps } from "../lib";
+import { DynamoDBStreamsToLambda, DynamoDBStreamsToLambdaProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as cdk from "@aws-cdk/core";
 import '@aws-cdk/assert/jest';
 
 function deployNewFunc(stack: cdk.Stack) {
-  const props: DynamoDBStreamToLambdaProps = {
+  const props: DynamoDBStreamsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       runtime: lambda.Runtime.NODEJS_12_X,
@@ -27,10 +27,10 @@ function deployNewFunc(stack: cdk.Stack) {
     },
   };
 
-  return new DynamoDBStreamToLambda(stack, 'test-lambda-dynamodb-stack', props);
+  return new DynamoDBStreamsToLambda(stack, 'test-lambda-dynamodb-stack', props);
 }
 
-test('snapshot test DynamoDBStreamToLambda default params', () => {
+test('snapshot test DynamoDBStreamsToLambda default params', () => {
   const stack = new cdk.Stack();
   deployNewFunc(stack);
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
@@ -43,12 +43,12 @@ test('check lambda EventSourceMapping', () => {
   expect(stack).toHaveResource('AWS::Lambda::EventSourceMapping', {
     EventSourceArn: {
       "Fn::GetAtt": [
-        "testlambdadynamodbstacktestlambdadynamodbstackwrappedDynamoTable93A88343",
+        "testlambdadynamodbstackDynamoTable8138E93B",
         "StreamArn"
       ]
     },
     FunctionName: {
-      Ref: "testlambdadynamodbstacktestlambdadynamodbstackwrappedLambdaFunction3A45417B"
+      Ref: "testlambdadynamodbstackLambdaFunction5DDB3E8D"
     },
     BatchSize: 100,
     StartingPosition: "TRIM_HORIZON",
@@ -60,7 +60,7 @@ test('check lambda EventSourceMapping', () => {
 
 test('check DynamoEventSourceProps override', () => {
   const stack = new cdk.Stack();
-  const props: DynamoDBStreamToLambdaProps = {
+  const props: DynamoDBStreamsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       runtime: lambda.Runtime.NODEJS_12_X,
@@ -72,17 +72,17 @@ test('check DynamoEventSourceProps override', () => {
     }
   };
 
-  new DynamoDBStreamToLambda(stack, 'test-lambda-dynamodb-stack', props);
+  new DynamoDBStreamsToLambda(stack, 'test-lambda-dynamodb-stack', props);
 
   expect(stack).toHaveResource('AWS::Lambda::EventSourceMapping', {
     EventSourceArn: {
       "Fn::GetAtt": [
-        "testlambdadynamodbstacktestlambdadynamodbstackwrappedDynamoTable93A88343",
+        "testlambdadynamodbstackDynamoTable8138E93B",
         "StreamArn"
       ]
     },
     FunctionName: {
-      Ref: "testlambdadynamodbstacktestlambdadynamodbstackwrappedLambdaFunction3A45417B"
+      Ref: "testlambdadynamodbstackLambdaFunction5DDB3E8D"
     },
     BatchSize: 55,
     StartingPosition: "LATEST"
@@ -118,7 +118,7 @@ test('check lambda permission to read dynamodb stream', () => {
           Effect: "Allow",
           Resource: {
             "Fn::GetAtt": [
-              "testlambdadynamodbstacktestlambdadynamodbstackwrappedDynamoTable93A88343",
+              "testlambdadynamodbstackDynamoTable8138E93B",
               "StreamArn"
             ]
           }
@@ -132,7 +132,7 @@ test('check lambda permission to read dynamodb stream', () => {
           Effect: "Allow",
           Resource: {
             "Fn::GetAtt": [
-              "testlambdadynamodbstacktestlambdadynamodbstackwrappedSqsDlqQueue391BFBC7",
+              "testlambdadynamodbstackSqsDlqQueue4CC9868B",
               "Arn"
             ]
           }
@@ -145,7 +145,7 @@ test('check lambda permission to read dynamodb stream', () => {
 
 test('check dynamodb table stream override', () => {
   const stack = new cdk.Stack();
-  const props: DynamoDBStreamToLambdaProps = {
+  const props: DynamoDBStreamsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       runtime: lambda.Runtime.NODEJS_12_X,
@@ -160,7 +160,7 @@ test('check dynamodb table stream override', () => {
     }
   };
 
-  new DynamoDBStreamToLambda(stack, 'test-lambda-dynamodb-stack', props);
+  new DynamoDBStreamsToLambda(stack, 'test-lambda-dynamodb-stack', props);
   expect(stack).toHaveResource('AWS::DynamoDB::Table', {
     KeySchema: [
       {
@@ -188,7 +188,7 @@ test('check dynamodb table stream override', () => {
 test('check getter methods without existingTableInterface', () => {
   const stack = new cdk.Stack();
 
-  const construct: DynamoDBStreamToLambda = deployNewFunc(stack);
+  const construct: DynamoDBStreamsToLambda = deployNewFunc(stack);
 
   expect(construct.lambdaFunction).toBeInstanceOf(lambda.Function);
   expect(construct.dynamoTableInterface).toHaveProperty('tableName');
@@ -199,7 +199,7 @@ test('check getter methods without existingTableInterface', () => {
 test('check getter methods with existingTableInterface', () => {
   const stack = new cdk.Stack();
 
-  const construct: DynamoDBStreamToLambda = new DynamoDBStreamToLambda(stack, 'test', {
+  const construct: DynamoDBStreamsToLambda = new DynamoDBStreamsToLambda(stack, 'test', {
     existingTableInterface: new dynamodb.Table(stack, 'table', {
       partitionKey: {
         name: 'id',
@@ -221,11 +221,11 @@ test('check getter methods with existingTableInterface', () => {
 test('check exception for Missing existingObj from props', () => {
   const stack = new cdk.Stack();
 
-  const props: DynamoDBStreamToLambdaProps = {
+  const props: DynamoDBStreamsToLambdaProps = {
   };
 
   try {
-    new DynamoDBStreamToLambda(stack, 'test-iot-lambda-integration', props);
+    new DynamoDBStreamsToLambda(stack, 'test-iot-lambda-integration', props);
   } catch (e) {
     expect(e).toBeInstanceOf(Error);
   }
@@ -237,7 +237,7 @@ test('check dynamodb table stream override with ITable', () => {
     tableArn: 'arn:aws:dynamodb:us-east-1:xxxxxxxxxxxxx:table/existing-table',
     tableStreamArn: 'arn:aws:dynamodb:us-east-1:xxxxxxxxxxxxx:table/existing-table/stream/2020-06-22T18:34:05.824'
   });
-  const props: DynamoDBStreamToLambdaProps = {
+  const props: DynamoDBStreamsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       runtime: lambda.Runtime.NODEJS_12_X,
@@ -246,7 +246,7 @@ test('check dynamodb table stream override with ITable', () => {
     existingTableInterface
   };
 
-  new DynamoDBStreamToLambda(stack, 'test-lambda-dynamodb-stack', props);
+  new DynamoDBStreamsToLambda(stack, 'test-lambda-dynamodb-stack', props);
 
   expect(stack).toHaveResource('AWS::Lambda::EventSourceMapping', {
     EventSourceArn: "arn:aws:dynamodb:us-east-1:xxxxxxxxxxxxx:table/existing-table/stream/2020-06-22T18:34:05.824",
@@ -286,7 +286,7 @@ test('check dynamodb table stream override with ITable', () => {
           Effect: "Allow",
           Resource: {
             "Fn::GetAtt": [
-              "testlambdadynamodbstacktestlambdadynamodbstackwrappedSqsDlqQueue391BFBC7",
+              "testlambdadynamodbstackSqsDlqQueue4CC9868B",
               "Arn"
             ]
           }

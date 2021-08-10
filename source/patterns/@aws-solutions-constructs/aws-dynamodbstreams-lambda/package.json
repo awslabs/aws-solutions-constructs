@@ -1,13 +1,13 @@
 {
-  "name": "@aws-solutions-constructs/aws-dynamodb-stream-lambda",
+  "name": "@aws-solutions-constructs/aws-dynamodbstreams-lambda",
   "version": "0.0.0",
-  "description": "CDK Constructs for AWS DynamoDB Stream to AWS Lambda integration.",
+  "description": "CDK Constructs for AWS DynamoDB Streams to AWS Lambda integration.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/awslabs/aws-solutions-constructs.git",
-    "directory": "source/patterns/@aws-solutions-constructs/aws-dynamodb-stream-lambda"
+    "directory": "source/patterns/@aws-solutions-constructs/aws-dynamodbstreams-lambda"
   },
   "author": {
     "name": "Amazon Web Services",
@@ -34,21 +34,21 @@
     "outdir": "dist",
     "targets": {
       "java": {
-        "package": "software.amazon.awsconstructs.services.dynamodbstreamlambda",
+        "package": "software.amazon.awsconstructs.services.dynamodbstreamslambda",
         "maven": {
           "groupId": "software.amazon.awsconstructs",
-          "artifactId": "dynamodbstreamlambda"
+          "artifactId": "dynamodbstreamslambda"
         }
       },
       "dotnet": {
-        "namespace": "Amazon.Constructs.AWS.DynamodbStreamLambda",
-        "packageId": "Amazon.Constructs.AWS.DynamodbStreamLambda",
+        "namespace": "Amazon.Constructs.AWS.DynamodbStreamsLambda",
+        "packageId": "Amazon.Constructs.AWS.DynamodbStreamsLambda",
         "signAssembly": true,
         "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
       },
       "python": {
-        "distName": "aws-solutions-constructs.aws-dynamodb-stream-lambda",
-        "module": "aws_solutions_constructs.aws_dynamodb_stream_lambda"
+        "distName": "aws-solutions-constructs.aws-dynamodbstreams-lambda",
+        "module": "aws_solutions_constructs.aws_dynamodbstreams_lambda"
       }
     }
   },
@@ -60,7 +60,6 @@
     "@aws-cdk/aws-sqs": "0.0.0",
     "@aws-cdk/core": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-dynamodbstreams-lambda": "0.0.0",
     "constructs": "^3.2.0"
   },
   "devDependencies": {
@@ -87,7 +86,6 @@
     "@aws-cdk/aws-dynamodb": "0.0.0",
     "@aws-cdk/core": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-dynamodbstreams-lambda": "0.0.0",
     "@aws-cdk/aws-lambda-event-sources": "0.0.0",
     "constructs": "^3.2.0",
     "@aws-cdk/aws-iam": "0.0.0",

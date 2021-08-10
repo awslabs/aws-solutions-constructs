@@ -12,13 +12,13 @@
  */
 
 import { SynthUtils } from '@aws-cdk/assert';
-import { DynamoDBStreamToLambdaToElasticSearchAndKibana, DynamoDBStreamToLambdaToElasticSearchAndKibanaProps } from "../lib";
+import { DynamoDBStreamsToLambdaToElasticSearchAndKibana, DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as cdk from "@aws-cdk/core";
 import '@aws-cdk/assert/jest';
 
 function deployNewFunc(stack: cdk.Stack) {
-  const props: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps = {
+  const props: DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       runtime: lambda.Runtime.NODEJS_10_X,
@@ -27,7 +27,7 @@ function deployNewFunc(stack: cdk.Stack) {
     domainName: 'test-domain'
   };
 
-  return new DynamoDBStreamToLambdaToElasticSearchAndKibana(stack, 'test--stack', props);
+  return new DynamoDBStreamsToLambdaToElasticSearchAndKibana(stack, 'test-dynamodb-stream-lambda-elasticsearch-stack', props);
 }
 
 test('snapshot test default params', () => {
@@ -45,7 +45,7 @@ test('check domain names', () => {
   expect(stack).toHaveResource('AWS::Cognito::UserPoolDomain', {
     Domain: "test-domain",
     UserPoolId: {
-      Ref: "teststackteststackwrappedLambdaToElasticSearchCognitoUserPoolBA16EA97"
+      Ref: "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoUserPoolF99F93E5"
     }
   });
 
@@ -57,7 +57,7 @@ test('check domain names', () => {
 test('check properties', () => {
   const stack = new cdk.Stack();
 
-  const construct: DynamoDBStreamToLambdaToElasticSearchAndKibana = deployNewFunc(stack);
+  const construct: DynamoDBStreamsToLambdaToElasticSearchAndKibana = deployNewFunc(stack);
 
   expect(construct.lambdaFunction !== null);
   expect(construct.dynamoTable !== null);
@@ -72,12 +72,12 @@ test('check properties', () => {
 test('check exception for Missing existingObj from props for deploy = false', () => {
   const stack = new cdk.Stack();
 
-  const props: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps = {
+  const props: DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps = {
     domainName: 'test-domain'
   };
 
   try {
-    new DynamoDBStreamToLambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-stack', props);
+    new DynamoDBStreamsToLambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-stack', props);
   } catch (e) {
     expect(e).toBeInstanceOf(Error);
   }

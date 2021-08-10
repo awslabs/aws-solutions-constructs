@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`snapshot test DynamoDBStreamToLambda default params 1`] = `
+exports[`snapshot test DynamoDBStreamsToLambda default params 1`] = `
 Object {
   "Parameters": Object {
     "AssetParameters0c3255e93ffe7a906c7422e9f0e9cc4c7fd86ee996ee3bb302e2f134b38463c8ArtifactHash8D9AD644": Object {
@@ -17,7 +17,7 @@ Object {
     },
   },
   "Resources": Object {
-    "testlambdadynamodbstacktestlambdadynamodbstackwrappedDynamoTable93A88343": Object {
+    "testlambdadynamodbstackDynamoTable8138E93B": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
         "AttributeDefinitions": Array [
@@ -46,10 +46,10 @@ Object {
       "Type": "AWS::DynamoDB::Table",
       "UpdateReplacePolicy": "Retain",
     },
-    "testlambdadynamodbstacktestlambdadynamodbstackwrappedLambdaFunction3A45417B": Object {
+    "testlambdadynamodbstackLambdaFunction5DDB3E8D": Object {
       "DependsOn": Array [
-        "testlambdadynamodbstacktestlambdadynamodbstackwrappedLambdaFunctionServiceRoleDefaultPolicyAE179EDE",
-        "testlambdadynamodbstacktestlambdadynamodbstackwrappedLambdaFunctionServiceRole0A19125C",
+        "testlambdadynamodbstackLambdaFunctionServiceRoleDefaultPolicy547FB7F4",
+        "testlambdadynamodbstackLambdaFunctionServiceRole758347A1",
       ],
       "Metadata": Object {
         "cfn_nag": Object {
@@ -116,7 +116,7 @@ Object {
         "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "testlambdadynamodbstacktestlambdadynamodbstackwrappedLambdaFunctionServiceRole0A19125C",
+            "testlambdadynamodbstackLambdaFunctionServiceRole758347A1",
             "Arn",
           ],
         },
@@ -127,7 +127,7 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "testlambdadynamodbstacktestlambdadynamodbstackwrappedLambdaFunctionDynamoDBEventSourcetestlambdadynamodbstacktestlambdadynamodbstackwrappedDynamoTable0CA0B4D9170871E7": Object {
+    "testlambdadynamodbstackLambdaFunctionDynamoDBEventSourcetestlambdadynamodbstackDynamoTableD6E2BCEF4AB6F3DD": Object {
       "Properties": Object {
         "BatchSize": 100,
         "BisectBatchOnFunctionError": true,
@@ -135,7 +135,7 @@ Object {
           "OnFailure": Object {
             "Destination": Object {
               "Fn::GetAtt": Array [
-                "testlambdadynamodbstacktestlambdadynamodbstackwrappedSqsDlqQueue391BFBC7",
+                "testlambdadynamodbstackSqsDlqQueue4CC9868B",
                 "Arn",
               ],
             },
@@ -143,12 +143,12 @@ Object {
         },
         "EventSourceArn": Object {
           "Fn::GetAtt": Array [
-            "testlambdadynamodbstacktestlambdadynamodbstackwrappedDynamoTable93A88343",
+            "testlambdadynamodbstackDynamoTable8138E93B",
             "StreamArn",
           ],
         },
         "FunctionName": Object {
-          "Ref": "testlambdadynamodbstacktestlambdadynamodbstackwrappedLambdaFunction3A45417B",
+          "Ref": "testlambdadynamodbstackLambdaFunction5DDB3E8D",
         },
         "MaximumRecordAgeInSeconds": 86400,
         "MaximumRetryAttempts": 500,
@@ -156,7 +156,7 @@ Object {
       },
       "Type": "AWS::Lambda::EventSourceMapping",
     },
-    "testlambdadynamodbstacktestlambdadynamodbstackwrappedLambdaFunctionServiceRole0A19125C": Object {
+    "testlambdadynamodbstackLambdaFunctionServiceRole758347A1": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -211,7 +211,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "testlambdadynamodbstacktestlambdadynamodbstackwrappedLambdaFunctionServiceRoleDefaultPolicyAE179EDE": Object {
+    "testlambdadynamodbstackLambdaFunctionServiceRoleDefaultPolicy547FB7F4": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -247,7 +247,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "testlambdadynamodbstacktestlambdadynamodbstackwrappedDynamoTable93A88343",
+                  "testlambdadynamodbstackDynamoTable8138E93B",
                   "StreamArn",
                 ],
               },
@@ -261,7 +261,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "testlambdadynamodbstacktestlambdadynamodbstackwrappedSqsDlqQueue391BFBC7",
+                  "testlambdadynamodbstackSqsDlqQueue4CC9868B",
                   "Arn",
                 ],
               },
@@ -269,16 +269,16 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "testlambdadynamodbstacktestlambdadynamodbstackwrappedLambdaFunctionServiceRoleDefaultPolicyAE179EDE",
+        "PolicyName": "testlambdadynamodbstackLambdaFunctionServiceRoleDefaultPolicy547FB7F4",
         "Roles": Array [
           Object {
-            "Ref": "testlambdadynamodbstacktestlambdadynamodbstackwrappedLambdaFunctionServiceRole0A19125C",
+            "Ref": "testlambdadynamodbstackLambdaFunctionServiceRole758347A1",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
     },
-    "testlambdadynamodbstacktestlambdadynamodbstackwrappedSqsDlqQueue391BFBC7": Object {
+    "testlambdadynamodbstackSqsDlqQueue4CC9868B": Object {
       "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
@@ -286,7 +286,7 @@ Object {
       "Type": "AWS::SQS::Queue",
       "UpdateReplacePolicy": "Delete",
     },
-    "testlambdadynamodbstacktestlambdadynamodbstackwrappedSqsDlqQueuePolicyDBA29802": Object {
+    "testlambdadynamodbstackSqsDlqQueuePolicy192E20FD": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -321,7 +321,7 @@ Object {
               },
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "testlambdadynamodbstacktestlambdadynamodbstackwrappedSqsDlqQueue391BFBC7",
+                  "testlambdadynamodbstackSqsDlqQueue4CC9868B",
                   "Arn",
                 ],
               },
@@ -340,7 +340,7 @@ Object {
               },
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "testlambdadynamodbstacktestlambdadynamodbstackwrappedSqsDlqQueue391BFBC7",
+                  "testlambdadynamodbstackSqsDlqQueue4CC9868B",
                   "Arn",
                 ],
               },
@@ -351,7 +351,7 @@ Object {
         },
         "Queues": Array [
           Object {
-            "Ref": "testlambdadynamodbstacktestlambdadynamodbstackwrappedSqsDlqQueue391BFBC7",
+            "Ref": "testlambdadynamodbstackSqsDlqQueue4CC9868B",
           },
         ],
       },

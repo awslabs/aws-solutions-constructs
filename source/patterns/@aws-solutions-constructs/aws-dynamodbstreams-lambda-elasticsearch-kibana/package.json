@@ -1,13 +1,13 @@
 {
-  "name": "@aws-solutions-constructs/aws-dynamodb-stream-lambda",
+  "name": "@aws-solutions-constructs/aws-dynamodbstreams-lambda-elasticsearch-kibana",
   "version": "0.0.0",
-  "description": "CDK Constructs for AWS DynamoDB Stream to AWS Lambda integration.",
+  "description": "CDK Constructs for Amazon Dynamodb streams to AWS Lambda to AWS Elasticsearch with Kibana integration",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/awslabs/aws-solutions-constructs.git",
-    "directory": "source/patterns/@aws-solutions-constructs/aws-dynamodb-stream-lambda"
+    "directory": "source/patterns/@aws-solutions-constructs/aws-dynamodbstreams-lambda-elasticsearch-kibana"
   },
   "author": {
     "name": "Amazon Web Services",
@@ -34,33 +34,37 @@
     "outdir": "dist",
     "targets": {
       "java": {
-        "package": "software.amazon.awsconstructs.services.dynamodbstreamlambda",
+        "package": "software.amazon.awsconstructs.services.dynamodbstreamslambdaelasticsearchkibana",
         "maven": {
           "groupId": "software.amazon.awsconstructs",
-          "artifactId": "dynamodbstreamlambda"
+          "artifactId": "dynamodbstreamslambdaelasticsearchkibana"
         }
       },
       "dotnet": {
-        "namespace": "Amazon.Constructs.AWS.DynamodbStreamLambda",
-        "packageId": "Amazon.Constructs.AWS.DynamodbStreamLambda",
+        "namespace": "Amazon.Constructs.AWS.DynamodbStreamsLambdaElasticsearchKibana",
+        "packageId": "Amazon.Constructs.AWS.DynamodbStreamsLambdaElasticsearchKibana",
         "signAssembly": true,
         "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
       },
       "python": {
-        "distName": "aws-solutions-constructs.aws-dynamodb-stream-lambda",
-        "module": "aws_solutions_constructs.aws_dynamodb_stream_lambda"
+        "distName": "aws-solutions-constructs.aws-dynamodbstreams-lambda-elasticsearch-kibana",
+        "module": "aws_solutions_constructs.aws_dynamodbstreams_lambda_elasticsearch_kibana"
       }
     }
   },
   "dependencies": {
     "@aws-cdk/aws-lambda": "0.0.0",
     "@aws-cdk/aws-lambda-event-sources": "0.0.0",
+    "@aws-cdk/core": "0.0.0",
+    "@aws-cdk/aws-cognito": "0.0.0",
+    "@aws-cdk/aws-elasticsearch": "0.0.0",
     "@aws-cdk/aws-dynamodb": "0.0.0",
+    "@aws-cdk/aws-cloudwatch": "0.0.0",
     "@aws-cdk/aws-iam": "0.0.0",
     "@aws-cdk/aws-sqs": "0.0.0",
-    "@aws-cdk/core": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
     "@aws-solutions-constructs/aws-dynamodbstreams-lambda": "0.0.0",
+    "@aws-solutions-constructs/aws-lambda-elasticsearch-kibana": "0.0.0",
     "constructs": "^3.2.0"
   },
   "devDependencies": {
@@ -84,10 +88,14 @@
   },
   "peerDependencies": {
     "@aws-cdk/aws-lambda": "0.0.0",
-    "@aws-cdk/aws-dynamodb": "0.0.0",
     "@aws-cdk/core": "0.0.0",
+    "@aws-cdk/aws-cognito": "0.0.0",
+    "@aws-cdk/aws-elasticsearch": "0.0.0",
+    "@aws-cdk/aws-dynamodb": "0.0.0",
+    "@aws-cdk/aws-cloudwatch": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
     "@aws-solutions-constructs/aws-dynamodbstreams-lambda": "0.0.0",
+    "@aws-solutions-constructs/aws-lambda-elasticsearch-kibana": "0.0.0",
     "@aws-cdk/aws-lambda-event-sources": "0.0.0",
     "constructs": "^3.2.0",
     "@aws-cdk/aws-iam": "0.0.0",
@@ -99,6 +107,7 @@
     "awscdk",
     "AWS Solutions Constructs",
     "Amazon DynamoDB Streams",
-    "AWS Lambda"
+    "AWS Lambda",
+    "Amazon Elasticsearch Service"
   ]
 }

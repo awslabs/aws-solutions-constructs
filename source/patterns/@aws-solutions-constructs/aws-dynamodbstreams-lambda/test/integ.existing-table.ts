@@ -13,23 +13,35 @@
 
 /// !cdk-integ *
 import { App, Stack } from "@aws-cdk/core";
-import { DynamoDBStreamToLambdaToElasticSearchAndKibanaProps, DynamoDBStreamToLambdaToElasticSearchAndKibana } from "../lib";
+import { DynamoDBStreamsToLambdaProps, DynamoDBStreamsToLambda } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
+import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
 
-// Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const props: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps = {
+const table = new dynamodb.Table(stack, 'mytable', {
+  billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+  encryption: dynamodb.TableEncryption.AWS_MANAGED,
+  pointInTimeRecovery: true,
+  partitionKey: {
+    name: 'id',
+    type: dynamodb.AttributeType.STRING
+  },
+  stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES
+});
+
+const props: DynamoDBStreamsToLambdaProps = {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     runtime: lambda.Runtime.NODEJS_12_X,
     handler: 'index.handler'
   },
-  domainName: 'testdomainconstructs'
+  existingTableInterface: table
 };
 
-new DynamoDBStreamToLambdaToElasticSearchAndKibana(stack, 'test', props);
+new DynamoDBStreamsToLambda(stack, 'test-dynamodbstreams-lambda', props);
+
 app.synth();

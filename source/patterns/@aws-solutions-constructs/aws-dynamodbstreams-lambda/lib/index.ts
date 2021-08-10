@@ -12,16 +12,16 @@
  */
 
 import * as lambda from '@aws-cdk/aws-lambda';
-import { DynamoEventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
+import { DynamoEventSourceProps, DynamoEventSource } from '@aws-cdk/aws-lambda-event-sources';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
+import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
 import * as sqs from '@aws-cdk/aws-sqs';
-import { DynamoDBStreamsToLambda } from '@aws-solutions-constructs/aws-dynamodbstreams-lambda';
 
 /**
- * @summary The properties for the DynamoDBStreamToLambda Construct
+ * @summary The properties for the DynamoDBStreamsToLambda Construct
  */
-export interface DynamoDBStreamToLambdaProps {
+export interface DynamoDBStreamsToLambdaProps {
   /**
    * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
@@ -67,7 +67,7 @@ export interface DynamoDBStreamToLambdaProps {
   readonly sqsDlqQueueProps?: sqs.QueueProps
 }
 
-export class DynamoDBStreamToLambda extends Construct {
+export class DynamoDBStreamsToLambda extends Construct {
   public readonly lambdaFunction: lambda.Function;
   public readonly dynamoTableInterface: dynamodb.ITable;
   public readonly dynamoTable?: dynamodb.Table;
@@ -76,16 +76,32 @@ export class DynamoDBStreamToLambda extends Construct {
    * @summary Constructs a new instance of the LambdaToDynamoDB class.
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
-   * @param {DynamoDBStreamToLambdaProps} props - user provided props for the construct
+   * @param {DynamoDBStreamsToLambdaProps} props - user provided props for the construct
    * @access public
    */
-  constructor(scope: Construct, id: string, props: DynamoDBStreamToLambdaProps) {
+  constructor(scope: Construct, id: string, props: DynamoDBStreamsToLambdaProps) {
     super(scope, id);
-    const convertedProps: DynamoDBStreamToLambdaProps = { ...props };
-    const wrappedConstruct: DynamoDBStreamToLambda = new DynamoDBStreamsToLambda(this, `${id}-wrapped`, convertedProps);
+    defaults.CheckProps(props);
 
-    this.lambdaFunction = wrappedConstruct.lambdaFunction;
-    this.dynamoTableInterface = wrappedConstruct.dynamoTableInterface;
-    this.dynamoTable = wrappedConstruct.dynamoTable;
+    this.lambdaFunction = defaults.buildLambdaFunction(this, {
+      existingLambdaObj: props.existingLambdaObj,
+      lambdaFunctionProps: props.lambdaFunctionProps
+    });
+
+    [this.dynamoTableInterface, this.dynamoTable] = defaults.buildDynamoDBTableWithStream(this, {
+      dynamoTableProps: props.dynamoTableProps,
+      existingTableInterface: props.existingTableInterface
+    });
+
+    // Grant DynamoDB Stream read perimssion for lambda function
+    this.dynamoTableInterface.grantStreamRead(this.lambdaFunction.grantPrincipal);
+
+    // Add the Lambda event source mapping
+    const eventSourceProps = defaults.DynamoEventSourceProps(this, {
+      eventSourceProps: props.dynamoEventSourceProps,
+      deploySqsDlqQueue: props.deploySqsDlqQueue,
+      sqsDlqQueueProps: props.sqsDlqQueueProps
+    });
+    this.lambdaFunction.addEventSource(new DynamoEventSource(this.dynamoTableInterface, eventSourceProps));
   }
 }
