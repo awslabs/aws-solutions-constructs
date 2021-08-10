@@ -18,6 +18,7 @@ import { LambdaToSqs } from '@aws-solutions-constructs/aws-lambda-sqs';
 import { SqsToLambda } from '@aws-solutions-constructs/aws-sqs-lambda';
 import { Construct } from '@aws-cdk/core';
 import * as defaults from '@aws-solutions-constructs/core';
+import { SqsEventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
 
 /**
  * @summary The properties for the LambdaToSqsToLambda class.
@@ -87,6 +88,12 @@ export interface LambdaToSqsToLambdaProps {
    * @default - None
    */
   readonly queueEnvironmentVariableName?: string;
+  /**
+     * Optional user provided properties for the dead letter queue
+     *
+     * @default - Default props are used
+     */
+  readonly sqsEventSourceProps?: SqsEventSourceProps
 }
 
 /**
@@ -94,7 +101,7 @@ export interface LambdaToSqsToLambdaProps {
  */
 export class LambdaToSqsToLambda extends Construct {
   public readonly producerLambdaFunction: lambda.Function;
-  public readonly sqsQueue: sqs.Queue;
+  public readonly sqsQueue: sqs.Queue; B
   public readonly deadLetterQueue?: sqs.DeadLetterQueue;
   public readonly consumerLambdaFunction: lambda.Function;
 
@@ -130,7 +137,8 @@ export class LambdaToSqsToLambda extends Construct {
       existingLambdaObj: props.existingConsumerLambdaObj,
       lambdaFunctionProps: props.consumerLambdaFunctionProps,
       existingQueueObj: this.sqsQueue,
-      deployDeadLetterQueue: false
+      deployDeadLetterQueue: false,
+      sqsEventSourceProps: props.sqsEventSourceProps
     });
 
     // Set other relevant pattern properties
