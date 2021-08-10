@@ -116,7 +116,8 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
   constructor(scope: Construct, id: string, props: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps) {
     super(scope, id);
     const convertedProps: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps = { ...props };
-    const wrappedConstruct: DynamoDBStreamToLambdaToElasticSearchAndKibana = new DynamoDBStreamsToLambdaToElasticSearchAndKibana(this, `${id}-wrapped`, convertedProps);
+    const wrappedConstruct: DynamoDBStreamToLambdaToElasticSearchAndKibana = new DynamoDBStreamsToLambdaToElasticSearchAndKibana(
+      this, `${id}-wrapped`, convertedProps);
 
     this.lambdaFunction = wrappedConstruct.lambdaFunction;
     this.dynamoTable = wrappedConstruct.dynamoTable;
