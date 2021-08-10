@@ -403,3 +403,32 @@ test('Test lambda function custom environment variable', () => {
     }
   });
 });
+
+// --------------------------------------------------------------
+// Pattern deployment w/ batch size
+// --------------------------------------------------------------
+test('Pattern deployment w/ batch size', () => {
+  const stack = new Stack();
+  const props: LambdaToSqsToLambdaProps = {
+    producerLambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
+      functionName: 'producer-function'
+    },
+    consumerLambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
+      functionName: 'consumer-function'
+    },
+    sqsEventSourceProps: {
+      batchSize: 5
+    }
+  };
+  new LambdaToSqsToLambda(stack, 'test-lambda-sqs-lambda', props);
+
+  expect(stack).toHaveResource('AWS::Lambda::EventSourceMapping', {
+    BatchSize: 5
+  });
+});
