@@ -98,8 +98,6 @@ export interface DynamoDBStreamToLambdaToElasticSearchAndKibanaProps {
 }
 
 export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
-  private dynamoDBStreamToLambda: DynamoDBStreamToLambda;
-  private lambdaToElasticSearchAndKibana: LambdaToElasticSearchAndKibana;
   public readonly lambdaFunction: lambda.Function;
   public readonly dynamoTableInterface: dynamodb.ITable;
   public readonly dynamoTable?: dynamodb.Table;
