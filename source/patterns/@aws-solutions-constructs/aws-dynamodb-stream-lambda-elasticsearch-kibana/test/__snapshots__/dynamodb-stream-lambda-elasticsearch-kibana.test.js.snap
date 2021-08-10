@@ -17,7 +17,7 @@ Object {
     },
   },
   "Resources": Object {
-    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoTable9A779B83": Object {
+    "teststackteststackwrappedDynamoDBStreamsToLambdaDynamoTable285FB6C5": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
         "AttributeDefinitions": Array [
@@ -46,10 +46,10 @@ Object {
       "Type": "AWS::DynamoDB::Table",
       "UpdateReplacePolicy": "Retain",
     },
-    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaLambdaFunction10347BD5": Object {
+    "teststackteststackwrappedDynamoDBStreamsToLambdaLambdaFunctionDF5A3CF8": Object {
       "DependsOn": Array [
-        "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaLambdaFunctionServiceRoleDefaultPolicyF8F69900",
-        "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaLambdaFunctionServiceRoleB674EE63",
+        "teststackteststackwrappedDynamoDBStreamsToLambdaLambdaFunctionServiceRoleDefaultPolicy74D14AAA",
+        "teststackteststackwrappedDynamoDBStreamsToLambdaLambdaFunctionServiceRoleDFC00776",
       ],
       "Metadata": Object {
         "cfn_nag": Object {
@@ -113,7 +113,7 @@ Object {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "DOMAIN_ENDPOINT": Object {
               "Fn::GetAtt": Array [
-                "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchElasticsearchDomainD539E435",
+                "teststackteststackwrappedLambdaToElasticSearchElasticsearchDomain7582D2E3",
                 "DomainEndpoint",
               ],
             },
@@ -122,7 +122,7 @@ Object {
         "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaLambdaFunctionServiceRoleB674EE63",
+            "teststackteststackwrappedDynamoDBStreamsToLambdaLambdaFunctionServiceRoleDFC00776",
             "Arn",
           ],
         },
@@ -133,7 +133,7 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaLambdaFunctionDynamoDBEventSourcetestdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoTable0DD1CCDAA02C0130": Object {
+    "teststackteststackwrappedDynamoDBStreamsToLambdaLambdaFunctionDynamoDBEventSourceteststackteststackwrappedDynamoDBStreamsToLambdaDynamoTableE5F505A30EC154BA": Object {
       "Properties": Object {
         "BatchSize": 100,
         "BisectBatchOnFunctionError": true,
@@ -141,7 +141,7 @@ Object {
           "OnFailure": Object {
             "Destination": Object {
               "Fn::GetAtt": Array [
-                "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaSqsDlqQueue2AC67B0B",
+                "teststackteststackwrappedDynamoDBStreamsToLambdaSqsDlqQueue5B5A4F47",
                 "Arn",
               ],
             },
@@ -149,12 +149,12 @@ Object {
         },
         "EventSourceArn": Object {
           "Fn::GetAtt": Array [
-            "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoTable9A779B83",
+            "teststackteststackwrappedDynamoDBStreamsToLambdaDynamoTable285FB6C5",
             "StreamArn",
           ],
         },
         "FunctionName": Object {
-          "Ref": "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaLambdaFunction10347BD5",
+          "Ref": "teststackteststackwrappedDynamoDBStreamsToLambdaLambdaFunctionDF5A3CF8",
         },
         "MaximumRecordAgeInSeconds": 86400,
         "MaximumRetryAttempts": 500,
@@ -162,7 +162,7 @@ Object {
       },
       "Type": "AWS::Lambda::EventSourceMapping",
     },
-    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaLambdaFunctionServiceRoleB674EE63": Object {
+    "teststackteststackwrappedDynamoDBStreamsToLambdaLambdaFunctionServiceRoleDFC00776": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -217,7 +217,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaLambdaFunctionServiceRoleDefaultPolicyF8F69900": Object {
+    "teststackteststackwrappedDynamoDBStreamsToLambdaLambdaFunctionServiceRoleDefaultPolicy74D14AAA": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -253,7 +253,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaDynamoTable9A779B83",
+                  "teststackteststackwrappedDynamoDBStreamsToLambdaDynamoTable285FB6C5",
                   "StreamArn",
                 ],
               },
@@ -267,7 +267,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaSqsDlqQueue2AC67B0B",
+                  "teststackteststackwrappedDynamoDBStreamsToLambdaSqsDlqQueue5B5A4F47",
                   "Arn",
                 ],
               },
@@ -275,16 +275,16 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaLambdaFunctionServiceRoleDefaultPolicyF8F69900",
+        "PolicyName": "teststackteststackwrappedDynamoDBStreamsToLambdaLambdaFunctionServiceRoleDefaultPolicy74D14AAA",
         "Roles": Array [
           Object {
-            "Ref": "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaLambdaFunctionServiceRoleB674EE63",
+            "Ref": "teststackteststackwrappedDynamoDBStreamsToLambdaLambdaFunctionServiceRoleDFC00776",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
     },
-    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaSqsDlqQueue2AC67B0B": Object {
+    "teststackteststackwrappedDynamoDBStreamsToLambdaSqsDlqQueue5B5A4F47": Object {
       "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
@@ -292,7 +292,7 @@ Object {
       "Type": "AWS::SQS::Queue",
       "UpdateReplacePolicy": "Delete",
     },
-    "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaSqsDlqQueuePolicyEB0A0B8A": Object {
+    "teststackteststackwrappedDynamoDBStreamsToLambdaSqsDlqQueuePolicyE03A7292": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -327,7 +327,7 @@ Object {
               },
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaSqsDlqQueue2AC67B0B",
+                  "teststackteststackwrappedDynamoDBStreamsToLambdaSqsDlqQueue5B5A4F47",
                   "Arn",
                 ],
               },
@@ -346,7 +346,7 @@ Object {
               },
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaSqsDlqQueue2AC67B0B",
+                  "teststackteststackwrappedDynamoDBStreamsToLambdaSqsDlqQueue5B5A4F47",
                   "Arn",
                 ],
               },
@@ -357,13 +357,13 @@ Object {
         },
         "Queues": Array [
           Object {
-            "Ref": "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaSqsDlqQueue2AC67B0B",
+            "Ref": "teststackteststackwrappedDynamoDBStreamsToLambdaSqsDlqQueue5B5A4F47",
           },
         ],
       },
       "Type": "AWS::SQS::QueuePolicy",
     },
-    "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchAutomatedSnapshotFailureTooHighAlarm79E9F162": Object {
+    "teststackteststackwrappedLambdaToElasticSearchAutomatedSnapshotFailureTooHighAlarm7CC2CA20": Object {
       "Properties": Object {
         "AlarmDescription": "An automated snapshot failed. This failure is often the result of a red cluster health status.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -376,7 +376,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCPUUtilizationTooHighAlarmFA0BD382": Object {
+    "teststackteststackwrappedLambdaToElasticSearchCPUUtilizationTooHighAlarm98B1C537": Object {
       "Properties": Object {
         "AlarmDescription": "100% CPU utilization is not uncommon, but sustained high usage is problematic. Consider using larger instance types or adding instances.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -389,7 +389,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoAuthorizedRole4B91C04E": Object {
+    "teststackteststackwrappedLambdaToElasticSearchCognitoAuthorizedRole15BFD8EB": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -401,7 +401,7 @@ Object {
                 },
                 "StringEquals": Object {
                   "cognito-identity.amazonaws.com:aud": Object {
-                    "Ref": "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoIdentityPool68C76F43",
+                    "Ref": "teststackteststackwrappedLambdaToElasticSearchCognitoIdentityPoolF92B1D06",
                   },
                 },
               },
@@ -450,17 +450,17 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoIdentityPool68C76F43": Object {
+    "teststackteststackwrappedLambdaToElasticSearchCognitoIdentityPoolF92B1D06": Object {
       "Properties": Object {
         "AllowUnauthenticatedIdentities": false,
         "CognitoIdentityProviders": Array [
           Object {
             "ClientId": Object {
-              "Ref": "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoUserPoolClientE03C5E18",
+              "Ref": "teststackteststackwrappedLambdaToElasticSearchCognitoUserPoolClient14E0ADEE",
             },
             "ProviderName": Object {
               "Fn::GetAtt": Array [
-                "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoUserPoolF99F93E5",
+                "teststackteststackwrappedLambdaToElasticSearchCognitoUserPoolBA16EA97",
                 "ProviderName",
               ],
             },
@@ -470,7 +470,7 @@ Object {
       },
       "Type": "AWS::Cognito::IdentityPool",
     },
-    "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoKibanaConfigureRoleC8DCD692": Object {
+    "teststackteststackwrappedLambdaToElasticSearchCognitoKibanaConfigureRoleD014A932": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -487,7 +487,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoKibanaConfigureRolePolicy96BB58EC": Object {
+    "teststackteststackwrappedLambdaToElasticSearchCognitoKibanaConfigureRolePolicy5276FFBA": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -510,7 +510,7 @@ Object {
               "Resource": Array [
                 Object {
                   "Fn::GetAtt": Array [
-                    "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoUserPoolF99F93E5",
+                    "teststackteststackwrappedLambdaToElasticSearchCognitoUserPoolBA16EA97",
                     "Arn",
                   ],
                 },
@@ -528,7 +528,7 @@ Object {
                       },
                       ":identitypool/",
                       Object {
-                        "Ref": "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoIdentityPool68C76F43",
+                        "Ref": "teststackteststackwrappedLambdaToElasticSearchCognitoIdentityPoolF92B1D06",
                       },
                     ],
                   ],
@@ -561,7 +561,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoKibanaConfigureRoleC8DCD692",
+                  "teststackteststackwrappedLambdaToElasticSearchCognitoKibanaConfigureRoleD014A932",
                   "Arn",
                 ],
               },
@@ -569,42 +569,16 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoKibanaConfigureRolePolicy96BB58EC",
+        "PolicyName": "teststackteststackwrappedLambdaToElasticSearchCognitoKibanaConfigureRolePolicy5276FFBA",
         "Roles": Array [
           Object {
-            "Ref": "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoKibanaConfigureRoleC8DCD692",
+            "Ref": "teststackteststackwrappedLambdaToElasticSearchCognitoKibanaConfigureRoleD014A932",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
     },
-    "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoUserPoolClientE03C5E18": Object {
-      "Properties": Object {
-        "AllowedOAuthFlows": Array [
-          "implicit",
-          "code",
-        ],
-        "AllowedOAuthFlowsUserPoolClient": true,
-        "AllowedOAuthScopes": Array [
-          "profile",
-          "phone",
-          "email",
-          "openid",
-          "aws.cognito.signin.user.admin",
-        ],
-        "CallbackURLs": Array [
-          "https://example.com",
-        ],
-        "SupportedIdentityProviders": Array [
-          "COGNITO",
-        ],
-        "UserPoolId": Object {
-          "Ref": "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoUserPoolF99F93E5",
-        },
-      },
-      "Type": "AWS::Cognito::UserPoolClient",
-    },
-    "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoUserPoolF99F93E5": Object {
+    "teststackteststackwrappedLambdaToElasticSearchCognitoUserPoolBA16EA97": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
         "AccountRecoverySetting": Object {
@@ -638,7 +612,33 @@ Object {
       "Type": "AWS::Cognito::UserPool",
       "UpdateReplacePolicy": "Retain",
     },
-    "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchElasticsearchDomainD539E435": Object {
+    "teststackteststackwrappedLambdaToElasticSearchCognitoUserPoolClient14E0ADEE": Object {
+      "Properties": Object {
+        "AllowedOAuthFlows": Array [
+          "implicit",
+          "code",
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": Array [
+          "profile",
+          "phone",
+          "email",
+          "openid",
+          "aws.cognito.signin.user.admin",
+        ],
+        "CallbackURLs": Array [
+          "https://example.com",
+        ],
+        "SupportedIdentityProviders": Array [
+          "COGNITO",
+        ],
+        "UserPoolId": Object {
+          "Ref": "teststackteststackwrappedLambdaToElasticSearchCognitoUserPoolBA16EA97",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolClient",
+    },
+    "teststackteststackwrappedLambdaToElasticSearchElasticsearchDomain7582D2E3": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -663,13 +663,13 @@ Object {
                 "AWS": Array [
                   Object {
                     "Fn::GetAtt": Array [
-                      "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoAuthorizedRole4B91C04E",
+                      "teststackteststackwrappedLambdaToElasticSearchCognitoAuthorizedRole15BFD8EB",
                       "Arn",
                     ],
                   },
                   Object {
                     "Fn::GetAtt": Array [
-                      "testdynamodbstreamlambdaelasticsearchstackDynamoDBStreamToLambdaLambdaFunctionServiceRoleB674EE63",
+                      "teststackteststackwrappedDynamoDBStreamsToLambdaLambdaFunctionServiceRoleDFC00776",
                       "Arn",
                     ],
                   },
@@ -698,16 +698,16 @@ Object {
         "CognitoOptions": Object {
           "Enabled": true,
           "IdentityPoolId": Object {
-            "Ref": "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoIdentityPool68C76F43",
+            "Ref": "teststackteststackwrappedLambdaToElasticSearchCognitoIdentityPoolF92B1D06",
           },
           "RoleArn": Object {
             "Fn::GetAtt": Array [
-              "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoKibanaConfigureRoleC8DCD692",
+              "teststackteststackwrappedLambdaToElasticSearchCognitoKibanaConfigureRoleD014A932",
               "Arn",
             ],
           },
           "UserPoolId": Object {
-            "Ref": "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoUserPoolF99F93E5",
+            "Ref": "teststackteststackwrappedLambdaToElasticSearchCognitoUserPoolBA16EA97",
           },
         },
         "DomainName": "test-domain",
@@ -737,7 +737,7 @@ Object {
       },
       "Type": "AWS::Elasticsearch::Domain",
     },
-    "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchFreeStorageSpaceTooLowAlarm0DF36C59": Object {
+    "teststackteststackwrappedLambdaToElasticSearchFreeStorageSpaceTooLowAlarm03262807": Object {
       "Properties": Object {
         "AlarmDescription": "A node in your cluster is down to 20 GiB of free storage space.",
         "ComparisonOperator": "LessThanOrEqualToThreshold",
@@ -750,15 +750,15 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchIdentityPoolRoleMapping31775D80": Object {
+    "teststackteststackwrappedLambdaToElasticSearchIdentityPoolRoleMapping529E4FD4": Object {
       "Properties": Object {
         "IdentityPoolId": Object {
-          "Ref": "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoIdentityPool68C76F43",
+          "Ref": "teststackteststackwrappedLambdaToElasticSearchCognitoIdentityPoolF92B1D06",
         },
         "Roles": Object {
           "authenticated": Object {
             "Fn::GetAtt": Array [
-              "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoAuthorizedRole4B91C04E",
+              "teststackteststackwrappedLambdaToElasticSearchCognitoAuthorizedRole15BFD8EB",
               "Arn",
             ],
           },
@@ -766,7 +766,7 @@ Object {
       },
       "Type": "AWS::Cognito::IdentityPoolRoleAttachment",
     },
-    "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchIndexWritesBlockedTooHighAlarmCD28CBB9": Object {
+    "teststackteststackwrappedLambdaToElasticSearchIndexWritesBlockedTooHighAlarm806FBE2F": Object {
       "Properties": Object {
         "AlarmDescription": "Your cluster is blocking write requests.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -779,7 +779,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchJVMMemoryPressureTooHighAlarmC6CB7B4D": Object {
+    "teststackteststackwrappedLambdaToElasticSearchJVMMemoryPressureTooHighAlarm357EE07D": Object {
       "Properties": Object {
         "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -792,7 +792,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchMasterCPUUtilizationTooHighAlarm2BA317F5": Object {
+    "teststackteststackwrappedLambdaToElasticSearchMasterCPUUtilizationTooHighAlarmF390E9A4": Object {
       "Properties": Object {
         "AlarmDescription": "Average CPU utilization over last 45 minutes too high. Consider using larger instance types for your dedicated master nodes.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -805,7 +805,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchMasterJVMMemoryPressureTooHighAlarmFD25E1C8": Object {
+    "teststackteststackwrappedLambdaToElasticSearchMasterJVMMemoryPressureTooHighAlarm9B82F810": Object {
       "Properties": Object {
         "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -818,7 +818,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchStatusRedAlarmDAEB5151": Object {
+    "teststackteststackwrappedLambdaToElasticSearchStatusRedAlarm5BF76B79": Object {
       "Properties": Object {
         "AlarmDescription": "At least one primary shard and its replicas are not allocated to a node. ",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -831,7 +831,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchStatusYellowAlarmB86505F9": Object {
+    "teststackteststackwrappedLambdaToElasticSearchStatusYellowAlarm2F036EF1": Object {
       "Properties": Object {
         "AlarmDescription": "At least one replica shard is not allocated to a node.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -844,14 +844,14 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchUserPoolDomain702D3127": Object {
+    "teststackteststackwrappedLambdaToElasticSearchUserPoolDomain5511272B": Object {
       "DependsOn": Array [
-        "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoUserPoolF99F93E5",
+        "teststackteststackwrappedLambdaToElasticSearchCognitoUserPoolBA16EA97",
       ],
       "Properties": Object {
         "Domain": "test-domain",
         "UserPoolId": Object {
-          "Ref": "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoUserPoolF99F93E5",
+          "Ref": "teststackteststackwrappedLambdaToElasticSearchCognitoUserPoolBA16EA97",
         },
       },
       "Type": "AWS::Cognito::UserPoolDomain",

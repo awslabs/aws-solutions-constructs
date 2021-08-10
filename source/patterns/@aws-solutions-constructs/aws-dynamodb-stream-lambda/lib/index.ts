@@ -12,11 +12,11 @@
  */
 
 import * as lambda from '@aws-cdk/aws-lambda';
-import { DynamoEventSourceProps, DynamoEventSource } from '@aws-cdk/aws-lambda-event-sources';
+import { DynamoEventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
-import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
 import * as sqs from '@aws-cdk/aws-sqs';
+import { DynamoDBStreamsToLambda } from '@aws-solutions-constructs/aws-dynamodbstreams-lambda';
 
 /**
  * @summary The properties for the DynamoDBStreamToLambda Construct
@@ -77,32 +77,15 @@ export class DynamoDBStreamToLambda extends Construct {
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {DynamoDBStreamToLambdaProps} props - user provided props for the construct
-   * @since 0.8.0
    * @access public
    */
   constructor(scope: Construct, id: string, props: DynamoDBStreamToLambdaProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    const convertedProps: DynamoDBStreamToLambdaProps = { ...props };
+    const wrappedConstruct: DynamoDBStreamToLambda = new DynamoDBStreamsToLambda(this, `${id}-wrapped`, convertedProps);
 
-    this.lambdaFunction = defaults.buildLambdaFunction(this, {
-      existingLambdaObj: props.existingLambdaObj,
-      lambdaFunctionProps: props.lambdaFunctionProps
-    });
-
-    [this.dynamoTableInterface, this.dynamoTable] = defaults.buildDynamoDBTableWithStream(this, {
-      dynamoTableProps: props.dynamoTableProps,
-      existingTableInterface: props.existingTableInterface
-    });
-
-    // Grant DynamoDB Stream read perimssion for lambda function
-    this.dynamoTableInterface.grantStreamRead(this.lambdaFunction.grantPrincipal);
-
-    // Add the Lambda event source mapping
-    const eventSourceProps = defaults.DynamoEventSourceProps(this, {
-      eventSourceProps: props.dynamoEventSourceProps,
-      deploySqsDlqQueue: props.deploySqsDlqQueue,
-      sqsDlqQueueProps: props.sqsDlqQueueProps
-    });
-    this.lambdaFunction.addEventSource(new DynamoEventSource(this.dynamoTableInterface, eventSourceProps));
+    this.lambdaFunction = wrappedConstruct.lambdaFunction;
+    this.dynamoTableInterface = wrappedConstruct.dynamoTableInterface;
+    this.dynamoTable = wrappedConstruct.dynamoTable;
   }
 }
