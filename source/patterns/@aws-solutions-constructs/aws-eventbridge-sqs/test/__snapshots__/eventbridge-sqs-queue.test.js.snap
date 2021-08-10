@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`snapshot test EventsRuleToSqs default params 1`] = `
+exports[`snapshot test EventbridgeToSqs default params 1`] = `
 Object {
   "Resources": Object {
-    "testeventsrulesqstesteventsrulesqswrappedEncryptionKey55835B42": Object {
+    "testeventbridgesqsEncryptionKey811BDC23": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
         "EnableKeyRotation": true,
@@ -68,7 +68,7 @@ Object {
       "Type": "AWS::KMS::Key",
       "UpdateReplacePolicy": "Retain",
     },
-    "testeventsrulesqstesteventsrulesqswrappedEventsRuleC8FC3158": Object {
+    "testeventbridgesqsEventsRule66E44184": Object {
       "Properties": Object {
         "ScheduleExpression": "rate(5 minutes)",
         "State": "ENABLED",
@@ -76,13 +76,13 @@ Object {
           Object {
             "Arn": Object {
               "Fn::GetAtt": Array [
-                "testeventsrulesqstesteventsrulesqswrappedqueue3820F81B",
+                "testeventbridgesqsqueue21FF6EBA",
                 "Arn",
               ],
             },
             "Id": Object {
               "Fn::GetAtt": Array [
-                "testeventsrulesqstesteventsrulesqswrappedqueue3820F81B",
+                "testeventbridgesqsqueue21FF6EBA",
                 "QueueName",
               ],
             },
@@ -91,7 +91,7 @@ Object {
       },
       "Type": "AWS::Events::Rule",
     },
-    "testeventsrulesqstesteventsrulesqswrappeddeadLetterQueue6B3B63F7": Object {
+    "testeventbridgesqsdeadLetterQueueF5B377E2": Object {
       "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": "alias/aws/sqs",
@@ -99,7 +99,7 @@ Object {
       "Type": "AWS::SQS::Queue",
       "UpdateReplacePolicy": "Delete",
     },
-    "testeventsrulesqstesteventsrulesqswrappeddeadLetterQueuePolicy543CB683": Object {
+    "testeventbridgesqsdeadLetterQueuePolicy74A33822": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -134,7 +134,7 @@ Object {
               },
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "testeventsrulesqstesteventsrulesqswrappeddeadLetterQueue6B3B63F7",
+                  "testeventbridgesqsdeadLetterQueueF5B377E2",
                   "Arn",
                 ],
               },
@@ -153,7 +153,7 @@ Object {
               },
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "testeventsrulesqstesteventsrulesqswrappeddeadLetterQueue6B3B63F7",
+                  "testeventbridgesqsdeadLetterQueueF5B377E2",
                   "Arn",
                 ],
               },
@@ -164,25 +164,25 @@ Object {
         },
         "Queues": Array [
           Object {
-            "Ref": "testeventsrulesqstesteventsrulesqswrappeddeadLetterQueue6B3B63F7",
+            "Ref": "testeventbridgesqsdeadLetterQueueF5B377E2",
           },
         ],
       },
       "Type": "AWS::SQS::QueuePolicy",
     },
-    "testeventsrulesqstesteventsrulesqswrappedqueue3820F81B": Object {
+    "testeventbridgesqsqueue21FF6EBA": Object {
       "DeletionPolicy": "Delete",
       "Properties": Object {
         "KmsMasterKeyId": Object {
           "Fn::GetAtt": Array [
-            "testeventsrulesqstesteventsrulesqswrappedEncryptionKey55835B42",
+            "testeventbridgesqsEncryptionKey811BDC23",
             "Arn",
           ],
         },
         "RedrivePolicy": Object {
           "deadLetterTargetArn": Object {
             "Fn::GetAtt": Array [
-              "testeventsrulesqstesteventsrulesqswrappeddeadLetterQueue6B3B63F7",
+              "testeventbridgesqsdeadLetterQueueF5B377E2",
               "Arn",
             ],
           },
@@ -192,7 +192,7 @@ Object {
       "Type": "AWS::SQS::Queue",
       "UpdateReplacePolicy": "Delete",
     },
-    "testeventsrulesqstesteventsrulesqswrappedqueuePolicy8E19BB24": Object {
+    "testeventbridgesqsqueuePolicy2E375B6A": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -227,7 +227,7 @@ Object {
               },
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "testeventsrulesqstesteventsrulesqswrappedqueue3820F81B",
+                  "testeventbridgesqsqueue21FF6EBA",
                   "Arn",
                 ],
               },
@@ -246,7 +246,7 @@ Object {
               },
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "testeventsrulesqstesteventsrulesqswrappedqueue3820F81B",
+                  "testeventbridgesqsqueue21FF6EBA",
                   "Arn",
                 ],
               },
@@ -264,7 +264,7 @@ Object {
               },
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "testeventsrulesqstesteventsrulesqswrappedqueue3820F81B",
+                  "testeventbridgesqsqueue21FF6EBA",
                   "Arn",
                 ],
               },
@@ -274,7 +274,7 @@ Object {
         },
         "Queues": Array [
           Object {
-            "Ref": "testeventsrulesqstesteventsrulesqswrappedqueue3820F81B",
+            "Ref": "testeventbridgesqsqueue21FF6EBA",
           },
         ],
       },

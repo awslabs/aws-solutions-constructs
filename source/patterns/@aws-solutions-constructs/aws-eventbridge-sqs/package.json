@@ -1,7 +1,7 @@
 {
-  "name": "@aws-solutions-constructs/aws-events-rule-sqs",
+  "name": "@aws-solutions-constructs/aws-eventbridge-sqs",
   "version": "0.0.0",
-  "description": "CDK Constructs for deploying AWS Events Rule that invokes AWS SQS",
+  "description": "CDK Constructs for deploying AWS Eventbridge that invokes AWS SQS",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -22,7 +22,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/awslabs/aws-solutions-constructs.git",
-    "directory": "source/patterns/@aws-solutions-constructs/aws-events-rule-sqs"
+    "directory": "source/patterns/@aws-solutions-constructs/aws-eventbridge-sqs"
   },
   "author": {
     "name": "Amazon Web Services",
@@ -34,21 +34,21 @@
     "outdir": "dist",
     "targets": {
       "java": {
-        "package": "software.amazon.awsconstructs.services.eventsrulesqs",
+        "package": "software.amazon.awsconstructs.services.eventbridgesqs",
         "maven": {
           "groupId": "software.amazon.awsconstructs",
-          "artifactId": "eventsrulesqs"
+          "artifactId": "eventbridgesqs"
         }
       },
       "dotnet": {
-        "namespace": "Amazon.Constructs.AWS.EventsRuleSQS",
-        "packageId": "Amazon.Constructs.AWS.EventsRuleSQS",
+        "namespace": "Amazon.Constructs.AWS.EventbridgeSQS",
+        "packageId": "Amazon.Constructs.AWS.EventbridgeSQS",
         "signAssembly": true,
         "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
       },
       "python": {
-        "distName": "aws-solutions-constructs.aws-events-rule-sqs",
-        "module": "aws_solutions_constructs.aws_events_rule_sqs"
+        "distName": "aws-solutions-constructs.aws-eventbridge-sqs",
+        "module": "aws_solutions_constructs.aws_eventbridge_sqs"
       }
     }
   },
@@ -59,7 +59,6 @@
     "@aws-cdk/aws-kms": "0.0.0",
     "@aws-cdk/core": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-eventbridge-sqs": "0.0.0",
     "constructs": "^3.2.0"
   },
   "devDependencies": {
@@ -88,7 +87,6 @@
     "@aws-cdk/aws-iam": "0.0.0",
     "@aws-cdk/aws-kms": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-eventbridge-sqs": "0.0.0",
     "constructs": "^3.2.0"
   },
   "keywords": [

@@ -12,22 +12,22 @@
  */
 
 import * as cdk from '@aws-cdk/core';
-import { EventsRuleToSqs, EventsRuleToSqsProps } from '../lib';
+import { EventbridgeToSqs, EventbridgeToSqsProps } from '../lib';
 import * as events from "@aws-cdk/aws-events";
 import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
 
 function deployNewStack(stack: cdk.Stack) {
-  const props: EventsRuleToSqsProps = {
+  const props: EventbridgeToSqsProps = {
     eventRuleProps: {
       schedule: events.Schedule.rate(cdk.Duration.minutes(5))
     }
   };
-  return new EventsRuleToSqs(stack, 'test-events-rule-sqs', props);
+  return new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
 }
 
-test('snapshot test EventsRuleToSqs default params', () => {
+test('snapshot test EventbridgeToSqs default params', () => {
   const stack = new cdk.Stack();
   deployNewStack(stack);
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
@@ -39,14 +39,14 @@ test('check the sqs queue properties', () => {
   expect(stack).toHaveResource('AWS::SQS::Queue', {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "testeventsrulesqstesteventsrulesqswrappedEncryptionKey55835B42",
+        "testeventbridgesqsEncryptionKey811BDC23",
         "Arn"
       ]
     },
     RedrivePolicy: {
       deadLetterTargetArn: {
         "Fn::GetAtt": [
-          "testeventsrulesqstesteventsrulesqswrappeddeadLetterQueue6B3B63F7",
+          "testeventbridgesqsdeadLetterQueueF5B377E2",
           "Arn"
         ]
       },
@@ -61,14 +61,14 @@ test('check the sqs queue properties with existing KMS key', () => {
     description: 'my-key'
   });
 
-  const props: EventsRuleToSqsProps = {
+  const props: EventbridgeToSqsProps = {
     eventRuleProps: {
       schedule: events.Schedule.rate(cdk.Duration.minutes(5))
     },
     encryptionKey: key
   };
 
-  new EventsRuleToSqs(stack, 'test-events-rule-sqs', props);
+  new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
 
   expect(stack).toHaveResource('AWS::SQS::Queue', {
     KmsMasterKeyId: {
@@ -80,7 +80,7 @@ test('check the sqs queue properties with existing KMS key', () => {
     RedrivePolicy: {
       deadLetterTargetArn: {
         "Fn::GetAtt": [
-          "testeventsrulesqstesteventsrulesqswrappeddeadLetterQueue6B3B63F7",
+          "testeventbridgesqsdeadLetterQueueF5B377E2",
           "Arn"
         ]
       },
@@ -188,7 +188,7 @@ test('check if the event rule has permission/policy in place in sqs queue for it
           },
           Resource:  {
             "Fn::GetAtt": [
-              "testeventsrulesqstesteventsrulesqswrappedqueue3820F81B",
+              "testeventbridgesqsqueue21FF6EBA",
               "Arn",
             ],
           },
@@ -207,7 +207,7 @@ test('check if the event rule has permission/policy in place in sqs queue for it
           },
           Resource:  {
             "Fn::GetAtt": [
-              "testeventsrulesqstesteventsrulesqswrappedqueue3820F81B",
+              "testeventbridgesqsqueue21FF6EBA",
               "Arn",
             ],
           },
@@ -225,7 +225,7 @@ test('check if the event rule has permission/policy in place in sqs queue for it
           },
           Resource: {
             "Fn::GetAtt": [
-              "testeventsrulesqstesteventsrulesqswrappedqueue3820F81B",
+              "testeventbridgesqsqueue21FF6EBA",
               "Arn"
             ]
           }
@@ -235,7 +235,7 @@ test('check if the event rule has permission/policy in place in sqs queue for it
     },
     Queues: [
       {
-        Ref: "testeventsrulesqstesteventsrulesqswrappedqueue3820F81B",
+        Ref: "testeventbridgesqsqueue21FF6EBA",
       }
     ]
   });
@@ -278,7 +278,7 @@ test('check if the dead letter queue policy is setup', () => {
           },
           Resource:  {
             "Fn::GetAtt": [
-              "testeventsrulesqstesteventsrulesqswrappeddeadLetterQueue6B3B63F7",
+              "testeventbridgesqsdeadLetterQueueF5B377E2",
               "Arn",
             ],
           },
@@ -297,7 +297,7 @@ test('check if the dead letter queue policy is setup', () => {
           },
           Resource:  {
             "Fn::GetAtt": [
-              "testeventsrulesqstesteventsrulesqswrappeddeadLetterQueue6B3B63F7",
+              "testeventbridgesqsdeadLetterQueueF5B377E2",
               "Arn",
             ],
           },
@@ -308,7 +308,7 @@ test('check if the dead letter queue policy is setup', () => {
     },
     Queues: [
       {
-        Ref: "testeventsrulesqstesteventsrulesqswrappeddeadLetterQueue6B3B63F7",
+        Ref: "testeventbridgesqsdeadLetterQueueF5B377E2",
       },
     ]
   });
@@ -316,7 +316,7 @@ test('check if the dead letter queue policy is setup', () => {
 
 test('check properties', () => {
   const stack = new cdk.Stack();
-  const construct: EventsRuleToSqs = deployNewStack(stack);
+  const construct: EventbridgeToSqs = deployNewStack(stack);
 
   expect(construct.eventsRule !== null);
   expect(construct.sqsQueue !== null);
