@@ -89,7 +89,7 @@ export interface LambdaToSqsToLambdaProps {
    */
   readonly queueEnvironmentVariableName?: string;
   /**
-   * Optional user provided properties for the dead letter queue
+   * Optional user provided properties for the queue event source
    *
    * @default - Default props are used
    */
