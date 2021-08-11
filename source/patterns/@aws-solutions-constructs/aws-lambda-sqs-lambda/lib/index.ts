@@ -18,6 +18,7 @@ import { LambdaToSqs } from '@aws-solutions-constructs/aws-lambda-sqs';
 import { SqsToLambda } from '@aws-solutions-constructs/aws-sqs-lambda';
 import { Construct } from '@aws-cdk/core';
 import { SqsEventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
+import * as ec2 from "@aws-cdk/aws-ec2";
 import * as defaults from '@aws-solutions-constructs/core';
 
 /**
@@ -94,6 +95,20 @@ export interface LambdaToSqsToLambdaProps {
    * @default - Default props are used
    */
   readonly sqsEventSourceProps?: SqsEventSourceProps
+  /**
+   * An existing VPC for the construct to use (construct will NOT create a new VPC in this case)
+   */
+  readonly existingVpc?: ec2.IVpc;
+  /**
+   * Properties to override default properties if deployVpc is true
+   */
+  readonly vpcProps?: ec2.VpcProps;
+  /**
+   * Whether to deploy a new VPC
+   *
+   * @default - false
+   */
+  readonly deployVpc?: boolean;
 }
 
 /**
@@ -104,18 +119,37 @@ export class LambdaToSqsToLambda extends Construct {
   public readonly sqsQueue: sqs.Queue;
   public readonly deadLetterQueue?: sqs.DeadLetterQueue;
   public readonly consumerLambdaFunction: lambda.Function;
+  public readonly vpc?: ec2.IVpc;
 
   /**
    * @summary Constructs a new instance of the LambdaToSqsToLambda class.
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {LambdaToSqsToLambdaProps} props - user provided props for the construct.
-   * @since 1.53.0
    * @access public
    */
   constructor(scope: Construct, id: string, props: LambdaToSqsToLambdaProps) {
     super(scope, id);
     defaults.CheckProps(props);
+
+    // Setup the vpc
+    if (props.deployVpc || props.existingVpc) {
+      if (props.deployVpc && props.existingVpc) {
+        throw new Error("More than 1 VPC specified in the properties");
+      }
+
+      this.vpc = defaults.buildVpc(scope, {
+        defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
+        existingVpc: props.existingVpc,
+        userVpcProps: props.vpcProps,
+        constructVpcProps: {
+          enableDnsHostnames: true,
+          enableDnsSupport: true,
+        },
+      });
+
+      defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.SQS);
+    }
 
     // Setup the aws-lambda-sqs pattern
     const lambdaToSqs = new LambdaToSqs(this, 'lambda-to-sqs', {
@@ -126,7 +160,8 @@ export class LambdaToSqsToLambda extends Construct {
       deadLetterQueueProps: props.deadLetterQueueProps,
       deployDeadLetterQueue: props.deployDeadLetterQueue,
       maxReceiveCount: props.maxReceiveCount,
-      queueEnvironmentVariableName: props.queueEnvironmentVariableName
+      queueEnvironmentVariableName: props.queueEnvironmentVariableName,
+      existingVpc: this.vpc
     });
 
     // Set the queue as a pattern property
