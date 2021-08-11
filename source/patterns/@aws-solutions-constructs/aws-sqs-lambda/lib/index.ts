@@ -47,7 +47,7 @@ export interface SqsToLambdaProps {
      */
     readonly queueProps?: sqs.QueueProps,
     /**
-     * Optional user provided properties for the dead letter queue
+     * Optional user provided properties for the dead letter queue.
      *
      * @default - Default props are used
      */
@@ -65,7 +65,7 @@ export interface SqsToLambdaProps {
      */
     readonly maxReceiveCount?: number,
     /**
-     * Optional user provided properties for the dead letter queue
+     * Optional user provided properties for the queue event source.
      *
      * @default - Default props are used
      */

@@ -49,7 +49,7 @@ test('Test deployment with new Lambda function', () => {
       Variables: {
         LAMBDA_NAME: 'deploy-function',
         STATE_MACHINE_ARN: {
-          Ref: 'lambdatostepfunctionstackStateMachine98EE8EFB'
+          Ref: 'lambdatostepfunctionstacklambdatostepfunctionstackwrappedStateMachine0E6FBDAE'
         }
       }
     }
@@ -132,7 +132,7 @@ test('Test invocation permissions', () => {
           Action: "states:StartExecution",
           Effect: "Allow",
           Resource: {
-            Ref: "testlambdastepfunctionstackStateMachine373C0BB9"
+            Ref: "testlambdastepfunctionstacktestlambdastepfunctionstackwrappedStateMachine5EFFCECB"
           }
         }
       ],
@@ -234,7 +234,7 @@ test('Test lambda function custom environment variable', () => {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
         CUSTOM_STATE_MAHINCE: {
-          Ref: 'lambdatostepfunctionstackStateMachine98EE8EFB'
+          Ref: 'lambdatostepfunctionstacklambdatostepfunctionstackwrappedStateMachine0E6FBDAE'
         }
       }
     }

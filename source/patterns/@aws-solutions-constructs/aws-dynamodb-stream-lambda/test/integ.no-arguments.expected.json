@@ -1,6 +1,6 @@
 {
   "Resources": {
-    "testdynamodbstreamlambdaLambdaFunctionServiceRole034E525C": {
+    "testdynamodbstreamlambdatestdynamodbstreamlambdawrappedLambdaFunctionServiceRoleDDCFD0C8": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -55,7 +55,7 @@
         ]
       }
     },
-    "testdynamodbstreamlambdaLambdaFunctionServiceRoleDefaultPolicy90B64ABB": {
+    "testdynamodbstreamlambdatestdynamodbstreamlambdawrappedLambdaFunctionServiceRoleDefaultPolicy29F7C03C": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -82,7 +82,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "testdynamodbstreamlambdaDynamoTable6EB2ED0F",
+                  "testdynamodbstreamlambdatestdynamodbstreamlambdawrappedDynamoTable79768550",
                   "StreamArn"
                 ]
               }
@@ -96,7 +96,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "testdynamodbstreamlambdaSqsDlqQueueF47B6B9A",
+                  "testdynamodbstreamlambdatestdynamodbstreamlambdawrappedSqsDlqQueue1DFD3653",
                   "Arn"
                 ]
               }
@@ -104,10 +104,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testdynamodbstreamlambdaLambdaFunctionServiceRoleDefaultPolicy90B64ABB",
+        "PolicyName": "testdynamodbstreamlambdatestdynamodbstreamlambdawrappedLambdaFunctionServiceRoleDefaultPolicy29F7C03C",
         "Roles": [
           {
-            "Ref": "testdynamodbstreamlambdaLambdaFunctionServiceRole034E525C"
+            "Ref": "testdynamodbstreamlambdatestdynamodbstreamlambdawrappedLambdaFunctionServiceRoleDDCFD0C8"
           }
         ]
       },
@@ -122,7 +122,7 @@
         }
       }
     },
-    "testdynamodbstreamlambdaLambdaFunction99034597": {
+    "testdynamodbstreamlambdatestdynamodbstreamlambdawrappedLambdaFunction791A020D": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -165,7 +165,7 @@
         },
         "Role": {
           "Fn::GetAtt": [
-            "testdynamodbstreamlambdaLambdaFunctionServiceRole034E525C",
+            "testdynamodbstreamlambdatestdynamodbstreamlambdawrappedLambdaFunctionServiceRoleDDCFD0C8",
             "Arn"
           ]
         },
@@ -181,8 +181,8 @@
         }
       },
       "DependsOn": [
-        "testdynamodbstreamlambdaLambdaFunctionServiceRoleDefaultPolicy90B64ABB",
-        "testdynamodbstreamlambdaLambdaFunctionServiceRole034E525C"
+        "testdynamodbstreamlambdatestdynamodbstreamlambdawrappedLambdaFunctionServiceRoleDefaultPolicy29F7C03C",
+        "testdynamodbstreamlambdatestdynamodbstreamlambdawrappedLambdaFunctionServiceRoleDDCFD0C8"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -203,11 +203,11 @@
         }
       }
     },
-    "testdynamodbstreamlambdaLambdaFunctionDynamoDBEventSourcenoargumentstestdynamodbstreamlambdaDynamoTableD8394C81D683362F": {
+    "testdynamodbstreamlambdatestdynamodbstreamlambdawrappedLambdaFunctionDynamoDBEventSourcenoargumentstestdynamodbstreamlambdatestdynamodbstreamlambdawrappedDynamoTableCADBA6654B02FB6D": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
         "FunctionName": {
-          "Ref": "testdynamodbstreamlambdaLambdaFunction99034597"
+          "Ref": "testdynamodbstreamlambdatestdynamodbstreamlambdawrappedLambdaFunction791A020D"
         },
         "BatchSize": 100,
         "BisectBatchOnFunctionError": true,
@@ -215,7 +215,7 @@
           "OnFailure": {
             "Destination": {
               "Fn::GetAtt": [
-                "testdynamodbstreamlambdaSqsDlqQueueF47B6B9A",
+                "testdynamodbstreamlambdatestdynamodbstreamlambdawrappedSqsDlqQueue1DFD3653",
                 "Arn"
               ]
             }
@@ -223,7 +223,7 @@
         },
         "EventSourceArn": {
           "Fn::GetAtt": [
-            "testdynamodbstreamlambdaDynamoTable6EB2ED0F",
+            "testdynamodbstreamlambdatestdynamodbstreamlambdawrappedDynamoTable79768550",
             "StreamArn"
           ]
         },
@@ -232,7 +232,7 @@
         "StartingPosition": "TRIM_HORIZON"
       }
     },
-    "testdynamodbstreamlambdaDynamoTable6EB2ED0F": {
+    "testdynamodbstreamlambdatestdynamodbstreamlambdawrappedDynamoTable79768550": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
         "KeySchema": [
@@ -261,7 +261,7 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "testdynamodbstreamlambdaSqsDlqQueueF47B6B9A": {
+    "testdynamodbstreamlambdatestdynamodbstreamlambdawrappedSqsDlqQueue1DFD3653": {
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": "alias/aws/sqs"
@@ -269,7 +269,7 @@
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete"
     },
-    "testdynamodbstreamlambdaSqsDlqQueuePolicy6BA0E667": {
+    "testdynamodbstreamlambdatestdynamodbstreamlambdawrappedSqsDlqQueuePolicy4A3A8225": {
       "Type": "AWS::SQS::QueuePolicy",
       "Properties": {
         "PolicyDocument": {
@@ -305,7 +305,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "testdynamodbstreamlambdaSqsDlqQueueF47B6B9A",
+                  "testdynamodbstreamlambdatestdynamodbstreamlambdawrappedSqsDlqQueue1DFD3653",
                   "Arn"
                 ]
               },
@@ -324,7 +324,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "testdynamodbstreamlambdaSqsDlqQueueF47B6B9A",
+                  "testdynamodbstreamlambdatestdynamodbstreamlambdawrappedSqsDlqQueue1DFD3653",
                   "Arn"
                 ]
               },
@@ -335,7 +335,7 @@
         },
         "Queues": [
           {
-            "Ref": "testdynamodbstreamlambdaSqsDlqQueueF47B6B9A"
+            "Ref": "testdynamodbstreamlambdatestdynamodbstreamlambdawrappedSqsDlqQueue1DFD3653"
           }
         ]
       }

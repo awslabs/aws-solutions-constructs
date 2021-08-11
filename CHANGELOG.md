@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.115.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.114.0...v1.115.0) (2021-08-11)
+
+### Added
+
+* Added new constructs that provide the same implementation as existing constructs but have names that follow our naming standard. aws-lambda-stepfunctions ([285](https://github.com/awslabs/aws-solutions-constructs/issues/285)), aws-eventbridge-stepfunctions ([299](https://github.com/awslabs/aws-solutions-constructs/issues/299)), aws-eventbridge-sns ([309](https://github.com/awslabs/aws-solutions-constructs/issues/309)), aws-eventbridge-kinesisfirehose-s3 ([310](https://github.com/awslabs/aws-solutions-constructs/issues/310)), aws-eventbridge-kinesisstreams ([311](https://github.com/awslabs/aws-solutions-constructs/issues/311)), aws-eventbridge-lambda ([312](https://github.com/awslabs/aws-solutions-constructs/issues/312))aws-eventbridge-sqs ([315](https://github.com/awslabs/aws-solutions-constructs/issues/315)), aws-dynamodbstreams-lambda-elasticsearch-kibana ([319](https://github.com/awslabs/aws-solutions-constructs/issues/319))
+
+### Changed
+
+* Upgraded all patterns to CDK v1.115.0
+* Encrypt scrap buckets created for integration tests ([314](https://github.com/awslabs/aws-solutions-constructs/issues/314))
+* fixed cfn_nag error when using existingBucketInterface on cloudfront-s3 ([320](https://github.com/awslabs/aws-solutions-constructs/issues/320))
+* allow passing sqsEventSourceProps into LambdaToSqsToLambda ([321](https://github.com/awslabs/aws-solutions-constructs/issues/321))
+* Set eligible constructs to Stable (9 constructs) ([323](https://github.com/awslabs/aws-solutions-constructs/issues/323))
+
+### ⚠ BREAKING CHANGES
+
+* CloudFrontToApiGateway - use cloudfront function instead of lambda@edge ([313](https://github.com/awslabs/aws-solutions-constructs/issues/))
+* CloudFrontToMediaStore - use cloudfront function instead of lambda@edge ([317](https://github.com/awslabs/aws-solutions-constructs/issues/))
+
 ## [1.114.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.113.0...v1.114.0) (2021-07-27)
 
 ### Changed

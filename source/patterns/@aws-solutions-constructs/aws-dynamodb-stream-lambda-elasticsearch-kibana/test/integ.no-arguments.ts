@@ -31,5 +31,5 @@ const props: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps = {
   domainName: 'testdomainconstructs'
 };
 
-new DynamoDBStreamToLambdaToElasticSearchAndKibana(stack, 'test-dynamodb-stream-lambda-elasticsearch-kibana', props);
+new DynamoDBStreamToLambdaToElasticSearchAndKibana(stack, 'test', props);
 app.synth();

@@ -3,7 +3,7 @@
 exports[`Test existing resources 1`] = `
 Object {
   "Resources": Object {
-    "testeventsrulekinesisstreamexistingresourceEventsRule50C4E158": Object {
+    "testeventsrulekinesisstreamexistingresourcetesteventsrulekinesisstreamexistingresourcewrappedEventsRule6F517F6D": Object {
       "Properties": Object {
         "Description": "event rule props",
         "ScheduleExpression": "rate(5 minutes)",
@@ -19,7 +19,7 @@ Object {
             "Id": "Target0",
             "RoleArn": Object {
               "Fn::GetAtt": Array [
-                "testeventsrulekinesisstreamexistingresourceeventsRole6431B874",
+                "testeventsrulekinesisstreamexistingresourcetesteventsrulekinesisstreamexistingresourcewrappedeventsRole6A38551C",
                 "Arn",
               ],
             },
@@ -28,7 +28,7 @@ Object {
       },
       "Type": "AWS::Events::Rule",
     },
-    "testeventsrulekinesisstreamexistingresourceKinesisStreamGetRecordsIteratorAgeAlarmCFA3A3CB": Object {
+    "testeventsrulekinesisstreamexistingresourcetesteventsrulekinesisstreamexistingresourcewrappedKinesisStreamGetRecordsIteratorAgeAlarmCC70229C": Object {
       "Properties": Object {
         "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -41,7 +41,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "testeventsrulekinesisstreamexistingresourceKinesisStreamReadProvisionedThroughputExceededAlarm2DAC9390": Object {
+    "testeventsrulekinesisstreamexistingresourcetesteventsrulekinesisstreamexistingresourcewrappedKinesisStreamReadProvisionedThroughputExceededAlarmFEFEEFB6": Object {
       "Properties": Object {
         "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
         "ComparisonOperator": "GreaterThanThreshold",
@@ -54,7 +54,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "testeventsrulekinesisstreamexistingresourceeventsRole6431B874": Object {
+    "testeventsrulekinesisstreamexistingresourcetesteventsrulekinesisstreamexistingresourcewrappedeventsRole6A38551C": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -72,7 +72,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "testeventsrulekinesisstreamexistingresourceeventsRoleDefaultPolicyDB76C6C1": Object {
+    "testeventsrulekinesisstreamexistingresourcetesteventsrulekinesisstreamexistingresourcewrappedeventsRoleDefaultPolicy40C6DC8E": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -93,10 +93,10 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "testeventsrulekinesisstreamexistingresourceeventsRoleDefaultPolicyDB76C6C1",
+        "PolicyName": "testeventsrulekinesisstreamexistingresourcetesteventsrulekinesisstreamexistingresourcewrappedeventsRoleDefaultPolicy40C6DC8E",
         "Roles": Array [
           Object {
-            "Ref": "testeventsrulekinesisstreamexistingresourceeventsRole6431B874",
+            "Ref": "testeventsrulekinesisstreamexistingresourcetesteventsrulekinesisstreamexistingresourcewrappedeventsRole6A38551C",
           },
         ],
       },
@@ -117,7 +117,7 @@ Object {
 exports[`Test snapshot match with default parameters 1`] = `
 Object {
   "Resources": Object {
-    "testeventsrulekinesisstreamsdefaultparametersEventsRuleB892ACC8": Object {
+    "testeventsrulekinesisstreamsdefaultparameterstesteventsrulekinesisstreamsdefaultparameterswrappedEventsRuleE7386116": Object {
       "Properties": Object {
         "Description": "event rule props",
         "ScheduleExpression": "rate(5 minutes)",
@@ -126,14 +126,14 @@ Object {
           Object {
             "Arn": Object {
               "Fn::GetAtt": Array [
-                "testeventsrulekinesisstreamsdefaultparametersKinesisStream289DD083",
+                "testeventsrulekinesisstreamsdefaultparameterstesteventsrulekinesisstreamsdefaultparameterswrappedKinesisStream89BFC3D2",
                 "Arn",
               ],
             },
             "Id": "Target0",
             "RoleArn": Object {
               "Fn::GetAtt": Array [
-                "testeventsrulekinesisstreamsdefaultparameterseventsRole3067A354",
+                "testeventsrulekinesisstreamsdefaultparameterstesteventsrulekinesisstreamsdefaultparameterswrappedeventsRoleA6F5A164",
                 "Arn",
               ],
             },
@@ -142,7 +142,7 @@ Object {
       },
       "Type": "AWS::Events::Rule",
     },
-    "testeventsrulekinesisstreamsdefaultparametersKinesisStream289DD083": Object {
+    "testeventsrulekinesisstreamsdefaultparameterstesteventsrulekinesisstreamsdefaultparameterswrappedKinesisStream89BFC3D2": Object {
       "Properties": Object {
         "RetentionPeriodHours": 24,
         "ShardCount": 1,
@@ -153,7 +153,7 @@ Object {
       },
       "Type": "AWS::Kinesis::Stream",
     },
-    "testeventsrulekinesisstreamsdefaultparametersKinesisStreamGetRecordsIteratorAgeAlarmF78CCCCE": Object {
+    "testeventsrulekinesisstreamsdefaultparameterstesteventsrulekinesisstreamsdefaultparameterswrappedKinesisStreamGetRecordsIteratorAgeAlarm49F13725": Object {
       "Properties": Object {
         "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -166,7 +166,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "testeventsrulekinesisstreamsdefaultparametersKinesisStreamReadProvisionedThroughputExceededAlarm07FC3EDE": Object {
+    "testeventsrulekinesisstreamsdefaultparameterstesteventsrulekinesisstreamsdefaultparameterswrappedKinesisStreamReadProvisionedThroughputExceededAlarm47CADB74": Object {
       "Properties": Object {
         "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
         "ComparisonOperator": "GreaterThanThreshold",
@@ -179,7 +179,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "testeventsrulekinesisstreamsdefaultparameterseventsRole3067A354": Object {
+    "testeventsrulekinesisstreamsdefaultparameterstesteventsrulekinesisstreamsdefaultparameterswrappedeventsRoleA6F5A164": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -197,7 +197,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "testeventsrulekinesisstreamsdefaultparameterseventsRoleDefaultPolicyF4C8EFFF": Object {
+    "testeventsrulekinesisstreamsdefaultparameterstesteventsrulekinesisstreamsdefaultparameterswrappedeventsRoleDefaultPolicyDD5DE3BB": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -210,7 +210,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "testeventsrulekinesisstreamsdefaultparametersKinesisStream289DD083",
+                  "testeventsrulekinesisstreamsdefaultparameterstesteventsrulekinesisstreamsdefaultparameterswrappedKinesisStream89BFC3D2",
                   "Arn",
                 ],
               },
@@ -218,10 +218,10 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "testeventsrulekinesisstreamsdefaultparameterseventsRoleDefaultPolicyF4C8EFFF",
+        "PolicyName": "testeventsrulekinesisstreamsdefaultparameterstesteventsrulekinesisstreamsdefaultparameterswrappedeventsRoleDefaultPolicyDD5DE3BB",
         "Roles": Array [
           Object {
-            "Ref": "testeventsrulekinesisstreamsdefaultparameterseventsRole3067A354",
+            "Ref": "testeventsrulekinesisstreamsdefaultparameterstesteventsrulekinesisstreamsdefaultparameterswrappedeventsRoleA6F5A164",
           },
         ],
       },

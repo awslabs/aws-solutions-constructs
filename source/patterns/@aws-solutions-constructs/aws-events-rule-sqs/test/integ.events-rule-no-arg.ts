@@ -26,5 +26,5 @@ const props: EventsRuleToSqsProps = {
   }
 };
 
-new EventsRuleToSqs(stack, 'construct', props);
+new EventsRuleToSqs(stack, 'test', props);
 app.synth();
