@@ -14,6 +14,7 @@
 // Imports
 import { Stack } from "@aws-cdk/core";
 import * as lambda from "@aws-cdk/aws-lambda";
+import * as ec2 from "@aws-cdk/aws-ec2";
 import * as defaults from '@aws-solutions-constructs/core';
 import { LambdaToSqsToLambda, LambdaToSqsToLambdaProps } from '../lib';
 import { SynthUtils, haveResourceLike } from '@aws-cdk/assert';
@@ -461,17 +462,17 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
       SecurityGroupIds: [
         {
           "Fn::GetAtt": [
-            "lambdatosqsstackReplaceDefaultSecurityGroupsecuritygroupAED1D1EE",
+            "lambdatosqstolambdastacklambdatosqsReplaceDefaultSecurityGroupsecuritygroup90A497DF",
             "GroupId",
           ],
         },
       ],
       SubnetIds: [
         {
-          Ref: "VpcisolatedSubnet1SubnetE62B1B9B",
+          Ref: "lambdatosqstolambdastackVpcisolatedSubnet1Subnet70F24179",
         },
         {
-          Ref: "VpcisolatedSubnet2Subnet39217055",
+          Ref: "lambdatosqstolambdastackVpcisolatedSubnet2Subnet1D6A3FAF",
         },
       ],
     },
@@ -523,17 +524,17 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
       SecurityGroupIds: [
         {
           "Fn::GetAtt": [
-            "lambdatosqsstackReplaceDefaultSecurityGroupsecuritygroupAED1D1EE",
+            "lambdatosqstolambdastacklambdatosqsReplaceDefaultSecurityGroupsecuritygroup90A497DF",
             "GroupId",
           ],
         },
       ],
       SubnetIds: [
         {
-          Ref: "VpcisolatedSubnet1SubnetE62B1B9B",
+          Ref: "lambdatosqstolambdastackVpcisolatedSubnet1Subnet70F24179",
         },
         {
-          Ref: "VpcisolatedSubnet2Subnet39217055",
+          Ref: "lambdatosqstolambdastackVpcisolatedSubnet2Subnet1D6A3FAF",
         },
       ],
     },
@@ -584,7 +585,7 @@ test("Test minimal deployment with an existing VPC", () => {
       SecurityGroupIds: [
         {
           "Fn::GetAtt": [
-            "lambdatosqsstackReplaceDefaultSecurityGroupsecuritygroupAED1D1EE",
+            "lambdatosqstolambdastacklambdatosqsReplaceDefaultSecurityGroupsecuritygroup90A497DF",
             "GroupId",
           ],
         },

@@ -132,25 +132,6 @@ export class LambdaToSqsToLambda extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
 
-    // Setup the vpc
-    if (props.deployVpc || props.existingVpc) {
-      if (props.deployVpc && props.existingVpc) {
-        throw new Error("More than 1 VPC specified in the properties");
-      }
-
-      this.vpc = defaults.buildVpc(scope, {
-        defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
-        existingVpc: props.existingVpc,
-        userVpcProps: props.vpcProps,
-        constructVpcProps: {
-          enableDnsHostnames: true,
-          enableDnsSupport: true,
-        },
-      });
-
-      defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.SQS);
-    }
-
     // Setup the aws-lambda-sqs pattern
     const lambdaToSqs = new LambdaToSqs(this, 'lambda-to-sqs', {
       existingLambdaObj: props.existingProducerLambdaObj,
@@ -161,9 +142,12 @@ export class LambdaToSqsToLambda extends Construct {
       deployDeadLetterQueue: props.deployDeadLetterQueue,
       maxReceiveCount: props.maxReceiveCount,
       queueEnvironmentVariableName: props.queueEnvironmentVariableName,
-      existingVpc: this.vpc
+      existingVpc: props.existingVpc,
+      vpcProps: props.vpcProps,
+      deployVpc: props.deployVpc
     });
-
+    // Set the vpc as a pattern property
+    this.vpc = lambdaToSqs.vpc;
     // Set the queue as a pattern property
     this.sqsQueue = lambdaToSqs.sqsQueue;
 
