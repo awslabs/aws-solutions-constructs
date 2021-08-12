@@ -138,7 +138,7 @@ Each integration test generates a .expected.json file by actually deploying the 
 
 The standard `npm run build+lint+test` command will compare the cdk synth output against the .expected.json file. The Solutions Constructs team will run `npm run integ` in each construct periodically to guard against drift and ensure each construct still deploys.
 
-NOTE: This process will launch a stack including the construct for each integration test. It will also delete the stack after collecting the CloudFormation template. While the stack will only be around for a few seconds, during this time you account will be billed for the resoruces. Some tests may leave behind an S3 bucket - you should check after running these steps.
+NOTE: Running `npm run integ` will launch a stack including the construct for each integration test. It will also delete the stack after collecting the CloudFormation template. While the stack will only be around for a few seconds, during this time you account will be billed for the resoruces. Some tests may leave behind an S3 bucket - you should check after running this step.
 
 ### Step 4: Commit
 
