@@ -17,6 +17,8 @@ import * as sqs from '@aws-cdk/aws-sqs';
 import { LambdaToSqs } from '@aws-solutions-constructs/aws-lambda-sqs';
 import { SqsToLambda } from '@aws-solutions-constructs/aws-sqs-lambda';
 import { Construct } from '@aws-cdk/core';
+import { SqsEventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
+import * as ec2 from "@aws-cdk/aws-ec2";
 import * as defaults from '@aws-solutions-constructs/core';
 
 /**
@@ -87,6 +89,26 @@ export interface LambdaToSqsToLambdaProps {
    * @default - None
    */
   readonly queueEnvironmentVariableName?: string;
+  /**
+   * Optional user provided properties for the queue event source
+   *
+   * @default - Default props are used
+   */
+  readonly sqsEventSourceProps?: SqsEventSourceProps
+  /**
+   * An existing VPC for the construct to use (construct will NOT create a new VPC in this case)
+   */
+  readonly existingVpc?: ec2.IVpc;
+  /**
+   * Properties to override default properties if deployVpc is true
+   */
+  readonly vpcProps?: ec2.VpcProps;
+  /**
+   * Whether to deploy a new VPC
+   *
+   * @default - false
+   */
+  readonly deployVpc?: boolean;
 }
 
 /**
@@ -97,13 +119,13 @@ export class LambdaToSqsToLambda extends Construct {
   public readonly sqsQueue: sqs.Queue;
   public readonly deadLetterQueue?: sqs.DeadLetterQueue;
   public readonly consumerLambdaFunction: lambda.Function;
+  public readonly vpc?: ec2.IVpc;
 
   /**
    * @summary Constructs a new instance of the LambdaToSqsToLambda class.
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {LambdaToSqsToLambdaProps} props - user provided props for the construct.
-   * @since 1.53.0
    * @access public
    */
   constructor(scope: Construct, id: string, props: LambdaToSqsToLambdaProps) {
@@ -119,9 +141,13 @@ export class LambdaToSqsToLambda extends Construct {
       deadLetterQueueProps: props.deadLetterQueueProps,
       deployDeadLetterQueue: props.deployDeadLetterQueue,
       maxReceiveCount: props.maxReceiveCount,
-      queueEnvironmentVariableName: props.queueEnvironmentVariableName
+      queueEnvironmentVariableName: props.queueEnvironmentVariableName,
+      existingVpc: props.existingVpc,
+      vpcProps: props.vpcProps,
+      deployVpc: props.deployVpc
     });
-
+    // Set the vpc as a pattern property
+    this.vpc = lambdaToSqs.vpc;
     // Set the queue as a pattern property
     this.sqsQueue = lambdaToSqs.sqsQueue;
 
@@ -130,7 +156,8 @@ export class LambdaToSqsToLambda extends Construct {
       existingLambdaObj: props.existingConsumerLambdaObj,
       lambdaFunctionProps: props.consumerLambdaFunctionProps,
       existingQueueObj: this.sqsQueue,
-      deployDeadLetterQueue: false
+      deployDeadLetterQueue: false,
+      sqsEventSourceProps: props.sqsEventSourceProps
     });
 
     // Set other relevant pattern properties

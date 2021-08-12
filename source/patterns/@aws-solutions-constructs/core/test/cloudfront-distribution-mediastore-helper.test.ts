@@ -17,10 +17,8 @@ import { Stack } from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as mediastore from '@aws-cdk/aws-mediastore';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as lambda from '@aws-cdk/aws-lambda';
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
 import { CloudFrontDistributionForMediaStore, CloudFrontOriginAccessIdentity } from '../lib/cloudfront-distribution-helper';
-import { LambdaEdgeEventType } from '@aws-cdk/aws-cloudfront';
 
 test('CloudFront distribution for MediaStore with default params', () => {
   const stack = new Stack();
@@ -61,11 +59,14 @@ test('CloudFront distribution for MediaStore with user provided log bucket', () 
           'OPTIONS'
         ],
         Compress: true,
-        LambdaFunctionAssociations: [
+        FunctionAssociations: [
           {
-            EventType: 'origin-response',
-            LambdaFunctionARN: {
-              Ref: 'SetHttpSecurityHeadersVersion660E2F72'
+            EventType: "viewer-response",
+            FunctionARN: {
+              "Fn::GetAtt": [
+                "SetHttpSecurityHeadersEE936115",
+                "FunctionARN"
+              ]
             }
           }
         ],
@@ -164,11 +165,14 @@ test('CloudFront distribution for MediaStore with user provided origin request p
           'OPTIONS'
         ],
         Compress: true,
-        LambdaFunctionAssociations: [
+        FunctionAssociations: [
           {
-            EventType: 'origin-response',
-            LambdaFunctionARN: {
-              Ref: 'SetHttpSecurityHeadersVersion660E2F72'
+            EventType: "viewer-response",
+            FunctionARN: {
+              "Fn::GetAtt": [
+                "SetHttpSecurityHeadersEE936115",
+                "FunctionARN"
+              ]
             }
           }
         ],
@@ -270,11 +274,14 @@ test('CloudFront distribution for MediaStore with user provided custom headers w
           'OPTIONS'
         ],
         Compress: true,
-        LambdaFunctionAssociations: [
+        FunctionAssociations: [
           {
-            EventType: 'origin-response',
-            LambdaFunctionARN: {
-              Ref: 'SetHttpSecurityHeadersVersion660E2F72'
+            EventType: "viewer-response",
+            FunctionARN: {
+              "Fn::GetAtt": [
+                "SetHttpSecurityHeadersEE936115",
+                "FunctionARN"
+              ]
             }
           }
         ],
@@ -509,34 +516,26 @@ test('CloudFront distribution for MediaStore override params', () => {
   });
 });
 
-test('test override cloudfront add custom lambda@edge', () => {
+test('test override cloudfront with custom cloudfront function', () => {
   const stack = new Stack();
   const mediaStoreContainerProps: mediastore.CfnContainerProps = {
     containerName: 'TestContainer'
   };
   const mediaStoreContainer = new mediastore.CfnContainer(stack, 'MediaStoreContainer', mediaStoreContainerProps);
 
-  // custom lambda@edg function
-  const handler = new lambda.Function(stack, 'SomeHandler', {
-    functionName: 'SomeHandler',
-    runtime: lambda.Runtime.NODEJS_12_X,
-    handler: 'index.handler',
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-  });
-
-  const handlerVersion = new lambda.Version(stack, 'SomeHandlerVersion', {
-    lambda: handler,
+  // custom cloudfront function
+  const cloudfrontFunction = new cloudfront.Function(stack, "MyFunction", {
+    code: cloudfront.FunctionCode.fromInline("exports.handler = (event, context, callback) => {}")
   });
 
   CloudFrontDistributionForMediaStore(stack, mediaStoreContainer, {
     defaultBehavior: {
-      edgeLambdas: [
+      functionAssociations: [
         {
-          eventType: LambdaEdgeEventType.VIEWER_REQUEST,
-          includeBody: false,
-          functionVersion: handlerVersion,
+          eventType: cloudfront.FunctionEventType.VIEWER_RESPONSE,
+          function: cloudfrontFunction
         }
-      ]
+      ],
     }
   });
 
@@ -555,18 +554,14 @@ test('test override cloudfront add custom lambda@edge', () => {
           "OPTIONS"
         ],
         Compress: true,
-        LambdaFunctionAssociations: [
+        FunctionAssociations: [
           {
-            EventType: "origin-response",
-            LambdaFunctionARN: {
-              Ref: "SetHttpSecurityHeadersVersion660E2F72"
-            }
-          },
-          {
-            EventType: "viewer-request",
-            IncludeBody: false,
-            LambdaFunctionARN: {
-              Ref: "SomeHandlerVersionDA986E41"
+            EventType: "viewer-response",
+            FunctionARN: {
+              "Fn::GetAtt": [
+                "MyFunction3BAA72D1",
+                "FunctionARN"
+              ]
             }
           }
         ],

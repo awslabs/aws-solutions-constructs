@@ -15,7 +15,6 @@ import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as api from '@aws-cdk/aws-apigateway';
-import * as lambda from '@aws-cdk/aws-lambda';
 import * as mediastore from '@aws-cdk/aws-mediastore';
 import * as cdk from '@aws-cdk/core';
 import { FunctionEventType } from '@aws-cdk/aws-cloudfront';
@@ -23,7 +22,7 @@ import { FunctionEventType } from '@aws-cdk/aws-cloudfront';
 export function DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint: api.RestApi,
   loggingBucket: s3.Bucket,
   setHttpSecurityHeaders: boolean,
-  edgeLambda?: lambda.Version): cloudfront.DistributionProps {
+  cfFunction?: cloudfront.IFunction): cloudfront.DistributionProps {
 
   const apiEndPointUrlWithoutProtocol = cdk.Fn.select(1, cdk.Fn.split("://", apiEndPoint.url));
   const apiEndPointDomainName = cdk.Fn.select(0, cdk.Fn.split("/", apiEndPointUrlWithoutProtocol));
@@ -34,10 +33,10 @@ export function DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint: 
         origin: new origins.HttpOrigin(apiEndPointDomainName, {
           originPath: `/${apiEndPoint.deploymentStage.stageName}`
         }),
-        edgeLambdas: [
+        functionAssociations: [
           {
-            eventType: cloudfront.LambdaEdgeEventType.ORIGIN_RESPONSE,
-            functionVersion: edgeLambda
+            eventType: FunctionEventType.VIEWER_RESPONSE,
+            function: cfFunction
           }
         ],
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS
@@ -97,7 +96,7 @@ export function DefaultCloudFrontDisributionForMediaStoreProps(mediastoreContain
   originRequestPolicy: cloudfront.OriginRequestPolicy,
   setHttpSecurityHeaders: boolean,
   customHeaders?: Record<string, string>,
-  edgeLambda?: lambda.Version): cloudfront.DistributionProps {
+  cfFunction?: cloudfront.IFunction): cloudfront.DistributionProps {
 
   const mediaStoreContainerUrlWithoutProtocol = cdk.Fn.select(1, cdk.Fn.split('://', mediastoreContainer.attrEndpoint));
   const mediaStoreContainerDomainName = cdk.Fn.select(0, cdk.Fn.split('/', mediaStoreContainerUrlWithoutProtocol));
@@ -110,10 +109,10 @@ export function DefaultCloudFrontDisributionForMediaStoreProps(mediastoreContain
     return {
       defaultBehavior: {
         origin: httpOrigin,
-        edgeLambdas: [
+        functionAssociations: [
           {
-            eventType: cloudfront.LambdaEdgeEventType.ORIGIN_RESPONSE,
-            functionVersion: edgeLambda
+            eventType: FunctionEventType.VIEWER_RESPONSE,
+            function: cfFunction
           }
         ],
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,

@@ -26,6 +26,6 @@ const props: EventsRuleToSnsProps = {
   }
 };
 
-new EventsRuleToSns(stack, 'test-construct', props);
+new EventsRuleToSns(stack, 'test', props);
 
 app.synth();

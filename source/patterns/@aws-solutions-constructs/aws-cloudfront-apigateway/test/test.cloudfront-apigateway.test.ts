@@ -47,7 +47,7 @@ test('check getter methods', () => {
 
   expect(construct.cloudFrontWebDistribution !== null);
   expect(construct.apiGateway !== null);
-  expect(construct.edgeLambdaFunctionVersion !== null);
+  expect(construct.cloudFrontFunction !== null);
   expect(construct.cloudFrontLoggingBucket !== null);
 });
 

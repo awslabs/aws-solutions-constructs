@@ -3,7 +3,9 @@
 
 ---
 
-![Stability: Experimental](https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge)
+![Stability: Deprecated](https://img.shields.io/badge/STABILITY-DEPRECATED-red?style=for-the-badge)
+
+> Some of our early constructs don’t meet the naming standards that evolved for the library. We are releasing completely feature compatible versions with corrected names. The underlying implementation code is the same regardless of whether you deploy the construct using the old or new name. We will support both names for all 1.x releases, but in 2.x we will only publish the correctly named constructs. This construct is being replaced by the functionally identical aws-eventbridge-lambda.
 
 > All classes are under active development and subject to non-backward compatible changes or removal in any
 > future version. These are not subject to the [Semantic Versioning](https://semver.org/) model.
@@ -27,7 +29,7 @@ This AWS Solutions Construct implements an AWS Events rule and an AWS Lambda fun
 Here is a minimal deployable pattern definition in Typescript:
 
 ``` javascript
-const { EventsRuleToLambdaProps, EventsRuleToLambda } from '@aws-solutions-constructs/aws-events-rule-lambda';
+import { EventsRuleToLambdaProps, EventsRuleToLambda } from '@aws-solutions-constructs/aws-events-rule-lambda';
 
 const props: EventsRuleToLambdaProps = {
     lambdaFunctionProps: {
