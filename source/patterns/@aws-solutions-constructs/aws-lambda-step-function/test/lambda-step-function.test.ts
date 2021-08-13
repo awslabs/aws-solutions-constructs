@@ -16,6 +16,7 @@ import { Stack } from "@aws-cdk/core";
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as defaults from '@aws-solutions-constructs/core';
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
+import * as ec2 from "@aws-cdk/aws-ec2";
 import { LambdaToStepFunction } from '../lib';
 import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
@@ -239,4 +240,230 @@ test('Test lambda function custom environment variable', () => {
       }
     }
   });
+});
+
+// --------------------------------------------------------------
+// Test minimal deployment that deploys a VPC without vpcProps
+// --------------------------------------------------------------
+test("Test minimal deployment that deploys a VPC without vpcProps", () => {
+  // Stack
+  const stack = new Stack();
+  const startState = new stepfunctions.Pass(stack, 'StartState');
+  // Helper declaration
+  new LambdaToStepFunction(stack, "lambda-to-step-function-stack", {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    stateMachineProps: {
+      definition: startState
+    },
+    deployVpc: true
+  });
+
+  expect(stack).toHaveResource("AWS::Lambda::Function", {
+    VpcConfig: {
+      SecurityGroupIds: [
+        {
+          "Fn::GetAtt": [
+            "lambdatostepfunctionstacklambdatostepfunctionstackwrappedReplaceDefaultSecurityGroupsecuritygroup69C944EB",
+            "GroupId",
+          ],
+        },
+      ],
+      SubnetIds: [
+        {
+          Ref: "lambdatostepfunctionstackVpcisolatedSubnet1SubnetCFC72E33",
+        },
+        {
+          Ref: "lambdatostepfunctionstackVpcisolatedSubnet2Subnet203149C3",
+        },
+      ],
+    },
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPC", {
+    EnableDnsHostnames: true,
+    EnableDnsSupport: true,
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+    VpcEndpointType: "Interface",
+  });
+
+  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
+  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+});
+
+// --------------------------------------------------------------
+// Test minimal deployment that deploys a VPC w/vpcProps
+// --------------------------------------------------------------
+test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
+  // Stack
+  const stack = new Stack();
+  const startState = new stepfunctions.Pass(stack, 'StartState');
+  // Helper declaration
+  new LambdaToStepFunction(stack, "lambda-to-step-function-stack", {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    stateMachineProps: {
+      definition: startState
+    },
+    vpcProps: {
+      enableDnsHostnames: false,
+      enableDnsSupport: false,
+      cidr: "192.68.0.0/16",
+    },
+    deployVpc: true,
+  });
+
+  expect(stack).toHaveResource("AWS::Lambda::Function", {
+    VpcConfig: {
+      SecurityGroupIds: [
+        {
+          "Fn::GetAtt": [
+            "lambdatostepfunctionstacklambdatostepfunctionstackwrappedReplaceDefaultSecurityGroupsecuritygroup69C944EB",
+            "GroupId",
+          ],
+        },
+      ],
+      SubnetIds: [
+        {
+          Ref: "lambdatostepfunctionstackVpcisolatedSubnet1SubnetCFC72E33",
+        },
+        {
+          Ref: "lambdatostepfunctionstackVpcisolatedSubnet2Subnet203149C3",
+        },
+      ],
+    },
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPC", {
+    CidrBlock: "192.68.0.0/16",
+    EnableDnsHostnames: true,
+    EnableDnsSupport: true,
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+    VpcEndpointType: "Interface",
+  });
+
+  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
+  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+});
+
+// --------------------------------------------------------------
+// Test minimal deployment with an existing VPC
+// --------------------------------------------------------------
+test("Test minimal deployment with an existing VPC", () => {
+  // Stack
+  const stack = new Stack();
+  const startState = new stepfunctions.Pass(stack, 'StartState');
+  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
+
+  // Helper declaration
+  new LambdaToStepFunction(stack, "lambda-to-step-function-stack", {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    stateMachineProps: {
+      definition: startState
+    },
+    existingVpc: testVpc,
+  });
+
+  expect(stack).toHaveResource("AWS::Lambda::Function", {
+    VpcConfig: {
+      SecurityGroupIds: [
+        {
+          "Fn::GetAtt": [
+            "lambdatostepfunctionstacklambdatostepfunctionstackwrappedReplaceDefaultSecurityGroupsecuritygroup69C944EB",
+            "GroupId",
+          ],
+        },
+      ],
+      SubnetIds: [
+        {
+          Ref: "testvpcPrivateSubnet1Subnet865FB50A",
+        },
+        {
+          Ref: "testvpcPrivateSubnet2Subnet23D3396F",
+        },
+      ],
+    },
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+    VpcEndpointType: "Interface",
+  });
+});
+
+// --------------------------------------------------------------
+// Test minimal deployment with an existing VPC and existing Lambda function not in a VPC
+//
+// buildLambdaFunction should throw an error if the Lambda function is not
+// attached to a VPC
+// --------------------------------------------------------------
+test("Test minimal deployment with an existing VPC and existing Lambda function not in a VPC", () => {
+  // Stack
+  const stack = new Stack();
+  const startState = new stepfunctions.Pass(stack, 'StartState');
+
+  const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: "index.handler",
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
+
+  // Helper declaration
+  const app = () => {
+    // Helper declaration
+    new LambdaToStepFunction(stack, "lambda-to-step-function-stack", {
+      existingLambdaObj: testLambdaFunction,
+      stateMachineProps: {
+        definition: startState
+      },
+      existingVpc: testVpc,
+    });
+  };
+
+  // Assertion
+  expect(app).toThrowError();
+
+});
+
+// --------------------------------------------------------------
+// Test bad call with existingVpc and deployVpc
+// --------------------------------------------------------------
+test("Test bad call with existingVpc and deployVpc", () => {
+  // Stack
+  const stack = new Stack();
+  const startState = new stepfunctions.Pass(stack, 'StartState');
+  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
+
+  const app = () => {
+    // Helper declaration
+    new LambdaToStepFunction(stack, "lambda-to-step-function-stack", {
+      lambdaFunctionProps: {
+        runtime: lambda.Runtime.NODEJS_10_X,
+        handler: 'index.handler',
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+      },
+      stateMachineProps: {
+        definition: startState
+      },
+      existingVpc: testVpc,
+      deployVpc: true,
+    });
+  };
+  // Assertion
+  expect(app).toThrowError();
 });
