@@ -250,7 +250,7 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   const stack = new Stack();
   const startState = new stepfunctions.Pass(stack, 'StartState');
   // Helper declaration
-  new LambdaToStepfunctions(stack, "lambda-to-sqs-stack", {
+  new LambdaToStepfunctions(stack, "lambda-to-stepfunctions-stack", {
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
@@ -259,7 +259,7 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     stateMachineProps: {
       definition: startState
     },
-    deployVpc: true,
+    deployVpc: true
   });
 
   expect(stack).toHaveResource("AWS::Lambda::Function", {
@@ -267,7 +267,7 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
       SecurityGroupIds: [
         {
           "Fn::GetAtt": [
-            "LambdaToStepfunctionsstackReplaceDefaultSecurityGroupsecuritygroupAED1D1EE",
+            "lambdatostepfunctionsstackReplaceDefaultSecurityGroupsecuritygroup0F25B19B",
             "GroupId",
           ],
         },
@@ -304,7 +304,7 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   const stack = new Stack();
   const startState = new stepfunctions.Pass(stack, 'StartState');
   // Helper declaration
-  new LambdaToStepfunctions(stack, "lambda-to-sqs-stack", {
+  new LambdaToStepfunctions(stack, "lambda-to-stepfunctions-stack", {
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
@@ -326,7 +326,7 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
       SecurityGroupIds: [
         {
           "Fn::GetAtt": [
-            "LambdaToStepfunctionsstackReplaceDefaultSecurityGroupsecuritygroupAED1D1EE",
+            "lambdatostepfunctionsstackReplaceDefaultSecurityGroupsecuritygroup0F25B19B",
             "GroupId",
           ],
         },
@@ -366,7 +366,7 @@ test("Test minimal deployment with an existing VPC", () => {
   const testVpc = new ec2.Vpc(stack, "test-vpc", {});
 
   // Helper declaration
-  new LambdaToStepfunctions(stack, "lambda-to-sqs-stack", {
+  new LambdaToStepfunctions(stack, "lambda-to-stepfunctions-stack", {
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_10_X,
       handler: 'index.handler',
@@ -383,7 +383,7 @@ test("Test minimal deployment with an existing VPC", () => {
       SecurityGroupIds: [
         {
           "Fn::GetAtt": [
-            "LambdaToStepfunctionsstackReplaceDefaultSecurityGroupsecuritygroupAED1D1EE",
+            "lambdatostepfunctionsstackReplaceDefaultSecurityGroupsecuritygroup0F25B19B",
             "GroupId",
           ],
         },
@@ -426,7 +426,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   // Helper declaration
   const app = () => {
     // Helper declaration
-    new LambdaToStepfunctions(stack, "lambda-to-sqs-stack", {
+    new LambdaToStepfunctions(stack, "lambda-to-stepfunctions-stack", {
       existingLambdaObj: testLambdaFunction,
       stateMachineProps: {
         definition: startState
@@ -451,7 +451,7 @@ test("Test bad call with existingVpc and deployVpc", () => {
 
   const app = () => {
     // Helper declaration
-    new LambdaToStepfunctions(stack, "lambda-to-sqs-stack", {
+    new LambdaToStepfunctions(stack, "lambda-to-stepfunctions-stack", {
       lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_10_X,
         handler: 'index.handler',

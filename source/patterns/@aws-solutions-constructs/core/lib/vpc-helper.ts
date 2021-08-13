@@ -115,6 +115,11 @@ const endpointSettings: EndpointDefinition[] = [
     endpointGatewayService: ec2.GatewayVpcEndpointAwsService.S3,
   },
   {
+    endpointName: ServiceEndpointTypes.STEP_FUNCTIONS,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.STEP_FUNCTIONS,
+  },
+  {
     endpointName: ServiceEndpointTypes.SNS,
     endpointType: EndpointTypes.INTERFACE,
     endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.SNS,
