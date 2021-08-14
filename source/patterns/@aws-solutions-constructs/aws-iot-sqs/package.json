@@ -1,13 +1,13 @@
 {
-  "name": "@aws-solutions-constructs/aws-lambda-sqs-lambda",
+  "name": "@aws-solutions-constructs/aws-iot-sqs",
   "version": "0.0.0",
-  "description": "CDK construct that provisions (1) an AWS Lambda function that is configured to send messages to a queue; (2) an Amazon SQS queue; and (3) an AWS Lambda function configured to consume messages from the queue.",
+  "description": "CDK Constructs for AWS IoT to AWS SQS integration",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/awslabs/aws-solutions-constructs.git",
-    "directory": "source/patterns/@aws-solutions-constructs/aws-lambda-sqs-lambda"
+    "directory": "source/patterns/@aws-solutions-constructs/aws-iot-sqs"
   },
   "author": {
     "name": "Amazon Web Services",
@@ -23,8 +23,8 @@
     "clean": "tsc -b --clean",
     "watch": "tsc -b -w",
     "integ": "cdk-integ",
-    "integ-assert": "cdk-integ-assert",
     "integ-no-clean": "cdk-integ --no-clean",
+    "integ-assert": "cdk-integ-assert",
     "jsii": "jsii",
     "jsii-pacmak": "jsii-pacmak",
     "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
@@ -34,33 +34,31 @@
     "outdir": "dist",
     "targets": {
       "java": {
-        "package": "software.amazon.awsconstructs.services.lambdasqslambda",
+        "package": "software.amazon.awsconstructs.services.iotsqs",
         "maven": {
           "groupId": "software.amazon.awsconstructs",
-          "artifactId": "lambdasqslambda"
+          "artifactId": "iotsqs"
         }
       },
       "dotnet": {
-        "namespace": "Amazon.Constructs.AWS.LambdaSqsLambda",
-        "packageId": "Amazon.Constructs.AWS.LambdaSqsLambda",
+        "namespace": "Amazon.Constructs.AWS.IotSqs",
+        "packageId": "Amazon.Constructs.AWS.IotSqs",
         "signAssembly": true,
         "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
       },
       "python": {
-        "distName": "aws-solutions-constructs.aws-lambda-sqs-lambda",
-        "module": "aws_solutions_constructs.aws_lambda_sqs_lambda"
+        "distName": "aws-solutions-constructs.aws-iot-sqs",
+        "module": "aws_solutions_constructs.aws_iot_sqs"
       }
     }
   },
   "dependencies": {
-    "@aws-cdk/aws-lambda": "0.0.0",
+    "@aws-cdk/aws-iot": "0.0.0",
     "@aws-cdk/aws-sqs": "0.0.0",
-    "@aws-cdk/aws-ec2": "0.0.0",
+    "@aws-cdk/aws-iam": "0.0.0",
+    "@aws-cdk/aws-kms": "0.0.0",
     "@aws-cdk/core": "0.0.0",
-    "@aws-cdk/aws-lambda-event-sources": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-lambda-sqs": "0.0.0",
-    "@aws-solutions-constructs/aws-sqs-lambda": "0.0.0",
     "constructs": "^3.2.0"
   },
   "devDependencies": {
@@ -83,22 +81,12 @@
     ]
   },
   "peerDependencies": {
-    "@aws-cdk/aws-lambda": "0.0.0",
+    "@aws-cdk/aws-iot": "0.0.0",
     "@aws-cdk/aws-sqs": "0.0.0",
-    "@aws-cdk/aws-ec2": "0.0.0",
+    "@aws-cdk/aws-iam": "0.0.0",
+    "@aws-cdk/aws-kms": "0.0.0",
     "@aws-cdk/core": "0.0.0",
-    "@aws-cdk/aws-lambda-event-sources": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-lambda-sqs": "0.0.0",
-    "@aws-solutions-constructs/aws-sqs-lambda": "0.0.0",
     "constructs": "^3.2.0"
-  },
-  "keywords": [
-    "aws",
-    "cdk",
-    "awscdk",
-    "AWS Solutions Constructs",
-    "Amazon SQS",
-    "AWS Lambda"
-  ]
+  }
 }
