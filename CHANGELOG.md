@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.117.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.116.0...v1.117.0) (2021-08-14)
+
+
+### Features
+
+* **aws-iot-sqs:** initial implementation ([#267](https://github.com/awslabs/aws-solutions-constructs/issues/267)) ([5411ab7](https://github.com/awslabs/aws-solutions-constructs/commit/5411ab73301f85ff7a5df1e6425996e2c6e8ffb5)), closes [#266](https://github.com/awslabs/aws-solutions-constructs/issues/266)
+
 ## [1.116.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.115.0...v1.116.0) (2021-08-12)
 
 * Upgraded all patterns to CDK v1.116.0
