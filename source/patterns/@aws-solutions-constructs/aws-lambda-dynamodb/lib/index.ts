@@ -15,6 +15,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as ec2 from "@aws-cdk/aws-ec2";
+import * as logs from "@aws-cdk/@aws-cdk/aws-logs";
 import { Construct } from '@aws-cdk/core';
 
 /**
@@ -72,12 +73,23 @@ export interface LambdaToDynamoDBProps {
    * @default - false
    */
   readonly deployVpc?: boolean;
+  /**
+   * An existing log group for the construct to use (construct will NOT create a new log group in this case)
+   */
+  readonly existingLogGroup?: logs.LogGroup;
+  /**
+   * Optional user provided props for log groups
+   * 
+   * @default - None
+   */
+  readonly logGroupProps?: logs.LogGroupProps;
 }
 
 export class LambdaToDynamoDB extends Construct {
   public readonly lambdaFunction: lambda.Function;
   public readonly dynamoTable: dynamodb.Table;
   public readonly vpc?: ec2.IVpc;
+  public readonly logGroup?: logs.LogGroup;
 
   /**
    * @summary Constructs a new instance of the LambdaToDynamoDB class.
@@ -115,6 +127,11 @@ export class LambdaToDynamoDB extends Construct {
       vpc: this.vpc
     });
 
+    this.logGroup = defaults.buildLogGroup(this, {
+      logGroupProps: props.logGroupProps,
+      existingLogGroup: props.existingLogGroup
+    });
+
     this.dynamoTable = defaults.buildDynamoDBTable(this, {
       dynamoTableProps: props.dynamoTableProps,
       existingTableObj: props.existingTableObj
@@ -129,11 +146,11 @@ export class LambdaToDynamoDB extends Construct {
       const _permissions = props.tablePermissions.toUpperCase();
       if (_permissions === 'ALL') {
         this.dynamoTable.grantFullAccess(this.lambdaFunction.grantPrincipal);
-      } else if (_permissions  ===  'READ') {
+      } else if (_permissions === 'READ') {
         this.dynamoTable.grantReadData(this.lambdaFunction.grantPrincipal);
-      } else if (_permissions  ===  'READWRITE') {
+      } else if (_permissions === 'READWRITE') {
         this.dynamoTable.grantReadWriteData(this.lambdaFunction.grantPrincipal);
-      } else if (_permissions  ===  'WRITE') {
+      } else if (_permissions === 'WRITE') {
         this.dynamoTable.grantWriteData(this.lambdaFunction.grantPrincipal);
       }
     } else {
