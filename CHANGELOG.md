@@ -10,6 +10,10 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
+* Added VPC support to aws-lambda-sqs-lambda. ([326](https://github.com/awslabs/aws-solutions-constructs/pull/326))
+
+### Added
+
 * **aws-iot-sqs:** initial implementation ([#267](https://github.com/awslabs/aws-solutions-constructs/issues/267)) ([5411ab7](https://github.com/awslabs/aws-solutions-constructs/commit/5411ab73301f85ff7a5df1e6425996e2c6e8ffb5)), closes [#266](https://github.com/awslabs/aws-solutions-constructs/issues/266)
 
 ## [1.116.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.115.0...v1.116.0) (2021-08-12)
