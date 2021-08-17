@@ -16,7 +16,12 @@ import * as logs from '@aws-cdk/aws-logs';
 import { overrideProps, addCfnSuppressRules } from './utils';
 import { Construct } from '@aws-cdk/core';
 
-export function buildLogGroup(scope: Construct, logGroupId?: string, logGroupProps?: logs.LogGroupProps): logs.LogGroup {
+export function buildLogGroup(scope: Construct, logGroupId?: string, logGroupProps?: logs.LogGroupProps,
+  existingLogGroup?: logs.LogGroup): logs.LogGroup {
+  if (existingLogGroup) {
+    return existingLogGroup;
+  }
+
   let _logGroupProps: logs.LogGroupProps;
 
   // Override user provided CW LogGroup props with the DefaultLogGroupProps

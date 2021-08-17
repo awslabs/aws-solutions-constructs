@@ -15,7 +15,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as ec2 from "@aws-cdk/aws-ec2";
-import * as logs from "@aws-cdk/@aws-cdk/aws-logs";
+import * as logs from "@aws-cdk/aws-logs";
 import { Construct } from '@aws-cdk/core';
 
 /**
@@ -79,7 +79,7 @@ export interface LambdaToDynamoDBProps {
   readonly existingLogGroup?: logs.LogGroup;
   /**
    * Optional user provided props for log groups
-   * 
+   *
    * @default - None
    */
   readonly logGroupProps?: logs.LogGroupProps;
@@ -127,10 +127,7 @@ export class LambdaToDynamoDB extends Construct {
       vpc: this.vpc
     });
 
-    this.logGroup = defaults.buildLogGroup(this, {
-      logGroupProps: props.logGroupProps,
-      existingLogGroup: props.existingLogGroup
-    });
+    this.logGroup = defaults.buildLogGroup(scope, `LambdaLogGroup`, props.logGroupProps, props.existingLogGroup);
 
     this.dynamoTable = defaults.buildDynamoDBTable(this, {
       dynamoTableProps: props.dynamoTableProps,
