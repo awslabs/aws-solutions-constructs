@@ -2,6 +2,10 @@
 
 This use case implements a static website that delivers HTML, JavaScript, images, video and other files to your website visitors and contain no application code. 
 
+> **Note:** This use case is designed to be built and deployed into your account from your local environment using the AWS CDK Toolkit (or CLI). For information on the toolkit and how to install and configure it, please see the [guide](https://docs.aws.amazon.com/cdk/latest/guide/cli.html).
+
+> **Note:** To ensure proper functionality, the AWS Solutions Constructs packages and AWS CDK packages in your project must be the same version. 
+
 ## Architecture
 The application architecture uses an Amazon CloudFront distribution, Amazon S3 and AWS lambda based custom resource to copy the static website content for Wild Rydes demo website.
 ![Architecture Diagram](architecture.png)

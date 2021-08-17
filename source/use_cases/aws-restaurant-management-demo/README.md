@@ -1,5 +1,9 @@
 # AWS Solutions Constructs - Restaurant Management System Example
 
+> **Note:** This use case is designed to be built and deployed into your account from your local environment using the AWS CDK Toolkit (or CLI). For information on the toolkit and how to install and configure it, please see the [guide](https://docs.aws.amazon.com/cdk/latest/guide/cli.html).
+
+> **Note:** To ensure proper functionality, the AWS Solutions Constructs packages and AWS CDK packages in your project must be the same version. 
+
 ## Overview
 
 This example demonstrates how to build a complex, real-world system using AWS Solutions Constructs. It is designed to 

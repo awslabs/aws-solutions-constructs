@@ -4,9 +4,9 @@ This use case construct implements an Amazon CloudFront distribution, an Amazon 
 function, and necessary permissions/logic to provision a functional image handler API for serving image content from 
 one or more Amazon S3 buckets within the deployment account.
 
-> *Note:* This use case demonstrates how you can use multiple AWS CDK constructs and AWS Solutions Constructs 
-together to create a modular, reusable solution. You can use this solution as either a standalone, functional example, 
-or as part of a larger solution, as demonstrated here with importing the `ServerlessImageHandler` module. 
+> **Note:** This use case is designed to serve as a reference for creating and using use case constructs. This construct can be used with other AWS Solutions Constructs and AWS CDK construct to create a larger solution. Once your solution is ready, you will need the AWS CDK Toolkit (or CLI) to build and deploy it from your local environment. For information on the toolkit and how to install and configure it, please see the [guide](https://docs.aws.amazon.com/cdk/latest/guide/cli.html).
+
+> **Note:** To ensure proper functionality, the AWS Solutions Constructs packages and AWS CDK packages in your project must be the same version. 
 
 Here is a minimal deployable pattern definition in Typescript:
 
