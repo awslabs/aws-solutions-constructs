@@ -10,7 +10,7 @@ You'll need to create a CDK project in your local development environment first 
 For information on setting up a CDK project, please see the [guide](https://docs.aws.amazon.com/cdk/latest/guide/hello_world.html) here.
 Once your project is ready, you will need the AWS CDK Toolkit (or CLI) to build and deploy it from your local environment. For information on the toolkit and how to install and configure it, please see the [guide](https://docs.aws.amazon.com/cdk/latest/guide/cli.html) here.
 
-> **IMPORTANT:** To ensure proper functionality, the AWS Solutions Constructs packages and AWS CDK packages in your project must be the same version. If you are experiencing odd behavior, check in your package.json file that all references to CDK modules and AWS Solutions Constructs modules have the same version number, and that none include the preceding caret '^'. Once the versions are aligned, delete package-lock.json and the node_modules folder and run npm install to sync the modules.
+> **IMPORTANT:** To ensure proper functionality, the AWS Solutions Constructs packages and AWS CDK packages in your project must be the same version. If you are experiencing odd behavior, check in your package.json file that all references to CDK modules and AWS Solutions Constructs modules have the same version number, and that none include the preceding caret `^`. Once the versions are aligned, delete `package-lock.json` and the `node_modules` folder and run `npm install` to sync the modules.
 
 Here is a minimal deployable pattern definition in Typescript:
 
