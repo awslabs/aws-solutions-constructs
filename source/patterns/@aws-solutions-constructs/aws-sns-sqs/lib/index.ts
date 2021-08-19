@@ -113,7 +113,8 @@ export class SnsToSqs extends Construct {
       this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
         existingQueueObj: props.existingQueueObj,
         deployDeadLetterQueue: props.deployDeadLetterQueue,
-        deadLetterQueueProps: props.deadLetterQueueProps,
+        deadLetterQueueProps: props.queueProps && props.queueProps.fifo ?
+          { ...props.deadLetterQueueProps, fifo: true} : { ...props.deadLetterQueueProps },
         maxReceiveCount: props.maxReceiveCount
       });
 
