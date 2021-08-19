@@ -125,13 +125,18 @@ export interface BuildDeadLetterQueueProps {
    * @default - Default props are used
    */
   readonly maxReceiveCount?: number
+  /**
+   * Whether this a first-in-first-out (FIFO) queue. (Must match source type)
+   *
+   */
+  readonly fifo?: boolean
 }
 
 export function buildDeadLetterQueue(scope: cdk.Construct, props: BuildDeadLetterQueueProps): sqs.DeadLetterQueue | undefined {
   if (!props.existingQueueObj && (props.deployDeadLetterQueue || props.deployDeadLetterQueue === undefined)) {
     // Create the Dead Letter Queue
     const [dlq] = buildQueue(scope, 'deadLetterQueue', {
-      queueProps: props.deadLetterQueueProps
+      queueProps: { ...props.deadLetterQueueProps, fifo: props.fifo ? true : undefined }
     });
 
     const mrc = (props.maxReceiveCount) ? props.maxReceiveCount : defaults.defaultMaxReceiveCount;
