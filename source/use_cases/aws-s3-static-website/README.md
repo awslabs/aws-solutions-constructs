@@ -17,6 +17,9 @@ Below are the steps to deploy the use case:
 # Set the proper version numbers in the package.json file
 ../../../deployment/align-version.sh
 
+# Install dependencies
+npm install
+
 # Build the use case
 npm run build
 

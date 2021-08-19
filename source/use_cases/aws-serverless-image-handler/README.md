@@ -12,11 +12,26 @@ Once your project is ready, you will need the AWS CDK Toolkit (or CLI) to build 
 
 > **IMPORTANT:** To ensure proper functionality, the AWS Solutions Constructs packages and AWS CDK packages in your project must be the same version. If you are experiencing odd behavior, check in your `package.json` file that all references to CDK modules and AWS Solutions Constructs modules have the same version number, and that none include the preceding caret `^`. Once the versions are aligned, delete `package-lock.json` and the `node_modules` folder and run `npm install` to sync the modules.
 
-Here is a minimal deployable pattern definition in Typescript:
+## Setup
+Before you can import and use this pattern in a CDK project, you'll need to set the proper Solutions Constructs and CDK dependency versions and then install them. Follow these steps to prepare the pattern for use:
 
-```javascript
-const { ServerlessImageHandler } from '@aws-solutions-constructs/aws-serverless-image-handler';
+```
+# Set the proper version numbers in the package.json file
+../../../deployment/align-version.sh
 
+# Install dependencies
+npm install
+
+```
+
+Once you've aligned the version numbers and installed the dependencies, you can add the pattern to your CDK project using an import statement:
+```typescript
+const { ServerlessImageHandler } from '../aws-serverless-image-handler/lib/index';
+
+```
+
+You can then use the pattern in your CDK project code as shown below in the minimal deployable pattern definition (using TypeScript, in this example):
+```typescript
 new ServerlessImageHandler(this, 'ServerlessImageHandlerPattern', {
     lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_12_X,
