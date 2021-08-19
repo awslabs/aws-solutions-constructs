@@ -39,9 +39,10 @@ This CDK project will deploy a total of five (5) stacks into your AWS account us
 ## Setting up
 After cloning this project into your local environment, we recommend performing the following steps to deploy it into 
 your account:
-- Run `npm install` at the root level of the project, to install all dependencies.
-- Run `npm run build` at the root level of the project, to build the project.
-- Run `cdk deploy --all` at the root level of the project, to initiate the deployment.
+- Run `../../../deployment/align-version.sh` from the root level of the use case, to set the proper version numbers in the package.json file.
+- Run `npm install` to install all dependencies.
+- Run `npm run build` to build the project.
+- Run `cdk deploy --all` to initiate the deployment.
 
 Note: If you are working on a clean instance or development environment, you will need to perform initial configuration
 steps for the CDK in order to deploy the project. Click [here](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html) for 

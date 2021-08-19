@@ -14,8 +14,13 @@ The application architecture uses AWS Lambda, Amazon API Gateway, Amazon S3, Ama
 Below are the steps to deploy the use case:
 
 ```
+# Set the proper version numbers in the package.json file
+../../../deployment/align-version.sh
+
+# Build the use case
 npm run build
 
+# Deploy the use case
 cdk deploy
 
 ```
