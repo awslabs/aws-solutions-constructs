@@ -68,7 +68,7 @@ export function buildQueue(scope: cdk.Construct, id: string, props: BuildQueuePr
     let queueProps;
     if (props.queueProps) {
       // If property overrides have been provided, incorporate them and deploy
-      queueProps = overrideProps(defaults.DefaultQueueProps(), props.queueProps);
+      queueProps = overrideProps(defaults.DefaultQueueProps(), { ...props.queueProps, fifo: props.queueProps.fifo ? true : undefined });
     } else {
       // If no property overrides, deploy using the default configuration
       queueProps = defaults.DefaultQueueProps();
@@ -136,7 +136,7 @@ export function buildDeadLetterQueue(scope: cdk.Construct, props: BuildDeadLette
   if (!props.existingQueueObj && (props.deployDeadLetterQueue || props.deployDeadLetterQueue === undefined)) {
     // Create the Dead Letter Queue
     const [dlq] = buildQueue(scope, 'deadLetterQueue', {
-      queueProps: { ...props.deadLetterQueueProps, fifo: props.fifo ? true : undefined }
+      queueProps: { ...props.deadLetterQueueProps, fifo: props.fifo }
     });
 
     const mrc = (props.maxReceiveCount) ? props.maxReceiveCount : defaults.defaultMaxReceiveCount;
