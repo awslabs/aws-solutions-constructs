@@ -68,7 +68,7 @@ export function buildQueue(scope: cdk.Construct, id: string, props: BuildQueuePr
     let queueProps;
     if (props.queueProps) {
       // If property overrides have been provided, incorporate them and deploy
-      queueProps = overrideProps(defaults.DefaultQueueProps(), { ...props.queueProps, fifo: props.queueProps.fifo ? true : undefined });
+      queueProps = overrideProps(defaults.DefaultQueueProps(), props.queueProps);
     } else {
       // If no property overrides, deploy using the default configuration
       queueProps = defaults.DefaultQueueProps();
@@ -125,18 +125,13 @@ export interface BuildDeadLetterQueueProps {
    * @default - Default props are used
    */
   readonly maxReceiveCount?: number
-  /**
-   * Whether this a first-in-first-out (FIFO) queue. (Must match source type)
-   *
-   */
-  readonly fifo?: boolean
 }
 
 export function buildDeadLetterQueue(scope: cdk.Construct, props: BuildDeadLetterQueueProps): sqs.DeadLetterQueue | undefined {
   if (!props.existingQueueObj && (props.deployDeadLetterQueue || props.deployDeadLetterQueue === undefined)) {
     // Create the Dead Letter Queue
     const [dlq] = buildQueue(scope, 'deadLetterQueue', {
-      queueProps: { ...props.deadLetterQueueProps, fifo: props.fifo }
+      queueProps: props.deadLetterQueueProps
     });
 
     const mrc = (props.maxReceiveCount) ? props.maxReceiveCount : defaults.defaultMaxReceiveCount;

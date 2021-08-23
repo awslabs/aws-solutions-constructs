@@ -266,6 +266,10 @@ test('Pattern deployment w/ existing topic and FIFO queue', () => {
       encryption: sqs.QueueEncryption.UNENCRYPTED,
       fifo: true,
     },
+    deadLetterQueueProps: {
+      encryption: sqs.QueueEncryption.UNENCRYPTED,
+      fifo: true,
+    }
   };
 
   new SnsToSqs(stack, 'test-sns-sqs', props);

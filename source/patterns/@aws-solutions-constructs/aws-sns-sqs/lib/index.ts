@@ -114,8 +114,7 @@ export class SnsToSqs extends Construct {
         existingQueueObj: props.existingQueueObj,
         deployDeadLetterQueue: props.deployDeadLetterQueue,
         deadLetterQueueProps: props.deadLetterQueueProps,
-        maxReceiveCount: props.maxReceiveCount,
-        fifo: props.queueProps && props.queueProps.fifo
+        maxReceiveCount: props.maxReceiveCount
       });
 
       let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;

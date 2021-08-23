@@ -92,6 +92,23 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
+  if (propsObject.queueProps && propsObject.queueProps.fifo && propsObject.deployDeadLetterQueue === undefined &&
+    ((!propsObject.deadLetterQueueProps) || (propsObject.deadLetterQueueProps && !propsObject.deadLetterQueueProps.fifo))) {
+    errorMessages += 'Error - If you specify a fifo: true in queueProps, you must also supply deadLetterQueueProps with fifo: true if deploying a Dead Letter Queue.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.deadLetterQueueProps && propsObject.deadLetterQueueProps.fifo && propsObject.deployDeadLetterQueue === undefined &&
+    ((!propsObject.queueProps) || (propsObject.queueProps && !propsObject.queueProps.fifo))) {
+    errorMessages += 'Error - If you specify a fifo: true in deadLetterQueueProps, you must also supply queueProps with fifo: true if deploying a Dead Letter Queue.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.existingQueueObj && propsObject.queueProps) {
+    errorMessages += 'Error - Either provide queueProps or existingQueueObj, but not both.\n';
+    errorFound = true;
+  }
+
   if (propsObject.existingQueueObj && propsObject.queueProps) {
     errorMessages += 'Error - Either provide queueProps or existingQueueObj, but not both.\n';
     errorFound = true;

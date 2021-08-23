@@ -16,6 +16,7 @@ import { App, Stack } from "@aws-cdk/core";
 import { SnsToSqs, SnsToSqsProps } from "../lib";
 import * as sqs from "@aws-cdk/aws-sqs";
 import * as sns from "@aws-cdk/aws-sns";
+import * as kms from '@aws-cdk/aws-kms';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
@@ -31,6 +32,12 @@ const topic = new sns.Topic(stack, 'TestTopic', {
   topicName: 'customerTopic',
 });
 
+const encryptionKeyProps: kms.KeyProps = {
+  enableKeyRotation: true
+};
+
+const key = new kms.Key(stack, 'ImportedEncryptionKey', encryptionKeyProps);
+
 const props: SnsToSqsProps = {
   enableEncryptionWithCustomerManagedKey: false,
   existingTopicObj: topic,
@@ -38,6 +45,11 @@ const props: SnsToSqsProps = {
     encryption: sqs.QueueEncryption.UNENCRYPTED,
     fifo: true,
   },
+  deadLetterQueueProps: {
+    encryption: sqs.QueueEncryption.UNENCRYPTED,
+    fifo: true,
+  },
+  encryptionKey: key
 };
 
 new SnsToSqs(stack, 'test-sns-sqs', props);

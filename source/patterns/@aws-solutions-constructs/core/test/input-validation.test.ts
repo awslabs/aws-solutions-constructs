@@ -107,15 +107,73 @@ test('Test fail Dead Letter Queue check', () => {
   expect(app).toThrowError('Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n');
 });
 
-test('Test fail Dead Letter Queue check with no deployDeadLetterQueue flag', () => {
+test('Test fail Dead Letter Queue check with queueProps fifo set to true and undefined deadLetterQueueProps', () => {
 
   const props: defaults.VerifiedProps = {
+    queueProps: {fifo: true},
     deadLetterQueueProps: {},
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If you specify a fifo: true in queueProps, you must also supply deadLetterQueueProps with fifo: true if deploying a Dead Letter Queue.\n');
+});
+
+test('Test fail Dead Letter Queue check with queueProps fifo set to true and deadLetterQueueProps fifo set to false', () => {
+
+  const props: defaults.VerifiedProps = {
+    queueProps: {fifo: true},
+    deadLetterQueueProps: {fifo: false},
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If you specify a fifo: true in queueProps, you must also supply deadLetterQueueProps with fifo: true if deploying a Dead Letter Queue.\n');
+});
+
+test('Test fail Dead Letter Queue check with queueProps fifo set to false and deadLetterQueueProps fifo set to true', () => {
+
+  const props: defaults.VerifiedProps = {
+    deadLetterQueueProps: {fifo: true},
+    queueProps: {fifo: false},
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If you specify a fifo: true in deadLetterQueueProps, you must also supply queueProps with fifo: true if deploying a Dead Letter Queue.\n');
+});
+
+test('Test fail Dead Letter Queue check with deadLetterQueueProps fifo set to true', () => {
+
+  const props: defaults.VerifiedProps = {
+    deadLetterQueueProps: {fifo: true},
+  };
+
+  //  Should not flag an error
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  expect(app).toThrowError('Error - If you specify a fifo: true in deadLetterQueueProps, you must also supply queueProps with fifo: true if deploying a Dead Letter Queue.\n');
+});
+
+test('Test fail Dead Letter Queue check with queueProps fifo set to false', () => {
+
+  const props: defaults.VerifiedProps = {
+    queueProps: {fifo: false},
   };
 
   //  Should not flag an error
   defaults.CheckProps(props);
-
 });
 
 test("Test fail MediaStore container check", () => {
