@@ -45,11 +45,10 @@ const props: SnsToSqsProps = {
   enableEncryptionWithCustomerManagedKey: true,
   existingTopicObj: topic,
   queueProps: {
-    encryption: sqs.QueueEncryption.UNENCRYPTED,
     fifo: true,
   },
   deadLetterQueueProps: {
-    encryption: sqs.QueueEncryption.UNENCRYPTED,
+    encryption: sqs.QueueEncryption.KMS,
     fifo: true,
   },
   encryptionKey: key

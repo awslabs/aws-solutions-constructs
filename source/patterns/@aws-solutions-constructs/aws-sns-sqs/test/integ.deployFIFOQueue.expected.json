@@ -104,10 +104,68 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
+    "testsnssqsdeadLetterQueueKeyF7870292": {
+      "Type": "AWS::KMS::Key",
+      "Properties": {
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion",
+                "kms:GenerateDataKey",
+                "kms:TagResource",
+                "kms:UntagResource"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              },
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Description": "Created by deployFIFOQueue/test-sns-sqs/deadLetterQueue"
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
     "testsnssqsdeadLetterQueue8DACC0A1": {
       "Type": "AWS::SQS::Queue",
       "Properties": {
-        "FifoQueue": true
+        "FifoQueue": true,
+        "KmsMasterKeyId": {
+          "Fn::GetAtt": [
+            "testsnssqsdeadLetterQueueKeyF7870292",
+            "Arn"
+          ]
+        }
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete"
