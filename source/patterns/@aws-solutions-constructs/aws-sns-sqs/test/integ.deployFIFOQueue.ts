@@ -25,11 +25,14 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-sns-sqs FIFO Queue';
 
 // Definitions
+const snsManagedKey = kms.Alias.fromAliasName(stack, 'sns-managed-key', 'alias/aws/sns');
+
 const topic = new sns.Topic(stack, 'TestTopic', {
   contentBasedDeduplication: true,
   displayName: 'Customer subscription topic',
   fifo: true,
-  topicName: 'customerTopic',
+  topicName: 'testTopic',
+  masterKey: snsManagedKey
 });
 
 const encryptionKeyProps: kms.KeyProps = {
@@ -39,7 +42,7 @@ const encryptionKeyProps: kms.KeyProps = {
 const key = new kms.Key(stack, 'ImportedEncryptionKey', encryptionKeyProps);
 
 const props: SnsToSqsProps = {
-  enableEncryptionWithCustomerManagedKey: false,
+  enableEncryptionWithCustomerManagedKey: true,
   existingTopicObj: topic,
   queueProps: {
     encryption: sqs.QueueEncryption.UNENCRYPTED,

@@ -7,7 +7,27 @@
         "ContentBasedDeduplication": true,
         "DisplayName": "Customer subscription topic",
         "FifoTopic": true,
-        "TopicName": "customerTopic.fifo"
+        "KmsMasterKeyId": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":kms:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":alias/aws/sns"
+            ]
+          ]
+        },
+        "TopicName": "testTopic.fifo"
       }
     },
     "ImportedEncryptionKeyBE10B2FC": {
@@ -51,6 +71,28 @@
                     ]
                   ]
                 }
+              },
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "kms:Decrypt",
+                "kms:GenerateDataKey"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "sns.amazonaws.com"
+              },
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "kms:Decrypt",
+                "kms:GenerateDataKey*"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "sns.amazonaws.com"
               },
               "Resource": "*"
             }
@@ -145,6 +187,12 @@
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "FifoQueue": true,
+        "KmsMasterKeyId": {
+          "Fn::GetAtt": [
+            "ImportedEncryptionKeyBE10B2FC",
+            "Arn"
+          ]
+        },
         "RedrivePolicy": {
           "deadLetterTargetArn": {
             "Fn::GetAtt": [
