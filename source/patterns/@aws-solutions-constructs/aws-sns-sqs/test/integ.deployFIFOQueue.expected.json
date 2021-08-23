@@ -104,7 +104,7 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "testsnssqsdeadLetterQueueKeyF7870292": {
+    "ImportedDLQEncryptionKeyDE178CD5": {
       "Type": "AWS::KMS::Key",
       "Properties": {
         "KeyPolicy": {
@@ -151,7 +151,7 @@
           ],
           "Version": "2012-10-17"
         },
-        "Description": "Created by deployFIFOQueue/test-sns-sqs/deadLetterQueue"
+        "EnableKeyRotation": true
       },
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
@@ -162,7 +162,7 @@
         "FifoQueue": true,
         "KmsMasterKeyId": {
           "Fn::GetAtt": [
-            "testsnssqsdeadLetterQueueKeyF7870292",
+            "ImportedDLQEncryptionKeyDE178CD5",
             "Arn"
           ]
         }

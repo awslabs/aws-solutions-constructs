@@ -41,6 +41,8 @@ const encryptionKeyProps: kms.KeyProps = {
 
 const key = new kms.Key(stack, 'ImportedEncryptionKey', encryptionKeyProps);
 
+const deadLetterQueueKey = new kms.Key(stack, 'ImportedDLQEncryptionKey', encryptionKeyProps);
+
 const props: SnsToSqsProps = {
   enableEncryptionWithCustomerManagedKey: true,
   existingTopicObj: topic,
@@ -50,6 +52,7 @@ const props: SnsToSqsProps = {
   deadLetterQueueProps: {
     encryption: sqs.QueueEncryption.KMS,
     fifo: true,
+    encryptionMasterKey: deadLetterQueueKey
   },
   encryptionKey: key
 };
