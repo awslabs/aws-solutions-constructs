@@ -71,10 +71,7 @@ export interface VerifiedProps {
 export function CheckProps(propsObject: VerifiedProps | any) {
   let errorMessages = '';
   let errorFound = false;
-  const isQueueFifo: boolean = propsObject?.queueProps?.fifo;
-  const isDeadLetterQueueFifo: boolean = propsObject?.deadLetterQueueProps?.fifo;
-  const deployDeadLetterQueue: boolean = propsObject.deployDeadLetterQueue || propsObject.deployDeadLetterQueue === undefined;
-
+  
   if (propsObject.dynamoTableProps && propsObject.existingTableObj) {
     errorMessages += 'Error - Either provide existingTableObj or dynamoTableProps, but not both.\n';
     errorFound = true;
@@ -104,6 +101,10 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorMessages += 'Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n';
     errorFound = true;
   }
+
+  const isQueueFifo: boolean = propsObject?.queueProps?.fifo;
+  const isDeadLetterQueueFifo: boolean = propsObject?.deadLetterQueueProps?.fifo;
+  const deployDeadLetterQueue: boolean = propsObject.deployDeadLetterQueue || propsObject.deployDeadLetterQueue === undefined;
 
   if (deployDeadLetterQueue && (isQueueFifo !== isDeadLetterQueueFifo)) {
     errorMessages += 'Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: true in the other props object. \
