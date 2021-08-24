@@ -68,7 +68,8 @@ export function buildQueue(scope: cdk.Construct, id: string, props: BuildQueuePr
     let queueProps;
     if (props.queueProps) {
       // If property overrides have been provided, incorporate them and deploy
-      queueProps = overrideProps(defaults.DefaultQueueProps(), props.queueProps);
+      const checkFifo = props.queueProps.fifo ? true : undefined;
+      queueProps = overrideProps(defaults.DefaultQueueProps(), { ...props.queueProps, fifo: checkFifo });
     } else {
       // If no property overrides, deploy using the default configuration
       queueProps = defaults.DefaultQueueProps();
