@@ -71,7 +71,7 @@ export interface VerifiedProps {
 export function CheckProps(propsObject: VerifiedProps | any) {
   let errorMessages = '';
   let errorFound = false;
-  
+
   if (propsObject.dynamoTableProps && propsObject.existingTableObj) {
     errorMessages += 'Error - Either provide existingTableObj or dynamoTableProps, but not both.\n';
     errorFound = true;
