@@ -71,6 +71,9 @@ export interface VerifiedProps {
 export function CheckProps(propsObject: VerifiedProps | any) {
   let errorMessages = '';
   let errorFound = false;
+  const isQueueFifo: boolean = propsObject?.queueProps?.fifo;
+  const isDeadLetterQueueFifo: boolean = propsObject?.deadLetterQueueProps?.fifo;
+  const deployDeadLetterQueue: boolean = propsObject.deployDeadLetterQueue || propsObject.deployDeadLetterQueue === undefined;
 
   if (propsObject.dynamoTableProps && propsObject.existingTableObj) {
     errorMessages += 'Error - Either provide existingTableObj or dynamoTableProps, but not both.\n';
@@ -92,23 +95,6 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
-  if (propsObject.queueProps && propsObject.queueProps.fifo && propsObject.deployDeadLetterQueue === undefined &&
-    ((!propsObject.deadLetterQueueProps) || (propsObject.deadLetterQueueProps && !propsObject.deadLetterQueueProps.fifo))) {
-    errorMessages += 'Error - If you specify a fifo: true in queueProps, you must also supply deadLetterQueueProps with fifo: true if deploying a Dead Letter Queue.\n';
-    errorFound = true;
-  }
-
-  if (propsObject.deadLetterQueueProps && propsObject.deadLetterQueueProps.fifo && propsObject.deployDeadLetterQueue === undefined &&
-    ((!propsObject.queueProps) || (propsObject.queueProps && !propsObject.queueProps.fifo))) {
-    errorMessages += 'Error - If you specify a fifo: true in deadLetterQueueProps, you must also supply queueProps with fifo: true if deploying a Dead Letter Queue.\n';
-    errorFound = true;
-  }
-
-  if (propsObject.existingQueueObj && propsObject.queueProps) {
-    errorMessages += 'Error - Either provide queueProps or existingQueueObj, but not both.\n';
-    errorFound = true;
-  }
-
   if (propsObject.existingQueueObj && propsObject.queueProps) {
     errorMessages += 'Error - Either provide queueProps or existingQueueObj, but not both.\n';
     errorFound = true;
@@ -116,6 +102,12 @@ export function CheckProps(propsObject: VerifiedProps | any) {
 
   if ((propsObject?.deployDeadLetterQueue === false) && propsObject.deadLetterQueueProps) {
     errorMessages += 'Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n';
+    errorFound = true;
+  }
+
+  if (deployDeadLetterQueue && (isQueueFifo !== isDeadLetterQueueFifo)) {
+    errorMessages += 'Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: true in the other props object. \
+    Fifo must match for the Queue and the Dead Letter Queue.\n';
     errorFound = true;
   }
 
