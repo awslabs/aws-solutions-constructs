@@ -57,7 +57,7 @@
         "Name": "RestApi"
       }
     },
-    "testapigatewaydynamodbRestApiDeployment1898674Bf06c85f4d2c4a0739d5158ea0dd6288a": {
+    "testapigatewaydynamodbRestApiDeployment1898674B00abb8cad507ed5309ac584f2dddf379": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -99,7 +99,7 @@
           "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "testapigatewaydynamodbRestApiDeployment1898674Bf06c85f4d2c4a0739d5158ea0dd6288a"
+          "Ref": "testapigatewaydynamodbRestApiDeployment1898674B00abb8cad507ed5309ac584f2dddf379"
         },
         "MethodSettings": [
           {
@@ -168,11 +168,11 @@
               "Fn::Join": [
                 "",
                 [
-                  "{\r\n\"TableName\": \"",
+                  "{           \"TableName\": \"",
                   {
                     "Ref": "testapigatewaydynamodbDynamoTableEEE3F463"
                   },
-                  "\",\r\n \"KeyConditionExpression\": \"id = :v1\",\r\n    \"ExpressionAttributeValues\": {\r\n        \":v1\": {\r\n            \"S\": \"$input.params('id')\"\r\n        }\r\n    }\r\n}"
+                  "\",           \"KeyConditionExpression\": \"id = :v1\",           \"ExpressionAttributeValues\": {             \":v1\": {               \"S\": \"$input.params('id')\"             }           }         }"
                 ]
               ]
             }
@@ -334,11 +334,11 @@
               "Fn::Join": [
                 "",
                 [
-                  "{\r\n  \"TableName\": \"",
+                  "{           \"TableName\": \"",
                   {
                     "Ref": "testapigatewaydynamodbDynamoTableEEE3F463"
                   },
-                  "\",\r\n  \"Key\": {\r\n    \"id\": {\r\n      \"S\": \"$input.params('id')\"\r\n    }\r\n  },\r\n  \"ConditionExpression\": \"attribute_not_exists(Replies)\",\r\n  \"ReturnValues\": \"ALL_OLD\"\r\n}"
+                  "\",           \"Key\": {             \"id\": {               \"S\": \"$input.params('id')\"               }             },           \"ReturnValues\": \"ALL_OLD\"         }"
                 ]
               ]
             }

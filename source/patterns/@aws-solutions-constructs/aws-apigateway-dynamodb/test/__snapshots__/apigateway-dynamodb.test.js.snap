@@ -160,7 +160,7 @@ Object {
       },
       "Type": "AWS::ApiGateway::RestApi",
     },
-    "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F3c3e5f83088fae14392dcefa7a52bda00": Object {
+    "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F3818e0ad130f9a49152a4afbd35ada7b6": Object {
       "DependsOn": Array [
         "testapigatewaydynamodbdefaultRestApiidGET94B6F433",
         "testapigatewaydynamodbdefaultRestApiidFD6A9E91",
@@ -195,7 +195,7 @@ Object {
           "Format": "{\\"requestId\\":\\"$context.requestId\\",\\"ip\\":\\"$context.identity.sourceIp\\",\\"user\\":\\"$context.identity.user\\",\\"caller\\":\\"$context.identity.caller\\",\\"requestTime\\":\\"$context.requestTime\\",\\"httpMethod\\":\\"$context.httpMethod\\",\\"resourcePath\\":\\"$context.resourcePath\\",\\"status\\":\\"$context.status\\",\\"protocol\\":\\"$context.protocol\\",\\"responseLength\\":\\"$context.responseLength\\"}",
         },
         "DeploymentId": Object {
-          "Ref": "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F3c3e5f83088fae14392dcefa7a52bda00",
+          "Ref": "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F3818e0ad130f9a49152a4afbd35ada7b6",
         },
         "MethodSettings": Array [
           Object {
@@ -277,19 +277,11 @@ Object {
               "Fn::Join": Array [
                 "",
                 Array [
-                  "{
-\\"TableName\\": \\"",
+                  "{           \\"TableName\\": \\"",
                   Object {
                     "Ref": "testapigatewaydynamodbdefaultDynamoTable0720D92C",
                   },
-                  "\\",
- \\"KeyConditionExpression\\": \\"id = :v1\\",
-    \\"ExpressionAttributeValues\\": {
-        \\":v1\\": {
-            \\"S\\": \\"$input.params('id')\\"
-        }
-    }
-}",
+                  "\\",           \\"KeyConditionExpression\\": \\"id = :v1\\",           \\"ExpressionAttributeValues\\": {             \\":v1\\": {               \\"S\\": \\"$input.params('id')\\"             }           }         }",
                 ],
               ],
             },
