@@ -57,7 +57,7 @@
         "Name": "RestApi"
       }
     },
-    "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F3c3e5f83088fae14392dcefa7a52bda00": {
+    "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F3818e0ad130f9a49152a4afbd35ada7b6": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -96,7 +96,7 @@
           "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F3c3e5f83088fae14392dcefa7a52bda00"
+          "Ref": "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F3818e0ad130f9a49152a4afbd35ada7b6"
         },
         "MethodSettings": [
           {
@@ -165,11 +165,11 @@
               "Fn::Join": [
                 "",
                 [
-                  "{\r\n\"TableName\": \"",
+                  "{           \"TableName\": \"",
                   {
                     "Ref": "testapigatewaydynamodbdefaultDynamoTable0720D92C"
                   },
-                  "\",\r\n \"KeyConditionExpression\": \"id = :v1\",\r\n    \"ExpressionAttributeValues\": {\r\n        \":v1\": {\r\n            \"S\": \"$input.params('id')\"\r\n        }\r\n    }\r\n}"
+                  "\",           \"KeyConditionExpression\": \"id = :v1\",           \"ExpressionAttributeValues\": {             \":v1\": {               \"S\": \"$input.params('id')\"             }           }         }"
                 ]
               ]
             }
