@@ -60,7 +60,8 @@ export interface ApiGatewayToDynamoDBProps {
    */
   readonly allowReadOperation?: boolean,
   /**
-   * Optional API Gateway Request template for Read method, it will use the default template if allowReadOperation is true and readRequestTemplate is not provided.
+   * Optional API Gateway Request template for Read method, it will use the default template if
+   * allowReadOperation is true and readRequestTemplate is not provided.
    * The default template only supports a partition key and not partition + sort keys.
    *
    * @default - None
@@ -85,7 +86,8 @@ export interface ApiGatewayToDynamoDBProps {
    */
   readonly allowDeleteOperation?: boolean,
   /**
-   * Optional API Gateway Request template for Delete method, it will use the default template if allowDeleteOperation is true and deleteRequestTemplate is not provided.
+   * Optional API Gateway Request template for Delete method, it will use the default template if
+   * allowDeleteOperation is true and deleteRequestTemplate is not provided.
    * The default template only supports a partition key and not partition + sort keys.
    *
    * @default - None
