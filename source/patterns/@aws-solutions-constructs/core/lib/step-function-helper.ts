@@ -20,13 +20,14 @@ import { overrideProps, generateResourceName, addCfnSuppressRules } from './util
 import * as iam from '@aws-cdk/aws-iam';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import { buildLogGroup } from './cloudwatch-log-group-helper';
+import { Construct } from '@aws-cdk/core';
 
 /**
  * Builds and returns a StateMachine.
  * @param scope - the construct to which the StateMachine should be attached to.
  * @param stateMachineProps - user-specified properties to override the default properties.
  */
-export function buildStateMachine(scope: cdk.Construct, stateMachineProps: sfn.StateMachineProps,
+export function buildStateMachine(scope: Construct, stateMachineProps: sfn.StateMachineProps,
   logGroupProps?: logs.LogGroupProps): [sfn.StateMachine, logs.ILogGroup] {
 
   let logGroup: logs.ILogGroup;
@@ -102,39 +103,42 @@ export function buildStateMachine(scope: cdk.Construct, stateMachineProps: sfn.S
   return [_sm, logGroup];
 }
 
-export function buildStepFunctionCWAlarms(scope: cdk.Construct, sm: sfn.StateMachine): cloudwatch.Alarm[] {
+export function buildStepFunctionCWAlarms(scope: Construct, sm: sfn.StateMachine): cloudwatch.Alarm[] {
   // Setup CW Alarms for State Machine
   const alarms: cloudwatch.Alarm[] = new Array();
 
   // Sum of number of executions that failed is >= 1 for 5 minutes, 1 consecutive time
   alarms.push(new cloudwatch.Alarm(scope, 'ExecutionFailedAlarm', {
-    metric: sm.metricFailed(),
+    metric: sm.metricFailed({
+      statistic: 'Sum',
+      period: cdk.Duration.seconds(300),
+    }),
     threshold: 1,
     evaluationPeriods: 1,
-    statistic: 'Sum',
-    period: cdk.Duration.seconds(300),
     comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
     alarmDescription: 'Alarm for the number of executions that failed exceeded the threshold of 1. '
   }));
 
   // Sum of number of executions that failed maximum is >= 1 for 5 minute, 1 consecutive time
   alarms.push(new cloudwatch.Alarm(scope, 'ExecutionThrottledAlarm', {
-    metric: sm.metricThrottled(),
+    metric: sm.metricThrottled({
+      statistic: 'Sum',
+      period: cdk.Duration.seconds(300),
+    }),
     threshold: 1,
     evaluationPeriods: 1,
-    statistic: 'Sum',
-    period: cdk.Duration.seconds(300),
     comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
     alarmDescription: 'Alarm for the number of executions that throttled exceeded the threshold of 1. '
   }));
 
   // Number of executions that aborted maximum is >= 1 for 5 minute, 1 consecutive time
   alarms.push(new cloudwatch.Alarm(scope, 'ExecutionAbortedAlarm', {
-    metric: sm.metricAborted(),
+    metric: sm.metricAborted({
+      statistic: 'Maximum',
+      period: cdk.Duration.seconds(300),
+    }),
     threshold: 1,
     evaluationPeriods: 1,
-    statistic: 'Maximum',
-    period: cdk.Duration.seconds(300),
     comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
     alarmDescription: 'Alarm for the number of executions that aborted exceeded the threshold of 1. '
   }));

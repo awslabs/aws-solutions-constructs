@@ -27,6 +27,7 @@ import * as iam from '@aws-cdk/aws-iam';
 import { Aws } from '@aws-cdk/core';
 import { DefaultPublicPrivateVpcProps } from './vpc-defaults';
 import { buildSecurityGroup } from './security-group-helper';
+import { Construct } from '@aws-cdk/core';
 
 export interface BuildSagemakerNotebookProps {
   /**
@@ -213,7 +214,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
 }
 
 export function buildSagemakerNotebook(
-  scope: cdk.Construct,
+  scope: Construct,
   props: BuildSagemakerNotebookProps
 ): [sagemaker.CfnNotebookInstance, ec2.IVpc?, ec2.SecurityGroup?] {
   // Setup the notebook properties
@@ -331,7 +332,7 @@ export interface BuildSagemakerEndpointProps {
 }
 
 export function BuildSagemakerEndpoint(
-  scope: cdk.Construct,
+  scope: Construct,
   props: BuildSagemakerEndpointProps
 ): [sagemaker.CfnEndpoint, sagemaker.CfnEndpointConfig?, sagemaker.CfnModel?] {
   /** Conditional Sagemaker endpoint creation */
@@ -349,7 +350,7 @@ export function BuildSagemakerEndpoint(
 }
 
 export function deploySagemakerEndpoint(
-  scope: cdk.Construct,
+  scope: Construct,
   props: BuildSagemakerEndpointProps
 ): [sagemaker.CfnEndpoint, sagemaker.CfnEndpointConfig?, sagemaker.CfnModel?] {
   let model: sagemaker.CfnModel;
@@ -393,7 +394,7 @@ export function deploySagemakerEndpoint(
 }
 
 export function createSagemakerModel(
-  scope: cdk.Construct,
+  scope: Construct,
   modelProps: sagemaker.CfnModelProps,
   role: iam.Role,
   vpc?: ec2.IVpc
@@ -459,7 +460,7 @@ export function createSagemakerModel(
 }
 
 export function createSagemakerEndpointConfig(
-  scope: cdk.Construct,
+  scope: Construct,
   modelName: string,
   endpointConfigProps?: sagemaker.CfnEndpointConfigProps
 ): sagemaker.CfnEndpointConfig {
@@ -487,7 +488,7 @@ export function createSagemakerEndpointConfig(
 }
 
 export function createSagemakerEndpoint(
-  scope: cdk.Construct,
+  scope: Construct,
   endpointConfigName: string,
   endpointProps?: sagemaker.CfnEndpointProps
 ): sagemaker.CfnEndpoint {

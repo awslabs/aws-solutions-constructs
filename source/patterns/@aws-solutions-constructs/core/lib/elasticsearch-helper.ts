@@ -17,8 +17,9 @@ import { overrideProps, addCfnSuppressRules } from './utils';
 import * as iam from '@aws-cdk/aws-iam';
 import * as cdk from '@aws-cdk/core';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+import { Construct } from '@aws-cdk/core';
 
-export function buildElasticSearch(scope: cdk.Construct, domainName: string,
+export function buildElasticSearch(scope: Construct, domainName: string,
   options: CfnDomainOptions, cfnDomainProps?: elasticsearch.CfnDomainProps): [elasticsearch.CfnDomain, iam.Role] {
 
   // Setup the IAM Role & policy for ES to configure Cognito User pool and Identity pool
@@ -85,7 +86,7 @@ export function buildElasticSearch(scope: cdk.Construct, domainName: string,
   return [esDomain, cognitoKibanaConfigureRole];
 }
 
-export function buildElasticSearchCWAlarms(scope: cdk.Construct): cloudwatch.Alarm[] {
+export function buildElasticSearchCWAlarms(scope: Construct): cloudwatch.Alarm[] {
   // Setup CW Alarms for ES
   const alarms: cloudwatch.Alarm[] = new Array();
 
@@ -93,12 +94,12 @@ export function buildElasticSearchCWAlarms(scope: cdk.Construct): cloudwatch.Ala
   alarms.push(new cloudwatch.Alarm(scope, 'StatusRedAlarm', {
     metric: new cloudwatch.Metric({
       namespace: 'AWS/ES',
-      metricName: 'ClusterStatus.red'
+      metricName: 'ClusterStatus.red',
+      statistic: 'Maximum',
+      period: cdk.Duration.seconds(60),
     }),
     threshold: 1,
     evaluationPeriods: 1,
-    statistic: 'Maximum',
-    period: cdk.Duration.seconds(60),
     comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
     alarmDescription: 'At least one primary shard and its replicas are not allocated to a node. '
   }));
@@ -107,12 +108,12 @@ export function buildElasticSearchCWAlarms(scope: cdk.Construct): cloudwatch.Ala
   alarms.push(new cloudwatch.Alarm(scope, 'StatusYellowAlarm', {
     metric: new cloudwatch.Metric({
       namespace: 'AWS/ES',
-      metricName: 'ClusterStatus.yellow'
+      metricName: 'ClusterStatus.yellow',
+      statistic: 'Maximum',
+      period: cdk.Duration.seconds(60),
     }),
     threshold: 1,
     evaluationPeriods: 1,
-    statistic: 'Maximum',
-    period: cdk.Duration.seconds(60),
     comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
     alarmDescription: 'At least one replica shard is not allocated to a node.'
   }));
@@ -121,12 +122,12 @@ export function buildElasticSearchCWAlarms(scope: cdk.Construct): cloudwatch.Ala
   alarms.push(new cloudwatch.Alarm(scope, 'FreeStorageSpaceTooLowAlarm', {
     metric: new cloudwatch.Metric({
       namespace: 'AWS/ES',
-      metricName: 'FreeStorageSpace'
+      metricName: 'FreeStorageSpace',
+      statistic: 'Minimum',
+      period: cdk.Duration.seconds(60),
     }),
     threshold: 20000,
     evaluationPeriods: 1,
-    statistic: 'Minimum',
-    period: cdk.Duration.seconds(60),
     comparisonOperator: cloudwatch.ComparisonOperator.LESS_THAN_OR_EQUAL_TO_THRESHOLD,
     alarmDescription: 'A node in your cluster is down to 20 GiB of free storage space.'
   }));
@@ -135,12 +136,12 @@ export function buildElasticSearchCWAlarms(scope: cdk.Construct): cloudwatch.Ala
   alarms.push(new cloudwatch.Alarm(scope, 'IndexWritesBlockedTooHighAlarm', {
     metric: new cloudwatch.Metric({
       namespace: 'AWS/ES',
-      metricName: 'ClusterIndexWritesBlocked'
+      metricName: 'ClusterIndexWritesBlocked',
+      statistic: 'Maximum',
+      period: cdk.Duration.seconds(300),
     }),
     threshold: 1,
     evaluationPeriods: 1,
-    statistic: 'Maximum',
-    period: cdk.Duration.seconds(300),
     comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
     alarmDescription: 'Your cluster is blocking write requests.'
   }));
@@ -149,12 +150,12 @@ export function buildElasticSearchCWAlarms(scope: cdk.Construct): cloudwatch.Ala
   alarms.push(new cloudwatch.Alarm(scope, 'AutomatedSnapshotFailureTooHighAlarm', {
     metric: new cloudwatch.Metric({
       namespace: 'AWS/ES',
-      metricName: 'AutomatedSnapshotFailure'
+      metricName: 'AutomatedSnapshotFailure',
+      statistic: 'Maximum',
+      period: cdk.Duration.seconds(60),
     }),
     threshold: 1,
     evaluationPeriods: 1,
-    statistic: 'Maximum',
-    period: cdk.Duration.seconds(60),
     comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
     alarmDescription: 'An automated snapshot failed. This failure is often the result of a red cluster health status.'
   }));
@@ -163,12 +164,12 @@ export function buildElasticSearchCWAlarms(scope: cdk.Construct): cloudwatch.Ala
   alarms.push(new cloudwatch.Alarm(scope, 'CPUUtilizationTooHighAlarm', {
     metric: new cloudwatch.Metric({
       namespace: 'AWS/ES',
-      metricName: 'CPUUtilization'
+      metricName: 'CPUUtilization',
+      statistic: 'Average',
+      period: cdk.Duration.seconds(900),
     }),
     threshold: 80,
     evaluationPeriods: 3,
-    statistic: 'Average',
-    period: cdk.Duration.seconds(900),
     comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
     alarmDescription: '100% CPU utilization is not uncommon, but sustained high usage is problematic. Consider using larger instance types or adding instances.'
   }));
@@ -177,12 +178,12 @@ export function buildElasticSearchCWAlarms(scope: cdk.Construct): cloudwatch.Ala
   alarms.push(new cloudwatch.Alarm(scope, 'JVMMemoryPressureTooHighAlarm', {
     metric: new cloudwatch.Metric({
       namespace: 'AWS/ES',
-      metricName: 'JVMMemoryPressure'
+      metricName: 'JVMMemoryPressure',
+      statistic: 'Average',
+      period: cdk.Duration.seconds(900),
     }),
     threshold: 80,
     evaluationPeriods: 1,
-    statistic: 'Average',
-    period: cdk.Duration.seconds(900),
     comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
     alarmDescription: 'Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.'
   }));
@@ -191,12 +192,12 @@ export function buildElasticSearchCWAlarms(scope: cdk.Construct): cloudwatch.Ala
   alarms.push(new cloudwatch.Alarm(scope, 'MasterCPUUtilizationTooHighAlarm', {
     metric: new cloudwatch.Metric({
       namespace: 'AWS/ES',
-      metricName: 'MasterCPUUtilization'
+      metricName: 'MasterCPUUtilization',
+      statistic: 'Average',
+      period: cdk.Duration.seconds(900),
     }),
     threshold: 50,
     evaluationPeriods: 3,
-    statistic: 'Average',
-    period: cdk.Duration.seconds(900),
     comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
     alarmDescription: 'Average CPU utilization over last 45 minutes too high. Consider using larger instance types for your dedicated master nodes.'
   }));
@@ -205,12 +206,12 @@ export function buildElasticSearchCWAlarms(scope: cdk.Construct): cloudwatch.Ala
   alarms.push(new cloudwatch.Alarm(scope, 'MasterJVMMemoryPressureTooHighAlarm', {
     metric: new cloudwatch.Metric({
       namespace: 'AWS/ES',
-      metricName: 'MasterJVMMemoryPressure'
+      metricName: 'MasterJVMMemoryPressure',
+      statistic: 'Average',
+      period: cdk.Duration.seconds(900),
     }),
     threshold: 50,
     evaluationPeriods: 1,
-    statistic: 'Average',
-    period: cdk.Duration.seconds(900),
     comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
     alarmDescription: 'Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.'
   }));

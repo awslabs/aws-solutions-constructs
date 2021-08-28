@@ -18,6 +18,8 @@ import { DefaultLambdaFunctionProps } from './lambda-defaults';
 import * as cdk from '@aws-cdk/core';
 import { overrideProps, addCfnSuppressRules } from './utils';
 import { buildSecurityGroup } from "./security-group-helper";
+import { Construct } from '@aws-cdk/core';
+import { IConstruct } from '@aws-cdk/core';
 
 export interface BuildLambdaFunctionProps {
   /**
@@ -40,7 +42,7 @@ export interface BuildLambdaFunctionProps {
   readonly vpc?: ec2.IVpc;
 }
 
-export function buildLambdaFunction(scope: cdk.Construct, props: BuildLambdaFunctionProps): lambda.Function {
+export function buildLambdaFunction(scope: Construct, props: BuildLambdaFunctionProps): lambda.Function {
   // Conditional lambda function creation
   if (!props.existingLambdaObj) {
     if (props.lambdaFunctionProps) {
@@ -58,7 +60,7 @@ export function buildLambdaFunction(scope: cdk.Construct, props: BuildLambdaFunc
   }
 }
 
-export function deployLambdaFunction(scope: cdk.Construct,
+export function deployLambdaFunction(scope: Construct,
   lambdaFunctionProps: lambda.FunctionProps,
   functionId?: string,
   vpc?: ec2.IVpc): lambda.Function {
@@ -178,7 +180,7 @@ export function addPermission(targetFunction: lambda.Function, name: string, per
 
 // Scan the current permissions for any entries with this core name and
 // return the first available synthesized name. Names are coreName-suffix.
-function GetNextId(children: cdk.IConstruct[], coreName: string): string {
+function GetNextId(children: IConstruct[], coreName: string): string {
   let lastSuffix: number = 0;
 
   children.forEach(child => {

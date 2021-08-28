@@ -17,6 +17,7 @@ import * as iot from '@aws-cdk/aws-iot';
 import * as kms from '@aws-cdk/aws-kms';
 import * as iam from '@aws-cdk/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
+import { Construct } from '@aws-cdk/core';
 
 /**
  * @summary The properties for the IotToSqs class.
@@ -87,7 +88,7 @@ export interface IotToSqsProps {
   readonly iotTopicRuleProps: iot.CfnTopicRuleProps;
 }
 
-export class IotToSqs extends cdk.Construct {
+export class IotToSqs extends Construct {
   public readonly sqsQueue: sqs.Queue;
   public readonly deadLetterQueue?: sqs.DeadLetterQueue;
   public readonly encryptionKey?: kms.IKey;
@@ -101,7 +102,7 @@ export class IotToSqs extends cdk.Construct {
    * @param {IotToSqsProps} props - user provided props for the construct
    * @access public
    */
-  constructor(scope: cdk.Construct, id: string, props: IotToSqsProps) {
+  constructor(scope: Construct, id: string, props: IotToSqsProps) {
     super(scope, id);
     defaults.CheckProps(props);
 

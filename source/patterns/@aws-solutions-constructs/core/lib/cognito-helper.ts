@@ -16,6 +16,7 @@ import * as iam from '@aws-cdk/aws-iam';
 import * as cdk from '@aws-cdk/core';
 import { overrideProps, addCfnSuppressRules } from './utils';
 import { DefaultUserPoolProps, DefaultUserPoolClientProps, DefaultIdentityPoolProps } from './cognito-defaults';
+import { Construct } from '@aws-cdk/core';
 
 export interface CognitoOptions {
   readonly identitypool: cognito.CfnIdentityPool,
@@ -23,7 +24,7 @@ export interface CognitoOptions {
   readonly userpoolclient: cognito.UserPoolClient
 }
 
-export function buildUserPool(scope: cdk.Construct, userPoolProps?: cognito.UserPoolProps): cognito.UserPool {
+export function buildUserPool(scope: Construct, userPoolProps?: cognito.UserPoolProps): cognito.UserPool {
   let cognitoUserPoolProps: cognito.UserPoolProps;
 
   if (userPoolProps) {
@@ -56,7 +57,7 @@ export function buildUserPool(scope: cdk.Construct, userPoolProps?: cognito.User
   return userPool;
 }
 
-export function buildUserPoolClient(scope: cdk.Construct, userPool: cognito.UserPool,
+export function buildUserPoolClient(scope: Construct, userPool: cognito.UserPool,
   cognitoUserPoolClientProps?: cognito.UserPoolClientProps): cognito.UserPoolClient {
 
   let userPoolClientProps: cognito.UserPoolClientProps;
@@ -70,7 +71,7 @@ export function buildUserPoolClient(scope: cdk.Construct, userPool: cognito.User
   return new cognito.UserPoolClient(scope, 'CognitoUserPoolClient', userPoolClientProps);
 }
 
-export function buildIdentityPool(scope: cdk.Construct, userpool: cognito.UserPool, userpoolclient: cognito.UserPoolClient,
+export function buildIdentityPool(scope: Construct, userpool: cognito.UserPool, userpoolclient: cognito.UserPoolClient,
   identityPoolProps?: cognito.CfnIdentityPoolProps): cognito.CfnIdentityPool {
 
   let cognitoIdentityPoolProps: cognito.CfnIdentityPoolProps = DefaultIdentityPoolProps(userpoolclient.userPoolClientId,
@@ -85,7 +86,7 @@ export function buildIdentityPool(scope: cdk.Construct, userpool: cognito.UserPo
   return idPool;
 }
 
-export function setupCognitoForElasticSearch(scope: cdk.Construct, domainName: string, options: CognitoOptions): iam.Role {
+export function setupCognitoForElasticSearch(scope: Construct, domainName: string, options: CognitoOptions): iam.Role {
 
   // Create the domain for Cognito UserPool
   const userpooldomain = new cognito.CfnUserPoolDomain(scope, 'UserPoolDomain', {

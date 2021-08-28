@@ -46,7 +46,7 @@ test('cloudfront distribution for ApiGateway without security headers', () => {
   const lambdaFunctionProps: lambda.FunctionProps = {
     runtime: lambda.Runtime.NODEJS_12_X,
     handler: 'index.handler',
-    code: lambda.Code.asset(`${__dirname}/lambda`)
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
 
   const func = new lambda.Function(stack, 'LambdaFunction', lambdaFunctionProps);

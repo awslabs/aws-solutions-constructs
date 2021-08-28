@@ -14,12 +14,12 @@
 // Imports
 import * as sqs from '@aws-cdk/aws-sqs';
 import * as defaults from './sqs-defaults';
-import * as cdk from '@aws-cdk/core';
 import * as kms from '@aws-cdk/aws-kms';
 import { overrideProps } from './utils';
 import { AccountPrincipal, Effect, PolicyStatement, AnyPrincipal } from '@aws-cdk/aws-iam';
 import { Stack } from '@aws-cdk/core';
 import {buildEncryptionKey} from "./kms-helper";
+import { Construct } from '@aws-cdk/core';
 
 export interface BuildQueueProps {
     /**
@@ -61,7 +61,7 @@ export interface BuildQueueProps {
     readonly encryptionKeyProps?: kms.KeyProps
 }
 
-export function buildQueue(scope: cdk.Construct, id: string, props: BuildQueueProps): [sqs.Queue, kms.IKey?] {
+export function buildQueue(scope: Construct, id: string, props: BuildQueueProps): [sqs.Queue, kms.IKey?] {
   // If an existingQueueObj is not specified
   if (!props.existingQueueObj) {
     // Setup the queue
@@ -128,7 +128,7 @@ export interface BuildDeadLetterQueueProps {
   readonly maxReceiveCount?: number
 }
 
-export function buildDeadLetterQueue(scope: cdk.Construct, props: BuildDeadLetterQueueProps): sqs.DeadLetterQueue | undefined {
+export function buildDeadLetterQueue(scope: Construct, props: BuildDeadLetterQueueProps): sqs.DeadLetterQueue | undefined {
   if (!props.existingQueueObj && (props.deployDeadLetterQueue || props.deployDeadLetterQueue === undefined)) {
     // Create the Dead Letter Queue
     const [dlq] = buildQueue(scope, 'deadLetterQueue', {
