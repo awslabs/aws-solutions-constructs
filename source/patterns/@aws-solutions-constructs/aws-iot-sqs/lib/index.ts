@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import * as cdk from '@aws-cdk/core';
 import * as sqs from '@aws-cdk/aws-sqs';
 import * as iot from '@aws-cdk/aws-iot';
 import * as kms from '@aws-cdk/aws-kms';
