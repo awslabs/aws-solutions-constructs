@@ -21,6 +21,7 @@ import * as apiDefaults from './apigateway-defaults';
 import { buildLogGroup } from './cloudwatch-log-group-helper';
 import { overrideProps, addCfnSuppressRules } from './utils';
 import { IRole } from '@aws-cdk/aws-iam';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
 /**

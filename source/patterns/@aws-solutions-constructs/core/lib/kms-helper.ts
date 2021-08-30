@@ -14,6 +14,7 @@
 import * as kms from '@aws-cdk/aws-kms';
 import { DefaultEncryptionProps } from './kms-defaults';
 import { overrideProps } from './utils';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
 export function buildEncryptionKey(scope: Construct, keyProps?: kms.KeyProps): kms.Key {

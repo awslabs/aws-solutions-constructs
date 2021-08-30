@@ -18,6 +18,7 @@ import { DefaultLambdaFunctionProps } from './lambda-defaults';
 import * as cdk from '@aws-cdk/core';
 import { overrideProps, addCfnSuppressRules } from './utils';
 import { buildSecurityGroup } from "./security-group-helper";
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import { IConstruct } from '@aws-cdk/core';
 

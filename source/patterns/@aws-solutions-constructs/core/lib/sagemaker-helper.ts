@@ -27,6 +27,7 @@ import * as iam from '@aws-cdk/aws-iam';
 import { Aws } from '@aws-cdk/core';
 import { DefaultPublicPrivateVpcProps } from './vpc-defaults';
 import { buildSecurityGroup } from './security-group-helper';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
 export interface BuildSagemakerNotebookProps {

@@ -14,6 +14,7 @@
 import * as api from '@aws-cdk/aws-apigateway';
 import * as iam from '@aws-cdk/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import { getPartitionKeyNameFromTable, overrideProps } from '@aws-solutions-constructs/core';

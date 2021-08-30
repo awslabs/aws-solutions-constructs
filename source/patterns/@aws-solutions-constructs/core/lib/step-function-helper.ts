@@ -20,6 +20,7 @@ import { overrideProps, generateResourceName, addCfnSuppressRules } from './util
 import * as iam from '@aws-cdk/aws-iam';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import { buildLogGroup } from './cloudwatch-log-group-helper';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
 /**

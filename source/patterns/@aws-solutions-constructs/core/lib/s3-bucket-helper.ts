@@ -21,6 +21,7 @@ import { PolicyStatement, Effect, AnyPrincipal } from '@aws-cdk/aws-iam';
 import { StorageClass } from '@aws-cdk/aws-s3';
 import { Duration } from '@aws-cdk/core';
 import { RemovalPolicy } from '@aws-cdk/core';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
 export interface BuildS3BucketProps {

@@ -23,6 +23,7 @@ import {
 } from './cloudfront-distribution-defaults';
 import { overrideProps, addCfnSuppressRules } from './utils';
 import { createLoggingBucket } from './s3-bucket-helper';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
 // Override Cfn_Nag rule: Cloudfront TLS-1.2 rule (https://github.com/stelligent/cfn_nag/issues/384)

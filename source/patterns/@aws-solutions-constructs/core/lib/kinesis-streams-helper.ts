@@ -17,6 +17,7 @@ import { DefaultStreamProps } from './kinesis-streams-defaults';
 import * as cdk from '@aws-cdk/core';
 import { overrideProps } from './utils';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
 export interface BuildKinesisStreamProps {

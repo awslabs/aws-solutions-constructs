@@ -17,6 +17,7 @@ import * as kinesisFirehose from '@aws-cdk/aws-kinesisfirehose';
 import * as iam from '@aws-cdk/aws-iam';
 import * as defaults from './kinesis-analytics-defaults';
 import { overrideProps } from './utils';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
 export interface BuildKinesisAnalyticsAppProps {

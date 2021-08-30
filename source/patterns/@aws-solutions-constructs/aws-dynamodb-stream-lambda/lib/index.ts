@@ -14,6 +14,7 @@
 import * as lambda from '@aws-cdk/aws-lambda';
 import { DynamoEventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import * as sqs from '@aws-cdk/aws-sqs';
 import { DynamoDBStreamsToLambda } from '@aws-solutions-constructs/aws-dynamodbstreams-lambda';

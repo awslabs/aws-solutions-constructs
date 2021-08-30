@@ -17,6 +17,7 @@ import * as cognito from '@aws-cdk/aws-cognito';
 import * as logs from '@aws-cdk/aws-logs';
 import * as iam from '@aws-cdk/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
 /**

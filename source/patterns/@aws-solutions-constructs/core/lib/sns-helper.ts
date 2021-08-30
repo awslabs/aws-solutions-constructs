@@ -19,6 +19,7 @@ import { buildEncryptionKey } from './kms-helper';
 import { overrideProps } from './utils';
 import { PolicyStatement, AnyPrincipal, Effect, AccountPrincipal } from '@aws-cdk/aws-iam';
 import { Stack } from '@aws-cdk/core';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
 export interface BuildTopicProps {

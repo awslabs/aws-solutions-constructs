@@ -14,6 +14,7 @@
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import { DefaultTableProps, DefaultTableWithStreamProps } from './dynamodb-table-defaults';
 import { overrideProps } from './utils';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
 export interface BuildDynamoDBTableProps {
