@@ -31,11 +31,11 @@ const submitLambda = deployLambdaFunction(stack, {
   handler: 'index.handler'
 });
 
-const submitJob = new tasks.RunLambdaTask(submitLambda);
+const submitJob = new tasks.LambdaInvoke(stack, 'LambdaTask', {
+  lambdaFunction: submitLambda
+});
 const startState = new stepfunctions.Pass(stack, 'StartState');
-startState.next(new stepfunctions.Task(stack, 'LambdaTask', {
-  task: submitJob
-}));
+startState.next(submitJob);
 
 const props: EventsRuleToStepFunctionProps = {
   stateMachineProps: {
