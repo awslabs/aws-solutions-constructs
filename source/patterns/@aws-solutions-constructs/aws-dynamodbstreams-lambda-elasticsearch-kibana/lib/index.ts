@@ -20,6 +20,7 @@ import { LambdaToElasticSearchAndKibanaProps, LambdaToElasticSearchAndKibana } f
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import * as sqs from '@aws-cdk/aws-sqs';
 import * as defaults from '@aws-solutions-constructs/core';

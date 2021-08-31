@@ -16,10 +16,11 @@ import * as sns from '@aws-cdk/aws-sns';
 import * as kms from '@aws-cdk/aws-kms';
 import { DefaultSnsTopicProps } from './sns-defaults';
 import { buildEncryptionKey } from './kms-helper';
-import * as cdk from '@aws-cdk/core';
 import { overrideProps } from './utils';
 import { PolicyStatement, AnyPrincipal, Effect, AccountPrincipal } from '@aws-cdk/aws-iam';
 import { Stack } from '@aws-cdk/core';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
+import { Construct } from '@aws-cdk/core';
 
 export interface BuildTopicProps {
     /**
@@ -116,7 +117,7 @@ function applySecureTopicPolicy(topic: sns.Topic): void {
   );
 }
 
-export function buildTopic(scope: cdk.Construct, props: BuildTopicProps): [sns.Topic, kms.Key?] {
+export function buildTopic(scope: Construct, props: BuildTopicProps): [sns.Topic, kms.Key?] {
   if (!props.existingTopicObj) {
     // Setup the topic properties
     let snsTopicProps;

@@ -16,6 +16,7 @@ import * as events from '@aws-cdk/aws-events';
 import * as kms from '@aws-cdk/aws-kms';
 import * as defaults from '@aws-solutions-constructs/core';
 import { ServicePrincipal } from '@aws-cdk/aws-iam';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import { overrideProps } from '@aws-solutions-constructs/core';
 

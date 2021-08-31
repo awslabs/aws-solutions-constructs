@@ -18,7 +18,7 @@ import * as kms from '@aws-cdk/aws-kms';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
 import '@aws-cdk/assert/jest';
-import { StorageClass } from '@aws-cdk/aws-s3/lib/rule';
+import { StorageClass } from '@aws-cdk/aws-s3';
 
 test('s3 bucket with default params', () => {
   const stack = new Stack();

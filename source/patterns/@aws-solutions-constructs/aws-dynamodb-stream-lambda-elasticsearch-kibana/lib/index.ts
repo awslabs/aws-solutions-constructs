@@ -18,6 +18,7 @@ import { DynamoEventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import * as sqs from '@aws-cdk/aws-sqs';
 import { DynamoDBStreamsToLambdaToElasticSearchAndKibana } from "@aws-solutions-constructs/aws-dynamodbstreams-lambda-elasticsearch-kibana";

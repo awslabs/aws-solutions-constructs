@@ -16,8 +16,9 @@ import * as kinesisAnalytics from '@aws-cdk/aws-kinesisanalytics';
 import * as kinesisFirehose from '@aws-cdk/aws-kinesisfirehose';
 import * as iam from '@aws-cdk/aws-iam';
 import * as defaults from './kinesis-analytics-defaults';
-import * as cdk from '@aws-cdk/core';
 import { overrideProps } from './utils';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
+import { Construct } from '@aws-cdk/core';
 
 export interface BuildKinesisAnalyticsAppProps {
     /**
@@ -34,7 +35,7 @@ export interface BuildKinesisAnalyticsAppProps {
    readonly kinesisAnalyticsProps?: kinesisAnalytics.CfnApplicationProps | any
  }
 
-export function buildKinesisAnalyticsApp(scope: cdk.Construct, props: BuildKinesisAnalyticsAppProps): kinesisAnalytics.CfnApplication {
+export function buildKinesisAnalyticsApp(scope: Construct, props: BuildKinesisAnalyticsAppProps): kinesisAnalytics.CfnApplication {
 
   // Setup the IAM role for Kinesis Analytics
   const analyticsRole = new iam.Role(scope, 'KinesisAnalyticsRole', {

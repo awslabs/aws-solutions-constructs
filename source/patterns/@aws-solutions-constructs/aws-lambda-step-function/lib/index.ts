@@ -16,6 +16,7 @@ import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as sfn from '@aws-cdk/aws-stepfunctions';
 import { LambdaToStepfunctions } from "@aws-solutions-constructs/aws-lambda-stepfunctions";
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import * as ec2 from "@aws-cdk/aws-ec2";
 import * as logs from '@aws-cdk/aws-logs';
