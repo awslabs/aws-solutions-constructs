@@ -1,0 +1,100 @@
+{
+  "name": "@aws-solutions-constructs/aws-eventbridge-kinesisstreams",
+  "version": "0.0.0",
+  "description": "CDK Constructs for deploying Amazon CloudWatch Events Rule that invokes Amazon Kinesis Data Stream",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc -b .",
+    "lint": "eslint -c ../eslintrc.yml --ext=.js,.ts . && tslint --project .",
+    "lint-fix": "eslint -c ../eslintrc.yml --ext=.js,.ts --fix .",
+    "test": "jest --coverage",
+    "clean": "tsc -b --clean",
+    "watch": "tsc -b -w",
+    "integ": "cdk-integ",
+    "integ-no-clean": "cdk-integ --no-clean",
+    "integ-assert": "cdk-integ-assert",
+    "jsii": "jsii",
+    "jsii-pacmak": "jsii-pacmak",
+    "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
+    "snapshot-update": "npm run jsii && npm test -- -u && npm run integ-assert"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/awslabs/aws-solutions-constructs.git",
+    "directory": "source/patterns/@aws-solutions-constructs/aws-eventbridge-kinesisstreams"
+  },
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com",
+    "organization": true
+  },
+  "license": "Apache-2.0",
+  "jsii": {
+    "outdir": "dist",
+    "targets": {
+      "java": {
+        "package": "software.amazon.awsconstructs.services.eventbridgekinesisstreams",
+        "maven": {
+          "groupId": "software.amazon.awsconstructs",
+          "artifactId": "eventbridgekinesisstreams"
+        }
+      },
+      "dotnet": {
+        "namespace": "Amazon.Constructs.AWS.EventbridgeKinesisStreams",
+        "packageId": "Amazon.Constructs.AWS.EventbridgeKinesisStreams",
+        "signAssembly": true,
+        "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
+      },
+      "python": {
+        "distName": "aws-solutions-constructs.aws-eventbridge-kinesis-streams",
+        "module": "aws_solutions_constructs.aws_eventbridge_kinesis_streams"
+      }
+    }
+  },
+  "dependencies": {
+    "@aws-cdk/aws-events": "0.0.0",
+    "@aws-cdk/aws-kinesis": "0.0.0",
+    "@aws-cdk/aws-iam": "0.0.0",
+    "@aws-cdk/aws-cloudwatch": "0.0.0",
+    "@aws-cdk/core": "0.0.0",
+    "@aws-solutions-constructs/core": "0.0.0",
+    "constructs": "^3.2.0"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "0.0.0",
+    "@types/jest": "^26.0.22",
+    "@types/node": "^10.3.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "coverageReporters": [
+      "text",
+      [
+        "lcov",
+        {
+          "projectRoot": "../../../../"
+        }
+      ]
+    ]
+  },
+  "peerDependencies": {
+    "@aws-cdk/aws-events": "0.0.0",
+    "@aws-cdk/aws-kinesis": "0.0.0",
+    "@aws-cdk/aws-iam": "0.0.0",
+    "@aws-cdk/aws-cloudwatch": "0.0.0",
+    "@aws-cdk/core": "0.0.0",
+    "@aws-solutions-constructs/core": "0.0.0",
+    "constructs": "^3.2.0"
+  },
+  "keywords": [
+    "aws",
+    "cdk",
+    "awscdk",
+    "AWS Solutions Constructs",
+    "Amazon EventBridge",
+    "Amazon Kinesis Data Streams"
+  ]
+}

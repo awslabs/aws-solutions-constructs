@@ -14,10 +14,9 @@
 import * as sqs from '@aws-cdk/aws-sqs';
 import * as events from '@aws-cdk/aws-events';
 import * as kms from '@aws-cdk/aws-kms';
-import * as defaults from '@aws-solutions-constructs/core';
-import { ServicePrincipal } from '@aws-cdk/aws-iam';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
-import { overrideProps } from '@aws-solutions-constructs/core';
+import { EventbridgeToSqs } from '@aws-solutions-constructs/aws-eventbridge-sqs';
 
 /**
  * @summary The properties for the EventsRuleToSqs Construct
@@ -102,50 +101,12 @@ export class EventsRuleToSqs extends Construct {
    */
   constructor(scope: Construct, id: string, props: EventsRuleToSqsProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    const convertedProps: EventsRuleToSqsProps = { ...props };
+    const wrappedConstruct: EventsRuleToSqs = new EventbridgeToSqs(this, `${id}-wrapped`, convertedProps);
 
-    // Setup the dead letter queue, if applicable
-    this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
-      existingQueueObj: props.existingQueueObj,
-      deployDeadLetterQueue: props.deployDeadLetterQueue,
-      deadLetterQueueProps: props.deadLetterQueueProps,
-      maxReceiveCount: props.maxReceiveCount
-    });
-
-    let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
-    if (props.enableEncryptionWithCustomerManagedKey === undefined ||
-      props.enableEncryptionWithCustomerManagedKey === true) {
-      enableEncryptionParam = true;
-    }
-
-    // Setup the queue
-    [this.sqsQueue, this.encryptionKey] = defaults.buildQueue(this, 'queue', {
-      existingQueueObj: props.existingQueueObj,
-      queueProps: props.queueProps,
-      deadLetterQueue: this.deadLetterQueue,
-      enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
-      encryptionKey: props.encryptionKey,
-      encryptionKeyProps: props.encryptionKeyProps
-    });
-
-    const sqsEventTarget: events.IRuleTarget = {
-      bind: () => ({
-        id: this.sqsQueue.queueName,
-        arn: this.sqsQueue.queueArn
-      })
-    };
-
-    const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([sqsEventTarget]);
-    const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);
-
-    this.eventsRule = new events.Rule(this, 'EventsRule', eventsRuleProps);
-
-    // Enable queue purging permissions for the event rule, if enabled
-    if (props.enableQueuePurging) {
-      this.sqsQueue.grantPurge(new ServicePrincipal('events.amazonaws.com'));
-    }
-
-    // Policy for event to be able to send messages to the queue and Grant Event Bridge service access to the SQS queue encryption key
-    this.sqsQueue.grantSendMessages(new ServicePrincipal('events.amazonaws.com'));
+    this.sqsQueue = wrappedConstruct.sqsQueue;
+    this.deadLetterQueue = wrappedConstruct.deadLetterQueue;
+    this.eventsRule = wrappedConstruct.eventsRule;
+    this.encryptionKey = wrappedConstruct.encryptionKey;
   }
 }

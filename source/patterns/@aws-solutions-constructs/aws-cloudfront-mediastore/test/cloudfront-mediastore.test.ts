@@ -45,7 +45,7 @@ test('Test the default deployment pattern variables', () => {
   expect(cloudFrontToMediaStore.cloudFrontLoggingBucket).not.toEqual(undefined);
   expect(cloudFrontToMediaStore.cloudFrontOriginRequestPolicy).not.toEqual(undefined);
   expect(cloudFrontToMediaStore.cloudFrontOriginAccessIdentity).not.toEqual(undefined);
-  expect(cloudFrontToMediaStore.edgeLambdaFunctionVersion).not.toEqual(undefined);
+  expect(cloudFrontToMediaStore.cloudFrontFunction).not.toEqual(undefined);
 });
 
 // --------------------------------------------------------------
@@ -135,7 +135,7 @@ test('Test the deployment without HTTP security headers', () => {
       ]
     }
   });
-  expect(cloudFrontToMediaStore.edgeLambdaFunctionVersion).toEqual(undefined);
+  expect(cloudFrontToMediaStore.cloudFrontFunction).toEqual(undefined);
 });
 
 // --------------------------------------------------------------
@@ -167,11 +167,14 @@ test('Test the deployment with existing MediaStore container', () => {
           'OPTIONS'
         ],
         Compress: true,
-        LambdaFunctionAssociations: [
+        FunctionAssociations: [
           {
-            EventType: 'origin-response',
-            LambdaFunctionARN: {
-              Ref: 'testcloudfrontmediastoreSetHttpSecurityHeadersVersionE87B65C3'
+            EventType: "viewer-response",
+            FunctionARN: {
+              "Fn::GetAtt": [
+                "testcloudfrontmediastoreSetHttpSecurityHeaders9995A63D",
+                "FunctionARN"
+              ]
             }
           }
         ],
@@ -303,11 +306,14 @@ test('Test the deployment with the user provided MediaStore properties', () => {
           'OPTIONS'
         ],
         Compress: true,
-        LambdaFunctionAssociations: [
+        FunctionAssociations: [
           {
-            EventType: 'origin-response',
-            LambdaFunctionARN: {
-              Ref: 'testcloudfrontmediastoreSetHttpSecurityHeadersVersionE87B65C3'
+            EventType: "viewer-response",
+            FunctionARN: {
+              "Fn::GetAtt": [
+                "testcloudfrontmediastoreSetHttpSecurityHeaders9995A63D",
+                "FunctionARN"
+              ]
             }
           }
         ],
@@ -446,11 +452,14 @@ test('Test the deployment with the user provided CloudFront properties', () => {
           'HEAD'
         ],
         Compress: true,
-        LambdaFunctionAssociations: [
+        FunctionAssociations: [
           {
-            EventType: 'origin-response',
-            LambdaFunctionARN: {
-              Ref: 'testcloudfrontmediastoreSetHttpSecurityHeadersVersionE87B65C3'
+            EventType: "viewer-response",
+            FunctionARN: {
+              "Fn::GetAtt": [
+                "testcloudfrontmediastoreSetHttpSecurityHeaders9995A63D",
+                "FunctionARN"
+              ]
             }
           }
         ],

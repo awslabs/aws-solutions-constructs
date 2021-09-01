@@ -391,7 +391,7 @@ test('Test for Exception while overriding LambdaRestApiProps using endPointTypes
   const lambdaFunctionProps: lambda.FunctionProps = {
     runtime: lambda.Runtime.NODEJS_12_X,
     handler: 'index.handler',
-    code: lambda.Code.asset(`${__dirname}/lambda`)
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
 
   const fn = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
@@ -639,7 +639,7 @@ test('Test for ApiKey creation using lambdaApiProps', () => {
   const lambdaFunctionProps: lambda.FunctionProps = {
     runtime: lambda.Runtime.NODEJS_12_X,
     handler: 'index.handler',
-    code: lambda.Code.asset(`${__dirname}/lambda`)
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
 
   const fn = defaults.deployLambdaFunction(stack, lambdaFunctionProps);

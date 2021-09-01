@@ -12,7 +12,7 @@
         }
       }
     },
-    "testeventsrulekinesisstreamexistingeventsRole6BFA3F09": {
+    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingwrappedeventsRole15D05460": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -30,7 +30,7 @@
         "Description": "Events Rule Role"
       }
     },
-    "testeventsrulekinesisstreamexistingeventsRoleDefaultPolicy7B842A0C": {
+    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingwrappedeventsRoleDefaultPolicyF94BA3BF": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -52,15 +52,15 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testeventsrulekinesisstreamexistingeventsRoleDefaultPolicy7B842A0C",
+        "PolicyName": "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingwrappedeventsRoleDefaultPolicyF94BA3BF",
         "Roles": [
           {
-            "Ref": "testeventsrulekinesisstreamexistingeventsRole6BFA3F09"
+            "Ref": "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingwrappedeventsRole15D05460"
           }
         ]
       }
     },
-    "testeventsrulekinesisstreamexistingEventsRule07EC6002": {
+    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingwrappedEventsRule5BECD28B": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "ScheduleExpression": "rate(5 minutes)",
@@ -76,7 +76,7 @@
             "Id": "Target0",
             "RoleArn": {
               "Fn::GetAtt": [
-                "testeventsrulekinesisstreamexistingeventsRole6BFA3F09",
+                "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingwrappedeventsRole15D05460",
                 "Arn"
               ]
             }
@@ -84,7 +84,7 @@
         ]
       }
     },
-    "testeventsrulekinesisstreamexistingKinesisStreamGetRecordsIteratorAgeAlarm6BBE2CE5": {
+    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingwrappedKinesisStreamGetRecordsIteratorAgeAlarmDD39CA16": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -97,7 +97,7 @@
         "Threshold": 2592000
       }
     },
-    "testeventsrulekinesisstreamexistingKinesisStreamReadProvisionedThroughputExceededAlarmEFD57259": {
+    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingwrappedKinesisStreamReadProvisionedThroughputExceededAlarmF2408E46": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanThreshold",

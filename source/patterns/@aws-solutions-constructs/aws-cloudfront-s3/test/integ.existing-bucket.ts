@@ -18,7 +18,7 @@ import * as defaults from "@aws-solutions-constructs/core";
 import { CloudFrontToS3 } from "../lib";
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import { Duration } from "@aws-cdk/core/lib/duration";
+import { Duration } from "@aws-cdk/core";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup

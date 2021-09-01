@@ -46,7 +46,7 @@ test('cloudfront distribution for ApiGateway without security headers', () => {
   const lambdaFunctionProps: lambda.FunctionProps = {
     runtime: lambda.Runtime.NODEJS_12_X,
     handler: 'index.handler',
-    code: lambda.Code.asset(`${__dirname}/lambda`)
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
 
   const func = new lambda.Function(stack, 'LambdaFunction', lambdaFunctionProps);
@@ -85,11 +85,14 @@ test('test cloudfront for Api Gateway with user provided logging bucket', () => 
       DefaultCacheBehavior: {
         CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
         Compress: true,
-        LambdaFunctionAssociations: [
+        FunctionAssociations: [
           {
-            EventType: "origin-response",
-            LambdaFunctionARN: {
-              Ref: "SetHttpSecurityHeadersVersion660E2F72"
+            EventType: "viewer-response",
+            FunctionARN: {
+              "Fn::GetAtt": [
+                "SetHttpSecurityHeadersEE936115",
+                "FunctionARN"
+              ]
             }
           }
         ],
@@ -220,11 +223,14 @@ test('test cloudfront for Api Gateway override properties', () => {
           "OPTIONS"
         ],
         Compress: true,
-        LambdaFunctionAssociations: [
+        FunctionAssociations: [
           {
-            EventType: "origin-response",
-            LambdaFunctionARN: {
-              Ref: "SetHttpSecurityHeadersVersion660E2F72"
+            EventType: "viewer-response",
+            FunctionARN: {
+              "Fn::GetAtt": [
+                "SetHttpSecurityHeadersEE936115",
+                "FunctionARN"
+              ]
             }
           }
         ],
@@ -279,19 +285,12 @@ test('test cloudfront for Api Gateway override properties', () => {
 
 });
 
-test('test override cloudfront add custom lambda@edge', () => {
+test('test override cloudfront add custom cloudfront function', () => {
   const stack = new Stack();
 
-  // custom lambda@edg function
-  const handler = new lambda.Function(stack, 'SomeHandler', {
-    functionName: 'SomeHandler',
-    runtime: lambda.Runtime.NODEJS_12_X,
-    handler: 'index.handler',
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-  });
-
-  const handlerVersion = new lambda.Version(stack, 'SomeHandlerVersion', {
-    lambda: handler,
+  // custom cloudfront function
+  const cloudfrontFunction = new cloudfront.Function(stack, "MyFunction", {
+    code: cloudfront.FunctionCode.fromInline("exports.handler = (event, context, callback) => {}")
   });
 
   // APIG Lambda function
@@ -307,13 +306,12 @@ test('test override cloudfront add custom lambda@edge', () => {
   });
   CloudFrontDistributionForApiGateway(stack, _api, {
     defaultBehavior: {
-      edgeLambdas: [
+      functionAssociations: [
         {
-          eventType: LambdaEdgeEventType.VIEWER_REQUEST,
-          includeBody: false,
-          functionVersion: handlerVersion,
+          eventType: cloudfront.FunctionEventType.VIEWER_RESPONSE,
+          function: cloudfrontFunction
         }
-      ]
+      ],
     }
   });
 
@@ -322,18 +320,14 @@ test('test override cloudfront add custom lambda@edge', () => {
       DefaultCacheBehavior: {
         CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
         Compress: true,
-        LambdaFunctionAssociations: [
+        FunctionAssociations: [
           {
-            EventType: "origin-response",
-            LambdaFunctionARN: {
-              Ref: "SetHttpSecurityHeadersVersion660E2F72"
-            }
-          },
-          {
-            EventType: "viewer-request",
-            IncludeBody: false,
-            LambdaFunctionARN: {
-              Ref: "SomeHandlerVersionDA986E41"
+            EventType: "viewer-response",
+            FunctionARN: {
+              "Fn::GetAtt": [
+                "MyFunction3BAA72D1",
+                "FunctionARN"
+              ]
             }
           }
         ],

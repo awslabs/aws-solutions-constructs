@@ -13,10 +13,9 @@
 
 import * as sfn from '@aws-cdk/aws-stepfunctions';
 import * as events from '@aws-cdk/aws-events';
-import * as defaults from '@aws-solutions-constructs/core';
-import * as iam from '@aws-cdk/aws-iam';
+import { EventbridgeToStepfunctions } from '@aws-solutions-constructs/aws-eventbridge-stepfunctions';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
-import { overrideProps } from '@aws-solutions-constructs/core';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import * as logs from '@aws-cdk/aws-logs';
 
@@ -61,43 +60,16 @@ export class EventsRuleToStepFunction extends Construct {
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {EventsRuleToStepFunctionProps} props - user provided props for the construct
-   * @since 0.9.0
    * @access public
    */
   constructor(scope: Construct, id: string, props: EventsRuleToStepFunctionProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    const convertedProps: EventsRuleToStepFunctionProps = { ...props };
+    const wrappedConstruct: EventsRuleToStepFunction = new EventbridgeToStepfunctions(this, `${id}-wrapped`, convertedProps);
 
-    [this.stateMachine, this.stateMachineLogGroup] = defaults.buildStateMachine(this, props.stateMachineProps,
-      props.logGroupProps);
-
-    // Create an IAM role for Events to start the State Machine
-    const eventsRole = new iam.Role(this, 'EventsRuleRole', {
-      assumedBy: new iam.ServicePrincipal('events.amazonaws.com')
-    });
-
-    // Grant the start execution permission to the Events service
-    this.stateMachine.grantStartExecution(eventsRole);
-
-    // Setup the Events target
-    const stateMachine: events.IRuleTarget = {
-      bind: () => ({
-        id: '',
-        arn: this.stateMachine.stateMachineArn,
-        role: eventsRole
-      })
-    };
-
-    // Defaults props for the Events
-    const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([stateMachine]);
-    // Override the defaults with the user provided props
-    const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);
-    // Create the Events Rule for the State Machine
-    this.eventsRule = new events.Rule(this, 'EventsRule', eventsRuleProps);
-
-    if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
-      // Deploy best practices CW Alarms for State Machine
-      this.cloudwatchAlarms = defaults.buildStepFunctionCWAlarms(this, this.stateMachine);
-    }
+    this.stateMachine = wrappedConstruct.stateMachine;
+    this.stateMachineLogGroup = wrappedConstruct.stateMachineLogGroup;
+    this.eventsRule = wrappedConstruct.eventsRule;
+    this.cloudwatchAlarms = wrappedConstruct.cloudwatchAlarms;
   }
 }

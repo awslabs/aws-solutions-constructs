@@ -14,7 +14,6 @@
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as mediastore from '@aws-cdk/aws-mediastore';
 import * as s3 from '@aws-cdk/aws-s3';
-import * as lambda from '@aws-cdk/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Construct, Aws} from '@aws-cdk/core';
 
@@ -52,10 +51,10 @@ export interface CloudFrontToMediaStoreProps {
 export class CloudFrontToMediaStore extends Construct {
   public readonly cloudFrontWebDistribution: cloudfront.Distribution;
   public readonly mediaStoreContainer: mediastore.CfnContainer;
-  public readonly cloudFrontLoggingBucket: s3.Bucket;
+  public readonly cloudFrontLoggingBucket?: s3.Bucket;
   public readonly cloudFrontOriginRequestPolicy: cloudfront.OriginRequestPolicy;
   public readonly cloudFrontOriginAccessIdentity?: cloudfront.OriginAccessIdentity;
-  public readonly edgeLambdaFunctionVersion?: lambda.Version;
+  public readonly cloudFrontFunction?: cloudfront.Function;
 
   /**
    * @summary Constructs a new instance of CloudFrontToMediaStore class.
@@ -122,7 +121,7 @@ export class CloudFrontToMediaStore extends Construct {
       this.mediaStoreContainer = defaults.MediaStoreContainer(this, mediaStoreProps);
     }
 
-    [this.cloudFrontWebDistribution, this.cloudFrontLoggingBucket, this.cloudFrontOriginRequestPolicy, this.edgeLambdaFunctionVersion]
+    [this.cloudFrontWebDistribution, this.cloudFrontLoggingBucket, this.cloudFrontOriginRequestPolicy, this.cloudFrontFunction]
       = defaults.CloudFrontDistributionForMediaStore(this, this.mediaStoreContainer, cloudFrontDistributionProps, props.insertHttpSecurityHeaders);
   }
 }

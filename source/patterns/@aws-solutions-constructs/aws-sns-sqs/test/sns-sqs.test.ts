@@ -244,3 +244,89 @@ test('Test deployment with SNS managed KMS key', () => {
     }
   });
 });
+
+// --------------------------------------------------------------
+// Pattern deployment with existing Topic and FIFO queues
+// --------------------------------------------------------------
+test('Pattern deployment w/ existing topic and FIFO queue', () => {
+  // Initial Setup
+  const stack = new Stack();
+
+  const topic = new sns.Topic(stack, 'TestTopic', {
+    contentBasedDeduplication: true,
+    displayName: 'Customer subscription topic',
+    fifo: true,
+    topicName: 'customerTopic',
+  });
+
+  const props: SnsToSqsProps = {
+    enableEncryptionWithCustomerManagedKey: false,
+    existingTopicObj: topic,
+    queueProps: {
+      encryption: sqs.QueueEncryption.UNENCRYPTED,
+      fifo: true,
+    },
+    deadLetterQueueProps: {
+      encryption: sqs.QueueEncryption.UNENCRYPTED,
+      fifo: true,
+    }
+  };
+
+  new SnsToSqs(stack, 'test-sns-sqs', props);
+
+  // Assertion 1
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    FifoQueue: true,
+    RedrivePolicy: {
+      deadLetterTargetArn: {
+        "Fn::GetAtt": [
+          "testsnssqsdeadLetterQueue8DACC0A1",
+          "Arn"
+        ]
+      },
+      maxReceiveCount: 15
+    }
+  });
+});
+
+// --------------------------------------------------------------
+// Pattern deployment with existing Topic and Standard queues
+// --------------------------------------------------------------
+test('Pattern deployment w/ existing topic and Standard queue', () => {
+  // Initial Setup
+  const stack = new Stack();
+
+  const topic = new sns.Topic(stack, 'TestTopic', {
+    displayName: 'Customer subscription topic',
+    fifo: false,
+    topicName: 'customerTopic',
+  });
+
+  const props: SnsToSqsProps = {
+    enableEncryptionWithCustomerManagedKey: false,
+    existingTopicObj: topic,
+    queueProps: {
+      encryption: sqs.QueueEncryption.UNENCRYPTED,
+      fifo: false,
+    },
+    deadLetterQueueProps: {
+      encryption: sqs.QueueEncryption.UNENCRYPTED,
+      fifo: false,
+    }
+  };
+
+  new SnsToSqs(stack, 'test-sns-sqs', props);
+
+  // Assertion 1
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    RedrivePolicy: {
+      deadLetterTargetArn: {
+        "Fn::GetAtt": [
+          "testsnssqsdeadLetterQueue8DACC0A1",
+          "Arn"
+        ]
+      },
+      maxReceiveCount: 15
+    }
+  });
+});

@@ -15,14 +15,13 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
 import * as iam from '@aws-cdk/aws-iam';
 import { DynamoEventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
-import { DynamoDBStreamToLambdaProps, DynamoDBStreamToLambda } from '@aws-solutions-constructs/aws-dynamodb-stream-lambda';
-import { LambdaToElasticSearchAndKibanaProps, LambdaToElasticSearchAndKibana } from '@aws-solutions-constructs/aws-lambda-elasticsearch-kibana';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import * as sqs from '@aws-cdk/aws-sqs';
-import * as defaults from '@aws-solutions-constructs/core';
+import { DynamoDBStreamsToLambdaToElasticSearchAndKibana } from "@aws-solutions-constructs/aws-dynamodbstreams-lambda-elasticsearch-kibana";
 
 /**
  * @summary The properties for the DynamoDBStreamToLambdaToElastciSearchAndKibana Construct
@@ -98,8 +97,6 @@ export interface DynamoDBStreamToLambdaToElasticSearchAndKibanaProps {
 }
 
 export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
-  private dynamoDBStreamToLambda: DynamoDBStreamToLambda;
-  private lambdaToElasticSearchAndKibana: LambdaToElasticSearchAndKibana;
   public readonly lambdaFunction: lambda.Function;
   public readonly dynamoTableInterface: dynamodb.ITable;
   public readonly dynamoTable?: dynamodb.Table;
@@ -115,44 +112,22 @@ export class DynamoDBStreamToLambdaToElasticSearchAndKibana extends Construct {
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {DynamoDBStreamToLambdaToElasticSearchAndKibanaProps} props - user provided props for the construct
-   * @since 0.8.0
    * @access public
    */
   constructor(scope: Construct, id: string, props: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    const convertedProps: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps = { ...props };
+    const wrappedConstruct: DynamoDBStreamToLambdaToElasticSearchAndKibana = new DynamoDBStreamsToLambdaToElasticSearchAndKibana(
+      this, `${id}-wrapped`, convertedProps);
 
-    const _props1: DynamoDBStreamToLambdaProps = {
-      existingLambdaObj: props.existingLambdaObj,
-      lambdaFunctionProps: props.lambdaFunctionProps,
-      dynamoEventSourceProps: props.dynamoEventSourceProps,
-      dynamoTableProps: props.dynamoTableProps,
-      existingTableInterface: props.existingTableInterface,
-      deploySqsDlqQueue: props.deploySqsDlqQueue,
-      sqsDlqQueueProps: props.sqsDlqQueueProps
-    };
-
-    this.dynamoDBStreamToLambda = new DynamoDBStreamToLambda(this, 'DynamoDBStreamToLambda', _props1);
-
-    this.lambdaFunction = this.dynamoDBStreamToLambda.lambdaFunction;
-
-    const _props2: LambdaToElasticSearchAndKibanaProps = {
-      existingLambdaObj: this.lambdaFunction,
-      domainName: props.domainName,
-      esDomainProps: props.esDomainProps,
-      cognitoDomainName: props.cognitoDomainName,
-      createCloudWatchAlarms: props.createCloudWatchAlarms
-    };
-
-    this.lambdaToElasticSearchAndKibana = new LambdaToElasticSearchAndKibana(this, 'LambdaToElasticSearch', _props2);
-
-    this.dynamoTable = this.dynamoDBStreamToLambda.dynamoTable;
-    this.dynamoTableInterface = this.dynamoDBStreamToLambda.dynamoTableInterface;
-    this.userPool = this.lambdaToElasticSearchAndKibana.userPool;
-    this.userPoolClient = this.lambdaToElasticSearchAndKibana.userPoolClient;
-    this.identityPool = this.lambdaToElasticSearchAndKibana.identityPool;
-    this.elasticsearchDomain = this.lambdaToElasticSearchAndKibana.elasticsearchDomain;
-    this.elasticsearchRole = this.lambdaToElasticSearchAndKibana.elasticsearchRole;
-    this.cloudwatchAlarms = this.lambdaToElasticSearchAndKibana.cloudwatchAlarms;
+    this.lambdaFunction = wrappedConstruct.lambdaFunction;
+    this.dynamoTable = wrappedConstruct.dynamoTable;
+    this.dynamoTableInterface = wrappedConstruct.dynamoTableInterface;
+    this.userPool = wrappedConstruct.userPool;
+    this.userPoolClient = wrappedConstruct.userPoolClient;
+    this.identityPool = wrappedConstruct.identityPool;
+    this.elasticsearchDomain = wrappedConstruct.elasticsearchDomain;
+    this.elasticsearchRole = wrappedConstruct.elasticsearchRole;
+    this.cloudwatchAlarms = wrappedConstruct.cloudwatchAlarms;
   }
 }

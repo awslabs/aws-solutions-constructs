@@ -13,6 +13,7 @@
 
 // Imports
 import * as defaults from '@aws-solutions-constructs/core';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import * as cloudFront from '@aws-cdk/aws-cloudfront';
 import * as apiGateway from '@aws-cdk/aws-apigateway';

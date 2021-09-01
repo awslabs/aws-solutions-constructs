@@ -11,19 +11,20 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
-import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
-import * as cdk from "@aws-cdk/core";
-import * as s3 from '@aws-cdk/aws-s3';
+import { ResourcePart, SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import * as acm from '@aws-cdk/aws-certificatemanager';
+import * as s3 from '@aws-cdk/aws-s3';
+import * as cdk from "@aws-cdk/core";
 import { RemovalPolicy } from '@aws-cdk/core';
+import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
 
-function deploy(stack: cdk.Stack) {
+function deploy(stack: cdk.Stack, props?: CloudFrontToS3Props) {
   return new CloudFrontToS3(stack, 'test-cloudfront-s3', {
     bucketProps: {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
-    }
+    },
+    ...props
   });
 }
 
@@ -103,6 +104,18 @@ test('check existing bucket', () => {
     BucketName: "my-bucket"
   });
 
+  expect(stack).toHaveResource("AWS::S3::BucketPolicy", {
+    Metadata: {
+      cfn_nag: {
+        rules_to_suppress: [
+          {
+            id: "F16",
+            reason: "Public website bucket policy requires a wildcard principal"
+          }
+        ]
+      }
+    }
+  }, ResourcePart.CompleteDefinition);
 });
 
 test('test cloudfront with custom domain names', () => {
@@ -225,4 +238,59 @@ test("Test bad call with existingBucket and bucketProps", () => {
   };
   // Assertion
   expect(app).toThrowError();
+});
+
+test("Test existingBucketInterface", () => {
+  // Stack
+  const stack = new cdk.Stack();
+  const construct: CloudFrontToS3 = new CloudFrontToS3(stack, "existingIBucket", {
+    existingBucketInterface: s3.Bucket.fromBucketName(stack, 'mybucket', 'mybucket')
+  });
+  // Assertion
+  expect(construct.cloudFrontWebDistribution !== null);
+  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+      Origins: [
+        {
+          DomainName: {
+            "Fn::Join": [
+              "",
+              [
+                "mybucket.s3.",
+                {
+                  Ref: "AWS::Region"
+                },
+                ".",
+                {
+                  Ref: "AWS::URLSuffix"
+                }
+              ]
+            ]
+          },
+          Id: "existingIBucketCloudFrontDistributionOrigin1D5849125",
+          S3OriginConfig: {
+            OriginAccessIdentity: {
+              "Fn::Join": [
+                "",
+                [
+                  "origin-access-identity/cloudfront/",
+                  {
+                    Ref: "existingIBucketCloudFrontDistributionOrigin1S3OriginDDDB1606"
+                  }
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    }
+  });
+});
+
+test('test cloudfront disable cloudfront logging', () => {
+  const stack = new cdk.Stack();
+
+  const construct = deploy(stack, {cloudFrontDistributionProps: {enableLogging: false}} );
+
+  expect(construct.cloudFrontLoggingBucket === undefined);
 });

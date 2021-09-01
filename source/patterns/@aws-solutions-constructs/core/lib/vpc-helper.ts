@@ -85,7 +85,7 @@ export enum ServiceEndpointTypes {
   SNS = "SNS",
   SQS = "SQS",
   S3 = "S3",
-  STEPFUNCTIONS = "STEPFUNCTIONS",
+  STEP_FUNCTIONS = "STEP_FUNCTIONS",
   SAGEMAKER_RUNTIME = "SAGEMAKER_RUNTIME",
   SECRETS_MANAGER = "SECRETS_MANAGER",
   SSM = "SSM",
@@ -113,6 +113,11 @@ const endpointSettings: EndpointDefinition[] = [
     endpointName: ServiceEndpointTypes.S3,
     endpointType: EndpointTypes.GATEWAY,
     endpointGatewayService: ec2.GatewayVpcEndpointAwsService.S3,
+  },
+  {
+    endpointName: ServiceEndpointTypes.STEP_FUNCTIONS,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.STEP_FUNCTIONS,
   },
   {
     endpointName: ServiceEndpointTypes.SNS,

@@ -78,7 +78,7 @@ test('check if the event rule has permission/policy in place in sns for it to be
             }
           },
           Resource: {
-            Ref: "testSnsTopic42942701"
+            Ref: "testSnsTopic431DB510"
           },
           Sid: "TopicOwnerOnlyAccess"
         },
@@ -104,7 +104,7 @@ test('check if the event rule has permission/policy in place in sns for it to be
             AWS: "*"
           },
           Resource: {
-            Ref: "testSnsTopic42942701"
+            Ref: "testSnsTopic431DB510"
           },
           Sid: "HttpsOnly"
         },
@@ -115,7 +115,7 @@ test('check if the event rule has permission/policy in place in sns for it to be
             Service: "events.amazonaws.com"
           },
           Resource: {
-            Ref: "testSnsTopic42942701"
+            Ref: "testSnsTopic431DB510"
           },
           Sid: "2"
         }
@@ -124,7 +124,7 @@ test('check if the event rule has permission/policy in place in sns for it to be
     },
     Topics: [
       {
-        Ref: "testSnsTopic42942701"
+        Ref: "testSnsTopic431DB510"
       }
     ]
   }
@@ -141,11 +141,11 @@ test('check events rule properties', () => {
     Targets: [
       {
         Arn: {
-          Ref: "testSnsTopic42942701"
+          Ref: "testSnsTopic431DB510"
         },
         Id: {
           "Fn::GetAtt": [
-            "testSnsTopic42942701",
+            "testSnsTopic431DB510",
             "TopicName"
           ]
         }
@@ -169,7 +169,7 @@ test('check the sns topic properties', () => {
   expect(stack).toHaveResource('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "testEncryptionKeyB55BFDBC",
+        "testEncryptionKey7058DF17",
         "Arn"
       ]
     }
