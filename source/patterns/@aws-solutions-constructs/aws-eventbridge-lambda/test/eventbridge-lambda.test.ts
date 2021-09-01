@@ -33,6 +33,23 @@ function deployNewFunc(stack: cdk.Stack) {
   return new EventbridgeToLambda(stack, 'test-eventbridge-lambda', props);
 }
 
+function deployNewEventBus(stack: cdk.Stack) {
+  const props: EventbridgeToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    eventBusProps: {},
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  return new EventbridgeToLambda(stack, 'test-new-eventbridge-lambda', props);
+}
+
 test('snapshot test EventbridgeToLambda default params', () => {
   const stack = new cdk.Stack();
   deployNewFunc(stack);
@@ -188,4 +205,94 @@ test('check exception for Missing existingObj from props', () => {
   } catch (e) {
     expect(e).toBeInstanceOf(Error);
   }
+});
+
+test('check eventbus property', () => {
+  const stack = new cdk.Stack();
+
+  const construct: EventbridgeToLambda = deployNewEventBus(stack);
+
+  expect(construct.eventsRule !== null);
+  expect(construct.lambdaFunction !== null);
+  expect(construct.eventBus !== null);
+});
+
+test('check exception while passing existingEventBus & eventBusProps', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {},
+    existingEventBus: new events.EventBus(stack, `test-existing-eventbus`, {})
+  };
+
+  try {
+    new EventbridgeToLambda(stack, 'test-eventbridge-lambda', props);
+  } catch (e) {
+    expect(e).toBeInstanceOf(Error);
+  }
+});
+
+test('snapshot test EventbridgeToLambda custom event bus params', () => {
+  const stack = new cdk.Stack();
+  deployNewEventBus(stack);
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+test('snapshot test EventbridgeToLambda existing event bus params', () => {
+  const stack = new cdk.Stack();
+  const props: EventbridgeToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    existingEventBus: new events.EventBus(stack, `test-existing-eventbus`, {})
+  };
+  new EventbridgeToLambda(stack, 'test-existing-eventbridge-lambda', props);
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+test('check custom event bus resource when deploy:true', () => {
+  const stack = new cdk.Stack();
+
+  deployNewEventBus(stack);
+
+  expect(stack).toHaveResource('AWS::Events::EventBus');
+});
+
+test('check multiple constructs in a single stack', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    eventBusProps: {},
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventbridgeToLambda(stack, 'test-new-eventbridge-lambda1', props);
+  new EventbridgeToLambda(stack, 'test-new-eventbridge-lambda2', props);
+
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
