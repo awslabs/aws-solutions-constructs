@@ -40,7 +40,7 @@ export interface EventbridgeToLambdaProps {
    *
    * @default - None
    */
-  readonly existingEventBus?: events.EventBus,
+  readonly existingEventBus?: events.IEventBus,
   /**
    * A new custom EventBus is created with provided props.
    *
@@ -83,14 +83,11 @@ export class EventbridgeToLambda extends Construct {
       })
     };
 
-    // Check whether an existing EventBus is provided
-    if (props.existingEventBus) {
-      this.eventBus = props.existingEventBus;
-    } else if (props.eventBusProps) {
-      // eventBusProps is provided, create a new EventBus
-      const _eventBusName = props.eventBusProps.eventBusName || 'CustomEventBus';
-      this.eventBus = new events.EventBus(this, _eventBusName, props.eventBusProps);
-    }
+    // build an event bus if existingEventBus is provided or eventBusProps are provided
+    this.eventBus = defaults.buildEventBus(this, {
+      existingEventBus: props.existingEventBus,
+      eventBusProps: props.eventBusProps
+    });
 
     const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([lambdaFunc], this.eventBus);
     const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);

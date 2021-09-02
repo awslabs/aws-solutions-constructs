@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test deployment with existing EventBus 1`] = `
+Object {
+  "Resources": Object {
+    "existingeventbusA5B80487": Object {
+      "Properties": Object {
+        "Name": "existingeventbus",
+      },
+      "Type": "AWS::Events::EventBus",
+    },
+  },
+}
+`;
+
+exports[`Test deployment with new EventBus no props 1`] = `
+Object {
+  "Resources": Object {
+    "CustomEventBusEC0C3CB8": Object {
+      "Properties": Object {
+        "Name": "CustomEventBus",
+      },
+      "Type": "AWS::Events::EventBus",
+    },
+  },
+}
+`;
+
+exports[`Test deployment with new EventBus with props 1`] = `
+Object {
+  "Resources": Object {
+    "testneweventbus87AFE59D": Object {
+      "Properties": Object {
+        "Name": "testneweventbus",
+      },
+      "Type": "AWS::Events::EventBus",
+    },
+  },
+}
+`;
+
+exports[`Test deployment with no properties 1`] = `Object {}`;
