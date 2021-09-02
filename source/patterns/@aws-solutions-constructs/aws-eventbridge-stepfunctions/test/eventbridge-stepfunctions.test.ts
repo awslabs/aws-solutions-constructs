@@ -35,6 +35,25 @@ function deployNewStateMachine(stack: cdk.Stack) {
   return new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions', props);
 }
 
+function deployNewStateMachineAndEventBus(stack: cdk.Stack) {
+
+  const startState = new sfn.Pass(stack, 'StartState');
+
+  const props: EventbridgeToStepfunctionsProps = {
+    stateMachineProps: {
+      definition: startState
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {}
+  };
+
+  return new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions-eventbus', props);
+}
+
 test('snapshot test EventbridgeToStepfunctions default params', () => {
   const stack = new cdk.Stack();
   deployNewStateMachine(stack);
@@ -118,4 +137,134 @@ test('check properties with no CW Alarms', () => {
   expect(construct.stateMachine !== null);
   expect(construct.eventsRule !== null);
   expect(construct.stateMachineLogGroup !== null);
+});
+
+test('check eventbus property', () => {
+  const stack = new cdk.Stack();
+
+  const construct: EventbridgeToStepfunctions = deployNewStateMachineAndEventBus(stack);
+
+  expect(construct.cloudwatchAlarms !== null);
+  expect(construct.stateMachine !== null);
+  expect(construct.eventsRule !== null);
+  expect(construct.stateMachineLogGroup !== null);
+  expect(construct.eventBus !== null);
+});
+
+test('check exception while passing existingEventBus & eventBusProps', () => {
+  const stack = new cdk.Stack();
+  const startState = new sfn.Pass(stack, 'StartState');
+
+  const props: EventbridgeToStepfunctionsProps = {
+    stateMachineProps: {
+      definition: startState
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {},
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, {})
+  };
+
+  try {
+    new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions', props);
+  } catch (e) {
+    expect(e).toBeInstanceOf(Error);
+  }
+});
+
+test('snapshot test EventbridgeToStepfunctions new custom event bus params', () => {
+  const stack = new cdk.Stack();
+  deployNewStateMachineAndEventBus(stack);
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+test('snapshot test EventbridgeToStepfunctions existing event bus params', () => {
+  const stack = new cdk.Stack();
+  const startState = new sfn.Pass(stack, 'StartState');
+
+  const props: EventbridgeToStepfunctionsProps = {
+    stateMachineProps: {
+      definition: startState
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {},
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, {})
+  };
+
+  new EventbridgeToStepfunctions(stack, 'test-existing-eventbridge-stepfunctions', props);
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+test('check custom event bus resource when deploy:true', () => {
+  const stack = new cdk.Stack();
+
+  deployNewStateMachineAndEventBus(stack);
+
+  expect(stack).toHaveResource('AWS::Events::EventBus');
+});
+
+test('check custom event bus resource with props when deploy:true', () => {
+  const stack = new cdk.Stack();
+  const startState = new sfn.Pass(stack, 'StartState');
+
+  const props: EventbridgeToStepfunctionsProps = {
+    stateMachineProps: {
+      definition: startState
+    },
+    eventBusProps: {
+      eventBusName: 'testcustomeventbus'
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventbridgeToStepfunctions(stack, 'test-new-eventbridge-stepfunctions', props);
+
+  expect(stack).toHaveResource('AWS::Events::EventBus', {
+    Name: 'testcustomeventbus'
+  });
+});
+
+test('check multiple constructs in a single stack', () => {
+  const stack = new cdk.Stack();
+  const startState1 = new sfn.Pass(stack, 'StartState1');
+
+  const props1: EventbridgeToStepfunctionsProps = {
+    stateMachineProps: {
+      definition: startState1
+    },
+    eventBusProps: {},
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+
+  const startState2 = new sfn.Pass(stack, 'StartState2');
+
+  const props2: EventbridgeToStepfunctionsProps = {
+    stateMachineProps: {
+      definition: startState2
+    },
+    eventBusProps: {},
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventbridgeToStepfunctions(stack, 'test-new-eventbridge-stepfunctions1', props1);
+  new EventbridgeToStepfunctions(stack, 'test-new-eventbridge-stepfunctions2', props2);
+
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
