@@ -14,6 +14,7 @@
 import * as sfn from '@aws-cdk/aws-stepfunctions';
 import * as s3 from '@aws-cdk/aws-s3';
 import { S3ToStepfunctions } from '@aws-solutions-constructs/aws-s3-stepfunctions';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import * as cloudtrail from '@aws-cdk/aws-cloudtrail';

@@ -15,6 +15,7 @@ import * as sns from '@aws-cdk/aws-sns';
 import * as events from '@aws-cdk/aws-events';
 import * as kms from '@aws-cdk/aws-kms';
 import { EventbridgeToSns } from '@aws-solutions-constructs/aws-eventbridge-sns';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
 export interface EventsRuleToSnsProps {

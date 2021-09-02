@@ -23,6 +23,8 @@ import {
 } from './cloudfront-distribution-defaults';
 import { overrideProps, addCfnSuppressRules } from './utils';
 import { createLoggingBucket } from './s3-bucket-helper';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
+import { Construct } from '@aws-cdk/core';
 
 // Override Cfn_Nag rule: Cloudfront TLS-1.2 rule (https://github.com/stelligent/cfn_nag/issues/384)
 function updateSecurityPolicy(cfDistribution: cloudfront.Distribution) {
@@ -38,7 +40,7 @@ function updateSecurityPolicy(cfDistribution: cloudfront.Distribution) {
 
 // Cloudfront function to insert the HTTP Security Headers into the response coming from the origin servers
 // and before it is sent to the client
-function defaultCloudfrontFunction(scope: cdk.Construct): cloudfront.Function {
+function defaultCloudfrontFunction(scope: Construct): cloudfront.Function {
   // generate a stable unique id for the cloudfront function and use it
   // both for the function name and the logical id of the function so if
   // it is changed the function will be recreated.
@@ -59,68 +61,41 @@ function defaultCloudfrontFunction(scope: cdk.Construct): cloudfront.Function {
   });
 }
 
-export function CloudFrontDistributionForApiGateway(scope: cdk.Construct,
+export function CloudFrontDistributionForApiGateway(scope: Construct,
   apiEndPoint: api.RestApi,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
-  httpSecurityHeaders?: boolean): [cloudfront.Distribution,
+  httpSecurityHeaders: boolean = true): [cloudfront.Distribution,
     cloudfront.Function?, s3.Bucket?] {
 
-  const _httpSecurityHeaders = (httpSecurityHeaders !== undefined && httpSecurityHeaders === false) ? false : true;
+  const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
-  let defaultprops: cloudfront.DistributionProps;
-  let cloudfrontFunction;
-  let loggingBucket;
+  const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope);
 
-  if (_httpSecurityHeaders) {
-    cloudfrontFunction = defaultCloudfrontFunction(scope);
-  }
-
-  if (cloudFrontDistributionProps && cloudFrontDistributionProps.enableLogging && cloudFrontDistributionProps.logBucket) {
-    defaultprops = DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint,
-      cloudFrontDistributionProps.logBucket, _httpSecurityHeaders,
-      cloudfrontFunction);
-  } else {
-    loggingBucket = createLoggingBucket(scope, 'CloudfrontLoggingBucket');
-    defaultprops = DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint,
-      loggingBucket, _httpSecurityHeaders,
-      cloudfrontFunction);
-  }
+  const defaultprops = DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint, loggingBucket, httpSecurityHeaders, cloudfrontFunction);
 
   const cfprops = cloudFrontDistributionProps ? overrideProps(defaultprops, cloudFrontDistributionProps, false) : defaultprops;
   // Create the Cloudfront Distribution
-  const cfDistribution: cloudfront.Distribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
+  const cfDistribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
   updateSecurityPolicy(cfDistribution);
 
   return [cfDistribution, cloudfrontFunction, loggingBucket];
 }
 
-export function CloudFrontDistributionForS3(scope: cdk.Construct,
+export function CloudFrontDistributionForS3(scope: Construct,
   sourceBucket: s3.IBucket,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
-  httpSecurityHeaders?: boolean): [cloudfront.Distribution,
+  httpSecurityHeaders: boolean = true): [cloudfront.Distribution,
     cloudfront.Function?, s3.Bucket?] {
 
-  let defaultprops: cloudfront.DistributionProps;
-  let cloudfrontFunction;
-  let loggingBucket;
-  const _httpSecurityHeaders = (httpSecurityHeaders !== undefined && httpSecurityHeaders === false) ? false : true;
+  const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
-  if (_httpSecurityHeaders) {
-    cloudfrontFunction = defaultCloudfrontFunction(scope);
-  }
+  const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope);
 
-  if (cloudFrontDistributionProps && cloudFrontDistributionProps.enableLogging && cloudFrontDistributionProps.logBucket) {
-    defaultprops = DefaultCloudFrontWebDistributionForS3Props(sourceBucket,
-      cloudFrontDistributionProps.logBucket, _httpSecurityHeaders, cloudfrontFunction);
-  } else {
-    loggingBucket = createLoggingBucket(scope, 'CloudfrontLoggingBucket');
-    defaultprops = DefaultCloudFrontWebDistributionForS3Props(sourceBucket, loggingBucket,
-      _httpSecurityHeaders, cloudfrontFunction);
-  }
+  const defaultprops = DefaultCloudFrontWebDistributionForS3Props(sourceBucket, loggingBucket, httpSecurityHeaders, cloudfrontFunction);
 
   const cfprops = cloudFrontDistributionProps ? overrideProps(defaultprops, cloudFrontDistributionProps, false) : defaultprops;
   // Create the Cloudfront Distribution
-  const cfDistribution: cloudfront.Distribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
+  const cfDistribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
   updateSecurityPolicy(cfDistribution);
 
   // Extract the CfnBucketPolicy from the sourceBucket
@@ -137,27 +112,15 @@ export function CloudFrontDistributionForS3(scope: cdk.Construct,
   return [cfDistribution, cloudfrontFunction, loggingBucket];
 }
 
-export function CloudFrontDistributionForMediaStore(scope: cdk.Construct,
+export function CloudFrontDistributionForMediaStore(scope: Construct,
   mediaStoreContainer: mediastore.CfnContainer,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
-  httpSecurityHeaders?: boolean): [cloudfront.Distribution,
-    s3.Bucket, cloudfront.OriginRequestPolicy, cloudfront.Function?] {
+  httpSecurityHeaders: boolean = true): [cloudfront.Distribution,
+    s3.Bucket | undefined, cloudfront.OriginRequestPolicy, cloudfront.Function?] {
 
-  let defaultprops: cloudfront.DistributionProps;
   let originRequestPolicy: cloudfront.OriginRequestPolicy;
-  let loggingBucket: s3.Bucket;
-  let cloudfrontFunction;
-  const _httpSecurityHeaders = (httpSecurityHeaders !== undefined && httpSecurityHeaders === false) ? false : true;
 
-  if (_httpSecurityHeaders) {
-    cloudfrontFunction = defaultCloudfrontFunction(scope);
-  }
-
-  if (cloudFrontDistributionProps && cloudFrontDistributionProps.enableLogging && cloudFrontDistributionProps.logBucket) {
-    loggingBucket = cloudFrontDistributionProps.logBucket as s3.Bucket;
-  } else {
-    loggingBucket = createLoggingBucket(scope, 'CloudfrontLoggingBucket');
-  }
+  const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope);
 
   if (cloudFrontDistributionProps
     && cloudFrontDistributionProps.defaultBehavior
@@ -187,11 +150,13 @@ export function CloudFrontDistributionForMediaStore(scope: cdk.Construct,
     originRequestPolicy = new cloudfront.OriginRequestPolicy(scope, 'CloudfrontOriginRequestPolicy', originRequestPolicyProps);
   }
 
-  defaultprops = DefaultCloudFrontDisributionForMediaStoreProps(
+  const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
+
+  const defaultprops = DefaultCloudFrontDisributionForMediaStoreProps(
     mediaStoreContainer,
     loggingBucket,
     originRequestPolicy,
-    _httpSecurityHeaders,
+    httpSecurityHeaders,
     cloudFrontDistributionProps?.customHeaders,
     cloudfrontFunction
   );
@@ -205,14 +170,26 @@ export function CloudFrontDistributionForMediaStore(scope: cdk.Construct,
   }
 
   // Create the CloudFront Distribution
-  const cfDistribution: cloudfront.Distribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
+  const cfDistribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
   updateSecurityPolicy(cfDistribution);
 
   return [cfDistribution, loggingBucket, originRequestPolicy, cloudfrontFunction];
 }
 
-export function CloudFrontOriginAccessIdentity(scope: cdk.Construct, comment?: string) {
+export function CloudFrontOriginAccessIdentity(scope: Construct, comment?: string) {
   return new cloudfront.OriginAccessIdentity(scope, 'CloudFrontOriginAccessIdentity', {
     comment: comment ? comment : `access-identity-${cdk.Aws.REGION}-${cdk.Aws.STACK_NAME}`
   });
+}
+
+function getLoggingBucket(cloudFrontDistributionProps: cloudfront.DistributionProps | any, scope: Construct): s3.Bucket | undefined {
+  const isLoggingDisabled = cloudFrontDistributionProps?.enableLogging === false;
+  const userSuppliedLogBucket = cloudFrontDistributionProps?.logBucket;
+  return isLoggingDisabled
+    ? undefined
+    : userSuppliedLogBucket ?? createLoggingBucket(scope, 'CloudfrontLoggingBucket');
+}
+
+function getCloudfrontFunction(httpSecurityHeaders: boolean, scope: Construct) {
+  return httpSecurityHeaders ? defaultCloudfrontFunction(scope) : undefined;
 }

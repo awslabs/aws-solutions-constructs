@@ -14,6 +14,7 @@
 import * as sqs from '@aws-cdk/aws-sqs';
 import * as events from '@aws-cdk/aws-events';
 import * as kms from '@aws-cdk/aws-kms';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import { EventbridgeToSqs } from '@aws-solutions-constructs/aws-eventbridge-sqs';
 

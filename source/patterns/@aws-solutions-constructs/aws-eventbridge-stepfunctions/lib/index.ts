@@ -15,6 +15,7 @@ import * as sfn from '@aws-cdk/aws-stepfunctions';
 import * as events from '@aws-cdk/aws-events';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as iam from '@aws-cdk/aws-iam';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import { overrideProps } from '@aws-solutions-constructs/core';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';

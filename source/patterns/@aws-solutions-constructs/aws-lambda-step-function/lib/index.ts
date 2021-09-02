@@ -16,7 +16,9 @@ import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as sfn from '@aws-cdk/aws-stepfunctions';
 import { LambdaToStepfunctions } from "@aws-solutions-constructs/aws-lambda-stepfunctions";
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
+import * as ec2 from "@aws-cdk/aws-ec2";
 import * as logs from '@aws-cdk/aws-logs';
 
 /**
@@ -59,6 +61,20 @@ export interface LambdaToStepFunctionProps {
    * @default - None
    */
   readonly stateMachineEnvironmentVariableName?: string;
+  /**
+   * An existing VPC for the construct to use (construct will NOT create a new VPC in this case)
+   */
+  readonly existingVpc?: ec2.IVpc;
+  /**
+   * Properties to override default properties if deployVpc is true
+   */
+  readonly vpcProps?: ec2.VpcProps;
+  /**
+   * Whether to deploy a new VPC
+   *
+   * @default - false
+   */
+  readonly deployVpc?: boolean;
 }
 
 /**
@@ -69,6 +85,7 @@ export class LambdaToStepFunction extends Construct {
   public readonly stateMachine: sfn.StateMachine;
   public readonly stateMachineLogGroup: logs.ILogGroup;
   public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
+  public readonly vpc?: ec2.IVpc;
 
   /**
    * @summary Constructs a new instance of the LambdaToStepFunctionProps class.
@@ -87,5 +104,6 @@ export class LambdaToStepFunction extends Construct {
     this.stateMachine = wrappedConstruct.stateMachine;
     this.stateMachineLogGroup = wrappedConstruct.stateMachineLogGroup;
     this.cloudwatchAlarms = wrappedConstruct.cloudwatchAlarms;
+    this.vpc = wrappedConstruct.vpc;
   }
 }

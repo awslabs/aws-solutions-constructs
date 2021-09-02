@@ -12,6 +12,7 @@
  */
 
 import { Secret, SecretProps } from '@aws-cdk/aws-secretsmanager';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import { DefaultSecretProps } from './secretsmanager-defaults';
 import { overrideProps, addCfnSuppressRules } from './utils';

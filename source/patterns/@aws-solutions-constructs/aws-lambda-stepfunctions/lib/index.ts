@@ -16,7 +16,9 @@ import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as sfn from '@aws-cdk/aws-stepfunctions';
 import * as defaults from '@aws-solutions-constructs/core';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
+import * as ec2 from "@aws-cdk/aws-ec2";
 import * as logs from '@aws-cdk/aws-logs';
 
 /**
@@ -59,6 +61,20 @@ export interface LambdaToStepfunctionsProps {
    * @default - None
    */
   readonly stateMachineEnvironmentVariableName?: string;
+  /**
+   * An existing VPC for the construct to use (construct will NOT create a new VPC in this case)
+   */
+  readonly existingVpc?: ec2.IVpc;
+  /**
+   * Properties to override default properties if deployVpc is true
+   */
+  readonly vpcProps?: ec2.VpcProps;
+  /**
+   * Whether to deploy a new VPC
+   *
+   * @default - false
+   */
+  readonly deployVpc?: boolean;
 }
 
 /**
@@ -69,6 +85,7 @@ export class LambdaToStepfunctions extends Construct {
   public readonly stateMachine: sfn.StateMachine;
   public readonly stateMachineLogGroup: logs.ILogGroup;
   public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
+  public readonly vpc?: ec2.IVpc;
 
   /**
    * @summary Constructs a new instance of the LambdaToStepfunctionsProps class.
@@ -82,6 +99,25 @@ export class LambdaToStepfunctions extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
 
+    // Setup vpc
+    if (props.deployVpc || props.existingVpc) {
+      if (props.deployVpc && props.existingVpc) {
+        throw new Error("More than 1 VPC specified in the properties");
+      }
+
+      this.vpc = defaults.buildVpc(scope, {
+        defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
+        existingVpc: props.existingVpc,
+        userVpcProps: props.vpcProps,
+        constructVpcProps: {
+          enableDnsHostnames: true,
+          enableDnsSupport: true,
+        },
+      });
+
+      defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.STEP_FUNCTIONS);
+    }
+
     // Setup the state machine
     [this.stateMachine, this.stateMachineLogGroup] = defaults.buildStateMachine(this, props.stateMachineProps,
       props.logGroupProps);
@@ -90,6 +126,7 @@ export class LambdaToStepfunctions extends Construct {
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps,
+      vpc: this.vpc
     });
 
     // Assign the state machine ARN as an environment variable

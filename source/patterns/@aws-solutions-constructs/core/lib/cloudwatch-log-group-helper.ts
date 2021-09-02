@@ -14,6 +14,7 @@
 import { DefaultLogGroupProps } from './cloudwatch-log-group-defaults';
 import * as logs from '@aws-cdk/aws-logs';
 import { overrideProps, addCfnSuppressRules } from './utils';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
 export function buildLogGroup(scope: Construct, logGroupId?: string, logGroupProps?: logs.LogGroupProps): logs.LogGroup {

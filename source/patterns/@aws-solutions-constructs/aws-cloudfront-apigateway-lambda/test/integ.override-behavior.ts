@@ -18,7 +18,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as apigateway from '@aws-cdk/aws-apigateway';
 import * as cdk from '@aws-cdk/core';
-import { Duration } from "@aws-cdk/core/lib/duration";
+import { Duration } from "@aws-cdk/core";
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
