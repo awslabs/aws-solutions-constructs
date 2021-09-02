@@ -295,7 +295,7 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
       }
     },
     eventBusProps: {},
-    existingEventBus: new events.EventBus(stack, `test-existing-new-eventbus`, {})
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, {})
   };
 
   try {
@@ -319,7 +319,7 @@ test('snapshot test EventbridgeToSns existing event bus params', () => {
         source: ['solutionsconstructs']
       }
     },
-    existingEventBus: new events.EventBus(stack, `test-existing-eventbus`, {})
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {})
   };
   new EventbridgeToSns(stack, 'test-existing-eventbridge-sns', props);
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();

@@ -28,11 +28,11 @@ export interface EventbridgeToSnsProps {
      */
     readonly topicProps?: sns.TopicProps
     /**
-     * Existing instance of a custom EventBus, uses `Default` EventBus if this property is not set.
+     * Existing instance of a custom EventBus.
      *
      * @default - None
      */
-    readonly existingEventBus?: events.IEventBus,
+    readonly existingEventBusInterface?: events.IEventBus,
     /**
      * A new custom EventBus is created with provided props.
      *
@@ -114,7 +114,7 @@ export class EventbridgeToSns extends Construct {
 
       // build an event bus if existingEventBus is provided or eventBusProps are provided
       this.eventBus = defaults.buildEventBus(this, {
-        existingEventBus: props.existingEventBus,
+        existingEventBusInterface: props.existingEventBusInterface,
         eventBusProps: props.eventBusProps
       });
 
