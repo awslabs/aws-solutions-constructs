@@ -28,6 +28,18 @@ export interface EventbridgeToSnsProps {
      */
     readonly topicProps?: sns.TopicProps
     /**
+     * Existing instance of a custom EventBus, uses `Default` EventBus if this property is not set.
+     *
+     * @default - None
+     */
+    readonly existingEventBus?: events.IEventBus,
+    /**
+     * A new custom EventBus is created with provided props.
+     *
+     * @default - None
+     */
+    readonly eventBusProps?: events.EventBusProps,
+    /**
      * User provided eventRuleProps to override the defaults
      *
      * @default - None
@@ -62,6 +74,7 @@ export interface EventbridgeToSnsProps {
 
 export class EventbridgeToSns extends Construct {
     public readonly snsTopic: sns.Topic;
+    public readonly eventBus?: events.IEventBus;
     public readonly eventsRule: events.Rule;
     public readonly encryptionKey?: kms.Key;
 
@@ -99,8 +112,14 @@ export class EventbridgeToSns extends Construct {
         })
       };
 
+      // build an event bus if existingEventBus is provided or eventBusProps are provided
+      this.eventBus = defaults.buildEventBus(this, {
+        existingEventBus: props.existingEventBus,
+        eventBusProps: props.eventBusProps
+      });
+
       // Setup up the event rule property.
-      const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([topicEventTarget]);
+      const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([topicEventTarget], this.eventBus);
       const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);
 
       // Setup up the event rule.
@@ -109,13 +128,12 @@ export class EventbridgeToSns extends Construct {
       // Setup up the grant policy for event to be able to publish to the sns topic.
       this.snsTopic.grantPublish(new ServicePrincipal('events.amazonaws.com'));
 
-        // Grant EventBridge service access to the SNS Topic encryption key
-        this.encryptionKey?.grant(new ServicePrincipal('events.amazonaws.com'),
-            "kms:Decrypt",
-            "kms:Encrypt",
-            "kms:ReEncrypt*",
-            "kms:GenerateDataKey*"
-        );
+      // Grant EventBridge service access to the SNS Topic encryption key
+      this.encryptionKey?.grant(new ServicePrincipal('events.amazonaws.com'),
+          "kms:Decrypt",
+          "kms:Encrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*"
+      );
     }
-
 }
