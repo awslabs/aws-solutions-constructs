@@ -23,7 +23,7 @@ export interface BuildEventBusProps {
    *
    * @default - None.
    */
-  readonly existingEventBus?: events.IEventBus,
+  readonly existingEventBusInterface?: events.IEventBus,
     /**
      * Optional user provided props to override the default props for the SNS topic.
      *
@@ -34,8 +34,8 @@ export interface BuildEventBusProps {
 
 export function buildEventBus(scope: Construct, props: BuildEventBusProps): events.IEventBus | undefined {
   // Check whether existing EventBus is provided
-  if (props.existingEventBus) {
-    return props.existingEventBus;
+  if (props.existingEventBusInterface) {
+    return props.existingEventBusInterface;
   } else if (props.eventBusProps) {
     // eventBusProps is provided, create a new EventBus
     const _eventBusName = props.eventBusProps.eventBusName || 'CustomEventBus';

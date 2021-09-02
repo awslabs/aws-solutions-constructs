@@ -39,7 +39,7 @@ test('Test deployment with existing EventBus', () => {
   const stack = new Stack();
   // Helper declaration
   defaults.buildEventBus(stack, {
-    existingEventBus: new events.EventBus(stack, `existing-event-bus`, {})
+    existingEventBusInterface: new events.EventBus(stack, `existing-event-bus`, {})
   });
   // Assertion 1
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();

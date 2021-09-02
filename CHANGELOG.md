@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.118.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.117.0...v1.118.0) (2021-09-02)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.118.0
+
+### Features
+
+* Provide better error message when Queue and DLQ fifo settings don't match [#343](https://github.com/awslabs/aws-solutions-constructs/pull/343)
+* Convert SQS fifo: false to fifo: undefined automatically [#346](https://github.com/awslabs/aws-solutions-constructs/pull/346)
+* Added read and delete request template props to aws-apigateway-dynamodb [#347](https://github.com/awslabs/aws-solutions-constructs/pull/347)
+* **cdk-v2:** Rearranging imports, removing deprecated APIs for CDK v2 release ([#350](https://github.com/awslabs/aws-solutions-constructs/issues/350)) ([0c8fba4](https://github.com/awslabs/aws-solutions-constructs/commit/0c8fba44001fedd549923ac16972b7779e1cdeaf))
+
 ## [1.117.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.116.0...v1.117.0) (2021-08-14)
 
 ### Changed
