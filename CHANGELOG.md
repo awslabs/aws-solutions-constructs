@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [1.120.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.119.0...v1.120.0) (2021-09-02)
 
+### Changed
+
+* Upgraded all patterns to CDK v1.120.0
+
 ## [1.119.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.118.0...v1.119.0) (2021-09-02)
 
 ### Changed
