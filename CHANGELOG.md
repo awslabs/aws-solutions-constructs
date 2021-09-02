@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.119.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.118.0...v1.119.0) (2021-09-02)
+
+
+### Features
+
+* **aws-eventbridge-lambda:**  Support for custom EventBus ([#354](https://github.com/awslabs/aws-solutions-constructs/issues/354)) ([fd750a5](https://github.com/awslabs/aws-solutions-constructs/commit/fd750a5fc02f23728214bba5ca2909c99cc6adb4))
+
 ## [1.118.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.117.0...v1.118.0) (2021-09-02)
 
 ### Changed
