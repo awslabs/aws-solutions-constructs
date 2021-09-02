@@ -31,26 +31,21 @@ Here is a minimal deployable pattern definition in Typescript:
 ``` typescript
 import * as api from '@aws-cdk/aws-apigateway';
 import * as lambda from "@aws-cdk/aws-lambda";
+import { ApiGatewayToLambda } from '@aws-solutions-constructs/aws-apigateway-lambda';
 import { WafWebACLToApiGatewayProps, WafWebACLToApiGateway } from "@aws-solutions-constructs/aws-wafwebacl-apigateway";
 
-const lambdaProps: lambda.FunctionProps = {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_12_X,
-    handler: 'index.handler'
-};
-
-const lambdafunction = new lambda.Function(this, 'LambdaFunction', lambdaProps);
-const apiGateway = new api.RestApi(this, 'test-api');
-const tasks = apiGateway.root.addResource('tasks');
-
-apiGateway.addMethod('GET', new api.LambdaIntegration(lambdaFunction));
-
-const apigatewayInterface = api.RestApi.fromRestApi(this, 'apigateway-interface', apiGateway.restApiId);
-
-new WafWebACLToApiGateway(this, 'test-wafwebacl-apigateway', {
-    existingApiGateway: apigatewayInterface
+const apiGatewayToLambda = new ApiGatewayToLambda(this, 'ApiGatewayToLambdaPattern', {
+    lambdaFunctionProps: {
+        runtime: lambda.Runtime.NODEJS_10_X,
+        handler: 'index.handler',
+        code: lambda.Code.fromAsset(`lambda`)
+    }
 });
 
+// This construct can only be attached to a configured API Gateway.
+new WafWebACLToApiGateway(this, 'test-wafwebacl-apigateway', {
+    existingApiGatewayInterface: apiGatewayToLambda.apiGateway
+});
 ```
 
 ## Initializer
@@ -69,7 +64,7 @@ _Parameters_
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
-|existingApiGateway|[`api.IRestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.IRestApi.html)|The existing API Gateway instance that will be fronted with the WAF.|
+|existingApiGatewayInterface|[`api.IRestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.IRestApi.html)|The existing API Gateway instance that will be protected with the WAF. *Note that a WAF web ACL can only be added to a configured API Gateway, so this construct only accepts an existing IRestApi and does not accept apiGatewayProps.*|
 |webACLProps?|[`waf.CfnWebACLProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-waf.CfnWebACLProps.html)|Optional user-provided props to override the default props for the AWS WAF access control list.|
 
 ## Pattern Properties
@@ -77,14 +72,15 @@ _Parameters_
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
 |webACL|[`waf.CfnWebACL`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-waf.CfnWebACL.html)|Returns an instance of the waf.CfnWebACL created by the construct.|
-|apiGateway|[`api.RestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.RestApi.html)|	Returns an instance of the API Gateway REST API created by the pattern. |
+|apiGateway|[`api.IRestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.IRestApi.html)|Returns an instance of the API Gateway REST API created by the pattern. |
 
 ## Default settings
 
 Out of the box implementation of the Construct without any override will set the following defaults:
 
 ### AWS WAF
-* Deploy a WAF with 7 [AWS managed rule groups](https://docs.aws.amazon.com/waf/latest/developerguide/aws-managed-rule-groups-list.html)
+* Deploy a WAF with 7 [AWS managed rule groups](https://docs.aws.amazon.com/waf/latest/developerguide/aws-managed-rule-groups-list.html).
+*Note that the default rules can be replaced by specifying the rules property of CfnWebACLProps* 
     * AWSManagedRulesBotControlRuleSet
     * AWSManagedRulesKnownBadInputsRuleSet
     * AWSManagedRulesCommonRuleSet
