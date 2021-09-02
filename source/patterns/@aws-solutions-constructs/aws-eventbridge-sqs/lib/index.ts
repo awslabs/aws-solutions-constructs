@@ -25,11 +25,11 @@ import { overrideProps } from '@aws-solutions-constructs/core';
  */
 export interface EventbridgeToSqsProps {
   /**
-   * Existing instance of a custom EventBus, uses `Default` EventBus if this property is not set.
+   * Existing instance of a custom EventBus.
    *
    * @default - None
    */
-  readonly existingEventBus?: events.IEventBus,
+  readonly existingEventBusInterface?: events.IEventBus,
   /**
    * A new custom EventBus is created with provided props.
    *
@@ -102,9 +102,9 @@ export interface EventbridgeToSqsProps {
 export class EventbridgeToSqs extends Construct {
   public readonly sqsQueue: sqs.Queue;
   public readonly deadLetterQueue?: sqs.DeadLetterQueue;
+  public readonly eventBus?: events.IEventBus;
   public readonly eventsRule: events.Rule;
   public readonly encryptionKey?: kms.IKey;
-  public readonly eventBus?: events.IEventBus;
 
   /**
    * @summary Constructs a new instance of the EventbridgeToSqs class.
@@ -151,7 +151,7 @@ export class EventbridgeToSqs extends Construct {
 
     // build an event bus if existingEventBus is provided or eventBusProps are provided
     this.eventBus = defaults.buildEventBus(this, {
-      existingEventBus: props.existingEventBus,
+      existingEventBusInterface: props.existingEventBusInterface,
       eventBusProps: props.eventBusProps
     });
 

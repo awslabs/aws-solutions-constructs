@@ -35,7 +35,7 @@ const props: EventbridgeToSqsProps = {
     }
   },
   existingQueueObj,
-  existingEventBus: new events.EventBus(stack, 'existing-event-bus', {})
+  existingEventBusInterface: new events.EventBus(stack, 'existing-event-bus', {})
 };
 
 new EventbridgeToSqs(stack, 'construct', props);
