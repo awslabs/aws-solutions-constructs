@@ -35,6 +35,25 @@ function deployNewStateMachine(stack: cdk.Stack) {
   return new EventsRuleToStepFunction(stack, 'test-events-rule-step-function', props);
 }
 
+function deployNewStateMachineAndEventBus(stack: cdk.Stack) {
+
+  const startState = new sfn.Pass(stack, 'StartState');
+
+  const props: EventsRuleToStepFunctionProps = {
+    stateMachineProps: {
+      definition: startState
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {}
+  };
+
+  return new EventsRuleToStepFunction(stack, 'test-eventrules-stepfunctions-eventbus', props);
+}
+
 test('snapshot test EventsRuleToStepFunction default params', () => {
   const stack = new cdk.Stack();
   deployNewStateMachine(stack);
@@ -118,4 +137,134 @@ test('check properties with no CW Alarms', () => {
   expect(construct.stateMachine !== null);
   expect(construct.eventsRule !== null);
   expect(construct.stateMachineLogGroup !== null);
+});
+
+test('check eventbus property', () => {
+  const stack = new cdk.Stack();
+
+  const construct: EventsRuleToStepFunction = deployNewStateMachineAndEventBus(stack);
+
+  expect(construct.cloudwatchAlarms !== null);
+  expect(construct.stateMachine !== null);
+  expect(construct.eventsRule !== null);
+  expect(construct.stateMachineLogGroup !== null);
+  expect(construct.eventBus !== null);
+});
+
+test('check exception while passing existingEventBus & eventBusProps', () => {
+  const stack = new cdk.Stack();
+  const startState = new sfn.Pass(stack, 'StartState');
+
+  const props: EventsRuleToStepFunctionProps = {
+    stateMachineProps: {
+      definition: startState
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {},
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, {})
+  };
+
+  try {
+    new EventsRuleToStepFunction(stack, 'test-eventsrule-stepfunctions', props);
+  } catch (e) {
+    expect(e).toBeInstanceOf(Error);
+  }
+});
+
+test('snapshot test EventsRuleToStepfunctions new custom event bus params', () => {
+  const stack = new cdk.Stack();
+  deployNewStateMachineAndEventBus(stack);
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+test('snapshot test EventsRuleToStepfunctions existing event bus params', () => {
+  const stack = new cdk.Stack();
+  const startState = new sfn.Pass(stack, 'StartState');
+
+  const props: EventsRuleToStepFunctionProps = {
+    stateMachineProps: {
+      definition: startState
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {},
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, {})
+  };
+
+  new EventsRuleToStepFunction(stack, 'test-existing-eventsrule-stepfunctions', props);
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+test('check custom event bus resource when deploy:true', () => {
+  const stack = new cdk.Stack();
+
+  deployNewStateMachineAndEventBus(stack);
+
+  expect(stack).toHaveResource('AWS::Events::EventBus');
+});
+
+test('check custom event bus resource with props when deploy:true', () => {
+  const stack = new cdk.Stack();
+  const startState = new sfn.Pass(stack, 'StartState');
+
+  const props: EventsRuleToStepFunctionProps = {
+    stateMachineProps: {
+      definition: startState
+    },
+    eventBusProps: {
+      eventBusName: 'testcustomeventbus'
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventsRuleToStepFunction(stack, 'test-new-eventsrule-stepfunctions', props);
+
+  expect(stack).toHaveResource('AWS::Events::EventBus', {
+    Name: 'testcustomeventbus'
+  });
+});
+
+test('check multiple constructs in a single stack', () => {
+  const stack = new cdk.Stack();
+  const startState1 = new sfn.Pass(stack, 'StartState1');
+
+  const props1: EventsRuleToStepFunctionProps = {
+    stateMachineProps: {
+      definition: startState1
+    },
+    eventBusProps: {},
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+
+  const startState2 = new sfn.Pass(stack, 'StartState2');
+
+  const props2: EventsRuleToStepFunctionProps = {
+    stateMachineProps: {
+      definition: startState2
+    },
+    eventBusProps: {},
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventsRuleToStepFunction(stack, 'test-new-eventsrule-stepfunctions1', props1);
+  new EventsRuleToStepFunction(stack, 'test-new-eventsrule-stepfunctions2', props2);
+
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });

@@ -24,6 +24,18 @@ import * as logs from '@aws-cdk/aws-logs';
  */
 export interface EventsRuleToStepFunctionProps {
   /**
+   * Existing instance of a custom EventBus.
+   *
+   * @default - None
+   */
+  readonly existingEventBusInterface?: events.IEventBus,
+  /**
+   * A new custom EventBus is created with provided props.
+   *
+   * @default - None
+   */
+  readonly eventBusProps?: events.EventBusProps,
+  /**
    * User provided StateMachineProps to override the defaults
    *
    * @default - None
@@ -54,6 +66,7 @@ export class EventsRuleToStepFunction extends Construct {
   public readonly stateMachineLogGroup: logs.ILogGroup;
   public readonly eventsRule: events.Rule;
   public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
+  public readonly eventBus?: events.IEventBus;
 
   /**
    * @summary Constructs a new instance of the EventsRuleToStepFunction class.
@@ -71,5 +84,6 @@ export class EventsRuleToStepFunction extends Construct {
     this.stateMachineLogGroup = wrappedConstruct.stateMachineLogGroup;
     this.eventsRule = wrappedConstruct.eventsRule;
     this.cloudwatchAlarms = wrappedConstruct.cloudwatchAlarms;
+    this.eventBus = wrappedConstruct.eventBus;
   }
 }
