@@ -36,7 +36,7 @@ export interface EventbridgeToLambdaProps {
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps,
   /**
-   * Existing instance of a custom EventBus, uses `Default` EventBus if this property is not set.
+   * Existing instance of a custom EventBus.
    *
    * @default - None
    */
