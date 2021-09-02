@@ -83,7 +83,7 @@ export class EventbridgeToLambda extends Construct {
       })
     };
 
-    // Check whether an existingBus is provided
+    // Check whether an existing EventBus is provided
     if (props.existingEventBus) {
       this.eventBus = props.existingEventBus;
     } else if (props.eventBusProps) {
