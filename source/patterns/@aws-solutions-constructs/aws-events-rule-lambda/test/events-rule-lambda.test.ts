@@ -207,7 +207,7 @@ test('check exception for Missing existingObj from props', () => {
   }
 });
 
-test('check eventbus property', () => {
+test('check eventbus property, snapshot & eventbus exists', () => {
   const stack = new cdk.Stack();
 
   const construct: EventsRuleToLambda = deployNewEventBus(stack);
@@ -215,6 +215,11 @@ test('check eventbus property', () => {
   expect(construct.eventsRule !== null);
   expect(construct.lambdaFunction !== null);
   expect(construct.eventBus !== null);
+
+  // Validate snapshot
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Check whether eventbus exists
+  expect(stack).toHaveResource('AWS::Events::EventBus');
 });
 
 test('check exception while passing existingEventBus & eventBusProps', () => {
@@ -242,12 +247,6 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
   }
 });
 
-test('snapshot test EventsRuleToLambda custom event bus params', () => {
-  const stack = new cdk.Stack();
-  deployNewEventBus(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
 test('snapshot test EventsRuleToLambda existing event bus params', () => {
   const stack = new cdk.Stack();
   const props: EventsRuleToLambdaProps = {
@@ -265,14 +264,6 @@ test('snapshot test EventsRuleToLambda existing event bus params', () => {
   };
   new EventsRuleToLambda(stack, 'test-existing-eventsrule-lambda', props);
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
-test('check custom event bus resource when deploy:true', () => {
-  const stack = new cdk.Stack();
-
-  deployNewEventBus(stack);
-
-  expect(stack).toHaveResource('AWS::Events::EventBus');
 });
 
 test('check custom event bus resource with props when deploy:true', () => {

@@ -18,14 +18,15 @@ import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
-
+// Create existing custom EventBus
+const existingEventBus = new events.EventBus(stack, `existing-event-bus`, {});
 const props: EventsRuleToSnsProps = {
   eventRuleProps: {
     eventPattern: {
       source: ['solutionsconstructs']
     }
   },
-  existingEventBusInterface: new events.EventBus(stack, `existing-event-bus`, {}) // Create existing custom EventBus
+  existingEventBusInterface: existingEventBus
 };
 
 new EventsRuleToSns(stack, 'test-construct', props);
