@@ -52,13 +52,13 @@ export interface EventbridgeToLambdaProps {
    *
    * @default - None
    */
-  readonly existingEventBusInterface?: events.IEventBus,
+  readonly existingEventBusInterface?: events.IEventBus;
   /**
    * A new custom EventBus is created with provided props.
    *
    * @default - None
    */
-  readonly eventBusProps?: events.EventBusProps,
+  readonly eventBusProps?: events.EventBusProps;
   /**
    * User provided eventRuleProps to override the defaults
    *
