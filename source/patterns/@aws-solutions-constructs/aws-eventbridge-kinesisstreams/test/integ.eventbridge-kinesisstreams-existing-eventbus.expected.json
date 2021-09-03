@@ -1,10 +1,10 @@
 {
-  "Description": "Integration Test for aws-eventbridge-kinesisstreams",
+  "Description": "Integration Test for aws-eventbridge-kinesisstreams with existing kinesis stream",
   "Resources": {
-    "testeventbridgekinesisstreamKinesisStream2A352C09": {
+    "teststream04374A09": {
       "Type": "AWS::Kinesis::Stream",
       "Properties": {
-        "ShardCount": 1,
+        "ShardCount": 2,
         "RetentionPeriodHours": 24,
         "StreamEncryption": {
           "EncryptionType": "KMS",
@@ -12,7 +12,13 @@
         }
       }
     },
-    "testeventbridgekinesisstreameventsRole43473E44": {
+    "existingeventbusA5B80487": {
+      "Type": "AWS::Events::EventBus",
+      "Properties": {
+        "Name": "eventbridgekinesisstreamsexistingeventbusexistingeventbus16C79224"
+      }
+    },
+    "testeventbridgekinesisstreamexistingeventsRoleDFC1450E": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -30,7 +36,7 @@
         "Description": "Events Rule Role"
       }
     },
-    "testeventbridgekinesisstreameventsRoleDefaultPolicy51F5A4FA": {
+    "testeventbridgekinesisstreamexistingeventsRoleDefaultPolicyAEF2E56D": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -44,7 +50,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "testeventbridgekinesisstreamKinesisStream2A352C09",
+                  "teststream04374A09",
                   "Arn"
                 ]
               }
@@ -52,25 +58,19 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testeventbridgekinesisstreameventsRoleDefaultPolicy51F5A4FA",
+        "PolicyName": "testeventbridgekinesisstreamexistingeventsRoleDefaultPolicyAEF2E56D",
         "Roles": [
           {
-            "Ref": "testeventbridgekinesisstreameventsRole43473E44"
+            "Ref": "testeventbridgekinesisstreamexistingeventsRoleDFC1450E"
           }
         ]
       }
     },
-    "testeventbridgekinesisstreamCustomEventBus591309EC": {
-      "Type": "AWS::Events::EventBus",
-      "Properties": {
-        "Name": "eventbridgekinesisstreamsneweventbridgetesteventbridgekinesisstreamCustomEventBusAD0012AD"
-      }
-    },
-    "testeventbridgekinesisstreamEventsRuleC4E74981": {
+    "testeventbridgekinesisstreamexistingEventsRuleEB7F3817": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "EventBusName": {
-          "Ref": "testeventbridgekinesisstreamCustomEventBus591309EC"
+          "Ref": "existingeventbusA5B80487"
         },
         "EventPattern": {
           "source": [
@@ -82,14 +82,14 @@
           {
             "Arn": {
               "Fn::GetAtt": [
-                "testeventbridgekinesisstreamKinesisStream2A352C09",
+                "teststream04374A09",
                 "Arn"
               ]
             },
             "Id": "Target0",
             "RoleArn": {
               "Fn::GetAtt": [
-                "testeventbridgekinesisstreameventsRole43473E44",
+                "testeventbridgekinesisstreamexistingeventsRoleDFC1450E",
                 "Arn"
               ]
             }
@@ -97,7 +97,7 @@
         ]
       }
     },
-    "testeventbridgekinesisstreamKinesisStreamGetRecordsIteratorAgeAlarm5FD9545D": {
+    "testeventbridgekinesisstreamexistingKinesisStreamGetRecordsIteratorAgeAlarmA1800C3D": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -110,7 +110,7 @@
         "Threshold": 2592000
       }
     },
-    "testeventbridgekinesisstreamKinesisStreamReadProvisionedThroughputExceededAlarm600B4281": {
+    "testeventbridgekinesisstreamexistingKinesisStreamReadProvisionedThroughputExceededAlarm078FEB59": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanThreshold",
