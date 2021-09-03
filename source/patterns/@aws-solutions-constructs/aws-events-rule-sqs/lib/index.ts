@@ -23,6 +23,18 @@ import { EventbridgeToSqs } from '@aws-solutions-constructs/aws-eventbridge-sqs'
  */
 export interface EventsRuleToSqsProps {
   /**
+   * Existing instance of a custom EventBus.
+   *
+   * @default - None
+   */
+  readonly existingEventBusInterface?: events.IEventBus,
+  /**
+   * A new custom EventBus is created with provided props.
+   *
+   * @default - None
+   */
+  readonly eventBusProps?: events.EventBusProps,
+  /**
    * User provided eventRuleProps to override the defaults
    *
    * @default - None
@@ -90,6 +102,7 @@ export class EventsRuleToSqs extends Construct {
   public readonly deadLetterQueue?: sqs.DeadLetterQueue;
   public readonly eventsRule: events.Rule;
   public readonly encryptionKey?: kms.IKey;
+  public readonly eventBus?: events.IEventBus;
 
   /**
    * @summary Constructs a new instance of the EventsRuleToSqs class.
@@ -108,5 +121,6 @@ export class EventsRuleToSqs extends Construct {
     this.deadLetterQueue = wrappedConstruct.deadLetterQueue;
     this.eventsRule = wrappedConstruct.eventsRule;
     this.encryptionKey = wrappedConstruct.encryptionKey;
+    this.eventBus = wrappedConstruct.eventBus;
   }
 }

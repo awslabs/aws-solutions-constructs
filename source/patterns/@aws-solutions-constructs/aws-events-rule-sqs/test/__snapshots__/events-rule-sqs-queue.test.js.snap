@@ -1,5 +1,592 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`check multiple constructs in a single stack 1`] = `
+Object {
+  "Resources": Object {
+    "testneweventsrulesqs1testneweventsrulesqs1wrappedCustomEventBus9D02CFA6": Object {
+      "Properties": Object {
+        "Name": "testneweventsrulesqs1testneweventsrulesqs1wrappedCustomEventBusEC6121F4",
+      },
+      "Type": "AWS::Events::EventBus",
+    },
+    "testneweventsrulesqs1testneweventsrulesqs1wrappedEncryptionKey863D30E3": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "EnableKeyRotation": true,
+        "KeyPolicy": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion",
+                "kms:GenerateDataKey",
+                "kms:TagResource",
+                "kms:UntagResource",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testneweventsrulesqs1testneweventsrulesqs1wrappedEventsRule016672B3": Object {
+      "Properties": Object {
+        "EventBusName": Object {
+          "Ref": "testneweventsrulesqs1testneweventsrulesqs1wrappedCustomEventBus9D02CFA6",
+        },
+        "EventPattern": Object {
+          "source": Array [
+            "solutionsconstructs",
+          ],
+        },
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "testneweventsrulesqs1testneweventsrulesqs1wrappedqueueD6E123E2",
+                "Arn",
+              ],
+            },
+            "Id": Object {
+              "Fn::GetAtt": Array [
+                "testneweventsrulesqs1testneweventsrulesqs1wrappedqueueD6E123E2",
+                "QueueName",
+              ],
+            },
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "testneweventsrulesqs1testneweventsrulesqs1wrappeddeadLetterQueueDBE8CACA": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "KmsMasterKeyId": "alias/aws/sqs",
+      },
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "testneweventsrulesqs1testneweventsrulesqs1wrappeddeadLetterQueuePolicy420A14F0": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:RemovePermission",
+                "sqs:AddPermission",
+                "sqs:SetQueueAttributes",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testneweventsrulesqs1testneweventsrulesqs1wrappeddeadLetterQueueDBE8CACA",
+                  "Arn",
+                ],
+              },
+              "Sid": "QueueOwnerOnlyAccess",
+            },
+            Object {
+              "Action": "SQS:*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testneweventsrulesqs1testneweventsrulesqs1wrappeddeadLetterQueueDBE8CACA",
+                  "Arn",
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Queues": Array [
+          Object {
+            "Ref": "testneweventsrulesqs1testneweventsrulesqs1wrappeddeadLetterQueueDBE8CACA",
+          },
+        ],
+      },
+      "Type": "AWS::SQS::QueuePolicy",
+    },
+    "testneweventsrulesqs1testneweventsrulesqs1wrappedqueueD6E123E2": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "KmsMasterKeyId": Object {
+          "Fn::GetAtt": Array [
+            "testneweventsrulesqs1testneweventsrulesqs1wrappedEncryptionKey863D30E3",
+            "Arn",
+          ],
+        },
+        "RedrivePolicy": Object {
+          "deadLetterTargetArn": Object {
+            "Fn::GetAtt": Array [
+              "testneweventsrulesqs1testneweventsrulesqs1wrappeddeadLetterQueueDBE8CACA",
+              "Arn",
+            ],
+          },
+          "maxReceiveCount": 15,
+        },
+      },
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "testneweventsrulesqs1testneweventsrulesqs1wrappedqueuePolicy8D992E2C": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:RemovePermission",
+                "sqs:AddPermission",
+                "sqs:SetQueueAttributes",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testneweventsrulesqs1testneweventsrulesqs1wrappedqueueD6E123E2",
+                  "Arn",
+                ],
+              },
+              "Sid": "QueueOwnerOnlyAccess",
+            },
+            Object {
+              "Action": "SQS:*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testneweventsrulesqs1testneweventsrulesqs1wrappedqueueD6E123E2",
+                  "Arn",
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+            Object {
+              "Action": Array [
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testneweventsrulesqs1testneweventsrulesqs1wrappedqueueD6E123E2",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Queues": Array [
+          Object {
+            "Ref": "testneweventsrulesqs1testneweventsrulesqs1wrappedqueueD6E123E2",
+          },
+        ],
+      },
+      "Type": "AWS::SQS::QueuePolicy",
+    },
+    "testneweventsrulesqs2testneweventsrulesqs2wrappedCustomEventBusA8D31D69": Object {
+      "Properties": Object {
+        "Name": "testneweventsrulesqs2testneweventsrulesqs2wrappedCustomEventBusA0895C25",
+      },
+      "Type": "AWS::Events::EventBus",
+    },
+    "testneweventsrulesqs2testneweventsrulesqs2wrappedEncryptionKeyE63D6087": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "EnableKeyRotation": true,
+        "KeyPolicy": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion",
+                "kms:GenerateDataKey",
+                "kms:TagResource",
+                "kms:UntagResource",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testneweventsrulesqs2testneweventsrulesqs2wrappedEventsRule2C8B47C2": Object {
+      "Properties": Object {
+        "EventBusName": Object {
+          "Ref": "testneweventsrulesqs2testneweventsrulesqs2wrappedCustomEventBusA8D31D69",
+        },
+        "EventPattern": Object {
+          "source": Array [
+            "solutionsconstructs",
+          ],
+        },
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "testneweventsrulesqs2testneweventsrulesqs2wrappedqueue8496F5CD",
+                "Arn",
+              ],
+            },
+            "Id": Object {
+              "Fn::GetAtt": Array [
+                "testneweventsrulesqs2testneweventsrulesqs2wrappedqueue8496F5CD",
+                "QueueName",
+              ],
+            },
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "testneweventsrulesqs2testneweventsrulesqs2wrappeddeadLetterQueueA3699350": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "KmsMasterKeyId": "alias/aws/sqs",
+      },
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "testneweventsrulesqs2testneweventsrulesqs2wrappeddeadLetterQueuePolicyB13FA08A": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:RemovePermission",
+                "sqs:AddPermission",
+                "sqs:SetQueueAttributes",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testneweventsrulesqs2testneweventsrulesqs2wrappeddeadLetterQueueA3699350",
+                  "Arn",
+                ],
+              },
+              "Sid": "QueueOwnerOnlyAccess",
+            },
+            Object {
+              "Action": "SQS:*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testneweventsrulesqs2testneweventsrulesqs2wrappeddeadLetterQueueA3699350",
+                  "Arn",
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Queues": Array [
+          Object {
+            "Ref": "testneweventsrulesqs2testneweventsrulesqs2wrappeddeadLetterQueueA3699350",
+          },
+        ],
+      },
+      "Type": "AWS::SQS::QueuePolicy",
+    },
+    "testneweventsrulesqs2testneweventsrulesqs2wrappedqueue8496F5CD": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "KmsMasterKeyId": Object {
+          "Fn::GetAtt": Array [
+            "testneweventsrulesqs2testneweventsrulesqs2wrappedEncryptionKeyE63D6087",
+            "Arn",
+          ],
+        },
+        "RedrivePolicy": Object {
+          "deadLetterTargetArn": Object {
+            "Fn::GetAtt": Array [
+              "testneweventsrulesqs2testneweventsrulesqs2wrappeddeadLetterQueueA3699350",
+              "Arn",
+            ],
+          },
+          "maxReceiveCount": 15,
+        },
+      },
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "testneweventsrulesqs2testneweventsrulesqs2wrappedqueuePolicy74546DC4": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:RemovePermission",
+                "sqs:AddPermission",
+                "sqs:SetQueueAttributes",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testneweventsrulesqs2testneweventsrulesqs2wrappedqueue8496F5CD",
+                  "Arn",
+                ],
+              },
+              "Sid": "QueueOwnerOnlyAccess",
+            },
+            Object {
+              "Action": "SQS:*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testneweventsrulesqs2testneweventsrulesqs2wrappedqueue8496F5CD",
+                  "Arn",
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+            Object {
+              "Action": Array [
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testneweventsrulesqs2testneweventsrulesqs2wrappedqueue8496F5CD",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Queues": Array [
+          Object {
+            "Ref": "testneweventsrulesqs2testneweventsrulesqs2wrappedqueue8496F5CD",
+          },
+        ],
+      },
+      "Type": "AWS::SQS::QueuePolicy",
+    },
+  },
+}
+`;
+
 exports[`snapshot test EventsRuleToSqs default params 1`] = `
 Object {
   "Resources": Object {
@@ -275,6 +862,600 @@ Object {
         "Queues": Array [
           Object {
             "Ref": "testeventsrulesqstesteventsrulesqswrappedqueue3820F81B",
+          },
+        ],
+      },
+      "Type": "AWS::SQS::QueuePolicy",
+    },
+  },
+}
+`;
+
+exports[`snapshot test EventsRuleToSqs existing event bus params 1`] = `
+Object {
+  "Resources": Object {
+    "testexistingeventbusC6E4A2D0": Object {
+      "Properties": Object {
+        "Name": "testexistingeventbus",
+      },
+      "Type": "AWS::Events::EventBus",
+    },
+    "testexistingeventsrulesqstestexistingeventsrulesqswrappedEncryptionKeyF56A8317": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "EnableKeyRotation": true,
+        "KeyPolicy": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion",
+                "kms:GenerateDataKey",
+                "kms:TagResource",
+                "kms:UntagResource",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testexistingeventsrulesqstestexistingeventsrulesqswrappedEventsRuleD53151C0": Object {
+      "Properties": Object {
+        "EventBusName": Object {
+          "Ref": "testexistingeventbusC6E4A2D0",
+        },
+        "EventPattern": Object {
+          "source": Array [
+            "solutionsconstructs",
+          ],
+        },
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "testexistingeventsrulesqstestexistingeventsrulesqswrappedqueue2D3A6826",
+                "Arn",
+              ],
+            },
+            "Id": Object {
+              "Fn::GetAtt": Array [
+                "testexistingeventsrulesqstestexistingeventsrulesqswrappedqueue2D3A6826",
+                "QueueName",
+              ],
+            },
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "testexistingeventsrulesqstestexistingeventsrulesqswrappeddeadLetterQueueE2FC125B": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "KmsMasterKeyId": "alias/aws/sqs",
+      },
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "testexistingeventsrulesqstestexistingeventsrulesqswrappeddeadLetterQueuePolicy481EEFB5": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:RemovePermission",
+                "sqs:AddPermission",
+                "sqs:SetQueueAttributes",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testexistingeventsrulesqstestexistingeventsrulesqswrappeddeadLetterQueueE2FC125B",
+                  "Arn",
+                ],
+              },
+              "Sid": "QueueOwnerOnlyAccess",
+            },
+            Object {
+              "Action": "SQS:*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testexistingeventsrulesqstestexistingeventsrulesqswrappeddeadLetterQueueE2FC125B",
+                  "Arn",
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Queues": Array [
+          Object {
+            "Ref": "testexistingeventsrulesqstestexistingeventsrulesqswrappeddeadLetterQueueE2FC125B",
+          },
+        ],
+      },
+      "Type": "AWS::SQS::QueuePolicy",
+    },
+    "testexistingeventsrulesqstestexistingeventsrulesqswrappedqueue2D3A6826": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "KmsMasterKeyId": Object {
+          "Fn::GetAtt": Array [
+            "testexistingeventsrulesqstestexistingeventsrulesqswrappedEncryptionKeyF56A8317",
+            "Arn",
+          ],
+        },
+        "RedrivePolicy": Object {
+          "deadLetterTargetArn": Object {
+            "Fn::GetAtt": Array [
+              "testexistingeventsrulesqstestexistingeventsrulesqswrappeddeadLetterQueueE2FC125B",
+              "Arn",
+            ],
+          },
+          "maxReceiveCount": 15,
+        },
+      },
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "testexistingeventsrulesqstestexistingeventsrulesqswrappedqueuePolicy181CF4C8": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:RemovePermission",
+                "sqs:AddPermission",
+                "sqs:SetQueueAttributes",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testexistingeventsrulesqstestexistingeventsrulesqswrappedqueue2D3A6826",
+                  "Arn",
+                ],
+              },
+              "Sid": "QueueOwnerOnlyAccess",
+            },
+            Object {
+              "Action": "SQS:*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testexistingeventsrulesqstestexistingeventsrulesqswrappedqueue2D3A6826",
+                  "Arn",
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+            Object {
+              "Action": Array [
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testexistingeventsrulesqstestexistingeventsrulesqswrappedqueue2D3A6826",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Queues": Array [
+          Object {
+            "Ref": "testexistingeventsrulesqstestexistingeventsrulesqswrappedqueue2D3A6826",
+          },
+        ],
+      },
+      "Type": "AWS::SQS::QueuePolicy",
+    },
+  },
+}
+`;
+
+exports[`snapshot test EventsRuleToSqs new custom event bus params 1`] = `
+Object {
+  "Resources": Object {
+    "testeventsrulesqsnewbustesteventsrulesqsnewbuswrappedCustomEventBus29FCEF5E": Object {
+      "Properties": Object {
+        "Name": "testeventsrulesqsnewbustesteventsrulesqsnewbuswrappedCustomEventBus7A98350A",
+      },
+      "Type": "AWS::Events::EventBus",
+    },
+    "testeventsrulesqsnewbustesteventsrulesqsnewbuswrappedEncryptionKeyF5E6BEBF": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "EnableKeyRotation": true,
+        "KeyPolicy": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion",
+                "kms:GenerateDataKey",
+                "kms:TagResource",
+                "kms:UntagResource",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testeventsrulesqsnewbustesteventsrulesqsnewbuswrappedEventsRule06176ECD": Object {
+      "Properties": Object {
+        "EventBusName": Object {
+          "Ref": "testeventsrulesqsnewbustesteventsrulesqsnewbuswrappedCustomEventBus29FCEF5E",
+        },
+        "EventPattern": Object {
+          "source": Array [
+            "solutionsconstructs",
+          ],
+        },
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "testeventsrulesqsnewbustesteventsrulesqsnewbuswrappedqueue9D5164C2",
+                "Arn",
+              ],
+            },
+            "Id": Object {
+              "Fn::GetAtt": Array [
+                "testeventsrulesqsnewbustesteventsrulesqsnewbuswrappedqueue9D5164C2",
+                "QueueName",
+              ],
+            },
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "testeventsrulesqsnewbustesteventsrulesqsnewbuswrappeddeadLetterQueue1A7A6517": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "KmsMasterKeyId": "alias/aws/sqs",
+      },
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "testeventsrulesqsnewbustesteventsrulesqsnewbuswrappeddeadLetterQueuePolicy975CA53B": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:RemovePermission",
+                "sqs:AddPermission",
+                "sqs:SetQueueAttributes",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testeventsrulesqsnewbustesteventsrulesqsnewbuswrappeddeadLetterQueue1A7A6517",
+                  "Arn",
+                ],
+              },
+              "Sid": "QueueOwnerOnlyAccess",
+            },
+            Object {
+              "Action": "SQS:*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testeventsrulesqsnewbustesteventsrulesqsnewbuswrappeddeadLetterQueue1A7A6517",
+                  "Arn",
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Queues": Array [
+          Object {
+            "Ref": "testeventsrulesqsnewbustesteventsrulesqsnewbuswrappeddeadLetterQueue1A7A6517",
+          },
+        ],
+      },
+      "Type": "AWS::SQS::QueuePolicy",
+    },
+    "testeventsrulesqsnewbustesteventsrulesqsnewbuswrappedqueue9D5164C2": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "KmsMasterKeyId": Object {
+          "Fn::GetAtt": Array [
+            "testeventsrulesqsnewbustesteventsrulesqsnewbuswrappedEncryptionKeyF5E6BEBF",
+            "Arn",
+          ],
+        },
+        "RedrivePolicy": Object {
+          "deadLetterTargetArn": Object {
+            "Fn::GetAtt": Array [
+              "testeventsrulesqsnewbustesteventsrulesqsnewbuswrappeddeadLetterQueue1A7A6517",
+              "Arn",
+            ],
+          },
+          "maxReceiveCount": 15,
+        },
+      },
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "testeventsrulesqsnewbustesteventsrulesqsnewbuswrappedqueuePolicyDFD135EE": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:RemovePermission",
+                "sqs:AddPermission",
+                "sqs:SetQueueAttributes",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testeventsrulesqsnewbustesteventsrulesqsnewbuswrappedqueue9D5164C2",
+                  "Arn",
+                ],
+              },
+              "Sid": "QueueOwnerOnlyAccess",
+            },
+            Object {
+              "Action": "SQS:*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testeventsrulesqsnewbustesteventsrulesqsnewbuswrappedqueue9D5164C2",
+                  "Arn",
+                ],
+              },
+              "Sid": "HttpsOnly",
+            },
+            Object {
+              "Action": Array [
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testeventsrulesqsnewbustesteventsrulesqsnewbuswrappedqueue9D5164C2",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Queues": Array [
+          Object {
+            "Ref": "testeventsrulesqsnewbustesteventsrulesqsnewbuswrappedqueue9D5164C2",
           },
         ],
       },
