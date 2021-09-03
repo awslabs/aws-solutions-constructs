@@ -23,13 +23,13 @@ export interface BuildEventBusProps {
    *
    * @default - None.
    */
-  readonly existingEventBusInterface?: events.IEventBus,
-    /**
-     * Optional user provided props to override the default props for the SNS topic.
-     *
-     * @default - Default props are used.
-     */
-    readonly eventBusProps?: events.EventBusProps
+  readonly existingEventBusInterface?: events.IEventBus;
+  /**
+   * Optional user provided props to override the default props for the SNS topic.
+   *
+   * @default - Default props are used.
+   */
+  readonly eventBusProps?: events.EventBusProps;
 }
 
 export function buildEventBus(scope: Construct, props: BuildEventBusProps): events.IEventBus | undefined {
