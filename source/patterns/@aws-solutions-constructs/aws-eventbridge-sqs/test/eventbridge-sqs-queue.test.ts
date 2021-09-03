@@ -26,6 +26,7 @@ function deployNewStack(stack: cdk.Stack) {
   };
   return new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
 }
+
 function deployStackWithNewEventBus(stack: cdk.Stack) {
   const props: EventbridgeToSqsProps = {
     eventRuleProps: {
