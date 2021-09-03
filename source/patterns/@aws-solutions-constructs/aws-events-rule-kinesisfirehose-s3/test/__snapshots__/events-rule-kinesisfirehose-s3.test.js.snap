@@ -439,3 +439,1804 @@ Object {
   },
 }
 `;
+
+exports[`check eventbus property, snapshot & eventbus exists 1`] = `
+Object {
+  "Resources": Object {
+    "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedCustomEventBusA38E34FB": Object {
+      "Properties": Object {
+        "Name": "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedCustomEventBusC8B80FA8",
+      },
+      "Type": "AWS::Events::EventBus",
+    },
+    "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedEventsRule73C81E12": Object {
+      "Properties": Object {
+        "EventBusName": Object {
+          "Ref": "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedCustomEventBusA38E34FB",
+        },
+        "EventPattern": Object {
+          "source": Array [
+            "solutionsconstructs",
+          ],
+        },
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3KinesisFirehose73F7BDDF",
+                "Arn",
+              ],
+            },
+            "Id": "Target0",
+            "RoleArn": Object {
+              "Fn::GetAtt": Array [
+                "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedEventsRuleInvokeKinesisFirehoseRole459438BC",
+                "Arn",
+              ],
+            },
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedEventsRuleInvokeKinesisFirehosePolicyA2B37AD5": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "firehose:PutRecord",
+                "firehose:PutRecordBatch",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3KinesisFirehose73F7BDDF",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "nesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedEventsRuleInvokeKinesisFirehosePolicyA2B37AD5",
+        "Roles": Array [
+          Object {
+            "Ref": "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedEventsRuleInvokeKinesisFirehoseRole459438BC",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedEventsRuleInvokeKinesisFirehoseRole459438BC": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Events Rule To Kinesis Firehose Role",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3KinesisFirehose73F7BDDF": Object {
+      "Properties": Object {
+        "DeliveryStreamEncryptionConfigurationInput": Object {
+          "KeyType": "AWS_OWNED_CMK",
+        },
+        "ExtendedS3DestinationConfiguration": Object {
+          "BucketARN": Object {
+            "Fn::GetAtt": Array [
+              "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3S3Bucket31AB8440",
+              "Arn",
+            ],
+          },
+          "BufferingHints": Object {
+            "IntervalInSeconds": 300,
+            "SizeInMBs": 5,
+          },
+          "CloudWatchLoggingOptions": Object {
+            "Enabled": true,
+            "LogGroupName": Object {
+              "Ref": "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3firehoseloggroup16F2CCA8",
+            },
+            "LogStreamName": Object {
+              "Ref": "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3firehoseloggroupfirehoselogstreamE1259129",
+            },
+          },
+          "CompressionFormat": "GZIP",
+          "EncryptionConfiguration": Object {
+            "KMSEncryptionConfig": Object {
+              "AWSKMSKeyARN": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":kms:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":alias/aws/s3",
+                  ],
+                ],
+              },
+            },
+          },
+          "RoleARN": Object {
+            "Fn::GetAtt": Array [
+              "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3KinesisFirehoseRole09FB29ED",
+              "Arn",
+            ],
+          },
+        },
+      },
+      "Type": "AWS::KinesisFirehose::DeliveryStream",
+    },
+    "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3KinesisFirehosePolicyAEAF4F55": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:AbortMultipartUpload",
+                "s3:GetBucketLocation",
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:ListBucketMultipartUploads",
+                "s3:PutObject",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3S3Bucket31AB8440",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3S3Bucket31AB8440",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": "logs:PutLogEvents",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":logs:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":log-group:",
+                    Object {
+                      "Ref": "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3firehoseloggroup16F2CCA8",
+                    },
+                    ":log-stream:",
+                    Object {
+                      "Ref": "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3firehoseloggroupfirehoselogstreamE1259129",
+                    },
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "isfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3KinesisFirehosePolicyAEAF4F55",
+        "Roles": Array [
+          Object {
+            "Ref": "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3KinesisFirehoseRole09FB29ED",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3KinesisFirehoseRole09FB29ED": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "firehose.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3S3Bucket31AB8440": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "BucketEncryption": Object {
+          "ServerSideEncryptionConfiguration": Array [
+            Object {
+              "ServerSideEncryptionByDefault": Object {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "LifecycleConfiguration": Object {
+          "Rules": Array [
+            Object {
+              "NoncurrentVersionTransitions": Array [
+                Object {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90,
+                },
+              ],
+              "Status": "Enabled",
+            },
+          ],
+        },
+        "LoggingConfiguration": Object {
+          "DestinationBucketName": Object {
+            "Ref": "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3S3LoggingBucket537E041B",
+          },
+        },
+        "PublicAccessBlockConfiguration": Object {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+        "VersioningConfiguration": Object {
+          "Status": "Enabled",
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3S3BucketPolicyCE4D59C9": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3S3Bucket31AB8440",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3S3Bucket31AB8440",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3S3Bucket31AB8440",
+                    "Arn",
+                  ],
+                },
+              ],
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3S3LoggingBucket537E041B": Object {
+      "DeletionPolicy": "Retain",
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W35",
+              "reason": "This S3 bucket is used as the access logging bucket for another bucket",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "AccessControl": "LogDeliveryWrite",
+        "BucketEncryption": Object {
+          "ServerSideEncryptionConfiguration": Array [
+            Object {
+              "ServerSideEncryptionByDefault": Object {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "PublicAccessBlockConfiguration": Object {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+        "VersioningConfiguration": Object {
+          "Status": "Enabled",
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3S3LoggingBucketPolicy7B87A085": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3S3LoggingBucket537E041B",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3S3LoggingBucket537E041B",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3S3LoggingBucket537E041B",
+                    "Arn",
+                  ],
+                },
+              ],
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3firehoseloggroup16F2CCA8": Object {
+      "DeletionPolicy": "Retain",
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely",
+            },
+            Object {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)",
+            },
+          ],
+        },
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3firehoseloggroupfirehoselogstreamE1259129": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "LogGroupName": Object {
+          "Ref": "testeventsrulekinesisfirehosedefaultparameterstesteventsrulekinesisfirehosedefaultparameterswrappedKinesisFirehoseToS3firehoseloggroup16F2CCA8",
+        },
+      },
+      "Type": "AWS::Logs::LogStream",
+      "UpdateReplacePolicy": "Retain",
+    },
+  },
+}
+`;
+
+exports[`check multiple constructs in a single stack 1`] = `
+Object {
+  "Resources": Object {
+    "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedCustomEventBus05E5B70C": Object {
+      "Properties": Object {
+        "Name": "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedCustomEventBus79EA412E",
+      },
+      "Type": "AWS::Events::EventBus",
+    },
+    "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedEventsRuleFBD4B61F": Object {
+      "Properties": Object {
+        "EventBusName": Object {
+          "Ref": "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedCustomEventBus05E5B70C",
+        },
+        "EventPattern": Object {
+          "source": Array [
+            "solutionsconstructs",
+          ],
+        },
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3KinesisFirehose7C071B84",
+                "Arn",
+              ],
+            },
+            "Id": "Target0",
+            "RoleArn": Object {
+              "Fn::GetAtt": Array [
+                "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedEventsRuleInvokeKinesisFirehoseRole8B96F55E",
+                "Arn",
+              ],
+            },
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedEventsRuleInvokeKinesisFirehosePolicyB1BC496D": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "firehose:PutRecord",
+                "firehose:PutRecordBatch",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3KinesisFirehose7C071B84",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedEventsRuleInvokeKinesisFirehosePolicyB1BC496D",
+        "Roles": Array [
+          Object {
+            "Ref": "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedEventsRuleInvokeKinesisFirehoseRole8B96F55E",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedEventsRuleInvokeKinesisFirehoseRole8B96F55E": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Events Rule To Kinesis Firehose Role",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3KinesisFirehose7C071B84": Object {
+      "Properties": Object {
+        "DeliveryStreamEncryptionConfigurationInput": Object {
+          "KeyType": "AWS_OWNED_CMK",
+        },
+        "ExtendedS3DestinationConfiguration": Object {
+          "BucketARN": Object {
+            "Fn::GetAtt": Array [
+              "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3S3Bucket45031F9A",
+              "Arn",
+            ],
+          },
+          "BufferingHints": Object {
+            "IntervalInSeconds": 300,
+            "SizeInMBs": 5,
+          },
+          "CloudWatchLoggingOptions": Object {
+            "Enabled": true,
+            "LogGroupName": Object {
+              "Ref": "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3firehoseloggroupFFE7CB51",
+            },
+            "LogStreamName": Object {
+              "Ref": "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3firehoseloggroupfirehoselogstreamDB33CB9C",
+            },
+          },
+          "CompressionFormat": "GZIP",
+          "EncryptionConfiguration": Object {
+            "KMSEncryptionConfig": Object {
+              "AWSKMSKeyARN": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":kms:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":alias/aws/s3",
+                  ],
+                ],
+              },
+            },
+          },
+          "RoleARN": Object {
+            "Fn::GetAtt": Array [
+              "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3KinesisFirehoseRoleBFF6284D",
+              "Arn",
+            ],
+          },
+        },
+      },
+      "Type": "AWS::KinesisFirehose::DeliveryStream",
+    },
+    "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3KinesisFirehosePolicy39C46C2D": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:AbortMultipartUpload",
+                "s3:GetBucketLocation",
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:ListBucketMultipartUploads",
+                "s3:PutObject",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3S3Bucket45031F9A",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3S3Bucket45031F9A",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": "logs:PutLogEvents",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":logs:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":log-group:",
+                    Object {
+                      "Ref": "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3firehoseloggroupFFE7CB51",
+                    },
+                    ":log-stream:",
+                    Object {
+                      "Ref": "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3firehoseloggroupfirehoselogstreamDB33CB9C",
+                    },
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3KinesisFirehosePolicy39C46C2D",
+        "Roles": Array [
+          Object {
+            "Ref": "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3KinesisFirehoseRoleBFF6284D",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3KinesisFirehoseRoleBFF6284D": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "firehose.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3S3Bucket45031F9A": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "BucketEncryption": Object {
+          "ServerSideEncryptionConfiguration": Array [
+            Object {
+              "ServerSideEncryptionByDefault": Object {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "LifecycleConfiguration": Object {
+          "Rules": Array [
+            Object {
+              "NoncurrentVersionTransitions": Array [
+                Object {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90,
+                },
+              ],
+              "Status": "Enabled",
+            },
+          ],
+        },
+        "LoggingConfiguration": Object {
+          "DestinationBucketName": Object {
+            "Ref": "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3S3LoggingBucketF94908EE",
+          },
+        },
+        "PublicAccessBlockConfiguration": Object {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+        "VersioningConfiguration": Object {
+          "Status": "Enabled",
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3S3BucketPolicyDF067464": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3S3Bucket45031F9A",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3S3Bucket45031F9A",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3S3Bucket45031F9A",
+                    "Arn",
+                  ],
+                },
+              ],
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3S3LoggingBucketF94908EE": Object {
+      "DeletionPolicy": "Retain",
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W35",
+              "reason": "This S3 bucket is used as the access logging bucket for another bucket",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "AccessControl": "LogDeliveryWrite",
+        "BucketEncryption": Object {
+          "ServerSideEncryptionConfiguration": Array [
+            Object {
+              "ServerSideEncryptionByDefault": Object {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "PublicAccessBlockConfiguration": Object {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+        "VersioningConfiguration": Object {
+          "Status": "Enabled",
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3S3LoggingBucketPolicy3A1EA0F1": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3S3LoggingBucketF94908EE",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3S3LoggingBucketF94908EE",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3S3LoggingBucketF94908EE",
+                    "Arn",
+                  ],
+                },
+              ],
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3firehoseloggroupFFE7CB51": Object {
+      "DeletionPolicy": "Retain",
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely",
+            },
+            Object {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)",
+            },
+          ],
+        },
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3firehoseloggroupfirehoselogstreamDB33CB9C": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "LogGroupName": Object {
+          "Ref": "testneweventsrulekinesisfirehose1testneweventsrulekinesisfirehose1wrappedKinesisFirehoseToS3firehoseloggroupFFE7CB51",
+        },
+      },
+      "Type": "AWS::Logs::LogStream",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedCustomEventBus07CCC64F": Object {
+      "Properties": Object {
+        "Name": "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedCustomEventBus855E1D7A",
+      },
+      "Type": "AWS::Events::EventBus",
+    },
+    "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedEventsRule9B97B75A": Object {
+      "Properties": Object {
+        "EventBusName": Object {
+          "Ref": "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedCustomEventBus07CCC64F",
+        },
+        "EventPattern": Object {
+          "source": Array [
+            "solutionsconstructs",
+          ],
+        },
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3KinesisFirehoseE2AFA304",
+                "Arn",
+              ],
+            },
+            "Id": "Target0",
+            "RoleArn": Object {
+              "Fn::GetAtt": Array [
+                "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedEventsRuleInvokeKinesisFirehoseRole319E8861",
+                "Arn",
+              ],
+            },
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedEventsRuleInvokeKinesisFirehosePolicyEF8DFDF1": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "firehose:PutRecord",
+                "firehose:PutRecordBatch",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3KinesisFirehoseE2AFA304",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedEventsRuleInvokeKinesisFirehosePolicyEF8DFDF1",
+        "Roles": Array [
+          Object {
+            "Ref": "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedEventsRuleInvokeKinesisFirehoseRole319E8861",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedEventsRuleInvokeKinesisFirehoseRole319E8861": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Events Rule To Kinesis Firehose Role",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3KinesisFirehoseE2AFA304": Object {
+      "Properties": Object {
+        "DeliveryStreamEncryptionConfigurationInput": Object {
+          "KeyType": "AWS_OWNED_CMK",
+        },
+        "ExtendedS3DestinationConfiguration": Object {
+          "BucketARN": Object {
+            "Fn::GetAtt": Array [
+              "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3S3Bucket5B431DE8",
+              "Arn",
+            ],
+          },
+          "BufferingHints": Object {
+            "IntervalInSeconds": 300,
+            "SizeInMBs": 5,
+          },
+          "CloudWatchLoggingOptions": Object {
+            "Enabled": true,
+            "LogGroupName": Object {
+              "Ref": "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3firehoseloggroup389CF763",
+            },
+            "LogStreamName": Object {
+              "Ref": "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3firehoseloggroupfirehoselogstreamCB52E2C0",
+            },
+          },
+          "CompressionFormat": "GZIP",
+          "EncryptionConfiguration": Object {
+            "KMSEncryptionConfig": Object {
+              "AWSKMSKeyARN": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":kms:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":alias/aws/s3",
+                  ],
+                ],
+              },
+            },
+          },
+          "RoleARN": Object {
+            "Fn::GetAtt": Array [
+              "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3KinesisFirehoseRoleBB2827FF",
+              "Arn",
+            ],
+          },
+        },
+      },
+      "Type": "AWS::KinesisFirehose::DeliveryStream",
+    },
+    "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3KinesisFirehosePolicy3E91A1BC": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:AbortMultipartUpload",
+                "s3:GetBucketLocation",
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:ListBucketMultipartUploads",
+                "s3:PutObject",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3S3Bucket5B431DE8",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3S3Bucket5B431DE8",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": "logs:PutLogEvents",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":logs:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":log-group:",
+                    Object {
+                      "Ref": "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3firehoseloggroup389CF763",
+                    },
+                    ":log-stream:",
+                    Object {
+                      "Ref": "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3firehoseloggroupfirehoselogstreamCB52E2C0",
+                    },
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3KinesisFirehosePolicy3E91A1BC",
+        "Roles": Array [
+          Object {
+            "Ref": "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3KinesisFirehoseRoleBB2827FF",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3KinesisFirehoseRoleBB2827FF": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "firehose.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3S3Bucket5B431DE8": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "BucketEncryption": Object {
+          "ServerSideEncryptionConfiguration": Array [
+            Object {
+              "ServerSideEncryptionByDefault": Object {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "LifecycleConfiguration": Object {
+          "Rules": Array [
+            Object {
+              "NoncurrentVersionTransitions": Array [
+                Object {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90,
+                },
+              ],
+              "Status": "Enabled",
+            },
+          ],
+        },
+        "LoggingConfiguration": Object {
+          "DestinationBucketName": Object {
+            "Ref": "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3S3LoggingBucket512134B0",
+          },
+        },
+        "PublicAccessBlockConfiguration": Object {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+        "VersioningConfiguration": Object {
+          "Status": "Enabled",
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3S3BucketPolicy383FFA3C": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3S3Bucket5B431DE8",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3S3Bucket5B431DE8",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3S3Bucket5B431DE8",
+                    "Arn",
+                  ],
+                },
+              ],
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3S3LoggingBucket512134B0": Object {
+      "DeletionPolicy": "Retain",
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W35",
+              "reason": "This S3 bucket is used as the access logging bucket for another bucket",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "AccessControl": "LogDeliveryWrite",
+        "BucketEncryption": Object {
+          "ServerSideEncryptionConfiguration": Array [
+            Object {
+              "ServerSideEncryptionByDefault": Object {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "PublicAccessBlockConfiguration": Object {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+        "VersioningConfiguration": Object {
+          "Status": "Enabled",
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3S3LoggingBucketPolicyCD9F4F5A": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3S3LoggingBucket512134B0",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3S3LoggingBucket512134B0",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3S3LoggingBucket512134B0",
+                    "Arn",
+                  ],
+                },
+              ],
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3firehoseloggroup389CF763": Object {
+      "DeletionPolicy": "Retain",
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely",
+            },
+            Object {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)",
+            },
+          ],
+        },
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3firehoseloggroupfirehoselogstreamCB52E2C0": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "LogGroupName": Object {
+          "Ref": "testneweventsrulekinesisfirehose2testneweventsrulekinesisfirehose2wrappedKinesisFirehoseToS3firehoseloggroup389CF763",
+        },
+      },
+      "Type": "AWS::Logs::LogStream",
+      "UpdateReplacePolicy": "Retain",
+    },
+  },
+}
+`;
+
+exports[`snapshot test EventsRuleToKinesisFirehose existing event bus params 1`] = `
+Object {
+  "Resources": Object {
+    "testexistingeventbusC6E4A2D0": Object {
+      "Properties": Object {
+        "Name": "testexistingeventbus",
+      },
+      "Type": "AWS::Events::EventBus",
+    },
+    "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedEventsRule564D171F": Object {
+      "Properties": Object {
+        "EventBusName": Object {
+          "Ref": "testexistingeventbusC6E4A2D0",
+        },
+        "EventPattern": Object {
+          "source": Array [
+            "solutionsconstructs",
+          ],
+        },
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3KinesisFirehose23BADD4C",
+                "Arn",
+              ],
+            },
+            "Id": "Target0",
+            "RoleArn": Object {
+              "Fn::GetAtt": Array [
+                "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedEventsRuleInvokeKinesisFirehoseRole5DF44DBF",
+                "Arn",
+              ],
+            },
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedEventsRuleInvokeKinesisFirehosePolicy9375C2D9": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "firehose:PutRecord",
+                "firehose:PutRecordBatch",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3KinesisFirehose23BADD4C",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedEventsRuleInvokeKinesisFirehosePolicy9375C2D9",
+        "Roles": Array [
+          Object {
+            "Ref": "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedEventsRuleInvokeKinesisFirehoseRole5DF44DBF",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedEventsRuleInvokeKinesisFirehoseRole5DF44DBF": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Events Rule To Kinesis Firehose Role",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3KinesisFirehose23BADD4C": Object {
+      "Properties": Object {
+        "DeliveryStreamEncryptionConfigurationInput": Object {
+          "KeyType": "AWS_OWNED_CMK",
+        },
+        "ExtendedS3DestinationConfiguration": Object {
+          "BucketARN": Object {
+            "Fn::GetAtt": Array [
+              "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3S3Bucket63AE09AD",
+              "Arn",
+            ],
+          },
+          "BufferingHints": Object {
+            "IntervalInSeconds": 300,
+            "SizeInMBs": 5,
+          },
+          "CloudWatchLoggingOptions": Object {
+            "Enabled": true,
+            "LogGroupName": Object {
+              "Ref": "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3firehoseloggroup9C3418A5",
+            },
+            "LogStreamName": Object {
+              "Ref": "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3firehoseloggroupfirehoselogstreamD5E403D1",
+            },
+          },
+          "CompressionFormat": "GZIP",
+          "EncryptionConfiguration": Object {
+            "KMSEncryptionConfig": Object {
+              "AWSKMSKeyARN": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":kms:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":alias/aws/s3",
+                  ],
+                ],
+              },
+            },
+          },
+          "RoleARN": Object {
+            "Fn::GetAtt": Array [
+              "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3KinesisFirehoseRoleE50E908B",
+              "Arn",
+            ],
+          },
+        },
+      },
+      "Type": "AWS::KinesisFirehose::DeliveryStream",
+    },
+    "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3KinesisFirehosePolicy6E70AD3F": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:AbortMultipartUpload",
+                "s3:GetBucketLocation",
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:ListBucketMultipartUploads",
+                "s3:PutObject",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3S3Bucket63AE09AD",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3S3Bucket63AE09AD",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": "logs:PutLogEvents",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":logs:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":log-group:",
+                    Object {
+                      "Ref": "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3firehoseloggroup9C3418A5",
+                    },
+                    ":log-stream:",
+                    Object {
+                      "Ref": "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3firehoseloggroupfirehoselogstreamD5E403D1",
+                    },
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "estexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3KinesisFirehosePolicy6E70AD3F",
+        "Roles": Array [
+          Object {
+            "Ref": "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3KinesisFirehoseRoleE50E908B",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3KinesisFirehoseRoleE50E908B": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "firehose.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3S3Bucket63AE09AD": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "BucketEncryption": Object {
+          "ServerSideEncryptionConfiguration": Array [
+            Object {
+              "ServerSideEncryptionByDefault": Object {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "LifecycleConfiguration": Object {
+          "Rules": Array [
+            Object {
+              "NoncurrentVersionTransitions": Array [
+                Object {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90,
+                },
+              ],
+              "Status": "Enabled",
+            },
+          ],
+        },
+        "LoggingConfiguration": Object {
+          "DestinationBucketName": Object {
+            "Ref": "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3S3LoggingBucketED2856BB",
+          },
+        },
+        "PublicAccessBlockConfiguration": Object {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+        "VersioningConfiguration": Object {
+          "Status": "Enabled",
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3S3BucketPolicyB9AF7AF2": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3S3Bucket63AE09AD",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3S3Bucket63AE09AD",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3S3Bucket63AE09AD",
+                    "Arn",
+                  ],
+                },
+              ],
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3S3LoggingBucketED2856BB": Object {
+      "DeletionPolicy": "Retain",
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W35",
+              "reason": "This S3 bucket is used as the access logging bucket for another bucket",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "AccessControl": "LogDeliveryWrite",
+        "BucketEncryption": Object {
+          "ServerSideEncryptionConfiguration": Array [
+            Object {
+              "ServerSideEncryptionByDefault": Object {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "PublicAccessBlockConfiguration": Object {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+        "VersioningConfiguration": Object {
+          "Status": "Enabled",
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3S3LoggingBucketPolicy3A9341FD": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3S3LoggingBucketED2856BB",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3S3LoggingBucketED2856BB",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3S3LoggingBucketED2856BB",
+                    "Arn",
+                  ],
+                },
+              ],
+              "Sid": "HttpsOnly",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3firehoseloggroup9C3418A5": Object {
+      "DeletionPolicy": "Retain",
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely",
+            },
+            Object {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)",
+            },
+          ],
+        },
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3firehoseloggroupfirehoselogstreamD5E403D1": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "LogGroupName": Object {
+          "Ref": "testexistingeventsrulekinesisfirehosetestexistingeventsrulekinesisfirehosewrappedKinesisFirehoseToS3firehoseloggroup9C3418A5",
+        },
+      },
+      "Type": "AWS::Logs::LogStream",
+      "UpdateReplacePolicy": "Retain",
+    },
+  },
+}
+`;

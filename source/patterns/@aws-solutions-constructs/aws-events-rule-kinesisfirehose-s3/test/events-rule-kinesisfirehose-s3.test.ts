@@ -151,3 +151,101 @@ test("Test bad call with existingBucket and bucketProps", () => {
   // Assertion
   expect(app).toThrowError();
 });
+
+test('check eventbus property, snapshot & eventbus exists', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventsRuleToKinesisFirehoseToS3Props = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {}
+  };
+  const construct = new EventsRuleToKinesisFirehoseToS3(stack, 'test-eventsrule-kinesis-firehose-default-parameters', props);
+
+  expect(construct.eventsRule !== null);
+  expect(construct.eventsRole !== null);
+  expect(construct.kinesisFirehose !== null);
+  expect(construct.kinesisFirehoseRole !== null);
+  expect(construct.kinesisFirehoseLogGroup !== null);
+  expect(construct.s3Bucket !== null);
+  expect(construct.s3LoggingBucket !== null);
+  expect(construct.eventBus !== null);
+  // Validate snapshot
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Check whether eventbus exists
+  expect(stack).toHaveResource('AWS::Events::EventBus');
+});
+
+test('check exception while passing existingEventBus & eventBusProps', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventsRuleToKinesisFirehoseToS3Props = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {},
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {})
+  };
+
+  try {
+    new EventsRuleToKinesisFirehoseToS3(stack, 'test-eventsrule-firehose', props);
+  } catch (e) {
+    expect(e).toBeInstanceOf(Error);
+  }
+});
+
+test('snapshot test EventsRuleToKinesisFirehose existing event bus params', () => {
+  const stack = new cdk.Stack();
+  const props: EventsRuleToKinesisFirehoseToS3Props = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {})
+  };
+  new EventsRuleToKinesisFirehoseToS3(stack, 'test-existing-eventsrule-kinesisfirehose', props);
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+test('check custom event bus resource with props when deploy:true', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventsRuleToKinesisFirehoseToS3Props = {
+    eventBusProps: {
+      eventBusName: `testeventbus`
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventsRuleToKinesisFirehoseToS3(stack, 'test-new-eventsrule-with-props-kinsesisfirehose', props);
+
+  expect(stack).toHaveResource('AWS::Events::EventBus', {
+    Name: `testeventbus`
+  });
+});
+
+test('check multiple constructs in a single stack', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventsRuleToKinesisFirehoseToS3Props = {
+    eventBusProps: {},
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventsRuleToKinesisFirehoseToS3(stack, 'test-new-eventsrule-kinesisfirehose1', props);
+  new EventsRuleToKinesisFirehoseToS3(stack, 'test-new-eventsrule-kinesisfirehose2', props);
+
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});

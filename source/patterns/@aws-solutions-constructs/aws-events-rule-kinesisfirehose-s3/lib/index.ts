@@ -25,35 +25,47 @@ import { EventbridgeToKinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-
  */
 export interface EventsRuleToKinesisFirehoseToS3Props {
   /**
+   * Existing instance of a custom EventBus.
+   *
+   * @default - None
+   */
+  readonly existingEventBusInterface?: events.IEventBus;
+  /**
+   * A new custom EventBus is created with provided props.
+   *
+   * @default - None
+   */
+  readonly eventBusProps?: events.EventBusProps;
+  /**
    * User provided eventRuleProps to override the defaults
    *
    * @default - None
    */
-  readonly eventRuleProps: events.RuleProps
+  readonly eventRuleProps: events.RuleProps;
   /**
    * User provided props to override the default props for the Kinesis Firehose.
    *
    * @default - Default props are used
    */
-  readonly kinesisFirehoseProps?: kinesisfirehose.CfnDeliveryStreamProps | any
+  readonly kinesisFirehoseProps?: kinesisfirehose.CfnDeliveryStreamProps | any;
   /**
    * Existing instance of S3 Bucket object, providing both this and `bucketProps` will cause an error.
    *
    * @default - None
    */
-  readonly existingBucketObj?: s3.IBucket,
+  readonly existingBucketObj?: s3.IBucket;
   /**
    * User provided props to override the default props for the S3 Bucket.
    *
    * @default - Default props are used
    */
-  readonly bucketProps?: s3.BucketProps,
+  readonly bucketProps?: s3.BucketProps;
   /**
    * User provided props to override the default props for the CloudWatchLogs LogGroup.
    *
    * @default - Default props are used
    */
-  readonly logGroupProps?: logs.LogGroupProps
+  readonly logGroupProps?: logs.LogGroupProps;
 }
 
 export class EventsRuleToKinesisFirehoseToS3 extends Construct {
@@ -64,6 +76,7 @@ export class EventsRuleToKinesisFirehoseToS3 extends Construct {
   public readonly kinesisFirehoseRole: iam.Role;
   public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
+  public readonly eventBus?: events.IEventBus;
 
   /**
    * @summary Constructs a new instance of the EventsRuleToKinesisFirehoseToS3 class.
@@ -83,5 +96,6 @@ export class EventsRuleToKinesisFirehoseToS3 extends Construct {
     this.kinesisFirehoseRole = wrappedConstruct.kinesisFirehoseRole;
     this.s3Bucket = wrappedConstruct.s3Bucket;
     this.s3LoggingBucket = wrappedConstruct.s3LoggingBucket;
+    this.eventBus = wrappedConstruct.eventBus;
   }
 }
