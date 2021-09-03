@@ -29,74 +29,74 @@ export interface EventbridgeToSqsProps {
    *
    * @default - None
    */
-  readonly existingEventBusInterface?: events.IEventBus,
+  readonly existingEventBusInterface?: events.IEventBus;
   /**
    * A new custom EventBus is created with provided props.
    *
    * @default - None
    */
-  readonly eventBusProps?: events.EventBusProps,
+  readonly eventBusProps?: events.EventBusProps;
   /**
    * User provided eventRuleProps to override the defaults
    *
    * @default - None
    */
-  readonly eventRuleProps: events.RuleProps
+  readonly eventRuleProps: events.RuleProps;
   /**
    * Existing instance of SQS queue object, providing both this and queueProps will cause an error.
    *
    * @default - None
    */
-  readonly existingQueueObj?: sqs.Queue,
+  readonly existingQueueObj?: sqs.Queue;
   /**
    * User provided props to override the default props for the SQS queue.
    *
    * @default - Default props are used
    */
-  readonly queueProps?: sqs.QueueProps,
+  readonly queueProps?: sqs.QueueProps;
   /**
    * Whether to grant additional permissions to the Lambda function enabling it to purge the SQS queue.
    *
    * @default - "false", disabled by default.
    */
-  readonly enableQueuePurging?: boolean,
+  readonly enableQueuePurging?: boolean;
   /**
    * Optional user provided properties for the dead letter queue
    *
    * @default - Default props are used
    */
-  readonly deadLetterQueueProps?: sqs.QueueProps,
+  readonly deadLetterQueueProps?: sqs.QueueProps;
   /**
    * Whether to deploy a secondary queue to be used as a dead letter queue.
    *
    * @default - true.
    */
-  readonly deployDeadLetterQueue?: boolean,
+  readonly deployDeadLetterQueue?: boolean;
   /**
    * The number of times a message can be unsuccessfully dequeued before being moved to the dead-letter queue.
    *
    * @default - required field if deployDeadLetterQueue=true.
    */
-  readonly maxReceiveCount?: number,
+  readonly maxReceiveCount?: number;
   /**
    * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
    * the encryptionKey property for this construct.
    *
    * @default - true (encryption enabled, managed by this CDK app).
    */
-  readonly enableEncryptionWithCustomerManagedKey?: boolean
+  readonly enableEncryptionWithCustomerManagedKey?: boolean;
   /**
    * An optional, imported encryption key to encrypt the SQS queue, and SNS Topic.
    *
    * @default - not specified.
    */
-  readonly encryptionKey?: kms.Key
+  readonly encryptionKey?: kms.Key;
   /**
    * Optional user-provided props to override the default props for the encryption key.
    *
    * @default - Default props are used.
    */
-  readonly encryptionKeyProps?: kms.KeyProps
+  readonly encryptionKeyProps?: kms.KeyProps;
 }
 
 export class EventbridgeToSqs extends Construct {
