@@ -232,7 +232,7 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
       }
     },
     eventBusProps: {},
-    existingEventBus: new events.EventBus(stack, `test-existing-eventbus`, {})
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {})
   };
 
   try {
@@ -261,7 +261,7 @@ test('snapshot test EventbridgeToLambda existing event bus params', () => {
         source: ['solutionsconstructs']
       }
     },
-    existingEventBus: new events.EventBus(stack, `test-existing-eventbus`, {})
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {})
   };
   new EventbridgeToLambda(stack, 'test-existing-eventbridge-lambda', props);
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
