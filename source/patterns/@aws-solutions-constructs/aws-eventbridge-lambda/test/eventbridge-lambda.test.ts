@@ -275,6 +275,31 @@ test('check custom event bus resource when deploy:true', () => {
   expect(stack).toHaveResource('AWS::Events::EventBus');
 });
 
+test('check custom event bus resource with props when deploy:true', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    eventBusProps: {
+      eventBusName: `testeventbus`
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventbridgeToLambda(stack, 'test-new-eventbridge-with-props-lambda', props);
+
+  expect(stack).toHaveResource('AWS::Events::EventBus', {
+    Name: `testeventbus`
+  });
+});
+
 test('check multiple constructs in a single stack', () => {
   const stack = new cdk.Stack();
 

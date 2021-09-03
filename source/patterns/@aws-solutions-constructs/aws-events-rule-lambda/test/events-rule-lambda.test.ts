@@ -33,6 +33,23 @@ function deployNewFunc(stack: cdk.Stack) {
   return new EventsRuleToLambda(stack, 'test-events-rule-lambda', props);
 }
 
+function deployNewEventBus(stack: cdk.Stack) {
+  const props: EventsRuleToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    eventBusProps: {},
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  return new EventsRuleToLambda(stack, 'test-new-eventsrule-lambda', props);
+}
+
 test('snapshot test EventsRuleToLambda default params', () => {
   const stack = new cdk.Stack();
   deployNewFunc(stack);
@@ -188,4 +205,119 @@ test('check exception for Missing existingObj from props', () => {
   } catch (e) {
     expect(e).toBeInstanceOf(Error);
   }
+});
+
+test('check eventbus property', () => {
+  const stack = new cdk.Stack();
+
+  const construct: EventsRuleToLambda = deployNewEventBus(stack);
+
+  expect(construct.eventsRule !== null);
+  expect(construct.lambdaFunction !== null);
+  expect(construct.eventBus !== null);
+});
+
+test('check exception while passing existingEventBus & eventBusProps', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventsRuleToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {},
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {})
+  };
+
+  try {
+    new EventsRuleToLambda(stack, 'test-eventsrule-lambda', props);
+  } catch (e) {
+    expect(e).toBeInstanceOf(Error);
+  }
+});
+
+test('snapshot test EventsRuleToLambda custom event bus params', () => {
+  const stack = new cdk.Stack();
+  deployNewEventBus(stack);
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+test('snapshot test EventsRuleToLambda existing event bus params', () => {
+  const stack = new cdk.Stack();
+  const props: EventsRuleToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {})
+  };
+  new EventsRuleToLambda(stack, 'test-existing-eventsrule-lambda', props);
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+test('check custom event bus resource when deploy:true', () => {
+  const stack = new cdk.Stack();
+
+  deployNewEventBus(stack);
+
+  expect(stack).toHaveResource('AWS::Events::EventBus');
+});
+
+test('check custom event bus resource with props when deploy:true', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventsRuleToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    eventBusProps: {
+      eventBusName: `testeventbus`
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventsRuleToLambda(stack, 'test-new-eventsrule-with-props-lambda', props);
+
+  expect(stack).toHaveResource('AWS::Events::EventBus', {
+    Name: `testeventbus`
+  });
+});
+
+test('check multiple constructs in a single stack', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventsRuleToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    eventBusProps: {},
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventsRuleToLambda(stack, 'test-new-eventsrule-lambda1', props);
+  new EventsRuleToLambda(stack, 'test-new-eventsrule-lambda2', props);
+
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
