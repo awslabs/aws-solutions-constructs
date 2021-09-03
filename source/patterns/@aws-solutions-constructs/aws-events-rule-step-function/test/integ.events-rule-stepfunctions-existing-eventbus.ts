@@ -37,6 +37,7 @@ const submitJob = new tasks.LambdaInvoke(stack, 'LambdaTask', {
 const startState = new stepfunctions.Pass(stack, 'StartState');
 startState.next(submitJob);
 
+const existingEventBus = new EventBus(stack, `existing-event-bus`, {});
 const props: EventsRuleToStepFunctionProps = {
   stateMachineProps: {
     definition: startState,
@@ -47,7 +48,7 @@ const props: EventsRuleToStepFunctionProps = {
       source: ['solutionsconstructs']
     }
   },
-  existingEventBusInterface: new EventBus(stack, `existing-event-bus`, {}),
+  existingEventBusInterface: existingEventBus,
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY
   },

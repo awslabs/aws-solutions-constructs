@@ -28,6 +28,7 @@ const existingQueueObj = new sqs.Queue(stack, 'MyQueue', {
   }),
 });
 
+const existingEventBus = new events.EventBus(stack, 'existing-event-bus', {});
 const props: EventsRuleToSqsProps = {
   eventRuleProps: {
     eventPattern: {
@@ -35,7 +36,7 @@ const props: EventsRuleToSqsProps = {
     }
   },
   existingQueueObj,
-  existingEventBusInterface: new events.EventBus(stack, 'existing-event-bus', {})
+  existingEventBusInterface: existingEventBus
 };
 
 new EventsRuleToSqs(stack, 'construct', props);

@@ -336,7 +336,7 @@ test('check properties', () => {
   expect(construct.deadLetterQueue !== null);
 });
 
-test('check eventbus property', () => {
+test('check eventbus property, snapshot & eventbus exists', () => {
   const stack = new cdk.Stack();
   const construct: EventbridgeToSqs = deployStackWithNewEventBus(stack);
 
@@ -345,6 +345,11 @@ test('check eventbus property', () => {
   expect(construct.encryptionKey !== null);
   expect(construct.deadLetterQueue !== null);
   expect(construct.eventBus !== null);
+
+  // Validate snapshot
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Check whether eventbus exists
+  expect(stack).toHaveResource('AWS::Events::EventBus');
 });
 
 test('check exception while passing existingEventBus & eventBusProps', () => {
@@ -367,12 +372,6 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
   }
 });
 
-test('snapshot test EventbridgeToSqs new custom event bus params', () => {
-  const stack = new cdk.Stack();
-  deployStackWithNewEventBus(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
 test('snapshot test EventbridgeToSqs existing event bus params', () => {
   const stack = new cdk.Stack();
   const props: EventbridgeToSqsProps = {
@@ -385,14 +384,6 @@ test('snapshot test EventbridgeToSqs existing event bus params', () => {
   };
   new EventbridgeToSqs(stack, 'test-existing-eventbridge-sqs', props);
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
-test('check custom event bus resource when deploy:true', () => {
-  const stack = new cdk.Stack();
-
-  deployStackWithNewEventBus(stack);
-
-  expect(stack).toHaveResource('AWS::Events::EventBus');
 });
 
 test('check custom event bus resource with props when deploy:true', () => {
