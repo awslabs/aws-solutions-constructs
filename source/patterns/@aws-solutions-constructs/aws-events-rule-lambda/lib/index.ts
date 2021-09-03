@@ -26,31 +26,31 @@ export interface EventsRuleToLambdaProps {
    *
    * @default - None
    */
-  readonly existingLambdaObj?: lambda.Function,
+  readonly existingLambdaObj?: lambda.Function;
   /**
    * User provided props to override the default props for the Lambda function.
    *
    * @default - Default props are used
    */
-  readonly lambdaFunctionProps?: lambda.FunctionProps,
+  readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
    * Existing instance of a custom EventBus.
    *
    * @default - None
    */
-  readonly existingEventBusInterface?: events.IEventBus,
+  readonly existingEventBusInterface?: events.IEventBus;
   /**
    * A new custom EventBus is created with provided props.
    *
    * @default - None
    */
-  readonly eventBusProps?: events.EventBusProps,
+  readonly eventBusProps?: events.EventBusProps;
   /**
    * User provided eventRuleProps to override the defaults
    *
    * @default - None
    */
-  readonly eventRuleProps: events.RuleProps
+  readonly eventRuleProps: events.RuleProps;
 }
 
 export class EventsRuleToLambda extends Construct {

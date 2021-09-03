@@ -1,5 +1,420 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`check multiple constructs in a single stack 1`] = `
+Object {
+  "Resources": Object {
+    "testneweventsrulesns1CustomEventBusCBCAE01E": Object {
+      "Properties": Object {
+        "Name": "testneweventsrulesns1CustomEventBus0B8BCDC1",
+      },
+      "Type": "AWS::Events::EventBus",
+    },
+    "testneweventsrulesns1EncryptionKey18930514": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "EnableKeyRotation": true,
+        "KeyPolicy": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion",
+                "kms:GenerateDataKey",
+                "kms:TagResource",
+                "kms:UntagResource",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testneweventsrulesns1EventsRule4902A7E2": Object {
+      "Properties": Object {
+        "EventBusName": Object {
+          "Ref": "testneweventsrulesns1CustomEventBusCBCAE01E",
+        },
+        "EventPattern": Object {
+          "source": Array [
+            "solutionsconstructs",
+          ],
+        },
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Ref": "testneweventsrulesns1SnsTopicB5A4AB2B",
+            },
+            "Id": Object {
+              "Fn::GetAtt": Array [
+                "testneweventsrulesns1SnsTopicB5A4AB2B",
+                "TopicName",
+              ],
+            },
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "testneweventsrulesns1SnsTopicB5A4AB2B": Object {
+      "Properties": Object {
+        "KmsMasterKeyId": Object {
+          "Fn::GetAtt": Array [
+            "testneweventsrulesns1EncryptionKey18930514",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::SNS::Topic",
+    },
+    "testneweventsrulesns1SnsTopicPolicyCC362F92": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "SNS:Publish",
+                "SNS:RemovePermission",
+                "SNS:SetTopicAttributes",
+                "SNS:DeleteTopic",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:GetTopicAttributes",
+                "SNS:Receive",
+                "SNS:AddPermission",
+                "SNS:Subscribe",
+              ],
+              "Condition": Object {
+                "StringEquals": Object {
+                  "AWS:SourceOwner": Object {
+                    "Ref": "AWS::AccountId",
+                  },
+                },
+              },
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": Object {
+                "Ref": "testneweventsrulesns1SnsTopicB5A4AB2B",
+              },
+              "Sid": "TopicOwnerOnlyAccess",
+            },
+            Object {
+              "Action": Array [
+                "SNS:Publish",
+                "SNS:RemovePermission",
+                "SNS:SetTopicAttributes",
+                "SNS:DeleteTopic",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:GetTopicAttributes",
+                "SNS:Receive",
+                "SNS:AddPermission",
+                "SNS:Subscribe",
+              ],
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Object {
+                "Ref": "testneweventsrulesns1SnsTopicB5A4AB2B",
+              },
+              "Sid": "HttpsOnly",
+            },
+            Object {
+              "Action": "sns:Publish",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+              "Resource": Object {
+                "Ref": "testneweventsrulesns1SnsTopicB5A4AB2B",
+              },
+              "Sid": "2",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Topics": Array [
+          Object {
+            "Ref": "testneweventsrulesns1SnsTopicB5A4AB2B",
+          },
+        ],
+      },
+      "Type": "AWS::SNS::TopicPolicy",
+    },
+    "testneweventsrulesns2CustomEventBus74F26858": Object {
+      "Properties": Object {
+        "Name": "testneweventsrulesns2CustomEventBus611E703F",
+      },
+      "Type": "AWS::Events::EventBus",
+    },
+    "testneweventsrulesns2EncryptionKey0DCA5BAD": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "EnableKeyRotation": true,
+        "KeyPolicy": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion",
+                "kms:GenerateDataKey",
+                "kms:TagResource",
+                "kms:UntagResource",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testneweventsrulesns2EventsRule7219E266": Object {
+      "Properties": Object {
+        "EventBusName": Object {
+          "Ref": "testneweventsrulesns2CustomEventBus74F26858",
+        },
+        "EventPattern": Object {
+          "source": Array [
+            "solutionsconstructs",
+          ],
+        },
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Ref": "testneweventsrulesns2SnsTopic92885429",
+            },
+            "Id": Object {
+              "Fn::GetAtt": Array [
+                "testneweventsrulesns2SnsTopic92885429",
+                "TopicName",
+              ],
+            },
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "testneweventsrulesns2SnsTopic92885429": Object {
+      "Properties": Object {
+        "KmsMasterKeyId": Object {
+          "Fn::GetAtt": Array [
+            "testneweventsrulesns2EncryptionKey0DCA5BAD",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::SNS::Topic",
+    },
+    "testneweventsrulesns2SnsTopicPolicyBB1D364F": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "SNS:Publish",
+                "SNS:RemovePermission",
+                "SNS:SetTopicAttributes",
+                "SNS:DeleteTopic",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:GetTopicAttributes",
+                "SNS:Receive",
+                "SNS:AddPermission",
+                "SNS:Subscribe",
+              ],
+              "Condition": Object {
+                "StringEquals": Object {
+                  "AWS:SourceOwner": Object {
+                    "Ref": "AWS::AccountId",
+                  },
+                },
+              },
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": Object {
+                "Ref": "testneweventsrulesns2SnsTopic92885429",
+              },
+              "Sid": "TopicOwnerOnlyAccess",
+            },
+            Object {
+              "Action": Array [
+                "SNS:Publish",
+                "SNS:RemovePermission",
+                "SNS:SetTopicAttributes",
+                "SNS:DeleteTopic",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:GetTopicAttributes",
+                "SNS:Receive",
+                "SNS:AddPermission",
+                "SNS:Subscribe",
+              ],
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Object {
+                "Ref": "testneweventsrulesns2SnsTopic92885429",
+              },
+              "Sid": "HttpsOnly",
+            },
+            Object {
+              "Action": "sns:Publish",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+              "Resource": Object {
+                "Ref": "testneweventsrulesns2SnsTopic92885429",
+              },
+              "Sid": "2",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Topics": Array [
+          Object {
+            "Ref": "testneweventsrulesns2SnsTopic92885429",
+          },
+        ],
+      },
+      "Type": "AWS::SNS::TopicPolicy",
+    },
+  },
+}
+`;
+
 exports[`snapshot test EventsRuleToSns default params 1`] = `
 Object {
   "Resources": Object {
@@ -189,6 +604,428 @@ Object {
         "Topics": Array [
           Object {
             "Ref": "testSnsTopic431DB510",
+          },
+        ],
+      },
+      "Type": "AWS::SNS::TopicPolicy",
+    },
+  },
+}
+`;
+
+exports[`snapshot test EventsruleToSns existing event bus params 1`] = `
+Object {
+  "Resources": Object {
+    "testexistingeventbusC6E4A2D0": Object {
+      "Properties": Object {
+        "Name": "testexistingeventbus",
+      },
+      "Type": "AWS::Events::EventBus",
+    },
+    "testexistingeventsrulesnsEncryptionKey8D9FDAF3": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "EnableKeyRotation": true,
+        "KeyPolicy": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion",
+                "kms:GenerateDataKey",
+                "kms:TagResource",
+                "kms:UntagResource",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testexistingeventsrulesnsEventsRule77C1F4E3": Object {
+      "Properties": Object {
+        "EventBusName": Object {
+          "Ref": "testexistingeventbusC6E4A2D0",
+        },
+        "EventPattern": Object {
+          "source": Array [
+            "solutionsconstructs",
+          ],
+        },
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Ref": "testexistingeventsrulesnsSnsTopicAB6B05AA",
+            },
+            "Id": Object {
+              "Fn::GetAtt": Array [
+                "testexistingeventsrulesnsSnsTopicAB6B05AA",
+                "TopicName",
+              ],
+            },
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "testexistingeventsrulesnsSnsTopicAB6B05AA": Object {
+      "Properties": Object {
+        "KmsMasterKeyId": Object {
+          "Fn::GetAtt": Array [
+            "testexistingeventsrulesnsEncryptionKey8D9FDAF3",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::SNS::Topic",
+    },
+    "testexistingeventsrulesnsSnsTopicPolicy8267187E": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "SNS:Publish",
+                "SNS:RemovePermission",
+                "SNS:SetTopicAttributes",
+                "SNS:DeleteTopic",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:GetTopicAttributes",
+                "SNS:Receive",
+                "SNS:AddPermission",
+                "SNS:Subscribe",
+              ],
+              "Condition": Object {
+                "StringEquals": Object {
+                  "AWS:SourceOwner": Object {
+                    "Ref": "AWS::AccountId",
+                  },
+                },
+              },
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": Object {
+                "Ref": "testexistingeventsrulesnsSnsTopicAB6B05AA",
+              },
+              "Sid": "TopicOwnerOnlyAccess",
+            },
+            Object {
+              "Action": Array [
+                "SNS:Publish",
+                "SNS:RemovePermission",
+                "SNS:SetTopicAttributes",
+                "SNS:DeleteTopic",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:GetTopicAttributes",
+                "SNS:Receive",
+                "SNS:AddPermission",
+                "SNS:Subscribe",
+              ],
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Object {
+                "Ref": "testexistingeventsrulesnsSnsTopicAB6B05AA",
+              },
+              "Sid": "HttpsOnly",
+            },
+            Object {
+              "Action": "sns:Publish",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+              "Resource": Object {
+                "Ref": "testexistingeventsrulesnsSnsTopicAB6B05AA",
+              },
+              "Sid": "2",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Topics": Array [
+          Object {
+            "Ref": "testexistingeventsrulesnsSnsTopicAB6B05AA",
+          },
+        ],
+      },
+      "Type": "AWS::SNS::TopicPolicy",
+    },
+  },
+}
+`;
+
+exports[`snapshot test EventsruleToSns new custom event bus params 1`] = `
+Object {
+  "Resources": Object {
+    "testneweventbusCustomEventBusF21A668A": Object {
+      "Properties": Object {
+        "Name": "testneweventbusCustomEventBus409B4FB3",
+      },
+      "Type": "AWS::Events::EventBus",
+    },
+    "testneweventbusEncryptionKey72D74021": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "EnableKeyRotation": true,
+        "KeyPolicy": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion",
+                "kms:GenerateDataKey",
+                "kms:TagResource",
+                "kms:UntagResource",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testneweventbusEventsRuleE82FDFD2": Object {
+      "Properties": Object {
+        "EventBusName": Object {
+          "Ref": "testneweventbusCustomEventBusF21A668A",
+        },
+        "EventPattern": Object {
+          "source": Array [
+            "solutionsconstructs",
+          ],
+        },
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Ref": "testneweventbusSnsTopic14EFE30B",
+            },
+            "Id": Object {
+              "Fn::GetAtt": Array [
+                "testneweventbusSnsTopic14EFE30B",
+                "TopicName",
+              ],
+            },
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "testneweventbusSnsTopic14EFE30B": Object {
+      "Properties": Object {
+        "KmsMasterKeyId": Object {
+          "Fn::GetAtt": Array [
+            "testneweventbusEncryptionKey72D74021",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::SNS::Topic",
+    },
+    "testneweventbusSnsTopicPolicyEF27265B": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "SNS:Publish",
+                "SNS:RemovePermission",
+                "SNS:SetTopicAttributes",
+                "SNS:DeleteTopic",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:GetTopicAttributes",
+                "SNS:Receive",
+                "SNS:AddPermission",
+                "SNS:Subscribe",
+              ],
+              "Condition": Object {
+                "StringEquals": Object {
+                  "AWS:SourceOwner": Object {
+                    "Ref": "AWS::AccountId",
+                  },
+                },
+              },
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": Object {
+                "Ref": "testneweventbusSnsTopic14EFE30B",
+              },
+              "Sid": "TopicOwnerOnlyAccess",
+            },
+            Object {
+              "Action": Array [
+                "SNS:Publish",
+                "SNS:RemovePermission",
+                "SNS:SetTopicAttributes",
+                "SNS:DeleteTopic",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:GetTopicAttributes",
+                "SNS:Receive",
+                "SNS:AddPermission",
+                "SNS:Subscribe",
+              ],
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Object {
+                "Ref": "testneweventbusSnsTopic14EFE30B",
+              },
+              "Sid": "HttpsOnly",
+            },
+            Object {
+              "Action": "sns:Publish",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+              "Resource": Object {
+                "Ref": "testneweventbusSnsTopic14EFE30B",
+              },
+              "Sid": "2",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Topics": Array [
+          Object {
+            "Ref": "testneweventbusSnsTopic14EFE30B",
           },
         ],
       },

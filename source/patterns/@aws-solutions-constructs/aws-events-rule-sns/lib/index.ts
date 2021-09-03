@@ -24,42 +24,55 @@ export interface EventsRuleToSnsProps {
    *
    * @default - Default props are used
    */
-  readonly topicProps?: sns.TopicProps
+  readonly topicProps?: sns.TopicProps;
+  /**
+   * Existing instance of a custom EventBus.
+   *
+   * @default - None
+   */
+  readonly existingEventBusInterface?: events.IEventBus;
+  /**
+   * A new custom EventBus is created with provided props.
+   *
+   * @default - None
+   */
+  readonly eventBusProps?: events.EventBusProps;
   /**
    * User provided eventRuleProps to override the defaults
    *
    * @default - None
    */
-  readonly eventRuleProps: events.RuleProps
+  readonly eventRuleProps: events.RuleProps;
   /**
    * Existing instance of SNS Topic object, providing both this and topicProps will cause an error..
    *
    * @default - Default props are used
    */
-  readonly existingTopicObj?: sns.Topic,
+  readonly existingTopicObj?: sns.Topic;
   /**
    * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
    * the encryptionKey property for this construct.
    *
    * @default - true (encryption enabled, managed by this CDK app).
    */
-  readonly enableEncryptionWithCustomerManagedKey?: boolean
+  readonly enableEncryptionWithCustomerManagedKey?: boolean;
   /**
    * An optional, imported encryption key to encrypt the SQS queue, and SNS Topic.
    *
    * @default - not specified.
    */
-  readonly encryptionKey?: kms.Key
+  readonly encryptionKey?: kms.Key;
   /**
    * Optional user-provided props to override the default props for the encryption key.
    *
    * @default - Default props are used.
    */
-  readonly encryptionKeyProps?: kms.KeyProps
+  readonly encryptionKeyProps?: kms.KeyProps;
 }
 
 export class EventsRuleToSns extends Construct {
   public readonly snsTopic: sns.Topic;
+  public readonly eventBus?: events.IEventBus;
   public readonly eventsRule: events.Rule;
   public readonly encryptionKey?: kms.Key;
 
@@ -78,5 +91,6 @@ export class EventsRuleToSns extends Construct {
     this.snsTopic = wrappedConstruct.snsTopic;
     this.eventsRule = wrappedConstruct.eventsRule;
     this.encryptionKey = wrappedConstruct.encryptionKey;
+    this.eventBus = wrappedConstruct.eventBus;
   }
 }

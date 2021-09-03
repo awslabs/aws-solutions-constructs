@@ -26,6 +26,7 @@ function deployNewStack(stack: cdk.Stack) {
   };
   return new EventbridgeToSns(stack, 'test', props);
 }
+
 function deployStackWithNewEventBus(stack: cdk.Stack) {
   const props: EventbridgeToSnsProps = {
     eventRuleProps: {
