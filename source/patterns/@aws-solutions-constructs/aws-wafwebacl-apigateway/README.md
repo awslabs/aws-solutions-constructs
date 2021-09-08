@@ -65,13 +65,16 @@ _Parameters_
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
 |existingApiGatewayInterface|[`api.IRestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.IRestApi.html)|The existing API Gateway instance that will be protected with the WAF webACL. *Note that a WAF web ACL can only be added to a configured API Gateway, so this construct only accepts an existing IRestApi and does not accept apiGatewayProps.*|
-|webACLProps?|[`waf.CfnWebACLProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-waf.CfnWebACLProps.html)|Optional user-provided props to override the default props for the AWS WAF access control list.|
+|existingWafAcl?|[`waf.CfnWebACL`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-waf.CfnWebACL.html)|Existing instance of a WAF ACL, if this is set then the all props are ignored.|
+|webACLProps?|[`waf.CfnWebACLProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-waf.CfnWebACLProps.html)|Optional user-provided props to override the default props for the AWS WAF ACL.|
+|existingWafRules?|[`waf.CfnWebACL.RuleProperty[]`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-wafregional.CfnWebACL.RuleProperty.html)|User provided rules to override the default ACL rules for WAF.|
 
 ## Pattern Properties
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
 |webACL|[`waf.CfnWebACL`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-waf.CfnWebACL.html)|Returns an instance of the waf.CfnWebACL created by the construct.|
+|webACLAssociation|[`waf.CfnWebACLAssociation`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-wafregional.CfnWebACLAssociation.html)|Returns an instance of the waf.CfnWebACLAssociation created by the construct.|
 |apiGateway|[`api.IRestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.IRestApi.html)|Returns an instance of the API Gateway REST API created by the pattern. |
 
 ## Default settings
@@ -80,7 +83,6 @@ Out of the box implementation of the Construct without any override will set the
 
 ### AWS WAF
 * Deploy a WAF with 7 [AWS managed rule groups](https://docs.aws.amazon.com/waf/latest/developerguide/aws-managed-rule-groups-list.html).
-*Note that the default rules can be replaced by specifying the rules property of CfnWebACLProps* 
     * AWSManagedRulesBotControlRuleSet
     * AWSManagedRulesKnownBadInputsRuleSet
     * AWSManagedRulesCommonRuleSet
@@ -88,6 +90,8 @@ Out of the box implementation of the Construct without any override will set the
     * AWSManagedRulesAmazonIpReputationList
     * AWSManagedRulesAdminProtectionRuleSet
     * AWSManagedRulesSQLiRuleSet
+
+    *Note that the default rules can be replaced by specifying the rules property of CfnWebACLProps* 
 * Send metrics to Amazon CloudWatch
 
 ### Amazon API Gateway
