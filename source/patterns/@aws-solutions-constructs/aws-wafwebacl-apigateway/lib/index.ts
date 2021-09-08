@@ -40,7 +40,7 @@ export interface WafWebACLToApiGatewayProps {
     /**
      * User provided rules to override the default ACL rules for WAF.
      */
-    readonly existingWafRules?: waf.CfnWebACL.RuleProperty[];
+    readonly existingWafRules?: waf.CfnRuleGroup.RuleProperty[];
 }
 
 /**

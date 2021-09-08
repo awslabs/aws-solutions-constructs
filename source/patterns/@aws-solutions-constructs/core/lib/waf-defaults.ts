@@ -16,7 +16,7 @@ import * as waf from "@aws-cdk/aws-wafv2";
 /**
  * Default rules for WAF
  */
-export function DefaultWafRules(): waf.CfnWebACL.RuleProperty[] {
+export function DefaultWafRules(): waf.CfnRuleGroup.RuleProperty[] {
   return [
     wrapManagedRuleSet("AWSManagedRulesBotControlRuleSet", "AWS", 0),
     wrapManagedRuleSet("AWSManagedRulesKnownBadInputsRuleSet", "AWS", 1),
@@ -44,5 +44,5 @@ function wrapManagedRuleSet(managedGroupName: string, vendorName: string, priori
       metricName: managedGroupName,
       sampledRequestsEnabled: true
     }
-  } as waf.CfnWebACL.RuleProperty;
+  } as waf.CfnRuleGroup.RuleProperty;
 }

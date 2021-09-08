@@ -1,0 +1,1432 @@
+{
+  "Resources": {
+    "ApiGatwayToIotapigatewayiotrole690273C0": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "apigateway.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Path": "/",
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": "iot:UpdateThingShadow",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:aws:iot:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":thing/*"
+                      ]
+                    ]
+                  }
+                },
+                {
+                  "Action": "iot:Publish",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:aws:iot:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":topic/*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "awsapigatewayiotpolicy"
+          }
+        ]
+      }
+    },
+    "ApiGatwayToIotApiAccessLogGroup9DE1058C": {
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
+            },
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+            }
+          ]
+        }
+      }
+    },
+    "ApiGatwayToIotRestApi5C9199A1": {
+      "Type": "AWS::ApiGateway::RestApi",
+      "Properties": {
+        "BinaryMediaTypes": [
+          "application/octet-stream"
+        ],
+        "EndpointConfiguration": {
+          "Types": [
+            "EDGE"
+          ]
+        },
+        "Name": "RestApi"
+      }
+    },
+    "ApiGatwayToIotRestApiDeployment1D98F58E69b0e2f4ec45c6b2b007e8fed0c63891": {
+      "Type": "AWS::ApiGateway::Deployment",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        },
+        "Description": "Automatically created by the RestApi construct"
+      },
+      "DependsOn": [
+        "ApiGatwayToIotawsapigatewayiotreqvalC75CBF3B",
+        "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6topiclevel7POST96F661A6",
+        "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6topiclevel75B54072D",
+        "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6POST1F4225EA",
+        "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6EC74ED56",
+        "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5POSTFD7C29A8",
+        "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5AD646C2B",
+        "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4POST6E6D9290",
+        "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel42C7B3E16",
+        "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3POST85FB1674",
+        "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel38847D591",
+        "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2POSTB202F6D4",
+        "ApiGatwayToIotRestApimessagetopiclevel1topiclevel24E79C18C",
+        "ApiGatwayToIotRestApimessagetopiclevel1POST4076F2DD",
+        "ApiGatwayToIotRestApimessagetopiclevel1D7675E5D",
+        "ApiGatwayToIotRestApimessage7CBE1A29",
+        "ApiGatwayToIotRestApishadowthingNameshadowNamePOST90E86080",
+        "ApiGatwayToIotRestApishadowthingNameshadowNameCD0DBFF8",
+        "ApiGatwayToIotRestApishadowthingNamePOSTCAE95743",
+        "ApiGatwayToIotRestApishadowthingNameA63EAADA",
+        "ApiGatwayToIotRestApishadow291367F2"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W45",
+              "reason": "ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checkes for it in AWS::ApiGateway::Deployment resource"
+            }
+          ]
+        }
+      }
+    },
+    "ApiGatwayToIotRestApiDeploymentStageprod113AACA2": {
+      "Type": "AWS::ApiGateway::Stage",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        },
+        "AccessLogSetting": {
+          "DestinationArn": {
+            "Fn::GetAtt": [
+              "ApiGatwayToIotApiAccessLogGroup9DE1058C",
+              "Arn"
+            ]
+          },
+          "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
+        },
+        "DeploymentId": {
+          "Ref": "ApiGatwayToIotRestApiDeployment1D98F58E69b0e2f4ec45c6b2b007e8fed0c63891"
+        },
+        "MethodSettings": [
+          {
+            "DataTraceEnabled": false,
+            "HttpMethod": "*",
+            "LoggingLevel": "INFO",
+            "ResourcePath": "/*"
+          }
+        ],
+        "StageName": "prod",
+        "TracingEnabled": true
+      }
+    },
+    "ApiGatwayToIotRestApimessage7CBE1A29": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatwayToIotRestApi5C9199A1",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "message",
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        }
+      }
+    },
+    "ApiGatwayToIotRestApimessagetopiclevel1D7675E5D": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatwayToIotRestApimessage7CBE1A29"
+        },
+        "PathPart": "{topic-level-1}",
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        }
+      }
+    },
+    "ApiGatwayToIotRestApimessagetopiclevel1POST4076F2DD": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "ResourceId": {
+          "Ref": "ApiGatwayToIotRestApimessagetopiclevel1D7675E5D"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        },
+        "AuthorizationType": "AWS_IAM",
+        "Integration": {
+          "Credentials": {
+            "Fn::GetAtt": [
+              "ApiGatwayToIotapigatewayiotrole690273C0",
+              "Arn"
+            ]
+          },
+          "IntegrationHttpMethod": "POST",
+          "IntegrationResponses": [
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "SelectionPattern": "2\\d{2}",
+              "StatusCode": "200"
+            },
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "SelectionPattern": "5\\d{2}",
+              "StatusCode": "500"
+            },
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "StatusCode": "403"
+            }
+          ],
+          "PassthroughBehavior": "WHEN_NO_MATCH",
+          "RequestParameters": {
+            "integration.request.header.Content-Type": "'application/json'",
+            "integration.request.path.topic-level-1": "method.request.path.topic-level-1"
+          },
+          "RequestTemplates": {
+            "application/json": "$input.json('$')"
+          },
+          "Type": "AWS",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":a1234567890123-ats.iotdata:path/topics/{topic-level-1}"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": [
+          {
+            "StatusCode": "200"
+          },
+          {
+            "StatusCode": "500"
+          },
+          {
+            "StatusCode": "403"
+          }
+        ],
+        "RequestParameters": {
+          "method.request.path.topic-level-1": true
+        },
+        "RequestValidatorId": {
+          "Ref": "ApiGatwayToIotawsapigatewayiotreqvalC75CBF3B"
+        }
+      }
+    },
+    "ApiGatwayToIotRestApimessagetopiclevel1topiclevel24E79C18C": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatwayToIotRestApimessagetopiclevel1D7675E5D"
+        },
+        "PathPart": "{topic-level-2}",
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        }
+      }
+    },
+    "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2POSTB202F6D4": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "ResourceId": {
+          "Ref": "ApiGatwayToIotRestApimessagetopiclevel1topiclevel24E79C18C"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        },
+        "AuthorizationType": "AWS_IAM",
+        "Integration": {
+          "Credentials": {
+            "Fn::GetAtt": [
+              "ApiGatwayToIotapigatewayiotrole690273C0",
+              "Arn"
+            ]
+          },
+          "IntegrationHttpMethod": "POST",
+          "IntegrationResponses": [
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "SelectionPattern": "2\\d{2}",
+              "StatusCode": "200"
+            },
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "SelectionPattern": "5\\d{2}",
+              "StatusCode": "500"
+            },
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "StatusCode": "403"
+            }
+          ],
+          "PassthroughBehavior": "WHEN_NO_MATCH",
+          "RequestParameters": {
+            "integration.request.header.Content-Type": "'application/json'",
+            "integration.request.path.topic-level-1": "method.request.path.topic-level-1",
+            "integration.request.path.topic-level-2": "method.request.path.topic-level-2"
+          },
+          "RequestTemplates": {
+            "application/json": "$input.json('$')"
+          },
+          "Type": "AWS",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":a1234567890123-ats.iotdata:path/topics/{topic-level-1}/{topic-level-2}"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": [
+          {
+            "StatusCode": "200"
+          },
+          {
+            "StatusCode": "500"
+          },
+          {
+            "StatusCode": "403"
+          }
+        ],
+        "RequestParameters": {
+          "method.request.path.topic-level-1": true,
+          "method.request.path.topic-level-2": true
+        },
+        "RequestValidatorId": {
+          "Ref": "ApiGatwayToIotawsapigatewayiotreqvalC75CBF3B"
+        }
+      }
+    },
+    "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel38847D591": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatwayToIotRestApimessagetopiclevel1topiclevel24E79C18C"
+        },
+        "PathPart": "{topic-level-3}",
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        }
+      }
+    },
+    "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3POST85FB1674": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "ResourceId": {
+          "Ref": "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel38847D591"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        },
+        "AuthorizationType": "AWS_IAM",
+        "Integration": {
+          "Credentials": {
+            "Fn::GetAtt": [
+              "ApiGatwayToIotapigatewayiotrole690273C0",
+              "Arn"
+            ]
+          },
+          "IntegrationHttpMethod": "POST",
+          "IntegrationResponses": [
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "SelectionPattern": "2\\d{2}",
+              "StatusCode": "200"
+            },
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "SelectionPattern": "5\\d{2}",
+              "StatusCode": "500"
+            },
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "StatusCode": "403"
+            }
+          ],
+          "PassthroughBehavior": "WHEN_NO_MATCH",
+          "RequestParameters": {
+            "integration.request.header.Content-Type": "'application/json'",
+            "integration.request.path.topic-level-1": "method.request.path.topic-level-1",
+            "integration.request.path.topic-level-2": "method.request.path.topic-level-2",
+            "integration.request.path.topic-level-3": "method.request.path.topic-level-3"
+          },
+          "RequestTemplates": {
+            "application/json": "$input.json('$')"
+          },
+          "Type": "AWS",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":a1234567890123-ats.iotdata:path/topics/{topic-level-1}/{topic-level-2}/{topic-level-3}"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": [
+          {
+            "StatusCode": "200"
+          },
+          {
+            "StatusCode": "500"
+          },
+          {
+            "StatusCode": "403"
+          }
+        ],
+        "RequestParameters": {
+          "method.request.path.topic-level-1": true,
+          "method.request.path.topic-level-2": true,
+          "method.request.path.topic-level-3": true
+        },
+        "RequestValidatorId": {
+          "Ref": "ApiGatwayToIotawsapigatewayiotreqvalC75CBF3B"
+        }
+      }
+    },
+    "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel42C7B3E16": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel38847D591"
+        },
+        "PathPart": "{topic-level-4}",
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        }
+      }
+    },
+    "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4POST6E6D9290": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "ResourceId": {
+          "Ref": "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel42C7B3E16"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        },
+        "AuthorizationType": "AWS_IAM",
+        "Integration": {
+          "Credentials": {
+            "Fn::GetAtt": [
+              "ApiGatwayToIotapigatewayiotrole690273C0",
+              "Arn"
+            ]
+          },
+          "IntegrationHttpMethod": "POST",
+          "IntegrationResponses": [
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "SelectionPattern": "2\\d{2}",
+              "StatusCode": "200"
+            },
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "SelectionPattern": "5\\d{2}",
+              "StatusCode": "500"
+            },
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "StatusCode": "403"
+            }
+          ],
+          "PassthroughBehavior": "WHEN_NO_MATCH",
+          "RequestParameters": {
+            "integration.request.header.Content-Type": "'application/json'",
+            "integration.request.path.topic-level-1": "method.request.path.topic-level-1",
+            "integration.request.path.topic-level-2": "method.request.path.topic-level-2",
+            "integration.request.path.topic-level-3": "method.request.path.topic-level-3",
+            "integration.request.path.topic-level-4": "method.request.path.topic-level-4"
+          },
+          "RequestTemplates": {
+            "application/json": "$input.json('$')"
+          },
+          "Type": "AWS",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":a1234567890123-ats.iotdata:path/topics/{topic-level-1}/{topic-level-2}/{topic-level-3}/{topic-level-4}"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": [
+          {
+            "StatusCode": "200"
+          },
+          {
+            "StatusCode": "500"
+          },
+          {
+            "StatusCode": "403"
+          }
+        ],
+        "RequestParameters": {
+          "method.request.path.topic-level-1": true,
+          "method.request.path.topic-level-2": true,
+          "method.request.path.topic-level-3": true,
+          "method.request.path.topic-level-4": true
+        },
+        "RequestValidatorId": {
+          "Ref": "ApiGatwayToIotawsapigatewayiotreqvalC75CBF3B"
+        }
+      }
+    },
+    "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5AD646C2B": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel42C7B3E16"
+        },
+        "PathPart": "{topic-level-5}",
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        }
+      }
+    },
+    "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5POSTFD7C29A8": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "ResourceId": {
+          "Ref": "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5AD646C2B"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        },
+        "AuthorizationType": "AWS_IAM",
+        "Integration": {
+          "Credentials": {
+            "Fn::GetAtt": [
+              "ApiGatwayToIotapigatewayiotrole690273C0",
+              "Arn"
+            ]
+          },
+          "IntegrationHttpMethod": "POST",
+          "IntegrationResponses": [
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "SelectionPattern": "2\\d{2}",
+              "StatusCode": "200"
+            },
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "SelectionPattern": "5\\d{2}",
+              "StatusCode": "500"
+            },
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "StatusCode": "403"
+            }
+          ],
+          "PassthroughBehavior": "WHEN_NO_MATCH",
+          "RequestParameters": {
+            "integration.request.header.Content-Type": "'application/json'",
+            "integration.request.path.topic-level-1": "method.request.path.topic-level-1",
+            "integration.request.path.topic-level-2": "method.request.path.topic-level-2",
+            "integration.request.path.topic-level-3": "method.request.path.topic-level-3",
+            "integration.request.path.topic-level-4": "method.request.path.topic-level-4",
+            "integration.request.path.topic-level-5": "method.request.path.topic-level-5"
+          },
+          "RequestTemplates": {
+            "application/json": "$input.json('$')"
+          },
+          "Type": "AWS",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":a1234567890123-ats.iotdata:path/topics/{topic-level-1}/{topic-level-2}/{topic-level-3}/{topic-level-4}/{topic-level-5}"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": [
+          {
+            "StatusCode": "200"
+          },
+          {
+            "StatusCode": "500"
+          },
+          {
+            "StatusCode": "403"
+          }
+        ],
+        "RequestParameters": {
+          "method.request.path.topic-level-1": true,
+          "method.request.path.topic-level-2": true,
+          "method.request.path.topic-level-3": true,
+          "method.request.path.topic-level-4": true,
+          "method.request.path.topic-level-5": true
+        },
+        "RequestValidatorId": {
+          "Ref": "ApiGatwayToIotawsapigatewayiotreqvalC75CBF3B"
+        }
+      }
+    },
+    "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6EC74ED56": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5AD646C2B"
+        },
+        "PathPart": "{topic-level-6}",
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        }
+      }
+    },
+    "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6POST1F4225EA": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "ResourceId": {
+          "Ref": "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6EC74ED56"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        },
+        "AuthorizationType": "AWS_IAM",
+        "Integration": {
+          "Credentials": {
+            "Fn::GetAtt": [
+              "ApiGatwayToIotapigatewayiotrole690273C0",
+              "Arn"
+            ]
+          },
+          "IntegrationHttpMethod": "POST",
+          "IntegrationResponses": [
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "SelectionPattern": "2\\d{2}",
+              "StatusCode": "200"
+            },
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "SelectionPattern": "5\\d{2}",
+              "StatusCode": "500"
+            },
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "StatusCode": "403"
+            }
+          ],
+          "PassthroughBehavior": "WHEN_NO_MATCH",
+          "RequestParameters": {
+            "integration.request.header.Content-Type": "'application/json'",
+            "integration.request.path.topic-level-1": "method.request.path.topic-level-1",
+            "integration.request.path.topic-level-2": "method.request.path.topic-level-2",
+            "integration.request.path.topic-level-3": "method.request.path.topic-level-3",
+            "integration.request.path.topic-level-4": "method.request.path.topic-level-4",
+            "integration.request.path.topic-level-5": "method.request.path.topic-level-5",
+            "integration.request.path.topic-level-6": "method.request.path.topic-level-6"
+          },
+          "RequestTemplates": {
+            "application/json": "$input.json('$')"
+          },
+          "Type": "AWS",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":a1234567890123-ats.iotdata:path/topics/{topic-level-1}/{topic-level-2}/{topic-level-3}/{topic-level-4}/{topic-level-5}/{topic-level-6}"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": [
+          {
+            "StatusCode": "200"
+          },
+          {
+            "StatusCode": "500"
+          },
+          {
+            "StatusCode": "403"
+          }
+        ],
+        "RequestParameters": {
+          "method.request.path.topic-level-1": true,
+          "method.request.path.topic-level-2": true,
+          "method.request.path.topic-level-3": true,
+          "method.request.path.topic-level-4": true,
+          "method.request.path.topic-level-5": true,
+          "method.request.path.topic-level-6": true
+        },
+        "RequestValidatorId": {
+          "Ref": "ApiGatwayToIotawsapigatewayiotreqvalC75CBF3B"
+        }
+      }
+    },
+    "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6topiclevel75B54072D": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6EC74ED56"
+        },
+        "PathPart": "{topic-level-7}",
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        }
+      }
+    },
+    "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6topiclevel7POST96F661A6": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "ResourceId": {
+          "Ref": "ApiGatwayToIotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6topiclevel75B54072D"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        },
+        "AuthorizationType": "AWS_IAM",
+        "Integration": {
+          "Credentials": {
+            "Fn::GetAtt": [
+              "ApiGatwayToIotapigatewayiotrole690273C0",
+              "Arn"
+            ]
+          },
+          "IntegrationHttpMethod": "POST",
+          "IntegrationResponses": [
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "SelectionPattern": "2\\d{2}",
+              "StatusCode": "200"
+            },
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "SelectionPattern": "5\\d{2}",
+              "StatusCode": "500"
+            },
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "StatusCode": "403"
+            }
+          ],
+          "PassthroughBehavior": "WHEN_NO_MATCH",
+          "RequestParameters": {
+            "integration.request.header.Content-Type": "'application/json'",
+            "integration.request.path.topic-level-1": "method.request.path.topic-level-1",
+            "integration.request.path.topic-level-2": "method.request.path.topic-level-2",
+            "integration.request.path.topic-level-3": "method.request.path.topic-level-3",
+            "integration.request.path.topic-level-4": "method.request.path.topic-level-4",
+            "integration.request.path.topic-level-5": "method.request.path.topic-level-5",
+            "integration.request.path.topic-level-6": "method.request.path.topic-level-6",
+            "integration.request.path.topic-level-7": "method.request.path.topic-level-7"
+          },
+          "RequestTemplates": {
+            "application/json": "$input.json('$')"
+          },
+          "Type": "AWS",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":a1234567890123-ats.iotdata:path/topics/{topic-level-1}/{topic-level-2}/{topic-level-3}/{topic-level-4}/{topic-level-5}/{topic-level-6}/{topic-level-7}"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": [
+          {
+            "StatusCode": "200"
+          },
+          {
+            "StatusCode": "500"
+          },
+          {
+            "StatusCode": "403"
+          }
+        ],
+        "RequestParameters": {
+          "method.request.path.topic-level-1": true,
+          "method.request.path.topic-level-2": true,
+          "method.request.path.topic-level-3": true,
+          "method.request.path.topic-level-4": true,
+          "method.request.path.topic-level-5": true,
+          "method.request.path.topic-level-6": true,
+          "method.request.path.topic-level-7": true
+        },
+        "RequestValidatorId": {
+          "Ref": "ApiGatwayToIotawsapigatewayiotreqvalC75CBF3B"
+        }
+      }
+    },
+    "ApiGatwayToIotRestApishadow291367F2": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatwayToIotRestApi5C9199A1",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "shadow",
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        }
+      }
+    },
+    "ApiGatwayToIotRestApishadowthingNameA63EAADA": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatwayToIotRestApishadow291367F2"
+        },
+        "PathPart": "{thingName}",
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        }
+      }
+    },
+    "ApiGatwayToIotRestApishadowthingNamePOSTCAE95743": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "ResourceId": {
+          "Ref": "ApiGatwayToIotRestApishadowthingNameA63EAADA"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        },
+        "AuthorizationType": "AWS_IAM",
+        "Integration": {
+          "Credentials": {
+            "Fn::GetAtt": [
+              "ApiGatwayToIotapigatewayiotrole690273C0",
+              "Arn"
+            ]
+          },
+          "IntegrationHttpMethod": "POST",
+          "IntegrationResponses": [
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "SelectionPattern": "2\\d{2}",
+              "StatusCode": "200"
+            },
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "SelectionPattern": "5\\d{2}",
+              "StatusCode": "500"
+            },
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "StatusCode": "403"
+            }
+          ],
+          "PassthroughBehavior": "WHEN_NO_MATCH",
+          "RequestParameters": {
+            "integration.request.header.Content-Type": "'application/json'",
+            "integration.request.path.thingName": "method.request.path.thingName"
+          },
+          "RequestTemplates": {
+            "application/json": "$input.json('$')"
+          },
+          "Type": "AWS",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":a1234567890123-ats.iotdata:path/things/{thingName}/shadow"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": [
+          {
+            "StatusCode": "200"
+          },
+          {
+            "StatusCode": "500"
+          },
+          {
+            "StatusCode": "403"
+          }
+        ],
+        "RequestParameters": {
+          "method.request.path.thingName": true
+        },
+        "RequestValidatorId": {
+          "Ref": "ApiGatwayToIotawsapigatewayiotreqvalC75CBF3B"
+        }
+      }
+    },
+    "ApiGatwayToIotRestApishadowthingNameshadowNameCD0DBFF8": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatwayToIotRestApishadowthingNameA63EAADA"
+        },
+        "PathPart": "{shadowName}",
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        }
+      }
+    },
+    "ApiGatwayToIotRestApishadowthingNameshadowNamePOST90E86080": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "ResourceId": {
+          "Ref": "ApiGatwayToIotRestApishadowthingNameshadowNameCD0DBFF8"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        },
+        "AuthorizationType": "AWS_IAM",
+        "Integration": {
+          "Credentials": {
+            "Fn::GetAtt": [
+              "ApiGatwayToIotapigatewayiotrole690273C0",
+              "Arn"
+            ]
+          },
+          "IntegrationHttpMethod": "POST",
+          "IntegrationResponses": [
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "SelectionPattern": "2\\d{2}",
+              "StatusCode": "200"
+            },
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "SelectionPattern": "5\\d{2}",
+              "StatusCode": "500"
+            },
+            {
+              "ResponseTemplates": {
+                "application/json": "$input.json('$')"
+              },
+              "StatusCode": "403"
+            }
+          ],
+          "PassthroughBehavior": "WHEN_NO_MATCH",
+          "RequestParameters": {
+            "integration.request.header.Content-Type": "'application/json'",
+            "integration.request.path.shadowName": "method.request.path.shadowName",
+            "integration.request.path.thingName": "method.request.path.thingName"
+          },
+          "RequestTemplates": {
+            "application/json": "$input.json('$')"
+          },
+          "Type": "AWS",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":a1234567890123-ats.iotdata:path/things/{thingName}/shadow?name={shadowName}"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": [
+          {
+            "StatusCode": "200"
+          },
+          {
+            "StatusCode": "500"
+          },
+          {
+            "StatusCode": "403"
+          }
+        ],
+        "RequestParameters": {
+          "method.request.path.shadowName": true,
+          "method.request.path.thingName": true
+        },
+        "RequestValidatorId": {
+          "Ref": "ApiGatwayToIotawsapigatewayiotreqvalC75CBF3B"
+        }
+      }
+    },
+    "ApiGatwayToIotRestApiUsagePlanD8594190": {
+      "Type": "AWS::ApiGateway::UsagePlan",
+      "Properties": {
+        "ApiStages": [
+          {
+            "ApiId": {
+              "Ref": "ApiGatwayToIotRestApi5C9199A1"
+            },
+            "Stage": {
+              "Ref": "ApiGatwayToIotRestApiDeploymentStageprod113AACA2"
+            },
+            "Throttle": {}
+          }
+        ]
+      }
+    },
+    "ApiGatwayToIotLambdaRestApiCloudWatchRoleBD8D55FD": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "apigateway.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:DescribeLogGroups",
+                    "logs:DescribeLogStreams",
+                    "logs:PutLogEvents",
+                    "logs:GetLogEvents",
+                    "logs:FilterLogEvents"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "LambdaRestApiCloudWatchRolePolicy"
+          }
+        ]
+      }
+    },
+    "ApiGatwayToIotLambdaRestApiAccountD72F8D6C": {
+      "Type": "AWS::ApiGateway::Account",
+      "Properties": {
+        "CloudWatchRoleArn": {
+          "Fn::GetAtt": [
+            "ApiGatwayToIotLambdaRestApiCloudWatchRoleBD8D55FD",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "ApiGatwayToIotRestApi5C9199A1"
+      ]
+    },
+    "ApiGatwayToIotawsapigatewayiotreqvalC75CBF3B": {
+      "Type": "AWS::ApiGateway::RequestValidator",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "ApiGatwayToIotRestApi5C9199A1"
+        },
+        "ValidateRequestBody": false,
+        "ValidateRequestParameters": true
+      }
+    },
+    "testwafwebaclapigatewayiottestwafwebaclapigatewayiotWebACLB9A5BE79": {
+      "Type": "AWS::WAFv2::WebACL",
+      "Properties": {
+        "DefaultAction": {
+          "Allow": {}
+        },
+        "Scope": "REGIONAL",
+        "VisibilityConfig": {
+          "CloudWatchMetricsEnabled": true,
+          "MetricName": "webACL",
+          "SampledRequestsEnabled": true
+        },
+        "Rules": [
+          {
+            "Name": "AWS-AWSManagedRulesBotControlRuleSet",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 0,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesBotControlRuleSet",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesBotControlRuleSet",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesKnownBadInputsRuleSet",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 1,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesKnownBadInputsRuleSet",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesKnownBadInputsRuleSet",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesCommonRuleSet",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 2,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesCommonRuleSet",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesCommonRuleSet",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesAnonymousIpList",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 3,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesAnonymousIpList",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesAnonymousIpList",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesAmazonIpReputationList",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 4,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesAmazonIpReputationList",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesAmazonIpReputationList",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesAdminProtectionRuleSet",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 5,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesAdminProtectionRuleSet",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesAdminProtectionRuleSet",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesSQLiRuleSet",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 6,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesSQLiRuleSet",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesSQLiRuleSet",
+              "SampledRequestsEnabled": true
+            }
+          }
+        ]
+      }
+    },
+    "testwafwebaclapigatewayiottestwafwebaclapigatewayiotWebACLAssociationE026C89C": {
+      "Type": "AWS::WAFv2::WebACLAssociation",
+      "Properties": {
+        "ResourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:apigateway:",
+              {
+                "Ref": "AWS::Region"
+              },
+              "::/restapis/",
+              {
+                "Ref": "ApiGatwayToIotRestApi5C9199A1"
+              },
+              "/stages/",
+              {
+                "Ref": "ApiGatwayToIotRestApiDeploymentStageprod113AACA2"
+              }
+            ]
+          ]
+        },
+        "WebACLArn": {
+          "Fn::GetAtt": [
+            "testwafwebaclapigatewayiottestwafwebaclapigatewayiotWebACLB9A5BE79",
+            "Arn"
+          ]
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "ApiGatwayToIotRestApiEndpoint999FBDFB": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "ApiGatwayToIotRestApi5C9199A1"
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region"
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix"
+            },
+            "/",
+            {
+              "Ref": "ApiGatwayToIotRestApiDeploymentStageprod113AACA2"
+            },
+            "/"
+          ]
+        ]
+      }
+    }
+  }
+}

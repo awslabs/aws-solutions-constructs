@@ -32,7 +32,7 @@ export interface BuildWafProps {
     /**
      * User provided props to override the default ACL props for WAF.
      */
-    readonly existingWafRules?: waf.CfnWebACL.RuleProperty[];
+    readonly existingWafRules?: waf.CfnRuleGroup.RuleProperty[];
 }
 
 export function buildWaf(scope: Construct, props: BuildWafProps): waf.CfnWebACLAssociation {

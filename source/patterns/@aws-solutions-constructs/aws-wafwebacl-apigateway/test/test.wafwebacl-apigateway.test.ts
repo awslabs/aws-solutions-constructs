@@ -68,7 +68,7 @@ test('Pattern deployment w/ new Lambda function and default props', () => {
 // --------------------------------------------------------------
 // Test getter methods
 // --------------------------------------------------------------
-test('check getter methods', () => {
+test('Check getter methods', () => {
   const stack = new cdk.Stack();
   const construct: WafWebACLToApiGateway = deploy(stack);
 
