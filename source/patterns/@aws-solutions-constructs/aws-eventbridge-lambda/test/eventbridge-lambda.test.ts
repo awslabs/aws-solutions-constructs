@@ -207,7 +207,7 @@ test('check exception for Missing existingObj from props', () => {
   }
 });
 
-test('check eventbus property', () => {
+test('check eventbus property, snapshot & eventbus exists', () => {
   const stack = new cdk.Stack();
 
   const construct: EventbridgeToLambda = deployNewEventBus(stack);
@@ -215,6 +215,10 @@ test('check eventbus property', () => {
   expect(construct.eventsRule !== null);
   expect(construct.lambdaFunction !== null);
   expect(construct.eventBus !== null);
+  // Validate snapshot
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Check whether eventbus exists
+  expect(stack).toHaveResource('AWS::Events::EventBus');
 });
 
 test('check exception while passing existingEventBus & eventBusProps', () => {
@@ -242,12 +246,6 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
   }
 });
 
-test('snapshot test EventbridgeToLambda custom event bus params', () => {
-  const stack = new cdk.Stack();
-  deployNewEventBus(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
 test('snapshot test EventbridgeToLambda existing event bus params', () => {
   const stack = new cdk.Stack();
   const props: EventbridgeToLambdaProps = {
@@ -267,12 +265,29 @@ test('snapshot test EventbridgeToLambda existing event bus params', () => {
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
-test('check custom event bus resource when deploy:true', () => {
+test('check custom event bus resource with props when deploy:true', () => {
   const stack = new cdk.Stack();
 
-  deployNewEventBus(stack);
+  const props: EventbridgeToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    eventBusProps: {
+      eventBusName: `testeventbus`
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventbridgeToLambda(stack, 'test-new-eventbridge-with-props-lambda', props);
 
-  expect(stack).toHaveResource('AWS::Events::EventBus');
+  expect(stack).toHaveResource('AWS::Events::EventBus', {
+    Name: `testeventbus`
+  });
 });
 
 test('check multiple constructs in a single stack', () => {

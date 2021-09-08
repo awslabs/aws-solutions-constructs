@@ -98,3 +98,98 @@ test('Test existing resources', () => {
     RetentionPeriodHours: 48,
   });
 });
+
+test('check eventbus property, snapshot & eventbus exists', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventsRuleToKinesisStreamsProps = {
+    eventRuleProps: {
+      description: 'event rule props',
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {}
+  };
+  const construct = new EventsRuleToKinesisStreams(stack, 'test-events-rule-kinesis-streams-default-parameters', props);
+
+  expect(construct.eventsRule !== null);
+  expect(construct.kinesisStream !== null);
+  expect(construct.eventsRole !== null);
+  expect(construct.eventBus !== null);
+  // Validate snapshot
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Check whether eventbus exists
+  expect(stack).toHaveResource('AWS::Events::EventBus');
+});
+
+test('check exception while passing existingEventBus & eventBusProps', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventsRuleToKinesisStreamsProps = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {},
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {})
+  };
+
+  try {
+    new EventsRuleToKinesisStreams(stack, 'test-eventsrule-kinesisstreams', props);
+  } catch (e) {
+    expect(e).toBeInstanceOf(Error);
+  }
+});
+
+test('snapshot test EventsRuleToKinesisStreams existing event bus params', () => {
+  const stack = new cdk.Stack();
+  const props: EventsRuleToKinesisStreamsProps = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {})
+  };
+  new EventsRuleToKinesisStreams(stack, 'test-existing-eventsrule-kinesisstreams', props);
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+test('check custom event bus resource with props when deploy:true', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventsRuleToKinesisStreamsProps = {
+    eventBusProps: {
+      eventBusName: `testeventbus`
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventsRuleToKinesisStreams(stack, 'test-new-eventsrule-with-props-kinsesisstreams', props);
+
+  expect(stack).toHaveResource('AWS::Events::EventBus', {
+    Name: `testeventbus`
+  });
+});
+
+test('check multiple constructs in a single stack', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventsRuleToKinesisStreamsProps = {
+    eventBusProps: {},
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventsRuleToKinesisStreams(stack, 'test-new-eventsrule-kinesisstreams1', props);
+  new EventsRuleToKinesisStreams(stack, 'test-new-eventsrule-kinesisstreams2', props);
+
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
