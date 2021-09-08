@@ -151,3 +151,101 @@ test("Test bad call with existingBucket and bucketProps", () => {
   // Assertion
   expect(app).toThrowError();
 });
+
+test('check eventbus property, snapshot & eventbus exists', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToKinesisFirehoseToS3Props = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {}
+  };
+  const construct = new EventbridgeToKinesisFirehoseToS3(stack, 'test-eventbridge-kinesis-firehose-default-parameters', props);
+
+  expect(construct.eventsRule !== null);
+  expect(construct.eventsRole !== null);
+  expect(construct.kinesisFirehose !== null);
+  expect(construct.kinesisFirehoseRole !== null);
+  expect(construct.kinesisFirehoseLogGroup !== null);
+  expect(construct.s3Bucket !== null);
+  expect(construct.s3LoggingBucket !== null);
+  expect(construct.eventBus !== null);
+  // Validate snapshot
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Check whether eventbus exists
+  expect(stack).toHaveResource('AWS::Events::EventBus');
+});
+
+test('check exception while passing existingEventBus & eventBusProps', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToKinesisFirehoseToS3Props = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {},
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {})
+  };
+
+  try {
+    new EventbridgeToKinesisFirehoseToS3(stack, 'test-eventbridge-firehose', props);
+  } catch (e) {
+    expect(e).toBeInstanceOf(Error);
+  }
+});
+
+test('snapshot test EventbridgeToKinesisFirehose existing event bus params', () => {
+  const stack = new cdk.Stack();
+  const props: EventbridgeToKinesisFirehoseToS3Props = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {})
+  };
+  new EventbridgeToKinesisFirehoseToS3(stack, 'test-existing-eventbridge-kinesisfirehose', props);
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+test('check custom event bus resource with props when deploy:true', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToKinesisFirehoseToS3Props = {
+    eventBusProps: {
+      eventBusName: `testeventbus`
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventbridgeToKinesisFirehoseToS3(stack, 'test-new-eventbridge-with-props-kinsesisfirehose', props);
+
+  expect(stack).toHaveResource('AWS::Events::EventBus', {
+    Name: `testeventbus`
+  });
+});
+
+test('check multiple constructs in a single stack', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToKinesisFirehoseToS3Props = {
+    eventBusProps: {},
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventbridgeToKinesisFirehoseToS3(stack, 'test-new-eventbridge-kinesisfirehose1', props);
+  new EventbridgeToKinesisFirehoseToS3(stack, 'test-new-eventbridge-kinesisfirehose2', props);
+
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});

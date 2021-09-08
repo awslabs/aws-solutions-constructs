@@ -27,6 +27,18 @@ function deployNewStack(stack: cdk.Stack) {
   return new EventsRuleToSqs(stack, 'test-events-rule-sqs', props);
 }
 
+function deployStackWithNewEventBus(stack: cdk.Stack) {
+  const props: EventsRuleToSqsProps = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {}
+  };
+  return new EventsRuleToSqs(stack, 'test-eventsrule-sqs-new-bus', props);
+}
+
 test('snapshot test EventsRuleToSqs default params', () => {
   const stack = new cdk.Stack();
   deployNewStack(stack);
@@ -322,4 +334,91 @@ test('check properties', () => {
   expect(construct.sqsQueue !== null);
   expect(construct.encryptionKey !== null);
   expect(construct.deadLetterQueue !== null);
+});
+
+test('check eventbus property, snapshot & eventbus exists', () => {
+  const stack = new cdk.Stack();
+  const construct: EventsRuleToSqs = deployStackWithNewEventBus(stack);
+
+  expect(construct.eventsRule !== null);
+  expect(construct.sqsQueue !== null);
+  expect(construct.encryptionKey !== null);
+  expect(construct.deadLetterQueue !== null);
+  expect(construct.eventBus !== null);
+
+  // Validate snapshot
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  // Check whether eventbus exists
+  expect(stack).toHaveResource('AWS::Events::EventBus');
+});
+
+test('check exception while passing existingEventBus & eventBusProps', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventsRuleToSqsProps = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {},
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, {})
+  };
+
+  try {
+    new EventsRuleToSqs(stack, 'test-eventsrule-sqs', props);
+  } catch (e) {
+    expect(e).toBeInstanceOf(Error);
+  }
+});
+
+test('snapshot test EventsRuleToSqs existing event bus params', () => {
+  const stack = new cdk.Stack();
+  const props: EventsRuleToSqsProps = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {})
+  };
+  new EventsRuleToSqs(stack, 'test-existing-eventsrule-sqs', props);
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+test('check custom event bus resource with props when deploy:true', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventsRuleToSqsProps = {
+    eventBusProps: {
+      eventBusName: 'testcustomeventbus'
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventsRuleToSqs(stack, 'test-new-eventsrule-sqs', props);
+
+  expect(stack).toHaveResource('AWS::Events::EventBus', {
+    Name: 'testcustomeventbus'
+  });
+});
+
+test('check multiple constructs in a single stack', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventsRuleToSqsProps = {
+    eventBusProps: {},
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventsRuleToSqs(stack, 'test-new-eventsrule-sqs1', props);
+  new EventsRuleToSqs(stack, 'test-new-eventsrule-sqs2', props);
+
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });

@@ -1,0 +1,238 @@
+{
+  "Resources": {
+    "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunctionServiceRoleD9BE1A11": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":log-group:/aws/lambda/*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy"
+          }
+        ]
+      }
+    },
+    "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunctionServiceRoleDefaultPolicy4F3DDE53": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunctionServiceRoleDefaultPolicy4F3DDE53",
+        "Roles": [
+          {
+            "Ref": "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunctionServiceRoleD9BE1A11"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+            }
+          ]
+        }
+      }
+    },
+    "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunctionFF005E9A": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cS3Bucket1F467BCC"
+          },
+          "S3Key": {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Fn::Select": [
+                    0,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cS3VersionKey9E4F7872"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Fn::Select": [
+                    1,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cS3VersionKey9E4F7872"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            ]
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunctionServiceRoleD9BE1A11",
+            "Arn"
+          ]
+        },
+        "Environment": {
+          "Variables": {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+          }
+        },
+        "Handler": "index.handler",
+        "Runtime": "nodejs12.x",
+        "TracingConfig": {
+          "Mode": "Active"
+        }
+      },
+      "DependsOn": [
+        "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunctionServiceRoleDefaultPolicy4F3DDE53",
+        "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunctionServiceRoleD9BE1A11"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+            },
+            {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            },
+            {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients"
+            }
+          ]
+        }
+      }
+    },
+    "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunctionAwsEventsLambdaInvokePermission115E53C70": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunctionFF005E9A",
+            "Arn"
+          ]
+        },
+        "Principal": "events.amazonaws.com",
+        "SourceArn": {
+          "Fn::GetAtt": [
+            "testeventsrulelambdatesteventsrulelambdawrappedEventsRule3AC0B436",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "testeventsrulelambdatesteventsrulelambdawrappedCustomEventBusBFE424DC": {
+      "Type": "AWS::Events::EventBus",
+      "Properties": {
+        "Name": "eventsruleneweventbustesteventsrulelambdatesteventsrulelambdawrappedCustomEventBusB88B29EA"
+      }
+    },
+    "testeventsrulelambdatesteventsrulelambdawrappedEventsRule3AC0B436": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "EventBusName": {
+          "Ref": "testeventsrulelambdatesteventsrulelambdawrappedCustomEventBusBFE424DC"
+        },
+        "EventPattern": {
+          "source": [
+            "solutionsconstructs"
+          ]
+        },
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::GetAtt": [
+                "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunctionFF005E9A",
+                "Arn"
+              ]
+            },
+            "Id": "Target0"
+          }
+        ]
+      }
+    }
+  },
+  "Parameters": {
+    "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cS3Bucket1F467BCC": {
+      "Type": "String",
+      "Description": "S3 bucket for asset \"42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c\""
+    },
+    "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cS3VersionKey9E4F7872": {
+      "Type": "String",
+      "Description": "S3 key for asset version \"42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c\""
+    },
+    "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cArtifactHash00A70A91": {
+      "Type": "String",
+      "Description": "Artifact hash for asset \"42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c\""
+    }
+  }
+}
