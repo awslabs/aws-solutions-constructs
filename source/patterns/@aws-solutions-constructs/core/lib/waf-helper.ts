@@ -35,7 +35,7 @@ export interface BuildWafProps {
     readonly existingWafRules?: waf.CfnRuleGroup.RuleProperty[];
 }
 
-export function buildWaf(scope: Construct, props: BuildWafProps): waf.CfnWebACLAssociation {
+export function buildWaf(scope: Construct, props: BuildWafProps): [ waf.CfnWebACL, waf.CfnWebACLAssociation ] {
   let webAcl;
   let webAclArn;
   const resourceArn = `arn:aws:apigateway:${Stack.of(scope).region}::/restapis/${props.existingApiGatewayInterface.restApiId}/stages/${props.existingApiGatewayInterface.deploymentStage.stageName}`;
@@ -63,8 +63,8 @@ export function buildWaf(scope: Construct, props: BuildWafProps): waf.CfnWebACLA
     webAclArn = webAcl.attrArn;
   }
 
-  return new waf.CfnWebACLAssociation(scope, `${scope.node.id}-WebACLAssociation`, {
+  return [ webAcl, new waf.CfnWebACLAssociation(scope, `${scope.node.id}-WebACLAssociation`, {
     webAclArn,
     resourceArn
-  });
+  }) ];
 }

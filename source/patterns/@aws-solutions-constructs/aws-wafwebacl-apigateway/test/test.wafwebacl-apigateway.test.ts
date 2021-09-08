@@ -72,6 +72,7 @@ test('Check getter methods', () => {
   const stack = new cdk.Stack();
   const construct: WafWebACLToApiGateway = deploy(stack);
 
+  expect(construct.webACL !== null);
   expect(construct.webACLAssociation !== null);
   expect(construct.apiGateway !== null);
 });

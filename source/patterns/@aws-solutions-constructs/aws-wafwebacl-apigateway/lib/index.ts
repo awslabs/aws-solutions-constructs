@@ -47,6 +47,7 @@ export interface WafWebACLToApiGatewayProps {
  * @summary The WafWebACLToApiGateway class.
  */
 export class WafWebACLToApiGateway extends Construct {
+    public readonly webACL: waf.CfnWebACL;
     public readonly webACLAssociation: waf.CfnWebACLAssociation;
     public readonly apiGateway: api.IRestApi;
     /**
@@ -61,7 +62,7 @@ export class WafWebACLToApiGateway extends Construct {
       defaults.CheckProps(props);
 
       // Setup the Web ACL Association
-      this.webACLAssociation = defaults.buildWaf(this, {
+      [ this.webACL, this.webACLAssociation ] = defaults.buildWaf(this, {
         existingApiGatewayInterface: props.existingApiGatewayInterface,
         existingWafAcl: props.existingWafAcl,
         wafAclProps: props.webACLProps,
