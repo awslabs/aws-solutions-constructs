@@ -56,7 +56,7 @@ export class WafwebaclToApiGateway extends Construct {
     defaults.CheckProps(props);
 
     // Build the Web ACL
-    this.webACL = defaults.buildWaf(this, 'REGIONAL', {
+    this.webACL = defaults.buildWebacl(this, 'REGIONAL', {
       existingApiGatewayInterface: props.existingApiGatewayInterface,
       existingWebaclObj: props.existingWebaclObj,
       webaclProps: props.webaclProps,
