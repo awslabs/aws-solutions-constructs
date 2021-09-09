@@ -24,7 +24,7 @@
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.wafwebaclapigateway`|
 
 ## Overview
-This AWS Solutions Construct implements an AWS WAF connected to Amazon API Gateway REST API.
+This AWS Solutions Construct implements an AWS WAF web ACL connected to Amazon API Gateway REST API.
 
 Here is a minimal deployable pattern definition in Typescript:
 
@@ -32,7 +32,7 @@ Here is a minimal deployable pattern definition in Typescript:
 import * as api from '@aws-cdk/aws-apigateway';
 import * as lambda from "@aws-cdk/aws-lambda";
 import { ApiGatewayToLambda } from '@aws-solutions-constructs/aws-apigateway-lambda';
-import { WafWebACLToApiGatewayProps, WafWebACLToApiGateway } from "@aws-solutions-constructs/aws-wafwebacl-apigateway";
+import { WafwebaclToApiGatewayProps, WafwebaclToApiGateway } from "@aws-solutions-constructs/aws-wafwebacl-apigateway";
 
 const apiGatewayToLambda = new ApiGatewayToLambda(this, 'ApiGatewayToLambdaPattern', {
     lambdaFunctionProps: {
@@ -43,7 +43,7 @@ const apiGatewayToLambda = new ApiGatewayToLambda(this, 'ApiGatewayToLambdaPatte
 });
 
 // This construct can only be attached to a configured API Gateway.
-new WafWebACLToApiGateway(this, 'test-wafwebacl-apigateway', {
+new WafwebaclToApiGateway(this, 'test-wafwebacl-apigateway', {
     existingApiGatewayInterface: apiGatewayToLambda.apiGateway
 });
 ```
@@ -51,30 +51,28 @@ new WafWebACLToApiGateway(this, 'test-wafwebacl-apigateway', {
 ## Initializer
 
 ``` text
-new WafWebACLToApiGateway(scope: Construct, id: string, props: WafWebACLToApiGatewayProps);
+new WafwebaclToApiGateway(scope: Construct, id: string, props: WafwebaclToApiGatewayProps);
 ```
 
 _Parameters_
 
 * scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
 * id `string`
-* props [`WafWebACLToApiGatewayProps`](#pattern-construct-props)
+* props [`WafwebaclToApiGatewayProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
-|existingApiGatewayInterface|[`api.IRestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.IRestApi.html)|The existing API Gateway instance that will be protected with the WAF webACL. *Note that a WAF web ACL can only be added to a configured API Gateway, so this construct only accepts an existing IRestApi and does not accept apiGatewayProps.*|
-|existingWafAcl?|[`waf.CfnWebACL`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-waf.CfnWebACL.html)|Existing instance of a WAF ACL, if this is set then the all props are ignored.|
-|webACLProps?|[`waf.CfnWebACLProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-waf.CfnWebACLProps.html)|Optional user-provided props to override the default props for the AWS WAF ACL.|
-|existingWafRules?|[`waf.CfnWebACL.RuleProperty[]`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-wafregional.CfnWebACL.RuleProperty.html)|User provided rules to override the default ACL rules for WAF.|
+|existingApiGatewayInterface|[`api.IRestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.IRestApi.html)|The existing API Gateway instance that will be protected with the WAF web ACL. *Note that a WAF web ACL can only be added to a configured API Gateway, so this construct only accepts an existing IRestApi and does not accept apiGatewayProps.*|
+|existingWebAcl?|[`waf.CfnWebACL`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-waf.CfnWebACL.html)|Existing instance of a WAF web ACL, if this is set then the all props are ignored.|
+|webAclProps?|[`waf.CfnWebACLProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-waf.CfnWebACLProps.html)|Optional user-provided props to override the default props for the AWS WAF web ACL.|
 
 ## Pattern Properties
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
 |webACL|[`waf.CfnWebACL`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-waf.CfnWebACL.html)|Returns an instance of the waf.CfnWebACL created by the construct.|
-|webACLAssociation|[`waf.CfnWebACLAssociation`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-wafregional.CfnWebACLAssociation.html)|Returns an instance of the waf.CfnWebACLAssociation created by the construct.|
 |apiGateway|[`api.IRestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.IRestApi.html)|Returns an instance of the API Gateway REST API created by the pattern. |
 
 ## Default settings
@@ -82,7 +80,7 @@ _Parameters_
 Out of the box implementation of the Construct without any override will set the following defaults:
 
 ### AWS WAF
-* Deploy a WAF with 7 [AWS managed rule groups](https://docs.aws.amazon.com/waf/latest/developerguide/aws-managed-rule-groups-list.html).
+* Deploy a WAF web ACL with 7 [AWS managed rule groups](https://docs.aws.amazon.com/waf/latest/developerguide/aws-managed-rule-groups-list.html).
     * AWSManagedRulesBotControlRuleSet
     * AWSManagedRulesKnownBadInputsRuleSet
     * AWSManagedRulesCommonRuleSet
