@@ -14,7 +14,7 @@
 import * as waf from "@aws-cdk/aws-wafv2";
 
 /**
- * Default rules for WAF
+ * Default rules for WAF web ACL
  */
 export function DefaultWafRules(): waf.CfnRuleGroup.RuleProperty[] {
   return [
@@ -45,4 +45,22 @@ function wrapManagedRuleSet(managedGroupName: string, vendorName: string, priori
       sampledRequestsEnabled: true
     }
   } as waf.CfnRuleGroup.RuleProperty;
+}
+
+/**
+ * Default props for WAF web ACL
+ */
+export function DefaultWafwebacl(webaclScope: string): Object {
+  return {
+    defaultAction: {
+      allow: {}
+    },
+    scope: webaclScope,
+    visibilityConfig: {
+      cloudWatchMetricsEnabled: true,
+      metricName: 'webACL',
+      sampledRequestsEnabled: true
+    },
+    rules: DefaultWafRules()
+  }
 }

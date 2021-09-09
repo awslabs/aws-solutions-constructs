@@ -14,57 +14,36 @@
 import { Construct, Stack } from "@aws-cdk/core";
 import * as api from '@aws-cdk/aws-apigateway';
 import * as waf from "@aws-cdk/aws-wafv2";
-import { DefaultWafRules } from "./waf-defaults";
+import { DefaultWafRules, DefaultWafwebacl } from "./waf-defaults";
 
-export interface BuildWafProps {
+export interface BuildWebaclProps {
     /**
-     * The existing API Gateway instance that will be protected with the WAF webACL.
+     * The existing API Gateway instance that will be protected with the WAF web ACL.
      */
     readonly existingApiGatewayInterface: api.IRestApi;
     /**
-     * Existing instance of a WAF ACL, if this is set then the all Props are ignored
+     * Existing instance of a WAF web ACL, if this is set then the all Props are ignored
      */
-    readonly existingWafAcl?: waf.CfnWebACL;
+    readonly existingWebaclObj?: waf.CfnWebACL;
     /**
-     * User provided props to override the default ACL props for WAF.
+     * User provided props to override the default ACL props for WAF web ACL.
      */
-    readonly wafAclProps?: waf.CfnWebACLProps;
-    /**
-     * User provided props to override the default ACL props for WAF.
-     */
-    readonly existingWafRules?: waf.CfnRuleGroup.RuleProperty[];
+    readonly webaclProps?: waf.CfnWebACLProps;
 }
 
-export function buildWaf(scope: Construct, props: BuildWafProps): [ waf.CfnWebACL, waf.CfnWebACLAssociation ] {
+export function buildWebacl(scope: Construct, webaclScope: string, props: BuildWebaclProps): waf.CfnWebACL {
   let webAcl;
-  let webAclArn;
-  const resourceArn = `arn:aws:apigateway:${Stack.of(scope).region}::/restapis/${props.existingApiGatewayInterface.restApiId}/stages/${props.existingApiGatewayInterface.deploymentStage.stageName}`;
 
-  if (props?.existingWafAcl && !props.existingWafRules) { // Existing WAF ACL
-    webAcl = props.existingWafAcl;
-    webAclArn = props.existingWafAcl.attrArn;
-  } else if (props?.wafAclProps && !props?.existingWafAcl) { // User provided props and rules
-    webAcl = new waf.CfnWebACL(scope, `${scope.node.id}-WebACL`, props.wafAclProps);
-    webAclArn = webAcl.attrArn;
-  } else { // User provided rules
-    webAcl = new waf.CfnWebACL(scope, `${scope.node.id}-WebACL`, {
-      defaultAction: {
-        allow: {}
-      },
-      scope: 'REGIONAL',
-      visibilityConfig: {
-        cloudWatchMetricsEnabled: true,
-        metricName: 'webACL',
-        sampledRequestsEnabled: true
-      },
-      rules: props?.existingWafRules ? props.existingWafRules : DefaultWafRules()
-    });
+  if (props?.existingWebaclObj && !props.webaclProps) { // Existing WAF web ACL
+    webAcl = props.existingWebaclObj;
+  } else if (props?.webaclProps && !props?.existingWebaclObj) { // User provided props
+    const updateRules = props.webaclProps?.rules ?  props.webaclProps.rules : DefaultWafRules();
+    const customAclProps = { ...props.webaclProps, rules :  updateRules };
 
-    webAclArn = webAcl.attrArn;
+    webAcl = new waf.CfnWebACL(scope, `${scope.node.id}-WebACL`, customAclProps );
+  } else { // No provided props
+    webAcl = new waf.CfnWebACL(scope, `${scope.node.id}-WebACL`, DefaultWafwebacl(webaclScope));
   }
 
-  return [ webAcl, new waf.CfnWebACLAssociation(scope, `${scope.node.id}-WebACLAssociation`, {
-    webAclArn,
-    resourceArn
-  }) ];
+  return webAcl;
 }

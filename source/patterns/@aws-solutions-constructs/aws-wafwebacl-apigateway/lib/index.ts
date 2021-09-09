@@ -16,59 +16,61 @@ import * as api from '@aws-cdk/aws-apigateway';
 import * as waf from '@aws-cdk/aws-wafv2';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct, Stack } from '@aws-cdk/core';
 
 /**
- * @summary The properties for the WafWebACLToApiGateway class.
+ * @summary The properties for the WafwebaclToApiGateway class.
  */
-export interface WafWebACLToApiGatewayProps {
-    /**
-     * The existing API Gateway instance that will be protected with the WAF webACL.
-     *
-     */
-    readonly existingApiGatewayInterface: api.IRestApi,
-    /**
-     * Existing instance of a WAF ACL, if this is set then the all props are ignored
-     */
-    readonly existingWafAcl?: waf.CfnWebACL,
-    /**
-     * Optional user-provided props to override the default props for the AWS WAF ACL.
-     *
-     * @default - Default properties are used.
-     */
-    readonly webACLProps?: waf.CfnWebACLProps,
-    /**
-     * User provided rules to override the default ACL rules for WAF.
-     */
-    readonly existingWafRules?: waf.CfnRuleGroup.RuleProperty[];
+export interface WafwebaclToApiGatewayProps {
+  /**
+   * The existing API Gateway instance that will be protected with the WAF web ACL.
+   */
+  readonly existingApiGatewayInterface: api.IRestApi,
+  /**
+   * Existing instance of a WAF web ACL, if this is set then the all props are ignored
+   */
+  readonly existingWebaclObj?: waf.CfnWebACL,
+  /**
+   * Optional user-provided props to override the default props for the AWS WAF web ACL.
+   *
+   * @default - Default properties are used.
+   */
+  readonly webaclProps?: waf.CfnWebACLProps,
 }
 
 /**
- * @summary The WafWebACLToApiGateway class.
+ * @summary The WafwebaclToApiGateway class.
  */
-export class WafWebACLToApiGateway extends Construct {
-    public readonly webACL: waf.CfnWebACL;
-    public readonly webACLAssociation: waf.CfnWebACLAssociation;
-    public readonly apiGateway: api.IRestApi;
-    /**
-     * @summary Constructs a new instance of the WafWebACLToApiGateway class.
-     * @param {cdk.App} scope - represents the scope for all the resources.
-     * @param {string} id - this is a a scope-unique id.
-     * @param {WafWebACLToApiGatewayProps} props - user provided props for the construct.
-     * @access public
-     */
-    constructor(scope: Construct, id: string, props: WafWebACLToApiGatewayProps) {
-      super(scope, id);
-      defaults.CheckProps(props);
+export class WafwebaclToApiGateway extends Construct {
+  public readonly webACL: waf.CfnWebACL;
+  public readonly apiGateway: api.IRestApi;
+  /**
+   * @summary Constructs a new instance of the WafwebaclToApiGateway class.
+   * @param {cdk.App} scope - represents the scope for all the resources.
+   * @param {string} id - this is a a scope-unique id.
+   * @param {WafwebaclToApiGatewayProps} props - user provided props for the construct.
+   * @access public
+   */
+  constructor(scope: Construct, id: string, props: WafwebaclToApiGatewayProps) {
+    super(scope, id);
+    defaults.CheckProps(props);
 
-      // Setup the Web ACL Association
-      [ this.webACL, this.webACLAssociation ] = defaults.buildWaf(this, {
-        existingApiGatewayInterface: props.existingApiGatewayInterface,
-        existingWafAcl: props.existingWafAcl,
-        wafAclProps: props.webACLProps,
-        existingWafRules: props.existingWafRules
-      });
+    // Build the Web ACL
+    this.webACL = defaults.buildWaf(this, 'REGIONAL', {
+      existingApiGatewayInterface: props.existingApiGatewayInterface,
+      existingWebaclObj: props.existingWebaclObj,
+      webaclProps: props.webaclProps,
+    });
 
-      this.apiGateway = props.existingApiGatewayInterface;
-    }
+    const webAclArn = this.webACL.attrArn;
+    const resourceArn = `arn:aws:apigateway:${Stack.of(scope).region}::/restapis/${props.existingApiGatewayInterface.restApiId}/stages/${props.existingApiGatewayInterface.deploymentStage.stageName}`;
+
+    // Setup the Web ACL Association
+    new waf.CfnWebACLAssociation(scope, `${scope.node.id}-WebACLAssociation`, {
+      webAclArn,
+      resourceArn
+    })
+
+    this.apiGateway = props.existingApiGatewayInterface;
+  }
 }
