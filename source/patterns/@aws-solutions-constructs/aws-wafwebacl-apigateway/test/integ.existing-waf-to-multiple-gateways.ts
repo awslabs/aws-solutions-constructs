@@ -15,12 +15,10 @@
 import { App, Stack } from "@aws-cdk/core";
 import { WafwebaclToApiGateway } from "../lib";
 import * as waf from "@aws-cdk/aws-wafv2";
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as elbv2 from '@aws-cdk/aws-elasticloadbalancingv2';
 import * as lambda from '@aws-cdk/aws-lambda';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { ApiGatewayToLambda, ApiGatewayToLambdaProps } from '@aws-solutions-constructs/aws-apigateway-lambda';
-import { AutoScalingGroup } from '@aws-cdk/aws-autoscaling';
+import * as defaults from '@aws-solutions-constructs/core';
 
 const app = new App();
 
@@ -37,39 +35,12 @@ const props: ApiGatewayToLambdaProps = {
 
 const gatewayToLambda = new ApiGatewayToLambda(stack, 'ApiGatewayToLambda', props);
 
-const vpc = new ec2.Vpc(stack, 'TheVPC', {
-  cidr: "10.0.0.0/16"
+const lambdaFunction = defaults.buildLambdaFunction(stack, {
+  existingLambdaObj: props.existingLambdaObj,
+  lambdaFunctionProps: props.lambdaFunctionProps
 });
 
-// Create the load balancer in a VPC. 'internetFacing' is 'false'
-// by default, which creates an internal load balancer.
-const lb = new elbv2.ApplicationLoadBalancer(stack, 'LB', {
-  vpc,
-  internetFacing: true
-});
-
-// Add a listener and open up the load balancer's security group
-// to the world.
-const listener = lb.addListener('Listener', {
-  port: 80,
-
-  // 'open: true' is the default, you can leave it out if you want. Set it
-  // to 'false' and use `listener.connections` if you want to be selective
-  // about who can access the load balancer.
-  open: true,
-});
-
-// Create an AutoScaling group and add it as a load balancing
-// target to the listener.
-const asg = new AutoScalingGroup(stack, 'ASG', {
-  vpc,
-  instanceType: ec2.InstanceType.of(ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.MICRO),
-  machineImage: new ec2.AmazonLinuxImage() // get the latest Amazon Linux image
-});
-listener.addTargets('ApplicationFleet', {
-  port: 8080,
-  targets: [asg]
-});
+let apiGateway;
 
 const aclTest = new waf.CfnWebACL(stack, 'test-waf', {
   defaultAction: {
@@ -83,9 +54,13 @@ const aclTest = new waf.CfnWebACL(stack, 'test-waf', {
   },
 });
 
+[apiGateway] = defaults.GlobalLambdaRestApi(stack, lambdaFunction, props.apiGatewayProps, props.logGroupProps);
+
+const resourceArn = `arn:aws:apigateway:${Stack.of(stack).region}::/restapis/${apiGateway.restApiId}/stages/${apiGateway.deploymentStage.stageName}`;
+
 new waf.CfnWebACLAssociation(stack, `test-WebACLAssociation`, {
   webAclArn: aclTest.attrArn,
-  resourceArn: lb.loadBalancerArn
+  resourceArn
 });
 
 new WafwebaclToApiGateway(stack, 'test-wafwebacl-apigateway-lambda', {
