@@ -13,7 +13,7 @@
 
 /// !cdk-integ *
 import { App, Stack } from "@aws-cdk/core";
-import { WafWebACLToApiGateway } from "../lib";
+import { WafwebaclToApiGateway } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { ApiGatewayToSqs } from '@aws-solutions-constructs/aws-apigateway-sqs';
 
@@ -24,7 +24,7 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 
 const gatewayToSqs = new ApiGatewayToSqs(stack, 'ApiGatwayToSqs', {});
 
-new WafWebACLToApiGateway(stack, 'test-wafwebacl-apigateway-sqs', {
+new WafwebaclToApiGateway(stack, 'test-wafwebacl-apigateway-sqs', {
   existingApiGatewayInterface: gatewayToSqs.apiGateway
 });
 

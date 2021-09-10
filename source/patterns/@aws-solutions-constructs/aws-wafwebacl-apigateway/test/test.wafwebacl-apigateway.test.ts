@@ -13,7 +13,7 @@
 
 // Imports
 import * as cdk from "@aws-cdk/core";
-import { WafWebACLToApiGateway } from "../lib";
+import { WafwebaclToApiGateway } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as waf from "@aws-cdk/aws-wafv2";
 import * as defaults from '@aws-solutions-constructs/core';
@@ -31,7 +31,7 @@ function deploy(stack: cdk.Stack) {
 
   const [_api] = defaults.RegionalLambdaRestApi(stack, func);
 
-  return new WafWebACLToApiGateway(stack, 'test-wafwebacl-apigateway', {
+  return new WafwebaclToApiGateway(stack, 'test-wafwebacl-apigateway', {
     existingApiGatewayInterface: _api
   });
 }
@@ -70,10 +70,9 @@ test('Pattern deployment w/ new Lambda function and default props', () => {
 // --------------------------------------------------------------
 test('Check getter methods', () => {
   const stack = new cdk.Stack();
-  const construct: WafWebACLToApiGateway = deploy(stack);
+  const construct: WafwebaclToApiGateway = deploy(stack);
 
   expect(construct.webACL !== null);
-  expect(construct.webACLAssociation !== null);
   expect(construct.apiGateway !== null);
 });
 
@@ -276,71 +275,6 @@ test('Test default acl rules', () => {
 });
 
 // --------------------------------------------------------------
-// Test web acl with custom rules
-// --------------------------------------------------------------
-test('Test custom acl rules', () => {
-  const stack = new cdk.Stack();
-  const inProps: lambda.FunctionProps = {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_10_X,
-    handler: 'index.handler'
-  };
-
-  const func = defaults.deployLambdaFunction(stack, inProps);
-  const [_api] = defaults.RegionalLambdaRestApi(stack, func);
-  const customRules = [
-    wrapManagedRuleSet("AWSManagedRulesCommonRuleSet", "AWS", 0),
-    wrapManagedRuleSet("AWSManagedRulesWordPressRuleSet", "AWS", 1),
-  ];
-
-  new WafWebACLToApiGateway(stack, 'test-wafwebacl-apigateway', {
-    existingApiGatewayInterface: _api,
-    existingWafRules: customRules
-  });
-
-  expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
-    Rules: [
-      {
-        Name: "AWS-AWSManagedRulesCommonRuleSet",
-        OverrideAction: {
-          None: {}
-        },
-        Priority: 0,
-        Statement: {
-          ManagedRuleGroupStatement: {
-            Name: "AWSManagedRulesCommonRuleSet",
-            VendorName: "AWS"
-          }
-        },
-        VisibilityConfig: {
-          CloudWatchMetricsEnabled: true,
-          MetricName: "AWSManagedRulesCommonRuleSet",
-          SampledRequestsEnabled: true
-        }
-      },
-      {
-        Name: "AWS-AWSManagedRulesWordPressRuleSet",
-        OverrideAction: {
-          None: {}
-        },
-        Priority: 1,
-        Statement: {
-          ManagedRuleGroupStatement: {
-            Name: "AWSManagedRulesWordPressRuleSet",
-            VendorName: "AWS"
-          }
-        },
-        VisibilityConfig: {
-          CloudWatchMetricsEnabled: true,
-          MetricName: "AWSManagedRulesWordPressRuleSet",
-          SampledRequestsEnabled: true
-        }
-      }
-    ]
-  });
-});
-
-// --------------------------------------------------------------
 // Test web acl with user provided acl props
 // --------------------------------------------------------------
 test('Test user provided acl props', () => {
@@ -370,9 +304,9 @@ test('Test user provided acl props', () => {
     rules: customRules
   });
 
-  new WafWebACLToApiGateway(stack, 'test-wafwebacl-apigateway', {
+  new WafwebaclToApiGateway(stack, 'test-wafwebacl-apigateway', {
     existingApiGatewayInterface: _api,
-    existingWafAcl: wafAcl
+    existingWebaclObj: wafAcl
   });
 
   expect(stack).toHaveResource("AWS::WAFv2::WebACL", {

@@ -69,7 +69,7 @@ export class WafwebaclToApiGateway extends Construct {
     new waf.CfnWebACLAssociation(scope, `${scope.node.id}-WebACLAssociation`, {
       webAclArn,
       resourceArn
-    })
+    });
 
     this.apiGateway = props.existingApiGatewayInterface;
   }

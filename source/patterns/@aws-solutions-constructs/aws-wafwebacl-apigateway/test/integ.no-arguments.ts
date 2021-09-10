@@ -13,7 +13,7 @@
 
 /// !cdk-integ *
 import { App, Stack } from "@aws-cdk/core";
-import { WafWebACLToApiGateway } from "../lib";
+import { WafwebaclToApiGateway } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { ApiGatewayToLambda, ApiGatewayToLambdaProps } from '@aws-solutions-constructs/aws-apigateway-lambda';
@@ -33,7 +33,7 @@ const props: ApiGatewayToLambdaProps = {
 
 const gatewayToLambda = new ApiGatewayToLambda(stack, 'ApiGatwayToLambda', props);
 
-new WafWebACLToApiGateway(stack, 'test-wafwebacl-apigateway-lambda', {
+new WafwebaclToApiGateway(stack, 'test-wafwebacl-apigateway-lambda', {
   existingApiGatewayInterface: gatewayToLambda.apiGateway
 });
 

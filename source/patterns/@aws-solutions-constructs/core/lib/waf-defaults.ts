@@ -11,56 +11,50 @@
  *  and limitations under the License.
  */
 
- import * as waf from "@aws-cdk/aws-wafv2";
+import * as waf from "@aws-cdk/aws-wafv2";
 
- /**
-  * Default rules for WAF web ACL
-  */
- export function DefaultWafRules(): waf.CfnRuleGroup.RuleProperty[] {
-   return [
-     wrapManagedRuleSet("AWSManagedRulesBotControlRuleSet", "AWS", 0),
-     wrapManagedRuleSet("AWSManagedRulesKnownBadInputsRuleSet", "AWS", 1),
-     wrapManagedRuleSet("AWSManagedRulesCommonRuleSet", "AWS", 2),
-     wrapManagedRuleSet("AWSManagedRulesAnonymousIpList", "AWS", 3),
-     wrapManagedRuleSet("AWSManagedRulesAmazonIpReputationList", "AWS", 4),
-     wrapManagedRuleSet("AWSManagedRulesAdminProtectionRuleSet", "AWS", 5),
-     wrapManagedRuleSet("AWSManagedRulesSQLiRuleSet", "AWS", 6)
-   ] as waf.CfnWebACL.RuleProperty[];
- }
- 
- function wrapManagedRuleSet(managedGroupName: string, vendorName: string, priority: number) {
-   return {
-     name: `${vendorName}-${managedGroupName}`,
-     priority,
-     overrideAction: { none: {} },
-     statement: {
-       managedRuleGroupStatement: {
-         name: managedGroupName,
-         vendorName,
-       }
-     },
-     visibilityConfig: {
-       cloudWatchMetricsEnabled: true,
-       metricName: managedGroupName,
-       sampledRequestsEnabled: true
-     }
-   } as waf.CfnRuleGroup.RuleProperty;
- }
- 
- /**
-  * Default props for WAF web ACL
-  */
- export function DefaultWafwebacl(webaclScope: string) {
-   return {
-     defaultAction: {
-       allow: {}
-     },
-     scope: webaclScope,
-     visibilityConfig: {
-       cloudWatchMetricsEnabled: true,
-       metricName: 'webACL',
-       sampledRequestsEnabled: true
-     },
-     rules: DefaultWafRules()
-   }
- }
+export function DefaultWafRules(): waf.CfnRuleGroup.RuleProperty[] {
+  return [
+    wrapManagedRuleSet("AWSManagedRulesBotControlRuleSet", "AWS", 0),
+    wrapManagedRuleSet("AWSManagedRulesKnownBadInputsRuleSet", "AWS", 1),
+    wrapManagedRuleSet("AWSManagedRulesCommonRuleSet", "AWS", 2),
+    wrapManagedRuleSet("AWSManagedRulesAnonymousIpList", "AWS", 3),
+    wrapManagedRuleSet("AWSManagedRulesAmazonIpReputationList", "AWS", 4),
+    wrapManagedRuleSet("AWSManagedRulesAdminProtectionRuleSet", "AWS", 5),
+    wrapManagedRuleSet("AWSManagedRulesSQLiRuleSet", "AWS", 6)
+  ] as waf.CfnWebACL.RuleProperty[];
+}
+
+function wrapManagedRuleSet(managedGroupName: string, vendorName: string, priority: number) {
+  return {
+    name: `${vendorName}-${managedGroupName}`,
+    priority,
+    overrideAction: { none: {} },
+    statement: {
+      managedRuleGroupStatement: {
+        name: managedGroupName,
+        vendorName,
+      }
+    },
+    visibilityConfig: {
+      cloudWatchMetricsEnabled: true,
+      metricName: managedGroupName,
+      sampledRequestsEnabled: true
+    }
+  } as waf.CfnRuleGroup.RuleProperty;
+}
+
+export function DefaultWafwebacl(webaclScope: string) {
+  return {
+    defaultAction: {
+      allow: {}
+    },
+    scope: webaclScope,
+    visibilityConfig: {
+      cloudWatchMetricsEnabled: true,
+      metricName: 'webACL',
+      sampledRequestsEnabled: true
+    },
+    rules: DefaultWafRules()
+  };
+}

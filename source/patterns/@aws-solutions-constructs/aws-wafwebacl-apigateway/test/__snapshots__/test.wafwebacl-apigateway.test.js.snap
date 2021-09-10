@@ -64,6 +64,36 @@ Object {
       "Type": "AWS::Logs::LogGroup",
       "UpdateReplacePolicy": "Retain",
     },
+    "DefaultWebACLAssociation": Object {
+      "Properties": Object {
+        "ResourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:aws:apigateway:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              "::/restapis/",
+              Object {
+                "Ref": "LambdaRestApi95870433",
+              },
+              "/stages/",
+              Object {
+                "Ref": "LambdaRestApiDeploymentStageprodB1F3862A",
+              },
+            ],
+          ],
+        },
+        "WebACLArn": Object {
+          "Fn::GetAtt": Array [
+            "testwafwebaclapigatewaytestwafwebaclapigatewayWebACL5F159E32",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::WAFv2::WebACLAssociation",
+    },
     "LambdaFunctionBF21E41F": Object {
       "DependsOn": Array [
         "LambdaFunctionServiceRoleDefaultPolicy126C8897",
@@ -783,36 +813,6 @@ Object {
         },
       },
       "Type": "AWS::WAFv2::WebACL",
-    },
-    "testwafwebaclapigatewaytestwafwebaclapigatewayWebACLAssociation39600A11": Object {
-      "Properties": Object {
-        "ResourceArn": Object {
-          "Fn::Join": Array [
-            "",
-            Array [
-              "arn:aws:apigateway:",
-              Object {
-                "Ref": "AWS::Region",
-              },
-              "::/restapis/",
-              Object {
-                "Ref": "LambdaRestApi95870433",
-              },
-              "/stages/",
-              Object {
-                "Ref": "LambdaRestApiDeploymentStageprodB1F3862A",
-              },
-            ],
-          ],
-        },
-        "WebACLArn": Object {
-          "Fn::GetAtt": Array [
-            "testwafwebaclapigatewaytestwafwebaclapigatewayWebACL5F159E32",
-            "Arn",
-          ],
-        },
-      },
-      "Type": "AWS::WAFv2::WebACLAssociation",
     },
   },
 }

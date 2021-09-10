@@ -13,7 +13,7 @@
 
 /// !cdk-integ *
 import { App, Stack } from "@aws-cdk/core";
-import { WafWebACLToApiGateway } from "../lib";
+import { WafwebaclToApiGateway } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { ApiGatewayToKinesisStreams } from '@aws-solutions-constructs/aws-apigateway-kinesisstreams';
 
@@ -24,7 +24,7 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 
 const gatewayToKinesisStreams = new ApiGatewayToKinesisStreams(stack, 'ApiGatwayToKinesisStreams', {});
 
-new WafWebACLToApiGateway(stack, 'test-wafwebacl-apigateway-kinesisstreams', {
+new WafwebaclToApiGateway(stack, 'test-wafwebacl-apigateway-kinesisstreams', {
   existingApiGatewayInterface: gatewayToKinesisStreams.apiGateway
 });
 

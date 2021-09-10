@@ -13,7 +13,7 @@
 
 /// !cdk-integ *
 import { App, Stack } from "@aws-cdk/core";
-import { WafWebACLToApiGateway } from "../lib";
+import { WafwebaclToApiGateway } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { ApiGatewayToSageMakerEndpoint } from '@aws-solutions-constructs/aws-apigateway-sagemakerendpoint';
 
@@ -28,7 +28,7 @@ const gatewayToSageMakerEndpoint = new ApiGatewayToSageMakerEndpoint(stack, 'api
   requestMappingTemplate: 'my-request-vtl-template'
 });
 
-new WafWebACLToApiGateway(stack, 'test-wafwebacl-apigateway-SageMakerEndpoint', {
+new WafwebaclToApiGateway(stack, 'test-wafwebacl-apigateway-SageMakerEndpoint', {
   existingApiGatewayInterface: gatewayToSageMakerEndpoint.apiGateway
 });
 

@@ -13,7 +13,7 @@
 
 /// !cdk-integ *
 import { App, Stack } from "@aws-cdk/core";
-import { WafWebACLToApiGateway } from "../lib";
+import { WafwebaclToApiGateway } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { ApiGatewayToIot } from '@aws-solutions-constructs/aws-apigateway-iot';
 
@@ -26,7 +26,7 @@ const gatewayToIot = new ApiGatewayToIot(stack, 'ApiGatwayToIot', {
   iotEndpoint: 'a1234567890123-ats',
 });
 
-new WafWebACLToApiGateway(stack, 'test-wafwebacl-apigateway-iot', {
+new WafwebaclToApiGateway(stack, 'test-wafwebacl-apigateway-iot', {
   existingApiGatewayInterface: gatewayToIot.apiGateway
 });
 

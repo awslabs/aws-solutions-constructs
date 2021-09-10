@@ -13,7 +13,7 @@
 
 /// !cdk-integ *
 import { App, Stack } from "@aws-cdk/core";
-import { WafWebACLToApiGateway } from "../lib";
+import { WafwebaclToApiGateway } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { ApiGatewayToDynamoDB } from '@aws-solutions-constructs/aws-apigateway-dynamodb';
 
@@ -24,7 +24,7 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 
 const gatewayToDynamoDB = new ApiGatewayToDynamoDB(stack, 'ApiGatwayToLambda', {});
 
-new WafWebACLToApiGateway(stack, 'test-wafwebacl-apigateway-lambda', {
+new WafwebaclToApiGateway(stack, 'test-wafwebacl-apigateway-lambda', {
   existingApiGatewayInterface: gatewayToDynamoDB.apiGateway
 });
 
