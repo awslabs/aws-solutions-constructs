@@ -1146,7 +1146,7 @@ Object {
     "testexistingeventbridgestepfunctionsEventsRuleA20DE119": Object {
       "Properties": Object {
         "EventBusName": Object {
-          "Ref": "testexistingneweventbusB9898D2B",
+          "Ref": "testexistingeventbusC6E4A2D0",
         },
         "EventPattern": Object {
           "source": Array [
@@ -1420,9 +1420,9 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
-    "testexistingneweventbusB9898D2B": Object {
+    "testexistingeventbusC6E4A2D0": Object {
       "Properties": Object {
-        "Name": "testexistingneweventbus",
+        "Name": "testexistingeventbus",
       },
       "Type": "AWS::Events::EventBus",
     },

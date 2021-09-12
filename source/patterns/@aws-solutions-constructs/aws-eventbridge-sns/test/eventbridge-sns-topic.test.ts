@@ -305,11 +305,10 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
     existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, {})
   };
 
-  try {
+  const app = () => {
     new EventbridgeToSns(stack, 'test-eventbridge-sns', props);
-  } catch (e) {
-    expect(e).toBeInstanceOf(Error);
-  }
+  };
+  expect(app).toThrowError();
 });
 
 test('snapshot test EventbridgeToSns existing event bus params', () => {

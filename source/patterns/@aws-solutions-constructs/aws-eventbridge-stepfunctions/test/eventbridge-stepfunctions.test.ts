@@ -173,11 +173,10 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
     existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, {})
   };
 
-  try {
+  const app = () => {
     new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions', props);
-  } catch (e) {
-    expect(e).toBeInstanceOf(Error);
-  }
+  };
+  expect(app).toThrowError();
 });
 
 test('snapshot test EventbridgeToStepfunctions existing event bus params', () => {
@@ -193,8 +192,7 @@ test('snapshot test EventbridgeToStepfunctions existing event bus params', () =>
         source: ['solutionsconstructs']
       }
     },
-    eventBusProps: {},
-    existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, {})
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {})
   };
 
   new EventbridgeToStepfunctions(stack, 'test-existing-eventbridge-stepfunctions', props);

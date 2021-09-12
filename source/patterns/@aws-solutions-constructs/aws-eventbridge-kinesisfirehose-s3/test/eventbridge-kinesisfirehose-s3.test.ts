@@ -192,11 +192,10 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
     existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {})
   };
 
-  try {
+  const app = () => {
     new EventbridgeToKinesisFirehoseToS3(stack, 'test-eventbridge-firehose', props);
-  } catch (e) {
-    expect(e).toBeInstanceOf(Error);
-  }
+  };
+  expect(app).toThrowError();
 });
 
 test('snapshot test EventbridgeToKinesisFirehose existing event bus params', () => {

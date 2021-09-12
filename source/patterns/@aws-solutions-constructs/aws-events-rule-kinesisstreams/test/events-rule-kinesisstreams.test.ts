@@ -136,11 +136,10 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
     existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {})
   };
 
-  try {
+  const app = () => {
     new EventsRuleToKinesisStreams(stack, 'test-eventsrule-kinesisstreams', props);
-  } catch (e) {
-    expect(e).toBeInstanceOf(Error);
-  }
+  };
+  expect(app).toThrowError();
 });
 
 test('snapshot test EventsRuleToKinesisStreams existing event bus params', () => {
