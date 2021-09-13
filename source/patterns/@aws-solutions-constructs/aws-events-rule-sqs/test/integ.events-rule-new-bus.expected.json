@@ -1,6 +1,6 @@
 {
   "Resources": {
-    "ersqsersqswrappeddeadLetterQueueDA0DC0E2": {
+    "ersqsersqsWdeadLetterQueueB06870B6": {
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": "alias/aws/sqs"
@@ -8,7 +8,7 @@
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete"
     },
-    "ersqsersqswrappeddeadLetterQueuePolicy95833FD0": {
+    "ersqsersqsWdeadLetterQueuePolicyFA1CF12F": {
       "Type": "AWS::SQS::QueuePolicy",
       "Properties": {
         "PolicyDocument": {
@@ -44,7 +44,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "ersqsersqswrappeddeadLetterQueueDA0DC0E2",
+                  "ersqsersqsWdeadLetterQueueB06870B6",
                   "Arn"
                 ]
               },
@@ -63,7 +63,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "ersqsersqswrappeddeadLetterQueueDA0DC0E2",
+                  "ersqsersqsWdeadLetterQueueB06870B6",
                   "Arn"
                 ]
               },
@@ -74,12 +74,12 @@
         },
         "Queues": [
           {
-            "Ref": "ersqsersqswrappeddeadLetterQueueDA0DC0E2"
+            "Ref": "ersqsersqsWdeadLetterQueueB06870B6"
           }
         ]
       }
     },
-    "ersqsersqswrappedEncryptionKeyB90DDAF7": {
+    "ersqsersqsWEncryptionKeyD63FAFB3": {
       "Type": "AWS::KMS::Key",
       "Properties": {
         "KeyPolicy": {
@@ -144,19 +144,19 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "ersqsersqswrappedqueue77F78672": {
+    "ersqsersqsWqueue881EC5DE": {
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": {
           "Fn::GetAtt": [
-            "ersqsersqswrappedEncryptionKeyB90DDAF7",
+            "ersqsersqsWEncryptionKeyD63FAFB3",
             "Arn"
           ]
         },
         "RedrivePolicy": {
           "deadLetterTargetArn": {
             "Fn::GetAtt": [
-              "ersqsersqswrappeddeadLetterQueueDA0DC0E2",
+              "ersqsersqsWdeadLetterQueueB06870B6",
               "Arn"
             ]
           },
@@ -166,7 +166,7 @@
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete"
     },
-    "ersqsersqswrappedqueuePolicy1DDD6C29": {
+    "ersqsersqsWqueuePolicyC4BDE85A": {
       "Type": "AWS::SQS::QueuePolicy",
       "Properties": {
         "PolicyDocument": {
@@ -202,7 +202,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "ersqsersqswrappedqueue77F78672",
+                  "ersqsersqsWqueue881EC5DE",
                   "Arn"
                 ]
               },
@@ -221,7 +221,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "ersqsersqswrappedqueue77F78672",
+                  "ersqsersqsWqueue881EC5DE",
                   "Arn"
                 ]
               },
@@ -239,7 +239,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "ersqsersqswrappedqueue77F78672",
+                  "ersqsersqsWqueue881EC5DE",
                   "Arn"
                 ]
               }
@@ -249,22 +249,22 @@
         },
         "Queues": [
           {
-            "Ref": "ersqsersqswrappedqueue77F78672"
+            "Ref": "ersqsersqsWqueue881EC5DE"
           }
         ]
       }
     },
-    "ersqsersqswrappedCustomEventBus58DA49B4": {
+    "ersqsersqsWCustomEventBus3249194C": {
       "Type": "AWS::Events::EventBus",
       "Properties": {
-        "Name": "eventsrulenewbusersqsersqswrappedCustomEventBusC1530AC9"
+        "Name": "eventsrulenewbusersqsersqsWCustomEventBusA92E8C83"
       }
     },
-    "ersqsersqswrappedEventsRule6C5B7B89": {
+    "ersqsersqsWEventsRule017C5D22": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "EventBusName": {
-          "Ref": "ersqsersqswrappedCustomEventBus58DA49B4"
+          "Ref": "ersqsersqsWCustomEventBus3249194C"
         },
         "EventPattern": {
           "source": [
@@ -276,13 +276,13 @@
           {
             "Arn": {
               "Fn::GetAtt": [
-                "ersqsersqswrappedqueue77F78672",
+                "ersqsersqsWqueue881EC5DE",
                 "Arn"
               ]
             },
             "Id": {
               "Fn::GetAtt": [
-                "ersqsersqswrappedqueue77F78672",
+                "ersqsersqsWqueue881EC5DE",
                 "QueueName"
               ]
             }

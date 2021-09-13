@@ -1,6 +1,6 @@
 {
   "Resources": {
-    "testtestwrappeddeadLetterQueue36E8394D": {
+    "testtestWdeadLetterQueueADA5E2B4": {
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": "alias/aws/sqs"
@@ -8,7 +8,7 @@
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete"
     },
-    "testtestwrappeddeadLetterQueuePolicyEAD361CF": {
+    "testtestWdeadLetterQueuePolicy146CFBB4": {
       "Type": "AWS::SQS::QueuePolicy",
       "Properties": {
         "PolicyDocument": {
@@ -44,7 +44,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "testtestwrappeddeadLetterQueue36E8394D",
+                  "testtestWdeadLetterQueueADA5E2B4",
                   "Arn"
                 ]
               },
@@ -63,7 +63,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "testtestwrappeddeadLetterQueue36E8394D",
+                  "testtestWdeadLetterQueueADA5E2B4",
                   "Arn"
                 ]
               },
@@ -74,12 +74,12 @@
         },
         "Queues": [
           {
-            "Ref": "testtestwrappeddeadLetterQueue36E8394D"
+            "Ref": "testtestWdeadLetterQueueADA5E2B4"
           }
         ]
       }
     },
-    "testtestwrappedEncryptionKey3FF098D5": {
+    "testtestWEncryptionKeyC6B126B6": {
       "Type": "AWS::KMS::Key",
       "Properties": {
         "KeyPolicy": {
@@ -144,19 +144,19 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "testtestwrappedqueue64D2F079": {
+    "testtestWqueue5267657C": {
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": {
           "Fn::GetAtt": [
-            "testtestwrappedEncryptionKey3FF098D5",
+            "testtestWEncryptionKeyC6B126B6",
             "Arn"
           ]
         },
         "RedrivePolicy": {
           "deadLetterTargetArn": {
             "Fn::GetAtt": [
-              "testtestwrappeddeadLetterQueue36E8394D",
+              "testtestWdeadLetterQueueADA5E2B4",
               "Arn"
             ]
           },
@@ -166,7 +166,7 @@
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete"
     },
-    "testtestwrappedqueuePolicyF9990682": {
+    "testtestWqueuePolicy5769D7F4": {
       "Type": "AWS::SQS::QueuePolicy",
       "Properties": {
         "PolicyDocument": {
@@ -202,7 +202,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "testtestwrappedqueue64D2F079",
+                  "testtestWqueue5267657C",
                   "Arn"
                 ]
               },
@@ -221,7 +221,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "testtestwrappedqueue64D2F079",
+                  "testtestWqueue5267657C",
                   "Arn"
                 ]
               },
@@ -239,7 +239,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "testtestwrappedqueue64D2F079",
+                  "testtestWqueue5267657C",
                   "Arn"
                 ]
               }
@@ -249,12 +249,12 @@
         },
         "Queues": [
           {
-            "Ref": "testtestwrappedqueue64D2F079"
+            "Ref": "testtestWqueue5267657C"
           }
         ]
       }
     },
-    "testtestwrappedEventsRule9009C17B": {
+    "testtestWEventsRuleDF9938A8": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "ScheduleExpression": "rate(5 minutes)",
@@ -263,13 +263,13 @@
           {
             "Arn": {
               "Fn::GetAtt": [
-                "testtestwrappedqueue64D2F079",
+                "testtestWqueue5267657C",
                 "Arn"
               ]
             },
             "Id": {
               "Fn::GetAtt": [
-                "testtestwrappedqueue64D2F079",
+                "testtestWqueue5267657C",
                 "QueueName"
               ]
             }
