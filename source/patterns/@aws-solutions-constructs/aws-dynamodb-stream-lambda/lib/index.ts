@@ -83,7 +83,7 @@ export class DynamoDBStreamToLambda extends Construct {
   constructor(scope: Construct, id: string, props: DynamoDBStreamToLambdaProps) {
     super(scope, id);
     const convertedProps: DynamoDBStreamToLambdaProps = { ...props };
-    const wrappedConstruct: DynamoDBStreamToLambda = new DynamoDBStreamsToLambda(this, `${id}-wrapped`, convertedProps);
+    const wrappedConstruct: DynamoDBStreamToLambda = new DynamoDBStreamsToLambda(this, `${id}W`, convertedProps);
 
     this.lambdaFunction = wrappedConstruct.lambdaFunction;
     this.dynamoTableInterface = wrappedConstruct.dynamoTableInterface;

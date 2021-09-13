@@ -89,7 +89,7 @@ export class S3ToStepFunction extends Construct {
   constructor(scope: Construct, id: string, props: S3ToStepFunctionProps) {
     super(scope, id);
     const convertedProps: S3ToStepFunctionProps = { ...props };
-    const wrappedConstruct: S3ToStepFunction = new S3ToStepfunctions(this, `${id}-wrapped`, convertedProps);
+    const wrappedConstruct: S3ToStepFunction = new S3ToStepfunctions(this, `${id}W`, convertedProps);
 
     this.stateMachine = wrappedConstruct.stateMachine;
     this.stateMachineLogGroup = wrappedConstruct.stateMachineLogGroup;

@@ -68,7 +68,7 @@ export class EventsRuleToLambda extends Construct {
   constructor(scope: Construct, id: string, props: EventsRuleToLambdaProps) {
     super(scope, id);
     const convertedProps: EventsRuleToLambdaProps = { ...props };
-    const wrappedConstruct: EventsRuleToLambda = new EventbridgeToLambda(this, `${id}-wrapped`, convertedProps);
+    const wrappedConstruct: EventsRuleToLambda = new EventbridgeToLambda(this, `${id}W`, convertedProps);
 
     this.lambdaFunction = wrappedConstruct.lambdaFunction;
     this.eventsRule = wrappedConstruct.eventsRule;

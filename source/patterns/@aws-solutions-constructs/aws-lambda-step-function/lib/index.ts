@@ -98,7 +98,7 @@ export class LambdaToStepFunction extends Construct {
   constructor(scope: Construct, id: string, props: LambdaToStepFunctionProps) {
     super(scope, id);
     const convertedProps: LambdaToStepFunctionProps = { ...props };
-    const wrappedConstruct: LambdaToStepFunction = new LambdaToStepfunctions(this, `${id}-wrapped`, convertedProps);
+    const wrappedConstruct: LambdaToStepFunction = new LambdaToStepfunctions(this, `${id}W`, convertedProps);
 
     this.lambdaFunction = wrappedConstruct.lambdaFunction;
     this.stateMachine = wrappedConstruct.stateMachine;

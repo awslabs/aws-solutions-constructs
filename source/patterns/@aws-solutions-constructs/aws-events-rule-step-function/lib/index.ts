@@ -78,7 +78,7 @@ export class EventsRuleToStepFunction extends Construct {
   constructor(scope: Construct, id: string, props: EventsRuleToStepFunctionProps) {
     super(scope, id);
     const convertedProps: EventsRuleToStepFunctionProps = { ...props };
-    const wrappedConstruct: EventsRuleToStepFunction = new EventbridgeToStepfunctions(this, `${id}-wrapped`, convertedProps);
+    const wrappedConstruct: EventsRuleToStepFunction = new EventbridgeToStepfunctions(this, `${id}W`, convertedProps);
 
     this.stateMachine = wrappedConstruct.stateMachine;
     this.stateMachineLogGroup = wrappedConstruct.stateMachineLogGroup;

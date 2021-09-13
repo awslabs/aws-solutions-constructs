@@ -88,7 +88,7 @@ export class EventsRuleToKinesisFirehoseToS3 extends Construct {
   constructor(scope: Construct, id: string, props: EventsRuleToKinesisFirehoseToS3Props) {
     super(scope, id);
     const convertedProps: EventsRuleToKinesisFirehoseToS3Props = { ...props };
-    const wrappedConstruct: EventsRuleToKinesisFirehoseToS3 = new EventbridgeToKinesisFirehoseToS3(this, `${id}-wrapped`, convertedProps);
+    const wrappedConstruct: EventsRuleToKinesisFirehoseToS3 = new EventbridgeToKinesisFirehoseToS3(this, `${id}W`, convertedProps);
     this.eventsRule = wrappedConstruct.eventsRule;
     this.eventsRole = wrappedConstruct.eventsRole;
     this.kinesisFirehose = wrappedConstruct.kinesisFirehose;

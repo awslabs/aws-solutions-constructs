@@ -78,7 +78,7 @@ export class EventsRuleToKinesisStreams extends Construct {
     constructor(scope: Construct, id: string, props: EventsRuleToKinesisStreamsProps) {
       super(scope, id);
       const convertedProps: EventsRuleToKinesisStreamsProps = { ...props };
-      const wrappedConstruct: EventsRuleToKinesisStreams = new EventbridgeToKinesisStreams(this, `${id}-wrapped`, convertedProps);
+      const wrappedConstruct: EventsRuleToKinesisStreams = new EventbridgeToKinesisStreams(this, `${id}W`, convertedProps);
 
       this.kinesisStream = wrappedConstruct.kinesisStream;
       this.eventsRule = wrappedConstruct.eventsRule;
