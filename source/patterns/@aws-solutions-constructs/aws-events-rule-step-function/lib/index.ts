@@ -78,6 +78,11 @@ export class EventsRuleToStepFunction extends Construct {
   constructor(scope: Construct, id: string, props: EventsRuleToStepFunctionProps) {
     super(scope, id);
     const convertedProps: EventsRuleToStepFunctionProps = { ...props };
+
+    // W (for 'wrapped') is added to the id so that the id's of the constructs with the old and new names don't collide
+    // If this character pushes you beyond the 64 character limit, just import the new named construct and instantiate 
+    // it in place of the older named version. They are functionally identical, aside from the types no other changes
+    // will be required.  (eg - new EventbridgeToStepfunctions instead of EventsRuleToStepFunction)
     const wrappedConstruct: EventsRuleToStepFunction = new EventbridgeToStepfunctions(this, `${id}W`, convertedProps);
 
     this.stateMachine = wrappedConstruct.stateMachine;

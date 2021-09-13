@@ -115,6 +115,11 @@ export class EventsRuleToSqs extends Construct {
   constructor(scope: Construct, id: string, props: EventsRuleToSqsProps) {
     super(scope, id);
     const convertedProps: EventsRuleToSqsProps = { ...props };
+
+    // W (for 'wrapped') is added to the id so that the id's of the constructs with the old and new names don't collide
+    // If this character pushes you beyond the 64 character limit, just import the new named construct and instantiate 
+    // it in place of the older named version. They are functionally identical, aside from the types no other changes
+    // will be required.  (eg - new EventbridgeToSqs instead of EventsRuleToSqs)
     const wrappedConstruct: EventsRuleToSqs = new EventbridgeToSqs(this, `${id}W`, convertedProps);
 
     this.sqsQueue = wrappedConstruct.sqsQueue;
