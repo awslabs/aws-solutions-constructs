@@ -25,7 +25,7 @@ export function DefaultWafRules(): waf.CfnRuleGroup.RuleProperty[] {
   ] as waf.CfnWebACL.RuleProperty[];
 }
 
-function wrapManagedRuleSet(managedGroupName: string, vendorName: string, priority: number) {
+export function wrapManagedRuleSet(managedGroupName: string, vendorName: string, priority: number) {
   return {
     name: `${vendorName}-${managedGroupName}`,
     priority,
@@ -44,7 +44,7 @@ function wrapManagedRuleSet(managedGroupName: string, vendorName: string, priori
   } as waf.CfnRuleGroup.RuleProperty;
 }
 
-export function DefaultWafwebacl(webaclScope: string) {
+export function DefaultWafwebaclProps(webaclScope: string) {
   return {
     defaultAction: {
       allow: {}

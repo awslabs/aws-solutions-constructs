@@ -17,7 +17,6 @@ import { WafwebaclToApiGateway } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as waf from "@aws-cdk/aws-wafv2";
 import * as defaults from '@aws-solutions-constructs/core';
-import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
 function deploy(stack: cdk.Stack) {
@@ -36,33 +35,50 @@ function deploy(stack: cdk.Stack) {
   });
 }
 
-function wrapManagedRuleSet(managedGroupName: string, vendorName: string, priority: number) {
-  return {
-    name: `${vendorName}-${managedGroupName}`,
-    priority,
-    overrideAction: { none: {} },
-    statement: {
-      managedRuleGroupStatement: {
-        name: managedGroupName,
-        vendorName,
-      }
-    },
-    visibilityConfig: {
-      cloudWatchMetricsEnabled: true,
-      metricName: managedGroupName,
-      sampledRequestsEnabled: true
-    }
-  } as waf.CfnWebACL.RuleProperty;
-}
-
 // --------------------------------------------------------------
-// Pattern deployment w/ new Lambda function and default properties
+// Test error handling for existing WAF web ACL and user provider web ACL props
 // --------------------------------------------------------------
-test('Pattern deployment w/ new Lambda function and default props', () => {
-  // Initial Setup
+test('Test error handling for existing WAF web ACL and user provider web ACL props', () => {
   const stack = new cdk.Stack();
-  deploy(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  const wafAcl = new waf.CfnWebACL(stack, 'test-waf', {
+    defaultAction: {
+      allow: {}
+    },
+    scope: 'REGIONAL',
+    visibilityConfig: {
+      cloudWatchMetricsEnabled: false,
+      metricName: 'webACL',
+      sampledRequestsEnabled: true
+    },
+  });
+
+  const props: waf.CfnWebACLProps = {
+    defaultAction: {
+      allow: {}
+    },
+    scope: 'REGIONAL',
+    visibilityConfig: {
+      cloudWatchMetricsEnabled: false,
+      metricName: 'webACL',
+      sampledRequestsEnabled: true
+    },
+  };
+
+  const inProps: lambda.FunctionProps = {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: 'index.handler'
+  };
+  const func = defaults.deployLambdaFunction(stack, inProps);
+  const [_api] = defaults.RegionalLambdaRestApi(stack, func);
+
+  expect(() => {
+    new WafwebaclToApiGateway(stack, 'test-waf-gateway', {
+      existingApiGatewayInterface: _api,
+      existingWebaclObj: wafAcl,
+      webaclProps: props
+    });
+  }).toThrowError();
 });
 
 // --------------------------------------------------------------
@@ -72,7 +88,7 @@ test('Check getter methods', () => {
   const stack = new cdk.Stack();
   const construct: WafwebaclToApiGateway = deploy(stack);
 
-  expect(construct.webACL !== null);
+  expect(construct.webacl !== null);
   expect(construct.apiGateway !== null);
 });
 
@@ -287,75 +303,33 @@ test('Test user provided acl props', () => {
   const func = defaults.deployLambdaFunction(stack, inProps);
   const [_api] = defaults.RegionalLambdaRestApi(stack, func);
   const customRules = [
-    wrapManagedRuleSet("AWSManagedRulesCommonRuleSet", "AWS", 0),
-    wrapManagedRuleSet("AWSManagedRulesWordPressRuleSet", "AWS", 1),
+    defaults.wrapManagedRuleSet("AWSManagedRulesCommonRuleSet", "AWS", 0),
+    defaults.wrapManagedRuleSet("AWSManagedRulesWordPressRuleSet", "AWS", 1),
   ];
 
-  const wafAcl = new waf.CfnWebACL(stack, 'test-waf', {
+  const webaclProps: waf.CfnWebACLProps =  {
     defaultAction: {
       allow: {}
     },
     scope: 'REGIONAL',
     visibilityConfig: {
-      cloudWatchMetricsEnabled: true,
+      cloudWatchMetricsEnabled: false,
       metricName: 'webACL',
       sampledRequestsEnabled: true
     },
     rules: customRules
-  });
+  };
 
   new WafwebaclToApiGateway(stack, 'test-wafwebacl-apigateway', {
     existingApiGatewayInterface: _api,
-    existingWebaclObj: wafAcl
+    webaclProps
   });
 
   expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
-    DefaultAction: {
-      Allow: {}
-    },
-    Scope: "REGIONAL",
     VisibilityConfig: {
-      CloudWatchMetricsEnabled: true,
+      CloudWatchMetricsEnabled: false,
       MetricName: "webACL",
       SampledRequestsEnabled: true
-    },
-    Rules: [
-      {
-        Name: "AWS-AWSManagedRulesCommonRuleSet",
-        OverrideAction: {
-          None: {}
-        },
-        Priority: 0,
-        Statement: {
-          ManagedRuleGroupStatement: {
-            Name: "AWSManagedRulesCommonRuleSet",
-            VendorName: "AWS"
-          }
-        },
-        VisibilityConfig: {
-          CloudWatchMetricsEnabled: true,
-          MetricName: "AWSManagedRulesCommonRuleSet",
-          SampledRequestsEnabled: true
-        }
-      },
-      {
-        Name: "AWS-AWSManagedRulesWordPressRuleSet",
-        OverrideAction: {
-          None: {}
-        },
-        Priority: 1,
-        Statement: {
-          ManagedRuleGroupStatement: {
-            Name: "AWSManagedRulesWordPressRuleSet",
-            VendorName: "AWS"
-          }
-        },
-        VisibilityConfig: {
-          CloudWatchMetricsEnabled: true,
-          MetricName: "AWSManagedRulesWordPressRuleSet",
-          SampledRequestsEnabled: true
-        }
-      }
-    ]
+    }
   });
 });

@@ -12,17 +12,13 @@
  */
 
 import { Construct } from "@aws-cdk/core";
-import * as api from '@aws-cdk/aws-apigateway';
 import * as waf from "@aws-cdk/aws-wafv2";
-import { DefaultWafRules, DefaultWafwebacl } from "./waf-defaults";
+import { DefaultWafwebaclProps } from "./waf-defaults";
+import { overrideProps } from './utils';
 
 export interface BuildWebaclProps {
      /**
-      * The existing API Gateway instance that will be protected with the WAF web ACL.
-      */
-     readonly existingApiGatewayInterface: api.IRestApi;
-     /**
-      * Existing instance of a WAF web ACL, if this is set then the all Props are ignored
+      * Existing instance of a WAF web ACL, if this is set then the all props are ignored
       */
      readonly existingWebaclObj?: waf.CfnWebACL;
      /**
@@ -34,15 +30,18 @@ export interface BuildWebaclProps {
 export function buildWebacl(scope: Construct, webaclScope: string, props: BuildWebaclProps): waf.CfnWebACL {
   let webAcl;
 
-  if (props?.existingWebaclObj && !props.webaclProps) { // Existing WAF web ACL
+  if (props.existingWebaclObj && !props.webaclProps) { // Existing WAF web ACL
     webAcl = props.existingWebaclObj;
-  } else if (props?.webaclProps && !props?.existingWebaclObj) { // User provided props
-    const updateRules = props.webaclProps?.rules ?  props.webaclProps.rules : DefaultWafRules();
-    const customAclProps = { ...props.webaclProps, rules :  updateRules };
+  } else { // Create a new web web ACL
+    let finalWebaclProps: waf.CfnWebACLProps;
 
-    webAcl = new waf.CfnWebACL(scope, `${scope.node.id}-WebACL`, customAclProps );
-  } else { // No provided props
-    webAcl = new waf.CfnWebACL(scope, `${scope.node.id}-WebACL`, DefaultWafwebacl(webaclScope));
+    if (props.webaclProps) {
+      finalWebaclProps = overrideProps(DefaultWafwebaclProps(webaclScope), props.webaclProps);
+    } else {
+      finalWebaclProps = DefaultWafwebaclProps(webaclScope);
+    }
+
+    webAcl = new waf.CfnWebACL(scope, `${scope.node.id}-WebACL`, finalWebaclProps);
   }
 
   return webAcl;

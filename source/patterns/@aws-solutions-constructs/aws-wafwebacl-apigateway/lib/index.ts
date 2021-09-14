@@ -27,7 +27,7 @@ export interface WafwebaclToApiGatewayProps {
    */
   readonly existingApiGatewayInterface: api.IRestApi,
   /**
-   * Existing instance of a WAF web ACL, if this is set then the all props are ignored
+   * Existing instance of a WAF web ACL, an error will occur if this and props is set
    */
   readonly existingWebaclObj?: waf.CfnWebACL,
   /**
@@ -42,7 +42,7 @@ export interface WafwebaclToApiGatewayProps {
  * @summary The WafwebaclToApiGateway class.
  */
 export class WafwebaclToApiGateway extends Construct {
-  public readonly webACL: waf.CfnWebACL;
+  public readonly webacl: waf.CfnWebACL;
   public readonly apiGateway: api.IRestApi;
   /**
    * @summary Constructs a new instance of the WafwebaclToApiGateway class.
@@ -56,18 +56,16 @@ export class WafwebaclToApiGateway extends Construct {
     defaults.CheckProps(props);
 
     // Build the Web ACL
-    this.webACL = defaults.buildWebacl(this, 'REGIONAL', {
-      existingApiGatewayInterface: props.existingApiGatewayInterface,
+    this.webacl = defaults.buildWebacl(this, 'REGIONAL', {
       existingWebaclObj: props.existingWebaclObj,
       webaclProps: props.webaclProps,
     });
 
-    const webAclArn = this.webACL.attrArn;
     const resourceArn = `arn:aws:apigateway:${Stack.of(scope).region}::/restapis/${props.existingApiGatewayInterface.restApiId}/stages/${props.existingApiGatewayInterface.deploymentStage.stageName}`;
 
     // Setup the Web ACL Association
     new waf.CfnWebACLAssociation(scope, `${scope.node.id}-WebACLAssociation`, {
-      webAclArn,
+      webAclArn: this.webacl.attrArn,
       resourceArn
     });
 
