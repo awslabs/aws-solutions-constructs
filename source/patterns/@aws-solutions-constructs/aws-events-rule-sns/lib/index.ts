@@ -91,7 +91,7 @@ export class EventsRuleToSns extends Construct {
     // If this character pushes you beyond the 64 character limit, just import the new named construct and instantiate
     // it in place of the older named version. They are functionally identical, aside from the types no other changes
     // will be required.  (eg - new EventbridgeToSns instead of EventsRuleToSns)
-    const wrappedConstruct: EventsRuleToSns = new EventbridgeToSns(this, `${id}`, convertedProps);
+    const wrappedConstruct: EventsRuleToSns = new EventbridgeToSns(this, `${id}W`, convertedProps);
 
     this.snsTopic = wrappedConstruct.snsTopic;
     this.eventsRule = wrappedConstruct.eventsRule;
