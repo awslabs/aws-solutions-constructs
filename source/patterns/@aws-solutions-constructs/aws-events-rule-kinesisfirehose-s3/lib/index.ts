@@ -90,7 +90,7 @@ export class EventsRuleToKinesisFirehoseToS3 extends Construct {
     const convertedProps: EventsRuleToKinesisFirehoseToS3Props = { ...props };
 
     // W (for 'wrapped') is added to the id so that the id's of the constructs with the old and new names don't collide
-    // If this character pushes you beyond the 64 character limit, just import the new named construct and instantiate 
+    // If this character pushes you beyond the 64 character limit, just import the new named construct and instantiate
     // it in place of the older named version. They are functionally identical, aside from the types no other changes
     // will be required.  (eg - new EventbridgeToKinesisFirehoseToS3 instead of EventsRuleToKinesisFirehoseToS3)
     const wrappedConstruct: EventsRuleToKinesisFirehoseToS3 = new EventbridgeToKinesisFirehoseToS3(this, `${id}W`, convertedProps);
