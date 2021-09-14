@@ -32,7 +32,7 @@ export function buildWebacl(scope: Construct, webaclScope: string, props: BuildW
 
   if (props.existingWebaclObj && !props.webaclProps) { // Existing WAF web ACL
     webAcl = props.existingWebaclObj;
-  } else { // Create a new waf web ACL
+  } else { // Create a new WAF web ACL
     let finalWebaclProps: waf.CfnWebACLProps;
 
     if (props.webaclProps) {
