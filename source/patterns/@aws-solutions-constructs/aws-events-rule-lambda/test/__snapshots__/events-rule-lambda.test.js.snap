@@ -17,16 +17,16 @@ Object {
     },
   },
   "Resources": Object {
-    "testneweventsrulelambdatestneweventsrulelambdawrappedCustomEventBusD55CE272": Object {
+    "testneweventsrulelambdatestneweventsrulelambdaWCustomEventBusACACFB40": Object {
       "Properties": Object {
-        "Name": "testneweventsrulelambdatestneweventsrulelambdawrappedCustomEventBusD11E8040",
+        "Name": "testneweventsrulelambdatestneweventsrulelambdaWCustomEventBus4B53AC86",
       },
       "Type": "AWS::Events::EventBus",
     },
-    "testneweventsrulelambdatestneweventsrulelambdawrappedEventsRuleD35AE1A2": Object {
+    "testneweventsrulelambdatestneweventsrulelambdaWEventsRule61826461": Object {
       "Properties": Object {
         "EventBusName": Object {
-          "Ref": "testneweventsrulelambdatestneweventsrulelambdawrappedCustomEventBusD55CE272",
+          "Ref": "testneweventsrulelambdatestneweventsrulelambdaWCustomEventBusACACFB40",
         },
         "EventPattern": Object {
           "source": Array [
@@ -38,7 +38,7 @@ Object {
           Object {
             "Arn": Object {
               "Fn::GetAtt": Array [
-                "testneweventsrulelambdatestneweventsrulelambdawrappedLambdaFunction30F213FF",
+                "testneweventsrulelambdatestneweventsrulelambdaWLambdaFunction82A6BFDD",
                 "Arn",
               ],
             },
@@ -48,10 +48,10 @@ Object {
       },
       "Type": "AWS::Events::Rule",
     },
-    "testneweventsrulelambdatestneweventsrulelambdawrappedLambdaFunction30F213FF": Object {
+    "testneweventsrulelambdatestneweventsrulelambdaWLambdaFunction82A6BFDD": Object {
       "DependsOn": Array [
-        "testneweventsrulelambdatestneweventsrulelambdawrappedLambdaFunctionServiceRoleDefaultPolicyD89025ED",
-        "testneweventsrulelambdatestneweventsrulelambdawrappedLambdaFunctionServiceRoleEF4B79C5",
+        "testneweventsrulelambdatestneweventsrulelambdaWLambdaFunctionServiceRoleDefaultPolicyA4A6E440",
+        "testneweventsrulelambdatestneweventsrulelambdaWLambdaFunctionServiceRole1A592834",
       ],
       "Metadata": Object {
         "cfn_nag": Object {
@@ -118,7 +118,7 @@ Object {
         "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "testneweventsrulelambdatestneweventsrulelambdawrappedLambdaFunctionServiceRoleEF4B79C5",
+            "testneweventsrulelambdatestneweventsrulelambdaWLambdaFunctionServiceRole1A592834",
             "Arn",
           ],
         },
@@ -129,60 +129,26 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "testneweventsrulelambdatestneweventsrulelambdawrappedLambdaFunctionAwsEventsLambdaInvokePermission1524B4AEB": Object {
+    "testneweventsrulelambdatestneweventsrulelambdaWLambdaFunctionAwsEventsLambdaInvokePermission1963A2F59": Object {
       "Properties": Object {
         "Action": "lambda:InvokeFunction",
         "FunctionName": Object {
           "Fn::GetAtt": Array [
-            "testneweventsrulelambdatestneweventsrulelambdawrappedLambdaFunction30F213FF",
+            "testneweventsrulelambdatestneweventsrulelambdaWLambdaFunction82A6BFDD",
             "Arn",
           ],
         },
         "Principal": "events.amazonaws.com",
         "SourceArn": Object {
           "Fn::GetAtt": Array [
-            "testneweventsrulelambdatestneweventsrulelambdawrappedEventsRuleD35AE1A2",
+            "testneweventsrulelambdatestneweventsrulelambdaWEventsRule61826461",
             "Arn",
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "testneweventsrulelambdatestneweventsrulelambdawrappedLambdaFunctionServiceRoleDefaultPolicyD89025ED": Object {
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W12",
-              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.",
-            },
-          ],
-        },
-      },
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "xray:PutTraceSegments",
-                "xray:PutTelemetryRecords",
-              ],
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "testneweventsrulelambdatestneweventsrulelambdawrappedLambdaFunctionServiceRoleDefaultPolicyD89025ED",
-        "Roles": Array [
-          Object {
-            "Ref": "testneweventsrulelambdatestneweventsrulelambdawrappedLambdaFunctionServiceRoleEF4B79C5",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "testneweventsrulelambdatestneweventsrulelambdawrappedLambdaFunctionServiceRoleEF4B79C5": Object {
+    "testneweventsrulelambdatestneweventsrulelambdaWLambdaFunctionServiceRole1A592834": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -236,6 +202,40 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Role",
+    },
+    "testneweventsrulelambdatestneweventsrulelambdaWLambdaFunctionServiceRoleDefaultPolicyA4A6E440": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testneweventsrulelambdatestneweventsrulelambdaWLambdaFunctionServiceRoleDefaultPolicyA4A6E440",
+        "Roles": Array [
+          Object {
+            "Ref": "testneweventsrulelambdatestneweventsrulelambdaWLambdaFunctionServiceRole1A592834",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
   },
 }
@@ -258,16 +258,16 @@ Object {
     },
   },
   "Resources": Object {
-    "testneweventsrulelambda1testneweventsrulelambda1wrappedCustomEventBusB523DE9D": Object {
+    "testneweventsrulelambda1testneweventsrulelambda1WCustomEventBusD70475EA": Object {
       "Properties": Object {
-        "Name": "testneweventsrulelambda1testneweventsrulelambda1wrappedCustomEventBus2947A41E",
+        "Name": "testneweventsrulelambda1testneweventsrulelambda1WCustomEventBusCCFC7671",
       },
       "Type": "AWS::Events::EventBus",
     },
-    "testneweventsrulelambda1testneweventsrulelambda1wrappedEventsRuleA63512F2": Object {
+    "testneweventsrulelambda1testneweventsrulelambda1WEventsRuleCAF3D220": Object {
       "Properties": Object {
         "EventBusName": Object {
-          "Ref": "testneweventsrulelambda1testneweventsrulelambda1wrappedCustomEventBusB523DE9D",
+          "Ref": "testneweventsrulelambda1testneweventsrulelambda1WCustomEventBusD70475EA",
         },
         "EventPattern": Object {
           "source": Array [
@@ -279,7 +279,7 @@ Object {
           Object {
             "Arn": Object {
               "Fn::GetAtt": Array [
-                "testneweventsrulelambda1testneweventsrulelambda1wrappedLambdaFunction26FF474D",
+                "testneweventsrulelambda1testneweventsrulelambda1WLambdaFunction508366E8",
                 "Arn",
               ],
             },
@@ -289,10 +289,10 @@ Object {
       },
       "Type": "AWS::Events::Rule",
     },
-    "testneweventsrulelambda1testneweventsrulelambda1wrappedLambdaFunction26FF474D": Object {
+    "testneweventsrulelambda1testneweventsrulelambda1WLambdaFunction508366E8": Object {
       "DependsOn": Array [
-        "testneweventsrulelambda1testneweventsrulelambda1wrappedLambdaFunctionServiceRoleDefaultPolicyEEA76A29",
-        "testneweventsrulelambda1testneweventsrulelambda1wrappedLambdaFunctionServiceRole9BD7A5E3",
+        "testneweventsrulelambda1testneweventsrulelambda1WLambdaFunctionServiceRoleDefaultPolicy2EDAC674",
+        "testneweventsrulelambda1testneweventsrulelambda1WLambdaFunctionServiceRole44F29D0D",
       ],
       "Metadata": Object {
         "cfn_nag": Object {
@@ -359,7 +359,7 @@ Object {
         "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "testneweventsrulelambda1testneweventsrulelambda1wrappedLambdaFunctionServiceRole9BD7A5E3",
+            "testneweventsrulelambda1testneweventsrulelambda1WLambdaFunctionServiceRole44F29D0D",
             "Arn",
           ],
         },
@@ -370,26 +370,26 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "testneweventsrulelambda1testneweventsrulelambda1wrappedLambdaFunctionAwsEventsLambdaInvokePermission101A42949": Object {
+    "testneweventsrulelambda1testneweventsrulelambda1WLambdaFunctionAwsEventsLambdaInvokePermission1BD774C6A": Object {
       "Properties": Object {
         "Action": "lambda:InvokeFunction",
         "FunctionName": Object {
           "Fn::GetAtt": Array [
-            "testneweventsrulelambda1testneweventsrulelambda1wrappedLambdaFunction26FF474D",
+            "testneweventsrulelambda1testneweventsrulelambda1WLambdaFunction508366E8",
             "Arn",
           ],
         },
         "Principal": "events.amazonaws.com",
         "SourceArn": Object {
           "Fn::GetAtt": Array [
-            "testneweventsrulelambda1testneweventsrulelambda1wrappedEventsRuleA63512F2",
+            "testneweventsrulelambda1testneweventsrulelambda1WEventsRuleCAF3D220",
             "Arn",
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "testneweventsrulelambda1testneweventsrulelambda1wrappedLambdaFunctionServiceRole9BD7A5E3": Object {
+    "testneweventsrulelambda1testneweventsrulelambda1WLambdaFunctionServiceRole44F29D0D": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -444,7 +444,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "testneweventsrulelambda1testneweventsrulelambda1wrappedLambdaFunctionServiceRoleDefaultPolicyEEA76A29": Object {
+    "testneweventsrulelambda1testneweventsrulelambda1WLambdaFunctionServiceRoleDefaultPolicy2EDAC674": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -469,25 +469,25 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "testneweventsrulelambda1testneweventsrulelambda1wrappedLambdaFunctionServiceRoleDefaultPolicyEEA76A29",
+        "PolicyName": "testneweventsrulelambda1testneweventsrulelambda1WLambdaFunctionServiceRoleDefaultPolicy2EDAC674",
         "Roles": Array [
           Object {
-            "Ref": "testneweventsrulelambda1testneweventsrulelambda1wrappedLambdaFunctionServiceRole9BD7A5E3",
+            "Ref": "testneweventsrulelambda1testneweventsrulelambda1WLambdaFunctionServiceRole44F29D0D",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
     },
-    "testneweventsrulelambda2testneweventsrulelambda2wrappedCustomEventBus14F7A12E": Object {
+    "testneweventsrulelambda2testneweventsrulelambda2WCustomEventBusECAFE55E": Object {
       "Properties": Object {
-        "Name": "testneweventsrulelambda2testneweventsrulelambda2wrappedCustomEventBus545E341A",
+        "Name": "testneweventsrulelambda2testneweventsrulelambda2WCustomEventBus8B7AB031",
       },
       "Type": "AWS::Events::EventBus",
     },
-    "testneweventsrulelambda2testneweventsrulelambda2wrappedEventsRule7D7931F0": Object {
+    "testneweventsrulelambda2testneweventsrulelambda2WEventsRule3AEF73E1": Object {
       "Properties": Object {
         "EventBusName": Object {
-          "Ref": "testneweventsrulelambda2testneweventsrulelambda2wrappedCustomEventBus14F7A12E",
+          "Ref": "testneweventsrulelambda2testneweventsrulelambda2WCustomEventBusECAFE55E",
         },
         "EventPattern": Object {
           "source": Array [
@@ -499,7 +499,7 @@ Object {
           Object {
             "Arn": Object {
               "Fn::GetAtt": Array [
-                "testneweventsrulelambda2testneweventsrulelambda2wrappedLambdaFunction174D60EC",
+                "testneweventsrulelambda2testneweventsrulelambda2WLambdaFunction0603676F",
                 "Arn",
               ],
             },
@@ -509,10 +509,10 @@ Object {
       },
       "Type": "AWS::Events::Rule",
     },
-    "testneweventsrulelambda2testneweventsrulelambda2wrappedLambdaFunction174D60EC": Object {
+    "testneweventsrulelambda2testneweventsrulelambda2WLambdaFunction0603676F": Object {
       "DependsOn": Array [
-        "testneweventsrulelambda2testneweventsrulelambda2wrappedLambdaFunctionServiceRoleDefaultPolicy15343B2A",
-        "testneweventsrulelambda2testneweventsrulelambda2wrappedLambdaFunctionServiceRole73329C49",
+        "testneweventsrulelambda2testneweventsrulelambda2WLambdaFunctionServiceRoleDefaultPolicyC838EF33",
+        "testneweventsrulelambda2testneweventsrulelambda2WLambdaFunctionServiceRoleE2024B15",
       ],
       "Metadata": Object {
         "cfn_nag": Object {
@@ -579,7 +579,7 @@ Object {
         "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "testneweventsrulelambda2testneweventsrulelambda2wrappedLambdaFunctionServiceRole73329C49",
+            "testneweventsrulelambda2testneweventsrulelambda2WLambdaFunctionServiceRoleE2024B15",
             "Arn",
           ],
         },
@@ -590,26 +590,60 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "testneweventsrulelambda2testneweventsrulelambda2wrappedLambdaFunctionAwsEventsLambdaInvokePermission1A86C7F7D": Object {
+    "testneweventsrulelambda2testneweventsrulelambda2WLambdaFunctionAwsEventsLambdaInvokePermission19D4CBF19": Object {
       "Properties": Object {
         "Action": "lambda:InvokeFunction",
         "FunctionName": Object {
           "Fn::GetAtt": Array [
-            "testneweventsrulelambda2testneweventsrulelambda2wrappedLambdaFunction174D60EC",
+            "testneweventsrulelambda2testneweventsrulelambda2WLambdaFunction0603676F",
             "Arn",
           ],
         },
         "Principal": "events.amazonaws.com",
         "SourceArn": Object {
           "Fn::GetAtt": Array [
-            "testneweventsrulelambda2testneweventsrulelambda2wrappedEventsRule7D7931F0",
+            "testneweventsrulelambda2testneweventsrulelambda2WEventsRule3AEF73E1",
             "Arn",
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "testneweventsrulelambda2testneweventsrulelambda2wrappedLambdaFunctionServiceRole73329C49": Object {
+    "testneweventsrulelambda2testneweventsrulelambda2WLambdaFunctionServiceRoleDefaultPolicyC838EF33": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testneweventsrulelambda2testneweventsrulelambda2WLambdaFunctionServiceRoleDefaultPolicyC838EF33",
+        "Roles": Array [
+          Object {
+            "Ref": "testneweventsrulelambda2testneweventsrulelambda2WLambdaFunctionServiceRoleE2024B15",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "testneweventsrulelambda2testneweventsrulelambda2WLambdaFunctionServiceRoleE2024B15": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -663,40 +697,6 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Role",
-    },
-    "testneweventsrulelambda2testneweventsrulelambda2wrappedLambdaFunctionServiceRoleDefaultPolicy15343B2A": Object {
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W12",
-              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.",
-            },
-          ],
-        },
-      },
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "xray:PutTraceSegments",
-                "xray:PutTelemetryRecords",
-              ],
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "testneweventsrulelambda2testneweventsrulelambda2wrappedLambdaFunctionServiceRoleDefaultPolicy15343B2A",
-        "Roles": Array [
-          Object {
-            "Ref": "testneweventsrulelambda2testneweventsrulelambda2wrappedLambdaFunctionServiceRole73329C49",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
     },
   },
 }
@@ -719,7 +719,7 @@ Object {
     },
   },
   "Resources": Object {
-    "testeventsrulelambdatesteventsrulelambdawrappedEventsRuleC19DAE50": Object {
+    "testeventsrulelambdatesteventsrulelambdaWEventsRule1B328BFB": Object {
       "Properties": Object {
         "ScheduleExpression": "rate(5 minutes)",
         "State": "ENABLED",
@@ -727,7 +727,7 @@ Object {
           Object {
             "Arn": Object {
               "Fn::GetAtt": Array [
-                "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunction0635FA98",
+                "testeventsrulelambdatesteventsrulelambdaWLambdaFunction5EE557E8",
                 "Arn",
               ],
             },
@@ -737,10 +737,10 @@ Object {
       },
       "Type": "AWS::Events::Rule",
     },
-    "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunction0635FA98": Object {
+    "testeventsrulelambdatesteventsrulelambdaWLambdaFunction5EE557E8": Object {
       "DependsOn": Array [
-        "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunctionServiceRoleDefaultPolicyF7B2C1E2",
-        "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunctionServiceRole9A954D10",
+        "testeventsrulelambdatesteventsrulelambdaWLambdaFunctionServiceRoleDefaultPolicyD705B722",
+        "testeventsrulelambdatesteventsrulelambdaWLambdaFunctionServiceRoleFF9B9BDB",
       ],
       "Metadata": Object {
         "cfn_nag": Object {
@@ -807,7 +807,7 @@ Object {
         "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunctionServiceRole9A954D10",
+            "testeventsrulelambdatesteventsrulelambdaWLambdaFunctionServiceRoleFF9B9BDB",
             "Arn",
           ],
         },
@@ -818,26 +818,60 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunctionAwsEventsLambdaInvokePermission15AD1F48C": Object {
+    "testeventsrulelambdatesteventsrulelambdaWLambdaFunctionAwsEventsLambdaInvokePermission135EE70F4": Object {
       "Properties": Object {
         "Action": "lambda:InvokeFunction",
         "FunctionName": Object {
           "Fn::GetAtt": Array [
-            "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunction0635FA98",
+            "testeventsrulelambdatesteventsrulelambdaWLambdaFunction5EE557E8",
             "Arn",
           ],
         },
         "Principal": "events.amazonaws.com",
         "SourceArn": Object {
           "Fn::GetAtt": Array [
-            "testeventsrulelambdatesteventsrulelambdawrappedEventsRuleC19DAE50",
+            "testeventsrulelambdatesteventsrulelambdaWEventsRule1B328BFB",
             "Arn",
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunctionServiceRole9A954D10": Object {
+    "testeventsrulelambdatesteventsrulelambdaWLambdaFunctionServiceRoleDefaultPolicyD705B722": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testeventsrulelambdatesteventsrulelambdaWLambdaFunctionServiceRoleDefaultPolicyD705B722",
+        "Roles": Array [
+          Object {
+            "Ref": "testeventsrulelambdatesteventsrulelambdaWLambdaFunctionServiceRoleFF9B9BDB",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "testeventsrulelambdatesteventsrulelambdaWLambdaFunctionServiceRoleFF9B9BDB": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -891,40 +925,6 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Role",
-    },
-    "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunctionServiceRoleDefaultPolicyF7B2C1E2": Object {
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W12",
-              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.",
-            },
-          ],
-        },
-      },
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "xray:PutTraceSegments",
-                "xray:PutTelemetryRecords",
-              ],
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunctionServiceRoleDefaultPolicyF7B2C1E2",
-        "Roles": Array [
-          Object {
-            "Ref": "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunctionServiceRole9A954D10",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
     },
   },
 }
@@ -953,7 +953,7 @@ Object {
       },
       "Type": "AWS::Events::EventBus",
     },
-    "testexistingeventsrulelambdatestexistingeventsrulelambdawrappedEventsRule1751BCED": Object {
+    "testexistingeventsrulelambdatestexistingeventsrulelambdaWEventsRuleEC7E86AC": Object {
       "Properties": Object {
         "EventBusName": Object {
           "Ref": "testexistingeventbusC6E4A2D0",
@@ -968,7 +968,7 @@ Object {
           Object {
             "Arn": Object {
               "Fn::GetAtt": Array [
-                "testexistingeventsrulelambdatestexistingeventsrulelambdawrappedLambdaFunction49FE3A50",
+                "testexistingeventsrulelambdatestexistingeventsrulelambdaWLambdaFunction761A16B3",
                 "Arn",
               ],
             },
@@ -978,10 +978,10 @@ Object {
       },
       "Type": "AWS::Events::Rule",
     },
-    "testexistingeventsrulelambdatestexistingeventsrulelambdawrappedLambdaFunction49FE3A50": Object {
+    "testexistingeventsrulelambdatestexistingeventsrulelambdaWLambdaFunction761A16B3": Object {
       "DependsOn": Array [
-        "testexistingeventsrulelambdatestexistingeventsrulelambdawrappedLambdaFunctionServiceRoleDefaultPolicyE0D1CBFE",
-        "testexistingeventsrulelambdatestexistingeventsrulelambdawrappedLambdaFunctionServiceRole46509482",
+        "testexistingeventsrulelambdatestexistingeventsrulelambdaWLambdaFunctionServiceRoleDefaultPolicy9D955941",
+        "testexistingeventsrulelambdatestexistingeventsrulelambdaWLambdaFunctionServiceRoleBE7F5B75",
       ],
       "Metadata": Object {
         "cfn_nag": Object {
@@ -1048,7 +1048,7 @@ Object {
         "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "testexistingeventsrulelambdatestexistingeventsrulelambdawrappedLambdaFunctionServiceRole46509482",
+            "testexistingeventsrulelambdatestexistingeventsrulelambdaWLambdaFunctionServiceRoleBE7F5B75",
             "Arn",
           ],
         },
@@ -1059,26 +1059,26 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "testexistingeventsrulelambdatestexistingeventsrulelambdawrappedLambdaFunctionAwsEventsLambdaInvokePermission15E0B8DA1": Object {
+    "testexistingeventsrulelambdatestexistingeventsrulelambdaWLambdaFunctionAwsEventsLambdaInvokePermission19C6183E3": Object {
       "Properties": Object {
         "Action": "lambda:InvokeFunction",
         "FunctionName": Object {
           "Fn::GetAtt": Array [
-            "testexistingeventsrulelambdatestexistingeventsrulelambdawrappedLambdaFunction49FE3A50",
+            "testexistingeventsrulelambdatestexistingeventsrulelambdaWLambdaFunction761A16B3",
             "Arn",
           ],
         },
         "Principal": "events.amazonaws.com",
         "SourceArn": Object {
           "Fn::GetAtt": Array [
-            "testexistingeventsrulelambdatestexistingeventsrulelambdawrappedEventsRule1751BCED",
+            "testexistingeventsrulelambdatestexistingeventsrulelambdaWEventsRuleEC7E86AC",
             "Arn",
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "testexistingeventsrulelambdatestexistingeventsrulelambdawrappedLambdaFunctionServiceRole46509482": Object {
+    "testexistingeventsrulelambdatestexistingeventsrulelambdaWLambdaFunctionServiceRoleBE7F5B75": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -1133,7 +1133,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "testexistingeventsrulelambdatestexistingeventsrulelambdawrappedLambdaFunctionServiceRoleDefaultPolicyE0D1CBFE": Object {
+    "testexistingeventsrulelambdatestexistingeventsrulelambdaWLambdaFunctionServiceRoleDefaultPolicy9D955941": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -1158,10 +1158,10 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "testexistingeventsrulelambdatestexistingeventsrulelambdawrappedLambdaFunctionServiceRoleDefaultPolicyE0D1CBFE",
+        "PolicyName": "testexistingeventsrulelambdatestexistingeventsrulelambdaWLambdaFunctionServiceRoleDefaultPolicy9D955941",
         "Roles": Array [
           Object {
-            "Ref": "testexistingeventsrulelambdatestexistingeventsrulelambdawrappedLambdaFunctionServiceRole46509482",
+            "Ref": "testexistingeventsrulelambdatestexistingeventsrulelambdaWLambdaFunctionServiceRoleBE7F5B75",
           },
         ],
       },

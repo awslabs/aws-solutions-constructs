@@ -12,21 +12,23 @@
  */
 
 import { EventsRuleToSns, EventsRuleToSnsProps } from '../lib';
+import * as events from '@aws-cdk/aws-events';
 import { App, Stack } from '@aws-cdk/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
-
+// Create existing custom EventBus
+const existingEventBus = new events.EventBus(stack, `event-bus`, {});
 const props: EventsRuleToSnsProps = {
   eventRuleProps: {
     eventPattern: {
       source: ['solutionsconstructs']
     }
   },
-  eventBusProps: {} // Pass props to create new custom EventBus
+  existingEventBusInterface: existingEventBus
 };
 
-new EventsRuleToSns(stack, 'test-construct', props);
+new EventsRuleToSns(stack, 'test', props);
 
 app.synth();

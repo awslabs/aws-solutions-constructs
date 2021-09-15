@@ -65,7 +65,7 @@ test('check lambda function properties for deploy: true', () => {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": [
-        "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunctionServiceRole9A954D10",
+        "testeventsrulelambdatesteventsrulelambdaWLambdaFunctionServiceRoleFF9B9BDB",
         "Arn"
       ]
     },
@@ -87,14 +87,14 @@ test('check lambda function permission for deploy: true', () => {
     Action: "lambda:InvokeFunction",
     FunctionName: {
       "Fn::GetAtt": [
-        "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunction0635FA98",
+        "testeventsrulelambdatesteventsrulelambdaWLambdaFunction5EE557E8",
         "Arn"
       ]
     },
     Principal: "events.amazonaws.com",
     SourceArn: {
       "Fn::GetAtt": [
-        "testeventsrulelambdatesteventsrulelambdawrappedEventsRuleC19DAE50",
+        "testeventsrulelambdatesteventsrulelambdaWEventsRule1B328BFB",
         "Arn"
       ]
     }
@@ -172,7 +172,7 @@ test('check events rule properties for deploy: true', () => {
       {
         Arn: {
           "Fn::GetAtt": [
-            "testeventsrulelambdatesteventsrulelambdawrappedLambdaFunction0635FA98",
+            "testeventsrulelambdatesteventsrulelambdaWLambdaFunction5EE557E8",
             "Arn"
           ]
         },
