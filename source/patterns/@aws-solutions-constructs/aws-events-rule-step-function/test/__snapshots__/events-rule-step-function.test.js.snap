@@ -1143,6 +1143,12 @@ Object {
 exports[`snapshot test EventsRuleToStepfunctions existing event bus params 1`] = `
 Object {
   "Resources": Object {
+    "testexistingeventbusC6E4A2D0": Object {
+      "Properties": Object {
+        "Name": "testexistingeventbus",
+      },
+      "Type": "AWS::Events::EventBus",
+    },
     "testexistingeventsrulestepfunctionstestexistingeventsrulestepfunctionsWEventsRule85E7CC2B": Object {
       "Properties": Object {
         "EventBusName": Object {

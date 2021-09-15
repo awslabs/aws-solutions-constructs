@@ -17,7 +17,6 @@ import * as lambda from "@aws-cdk/aws-lambda";
 import * as events from "@aws-cdk/aws-events";
 import * as ec2 from "@aws-cdk/aws-ec2";
 import { LambdaToEventbridge, LambdaToEventbridgeProps } from '../lib';
-import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------
@@ -34,9 +33,6 @@ test('Test minimal deployment with new Lambda function', () => {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }
   });
-
-  // Snapshot match
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
   // Check Props
   const lambdaFunction = construct.lambdaFunction;
@@ -167,8 +163,6 @@ test('Test deployment w/ existing eventbus', () => {
     },
     existingEventBusInterface: existingEventBus
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
   // Check Lambda Permissions
   expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
@@ -510,6 +504,5 @@ test('check multiple constructs in a single stack', () => {
   };
   new LambdaToEventbridge(stack, 'test-new-lambda-eventbridge1', props);
   new LambdaToEventbridge(stack, 'test-new-lambda-eventbridge2', props);
-
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(stack).toCountResources('AWS::Events::EventBus', 2);
 });
