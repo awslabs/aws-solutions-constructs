@@ -3,7 +3,7 @@
 exports[`snapshot test S3ToStepFunction default params 1`] = `
 Object {
   "Resources": Object {
-    "tests3stepfunctiontests3stepfunctionwrappedCloudTrailS3Bucket36BB1A41": Object {
+    "tests3stepfunctiontests3stepfunctionWCloudTrailS3Bucket24C50489": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
         "BucketEncryption": Object {
@@ -30,7 +30,7 @@ Object {
         },
         "LoggingConfiguration": Object {
           "DestinationBucketName": Object {
-            "Ref": "tests3stepfunctiontests3stepfunctionwrappedCloudTrailS3LoggingBucket6AF72EAB",
+            "Ref": "tests3stepfunctiontests3stepfunctionWCloudTrailS3LoggingBucket449D5AB7",
           },
         },
         "PublicAccessBlockConfiguration": Object {
@@ -46,10 +46,10 @@ Object {
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
     },
-    "tests3stepfunctiontests3stepfunctionwrappedCloudTrailS3BucketPolicy58F28977": Object {
+    "tests3stepfunctiontests3stepfunctionWCloudTrailS3BucketPolicy9ACF9ADC": Object {
       "Properties": Object {
         "Bucket": Object {
-          "Ref": "tests3stepfunctiontests3stepfunctionwrappedCloudTrailS3Bucket36BB1A41",
+          "Ref": "tests3stepfunctiontests3stepfunctionWCloudTrailS3Bucket24C50489",
         },
         "PolicyDocument": Object {
           "Statement": Array [
@@ -71,7 +71,7 @@ Object {
                     Array [
                       Object {
                         "Fn::GetAtt": Array [
-                          "tests3stepfunctiontests3stepfunctionwrappedCloudTrailS3Bucket36BB1A41",
+                          "tests3stepfunctiontests3stepfunctionWCloudTrailS3Bucket24C50489",
                           "Arn",
                         ],
                       },
@@ -81,7 +81,7 @@ Object {
                 },
                 Object {
                   "Fn::GetAtt": Array [
-                    "tests3stepfunctiontests3stepfunctionwrappedCloudTrailS3Bucket36BB1A41",
+                    "tests3stepfunctiontests3stepfunctionWCloudTrailS3Bucket24C50489",
                     "Arn",
                   ],
                 },
@@ -96,7 +96,7 @@ Object {
               },
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "tests3stepfunctiontests3stepfunctionwrappedCloudTrailS3Bucket36BB1A41",
+                  "tests3stepfunctiontests3stepfunctionWCloudTrailS3Bucket24C50489",
                   "Arn",
                 ],
               },
@@ -118,7 +118,7 @@ Object {
                   Array [
                     Object {
                       "Fn::GetAtt": Array [
-                        "tests3stepfunctiontests3stepfunctionwrappedCloudTrailS3Bucket36BB1A41",
+                        "tests3stepfunctiontests3stepfunctionWCloudTrailS3Bucket24C50489",
                         "Arn",
                       ],
                     },
@@ -137,7 +137,7 @@ Object {
       },
       "Type": "AWS::S3::BucketPolicy",
     },
-    "tests3stepfunctiontests3stepfunctionwrappedCloudTrailS3LoggingBucket6AF72EAB": Object {
+    "tests3stepfunctiontests3stepfunctionWCloudTrailS3LoggingBucket449D5AB7": Object {
       "DeletionPolicy": "Retain",
       "Metadata": Object {
         "cfn_nag": Object {
@@ -173,10 +173,10 @@ Object {
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
     },
-    "tests3stepfunctiontests3stepfunctionwrappedCloudTrailS3LoggingBucketPolicyB2A29099": Object {
+    "tests3stepfunctiontests3stepfunctionWCloudTrailS3LoggingBucketPolicy7547A73F": Object {
       "Properties": Object {
         "Bucket": Object {
-          "Ref": "tests3stepfunctiontests3stepfunctionwrappedCloudTrailS3LoggingBucket6AF72EAB",
+          "Ref": "tests3stepfunctiontests3stepfunctionWCloudTrailS3LoggingBucket449D5AB7",
         },
         "PolicyDocument": Object {
           "Statement": Array [
@@ -198,7 +198,7 @@ Object {
                     Array [
                       Object {
                         "Fn::GetAtt": Array [
-                          "tests3stepfunctiontests3stepfunctionwrappedCloudTrailS3LoggingBucket6AF72EAB",
+                          "tests3stepfunctiontests3stepfunctionWCloudTrailS3LoggingBucket449D5AB7",
                           "Arn",
                         ],
                       },
@@ -208,7 +208,7 @@ Object {
                 },
                 Object {
                   "Fn::GetAtt": Array [
-                    "tests3stepfunctiontests3stepfunctionwrappedCloudTrailS3LoggingBucket6AF72EAB",
+                    "tests3stepfunctiontests3stepfunctionWCloudTrailS3LoggingBucket449D5AB7",
                     "Arn",
                   ],
                 },
@@ -221,7 +221,7 @@ Object {
       },
       "Type": "AWS::S3::BucketPolicy",
     },
-    "tests3stepfunctiontests3stepfunctionwrappedS3BucketAB38FBAE": Object {
+    "tests3stepfunctiontests3stepfunctionWS3Bucket9BE64924": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
         "BucketEncryption": Object {
@@ -248,7 +248,7 @@ Object {
         },
         "LoggingConfiguration": Object {
           "DestinationBucketName": Object {
-            "Ref": "tests3stepfunctiontests3stepfunctionwrappedS3LoggingBucket41A6693F",
+            "Ref": "tests3stepfunctiontests3stepfunctionWS3LoggingBucketB716417C",
           },
         },
         "PublicAccessBlockConfiguration": Object {
@@ -264,10 +264,10 @@ Object {
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
     },
-    "tests3stepfunctiontests3stepfunctionwrappedS3BucketPolicyA8AB98B3": Object {
+    "tests3stepfunctiontests3stepfunctionWS3BucketPolicy6A88EABC": Object {
       "Properties": Object {
         "Bucket": Object {
-          "Ref": "tests3stepfunctiontests3stepfunctionwrappedS3BucketAB38FBAE",
+          "Ref": "tests3stepfunctiontests3stepfunctionWS3Bucket9BE64924",
         },
         "PolicyDocument": Object {
           "Statement": Array [
@@ -289,7 +289,7 @@ Object {
                     Array [
                       Object {
                         "Fn::GetAtt": Array [
-                          "tests3stepfunctiontests3stepfunctionwrappedS3BucketAB38FBAE",
+                          "tests3stepfunctiontests3stepfunctionWS3Bucket9BE64924",
                           "Arn",
                         ],
                       },
@@ -299,7 +299,7 @@ Object {
                 },
                 Object {
                   "Fn::GetAtt": Array [
-                    "tests3stepfunctiontests3stepfunctionwrappedS3BucketAB38FBAE",
+                    "tests3stepfunctiontests3stepfunctionWS3Bucket9BE64924",
                     "Arn",
                   ],
                 },
@@ -312,9 +312,9 @@ Object {
       },
       "Type": "AWS::S3::BucketPolicy",
     },
-    "tests3stepfunctiontests3stepfunctionwrappedS3EventsTrailF4ABB84A": Object {
+    "tests3stepfunctiontests3stepfunctionWS3EventsTrailA0FDE626": Object {
       "DependsOn": Array [
-        "tests3stepfunctiontests3stepfunctionwrappedCloudTrailS3BucketPolicy58F28977",
+        "tests3stepfunctiontests3stepfunctionWCloudTrailS3BucketPolicy9ACF9ADC",
       ],
       "Properties": Object {
         "EnableLogFileValidation": true,
@@ -330,7 +330,7 @@ Object {
                       Array [
                         Object {
                           "Fn::GetAtt": Array [
-                            "tests3stepfunctiontests3stepfunctionwrappedS3BucketAB38FBAE",
+                            "tests3stepfunctiontests3stepfunctionWS3Bucket9BE64924",
                             "Arn",
                           ],
                         },
@@ -349,12 +349,12 @@ Object {
         "IsLogging": true,
         "IsMultiRegionTrail": true,
         "S3BucketName": Object {
-          "Ref": "tests3stepfunctiontests3stepfunctionwrappedCloudTrailS3Bucket36BB1A41",
+          "Ref": "tests3stepfunctiontests3stepfunctionWCloudTrailS3Bucket24C50489",
         },
       },
       "Type": "AWS::CloudTrail::Trail",
     },
-    "tests3stepfunctiontests3stepfunctionwrappedS3LoggingBucket41A6693F": Object {
+    "tests3stepfunctiontests3stepfunctionWS3LoggingBucketB716417C": Object {
       "DeletionPolicy": "Retain",
       "Metadata": Object {
         "cfn_nag": Object {
@@ -390,10 +390,10 @@ Object {
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
     },
-    "tests3stepfunctiontests3stepfunctionwrappedS3LoggingBucketPolicyD64FEE47": Object {
+    "tests3stepfunctiontests3stepfunctionWS3LoggingBucketPolicy8E5E6292": Object {
       "Properties": Object {
         "Bucket": Object {
-          "Ref": "tests3stepfunctiontests3stepfunctionwrappedS3LoggingBucket41A6693F",
+          "Ref": "tests3stepfunctiontests3stepfunctionWS3LoggingBucketB716417C",
         },
         "PolicyDocument": Object {
           "Statement": Array [
@@ -415,7 +415,7 @@ Object {
                     Array [
                       Object {
                         "Fn::GetAtt": Array [
-                          "tests3stepfunctiontests3stepfunctionwrappedS3LoggingBucket41A6693F",
+                          "tests3stepfunctiontests3stepfunctionWS3LoggingBucketB716417C",
                           "Arn",
                         ],
                       },
@@ -425,7 +425,7 @@ Object {
                 },
                 Object {
                   "Fn::GetAtt": Array [
-                    "tests3stepfunctiontests3stepfunctionwrappedS3LoggingBucket41A6693F",
+                    "tests3stepfunctiontests3stepfunctionWS3LoggingBucketB716417C",
                     "Arn",
                   ],
                 },
@@ -438,7 +438,7 @@ Object {
       },
       "Type": "AWS::S3::BucketPolicy",
     },
-    "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructEventsRule024102DB": Object {
+    "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructEventsRule2C8C073A": Object {
       "Properties": Object {
         "EventPattern": Object {
           "detail": Object {
@@ -453,7 +453,7 @@ Object {
             "requestParameters": Object {
               "bucketName": Array [
                 Object {
-                  "Ref": "tests3stepfunctiontests3stepfunctionwrappedS3BucketAB38FBAE",
+                  "Ref": "tests3stepfunctiontests3stepfunctionWS3Bucket9BE64924",
                 },
               ],
             },
@@ -469,12 +469,12 @@ Object {
         "Targets": Array [
           Object {
             "Arn": Object {
-              "Ref": "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructStateMachine6874E63D",
+              "Ref": "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructStateMachineAAE00FFE",
             },
             "Id": "Target0",
             "RoleArn": Object {
               "Fn::GetAtt": Array [
-                "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructEventsRuleRole0706EB34",
+                "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructEventsRuleRole1B233B12",
                 "Arn",
               ],
             },
@@ -483,7 +483,7 @@ Object {
       },
       "Type": "AWS::Events::Rule",
     },
-    "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructEventsRuleRole0706EB34": Object {
+    "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructEventsRuleRole1B233B12": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -500,7 +500,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructEventsRuleRoleDefaultPolicyE6DE5D78": Object {
+    "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructEventsRuleRoleDefaultPolicyA55D44AB": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -508,22 +508,22 @@ Object {
               "Action": "states:StartExecution",
               "Effect": "Allow",
               "Resource": Object {
-                "Ref": "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructStateMachine6874E63D",
+                "Ref": "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructStateMachineAAE00FFE",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructEventsRuleRoleDefaultPolicyE6DE5D78",
+        "PolicyName": "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructEventsRuleRoleDefaultPolicyA55D44AB",
         "Roles": Array [
           Object {
-            "Ref": "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructEventsRuleRole0706EB34",
+            "Ref": "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructEventsRuleRole1B233B12",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
     },
-    "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructExecutionAbortedAlarmA9E063A2": Object {
+    "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructExecutionAbortedAlarm0D634092": Object {
       "Properties": Object {
         "AlarmDescription": "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -531,7 +531,7 @@ Object {
           Object {
             "Name": "StateMachineArn",
             "Value": Object {
-              "Ref": "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructStateMachine6874E63D",
+              "Ref": "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructStateMachineAAE00FFE",
             },
           },
         ],
@@ -544,7 +544,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructExecutionFailedAlarm194F2DE7": Object {
+    "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructExecutionFailedAlarm0292B991": Object {
       "Properties": Object {
         "AlarmDescription": "Alarm for the number of executions that failed exceeded the threshold of 1. ",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -552,7 +552,7 @@ Object {
           Object {
             "Name": "StateMachineArn",
             "Value": Object {
-              "Ref": "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructStateMachine6874E63D",
+              "Ref": "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructStateMachineAAE00FFE",
             },
           },
         ],
@@ -565,7 +565,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructExecutionThrottledAlarm0C165971": Object {
+    "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructExecutionThrottledAlarmC8F77F85": Object {
       "Properties": Object {
         "AlarmDescription": "Alarm for the number of executions that throttled exceeded the threshold of 1. ",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -573,7 +573,7 @@ Object {
           Object {
             "Name": "StateMachineArn",
             "Value": Object {
-              "Ref": "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructStateMachine6874E63D",
+              "Ref": "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructStateMachineAAE00FFE",
             },
           },
         ],
@@ -586,10 +586,10 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructStateMachine6874E63D": Object {
+    "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructStateMachineAAE00FFE": Object {
       "DependsOn": Array [
-        "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructStateMachineRoleDefaultPolicyBD4C3856",
-        "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructStateMachineRole12AC4737",
+        "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructStateMachineRoleDefaultPolicyC73B582F",
+        "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructStateMachineRoleDCB350A2",
       ],
       "Properties": Object {
         "DefinitionString": "{\\"StartAt\\":\\"StartState\\",\\"States\\":{\\"StartState\\":{\\"Type\\":\\"Pass\\",\\"End\\":true}}}",
@@ -599,7 +599,7 @@ Object {
               "CloudWatchLogsLogGroup": Object {
                 "LogGroupArn": Object {
                   "Fn::GetAtt": Array [
-                    "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructStateMachineLogGroupF3D52CD5",
+                    "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructStateMachineLogGroupE83EECDD",
                     "Arn",
                   ],
                 },
@@ -610,14 +610,14 @@ Object {
         },
         "RoleArn": Object {
           "Fn::GetAtt": Array [
-            "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructStateMachineRole12AC4737",
+            "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructStateMachineRoleDCB350A2",
             "Arn",
           ],
         },
       },
       "Type": "AWS::StepFunctions::StateMachine",
     },
-    "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructStateMachineLogGroupF3D52CD5": Object {
+    "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructStateMachineLogGroupE83EECDD": Object {
       "DeletionPolicy": "Retain",
       "Metadata": Object {
         "cfn_nag": Object {
@@ -634,12 +634,12 @@ Object {
         },
       },
       "Properties": Object {
-        "LogGroupName": "/aws/vendedlogs/states/defaulttests3stepfunctionwrappedeventrulestepfunctionconstructstatemachinelogda6643d1acfc",
+        "LogGroupName": "/aws/vendedlogs/states/defaulttests3stepfunctionweventrulestepfunctionconstructstatemachinelogfb43dc28fae1",
       },
       "Type": "AWS::Logs::LogGroup",
       "UpdateReplacePolicy": "Retain",
     },
-    "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructStateMachineRole12AC4737": Object {
+    "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructStateMachineRoleDCB350A2": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -667,7 +667,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructStateMachineRoleDefaultPolicyBD4C3856": Object {
+    "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructStateMachineRoleDefaultPolicyC73B582F": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -723,10 +723,10 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "tepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructStateMachineRoleDefaultPolicyBD4C3856",
+        "PolicyName": "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructStateMachineRoleDefaultPolicyC73B582F",
         "Roles": Array [
           Object {
-            "Ref": "tests3stepfunctiontests3stepfunctionwrappedtests3stepfunctionwrappedeventrulestepfunctionconstructStateMachineRole12AC4737",
+            "Ref": "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructStateMachineRoleDCB350A2",
           },
         ],
       },
