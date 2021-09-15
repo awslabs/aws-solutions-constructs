@@ -13,7 +13,6 @@
 
 import { Stack } from "@aws-cdk/core";
 import * as defaults from "../";
-import { SynthUtils } from "@aws-cdk/assert";
 import "@aws-cdk/assert/jest";
 import * as ec2 from "@aws-cdk/aws-ec2";
 
@@ -37,9 +36,6 @@ test("Test minimal deployment with no properties", () => {
     [],
     []
   );
-
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
   expect(stack).toHaveResource("AWS::EC2::SecurityGroup", {
     SecurityGroupEgress: [
@@ -69,9 +65,6 @@ test("Test deployment with ingress rules", () => {
     [{ peer: ec2.Peer.ipv4("1.1.1.1/16"), connection: ec2.Port.tcp(100) }],
     []
   );
-
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
   expect(stack).toHaveResource("AWS::EC2::SecurityGroup", {
     SecurityGroupIngress: [
@@ -106,9 +99,6 @@ test("Test deployment with egress rule", () => {
       { peer: ec2.Peer.ipv4("2.2.2.2/24"), connection: ec2.Port.tcp(200) },
     ]
   );
-
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
   expect(stack).toHaveResource("AWS::EC2::SecurityGroup", {
     SecurityGroupEgress: [

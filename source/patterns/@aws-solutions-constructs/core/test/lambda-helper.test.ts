@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils, ResourcePart } from "@aws-cdk/assert";
+import {  ResourcePart } from "@aws-cdk/assert";
 import { Stack } from "@aws-cdk/core";
 import * as ec2 from "@aws-cdk/aws-ec2";
 import * as lambda from "@aws-cdk/aws-lambda";
@@ -19,20 +19,6 @@ import * as defaults from "../index";
 import "@aws-cdk/assert/jest";
 import { Duration } from "@aws-cdk/core";
 import * as iam from '@aws-cdk/aws-iam';
-
-test("snapshot test LambdaFunction default params", () => {
-  const stack = new Stack();
-
-  const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_12_X,
-    handler: "index.handler",
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-  };
-
-  defaults.deployLambdaFunction(stack, lambdaFunctionProps);
-
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test("test FunctionProps override code and runtime", () => {
   const stack = new Stack();

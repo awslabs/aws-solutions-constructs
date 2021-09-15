@@ -14,7 +14,7 @@
 // Imports
 import { Stack } from "@aws-cdk/core";
 import * as defaults from '../';
-import { SynthUtils, ResourcePart } from '@aws-cdk/assert';
+import { ResourcePart } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------
@@ -25,9 +25,7 @@ test('Test minimal deployment with no properties', () => {
   const stack = new Stack();
   // Helper declaration
   defaults.buildEncryptionKey(stack);
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
+
   expect(stack).toHaveResourceLike('AWS::KMS::Key', {
     Type: "AWS::KMS::Key",
     Properties: {
@@ -46,9 +44,7 @@ test('Test minimal deployment with custom properties', () => {
   defaults.buildEncryptionKey(stack, {
     enableKeyRotation: false
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
+
   expect(stack).toHaveResourceLike('AWS::KMS::Key', {
     Type: "AWS::KMS::Key",
     Properties: {
