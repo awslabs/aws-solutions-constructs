@@ -84,7 +84,7 @@ Object {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "LAMBDA_NAME": "existing-function",
             "STATE_MACHINE_ARN": Object {
-              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineD7DA108D",
+              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineE1495D19",
             },
           },
         },
@@ -183,7 +183,7 @@ Object {
               "Action": "states:StartExecution",
               "Effect": "Allow",
               "Resource": Object {
-                "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineD7DA108D",
+                "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineE1495D19",
               },
             },
           ],
@@ -198,7 +198,7 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedExecutionAbortedAlarm3410672A": Object {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWExecutionAbortedAlarmC0CADAC2": Object {
       "Properties": Object {
         "AlarmDescription": "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -206,7 +206,7 @@ Object {
           Object {
             "Name": "StateMachineArn",
             "Value": Object {
-              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineD7DA108D",
+              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineE1495D19",
             },
           },
         ],
@@ -219,7 +219,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedExecutionFailedAlarmD6BB272D": Object {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWExecutionFailedAlarm513E4C7C": Object {
       "Properties": Object {
         "AlarmDescription": "Alarm for the number of executions that failed exceeded the threshold of 1. ",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -227,7 +227,7 @@ Object {
           Object {
             "Name": "StateMachineArn",
             "Value": Object {
-              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineD7DA108D",
+              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineE1495D19",
             },
           },
         ],
@@ -240,7 +240,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedExecutionThrottledAlarmE8079CC5": Object {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWExecutionThrottledAlarm08912C4F": Object {
       "Properties": Object {
         "AlarmDescription": "Alarm for the number of executions that throttled exceeded the threshold of 1. ",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -248,7 +248,7 @@ Object {
           Object {
             "Name": "StateMachineArn",
             "Value": Object {
-              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineD7DA108D",
+              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineE1495D19",
             },
           },
         ],
@@ -261,10 +261,10 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineD7DA108D": Object {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineE1495D19": Object {
       "DependsOn": Array [
-        "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineRoleDefaultPolicyCED4BF48",
-        "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineRole07DDAA06",
+        "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineRoleDefaultPolicyF44CF55B",
+        "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineRoleC001CA39",
       ],
       "Properties": Object {
         "DefinitionString": "{\\"StartAt\\":\\"StartState\\",\\"States\\":{\\"StartState\\":{\\"Type\\":\\"Pass\\",\\"End\\":true}}}",
@@ -274,7 +274,7 @@ Object {
               "CloudWatchLogsLogGroup": Object {
                 "LogGroupArn": Object {
                   "Fn::GetAtt": Array [
-                    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineLogGroupA191FCAA",
+                    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineLogGroup7291796E",
                     "Arn",
                   ],
                 },
@@ -285,14 +285,14 @@ Object {
         },
         "RoleArn": Object {
           "Fn::GetAtt": Array [
-            "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineRole07DDAA06",
+            "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineRoleC001CA39",
             "Arn",
           ],
         },
       },
       "Type": "AWS::StepFunctions::StateMachine",
     },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineLogGroupA191FCAA": Object {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineLogGroup7291796E": Object {
       "DeletionPolicy": "Retain",
       "Metadata": Object {
         "cfn_nag": Object {
@@ -309,12 +309,12 @@ Object {
         },
       },
       "Properties": Object {
-        "LogGroupName": "/aws/vendedlogs/states/defaulttestlambdastepfunctionconstructwrappedstatemachinelog0f99e6efac09",
+        "LogGroupName": "/aws/vendedlogs/states/defaulttestlambdastepfunctionconstructwstatemachinelogbb0fcb9b20b9",
       },
       "Type": "AWS::Logs::LogGroup",
       "UpdateReplacePolicy": "Retain",
     },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineRole07DDAA06": Object {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineRoleC001CA39": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -342,7 +342,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineRoleDefaultPolicyCED4BF48": Object {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineRoleDefaultPolicyF44CF55B": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -398,10 +398,10 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineRoleDefaultPolicyCED4BF48",
+        "PolicyName": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineRoleDefaultPolicyF44CF55B",
         "Roles": Array [
           Object {
-            "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineRole07DDAA06",
+            "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineRoleC001CA39",
           },
         ],
       },
@@ -428,7 +428,7 @@ Object {
     },
   },
   "Resources": Object {
-    "lambdatostepfunctionstacklambdatostepfunctionstackwrappedExecutionAbortedAlarmC7FF6F55": Object {
+    "lambdatostepfunctionstacklambdatostepfunctionstackWExecutionAbortedAlarmB996058D": Object {
       "Properties": Object {
         "AlarmDescription": "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -436,7 +436,7 @@ Object {
           Object {
             "Name": "StateMachineArn",
             "Value": Object {
-              "Ref": "lambdatostepfunctionstacklambdatostepfunctionstackwrappedStateMachine0E6FBDAE",
+              "Ref": "lambdatostepfunctionstacklambdatostepfunctionstackWStateMachineB28C4CED",
             },
           },
         ],
@@ -449,7 +449,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "lambdatostepfunctionstacklambdatostepfunctionstackwrappedExecutionFailedAlarm8067D736": Object {
+    "lambdatostepfunctionstacklambdatostepfunctionstackWExecutionFailedAlarmB82026F5": Object {
       "Properties": Object {
         "AlarmDescription": "Alarm for the number of executions that failed exceeded the threshold of 1. ",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -457,7 +457,7 @@ Object {
           Object {
             "Name": "StateMachineArn",
             "Value": Object {
-              "Ref": "lambdatostepfunctionstacklambdatostepfunctionstackwrappedStateMachine0E6FBDAE",
+              "Ref": "lambdatostepfunctionstacklambdatostepfunctionstackWStateMachineB28C4CED",
             },
           },
         ],
@@ -470,7 +470,7 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "lambdatostepfunctionstacklambdatostepfunctionstackwrappedExecutionThrottledAlarm728189CD": Object {
+    "lambdatostepfunctionstacklambdatostepfunctionstackWExecutionThrottledAlarmD6C471DD": Object {
       "Properties": Object {
         "AlarmDescription": "Alarm for the number of executions that throttled exceeded the threshold of 1. ",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -478,7 +478,7 @@ Object {
           Object {
             "Name": "StateMachineArn",
             "Value": Object {
-              "Ref": "lambdatostepfunctionstacklambdatostepfunctionstackwrappedStateMachine0E6FBDAE",
+              "Ref": "lambdatostepfunctionstacklambdatostepfunctionstackWStateMachineB28C4CED",
             },
           },
         ],
@@ -491,10 +491,10 @@ Object {
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
-    "lambdatostepfunctionstacklambdatostepfunctionstackwrappedLambdaFunctionDA41BBFF": Object {
+    "lambdatostepfunctionstacklambdatostepfunctionstackWLambdaFunction9C7C68AF": Object {
       "DependsOn": Array [
-        "lambdatostepfunctionstacklambdatostepfunctionstackwrappedLambdaFunctionServiceRoleDefaultPolicy8FEC69D1",
-        "lambdatostepfunctionstacklambdatostepfunctionstackwrappedLambdaFunctionServiceRole382C2FE2",
+        "lambdatostepfunctionstacklambdatostepfunctionstackWLambdaFunctionServiceRoleDefaultPolicyCA1819E5",
+        "lambdatostepfunctionstacklambdatostepfunctionstackWLambdaFunctionServiceRoleD072F490",
       ],
       "Metadata": Object {
         "cfn_nag": Object {
@@ -558,14 +558,14 @@ Object {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "LAMBDA_NAME": "deploy-function",
             "STATE_MACHINE_ARN": Object {
-              "Ref": "lambdatostepfunctionstacklambdatostepfunctionstackwrappedStateMachine0E6FBDAE",
+              "Ref": "lambdatostepfunctionstacklambdatostepfunctionstackWStateMachineB28C4CED",
             },
           },
         },
         "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "lambdatostepfunctionstacklambdatostepfunctionstackwrappedLambdaFunctionServiceRole382C2FE2",
+            "lambdatostepfunctionstacklambdatostepfunctionstackWLambdaFunctionServiceRoleD072F490",
             "Arn",
           ],
         },
@@ -576,7 +576,7 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "lambdatostepfunctionstacklambdatostepfunctionstackwrappedLambdaFunctionServiceRole382C2FE2": Object {
+    "lambdatostepfunctionstacklambdatostepfunctionstackWLambdaFunctionServiceRoleD072F490": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -631,7 +631,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "lambdatostepfunctionstacklambdatostepfunctionstackwrappedLambdaFunctionServiceRoleDefaultPolicy8FEC69D1": Object {
+    "lambdatostepfunctionstacklambdatostepfunctionstackWLambdaFunctionServiceRoleDefaultPolicyCA1819E5": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -657,25 +657,25 @@ Object {
               "Action": "states:StartExecution",
               "Effect": "Allow",
               "Resource": Object {
-                "Ref": "lambdatostepfunctionstacklambdatostepfunctionstackwrappedStateMachine0E6FBDAE",
+                "Ref": "lambdatostepfunctionstacklambdatostepfunctionstackWStateMachineB28C4CED",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "lambdatostepfunctionstacklambdatostepfunctionstackwrappedLambdaFunctionServiceRoleDefaultPolicy8FEC69D1",
+        "PolicyName": "lambdatostepfunctionstacklambdatostepfunctionstackWLambdaFunctionServiceRoleDefaultPolicyCA1819E5",
         "Roles": Array [
           Object {
-            "Ref": "lambdatostepfunctionstacklambdatostepfunctionstackwrappedLambdaFunctionServiceRole382C2FE2",
+            "Ref": "lambdatostepfunctionstacklambdatostepfunctionstackWLambdaFunctionServiceRoleD072F490",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
     },
-    "lambdatostepfunctionstacklambdatostepfunctionstackwrappedStateMachine0E6FBDAE": Object {
+    "lambdatostepfunctionstacklambdatostepfunctionstackWStateMachineB28C4CED": Object {
       "DependsOn": Array [
-        "lambdatostepfunctionstacklambdatostepfunctionstackwrappedStateMachineRoleDefaultPolicy3CB927D5",
-        "lambdatostepfunctionstacklambdatostepfunctionstackwrappedStateMachineRoleEA410CC1",
+        "lambdatostepfunctionstacklambdatostepfunctionstackWStateMachineRoleDefaultPolicy26F2A08C",
+        "lambdatostepfunctionstacklambdatostepfunctionstackWStateMachineRole3EDB944D",
       ],
       "Properties": Object {
         "DefinitionString": "{\\"StartAt\\":\\"StartState\\",\\"States\\":{\\"StartState\\":{\\"Type\\":\\"Pass\\",\\"End\\":true}}}",
@@ -685,7 +685,7 @@ Object {
               "CloudWatchLogsLogGroup": Object {
                 "LogGroupArn": Object {
                   "Fn::GetAtt": Array [
-                    "lambdatostepfunctionstacklambdatostepfunctionstackwrappedStateMachineLogGroupE2E4A4E0",
+                    "lambdatostepfunctionstacklambdatostepfunctionstackWStateMachineLogGroup18B411CB",
                     "Arn",
                   ],
                 },
@@ -696,14 +696,14 @@ Object {
         },
         "RoleArn": Object {
           "Fn::GetAtt": Array [
-            "lambdatostepfunctionstacklambdatostepfunctionstackwrappedStateMachineRoleEA410CC1",
+            "lambdatostepfunctionstacklambdatostepfunctionstackWStateMachineRole3EDB944D",
             "Arn",
           ],
         },
       },
       "Type": "AWS::StepFunctions::StateMachine",
     },
-    "lambdatostepfunctionstacklambdatostepfunctionstackwrappedStateMachineLogGroupE2E4A4E0": Object {
+    "lambdatostepfunctionstacklambdatostepfunctionstackWStateMachineLogGroup18B411CB": Object {
       "DeletionPolicy": "Retain",
       "Metadata": Object {
         "cfn_nag": Object {
@@ -720,12 +720,40 @@ Object {
         },
       },
       "Properties": Object {
-        "LogGroupName": "/aws/vendedlogs/states/defaultlambdatostepfunctionstackwrappedstatemachinelogac925b19c9f2",
+        "LogGroupName": "/aws/vendedlogs/states/defaultlambdatostepfunctionstackwstatemachinelogcdfe1ad94ef3",
       },
       "Type": "AWS::Logs::LogGroup",
       "UpdateReplacePolicy": "Retain",
     },
-    "lambdatostepfunctionstacklambdatostepfunctionstackwrappedStateMachineRoleDefaultPolicy3CB927D5": Object {
+    "lambdatostepfunctionstacklambdatostepfunctionstackWStateMachineRole3EDB944D": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "states.",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      ".amazonaws.com",
+                    ],
+                  ],
+                },
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "lambdatostepfunctionstacklambdatostepfunctionstackWStateMachineRoleDefaultPolicy26F2A08C": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -781,42 +809,14 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "lambdatostepfunctionstacklambdatostepfunctionstackwrappedStateMachineRoleDefaultPolicy3CB927D5",
+        "PolicyName": "lambdatostepfunctionstacklambdatostepfunctionstackWStateMachineRoleDefaultPolicy26F2A08C",
         "Roles": Array [
           Object {
-            "Ref": "lambdatostepfunctionstacklambdatostepfunctionstackwrappedStateMachineRoleEA410CC1",
+            "Ref": "lambdatostepfunctionstacklambdatostepfunctionstackWStateMachineRole3EDB944D",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
-    },
-    "lambdatostepfunctionstacklambdatostepfunctionstackwrappedStateMachineRoleEA410CC1": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "states.",
-                      Object {
-                        "Ref": "AWS::Region",
-                      },
-                      ".amazonaws.com",
-                    ],
-                  ],
-                },
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::IAM::Role",
     },
   },
 }

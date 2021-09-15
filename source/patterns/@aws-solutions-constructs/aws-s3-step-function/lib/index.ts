@@ -89,7 +89,12 @@ export class S3ToStepFunction extends Construct {
   constructor(scope: Construct, id: string, props: S3ToStepFunctionProps) {
     super(scope, id);
     const convertedProps: S3ToStepFunctionProps = { ...props };
-    const wrappedConstruct: S3ToStepFunction = new S3ToStepfunctions(this, `${id}-wrapped`, convertedProps);
+
+    // W (for 'wrapped') is added to the id so that the id's of the constructs with the old and new names don't collide
+    // If this character pushes you beyond the 64 character limit, just import the new named construct and instantiate
+    // it in place of the older named version. They are functionally identical, aside from the types no other changes
+    // will be required.  (eg - new S3ToStepfunctions instead of S3ToStepFunction)
+    const wrappedConstruct: S3ToStepFunction = new S3ToStepfunctions(this, `${id}W`, convertedProps);
 
     this.stateMachine = wrappedConstruct.stateMachine;
     this.stateMachineLogGroup = wrappedConstruct.stateMachineLogGroup;
