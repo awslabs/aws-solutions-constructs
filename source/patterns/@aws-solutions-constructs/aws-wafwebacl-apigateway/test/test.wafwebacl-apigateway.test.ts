@@ -14,44 +14,27 @@
 // Imports
 import * as cdk from "@aws-cdk/core";
 import { WafwebaclToApiGateway } from "../lib";
-import * as lambda from '@aws-cdk/aws-lambda';
+import * as api from '@aws-cdk/aws-apigateway';
 import * as waf from "@aws-cdk/aws-wafv2";
 import * as defaults from '@aws-solutions-constructs/core';
 import '@aws-cdk/assert/jest';
 
-function deploy(stack: cdk.Stack) {
-  const inProps: lambda.FunctionProps = {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_10_X,
-    handler: 'index.handler'
-  };
+function deployConstruct(stack: cdk.Stack, constructProps?: waf.CfnWebACLProps ) {
+  const restApi = new api.RestApi(stack, 'test-api', {});
+  restApi.root.addMethod('ANY');
 
-  const func = defaults.deployLambdaFunction(stack, inProps);
+  const props = constructProps ?
+    { webaclProps: constructProps, existingApiGatewayInterface: restApi }
+    : { existingApiGatewayInterface: restApi };
 
-  const [_api] = defaults.RegionalLambdaRestApi(stack, func);
-
-  return new WafwebaclToApiGateway(stack, 'test-wafwebacl-apigateway', {
-    existingApiGatewayInterface: _api
-  });
+  return new WafwebaclToApiGateway(stack, 'test-wafwebacl-apigateway', props);
 }
 
 // --------------------------------------------------------------
-// Test error handling for existing WAF web ACL and user provider web ACL props
+// Test error handling for existing WAF web ACL and user provided web ACL props
 // --------------------------------------------------------------
 test('Test error handling for existing WAF web ACL and user provider web ACL props', () => {
   const stack = new cdk.Stack();
-  const wafAcl = new waf.CfnWebACL(stack, 'test-waf', {
-    defaultAction: {
-      allow: {}
-    },
-    scope: 'REGIONAL',
-    visibilityConfig: {
-      cloudWatchMetricsEnabled: false,
-      metricName: 'webACL',
-      sampledRequestsEnabled: true
-    },
-  });
-
   const props: waf.CfnWebACLProps = {
     defaultAction: {
       allow: {}
@@ -64,17 +47,12 @@ test('Test error handling for existing WAF web ACL and user provider web ACL pro
     },
   };
 
-  const inProps: lambda.FunctionProps = {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_10_X,
-    handler: 'index.handler'
-  };
-  const func = defaults.deployLambdaFunction(stack, inProps);
-  const [_api] = defaults.RegionalLambdaRestApi(stack, func);
+  const wafAcl = new waf.CfnWebACL(stack, 'test-waf', props);
+  const restApi = new api.RestApi(stack, 'empty-api', {} );
 
   expect(() => {
     new WafwebaclToApiGateway(stack, 'test-waf-gateway', {
-      existingApiGatewayInterface: _api,
+      existingApiGatewayInterface: restApi,
       existingWebaclObj: wafAcl,
       webaclProps: props
     });
@@ -82,82 +60,15 @@ test('Test error handling for existing WAF web ACL and user provider web ACL pro
 });
 
 // --------------------------------------------------------------
-// Test getter methods
+// Test default deployment
 // --------------------------------------------------------------
-test('Check getter methods', () => {
+test('Test default deployment', () => {
   const stack = new cdk.Stack();
-  const construct: WafwebaclToApiGateway = deploy(stack);
+  const construct = deployConstruct(stack);
 
   expect(construct.webacl !== null);
   expect(construct.apiGateway !== null);
-});
 
-// --------------------------------------------------------------
-// Test lambda service role
-// --------------------------------------------------------------
-test('Test api gateway lambda service role', () => {
-  const stack = new cdk.Stack();
-  deploy(stack);
-  expect(stack).toHaveResource("AWS::IAM::Role", {
-    AssumeRolePolicyDocument: {
-      Statement: [
-        {
-          Action: "sts:AssumeRole",
-          Effect: "Allow",
-          Principal: {
-            Service: "lambda.amazonaws.com"
-          }
-        }
-      ],
-      Version: "2012-10-17"
-    },
-    Policies: [
-      {
-        PolicyDocument: {
-          Statement: [
-            {
-              Action: [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents"
-              ],
-              Effect: "Allow",
-              Resource: {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:",
-                    {
-                      Ref: "AWS::Partition"
-                    },
-                    ":logs:",
-                    {
-                      Ref: "AWS::Region"
-                    },
-                    ":",
-                    {
-                      Ref: "AWS::AccountId"
-                    },
-                    ":log-group:/aws/lambda/*"
-                  ]
-                ]
-              }
-            }
-          ],
-          Version: "2012-10-17"
-        },
-        PolicyName: "LambdaFunctionServiceRolePolicy"
-      }
-    ]
-  });
-});
-
-// --------------------------------------------------------------
-// Test web acl with default rules
-// --------------------------------------------------------------
-test('Test default acl rules', () => {
-  const stack = new cdk.Stack();
-  deploy(stack);
   expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
     Rules: [
       {
@@ -295,18 +206,6 @@ test('Test default acl rules', () => {
 // --------------------------------------------------------------
 test('Test user provided acl props', () => {
   const stack = new cdk.Stack();
-  const inProps: lambda.FunctionProps = {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_10_X,
-    handler: 'index.handler'
-  };
-  const func = defaults.deployLambdaFunction(stack, inProps);
-  const [_api] = defaults.RegionalLambdaRestApi(stack, func);
-  const customRules = [
-    defaults.wrapManagedRuleSet("AWSManagedRulesCommonRuleSet", "AWS", 0),
-    defaults.wrapManagedRuleSet("AWSManagedRulesWordPressRuleSet", "AWS", 1),
-  ];
-
   const webaclProps: waf.CfnWebACLProps =  {
     defaultAction: {
       allow: {}
@@ -317,19 +216,57 @@ test('Test user provided acl props', () => {
       metricName: 'webACL',
       sampledRequestsEnabled: true
     },
-    rules: customRules
+    rules: [
+      defaults.wrapManagedRuleSet("AWSManagedRulesCommonRuleSet", "AWS", 0),
+      defaults.wrapManagedRuleSet("AWSManagedRulesWordPressRuleSet", "AWS", 1),
+    ]
   };
 
-  new WafwebaclToApiGateway(stack, 'test-wafwebacl-apigateway', {
-    existingApiGatewayInterface: _api,
-    webaclProps
-  });
+  deployConstruct(stack, webaclProps);
 
   expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
     VisibilityConfig: {
       CloudWatchMetricsEnabled: false,
       MetricName: "webACL",
       SampledRequestsEnabled: true
-    }
+    },
+    Rules: [
+      {
+        Name: "AWS-AWSManagedRulesCommonRuleSet",
+        OverrideAction: {
+          None: {}
+        },
+        Priority: 0,
+        Statement: {
+          ManagedRuleGroupStatement: {
+            Name: "AWSManagedRulesCommonRuleSet",
+            VendorName: "AWS"
+          }
+        },
+        VisibilityConfig: {
+          CloudWatchMetricsEnabled: true,
+          MetricName: "AWSManagedRulesCommonRuleSet",
+          SampledRequestsEnabled: true
+        }
+      },
+      {
+        Name: "AWS-AWSManagedRulesWordPressRuleSet",
+        OverrideAction: {
+          None: {}
+        },
+        Priority: 1,
+        Statement: {
+          ManagedRuleGroupStatement: {
+            Name: "AWSManagedRulesWordPressRuleSet",
+            VendorName: "AWS"
+          }
+        },
+        VisibilityConfig: {
+          CloudWatchMetricsEnabled: true,
+          MetricName: "AWSManagedRulesWordPressRuleSet",
+          SampledRequestsEnabled: true
+        }
+      }
+    ]
   });
 });

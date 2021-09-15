@@ -14,15 +14,11 @@
 /// !cdk-integ *
 import { App, Stack } from "@aws-cdk/core";
 import { WafwebaclToApiGateway } from "../lib";
-import * as waf from "@aws-cdk/aws-wafv2";
 import * as lambda from '@aws-cdk/aws-lambda';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { ApiGatewayToLambda, ApiGatewayToLambdaProps } from '@aws-solutions-constructs/aws-apigateway-lambda';
-import * as defaults from '@aws-solutions-constructs/core';
 
 const app = new App();
-
-// Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
 
 const props: ApiGatewayToLambdaProps = {
@@ -33,39 +29,16 @@ const props: ApiGatewayToLambdaProps = {
   },
 };
 
-const gatewayToLambda = new ApiGatewayToLambda(stack, 'ApiGatewayToLambda', props);
+const gatewayToLambdaOne = new ApiGatewayToLambda(stack, 'gateway-one', props);
+const gatewayToLambdaTwo = new ApiGatewayToLambda(stack, 'gateway-two', props);
 
-const lambdaFunction = defaults.buildLambdaFunction(stack, {
-  existingLambdaObj: props.existingLambdaObj,
-  lambdaFunctionProps: props.lambdaFunctionProps
+const ownsWaf = new WafwebaclToApiGateway(stack, 'first-construct', {
+  existingApiGatewayInterface: gatewayToLambdaOne.apiGateway,
 });
 
-let apiGateway;
-
-const aclTest = new waf.CfnWebACL(stack, 'test-waf', {
-  defaultAction: {
-    allow: {}
-  },
-  scope: 'REGIONAL',
-  visibilityConfig: {
-    cloudWatchMetricsEnabled: true,
-    metricName: 'webACL',
-    sampledRequestsEnabled: true
-  },
-});
-
-[apiGateway] = defaults.GlobalLambdaRestApi(stack, lambdaFunction, props.apiGatewayProps, props.logGroupProps);
-
-const resourceArn = `arn:aws:apigateway:${Stack.of(stack).region}::/restapis/${apiGateway.restApiId}/stages/${apiGateway.deploymentStage.stageName}`;
-
-new waf.CfnWebACLAssociation(stack, `test-WebACLAssociation`, {
-  webAclArn: aclTest.attrArn,
-  resourceArn
-});
-
-new WafwebaclToApiGateway(stack, 'test-wafwebacl-apigateway-lambda', {
-  existingApiGatewayInterface: gatewayToLambda.apiGateway,
-  existingWebaclObj: aclTest
+new WafwebaclToApiGateway(stack, 'second-construct', {
+  existingApiGatewayInterface: gatewayToLambdaTwo.apiGateway,
+  existingWebaclObj: ownsWaf.webacl
 });
 
 app.synth();
