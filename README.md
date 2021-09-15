@@ -1,102 +1,52 @@
-# aws-wafwebacl-apigateway module
-<!--BEGIN STABILITY BANNER-->
+# AWS Solutions Constructs
 
----
-
-![Stability: Experimental](https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge)
-
-> All classes are under active development and subject to non-backward compatible changes or removal in any
-> future version. These are not subject to the [Semantic Versioning](https://semver.org/) model.
-> This means that while you may use them, you may need to update your source code when upgrading to a newer version of this package.
-
----
-<!--END STABILITY BANNER-->
-
-| **Reference Documentation**:| <span style="font-weight: normal">https://docs.aws.amazon.com/solutions/latest/constructs/</span>|
+| **Browse Library**:| <span style="font-weight: normal">https://aws.amazon.com/solutions/constructs/patterns/</span>|
 |:-------------|:-------------|
+| **Reference Documentation**:| <span style="font-weight: normal">https://docs.aws.amazon.com/solutions/latest/constructs/</span>|
+
 <div style="height:8px"></div>
 
+The AWS Solutions Constructs library is an open-source extension of the AWS Cloud Development Kit (AWS CDK) that provides multi-service, well-architected patterns for quickly defining solutions in code to create predictable and repeatable infrastructure. The goal of AWS Solutions Constructs is to accelerate the experience for developers to build solutions of any size using pattern-based definitions for their architecture.
 
-| **Language**     | **Package**        |
-|:-------------|-----------------|
-|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_wafwebacl_apigateway`|
-|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-wafwebacl-apigateway`|
-|![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.wafwebaclapigateway`|
+The patterns defined in AWS Solutions Constructs are high level, multi-service abstractions of AWS CDK constructs that have default configurations based on well-architected best practices. The library is organized into logical modules using object-oriented techniques to create each architectural pattern model. 
 
-## Overview
-This AWS Solutions Construct implements an AWS WAF web ACL connected to Amazon API Gateway REST API.
+The CDK is available in the following languages:
 
-Here is a minimal deployable pattern definition in Typescript:
+* JavaScript, TypeScript (Node.js ≥ 10.13.0)
+* Python (Python ≥ 3.6)
+* Java (Java ≥ 8 and Maven ≥ 3.5.4)
 
-``` typescript
-import * as api from '@aws-cdk/aws-apigateway';
-import * as lambda from "@aws-cdk/aws-lambda";
-import { ApiGatewayToLambda } from '@aws-solutions-constructs/aws-apigateway-lambda';
-import { WafwebaclToApiGatewayProps, WafwebaclToApiGateway } from "@aws-solutions-constructs/aws-wafwebacl-apigateway";
+## Modules
 
-const apiGatewayToLambda = new ApiGatewayToLambda(this, 'ApiGatewayToLambdaPattern', {
-    lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`lambda`)
-    }
-});
+The AWS Solutions Constructs library is organized into several modules. They are named like this:
 
-// This construct can only be attached to a configured API Gateway.
-new WafwebaclToApiGateway(this, 'test-wafwebacl-apigateway', {
-    existingApiGatewayInterface: apiGatewayToLambda.apiGateway
-});
-```
+* __aws-xxx__: well architected pattern package for the indicated services. This package will contain constructs that contain multiple AWS CDK service modules to configure the given pattern.
+* __xxx__: packages that don't start "aws-" are core modules that are used to configure best practice defaults for services used within the pattern library.
 
-## Initializer
+## Module Contents
 
-``` text
-new WafwebaclToApiGateway(scope: Construct, id: string, props: WafwebaclToApiGatewayProps);
-```
+Modules contain the following types:
 
-_Parameters_
+* __Patterns__ - All higher-level, multi-services constructs in this library.
+* __Other Types__ - All non-construct classes, interfaces, structs and enums that exist to support the patterns.
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`WafwebaclToApiGatewayProps`](#pattern-construct-props)
+Patterns take a set of (input) properties in their constructor; the set of properties (and which ones are required) can be seen on a pattern's documentation page.
 
-## Pattern Construct Props
+The pattern's documentation page also lists the available methods to call and the properties which can be used to retrieve information about the pattern after it has been instantiated.
 
-| **Name**     | **Type**        | **Description** |
-|:-------------|:----------------|-----------------|
-|existingApiGatewayInterface|[`api.IRestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.IRestApi.html)|The existing API Gateway instance that will be protected with the WAF web ACL. *Note that a WAF web ACL can only be added to a configured API Gateway, so this construct only accepts an existing IRestApi and does not accept apiGatewayProps.*|
-|existingWebaclObj?|[`waf.CfnWebACL`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-waf.CfnWebACL.html)|Existing instance of a WAF web ACL, an error will occur if this and props is set.|
-|webaclProps?|[`waf.CfnWebACLProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-waf.CfnWebACLProps.html)|Optional user-provided props to override the default props for the AWS WAF web ACL. To use a different collection of managed rule sets, specify a new rules property. Use our wrapManagedRuleSet(managedGroupName: string, vendorName: string, priority: number) function from core to create an array entry from each desired managed rule set.|
+## Sample Use Cases
 
-## Pattern Properties
+This library includes a collection of functional use case implementations to demonstrate the usage of AWS Solutions Constructs architectural patterns. These can be used in the same way as architectural patterns, and can be conceptualized as an additional "higher-level" abstraction of those patterns. The following use cases are provided as functional examples:
 
-| **Name**     | **Type**        | **Description** |
-|:-------------|:----------------|-----------------|
-|webacl|[`waf.CfnWebACL`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-waf.CfnWebACL.html)|Returns an instance of the waf.CfnWebACL created by the construct.|
-|apiGateway|[`api.IRestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.IRestApi.html)|Returns an instance of the API Gateway REST API created by the pattern. |
-
-## Default settings
-
-Out of the box implementation of the Construct without any override will set the following defaults:
-
-### AWS WAF
-* Deploy a WAF web ACL with 7 [AWS managed rule groups](https://docs.aws.amazon.com/waf/latest/developerguide/aws-managed-rule-groups-list.html).
-    * AWSManagedRulesBotControlRuleSet
-    * AWSManagedRulesKnownBadInputsRuleSet
-    * AWSManagedRulesCommonRuleSet
-    * AWSManagedRulesAnonymousIpList
-    * AWSManagedRulesAmazonIpReputationList
-    * AWSManagedRulesAdminProtectionRuleSet
-    * AWSManagedRulesSQLiRuleSet
-
-    *Note that the default rules can be replaced by specifying the rules property of CfnWebACLProps* 
-* Send metrics to Amazon CloudWatch
-
-### Amazon API Gateway
-* User provided API Gateway object is used as-is
-
-## Architecture
-![Architecture Diagram](architecture.png)
+* __aws-s3-static-website__ - implements an Amazon CloudFront distribution, Amazon S3 bucket and AWS Lambda-based custom resource to copy the static website content for the Wild Rydes demo website (part of the aws-serverless-web-app implementation).
+  * Use case pattern: https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-s3-static-website
+* __aws-serverless-image-handler__ - implements an Amazon CloudFront distribution, an Amazon API Gateway REST API, an AWS Lambda function, and necessary permissions/logic to provision a functional image handler API for serving image content from  one or more Amazon S3 buckets within the deployment account.
+  * Use case pattern: https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-serverless-image-handler
+* __aws-serverless-web-app__ - implements a simple serverless web application that enables users to request unicorn rides from the Wild Rydes fleet. The application will present users with an HTML based user interface for indicating the location where they would like to be picked up and will interface on the backend with a RESTful web service to submit the request and dispatch a nearby unicorn. The application will also provide facilities for users to register with the service and log in before requesting rides.
+  * Use case pattern: https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-serverless-web-app
+* __aws-restaurant-management-demo__ - implements a complex, multi-stack architecture that models a restaurant management system. This use case will provision a stack for service/wait staff to open/close orders, a stack for kitchen staff to view/complete orders, and a stack for managers to perform various business functions. It will also provision a stack
+containing a central DynamoDB table for managing orders, as well as a Lambda layer for sharing common database access patterns.
+  * Use case pattern: https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-restaurant-management-demo
 
 ***
 &copy; Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
