@@ -3,13 +3,13 @@
 exports[`check eventbus property, snapshot & eventbus exists 1`] = `
 Object {
   "Resources": Object {
-    "testneweventbusCustomEventBusF21A668A": Object {
+    "testneweventbustestneweventbusWCustomEventBusF2664EFE": Object {
       "Properties": Object {
-        "Name": "testneweventbusCustomEventBus409B4FB3",
+        "Name": "testneweventbustestneweventbusWCustomEventBus51480605",
       },
       "Type": "AWS::Events::EventBus",
     },
-    "testneweventbusEncryptionKey72D74021": Object {
+    "testneweventbustestneweventbusWEncryptionKeyCEA853ED": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
         "EnableKeyRotation": true,
@@ -74,10 +74,10 @@ Object {
       "Type": "AWS::KMS::Key",
       "UpdateReplacePolicy": "Retain",
     },
-    "testneweventbusEventsRuleE82FDFD2": Object {
+    "testneweventbustestneweventbusWEventsRuleB426C87E": Object {
       "Properties": Object {
         "EventBusName": Object {
-          "Ref": "testneweventbusCustomEventBusF21A668A",
+          "Ref": "testneweventbustestneweventbusWCustomEventBusF2664EFE",
         },
         "EventPattern": Object {
           "source": Array [
@@ -88,11 +88,11 @@ Object {
         "Targets": Array [
           Object {
             "Arn": Object {
-              "Ref": "testneweventbusSnsTopic14EFE30B",
+              "Ref": "testneweventbustestneweventbusWSnsTopic2702F6D7",
             },
             "Id": Object {
               "Fn::GetAtt": Array [
-                "testneweventbusSnsTopic14EFE30B",
+                "testneweventbustestneweventbusWSnsTopic2702F6D7",
                 "TopicName",
               ],
             },
@@ -101,18 +101,18 @@ Object {
       },
       "Type": "AWS::Events::Rule",
     },
-    "testneweventbusSnsTopic14EFE30B": Object {
+    "testneweventbustestneweventbusWSnsTopic2702F6D7": Object {
       "Properties": Object {
         "KmsMasterKeyId": Object {
           "Fn::GetAtt": Array [
-            "testneweventbusEncryptionKey72D74021",
+            "testneweventbustestneweventbusWEncryptionKeyCEA853ED",
             "Arn",
           ],
         },
       },
       "Type": "AWS::SNS::Topic",
     },
-    "testneweventbusSnsTopicPolicyEF27265B": Object {
+    "testneweventbustestneweventbusWSnsTopicPolicyB728B045": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -155,7 +155,7 @@ Object {
                 },
               },
               "Resource": Object {
-                "Ref": "testneweventbusSnsTopic14EFE30B",
+                "Ref": "testneweventbustestneweventbusWSnsTopic2702F6D7",
               },
               "Sid": "TopicOwnerOnlyAccess",
             },
@@ -181,7 +181,7 @@ Object {
                 "AWS": "*",
               },
               "Resource": Object {
-                "Ref": "testneweventbusSnsTopic14EFE30B",
+                "Ref": "testneweventbustestneweventbusWSnsTopic2702F6D7",
               },
               "Sid": "HttpsOnly",
             },
@@ -192,7 +192,7 @@ Object {
                 "Service": "events.amazonaws.com",
               },
               "Resource": Object {
-                "Ref": "testneweventbusSnsTopic14EFE30B",
+                "Ref": "testneweventbustestneweventbusWSnsTopic2702F6D7",
               },
               "Sid": "2",
             },
@@ -201,7 +201,7 @@ Object {
         },
         "Topics": Array [
           Object {
-            "Ref": "testneweventbusSnsTopic14EFE30B",
+            "Ref": "testneweventbustestneweventbusWSnsTopic2702F6D7",
           },
         ],
       },
@@ -214,13 +214,13 @@ Object {
 exports[`check multiple constructs in a single stack 1`] = `
 Object {
   "Resources": Object {
-    "testneweventsrulesns1CustomEventBusCBCAE01E": Object {
+    "testneweventsrulesns1testneweventsrulesns1WCustomEventBus92059687": Object {
       "Properties": Object {
-        "Name": "testneweventsrulesns1CustomEventBus0B8BCDC1",
+        "Name": "testneweventsrulesns1testneweventsrulesns1WCustomEventBus3405BE4B",
       },
       "Type": "AWS::Events::EventBus",
     },
-    "testneweventsrulesns1EncryptionKey18930514": Object {
+    "testneweventsrulesns1testneweventsrulesns1WEncryptionKey897A7F56": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
         "EnableKeyRotation": true,
@@ -285,10 +285,10 @@ Object {
       "Type": "AWS::KMS::Key",
       "UpdateReplacePolicy": "Retain",
     },
-    "testneweventsrulesns1EventsRule4902A7E2": Object {
+    "testneweventsrulesns1testneweventsrulesns1WEventsRule8D7B1276": Object {
       "Properties": Object {
         "EventBusName": Object {
-          "Ref": "testneweventsrulesns1CustomEventBusCBCAE01E",
+          "Ref": "testneweventsrulesns1testneweventsrulesns1WCustomEventBus92059687",
         },
         "EventPattern": Object {
           "source": Array [
@@ -299,11 +299,11 @@ Object {
         "Targets": Array [
           Object {
             "Arn": Object {
-              "Ref": "testneweventsrulesns1SnsTopicB5A4AB2B",
+              "Ref": "testneweventsrulesns1testneweventsrulesns1WSnsTopic5FA11EB4",
             },
             "Id": Object {
               "Fn::GetAtt": Array [
-                "testneweventsrulesns1SnsTopicB5A4AB2B",
+                "testneweventsrulesns1testneweventsrulesns1WSnsTopic5FA11EB4",
                 "TopicName",
               ],
             },
@@ -312,18 +312,18 @@ Object {
       },
       "Type": "AWS::Events::Rule",
     },
-    "testneweventsrulesns1SnsTopicB5A4AB2B": Object {
+    "testneweventsrulesns1testneweventsrulesns1WSnsTopic5FA11EB4": Object {
       "Properties": Object {
         "KmsMasterKeyId": Object {
           "Fn::GetAtt": Array [
-            "testneweventsrulesns1EncryptionKey18930514",
+            "testneweventsrulesns1testneweventsrulesns1WEncryptionKey897A7F56",
             "Arn",
           ],
         },
       },
       "Type": "AWS::SNS::Topic",
     },
-    "testneweventsrulesns1SnsTopicPolicyCC362F92": Object {
+    "testneweventsrulesns1testneweventsrulesns1WSnsTopicPolicy63BBE31D": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -366,7 +366,7 @@ Object {
                 },
               },
               "Resource": Object {
-                "Ref": "testneweventsrulesns1SnsTopicB5A4AB2B",
+                "Ref": "testneweventsrulesns1testneweventsrulesns1WSnsTopic5FA11EB4",
               },
               "Sid": "TopicOwnerOnlyAccess",
             },
@@ -392,7 +392,7 @@ Object {
                 "AWS": "*",
               },
               "Resource": Object {
-                "Ref": "testneweventsrulesns1SnsTopicB5A4AB2B",
+                "Ref": "testneweventsrulesns1testneweventsrulesns1WSnsTopic5FA11EB4",
               },
               "Sid": "HttpsOnly",
             },
@@ -403,7 +403,7 @@ Object {
                 "Service": "events.amazonaws.com",
               },
               "Resource": Object {
-                "Ref": "testneweventsrulesns1SnsTopicB5A4AB2B",
+                "Ref": "testneweventsrulesns1testneweventsrulesns1WSnsTopic5FA11EB4",
               },
               "Sid": "2",
             },
@@ -412,19 +412,19 @@ Object {
         },
         "Topics": Array [
           Object {
-            "Ref": "testneweventsrulesns1SnsTopicB5A4AB2B",
+            "Ref": "testneweventsrulesns1testneweventsrulesns1WSnsTopic5FA11EB4",
           },
         ],
       },
       "Type": "AWS::SNS::TopicPolicy",
     },
-    "testneweventsrulesns2CustomEventBus74F26858": Object {
+    "testneweventsrulesns2testneweventsrulesns2WCustomEventBus627A5C94": Object {
       "Properties": Object {
-        "Name": "testneweventsrulesns2CustomEventBus611E703F",
+        "Name": "testneweventsrulesns2testneweventsrulesns2WCustomEventBus7D2C1571",
       },
       "Type": "AWS::Events::EventBus",
     },
-    "testneweventsrulesns2EncryptionKey0DCA5BAD": Object {
+    "testneweventsrulesns2testneweventsrulesns2WEncryptionKey8192A4D6": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
         "EnableKeyRotation": true,
@@ -489,10 +489,10 @@ Object {
       "Type": "AWS::KMS::Key",
       "UpdateReplacePolicy": "Retain",
     },
-    "testneweventsrulesns2EventsRule7219E266": Object {
+    "testneweventsrulesns2testneweventsrulesns2WEventsRule3B7FEBA5": Object {
       "Properties": Object {
         "EventBusName": Object {
-          "Ref": "testneweventsrulesns2CustomEventBus74F26858",
+          "Ref": "testneweventsrulesns2testneweventsrulesns2WCustomEventBus627A5C94",
         },
         "EventPattern": Object {
           "source": Array [
@@ -503,11 +503,11 @@ Object {
         "Targets": Array [
           Object {
             "Arn": Object {
-              "Ref": "testneweventsrulesns2SnsTopic92885429",
+              "Ref": "testneweventsrulesns2testneweventsrulesns2WSnsTopic40FFC103",
             },
             "Id": Object {
               "Fn::GetAtt": Array [
-                "testneweventsrulesns2SnsTopic92885429",
+                "testneweventsrulesns2testneweventsrulesns2WSnsTopic40FFC103",
                 "TopicName",
               ],
             },
@@ -516,18 +516,18 @@ Object {
       },
       "Type": "AWS::Events::Rule",
     },
-    "testneweventsrulesns2SnsTopic92885429": Object {
+    "testneweventsrulesns2testneweventsrulesns2WSnsTopic40FFC103": Object {
       "Properties": Object {
         "KmsMasterKeyId": Object {
           "Fn::GetAtt": Array [
-            "testneweventsrulesns2EncryptionKey0DCA5BAD",
+            "testneweventsrulesns2testneweventsrulesns2WEncryptionKey8192A4D6",
             "Arn",
           ],
         },
       },
       "Type": "AWS::SNS::Topic",
     },
-    "testneweventsrulesns2SnsTopicPolicyBB1D364F": Object {
+    "testneweventsrulesns2testneweventsrulesns2WSnsTopicPolicyBD757099": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -570,7 +570,7 @@ Object {
                 },
               },
               "Resource": Object {
-                "Ref": "testneweventsrulesns2SnsTopic92885429",
+                "Ref": "testneweventsrulesns2testneweventsrulesns2WSnsTopic40FFC103",
               },
               "Sid": "TopicOwnerOnlyAccess",
             },
@@ -596,7 +596,7 @@ Object {
                 "AWS": "*",
               },
               "Resource": Object {
-                "Ref": "testneweventsrulesns2SnsTopic92885429",
+                "Ref": "testneweventsrulesns2testneweventsrulesns2WSnsTopic40FFC103",
               },
               "Sid": "HttpsOnly",
             },
@@ -607,7 +607,7 @@ Object {
                 "Service": "events.amazonaws.com",
               },
               "Resource": Object {
-                "Ref": "testneweventsrulesns2SnsTopic92885429",
+                "Ref": "testneweventsrulesns2testneweventsrulesns2WSnsTopic40FFC103",
               },
               "Sid": "2",
             },
@@ -616,7 +616,7 @@ Object {
         },
         "Topics": Array [
           Object {
-            "Ref": "testneweventsrulesns2SnsTopic92885429",
+            "Ref": "testneweventsrulesns2testneweventsrulesns2WSnsTopic40FFC103",
           },
         ],
       },
@@ -629,7 +629,7 @@ Object {
 exports[`snapshot test EventsRuleToSns default params 1`] = `
 Object {
   "Resources": Object {
-    "testEncryptionKey7058DF17": Object {
+    "testtestWEncryptionKeyC6B126B6": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
         "EnableKeyRotation": true,
@@ -694,18 +694,18 @@ Object {
       "Type": "AWS::KMS::Key",
       "UpdateReplacePolicy": "Retain",
     },
-    "testEventsRuleC345F4C7": Object {
+    "testtestWEventsRuleDF9938A8": Object {
       "Properties": Object {
         "ScheduleExpression": "rate(5 minutes)",
         "State": "ENABLED",
         "Targets": Array [
           Object {
             "Arn": Object {
-              "Ref": "testSnsTopic431DB510",
+              "Ref": "testtestWSnsTopicBFF33C41",
             },
             "Id": Object {
               "Fn::GetAtt": Array [
-                "testSnsTopic431DB510",
+                "testtestWSnsTopicBFF33C41",
                 "TopicName",
               ],
             },
@@ -714,18 +714,18 @@ Object {
       },
       "Type": "AWS::Events::Rule",
     },
-    "testSnsTopic431DB510": Object {
+    "testtestWSnsTopicBFF33C41": Object {
       "Properties": Object {
         "KmsMasterKeyId": Object {
           "Fn::GetAtt": Array [
-            "testEncryptionKey7058DF17",
+            "testtestWEncryptionKeyC6B126B6",
             "Arn",
           ],
         },
       },
       "Type": "AWS::SNS::Topic",
     },
-    "testSnsTopicPolicyC811A1C0": Object {
+    "testtestWSnsTopicPolicy2A17B1B5": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -768,7 +768,7 @@ Object {
                 },
               },
               "Resource": Object {
-                "Ref": "testSnsTopic431DB510",
+                "Ref": "testtestWSnsTopicBFF33C41",
               },
               "Sid": "TopicOwnerOnlyAccess",
             },
@@ -794,7 +794,7 @@ Object {
                 "AWS": "*",
               },
               "Resource": Object {
-                "Ref": "testSnsTopic431DB510",
+                "Ref": "testtestWSnsTopicBFF33C41",
               },
               "Sid": "HttpsOnly",
             },
@@ -805,7 +805,7 @@ Object {
                 "Service": "events.amazonaws.com",
               },
               "Resource": Object {
-                "Ref": "testSnsTopic431DB510",
+                "Ref": "testtestWSnsTopicBFF33C41",
               },
               "Sid": "2",
             },
@@ -814,7 +814,7 @@ Object {
         },
         "Topics": Array [
           Object {
-            "Ref": "testSnsTopic431DB510",
+            "Ref": "testtestWSnsTopicBFF33C41",
           },
         ],
       },
@@ -833,7 +833,7 @@ Object {
       },
       "Type": "AWS::Events::EventBus",
     },
-    "testexistingeventsrulesnsEncryptionKey8D9FDAF3": Object {
+    "testexistingeventsrulesnstestexistingeventsrulesnsWEncryptionKeyA657F0B7": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
         "EnableKeyRotation": true,
@@ -898,7 +898,7 @@ Object {
       "Type": "AWS::KMS::Key",
       "UpdateReplacePolicy": "Retain",
     },
-    "testexistingeventsrulesnsEventsRule77C1F4E3": Object {
+    "testexistingeventsrulesnstestexistingeventsrulesnsWEventsRuleC69BF9D5": Object {
       "Properties": Object {
         "EventBusName": Object {
           "Ref": "testexistingeventbusC6E4A2D0",
@@ -912,11 +912,11 @@ Object {
         "Targets": Array [
           Object {
             "Arn": Object {
-              "Ref": "testexistingeventsrulesnsSnsTopicAB6B05AA",
+              "Ref": "testexistingeventsrulesnstestexistingeventsrulesnsWSnsTopicB26AB7C3",
             },
             "Id": Object {
               "Fn::GetAtt": Array [
-                "testexistingeventsrulesnsSnsTopicAB6B05AA",
+                "testexistingeventsrulesnstestexistingeventsrulesnsWSnsTopicB26AB7C3",
                 "TopicName",
               ],
             },
@@ -925,18 +925,18 @@ Object {
       },
       "Type": "AWS::Events::Rule",
     },
-    "testexistingeventsrulesnsSnsTopicAB6B05AA": Object {
+    "testexistingeventsrulesnstestexistingeventsrulesnsWSnsTopicB26AB7C3": Object {
       "Properties": Object {
         "KmsMasterKeyId": Object {
           "Fn::GetAtt": Array [
-            "testexistingeventsrulesnsEncryptionKey8D9FDAF3",
+            "testexistingeventsrulesnstestexistingeventsrulesnsWEncryptionKeyA657F0B7",
             "Arn",
           ],
         },
       },
       "Type": "AWS::SNS::Topic",
     },
-    "testexistingeventsrulesnsSnsTopicPolicy8267187E": Object {
+    "testexistingeventsrulesnstestexistingeventsrulesnsWSnsTopicPolicyF0C4F75A": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -979,7 +979,7 @@ Object {
                 },
               },
               "Resource": Object {
-                "Ref": "testexistingeventsrulesnsSnsTopicAB6B05AA",
+                "Ref": "testexistingeventsrulesnstestexistingeventsrulesnsWSnsTopicB26AB7C3",
               },
               "Sid": "TopicOwnerOnlyAccess",
             },
@@ -1005,7 +1005,7 @@ Object {
                 "AWS": "*",
               },
               "Resource": Object {
-                "Ref": "testexistingeventsrulesnsSnsTopicAB6B05AA",
+                "Ref": "testexistingeventsrulesnstestexistingeventsrulesnsWSnsTopicB26AB7C3",
               },
               "Sid": "HttpsOnly",
             },
@@ -1016,7 +1016,7 @@ Object {
                 "Service": "events.amazonaws.com",
               },
               "Resource": Object {
-                "Ref": "testexistingeventsrulesnsSnsTopicAB6B05AA",
+                "Ref": "testexistingeventsrulesnstestexistingeventsrulesnsWSnsTopicB26AB7C3",
               },
               "Sid": "2",
             },
@@ -1025,7 +1025,7 @@ Object {
         },
         "Topics": Array [
           Object {
-            "Ref": "testexistingeventsrulesnsSnsTopicAB6B05AA",
+            "Ref": "testexistingeventsrulesnstestexistingeventsrulesnsWSnsTopicB26AB7C3",
           },
         ],
       },
