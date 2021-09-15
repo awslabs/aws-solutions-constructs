@@ -1,9 +1,9 @@
 {
   "Resources": {
-    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedStateMachineLogGroup320F554C": {
+    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWStateMachineLogGroup600D6F22": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/vendedlogs/states/eventsrulestepfunctionnoargumenttesteventsrulestepfunctionconstructwrappedstatemachinelog07f4f9869a40"
+        "LogGroupName": "/aws/vendedlogs/states/eventsrulestepfunctionnoargumenttesteventsrulestepfunctionconstructwstatemachinelog825337e176ed"
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
@@ -22,7 +22,7 @@
         }
       }
     },
-    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedStateMachineRoleB98FCE58": {
+    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWStateMachineRole4754DBBF": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -50,7 +50,7 @@
         }
       }
     },
-    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedStateMachineRoleDefaultPolicy6CBF7E35": {
+    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWStateMachineRoleDefaultPolicy79AC1A05": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -97,10 +97,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedStateMachineRoleDefaultPolicy6CBF7E35",
+        "PolicyName": "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWStateMachineRoleDefaultPolicy79AC1A05",
         "Roles": [
           {
-            "Ref": "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedStateMachineRoleB98FCE58"
+            "Ref": "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWStateMachineRole4754DBBF"
           }
         ]
       },
@@ -115,12 +115,12 @@
         }
       }
     },
-    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedStateMachine5ED8C777": {
+    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWStateMachine0424229E": {
       "Type": "AWS::StepFunctions::StateMachine",
       "Properties": {
         "RoleArn": {
           "Fn::GetAtt": [
-            "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedStateMachineRoleB98FCE58",
+            "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWStateMachineRole4754DBBF",
             "Arn"
           ]
         },
@@ -131,7 +131,7 @@
               "CloudWatchLogsLogGroup": {
                 "LogGroupArn": {
                   "Fn::GetAtt": [
-                    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedStateMachineLogGroup320F554C",
+                    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWStateMachineLogGroup600D6F22",
                     "Arn"
                   ]
                 }
@@ -142,11 +142,11 @@
         }
       },
       "DependsOn": [
-        "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedStateMachineRoleDefaultPolicy6CBF7E35",
-        "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedStateMachineRoleB98FCE58"
+        "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWStateMachineRoleDefaultPolicy79AC1A05",
+        "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWStateMachineRole4754DBBF"
       ]
     },
-    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedEventsRuleRoleB9781881": {
+    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWEventsRuleRole1639AF0D": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -163,7 +163,7 @@
         }
       }
     },
-    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedEventsRuleRoleDefaultPolicy829CA63F": {
+    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWEventsRuleRoleDefaultPolicyA7B5D8EB": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -172,21 +172,21 @@
               "Action": "states:StartExecution",
               "Effect": "Allow",
               "Resource": {
-                "Ref": "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedStateMachine5ED8C777"
+                "Ref": "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWStateMachine0424229E"
               }
             }
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedEventsRuleRoleDefaultPolicy829CA63F",
+        "PolicyName": "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWEventsRuleRoleDefaultPolicyA7B5D8EB",
         "Roles": [
           {
-            "Ref": "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedEventsRuleRoleB9781881"
+            "Ref": "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWEventsRuleRole1639AF0D"
           }
         ]
       }
     },
-    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedEventsRuleA150B140": {
+    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWEventsRule31D6F54E": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "ScheduleExpression": "rate(5 minutes)",
@@ -194,12 +194,12 @@
         "Targets": [
           {
             "Arn": {
-              "Ref": "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedStateMachine5ED8C777"
+              "Ref": "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWStateMachine0424229E"
             },
             "Id": "Target0",
             "RoleArn": {
               "Fn::GetAtt": [
-                "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedEventsRuleRoleB9781881",
+                "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWEventsRuleRole1639AF0D",
                 "Arn"
               ]
             }
@@ -207,7 +207,7 @@
         ]
       }
     },
-    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedExecutionFailedAlarmB9B5EE2C": {
+    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWExecutionFailedAlarm141B94C4": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -217,7 +217,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedStateMachine5ED8C777"
+              "Ref": "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWStateMachine0424229E"
             }
           }
         ],
@@ -228,7 +228,7 @@
         "Threshold": 1
       }
     },
-    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedExecutionThrottledAlarm13F2FFC3": {
+    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWExecutionThrottledAlarmB477D6C0": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -238,7 +238,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedStateMachine5ED8C777"
+              "Ref": "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWStateMachine0424229E"
             }
           }
         ],
@@ -249,7 +249,7 @@
         "Threshold": 1
       }
     },
-    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedExecutionAbortedAlarm46957545": {
+    "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWExecutionAbortedAlarm5513A636": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -259,7 +259,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructwrappedStateMachine5ED8C777"
+              "Ref": "testeventsrulestepfunctionconstructtesteventsrulestepfunctionconstructWStateMachine0424229E"
             }
           }
         ],

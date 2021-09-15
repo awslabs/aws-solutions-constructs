@@ -18,7 +18,7 @@
         "Name": "eventsrulekinesisstreamsexistingeventbusexistingeventbus213FA4D6"
       }
     },
-    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingwrappedeventsRole38D10826": {
+    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWeventsRole95F9546E": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -36,7 +36,7 @@
         "Description": "Events Rule Role"
       }
     },
-    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingwrappedeventsRoleDefaultPolicy59074775": {
+    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWeventsRoleDefaultPolicy1EDA1128": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -58,15 +58,15 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingwrappedeventsRoleDefaultPolicy59074775",
+        "PolicyName": "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWeventsRoleDefaultPolicy1EDA1128",
         "Roles": [
           {
-            "Ref": "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingwrappedeventsRole38D10826"
+            "Ref": "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWeventsRole95F9546E"
           }
         ]
       }
     },
-    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingwrappedEventsRuleFD150210": {
+    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWEventsRule2FF4D2A3": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "EventBusName": {
@@ -89,7 +89,7 @@
             "Id": "Target0",
             "RoleArn": {
               "Fn::GetAtt": [
-                "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingwrappedeventsRole38D10826",
+                "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWeventsRole95F9546E",
                 "Arn"
               ]
             }
@@ -97,7 +97,7 @@
         ]
       }
     },
-    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingwrappedKinesisStreamGetRecordsIteratorAgeAlarm2292FE85": {
+    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWKinesisStreamGetRecordsIteratorAgeAlarm43FEE706": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -110,7 +110,7 @@
         "Threshold": 2592000
       }
     },
-    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingwrappedKinesisStreamReadProvisionedThroughputExceededAlarm2C18A4CF": {
+    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWKinesisStreamReadProvisionedThroughputExceededAlarmC7B9BAE4": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanThreshold",

@@ -50,7 +50,7 @@ test('Test deployment with new Lambda function', () => {
       Variables: {
         LAMBDA_NAME: 'deploy-function',
         STATE_MACHINE_ARN: {
-          Ref: 'lambdatostepfunctionstacklambdatostepfunctionstackwrappedStateMachine0E6FBDAE'
+          Ref: 'lambdatostepfunctionstacklambdatostepfunctionstackWStateMachineB28C4CED'
         }
       }
     }
@@ -133,7 +133,7 @@ test('Test invocation permissions', () => {
           Action: "states:StartExecution",
           Effect: "Allow",
           Resource: {
-            Ref: "testlambdastepfunctionstacktestlambdastepfunctionstackwrappedStateMachine5EFFCECB"
+            Ref: "testlambdastepfunctionstacktestlambdastepfunctionstackWStateMachine924A396A"
           }
         }
       ],
@@ -235,7 +235,7 @@ test('Test lambda function custom environment variable', () => {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
         CUSTOM_STATE_MAHINCE: {
-          Ref: 'lambdatostepfunctionstacklambdatostepfunctionstackwrappedStateMachine0E6FBDAE'
+          Ref: 'lambdatostepfunctionstacklambdatostepfunctionstackWStateMachineB28C4CED'
         }
       }
     }
@@ -267,7 +267,7 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
       SecurityGroupIds: [
         {
           "Fn::GetAtt": [
-            "lambdatostepfunctionstacklambdatostepfunctionstackwrappedReplaceDefaultSecurityGroupsecuritygroup69C944EB",
+            "lambdatostepfunctionstacklambdatostepfunctionstackWReplaceDefaultSecurityGroupsecuritygroupC4A04662",
             "GroupId",
           ],
         },
@@ -326,7 +326,7 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
       SecurityGroupIds: [
         {
           "Fn::GetAtt": [
-            "lambdatostepfunctionstacklambdatostepfunctionstackwrappedReplaceDefaultSecurityGroupsecuritygroup69C944EB",
+            "lambdatostepfunctionstacklambdatostepfunctionstackWReplaceDefaultSecurityGroupsecuritygroupC4A04662",
             "GroupId",
           ],
         },
@@ -383,7 +383,7 @@ test("Test minimal deployment with an existing VPC", () => {
       SecurityGroupIds: [
         {
           "Fn::GetAtt": [
-            "lambdatostepfunctionstacklambdatostepfunctionstackwrappedReplaceDefaultSecurityGroupsecuritygroup69C944EB",
+            "lambdatostepfunctionstacklambdatostepfunctionstackWReplaceDefaultSecurityGroupsecuritygroupC4A04662",
             "GroupId",
           ],
         },

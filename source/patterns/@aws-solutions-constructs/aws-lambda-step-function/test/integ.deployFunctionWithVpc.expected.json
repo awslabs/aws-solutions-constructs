@@ -1,10 +1,10 @@
 {
   "Description": "Integration Test for aws-lambda-step-function",
   "Resources": {
-    "testlambdastepfunctionstestlambdastepfunctionswrappedStateMachineLogGroup77280CCE": {
+    "testlambdastepfunctionstestlambdastepfunctionsWStateMachineLogGroup2E65D2A3": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/vendedlogs/states/deployfunctionwithvpctestlambdastepfunctionswrappedstatemachineloga17627d82b85"
+        "LogGroupName": "/aws/vendedlogs/states/deployfunctionwithvpctestlambdastepfunctionswstatemachineloge2de3bbf2487"
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
@@ -23,7 +23,7 @@
         }
       }
     },
-    "testlambdastepfunctionstestlambdastepfunctionswrappedStateMachineRole872C16F5": {
+    "testlambdastepfunctionstestlambdastepfunctionsWStateMachineRoleA5B28910": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -51,7 +51,7 @@
         }
       }
     },
-    "testlambdastepfunctionstestlambdastepfunctionswrappedStateMachineRoleDefaultPolicy26E1CFCD": {
+    "testlambdastepfunctionstestlambdastepfunctionsWStateMachineRoleDefaultPolicy2C2F2A42": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -98,10 +98,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testlambdastepfunctionstestlambdastepfunctionswrappedStateMachineRoleDefaultPolicy26E1CFCD",
+        "PolicyName": "testlambdastepfunctionstestlambdastepfunctionsWStateMachineRoleDefaultPolicy2C2F2A42",
         "Roles": [
           {
-            "Ref": "testlambdastepfunctionstestlambdastepfunctionswrappedStateMachineRole872C16F5"
+            "Ref": "testlambdastepfunctionstestlambdastepfunctionsWStateMachineRoleA5B28910"
           }
         ]
       },
@@ -116,12 +116,12 @@
         }
       }
     },
-    "testlambdastepfunctionstestlambdastepfunctionswrappedStateMachineB4F6BA60": {
+    "testlambdastepfunctionstestlambdastepfunctionsWStateMachine95B94E44": {
       "Type": "AWS::StepFunctions::StateMachine",
       "Properties": {
         "RoleArn": {
           "Fn::GetAtt": [
-            "testlambdastepfunctionstestlambdastepfunctionswrappedStateMachineRole872C16F5",
+            "testlambdastepfunctionstestlambdastepfunctionsWStateMachineRoleA5B28910",
             "Arn"
           ]
         },
@@ -132,7 +132,7 @@
               "CloudWatchLogsLogGroup": {
                 "LogGroupArn": {
                   "Fn::GetAtt": [
-                    "testlambdastepfunctionstestlambdastepfunctionswrappedStateMachineLogGroup77280CCE",
+                    "testlambdastepfunctionstestlambdastepfunctionsWStateMachineLogGroup2E65D2A3",
                     "Arn"
                   ]
                 }
@@ -143,11 +143,11 @@
         }
       },
       "DependsOn": [
-        "testlambdastepfunctionstestlambdastepfunctionswrappedStateMachineRoleDefaultPolicy26E1CFCD",
-        "testlambdastepfunctionstestlambdastepfunctionswrappedStateMachineRole872C16F5"
+        "testlambdastepfunctionstestlambdastepfunctionsWStateMachineRoleDefaultPolicy2C2F2A42",
+        "testlambdastepfunctionstestlambdastepfunctionsWStateMachineRoleA5B28910"
       ]
     },
-    "testlambdastepfunctionstestlambdastepfunctionswrappedLambdaFunctionServiceRole2D5B228F": {
+    "testlambdastepfunctionstestlambdastepfunctionsWLambdaFunctionServiceRole4078B96B": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -202,7 +202,7 @@
         ]
       }
     },
-    "testlambdastepfunctionstestlambdastepfunctionswrappedLambdaFunctionServiceRoleDefaultPolicy21DEEB26": {
+    "testlambdastepfunctionstestlambdastepfunctionsWLambdaFunctionServiceRoleDefaultPolicy17583F4E": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -230,16 +230,16 @@
               "Action": "states:StartExecution",
               "Effect": "Allow",
               "Resource": {
-                "Ref": "testlambdastepfunctionstestlambdastepfunctionswrappedStateMachineB4F6BA60"
+                "Ref": "testlambdastepfunctionstestlambdastepfunctionsWStateMachine95B94E44"
               }
             }
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testlambdastepfunctionstestlambdastepfunctionswrappedLambdaFunctionServiceRoleDefaultPolicy21DEEB26",
+        "PolicyName": "testlambdastepfunctionstestlambdastepfunctionsWLambdaFunctionServiceRoleDefaultPolicy17583F4E",
         "Roles": [
           {
-            "Ref": "testlambdastepfunctionstestlambdastepfunctionswrappedLambdaFunctionServiceRole2D5B228F"
+            "Ref": "testlambdastepfunctionstestlambdastepfunctionsWLambdaFunctionServiceRole4078B96B"
           }
         ]
       },
@@ -254,10 +254,10 @@
         }
       }
     },
-    "testlambdastepfunctionstestlambdastepfunctionswrappedReplaceDefaultSecurityGroupsecuritygroupFA1BF8B5": {
+    "testlambdastepfunctionstestlambdastepfunctionsWReplaceDefaultSecurityGroupsecuritygroup179A946A": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "deployFunctionWithVpc/test-lambda-stepfunctions/test-lambda-stepfunctions-wrapped/ReplaceDefaultSecurityGroup-security-group",
+        "GroupDescription": "deployFunctionWithVpc/test-lambda-stepfunctions/test-lambda-stepfunctionsW/ReplaceDefaultSecurityGroup-security-group",
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",
@@ -284,7 +284,7 @@
         }
       }
     },
-    "testlambdastepfunctionstestlambdastepfunctionswrappedLambdaFunctionA6DC709D": {
+    "testlambdastepfunctionstestlambdastepfunctionsWLambdaFunction69AF229F": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -327,7 +327,7 @@
         },
         "Role": {
           "Fn::GetAtt": [
-            "testlambdastepfunctionstestlambdastepfunctionswrappedLambdaFunctionServiceRole2D5B228F",
+            "testlambdastepfunctionstestlambdastepfunctionsWLambdaFunctionServiceRole4078B96B",
             "Arn"
           ]
         },
@@ -335,7 +335,7 @@
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "STATE_MACHINE_ARN": {
-              "Ref": "testlambdastepfunctionstestlambdastepfunctionswrappedStateMachineB4F6BA60"
+              "Ref": "testlambdastepfunctionstestlambdastepfunctionsWStateMachine95B94E44"
             }
           }
         },
@@ -348,7 +348,7 @@
           "SecurityGroupIds": [
             {
               "Fn::GetAtt": [
-                "testlambdastepfunctionstestlambdastepfunctionswrappedReplaceDefaultSecurityGroupsecuritygroupFA1BF8B5",
+                "testlambdastepfunctionstestlambdastepfunctionsWReplaceDefaultSecurityGroupsecuritygroup179A946A",
                 "GroupId"
               ]
             }
@@ -367,8 +367,8 @@
         }
       },
       "DependsOn": [
-        "testlambdastepfunctionstestlambdastepfunctionswrappedLambdaFunctionServiceRoleDefaultPolicy21DEEB26",
-        "testlambdastepfunctionstestlambdastepfunctionswrappedLambdaFunctionServiceRole2D5B228F"
+        "testlambdastepfunctionstestlambdastepfunctionsWLambdaFunctionServiceRoleDefaultPolicy17583F4E",
+        "testlambdastepfunctionstestlambdastepfunctionsWLambdaFunctionServiceRole4078B96B"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -389,7 +389,7 @@
         }
       }
     },
-    "testlambdastepfunctionstestlambdastepfunctionswrappedExecutionFailedAlarm8B4991FA": {
+    "testlambdastepfunctionstestlambdastepfunctionsWExecutionFailedAlarmBFA207F1": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -399,7 +399,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "testlambdastepfunctionstestlambdastepfunctionswrappedStateMachineB4F6BA60"
+              "Ref": "testlambdastepfunctionstestlambdastepfunctionsWStateMachine95B94E44"
             }
           }
         ],
@@ -410,7 +410,7 @@
         "Threshold": 1
       }
     },
-    "testlambdastepfunctionstestlambdastepfunctionswrappedExecutionThrottledAlarmF14EF267": {
+    "testlambdastepfunctionstestlambdastepfunctionsWExecutionThrottledAlarm0F7BF1E9": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -420,7 +420,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "testlambdastepfunctionstestlambdastepfunctionswrappedStateMachineB4F6BA60"
+              "Ref": "testlambdastepfunctionstestlambdastepfunctionsWStateMachine95B94E44"
             }
           }
         ],
@@ -431,7 +431,7 @@
         "Threshold": 1
       }
     },
-    "testlambdastepfunctionstestlambdastepfunctionswrappedExecutionAbortedAlarmEC9B5853": {
+    "testlambdastepfunctionstestlambdastepfunctionsWExecutionAbortedAlarmF3E97C7F": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -441,7 +441,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "testlambdastepfunctionstestlambdastepfunctionswrappedStateMachineB4F6BA60"
+              "Ref": "testlambdastepfunctionstestlambdastepfunctionsWStateMachine95B94E44"
             }
           }
         ],
