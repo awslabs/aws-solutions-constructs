@@ -43,12 +43,12 @@ test('check lambda EventSourceMapping', () => {
   expect(stack).toHaveResource('AWS::Lambda::EventSourceMapping', {
     EventSourceArn: {
       "Fn::GetAtt": [
-        "testlambdadynamodbstacktestlambdadynamodbstackwrappedDynamoTable93A88343",
+        "testlambdadynamodbstacktestlambdadynamodbstackWDynamoTableA36F83E4",
         "StreamArn"
       ]
     },
     FunctionName: {
-      Ref: "testlambdadynamodbstacktestlambdadynamodbstackwrappedLambdaFunction3A45417B"
+      Ref: "testlambdadynamodbstacktestlambdadynamodbstackWLambdaFunctionB74B248B"
     },
     BatchSize: 100,
     StartingPosition: "TRIM_HORIZON",
@@ -77,12 +77,12 @@ test('check DynamoEventSourceProps override', () => {
   expect(stack).toHaveResource('AWS::Lambda::EventSourceMapping', {
     EventSourceArn: {
       "Fn::GetAtt": [
-        "testlambdadynamodbstacktestlambdadynamodbstackwrappedDynamoTable93A88343",
+        "testlambdadynamodbstacktestlambdadynamodbstackWDynamoTableA36F83E4",
         "StreamArn"
       ]
     },
     FunctionName: {
-      Ref: "testlambdadynamodbstacktestlambdadynamodbstackwrappedLambdaFunction3A45417B"
+      Ref: "testlambdadynamodbstacktestlambdadynamodbstackWLambdaFunctionB74B248B"
     },
     BatchSize: 55,
     StartingPosition: "LATEST"
@@ -118,7 +118,7 @@ test('check lambda permission to read dynamodb stream', () => {
           Effect: "Allow",
           Resource: {
             "Fn::GetAtt": [
-              "testlambdadynamodbstacktestlambdadynamodbstackwrappedDynamoTable93A88343",
+              "testlambdadynamodbstacktestlambdadynamodbstackWDynamoTableA36F83E4",
               "StreamArn"
             ]
           }
@@ -132,7 +132,7 @@ test('check lambda permission to read dynamodb stream', () => {
           Effect: "Allow",
           Resource: {
             "Fn::GetAtt": [
-              "testlambdadynamodbstacktestlambdadynamodbstackwrappedSqsDlqQueue391BFBC7",
+              "testlambdadynamodbstacktestlambdadynamodbstackWSqsDlqQueueEABCC500",
               "Arn"
             ]
           }
@@ -286,7 +286,7 @@ test('check dynamodb table stream override with ITable', () => {
           Effect: "Allow",
           Resource: {
             "Fn::GetAtt": [
-              "testlambdadynamodbstacktestlambdadynamodbstackwrappedSqsDlqQueue391BFBC7",
+              "testlambdadynamodbstacktestlambdadynamodbstackWSqsDlqQueueEABCC500",
               "Arn"
             ]
           }

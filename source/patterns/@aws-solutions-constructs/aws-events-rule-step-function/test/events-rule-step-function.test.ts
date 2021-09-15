@@ -72,7 +72,7 @@ test('check events rule role policy permissions', () => {
           Action: "states:StartExecution",
           Effect: "Allow",
           Resource: {
-            Ref: "testeventsrulestepfunctiontesteventsrulestepfunctionwrappedStateMachine630E5B8C"
+            Ref: "testeventsrulestepfunctiontesteventsrulestepfunctionWStateMachine64FD5A64"
           }
         }
       ],
@@ -92,12 +92,12 @@ test('check events rule properties', () => {
     Targets: [
       {
         Arn: {
-          Ref: "testeventsrulestepfunctiontesteventsrulestepfunctionwrappedStateMachine630E5B8C"
+          Ref: "testeventsrulestepfunctiontesteventsrulestepfunctionWStateMachine64FD5A64"
         },
         Id: "Target0",
         RoleArn: {
           "Fn::GetAtt": [
-            "testeventsrulestepfunctiontesteventsrulestepfunctionwrappedEventsRuleRole30B14737",
+            "testeventsrulestepfunctiontesteventsrulestepfunctionWEventsRuleRole992B57E4",
             "Arn"
           ]
         }
