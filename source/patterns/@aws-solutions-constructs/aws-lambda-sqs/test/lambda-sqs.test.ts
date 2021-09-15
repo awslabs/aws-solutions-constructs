@@ -14,68 +14,9 @@
 // Imports
 import { Stack } from "@aws-cdk/core";
 import * as lambda from "@aws-cdk/aws-lambda";
-import * as sqs from "@aws-cdk/aws-sqs";
 import * as ec2 from "@aws-cdk/aws-ec2";
 import { LambdaToSqs } from '../lib';
-import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
-
-// --------------------------------------------------------------
-// Test minimal deployment with new Lambda function
-// --------------------------------------------------------------
-test('Test minimal deployment with new Lambda function', () => {
-  // Stack
-  const stack = new Stack();
-  // Helper declaration
-  new LambdaToSqs(stack, 'lambda-to-sqs-stack', {
-    lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    }
-  });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
-// --------------------------------------------------------------
-// Test deployment w/ DLQ and purging explicitly enabled
-// --------------------------------------------------------------
-test('Test deployment w/ DLQ and purging enabled', () => {
-  // Stack
-  const stack = new Stack();
-  // Helper declaration
-  new LambdaToSqs(stack, 'lambda-to-sqs-stack', {
-    lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    },
-    enableQueuePurging: true,
-    deployDeadLetterQueue: true
-  });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
-// --------------------------------------------------------------
-// Test deployment w/ purging explicitly disabled
-// --------------------------------------------------------------
-test('Test deployment w/ purging disabled', () => {
-  // Stack
-  const stack = new Stack();
-  // Helper declaration
-  new LambdaToSqs(stack, 'lambda-to-sqs-stack', {
-    lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    },
-    enableQueuePurging: false
-  });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 // --------------------------------------------------------------
 // Test the getter methods
@@ -100,52 +41,6 @@ test('Test the properties', () => {
   // Assertion 3
   const dlq = pattern.deadLetterQueue;
   expect(dlq).toBeDefined();
-});
-
-// --------------------------------------------------------------
-// Test deployment w/ DLQ disabled
-// --------------------------------------------------------------
-test('Test deployment w/ DLQ disabled', () => {
-  // Stack
-  const stack = new Stack();
-  // Helper declaration
-  new LambdaToSqs(stack, 'lambda-to-sqs-stack', {
-    lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    },
-    enableQueuePurging: true,
-    deployDeadLetterQueue: false,
-    queueProps: {
-      queueName: 'queue-with-dlq-disabled'
-    }
-  });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
-// --------------------------------------------------------------
-// Test deployment w/ existing queue
-// --------------------------------------------------------------
-test('Test deployment w/ existing queue', () => {
-  // Stack
-  const stack = new Stack();
-  // Helper declaration
-  const queue = new sqs.Queue(stack, 'existing-queue-obj', {
-    queueName: 'existing-queue-obj'
-  });
-  new LambdaToSqs(stack, 'lambda-to-sqs-stack', {
-    lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    },
-    enableQueuePurging: true,
-    existingQueueObj: queue
-  });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------

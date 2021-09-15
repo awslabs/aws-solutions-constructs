@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { KinesisFirehoseToS3, KinesisFirehoseToS3Props } from "../lib";
 import * as cdk from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
@@ -21,12 +20,6 @@ import { CreateScrapBucket } from '@aws-solutions-constructs/core';
 function deploy(stack: cdk.Stack, props: KinesisFirehoseToS3Props = {}) {
   return new KinesisFirehoseToS3(stack, 'test-firehose-s3', props);
 }
-
-test('snapshot test KinesisFirehoseToS3 default params', () => {
-  const stack = new cdk.Stack();
-  deploy(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('check s3Bucket default encryption', () => {
   const stack = new cdk.Stack();
