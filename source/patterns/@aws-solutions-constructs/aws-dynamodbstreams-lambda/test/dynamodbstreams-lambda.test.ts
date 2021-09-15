@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { DynamoDBStreamsToLambda, DynamoDBStreamsToLambdaProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
@@ -29,12 +28,6 @@ function deployNewFunc(stack: cdk.Stack) {
 
   return new DynamoDBStreamsToLambda(stack, 'test-lambda-dynamodb-stack', props);
 }
-
-test('snapshot test DynamoDBStreamsToLambda default params', () => {
-  const stack = new cdk.Stack();
-  deployNewFunc(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('check lambda EventSourceMapping', () => {
   const stack = new cdk.Stack();
