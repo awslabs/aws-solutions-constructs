@@ -101,7 +101,7 @@ test("test FunctionProps for environment variable when runtime = NODEJS", () => 
   });
 });
 
-test("test FunctionProps for no envrionment variable when runtime = PYTHON", () => {
+test("test FunctionProps when runtime = PYTHON", () => {
   const stack = new Stack();
 
   const inProps: lambda.FunctionProps = {
