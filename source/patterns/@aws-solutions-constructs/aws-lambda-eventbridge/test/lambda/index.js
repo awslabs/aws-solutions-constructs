@@ -15,8 +15,7 @@ const aws = require('aws-sdk');
 const eventbridge = new aws.EventBridge();
 exports.handler = () => {
 	const params = {
-		Entries:[
-		{
+		Entries: [{
 			EventBusName: process.env.EVENTBUS_NAME,
 			Source: 'solutionsconstructs',
 			DetailType: 'test',

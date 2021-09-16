@@ -19,6 +19,60 @@ import * as ec2 from "@aws-cdk/aws-ec2";
 import { LambdaToEventbridge, LambdaToEventbridgeProps } from '../lib';
 import '@aws-cdk/assert/jest';
 
+const xrayPolicyStatement = {
+  Action: [
+    "xray:PutTraceSegments",
+    "xray:PutTelemetryRecords"
+  ],
+  Effect: "Allow",
+  Resource: "*"
+};
+const defaultEventBusPolicyStatement = {
+  Action: "events:PutEvents",
+  Effect: "Allow",
+  Resource: {
+    "Fn::Join": [
+      "",
+      [
+        "arn:",
+        {
+          Ref: "AWS::Partition"
+        },
+        ":events:",
+        {
+          Ref: "AWS::Region"
+        },
+        ":",
+        {
+          Ref: "AWS::AccountId"
+        },
+        ":event-bus/default"
+      ]
+    ]
+  }
+};
+
+const vpcConfig = {
+  VpcConfig: {
+    SecurityGroupIds: [
+      {
+        "Fn::GetAtt": [
+          "lambdatoeventbridgestackReplaceDefaultSecurityGroupsecuritygroup59EF0706",
+          "GroupId",
+        ],
+      },
+    ],
+    SubnetIds: [
+      {
+        Ref: "VpcisolatedSubnet1SubnetE62B1B9B",
+      },
+      {
+        Ref: "VpcisolatedSubnet2Subnet39217055",
+      },
+    ],
+  },
+};
+
 // --------------------------------------------------------------
 // Tests minimal deployment with new Lambda function
 // --------------------------------------------------------------
@@ -59,38 +113,8 @@ test('Test minimal deployment with new Lambda function', () => {
   expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
-        {
-          Action: [
-            "xray:PutTraceSegments",
-            "xray:PutTelemetryRecords"
-          ],
-          Effect: "Allow",
-          Resource: "*"
-        },
-        {
-          Action: "events:PutEvents",
-          Effect: "Allow",
-          Resource: {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  Ref: "AWS::Partition"
-                },
-                ":events:",
-                {
-                  Ref: "AWS::Region"
-                },
-                ":",
-                {
-                  Ref: "AWS::AccountId"
-                },
-                ":event-bus/default"
-              ]
-            ]
-          }
-        }
+        xrayPolicyStatement,
+        defaultEventBusPolicyStatement
       ]
     }
   });
@@ -168,14 +192,7 @@ test('Test deployment w/ existing eventbus', () => {
   expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
-        {
-          Action: [
-            "xray:PutTraceSegments",
-            "xray:PutTelemetryRecords"
-          ],
-          Effect: "Allow",
-          Resource: "*"
-        },
+        xrayPolicyStatement,
         {
           Action: "events:PutEvents",
           Effect: "Allow",
@@ -210,26 +227,7 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
-    VpcConfig: {
-      SecurityGroupIds: [
-        {
-          "Fn::GetAtt": [
-            "lambdatoeventbridgestackReplaceDefaultSecurityGroupsecuritygroup59EF0706",
-            "GroupId",
-          ],
-        },
-      ],
-      SubnetIds: [
-        {
-          Ref: "VpcisolatedSubnet1SubnetE62B1B9B",
-        },
-        {
-          Ref: "VpcisolatedSubnet2Subnet39217055",
-        },
-      ],
-    },
-  });
+  expect(stack).toHaveResource("AWS::Lambda::Function", vpcConfig);
 
   expect(stack).toHaveResource("AWS::EC2::VPC", {
     EnableDnsHostnames: true,
@@ -265,26 +263,7 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
-    VpcConfig: {
-      SecurityGroupIds: [
-        {
-          "Fn::GetAtt": [
-            "lambdatoeventbridgestackReplaceDefaultSecurityGroupsecuritygroup59EF0706",
-            "GroupId",
-          ],
-        },
-      ],
-      SubnetIds: [
-        {
-          Ref: "VpcisolatedSubnet1SubnetE62B1B9B",
-        },
-        {
-          Ref: "VpcisolatedSubnet2Subnet39217055",
-        },
-      ],
-    },
-  });
+  expect(stack).toHaveResource("AWS::Lambda::Function", vpcConfig);
 
   expect(stack).toHaveResource("AWS::EC2::VPC", {
     CidrBlock: "192.68.0.0/16",
@@ -359,38 +338,8 @@ test("Test minimal deployment with an existing VPC", () => {
           Effect: "Allow",
           Resource: "*"
         },
-        {
-          Action: [
-            "xray:PutTraceSegments",
-            "xray:PutTelemetryRecords"
-          ],
-          Effect: "Allow",
-          Resource: "*"
-        },
-        {
-          Action: "events:PutEvents",
-          Effect: "Allow",
-          Resource: {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  Ref: "AWS::Partition"
-                },
-                ":events:",
-                {
-                  Ref: "AWS::Region"
-                },
-                ":",
-                {
-                  Ref: "AWS::AccountId"
-                },
-                ":event-bus/default"
-              ]
-            ]
-          }
-        }
+        xrayPolicyStatement,
+        defaultEventBusPolicyStatement
       ]
     }
   });
@@ -468,14 +417,7 @@ test('Test lambda function custom environment variable', () => {
   expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
-        {
-          Action: [
-            "xray:PutTraceSegments",
-            "xray:PutTelemetryRecords"
-          ],
-          Effect: "Allow",
-          Resource: "*"
-        },
+        xrayPolicyStatement,
         {
           Action: "events:PutEvents",
           Effect: "Allow",
@@ -505,4 +447,67 @@ test('check multiple constructs in a single stack', () => {
   new LambdaToEventbridge(stack, 'test-new-lambda-eventbridge1', props);
   new LambdaToEventbridge(stack, 'test-new-lambda-eventbridge2', props);
   expect(stack).toCountResources('AWS::Events::EventBus', 2);
+});
+
+test('check multiple lambda functions publishing to single event bus', () => {
+  const stack = new Stack();
+
+  const props1: LambdaToEventbridgeProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    eventBusProps: {}
+  };
+  const construct = new LambdaToEventbridge(stack, 'test-new-lambda-eventbridge1', props1);
+
+  const props2: LambdaToEventbridgeProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    existingEventBusInterface: construct.eventBus
+  };
+  new LambdaToEventbridge(stack, 'test-new-lambda-eventbridge2', props2);
+
+  // Make sure only single event bus exists
+  expect(stack).toCountResources('AWS::Events::EventBus', 1);
+
+  // Make sure 2 lambda functions exist
+  expect(stack).toCountResources('AWS::Lambda::Function', 2);
+
+  // Check whether lambdas have permisison to publish to the event bus
+  expect(stack).toHaveResourceLike('AWS::IAM::Policy', {
+    PolicyDocument: {
+      Statement: [
+        xrayPolicyStatement,
+        {
+          Action: "events:PutEvents",
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              "testnewlambdaeventbridge1CustomEventBusA089F10A",
+              "Arn"
+            ]
+          }
+        }
+      ]
+    }
+  });
+
+  // Check environment variables
+  expect(stack).toHaveResource('AWS::Lambda::Function', {
+    Handler: 'index.handler',
+    Runtime: 'nodejs12.x',
+    Environment: {
+      Variables: {
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+        EVENTBUS_NAME: {
+          Ref: "testnewlambdaeventbridge1CustomEventBusA089F10A"
+        }
+      }
+    }
+  });
 });
