@@ -287,14 +287,14 @@ test('Test existing web ACL', () => {
       sampledRequestsEnabled: true
     },
   });
-  
+
   const restApi = new api.RestApi(stack, 'test-api', {});
   restApi.root.addMethod('ANY');
-  
+
   new WafwebaclToApiGateway(stack, 'test-wafwebacl-apigateway', {
     existingWebaclObj: webacl,
     existingApiGatewayInterface: restApi
-  })
+  });
 
   expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
     VisibilityConfig: {
@@ -303,6 +303,6 @@ test('Test existing web ACL', () => {
       SampledRequestsEnabled: true
     }
   });
-  
+
   expect(stack).toCountResources("AWS::WAFv2::WebACL", 1);
 });
