@@ -101,63 +101,6 @@ test('check the sqs queue properties with existing KMS key', () => {
   });
 
   expect(stack).toHaveResource('AWS::KMS::Key', {
-    KeyPolicy: {
-      Statement: [
-        {
-          Action: [
-            "kms:Create*",
-            "kms:Describe*",
-            "kms:Enable*",
-            "kms:List*",
-            "kms:Put*",
-            "kms:Update*",
-            "kms:Revoke*",
-            "kms:Disable*",
-            "kms:Get*",
-            "kms:Delete*",
-            "kms:ScheduleKeyDeletion",
-            "kms:CancelKeyDeletion",
-            "kms:GenerateDataKey",
-            "kms:TagResource",
-            "kms:UntagResource"
-          ],
-          Effect: "Allow",
-          Principal: {
-            AWS: {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:",
-                  {
-                    Ref: "AWS::Partition"
-                  },
-                  ":iam::",
-                  {
-                    Ref: "AWS::AccountId"
-                  },
-                  ":root"
-                ]
-              ]
-            }
-          },
-          Resource: "*"
-        },
-        {
-          Action: [
-            "kms:Decrypt",
-            "kms:Encrypt",
-            "kms:ReEncrypt*",
-            "kms:GenerateDataKey*"
-          ],
-          Effect: "Allow",
-          Principal: {
-            Service: "events.amazonaws.com"
-          },
-          Resource: "*"
-        }
-      ],
-      Version: "2012-10-17"
-    },
     Description: "my-key",
     EnableKeyRotation: true
   });
