@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { ResourcePart, SynthUtils } from '@aws-cdk/assert';
+import { ResourcePart } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import { Aws, Stack } from '@aws-cdk/core';
 import * as defaults from '..';
@@ -56,8 +56,6 @@ test('create default CfnTable with default props', () => {
     }
   });
 
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-
   expect(stack).toHaveResourceLike('AWS::Glue::Table', {
     Type: "AWS::Glue::Table",
     Properties: {
@@ -98,7 +96,6 @@ test('Create table', () => {
   defaults.createGlueTable(stack, defaults.createGlueDatabase(stack), undefined, _fieldSchema, 'kinesis', {
     STREAM_NAME: 'testStream'
   });
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   expect(stack).toHaveResourceLike('AWS::Glue::Database', {
     Type: "AWS::Glue::Database",
     Properties: {

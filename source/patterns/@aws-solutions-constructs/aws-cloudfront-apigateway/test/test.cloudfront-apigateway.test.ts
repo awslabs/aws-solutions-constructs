@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils, ResourcePart } from '@aws-cdk/assert';
+import { ResourcePart } from '@aws-cdk/assert';
 import { CloudFrontToApiGateway } from "../lib";
 import * as cdk from "@aws-cdk/core";
 import * as defaults from '@aws-solutions-constructs/core';
@@ -33,12 +33,6 @@ function deploy(stack: cdk.Stack) {
     existingApiGatewayObj: _api
   });
 }
-
-test('snapshot test CloudFrontToApiGateway default params', () => {
-  const stack = new cdk.Stack();
-  deploy(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('check getter methods', () => {
   const stack = new cdk.Stack();

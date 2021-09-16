@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { KinesisStreamsToKinesisFirehoseToS3, KinesisStreamsToKinesisFirehoseToS3Props } from '../lib';
 import * as cdk from '@aws-cdk/core';
 import '@aws-cdk/assert/jest';
@@ -22,12 +21,6 @@ import * as s3 from '@aws-cdk/aws-s3';
 function deploy(stack: cdk.Stack, props: KinesisStreamsToKinesisFirehoseToS3Props = {}) {
   return new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-stream-firehose-s3', props);
 }
-
-test('snapshot test KinesisStreamsToKinesisFirehoseToS3 default params', () => {
-  const stack = new cdk.Stack();
-  deploy(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('test kinesisFirehose override ', () => {
   const stack = new cdk.Stack();

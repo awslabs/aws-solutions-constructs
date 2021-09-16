@@ -15,7 +15,7 @@
 import { Stack, Duration } from "@aws-cdk/core";
 import * as defaults from '../';
 import * as kinesis from '@aws-cdk/aws-kinesis';
-import { SynthUtils, ResourcePart } from '@aws-cdk/assert';
+import { ResourcePart } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------
@@ -26,9 +26,7 @@ test('Test minimal deployment with no properties', () => {
   const stack = new Stack();
   // Helper declaration
   defaults.buildKinesisStream(stack, {});
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
+
   expect(stack).toHaveResourceLike('AWS::Kinesis::Stream', {
     Type: "AWS::Kinesis::Stream",
     Properties: {
@@ -55,9 +53,7 @@ test('Test deployment w/ custom properties', () => {
       encryptionKey: encKey
     }
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
+
   expect(stack).toHaveResource('AWS::Kinesis::Stream', {
     Name: 'myCustomKinesisStream'
   });
@@ -88,9 +84,7 @@ test('Test deployment w/ existing stream', () => {
       retentionPeriod: Duration.days(1)
     }
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
+
   expect(stack).toHaveResource('AWS::Kinesis::Stream', {
     ShardCount: 2,
     RetentionPeriodHours: 72
