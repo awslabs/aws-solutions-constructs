@@ -36,7 +36,7 @@ import { WafwebaclToApiGatewayProps, WafwebaclToApiGateway } from "@aws-solution
 
 const apiGatewayToLambda = new ApiGatewayToLambda(this, 'ApiGatewayToLambdaPattern', {
     lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
+        runtime: lambda.Runtime.NODEJS_14_X,
         handler: 'index.handler',
         code: lambda.Code.fromAsset(`lambda`)
     }

@@ -19,7 +19,7 @@ import * as waf from "@aws-cdk/aws-wafv2";
 import * as defaults from '@aws-solutions-constructs/core';
 import '@aws-cdk/assert/jest';
 
-function deployConstruct(stack: cdk.Stack, constructProps?: waf.CfnWebACLProps ) {
+function deployConstruct(stack: cdk.Stack, constructProps?: waf.CfnWebACLProps) {
   const restApi = new api.RestApi(stack, 'test-api', {});
   restApi.root.addMethod('ANY');
 
@@ -269,4 +269,40 @@ test('Test user provided acl props', () => {
       }
     ]
   });
+});
+
+// --------------------------------------------------------------
+// Test existing web ACL
+// --------------------------------------------------------------
+test('Test existing web ACL', () => {
+  const stack = new cdk.Stack();
+  const webacl: waf.CfnWebACL =  new waf.CfnWebACL(stack, 'test-webacl', {
+    defaultAction: {
+      allow: {}
+    },
+    scope: 'REGIONAL',
+    visibilityConfig: {
+      cloudWatchMetricsEnabled: true,
+      metricName: 'webACL',
+      sampledRequestsEnabled: true
+    },
+  });
+  
+  const restApi = new api.RestApi(stack, 'test-api', {});
+  restApi.root.addMethod('ANY');
+  
+  new WafwebaclToApiGateway(stack, 'test-wafwebacl-apigateway', {
+    existingWebaclObj: webacl,
+    existingApiGatewayInterface: restApi
+  })
+
+  expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
+    VisibilityConfig: {
+      CloudWatchMetricsEnabled: true,
+      MetricName: "webACL",
+      SampledRequestsEnabled: true
+    }
+  });
+  
+  expect(stack).toCountResources("AWS::WAFv2::WebACL", 1);
 });
