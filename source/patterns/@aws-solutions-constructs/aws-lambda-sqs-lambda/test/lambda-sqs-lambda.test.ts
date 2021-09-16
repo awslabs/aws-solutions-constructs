@@ -17,7 +17,7 @@ import * as lambda from "@aws-cdk/aws-lambda";
 import * as ec2 from "@aws-cdk/aws-ec2";
 import * as defaults from '@aws-solutions-constructs/core';
 import { LambdaToSqsToLambda, LambdaToSqsToLambdaProps } from '../lib';
-import { SynthUtils, haveResourceLike } from '@aws-cdk/assert';
+import { haveResourceLike } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------
@@ -42,8 +42,7 @@ test('Test minimal deployment', () => {
     }
   };
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
-  // Assertion 1: snapshot test
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
   // Assertion 2: test for an producer function
   expect(stack).toHaveResource('AWS::Lambda::Function', {
     FunctionName: 'producer-function'
@@ -144,8 +143,7 @@ test('Test deployment w/ existing producer function', () => {
     }
   };
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
-  // Assertion 1: snapshot test
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
   // Assertion 2: test for the existing producer function
   expect(stack).toHaveResource('AWS::Lambda::Function', {
     FunctionName: 'existing-producer-function'
@@ -182,8 +180,7 @@ test('Test deployment w/ existing consumer function', () => {
     existingConsumerLambdaObj: existingConsumerFn
   };
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
-  // Assertion 1: snapshot test
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
   // Assertion 2: test for the deployed producer function
   expect(stack).toHaveResource('AWS::Lambda::Function', {
     FunctionName: 'deployed-producer-function'
@@ -223,8 +220,7 @@ test('Test deployment w/ existing queue', () => {
     existingQueueObj: existingQueue
   };
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
-  // Assertion 1: snapshot test
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
   // Assertion 2: test for the existing queue
   expect(stack).toHaveResource('AWS::SQS::Queue', {
     QueueName: 'existing-queue'
@@ -252,8 +248,7 @@ test('Test deployment w/ DLQ explicitly disabled', () => {
     deployDeadLetterQueue: false,
   };
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
-  // Assertion 1: snapshot test
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
   // Assertion 2: test for a non-existing DLQ
   expect(!haveResourceLike('AWS::SQS::Queue', {
     RedrivePolicy: {
@@ -284,8 +279,7 @@ test('Test deployment w/ DLQ explicitly enabled and w/ MRC override', () => {
     maxReceiveCount: 6
   };
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
-  // Assertion 1: snapshot test
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
   // Assertion 2: test for an existing DLQ
   expect(haveResourceLike('AWS::SQS::Queue', {
     RedrivePolicy: {
@@ -322,8 +316,7 @@ test('Test overrides for producer and consumer functions', () => {
     }
   };
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
-  // Assertion 1: snapshot test
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
   // Assertion 2: test for updated runtime on producer function
   expect(stack).toHaveResource('AWS::Lambda::Function', {
     Runtime: "nodejs12.x"

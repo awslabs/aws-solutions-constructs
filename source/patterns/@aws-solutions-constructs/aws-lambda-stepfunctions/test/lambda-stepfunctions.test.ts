@@ -18,7 +18,6 @@ import * as defaults from '@aws-solutions-constructs/core';
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
 import * as ec2 from "@aws-cdk/aws-ec2";
 import { LambdaToStepfunctions } from '../lib';
-import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------
@@ -42,9 +41,7 @@ test('Test deployment with new Lambda function', () => {
       definition: startState
     }
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
+
   expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
     Environment: {
       Variables: {
@@ -81,9 +78,7 @@ test('Test deployment with existing Lambda function', () => {
       definition: startState
     }
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
+
   expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
     Environment: {
       Variables: {

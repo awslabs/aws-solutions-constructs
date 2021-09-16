@@ -17,7 +17,7 @@ import * as lambda from "@aws-cdk/aws-lambda";
 import * as sns from "@aws-cdk/aws-sns";
 import * as ec2 from "@aws-cdk/aws-ec2";
 import { LambdaToSns, LambdaToSnsProps } from '../lib';
-import { SynthUtils, expect as expectCDK, haveResource } from '@aws-cdk/assert';
+import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------
@@ -37,9 +37,7 @@ test('Test deployment with new Lambda function', () => {
       }
     }
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
+
   expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
     Environment: {
       Variables: {
@@ -103,9 +101,7 @@ test('Test deployment with existing existingTopicObj', () => {
     },
     existingTopicObj: topic
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
+
   expectCDK(stack).to(haveResource("AWS::SNS::Topic", {
     TopicName: "custom-topic"
   }));

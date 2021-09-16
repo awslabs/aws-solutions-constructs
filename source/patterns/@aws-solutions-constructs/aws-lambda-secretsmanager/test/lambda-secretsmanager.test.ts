@@ -17,28 +17,8 @@ import * as lambda from "@aws-cdk/aws-lambda";
 import { Secret } from '@aws-cdk/aws-secretsmanager';
 import * as ec2 from "@aws-cdk/aws-ec2";
 import { LambdaToSecretsmanager } from '../lib';
-import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import * as defaults from "@aws-solutions-constructs/core";
-
-// --------------------------------------------------------------
-// Test minimal deployment with new Lambda function
-// --------------------------------------------------------------
-test('Test minimal deployment with new Lambda function', () => {
-  // Stack
-  const stack = new Stack();
-  // Helper declaration
-  new LambdaToSecretsmanager(stack, 'lambda-to-secretsmanager-stack', {
-    lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    },
-    secretProps: { removalPolicy: RemovalPolicy.DESTROY },
-  });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 // --------------------------------------------------------------
 // Test the getter methods

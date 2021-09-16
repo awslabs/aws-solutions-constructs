@@ -14,26 +14,9 @@
 // Imports
 import { Stack } from "@aws-cdk/core";
 import * as defaults from '../';
-import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import * as sfn from '@aws-cdk/aws-stepfunctions';
 import { buildLogGroup } from '../lib/cloudwatch-log-group-helper';
-
-// --------------------------------------------------------------
-// Test minimal deployment with no properties
-// --------------------------------------------------------------
-test('Test minimal deployment with no properties', () => {
-  // Stack
-  const stack = new Stack();
-  // Step function definition
-  const startState = new sfn.Pass(stack, 'StartState');
-  // Build state machine
-  defaults.buildStateMachine(stack, {
-    definition: startState
-  });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 // --------------------------------------------------------------
 // Test deployment w/ custom properties

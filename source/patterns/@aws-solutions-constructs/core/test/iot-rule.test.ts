@@ -11,33 +11,11 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { Stack } from '@aws-cdk/core';
 import * as iot from '@aws-cdk/aws-iot';
-import * as lambda from '@aws-cdk/aws-lambda';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
 import '@aws-cdk/assert/jest';
-
-test('snapshot test TopicRuleProps default params', () => {
-  const stack = new Stack();
-
-  const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_12_X,
-    handler: 'index.handler',
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-  };
-
-  const fn = new lambda.Function(stack, 'LambdaFunction', lambdaFunctionProps);
-
-  const defaultIotTopicProps = defaults.DefaultCfnTopicRuleProps([{
-    lambda: {
-      functionArn: fn.functionArn
-    }
-  }], "SELECT * FROM 'topic/#'");
-  new iot.CfnTopicRule(stack, 'IotTopic', defaultIotTopicProps);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('test TopicRuleProps override sql and description', () => {
   const stack = new Stack();

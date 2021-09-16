@@ -14,18 +14,8 @@
 // Imports
 import { Stack, Duration } from '@aws-cdk/core';
 import { ApiGatewayToKinesisStreams } from '../lib';
-import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import * as kinesis from '@aws-cdk/aws-kinesis';
-
-// --------------------------------------------------------------
-// Test minimal deployment snapshot
-// --------------------------------------------------------------
-test('Test minimal deployment snapshot', () => {
-  const stack = new Stack();
-  new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis', {});
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 // --------------------------------------------------------------
 // Test construct properties
@@ -69,8 +59,6 @@ test('Test deployment w/ overwritten properties', () => {
     putRecordsRequestModel: { schema: {} }
   });
 
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-
   expect(stack).toHaveResourceLike('AWS::ApiGateway::Stage', {
     MethodSettings: [
       {
@@ -107,8 +95,6 @@ test('Test deployment w/ existing stream', () => {
       retentionPeriod: Duration.days(4)
     })
   });
-
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
   expect(stack).toHaveResource('AWS::Kinesis::Stream', {
     ShardCount: 5,

@@ -16,25 +16,7 @@ import * as iam from '@aws-cdk/aws-iam';
 import * as kms from '@aws-cdk/aws-kms';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as defaults from '../';
-import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
-
-// --------------------------------------------------------------
-// Test minimal deployment with no properties
-// --------------------------------------------------------------
-test('Test minimal deployment with no properties', () => {
-  // Stack
-  const stack = new Stack();
-  const sagemakerRole = new iam.Role(stack, 'SagemakerRole', {
-    assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
-  });
-  // Build Sagemaker Notebook Instance
-  defaults.buildSagemakerNotebook(stack, {
-    role: sagemakerRole,
-  });
-  // Assertion
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 // --------------------------------------------------------------
 // Test deployment with VPC
@@ -54,29 +36,10 @@ test('Test deployment with VPC', () => {
     role: sagemakerRole,
   });
   // Assertion
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   expect(vpc?.privateSubnets.length).toEqual(2);
   expect(vpc?.publicSubnets.length).toEqual(2);
   expect(sagemaker.instanceType).toEqual('ml.t2.medium');
   expect(sg).toBeInstanceOf(ec2.SecurityGroup);
-});
-
-// --------------------------------------------------------------
-// Test deployment witout VPC
-// --------------------------------------------------------------
-test('Test deployment w/o VPC', () => {
-  // Stack
-  const stack = new Stack();
-  const sagemakerRole = new iam.Role(stack, 'SagemakerRole', {
-    assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
-  });
-  // Build Sagemaker Notebook Instance
-  defaults.buildSagemakerNotebook(stack, {
-    role: sagemakerRole,
-    deployInsideVpc: false,
-  });
-  // Assertion
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
@@ -131,29 +94,6 @@ test('Test deployment w/ override', () => {
   });
 });
 
-// ----------------------------------------------------------
-// Test deployment with existing Sagemaker Notebook instance
-// ----------------------------------------------------------
-test('Test deployment with existing Sagemaker Notebook instance', () => {
-  // Stack
-  const stack = new Stack();
-  const sagemakerRole = new iam.Role(stack, 'SagemakerRole', {
-    assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
-  });
-  // Build Sagemaker Notebook Instance
-  const [noteBookInstance] = defaults.buildSagemakerNotebook(stack, {
-    role: sagemakerRole,
-  });
-
-  // Build Sagemaker Notebook Instance
-  defaults.buildSagemakerNotebook(stack, {
-    existingNotebookObj: noteBookInstance,
-    role: sagemakerRole,
-  });
-  // Assertion
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
 // --------------------------------------------------------------
 // Test exception
 // --------------------------------------------------------------
@@ -174,167 +114,6 @@ test('Test exception', () => {
       },
     });
   }).toThrowError();
-});
-
-// --------------------------------------------------------------------------------------
-// Test minimal deployment of Sagemaker Inference Endpoint no VPC using internal IAM role
-// --------------------------------------------------------------------------------------
-test('Test minimal deployment with no properties using internal IAM role', () => {
-  // Stack
-  const stack = new Stack();
-  // Build Sagemaker Inference Endpoint
-  defaults.BuildSagemakerEndpoint(stack, {
-    modelProps: {
-      primaryContainer: {
-        image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
-        modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
-      },
-    },
-  });
-  // Assertion
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
-// ----------------------------------------------------------------
-// Test minimal deployment of Sagemaker Inference Endpoint with VPC
-// ----------------------------------------------------------------
-test('Test minimal deployment of Sagemaker Inference Endpoint with VPC', () => {
-  // Stack
-  const stack = new Stack();
-
-  // create a VPC with required VPC S3 gateway and SAGEMAKER_RUNTIME Interface
-  const vpc = defaults.buildVpc(stack, {
-    defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
-    constructVpcProps: {
-      enableDnsHostnames: true,
-      enableDnsSupport: true,
-    },
-  });
-
-  // Add S3 VPC Gateway Endpint, required by Sagemaker to access Models artifacts via AWS private network
-  defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.S3);
-  // Add SAGEMAKER_RUNTIME VPC Interface Endpint, required by the lambda function to invoke the SageMaker endpoint
-  defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.SAGEMAKER_RUNTIME);
-
-  // Build Sagemaker Inference Endpoint
-  defaults.BuildSagemakerEndpoint(stack, {
-    modelProps: {
-      primaryContainer: {
-        image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
-        modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
-      },
-    },
-    vpc,
-  });
-  // Assertion
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
-// -------------------------------------------------------------------------
-// Test deployment of Sagemaker Inference Endpoint with properties overwrite
-// -------------------------------------------------------------------------
-test('Test deployment of Sagemaker Inference Endpoint with properties overwrite', () => {
-  // Stack
-  const stack = new Stack();
-
-  // create a VPC with required VPC S3 gateway and SAGEMAKER_RUNTIME Interface
-  const vpc = defaults.buildVpc(stack, {
-    defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
-    constructVpcProps: {
-      enableDnsHostnames: true,
-      enableDnsSupport: true,
-    },
-  });
-
-  // Add S3 VPC Gateway Endpint, required by Sagemaker to access Models artifacts via AWS private network
-  defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.S3);
-  // Add SAGEMAKER_RUNTIME VPC Interface Endpint, required by the lambda function to invoke the SageMaker endpoint
-  defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.SAGEMAKER_RUNTIME);
-
-  // create encryption key
-  const encryptionkey = new kms.Key(stack, 'MyEndpointConfigEncryptionKey');
-  // Build Sagemaker Inference Endpoint
-  defaults.BuildSagemakerEndpoint(stack, {
-    modelProps: {
-      modelName: 'linear-learner-model',
-      primaryContainer: {
-        image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
-        modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
-      },
-    },
-    endpointConfigProps: {
-      endpointConfigName: 'linear-learner-endpoint-config',
-      productionVariants: [
-        {
-          modelName: 'linear-learner-model',
-          initialInstanceCount: 1,
-          initialVariantWeight: 1.0,
-          instanceType: 'ml.m4.large',
-          variantName: 'AllTraffic',
-          acceleratorType: 'ml.eia2.medium',
-        },
-      ],
-      kmsKeyId: encryptionkey.keyArn,
-    },
-    endpointProps: {
-      endpointConfigName: 'linear-learner-endpoint-config',
-      endpointName: 'linear-learner-endpoint',
-    },
-    vpc,
-  });
-  // Assertion
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
-// --------------------------------------------------------------
-// Test deployment of existing Sagemaker Endpoint
-// --------------------------------------------------------------
-test('Test deployment of existing Sagemaker Endpoint', () => {
-  // Stack
-  const stack = new Stack();
-
-  const [sagemakerEndpoint] = defaults.deploySagemakerEndpoint(stack, {
-    modelProps: {
-      primaryContainer: {
-        image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
-        modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
-      },
-    },
-  });
-
-  // Build Sagemaker Inference Endpoint
-  defaults.BuildSagemakerEndpoint(stack, {
-    existingSagemakerEndpointObj: sagemakerEndpoint,
-  });
-  // Assertion
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
-// ------------------------------------------------------------------------
-// Test deployment of sagemaker endpoint with a customer provided role
-// ------------------------------------------------------------------------
-test('Test deployment of sagemaker endpoint with a customer provided role', () => {
-  // Stack
-  const stack = new Stack();
-  // Create IAM Role to be assumed by Sagemaker
-  const sagemakerRole = new iam.Role(stack, 'SagemakerRole', {
-    assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
-  });
-  sagemakerRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSageMakerFullAccess'));
-
-  // Build Sagemaker Inference Endpoint
-  defaults.BuildSagemakerEndpoint(stack, {
-    modelProps: {
-      executionRoleArn: sagemakerRole.roleArn,
-      primaryContainer: {
-        image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
-        modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
-      },
-    },
-  });
-
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // ---------------------------------------------------------------

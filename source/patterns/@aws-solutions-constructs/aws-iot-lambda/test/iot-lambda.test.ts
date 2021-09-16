@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { IotToLambda, IotToLambdaProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as cdk from "@aws-cdk/core";
@@ -59,12 +58,6 @@ function useExistingFunc(stack: cdk.Stack) {
 
   return new IotToLambda(stack, 'test-iot-lambda-integration', props);
 }
-
-test('snapshot test IotToLambda default params', () => {
-  const stack = new cdk.Stack();
-  deployNewFunc(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('check lambda function properties for deploy: true', () => {
   const stack = new cdk.Stack();

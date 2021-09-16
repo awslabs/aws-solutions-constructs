@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils, ResourcePart } from '@aws-cdk/assert';
+import { ResourcePart } from '@aws-cdk/assert';
 import { Stack } from '@aws-cdk/core';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as lambda from '@aws-cdk/aws-lambda';
@@ -22,13 +22,6 @@ import { Bucket } from '@aws-cdk/aws-s3';
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
 import * as acm from '@aws-cdk/aws-certificatemanager';
 import { LambdaEdgeEventType } from '@aws-cdk/aws-cloudfront';
-
-test('cloudfront distribution with default params', () => {
-  const stack = new Stack();
-  const [sourceBucket] = buildS3Bucket(stack, {});
-  CloudFrontDistributionForS3(stack, sourceBucket);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('check bucket policy metadata', () => {
   const stack = new Stack();
