@@ -14,22 +14,9 @@
 // Imports
 import '@aws-cdk/assert/jest';
 import { Stack } from '@aws-cdk/core';
-import { SynthUtils } from '@aws-cdk/assert';
 import * as mediastore from '@aws-cdk/aws-mediastore';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import { CloudFrontToMediaStore } from '../lib';
-
-// --------------------------------------------------------------
-// Test the default deployment snapshot
-// --------------------------------------------------------------
-test('Test the default deployment snapshot', () => {
-  // Initial setup
-  const stack = new Stack();
-  new CloudFrontToMediaStore(stack, 'test-cloudfront-mediastore', {});
-
-  // Assertion
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 // --------------------------------------------------------------
 // Test the default deployment pattern variables

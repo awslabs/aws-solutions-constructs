@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { IotToKinesisFirehoseToS3, IotToKinesisFirehoseToS3Props } from "../lib";
 import * as cdk from "@aws-cdk/core";
 import * as s3 from "@aws-cdk/aws-s3";
@@ -34,12 +33,6 @@ function deploy(stack: cdk.Stack) {
 
   return new IotToKinesisFirehoseToS3(stack, 'test-iot-firehose-s3', props);
 }
-
-test('snapshot test IotToKinesisFirehoseToS3 default params', () => {
-  const stack = new cdk.Stack();
-  deploy(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('check iot topic rule properties', () => {
   const stack = new cdk.Stack();

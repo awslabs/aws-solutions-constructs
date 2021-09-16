@@ -11,18 +11,11 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { Stack, Duration } from '@aws-cdk/core';
 import * as kinesis from '@aws-cdk/aws-kinesis';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
 import '@aws-cdk/assert/jest';
-
-test('snapshot test kinesisstream default params', () => {
-  const stack = new Stack();
-  new kinesis.Stream(stack, 'KinesisStream', defaults.DefaultStreamProps);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('test kinesisstream override RetentionPeriodHours', () => {
   const stack = new Stack();

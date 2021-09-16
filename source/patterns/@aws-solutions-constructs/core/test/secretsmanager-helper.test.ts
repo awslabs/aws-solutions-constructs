@@ -13,7 +13,7 @@
 
 import {RemovalPolicy, Stack} from '@aws-cdk/core';
 import * as defaults from '../';
-import {ResourcePart, SynthUtils} from '@aws-cdk/assert';
+import {ResourcePart} from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
 const DESCRIPTION = 'test secret description';
@@ -27,9 +27,7 @@ test('Test minimal deployment with no properties', () => {
   const stack = new Stack();
   // Helper declaration
   defaults.buildSecretsManagerSecret(stack, 'secret', {});
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
+
   expect(stack).toHaveResourceLike('AWS::SecretsManager::Secret', {
     Type: 'AWS::SecretsManager::Secret',
     UpdateReplacePolicy: 'Retain',

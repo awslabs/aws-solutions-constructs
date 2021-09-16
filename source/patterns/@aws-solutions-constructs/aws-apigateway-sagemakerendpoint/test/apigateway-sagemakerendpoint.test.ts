@@ -15,21 +15,7 @@
 import { Stack, Aws } from '@aws-cdk/core';
 import { ApiGatewayToSageMakerEndpoint } from '../lib';
 import * as iam from '@aws-cdk/aws-iam';
-import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
-
-// --------------------------------------------------------------
-// Test minimal deployment snapshot
-// --------------------------------------------------------------
-test('Test minimal deployment snapshot', () => {
-  const stack = new Stack();
-  new ApiGatewayToSageMakerEndpoint(stack, 'api-gateway-sagemakerendpoint', {
-    endpointName: 'my-endpoint',
-    resourcePath: '{my_param}',
-    requestMappingTemplate: 'my-request-vtl-template'
-  });
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 // --------------------------------------------------------------
 // Test construct properties
@@ -87,8 +73,6 @@ test('Test deployment w/ overwritten properties', () => {
     resourceName: 'my-resource',
     responseMappingTemplate: 'my-response-vtl-template'
   });
-
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
   expect(stack).toHaveResourceLike('AWS::ApiGateway::Stage', {
     MethodSettings: [

@@ -17,7 +17,6 @@ import { LambdaToSagemakerEndpoint, LambdaToSagemakerEndpointProps } from '../li
 import * as defaults from '@aws-solutions-constructs/core';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as iam from '@aws-cdk/aws-iam';
-import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
 // -----------------------------------------------------------------------------------------
@@ -43,9 +42,7 @@ test('Pattern deployment with new Lambda function, new Sagemaker endpoint, deplo
     deployVpc: true,
   };
   new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
+
   expect(stack).toHaveResourceLike('AWS::Lambda::Function', {
     Environment: {
       Variables: {
@@ -147,10 +144,7 @@ test('Pattern deployment with existing Lambda function, new Sagemaker endpoint, 
     existingLambdaObj: fn,
   };
   new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
-  // Assertion 2
   expect(stack).toHaveResourceLike('AWS::SageMaker::Model', {
     ExecutionRoleArn: {
       'Fn::GetAtt': ['testlambdasagemakerSagemakerRoleD84546B8', 'Arn'],

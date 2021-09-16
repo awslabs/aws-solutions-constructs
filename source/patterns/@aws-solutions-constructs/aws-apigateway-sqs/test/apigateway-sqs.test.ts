@@ -14,39 +14,8 @@
 // Imports
 import { Stack } from "@aws-cdk/core";
 import { ApiGatewayToSqs } from '../lib';
-import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import * as api from "@aws-cdk/aws-apigateway";
-
-// --------------------------------------------------------------
-// Test minimal deployment
-// --------------------------------------------------------------
-test('Test minimal deployment', () => {
-  // Stack
-  const stack = new Stack();
-  // Helper declaration
-  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
-  });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
-// --------------------------------------------------------------
-// Test deployment w/ DLQ
-// --------------------------------------------------------------
-test('Test deployment w/ DLQ', () => {
-  // Stack
-  const stack = new Stack();
-  // Helper declaration
-  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
-    allowCreateOperation: true,
-    allowReadOperation: true,
-    allowDeleteOperation: true,
-    deployDeadLetterQueue: true
-  });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 // --------------------------------------------------------------
 // Test deployment w/o DLQ
@@ -58,9 +27,7 @@ test('Test deployment w/o DLQ', () => {
   new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
     deployDeadLetterQueue: false
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
+
   expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
     HttpMethod: "GET",
     AuthorizationType: "AWS_IAM"
@@ -78,9 +45,7 @@ test('Test deployment w/o allowReadOperation', () => {
     allowCreateOperation: true,
     allowReadOperation: false,
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
+
   expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
     HttpMethod: "POST",
     AuthorizationType: "AWS_IAM"
@@ -97,9 +62,7 @@ test('Test deployment w/ allowReadOperation', () => {
   new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
     allowReadOperation: true,
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
+
   expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
     HttpMethod: "GET",
     AuthorizationType: "AWS_IAM"

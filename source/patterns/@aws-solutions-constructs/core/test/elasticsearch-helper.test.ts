@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { Stack } from '@aws-cdk/core';
 import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
 import * as defaults from '../index';
@@ -48,13 +47,6 @@ function deployES(stack: Stack, domainName: string, cfnDomainProps?: elasticsear
     }, cfnDomainProps);
   }
 }
-
-test('snapshot test buildElasticSearch default params', () => {
-  const stack = new Stack();
-  deployES(stack, 'test-domain');
-
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('Test override SnapshotOptions for buildElasticSearch', () => {
   const stack = new Stack();

@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils, expect as expectCDK, haveResource } from '@aws-cdk/assert';
+import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
 import { LambdaToDynamoDB, LambdaToDynamoDBProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
@@ -53,12 +53,6 @@ function useExistingFunc(stack: cdk.Stack) {
 
   return new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', props);
 }
-
-test('snapshot test LambdaToDynamoDB default params', () => {
-  const stack = new cdk.Stack();
-  deployNewFunc(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('check lambda function properties for deploy: true', () => {
   const stack = new cdk.Stack();

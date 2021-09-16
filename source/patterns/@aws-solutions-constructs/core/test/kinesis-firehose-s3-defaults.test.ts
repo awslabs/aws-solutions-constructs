@@ -11,23 +11,12 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { Stack } from '@aws-cdk/core';
 import * as kinesisfirehose from '@aws-cdk/aws-kinesisfirehose';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
 import '@aws-cdk/assert/jest';
 import * as kms from '@aws-cdk/aws-kms';
-
-test('snapshot test kinesisfirehose default params', () => {
-  const stack = new Stack();
-
-  const awsManagedKey: kms.IKey = kms.Alias.fromAliasName(stack, 'aws-managed-key', 'alias/aws/s3');
-
-  new kinesisfirehose.CfnDeliveryStream(stack, 'KinesisFirehose',
-    defaults.DefaultCfnDeliveryStreamProps('bucket_arn', 'role_arn', 'log_group', 'log_stream', awsManagedKey));
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('test kinesisanalytics override buffer conditions', () => {
   const stack = new Stack();

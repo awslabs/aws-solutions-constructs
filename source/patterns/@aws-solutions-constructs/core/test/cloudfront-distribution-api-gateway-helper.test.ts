@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { Stack } from '@aws-cdk/core';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as api from '@aws-cdk/aws-apigateway';
@@ -22,40 +21,6 @@ import { CloudFrontDistributionForApiGateway } from '../lib/cloudfront-distribut
 import '@aws-cdk/assert/jest';
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
 import { LambdaEdgeEventType } from '@aws-cdk/aws-cloudfront';
-
-test('cloudfront distribution for ApiGateway with default params', () => {
-  const stack = new Stack();
-
-  const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_12_X,
-    handler: 'index.handler',
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-  };
-
-  const func = new lambda.Function(stack, 'LambdaFunction', lambdaFunctionProps);
-  const _api = new api.LambdaRestApi(stack, 'RestApi', {
-    handler: func
-  });
-  CloudFrontDistributionForApiGateway(stack, _api);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
-test('cloudfront distribution for ApiGateway without security headers', () => {
-  const stack = new Stack();
-
-  const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_12_X,
-    handler: 'index.handler',
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-  };
-
-  const func = new lambda.Function(stack, 'LambdaFunction', lambdaFunctionProps);
-  const _api = new api.LambdaRestApi(stack, 'RestApi', {
-    handler: func
-  });
-  CloudFrontDistributionForApiGateway(stack, _api, {}, false);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('test cloudfront for Api Gateway with user provided logging bucket', () => {
   const stack = new Stack();
