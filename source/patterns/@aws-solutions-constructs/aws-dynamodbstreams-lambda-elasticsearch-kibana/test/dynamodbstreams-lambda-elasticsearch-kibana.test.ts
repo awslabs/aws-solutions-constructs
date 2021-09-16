@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { DynamoDBStreamsToLambdaToElasticSearchAndKibana, DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as cdk from "@aws-cdk/core";
@@ -29,13 +28,6 @@ function deployNewFunc(stack: cdk.Stack) {
 
   return new DynamoDBStreamsToLambdaToElasticSearchAndKibana(stack, 'test-dynamodb-stream-lambda-elasticsearch-stack', props);
 }
-
-test('snapshot test default params', () => {
-  const stack = new cdk.Stack();
-  deployNewFunc(stack);
-
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('check domain names', () => {
   const stack = new cdk.Stack();

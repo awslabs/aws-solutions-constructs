@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { ResourcePart, SynthUtils } from '@aws-cdk/assert';
+import { ResourcePart } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import * as acm from '@aws-cdk/aws-certificatemanager';
 import * as s3 from '@aws-cdk/aws-s3';
@@ -27,12 +27,6 @@ function deploy(stack: cdk.Stack, props?: CloudFrontToS3Props) {
     ...props
   });
 }
-
-test('snapshot test CloudFrontToS3 default params', () => {
-  const stack = new cdk.Stack();
-  deploy(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('check s3Bucket default encryption', () => {
   const stack = new cdk.Stack();

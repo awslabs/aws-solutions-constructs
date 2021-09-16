@@ -12,24 +12,12 @@
  */
 
 import '@aws-cdk/assert/jest';
-import { SynthUtils } from '@aws-cdk/assert';
 import { Stack } from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as mediastore from '@aws-cdk/aws-mediastore';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
 import { CloudFrontDistributionForMediaStore, CloudFrontOriginAccessIdentity } from '../lib/cloudfront-distribution-helper';
-
-test('CloudFront distribution for MediaStore with default params', () => {
-  const stack = new Stack();
-  const mediaStoreContainerProps: mediastore.CfnContainerProps = {
-    containerName: 'TestContainer'
-  };
-  const mediaStoreContainer = new mediastore.CfnContainer(stack, 'MediaStoreContainer', mediaStoreContainerProps);
-
-  CloudFrontDistributionForMediaStore(stack, mediaStoreContainer);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('CloudFront distribution for MediaStore with user provided log bucket', () => {
   const stack = new Stack();

@@ -45,7 +45,7 @@ _Parameters_
 
 * scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
 * id `string`
-* props [`S3ToLambdaProps`](#pattern-construct-props)
+* props [`SnsToLambdaProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

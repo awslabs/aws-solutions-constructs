@@ -12,55 +12,10 @@
  */
 
 // Imports
-import { SynthUtils } from '@aws-cdk/assert';
 import { Stack, RemovalPolicy } from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
 import { KinesisFirehoseToAnalyticsAndS3, KinesisFirehoseToAnalyticsAndS3Props } from '../lib';
 import '@aws-cdk/assert/jest';
-
-// --------------------------------------------------------------
-// Test Case 1 - Pattern deployment w/ default properties
-// --------------------------------------------------------------
-test('Pattern deployment w/ default properties', () => {
-  // Initial Setup
-  const stack = new Stack();
-  const props: KinesisFirehoseToAnalyticsAndS3Props = {
-    kinesisAnalyticsProps: {
-      inputs: [{
-        inputSchema: {
-          recordColumns: [{
-            name: 'ticker_symbol',
-            sqlType: 'VARCHAR(4)',
-            mapping: '$.ticker_symbol'
-          }, {
-            name: 'sector',
-            sqlType: 'VARCHAR(16)',
-            mapping: '$.sector'
-          }, {
-            name: 'change',
-            sqlType: 'REAL',
-            mapping: '$.change'
-          }, {
-            name: 'price',
-            sqlType: 'REAL',
-            mapping: '$.price'
-          }],
-          recordFormat: {
-            recordFormatType: 'JSON'
-          },
-          recordEncoding: 'UTF-8'
-        },
-        namePrefix: 'SOURCE_SQL_STREAM'
-      }]
-    },
-    bucketProps: {
-      removalPolicy: RemovalPolicy.DESTROY,
-    }
-  };
-  new KinesisFirehoseToAnalyticsAndS3(stack, 'test-firehose-s3-and-analytics-stack', props);
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 // --------------------------------------------------------------
 // Test Case 2 - Test the getter methods

@@ -14,7 +14,6 @@
 import * as cdk from '@aws-cdk/core';
 import { EventbridgeToSqs, EventbridgeToSqsProps } from '../lib';
 import * as events from "@aws-cdk/aws-events";
-import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
 
@@ -38,12 +37,6 @@ function deployStackWithNewEventBus(stack: cdk.Stack) {
   };
   return new EventbridgeToSqs(stack, 'test-eventbridge-sqs-new-bus', props);
 }
-
-test('snapshot test EventbridgeToSqs default params', () => {
-  const stack = new cdk.Stack();
-  deployNewStack(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('check the sqs queue properties', () => {
   const stack = new cdk.Stack();
@@ -101,63 +94,6 @@ test('check the sqs queue properties with existing KMS key', () => {
   });
 
   expect(stack).toHaveResource('AWS::KMS::Key', {
-    KeyPolicy: {
-      Statement: [
-        {
-          Action: [
-            "kms:Create*",
-            "kms:Describe*",
-            "kms:Enable*",
-            "kms:List*",
-            "kms:Put*",
-            "kms:Update*",
-            "kms:Revoke*",
-            "kms:Disable*",
-            "kms:Get*",
-            "kms:Delete*",
-            "kms:ScheduleKeyDeletion",
-            "kms:CancelKeyDeletion",
-            "kms:GenerateDataKey",
-            "kms:TagResource",
-            "kms:UntagResource"
-          ],
-          Effect: "Allow",
-          Principal: {
-            AWS: {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:",
-                  {
-                    Ref: "AWS::Partition"
-                  },
-                  ":iam::",
-                  {
-                    Ref: "AWS::AccountId"
-                  },
-                  ":root"
-                ]
-              ]
-            }
-          },
-          Resource: "*"
-        },
-        {
-          Action: [
-            "kms:Decrypt",
-            "kms:Encrypt",
-            "kms:ReEncrypt*",
-            "kms:GenerateDataKey*"
-          ],
-          Effect: "Allow",
-          Principal: {
-            Service: "events.amazonaws.com"
-          },
-          Resource: "*"
-        }
-      ],
-      Version: "2012-10-17"
-    },
     Description: "my-key",
     EnableKeyRotation: true
   });
@@ -346,8 +282,6 @@ test('check eventbus property, snapshot & eventbus exists', () => {
   expect(construct.deadLetterQueue !== null);
   expect(construct.eventBus !== null);
 
-  // Validate snapshot
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   // Check whether eventbus exists
   expect(stack).toHaveResource('AWS::Events::EventBus');
 });
@@ -372,20 +306,6 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
   }
 });
 
-test('snapshot test EventbridgeToSqs existing event bus params', () => {
-  const stack = new cdk.Stack();
-  const props: EventbridgeToSqsProps = {
-    eventRuleProps: {
-      eventPattern: {
-        source: ['solutionsconstructs']
-      }
-    },
-    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {})
-  };
-  new EventbridgeToSqs(stack, 'test-existing-eventbridge-sqs', props);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
 test('check custom event bus resource with props when deploy:true', () => {
   const stack = new cdk.Stack();
 
@@ -404,21 +324,4 @@ test('check custom event bus resource with props when deploy:true', () => {
   expect(stack).toHaveResource('AWS::Events::EventBus', {
     Name: 'testcustomeventbus'
   });
-});
-
-test('check multiple constructs in a single stack', () => {
-  const stack = new cdk.Stack();
-
-  const props: EventbridgeToSqsProps = {
-    eventBusProps: {},
-    eventRuleProps: {
-      eventPattern: {
-        source: ['solutionsconstructs']
-      }
-    }
-  };
-  new EventbridgeToSqs(stack, 'test-new-eventbridge-sqs1', props);
-  new EventbridgeToSqs(stack, 'test-new-eventbridge-sqs2', props);
-
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });

@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { Stack } from '@aws-cdk/core';
 import * as events from '@aws-cdk/aws-events';
 import * as defaults from '../index';
@@ -25,9 +24,7 @@ test('Test deployment with no properties', () => {
   const stack = new Stack();
   // Helper declaration
   defaults.buildEventBus(stack, {});
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
+
   expect(stack).not.toHaveResource("AWS::EventBridge::EventBus");
 });
 
@@ -41,25 +38,7 @@ test('Test deployment with existing EventBus', () => {
   defaults.buildEventBus(stack, {
     existingEventBusInterface: new events.EventBus(stack, `existing-event-bus`, {})
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
-  expect(stack).toHaveResource('AWS::Events::EventBus', {});
-});
 
-// --------------------------------------------------------------
-// Test deployment with new EventBus no props
-// --------------------------------------------------------------
-test('Test deployment with new EventBus no props', () => {
-  // Stack
-  const stack = new Stack();
-  // Helper declaration
-  defaults.buildEventBus(stack, {
-    eventBusProps: {}
-  });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
   expect(stack).toHaveResource('AWS::Events::EventBus', {});
 });
 
@@ -75,9 +54,7 @@ test('Test deployment with new EventBus with props', () => {
       eventBusName: 'testneweventbus'
     }
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
+
   expect(stack).toHaveResource('AWS::Events::EventBus', {
     Name: 'testneweventbus'
   });

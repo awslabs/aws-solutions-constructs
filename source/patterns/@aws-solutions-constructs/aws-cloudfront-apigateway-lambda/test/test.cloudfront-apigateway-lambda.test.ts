@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { CloudFrontToApiGatewayToLambda, CloudFrontToApiGatewayToLambdaProps } from "../lib";
 import * as cdk from "@aws-cdk/core";
 import * as lambda from '@aws-cdk/aws-lambda';
@@ -41,12 +40,6 @@ function useExistingFunc(stack: cdk.Stack) {
     existingLambdaObj: new lambda.Function(stack, 'MyExistingFunction', lambdaFunctionProps)
   });
 }
-
-test('snapshot test CloudFrontToApiGatewayToLambda default params', () => {
-  const stack = new cdk.Stack();
-  deployNewFunc(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('check properties', () => {
   const stack = new cdk.Stack();
