@@ -12,9 +12,7 @@
  */
 
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import {
-  Construct
-} from '@aws-cdk/core';
+import { Construct } from '@aws-cdk/core';
 import * as events from '@aws-cdk/aws-events';
 
 export interface BuildEventBusProps {
