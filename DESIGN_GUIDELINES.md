@@ -132,7 +132,7 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 
 | Name    | Type     | Notes    |
 | --- | --- | --- |
-| webacl	| CfnWebACL	||
+| webacl	| waf.CfnWebACL	||
 
 ## IoT
 **Required Attributes on Props** 
