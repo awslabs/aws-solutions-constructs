@@ -119,6 +119,21 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | apiGatewayRole	| iam.Role	||
 
 
+## WAF WebACL
+**Required Attributes on Props** 
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| existingWebaclObj? | waf.CfnWebACL	||
+| webaclProps?	| waf.CfnWebACLProps	||
+
+
+**Required Construct Properties** 
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| webacl	| CfnWebACL	||
+
 ## IoT
 **Required Attributes on Props** 
 
@@ -204,7 +219,6 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | cloudFrontLoggingBucket?	s3.Bucket	||
 | cloudFrontWebDistribution	cloudfront.CloudrontWebDistribution	||
 
-
 ## DynamoDB
 **Required Attributes on Props** 
 
@@ -214,7 +228,6 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | existingTableObj?	| dynamodb.Table	||
 | tablePermissions?	| string	| Only where DynamoDB is a data store being accessed by the construct|
 | dynamoEventSourceProps?		| aws-lambda-event-sources.DynamoEventSourceProps	| Only where DynamoDB is invoking other services (dynamodb streams) |
-
 
 **Required Construct Properties** 
 
@@ -228,12 +241,16 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | Name    | Type     | Notes    |
 | --- | --- | --- |
 | eventRuleProps	| events.RuleProps	||
+| existingEVentBusInterface?	| events.IEventBus	||
+| eventBusProps?	| events.EventBusProps	||
 
 **Required Construct Properties** 
 
 | Name    | Type     | Notes    |
 | --- | --- | --- |
 | eventsRule	| events.Rule	||
+| eventBus?	| events.IEventBus	| Only populated for non-default Event Buses.|
+
 
 ## Firehose
 **Required Attributes on Props** 
@@ -261,8 +278,6 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | enableEncryptionWithCustomerManagedKey?	| boolean	| Sending messages from an AWS service to an encrypted Topic [requires a Customer Master key](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-key-management.html#compatibility-with-aws-services). Those constructs require these properties.  |
 | encryptionKey?		| kms.Key	|
 | encryptionKeyProps?		| kms.KeyProps	|
-
-
 
 **Required Construct Properties** 
 
