@@ -16,7 +16,7 @@ All notable changes to this project will be documented in this file. See [standa
 * **aws-eventbridge-sqs, aws-events-rule-sqs, aws-eventbridge-stepfunctions, aws-events-rule-step-function:** custom EventBus support ([#363](https://github.com/awslabs/aws-solutions-constructs/issues/363)) ([60dd243](https://github.com/awslabs/aws-solutions-constructs/commit/60dd24384f38fa39ce120c008ab7ce05964cd15e))
 * **aws-wafwebacl-apigateway:** created new construct ([#366](https://github.com/awslabs/aws-solutions-constructs/issues/366)) ([ee143ca](https://github.com/awslabs/aws-solutions-constructs/commit/ee143ca595784c2011c32cdc1d23766c7b4581e2))
 * **aws-lambda-eventbridge:** created new construct ([#368](https://github.com/awslabs/aws-solutions-constructs/pull/368))
-* **cdk-v2:** Adding build scripts for CDK v2 ([#353](https://github.com/awslabs/aws-solutions-constructs/issues/353)) ([5657b98](https://github.com/awslabs/aws-solutions-constructs/commit/5657b98ee3e5d999fe65448ae3d3095649937650))
+* **cdk-v2:** Adding build scripts for CDK v2 ([#353](https://github.com/awslabs/aws-solutions-constructs/issues/353))
 * **cdk-v2:** fixing assertion tests to work with both v1 and v2 ([#370](https://github.com/awslabs/aws-solutions-constructs/issues/370)) ([c4c20e4](https://github.com/awslabs/aws-solutions-constructs/commit/c4c20e46ee253ac06629a4d38a07093c46b9905c))
 
 
