@@ -124,15 +124,15 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 
 | Name    | Type     | Notes    |
 | --- | --- | --- |
-| existingWebaclObj? | waf.CfnWebACL	||
-| webaclProps?	| waf.CfnWebACLProps	||
+| existingWebaclObj? | aws-wafv2.CfnWebACL	||
+| webaclProps?	| aws-wafv2.CfnWebACLProps	||
 
 
 **Required Construct Properties** 
 
 | Name    | Type     | Notes    |
 | --- | --- | --- |
-| webacl	| waf.CfnWebACL	||
+| webacl	| aws-wafv2.CfnWebACL	||
 
 ## IoT
 **Required Attributes on Props** 
