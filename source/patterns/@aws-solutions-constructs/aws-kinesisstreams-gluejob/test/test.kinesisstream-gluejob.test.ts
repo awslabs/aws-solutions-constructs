@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { ResourcePart, SynthUtils } from '@aws-cdk/assert';
+import { ResourcePart } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import { CfnDatabase, CfnJob } from '@aws-cdk/aws-glue';
 import { Stream, StreamEncryption } from '@aws-cdk/aws-kinesis';
@@ -56,8 +56,6 @@ test('Pattern minimal deployment', () => {
   const id = 'test-kinesisstreams-lambda';
 
   new KinesisstreamsToGluejob(stack, id, props);
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
   // check for role creation
   expect(stack).toHaveResourceLike('AWS::IAM::Role', {
@@ -294,8 +292,6 @@ test('Test if existing Glue Job is provided', () => {
       comment: "Some value associated with the record"
     }],
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
   // check for Kinesis Stream
   expect(stack).toHaveResourceLike('AWS::Kinesis::Stream', {
@@ -348,8 +344,6 @@ test('When S3 bucket location for script exists', () => {
     }
   };
   new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', props);
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   expect(stack).toHaveResourceLike('AWS::Glue::Job', {
     Type: 'AWS::Glue::Job',
     Properties: {
@@ -405,7 +399,6 @@ test('create glue job with existing kinesis stream', () => {
     }
   });
 
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   expect(stack).toHaveResourceLike('AWS::Kinesis::Stream', {
     Type: 'AWS::Kinesis::Stream',
     Properties: {
@@ -522,8 +515,6 @@ test('When database and table are provided', () => {
     }], 'kinesis', { STREAM_NAME: 'testStream' })
   };
   new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', props);
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   expect(stack).toHaveResourceLike('AWS::Glue::Database', {
     Type: "AWS::Glue::Database",
     Properties: {
@@ -568,8 +559,6 @@ test('When database and table are not provided', () => {
     }]
   };
   new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', props);
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   expect(stack).toHaveResourceLike('AWS::Glue::Database', {
     Type: "AWS::Glue::Database",
     Properties: {

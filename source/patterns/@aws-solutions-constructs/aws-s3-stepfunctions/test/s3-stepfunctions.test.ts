@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { S3ToStepfunctions, S3ToStepfunctionsProps } from '../lib/index';
 import * as sfn from '@aws-cdk/aws-stepfunctions';
 import '@aws-cdk/assert/jest';
@@ -30,12 +29,6 @@ function deployNewStateMachine(stack: cdk.Stack) {
 
   return new S3ToStepfunctions(stack, 'test-s3-stepfunctions', props);
 }
-
-test('snapshot test S3ToStepfunctions default params', () => {
-  const stack = new cdk.Stack();
-  deployNewStateMachine(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('check deployCloudTrail = false', () => {
   const stack = new cdk.Stack();

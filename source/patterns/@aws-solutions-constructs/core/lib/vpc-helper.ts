@@ -89,6 +89,7 @@ export enum ServiceEndpointTypes {
   SAGEMAKER_RUNTIME = "SAGEMAKER_RUNTIME",
   SECRETS_MANAGER = "SECRETS_MANAGER",
   SSM = "SSM",
+  EVENTS = "CLOUDWATCH_EVENTS"
 }
 
 enum EndpointTypes {
@@ -144,6 +145,11 @@ const endpointSettings: EndpointDefinition[] = [
     endpointType: EndpointTypes.INTERFACE,
     endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.SSM,
   },
+  {
+    endpointName: ServiceEndpointTypes.EVENTS,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.CLOUDWATCH_EVENTS
+  }
 ];
 
 export function AddAwsServiceEndpoint(

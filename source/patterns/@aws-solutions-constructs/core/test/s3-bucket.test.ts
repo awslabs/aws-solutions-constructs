@@ -11,29 +11,12 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { Duration, Stack } from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as kms from '@aws-cdk/aws-kms';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
 import '@aws-cdk/assert/jest';
-import { StorageClass } from '@aws-cdk/aws-s3';
-
-test('s3 bucket with default params', () => {
-  const stack = new Stack();
-
-  /** Default Life Cycle policy to transition older versions to Glacier after 90 days */
-  const lifecycleRules: s3.LifecycleRule[] = [{
-    noncurrentVersionTransitions: [{
-      storageClass: StorageClass.GLACIER,
-      transitionAfter: Duration.days(90)
-    }]
-  }];
-
-  new s3.Bucket(stack, 'test-s3-defaults', defaults.DefaultS3Props(undefined, lifecycleRules));
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('test s3Bucket override versioningConfiguration', () => {
   const stack = new Stack();

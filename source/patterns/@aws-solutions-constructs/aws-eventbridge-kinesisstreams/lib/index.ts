@@ -24,34 +24,47 @@ import { overrideProps } from '@aws-solutions-constructs/core';
  * @summary The properties for the EventbridgeToKinesisStreams Construct
  */
 export interface EventbridgeToKinesisStreamsProps {
-/**
- * User provided eventRuleProps to override the defaults
- *
- * @default - None
- */
-readonly eventRuleProps: events.RuleProps
-/**
- * Existing instance of Kinesis Stream object, providing both this and KinesisStreamProps will cause an error.
- *
- * @default - Default props are used
- */
-readonly existingStreamObj?: kinesis.Stream,
-/**
- * User provided props to override the default props for the Kinesis Stream.
- *
- * @default - Default props are used
- */
-readonly kinesisStreamProps?: kinesis.StreamProps | any
-/**
- * Whether to create recommended CloudWatch alarms
- *
- * @default - Alarms are created
- */
-readonly createCloudWatchAlarms?: boolean
+  /**
+   * Existing instance of a custom EventBus.
+   *
+   * @default - None
+   */
+  readonly existingEventBusInterface?: events.IEventBus;
+  /**
+   * A new custom EventBus is created with provided props.
+   *
+   * @default - None
+   */
+  readonly eventBusProps?: events.EventBusProps;
+  /**
+   * User provided eventRuleProps to override the defaults
+   *
+   * @default - None
+   */
+  readonly eventRuleProps: events.RuleProps;
+  /**
+   * Existing instance of Kinesis Stream object, providing both this and KinesisStreamProps will cause an error.
+   *
+   * @default - Default props are used
+   */
+  readonly existingStreamObj?: kinesis.Stream;
+  /**
+   * User provided props to override the default props for the Kinesis Stream.
+   *
+   * @default - Default props are used
+   */
+  readonly kinesisStreamProps?: kinesis.StreamProps | any;
+  /**
+   * Whether to create recommended CloudWatch alarms
+   *
+   * @default - Alarms are created
+   */
+  readonly createCloudWatchAlarms?: boolean;
 }
 
 export class EventbridgeToKinesisStreams extends Construct {
     public readonly kinesisStream: kinesis.Stream;
+    public readonly eventBus?: events.IEventBus;
     public readonly eventsRule: events.Rule;
     public readonly eventsRole: iam.Role;
     public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
@@ -91,8 +104,14 @@ export class EventbridgeToKinesisStreams extends Construct {
         })
       };
 
+      // build an event bus if existingEventBus is provided or eventBusProps are provided
+      this.eventBus = defaults.buildEventBus(this, {
+        existingEventBusInterface: props.existingEventBusInterface,
+        eventBusProps: props.eventBusProps
+      });
+
       // Set up the events rule props
-      const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([kinesisStreamEventTarget]);
+      const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([kinesisStreamEventTarget], this.eventBus);
       const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);
 
       // Setup up the event rule

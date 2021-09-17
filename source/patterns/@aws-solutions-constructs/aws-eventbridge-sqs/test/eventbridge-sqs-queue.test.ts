@@ -14,7 +14,6 @@
 import * as cdk from '@aws-cdk/core';
 import { EventbridgeToSqs, EventbridgeToSqsProps } from '../lib';
 import * as events from "@aws-cdk/aws-events";
-import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
 
@@ -27,11 +26,17 @@ function deployNewStack(stack: cdk.Stack) {
   return new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
 }
 
-test('snapshot test EventbridgeToSqs default params', () => {
-  const stack = new cdk.Stack();
-  deployNewStack(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
+function deployStackWithNewEventBus(stack: cdk.Stack) {
+  const props: EventbridgeToSqsProps = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {}
+  };
+  return new EventbridgeToSqs(stack, 'test-eventbridge-sqs-new-bus', props);
+}
 
 test('check the sqs queue properties', () => {
   const stack = new cdk.Stack();
@@ -89,63 +94,6 @@ test('check the sqs queue properties with existing KMS key', () => {
   });
 
   expect(stack).toHaveResource('AWS::KMS::Key', {
-    KeyPolicy: {
-      Statement: [
-        {
-          Action: [
-            "kms:Create*",
-            "kms:Describe*",
-            "kms:Enable*",
-            "kms:List*",
-            "kms:Put*",
-            "kms:Update*",
-            "kms:Revoke*",
-            "kms:Disable*",
-            "kms:Get*",
-            "kms:Delete*",
-            "kms:ScheduleKeyDeletion",
-            "kms:CancelKeyDeletion",
-            "kms:GenerateDataKey",
-            "kms:TagResource",
-            "kms:UntagResource"
-          ],
-          Effect: "Allow",
-          Principal: {
-            AWS: {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:",
-                  {
-                    Ref: "AWS::Partition"
-                  },
-                  ":iam::",
-                  {
-                    Ref: "AWS::AccountId"
-                  },
-                  ":root"
-                ]
-              ]
-            }
-          },
-          Resource: "*"
-        },
-        {
-          Action: [
-            "kms:Decrypt",
-            "kms:Encrypt",
-            "kms:ReEncrypt*",
-            "kms:GenerateDataKey*"
-          ],
-          Effect: "Allow",
-          Principal: {
-            Service: "events.amazonaws.com"
-          },
-          Resource: "*"
-        }
-      ],
-      Version: "2012-10-17"
-    },
     Description: "my-key",
     EnableKeyRotation: true
   });
@@ -322,4 +270,57 @@ test('check properties', () => {
   expect(construct.sqsQueue !== null);
   expect(construct.encryptionKey !== null);
   expect(construct.deadLetterQueue !== null);
+});
+
+test('check eventbus property, snapshot & eventbus exists', () => {
+  const stack = new cdk.Stack();
+  const construct: EventbridgeToSqs = deployStackWithNewEventBus(stack);
+
+  expect(construct.eventsRule !== null);
+  expect(construct.sqsQueue !== null);
+  expect(construct.encryptionKey !== null);
+  expect(construct.deadLetterQueue !== null);
+  expect(construct.eventBus !== null);
+
+  // Check whether eventbus exists
+  expect(stack).toHaveResource('AWS::Events::EventBus');
+});
+
+test('check exception while passing existingEventBus & eventBusProps', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToSqsProps = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {},
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, {})
+  };
+
+  const app = () => {
+    new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+  };
+  expect(app).toThrowError();
+});
+
+test('check custom event bus resource with props when deploy:true', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToSqsProps = {
+    eventBusProps: {
+      eventBusName: 'testcustomeventbus'
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventbridgeToSqs(stack, 'test-new-eventbridge-sqs', props);
+
+  expect(stack).toHaveResource('AWS::Events::EventBus', {
+    Name: 'testcustomeventbus'
+  });
 });

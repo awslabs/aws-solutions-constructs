@@ -24,29 +24,41 @@ import * as logs from '@aws-cdk/aws-logs';
  */
 export interface EventsRuleToStepFunctionProps {
   /**
+   * Existing instance of a custom EventBus.
+   *
+   * @default - None
+   */
+  readonly existingEventBusInterface?: events.IEventBus;
+  /**
+   * A new custom EventBus is created with provided props.
+   *
+   * @default - None
+   */
+  readonly eventBusProps?: events.EventBusProps;
+  /**
    * User provided StateMachineProps to override the defaults
    *
    * @default - None
    */
-  readonly stateMachineProps: sfn.StateMachineProps,
+  readonly stateMachineProps: sfn.StateMachineProps;
   /**
    * User provided eventRuleProps to override the defaults
    *
    * @default - None
    */
-  readonly eventRuleProps: events.RuleProps,
+  readonly eventRuleProps: events.RuleProps;
   /**
    * Whether to create recommended CloudWatch alarms
    *
    * @default - Alarms are created
    */
-  readonly createCloudWatchAlarms?: boolean,
+  readonly createCloudWatchAlarms?: boolean;
   /**
    * User provided props to override the default props for the CloudWatchLogs LogGroup.
    *
    * @default - Default props are used
    */
-  readonly logGroupProps?: logs.LogGroupProps
+  readonly logGroupProps?: logs.LogGroupProps;
 }
 
 export class EventsRuleToStepFunction extends Construct {
@@ -54,6 +66,7 @@ export class EventsRuleToStepFunction extends Construct {
   public readonly stateMachineLogGroup: logs.ILogGroup;
   public readonly eventsRule: events.Rule;
   public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
+  public readonly eventBus?: events.IEventBus;
 
   /**
    * @summary Constructs a new instance of the EventsRuleToStepFunction class.
@@ -65,11 +78,17 @@ export class EventsRuleToStepFunction extends Construct {
   constructor(scope: Construct, id: string, props: EventsRuleToStepFunctionProps) {
     super(scope, id);
     const convertedProps: EventsRuleToStepFunctionProps = { ...props };
-    const wrappedConstruct: EventsRuleToStepFunction = new EventbridgeToStepfunctions(this, `${id}-wrapped`, convertedProps);
+
+    // W (for 'wrapped') is added to the id so that the id's of the constructs with the old and new names don't collide
+    // If this character pushes you beyond the 64 character limit, just import the new named construct and instantiate
+    // it in place of the older named version. They are functionally identical, aside from the types no other changes
+    // will be required.  (eg - new EventbridgeToStepfunctions instead of EventsRuleToStepFunction)
+    const wrappedConstruct: EventsRuleToStepFunction = new EventbridgeToStepfunctions(this, `${id}W`, convertedProps);
 
     this.stateMachine = wrappedConstruct.stateMachine;
     this.stateMachineLogGroup = wrappedConstruct.stateMachineLogGroup;
     this.eventsRule = wrappedConstruct.eventsRule;
     this.cloudwatchAlarms = wrappedConstruct.cloudwatchAlarms;
+    this.eventBus = wrappedConstruct.eventBus;
   }
 }

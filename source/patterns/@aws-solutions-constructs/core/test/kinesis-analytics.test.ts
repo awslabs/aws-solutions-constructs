@@ -11,18 +11,11 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { Stack } from '@aws-cdk/core';
 import * as kinesisanalytics from '@aws-cdk/aws-kinesisanalytics';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
 import '@aws-cdk/assert/jest';
-
-test('snapshot test kinesisanalytics default params', () => {
-  const stack = new Stack();
-  new kinesisanalytics.CfnApplication(stack, 'KinesisAnalytics', defaults.DefaultCfnApplicationProps);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('test kinesisanalytics override inputProperty', () => {
   const stack = new Stack();

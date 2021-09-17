@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils, expect as expectCDK, haveResource } from '@aws-cdk/assert';
+import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
 import { SnsToLambda, SnsToLambdaProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as sns from '@aws-cdk/aws-sns';
@@ -29,12 +29,6 @@ function deployNewFunc(stack: cdk.Stack) {
 
   return new SnsToLambda(stack, 'test-sns-lambda', props);
 }
-
-test('snapshot test SnsToLambda default params', () => {
-  const stack = new cdk.Stack();
-  deployNewFunc(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('check properties', () => {
   const stack = new cdk.Stack();

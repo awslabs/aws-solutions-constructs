@@ -20,20 +20,6 @@ import { AddAwsServiceEndpoint, ServiceEndpointTypes } from '../lib/vpc-helper';
 import { DefaultPublicPrivateVpcProps, DefaultIsolatedVpcProps } from '../lib/vpc-defaults';
 
 // --------------------------------------------------------------
-// Test minimal Public/Private deployment with no properties
-// --------------------------------------------------------------
-test('Test minimal deployment with no properties', () => {
-  // Stack
-  const stack = new Stack();
-  // Build VPC
-  defaults.buildVpc(stack, {
-    defaultVpcProps: DefaultPublicPrivateVpcProps(),
-  });
-  // Assertion
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
-// --------------------------------------------------------------
 // Test minimal Isolated deployment with no properties
 // --------------------------------------------------------------
 test("Test minimal deployment with no properties", () => {
@@ -43,8 +29,6 @@ test("Test minimal deployment with no properties", () => {
   defaults.buildVpc(stack, {
     defaultVpcProps: DefaultIsolatedVpcProps(),
   });
-  // Assertion
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
   expect(SynthUtils.toCloudFormation(stack)).toHaveResource('AWS::EC2::VPC', {
     EnableDnsHostnames: true,
@@ -53,23 +37,6 @@ test("Test minimal deployment with no properties", () => {
 
   expect(SynthUtils.toCloudFormation(stack)).toCountResources('AWS::EC2::Subnet', 2);
   expect(SynthUtils.toCloudFormation(stack)).toCountResources('AWS::EC2::InternetGateway', 0);
-});
-
-// --------------------------------------------------------------
-// Test deployment w/ custom CIDR
-// --------------------------------------------------------------
-test('Test deployment w/ custom CIDR', () => {
-  // Stack
-  const stack = new Stack();
-  // Build VPC
-  defaults.buildVpc(stack, {
-    defaultVpcProps: DefaultPublicPrivateVpcProps(),
-    userVpcProps: {
-      cidr: '172.168.0.0/16',
-    },
-  });
-  // Assertion
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
@@ -298,4 +265,23 @@ test('Test adding bad Endpoint', () => {
   };
   // Assertion
   expect(app).toThrowError();
+});
+
+// --------------------------------------------------------------
+// Test adding Events Interface Endpoint
+// --------------------------------------------------------------
+test('Test adding Events Interface Endpoint', () => {
+  // Stack
+  const stack = new Stack();
+  // Build VPC
+  const testVpc = defaults.buildVpc(stack, {
+    defaultVpcProps: DefaultPublicPrivateVpcProps(),
+  });
+
+  AddAwsServiceEndpoint(stack, testVpc, ServiceEndpointTypes.EVENTS);
+
+  // Assertion
+  expect(stack).toHaveResource('AWS::EC2::VPCEndpoint', {
+    VpcEndpointType: 'Interface',
+  });
 });

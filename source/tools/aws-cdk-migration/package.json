@@ -1,0 +1,50 @@
+{
+  "name": "aws-cdk-migration",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Rewrites typescript 'import' statements from @aws-cdk/xxx to aws-cdk-lib",
+  "bin": {
+    "rewrite-imports-v2": "bin/rewrite-imports-v2"
+  },
+  "main": "lib/rewrite.js",
+  "types": "lib/rewrite.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aws/aws-cdk.git",
+    "directory": "tools/aws-cdk-migration"
+  },
+  "scripts": {
+    "build": "tsc -b .",
+    "watch": "tsc -b -w",
+    "lint": "tslint --project ."
+  },
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com",
+    "organization": true
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@types/glob": "^7.1.3",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^10.17.60",
+    "aws-cdk-lib": "2.0.0-rc.16",
+    "constructs": "^10.0.0"
+  },
+  "dependencies": {
+    "glob": "^7.1.7",
+    "typescript": "~3.9.9"
+  },
+  "keywords": [
+    "aws",
+    "cdk"
+  ],
+  "homepage": "https://github.com/aws/aws-cdk",
+  "engines": {
+    "node": ">= 10.13.0 <13 || >=13.7.0"
+  },
+  "peerDependencies": {
+    "aws-cdk-lib": "^2.0.0-rc.16",
+    "constructs": "^10.0.0"
+  }
+}

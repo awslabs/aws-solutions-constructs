@@ -12,17 +12,9 @@
  */
 
 import '@aws-cdk/assert/jest';
-import { SynthUtils } from '@aws-cdk/assert';
 import { Stack } from '@aws-cdk/core';
 import * as mediastore from '@aws-cdk/aws-mediastore';
 import { MediaStoreContainer } from '../lib/mediastore-helper';
-
-test('MediaStore container with default params', () => {
-  const stack = new Stack();
-
-  MediaStoreContainer(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('MediaStore container override params', () => {
   const stack = new Stack();

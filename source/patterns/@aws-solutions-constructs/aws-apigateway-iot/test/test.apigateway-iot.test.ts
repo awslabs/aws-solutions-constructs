@@ -16,22 +16,8 @@ import * as cdk from "@aws-cdk/core";
 import { ApiGatewayToIot, ApiGatewayToIotProps } from "../lib";
 import * as api from '@aws-cdk/aws-apigateway';
 import * as iam from '@aws-cdk/aws-iam';
-import { ResourcePart, SynthUtils } from '@aws-cdk/assert';
+import { ResourcePart } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
-
-// --------------------------------------------------------------
-// Snapshot matching
-// --------------------------------------------------------------
-test('Test for default Params snapshot match', () => {
-  // Initial Setup
-  const stack = new cdk.Stack();
-  const props: ApiGatewayToIotProps = {
-    iotEndpoint: `a1234567890123-ats`
-  };
-  new ApiGatewayToIot(stack, 'test-apigateway-iot-default-snapshot', props);
-  // Assertion
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 // --------------------------------------------------------------
 // Check for ApiGateway params
@@ -273,80 +259,6 @@ test('Test for Binary Media types', () => {
       "application/octet-stream",
     ],
   });
-});
-
-// --------------------------------------------------------------
-// Check for multiple constructs
-// --------------------------------------------------------------
-test('Test for multiple constructs usage', () => {
-  // Initial Setup
-  const stack = new cdk.Stack();
-  const props: ApiGatewayToIotProps = {
-    iotEndpoint: `a1234567890123-ats`
-  };
-  new ApiGatewayToIot(stack, 'test-apigateway-iot-default-params', props);
-  new ApiGatewayToIot(stack, 'test-apigateway-iot-default-params-1', props);
-
-  // Assertion
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
-// --------------------------------------------------------------
-// Check for ApiGateway Overriden Props Snapshot match
-// --------------------------------------------------------------
-test('Test for overriden props snapshot', () => {
-  // Initial Setup
-  const stack = new cdk.Stack();
-  const apiGatewayProps = {
-    restApiName: 'RestApi-Regional',
-    description: 'Description for the Regional Rest Api',
-    endpointConfiguration: {types: [api.EndpointType.REGIONAL]},
-    apiKeySourceType: api.ApiKeySourceType.HEADER,
-    defaultMethodOptions: {
-      authorizationType: api.AuthorizationType.NONE,
-    }
-  };
-
-  const policyJSON = {
-    Version: "2012-10-17",
-    Statement: [
-      {
-        Action: [
-          "iot:UpdateThingShadow"
-        ],
-        Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:thing/*`,
-        Effect: "Allow"
-      },
-      {
-        Action: [
-          "iot:Publish"
-        ],
-        Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:topic/*`,
-        Effect: "Allow"
-      }
-    ]
-  };
-  const policyDocument: iam.PolicyDocument = iam.PolicyDocument.fromJson(policyJSON);
-  const iamRoleProps: iam.RoleProps = {
-    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
-    path: '/',
-    inlinePolicies: {testPolicy: policyDocument}
-  };
-
-  // Create a policy that overrides the default policy that gets created with the construct
-  const apiGatewayExecutionRole: iam.Role = new iam.Role(stack, 'apigateway-iot-role', iamRoleProps);
-
-  // Api gateway setup
-  const props: ApiGatewayToIotProps = {
-    iotEndpoint: `a1234567890123-ats`,
-    apiGatewayCreateApiKey: true,
-    apiGatewayExecutionRole,
-    apiGatewayProps
-  };
-  new ApiGatewayToIot(stack, 'test-apigateway-iot-overriden-params', props);
-
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------

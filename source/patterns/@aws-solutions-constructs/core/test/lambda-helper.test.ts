@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils, ResourcePart } from "@aws-cdk/assert";
 import { Stack } from "@aws-cdk/core";
 import * as ec2 from "@aws-cdk/aws-ec2";
 import * as lambda from "@aws-cdk/aws-lambda";
@@ -19,20 +18,6 @@ import * as defaults from "../index";
 import "@aws-cdk/assert/jest";
 import { Duration } from "@aws-cdk/core";
 import * as iam from '@aws-cdk/aws-iam';
-
-test("snapshot test LambdaFunction default params", () => {
-  const stack = new Stack();
-
-  const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_12_X,
-    handler: "index.handler",
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-  };
-
-  defaults.deployLambdaFunction(stack, lambdaFunctionProps);
-
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test("test FunctionProps override code and runtime", () => {
   const stack = new Stack();
@@ -101,7 +86,7 @@ test("test FunctionProps for environment variable when runtime = NODEJS", () => 
   });
 });
 
-test("test FunctionProps for no envrionment variable when runtime = PYTHON", () => {
+test("test FunctionProps when runtime = PYTHON", () => {
   const stack = new Stack();
 
   const inProps: lambda.FunctionProps = {
@@ -115,64 +100,15 @@ test("test FunctionProps for no envrionment variable when runtime = PYTHON", () 
   expect(stack).toHaveResource(
     "AWS::Lambda::Function",
     {
-      Type: "AWS::Lambda::Function",
-      Properties: {
-        Code: {
-          S3Bucket: {
-            Ref:
-              "AssetParametersb472c1cea6f4795d84eb1b97e37bfa1f79f1c744caebeb372f30dbf716299895S3Bucket0A3514D6",
-          },
-          S3Key: {
-            "Fn::Join": [
-              "",
-              [
-                {
-                  "Fn::Select": [
-                    0,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          Ref:
-                            "AssetParametersb472c1cea6f4795d84eb1b97e37bfa1f79f1c744caebeb372f30dbf716299895S3VersionKey0DB6BEDE",
-                        },
-                      ],
-                    },
-                  ],
-                },
-                {
-                  "Fn::Select": [
-                    1,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          Ref:
-                            "AssetParametersb472c1cea6f4795d84eb1b97e37bfa1f79f1c744caebeb372f30dbf716299895S3VersionKey0DB6BEDE",
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            ],
-          },
-        },
-        Handler: "index.handler",
-        Role: {
-          "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
-        },
-        Runtime: "python3.6",
-        TracingConfig: {
-          Mode: "Active",
-        },
+      Handler: "index.handler",
+      Role: {
+        "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
       },
-      DependsOn: [
-        "LambdaFunctionServiceRoleDefaultPolicy126C8897",
-        "LambdaFunctionServiceRole0C4CDE0B",
-      ],
-    },
-    ResourcePart.CompleteDefinition
+      Runtime: "python3.6",
+      TracingConfig: {
+        Mode: "Active",
+      },
+    }
   );
 });
 
