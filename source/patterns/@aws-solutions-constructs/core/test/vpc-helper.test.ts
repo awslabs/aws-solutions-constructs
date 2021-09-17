@@ -266,3 +266,22 @@ test('Test adding bad Endpoint', () => {
   // Assertion
   expect(app).toThrowError();
 });
+
+// --------------------------------------------------------------
+// Test adding Events Interface Endpoint
+// --------------------------------------------------------------
+test('Test adding Events Interface Endpoint', () => {
+  // Stack
+  const stack = new Stack();
+  // Build VPC
+  const testVpc = defaults.buildVpc(stack, {
+    defaultVpcProps: DefaultPublicPrivateVpcProps(),
+  });
+
+  AddAwsServiceEndpoint(stack, testVpc, ServiceEndpointTypes.EVENTS);
+
+  // Assertion
+  expect(stack).toHaveResource('AWS::EC2::VPCEndpoint', {
+    VpcEndpointType: 'Interface',
+  });
+});

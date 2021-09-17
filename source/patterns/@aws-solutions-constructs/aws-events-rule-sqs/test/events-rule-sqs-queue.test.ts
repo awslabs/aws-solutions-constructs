@@ -299,11 +299,10 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
     existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, {})
   };
 
-  try {
+  const app = () => {
     new EventsRuleToSqs(stack, 'test-eventsrule-sqs', props);
-  } catch (e) {
-    expect(e).toBeInstanceOf(Error);
-  }
+  };
+  expect(app).toThrowError();
 });
 
 test('check custom event bus resource with props when deploy:true', () => {

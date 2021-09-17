@@ -181,11 +181,10 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
     existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {})
   };
 
-  try {
+  const app = () => {
     new EventsRuleToKinesisFirehoseToS3(stack, 'test-eventsrule-firehose', props);
-  } catch (e) {
-    expect(e).toBeInstanceOf(Error);
-  }
+  };
+  expect(app).toThrowError();
 });
 
 test('check custom event bus resource with props when deploy:true', () => {

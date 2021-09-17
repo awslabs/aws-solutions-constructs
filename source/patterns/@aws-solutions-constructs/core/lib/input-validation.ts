@@ -158,8 +158,8 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
-  if (propsObject.existingEventBus && propsObject.eventBusProps) {
-    errorMessages += 'Error - Either provide existingEventBus or eventBusProps, but not both.\n';
+  if (propsObject.existingEventBusInterface && propsObject.eventBusProps) {
+    errorMessages += 'Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n';
     errorFound = true;
   }
 
