@@ -32,7 +32,6 @@ const props: IotToKinesisStreamsProps = {
   },
   kinesisStreamProps: {
     shardCount: 5,
-    streamName: 'testnewstream',
     retentionPeriod: Duration.hours(30)
   }
 };

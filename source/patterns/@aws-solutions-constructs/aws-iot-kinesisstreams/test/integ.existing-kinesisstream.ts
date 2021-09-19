@@ -16,6 +16,7 @@ import { App, Stack, Duration } from "@aws-cdk/core";
 import * as kinesis from "@aws-cdk/aws-kinesis";
 import { IotToKinesisStreams, IotToKinesisStreamsProps } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { StreamEncryption } from "@aws-cdk/aws-kinesis";
 
 // Setup
 const app = new App();
@@ -25,8 +26,8 @@ stack.templateOptions.description = 'Integration Test for aws-iot-kinesisstreams
 // Definitions
 const existingKinesisStream = new kinesis.Stream(stack, `existing-stream`, {
   shardCount: 2,
-  streamName: 'testexistingstream',
-  retentionPeriod: Duration.hours(25)
+  retentionPeriod: Duration.hours(25),
+  encryption: StreamEncryption.MANAGED
 });
 
 const props: IotToKinesisStreamsProps = {

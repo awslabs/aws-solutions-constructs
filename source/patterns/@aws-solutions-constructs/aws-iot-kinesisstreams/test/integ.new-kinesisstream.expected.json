@@ -5,7 +5,6 @@
       "Type": "AWS::Kinesis::Stream",
       "Properties": {
         "ShardCount": 5,
-        "Name": "testnewstream",
         "RetentionPeriodHours": 30,
         "StreamEncryption": {
           "EncryptionType": "KMS",

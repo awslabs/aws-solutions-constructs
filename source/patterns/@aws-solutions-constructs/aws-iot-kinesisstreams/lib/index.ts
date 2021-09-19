@@ -18,7 +18,6 @@ import * as iam from '@aws-cdk/aws-iam';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import * as defaults from '@aws-solutions-constructs/core';
-import { overrideProps } from '@aws-solutions-constructs/core';
 
 /**
  * @summary The properties for the IotToKinesisFirehoseToS3 Construct
@@ -99,7 +98,7 @@ export class IotToKinesisStreams extends Construct {
         roleArn: this.iotActionsRole.roleArn
       }
     }]);
-    const iotTopicProps = overrideProps(defaultIotTopicProps, props.iotTopicRuleProps, true);
+    const iotTopicProps = defaults.overrideProps(defaultIotTopicProps, props.iotTopicRuleProps, true);
 
     // Create the IoT topic rule
     this.iotTopicRule = new iot.CfnTopicRule(this, 'IotTopic', iotTopicProps);

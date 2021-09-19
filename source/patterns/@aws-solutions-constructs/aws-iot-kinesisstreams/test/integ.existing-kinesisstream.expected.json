@@ -5,19 +5,10 @@
       "Type": "AWS::Kinesis::Stream",
       "Properties": {
         "ShardCount": 2,
-        "Name": "testexistingstream",
         "RetentionPeriodHours": 25,
         "StreamEncryption": {
-          "Fn::If": [
-            "AwsCdkKinesisEncryptedStreamsUnsupportedRegions",
-            {
-              "Ref": "AWS::NoValue"
-            },
-            {
-              "EncryptionType": "KMS",
-              "KeyId": "alias/aws/kinesis"
-            }
-          ]
+          "EncryptionType": "KMS",
+          "KeyId": "alias/aws/kinesis"
         }
       }
     },
@@ -114,28 +105,6 @@
         "Statistic": "Average",
         "Threshold": 0
       }
-    }
-  },
-  "Conditions": {
-    "AwsCdkKinesisEncryptedStreamsUnsupportedRegions": {
-      "Fn::Or": [
-        {
-          "Fn::Equals": [
-            {
-              "Ref": "AWS::Region"
-            },
-            "cn-north-1"
-          ]
-        },
-        {
-          "Fn::Equals": [
-            {
-              "Ref": "AWS::Region"
-            },
-            "cn-northwest-1"
-          ]
-        }
-      ]
     }
   }
 }
