@@ -30,33 +30,33 @@ Here is a minimal deployable pattern definition in Typescript:
 
 ``` typescript
 import { CloudFrontToS3 } from '@aws-solutions-constructs/aws-cloudfront-s3';
-import { WafwebaclToCloudfront } from "@aws-solutions-constructs/aws-wafwebacl-cloudfront";
+import { WafwebaclToCloudFront } from "@aws-solutions-constructs/aws-wafwebacl-cloudfront";
 
 const cloudfrontToS3 = new CloudFrontToS3(this, 'test-cloudfront-s3', {});
 
-// This construct can only be attached to a configured Cloudfront.
-new WafwebaclToCloudfront(this, 'test-wafwebacl-cloudfront', {
-    existingCloudfrontWebDistribution: cloudfrontToS3.cloudFrontWebDistribution
+// This construct can only be attached to a configured CloudFront.
+new WafwebaclToCloudFront(this, 'test-wafwebacl-cloudfront', {
+    existingCloudFrontWebDistribution: cloudfrontToS3.cloudFrontWebDistribution
 });
 ```
 
 ## Initializer
 
 ``` text
-new WafwebaclToCloudfront(scope: Construct, id: string, props: WafwebaclToCloudfrontProps);
+new WafwebaclToCloudFront(scope: Construct, id: string, props: WafwebaclToCloudFrontProps);
 ```
 
 _Parameters_
 
 * scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
 * id `string`
-* props [`WafwebaclToCloudfrontProps`](#pattern-construct-props)
+* props [`WafwebaclToCloudFrontProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
-|existingCloudfrontWebDistribution|[`cloudfront.CloudFrontWebDistribution`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudfront.Distribution.html)|The existing Cloudfront instance that will be protected with the WAF web ACL. *Note that a WAF web ACL can only be added to a configured Cloudfront, so this construct only accepts an existing CloudFrontWebDistribution and does not accept cloudfrontProps.*|
+|existingCloudFrontWebDistribution|[`cloudfront.CloudFrontWebDistribution`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudfront.Distribution.html)|The existing CloudFront instance that will be protected with the WAF web ACL. *Note that a WAF web ACL can only be added to a configured CloudFront, so this construct only accepts an existing CloudFrontWebDistribution and does not accept cloudfrontProps.*|
 |existingWebaclObj?|[`waf.CfnWebACL`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-wafv2.CfnWebACL.html)|Existing instance of a WAF web ACL, an error will occur if this and props is set.|
 |webaclProps?|[`waf.CfnWebACLProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-wafv2.CfnWebACLProps.html)|Optional user-provided props to override the default props for the AWS WAF web ACL. To use a different collection of managed rule sets, specify a new rules property. Use our [`wrapManagedRuleSet(managedGroupName: string, vendorName: string, priority: number)`](../core/lib/waf-defaults.ts) function from core to create an array entry from each desired managed rule set.|
 
@@ -65,7 +65,7 @@ _Parameters_
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
 |webacl|[`waf.CfnWebACL`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-wafv2.CfnWebACL.html)|Returns an instance of the waf.CfnWebACL created by the construct.|
-|cloudFrontWebDistribution|[`cloudfront.CloudFrontWebDistribution`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudfront.CloudFrontWebDistribution.html)|Returns an instance of cloudfront.CloudFrontWebDistribution created by the construct|
+|cloudFrontWebDistribution|[`cloudfront.CloudFrontWebDistribution`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudfront.CloudFrontWebDistribution.html)|Returns an instance of cloudfront.CloudFrontWebDistribution created by the construct.|
 
 ## Default settings
 
@@ -84,8 +84,8 @@ Out of the box implementation of the Construct without any override will set the
     *Note that the default rules can be replaced by specifying the rules property of CfnWebACLProps* 
 * Send metrics to Amazon CloudWatch
 
-### Amazon Cloudfront
-* User provided Cloudfront object is used as-is
+### Amazon CloudFront
+* User provided CloudFront object is used as-is
 
 ## Architecture
 ![Architecture Diagram](architecture.png)
