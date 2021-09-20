@@ -80,26 +80,6 @@ This version of the document also lists what Constructs currently violate these 
 Existing Inconsistencies would not be published, thatâ€™s for our internal use â€“ only the Required Properties and Attributes on Props would be published as requirements (along with specific notes).
 â€ƒ
 
-
-## S3
-**Required Attributes on Props** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| existingBucketObj? | s3.Bucket | Either this or bucketProps must be provided |
-| bucketProps? | s3.BucketProps	| |
-| s3EventTypes?	| s3.EventType	| Only required when construct responds to S3 events |
-| s3EventFilters?	| s3.NotificationKeyFilter |Only required when construct responds to S3 events |
-
-
-**Required Construct Properties** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| s3Bucket	| s3.Bucket	||
-| s3LoggingBucket	| s3.Bucket	||
-
-
 ## API Gateway
 **Required Attributes on Props** 
 
@@ -118,91 +98,6 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | apiGatewayLogGroup	| logs.LogGroup	||
 | apiGatewayRole	| iam.Role	||
 
-
-## WAF WebACL
-**Required Attributes on Props** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| existingWebaclObj? | wafv2.CfnWebACL	||
-| webaclProps?	| wafv2.CfnWebACLProps	||
-
-
-**Required Construct Properties** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| webacl	| wafv2.CfnWebACL	||
-
-## IoT
-**Required Attributes on Props** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| iotEndpoint	| string	| When IoT is *downstream* (e.g. â€“ aws-apigateway-iot) |
-| iotTopicRuleProps	| iot.CfnTopicRuleProps	| When iot is *upstream* (eg â€“ aws-iot-lambda) |
-
-**Required Construct Properties** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| iotActionsRole	| iam.Role	| For upstream IoT|
-
-## Kinesis Streams
-**Required Attributes on Props** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| existingStreamObj?	| kinesis.Stream	| |
-| kinesisStreamProps?	| kinesis.StreamProps	||
-
-
-**Required Construct Properties** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| kinesisStream	| kinesis.Stream	||
-| kinesisStreamRole	| iam.Role	| Only when Kinesis is upstream (because then the role is important to the construct) |
-
-
-## Lambda
-**Required Attributes on Props** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| existingLambdaObj?	| lambda.Function	||
-| lambdaFunctionProps?	| lambda.FunctionProps	||
-
-
-**Required Construct Properties** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| lambdaFunction	| lambda.Function	||
-
-## SQS
-**Required Attributes on Props** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| queueProps?	| sqs.QueueProps	||
-| existingQueueObj?	| sqs.Qeue	||
-| deployDeadLetterQueue?	| Boolean	||
-| deadLetterQueueProps?	| sqs.QueueProps	||
-| maxReceiveCount	| number	||
-| enableQueuePurging	| boolean	| This is only on 2 constructs, docs talk about a Lambda function role|
-| encryptionKey?	| kms.Key	| Sending messages from an AWS service to an encrypted queue [requires a Customer Master key](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-key-management.html#compatibility-with-aws-services). Those constructs require these properties. |
-
-
-**Required Construct Properties** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| sqsQueue	| sqs.Queue	||
-| deadLetterQueue?	| sqs.Queue	||
-| encryptionKey	| kms.Key	| Only for service to SQS constructs that require a non-default CMK. |
-
-
 ## CloudFront
 **Required Attributes on Props** 
 
@@ -210,7 +105,6 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | --- | --- | --- |
 | cloudFrontDistributionProps?	| cloudfront.CloudFront.WebDistributionProps	||
 | insertHttpSecurityHeaders?	| boolean	||
-
 
 **Required Construct Properties** 
 
@@ -235,7 +129,23 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | --- | --- | --- |
 | dynamoTable	| dynamodb.Table	||
 
-## Events Rules
+## ElasticSearch
+**Required Attributes on Props** 
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| esDomainProps?	| elasticsearch.CfnDomainProps	||
+| domainName	| string	||
+
+
+**Required Construct Properties** 
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| elasticsearchDomain | elasticsearch.CfnDomain ||
+| elasticsearchDomainRole | iam.Role ||
+
+## Eventbridge
 **Required Attributes on Props** 
 
 | Name    | Type     | Notes    |
@@ -267,6 +177,67 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | kinesisFirehoseRole	| iam.Role	||
 | kinesisFirehoseLogGroup	| logs.LogGroup	||
 
+## IoT
+**Required Attributes on Props** 
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| iotEndpoint	| string	| When IoT is *downstream* (e.g. â€“ aws-apigateway-iot) |
+| iotTopicRuleProps	| iot.CfnTopicRuleProps	| When iot is *upstream* (eg â€“ aws-iot-lambda) |
+
+**Required Construct Properties** 
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| iotActionsRole	| iam.Role	| For upstream IoT|
+| iotTopicRule | iot.CfnTopicRule | When iot is upstream |
+
+## Kinesis Streams
+**Required Attributes on Props** 
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| existingStreamObj?	| kinesis.Stream	| |
+| kinesisStreamProps?	| kinesis.StreamProps	||
+|createCloudWatchAlarms|`boolean`| |
+
+**Required Construct Properties** 
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| kinesisStream	| kinesis.Stream	||
+| kinesisStreamRole	| iam.Role	| Only when Kinesis is upstream (because then the role is important to the construct) |
+
+## Lambda
+**Required Attributes on Props** 
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| existingLambdaObj?	| lambda.Function	||
+| lambdaFunctionProps?	| lambda.FunctionProps	||
+
+**Required Construct Properties** 
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| lambdaFunction	| lambda.Function	||
+
+## S3
+**Required Attributes on Props** 
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| existingBucketObj? | s3.Bucket | Either this or bucketProps must be provided |
+| bucketProps? | s3.BucketProps	| |
+| s3EventTypes?	| s3.EventType	| Only required when construct responds to S3 events |
+| s3EventFilters?	| s3.NotificationKeyFilter |Only required when construct responds to S3 events |
+
+**Required Construct Properties** 
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| s3Bucket	| s3.Bucket	||
+| s3LoggingBucket	| s3.Bucket	||
 
 ## SNS
 **Required Attributes on Props** 
@@ -286,6 +257,26 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | snsTopic	| sns.Topic	 | |
 | encryptionKey	| kms.Key	| Only required when AWS service is writing to the SNS topic (similar to SQS) |
 
+## SQS
+**Required Attributes on Props** 
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| queueProps?	| sqs.QueueProps	||
+| existingQueueObj?	| sqs.Qeue	||
+| deployDeadLetterQueue?	| Boolean	||
+| deadLetterQueueProps?	| sqs.QueueProps	||
+| maxReceiveCount	| number	||
+| enableQueuePurging	| boolean	| This is only on 2 constructs, docs talk about a Lambda function role|
+| encryptionKey?	| kms.Key	| Sending messages from an AWS service to an encrypted queue [requires a Customer Master key](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-key-management.html#compatibility-with-aws-services). Those constructs require these properties. |
+
+**Required Construct Properties** 
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| sqsQueue	| sqs.Queue	||
+| deadLetterQueue?	| sqs.Queue	||
+| encryptionKey	| kms.Key	| Only for service to SQS constructs that require a non-default CMK. |
 
 ## Step Functions
 **Required Attributes on Props** 
@@ -295,7 +286,6 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | stateMachineProps	| sfn.StateMachineProps	||
 | createCloudWatchAlarms | boolean | |
 
-
 **Required Construct Properties** 
 
 | Name    | Type     | Notes    |
@@ -303,23 +293,6 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | stateMachine		| sfn.StateMachine	||
 | stateMachineLoggingGroup	| logs.LogGroup	||
 | cloudwatchAlarms? | cloudwatch.Alarm[] ||
-
-
-## ElasticSearch
-**Required Attributes on Props** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| esDomainProps?	| elasticsearch.CfnDomainProps	||
-| domainName	| string	||
-
-
-**Required Construct Properties** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| elasticsearchDomain | elasticsearch.CfnDomain ||
-| elasticsearchDomainRole | iam.Role ||
 
 ## VPC
 **Required Attributes on Props** 
@@ -335,3 +308,17 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | Name    | Type     | Notes    |
 | --- | --- | --- |
 | vpc? | ec2.IVpc |  |
+
+## WAF WebACL
+**Required Attributes on Props** 
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| existingWebaclObj? | wafv2.CfnWebACL	||
+| webaclProps?	| wafv2.CfnWebACLProps	||
+
+**Required Construct Properties** 
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| webacl	| wafv2.CfnWebACL	||
