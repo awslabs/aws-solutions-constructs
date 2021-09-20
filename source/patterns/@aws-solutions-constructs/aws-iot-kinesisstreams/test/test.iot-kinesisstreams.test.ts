@@ -19,7 +19,7 @@ import * as iam from '@aws-cdk/aws-iam';
 // import * as defaults from '@aws-solutions-constructs/core';
 import '@aws-cdk/assert/jest';
 
-const iotTopicRuleProps = {
+const iotTopicRuleProps: iot.CfnTopicRuleProps = {
   topicRulePayload: {
     description: "sends data to kinesis streams",
     sql: "SELECT * FROM 'solutions/constructs'",
@@ -67,14 +67,10 @@ test('check iot topic rule properties', () => {
     }
   });
 
-  const iotTopicRule = construct.iotTopicRule;
-  const iotActionsRole = construct.iotActionsRole;
-  const cloudwatchAlarms = construct.cloudwatchAlarms;
-  const kinesisStream = construct.kinesisStream;
-  expect(iotTopicRule).toBeDefined();
-  expect(iotActionsRole).toBeDefined();
-  expect(cloudwatchAlarms).toBeDefined();
-  expect(kinesisStream).toBeDefined();
+  expect(construct.iotTopicRule).toBeDefined();
+  expect(construct.iotActionsRole).toBeDefined();
+  expect(construct.cloudwatchAlarms).toBeDefined();
+  expect(construct.kinesisStream).toBeDefined();
 });
 
 test('check existing kinesis stream', () => {
@@ -101,14 +97,10 @@ test('check existing kinesis stream', () => {
 
   expect(stack).not.toHaveResource('AWS::CloudWatch::Alarm');
 
-  const iotTopicRule = construct.iotTopicRule;
-  const iotActionsRole = construct.iotActionsRole;
-  const cloudwatchAlarms = construct.cloudwatchAlarms;
-  const kinesisStream = construct.kinesisStream;
-  expect(iotTopicRule).toBeDefined();
-  expect(iotActionsRole).toBeDefined();
-  expect(cloudwatchAlarms).toBeUndefined();
-  expect(kinesisStream).toBeDefined();
+  expect(construct.iotTopicRule).toBeDefined();
+  expect(construct.iotActionsRole).toBeDefined();
+  expect(construct.cloudwatchAlarms).toBeUndefined();
+  expect(construct.kinesisStream).toBeDefined();
 });
 
 test('check new kinesis stream with override props', () => {
