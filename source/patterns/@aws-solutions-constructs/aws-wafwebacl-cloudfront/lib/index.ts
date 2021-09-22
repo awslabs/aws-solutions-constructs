@@ -24,6 +24,10 @@ import { Construct } from '@aws-cdk/core';
 export interface WafwebaclToCloudFrontProps {
   /**
    * The existing CloudFront instance that will be protected with the WAF web ACL.
+   * 
+   * This construct changes the CloudFront distribution by directly manipulating
+   * the CloudFormation output, so this must be the Construct and cannot be
+   * changed to the Interface (IDistribution)
    */
   readonly existingCloudFrontWebDistribution: cloudfront.Distribution ,
   /**
@@ -32,10 +36,6 @@ export interface WafwebaclToCloudFrontProps {
   readonly existingWebaclObj?: waf.CfnWebACL,
   /**
    * Optional user-provided props to override the default props for the AWS WAF web ACL.
-   *
-   * This construct changes the CloudFront distribution by directly manipulating
-   * the CloudFormation output, so this must be the Construct and cannot be
-   * changed to the Interface (IDistribution)
    *
    * @default - Default properties are used.
    */
