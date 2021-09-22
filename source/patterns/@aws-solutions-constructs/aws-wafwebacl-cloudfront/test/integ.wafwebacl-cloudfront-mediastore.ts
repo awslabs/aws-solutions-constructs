@@ -22,10 +22,10 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-wafwebacl-cloudfront-mediastore';
 
-const cloudfrontGatewayLambda = new CloudFrontToMediaStore(stack, 'test-cloudfront-mediastore', {});
+const cloudfrontMediaStore = new CloudFrontToMediaStore(stack, 'test-cloudfront-mediastore', {});
 
 new WafwebaclToCloudFront(stack, 'waf-cloudfront', {
-  existingCloudFrontWebDistribution: cloudfrontGatewayLambda.cloudFrontWebDistribution
+  existingCloudFrontWebDistribution: cloudfrontMediaStore.cloudFrontWebDistribution
 });
 
 // Synth
