@@ -22,7 +22,10 @@ import * as defaults from '@aws-solutions-constructs/core';
 import '@aws-cdk/assert/jest';
 
 function deployConstruct(stack: cdk.Stack, constructProps?: waf.CfnWebACLProps) {
-  const myBucket = new s3.Bucket(stack, 'myBucket');
+  const myBucket = new s3.Bucket(stack, 'myBucket', {
+    removalPolicy: cdk.RemovalPolicy.DESTROY
+  });
+
   const testCloudfrontDistribution = new cloudfront.Distribution(stack, 'myDist', {
     defaultBehavior: { origin: new origins.S3Origin(myBucket) },
   });

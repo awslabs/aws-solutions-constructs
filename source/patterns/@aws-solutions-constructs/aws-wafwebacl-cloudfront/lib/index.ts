@@ -33,6 +33,10 @@ export interface WafwebaclToCloudFrontProps {
   /**
    * Optional user-provided props to override the default props for the AWS WAF web ACL.
    *
+   * This construct changes the CloudFront distribution by directly manipulating
+   * the CloudFormation output, so this must be the Construct and cannot be
+   * changed to the Interface (IDistribution)
+   * 
    * @default - Default properties are used.
    */
   readonly webaclProps?: waf.CfnWebACLProps,
