@@ -36,7 +36,7 @@ export interface WafwebaclToCloudFrontProps {
    * This construct changes the CloudFront distribution by directly manipulating
    * the CloudFormation output, so this must be the Construct and cannot be
    * changed to the Interface (IDistribution)
-   * 
+   *
    * @default - Default properties are used.
    */
   readonly webaclProps?: waf.CfnWebACLProps,
