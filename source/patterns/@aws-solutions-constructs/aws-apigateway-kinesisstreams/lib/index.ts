@@ -19,6 +19,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import * as logs from '@aws-cdk/aws-logs';
+import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 
 /**
  * @summary The properties for the ApiGatewayToKinesisStreamsProps class.
@@ -81,6 +82,12 @@ export interface ApiGatewayToKinesisStreamsProps {
    * @default - Default props are used
    */
   readonly logGroupProps?: logs.LogGroupProps
+  /**
+   * Whether to create recommended CloudWatch alarms
+   *
+   * @default - Alarms are created
+   */
+  readonly createCloudWatchAlarms?: boolean;
 }
 
 /**
@@ -92,6 +99,7 @@ export class ApiGatewayToKinesisStreams extends Construct {
   public readonly apiGatewayCloudWatchRole: iam.Role;
   public readonly apiGatewayLogGroup: logs.LogGroup;
   public readonly kinesisStream: kinesis.Stream;
+  public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
 
   /**
    * @summary Constructs a new instance of the ApiGatewayToKinesisStreams class.
@@ -154,6 +162,11 @@ export class ApiGatewayToKinesisStreams extends Construct {
       requestValidator,
       requestModel: { 'application/json': this.getPutRecordsModel(props.putRecordsRequestModel) }
     });
+
+    if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
+      // Deploy best practices CW Alarms for Kinesis Stream
+      this.cloudwatchAlarms = defaults.buildKinesisStreamCWAlarms(this);
+    }
   }
 
   private getPutRecordTemplate(putRecordTemplate?: string): string {
