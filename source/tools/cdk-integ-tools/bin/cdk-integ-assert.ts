@@ -3,6 +3,7 @@
 import { canonicalizeTemplate } from '@aws-cdk/assert';
 import { diffTemplate, formatDifferences } from '@aws-cdk/cloudformation-diff';
 import { DEFAULT_SYNTH_OPTIONS, IntegrationTests } from '../lib/integ-helpers';
+import * as deepmerge from 'deepmerge';
 
 /* eslint-disable no-console */
 
@@ -20,7 +21,12 @@ async function main() {
     }
 
     let expected = await test.readExpected();
-    let actual = await test.cdkSynthFast(DEFAULT_SYNTH_OPTIONS);
+    // Enable Default KMS policy to match with CDK v2 expected KMS policy
+    let actual = await test.cdkSynthFast(deepmerge(DEFAULT_SYNTH_OPTIONS, {
+      context: {
+        '@aws-cdk/aws-kms:defaultKeyPolicies': true
+      }
+    }));
 
     if ((await test.pragmas()).includes(IGNORE_ASSETS_PRAGMA)) {
       expected = canonicalizeTemplate(expected);
