@@ -11,6 +11,8 @@
  *  and limitations under the License.
  */
 
+export * from './lib/alb-defaults';
+export * from './lib/alb-helper';
 export * from './lib/apigateway-defaults';
 export * from './lib/apigateway-helper';
 export * from './lib/dynamodb-table-defaults';
