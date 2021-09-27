@@ -54,7 +54,8 @@ async function main() {
       // Enable Default KMS policy to match with CDK v2 expected KMS policy
       const actual = await test.cdkSynthFast(deepmerge(DEFAULT_SYNTH_OPTIONS, {
         context: {
-          '@aws-cdk/aws-kms:defaultKeyPolicies': true
+          '@aws-cdk/aws-kms:defaultKeyPolicies': true,
+          '@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId' : true
         }
       }));
 
