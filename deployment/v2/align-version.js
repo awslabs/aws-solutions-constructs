@@ -25,6 +25,9 @@ for (const file of process.argv.splice(4)) {
   pkg.dependencies = processDependencies(pkg.dependencies || { }, file);
   pkg.peerDependencies = processPeerDependencies(pkg.peerDependencies || { }, file);
   pkg.devDependencies = processDevDependencies(pkg.devDependencies || { }, file);
+  if (pkg.scripts) {
+    pkg.scripts["integ-assert"] = "cdk-integ-assert-v2";
+  }
 
   console.error(`${file} => ${replaceVersion}`);
   fs.writeFileSync(file, JSON.stringify(pkg, undefined, 2));
