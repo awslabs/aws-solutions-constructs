@@ -13,6 +13,12 @@ const replaceVersion = process.argv[3];
 const awsCdkLibVersion = '2.0.0-rc.16';
 const constructsVersion = '10.0.0';
 
+const MODULE_EXEMPTIONS = new Set([
+  '@aws-cdk/cloudformation-diff',
+  '@aws-cdk/assert',
+  '@aws-cdk/assert/jest'
+]);
+
 for (const file of process.argv.splice(4)) {
   const pkg = JSON.parse(fs.readFileSync(file).toString());
 
@@ -38,7 +44,7 @@ function processDependencies(section, file) {
   let newdependencies = {};
   for (const [ name, version ] of Object.entries(section)) {
     // Remove all entries starting with @aws-cdk/* and constructs
-    if (!name.startsWith('@aws-cdk/') && !name.startsWith('constructs')) {
+    if (MODULE_EXEMPTIONS.has(name) || ((!name.startsWith('@aws-cdk/') && !name.startsWith('constructs')))) {
       newdependencies[name] = version.replace(findVersion, replaceVersion);
     }
   }
@@ -49,7 +55,7 @@ function processPeerDependencies(section, file) {
   let newdependencies = {};
   for (const [ name, version ] of Object.entries(section)) {
     // Remove all entries starting with @aws-cdk/* and constructs
-    if (!name.startsWith('@aws-cdk/') && !name.startsWith('constructs')) {
+    if (MODULE_EXEMPTIONS.has(name) || ((!name.startsWith('@aws-cdk/') && !name.startsWith('constructs')))) {
       newdependencies[name] = version.replace(findVersion, replaceVersion);
     }
   }
