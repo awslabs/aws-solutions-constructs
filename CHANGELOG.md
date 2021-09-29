@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.124.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.123.0...v1.124.0) (2021-09-29)
+
+
+### Features
+
+* **aws-wafwebacl-cloudfront:** created README for aws-wafwebacl-cloudfront ([#389](https://github.com/awslabs/aws-solutions-constructs/issues/389)) ([bba361e](https://github.com/awslabs/aws-solutions-constructs/commit/bba361eb9c486af272fce4f8352c667e4e04cfa7))
+
+
+### Bug Fixes
+
+* **api-usage-plan:** update cfn templates with api usage plan ([#400](https://github.com/awslabs/aws-solutions-constructs/issues/400)) ([57afba8](https://github.com/awslabs/aws-solutions-constructs/commit/57afba81ce0d9a8cc53c764daa7d9ea573ba1ef8))
+* **aws-apigateway-kinesisstreams:** Update construct to match DESIGN_GUIDELINES.md ([#395](https://github.com/awslabs/aws-solutions-constructs/issues/395)) ([9dbec8a](https://github.com/awslabs/aws-solutions-constructs/commit/9dbec8a0365b28c3e0ee279ded0dfaa42a319d3b))
+* **kms policy:** update cfn templates with kms policy to match with CDK v2 ([#397](https://github.com/awslabs/aws-solutions-constructs/issues/397)) ([21f1f93](https://github.com/awslabs/aws-solutions-constructs/commit/21f1f932e5651e108e5995e89d8bc1c6282dd4f3))
+
 ## [1.123.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.122.0...v1.123.0) (2021-09-21)
 
 * Upgraded all patterns to CDK v1.123.0
