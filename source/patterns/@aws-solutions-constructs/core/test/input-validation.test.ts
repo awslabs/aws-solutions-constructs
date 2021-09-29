@@ -12,19 +12,20 @@
  */
 
 // Imports
-import * as defaults from '../';
-import { Stack } from '@aws-cdk/core';
-import { CreateScrapBucket } from './test-helper';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as sqs from '@aws-cdk/aws-sqs';
-import { MediaStoreContainerProps } from '../lib/mediastore-defaults';
-import * as mediastore from '@aws-cdk/aws-mediastore';
-import * as kinesis from '@aws-cdk/aws-kinesis';
-import * as sns from '@aws-cdk/aws-sns';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as glue from '@aws-cdk/aws-glue';
 import * as iam from '@aws-cdk/aws-iam';
+import * as kinesis from '@aws-cdk/aws-kinesis';
+import * as lambda from '@aws-cdk/aws-lambda';
+import * as mediastore from '@aws-cdk/aws-mediastore';
+import * as s3 from '@aws-cdk/aws-s3';
+import * as sns from '@aws-cdk/aws-sns';
+import * as sqs from '@aws-cdk/aws-sqs';
+import { Stack } from '@aws-cdk/core';
+import * as defaults from '../';
+import { MediaStoreContainerProps } from '../lib/mediastore-defaults';
 import { BuildSagemakerEndpoint } from '../lib/sagemaker-helper';
+import { CreateScrapBucket } from './test-helper';
 
 test('Test with valid props', () => {
   const props: defaults.VerifiedProps = {
@@ -106,15 +107,80 @@ test('Test fail Dead Letter Queue check', () => {
   expect(app).toThrowError('Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n');
 });
 
-test('Test fail Dead Letter Queue check with no deployDeadLetterQueue flag', () => {
+test('Test fail Dead Letter Queue check with queueProps fifo set to true and undefined deadLetterQueueProps', () => {
 
   const props: defaults.VerifiedProps = {
+    queueProps: {fifo: true},
     deadLetterQueueProps: {},
   };
 
-  //  Should not flag an error
-  defaults.CheckProps(props);
+  const app = () => {
+    defaults.CheckProps(props);
+  };
 
+  // Assertion
+  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: true in the other props object. \
+    Fifo must match for the Queue and the Dead Letter Queue.\n');
+});
+
+test('Test fail Dead Letter Queue check with queueProps fifo set to true and deadLetterQueueProps fifo set to false', () => {
+
+  const props: defaults.VerifiedProps = {
+    queueProps: {fifo: true},
+    deadLetterQueueProps: {fifo: false},
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: true in the other props object. \
+    Fifo must match for the Queue and the Dead Letter Queue.\n');
+});
+
+test('Test fail Dead Letter Queue check with queueProps fifo set to false and deadLetterQueueProps fifo set to true', () => {
+
+  const props: defaults.VerifiedProps = {
+    deadLetterQueueProps: {fifo: true},
+    queueProps: {fifo: false},
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: true in the other props object. \
+    Fifo must match for the Queue and the Dead Letter Queue.\n');
+});
+
+test('Test fail Dead Letter Queue check with deadLetterQueueProps fifo set to true', () => {
+
+  const props: defaults.VerifiedProps = {
+    deadLetterQueueProps: {fifo: true},
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: true in the other props object. \
+    Fifo must match for the Queue and the Dead Letter Queue.\n');
+});
+
+test('Test fail Dead Letter Queue check with queueProps fifo set to false', () => {
+
+  const props: defaults.VerifiedProps = {
+    queueProps: {fifo: false},
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: true in the other props object. \
+    Fifo must match for the Queue and the Dead Letter Queue.\n');
 });
 
 test("Test fail MediaStore container check", () => {
@@ -217,10 +283,14 @@ test('Test fail Glue job check', () => {
   });
 
   const jobProps: glue.CfnJobProps = defaults.DefaultGlueJobProps(_jobRole, {
-    name: 'placeholder',
-    pythonVersion: '3',
-    scriptLocation: 's3://fakelocation/script'
-  }, 'testETLJob', {}, '1.0');
+    command: {
+      name: 'glueetl',
+      pythonVersion: '3',
+      scriptLocation: new s3.Bucket(stack, 'ScriptBucket').bucketArn,
+    },
+    role: new iam.Role(stack, 'JobRole', {
+      assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
+    }).roleArn}, 'testETLJob', {});
 
   const job = new glue.CfnJob(stack, 'placeholder', jobProps);
 

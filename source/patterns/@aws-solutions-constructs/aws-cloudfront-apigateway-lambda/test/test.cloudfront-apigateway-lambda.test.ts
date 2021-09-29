@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { CloudFrontToApiGatewayToLambda, CloudFrontToApiGatewayToLambdaProps } from "../lib";
 import * as cdk from "@aws-cdk/core";
 import * as lambda from '@aws-cdk/aws-lambda';
@@ -42,12 +41,6 @@ function useExistingFunc(stack: cdk.Stack) {
   });
 }
 
-test('snapshot test CloudFrontToApiGatewayToLambda default params', () => {
-  const stack = new cdk.Stack();
-  deployNewFunc(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
 test('check properties', () => {
   const stack = new cdk.Stack();
 
@@ -56,7 +49,7 @@ test('check properties', () => {
   expect(construct.cloudFrontWebDistribution !== null);
   expect(construct.apiGateway !== null);
   expect(construct.lambdaFunction !== null);
-  expect(construct.edgeLambdaFunctionVersion !== null);
+  expect(construct.cloudFrontFunction !== null);
   expect(construct.cloudFrontLoggingBucket !== null);
   expect(construct.apiGatewayCloudWatchRole !== null);
   expect(construct.apiGatewayLogGroup !== null);

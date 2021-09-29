@@ -14,7 +14,7 @@
 // Imports
 import { Stack } from "@aws-cdk/core";
 import * as defaults from '../';
-import { SynthUtils, expect as expectCDK, haveResource } from '@aws-cdk/assert';
+import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------
@@ -25,9 +25,7 @@ test('Test deployment with no properties using AWS Managed KMS Key', () => {
   const stack = new Stack();
   // Helper declaration
   defaults.buildTopic(stack, {});
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
+
   expect(stack).toHaveResource("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::Join": [
@@ -65,9 +63,7 @@ test('Test deployment without imported encryption key', () => {
     },
     enableEncryptionWithCustomerManagedKey: true
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
+
   expect(stack).toHaveResource("AWS::SNS::Topic", {
     TopicName: "custom-topic"
   });
@@ -93,9 +89,7 @@ test('Test deployment w/ imported encryption key', () => {
     enableEncryptionWithCustomerManagedKey: true,
     encryptionKey: key
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
+
   expect(stack).toHaveResource("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
@@ -175,7 +169,9 @@ test('Check SNS Topic policy', () => {
             }
           },
           Effect: "Deny",
-          Principal: "*",
+          Principal: {
+            AWS: "*"
+          },
           Resource: {
             Ref: "SnsTopic2C1570A4"
           },

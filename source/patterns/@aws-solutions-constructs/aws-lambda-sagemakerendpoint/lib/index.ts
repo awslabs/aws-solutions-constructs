@@ -11,12 +11,13 @@
  *  and limitations under the License.
  */
 
-import * as cdk from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as iam from '@aws-cdk/aws-iam';
 import * as sagemaker from '@aws-cdk/aws-sagemaker';
 import * as defaults from '@aws-solutions-constructs/core';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
+import { Construct } from '@aws-cdk/core';
 
 /**
  * @summary The properties for the LambdaToSagemakerEndpoint class
@@ -87,7 +88,7 @@ export interface LambdaToSagemakerEndpointProps {
 /**
  * @summary The LambdaToSagemakerEndpoint class.
  */
-export class LambdaToSagemakerEndpoint extends cdk.Construct {
+export class LambdaToSagemakerEndpoint extends Construct {
   public readonly lambdaFunction: lambda.Function;
   public readonly sagemakerEndpoint: sagemaker.CfnEndpoint;
   public readonly sagemakerEndpointConfig?: sagemaker.CfnEndpointConfig;
@@ -102,7 +103,7 @@ export class LambdaToSagemakerEndpoint extends cdk.Construct {
    * @since 1.87.1
    * @access public
    */
-  constructor(scope: cdk.Construct, id: string, props: LambdaToSagemakerEndpointProps) {
+  constructor(scope: Construct, id: string, props: LambdaToSagemakerEndpointProps) {
     super(scope, id);
     defaults.CheckProps(props);
 

@@ -13,7 +13,8 @@
 
 import { DefaultLogGroupProps } from './cloudwatch-log-group-defaults';
 import * as logs from '@aws-cdk/aws-logs';
-import { overrideProps } from './utils';
+import { overrideProps, addCfnSuppressRules } from './utils';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
 export function buildLogGroup(scope: Construct, logGroupId?: string, logGroupProps?: logs.LogGroupProps): logs.LogGroup {
@@ -33,34 +34,22 @@ export function buildLogGroup(scope: Construct, logGroupId?: string, logGroupPro
   const logGroup = new logs.LogGroup(scope, _logGroupId, _logGroupProps);
 
   // If required, suppress the Cfn Nag WARNINGS
-  const cfnLogGroup: logs.CfnLogGroup = logGroup.node.defaultChild as logs.CfnLogGroup;
-
   if (_logGroupProps.retention === logs.RetentionDays.INFINITE) {
-    cfnLogGroup.cfnOptions.metadata = {
-      cfn_nag: {
-        rules_to_suppress: [{
-          id: 'W86',
-          reason: 'Retention period for CloudWatchLogs LogGroups are set to \'Never Expire\' to preserve customer data indefinitely'
-        }]
+    addCfnSuppressRules( logGroup, [
+      {
+        id: 'W86',
+        reason: 'Retention period for CloudWatchLogs LogGroups are set to \'Never Expire\' to preserve customer data indefinitely'
       }
-    };
+    ]);
   }
 
   if (!_logGroupProps.encryptionKey) {
-    const suppressMsg = {
-      id: 'W84',
-      reason: 'By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)'
-    };
-
-    if (cfnLogGroup.cfnOptions.metadata?.cfn_nag.rules_to_suppress) {
-        cfnLogGroup.cfnOptions.metadata?.cfn_nag.rules_to_suppress.push(suppressMsg);
-    } else {
-      cfnLogGroup.cfnOptions.metadata = {
-        cfn_nag: {
-          rules_to_suppress: [suppressMsg]
-        }
-      };
-    }
+    addCfnSuppressRules( logGroup, [
+      {
+        id: 'W84',
+        reason: 'By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)'
+      }
+    ]);
   }
 
   return logGroup;

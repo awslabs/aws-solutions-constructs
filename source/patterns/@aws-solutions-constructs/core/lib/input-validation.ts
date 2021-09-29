@@ -27,6 +27,7 @@ import * as kms from "@aws-cdk/aws-kms";
 export interface VerifiedProps {
   readonly dynamoTableProps?: dynamodb.TableProps,
   readonly existingTableObj?: dynamodb.Table,
+  readonly existingTableInterface?: dynamodb.ITable,
 
   readonly existingStreamObj?: kinesis.Stream;
   readonly kinesisStreamProps?: kinesis.StreamProps,
@@ -43,6 +44,7 @@ export interface VerifiedProps {
   readonly mediaStoreContainerProps?: mediastore.CfnContainerProps;
 
   readonly existingBucketObj?: s3.Bucket,
+  readonly existingBucketInterface?: s3.IBucket,
   readonly bucketProps?: s3.BucketProps,
 
   readonly topicProps?: sns.TopicProps,
@@ -75,6 +77,11 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
+  if (propsObject.dynamoTableProps && propsObject.existingTableInterface) {
+    errorMessages += 'Error - Either provide existingTableInterface or dynamoTableProps, but not both.\n';
+    errorFound = true;
+  }
+
   if (propsObject.existingStreamObj  && propsObject.kinesisStreamProps) {
     errorMessages += 'Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n';
     errorFound = true;
@@ -95,6 +102,16 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
+  const isQueueFifo: boolean = propsObject?.queueProps?.fifo;
+  const isDeadLetterQueueFifo: boolean = propsObject?.deadLetterQueueProps?.fifo;
+  const deployDeadLetterQueue: boolean = propsObject.deployDeadLetterQueue || propsObject.deployDeadLetterQueue === undefined;
+
+  if (deployDeadLetterQueue && (isQueueFifo !== isDeadLetterQueueFifo)) {
+    errorMessages += 'Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: true in the other props object. \
+    Fifo must match for the Queue and the Dead Letter Queue.\n';
+    errorFound = true;
+  }
+
   if (propsObject.existingMediaStoreContainerObj && propsObject.mediaStoreContainerProps) {
     errorMessages += 'Error - Either provide mediaStoreContainerProps or existingMediaStoreContainerObj, but not both.\n';
     errorFound = true;
@@ -102,6 +119,11 @@ export function CheckProps(propsObject: VerifiedProps | any) {
 
   if (propsObject.existingBucketObj && propsObject.bucketProps) {
     errorMessages += 'Error - Either provide bucketProps or existingBucketObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.existingBucketInterface && propsObject.bucketProps) {
+    errorMessages += 'Error - Either provide bucketProps or existingBucketInterface, but not both.\n';
     errorFound = true;
   }
 
@@ -133,6 +155,16 @@ export function CheckProps(propsObject: VerifiedProps | any) {
 
   if (propsObject.encryptionKey && propsObject.encryptionKeyProps) {
     errorMessages += 'Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.existingEventBusInterface && propsObject.eventBusProps) {
+    errorMessages += 'Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.existingWebaclObj && propsObject.webaclProps) {
+    errorMessages += 'Error - Either provide existingWebaclObj or webaclProps, but not both.\n';
     errorFound = true;
   }
 

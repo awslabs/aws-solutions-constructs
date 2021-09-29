@@ -15,8 +15,10 @@
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as sfn from '@aws-cdk/aws-stepfunctions';
-import * as defaults from '@aws-solutions-constructs/core';
+import { LambdaToStepfunctions } from "@aws-solutions-constructs/aws-lambda-stepfunctions";
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
+import * as ec2 from "@aws-cdk/aws-ec2";
 import * as logs from '@aws-cdk/aws-logs';
 
 /**
@@ -59,6 +61,20 @@ export interface LambdaToStepFunctionProps {
    * @default - None
    */
   readonly stateMachineEnvironmentVariableName?: string;
+  /**
+   * An existing VPC for the construct to use (construct will NOT create a new VPC in this case)
+   */
+  readonly existingVpc?: ec2.IVpc;
+  /**
+   * Properties to override default properties if deployVpc is true
+   */
+  readonly vpcProps?: ec2.VpcProps;
+  /**
+   * Whether to deploy a new VPC
+   *
+   * @default - false
+   */
+  readonly deployVpc?: boolean;
 }
 
 /**
@@ -69,6 +85,7 @@ export class LambdaToStepFunction extends Construct {
   public readonly stateMachine: sfn.StateMachine;
   public readonly stateMachineLogGroup: logs.ILogGroup;
   public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
+  public readonly vpc?: ec2.IVpc;
 
   /**
    * @summary Constructs a new instance of the LambdaToStepFunctionProps class.
@@ -80,28 +97,18 @@ export class LambdaToStepFunction extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToStepFunctionProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    const convertedProps: LambdaToStepFunctionProps = { ...props };
 
-    // Setup the state machine
-    [this.stateMachine, this.stateMachineLogGroup] = defaults.buildStateMachine(this, props.stateMachineProps,
-      props.logGroupProps);
+    // W (for 'wrapped') is added to the id so that the id's of the constructs with the old and new names don't collide
+    // If this character pushes you beyond the 64 character limit, just import the new named construct and instantiate
+    // it in place of the older named version. They are functionally identical, aside from the types no other changes
+    // will be required.  (eg - new LambdaToStepfunctions instead of LambdaToStepFunction)
+    const wrappedConstruct: LambdaToStepFunction = new LambdaToStepfunctions(this, `${id}W`, convertedProps);
 
-    // Setup the Lambda function
-    this.lambdaFunction = defaults.buildLambdaFunction(this, {
-      existingLambdaObj: props.existingLambdaObj,
-      lambdaFunctionProps: props.lambdaFunctionProps,
-    });
-
-    // Assign the state machine ARN as an environment variable
-    const stateMachineEnvironmentVariableName = props.stateMachineEnvironmentVariableName || 'STATE_MACHINE_ARN';
-    this.lambdaFunction.addEnvironment(stateMachineEnvironmentVariableName, this.stateMachine.stateMachineArn);
-
-    // Grant the start execution permission to the Lambda function
-    this.stateMachine.grantStartExecution(this.lambdaFunction);
-
-    if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
-      // Deploy best-practice CloudWatch Alarm for state machine
-      this.cloudwatchAlarms = defaults.buildStepFunctionCWAlarms(this, this.stateMachine);
-    }
+    this.lambdaFunction = wrappedConstruct.lambdaFunction;
+    this.stateMachine = wrappedConstruct.stateMachine;
+    this.stateMachineLogGroup = wrappedConstruct.stateMachineLogGroup;
+    this.cloudwatchAlarms = wrappedConstruct.cloudwatchAlarms;
+    this.vpc = wrappedConstruct.vpc;
   }
 }

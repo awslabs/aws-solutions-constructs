@@ -16,45 +16,7 @@ import { Stack } from "@aws-cdk/core";
 import { ApiGatewayToLambda, ApiGatewayToLambdaProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as api from '@aws-cdk/aws-apigateway';
-import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
-
-// --------------------------------------------------------------
-// Pattern deployment with new Lambda function
-// --------------------------------------------------------------
-test('Pattern deployment with new Lambda function', () => {
-  // Initial Setup
-  const stack = new Stack();
-  const props: ApiGatewayToLambdaProps = {
-    lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    }
-  };
-  new ApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
-// --------------------------------------------------------------
-// Pattern deployment with existing Lambda function
-// --------------------------------------------------------------
-test('Pattern deployment with existing Lambda function', () => {
-  // Initial Setup
-  const stack = new Stack();
-  const fn = new lambda.Function(stack, 'ExistingLambdaFunction', {
-    runtime: lambda.Runtime.NODEJS_10_X,
-    handler: 'index.handler',
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-  });
-  const props: ApiGatewayToLambdaProps = {
-    existingLambdaObj: fn
-  };
-  new ApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 // --------------------------------------------------------------
 // Test for error with existingLambdaObj=undefined (not supplied by user).
@@ -137,34 +99,6 @@ test('Error on lambdaFunctionProps=undefined', () => {
   };
     // Assertion 1
   expect(app).toThrowError();
-});
-
-// --------------------------------------------------------------
-// Pattern deployment with two ApiGatewayToLambda constructs
-// --------------------------------------------------------------
-test('Pattern deployment with two ApiGatewayToLambda constructs', () => {
-  // Initial Setup
-  const stack = new Stack();
-  const props1: ApiGatewayToLambdaProps = {
-    lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    }
-  };
-  new ApiGatewayToLambda(stack, 'pattern1', props1);
-
-  const props2: ApiGatewayToLambdaProps = {
-    lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    }
-  };
-  new ApiGatewayToLambda(stack, 'pattern2', props2);
-
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // -----------------------------------------------------------------

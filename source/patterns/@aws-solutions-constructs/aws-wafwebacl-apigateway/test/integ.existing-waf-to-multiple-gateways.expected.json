@@ -1,0 +1,1468 @@
+{
+  "Resources": {
+    "gatewayoneLambdaFunctionServiceRole1F6DDFC3": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":log-group:/aws/lambda/*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy"
+          }
+        ]
+      }
+    },
+    "gatewayoneLambdaFunctionServiceRoleDefaultPolicyA37B506C": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "gatewayoneLambdaFunctionServiceRoleDefaultPolicyA37B506C",
+        "Roles": [
+          {
+            "Ref": "gatewayoneLambdaFunctionServiceRole1F6DDFC3"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+            }
+          ]
+        }
+      }
+    },
+    "gatewayoneLambdaFunctionF5CD5916": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420S3Bucket749AC458"
+          },
+          "S3Key": {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Fn::Select": [
+                    0,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420S3VersionKeyFF5CC16D"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Fn::Select": [
+                    1,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420S3VersionKeyFF5CC16D"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            ]
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "gatewayoneLambdaFunctionServiceRole1F6DDFC3",
+            "Arn"
+          ]
+        },
+        "Environment": {
+          "Variables": {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+          }
+        },
+        "Handler": "index.handler",
+        "Runtime": "nodejs12.x",
+        "TracingConfig": {
+          "Mode": "Active"
+        }
+      },
+      "DependsOn": [
+        "gatewayoneLambdaFunctionServiceRoleDefaultPolicyA37B506C",
+        "gatewayoneLambdaFunctionServiceRole1F6DDFC3"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+            },
+            {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            },
+            {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients"
+            }
+          ]
+        }
+      }
+    },
+    "gatewayoneApiAccessLogGroupE3CB61EE": {
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
+            },
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+            }
+          ]
+        }
+      }
+    },
+    "gatewayoneLambdaRestApi6736CB0F": {
+      "Type": "AWS::ApiGateway::RestApi",
+      "Properties": {
+        "EndpointConfiguration": {
+          "Types": [
+            "EDGE"
+          ]
+        },
+        "Name": "LambdaRestApi"
+      }
+    },
+    "gatewayoneLambdaRestApiDeployment7B05E48961d9ef667f72c076dca193d3a95b5802": {
+      "Type": "AWS::ApiGateway::Deployment",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "gatewayoneLambdaRestApi6736CB0F"
+        },
+        "Description": "Automatically created by the RestApi construct"
+      },
+      "DependsOn": [
+        "gatewayoneLambdaRestApiproxyANYD2A809E4",
+        "gatewayoneLambdaRestApiproxy2088B93B",
+        "gatewayoneLambdaRestApiANYAF87BA09"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W45",
+              "reason": "ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checkes for it in AWS::ApiGateway::Deployment resource"
+            }
+          ]
+        }
+      }
+    },
+    "gatewayoneLambdaRestApiDeploymentStageprod52912E1A": {
+      "Type": "AWS::ApiGateway::Stage",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "gatewayoneLambdaRestApi6736CB0F"
+        },
+        "AccessLogSetting": {
+          "DestinationArn": {
+            "Fn::GetAtt": [
+              "gatewayoneApiAccessLogGroupE3CB61EE",
+              "Arn"
+            ]
+          },
+          "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
+        },
+        "DeploymentId": {
+          "Ref": "gatewayoneLambdaRestApiDeployment7B05E48961d9ef667f72c076dca193d3a95b5802"
+        },
+        "MethodSettings": [
+          {
+            "DataTraceEnabled": false,
+            "HttpMethod": "*",
+            "LoggingLevel": "INFO",
+            "ResourcePath": "/*"
+          }
+        ],
+        "StageName": "prod",
+        "TracingEnabled": true
+      }
+    },
+    "gatewayoneLambdaRestApiproxy2088B93B": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "gatewayoneLambdaRestApi6736CB0F",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "{proxy+}",
+        "RestApiId": {
+          "Ref": "gatewayoneLambdaRestApi6736CB0F"
+        }
+      }
+    },
+    "gatewayoneLambdaRestApiproxyANYApiPermissionexistingwaftomultiplegatewaysgatewayoneLambdaRestApi0C5F0465ANYproxyC7914775": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "gatewayoneLambdaFunctionF5CD5916",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "gatewayoneLambdaRestApi6736CB0F"
+              },
+              "/",
+              {
+                "Ref": "gatewayoneLambdaRestApiDeploymentStageprod52912E1A"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "gatewayoneLambdaRestApiproxyANYApiPermissionTestexistingwaftomultiplegatewaysgatewayoneLambdaRestApi0C5F0465ANYproxyC2178D53": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "gatewayoneLambdaFunctionF5CD5916",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "gatewayoneLambdaRestApi6736CB0F"
+              },
+              "/test-invoke-stage/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "gatewayoneLambdaRestApiproxyANYD2A809E4": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "ANY",
+        "ResourceId": {
+          "Ref": "gatewayoneLambdaRestApiproxy2088B93B"
+        },
+        "RestApiId": {
+          "Ref": "gatewayoneLambdaRestApi6736CB0F"
+        },
+        "AuthorizationType": "AWS_IAM",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "gatewayoneLambdaFunctionF5CD5916",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        }
+      }
+    },
+    "gatewayoneLambdaRestApiANYApiPermissionexistingwaftomultiplegatewaysgatewayoneLambdaRestApi0C5F0465ANY1D36A48A": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "gatewayoneLambdaFunctionF5CD5916",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "gatewayoneLambdaRestApi6736CB0F"
+              },
+              "/",
+              {
+                "Ref": "gatewayoneLambdaRestApiDeploymentStageprod52912E1A"
+              },
+              "/*/"
+            ]
+          ]
+        }
+      }
+    },
+    "gatewayoneLambdaRestApiANYApiPermissionTestexistingwaftomultiplegatewaysgatewayoneLambdaRestApi0C5F0465ANY24049F0D": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "gatewayoneLambdaFunctionF5CD5916",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "gatewayoneLambdaRestApi6736CB0F"
+              },
+              "/test-invoke-stage/*/"
+            ]
+          ]
+        }
+      }
+    },
+    "gatewayoneLambdaRestApiANYAF87BA09": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "ANY",
+        "ResourceId": {
+          "Fn::GetAtt": [
+            "gatewayoneLambdaRestApi6736CB0F",
+            "RootResourceId"
+          ]
+        },
+        "RestApiId": {
+          "Ref": "gatewayoneLambdaRestApi6736CB0F"
+        },
+        "AuthorizationType": "AWS_IAM",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "gatewayoneLambdaFunctionF5CD5916",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        }
+      }
+    },
+    "gatewayoneLambdaRestApiUsagePlan1BCC662B": {
+      "Type": "AWS::ApiGateway::UsagePlan",
+      "Properties": {
+        "ApiStages": [
+          {
+            "ApiId": {
+              "Ref": "gatewayoneLambdaRestApi6736CB0F"
+            },
+            "Stage": {
+              "Ref": "gatewayoneLambdaRestApiDeploymentStageprod52912E1A"
+            },
+            "Throttle": {}
+          }
+        ]
+      }
+    },
+    "gatewayoneLambdaRestApiCloudWatchRoleC7A78794": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "apigateway.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:DescribeLogGroups",
+                    "logs:DescribeLogStreams",
+                    "logs:PutLogEvents",
+                    "logs:GetLogEvents",
+                    "logs:FilterLogEvents"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "LambdaRestApiCloudWatchRolePolicy"
+          }
+        ]
+      }
+    },
+    "gatewayoneLambdaRestApiAccount3FD1C6CF": {
+      "Type": "AWS::ApiGateway::Account",
+      "Properties": {
+        "CloudWatchRoleArn": {
+          "Fn::GetAtt": [
+            "gatewayoneLambdaRestApiCloudWatchRoleC7A78794",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "gatewayoneLambdaRestApi6736CB0F"
+      ]
+    },
+    "gatewaytwoLambdaFunctionServiceRole52F9A87F": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":log-group:/aws/lambda/*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy"
+          }
+        ]
+      }
+    },
+    "gatewaytwoLambdaFunctionServiceRoleDefaultPolicyACFB1F32": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "gatewaytwoLambdaFunctionServiceRoleDefaultPolicyACFB1F32",
+        "Roles": [
+          {
+            "Ref": "gatewaytwoLambdaFunctionServiceRole52F9A87F"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+            }
+          ]
+        }
+      }
+    },
+    "gatewaytwoLambdaFunction7A0A2DA7": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420S3Bucket749AC458"
+          },
+          "S3Key": {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Fn::Select": [
+                    0,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420S3VersionKeyFF5CC16D"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Fn::Select": [
+                    1,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420S3VersionKeyFF5CC16D"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            ]
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "gatewaytwoLambdaFunctionServiceRole52F9A87F",
+            "Arn"
+          ]
+        },
+        "Environment": {
+          "Variables": {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+          }
+        },
+        "Handler": "index.handler",
+        "Runtime": "nodejs12.x",
+        "TracingConfig": {
+          "Mode": "Active"
+        }
+      },
+      "DependsOn": [
+        "gatewaytwoLambdaFunctionServiceRoleDefaultPolicyACFB1F32",
+        "gatewaytwoLambdaFunctionServiceRole52F9A87F"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+            },
+            {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            },
+            {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients"
+            }
+          ]
+        }
+      }
+    },
+    "gatewaytwoApiAccessLogGroup55FEBB3B": {
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
+            },
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+            }
+          ]
+        }
+      }
+    },
+    "gatewaytwoLambdaRestApi67206603": {
+      "Type": "AWS::ApiGateway::RestApi",
+      "Properties": {
+        "EndpointConfiguration": {
+          "Types": [
+            "EDGE"
+          ]
+        },
+        "Name": "LambdaRestApi"
+      }
+    },
+    "gatewaytwoLambdaRestApiDeployment19522CBD76cd7772a4601139df9020d9f3c2a417": {
+      "Type": "AWS::ApiGateway::Deployment",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "gatewaytwoLambdaRestApi67206603"
+        },
+        "Description": "Automatically created by the RestApi construct"
+      },
+      "DependsOn": [
+        "gatewaytwoLambdaRestApiproxyANY655E0C6C",
+        "gatewaytwoLambdaRestApiproxyA1CF71EC",
+        "gatewaytwoLambdaRestApiANYCB79A83A"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W45",
+              "reason": "ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checkes for it in AWS::ApiGateway::Deployment resource"
+            }
+          ]
+        }
+      }
+    },
+    "gatewaytwoLambdaRestApiDeploymentStageprod0E298F7E": {
+      "Type": "AWS::ApiGateway::Stage",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "gatewaytwoLambdaRestApi67206603"
+        },
+        "AccessLogSetting": {
+          "DestinationArn": {
+            "Fn::GetAtt": [
+              "gatewaytwoApiAccessLogGroup55FEBB3B",
+              "Arn"
+            ]
+          },
+          "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
+        },
+        "DeploymentId": {
+          "Ref": "gatewaytwoLambdaRestApiDeployment19522CBD76cd7772a4601139df9020d9f3c2a417"
+        },
+        "MethodSettings": [
+          {
+            "DataTraceEnabled": false,
+            "HttpMethod": "*",
+            "LoggingLevel": "INFO",
+            "ResourcePath": "/*"
+          }
+        ],
+        "StageName": "prod",
+        "TracingEnabled": true
+      }
+    },
+    "gatewaytwoLambdaRestApiproxyA1CF71EC": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "gatewaytwoLambdaRestApi67206603",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "{proxy+}",
+        "RestApiId": {
+          "Ref": "gatewaytwoLambdaRestApi67206603"
+        }
+      }
+    },
+    "gatewaytwoLambdaRestApiproxyANYApiPermissionexistingwaftomultiplegatewaysgatewaytwoLambdaRestApiEE78C7C6ANYproxyC9ED8D1C": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "gatewaytwoLambdaFunction7A0A2DA7",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "gatewaytwoLambdaRestApi67206603"
+              },
+              "/",
+              {
+                "Ref": "gatewaytwoLambdaRestApiDeploymentStageprod0E298F7E"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "gatewaytwoLambdaRestApiproxyANYApiPermissionTestexistingwaftomultiplegatewaysgatewaytwoLambdaRestApiEE78C7C6ANYproxyD05D5679": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "gatewaytwoLambdaFunction7A0A2DA7",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "gatewaytwoLambdaRestApi67206603"
+              },
+              "/test-invoke-stage/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "gatewaytwoLambdaRestApiproxyANY655E0C6C": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "ANY",
+        "ResourceId": {
+          "Ref": "gatewaytwoLambdaRestApiproxyA1CF71EC"
+        },
+        "RestApiId": {
+          "Ref": "gatewaytwoLambdaRestApi67206603"
+        },
+        "AuthorizationType": "AWS_IAM",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "gatewaytwoLambdaFunction7A0A2DA7",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        }
+      }
+    },
+    "gatewaytwoLambdaRestApiANYApiPermissionexistingwaftomultiplegatewaysgatewaytwoLambdaRestApiEE78C7C6ANY4EDE62BB": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "gatewaytwoLambdaFunction7A0A2DA7",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "gatewaytwoLambdaRestApi67206603"
+              },
+              "/",
+              {
+                "Ref": "gatewaytwoLambdaRestApiDeploymentStageprod0E298F7E"
+              },
+              "/*/"
+            ]
+          ]
+        }
+      }
+    },
+    "gatewaytwoLambdaRestApiANYApiPermissionTestexistingwaftomultiplegatewaysgatewaytwoLambdaRestApiEE78C7C6ANY5C1983E9": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "gatewaytwoLambdaFunction7A0A2DA7",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "gatewaytwoLambdaRestApi67206603"
+              },
+              "/test-invoke-stage/*/"
+            ]
+          ]
+        }
+      }
+    },
+    "gatewaytwoLambdaRestApiANYCB79A83A": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "ANY",
+        "ResourceId": {
+          "Fn::GetAtt": [
+            "gatewaytwoLambdaRestApi67206603",
+            "RootResourceId"
+          ]
+        },
+        "RestApiId": {
+          "Ref": "gatewaytwoLambdaRestApi67206603"
+        },
+        "AuthorizationType": "AWS_IAM",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "gatewaytwoLambdaFunction7A0A2DA7",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        }
+      }
+    },
+    "gatewaytwoLambdaRestApiUsagePlanB0B39911": {
+      "Type": "AWS::ApiGateway::UsagePlan",
+      "Properties": {
+        "ApiStages": [
+          {
+            "ApiId": {
+              "Ref": "gatewaytwoLambdaRestApi67206603"
+            },
+            "Stage": {
+              "Ref": "gatewaytwoLambdaRestApiDeploymentStageprod0E298F7E"
+            },
+            "Throttle": {}
+          }
+        ]
+      }
+    },
+    "gatewaytwoLambdaRestApiCloudWatchRole7414EE4E": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "apigateway.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:DescribeLogGroups",
+                    "logs:DescribeLogStreams",
+                    "logs:PutLogEvents",
+                    "logs:GetLogEvents",
+                    "logs:FilterLogEvents"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "LambdaRestApiCloudWatchRolePolicy"
+          }
+        ]
+      }
+    },
+    "gatewaytwoLambdaRestApiAccount79CE9C4C": {
+      "Type": "AWS::ApiGateway::Account",
+      "Properties": {
+        "CloudWatchRoleArn": {
+          "Fn::GetAtt": [
+            "gatewaytwoLambdaRestApiCloudWatchRole7414EE4E",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "gatewaytwoLambdaRestApi67206603"
+      ]
+    },
+    "firstconstructfirstconstructWebACLCB39A850": {
+      "Type": "AWS::WAFv2::WebACL",
+      "Properties": {
+        "DefaultAction": {
+          "Allow": {}
+        },
+        "Scope": "REGIONAL",
+        "VisibilityConfig": {
+          "CloudWatchMetricsEnabled": true,
+          "MetricName": "webACL",
+          "SampledRequestsEnabled": true
+        },
+        "Rules": [
+          {
+            "Name": "AWS-AWSManagedRulesBotControlRuleSet",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 0,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesBotControlRuleSet",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesBotControlRuleSet",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesKnownBadInputsRuleSet",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 1,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesKnownBadInputsRuleSet",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesKnownBadInputsRuleSet",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesCommonRuleSet",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 2,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesCommonRuleSet",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesCommonRuleSet",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesAnonymousIpList",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 3,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesAnonymousIpList",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesAnonymousIpList",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesAmazonIpReputationList",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 4,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesAmazonIpReputationList",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesAmazonIpReputationList",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesAdminProtectionRuleSet",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 5,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesAdminProtectionRuleSet",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesAdminProtectionRuleSet",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesSQLiRuleSet",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 6,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesSQLiRuleSet",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesSQLiRuleSet",
+              "SampledRequestsEnabled": true
+            }
+          }
+        ]
+      }
+    },
+    "firstconstructWebACLAssociation": {
+      "Type": "AWS::WAFv2::WebACLAssociation",
+      "Properties": {
+        "ResourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:apigateway:",
+              {
+                "Ref": "AWS::Region"
+              },
+              "::/restapis/",
+              {
+                "Ref": "gatewayoneLambdaRestApi6736CB0F"
+              },
+              "/stages/",
+              {
+                "Ref": "gatewayoneLambdaRestApiDeploymentStageprod52912E1A"
+              }
+            ]
+          ]
+        },
+        "WebACLArn": {
+          "Fn::GetAtt": [
+            "firstconstructfirstconstructWebACLCB39A850",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "secondconstructWebACLAssociation": {
+      "Type": "AWS::WAFv2::WebACLAssociation",
+      "Properties": {
+        "ResourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:apigateway:",
+              {
+                "Ref": "AWS::Region"
+              },
+              "::/restapis/",
+              {
+                "Ref": "gatewaytwoLambdaRestApi67206603"
+              },
+              "/stages/",
+              {
+                "Ref": "gatewaytwoLambdaRestApiDeploymentStageprod0E298F7E"
+              }
+            ]
+          ]
+        },
+        "WebACLArn": {
+          "Fn::GetAtt": [
+            "firstconstructfirstconstructWebACLCB39A850",
+            "Arn"
+          ]
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "gatewayoneLambdaRestApiEndpoint00E00287": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "gatewayoneLambdaRestApi6736CB0F"
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region"
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix"
+            },
+            "/",
+            {
+              "Ref": "gatewayoneLambdaRestApiDeploymentStageprod52912E1A"
+            },
+            "/"
+          ]
+        ]
+      }
+    },
+    "gatewaytwoLambdaRestApiEndpoint08AF3B17": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "gatewaytwoLambdaRestApi67206603"
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region"
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix"
+            },
+            "/",
+            {
+              "Ref": "gatewaytwoLambdaRestApiDeploymentStageprod0E298F7E"
+            },
+            "/"
+          ]
+        ]
+      }
+    }
+  },
+  "Parameters": {
+    "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420S3Bucket749AC458": {
+      "Type": "String",
+      "Description": "S3 bucket for asset \"8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420\""
+    },
+    "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420S3VersionKeyFF5CC16D": {
+      "Type": "String",
+      "Description": "S3 key for asset version \"8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420\""
+    },
+    "AssetParameters8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420ArtifactHashA71E92AD": {
+      "Type": "String",
+      "Description": "Artifact hash for asset \"8efd3dd9643a4d64a128ad582cab718a1e464bcc719bbbcf0e7b0481188a0420\""
+    }
+  }
+}

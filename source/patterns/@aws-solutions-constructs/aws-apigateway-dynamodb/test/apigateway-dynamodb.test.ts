@@ -14,17 +14,9 @@
 // Imports
 import { Stack } from "@aws-cdk/core";
 import { ApiGatewayToDynamoDB, ApiGatewayToDynamoDBProps } from "../lib";
-import { SynthUtils } from "@aws-cdk/assert";
 import "@aws-cdk/assert/jest";
 import * as ddb from "@aws-cdk/aws-dynamodb";
 import * as api from "@aws-cdk/aws-apigateway";
-
-test("snapshot test ApiGatewayToDynamoDB default params", () => {
-  const stack = new Stack();
-  const apiGatewayToDynamoDBProps: ApiGatewayToDynamoDBProps = {};
-  new ApiGatewayToDynamoDB( stack, "test-api-gateway-dynamodb-default", apiGatewayToDynamoDBProps);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test("check properties", () => {
   const stack = new Stack();

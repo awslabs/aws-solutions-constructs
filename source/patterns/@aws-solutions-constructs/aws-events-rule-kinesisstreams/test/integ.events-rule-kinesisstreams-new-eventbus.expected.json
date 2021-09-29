@@ -1,0 +1,127 @@
+{
+  "Description": "Integration Test for aws-eventsrule-kinesisstreams",
+  "Resources": {
+    "testeventsrulekinesisstreamtesteventsrulekinesisstreamWKinesisStream67B308F2": {
+      "Type": "AWS::Kinesis::Stream",
+      "Properties": {
+        "ShardCount": 1,
+        "RetentionPeriodHours": 24,
+        "StreamEncryption": {
+          "EncryptionType": "KMS",
+          "KeyId": "alias/aws/kinesis"
+        }
+      }
+    },
+    "testeventsrulekinesisstreamtesteventsrulekinesisstreamWeventsRole0A44F5C7": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Description": "Events Rule Role"
+      }
+    },
+    "testeventsrulekinesisstreamtesteventsrulekinesisstreamWeventsRoleDefaultPolicy4F587315": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "kinesis:ListShards",
+                "kinesis:PutRecord",
+                "kinesis:PutRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testeventsrulekinesisstreamtesteventsrulekinesisstreamWKinesisStream67B308F2",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testeventsrulekinesisstreamtesteventsrulekinesisstreamWeventsRoleDefaultPolicy4F587315",
+        "Roles": [
+          {
+            "Ref": "testeventsrulekinesisstreamtesteventsrulekinesisstreamWeventsRole0A44F5C7"
+          }
+        ]
+      }
+    },
+    "testeventsrulekinesisstreamtesteventsrulekinesisstreamWCustomEventBusAF7D2D89": {
+      "Type": "AWS::Events::EventBus",
+      "Properties": {
+        "Name": "eventsrulekinesisstreamsneweventbustesteventsrulekinesisstreamtesteventsrulekinesisstreamWCustomEventBusB7D74ACD"
+      }
+    },
+    "testeventsrulekinesisstreamtesteventsrulekinesisstreamWEventsRuleC03ABB43": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "EventBusName": {
+          "Ref": "testeventsrulekinesisstreamtesteventsrulekinesisstreamWCustomEventBusAF7D2D89"
+        },
+        "EventPattern": {
+          "source": [
+            "solutionsconstructs"
+          ]
+        },
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::GetAtt": [
+                "testeventsrulekinesisstreamtesteventsrulekinesisstreamWKinesisStream67B308F2",
+                "Arn"
+              ]
+            },
+            "Id": "Target0",
+            "RoleArn": {
+              "Fn::GetAtt": [
+                "testeventsrulekinesisstreamtesteventsrulekinesisstreamWeventsRole0A44F5C7",
+                "Arn"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "testeventsrulekinesisstreamtesteventsrulekinesisstreamWKinesisStreamGetRecordsIteratorAgeAlarm0F9A252D": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
+        "MetricName": "GetRecords.IteratorAgeMilliseconds",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 2592000
+      }
+    },
+    "testeventsrulekinesisstreamtesteventsrulekinesisstreamWKinesisStreamReadProvisionedThroughputExceededAlarm5F32E34D": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
+        "MetricName": "ReadProvisionedThroughputExceeded",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Average",
+        "Threshold": 0
+      }
+    }
+  }
+}

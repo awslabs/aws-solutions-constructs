@@ -19,15 +19,17 @@ import * as api from '@aws-cdk/aws-apigateway';
 import * as iam from '@aws-cdk/aws-iam';
 import * as apiDefaults from './apigateway-defaults';
 import { buildLogGroup } from './cloudwatch-log-group-helper';
-import { overrideProps } from './utils';
+import { overrideProps, addCfnSuppressRules } from './utils';
 import { IRole } from '@aws-cdk/aws-iam';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
+import { Construct } from '@aws-cdk/core';
 
 /**
  * Create and configures access logging for API Gateway resources.
  * @param scope - the construct to which the access logging capabilities should be attached to.
  * @param _api - an existing api.RestApi or api.LambdaRestApi.
  */
-function configureCloudwatchRoleForApi(scope: cdk.Construct, _api: api.RestApi): iam.Role {
+function configureCloudwatchRoleForApi(scope: Construct, _api: api.RestApi): iam.Role {
   // Setup the IAM Role for API Gateway CloudWatch access
   const restApiCloudwatchRole = new iam.Role(scope, 'LambdaRestApiCloudWatchRole', {
     assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
@@ -57,14 +59,12 @@ function configureCloudwatchRoleForApi(scope: cdk.Construct, _api: api.RestApi):
 
   // Suppress Cfn Nag warning for APIG
   const deployment: api.CfnDeployment = _api.latestDeployment?.node.findChild('Resource') as api.CfnDeployment;
-  deployment.cfnOptions.metadata = {
-    cfn_nag: {
-      rules_to_suppress: [{
-        id: 'W45',
-        reason: `ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checkes for it in AWS::ApiGateway::Deployment resource`
-      }]
+  addCfnSuppressRules(deployment, [
+    {
+      id: 'W45',
+      reason: `ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checkes for it in AWS::ApiGateway::Deployment resource`
     }
-  };
+  ]);
 
   // Return the CW Role
   return restApiCloudwatchRole;
@@ -76,7 +76,7 @@ function configureCloudwatchRoleForApi(scope: cdk.Construct, _api: api.RestApi):
  * @param defaultApiGatewayProps - the default properties for the LambdaRestApi.
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
-function configureLambdaRestApi(scope: cdk.Construct, defaultApiGatewayProps: api.LambdaRestApiProps,
+function configureLambdaRestApi(scope: Construct, defaultApiGatewayProps: api.LambdaRestApiProps,
   apiGatewayProps?: api.LambdaRestApiProps): [api.RestApi, iam.Role] {
 
   // API Gateway doesn't allow both endpointTypes and endpointConfiguration, check whether endPointTypes exists
@@ -122,7 +122,7 @@ function configureLambdaRestApi(scope: cdk.Construct, defaultApiGatewayProps: ap
  * @param defaultApiGatewayProps - the default properties for the RestApi.
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
-function configureRestApi(scope: cdk.Construct, defaultApiGatewayProps: api.RestApiProps,
+function configureRestApi(scope: Construct, defaultApiGatewayProps: api.RestApiProps,
   apiGatewayProps?: api.RestApiProps): [api.RestApi, iam.Role] {
 
   // API Gateway doesn't allow both endpointTypes and endpointConfiguration, check whether endPointTypes exists
@@ -169,7 +169,7 @@ function configureRestApi(scope: cdk.Construct, defaultApiGatewayProps: api.Rest
  * @param _existingLambdaObj - an existing AWS Lambda function.
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
-export function GlobalLambdaRestApi(scope: cdk.Construct, _existingLambdaObj: lambda.Function,
+export function GlobalLambdaRestApi(scope: Construct, _existingLambdaObj: lambda.Function,
   apiGatewayProps?: api.LambdaRestApiProps, logGroupProps?: logs.LogGroupProps): [api.RestApi, iam.Role, logs.LogGroup] {
   // Configure log group for API Gateway AccessLogging
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
@@ -185,7 +185,7 @@ export function GlobalLambdaRestApi(scope: cdk.Construct, _existingLambdaObj: la
  * @param _existingLambdaObj - an existing AWS Lambda function.
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
-export function RegionalLambdaRestApi(scope: cdk.Construct, _existingLambdaObj: lambda.Function,
+export function RegionalLambdaRestApi(scope: Construct, _existingLambdaObj: lambda.Function,
   apiGatewayProps?: api.LambdaRestApiProps, logGroupProps?: logs.LogGroupProps): [api.RestApi, iam.Role, logs.LogGroup] {
   // Configure log group for API Gateway AccessLogging
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
@@ -200,7 +200,7 @@ export function RegionalLambdaRestApi(scope: cdk.Construct, _existingLambdaObj: 
  * @param scope - the construct to which the RestApi should be attached to.
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
-export function GlobalRestApi(scope: cdk.Construct, apiGatewayProps?: api.RestApiProps,
+export function GlobalRestApi(scope: Construct, apiGatewayProps?: api.RestApiProps,
   logGroupProps?: logs.LogGroupProps): [api.RestApi, iam.Role, logs.LogGroup] {
   // Configure log group for API Gateway AccessLogging
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
@@ -215,7 +215,7 @@ export function GlobalRestApi(scope: cdk.Construct, apiGatewayProps?: api.RestAp
  * @param scope - the construct to which the RestApi should be attached to.
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
-export function RegionalRestApi(scope: cdk.Construct, apiGatewayProps?: api.RestApiProps,
+export function RegionalRestApi(scope: Construct, apiGatewayProps?: api.RestApiProps,
   logGroupProps?: logs.LogGroupProps): [api.RestApi, iam.Role, logs.LogGroup] {
   // Configure log group for API Gateway AccessLogging
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);

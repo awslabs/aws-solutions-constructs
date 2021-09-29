@@ -15,8 +15,10 @@ import * as cdk from '@aws-cdk/core';
 import * as mediastore from '@aws-cdk/aws-mediastore';
 import { MediaStoreContainerProps } from './mediastore-defaults';
 import { overrideProps } from './utils';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
+import { Construct } from '@aws-cdk/core';
 
-export function MediaStoreContainer(scope: cdk.Construct, mediaStoreContainerProps?: mediastore.CfnContainerProps): mediastore.CfnContainer {
+export function MediaStoreContainer(scope: Construct, mediaStoreContainerProps?: mediastore.CfnContainerProps): mediastore.CfnContainer {
   const defaultprops: mediastore.CfnContainerProps = MediaStoreContainerProps();
   let mediaStoreProps: mediastore.CfnContainerProps;
 

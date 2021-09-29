@@ -14,8 +14,10 @@
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as iam from '@aws-cdk/aws-iam';
 import * as cdk from '@aws-cdk/core';
-import { overrideProps } from './utils';
+import { overrideProps, addCfnSuppressRules } from './utils';
 import { DefaultUserPoolProps, DefaultUserPoolClientProps, DefaultIdentityPoolProps } from './cognito-defaults';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
+import { Construct } from '@aws-cdk/core';
 
 export interface CognitoOptions {
   readonly identitypool: cognito.CfnIdentityPool,
@@ -23,7 +25,7 @@ export interface CognitoOptions {
   readonly userpoolclient: cognito.UserPoolClient
 }
 
-export function buildUserPool(scope: cdk.Construct, userPoolProps?: cognito.UserPoolProps): cognito.UserPool {
+export function buildUserPool(scope: Construct, userPoolProps?: cognito.UserPoolProps): cognito.UserPool {
   let cognitoUserPoolProps: cognito.UserPoolProps;
 
   if (userPoolProps) {
@@ -45,22 +47,18 @@ export function buildUserPool(scope: cdk.Construct, userPoolProps?: cognito.User
   const userPoolSmsRole = userPool.node.tryFindChild('smsRole') as iam.Role;
 
   if (userPoolSmsRole) {
-    const cfnuserPoolSmsRole = userPoolSmsRole.node.defaultChild as iam.CfnRole;
-
-    cfnuserPoolSmsRole.cfnOptions.metadata = {
-      cfn_nag: {
-        rules_to_suppress: [{
-          id: 'W11',
-          reason: `Allowing * resource on permissions policy since its used by Cognito to send SMS messages via sns:Publish`
-        }]
+    addCfnSuppressRules(userPool, [
+      {
+        id: 'W11',
+        reason: `Allowing * resource on permissions policy since its used by Cognito to send SMS messages via sns:Publish`
       }
-    };
+    ]);
   }
 
   return userPool;
 }
 
-export function buildUserPoolClient(scope: cdk.Construct, userPool: cognito.UserPool,
+export function buildUserPoolClient(scope: Construct, userPool: cognito.UserPool,
   cognitoUserPoolClientProps?: cognito.UserPoolClientProps): cognito.UserPoolClient {
 
   let userPoolClientProps: cognito.UserPoolClientProps;
@@ -74,7 +72,7 @@ export function buildUserPoolClient(scope: cdk.Construct, userPool: cognito.User
   return new cognito.UserPoolClient(scope, 'CognitoUserPoolClient', userPoolClientProps);
 }
 
-export function buildIdentityPool(scope: cdk.Construct, userpool: cognito.UserPool, userpoolclient: cognito.UserPoolClient,
+export function buildIdentityPool(scope: Construct, userpool: cognito.UserPool, userpoolclient: cognito.UserPoolClient,
   identityPoolProps?: cognito.CfnIdentityPoolProps): cognito.CfnIdentityPool {
 
   let cognitoIdentityPoolProps: cognito.CfnIdentityPoolProps = DefaultIdentityPoolProps(userpoolclient.userPoolClientId,
@@ -89,7 +87,7 @@ export function buildIdentityPool(scope: cdk.Construct, userpool: cognito.UserPo
   return idPool;
 }
 
-export function setupCognitoForElasticSearch(scope: cdk.Construct, domainName: string, options: CognitoOptions): iam.Role {
+export function setupCognitoForElasticSearch(scope: Construct, domainName: string, options: CognitoOptions): iam.Role {
 
   // Create the domain for Cognito UserPool
   const userpooldomain = new cognito.CfnUserPoolDomain(scope, 'UserPoolDomain', {

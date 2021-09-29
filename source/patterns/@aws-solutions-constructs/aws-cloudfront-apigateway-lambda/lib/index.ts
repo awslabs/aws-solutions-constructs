@@ -18,6 +18,7 @@ import * as logs from '@aws-cdk/aws-logs';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as iam from '@aws-cdk/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import { CloudFrontToApiGateway } from '@aws-solutions-constructs/aws-cloudfront-apigateway';
 
@@ -66,7 +67,7 @@ export interface CloudFrontToApiGatewayToLambdaProps {
 
 export class CloudFrontToApiGatewayToLambda extends Construct {
   public readonly cloudFrontWebDistribution: cloudfront.Distribution;
-  public readonly edgeLambdaFunctionVersion?: lambda.Version;
+  public readonly cloudFrontFunction?: cloudfront.Function;
   public readonly cloudFrontLoggingBucket?: s3.Bucket;
   public readonly apiGateway: api.RestApi;
   public readonly apiGatewayCloudWatchRole: iam.Role;
@@ -99,14 +100,13 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
       if (child.authorizationType === 'AWS_IAM') {
         child.addPropertyOverride('AuthorizationType', 'NONE');
 
-        child.cfnOptions.metadata = {
-          cfn_nag: {
-            rules_to_suppress: [{
-              id: 'W59',
-              reason: `AWS::ApiGateway::Method AuthorizationType is set to 'NONE' because API Gateway behind CloudFront does not support AWS_IAM authentication`
-            }]
-          }
-        };
+        defaults.addCfnSuppressRules(apiMethod, [
+          {
+            id: 'W59',
+            reason: `AWS::ApiGateway::Method AuthorizationType is set to 'NONE' because API Gateway behind CloudFront does not support AWS_IAM authentication`
+          },
+        ]);
+
       }
     });
 
@@ -117,7 +117,7 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
     });
 
     this.cloudFrontWebDistribution = apiCloudfront.cloudFrontWebDistribution;
-    this.edgeLambdaFunctionVersion = apiCloudfront.edgeLambdaFunctionVersion;
+    this.cloudFrontFunction = apiCloudfront.cloudFrontFunction;
     this.cloudFrontLoggingBucket = apiCloudfront.cloudFrontLoggingBucket;
   }
 }

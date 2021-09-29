@@ -1,0 +1,841 @@
+{
+  "Description": "Integration Test for aws-lambda-step-function",
+  "Resources": {
+    "testlambdastepfunctionstestlambdastepfunctionsWStateMachineLogGroup2E65D2A3": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/vendedlogs/states/deployfunctionwithvpctestlambdastepfunctionswstatemachineloge2de3bbf2487"
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
+            },
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+            }
+          ]
+        }
+      }
+    },
+    "testlambdastepfunctionstestlambdastepfunctionsWStateMachineRoleA5B28910": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "states.",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ".amazonaws.com"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "testlambdastepfunctionstestlambdastepfunctionsWStateMachineRoleDefaultPolicy2C2F2A42": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogDelivery",
+                "logs:GetLogDelivery",
+                "logs:UpdateLogDelivery",
+                "logs:DeleteLogDelivery",
+                "logs:ListLogDeliveries"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "logs:PutResourcePolicy",
+                "logs:DescribeResourcePolicies",
+                "logs:DescribeLogGroups"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":logs:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testlambdastepfunctionstestlambdastepfunctionsWStateMachineRoleDefaultPolicy2C2F2A42",
+        "Roles": [
+          {
+            "Ref": "testlambdastepfunctionstestlambdastepfunctionsWStateMachineRoleA5B28910"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "The 'LogDelivery' actions do not support resource-level authorizations"
+            }
+          ]
+        }
+      }
+    },
+    "testlambdastepfunctionstestlambdastepfunctionsWStateMachine95B94E44": {
+      "Type": "AWS::StepFunctions::StateMachine",
+      "Properties": {
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "testlambdastepfunctionstestlambdastepfunctionsWStateMachineRoleA5B28910",
+            "Arn"
+          ]
+        },
+        "DefinitionString": "{\"StartAt\":\"StartState\",\"States\":{\"StartState\":{\"Type\":\"Pass\",\"End\":true}}}",
+        "LoggingConfiguration": {
+          "Destinations": [
+            {
+              "CloudWatchLogsLogGroup": {
+                "LogGroupArn": {
+                  "Fn::GetAtt": [
+                    "testlambdastepfunctionstestlambdastepfunctionsWStateMachineLogGroup2E65D2A3",
+                    "Arn"
+                  ]
+                }
+              }
+            }
+          ],
+          "Level": "ERROR"
+        }
+      },
+      "DependsOn": [
+        "testlambdastepfunctionstestlambdastepfunctionsWStateMachineRoleDefaultPolicy2C2F2A42",
+        "testlambdastepfunctionstestlambdastepfunctionsWStateMachineRoleA5B28910"
+      ]
+    },
+    "testlambdastepfunctionstestlambdastepfunctionsWLambdaFunctionServiceRole4078B96B": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":log-group:/aws/lambda/*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy"
+          }
+        ]
+      }
+    },
+    "testlambdastepfunctionstestlambdastepfunctionsWLambdaFunctionServiceRoleDefaultPolicy17583F4E": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "ec2:CreateNetworkInterface",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DeleteNetworkInterface",
+                "ec2:AssignPrivateIpAddresses",
+                "ec2:UnassignPrivateIpAddresses"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": "states:StartExecution",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "testlambdastepfunctionstestlambdastepfunctionsWStateMachine95B94E44"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testlambdastepfunctionstestlambdastepfunctionsWLambdaFunctionServiceRoleDefaultPolicy17583F4E",
+        "Roles": [
+          {
+            "Ref": "testlambdastepfunctionstestlambdastepfunctionsWLambdaFunctionServiceRole4078B96B"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+            }
+          ]
+        }
+      }
+    },
+    "testlambdastepfunctionstestlambdastepfunctionsWReplaceDefaultSecurityGroupsecuritygroup179A946A": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "deployFunctionWithVpc/test-lambda-stepfunctions/test-lambda-stepfunctionsW/ReplaceDefaultSecurityGroup-security-group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "testlambdastepfunctionsVpc80F2F601"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W5",
+              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK"
+            },
+            {
+              "id": "W40",
+              "reason": "Egress IPProtocol of -1 is default and generally considered OK"
+            }
+          ]
+        }
+      }
+    },
+    "testlambdastepfunctionstestlambdastepfunctionsWLambdaFunction69AF229F": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "AssetParametersfd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93S3Bucket0DF3E8CF"
+          },
+          "S3Key": {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Fn::Select": [
+                    0,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParametersfd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93S3VersionKeyE124A528"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Fn::Select": [
+                    1,
+                    {
+                      "Fn::Split": [
+                        "||",
+                        {
+                          "Ref": "AssetParametersfd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93S3VersionKeyE124A528"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            ]
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "testlambdastepfunctionstestlambdastepfunctionsWLambdaFunctionServiceRole4078B96B",
+            "Arn"
+          ]
+        },
+        "Environment": {
+          "Variables": {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "STATE_MACHINE_ARN": {
+              "Ref": "testlambdastepfunctionstestlambdastepfunctionsWStateMachine95B94E44"
+            }
+          }
+        },
+        "Handler": "index.handler",
+        "Runtime": "nodejs10.x",
+        "TracingConfig": {
+          "Mode": "Active"
+        },
+        "VpcConfig": {
+          "SecurityGroupIds": [
+            {
+              "Fn::GetAtt": [
+                "testlambdastepfunctionstestlambdastepfunctionsWReplaceDefaultSecurityGroupsecuritygroup179A946A",
+                "GroupId"
+              ]
+            }
+          ],
+          "SubnetIds": [
+            {
+              "Ref": "testlambdastepfunctionsVpcisolatedSubnet1Subnet8EFE3336"
+            },
+            {
+              "Ref": "testlambdastepfunctionsVpcisolatedSubnet2Subnet994E4442"
+            },
+            {
+              "Ref": "testlambdastepfunctionsVpcisolatedSubnet3Subnet17B6E926"
+            }
+          ]
+        }
+      },
+      "DependsOn": [
+        "testlambdastepfunctionstestlambdastepfunctionsWLambdaFunctionServiceRoleDefaultPolicy17583F4E",
+        "testlambdastepfunctionstestlambdastepfunctionsWLambdaFunctionServiceRole4078B96B"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+            },
+            {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            },
+            {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients"
+            }
+          ]
+        }
+      }
+    },
+    "testlambdastepfunctionstestlambdastepfunctionsWExecutionFailedAlarmBFA207F1": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Alarm for the number of executions that failed exceeded the threshold of 1. ",
+        "Dimensions": [
+          {
+            "Name": "StateMachineArn",
+            "Value": {
+              "Ref": "testlambdastepfunctionstestlambdastepfunctionsWStateMachine95B94E44"
+            }
+          }
+        ],
+        "MetricName": "ExecutionsFailed",
+        "Namespace": "AWS/States",
+        "Period": 300,
+        "Statistic": "Sum",
+        "Threshold": 1
+      }
+    },
+    "testlambdastepfunctionstestlambdastepfunctionsWExecutionThrottledAlarm0F7BF1E9": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Alarm for the number of executions that throttled exceeded the threshold of 1. ",
+        "Dimensions": [
+          {
+            "Name": "StateMachineArn",
+            "Value": {
+              "Ref": "testlambdastepfunctionstestlambdastepfunctionsWStateMachine95B94E44"
+            }
+          }
+        ],
+        "MetricName": "ExecutionThrottled",
+        "Namespace": "AWS/States",
+        "Period": 300,
+        "Statistic": "Sum",
+        "Threshold": 1
+      }
+    },
+    "testlambdastepfunctionstestlambdastepfunctionsWExecutionAbortedAlarmF3E97C7F": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
+        "Dimensions": [
+          {
+            "Name": "StateMachineArn",
+            "Value": {
+              "Ref": "testlambdastepfunctionstestlambdastepfunctionsWStateMachine95B94E44"
+            }
+          }
+        ],
+        "MetricName": "ExecutionsAborted",
+        "Namespace": "AWS/States",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 1
+      }
+    },
+    "testlambdastepfunctionsVpc80F2F601": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "deployFunctionWithVpc/test-lambda-stepfunctions/Vpc"
+          }
+        ]
+      }
+    },
+    "testlambdastepfunctionsVpcisolatedSubnet1Subnet8EFE3336": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/18",
+        "VpcId": {
+          "Ref": "testlambdastepfunctionsVpc80F2F601"
+        },
+        "AvailabilityZone": "test-region-1a",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "isolated"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "deployFunctionWithVpc/test-lambda-stepfunctions/Vpc/isolatedSubnet1"
+          }
+        ]
+      }
+    },
+    "testlambdastepfunctionsVpcisolatedSubnet1RouteTableD81BAB96": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "testlambdastepfunctionsVpc80F2F601"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "deployFunctionWithVpc/test-lambda-stepfunctions/Vpc/isolatedSubnet1"
+          }
+        ]
+      }
+    },
+    "testlambdastepfunctionsVpcisolatedSubnet1RouteTableAssociation25A1BC90": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "testlambdastepfunctionsVpcisolatedSubnet1RouteTableD81BAB96"
+        },
+        "SubnetId": {
+          "Ref": "testlambdastepfunctionsVpcisolatedSubnet1Subnet8EFE3336"
+        }
+      }
+    },
+    "testlambdastepfunctionsVpcisolatedSubnet2Subnet994E4442": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.64.0/18",
+        "VpcId": {
+          "Ref": "testlambdastepfunctionsVpc80F2F601"
+        },
+        "AvailabilityZone": "test-region-1b",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "isolated"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "deployFunctionWithVpc/test-lambda-stepfunctions/Vpc/isolatedSubnet2"
+          }
+        ]
+      }
+    },
+    "testlambdastepfunctionsVpcisolatedSubnet2RouteTableF9670FF3": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "testlambdastepfunctionsVpc80F2F601"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "deployFunctionWithVpc/test-lambda-stepfunctions/Vpc/isolatedSubnet2"
+          }
+        ]
+      }
+    },
+    "testlambdastepfunctionsVpcisolatedSubnet2RouteTableAssociationBB9DC37F": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "testlambdastepfunctionsVpcisolatedSubnet2RouteTableF9670FF3"
+        },
+        "SubnetId": {
+          "Ref": "testlambdastepfunctionsVpcisolatedSubnet2Subnet994E4442"
+        }
+      }
+    },
+    "testlambdastepfunctionsVpcisolatedSubnet3Subnet17B6E926": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.128.0/18",
+        "VpcId": {
+          "Ref": "testlambdastepfunctionsVpc80F2F601"
+        },
+        "AvailabilityZone": "test-region-1c",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "isolated"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "deployFunctionWithVpc/test-lambda-stepfunctions/Vpc/isolatedSubnet3"
+          }
+        ]
+      }
+    },
+    "testlambdastepfunctionsVpcisolatedSubnet3RouteTable7D71C449": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "testlambdastepfunctionsVpc80F2F601"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "deployFunctionWithVpc/test-lambda-stepfunctions/Vpc/isolatedSubnet3"
+          }
+        ]
+      }
+    },
+    "testlambdastepfunctionsVpcisolatedSubnet3RouteTableAssociationADE89BB9": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "testlambdastepfunctionsVpcisolatedSubnet3RouteTable7D71C449"
+        },
+        "SubnetId": {
+          "Ref": "testlambdastepfunctionsVpcisolatedSubnet3Subnet17B6E926"
+        }
+      }
+    },
+    "testlambdastepfunctionsVpcFlowLogIAMRole02621206": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "vpc-flow-logs.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "deployFunctionWithVpc/test-lambda-stepfunctions/Vpc"
+          }
+        ]
+      }
+    },
+    "testlambdastepfunctionsVpcFlowLogIAMRoleDefaultPolicy8F2E06FA": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:DescribeLogStreams"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testlambdastepfunctionsVpcFlowLogLogGroup4C235420",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "iam:PassRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testlambdastepfunctionsVpcFlowLogIAMRole02621206",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testlambdastepfunctionsVpcFlowLogIAMRoleDefaultPolicy8F2E06FA",
+        "Roles": [
+          {
+            "Ref": "testlambdastepfunctionsVpcFlowLogIAMRole02621206"
+          }
+        ]
+      }
+    },
+    "testlambdastepfunctionsVpcFlowLogLogGroup4C235420": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "RetentionInDays": 731
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+            }
+          ]
+        }
+      }
+    },
+    "testlambdastepfunctionsVpcFlowLog06702DB5": {
+      "Type": "AWS::EC2::FlowLog",
+      "Properties": {
+        "ResourceId": {
+          "Ref": "testlambdastepfunctionsVpc80F2F601"
+        },
+        "ResourceType": "VPC",
+        "TrafficType": "ALL",
+        "DeliverLogsPermissionArn": {
+          "Fn::GetAtt": [
+            "testlambdastepfunctionsVpcFlowLogIAMRole02621206",
+            "Arn"
+          ]
+        },
+        "LogDestinationType": "cloud-watch-logs",
+        "LogGroupName": {
+          "Ref": "testlambdastepfunctionsVpcFlowLogLogGroup4C235420"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "deployFunctionWithVpc/test-lambda-stepfunctions/Vpc"
+          }
+        ]
+      }
+    },
+    "testlambdastepfunctionsVpcSTEPFUNCTIONSA18A1860": {
+      "Type": "AWS::EC2::VPCEndpoint",
+      "Properties": {
+        "ServiceName": {
+          "Fn::Join": [
+            "",
+            [
+              "com.amazonaws.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".states"
+            ]
+          ]
+        },
+        "VpcId": {
+          "Ref": "testlambdastepfunctionsVpc80F2F601"
+        },
+        "PrivateDnsEnabled": true,
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "testlambdastepfunctionstestlambdastepfunctionsSTEPFUNCTIONSsecuritygroup54889181",
+              "GroupId"
+            ]
+          }
+        ],
+        "SubnetIds": [
+          {
+            "Ref": "testlambdastepfunctionsVpcisolatedSubnet1Subnet8EFE3336"
+          },
+          {
+            "Ref": "testlambdastepfunctionsVpcisolatedSubnet2Subnet994E4442"
+          },
+          {
+            "Ref": "testlambdastepfunctionsVpcisolatedSubnet3Subnet17B6E926"
+          }
+        ],
+        "VpcEndpointType": "Interface"
+      }
+    },
+    "testlambdastepfunctionstestlambdastepfunctionsSTEPFUNCTIONSsecuritygroup54889181": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "deployFunctionWithVpc/test-lambda-stepfunctions/test-lambda-stepfunctions-STEP_FUNCTIONS-security-group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": {
+              "Fn::GetAtt": [
+                "testlambdastepfunctionsVpc80F2F601",
+                "CidrBlock"
+              ]
+            },
+            "Description": {
+              "Fn::Join": [
+                "",
+                [
+                  "from ",
+                  {
+                    "Fn::GetAtt": [
+                      "testlambdastepfunctionsVpc80F2F601",
+                      "CidrBlock"
+                    ]
+                  },
+                  ":443"
+                ]
+              ]
+            },
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443
+          }
+        ],
+        "VpcId": {
+          "Ref": "testlambdastepfunctionsVpc80F2F601"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W5",
+              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK"
+            },
+            {
+              "id": "W40",
+              "reason": "Egress IPProtocol of -1 is default and generally considered OK"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "Parameters": {
+    "AssetParametersfd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93S3Bucket0DF3E8CF": {
+      "Type": "String",
+      "Description": "S3 bucket for asset \"fd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93\""
+    },
+    "AssetParametersfd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93S3VersionKeyE124A528": {
+      "Type": "String",
+      "Description": "S3 key for asset version \"fd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93\""
+    },
+    "AssetParametersfd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93ArtifactHashC69F2EC4": {
+      "Type": "String",
+      "Description": "Artifact hash for asset \"fd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93\""
+    }
+  }
+}

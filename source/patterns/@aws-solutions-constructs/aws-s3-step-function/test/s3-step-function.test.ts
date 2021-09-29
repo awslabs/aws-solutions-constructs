@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { S3ToStepFunction, S3ToStepFunctionProps } from '../lib/index';
 import * as sfn from '@aws-cdk/aws-stepfunctions';
 import '@aws-cdk/assert/jest';
@@ -30,12 +29,6 @@ function deployNewStateMachine(stack: cdk.Stack) {
 
   return new S3ToStepFunction(stack, 'test-s3-step-function', props);
 }
-
-test('snapshot test S3ToStepFunction default params', () => {
-  const stack = new cdk.Stack();
-  deployNewStateMachine(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('check deployCloudTrail = false', () => {
   const stack = new cdk.Stack();
@@ -116,12 +109,12 @@ test('override eventRuleProps', () => {
     Targets: [
       {
         Arn: {
-          Ref: "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructStateMachineA4D4F2B0"
+          Ref: "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructStateMachineAAE00FFE"
         },
         Id: "Target0",
         RoleArn: {
           "Fn::GetAtt": [
-            "tests3stepfunctiontests3stepfunctioneventrulestepfunctionconstructEventsRuleRole07FD7EC1",
+            "tests3stepfunctiontests3stepfunctionWtests3stepfunctionWeventrulestepfunctionconstructEventsRuleRole1B233B12",
             "Arn"
           ]
         }

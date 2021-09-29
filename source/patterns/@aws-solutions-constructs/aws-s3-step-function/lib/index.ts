@@ -13,8 +13,8 @@
 
 import * as sfn from '@aws-cdk/aws-stepfunctions';
 import * as s3 from '@aws-cdk/aws-s3';
-import * as defaults from '@aws-solutions-constructs/core';
-import { EventsRuleToStepFunction } from '@aws-solutions-constructs/aws-events-rule-step-function';
+import { S3ToStepfunctions } from '@aws-solutions-constructs/aws-s3-stepfunctions';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import * as cloudtrail from '@aws-cdk/aws-cloudtrail';
@@ -84,80 +84,25 @@ export class S3ToStepFunction extends Construct {
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {S3ToStepFunctionProps} props - user provided props for the construct
-   * @since 0.9.0
    * @access public
    */
   constructor(scope: Construct, id: string, props: S3ToStepFunctionProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    const convertedProps: S3ToStepFunctionProps = { ...props };
 
-    let bucket: s3.IBucket;
+    // W (for 'wrapped') is added to the id so that the id's of the constructs with the old and new names don't collide
+    // If this character pushes you beyond the 64 character limit, just import the new named construct and instantiate
+    // it in place of the older named version. They are functionally identical, aside from the types no other changes
+    // will be required.  (eg - new S3ToStepfunctions instead of S3ToStepFunction)
+    const wrappedConstruct: S3ToStepFunction = new S3ToStepfunctions(this, `${id}W`, convertedProps);
 
-    if (props.existingBucketObj && props.bucketProps) {
-      throw new Error('Cannot specify both bucket properties and an existing bucket');
-    }
-
-    if (!props.existingBucketObj) {
-      [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
-        bucketProps: props.bucketProps
-      });
-      bucket = this.s3Bucket;
-    } else {
-      bucket = props.existingBucketObj;
-    }
-
-    if (props.deployCloudTrail === undefined || props.deployCloudTrail) {
-      [this.cloudtrailBucket, this.cloudtrailLoggingBucket] = defaults.buildS3Bucket(this, {}, 'CloudTrail');
-
-      this.cloudtrail = new cloudtrail.Trail(this, 'S3EventsTrail', {
-        bucket: this.cloudtrailBucket
-      });
-
-      this.cloudtrail.addS3EventSelector([{
-        bucket
-      }], {
-        readWriteType: cloudtrail.ReadWriteType.ALL,
-        includeManagementEvents: false
-      });
-    }
-
-    let _eventRuleProps = {};
-    if (props.eventRuleProps) {
-      _eventRuleProps = props.eventRuleProps;
-    } else {
-      // By default the CW Events Rule will filter any 's3:PutObject' events for the S3 Bucket
-      _eventRuleProps = {
-        eventPattern: {
-          source: ['aws.s3'],
-          detailType: ['AWS API Call via CloudTrail'],
-          detail: {
-            eventSource: [
-              "s3.amazonaws.com"
-            ],
-            eventName: [
-              "PutObject",
-              "CopyObject",
-              "CompleteMultipartUpload"
-            ],
-            requestParameters: {
-              bucketName: [
-                bucket.bucketName
-              ]
-            }
-          }
-        }
-      };
-    }
-
-    const eventsRuleToStepFunction = new EventsRuleToStepFunction(this, `${id}-event-rule-step-function-construct`, {
-      stateMachineProps: props.stateMachineProps,
-      eventRuleProps: _eventRuleProps,
-      createCloudWatchAlarms: props.createCloudWatchAlarms,
-      logGroupProps: props.logGroupProps
-    });
-
-    this.stateMachine = eventsRuleToStepFunction.stateMachine;
-    this.stateMachineLogGroup = eventsRuleToStepFunction.stateMachineLogGroup;
-    this.cloudwatchAlarms = eventsRuleToStepFunction.cloudwatchAlarms;
+    this.stateMachine = wrappedConstruct.stateMachine;
+    this.stateMachineLogGroup = wrappedConstruct.stateMachineLogGroup;
+    this.s3Bucket = wrappedConstruct.s3Bucket;
+    this.s3LoggingBucket = wrappedConstruct.s3LoggingBucket;
+    this.cloudwatchAlarms = wrappedConstruct.cloudwatchAlarms;
+    this.cloudtrail = wrappedConstruct.cloudtrail;
+    this.cloudtrailBucket = wrappedConstruct.cloudtrailBucket;
+    this.cloudtrailLoggingBucket = wrappedConstruct.cloudtrailLoggingBucket;
   }
 }

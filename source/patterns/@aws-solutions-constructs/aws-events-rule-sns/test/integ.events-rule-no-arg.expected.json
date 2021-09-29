@@ -1,28 +1,12 @@
 {
   "Resources": {
-    "testconstructEncryptionKey6153B053": {
+    "testtestWEncryptionKeyC6B126B6": {
       "Type": "AWS::KMS::Key",
       "Properties": {
         "KeyPolicy": {
           "Statement": [
             {
-              "Action": [
-                "kms:Create*",
-                "kms:Describe*",
-                "kms:Enable*",
-                "kms:List*",
-                "kms:Put*",
-                "kms:Update*",
-                "kms:Revoke*",
-                "kms:Disable*",
-                "kms:Get*",
-                "kms:Delete*",
-                "kms:ScheduleKeyDeletion",
-                "kms:CancelKeyDeletion",
-                "kms:GenerateDataKey",
-                "kms:TagResource",
-                "kms:UntagResource"
-              ],
+              "Action": "kms:*",
               "Effect": "Allow",
               "Principal": {
                 "AWS": {
@@ -65,18 +49,18 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "testconstructSnsTopic44188529": {
+    "testtestWSnsTopicBFF33C41": {
       "Type": "AWS::SNS::Topic",
       "Properties": {
         "KmsMasterKeyId": {
           "Fn::GetAtt": [
-            "testconstructEncryptionKey6153B053",
+            "testtestWEncryptionKeyC6B126B6",
             "Arn"
           ]
         }
       }
     },
-    "testconstructSnsTopicPolicy72FFD530": {
+    "testtestWSnsTopicPolicy2A17B1B5": {
       "Type": "AWS::SNS::TopicPolicy",
       "Properties": {
         "PolicyDocument": {
@@ -120,7 +104,7 @@
                 }
               },
               "Resource": {
-                "Ref": "testconstructSnsTopic44188529"
+                "Ref": "testtestWSnsTopicBFF33C41"
               },
               "Sid": "TopicOwnerOnlyAccess"
             },
@@ -142,9 +126,11 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": {
+                "AWS": "*"
+              },
               "Resource": {
-                "Ref": "testconstructSnsTopic44188529"
+                "Ref": "testtestWSnsTopicBFF33C41"
               },
               "Sid": "HttpsOnly"
             },
@@ -155,7 +141,7 @@
                 "Service": "events.amazonaws.com"
               },
               "Resource": {
-                "Ref": "testconstructSnsTopic44188529"
+                "Ref": "testtestWSnsTopicBFF33C41"
               },
               "Sid": "2"
             }
@@ -164,12 +150,12 @@
         },
         "Topics": [
           {
-            "Ref": "testconstructSnsTopic44188529"
+            "Ref": "testtestWSnsTopicBFF33C41"
           }
         ]
       }
     },
-    "testconstructEventsRule145DBA20": {
+    "testtestWEventsRuleDF9938A8": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "ScheduleExpression": "rate(5 minutes)",
@@ -177,11 +163,11 @@
         "Targets": [
           {
             "Arn": {
-              "Ref": "testconstructSnsTopic44188529"
+              "Ref": "testtestWSnsTopicBFF33C41"
             },
             "Id": {
               "Fn::GetAtt": [
-                "testconstructSnsTopic44188529",
+                "testtestWSnsTopicBFF33C41",
                 "TopicName"
               ]
             }

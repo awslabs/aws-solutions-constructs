@@ -1,9 +1,9 @@
 {
   "Resources": {
-    "testlambdastepfunctionconstructStateMachineLogGroup08972C3B": {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineLogGroup7291796E": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/vendedlogs/states/deploylambdatestlambdastepfunctionconstructstatemachinelog627db2f772f6"
+        "LogGroupName": "/aws/vendedlogs/states/deploylambdatestlambdastepfunctionconstructwstatemachinelog13078db412a6"
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
@@ -22,7 +22,7 @@
         }
       }
     },
-    "testlambdastepfunctionconstructStateMachineRoleC3777C02": {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineRoleC001CA39": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -50,7 +50,7 @@
         }
       }
     },
-    "testlambdastepfunctionconstructStateMachineRoleDefaultPolicy226F91C6": {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineRoleDefaultPolicyF44CF55B": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -97,10 +97,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testlambdastepfunctionconstructStateMachineRoleDefaultPolicy226F91C6",
+        "PolicyName": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineRoleDefaultPolicyF44CF55B",
         "Roles": [
           {
-            "Ref": "testlambdastepfunctionconstructStateMachineRoleC3777C02"
+            "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineRoleC001CA39"
           }
         ]
       },
@@ -115,12 +115,12 @@
         }
       }
     },
-    "testlambdastepfunctionconstructStateMachine3D4830AD": {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineE1495D19": {
       "Type": "AWS::StepFunctions::StateMachine",
       "Properties": {
         "RoleArn": {
           "Fn::GetAtt": [
-            "testlambdastepfunctionconstructStateMachineRoleC3777C02",
+            "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineRoleC001CA39",
             "Arn"
           ]
         },
@@ -131,7 +131,7 @@
               "CloudWatchLogsLogGroup": {
                 "LogGroupArn": {
                   "Fn::GetAtt": [
-                    "testlambdastepfunctionconstructStateMachineLogGroup08972C3B",
+                    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineLogGroup7291796E",
                     "Arn"
                   ]
                 }
@@ -142,11 +142,11 @@
         }
       },
       "DependsOn": [
-        "testlambdastepfunctionconstructStateMachineRoleDefaultPolicy226F91C6",
-        "testlambdastepfunctionconstructStateMachineRoleC3777C02"
+        "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineRoleDefaultPolicyF44CF55B",
+        "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineRoleC001CA39"
       ]
     },
-    "testlambdastepfunctionconstructLambdaFunctionServiceRole57BEAADE": {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWLambdaFunctionServiceRole87B6CB40": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -201,7 +201,7 @@
         ]
       }
     },
-    "testlambdastepfunctionconstructLambdaFunctionServiceRoleDefaultPolicyE27F2D22": {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWLambdaFunctionServiceRoleDefaultPolicy87D4E46F": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -218,16 +218,16 @@
               "Action": "states:StartExecution",
               "Effect": "Allow",
               "Resource": {
-                "Ref": "testlambdastepfunctionconstructStateMachine3D4830AD"
+                "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineE1495D19"
               }
             }
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testlambdastepfunctionconstructLambdaFunctionServiceRoleDefaultPolicyE27F2D22",
+        "PolicyName": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWLambdaFunctionServiceRoleDefaultPolicy87D4E46F",
         "Roles": [
           {
-            "Ref": "testlambdastepfunctionconstructLambdaFunctionServiceRole57BEAADE"
+            "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWLambdaFunctionServiceRole87B6CB40"
           }
         ]
       },
@@ -242,7 +242,7 @@
         }
       }
     },
-    "testlambdastepfunctionconstructLambdaFunction50F66B71": {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWLambdaFunction66188A61": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -285,7 +285,7 @@
         },
         "Role": {
           "Fn::GetAtt": [
-            "testlambdastepfunctionconstructLambdaFunctionServiceRole57BEAADE",
+            "testlambdastepfunctionconstructtestlambdastepfunctionconstructWLambdaFunctionServiceRole87B6CB40",
             "Arn"
           ]
         },
@@ -293,7 +293,7 @@
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "STATE_MACHINE_ARN": {
-              "Ref": "testlambdastepfunctionconstructStateMachine3D4830AD"
+              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineE1495D19"
             }
           }
         },
@@ -304,8 +304,8 @@
         }
       },
       "DependsOn": [
-        "testlambdastepfunctionconstructLambdaFunctionServiceRoleDefaultPolicyE27F2D22",
-        "testlambdastepfunctionconstructLambdaFunctionServiceRole57BEAADE"
+        "testlambdastepfunctionconstructtestlambdastepfunctionconstructWLambdaFunctionServiceRoleDefaultPolicy87D4E46F",
+        "testlambdastepfunctionconstructtestlambdastepfunctionconstructWLambdaFunctionServiceRole87B6CB40"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -326,7 +326,7 @@
         }
       }
     },
-    "testlambdastepfunctionconstructExecutionFailedAlarmC55FFDEE": {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWExecutionFailedAlarm513E4C7C": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -336,7 +336,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "testlambdastepfunctionconstructStateMachine3D4830AD"
+              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineE1495D19"
             }
           }
         ],
@@ -347,7 +347,7 @@
         "Threshold": 1
       }
     },
-    "testlambdastepfunctionconstructExecutionThrottledAlarm8C5110D9": {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWExecutionThrottledAlarm08912C4F": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -357,7 +357,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "testlambdastepfunctionconstructStateMachine3D4830AD"
+              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineE1495D19"
             }
           }
         ],
@@ -368,7 +368,7 @@
         "Threshold": 1
       }
     },
-    "testlambdastepfunctionconstructExecutionAbortedAlarmC2BA974A": {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWExecutionAbortedAlarmC0CADAC2": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -378,7 +378,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "testlambdastepfunctionconstructStateMachine3D4830AD"
+              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineE1495D19"
             }
           }
         ],

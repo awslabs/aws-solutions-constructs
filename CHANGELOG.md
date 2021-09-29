@@ -2,6 +2,158 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.123.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.122.0...v1.123.0) (2021-09-21)
+
+* Upgraded all patterns to CDK v1.123.0
+
+### Features
+
+* **aws-iot-kinesisstreams:** implement new construct ([#383](https://github.com/awslabs/aws-solutions-constructs/issues/383)) ([9d2e5ec](https://github.com/awslabs/aws-solutions-constructs/commit/9d2e5ec2db2ce70d0498bbd133eaf4ed0c922157))
+
+## [1.122.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.121.0...v1.122.0) (2021-09-20)
+
+* Upgraded all patterns to CDK v1.122.0
+
+## [1.121.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.120.0...v1.121.0) (2021-09-17)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.121.0
+* **cdk-v2:** Delete snapshot unit tests ([#373](https://github.com/awslabs/aws-solutions-constructs/pull/373))
+
+### Features
+
+* **aws-eventbridge-kinesisstrems, aws-events-rule-kinesisstreams, aws-eventbridge-kinesisfirehose-s3, aws-events-rule-kinesisfirehose-s3:** support for custom EventBus ([#364](https://github.com/awslabs/aws-solutions-constructs/issues/364)) ([2ed5355](https://github.com/awslabs/aws-solutions-constructs/commit/2ed535576a3ecf9a4e425e63bfa11d52191491a2))
+* **aws-eventbridge-sns , aws-events-rule-sns, aws-events-rule-lambda:** custom event bus support ([#362](https://github.com/awslabs/aws-solutions-constructs/issues/362)) ([47221d9](https://github.com/awslabs/aws-solutions-constructs/commit/47221d9dfa2de30c9c33c74eff62a150cb477db0))
+* **aws-eventbridge-sqs, aws-events-rule-sqs, aws-eventbridge-stepfunctions, aws-events-rule-step-function:** custom EventBus support ([#363](https://github.com/awslabs/aws-solutions-constructs/issues/363)) ([60dd243](https://github.com/awslabs/aws-solutions-constructs/commit/60dd24384f38fa39ce120c008ab7ce05964cd15e))
+* **aws-wafwebacl-apigateway:** created new construct ([#366](https://github.com/awslabs/aws-solutions-constructs/issues/366)) ([ee143ca](https://github.com/awslabs/aws-solutions-constructs/commit/ee143ca595784c2011c32cdc1d23766c7b4581e2))
+* **aws-lambda-eventbridge:** created new construct ([#368](https://github.com/awslabs/aws-solutions-constructs/pull/368))
+* **cdk-v2:** Adding build scripts for CDK v2 ([#353](https://github.com/awslabs/aws-solutions-constructs/issues/353))
+* **cdk-v2:** fixing assertion tests to work with both v1 and v2 ([#370](https://github.com/awslabs/aws-solutions-constructs/issues/370)) ([c4c20e4](https://github.com/awslabs/aws-solutions-constructs/commit/c4c20e46ee253ac06629a4d38a07093c46b9905c))
+
+
+### Bug Fixes
+
+* **doc:** Typo in aws-sns-lambda README.md ([#374](https://github.com/awslabs/aws-solutions-constructs/issues/374)) ([0dbe295](https://github.com/awslabs/aws-solutions-constructs/commit/0dbe295bae4f24bb599168b2a0f014fdae69c41c))
+* **wrapped constructs:** shorten wrapped ID names in deprecated constructs ([#371](https://github.com/awslabs/aws-solutions-constructs/issues/371)) ([30737ae](https://github.com/awslabs/aws-solutions-constructs/commit/30737ae187b0231ec8e74e0f9abba59bd5c915a9))
+
+## [1.120.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.119.0...v1.120.0) (2021-09-02)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.120.0
+
+## [1.119.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.118.0...v1.119.0) (2021-09-02)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.119.0
+
+### Features
+
+* Added custom event bus support to aws-eventbridge-lambda [354](https://github.com/awslabs/aws-solutions-constructs/pull/354)
+
+* **aws-eventbridge-lambda:**  Support for custom EventBus ([#354](https://github.com/awslabs/aws-solutions-constructs/issues/354)) ([fd750a5](https://github.com/awslabs/aws-solutions-constructs/commit/fd750a5fc02f23728214bba5ca2909c99cc6adb4))
+
+## [1.118.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.117.0...v1.118.0) (2021-09-02)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.118.0
+
+### Features
+
+* Provide better error message when Queue and DLQ fifo settings don't match [#343](https://github.com/awslabs/aws-solutions-constructs/pull/343)
+* Convert SQS fifo: false to fifo: undefined automatically [#346](https://github.com/awslabs/aws-solutions-constructs/pull/346)
+* Added read and delete request template props to aws-apigateway-dynamodb [#347](https://github.com/awslabs/aws-solutions-constructs/pull/347)
+* Do not create cloudfront log bucket if logging is disabled on construct [#303](https://github.com/awslabs/aws-solutions-constructs/pull/303)
+* Add VPC support to aws-lambda-stepfunctions [#333](https://github.com/awslabs/aws-solutions-constructs/pull/333)
+* **cdk-v2:** Rearranging imports, removing deprecated APIs for CDK v2 release ([#350](https://github.com/awslabs/aws-solutions-constructs/issues/350)) ([0c8fba4](https://github.com/awslabs/aws-solutions-constructs/commit/0c8fba44001fedd549923ac16972b7779e1cdeaf))
+
+## [1.117.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.116.0...v1.117.0) (2021-08-14)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.117.0
+
+### Features
+
+* Added VPC support to aws-lambda-sqs-lambda. ([326](https://github.com/awslabs/aws-solutions-constructs/pull/326))
+
+### Added
+
+* **aws-iot-sqs:** initial implementation ([#267](https://github.com/awslabs/aws-solutions-constructs/issues/267)) ([5411ab7](https://github.com/awslabs/aws-solutions-constructs/commit/5411ab73301f85ff7a5df1e6425996e2c6e8ffb5)), closes [#266](https://github.com/awslabs/aws-solutions-constructs/issues/266)
+
+## [1.116.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.115.0...v1.116.0) (2021-08-12)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.116.0
+
+## [1.115.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.114.0...v1.115.0) (2021-08-11)
+
+### Added
+
+* Added new constructs that provide the same implementation as existing constructs but have names that follow our naming standard. aws-lambda-stepfunctions ([285](https://github.com/awslabs/aws-solutions-constructs/issues/285)), aws-eventbridge-stepfunctions ([299](https://github.com/awslabs/aws-solutions-constructs/issues/299)), aws-eventbridge-sns ([309](https://github.com/awslabs/aws-solutions-constructs/issues/309)), aws-eventbridge-kinesisfirehose-s3 ([310](https://github.com/awslabs/aws-solutions-constructs/issues/310)), aws-eventbridge-kinesisstreams ([311](https://github.com/awslabs/aws-solutions-constructs/issues/311)), aws-eventbridge-lambda ([312](https://github.com/awslabs/aws-solutions-constructs/issues/312))aws-eventbridge-sqs ([315](https://github.com/awslabs/aws-solutions-constructs/issues/315)), aws-dynamodbstreams-lambda-elasticsearch-kibana ([319](https://github.com/awslabs/aws-solutions-constructs/issues/319))
+
+### Changed
+
+* Upgraded all patterns to CDK v1.115.0
+* Encrypt scrap buckets created for integration tests ([314](https://github.com/awslabs/aws-solutions-constructs/issues/314))
+* fixed cfn_nag error when using existingBucketInterface on cloudfront-s3 ([320](https://github.com/awslabs/aws-solutions-constructs/issues/320))
+* allow passing sqsEventSourceProps into LambdaToSqsToLambda ([321](https://github.com/awslabs/aws-solutions-constructs/issues/321))
+* Set eligible constructs to Stable (9 constructs) ([323](https://github.com/awslabs/aws-solutions-constructs/issues/323))
+
+### ⚠ BREAKING CHANGES
+
+* CloudFrontToApiGateway - use cloudfront function instead of lambda@edge ([313](https://github.com/awslabs/aws-solutions-constructs/issues/))
+* CloudFrontToMediaStore - use cloudfront function instead of lambda@edge ([317](https://github.com/awslabs/aws-solutions-constructs/issues/))
+
+## [1.114.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.113.0...v1.114.0) (2021-07-27)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.114.0
+
+## [1.113.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.112.0...v1.113.0) (2021-07-27)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.113.0
+* Added keywords to each construct to appear as tags in NPM registry [278](https://github.com/awslabs/aws-solutions-constructs/issues/278)
+
+## [1.112.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.111.0...v1.112.0) (2021-07-24)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.112.0
+* Correct rules_to_suppress error in utils.ts [273](https://github.com/awslabs/aws-solutions-constructs/issues/273)
+
+### ⚠ BREAKING CHANGES
+
+* Use cloudfront function instead of lambda@edge for response security headers . [233](https://github.com/awslabs/aws-solutions-constructs/issues/233). The construct property edgeLambdaFunctionVersion is replaced by cloudFrontFunction, only stacks that reference that property will be affected.
+
+## [1.111.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.110.1...v1.111.0) (2021-07-19)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.111.0
+* Reduced default worker nodes from 10 to 2 on aws-kinesisstreams-gluejob to reduce costs for the default installation (may require refreshing test snapshots)
+* Added bucketname (to the current bucketname/*) in the bucket policy conditions requiring secure transport for greater control  (may require refreshing test snapshots).
+* Updated constructs to add cfn_nag rule suppression to metadata rather than replace the metadata section. [228](https://github.com/awslabs/aws-solutions-constructs/issues/228)
+* Support IBucket for the existingBucketObj prop in the aws-cloudfront-s3 pattern. [139](https://github.com/awslabs/aws-solutions-constructs/issues/139)
+
+## [1.110.1](https://github.com/awslabs/aws-solutions-constructs/compare/v1.110.0...v1.110.1) (2021-07-01)
+
+### Changed
+
+* Upgraded all patterns to CDK v1.110.1
+* Changed URL used to access IoT in aws-apigateway-iot [232](https://github.com/awslabs/aws-solutions-constructs/pull/232)
+
+### ⚠ BREAKING CHANGES
+
+* [253](https://github.com/awslabs/aws-solutions-constructs/pull/253) The construct docs say Mediastore requests are only accepted from CloudFront. The policy as written did not enforce this. If your app relied on the undocumented behavior and made Mediastore requests directly this change will break your app as the policy is now implemented as documented - only calls through CloudFront are accepted.
+
 ## [1.110.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.109.0...v1.110.0) (2021-06-26)
 
 ### Changed

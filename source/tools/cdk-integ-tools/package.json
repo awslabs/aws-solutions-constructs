@@ -11,7 +11,8 @@
   },
   "bin": {
     "cdk-integ": "bin/cdk-integ",
-    "cdk-integ-assert": "bin/cdk-integ-assert"
+    "cdk-integ-assert": "bin/cdk-integ-assert",
+    "cdk-integ-assert-v2": "bin/cdk-integ-assert-v2"
   },
   "scripts": {
     "build": "tsc -b .",
@@ -36,7 +37,8 @@
     "@aws-cdk/assert": "0.0.0",
     "aws-cdk": "0.0.0",
     "fs-extra": "^9.0.1",
-    "yargs": "^16.1.1"
+    "yargs": "^16.1.1",
+    "deepmerge": "^4.0.0"
   },
   "keywords": [
     "aws",

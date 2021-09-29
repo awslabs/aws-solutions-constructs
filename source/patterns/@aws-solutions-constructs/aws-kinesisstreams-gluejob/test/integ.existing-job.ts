@@ -16,9 +16,8 @@ import { CfnJob } from '@aws-cdk/aws-glue';
 import { Role, ServicePrincipal } from '@aws-cdk/aws-iam';
 import { Bucket, CfnBucket } from '@aws-cdk/aws-s3';
 import { App, Duration, Stack } from '@aws-cdk/core';
-import { SinkStoreType } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, SinkStoreType } from '@aws-solutions-constructs/core';
 import { KinesisstreamsToGluejob } from '../lib';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();

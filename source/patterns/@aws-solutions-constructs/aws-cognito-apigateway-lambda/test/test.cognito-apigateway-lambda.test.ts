@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { CognitoToApiGatewayToLambda, CognitoToApiGatewayToLambdaProps } from "../lib";
 import * as cdk from "@aws-cdk/core";
 import * as cognito from '@aws-cdk/aws-cognito';
@@ -30,12 +29,6 @@ function deployNewFunc(stack: cdk.Stack) {
     lambdaFunctionProps
   });
 }
-
-test('snapshot test CognitoToApiGatewayToLambda default params', () => {
-  const stack = new cdk.Stack();
-  deployNewFunc(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('override cognito properties', () => {
   const stack = new cdk.Stack();

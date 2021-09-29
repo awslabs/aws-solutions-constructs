@@ -17,6 +17,7 @@ import * as cdk from '@aws-cdk/core';
 import * as iam from '@aws-cdk/aws-iam';
 import * as logs from '@aws-cdk/aws-logs';
 import * as defaults from '@aws-solutions-constructs/core';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
 /**
@@ -192,8 +193,7 @@ export class ApiGatewayToIot extends Construct {
     shadowReqParams);
     const methodNamedShadowReqParams = Object.assign({
       'method.request.path.shadowName': true}, methodShadowReqParams);
-      // For some reason path mapping to 'things/{thingName}/shadow/name/{shadowName}' results in 403 error, hence this shortcut
-    this.addResourceMethod(namedShadowResource, props, 'topics/$aws/things/{thingName}/shadow/name/{shadowName}/update',
+    this.addResourceMethod(namedShadowResource, props, 'things/{thingName}/shadow?name={shadowName}',
       namedShadowReqParams, methodNamedShadowReqParams);
   }
 
@@ -271,19 +271,19 @@ export class ApiGatewayToIot extends Construct {
       methodOptions: resourceMethodOptions
     };
 
-    const apiMethod = defaults.addProxyMethodToApiResource(resourceMethodParams);
+    const apiMethod = defaults.addProxyMethodToApiResource(
+      resourceMethodParams
+    );
 
-    // cfn Nag doesn't like having a HTTP Method with Authorization Set to None, supress the warning
     if (props.apiGatewayCreateApiKey === true) {
-      const cfnMethod = apiMethod.node.findChild('Resource') as api.CfnMethod;
-      cfnMethod.cfnOptions.metadata = {
-        cfn_nag: {
-          rules_to_suppress: [{
-            id: 'W59',
-            reason: 'When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE'
-          }]
-        }
-      };
+      // cfn Nag doesn't like having a HTTP Method with Authorization Set to None, supress the warning
+      defaults.addCfnSuppressRules(apiMethod, [
+        {
+          id: "W59",
+          reason:
+            "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE",
+        },
+      ]);
     }
   }
 }

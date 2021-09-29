@@ -11,25 +11,13 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils, expect as expectCDK, haveResource } from '@aws-cdk/assert';
+import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
 import { Stack } from '@aws-cdk/core';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
 import '@aws-cdk/assert/jest';
 import { getPartitionKeyNameFromTable } from '../lib/dynamodb-table-helper';
-
-test('snapshot test TableProps default params', () => {
-  const stack = new Stack();
-  new dynamodb.Table(stack, 'test-dynamo-defaults', defaults.DefaultTableProps);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
-test('snapshot test TableWithStream default params', () => {
-  const stack = new Stack();
-  new dynamodb.Table(stack, 'test-dynamo-stream-defaults', defaults.DefaultTableWithStreamProps);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('test TableProps change billing mode', () => {
   const stack = new Stack();

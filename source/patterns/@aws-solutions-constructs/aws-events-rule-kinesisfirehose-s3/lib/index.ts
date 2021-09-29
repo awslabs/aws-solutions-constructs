@@ -13,48 +13,59 @@
 
 import * as events from '@aws-cdk/aws-events';
 import * as kinesisfirehose from '@aws-cdk/aws-kinesisfirehose';
-import * as defaults from '@aws-solutions-constructs/core';
 import * as iam from '@aws-cdk/aws-iam';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as logs from '@aws-cdk/aws-logs';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
-import { overrideProps } from '@aws-solutions-constructs/core';
-import { KinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-kinesisfirehose-s3';
+import { EventbridgeToKinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-eventbridge-kinesisfirehose-s3';
 
 /**
  * @summary The properties for the EventsRuleToKinesisFirehoseToS3 Construct
  */
 export interface EventsRuleToKinesisFirehoseToS3Props {
   /**
+   * Existing instance of a custom EventBus.
+   *
+   * @default - None
+   */
+  readonly existingEventBusInterface?: events.IEventBus;
+  /**
+   * A new custom EventBus is created with provided props.
+   *
+   * @default - None
+   */
+  readonly eventBusProps?: events.EventBusProps;
+  /**
    * User provided eventRuleProps to override the defaults
    *
    * @default - None
    */
-  readonly eventRuleProps: events.RuleProps
+  readonly eventRuleProps: events.RuleProps;
   /**
    * User provided props to override the default props for the Kinesis Firehose.
    *
    * @default - Default props are used
    */
-  readonly kinesisFirehoseProps?: kinesisfirehose.CfnDeliveryStreamProps | any
+  readonly kinesisFirehoseProps?: kinesisfirehose.CfnDeliveryStreamProps | any;
   /**
    * Existing instance of S3 Bucket object, providing both this and `bucketProps` will cause an error.
    *
    * @default - None
    */
-  readonly existingBucketObj?: s3.IBucket,
+  readonly existingBucketObj?: s3.IBucket;
   /**
    * User provided props to override the default props for the S3 Bucket.
    *
    * @default - Default props are used
    */
-  readonly bucketProps?: s3.BucketProps,
+  readonly bucketProps?: s3.BucketProps;
   /**
    * User provided props to override the default props for the CloudWatchLogs LogGroup.
    *
    * @default - Default props are used
    */
-  readonly logGroupProps?: logs.LogGroupProps
+  readonly logGroupProps?: logs.LogGroupProps;
 }
 
 export class EventsRuleToKinesisFirehoseToS3 extends Construct {
@@ -65,70 +76,31 @@ export class EventsRuleToKinesisFirehoseToS3 extends Construct {
   public readonly kinesisFirehoseRole: iam.Role;
   public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
+  public readonly eventBus?: events.IEventBus;
 
   /**
    * @summary Constructs a new instance of the EventsRuleToKinesisFirehoseToS3 class.
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {EventsRuleToKinesisFirehoseToS3Props} props - user provided props for the construct
-   * @since 0.8.0
    * @access public
    */
   constructor(scope: Construct, id: string, props: EventsRuleToKinesisFirehoseToS3Props) {
     super(scope, id);
-    defaults.CheckProps(props);
+    const convertedProps: EventsRuleToKinesisFirehoseToS3Props = { ...props };
 
-    if (props.existingBucketObj && props.bucketProps) {
-      throw new Error('Cannot specify both bucket properties and an existing bucket');
-    }
-
-    // Set up the Kinesis Firehose using KinesisFirehoseToS3 construct
-    const firehoseToS3 = new KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {
-      kinesisFirehoseProps: props.kinesisFirehoseProps,
-      existingBucketObj: props.existingBucketObj,
-      bucketProps: props.bucketProps,
-      logGroupProps: props.logGroupProps
-    });
-    this.kinesisFirehose = firehoseToS3.kinesisFirehose;
-    this.s3Bucket = firehoseToS3.s3Bucket;
-    this.kinesisFirehoseRole = firehoseToS3.kinesisFirehoseRole;
-    this.s3LoggingBucket = firehoseToS3.s3LoggingBucket;
-    this.kinesisFirehoseLogGroup = firehoseToS3.kinesisFirehoseLogGroup;
-
-    // Create an events service role
-    this.eventsRole = new iam.Role(this, 'EventsRuleInvokeKinesisFirehoseRole', {
-      assumedBy: new iam.ServicePrincipal('events.amazonaws.com'),
-      description: 'Events Rule To Kinesis Firehose Role',
-    });
-
-    // Setup the IAM policy that grants events rule the permission to send cw events data to kinesis firehose
-    const eventsPolicy = new iam.Policy(this, 'EventsRuleInvokeKinesisFirehosePolicy', {
-      statements: [new iam.PolicyStatement({
-        actions: [
-          'firehose:PutRecord',
-          'firehose:PutRecordBatch'
-        ],
-        resources: [this.kinesisFirehose.attrArn]
-      })
-      ]});
-
-    // Attach policy to role
-    eventsPolicy.attachToRole(this.eventsRole);
-
-    // Set up the Kinesis Firehose as the target for event rule
-    const KinesisFirehoseEventTarget: events.IRuleTarget = {
-      bind: () => ({
-        id: '',
-        arn: this.kinesisFirehose.attrArn,
-        role: this.eventsRole
-      })
-    };
-
-    // Set up the events rule props
-    const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([KinesisFirehoseEventTarget]);
-    const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);
-
-    this.eventsRule = new events.Rule(this, 'EventsRule', eventsRuleProps);
-
+    // W (for 'wrapped') is added to the id so that the id's of the constructs with the old and new names don't collide
+    // If this character pushes you beyond the 64 character limit, just import the new named construct and instantiate
+    // it in place of the older named version. They are functionally identical, aside from the types no other changes
+    // will be required.  (eg - new EventbridgeToKinesisFirehoseToS3 instead of EventsRuleToKinesisFirehoseToS3)
+    const wrappedConstruct: EventsRuleToKinesisFirehoseToS3 = new EventbridgeToKinesisFirehoseToS3(this, `${id}W`, convertedProps);
+    this.eventsRule = wrappedConstruct.eventsRule;
+    this.eventsRole = wrappedConstruct.eventsRole;
+    this.kinesisFirehose = wrappedConstruct.kinesisFirehose;
+    this.kinesisFirehoseLogGroup = wrappedConstruct.kinesisFirehoseLogGroup;
+    this.kinesisFirehoseRole = wrappedConstruct.kinesisFirehoseRole;
+    this.s3Bucket = wrappedConstruct.s3Bucket;
+    this.s3LoggingBucket = wrappedConstruct.s3LoggingBucket;
+    this.eventBus = wrappedConstruct.eventBus;
   }
 }

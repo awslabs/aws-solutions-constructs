@@ -12,9 +12,10 @@
  */
 
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
-import * as cdk from '@aws-cdk/core';
 import { DefaultTableProps, DefaultTableWithStreamProps } from './dynamodb-table-defaults';
 import { overrideProps } from './utils';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
+import { Construct } from '@aws-cdk/core';
 
 export interface BuildDynamoDBTableProps {
   /**
@@ -48,7 +49,7 @@ export interface BuildDynamoDBTableWithStreamProps {
   readonly existingTableInterface?: dynamodb.ITable
 }
 
-export function buildDynamoDBTable(scope: cdk.Construct, props: BuildDynamoDBTableProps): dynamodb.Table {
+export function buildDynamoDBTable(scope: Construct, props: BuildDynamoDBTableProps): dynamodb.Table {
   // Conditional DynamoDB Table creation
   if (!props.existingTableObj) {
     // Set the default props for DynamoDB table
@@ -63,7 +64,7 @@ export function buildDynamoDBTable(scope: cdk.Construct, props: BuildDynamoDBTab
   }
 }
 
-export function buildDynamoDBTableWithStream(scope: cdk.Construct, props: BuildDynamoDBTableWithStreamProps): [dynamodb.ITable, dynamodb.Table?] {
+export function buildDynamoDBTableWithStream(scope: Construct, props: BuildDynamoDBTableWithStreamProps): [dynamodb.ITable, dynamodb.Table?] {
   // Conditional DynamoDB Table creation
   if (!props.existingTableInterface) {
     // Set the default props for DynamoDB table
