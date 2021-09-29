@@ -4,11 +4,11 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [1.124.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.123.0...v1.124.0) (2021-09-29)
 
+* Upgraded all patterns to CDK v1.124.0
 
 ### Features
 
-* **aws-wafwebacl-cloudfront:** created README for aws-wafwebacl-cloudfront ([#389](https://github.com/awslabs/aws-solutions-constructs/issues/389)) ([bba361e](https://github.com/awslabs/aws-solutions-constructs/commit/bba361eb9c486af272fce4f8352c667e4e04cfa7))
-
+* **aws-wafwebacl-cloudfront:** New Construct - aws-wafwebacl-cloudfront ([#389](https://github.com/awslabs/aws-solutions-constructs/issues/389)) ([bba361e](https://github.com/awslabs/aws-solutions-constructs/commit/bba361eb9c486af272fce4f8352c667e4e04cfa7))
 
 ### Bug Fixes
 
