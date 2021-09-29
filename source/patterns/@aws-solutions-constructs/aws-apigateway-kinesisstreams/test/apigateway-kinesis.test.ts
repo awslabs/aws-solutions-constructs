@@ -29,6 +29,7 @@ test('Test construct properties', () => {
   expect(pattern.apiGatewayCloudWatchRole !== null);
   expect(pattern.apiGatewayLogGroup !== null);
   expect(pattern.kinesisStream !== null);
+  expect(pattern.cloudwatchAlarms !== null);
 });
 
 // --------------------------------------------------------------
@@ -80,24 +81,33 @@ test('Test deployment w/ overwritten properties', () => {
     ShardCount: 1,
     Name: 'my-stream'
   });
+
+  // Test for Cloudwatch Alarms
+  expect(stack).toCountResources('AWS::CloudWatch::Alarm', 2);
 });
 
 // --------------------------------------------------------------
-// Test deployment w/ existing stream
+// Test deployment w/ existing stream without default cloudwatch alarms
 // --------------------------------------------------------------
 test('Test deployment w/ existing stream', () => {
   const stack = new Stack();
 
-  new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis', {
+  const construct = new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis', {
     apiGatewayProps: {},
     existingStreamObj: new kinesis.Stream(stack, 'ExistingStream', {
       shardCount: 5,
       retentionPeriod: Duration.days(4)
-    })
+    }),
+    createCloudWatchAlarms: false
   });
 
   expect(stack).toHaveResource('AWS::Kinesis::Stream', {
     ShardCount: 5,
     RetentionPeriodHours: 96
   });
+
+  expect(construct.cloudwatchAlarms == null);
+
+  // Since createCloudWatchAlars is set to false, no Alarm should exist
+  expect(stack).not.toHaveResource('AWS::CloudWatch::Alarm');
 });
