@@ -21,6 +21,7 @@ import '@aws-cdk/assert/jest';
 import { Bucket } from '@aws-cdk/aws-s3';
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
 import { LambdaEdgeEventType } from '@aws-cdk/aws-cloudfront';
+import * as acm from '@aws-cdk/aws-certificatemanager';
 
 test('check bucket policy metadata', () => {
   const stack = new Stack();
@@ -476,6 +477,27 @@ test('test override cloudfront replace custom lambda@edge', () => {
           }
         }
       ]
+    }
+  });
+});
+
+test('test cloudfront override cloudfront custom domain names ', () => {
+  const stack = new Stack();
+  const [sourceBucket] = buildS3Bucket(stack, {});
+  const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012');
+
+  const myprops = {
+    domainNames: ['mydomains'],
+    certificate
+  };
+
+  CloudFrontDistributionForS3(stack, sourceBucket, myprops);
+
+  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+      Aliases: [
+        "mydomains"
+      ],
     }
   });
 });
