@@ -25,7 +25,7 @@ import {addCfnNagS3BucketNotificationRulesToSuppress} from "@aws-solutions-const
  */
 export interface S3ToSqsProps {
     /**
-     * Optional existing instance of S3 Bucket object, providing both this and `bucketProps` will cause an error.
+     * Existing instance of S3 Bucket object, providing both this and `bucketProps` will cause an error.
      *
      * @default - None
      */
@@ -49,7 +49,7 @@ export interface S3ToSqsProps {
      */
     readonly s3EventFilters?: s3.NotificationKeyFilter[]
     /**
-     * Optional existing instance of SQS queue object, Providing both this and queueProps will cause an error.
+     * Existing instance of SQS queue object, Providing both this and queueProps will cause an error.
      *
      * @default - Default props are used
      */
