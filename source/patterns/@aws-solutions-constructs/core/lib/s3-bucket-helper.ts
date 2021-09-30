@@ -39,11 +39,7 @@ export interface BuildS3BucketProps {
 }
 
 export function buildS3Bucket(scope: Construct, props: BuildS3BucketProps, bucketId?: string): [s3.Bucket, s3.Bucket?] {
-  if (props.bucketProps) {
-    return s3BucketWithLogging(scope, props.bucketProps, bucketId, props.loggingBucketProps);
-  } else {
-    return s3BucketWithLogging(scope, DefaultS3Props(), bucketId, props.loggingBucketProps);
-  }
+  return s3BucketWithLogging(scope, props.bucketProps, bucketId, props.loggingBucketProps);
 }
 
 export function applySecureBucketPolicy(s3Bucket: s3.Bucket): void {
@@ -72,13 +68,7 @@ export function applySecureBucketPolicy(s3Bucket: s3.Bucket): void {
 
 export function createLoggingBucket(scope: Construct,
   bucketId: string,
-  userLoggingBucketProps?: s3.BucketProps): s3.Bucket {
-
-  let loggingBucketProps = userLoggingBucketProps;
-
-  if (!loggingBucketProps) {
-    loggingBucketProps = DefaultS3Props();
-  }
+  loggingBucketProps: s3.BucketProps): s3.Bucket {
 
   // Create the Logging Bucket
   const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, loggingBucketProps);
@@ -141,11 +131,11 @@ function s3BucketWithLogging(scope: Construct,
     let loggingBucketProps;
 
     if (userLoggingBucketProps) { // User provided logging bucket props
-      loggingBucketProps = userLoggingBucketProps;
+      loggingBucketProps = overrideProps(DefaultS3Props(), userLoggingBucketProps);
     } else if (s3BucketProps?.removalPolicy) { // Deletes logging bucket only if it is empty
       loggingBucketProps = overrideProps(DefaultS3Props(), { removalPolicy: s3BucketProps.removalPolicy });
     } else { // Default S3 bucket props
-      loggingBucketProps = undefined;
+      loggingBucketProps = DefaultS3Props();
     }
 
     loggingBucket = createLoggingBucket(scope, _loggingBucketId, loggingBucketProps);

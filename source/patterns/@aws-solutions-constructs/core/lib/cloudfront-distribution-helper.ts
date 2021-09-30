@@ -23,6 +23,7 @@ import {
 } from './cloudfront-distribution-defaults';
 import { overrideProps, addCfnSuppressRules } from './utils';
 import { createLoggingBucket } from './s3-bucket-helper';
+import { DefaultS3Props } from './s3-bucket-defaults';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
@@ -187,7 +188,7 @@ function getLoggingBucket(cloudFrontDistributionProps: cloudfront.DistributionPr
   const userSuppliedLogBucket = cloudFrontDistributionProps?.logBucket;
   return isLoggingDisabled
     ? undefined
-    : userSuppliedLogBucket ?? createLoggingBucket(scope, 'CloudfrontLoggingBucket');
+    : userSuppliedLogBucket ?? createLoggingBucket(scope, 'CloudfrontLoggingBucket', DefaultS3Props());
 }
 
 function getCloudfrontFunction(httpSecurityHeaders: boolean, scope: Construct) {

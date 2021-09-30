@@ -58,6 +58,33 @@ test('s3 bucket with bucketProps', () => {
   }));
 });
 
+test('s3 bucket with default props', () => {
+  const stack = new Stack();
+
+  defaults.buildS3Bucket(stack, {});
+
+  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+    BucketEncryption: {
+      ServerSideEncryptionConfiguration: [
+        {
+          ServerSideEncryptionByDefault: {
+            SSEAlgorithm: "AES256"
+          }
+        }
+      ]
+    },
+    PublicAccessBlockConfiguration: {
+      BlockPublicAcls: true,
+      BlockPublicPolicy: true,
+      IgnorePublicAcls: true,
+      RestrictPublicBuckets: true
+    },
+    VersioningConfiguration: {
+      Status: "Enabled"
+    }
+  }));
+});
+
 test('s3 bucket with life cycle policy', () => {
   const stack = new Stack();
 
