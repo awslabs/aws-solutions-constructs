@@ -20,7 +20,6 @@ import { overrideProps, addCfnSuppressRules } from './utils';
 import { PolicyStatement, Effect, AnyPrincipal } from '@aws-cdk/aws-iam';
 import { StorageClass } from '@aws-cdk/aws-s3';
 import { Duration } from '@aws-cdk/core';
-import { RemovalPolicy } from '@aws-cdk/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
@@ -31,13 +30,19 @@ export interface BuildS3BucketProps {
    * @default - Default props are used
    */
   readonly bucketProps?: s3.BucketProps
+  /**
+   * User provided props to override the default props for the S3 Logging Bucket.
+   *
+   * @default - Default props are used
+   */
+  readonly loggingBucketProps?: s3.BucketProps
 }
 
 export function buildS3Bucket(scope: Construct, props: BuildS3BucketProps, bucketId?: string): [s3.Bucket, s3.Bucket?] {
   if (props.bucketProps) {
-    return s3BucketWithLogging(scope, props.bucketProps, bucketId);
+    return s3BucketWithLogging(scope, props.bucketProps, bucketId, props.loggingBucketProps);
   } else {
-    return s3BucketWithLogging(scope, DefaultS3Props(), bucketId);
+    return s3BucketWithLogging(scope, DefaultS3Props(), bucketId, props.loggingBucketProps);
   }
 }
 
@@ -56,21 +61,22 @@ export function applySecureBucketPolicy(s3Bucket: s3.Bucket): void {
       principals: [new AnyPrincipal()],
       effect: Effect.DENY,
       conditions:
-            {
-              Bool: {
-                'aws:SecureTransport': 'false'
-              }
-            }
+      {
+        Bool: {
+          'aws:SecureTransport': 'false'
+        }
+      }
     })
   );
 }
 
-export function createLoggingBucket(scope: Construct, bucketId: string, removalPolicy?: RemovalPolicy): s3.Bucket {
-  let loggingBucketProps;
+export function createLoggingBucket(scope: Construct,
+  bucketId: string,
+  userLoggingBucketProps?: s3.BucketProps): s3.Bucket {
 
-  if (removalPolicy) {
-    loggingBucketProps = overrideProps(DefaultS3Props(), { removalPolicy });
-  } else {
+  let loggingBucketProps = userLoggingBucketProps;
+
+  if (!loggingBucketProps) {
     loggingBucketProps = DefaultS3Props();
   }
 
@@ -104,7 +110,10 @@ export function createLoggingBucket(scope: Construct, bucketId: string, removalP
   return loggingBucket;
 }
 
-function s3BucketWithLogging(scope: Construct, s3BucketProps?: s3.BucketProps, bucketId?: string): [s3.Bucket, s3.Bucket?] {
+function s3BucketWithLogging(scope: Construct,
+  s3BucketProps?: s3.BucketProps,
+  bucketId?: string,
+  userLoggingBucketProps?: s3.BucketProps): [s3.Bucket, s3.Bucket?] {
 
   /** Default Life Cycle policy to transition older versions to Glacier after 90 days */
   const lifecycleRules: s3.LifecycleRule[] = [{
@@ -129,7 +138,17 @@ function s3BucketWithLogging(scope: Construct, s3BucketProps?: s3.BucketProps, b
     }
   } else {
     // Create the Logging Bucket
-    loggingBucket = createLoggingBucket(scope, _loggingBucketId, s3BucketProps?.removalPolicy);
+    let loggingBucketProps;
+
+    if (userLoggingBucketProps) { // User provided logging bucket props
+      loggingBucketProps = userLoggingBucketProps;
+    } else if (s3BucketProps?.removalPolicy) { // Deletes logging bucket only if it is empty
+      loggingBucketProps = overrideProps(DefaultS3Props(), { removalPolicy: s3BucketProps.removalPolicy });
+    } else { // Default S3 bucket props
+      loggingBucketProps = undefined;
+    }
+
+    loggingBucket = createLoggingBucket(scope, _loggingBucketId, loggingBucketProps);
 
     // Attach the Default Life Cycle policy ONLY IF the versioning is ENABLED
     if (s3BucketProps?.versioned === undefined || s3BucketProps.versioned) {
