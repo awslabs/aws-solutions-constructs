@@ -15,7 +15,6 @@ import { S3ToLambda, S3ToLambdaProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as cdk from "@aws-cdk/core";
-import * as defaults from '../../core/index';
 import '@aws-cdk/assert/jest';
 
 function deployNewFunc(stack: cdk.Stack) {
@@ -71,7 +70,12 @@ test("Test bad call with existingBucket and bucketProps", () => {
 test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   const stack = new cdk.Stack();
 
-  defaults.buildS3Bucket(stack, {
+  new S3ToLambda(stack, 's3-lambda', {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
     bucketProps: {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     },
@@ -93,7 +97,7 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
       ]
     },
     BucketName: {
-      Ref: "S3LoggingBucket800A2B27"
+      Ref: "s3lambdaS3LoggingBucketAC6FF14E"
     }
   });
 });

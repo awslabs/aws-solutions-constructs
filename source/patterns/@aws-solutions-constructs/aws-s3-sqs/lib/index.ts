@@ -31,7 +31,7 @@ export interface S3ToSqsProps {
      */
     readonly existingBucketObj?: s3.Bucket,
     /**
-     * User provided props to override the default props for the S3 Bucket.
+     * Optional user provided props to override the default props for the S3 Bucket.
      *
      * @default - Default props are used
      */
@@ -86,17 +86,23 @@ export interface S3ToSqsProps {
      */
     readonly enableEncryptionWithCustomerManagedKey?: boolean
     /**
-     * An optional, imported encryption key to encrypt the SQS queue.
+     * Optional imported encryption key to encrypt the SQS queue.
      *
      * @default - not specified.
      */
     readonly encryptionKey?: kms.Key,
     /**
-     * Optional user-provided props to override the default props for the encryption key.
+     * Optional user provided props to override the default props for the encryption key.
      *
      * @default - Default props are used.
      */
     readonly encryptionKeyProps?: kms.KeyProps
+    /**
+     * Optional user provided props to override the default props for the S3 Logging Bucket.
+     *
+     * @default - Default props are used
+     */
+    readonly loggingBucketProps?: s3.BucketProps
 }
 
 /**
@@ -136,7 +142,8 @@ export class S3ToSqs extends Construct {
       // Setup the S3 bucket
       if (!props.existingBucketObj) {
         [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
-          bucketProps: props.bucketProps
+          bucketProps: props.bucketProps,
+          loggingBucketProps: props.loggingBucketProps
         });
         bucket = this.s3Bucket;
       } else {
