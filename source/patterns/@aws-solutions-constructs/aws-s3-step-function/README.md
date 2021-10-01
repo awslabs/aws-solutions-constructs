@@ -55,7 +55,7 @@ _Parameters_
 * id `string`
 * props [`S3ToStepFunctionProps`](#pattern-construct-props)
 
-## Pattern Construct Props
+## Pattern Construct Props◊
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
@@ -66,6 +66,7 @@ _Parameters_
 |deployCloudTrail?|`boolean`|Whether to deploy a Trail in AWS CloudTrail to log API events in Amazon S3. Defaults to `true`.|
 |createCloudWatchAlarms|`boolean`|Whether to create recommended CloudWatch alarms|
 |logGroupProps?|[`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-logs.LogGroupProps.html)|User provided props to override the default props for for the CloudWatchLogs LogGroup.|
+|loggingBucketProps?|[`s3.BucketProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html)|Optional user provided props to override the default props for the S3 Logging Bucket.|
 
 ## Pattern Properties
 

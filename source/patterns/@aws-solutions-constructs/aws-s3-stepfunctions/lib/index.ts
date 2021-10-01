@@ -33,19 +33,19 @@ export interface S3ToStepfunctionsProps {
    */
   readonly existingBucketObj?: s3.IBucket,
   /**
-   * User provided props to override the default props for the S3 Bucket.
+   * Optional user provided props to override the default props for the S3 Bucket.
    *
    * @default - Default props are used
    */
   readonly bucketProps?: s3.BucketProps,
   /**
-   * User provided StateMachineProps to override the defaults
+   * Optional user provided StateMachineProps to override the defaults
    *
    * @default - None
    */
   readonly stateMachineProps: sfn.StateMachineProps,
   /**
-   * User provided eventRuleProps to override the defaults
+   * Optional user provided eventRuleProps to override the defaults
    *
    * @default - None
    */
@@ -63,11 +63,17 @@ export interface S3ToStepfunctionsProps {
    */
   readonly createCloudWatchAlarms?: boolean,
   /**
-   * User provided props to override the default props for the CloudWatchLogs LogGroup.
+   * Optional user provided props to override the default props for the CloudWatchLogs LogGroup.
    *
    * @default - Default props are used
    */
   readonly logGroupProps?: logs.LogGroupProps
+  /**
+   * Optional user provided props to override the default props for the S3 Logging Bucket.
+   *
+   * @default - Default props are used
+   */
+   readonly loggingBucketProps?: s3.BucketProps
 }
 
 export class S3ToStepfunctions extends Construct {
@@ -99,7 +105,8 @@ export class S3ToStepfunctions extends Construct {
 
     if (!props.existingBucketObj) {
       [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
-        bucketProps: props.bucketProps
+        bucketProps: props.bucketProps,
+        loggingBucketProps: props.loggingBucketProps
       });
       bucket = this.s3Bucket;
     } else {

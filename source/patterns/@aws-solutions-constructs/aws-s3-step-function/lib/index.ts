@@ -67,6 +67,12 @@ export interface S3ToStepFunctionProps {
    * @default - Default props are used
    */
   readonly logGroupProps?: logs.LogGroupProps
+  /**
+   * Optional user provided props to override the default props for the S3 Logging Bucket.
+   *
+   * @default - Default props are used
+   */
+   readonly loggingBucketProps?: s3.BucketProps
 }
 
 export class S3ToStepFunction extends Construct {
