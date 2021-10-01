@@ -13,6 +13,7 @@
 
 /// !cdk-integ *
 import {App, Stack, RemovalPolicy} from "@aws-cdk/core";
+import { BucketEncryption } from "@aws-cdk/aws-s3"
 import {S3ToSqs} from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
@@ -27,8 +28,9 @@ new S3ToSqs(stack, 'test-s3-sqs', {
   },
   loggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-    autoDeleteObjects: true,
     bucketName: 'custom-logging-bucket',
+    encryption: BucketEncryption.S3_MANAGED,
+    versioned: true
   }
 });
 app.synth();
