@@ -13,7 +13,7 @@
 
 /// !cdk-integ *
 import {App, Stack, RemovalPolicy} from "@aws-cdk/core";
-import { BucketEncryption } from "@aws-cdk/aws-s3"
+import { BucketEncryption } from "@aws-cdk/aws-s3";
 import {S3ToSqs} from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
