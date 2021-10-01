@@ -39,7 +39,7 @@ export interface S3ToStepfunctionsProps {
    */
   readonly bucketProps?: s3.BucketProps,
   /**
-   * Optional user provided StateMachineProps to override the defaults
+   * User provided StateMachineProps to override the defaults
    *
    * @default - None
    */
