@@ -29,7 +29,7 @@ export interface S3ToLambdaProps {
    */
   readonly existingLambdaObj?: lambda.Function,
   /**
-   * User provided props to override the default props for the Lambda function.
+   * Optional user provided props to override the default props for the Lambda function.
    *
    * @default - Default props are used
    */
@@ -41,7 +41,7 @@ export interface S3ToLambdaProps {
    */
   readonly existingBucketObj?: s3.Bucket,
   /**
-   * User provided props to override the default props for the S3 Bucket.
+   * Optional user provided props to override the default props for the S3 Bucket.
    *
    * @default - Default props are used
    */
@@ -53,7 +53,7 @@ export interface S3ToLambdaProps {
    */
   readonly s3EventSourceProps?: S3EventSourceProps,
   /**
-   * User provided props to override the default props for the S3 Logging Bucket.
+   * Optional user provided props to override the default props for the S3 Logging Bucket.
    *
    * @default - Default props are used
    */
