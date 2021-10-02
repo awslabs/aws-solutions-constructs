@@ -25,7 +25,7 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 
 const startState = new stepfunctions.Pass(stack, 'StartState');
 
-new S3ToStepfunctions(stack, 'test-s3-sqs', {
+new S3ToStepfunctions(stack, 'test-s3-stepfunctions', {
   stateMachineProps: {
     definition: startState
   },
