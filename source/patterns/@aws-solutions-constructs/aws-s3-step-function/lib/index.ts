@@ -44,7 +44,7 @@ export interface S3ToStepFunctionProps {
    */
   readonly stateMachineProps: sfn.StateMachineProps,
   /**
-   * User provided eventRuleProps to override the defaults
+   * Optional User provided eventRuleProps to override the defaults
    *
    * @default - None
    */
