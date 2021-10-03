@@ -32,7 +32,7 @@ export interface S3ToStepFunctionProps {
    */
   readonly existingBucketObj?: s3.IBucket,
   /**
-   * User provided props to override the default props for the S3 Bucket.
+   * Optional user provided props to override the default props for the S3 Bucket.
    *
    * @default - Default props are used
    */
