@@ -29,7 +29,8 @@ const lambdaProps: lambda.FunctionProps = {
 
 new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
   lambdaFunctionProps: lambdaProps,
-  domainName: 'noargumentstest'
+  domainName: 'noargumentstest',
+  cognitoDomainName: 'testingwithnoargs'
 });
 
 // Synth
