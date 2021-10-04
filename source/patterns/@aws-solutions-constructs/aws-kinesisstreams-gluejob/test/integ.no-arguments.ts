@@ -13,10 +13,10 @@
 
 // Imports
 import { CfnTable } from '@aws-cdk/aws-glue';
-import { Asset } from '@aws-cdk/aws-s3-assets';
 import { App, Stack } from '@aws-cdk/core';
 import { KinesisstreamsToGluejob } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { Asset } from '@aws-cdk/aws-s3-assets';
 
 // Setup
 const app = new App();
@@ -48,7 +48,7 @@ new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', {
       pythonVersion: '3',
       scriptLocation: new Asset(stack, 'ScriptLocation', {
         path: `${__dirname}/transform.py`
-      }).s3ObjectUrl
+      }).assetPath
     }
   },
   fieldSchema

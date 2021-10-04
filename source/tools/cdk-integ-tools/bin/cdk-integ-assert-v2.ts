@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Verify that all integration tests still match their expected output
 import { canonicalizeTemplate } from '@aws-cdk/assert';
-import { diffTemplate, formatDifferences, TemplateDiff } from '@aws-cdk/cloudformation-diff';
+import { diffTemplate, formatDifferences } from '@aws-cdk/cloudformation-diff';
 import { DEFAULT_SYNTH_OPTIONS, IntegrationTests } from '../lib/integ-helpers';
 
 /* eslint-disable no-console */
@@ -29,47 +29,10 @@ async function main() {
 
     const diff = diffTemplate(expected, actual);
 
-    const v2diff = new TemplateDiff({
-      awsTemplateFormatVersion: diff.awsTemplateFormatVersion,
-      outputs: diff.outputs,
-      description: diff.description,
-      transform: diff.transform,
-      conditions: diff.conditions,
-      mappings: diff.mappings,
-      metadata: diff.metadata,
-      resources: diff.resources.filter(d => {
-        if ((d?.isDifferent) && (d?.resourceType === 'AWS::Lambda::Function') && d?.oldProperties?.Code?.S3Bucket?.Ref.startsWith("AssetParameters")) {
-          return false;
-        } else
-          return true;
-      }),
-      parameters: diff.parameters.filter(d => {
-        if ((d?.isAddition) && (d?.newValue?.Default?.startsWith('/cdk-bootstrap/'))) {
-          return false;
-        } else if ((d?.isRemoval) && 
-          (
-            (d?.oldValue?.Description?.startsWith('S3 bucket for asset')) ||
-            (d?.oldValue?.Description?.startsWith('S3 key for asset version')) || 
-            (d?.oldValue?.Description?.startsWith('Artifact hash for asset'))
-          )) {
-          return false;
-        }
-        else
-          return true;
-      }),
-      unknown: diff.unknown.filter(d => {
-        if ((d?.isAddition) && (d?.newValue?.CheckBootstrapVersion)) {
-          return false;
-        }
-        else
-          return true;
-      }),
-    });
-
-    if (!v2diff.isEmpty) {
+    if (!diff.isEmpty) {
       failures.push(test.name);
       process.stdout.write('CHANGED.\n');
-      formatDifferences(process.stdout, v2diff);
+      formatDifferences(process.stdout, diff);
     } else {
       process.stdout.write('OK.\n');
     }
