@@ -17,6 +17,7 @@ import * as s3 from '@aws-cdk/aws-s3';
 import * as cdk from "@aws-cdk/core";
 import { RemovalPolicy } from '@aws-cdk/core';
 import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
+import * as acm from '@aws-cdk/aws-certificatemanager';
 
 function deploy(stack: cdk.Stack, props?: CloudFrontToS3Props) {
   return new CloudFrontToS3(stack, 'test-cloudfront-s3', {
@@ -205,4 +206,27 @@ test('test cloudfront disable cloudfront logging', () => {
   const construct = deploy(stack, {cloudFrontDistributionProps: {enableLogging: false}} );
 
   expect(construct.cloudFrontLoggingBucket === undefined);
+});
+
+test('test cloudfront with custom domain names', () => {
+  const stack = new cdk.Stack();
+
+  const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012');
+
+  const props: CloudFrontToS3Props = {
+    cloudFrontDistributionProps: {
+      domainNames: ['mydomains'],
+      certificate
+    }
+  };
+
+  new CloudFrontToS3(stack, 'test-cloudfront-s3', props);
+
+  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+      Aliases: [
+        "mydomains"
+      ]
+    }
+  });
 });
