@@ -229,7 +229,7 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | --- | --- | --- |
 | existingBucketObj? | s3.Bucket | Either this or bucketProps must be provided |
 | bucketProps? | s3.BucketProps	| |
-| loggingBucketProps? | s3.BucketProps	|  |
+| loggingBucketProps? | s3.BucketProps	| Creating an S3 Bucket will generate a Logging Bucket which users can provide props to override the default props |
 | s3EventTypes?	| s3.EventType	| Only required when construct responds to S3 events |
 | s3EventFilters?	| s3.NotificationKeyFilter |Only required when construct responds to S3 events |
 
