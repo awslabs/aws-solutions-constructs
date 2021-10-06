@@ -652,22 +652,6 @@
         ]
       }
     },
-    "emptysecuritygroupA4ADE482": {
-      "Type": "AWS::EC2::SecurityGroup",
-      "Properties": {
-        "GroupDescription": "deployPublicApiNewAlb/empty-security-group",
-        "SecurityGroupEgress": [
-          {
-            "CidrIp": "0.0.0.0/0",
-            "Description": "Allow all outbound traffic by default",
-            "IpProtocol": "-1"
-          }
-        ],
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        }
-      }
-    },
     "newzone1D011936": {
       "Type": "AWS::Route53::HostedZone",
       "Properties": {
@@ -702,7 +686,7 @@
         "SecurityGroups": [
           {
             "Fn::GetAtt": [
-              "emptysecuritygroupA4ADE482",
+              "testroute53albtestroute53albalbSecurityGroupC3716E02",
               "GroupId"
             ]
           }
@@ -726,6 +710,28 @@
         "VpcPublicSubnet1DefaultRoute3DA9E72A",
         "VpcPublicSubnet2DefaultRoute97F91067",
         "VpcPublicSubnet3DefaultRoute4697774F"
+      ]
+    },
+    "testroute53albtestroute53albalbSecurityGroupC3716E02": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Automatically created Security Group for ELB deployPublicApiNewAlbtestroute53albtestroute53albalbC4C12C26",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "255.255.255.255/32",
+            "Description": "Disallow all traffic",
+            "FromPort": 252,
+            "IpProtocol": "icmp",
+            "ToPort": 86
+          }
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
+      },
+      "DependsOn": [
+        "testroute53albPolicy478FC0AF",
+        "testroute53albAC463A50"
       ]
     },
     "testroute53albAC463A50": {
