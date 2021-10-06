@@ -1,7 +1,7 @@
 {
   "Description": "Integration Test for aws-route53-alb",
   "Resources": {
-    "testroute53albtestroute53albzone04BEDFE6": {
+    "nologgingstacknologgingstackzoneE11B9175": {
       "Type": "AWS::Route53::HostedZone",
       "Properties": {
         "Name": "www.example.com.",
@@ -15,7 +15,7 @@
         ]
       }
     },
-    "testroute53albtestroute53albalb7C171F50": {
+    "nologgingstacknologgingstackalbFD11E34A": {
       "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
       "Properties": {
         "LoadBalancerAttributes": [
@@ -28,7 +28,7 @@
         "SecurityGroups": [
           {
             "Fn::GetAtt": [
-              "testroute53albtestroute53albalbSecurityGroupC3716E02",
+              "nologgingstacknologgingstackalbSecurityGroup1C3487C4",
               "GroupId"
             ]
           }
@@ -57,10 +57,10 @@
         }
       }
     },
-    "testroute53albtestroute53albalbSecurityGroupC3716E02": {
+    "nologgingstacknologgingstackalbSecurityGroup1C3487C4": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "Automatically created Security Group for ELB deployWithoutLoggingtestroute53albtestroute53albalbF6630861",
+        "GroupDescription": "Automatically created Security Group for ELB deployWithoutLoggingnologgingstacknologgingstackalbBA718BE3",
         "SecurityGroupEgress": [
           {
             "CidrIp": "255.255.255.255/32",
@@ -73,9 +73,19 @@
         "VpcId": {
           "Ref": "Vpc8378EB38"
         }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W29",
+              "reason": "CDK created rule that blocks all traffic."
+            }
+          ]
+        }
       }
     },
-    "testroute53albtestroute53albaliasCCC6DDF3": {
+    "nologgingstacknologgingstackalias0D6EE5FC": {
       "Type": "AWS::Route53::RecordSet",
       "Properties": {
         "Name": "www.example.com.",
@@ -88,7 +98,7 @@
                 "dualstack.",
                 {
                   "Fn::GetAtt": [
-                    "testroute53albtestroute53albalb7C171F50",
+                    "nologgingstacknologgingstackalbFD11E34A",
                     "DNSName"
                   ]
                 }
@@ -97,13 +107,13 @@
           },
           "HostedZoneId": {
             "Fn::GetAtt": [
-              "testroute53albtestroute53albalb7C171F50",
+              "nologgingstacknologgingstackalbFD11E34A",
               "CanonicalHostedZoneID"
             ]
           }
         },
         "HostedZoneId": {
-          "Ref": "testroute53albtestroute53albzone04BEDFE6"
+          "Ref": "nologgingstacknologgingstackzoneE11B9175"
         }
       }
     },

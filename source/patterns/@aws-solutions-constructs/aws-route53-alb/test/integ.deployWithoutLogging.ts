@@ -16,6 +16,7 @@ import { App, Stack, Aws } from "@aws-cdk/core";
 import { Route53ToAlb, Route53ToAlbProps } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import * as defaults from '@aws-solutions-constructs/core';
+import { CfnSecurityGroup } from "@aws-cdk/aws-ec2";
 
 // Setup
 const app = new App();
@@ -33,7 +34,10 @@ const props: Route53ToAlbProps = {
   logAccessLogs: false,
 };
 
-const testConstruct = new Route53ToAlb(stack, 'test-route53-alb', props);
+const testConstruct = new Route53ToAlb(stack, 'no-logging-stack', props);
+
+const newSecurityGroup = testConstruct.loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
+defaults.addCfnSuppressRules(newSecurityGroup, [{ id: 'W29', reason: 'CDK created rule that blocks all traffic.'}]);
 
 defaults.addCfnSuppressRules(testConstruct.loadBalancer, [{ id: 'W52', reason: 'This test is explicitly to test the no logging case.'}]);
 

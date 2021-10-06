@@ -1,7 +1,7 @@
 {
   "Description": "Integration Test for aws-route53-alb",
   "Resources": {
-    "testroute53albtestroute53albzone04BEDFE6": {
+    "privateapistackprivateapistackzone3E5194E7": {
       "Type": "AWS::Route53::HostedZone",
       "Properties": {
         "Name": "www.example.com.",
@@ -15,7 +15,7 @@
         ]
       }
     },
-    "testroute53albtestroute53albalb7C171F50": {
+    "privateapistackprivateapistackalb7242E759": {
       "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
       "Properties": {
         "LoadBalancerAttributes": [
@@ -30,7 +30,7 @@
           {
             "Key": "access_logs.s3.bucket",
             "Value": {
-              "Ref": "testroute53albAC463A50"
+              "Ref": "privateapistack09C932BB"
             }
           },
           {
@@ -42,7 +42,7 @@
         "SecurityGroups": [
           {
             "Fn::GetAtt": [
-              "testroute53albtestroute53albalbSecurityGroupC3716E02",
+              "privateapistackprivateapistackalbSecurityGroup5A8A9725",
               "GroupId"
             ]
           }
@@ -61,14 +61,14 @@
         "Type": "application"
       },
       "DependsOn": [
-        "testroute53albPolicy478FC0AF",
-        "testroute53albAC463A50"
+        "privateapistackPolicy98558170",
+        "privateapistack09C932BB"
       ]
     },
-    "testroute53albtestroute53albalbSecurityGroupC3716E02": {
+    "privateapistackprivateapistackalbSecurityGroup5A8A9725": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "Automatically created Security Group for ELB deployPrivateApitestroute53albtestroute53albalb1145D1AD",
+        "GroupDescription": "Automatically created Security Group for ELB deployPrivateApiprivateapistackprivateapistackalb5DF93E18",
         "SecurityGroupEgress": [
           {
             "CidrIp": "255.255.255.255/32",
@@ -83,11 +83,21 @@
         }
       },
       "DependsOn": [
-        "testroute53albPolicy478FC0AF",
-        "testroute53albAC463A50"
-      ]
+        "privateapistackPolicy98558170",
+        "privateapistack09C932BB"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W29",
+              "reason": "CDK created rule that blocks all traffic."
+            }
+          ]
+        }
+      }
     },
-    "testroute53albAC463A50": {
+    "privateapistack09C932BB": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -122,11 +132,11 @@
         }
       }
     },
-    "testroute53albPolicy478FC0AF": {
+    "privateapistackPolicy98558170": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "testroute53albAC463A50"
+          "Ref": "privateapistack09C932BB"
         },
         "PolicyDocument": {
           "Statement": [
@@ -148,7 +158,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "testroute53albAC463A50",
+                          "privateapistack09C932BB",
                           "Arn"
                         ]
                       },
@@ -158,7 +168,7 @@
                 },
                 {
                   "Fn::GetAtt": [
-                    "testroute53albAC463A50",
+                    "privateapistack09C932BB",
                     "Arn"
                   ]
                 }
@@ -191,7 +201,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "testroute53albAC463A50",
+                        "privateapistack09C932BB",
                         "Arn"
                       ]
                     },
@@ -209,7 +219,7 @@
         }
       }
     },
-    "testroute53albtestroute53albaliasCCC6DDF3": {
+    "privateapistackprivateapistackalias54E3713F": {
       "Type": "AWS::Route53::RecordSet",
       "Properties": {
         "Name": "www.example.com.",
@@ -222,7 +232,7 @@
                 "dualstack.",
                 {
                   "Fn::GetAtt": [
-                    "testroute53albtestroute53albalb7C171F50",
+                    "privateapistackprivateapistackalb7242E759",
                     "DNSName"
                   ]
                 }
@@ -231,13 +241,13 @@
           },
           "HostedZoneId": {
             "Fn::GetAtt": [
-              "testroute53albtestroute53albalb7C171F50",
+              "privateapistackprivateapistackalb7242E759",
               "CanonicalHostedZoneID"
             ]
           }
         },
         "HostedZoneId": {
-          "Ref": "testroute53albtestroute53albzone04BEDFE6"
+          "Ref": "privateapistackprivateapistackzone3E5194E7"
         }
       }
     },

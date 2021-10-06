@@ -716,9 +716,19 @@
         "VpcId": {
           "Ref": "Vpc8378EB38"
         }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W29",
+              "reason": "CDK created rule that blocks all traffic."
+            }
+          ]
+        }
       }
     },
-    "testroute53albtestroute53albaliasCCC6DDF3": {
+    "publicapistackpublicapistackalias4096038C": {
       "Type": "AWS::Route53::RecordSet",
       "Properties": {
         "Name": "www.test-example.com.",
