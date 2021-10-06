@@ -13,14 +13,14 @@
 
 // Imports
 import { App, Stack, Aws } from "@aws-cdk/core";
+import * as ec2 from '@aws-cdk/aws-ec2';
 import * as defaults from '@aws-solutions-constructs/core';
 import { PublicHostedZone } from "@aws-cdk/aws-route53";
 import { Route53ToAlb, Route53ToAlbProps } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, generateIntegStackName(__filename), {
+const stack = new Stack(app, defaults.generateIntegStackName(__filename), {
   env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
 stack.templateOptions.description = 'Integration Test for aws-route53-alb';
@@ -34,6 +34,10 @@ const newVpc = defaults.buildVpc(stack, {
   },
 });
 
+const emptySecurityGroup = new ec2.SecurityGroup(stack, 'empty-security-group', {
+  vpc: newVpc
+});
+
 const newZone = new PublicHostedZone(stack, 'new-zone', {
   zoneName: 'www.test-example.com',
 });
@@ -45,6 +49,7 @@ const props: Route53ToAlbProps = {
   existingVpc: newVpc,
   loadBalancerProps: {
     loadBalancerName: 'new-alb',
+    securityGroup: emptySecurityGroup,
   }
 };
 
