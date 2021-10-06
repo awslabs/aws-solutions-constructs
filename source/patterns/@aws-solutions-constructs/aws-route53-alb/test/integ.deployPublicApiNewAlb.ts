@@ -43,9 +43,6 @@ const props: Route53ToAlbProps = {
   publicApi: true,
   existingHostedZoneInterface: newZone,
   existingVpc: newVpc,
-  loadBalancerProps: {
-    loadBalancerName: 'new-alb',
-  }
 };
 
 const testConstruct = new Route53ToAlb(stack, 'new-alb-stack', props);

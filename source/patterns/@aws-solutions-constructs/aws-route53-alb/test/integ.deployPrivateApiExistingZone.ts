@@ -16,11 +16,11 @@ import { App, Stack, Aws } from "@aws-cdk/core";
 import * as defaults from '@aws-solutions-constructs/core';
 import { PrivateHostedZone } from "@aws-cdk/aws-route53";
 import { Route53ToAlb, Route53ToAlbProps } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { CfnSecurityGroup } from "@aws-cdk/aws-ec2";
 
 // Setup
 const app = new App();
-const stack = new Stack(app, generateIntegStackName(__filename), {
+const stack = new Stack(app, defaults.generateIntegStackName(__filename), {
   env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
 stack.templateOptions.description = 'Integration Test for aws-route53-alb';
@@ -46,7 +46,11 @@ const props: Route53ToAlbProps = {
   existingVpc: newVpc,
 };
 
-new Route53ToAlb(stack, 'test-route53-alb', props);
+const testConstruct = new Route53ToAlb(stack, 'existing-zone-stack', props);
+
+const newSecurityGroup = testConstruct.loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
+defaults.addCfnSuppressRules(newSecurityGroup, [{ id: 'W29', reason: 'CDK created rule that blocks all traffic.'}]);
+
 
 // Synth
 app.synth();

@@ -666,7 +666,7 @@
         ]
       }
     },
-    "testroute53albtestroute53albalb7C171F50": {
+    "existingzonestackexistingzonestackalbCFB3D7E4": {
       "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
       "Properties": {
         "LoadBalancerAttributes": [
@@ -681,7 +681,7 @@
           {
             "Key": "access_logs.s3.bucket",
             "Value": {
-              "Ref": "testroute53albAC463A50"
+              "Ref": "existingzonestackEFB9F5B3"
             }
           },
           {
@@ -693,7 +693,7 @@
         "SecurityGroups": [
           {
             "Fn::GetAtt": [
-              "testroute53albtestroute53albalbSecurityGroupC3716E02",
+              "existingzonestackexistingzonestackalbSecurityGroup6F32DCA5",
               "GroupId"
             ]
           }
@@ -712,14 +712,14 @@
         "Type": "application"
       },
       "DependsOn": [
-        "testroute53albPolicy478FC0AF",
-        "testroute53albAC463A50"
+        "existingzonestackPolicyFEC9C88E",
+        "existingzonestackEFB9F5B3"
       ]
     },
-    "testroute53albtestroute53albalbSecurityGroupC3716E02": {
+    "existingzonestackexistingzonestackalbSecurityGroup6F32DCA5": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "Automatically created Security Group for ELB deployPrivateApiExistingZonetestroute53albtestroute53albalb73DF0A20",
+        "GroupDescription": "Automatically created Security Group for ELB deployPrivateApiExistingZoneexistingzonestackexistingzonestackalbFBEA12EB",
         "SecurityGroupEgress": [
           {
             "CidrIp": "255.255.255.255/32",
@@ -734,11 +734,21 @@
         }
       },
       "DependsOn": [
-        "testroute53albPolicy478FC0AF",
-        "testroute53albAC463A50"
-      ]
+        "existingzonestackPolicyFEC9C88E",
+        "existingzonestackEFB9F5B3"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W29",
+              "reason": "CDK created rule that blocks all traffic."
+            }
+          ]
+        }
+      }
     },
-    "testroute53albAC463A50": {
+    "existingzonestackEFB9F5B3": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -773,11 +783,11 @@
         }
       }
     },
-    "testroute53albPolicy478FC0AF": {
+    "existingzonestackPolicyFEC9C88E": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "testroute53albAC463A50"
+          "Ref": "existingzonestackEFB9F5B3"
         },
         "PolicyDocument": {
           "Statement": [
@@ -799,7 +809,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "testroute53albAC463A50",
+                          "existingzonestackEFB9F5B3",
                           "Arn"
                         ]
                       },
@@ -809,7 +819,7 @@
                 },
                 {
                   "Fn::GetAtt": [
-                    "testroute53albAC463A50",
+                    "existingzonestackEFB9F5B3",
                     "Arn"
                   ]
                 }
@@ -842,7 +852,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "testroute53albAC463A50",
+                        "existingzonestackEFB9F5B3",
                         "Arn"
                       ]
                     },
@@ -860,7 +870,7 @@
         }
       }
     },
-    "testroute53albtestroute53albaliasCCC6DDF3": {
+    "existingzonestackexistingzonestackalias77D2E65D": {
       "Type": "AWS::Route53::RecordSet",
       "Properties": {
         "Name": "www.test-example.com.",
@@ -873,7 +883,7 @@
                 "dualstack.",
                 {
                   "Fn::GetAtt": [
-                    "testroute53albtestroute53albalb7C171F50",
+                    "existingzonestackexistingzonestackalbCFB3D7E4",
                     "DNSName"
                   ]
                 }
@@ -882,7 +892,7 @@
           },
           "HostedZoneId": {
             "Fn::GetAtt": [
-              "testroute53albtestroute53albalb7C171F50",
+              "existingzonestackexistingzonestackalbCFB3D7E4",
               "CanonicalHostedZoneID"
             ]
           }
