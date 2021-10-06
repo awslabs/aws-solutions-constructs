@@ -32,6 +32,7 @@ for (const file of process.argv.splice(4)) {
   pkg.devDependencies = processDevDependencies(pkg.devDependencies || { }, file);
   if (pkg.scripts) {
     pkg.scripts["integ-assert"] = "cdk-integ-assert-v2";
+    pkg.scripts["jsii-pacmak"] = "jsii-pacmak --targets js java python";
   }
 
   console.error(`${file} => ${replaceVersion}`);
