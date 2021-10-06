@@ -15,6 +15,7 @@
 import { App, Stack, Aws } from "@aws-cdk/core";
 import { Route53ToAlb, Route53ToAlbProps } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -32,7 +33,9 @@ const props: Route53ToAlbProps = {
   logAccessLogs: false,
 };
 
-new Route53ToAlb(stack, 'test-route53-alb', props);
+const testConstruct = new Route53ToAlb(stack, 'test-route53-alb', props);
+
+defaults.addCfnSuppressRules(testConstruct.loadBalancer, [{ id: 'W52', reason: 'This test is explicitly to test the no logging case.'}]);
 
 // Synth
 app.synth();

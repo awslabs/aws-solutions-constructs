@@ -667,7 +667,6 @@
             "Value": "false"
           }
         ],
-        "Name": "find-this-name",
         "Scheme": "internal",
         "SecurityGroups": [
           {
@@ -689,6 +688,16 @@
           }
         ],
         "Type": "application"
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W52",
+              "reason": "Test ALB only."
+            }
+          ]
+        }
       }
     },
     "testalbSecurityGroup0C84CDF9": {

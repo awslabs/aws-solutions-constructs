@@ -45,6 +45,16 @@
           }
         ],
         "Type": "application"
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W52",
+              "reason": "This test is explicitly to test the no logging case."
+            }
+          ]
+        }
       }
     },
     "testroute53albtestroute53albalbSecurityGroupC3716E02": {
