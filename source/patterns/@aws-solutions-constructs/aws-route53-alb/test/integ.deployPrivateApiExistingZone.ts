@@ -51,6 +51,5 @@ const testConstruct = new Route53ToAlb(stack, 'existing-zone-stack', props);
 const newSecurityGroup = testConstruct.loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
 defaults.addCfnSuppressRules(newSecurityGroup, [{ id: 'W29', reason: 'CDK created rule that blocks all traffic.'}]);
 
-
 // Synth
 app.synth();
