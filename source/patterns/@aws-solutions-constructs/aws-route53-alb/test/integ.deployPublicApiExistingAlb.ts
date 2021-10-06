@@ -41,8 +41,9 @@ const newZone = new PublicHostedZone(stack, 'new-zone', {
 
 const existingAlb = new ApplicationLoadBalancer(stack, 'test-alb', {
   vpc: newVpc,
-  loadBalancerName: 'find-this-name'
 });
+
+defaults.addCfnSuppressRules(existingAlb, [{ id: 'W52', reason: 'Test ALB only.'}]);
 
 // Definitions
 const props: Route53ToAlbProps = {
