@@ -15,7 +15,8 @@ const constructsVersion = '10.0.0';
 const MODULE_EXEMPTIONS = new Set([
   '@aws-cdk/cloudformation-diff',
   '@aws-cdk/assert',
-  '@aws-cdk/assert/jest'
+  '@aws-cdk/assert/jest',
+  'aws-cdk'
 ]);
 
 for (const file of process.argv.splice(4)) {
