@@ -2,8 +2,8 @@
 set -euo pipefail
 
 deployment_dir=$(cd $(dirname $0) && pwd)
-source_dir="$deployment_dir/../source"
-dist_dir="$deployment_dir/dist"
+source_dir="$deployment_dir/../../source"
+dist_dir="$deployment_dir/../dist"
 
 cd $source_dir/
 export PATH=$(npm bin):$PATH
@@ -73,7 +73,7 @@ cat > ${dist_dir}/build.json <<HERE
 HERE
 
 # copy CHANGELOG.md to dist/ for github releases
-changelog_file=$deployment_dir/../CHANGELOG.md
+changelog_file=$deployment_dir/../../CHANGELOG.v2.md
 cp ${changelog_file} ${dist_dir}/CHANGELOG.md
 
 echo "------------------------------------------------------------------------------"
