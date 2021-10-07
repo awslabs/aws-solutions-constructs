@@ -32,5 +32,5 @@ const props: DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps = {
   cognitoDomainName: 'pooldomaintest'
 };
 
-new DynamoDBStreamsToLambdaToElasticSearchAndKibana(stack, 'test-dynamodbstreams-lambda-elasticsearch-kibana', props);
+new DynamoDBStreamsToLambdaToElasticSearchAndKibana(stack, 'test-ddbstreams-lambda-esk', props);
 app.synth();
