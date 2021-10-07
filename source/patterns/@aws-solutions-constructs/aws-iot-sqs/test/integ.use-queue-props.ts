@@ -25,10 +25,10 @@ stack.templateOptions.description = 'Integration Test for aws-iot-sqs';
 // Definitions
 const props: IotToSqsProps = {
   deadLetterQueueProps: {
-    queueName: 'dlq-name'
+    queueName: 'use-queue-test-dlq-name'
   },
   queueProps: {
-    queueName: 'queue-name'
+    queueName: 'use-queue-test-name'
   },
   iotTopicRuleProps: {
     topicRulePayload: {
