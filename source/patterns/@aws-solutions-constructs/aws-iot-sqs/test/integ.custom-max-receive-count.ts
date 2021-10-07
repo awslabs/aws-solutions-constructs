@@ -25,12 +25,12 @@ stack.templateOptions.description = 'Integration Test for aws-iot-sqs';
 // Definitions
 const props: IotToSqsProps = {
   deadLetterQueueProps: {
-    queueName: 'dlq-name'
+    queueName: 'max-receive-count-test-dlq-name'
   },
   deployDeadLetterQueue: true,
   maxReceiveCount: 1,
   queueProps: {
-    queueName: 'queue-name'
+    queueName: 'max-receive-count-test-queue-name'
   },
   iotTopicRuleProps: {
     topicRulePayload: {
