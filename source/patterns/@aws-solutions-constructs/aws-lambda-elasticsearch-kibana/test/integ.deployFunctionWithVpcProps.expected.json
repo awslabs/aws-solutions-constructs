@@ -103,7 +103,7 @@
     "testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup375DBE67": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "test-lambda-elasticsearch-kibana-stack5/test-lambda-elasticsearch-kibana5/ReplaceDefaultSecurityGroup-security-group",
+        "GroupDescription": "deployFunctionWithVpcProps/test-lambda-elasticsearch-kibana5/ReplaceDefaultSecurityGroup-security-group",
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",
@@ -130,11 +130,11 @@
         }
       }
     },
-    "testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroupfromtestlambdaelasticsearchkibanastack5testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup1CBA7E7AALLPORTS5A683504": {
+    "testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroupfromdeployFunctionWithVpcPropstestlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup2E653517ALLPORTSD7B3FCC9": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "IpProtocol": "tcp",
-        "Description": "from testlambdaelasticsearchkibanastack5testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup1CBA7E7A:ALL PORTS",
+        "Description": "from deployFunctionWithVpcPropstestlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup2E653517:ALL PORTS",
         "FromPort": 0,
         "GroupId": {
           "Fn::GetAtt": [
@@ -783,7 +783,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack5/Vpc"
+            "Value": "deployFunctionWithVpcProps/Vpc"
           }
         ]
       }
@@ -808,7 +808,7 @@
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack5/Vpc/isolatedSubnet1"
+            "Value": "deployFunctionWithVpcProps/Vpc/isolatedSubnet1"
           }
         ]
       }
@@ -822,7 +822,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack5/Vpc/isolatedSubnet1"
+            "Value": "deployFunctionWithVpcProps/Vpc/isolatedSubnet1"
           }
         ]
       }
@@ -858,7 +858,7 @@
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack5/Vpc/isolatedSubnet2"
+            "Value": "deployFunctionWithVpcProps/Vpc/isolatedSubnet2"
           }
         ]
       }
@@ -872,7 +872,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack5/Vpc/isolatedSubnet2"
+            "Value": "deployFunctionWithVpcProps/Vpc/isolatedSubnet2"
           }
         ]
       }
@@ -908,7 +908,7 @@
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack5/Vpc/isolatedSubnet3"
+            "Value": "deployFunctionWithVpcProps/Vpc/isolatedSubnet3"
           }
         ]
       }
@@ -922,7 +922,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack5/Vpc/isolatedSubnet3"
+            "Value": "deployFunctionWithVpcProps/Vpc/isolatedSubnet3"
           }
         ]
       }
@@ -956,7 +956,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack5/Vpc"
+            "Value": "deployFunctionWithVpcProps/Vpc"
           }
         ]
       }
@@ -1040,7 +1040,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack5/Vpc"
+            "Value": "deployFunctionWithVpcProps/Vpc"
           }
         ]
       }
