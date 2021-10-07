@@ -217,7 +217,7 @@ Additional scripts that take part in the versioning mechanism:
 
 ```console
 $ cd <root-of-aws-solutions-constructs-repo>
-$ docker run --rm --net=host -it -v $PWD:$PWD -w $PWD jsii/superchain
+$ docker run -u root --rm --net=host -it -v $PWD:$PWD -w $PWD jsii/superchain:1-buster-slim-node14
 docker$ ./deployment/build-patterns.sh
 docker$ exit
 ```
@@ -228,7 +228,7 @@ First run a clean Full Build before doing the partial build.
 
 ```console
 $ cd <root-of-aws-solutions-constructs-repo>
-$ docker run --rm --net=host -it -v $PWD:$PWD -w $PWD jsii/superchain
+$ docker run -u root --rm --net=host -it -v $PWD:$PWD -w $PWD jsii/superchain:1-buster-slim-node14
 docker$ ./deployment/align-version.sh
 docker$ cd source
 docker$ export PATH=$(npm bin):$PATH

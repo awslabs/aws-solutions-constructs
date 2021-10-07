@@ -164,3 +164,42 @@ test("Test bad call with existingBucket and bucketProps", () => {
   // Assertion
   expect(app).toThrowError();
 });
+
+// --------------------------------------------------------------
+// s3 bucket with bucket, loggingBucket, and auto delete objects
+// --------------------------------------------------------------
+test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
+  const stack = new cdk.Stack();
+  const startState = new sfn.Pass(stack, 'StartState');
+
+  const testProps: S3ToStepfunctionsProps = {
+    stateMachineProps: {
+      definition: startState
+    },
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY
+    },
+    loggingBucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    }
+  };
+
+  new S3ToStepfunctions(stack, 'test-s3-stepfunctions', testProps);
+
+  expect(stack).toHaveResource("AWS::S3::Bucket", {
+    AccessControl: "LogDeliveryWrite"
+  });
+
+  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+    ServiceToken: {
+      "Fn::GetAtt": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+        "Arn"
+      ]
+    },
+    BucketName: {
+      Ref: "tests3stepfunctionsS3LoggingBucketF7586A92"
+    }
+  });
+});

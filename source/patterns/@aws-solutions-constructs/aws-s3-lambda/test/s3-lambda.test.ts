@@ -63,3 +63,41 @@ test("Test bad call with existingBucket and bucketProps", () => {
   // Assertion
   expect(app).toThrowError();
 });
+
+// --------------------------------------------------------------
+// s3 bucket with bucket, loggingBucket, and auto delete objects
+// --------------------------------------------------------------
+test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
+  const stack = new cdk.Stack();
+
+  new S3ToLambda(stack, 's3-lambda', {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+    loggingBucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::S3::Bucket", {
+    AccessControl: "LogDeliveryWrite"
+  });
+
+  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+    ServiceToken: {
+      "Fn::GetAtt": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+        "Arn"
+      ]
+    },
+    BucketName: {
+      Ref: "s3lambdaS3LoggingBucketAC6FF14E"
+    }
+  });
+});

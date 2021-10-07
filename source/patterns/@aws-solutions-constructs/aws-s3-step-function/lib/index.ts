@@ -32,7 +32,7 @@ export interface S3ToStepFunctionProps {
    */
   readonly existingBucketObj?: s3.IBucket,
   /**
-   * User provided props to override the default props for the S3 Bucket.
+   * Optional user provided props to override the default props for the S3 Bucket.
    *
    * @default - Default props are used
    */
@@ -44,7 +44,7 @@ export interface S3ToStepFunctionProps {
    */
   readonly stateMachineProps: sfn.StateMachineProps,
   /**
-   * User provided eventRuleProps to override the defaults
+   * Optional User provided eventRuleProps to override the defaults
    *
    * @default - None
    */
@@ -67,6 +67,12 @@ export interface S3ToStepFunctionProps {
    * @default - Default props are used
    */
   readonly logGroupProps?: logs.LogGroupProps
+  /**
+   * Optional user provided props to override the default props for the S3 Logging Bucket.
+   *
+   * @default - Default props are used
+   */
+   readonly loggingBucketProps?: s3.BucketProps
 }
 
 export class S3ToStepFunction extends Construct {

@@ -20,8 +20,8 @@ import { buildS3Bucket } from '../lib/s3-bucket-helper';
 import '@aws-cdk/assert/jest';
 import { Bucket } from '@aws-cdk/aws-s3';
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
-import * as acm from '@aws-cdk/aws-certificatemanager';
 import { LambdaEdgeEventType } from '@aws-cdk/aws-cloudfront';
+import * as acm from '@aws-cdk/aws-certificatemanager';
 
 test('check bucket policy metadata', () => {
   const stack = new Stack();
@@ -154,85 +154,6 @@ test('test cloudfront with no security headers ', () => {
           }
         }
       ]
-    }
-  });
-});
-
-test('test cloudfront override cloudfront custom domain names ', () => {
-  const stack = new Stack();
-  const [sourceBucket] = buildS3Bucket(stack, {});
-  const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012');
-
-  const myprops = {
-    domainNames: ['mydomains'],
-    certificate
-  };
-
-  CloudFrontDistributionForS3(stack, sourceBucket, myprops);
-
-  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
-    DistributionConfig: {
-      Aliases: [
-        "mydomains"
-      ],
-      DefaultCacheBehavior: {
-        CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
-        Compress: true,
-        FunctionAssociations: [
-          {
-            EventType: "viewer-response",
-            FunctionARN: {
-              "Fn::GetAtt": [
-                "SetHttpSecurityHeadersEE936115",
-                "FunctionARN"
-              ]
-            }
-          }
-        ],
-        TargetOriginId: "CloudFrontDistributionOrigin176EC3A12",
-        ViewerProtocolPolicy: "redirect-to-https"
-      },
-      DefaultRootObject: "index.html",
-      Enabled: true,
-      HttpVersion: "http2",
-      IPV6Enabled: true,
-      Logging: {
-        Bucket: {
-          "Fn::GetAtt": [
-            "CloudfrontLoggingBucket3C3EFAA7",
-            "RegionalDomainName"
-          ]
-        }
-      },
-      Origins: [
-        {
-          DomainName: {
-            "Fn::GetAtt": [
-              "S3Bucket07682993",
-              "RegionalDomainName"
-            ]
-          },
-          Id: "CloudFrontDistributionOrigin176EC3A12",
-          S3OriginConfig: {
-            OriginAccessIdentity: {
-              "Fn::Join": [
-                "",
-                [
-                  "origin-access-identity/cloudfront/",
-                  {
-                    Ref: "CloudFrontDistributionOrigin1S3Origin3D9CA0E9"
-                  }
-                ]
-              ]
-            }
-          }
-        }
-      ],
-      ViewerCertificate: {
-        AcmCertificateArn: "arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012",
-        MinimumProtocolVersion: "TLSv1.2_2019",
-        SslSupportMethod: "sni-only"
-      }
     }
   });
 });
@@ -556,6 +477,27 @@ test('test override cloudfront replace custom lambda@edge', () => {
           }
         }
       ]
+    }
+  });
+});
+
+test('test cloudfront override cloudfront custom domain names ', () => {
+  const stack = new Stack();
+  const [sourceBucket] = buildS3Bucket(stack, {});
+  const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012');
+
+  const myprops = {
+    domainNames: ['mydomains'],
+    certificate
+  };
+
+  CloudFrontDistributionForS3(stack, sourceBucket, myprops);
+
+  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+      Aliases: [
+        "mydomains"
+      ],
     }
   });
 });
