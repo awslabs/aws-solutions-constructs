@@ -15,43 +15,35 @@
 import { App, Stack } from "@aws-cdk/core";
 import { LambdaToElasticSearchAndKibana } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
-import * as ec2 from '@aws-cdk/aws-ec2';
 import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
-const stack = new Stack(app, 'test-lambda-elasticsearch-kibana-stack4');
 
+// https://docs.aws.amazon.com/cdk/api/latest/python/aws_cdk.aws_ec2/VpcProps.html
+// Be aware that environment-agnostic stacks will be created with access to only 2 AZs,
+// so to use more than 2 AZs, be sure to specify the account and region on your stack.
+const stack = new Stack(app, 'test-lambda-elasticsearch-kibana-stack4', {
+  env: {
+    region: process.env.CDK_DEFAULT_REGION,
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+  }
+});
+
+// Create VPC
+const vpc = defaults.buildVpc(stack, {
+  defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
+  constructVpcProps: {
+    enableDnsHostnames: true,
+    enableDnsSupport: true,
+    maxAzs: 3,
+  },
+});
 const lambdaProps: lambda.FunctionProps = {
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   runtime: lambda.Runtime.NODEJS_12_X,
   handler: 'index.handler',
 };
-const vpcProps = {
-  natGateways: 1,
-  natGatewaySubnets: {
-    subnetType: ec2.SubnetType.PUBLIC
-  },
-  maxAzs: 1,
-  enableDnsHostnames: true,
-  enableDnsSupport: true,
-  subnetConfiguration: [
-    {
-      cidrMask: 18,
-      name: "private",
-      subnetType: ec2.SubnetType.PRIVATE,
-    },
-    {
-      cidrMask: 18,
-      name: "public",
-      subnetType: ec2.SubnetType.PUBLIC,
-    }
-  ]
-};
-const vpc = defaults.buildVpc(stack, {
-  defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
-  constructVpcProps: vpcProps,
-});
 
 new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana4', {
   lambdaFunctionProps: lambdaProps,

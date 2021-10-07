@@ -150,11 +150,17 @@ test('check override cognito domain name with provided cognito domain name', () 
 });
 
 // --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC w/vpcProps
+// Test minimal deployment that deploys a VPC without vpcProps
 // --------------------------------------------------------------
-test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
+test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Stack
-  const stack = new cdk.Stack();
+  const stack = new cdk.Stack(undefined, "test", {
+    env: {
+      account: "dummy_account",
+      region: "dummy_region",
+    }
+  });
+
   // Helper declaration
   new LambdaToElasticSearchAndKibana(stack, "lambda-elasticsearch-kibana-stack", {
     lambdaFunctionProps: {
@@ -163,26 +169,6 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
       handler: 'index.handler'
     },
     domainName: 'test-domain',
-    vpcProps: {
-      natGateways: 1,
-      natGatewaySubnets: {
-        subnetType: ec2.SubnetType.PUBLIC
-      },
-      enableDnsHostnames: true,
-      enableDnsSupport: true,
-      subnetConfiguration: [
-        {
-          cidrMask: 18,
-          name: "private",
-          subnetType: ec2.SubnetType.PRIVATE,
-        },
-        {
-          cidrMask: 18,
-          name: "public",
-          subnetType: ec2.SubnetType.PUBLIC,
-        }
-      ]
-    },
     deployVpc: true,
   });
 
@@ -198,10 +184,13 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
       ],
       SubnetIds: [
         {
-          Ref: "VpcprivateSubnet1SubnetCEAD3716",
+          Ref: "VpcisolatedSubnet1SubnetE62B1B9B",
         },
         {
-          Ref: "VpcprivateSubnet2Subnet2DE7549C",
+          Ref: "VpcisolatedSubnet2Subnet39217055",
+        },
+        {
+          Ref: "VpcisolatedSubnet3Subnet44F2537D",
         },
       ],
     },
@@ -211,10 +200,63 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
+});
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 4);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 1);
-  expect(stack).toCountResources("AWS::EC2::NatGateway", 1);
+// --------------------------------------------------------------
+// Test deployment that deploys a VPC with vpcProps
+// --------------------------------------------------------------
+test("Test deployment that deploys a VPC with vpcProps", () => {
+  // Stack
+  const stack = new cdk.Stack(undefined, "test", {
+    env: {
+      account: "dummy_account",
+      region: "dummy_region",
+    }
+  });
+
+  const vpcProps = {
+    maxAzs: 3
+  };
+  // Helper declaration
+  new LambdaToElasticSearchAndKibana(stack, "lambda-elasticsearch-kibana-stack", {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler'
+    },
+    domainName: 'test-domain',
+    vpcProps,
+    deployVpc: true,
+  });
+
+  expect(stack).toHaveResource("AWS::Lambda::Function", {
+    VpcConfig: {
+      SecurityGroupIds: [
+        {
+          "Fn::GetAtt": [
+            "lambdaelasticsearchkibanastackReplaceDefaultSecurityGroupsecuritygroup4C50002B",
+            "GroupId",
+          ],
+        },
+      ],
+      SubnetIds: [
+        {
+          Ref: "VpcisolatedSubnet1SubnetE62B1B9B",
+        },
+        {
+          Ref: "VpcisolatedSubnet2Subnet39217055",
+        },
+        {
+          Ref: "VpcisolatedSubnet3Subnet44F2537D",
+        },
+      ],
+    },
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPC", {
+    EnableDnsHostnames: true,
+    EnableDnsSupport: true,
+  });
 });
 
 // --------------------------------------------------------------
@@ -222,27 +264,15 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
 // --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC", () => {
   // Stack
-  const stack = new cdk.Stack();
+  const stack = new cdk.Stack(undefined, "test", {
+    env: {
+      account: "dummy_account",
+      region: "dummy_region",
+    }
+  });
 
   const testVpc = new ec2.Vpc(stack, "test-vpc", {
-    natGateways: 1,
-    natGatewaySubnets: {
-      subnetType: ec2.SubnetType.PUBLIC
-    },
-    enableDnsHostnames: true,
-    enableDnsSupport: true,
-    subnetConfiguration: [
-      {
-        cidrMask: 18,
-        name: "private",
-        subnetType: ec2.SubnetType.PRIVATE,
-      },
-      {
-        cidrMask: 18,
-        name: "public",
-        subnetType: ec2.SubnetType.PUBLIC,
-      }
-    ]
+    maxAzs: 3,
   });
 
   // Helper declaration
@@ -268,66 +298,17 @@ test("Test minimal deployment with an existing VPC", () => {
       ],
       SubnetIds: [
         {
-          Ref: "testvpcprivateSubnet1Subnet2E35BD58",
+          Ref: "testvpcPrivateSubnet1Subnet865FB50A",
         },
         {
-          Ref: "testvpcprivateSubnet2Subnet60F9C8A0",
+          Ref: "testvpcPrivateSubnet2Subnet23D3396F",
         },
+        {
+          Ref: "testvpcPrivateSubnet3SubnetD71C361C"
+        }
       ],
     },
   });
-});
-
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC and existing Lambda function not in a VPC
-//
-// buildLambdaFunction should throw an error if the Lambda function is not
-// attached to a VPC
-// --------------------------------------------------------------
-test("Test minimal deployment with an existing VPC and existing Lambda function not in a VPC", () => {
-  // Stack
-  const stack = new cdk.Stack();
-
-  const testLambdaFunction = new lambda.Function(stack, 'test-lambda', {
-    runtime: lambda.Runtime.NODEJS_14_X,
-    handler: "index.handler",
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-  });
-
-  const testVpc = new ec2.Vpc(stack, "test-vpc", {
-    natGateways: 1,
-    natGatewaySubnets: {
-      subnetType: ec2.SubnetType.PUBLIC
-    },
-    enableDnsHostnames: true,
-    enableDnsSupport: true,
-    subnetConfiguration: [
-      {
-        cidrMask: 18,
-        name: "private",
-        subnetType: ec2.SubnetType.PRIVATE,
-      },
-      {
-        cidrMask: 18,
-        name: "public",
-        subnetType: ec2.SubnetType.PUBLIC,
-      }
-    ]
-  });
-
-  // Helper declaration
-  const app = () => {
-    // Helper declaration
-    new LambdaToElasticSearchAndKibana(stack, "lambda-elasticsearch-kibana-stack", {
-      existingLambdaObj: testLambdaFunction,
-      domainName: 'test-domain',
-      existingVpc: testVpc,
-    });
-  };
-
-  // Assertion
-  expect(app).toThrowError();
-
 });
 
 // --------------------------------------------------------------
@@ -376,13 +357,16 @@ test("Test bad call with existingVpc and deployVpc", () => {
 });
 
 // --------------------------------------------------------------
-// Test bad call with deployVpc AND lambdaFunctionProps.vpc
+// Test bad call with existingVpc AND vpcProps
 // --------------------------------------------------------------
-test("Test bad call with deployVpc and lambdaFunctionProps.vpc", () => {
+test("Test bad call with existingVpc AND vpcProps", () => {
   // Stack
   const stack = new cdk.Stack();
 
-  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
+  const testVpc = new ec2.Vpc(stack, "test-vpc", {
+    enableDnsHostnames: true,
+    enableDnsSupport: true,
+  });
 
   const app = () => {
     // Helper declaration
@@ -391,36 +375,12 @@ test("Test bad call with deployVpc and lambdaFunctionProps.vpc", () => {
         runtime: lambda.Runtime.NODEJS_14_X,
         handler: "index.handler",
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        vpc: testVpc
-      },
-      domainName: 'test-domain',
-      deployVpc: true,
-    });
-  };
-  // Assertion
-  expect(app).toThrowError();
-});
-
-// --------------------------------------------------------------
-// Test bad call with existingVpc AND lambdaFunctionProps.vpc
-// --------------------------------------------------------------
-test("Test bad call with existingVpc and lambdaFunctionProps.vpc", () => {
-  // Stack
-  const stack = new cdk.Stack();
-
-  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
-
-  const app = () => {
-    // Helper declaration
-    new LambdaToElasticSearchAndKibana(stack, "lambda-elasticsearch-kibana-stack", {
-      lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: "index.handler",
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        vpc: testVpc
       },
       domainName: 'test-domain',
       existingVpc: testVpc,
+      vpcProps: {
+        maxAzs: 3,
+      },
     });
   };
   // Assertion
@@ -428,9 +388,34 @@ test("Test bad call with existingVpc and lambdaFunctionProps.vpc", () => {
 });
 
 // --------------------------------------------------------------
-// Test bad call with deployVpc AND lambdaFunctionProps.vpcSubnets
+// Test bad call with lambdaFunctionProps.vpc
 // --------------------------------------------------------------
-test("Test bad call with deployVpc and lambdaFunctionProps.vpcSubnets", () => {
+test("Test bad call with lambdaFunctionProps.vpc", () => {
+  // Stack
+  const stack = new cdk.Stack();
+
+  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
+
+  const app = () => {
+    // Helper declaration
+    new LambdaToElasticSearchAndKibana(stack, "lambda-elasticsearch-kibana-stack", {
+      lambdaFunctionProps: {
+        runtime: lambda.Runtime.NODEJS_14_X,
+        handler: "index.handler",
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+        vpc: testVpc
+      },
+      domainName: 'test-domain',
+    });
+  };
+  // Assertion
+  expect(app).toThrowError();
+});
+
+// --------------------------------------------------------------
+// Test bad call with lambdaFunctionProps.vpcSubnets
+// --------------------------------------------------------------
+test("Test bad call with lambdaFunctionProps.vpcSubnets", () => {
   // Stack
   const stack = new cdk.Stack();
 
@@ -448,7 +433,6 @@ test("Test bad call with deployVpc and lambdaFunctionProps.vpcSubnets", () => {
         })
       },
       domainName: 'test-domain',
-      deployVpc: true,
     });
   };
   // Assertion
@@ -456,37 +440,9 @@ test("Test bad call with deployVpc and lambdaFunctionProps.vpcSubnets", () => {
 });
 
 // --------------------------------------------------------------
-// Test bad call with existingVpc AND lambdaFunctionProps.vpcSubnets
+// Test bad call with esDomainProps.vpcOptions
 // --------------------------------------------------------------
-test("Test bad call with existingVpc and lambdaFunctionProps.vpcSubnets", () => {
-  // Stack
-  const stack = new cdk.Stack();
-
-  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
-
-  const app = () => {
-    // Helper declaration
-    new LambdaToElasticSearchAndKibana(stack, "lambda-elasticsearch-kibana-stack", {
-      lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: "index.handler",
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        vpcSubnets: testVpc.selectSubnets({
-          subnetType: ec2.SubnetType.PRIVATE
-        })
-      },
-      domainName: 'test-domain',
-      existingVpc: testVpc,
-    });
-  };
-  // Assertion
-  expect(app).toThrowError();
-});
-
-// --------------------------------------------------------------
-// Test bad call with deployVpc AND esDomainProps.vpcOptions
-// --------------------------------------------------------------
-test("Test bad call with deployVpc and esDomainProps.vpcOptions", () => {
+test("Test bad call with esDomainProps.vpcOptions", () => {
   // Stack
   const stack = new cdk.Stack();
 
@@ -499,12 +455,9 @@ test("Test bad call with deployVpc and esDomainProps.vpcOptions", () => {
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       },
       domainName: 'test-domain',
-      deployVpc: true,
       esDomainProps: {
-        vpcOptions: {
-          subnetIds: ["dummy1111", "dummy2222"]
-        }
-      }
+        vpcOptions: {},
+      },
     });
   };
   // Assertion
@@ -512,16 +465,18 @@ test("Test bad call with deployVpc and esDomainProps.vpcOptions", () => {
 });
 
 // --------------------------------------------------------------
-// Test bad call with existingVpc AND esDomainProps.vpcOptions
+// Test bad call with existingVpc have less than 3 subnets
 // --------------------------------------------------------------
-test("Test bad call with existingVpc and esDomainProps.vpcOptions", () => {
+test("Test bad call with existingVpc has less than 3 AZs", () => {
   // Stack
   const stack = new cdk.Stack();
 
-  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
+  const testVpc = new ec2.Vpc(stack, "test-vpc", {
+    maxAzs: 1,
+  });
 
+  // Helper declaration
   const app = () => {
-    // Helper declaration
     new LambdaToElasticSearchAndKibana(stack, "lambda-elasticsearch-kibana-stack", {
       lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_14_X,
@@ -530,11 +485,6 @@ test("Test bad call with existingVpc and esDomainProps.vpcOptions", () => {
       },
       domainName: 'test-domain',
       existingVpc: testVpc,
-      esDomainProps: {
-        vpcOptions: {
-          subnetIds: ["dummy1111", "dummy2222"]
-        }
-      }
     });
   };
   // Assertion

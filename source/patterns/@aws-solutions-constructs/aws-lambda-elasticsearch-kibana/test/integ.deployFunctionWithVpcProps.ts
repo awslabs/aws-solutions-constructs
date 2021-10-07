@@ -23,7 +23,7 @@ const app = new App();
 // https://docs.aws.amazon.com/cdk/api/latest/python/aws_cdk.aws_ec2/VpcProps.html
 // Be aware that environment-agnostic stacks will be created with access to only 2 AZs,
 // so to use more than 2 AZs, be sure to specify the account and region on your stack.
-const stack = new Stack(app, 'test-lambda-elasticsearch-kibana-stack3', {
+const stack = new Stack(app, 'test-lambda-elasticsearch-kibana-stack5', {
   env: {
     region: process.env.CDK_DEFAULT_REGION,
     account: process.env.CDK_DEFAULT_ACCOUNT,
@@ -36,13 +36,15 @@ const lambdaProps: lambda.FunctionProps = {
   handler: 'index.handler',
 };
 
-new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana3', {
+const vpcProps = {
+  maxAzs: 3
+};
+
+new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana5', {
   lambdaFunctionProps: lambdaProps,
-  domainName: "deploywithvpctest",
+  domainName: "deploywithvpcpropstest",
   deployVpc: true,
-  vpcProps: {
-    maxAzs: 3,
-  }
+  vpcProps
 });
 
 // Synth

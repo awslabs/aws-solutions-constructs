@@ -1,6 +1,6 @@
 {
   "Resources": {
-    "testlambdaelasticsearchkibana3LambdaFunctionServiceRoleA3C1E07E": {
+    "testlambdaelasticsearchkibana5LambdaFunctionServiceRole26E43B12": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -55,7 +55,7 @@
         ]
       }
     },
-    "testlambdaelasticsearchkibana3LambdaFunctionServiceRoleDefaultPolicyA148ED7D": {
+    "testlambdaelasticsearchkibana5LambdaFunctionServiceRoleDefaultPolicy8A628F4B": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -82,10 +82,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testlambdaelasticsearchkibana3LambdaFunctionServiceRoleDefaultPolicyA148ED7D",
+        "PolicyName": "testlambdaelasticsearchkibana5LambdaFunctionServiceRoleDefaultPolicy8A628F4B",
         "Roles": [
           {
-            "Ref": "testlambdaelasticsearchkibana3LambdaFunctionServiceRoleA3C1E07E"
+            "Ref": "testlambdaelasticsearchkibana5LambdaFunctionServiceRole26E43B12"
           }
         ]
       },
@@ -100,10 +100,10 @@
         }
       }
     },
-    "testlambdaelasticsearchkibana3ReplaceDefaultSecurityGroupsecuritygroupEB497E1A": {
+    "testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup375DBE67": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "test-lambda-elasticsearch-kibana-stack3/test-lambda-elasticsearch-kibana3/ReplaceDefaultSecurityGroup-security-group",
+        "GroupDescription": "test-lambda-elasticsearch-kibana-stack5/test-lambda-elasticsearch-kibana5/ReplaceDefaultSecurityGroup-security-group",
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",
@@ -130,28 +130,28 @@
         }
       }
     },
-    "testlambdaelasticsearchkibana3ReplaceDefaultSecurityGroupsecuritygroupfromtestlambdaelasticsearchkibanastack3testlambdaelasticsearchkibana3ReplaceDefaultSecurityGroupsecuritygroupE2DD5953ALLPORTS9335809A": {
+    "testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroupfromtestlambdaelasticsearchkibanastack5testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup1CBA7E7AALLPORTS5A683504": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "IpProtocol": "tcp",
-        "Description": "from testlambdaelasticsearchkibanastack3testlambdaelasticsearchkibana3ReplaceDefaultSecurityGroupsecuritygroupE2DD5953:ALL PORTS",
+        "Description": "from testlambdaelasticsearchkibanastack5testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup1CBA7E7A:ALL PORTS",
         "FromPort": 0,
         "GroupId": {
           "Fn::GetAtt": [
-            "testlambdaelasticsearchkibana3ReplaceDefaultSecurityGroupsecuritygroupEB497E1A",
+            "testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup375DBE67",
             "GroupId"
           ]
         },
         "SourceSecurityGroupId": {
           "Fn::GetAtt": [
-            "testlambdaelasticsearchkibana3ReplaceDefaultSecurityGroupsecuritygroupEB497E1A",
+            "testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup375DBE67",
             "GroupId"
           ]
         },
         "ToPort": 65535
       }
     },
-    "testlambdaelasticsearchkibana3LambdaFunctionE377CF86": {
+    "testlambdaelasticsearchkibana5LambdaFunction5382AC86": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -194,7 +194,7 @@
         },
         "Role": {
           "Fn::GetAtt": [
-            "testlambdaelasticsearchkibana3LambdaFunctionServiceRoleA3C1E07E",
+            "testlambdaelasticsearchkibana5LambdaFunctionServiceRole26E43B12",
             "Arn"
           ]
         },
@@ -203,7 +203,7 @@
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "DOMAIN_ENDPOINT": {
               "Fn::GetAtt": [
-                "testlambdaelasticsearchkibana3ElasticsearchDomain268DE741",
+                "testlambdaelasticsearchkibana5ElasticsearchDomain58F77409",
                 "DomainEndpoint"
               ]
             }
@@ -218,7 +218,7 @@
           "SecurityGroupIds": [
             {
               "Fn::GetAtt": [
-                "testlambdaelasticsearchkibana3ReplaceDefaultSecurityGroupsecuritygroupEB497E1A",
+                "testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup375DBE67",
                 "GroupId"
               ]
             }
@@ -237,8 +237,8 @@
         }
       },
       "DependsOn": [
-        "testlambdaelasticsearchkibana3LambdaFunctionServiceRoleDefaultPolicyA148ED7D",
-        "testlambdaelasticsearchkibana3LambdaFunctionServiceRoleA3C1E07E"
+        "testlambdaelasticsearchkibana5LambdaFunctionServiceRoleDefaultPolicy8A628F4B",
+        "testlambdaelasticsearchkibana5LambdaFunctionServiceRole26E43B12"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -259,7 +259,7 @@
         }
       }
     },
-    "testlambdaelasticsearchkibana3CognitoUserPoolEF0D5793": {
+    "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0": {
       "Type": "AWS::Cognito::UserPool",
       "Properties": {
         "AccountRecoverySetting": {
@@ -293,11 +293,11 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "testlambdaelasticsearchkibana3CognitoUserPoolClient89D3C6A0": {
+    "testlambdaelasticsearchkibana5CognitoUserPoolClientB41FB91B": {
       "Type": "AWS::Cognito::UserPoolClient",
       "Properties": {
         "UserPoolId": {
-          "Ref": "testlambdaelasticsearchkibana3CognitoUserPoolEF0D5793"
+          "Ref": "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0"
         },
         "AllowedOAuthFlows": [
           "implicit",
@@ -319,18 +319,18 @@
         ]
       }
     },
-    "testlambdaelasticsearchkibana3CognitoIdentityPool48956B3D": {
+    "testlambdaelasticsearchkibana5CognitoIdentityPool1B0A6046": {
       "Type": "AWS::Cognito::IdentityPool",
       "Properties": {
         "AllowUnauthenticatedIdentities": false,
         "CognitoIdentityProviders": [
           {
             "ClientId": {
-              "Ref": "testlambdaelasticsearchkibana3CognitoUserPoolClient89D3C6A0"
+              "Ref": "testlambdaelasticsearchkibana5CognitoUserPoolClientB41FB91B"
             },
             "ProviderName": {
               "Fn::GetAtt": [
-                "testlambdaelasticsearchkibana3CognitoUserPoolEF0D5793",
+                "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0",
                 "ProviderName"
               ]
             },
@@ -339,19 +339,19 @@
         ]
       }
     },
-    "testlambdaelasticsearchkibana3UserPoolDomain11719EB9": {
+    "testlambdaelasticsearchkibana5UserPoolDomainE2693371": {
       "Type": "AWS::Cognito::UserPoolDomain",
       "Properties": {
-        "Domain": "deploywithvpctest",
+        "Domain": "deploywithvpcpropstest",
         "UserPoolId": {
-          "Ref": "testlambdaelasticsearchkibana3CognitoUserPoolEF0D5793"
+          "Ref": "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0"
         }
       },
       "DependsOn": [
-        "testlambdaelasticsearchkibana3CognitoUserPoolEF0D5793"
+        "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0"
       ]
     },
-    "testlambdaelasticsearchkibana3CognitoAuthorizedRole2E055088": {
+    "testlambdaelasticsearchkibana5CognitoAuthorizedRole784B2C89": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -361,7 +361,7 @@
               "Condition": {
                 "StringEquals": {
                   "cognito-identity.amazonaws.com:aud": {
-                    "Ref": "testlambdaelasticsearchkibana3CognitoIdentityPool48956B3D"
+                    "Ref": "testlambdaelasticsearchkibana5CognitoIdentityPool1B0A6046"
                   }
                 },
                 "ForAnyValue:StringLike": {
@@ -399,7 +399,7 @@
                         {
                           "Ref": "AWS::AccountId"
                         },
-                        ":domain/deploywithvpctest/*"
+                        ":domain/deploywithvpcpropstest/*"
                       ]
                     ]
                   }
@@ -412,23 +412,23 @@
         ]
       }
     },
-    "testlambdaelasticsearchkibana3IdentityPoolRoleMappingDF65C594": {
+    "testlambdaelasticsearchkibana5IdentityPoolRoleMappingE355C8E9": {
       "Type": "AWS::Cognito::IdentityPoolRoleAttachment",
       "Properties": {
         "IdentityPoolId": {
-          "Ref": "testlambdaelasticsearchkibana3CognitoIdentityPool48956B3D"
+          "Ref": "testlambdaelasticsearchkibana5CognitoIdentityPool1B0A6046"
         },
         "Roles": {
           "authenticated": {
             "Fn::GetAtt": [
-              "testlambdaelasticsearchkibana3CognitoAuthorizedRole2E055088",
+              "testlambdaelasticsearchkibana5CognitoAuthorizedRole784B2C89",
               "Arn"
             ]
           }
         }
       }
     },
-    "testlambdaelasticsearchkibana3CognitoKibanaConfigureRoleE8D8BE00": {
+    "testlambdaelasticsearchkibana5CognitoKibanaConfigureRoleD2E8341A": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -445,7 +445,7 @@
         }
       }
     },
-    "testlambdaelasticsearchkibana3CognitoKibanaConfigureRolePolicyF1017A7A": {
+    "testlambdaelasticsearchkibana5CognitoKibanaConfigureRolePolicy11560205": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -469,7 +469,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "testlambdaelasticsearchkibana3CognitoUserPoolEF0D5793",
+                    "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0",
                     "Arn"
                   ]
                 },
@@ -487,7 +487,7 @@
                       },
                       ":identitypool/",
                       {
-                        "Ref": "testlambdaelasticsearchkibana3CognitoIdentityPool48956B3D"
+                        "Ref": "testlambdaelasticsearchkibana5CognitoIdentityPool1B0A6046"
                       }
                     ]
                   ]
@@ -504,7 +504,7 @@
                       {
                         "Ref": "AWS::AccountId"
                       },
-                      ":domain/deploywithvpctest"
+                      ":domain/deploywithvpcpropstest"
                     ]
                   ]
                 }
@@ -520,7 +520,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "testlambdaelasticsearchkibana3CognitoKibanaConfigureRoleE8D8BE00",
+                  "testlambdaelasticsearchkibana5CognitoKibanaConfigureRoleD2E8341A",
                   "Arn"
                 ]
               }
@@ -528,15 +528,15 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testlambdaelasticsearchkibana3CognitoKibanaConfigureRolePolicyF1017A7A",
+        "PolicyName": "testlambdaelasticsearchkibana5CognitoKibanaConfigureRolePolicy11560205",
         "Roles": [
           {
-            "Ref": "testlambdaelasticsearchkibana3CognitoKibanaConfigureRoleE8D8BE00"
+            "Ref": "testlambdaelasticsearchkibana5CognitoKibanaConfigureRoleD2E8341A"
           }
         ]
       }
     },
-    "testlambdaelasticsearchkibana3ElasticsearchDomain268DE741": {
+    "testlambdaelasticsearchkibana5ElasticsearchDomain58F77409": {
       "Type": "AWS::Elasticsearch::Domain",
       "Properties": {
         "AccessPolicies": {
@@ -548,13 +548,13 @@
                 "AWS": [
                   {
                     "Fn::GetAtt": [
-                      "testlambdaelasticsearchkibana3CognitoAuthorizedRole2E055088",
+                      "testlambdaelasticsearchkibana5CognitoAuthorizedRole784B2C89",
                       "Arn"
                     ]
                   },
                   {
                     "Fn::GetAtt": [
-                      "testlambdaelasticsearchkibana3LambdaFunctionServiceRoleA3C1E07E",
+                      "testlambdaelasticsearchkibana5LambdaFunctionServiceRole26E43B12",
                       "Arn"
                     ]
                   }
@@ -572,7 +572,7 @@
                     {
                       "Ref": "AWS::AccountId"
                     },
-                    ":domain/deploywithvpctest/*"
+                    ":domain/deploywithvpcpropstest/*"
                   ]
                 ]
               }
@@ -583,19 +583,19 @@
         "CognitoOptions": {
           "Enabled": true,
           "IdentityPoolId": {
-            "Ref": "testlambdaelasticsearchkibana3CognitoIdentityPool48956B3D"
+            "Ref": "testlambdaelasticsearchkibana5CognitoIdentityPool1B0A6046"
           },
           "RoleArn": {
             "Fn::GetAtt": [
-              "testlambdaelasticsearchkibana3CognitoKibanaConfigureRoleE8D8BE00",
+              "testlambdaelasticsearchkibana5CognitoKibanaConfigureRoleD2E8341A",
               "Arn"
             ]
           },
           "UserPoolId": {
-            "Ref": "testlambdaelasticsearchkibana3CognitoUserPoolEF0D5793"
+            "Ref": "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0"
           }
         },
-        "DomainName": "deploywithvpctest",
+        "DomainName": "deploywithvpcpropstest",
         "EBSOptions": {
           "EBSEnabled": true,
           "VolumeSize": 10
@@ -623,7 +623,7 @@
           "SecurityGroupIds": [
             {
               "Fn::GetAtt": [
-                "testlambdaelasticsearchkibana3ReplaceDefaultSecurityGroupsecuritygroupEB497E1A",
+                "testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup375DBE67",
                 "GroupId"
               ]
             }
@@ -656,7 +656,7 @@
         }
       }
     },
-    "testlambdaelasticsearchkibana3StatusRedAlarmFECC950E": {
+    "testlambdaelasticsearchkibana5StatusRedAlarm916EC672": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -669,7 +669,7 @@
         "Threshold": 1
       }
     },
-    "testlambdaelasticsearchkibana3StatusYellowAlarmC7FC4662": {
+    "testlambdaelasticsearchkibana5StatusYellowAlarm7DCAF60A": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -682,7 +682,7 @@
         "Threshold": 1
       }
     },
-    "testlambdaelasticsearchkibana3FreeStorageSpaceTooLowAlarmB9AD5427": {
+    "testlambdaelasticsearchkibana5FreeStorageSpaceTooLowAlarmEC2C0D7B": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "LessThanOrEqualToThreshold",
@@ -695,7 +695,7 @@
         "Threshold": 20000
       }
     },
-    "testlambdaelasticsearchkibana3IndexWritesBlockedTooHighAlarm36E1D418": {
+    "testlambdaelasticsearchkibana5IndexWritesBlockedTooHighAlarmD496CE3E": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -708,7 +708,7 @@
         "Threshold": 1
       }
     },
-    "testlambdaelasticsearchkibana3AutomatedSnapshotFailureTooHighAlarmA83D4971": {
+    "testlambdaelasticsearchkibana5AutomatedSnapshotFailureTooHighAlarm97129BC4": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -721,7 +721,7 @@
         "Threshold": 1
       }
     },
-    "testlambdaelasticsearchkibana3CPUUtilizationTooHighAlarmE77470C0": {
+    "testlambdaelasticsearchkibana5CPUUtilizationTooHighAlarm3BAAA397": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -734,7 +734,7 @@
         "Threshold": 80
       }
     },
-    "testlambdaelasticsearchkibana3JVMMemoryPressureTooHighAlarm084D2991": {
+    "testlambdaelasticsearchkibana5JVMMemoryPressureTooHighAlarm251AD583": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -747,7 +747,7 @@
         "Threshold": 80
       }
     },
-    "testlambdaelasticsearchkibana3MasterCPUUtilizationTooHighAlarm3331F781": {
+    "testlambdaelasticsearchkibana5MasterCPUUtilizationTooHighAlarm97A330CC": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -760,7 +760,7 @@
         "Threshold": 50
       }
     },
-    "testlambdaelasticsearchkibana3MasterJVMMemoryPressureTooHighAlarm149E8D14": {
+    "testlambdaelasticsearchkibana5MasterJVMMemoryPressureTooHighAlarm7DABB351": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -783,7 +783,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack3/Vpc"
+            "Value": "test-lambda-elasticsearch-kibana-stack5/Vpc"
           }
         ]
       }
@@ -808,7 +808,7 @@
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack3/Vpc/isolatedSubnet1"
+            "Value": "test-lambda-elasticsearch-kibana-stack5/Vpc/isolatedSubnet1"
           }
         ]
       }
@@ -822,7 +822,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack3/Vpc/isolatedSubnet1"
+            "Value": "test-lambda-elasticsearch-kibana-stack5/Vpc/isolatedSubnet1"
           }
         ]
       }
@@ -858,7 +858,7 @@
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack3/Vpc/isolatedSubnet2"
+            "Value": "test-lambda-elasticsearch-kibana-stack5/Vpc/isolatedSubnet2"
           }
         ]
       }
@@ -872,7 +872,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack3/Vpc/isolatedSubnet2"
+            "Value": "test-lambda-elasticsearch-kibana-stack5/Vpc/isolatedSubnet2"
           }
         ]
       }
@@ -908,7 +908,7 @@
           },
           {
             "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack3/Vpc/isolatedSubnet3"
+            "Value": "test-lambda-elasticsearch-kibana-stack5/Vpc/isolatedSubnet3"
           }
         ]
       }
@@ -922,7 +922,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack3/Vpc/isolatedSubnet3"
+            "Value": "test-lambda-elasticsearch-kibana-stack5/Vpc/isolatedSubnet3"
           }
         ]
       }
@@ -956,7 +956,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack3/Vpc"
+            "Value": "test-lambda-elasticsearch-kibana-stack5/Vpc"
           }
         ]
       }
@@ -1040,7 +1040,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "test-lambda-elasticsearch-kibana-stack3/Vpc"
+            "Value": "test-lambda-elasticsearch-kibana-stack5/Vpc"
           }
         ]
       }

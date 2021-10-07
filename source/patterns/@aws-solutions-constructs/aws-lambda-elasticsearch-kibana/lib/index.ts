@@ -106,14 +106,12 @@ export class LambdaToElasticSearchAndKibana extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
 
-    if ((props.deployVpc || props.vpcProps || props.existingVpc) &&
-        (props.lambdaFunctionProps && (props.lambdaFunctionProps.vpc || props.lambdaFunctionProps.vpcSubnets))) {
-      throw new Error("Error - More than 1 VPC specified for Lambda function");
+    if (props.lambdaFunctionProps?.vpc || props.lambdaFunctionProps?.vpcSubnets) {
+      throw new Error("Error - Define VPC using construct parameters not Lambda function props");
     }
 
-    if ((props.deployVpc || props.vpcProps || props.existingVpc) &&
-        props.esDomainProps && props.esDomainProps.vpcOptions) {
-      throw new Error("Error - More than 1 VPC specified in the properties");
+    if (props.esDomainProps?.vpcOptions) {
+      throw new Error("Error - Define VPC using construct parameters not Elasticsearch props");
     }
 
     if (props.deployVpc || props.existingVpc) {
@@ -137,6 +135,34 @@ export class LambdaToElasticSearchAndKibana extends Construct {
     // Find the lambda service Role ARN
     const lambdaFunctionRoleARN = this.lambdaFunction.role?.roleArn;
 
+    let _esDomainProps = { ...props.esDomainProps };
+
+    if (this.vpc) {
+      // This construct sets Elasticsearch cluster deployment type as production, deploying within exactly 3 availability zones,
+      // in that case,
+      //      1. The VPC that ES cluster will create in should have minimum 3 AZs.
+      //      2. We will need to specify EXACTLY 3 subnets, each of them is in different AZs, for ES cluster.
+      const availabilityZones: string[] = this.vpc.availabilityZones;
+      if (availabilityZones.length < 3) {
+        throw new Error ("Error - You need to have minimum 3 AZs in this VPC for a production deployment type ES cluster.");
+      }
+
+      const subnets = this.vpc.selectSubnets({onePerAz: true}).subnetIds;
+
+      const securityGroupIds: string[] = [];
+      this.lambdaFunction.connections.securityGroups.forEach(element => securityGroupIds.push(element.securityGroupId));
+
+      _esDomainProps = {
+        vpcOptions: {
+          subnetIds: [subnets[0], subnets[1], subnets[2]],
+          securityGroupIds,
+        },
+        ...props.esDomainProps };
+
+      // Add Inbound rule to allow tcp call internally
+      this.lambdaFunction.connections.allowInternally(ec2.Port.allTcp());
+    }
+
     this.userPool = defaults.buildUserPool(this);
     this.userPoolClient = defaults.buildUserPoolClient(this, this.userPool);
     this.identityPool = defaults.buildIdentityPool(this, this.userPool, this.userPoolClient);
@@ -157,9 +183,9 @@ export class LambdaToElasticSearchAndKibana extends Construct {
       userpool: this.userPool,
       identitypool: this.identityPool,
       cognitoAuthorizedRoleARN: cognitoAuthorizedRole.roleArn,
-      serviceRoleARN: lambdaFunctionRoleARN}, props.esDomainProps);
+      serviceRoleARN: lambdaFunctionRoleARN}, _esDomainProps);
 
-    // Add ES Domain to lambda envrionment variable
+    // Add ES Domain to lambda environment variable
     const domainEndpointEnvironmentVariableName = props.domainEndpointEnvironmentVariableName || 'DOMAIN_ENDPOINT';
     this.lambdaFunction.addEnvironment(domainEndpointEnvironmentVariableName, this.elasticsearchDomain.attrDomainEndpoint);
 
