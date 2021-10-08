@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.125.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.124.0...v1.125.0) (2021-10-08)
+
+
+### Features
+
+* **aws-cloudfront-s3:** added loggingBucketProps for cloudfront-s3 ([#419](https://github.com/awslabs/aws-solutions-constructs/issues/419)) ([743c874](https://github.com/awslabs/aws-solutions-constructs/commit/743c87485b5f173243423fa598a3f34e2eaacc16))
+* **aws-s3-lambda:** added optional loggingBucketProps to aws-s3-lambda ([#411](https://github.com/awslabs/aws-solutions-constructs/issues/411)) ([1552e4e](https://github.com/awslabs/aws-solutions-constructs/commit/1552e4e485ac89cc959ad810526ab4d7aac48210))
+* **aws-s3-sqs:** added loggingBucketProps in aws-s3-sqs and updated tests ([#413](https://github.com/awslabs/aws-solutions-constructs/issues/413)) ([3ddf6ef](https://github.com/awslabs/aws-solutions-constructs/commit/3ddf6efcc8de2d78aa2bba4b173089052e3b7956))
+* **aws-s3-stepfunctions:** added loggingBucketProps to s3-stepfunctions and s3-step-function ([#414](https://github.com/awslabs/aws-solutions-constructs/issues/414)) ([ed7bdfa](https://github.com/awslabs/aws-solutions-constructs/commit/ed7bdfa055b5b9555d5c0c8bb488e78669a85b6a))
+* **dynamodbstreams-lambda-elasticsearch-kibana:** updated cognito user pool domain name ([#433](https://github.com/awslabs/aws-solutions-constructs/issues/433)) ([6f340a6](https://github.com/awslabs/aws-solutions-constructs/commit/6f340a6e6c10148ca40812a1b36c49cc2eb210da))
+
+
+### Bug Fixes
+
+* **cdk-integ-assert-v2:** revert the changes for special CDK v2 handling ([#417](https://github.com/awslabs/aws-solutions-constructs/issues/417)) ([51b1758](https://github.com/awslabs/aws-solutions-constructs/commit/51b1758956541e76cb07fc2d826eb7b602fe806a))
+* **cdk-integ-tools:** enabling all feature flags in cdk-integ-tools for CDK v1 ([#410](https://github.com/awslabs/aws-solutions-constructs/issues/410)) ([9c42458](https://github.com/awslabs/aws-solutions-constructs/commit/9c4245854c966fb4162fc12a99ee2afbc56c49d1))
+* **cdk-integ-tools:** fix npm run integ for individual pattern ([#432](https://github.com/awslabs/aws-solutions-constructs/issues/432)) ([5d2f3d9](https://github.com/awslabs/aws-solutions-constructs/commit/5d2f3d900f9c50ec9f041c72911615d3dbe9d908))
+* **cdk-v2-align-version:** it fails to build cdk-integ-tools for constructs v2.0.0-rc.2 ([#424](https://github.com/awslabs/aws-solutions-constructs/issues/424)) ([80d1fe8](https://github.com/awslabs/aws-solutions-constructs/commit/80d1fe8b48580dd2ec7ab0d46b7636ed159e0478))
+* **cdk-v2:** fixing relative paths in deployment/v2/build-cdk-dist.sh ([#429](https://github.com/awslabs/aws-solutions-constructs/issues/429)) ([fd7e210](https://github.com/awslabs/aws-solutions-constructs/commit/fd7e2108fc9c57b8bc94a94002ca0351d9479e81))
+
 ## [1.124.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.123.0...v1.124.0) (2021-09-29)
 
 * Upgraded all patterns to CDK v1.124.0
