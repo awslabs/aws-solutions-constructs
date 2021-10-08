@@ -31,7 +31,7 @@ export function DefaultIsolatedVpcProps(): ec2.VpcProps {
       {
         cidrMask: 18,
         name: "isolated",
-        subnetType: ec2.SubnetType.ISOLATED,
+        subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
       }
     ]
   } as ec2.VpcProps;

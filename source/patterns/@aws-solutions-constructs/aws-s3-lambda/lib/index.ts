@@ -29,7 +29,7 @@ export interface S3ToLambdaProps {
    */
   readonly existingLambdaObj?: lambda.Function,
   /**
-   * User provided props to override the default props for the Lambda function.
+   * Optional user provided props to override the default props for the Lambda function.
    *
    * @default - Default props are used
    */
@@ -41,7 +41,7 @@ export interface S3ToLambdaProps {
    */
   readonly existingBucketObj?: s3.Bucket,
   /**
-   * User provided props to override the default props for the S3 Bucket.
+   * Optional user provided props to override the default props for the S3 Bucket.
    *
    * @default - Default props are used
    */
@@ -51,7 +51,13 @@ export interface S3ToLambdaProps {
    *
    * @default - Default props are used
    */
-  readonly s3EventSourceProps?: S3EventSourceProps
+  readonly s3EventSourceProps?: S3EventSourceProps,
+  /**
+   * Optional user provided props to override the default props for the S3 Logging Bucket.
+   *
+   * @default - Default props are used
+   */
+   readonly loggingBucketProps?: s3.BucketProps
 }
 
 export class S3ToLambda extends Construct {
@@ -84,7 +90,8 @@ export class S3ToLambda extends Construct {
 
     if (!props.existingBucketObj) {
       [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
-        bucketProps: props.bucketProps
+        bucketProps: props.bucketProps,
+        loggingBucketProps: props.loggingBucketProps
       });
       bucket = this.s3Bucket;
     } else {
