@@ -4,15 +4,17 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [1.125.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.124.0...v1.125.0) (2021-10-08)
 
+* Upgraded all patterns to CDK v1.125.0
 
 ### Features
 
 * **aws-cloudfront-s3:** added loggingBucketProps for cloudfront-s3 ([#419](https://github.com/awslabs/aws-solutions-constructs/issues/419)) ([743c874](https://github.com/awslabs/aws-solutions-constructs/commit/743c87485b5f173243423fa598a3f34e2eaacc16))
+* **aws-lambda-s3:** added loggingBucketProps for lambda-s3 ([#422](https://github.com/awslabs/aws-solutions-constructs/issues/42))
 * **aws-s3-lambda:** added optional loggingBucketProps to aws-s3-lambda ([#411](https://github.com/awslabs/aws-solutions-constructs/issues/411)) ([1552e4e](https://github.com/awslabs/aws-solutions-constructs/commit/1552e4e485ac89cc959ad810526ab4d7aac48210))
 * **aws-s3-sqs:** added loggingBucketProps in aws-s3-sqs and updated tests ([#413](https://github.com/awslabs/aws-solutions-constructs/issues/413)) ([3ddf6ef](https://github.com/awslabs/aws-solutions-constructs/commit/3ddf6efcc8de2d78aa2bba4b173089052e3b7956))
 * **aws-s3-stepfunctions:** added loggingBucketProps to s3-stepfunctions and s3-step-function ([#414](https://github.com/awslabs/aws-solutions-constructs/issues/414)) ([ed7bdfa](https://github.com/awslabs/aws-solutions-constructs/commit/ed7bdfa055b5b9555d5c0c8bb488e78669a85b6a))
 * **dynamodbstreams-lambda-elasticsearch-kibana:** updated cognito user pool domain name ([#433](https://github.com/awslabs/aws-solutions-constructs/issues/433)) ([6f340a6](https://github.com/awslabs/aws-solutions-constructs/commit/6f340a6e6c10148ca40812a1b36c49cc2eb210da))
-
+* **aws-iot-sqs:** updated names to address conflicting duplicate queue and dlq names ([#434](https://github.com/awslabs/aws-solutions-constructs/issues/434)) 
 
 ### Bug Fixes
 
