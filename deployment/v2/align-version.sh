@@ -20,5 +20,8 @@ if [ $# -eq 0 ]; then
     ${deployment_dir}/align-version.js ${marker} ${repoVersion} ${files}
 else
     echo "Reverting back CDK v2 updatesfrom ALL package.json files"
-    git checkout `find . -name package.json | grep -v node_modules`
+    # This command is required ONLY for the local development and it fails in CodePipeline
+    if [[ -z "${CODEBUILD_BUILD_ID+x}" ]]; then
+        git checkout `find . -name package.json | grep -v node_modules`
+    fi
 fi

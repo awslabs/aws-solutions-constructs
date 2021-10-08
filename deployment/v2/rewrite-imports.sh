@@ -34,5 +34,8 @@ if [ $# -eq 0 ]; then
     done
 else
     echo "Reverting back TypeScript import statements for CDK v2"
-    git checkout `find . -name *.ts | grep -v node_modules | grep -v -F .d.ts`
+    # This command is required ONLY for the local development and it fails in CodePipeline
+    if [[ -z "${CODEBUILD_BUILD_ID+x}" ]]; then
+      git checkout `find . -name *.ts | grep -v node_modules | grep -v -F .d.ts`
+    fi
 fi
