@@ -65,12 +65,13 @@ function defaultCloudfrontFunction(scope: Construct): cloudfront.Function {
 export function CloudFrontDistributionForApiGateway(scope: Construct,
   apiEndPoint: api.RestApi,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
-  httpSecurityHeaders: boolean = true): [cloudfront.Distribution,
-    cloudfront.Function?, s3.Bucket?] {
+  httpSecurityHeaders: boolean = true,
+  cloudfrontLoggingBucketProps?: s3.BucketProps
+): [cloudfront.Distribution, cloudfront.Function?, s3.Bucket?] {
 
   const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
-  const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope);
+  const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope, cloudfrontLoggingBucketProps);
 
   const defaultprops = DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint, loggingBucket, httpSecurityHeaders, cloudfrontFunction);
 
@@ -183,12 +184,20 @@ export function CloudFrontOriginAccessIdentity(scope: Construct, comment?: strin
   });
 }
 
-function getLoggingBucket(cloudFrontDistributionProps: cloudfront.DistributionProps | any, scope: Construct): s3.Bucket | undefined {
+function getLoggingBucket(
+  cloudFrontDistributionProps: cloudfront.DistributionProps | any, scope: Construct,
+  cloudfrontLoggingBucketProps?: s3.BucketProps
+): s3.Bucket | undefined {
   const isLoggingDisabled = cloudFrontDistributionProps?.enableLogging === false;
   const userSuppliedLogBucket = cloudFrontDistributionProps?.logBucket;
+
+  if (userSuppliedLogBucket && cloudfrontLoggingBucketProps) {
+    throw Error('Either cloudFrontDistributionProps.logBucket or cloudfrontLoggingBucketProps can be set.');
+  }
+
   return isLoggingDisabled
     ? undefined
-    : userSuppliedLogBucket ?? createLoggingBucket(scope, 'CloudfrontLoggingBucket', DefaultS3Props());
+    : userSuppliedLogBucket ?? createLoggingBucket(scope, 'CloudfrontLoggingBucket', cloudfrontLoggingBucketProps || DefaultS3Props());
 }
 
 function getCloudfrontFunction(httpSecurityHeaders: boolean, scope: Construct) {
