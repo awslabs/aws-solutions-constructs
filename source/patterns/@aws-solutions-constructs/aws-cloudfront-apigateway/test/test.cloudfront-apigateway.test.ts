@@ -178,7 +178,7 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
 
   new CloudFrontToApiGateway(stack, 'cloudfront-s3', {
     existingApiGatewayObj: _api,
-    cloudfrontLoggingBucketProps: {
+    cloudFrontLoggingBucketProps: {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true
     }
@@ -224,7 +224,7 @@ test('Cloudfront logging bucket error when providing existing log bucket and log
     cloudFrontDistributionProps: {
       logBucket
     },
-    cloudfrontLoggingBucketProps: {
+    cloudFrontLoggingBucketProps: {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true
     }
