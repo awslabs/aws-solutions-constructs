@@ -52,7 +52,16 @@ echo "mkdir -p $dist_dir"
 mkdir -p $dist_dir
 
 ## create a list of deprecated constructs
-declare -a ignore_list=("aws-dynamodb-stream-lambda-elasticsearch-kibana" "aws-dynamodb-stream-lambda" "aws-events-rule-kinesisfirehose-s3" "aws-events-rule-kinesisstreams" "aws-events-rule-lambda" "aws-events-rule-sns" "aws-events-rule-sqs" "aws-events-rule-step-function" "aws-lambda-step-function" "aws-s3-step-function")
+declare -a ignore_list=("aws-dynamodb-stream-lambda-elasticsearch-kibana" 
+"aws-dynamodb-stream-lambda" 
+"aws-events-rule-kinesisfirehose-s3" 
+"aws-events-rule-kinesisstreams" 
+"aws-events-rule-lambda" 
+"aws-events-rule-sns" 
+"aws-events-rule-sqs" 
+"aws-events-rule-step-function" 
+"aws-lambda-step-function" 
+"aws-s3-step-function")
 
 ## create \| delimited string
 ignore_modules=""
