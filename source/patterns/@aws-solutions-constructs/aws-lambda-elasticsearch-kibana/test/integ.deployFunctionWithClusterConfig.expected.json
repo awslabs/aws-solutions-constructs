@@ -1,6 +1,6 @@
 {
   "Resources": {
-    "testlambdaelasticsearchkibanaLambdaFunctionServiceRole3AFFEAA2": {
+    "testlambdaelasticsearchkibana5LambdaFunctionServiceRole26E43B12": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -55,11 +55,22 @@
         ]
       }
     },
-    "testlambdaelasticsearchkibanaLambdaFunctionServiceRoleDefaultPolicy199413EB": {
+    "testlambdaelasticsearchkibana5LambdaFunctionServiceRoleDefaultPolicy8A628F4B": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
           "Statement": [
+            {
+              "Action": [
+                "ec2:CreateNetworkInterface",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DeleteNetworkInterface",
+                "ec2:AssignPrivateIpAddresses",
+                "ec2:UnassignPrivateIpAddresses"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
             {
               "Action": [
                 "xray:PutTraceSegments",
@@ -71,10 +82,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testlambdaelasticsearchkibanaLambdaFunctionServiceRoleDefaultPolicy199413EB",
+        "PolicyName": "testlambdaelasticsearchkibana5LambdaFunctionServiceRoleDefaultPolicy8A628F4B",
         "Roles": [
           {
-            "Ref": "testlambdaelasticsearchkibanaLambdaFunctionServiceRole3AFFEAA2"
+            "Ref": "testlambdaelasticsearchkibana5LambdaFunctionServiceRole26E43B12"
           }
         ]
       },
@@ -89,18 +100,67 @@
         }
       }
     },
-    "testlambdaelasticsearchkibanaLambdaFunction601D26D3": {
+    "testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup375DBE67": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/ReplaceDefaultSecurityGroup-security-group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W5",
+              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK"
+            },
+            {
+              "id": "W40",
+              "reason": "Egress IPProtocol of -1 is default and generally considered OK"
+            }
+          ]
+        }
+      }
+    },
+    "testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroupfromdeployFunctionWithClusterConfigtestlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup152B06D5ALLPORTS30055349": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "IpProtocol": "tcp",
+        "Description": "from deployFunctionWithClusterConfigtestlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup152B06D5:ALL PORTS",
+        "FromPort": 0,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup375DBE67",
+            "GroupId"
+          ]
+        },
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup375DBE67",
+            "GroupId"
+          ]
+        },
+        "ToPort": 65535
+      }
+    },
+    "testlambdaelasticsearchkibana5LambdaFunction5382AC86": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
-          "S3Bucket": {
-            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-          },
+          "S3Bucket": "cdk-hnb659fds-assets-12345678-test-region",
           "S3Key": "67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682db.zip"
         },
         "Role": {
           "Fn::GetAtt": [
-            "testlambdaelasticsearchkibanaLambdaFunctionServiceRole3AFFEAA2",
+            "testlambdaelasticsearchkibana5LambdaFunctionServiceRole26E43B12",
             "Arn"
           ]
         },
@@ -109,7 +169,7 @@
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "DOMAIN_ENDPOINT": {
               "Fn::GetAtt": [
-                "testlambdaelasticsearchkibanaElasticsearchDomain50D5F86E",
+                "testlambdaelasticsearchkibana5ElasticsearchDomain58F77409",
                 "DomainEndpoint"
               ]
             }
@@ -119,11 +179,32 @@
         "Runtime": "nodejs12.x",
         "TracingConfig": {
           "Mode": "Active"
+        },
+        "VpcConfig": {
+          "SecurityGroupIds": [
+            {
+              "Fn::GetAtt": [
+                "testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup375DBE67",
+                "GroupId"
+              ]
+            }
+          ],
+          "SubnetIds": [
+            {
+              "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
+            },
+            {
+              "Ref": "VpcisolatedSubnet2Subnet39217055"
+            },
+            {
+              "Ref": "VpcisolatedSubnet3Subnet44F2537D"
+            }
+          ]
         }
       },
       "DependsOn": [
-        "testlambdaelasticsearchkibanaLambdaFunctionServiceRoleDefaultPolicy199413EB",
-        "testlambdaelasticsearchkibanaLambdaFunctionServiceRole3AFFEAA2"
+        "testlambdaelasticsearchkibana5LambdaFunctionServiceRoleDefaultPolicy8A628F4B",
+        "testlambdaelasticsearchkibana5LambdaFunctionServiceRole26E43B12"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -144,7 +225,7 @@
         }
       }
     },
-    "testlambdaelasticsearchkibanaCognitoUserPool9537802B": {
+    "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0": {
       "Type": "AWS::Cognito::UserPool",
       "Properties": {
         "AccountRecoverySetting": {
@@ -178,11 +259,11 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "testlambdaelasticsearchkibanaCognitoUserPoolClient8F70A2AA": {
+    "testlambdaelasticsearchkibana5CognitoUserPoolClientB41FB91B": {
       "Type": "AWS::Cognito::UserPoolClient",
       "Properties": {
         "UserPoolId": {
-          "Ref": "testlambdaelasticsearchkibanaCognitoUserPool9537802B"
+          "Ref": "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0"
         },
         "AllowedOAuthFlows": [
           "implicit",
@@ -204,18 +285,18 @@
         ]
       }
     },
-    "testlambdaelasticsearchkibanaCognitoIdentityPoolC48068F0": {
+    "testlambdaelasticsearchkibana5CognitoIdentityPool1B0A6046": {
       "Type": "AWS::Cognito::IdentityPool",
       "Properties": {
         "AllowUnauthenticatedIdentities": false,
         "CognitoIdentityProviders": [
           {
             "ClientId": {
-              "Ref": "testlambdaelasticsearchkibanaCognitoUserPoolClient8F70A2AA"
+              "Ref": "testlambdaelasticsearchkibana5CognitoUserPoolClientB41FB91B"
             },
             "ProviderName": {
               "Fn::GetAtt": [
-                "testlambdaelasticsearchkibanaCognitoUserPool9537802B",
+                "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0",
                 "ProviderName"
               ]
             },
@@ -224,19 +305,19 @@
         ]
       }
     },
-    "testlambdaelasticsearchkibanaUserPoolDomainB9BDF063": {
+    "testlambdaelasticsearchkibana5UserPoolDomainE2693371": {
       "Type": "AWS::Cognito::UserPoolDomain",
       "Properties": {
-        "Domain": "testingwithnoargs",
+        "Domain": "deploywithclusterconfig",
         "UserPoolId": {
-          "Ref": "testlambdaelasticsearchkibanaCognitoUserPool9537802B"
+          "Ref": "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0"
         }
       },
       "DependsOn": [
-        "testlambdaelasticsearchkibanaCognitoUserPool9537802B"
+        "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0"
       ]
     },
-    "testlambdaelasticsearchkibanaCognitoAuthorizedRole88FAFCFA": {
+    "testlambdaelasticsearchkibana5CognitoAuthorizedRole784B2C89": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -246,7 +327,7 @@
               "Condition": {
                 "StringEquals": {
                   "cognito-identity.amazonaws.com:aud": {
-                    "Ref": "testlambdaelasticsearchkibanaCognitoIdentityPoolC48068F0"
+                    "Ref": "testlambdaelasticsearchkibana5CognitoIdentityPool1B0A6046"
                   }
                 },
                 "ForAnyValue:StringLike": {
@@ -284,7 +365,7 @@
                         {
                           "Ref": "AWS::AccountId"
                         },
-                        ":domain/testingwithnoargs/*"
+                        ":domain/deploywithclusterconfig/*"
                       ]
                     ]
                   }
@@ -297,23 +378,23 @@
         ]
       }
     },
-    "testlambdaelasticsearchkibanaIdentityPoolRoleMappingBD0A239B": {
+    "testlambdaelasticsearchkibana5IdentityPoolRoleMappingE355C8E9": {
       "Type": "AWS::Cognito::IdentityPoolRoleAttachment",
       "Properties": {
         "IdentityPoolId": {
-          "Ref": "testlambdaelasticsearchkibanaCognitoIdentityPoolC48068F0"
+          "Ref": "testlambdaelasticsearchkibana5CognitoIdentityPool1B0A6046"
         },
         "Roles": {
           "authenticated": {
             "Fn::GetAtt": [
-              "testlambdaelasticsearchkibanaCognitoAuthorizedRole88FAFCFA",
+              "testlambdaelasticsearchkibana5CognitoAuthorizedRole784B2C89",
               "Arn"
             ]
           }
         }
       }
     },
-    "testlambdaelasticsearchkibanaCognitoKibanaConfigureRole8F40C1A1": {
+    "testlambdaelasticsearchkibana5CognitoKibanaConfigureRoleD2E8341A": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -330,7 +411,7 @@
         }
       }
     },
-    "testlambdaelasticsearchkibanaCognitoKibanaConfigureRolePolicyB7090E91": {
+    "testlambdaelasticsearchkibana5CognitoKibanaConfigureRolePolicy11560205": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -354,7 +435,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "testlambdaelasticsearchkibanaCognitoUserPool9537802B",
+                    "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0",
                     "Arn"
                   ]
                 },
@@ -372,7 +453,7 @@
                       },
                       ":identitypool/",
                       {
-                        "Ref": "testlambdaelasticsearchkibanaCognitoIdentityPoolC48068F0"
+                        "Ref": "testlambdaelasticsearchkibana5CognitoIdentityPool1B0A6046"
                       }
                     ]
                   ]
@@ -389,7 +470,7 @@
                       {
                         "Ref": "AWS::AccountId"
                       },
-                      ":domain/noargumentstest"
+                      ":domain/deploywithclusterconfig"
                     ]
                   ]
                 }
@@ -405,7 +486,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "testlambdaelasticsearchkibanaCognitoKibanaConfigureRole8F40C1A1",
+                  "testlambdaelasticsearchkibana5CognitoKibanaConfigureRoleD2E8341A",
                   "Arn"
                 ]
               }
@@ -413,15 +494,15 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testlambdaelasticsearchkibanaCognitoKibanaConfigureRolePolicyB7090E91",
+        "PolicyName": "testlambdaelasticsearchkibana5CognitoKibanaConfigureRolePolicy11560205",
         "Roles": [
           {
-            "Ref": "testlambdaelasticsearchkibanaCognitoKibanaConfigureRole8F40C1A1"
+            "Ref": "testlambdaelasticsearchkibana5CognitoKibanaConfigureRoleD2E8341A"
           }
         ]
       }
     },
-    "testlambdaelasticsearchkibanaElasticsearchDomain50D5F86E": {
+    "testlambdaelasticsearchkibana5ElasticsearchDomain58F77409": {
       "Type": "AWS::Elasticsearch::Domain",
       "Properties": {
         "AccessPolicies": {
@@ -433,13 +514,13 @@
                 "AWS": [
                   {
                     "Fn::GetAtt": [
-                      "testlambdaelasticsearchkibanaCognitoAuthorizedRole88FAFCFA",
+                      "testlambdaelasticsearchkibana5CognitoAuthorizedRole784B2C89",
                       "Arn"
                     ]
                   },
                   {
                     "Fn::GetAtt": [
-                      "testlambdaelasticsearchkibanaLambdaFunctionServiceRole3AFFEAA2",
+                      "testlambdaelasticsearchkibana5LambdaFunctionServiceRole26E43B12",
                       "Arn"
                     ]
                   }
@@ -457,7 +538,7 @@
                     {
                       "Ref": "AWS::AccountId"
                     },
-                    ":domain/noargumentstest/*"
+                    ":domain/deploywithclusterconfig/*"
                   ]
                 ]
               }
@@ -468,19 +549,19 @@
         "CognitoOptions": {
           "Enabled": true,
           "IdentityPoolId": {
-            "Ref": "testlambdaelasticsearchkibanaCognitoIdentityPoolC48068F0"
+            "Ref": "testlambdaelasticsearchkibana5CognitoIdentityPool1B0A6046"
           },
           "RoleArn": {
             "Fn::GetAtt": [
-              "testlambdaelasticsearchkibanaCognitoKibanaConfigureRole8F40C1A1",
+              "testlambdaelasticsearchkibana5CognitoKibanaConfigureRoleD2E8341A",
               "Arn"
             ]
           },
           "UserPoolId": {
-            "Ref": "testlambdaelasticsearchkibanaCognitoUserPool9537802B"
+            "Ref": "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0"
           }
         },
-        "DomainName": "noargumentstest",
+        "DomainName": "deploywithclusterconfig",
         "EBSOptions": {
           "EBSEnabled": true,
           "VolumeSize": 10
@@ -488,9 +569,9 @@
         "ElasticsearchClusterConfig": {
           "DedicatedMasterCount": 3,
           "DedicatedMasterEnabled": true,
-          "InstanceCount": 3,
+          "InstanceCount": 2,
           "ZoneAwarenessConfig": {
-            "AvailabilityZoneCount": 3
+            "AvailabilityZoneCount": 2
           },
           "ZoneAwarenessEnabled": true
         },
@@ -503,6 +584,24 @@
         },
         "SnapshotOptions": {
           "AutomatedSnapshotStartHour": 1
+        },
+        "VPCOptions": {
+          "SecurityGroupIds": [
+            {
+              "Fn::GetAtt": [
+                "testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup375DBE67",
+                "GroupId"
+              ]
+            }
+          ],
+          "SubnetIds": [
+            {
+              "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
+            },
+            {
+              "Ref": "VpcisolatedSubnet2Subnet39217055"
+            }
+          ]
         }
       },
       "Metadata": {
@@ -520,7 +619,7 @@
         }
       }
     },
-    "testlambdaelasticsearchkibanaStatusRedAlarmCFCDB629": {
+    "testlambdaelasticsearchkibana5StatusRedAlarm916EC672": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -533,7 +632,7 @@
         "Threshold": 1
       }
     },
-    "testlambdaelasticsearchkibanaStatusYellowAlarm24B9D1CB": {
+    "testlambdaelasticsearchkibana5StatusYellowAlarm7DCAF60A": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -546,7 +645,7 @@
         "Threshold": 1
       }
     },
-    "testlambdaelasticsearchkibanaFreeStorageSpaceTooLowAlarm0B4D4E35": {
+    "testlambdaelasticsearchkibana5FreeStorageSpaceTooLowAlarmEC2C0D7B": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "LessThanOrEqualToThreshold",
@@ -559,7 +658,7 @@
         "Threshold": 20000
       }
     },
-    "testlambdaelasticsearchkibanaIndexWritesBlockedTooHighAlarmB8C0E99C": {
+    "testlambdaelasticsearchkibana5IndexWritesBlockedTooHighAlarmD496CE3E": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -572,7 +671,7 @@
         "Threshold": 1
       }
     },
-    "testlambdaelasticsearchkibanaAutomatedSnapshotFailureTooHighAlarm75F2676B": {
+    "testlambdaelasticsearchkibana5AutomatedSnapshotFailureTooHighAlarm97129BC4": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -585,7 +684,7 @@
         "Threshold": 1
       }
     },
-    "testlambdaelasticsearchkibanaCPUUtilizationTooHighAlarmF16BA5D9": {
+    "testlambdaelasticsearchkibana5CPUUtilizationTooHighAlarm3BAAA397": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -598,7 +697,7 @@
         "Threshold": 80
       }
     },
-    "testlambdaelasticsearchkibanaJVMMemoryPressureTooHighAlarm18224533": {
+    "testlambdaelasticsearchkibana5JVMMemoryPressureTooHighAlarm251AD583": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -611,7 +710,7 @@
         "Threshold": 80
       }
     },
-    "testlambdaelasticsearchkibanaMasterCPUUtilizationTooHighAlarmE5E5999F": {
+    "testlambdaelasticsearchkibana5MasterCPUUtilizationTooHighAlarm97A330CC": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -624,7 +723,7 @@
         "Threshold": 50
       }
     },
-    "testlambdaelasticsearchkibanaMasterJVMMemoryPressureTooHighAlarm297FF1BE": {
+    "testlambdaelasticsearchkibana5MasterJVMMemoryPressureTooHighAlarm7DABB351": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -635,6 +734,278 @@
         "Period": 900,
         "Statistic": "Average",
         "Threshold": 50
+      }
+    },
+    "Vpc8378EB38": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "deployFunctionWithClusterConfig/Vpc"
+          }
+        ]
+      }
+    },
+    "VpcisolatedSubnet1SubnetE62B1B9B": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/18",
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "AvailabilityZone": "test-region-1a",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "isolated"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "deployFunctionWithClusterConfig/Vpc/isolatedSubnet1"
+          }
+        ]
+      }
+    },
+    "VpcisolatedSubnet1RouteTableE442650B": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "deployFunctionWithClusterConfig/Vpc/isolatedSubnet1"
+          }
+        ]
+      }
+    },
+    "VpcisolatedSubnet1RouteTableAssociationD259E31A": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "VpcisolatedSubnet1RouteTableE442650B"
+        },
+        "SubnetId": {
+          "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
+        }
+      }
+    },
+    "VpcisolatedSubnet2Subnet39217055": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.64.0/18",
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "AvailabilityZone": "test-region-1b",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "isolated"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "deployFunctionWithClusterConfig/Vpc/isolatedSubnet2"
+          }
+        ]
+      }
+    },
+    "VpcisolatedSubnet2RouteTable334F9764": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "deployFunctionWithClusterConfig/Vpc/isolatedSubnet2"
+          }
+        ]
+      }
+    },
+    "VpcisolatedSubnet2RouteTableAssociation25A4716F": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "VpcisolatedSubnet2RouteTable334F9764"
+        },
+        "SubnetId": {
+          "Ref": "VpcisolatedSubnet2Subnet39217055"
+        }
+      }
+    },
+    "VpcisolatedSubnet3Subnet44F2537D": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.128.0/18",
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "AvailabilityZone": "test-region-1c",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "isolated"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "deployFunctionWithClusterConfig/Vpc/isolatedSubnet3"
+          }
+        ]
+      }
+    },
+    "VpcisolatedSubnet3RouteTableA2F6BBC0": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "deployFunctionWithClusterConfig/Vpc/isolatedSubnet3"
+          }
+        ]
+      }
+    },
+    "VpcisolatedSubnet3RouteTableAssociationDC010BEB": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "VpcisolatedSubnet3RouteTableA2F6BBC0"
+        },
+        "SubnetId": {
+          "Ref": "VpcisolatedSubnet3Subnet44F2537D"
+        }
+      }
+    },
+    "VpcFlowLogIAMRole6A475D41": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "vpc-flow-logs.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "deployFunctionWithClusterConfig/Vpc"
+          }
+        ]
+      }
+    },
+    "VpcFlowLogIAMRoleDefaultPolicy406FB995": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:DescribeLogStreams"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "VpcFlowLogLogGroup7B5C56B9",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "iam:PassRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "VpcFlowLogIAMRole6A475D41",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "VpcFlowLogIAMRoleDefaultPolicy406FB995",
+        "Roles": [
+          {
+            "Ref": "VpcFlowLogIAMRole6A475D41"
+          }
+        ]
+      }
+    },
+    "VpcFlowLogLogGroup7B5C56B9": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "RetentionInDays": 731
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+            }
+          ]
+        }
+      }
+    },
+    "VpcFlowLog8FF33A73": {
+      "Type": "AWS::EC2::FlowLog",
+      "Properties": {
+        "ResourceId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "ResourceType": "VPC",
+        "TrafficType": "ALL",
+        "DeliverLogsPermissionArn": {
+          "Fn::GetAtt": [
+            "VpcFlowLogIAMRole6A475D41",
+            "Arn"
+          ]
+        },
+        "LogDestinationType": "cloud-watch-logs",
+        "LogGroupName": {
+          "Ref": "VpcFlowLogLogGroup7B5C56B9"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "deployFunctionWithClusterConfig/Vpc"
+          }
+        ]
       }
     }
   },

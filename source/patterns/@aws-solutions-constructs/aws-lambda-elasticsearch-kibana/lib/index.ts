@@ -17,10 +17,11 @@ import * as iam from '@aws-cdk/aws-iam';
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import { Role } from '@aws-cdk/aws-iam';
+import {Construct} from '@aws-cdk/core';
+import {Role} from '@aws-cdk/aws-iam';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import * as ec2 from "@aws-cdk/aws-ec2";
+import {overrideProps} from "@aws-solutions-constructs/core";
 
 /**
  * @summary The properties for the CognitoToApiGatewayToLambda Construct
@@ -135,29 +136,47 @@ export class LambdaToElasticSearchAndKibana extends Construct {
     // Find the lambda service Role ARN
     const lambdaFunctionRoleARN = this.lambdaFunction.role?.roleArn;
 
-    let _esDomainProps = { ...props.esDomainProps };
+    // let _esDomainProps = { ...props.esDomainProps };
+    let _esDomainProps: elasticsearch.CfnDomainProps = {};
 
     if (this.vpc) {
-      // This construct sets Elasticsearch cluster deployment type as production, deploying within exactly 3 availability zones,
-      // in that case,
-      //      1. The VPC that ES cluster will create in should have minimum 3 AZs.
-      //      2. We will need to specify EXACTLY 3 subnets, each of them is in different AZs, for ES cluster.
-      const availabilityZones: string[] = this.vpc.availabilityZones;
-      if (availabilityZones.length < 3) {
-        throw new Error ("Error - You need to have minimum 3 AZs in this VPC for a production deployment type ES cluster.");
-      }
 
-      const subnets = this.vpc.selectSubnets({onePerAz: true}).subnetIds;
+      // A ES cluster deploys in 3 AZs with 3 subnets maximum(each subnet in a different AZ).
+      // To successfully deploy a ES cluster, construct will need to specify exactly same subnets number as cluster AZs number
+      // In a word, 1. Subnets number must equals to AZs number.   2. Each subnet belongs to different AZ.
+      let subnets: string[] = this.vpc.selectSubnets({onePerAz: true}).subnetIds;
+
+      if (props.esDomainProps?.elasticsearchClusterConfig) {
+        // If zoneAwarenessEnabled set to false, ES cluster deploy in 1 AZ with 1 subnet
+        // If zoneAwarenessConfig.availabilityZoneCount set to 2, ES cluster deploy in 2 AZ with 2 subnets.
+        if ('zoneAwarenessEnabled' in props.esDomainProps.elasticsearchClusterConfig &&
+          !props.esDomainProps.elasticsearchClusterConfig.zoneAwarenessEnabled) {
+          subnets = subnets.slice(0, 1);
+        } else if ('zoneAwarenessConfig' in props.esDomainProps.elasticsearchClusterConfig &&
+          props.esDomainProps.elasticsearchClusterConfig.zoneAwarenessConfig &&
+          'availabilityZoneCount' in props.esDomainProps.elasticsearchClusterConfig.zoneAwarenessConfig &&
+          props.esDomainProps.elasticsearchClusterConfig.zoneAwarenessConfig.availabilityZoneCount === 2) {
+          subnets = subnets.slice(0, 2);
+        } else {
+          subnets = subnets.slice(0, 3);
+        }
+      } else {
+        subnets = subnets.slice(0, 3);
+      }
 
       const securityGroupIds: string[] = [];
       this.lambdaFunction.connections.securityGroups.forEach(element => securityGroupIds.push(element.securityGroupId));
 
       _esDomainProps = {
         vpcOptions: {
-          subnetIds: [subnets[0], subnets[1], subnets[2]],
+          subnetIds: subnets,
           securityGroupIds,
         },
-        ...props.esDomainProps };
+      };
+
+      if (props.esDomainProps) {
+        _esDomainProps = overrideProps(_esDomainProps, props.esDomainProps);
+      }
 
       // Add Inbound rule to allow tcp call internally
       this.lambdaFunction.connections.allowInternally(ec2.Port.allTcp());
@@ -183,7 +202,8 @@ export class LambdaToElasticSearchAndKibana extends Construct {
       userpool: this.userPool,
       identitypool: this.identityPool,
       cognitoAuthorizedRoleARN: cognitoAuthorizedRole.roleArn,
-      serviceRoleARN: lambdaFunctionRoleARN}, _esDomainProps);
+      serviceRoleARN: lambdaFunctionRoleARN
+    }, _esDomainProps);
 
     // Add ES Domain to lambda environment variable
     const domainEndpointEnvironmentVariableName = props.domainEndpointEnvironmentVariableName || 'DOMAIN_ENDPOINT';

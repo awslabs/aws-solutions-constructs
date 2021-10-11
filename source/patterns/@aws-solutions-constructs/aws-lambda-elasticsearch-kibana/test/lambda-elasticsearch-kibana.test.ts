@@ -465,14 +465,26 @@ test("Test bad call with esDomainProps.vpcOptions", () => {
 });
 
 // --------------------------------------------------------------
-// Test bad call with existingVpc have less than 3 subnets
+// Test bad call with existingVpc has less than 1 AZs
 // --------------------------------------------------------------
-test("Test bad call with existingVpc has less than 3 AZs", () => {
+test("Test bad call with existingVpc has less than 1 AZs", () => {
   // Stack
-  const stack = new cdk.Stack();
+  const stack = new cdk.Stack(undefined, "test", {
+    env: {
+      account: "dummy_account",
+      region: "dummy_region",
+    }
+  });
 
   const testVpc = new ec2.Vpc(stack, "test-vpc", {
-    maxAzs: 1,
+    maxAzs: 0,
+    subnetConfiguration: [
+      {
+        cidrMask: 24,
+        name: "private",
+        subnetType: ec2.SubnetType.ISOLATED,
+      },
+    ]
   });
 
   // Helper declaration
@@ -489,4 +501,139 @@ test("Test bad call with existingVpc has less than 3 AZs", () => {
   };
   // Assertion
   expect(app).toThrowError();
+});
+
+// --------------------------------------------------------------
+// Test ES cluster deploy to 1 AZ when user set zoneAwarenessEnabled to false
+// --------------------------------------------------------------
+test("Test ES cluster deploy to 1 AZ when user set zoneAwarenessEnabled to false", () => {
+  // Stack
+  const stack = new cdk.Stack(undefined, "test", {
+    env: {
+      account: "dummy_account",
+      region: "dummy_region",
+    }
+  });
+
+  const esDomainProps = {
+    elasticsearchClusterConfig: {
+      zoneAwarenessEnabled: false,
+      // zoneAwarenessConfig: {
+      //   availabilityZoneCount: 2
+      // }
+    }
+  };
+
+  // Helper declaration
+  new LambdaToElasticSearchAndKibana(stack, "lambda-elasticsearch-kibana-stack", {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: "index.handler",
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    domainName: 'test-domain',
+    esDomainProps,
+    deployVpc: true,
+  });
+
+  // Assertion
+  expect(stack).toHaveResource("AWS::Elasticsearch::Domain", {
+    ElasticsearchClusterConfig: {
+      DedicatedMasterCount: 3,
+      DedicatedMasterEnabled: true,
+      InstanceCount: 3,
+      ZoneAwarenessConfig: {
+        AvailabilityZoneCount: 3,
+      },
+      ZoneAwarenessEnabled: false,
+    }
+  });
+});
+
+// --------------------------------------------------------------
+// Test ES cluster deploy to 2 AZ when user set availabilityZoneCount to 2
+// --------------------------------------------------------------
+test("Test ES cluster deploy to 2 AZ when user set availabilityZoneCount to 2", () => {
+  // Stack
+  const stack = new cdk.Stack(undefined, "test", {
+    env: {
+      account: "dummy_account",
+      region: "dummy_region",
+    }
+  });
+
+  const esDomainProps = {
+    elasticsearchClusterConfig: {
+      zoneAwarenessConfig: {
+        availabilityZoneCount: 2
+      }
+    }
+  };
+
+  // Helper declaration
+  new LambdaToElasticSearchAndKibana(stack, "lambda-elasticsearch-kibana-stack", {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: "index.handler",
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    domainName: 'test-domain',
+    esDomainProps,
+    deployVpc: true,
+  });
+
+  // Assertion
+  expect(stack).toHaveResource("AWS::Elasticsearch::Domain", {
+    ElasticsearchClusterConfig: {
+      DedicatedMasterCount: 3,
+      DedicatedMasterEnabled: true,
+      InstanceCount: 3,
+      ZoneAwarenessConfig: {
+        AvailabilityZoneCount: 2,
+      },
+      ZoneAwarenessEnabled: true,
+    }
+  });
+});
+
+// --------------------------------------------------------------
+// Test ES cluster deploy to 3 AZs when user using default values for ElasticsearchClusterConfig
+// --------------------------------------------------------------
+test("Test ES cluster deploy to 3 AZs when user using default values for ElasticsearchClusterConfig", () => {
+  // Stack
+  const stack = new cdk.Stack(undefined, "test", {
+    env: {
+      account: "dummy_account",
+      region: "dummy_region",
+    }
+  });
+
+  const esDomainProps = {
+    elasticsearchClusterConfig: {}
+  };
+
+  // Helper declaration
+  new LambdaToElasticSearchAndKibana(stack, "lambda-elasticsearch-kibana-stack", {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: "index.handler",
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    domainName: 'test-domain',
+    esDomainProps,
+    deployVpc: true,
+  });
+
+  // Assertion
+  expect(stack).toHaveResource("AWS::Elasticsearch::Domain", {
+    ElasticsearchClusterConfig: {
+      DedicatedMasterCount: 3,
+      DedicatedMasterEnabled: true,
+      InstanceCount: 3,
+      ZoneAwarenessConfig: {
+        AvailabilityZoneCount: 3,
+      },
+      ZoneAwarenessEnabled: true,
+    }
+  });
 });
