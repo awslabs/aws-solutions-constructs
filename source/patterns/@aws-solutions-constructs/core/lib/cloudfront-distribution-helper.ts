@@ -197,7 +197,10 @@ function getLoggingBucket(
 
   return isLoggingDisabled
     ? undefined
-    : userSuppliedLogBucket ?? createLoggingBucket(scope, 'CloudfrontLoggingBucket', cloudFrontLoggingBucketProps || DefaultS3Props());
+    : userSuppliedLogBucket ?? createLoggingBucket(
+      scope,
+      'CloudfrontLoggingBucket',
+      cloudFrontLoggingBucketProps ? overrideProps(DefaultS3Props(), cloudFrontLoggingBucketProps) : DefaultS3Props());
 }
 
 function getCloudfrontFunction(httpSecurityHeaders: boolean, scope: Construct) {

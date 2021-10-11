@@ -51,11 +51,10 @@ _api.methods.forEach((apiMethod) => {
   }
 });
 
-new CloudFrontToApiGateway(stack, 'test-cloudfront-apigateway', {
+new CloudFrontToApiGateway(stack, 'cf-apigw', {
   existingApiGatewayObj: _api,
   cloudFrontLoggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-    bucketName: 'custom-logging-bucket',
     encryption: BucketEncryption.S3_MANAGED,
     versioned: true
   }

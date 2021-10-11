@@ -586,19 +586,19 @@
         "LambdaRestApi95870433"
       ]
     },
-    "testcloudfrontapigatewaySetHttpSecurityHeadersD8DBA642": {
+    "cfapigwSetHttpSecurityHeaders07A0F0C0": {
       "Type": "AWS::CloudFront::Function",
       "Properties": {
-        "Name": "SetHttpSecurityHeadersc84197c2acb39dda84dc045e430a03a9e2ab419192",
+        "Name": "SetHttpSecurityHeadersc8fc067b45a5c199a519a90c3b5f02d380f1625f1d",
         "AutoPublish": true,
         "FunctionCode": "function handler(event) { var response = event.response;       var headers = response.headers;       headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'};       headers['content-security-policy'] = { value: \"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\"};       headers['x-content-type-options'] = { value: 'nosniff'};       headers['x-frame-options'] = {value: 'DENY'};       headers['x-xss-protection'] = {value: '1; mode=block'};       return response;     }",
         "FunctionConfig": {
-          "Comment": "SetHttpSecurityHeadersc84197c2acb39dda84dc045e430a03a9e2ab419192",
+          "Comment": "SetHttpSecurityHeadersc8fc067b45a5c199a519a90c3b5f02d380f1625f1d",
           "Runtime": "cloudfront-js-1.0"
         }
       }
     },
-    "testcloudfrontapigatewayCloudfrontLoggingBucket9811F6E8": {
+    "cfapigwCloudfrontLoggingBucket79FE4195": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "AccessControl": "LogDeliveryWrite",
@@ -611,7 +611,12 @@
             }
           ]
         },
-        "BucketName": "custom-logging-bucket",
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        },
         "VersioningConfiguration": {
           "Status": "Enabled"
         }
@@ -629,11 +634,11 @@
         }
       }
     },
-    "testcloudfrontapigatewayCloudfrontLoggingBucketPolicyAA14EB71": {
+    "cfapigwCloudfrontLoggingBucketPolicyF5181F4F": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "testcloudfrontapigatewayCloudfrontLoggingBucket9811F6E8"
+          "Ref": "cfapigwCloudfrontLoggingBucket79FE4195"
         },
         "PolicyDocument": {
           "Statement": [
@@ -655,7 +660,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "testcloudfrontapigatewayCloudfrontLoggingBucket9811F6E8",
+                          "cfapigwCloudfrontLoggingBucket79FE4195",
                           "Arn"
                         ]
                       },
@@ -665,7 +670,7 @@
                 },
                 {
                   "Fn::GetAtt": [
-                    "testcloudfrontapigatewayCloudfrontLoggingBucket9811F6E8",
+                    "cfapigwCloudfrontLoggingBucket79FE4195",
                     "Arn"
                   ]
                 }
@@ -677,7 +682,7 @@
         }
       }
     },
-    "testcloudfrontapigatewayCloudFrontDistribution159820CC": {
+    "cfapigwCloudFrontDistribution2DD013DF": {
       "Type": "AWS::CloudFront::Distribution",
       "Properties": {
         "DistributionConfig": {
@@ -689,13 +694,13 @@
                 "EventType": "viewer-response",
                 "FunctionARN": {
                   "Fn::GetAtt": [
-                    "testcloudfrontapigatewaySetHttpSecurityHeadersD8DBA642",
+                    "cfapigwSetHttpSecurityHeaders07A0F0C0",
                     "FunctionARN"
                   ]
                 }
               }
             ],
-            "TargetOriginId": "customCloudfrontLoggingBuckettestcloudfrontapigatewayCloudFrontDistributionOrigin1E0B18472",
+            "TargetOriginId": "customCloudfrontLoggingBucketcfapigwCloudFrontDistributionOrigin1D25D62E1",
             "ViewerProtocolPolicy": "redirect-to-https"
           },
           "Enabled": true,
@@ -704,7 +709,7 @@
           "Logging": {
             "Bucket": {
               "Fn::GetAtt": [
-                "testcloudfrontapigatewayCloudfrontLoggingBucket9811F6E8",
+                "cfapigwCloudfrontLoggingBucket79FE4195",
                 "RegionalDomainName"
               ]
             }
@@ -761,7 +766,7 @@
                   }
                 ]
               },
-              "Id": "customCloudfrontLoggingBuckettestcloudfrontapigatewayCloudFrontDistributionOrigin1E0B18472",
+              "Id": "customCloudfrontLoggingBucketcfapigwCloudFrontDistributionOrigin1D25D62E1",
               "OriginPath": {
                 "Fn::Join": [
                   "",
