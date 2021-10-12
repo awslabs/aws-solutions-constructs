@@ -217,9 +217,12 @@ Additional scripts that take part in the versioning mechanism:
 
 ```console
 $ cd <root-of-aws-solutions-constructs-repo>
-$ docker run --rm --net=host -it -v $PWD:$PWD -w $PWD jsii/superchain
+$ docker run -u root --rm --net=host -it -v $PWD:$PWD -w $PWD jsii/superchain:1-buster-slim-node14
+# The build-patterns.sh command can take along time, be sure to allocate enough resources in the Docker dashboard
+# (6 CPUs is good)
 docker$ ./deployment/build-patterns.sh
-docker$ exit
+# At this point the container is configured and ready to work on. 
+# To work on a specific construct, execute the Partial Build steps below
 ```
 
 ### Partial Build
@@ -228,14 +231,13 @@ First run a clean Full Build before doing the partial build.
 
 ```console
 $ cd <root-of-aws-solutions-constructs-repo>
-$ docker run --rm --net=host -it -v $PWD:$PWD -w $PWD jsii/superchain
+$ docker run -u root --rm --net=host -it -v $PWD:$PWD -w $PWD jsii/superchain:1-buster-slim-node14
 docker$ ./deployment/align-version.sh
 docker$ cd source
 docker$ export PATH=$(npm bin):$PATH
 docker$ cd patterns/@aws-solutions-constructs/my-module
 docker$ npm run build+lint+test
 docker$ ../../../../deployment/align-version.sh revert
-docker$ exit
 ```
 
 ## Code of Conduct

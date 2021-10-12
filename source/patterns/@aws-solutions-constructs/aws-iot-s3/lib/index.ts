@@ -13,59 +13,50 @@
 
 import * as s3 from '@aws-cdk/aws-s3';
 import * as iot from '@aws-cdk/aws-iot';
-import * as kms from '@aws-cdk/aws-kms';
 import * as iam from '@aws-cdk/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
 /**
- * @summary The properties for the IotToSqs class.
+ * @summary The properties for the IotToS3 class.
  */
-export interface IotToSqsProps {
+export interface IotToS3Props {
   /**
    * Existing instance of S3 Bucket object, providing both this and `bucketProps` will cause an error.
    *
    * @default - None
    */
-  readonly existingBucketObj?: s3.IBucket;
+  readonly existingBucketObj?: s3.Bucket;
   /**
    * User provided props to override the default props for the S3 Bucket.
    *
-   * @default - Default props are used
+   * @default - Default props are used.
    */
   readonly bucketProps?: s3.BucketProps;
   /**
-   * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
-   * the encryptionKey property for this construct.
-   *
-   * @default - true (encryption enabled, managed by this CDK app).
-   */
-  // readonly enableEncryptionWithCustomerManagedKey?: boolean;
-  /**
-   * An optional, imported encryption key to encrypt the SQS queue, and SNS Topic.
-   *
-   * @default - not specified.
-   */
-  // readonly encryptionKey?: kms.Key;
-  /**
-   * Optional user-provided props to override the default props for the encryption key.
-   *
-   * @default - Default props are used.
-   */
-  // readonly encryptionKeyProps?: kms.KeyProps;
-  /**
    * User provided CfnTopicRuleProps to override the defaults
    *
-   * @default - None
+   * @default - Default props are used. S3ActionProperty with S3 Key '${topic()}/${timestamp()}' is used.
    */
   readonly iotTopicRuleProps: iot.CfnTopicRuleProps;
+  /**
+   * Optional user provided props to override the default props for the S3 Logging Bucket.
+   *
+   * @default - Default props are used
+   */
+  readonly loggingBucketProps?: s3.BucketProps
+  /**
+   * Optional user provided value to override the default S3Key for IoTRule S3 Action.
+   *
+   * @default - Default value '${topic()}/${timestamp()}' is used
+   */
+  readonly s3Key?: string;
 }
 
-export class IotToSqs extends Construct {
+export class IotToS3 extends Construct {
   public readonly s3Bucket: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
-  // public readonly encryptionKey?: kms.IKey;
   public readonly iotActionsRole: iam.Role;
   public readonly iotTopicRule: iot.CfnTopicRule;
 
@@ -73,20 +64,21 @@ export class IotToSqs extends Construct {
    * @summary Constructs a new instance of the IotToSqs class.
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
-   * @param {IotToSqsProps} props - user provided props for the construct
+   * @param {IotToS3Props} props - user provided props for the construct
    * @access public
    */
-  constructor(scope: Construct, id: string, props: IotToSqsProps) {
+  constructor(scope: Construct, id: string, props: IotToS3Props) {
     super(scope, id);
     defaults.CheckProps(props);
 
-    if (!props.existingBucketInterface) {
+    // Setup S3 Bucket
+    if (!props.existingBucketObj) {
       [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
-        bucketProps: props.bucketProps
+        bucketProps: props.bucketProps,
+        loggingBucketProps: props.loggingBucketProps
       });
-      this.s3BucketInterface = this.s3Bucket;
     } else {
-      this.s3BucketInterface = props.existingBucketInterface;
+      this.s3Bucket = props.existingBucketObj;
     }
 
     // Role to allow IoT to send messages to the S3 Bucket
@@ -100,18 +92,16 @@ export class IotToSqs extends Construct {
         actions: [
           's3:PutObject'
         ],
-        resources: [this.kinesisStream.streamArn]
-      })
-      ]});
+        resources: [this.s3Bucket.bucketArn, `${this.s3Bucket.bucketArn}/*`]
+      })]
+    });
+
     // Attach policy to role
     iotActionsPolicy.attachToRole(this.iotActionsRole);
 
-    // if (this.encryptionKey) {
-    //   this.encryptionKey.grantEncrypt(this.iotActionsRole);
-    // }
-
     const defaultIotTopicProps = defaults.DefaultCfnTopicRuleProps([{
       s3: {
+        key: props.s3Key || '${topic()}/${timestamp()}',
         bucketName: this.s3Bucket?.bucketName,
         roleArn: this.iotActionsRole.roleArn
       }
@@ -120,5 +110,10 @@ export class IotToSqs extends Construct {
 
     // Create the IoT topic rule
     this.iotTopicRule = new iot.CfnTopicRule(this, 'IotTopicRule', iotTopicProps);
+
+    // If bucket has a KMS CMK, explicitly provide IoTActionsRole necessary access to write to the bucket
+    if (this.s3Bucket && this.s3Bucket.encryptionKey) {
+      this.s3Bucket.encryptionKey.grantEncrypt(this.iotActionsRole);
+    }
   }
 }

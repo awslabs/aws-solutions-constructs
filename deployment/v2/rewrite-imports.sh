@@ -26,7 +26,16 @@ if [ $# -eq 0 ]; then
         rewrite-imports-v2 $subdir/**/*.ts
       fi
     done
+    for subdir in $source_dir/tools/cdk-integ-tools/* ; do
+      if [ -d "$subdir" -a `basename $subdir` != "node_modules" ]; then
+        echo $subdir
+        rewrite-imports-v2 $subdir/**/*.ts
+      fi
+    done
 else
     echo "Reverting back TypeScript import statements for CDK v2"
-    git checkout `find . -name *.ts | grep -v node_modules | grep -v -F .d.ts`
+    # This command is required ONLY for the local development and it fails in CodePipeline
+    if [[ -z "${CODEBUILD_BUILD_ID+x}" ]]; then
+      git checkout `find . -name *.ts | grep -v node_modules | grep -v -F .d.ts`
+    fi
 fi

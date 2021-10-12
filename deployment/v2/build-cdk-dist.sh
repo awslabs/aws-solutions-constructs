@@ -2,8 +2,8 @@
 set -euo pipefail
 
 deployment_dir=$(cd $(dirname $0) && pwd)
-source_dir="$deployment_dir/../source"
-dist_dir="$deployment_dir/dist"
+source_dir="$deployment_dir/../../source"
+dist_dir="$deployment_dir/../dist"
 
 cd $source_dir/
 export PATH=$(npm bin):$PATH
@@ -51,7 +51,29 @@ echo "--------------------------------------------------------------------------
 echo "mkdir -p $dist_dir"
 mkdir -p $dist_dir
 
-for dir in $(find $source_dir/patterns/\@aws-solutions-constructs/ -name dist | grep -v node_modules | grep -v coverage); do
+## create a list of deprecated constructs
+declare -a ignore_list=("aws-dynamodb-stream-lambda-elasticsearch-kibana" 
+"aws-dynamodb-stream-lambda" 
+"aws-events-rule-kinesisfirehose-s3" 
+"aws-events-rule-kinesisstreams" 
+"aws-events-rule-lambda" 
+"aws-events-rule-sns" 
+"aws-events-rule-sqs" 
+"aws-events-rule-step-function" 
+"aws-lambda-step-function" 
+"aws-s3-step-function")
+
+## create \| delimited string
+ignore_modules=""
+for i in "${ignore_list[@]}"
+do
+   ignore_modules=$ignore_modules"$i""\|"
+done
+
+ignore_modules=${ignore_modules::-2}
+echo "ignore_modules=${ignore_modules}"
+
+for dir in $(find $source_dir/patterns/\@aws-solutions-constructs/ -name dist | grep -v node_modules | grep -v coverage | grep -v "$ignore_modules"); do
   echo "Merging ${dir} into ${dist_dir}" >&2
   rsync -a $dir/ ${dist_dir}/
 done
@@ -73,7 +95,7 @@ cat > ${dist_dir}/build.json <<HERE
 HERE
 
 # copy CHANGELOG.md to dist/ for github releases
-changelog_file=$deployment_dir/../CHANGELOG.md
+changelog_file=$deployment_dir/../../CHANGELOG.v2.md
 cp ${changelog_file} ${dist_dir}/CHANGELOG.md
 
 echo "------------------------------------------------------------------------------"

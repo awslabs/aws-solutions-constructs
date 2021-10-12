@@ -1,0 +1,478 @@
+/**
+ *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
+ *  with the License. A copy of the License is located at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  or in the 'license' file accompanying this file. This file is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES
+ *  OR CONDITIONS OF ANY KIND, express or implied. See the License for the specific language governing permissions
+ *  and limitations under the License.
+ */
+
+import { IotToS3, IotToS3Props } from "../lib";
+import * as cdk from "@aws-cdk/core";
+import '@aws-cdk/assert/jest';
+import * as s3 from "@aws-cdk/aws-s3";
+
+function deployNewFunc(stack: cdk.Stack) {
+  const props: IotToS3Props = {
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "process solutions constructs messages",
+        sql: "SELECT * FROM 'solutions/constructs'",
+        actions: []
+      }
+    }
+  };
+  return new IotToS3(stack, 'test-iot-s3-integration', props);
+}
+
+const s3BucketAccessPolicy = {
+  PolicyDocument: {
+    Statement: [
+      {
+        Action: "s3:PutObject",
+        Effect: "Allow",
+        Resource: [
+          {
+            "Fn::GetAtt": [
+              "testiots3integrationS3Bucket9B8B180C",
+              "Arn"
+            ]
+          },
+          {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Fn::GetAtt": [
+                    "testiots3integrationS3Bucket9B8B180C",
+                    "Arn"
+                  ]
+                },
+                "/*"
+              ]
+            ]
+          }
+        ]
+      }
+    ],
+    Version: "2012-10-17"
+  },
+  PolicyName: "testiots3integrationIotActionsPolicyE1646C38",
+  Roles: [
+    {
+      Ref: "testiots3integrationiotactionsrole04473665"
+    }
+  ]
+};
+
+test('check for default props', () => {
+  const stack = new cdk.Stack();
+  const construct = deployNewFunc(stack);
+
+  // Check whether construct has two s3 buckets for storing msgs and logging
+  expect(stack).toCountResources('AWS::S3::Bucket', 2);
+
+  // Check for IoT Topic Rule Definition
+  expect(stack).toHaveResource('AWS::IoT::TopicRule', {
+    TopicRulePayload: {
+      Actions: [
+        {
+          S3: {
+            BucketName: {
+              Ref: "testiots3integrationS3Bucket9B8B180C"
+            },
+            Key: "${topic()}/${timestamp()}",
+            RoleArn: {
+              "Fn::GetAtt": [
+                "testiots3integrationiotactionsrole04473665",
+                "Arn"
+              ]
+            }
+          }
+        }
+      ],
+      Description: "process solutions constructs messages",
+      RuleDisabled: false,
+      Sql: "SELECT * FROM 'solutions/constructs'"
+    }
+  });
+
+  // Check for IAM policy to have access to s3 bucket
+  expect(stack).toHaveResource('AWS::IAM::Policy', s3BucketAccessPolicy);
+
+  // Check for properties
+  expect(construct.s3Bucket).toBeDefined();
+  expect(construct.s3LoggingBucket).toBeDefined();
+  expect(construct.iotActionsRole).toBeDefined();
+  expect(construct.iotTopicRule).toBeDefined();
+});
+
+test('check for overriden props', () => {
+  const stack = new cdk.Stack();
+  const props: IotToS3Props = {
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: true,
+        description: "process solutions constructs messages",
+        sql: "SELECT * FROM 'test/constructs'",
+        actions: []
+      }
+    },
+    s3Key: 'test/key',
+    bucketProps: {
+      encryption: s3.BucketEncryption.KMS
+    },
+    loggingBucketProps: {
+      encryption: s3.BucketEncryption.KMS_MANAGED
+    }
+  };
+  const construct = new IotToS3(stack, 'test-iot-s3-integration', props);
+
+  // Check whether construct has two s3 buckets for storing msgs and logging
+  expect(stack).toCountResources('AWS::S3::Bucket', 2);
+
+  // Check logging bucket encryption type to be KMS_Managed
+  expect(stack).toHaveResourceLike('AWS::S3::Bucket', {
+    BucketEncryption: {
+      ServerSideEncryptionConfiguration: [
+        {
+          ServerSideEncryptionByDefault: {
+            SSEAlgorithm: "aws:kms"
+          }
+        }
+      ]
+    }
+  });
+
+  // Check for bucket to have KMS CMK Encryption
+  expect(stack).toHaveResourceLike('AWS::S3::Bucket', {
+    BucketEncryption: {
+      ServerSideEncryptionConfiguration: [
+        {
+          ServerSideEncryptionByDefault: {
+            KMSMasterKeyID: {
+              "Fn::GetAtt": [
+                "testiots3integrationS3BucketKey127368C9",
+                "Arn"
+              ]
+            },
+            SSEAlgorithm: "aws:kms"
+          }
+        }
+      ]
+    },
+  });
+
+  // Check for IoT Topic Rule Definition
+  expect(stack).toHaveResource('AWS::IoT::TopicRule', {
+    TopicRulePayload: {
+      Actions: [
+        {
+          S3: {
+            BucketName: {
+              Ref: "testiots3integrationS3Bucket9B8B180C"
+            },
+            Key: "test/key",
+            RoleArn: {
+              "Fn::GetAtt": [
+                "testiots3integrationiotactionsrole04473665",
+                "Arn"
+              ]
+            }
+          }
+        }
+      ],
+      Description: "process solutions constructs messages",
+      RuleDisabled: true,
+      Sql: "SELECT * FROM 'test/constructs'"
+    }
+  });
+
+  // Check for IAM policy to have access to s3 bucket
+  expect(stack).toHaveResource('AWS::IAM::Policy', s3BucketAccessPolicy);
+
+  // Check for automatically created CMK KMS Key
+  expect(stack).toHaveResource('AWS::KMS::Key', {
+    KeyPolicy: {
+      Statement: [
+        {
+          Action: [
+            "kms:Create*",
+            "kms:Describe*",
+            "kms:Enable*",
+            "kms:List*",
+            "kms:Put*",
+            "kms:Update*",
+            "kms:Revoke*",
+            "kms:Disable*",
+            "kms:Get*",
+            "kms:Delete*",
+            "kms:ScheduleKeyDeletion",
+            "kms:CancelKeyDeletion",
+            "kms:GenerateDataKey",
+            "kms:TagResource",
+            "kms:UntagResource"
+          ],
+          Effect: "Allow",
+          Principal: {
+            AWS: {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    Ref: "AWS::Partition"
+                  },
+                  ":iam::",
+                  {
+                    Ref: "AWS::AccountId"
+                  },
+                  ":root"
+                ]
+              ]
+            }
+          },
+          Resource: "*"
+        },
+        {
+          Action: [
+            "kms:Encrypt",
+            "kms:ReEncrypt*",
+            "kms:GenerateDataKey*"
+          ],
+          Effect: "Allow",
+          Principal: {
+            AWS: {
+              "Fn::GetAtt": [
+                "testiots3integrationiotactionsrole04473665",
+                "Arn"
+              ]
+            }
+          },
+          Resource: "*"
+        }
+      ],
+      Version: "2012-10-17"
+    },
+    Description: "Created by Default/test-iot-s3-integration/S3Bucket"
+  });
+
+  // Check for IoT Topic Rule permissions to KMS key to store msgs to S3 Bucket
+  expect(stack).toHaveResource("AWS::IAM::Policy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: [
+            "kms:Encrypt",
+            "kms:ReEncrypt*",
+            "kms:GenerateDataKey*"
+          ],
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              "testiots3integrationS3BucketKey127368C9",
+              "Arn"
+            ]
+          }
+        }
+      ],
+      Version: "2012-10-17"
+    },
+    PolicyName: "testiots3integrationiotactionsroleDefaultPolicy735A8FB6",
+    Roles: [
+      {
+        Ref: "testiots3integrationiotactionsrole04473665"
+      }
+    ]
+  });
+
+  // Check for properties
+  expect(construct.s3Bucket).toBeDefined();
+  expect(construct.s3LoggingBucket).toBeDefined();
+  expect(construct.iotActionsRole).toBeDefined();
+  expect(construct.iotTopicRule).toBeDefined();
+});
+
+test('check for existing bucket', () => {
+  const stack = new cdk.Stack();
+  const existingBucket = new s3.Bucket(stack, `existingBucket`);
+  const props: IotToS3Props = {
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "process solutions constructs messages",
+        sql: "SELECT * FROM 'test/constructs'",
+        actions: []
+      }
+    },
+    s3Key: 'existingtest/key',
+    existingBucketObj: existingBucket
+  };
+  const construct = new IotToS3(stack, 'test-iot-s3-integration', props);
+
+  // Check whether construct has a single s3 bucket, no logging bucket should exist since existing bucket is supplied
+  expect(stack).toCountResources('AWS::S3::Bucket', 1);
+
+  // Check for IoT Topic Rule Definition with existing Bucket Ref
+  expect(stack).toHaveResource('AWS::IoT::TopicRule', {
+    TopicRulePayload: {
+      Actions: [
+        {
+          S3: {
+            BucketName: {
+              Ref: "existingBucket9529822F"
+            },
+            Key: "existingtest/key",
+            RoleArn: {
+              "Fn::GetAtt": [
+                "testiots3integrationiotactionsrole04473665",
+                "Arn"
+              ]
+            }
+          }
+        }
+      ],
+      Description: "process solutions constructs messages",
+      RuleDisabled: false,
+      Sql: "SELECT * FROM 'test/constructs'"
+    }
+  });
+
+  // Check for IAM policy to have access to s3 bucket
+  expect(stack).toHaveResource('AWS::IAM::Policy', {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: "s3:PutObject",
+          Effect: "Allow",
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                "existingBucket9529822F",
+                "Arn"
+              ]
+            },
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "existingBucket9529822F",
+                      "Arn"
+                    ]
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      Version: "2012-10-17"
+    },
+    PolicyName: "testiots3integrationIotActionsPolicyE1646C38",
+    Roles: [
+      {
+        Ref: "testiots3integrationiotactionsrole04473665"
+      }
+    ]
+  });
+
+  // since existing bucket is supplied, no key should exist
+  expect(stack).not.toHaveResource('AWS::KMS::Key', {});
+
+  // Check for IoT Topic Rule permissions to KMS key to store msgs to S3 Bucket
+  expect(stack).toCountResources("AWS::IAM::Policy", 1);
+
+  // Check for properties
+  expect(construct.s3Bucket).toBeDefined();
+  expect(construct.s3LoggingBucket).toBeUndefined();
+  expect(construct.iotActionsRole).toBeDefined();
+  expect(construct.iotTopicRule).toBeDefined();
+});
+
+test('check for both bucketProps and existingBucket', () => {
+  const stack = new cdk.Stack();
+  const existingBucket = new s3.Bucket(stack, `existingBucket`);
+  const props: IotToS3Props = {
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "process solutions constructs messages",
+        sql: "SELECT * FROM 'test/constructs'",
+        actions: []
+      }
+    },
+    bucketProps: {
+      encryption: s3.BucketEncryption.KMS_MANAGED
+    },
+    existingBucketObj: existingBucket
+  };
+
+  // since bucketprops and existing bucket is supplied, this should result in error
+  try {
+    new IotToS3(stack, 'test-iot-s3-integration', props);
+  } catch (e) {
+    expect(e).toBeInstanceOf(Error);
+  }
+});
+
+test('check for name collision', () => {
+  const stack = new cdk.Stack();
+  const props: IotToS3Props = {
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "process solutions constructs messages",
+        sql: "SELECT * FROM 'test/constructs'",
+        actions: []
+      }
+    }
+  };
+
+  // since bucketprops and existing bucket is supplied, this should result in error
+  new IotToS3(stack, 'test-iot-s3-integration', props);
+  new IotToS3(stack, 'test-iot-s3-integration1', props);
+
+  expect(stack).toCountResources('AWS::IoT::TopicRule', 2);
+  expect(stack).toCountResources('AWS::S3::Bucket', 4);
+});
+
+test('check for chaining of resource', () => {
+  const stack = new cdk.Stack();
+  const props: IotToS3Props = {
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "process solutions constructs messages",
+        sql: "SELECT * FROM 'test/constructs'",
+        actions: []
+      }
+    }
+  };
+
+  // since bucketprops and existing bucket is supplied, this should result in error
+  const construct = new IotToS3(stack, 'test-iot-s3-integration', props);
+
+  const props1: IotToS3Props = {
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "process solutions constructs messages",
+        sql: "SELECT * FROM 'test/constructs'",
+        actions: []
+      }
+    },
+    existingBucketObj: construct.s3Bucket
+  };
+  new IotToS3(stack, 'test-iot-s3-integration1', props1);
+
+  expect(stack).toCountResources('AWS::IoT::TopicRule', 2);
+  expect(stack).toCountResources('AWS::S3::Bucket', 2);
+});

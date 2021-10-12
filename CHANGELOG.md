@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.125.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.124.0...v1.125.0) (2021-10-08)
+
+* Upgraded all patterns to CDK v1.125.0
+
+### Features
+
+* **aws-cloudfront-s3:** added loggingBucketProps for cloudfront-s3 ([#419](https://github.com/awslabs/aws-solutions-constructs/issues/419)) ([743c874](https://github.com/awslabs/aws-solutions-constructs/commit/743c87485b5f173243423fa598a3f34e2eaacc16))
+* **aws-lambda-s3:** added loggingBucketProps for lambda-s3 ([#422](https://github.com/awslabs/aws-solutions-constructs/issues/42))
+* **aws-s3-lambda:** added optional loggingBucketProps to aws-s3-lambda ([#411](https://github.com/awslabs/aws-solutions-constructs/issues/411)) ([1552e4e](https://github.com/awslabs/aws-solutions-constructs/commit/1552e4e485ac89cc959ad810526ab4d7aac48210))
+* **aws-s3-sqs:** added loggingBucketProps in aws-s3-sqs and updated tests ([#413](https://github.com/awslabs/aws-solutions-constructs/issues/413)) ([3ddf6ef](https://github.com/awslabs/aws-solutions-constructs/commit/3ddf6efcc8de2d78aa2bba4b173089052e3b7956))
+* **aws-s3-stepfunctions:** added loggingBucketProps to s3-stepfunctions and s3-step-function ([#414](https://github.com/awslabs/aws-solutions-constructs/issues/414)) ([ed7bdfa](https://github.com/awslabs/aws-solutions-constructs/commit/ed7bdfa055b5b9555d5c0c8bb488e78669a85b6a))
+* **dynamodbstreams-lambda-elasticsearch-kibana:** updated cognito user pool domain name ([#433](https://github.com/awslabs/aws-solutions-constructs/issues/433)) ([6f340a6](https://github.com/awslabs/aws-solutions-constructs/commit/6f340a6e6c10148ca40812a1b36c49cc2eb210da))
+* **aws-iot-sqs:** updated names to address conflicting duplicate queue and dlq names ([#434](https://github.com/awslabs/aws-solutions-constructs/issues/434)) 
+
+### Bug Fixes
+
+* **cdk-integ-assert-v2:** revert the changes for special CDK v2 handling ([#417](https://github.com/awslabs/aws-solutions-constructs/issues/417)) ([51b1758](https://github.com/awslabs/aws-solutions-constructs/commit/51b1758956541e76cb07fc2d826eb7b602fe806a))
+* **cdk-integ-tools:** enabling all feature flags in cdk-integ-tools for CDK v1 ([#410](https://github.com/awslabs/aws-solutions-constructs/issues/410)) ([9c42458](https://github.com/awslabs/aws-solutions-constructs/commit/9c4245854c966fb4162fc12a99ee2afbc56c49d1))
+* **cdk-integ-tools:** fix npm run integ for individual pattern ([#432](https://github.com/awslabs/aws-solutions-constructs/issues/432)) ([5d2f3d9](https://github.com/awslabs/aws-solutions-constructs/commit/5d2f3d900f9c50ec9f041c72911615d3dbe9d908))
+* **cdk-v2-align-version:** it fails to build cdk-integ-tools for constructs v2.0.0-rc.2 ([#424](https://github.com/awslabs/aws-solutions-constructs/issues/424)) ([80d1fe8](https://github.com/awslabs/aws-solutions-constructs/commit/80d1fe8b48580dd2ec7ab0d46b7636ed159e0478))
+* **cdk-v2:** fixing relative paths in deployment/v2/build-cdk-dist.sh ([#429](https://github.com/awslabs/aws-solutions-constructs/issues/429)) ([fd7e210](https://github.com/awslabs/aws-solutions-constructs/commit/fd7e2108fc9c57b8bc94a94002ca0351d9479e81))
+
+## [1.124.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.123.0...v1.124.0) (2021-09-29)
+
+* Upgraded all patterns to CDK v1.124.0
+
+### Features
+
+* **aws-wafwebacl-cloudfront:** New Construct - aws-wafwebacl-cloudfront ([#389](https://github.com/awslabs/aws-solutions-constructs/issues/389)) ([bba361e](https://github.com/awslabs/aws-solutions-constructs/commit/bba361eb9c486af272fce4f8352c667e4e04cfa7))
+
+### Bug Fixes
+
+* **api-usage-plan:** update cfn templates with api usage plan ([#400](https://github.com/awslabs/aws-solutions-constructs/issues/400)) ([57afba8](https://github.com/awslabs/aws-solutions-constructs/commit/57afba81ce0d9a8cc53c764daa7d9ea573ba1ef8))
+* **aws-apigateway-kinesisstreams:** Update construct to match DESIGN_GUIDELINES.md ([#395](https://github.com/awslabs/aws-solutions-constructs/issues/395)) ([9dbec8a](https://github.com/awslabs/aws-solutions-constructs/commit/9dbec8a0365b28c3e0ee279ded0dfaa42a319d3b))
+* **kms policy:** update cfn templates with kms policy to match with CDK v2 ([#397](https://github.com/awslabs/aws-solutions-constructs/issues/397)) ([21f1f93](https://github.com/awslabs/aws-solutions-constructs/commit/21f1f932e5651e108e5995e89d8bc1c6282dd4f3))
+
 ## [1.123.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.122.0...v1.123.0) (2021-09-21)
 
 * Upgraded all patterns to CDK v1.123.0
