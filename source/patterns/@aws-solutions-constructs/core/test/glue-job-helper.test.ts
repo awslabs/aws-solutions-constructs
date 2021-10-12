@@ -42,7 +42,7 @@ test('Test deployment with role creation', () => {
 
   const _database = defaults.createGlueDatabase(stack, defaults.DefaultGlueDatabaseProps());
 
-  defaults.buildGlueJob(stack, {
+  const _glueJob = defaults.buildGlueJob(stack, {
     glueJobProps: cfnJobProps,
     database: _database,
     table: defaults.createGlueTable(stack, _database, undefined, [{
@@ -52,6 +52,8 @@ test('Test deployment with role creation', () => {
     }], 'kinesis', {STREAM_NAME: 'testStream'})
   });
 
+  expect(_glueJob[2]?.[0]).toBeDefined();
+  expect(_glueJob[2]?.[0]).toBeInstanceOf(Bucket);
   expect(stack).toHaveResourceLike('AWS::Glue::Job', {
     Type: "AWS::Glue::Job",
     Properties: {
@@ -99,7 +101,7 @@ test('Create a Glue Job outside the construct', () => {
 
   const _database = defaults.createGlueDatabase(stack, defaults.DefaultGlueDatabaseProps());
 
-  defaults.buildGlueJob(stack, {
+  const _glueJob = defaults.buildGlueJob(stack, {
     existingCfnJob: _existingCfnJob,
     outputDataStore: {
       datastoreType: defaults.SinkStoreType.S3
@@ -111,6 +113,8 @@ test('Create a Glue Job outside the construct', () => {
       comment: ""
     }], 'kinesis', {STREAM_NAME: 'testStream'})
   });
+
+  expect(_glueJob[2]).not.toBeDefined();
   expect(stack).toHaveResourceLike('AWS::Glue::Job', {
     Type: "AWS::Glue::Job",
     Properties: {
