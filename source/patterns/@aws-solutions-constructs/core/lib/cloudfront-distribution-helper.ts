@@ -65,12 +65,13 @@ function defaultCloudfrontFunction(scope: Construct): cloudfront.Function {
 export function CloudFrontDistributionForApiGateway(scope: Construct,
   apiEndPoint: api.RestApi,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
-  httpSecurityHeaders: boolean = true): [cloudfront.Distribution,
-    cloudfront.Function?, s3.Bucket?] {
+  httpSecurityHeaders: boolean = true,
+  cloudFrontLoggingBucketProps?: s3.BucketProps
+): [cloudfront.Distribution, cloudfront.Function?, s3.Bucket?] {
 
   const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
-  const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope);
+  const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope, cloudFrontLoggingBucketProps);
 
   const defaultprops = DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint, loggingBucket, httpSecurityHeaders, cloudfrontFunction);
 
@@ -183,12 +184,23 @@ export function CloudFrontOriginAccessIdentity(scope: Construct, comment?: strin
   });
 }
 
-function getLoggingBucket(cloudFrontDistributionProps: cloudfront.DistributionProps | any, scope: Construct): s3.Bucket | undefined {
+function getLoggingBucket(
+  cloudFrontDistributionProps: cloudfront.DistributionProps | any, scope: Construct,
+  cloudFrontLoggingBucketProps?: s3.BucketProps
+): s3.Bucket | undefined {
   const isLoggingDisabled = cloudFrontDistributionProps?.enableLogging === false;
   const userSuppliedLogBucket = cloudFrontDistributionProps?.logBucket;
+
+  if (userSuppliedLogBucket && cloudFrontLoggingBucketProps) {
+    throw Error('Either cloudFrontDistributionProps.logBucket or cloudFrontLoggingBucketProps can be set.');
+  }
+
   return isLoggingDisabled
     ? undefined
-    : userSuppliedLogBucket ?? createLoggingBucket(scope, 'CloudfrontLoggingBucket', DefaultS3Props());
+    : userSuppliedLogBucket ?? createLoggingBucket(
+      scope,
+      'CloudfrontLoggingBucket',
+      cloudFrontLoggingBucketProps ? overrideProps(DefaultS3Props(), cloudFrontLoggingBucketProps) : DefaultS3Props());
 }
 
 function getCloudfrontFunction(httpSecurityHeaders: boolean, scope: Construct) {
