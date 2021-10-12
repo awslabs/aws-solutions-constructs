@@ -55,7 +55,7 @@ test('Pattern minimal deployment', () => {
 
   const id = 'test-kinesisstreams-lambda';
 
-  new KinesisstreamsToGluejob(stack, id, props);
+  const construct = new KinesisstreamsToGluejob(stack, id, props);
 
   // check for role creation
   expect(stack).toHaveResourceLike('AWS::IAM::Role', {
@@ -253,6 +253,17 @@ test('Pattern minimal deployment', () => {
       }
     }
   }, ResourcePart.CompleteDefinition);
+
+  // Check for cloudwatch alarm
+  expect(stack).toCountResources('AWS::CloudWatch::Alarm', 2);
+
+  // Check for properties
+  expect(construct.database).toBeDefined();
+  expect(construct.glueJob).toBeDefined();
+  expect(construct.table).toBeDefined();
+  expect(construct.kinesisStream).toBeDefined();
+  expect(construct.glueJobRole).toBeDefined();
+  expect(construct.cloudwatchAlarms).toBeDefined();
 });
 
 // --------------------------------------------------------------
@@ -527,12 +538,13 @@ test('When database and table are provided', () => {
 });
 
 // --------------------------------------------------------------
-// When database and table are not provided
+// When database and table are not provided & cloudwatch alarms set to false
 // --------------------------------------------------------------
-test('When database and table are not provided', () => {
+test('When database and table are not provided & cloudwatch alarms set to false', () => {
   // Initial setup
   const stack = new Stack();
   const props: KinesisstreamsToGluejobProps = {
+    createCloudWatchAlarms: false,
     glueJobProps: {
       command: {
         name: 'glueetl',
@@ -558,7 +570,7 @@ test('When database and table are not provided', () => {
       comment: "Some value associated with the record"
     }]
   };
-  new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', props);
+  const construct = new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', props);
   expect(stack).toHaveResourceLike('AWS::Glue::Database', {
     Type: "AWS::Glue::Database",
     Properties: {
@@ -655,4 +667,10 @@ test('When database and table are not provided', () => {
       }
     }
   }, ResourcePart.CompleteDefinition);
+
+  // Cloudwatch alarms is set to false, no CFN def should exist
+  expect(stack).not.toHaveResource('AWS::CloudWatch::Alarm');
+
+  // Since alarms is set to false, cloudwatch alarms property should be undefined
+  expect(construct.cloudwatchAlarms).toBeUndefined();
 });
