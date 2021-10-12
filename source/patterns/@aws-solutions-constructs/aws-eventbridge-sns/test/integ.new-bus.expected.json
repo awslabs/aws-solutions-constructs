@@ -1,12 +1,6 @@
 {
   "Resources": {
-    "eventbus7CF8FDD5": {
-      "Type": "AWS::Events::EventBus",
-      "Properties": {
-        "Name": "existingbuseventbus9E470DE7"
-      }
-    },
-    "testtestWEncryptionKeyC6B126B6": {
+    "testconstructEncryptionKey6153B053": {
       "Type": "AWS::KMS::Key",
       "Properties": {
         "KeyPolicy": {
@@ -55,18 +49,18 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "testtestWSnsTopicBFF33C41": {
+    "testconstructSnsTopic44188529": {
       "Type": "AWS::SNS::Topic",
       "Properties": {
         "KmsMasterKeyId": {
           "Fn::GetAtt": [
-            "testtestWEncryptionKeyC6B126B6",
+            "testconstructEncryptionKey6153B053",
             "Arn"
           ]
         }
       }
     },
-    "testtestWSnsTopicPolicy2A17B1B5": {
+    "testconstructSnsTopicPolicy72FFD530": {
       "Type": "AWS::SNS::TopicPolicy",
       "Properties": {
         "PolicyDocument": {
@@ -110,7 +104,7 @@
                 }
               },
               "Resource": {
-                "Ref": "testtestWSnsTopicBFF33C41"
+                "Ref": "testconstructSnsTopic44188529"
               },
               "Sid": "TopicOwnerOnlyAccess"
             },
@@ -136,7 +130,7 @@
                 "AWS": "*"
               },
               "Resource": {
-                "Ref": "testtestWSnsTopicBFF33C41"
+                "Ref": "testconstructSnsTopic44188529"
               },
               "Sid": "HttpsOnly"
             },
@@ -147,7 +141,7 @@
                 "Service": "events.amazonaws.com"
               },
               "Resource": {
-                "Ref": "testtestWSnsTopicBFF33C41"
+                "Ref": "testconstructSnsTopic44188529"
               },
               "Sid": "2"
             }
@@ -156,16 +150,22 @@
         },
         "Topics": [
           {
-            "Ref": "testtestWSnsTopicBFF33C41"
+            "Ref": "testconstructSnsTopic44188529"
           }
         ]
       }
     },
-    "testtestWEventsRuleDF9938A8": {
+    "testconstructCustomEventBusFBDE2130": {
+      "Type": "AWS::Events::EventBus",
+      "Properties": {
+        "Name": "newbustestconstructCustomEventBus62B63ED1"
+      }
+    },
+    "testconstructEventsRule145DBA20": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "EventBusName": {
-          "Ref": "eventbus7CF8FDD5"
+          "Ref": "testconstructCustomEventBusFBDE2130"
         },
         "EventPattern": {
           "source": [
@@ -176,11 +176,11 @@
         "Targets": [
           {
             "Arn": {
-              "Ref": "testtestWSnsTopicBFF33C41"
+              "Ref": "testconstructSnsTopic44188529"
             },
             "Id": {
               "Fn::GetAtt": [
-                "testtestWSnsTopicBFF33C41",
+                "testconstructSnsTopic44188529",
                 "TopicName"
               ]
             }
