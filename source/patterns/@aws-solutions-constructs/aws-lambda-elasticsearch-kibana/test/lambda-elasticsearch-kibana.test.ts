@@ -318,26 +318,7 @@ test("Test bad call with existingVpc and deployVpc", () => {
   // Stack
   const stack = new cdk.Stack();
 
-  const testVpc = new ec2.Vpc(stack, "test-vpc", {
-    natGateways: 1,
-    natGatewaySubnets: {
-      subnetType: ec2.SubnetType.PUBLIC
-    },
-    enableDnsHostnames: true,
-    enableDnsSupport: true,
-    subnetConfiguration: [
-      {
-        cidrMask: 18,
-        name: "private",
-        subnetType: ec2.SubnetType.PRIVATE,
-      },
-      {
-        cidrMask: 18,
-        name: "public",
-        subnetType: ec2.SubnetType.PUBLIC,
-      }
-    ]
-  });
+  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
 
   const app = () => {
     // Helper declaration
@@ -428,9 +409,7 @@ test("Test bad call with lambdaFunctionProps.vpcSubnets", () => {
         runtime: lambda.Runtime.NODEJS_14_X,
         handler: "index.handler",
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        vpcSubnets: testVpc.selectSubnets({
-          subnetType: ec2.SubnetType.PRIVATE
-        })
+        vpcSubnets: testVpc.selectSubnets({})
       },
       domainName: 'test-domain',
     });
@@ -458,45 +437,6 @@ test("Test bad call with esDomainProps.vpcOptions", () => {
       esDomainProps: {
         vpcOptions: {},
       },
-    });
-  };
-  // Assertion
-  expect(app).toThrowError();
-});
-
-// --------------------------------------------------------------
-// Test bad call with existingVpc has less than 1 AZs
-// --------------------------------------------------------------
-test("Test bad call with existingVpc has less than 1 AZs", () => {
-  // Stack
-  const stack = new cdk.Stack(undefined, "test", {
-    env: {
-      account: "dummy_account",
-      region: "dummy_region",
-    }
-  });
-
-  const testVpc = new ec2.Vpc(stack, "test-vpc", {
-    maxAzs: 0,
-    subnetConfiguration: [
-      {
-        cidrMask: 24,
-        name: "private",
-        subnetType: ec2.SubnetType.ISOLATED,
-      },
-    ]
-  });
-
-  // Helper declaration
-  const app = () => {
-    new LambdaToElasticSearchAndKibana(stack, "lambda-elasticsearch-kibana-stack", {
-      lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: "index.handler",
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      },
-      domainName: 'test-domain',
-      existingVpc: testVpc,
     });
   };
   // Assertion
