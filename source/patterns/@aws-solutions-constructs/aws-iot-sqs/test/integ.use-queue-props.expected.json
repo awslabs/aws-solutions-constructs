@@ -5,7 +5,7 @@
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": "alias/aws/sqs",
-        "QueueName": "dlq-name"
+        "QueueName": "use-queue-test-dlq-name"
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete"
@@ -152,7 +152,7 @@
             "Arn"
           ]
         },
-        "QueueName": "queue-name",
+        "QueueName": "use-queue-test-name",
         "RedrivePolicy": {
           "deadLetterTargetArn": {
             "Fn::GetAtt": [
