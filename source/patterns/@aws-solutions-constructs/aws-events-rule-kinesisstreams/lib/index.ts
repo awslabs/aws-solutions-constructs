@@ -23,34 +23,47 @@ import { EventbridgeToKinesisStreams } from '@aws-solutions-constructs/aws-event
  * @summary The properties for the EventsRuleToKinesisStreams Construct
  */
 export interface EventsRuleToKinesisStreamsProps {
-/**
- * User provided eventRuleProps to override the defaults
- *
- * @default - None
- */
-readonly eventRuleProps: events.RuleProps
-/**
- * Existing instance of Kinesis Stream object, providing both this and KinesisStreamProps will cause an error.
- *
- * @default - Default props are used
- */
-readonly existingStreamObj?: kinesis.Stream,
-/**
- * User provided props to override the default props for the Kinesis Stream.
- *
- * @default - Default props are used
- */
-readonly kinesisStreamProps?: kinesis.StreamProps | any
-/**
- * Whether to create recommended CloudWatch alarms
- *
- * @default - Alarms are created
- */
-readonly createCloudWatchAlarms?: boolean
+  /**
+   * Existing instance of a custom EventBus.
+   *
+   * @default - None
+   */
+  readonly existingEventBusInterface?: events.IEventBus;
+  /**
+   * A new custom EventBus is created with provided props.
+   *
+   * @default - None
+   */
+  readonly eventBusProps?: events.EventBusProps;
+  /**
+   * User provided eventRuleProps to override the defaults
+   *
+   * @default - None
+   */
+  readonly eventRuleProps: events.RuleProps;
+  /**
+   * Existing instance of Kinesis Stream object, providing both this and KinesisStreamProps will cause an error.
+   *
+   * @default - Default props are used
+   */
+  readonly existingStreamObj?: kinesis.Stream;
+  /**
+   * User provided props to override the default props for the Kinesis Stream.
+   *
+   * @default - Default props are used
+   */
+  readonly kinesisStreamProps?: kinesis.StreamProps | any;
+  /**
+   * Whether to create recommended CloudWatch alarms
+   *
+   * @default - Alarms are created
+   */
+  readonly createCloudWatchAlarms?: boolean;
 }
 
 export class EventsRuleToKinesisStreams extends Construct {
     public readonly kinesisStream: kinesis.Stream;
+    public readonly eventBus?: events.IEventBus;
     public readonly eventsRule: events.Rule;
     public readonly eventsRole: iam.Role;
     public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
@@ -65,11 +78,17 @@ export class EventsRuleToKinesisStreams extends Construct {
     constructor(scope: Construct, id: string, props: EventsRuleToKinesisStreamsProps) {
       super(scope, id);
       const convertedProps: EventsRuleToKinesisStreamsProps = { ...props };
-      const wrappedConstruct: EventsRuleToKinesisStreams = new EventbridgeToKinesisStreams(this, `${id}-wrapped`, convertedProps);
+
+      // W (for 'wrapped') is added to the id so that the id's of the constructs with the old and new names don't collide
+      // If this character pushes you beyond the 64 character limit, just import the new named construct and instantiate
+      // it in place of the older named version. They are functionally identical, aside from the types no other changes
+      // will be required.  (eg - new EventbridgeToKinesisStreams instead of EventsRuleToKinesisStreams)
+      const wrappedConstruct: EventsRuleToKinesisStreams = new EventbridgeToKinesisStreams(this, `${id}W`, convertedProps);
 
       this.kinesisStream = wrappedConstruct.kinesisStream;
       this.eventsRule = wrappedConstruct.eventsRule;
       this.eventsRole = wrappedConstruct.eventsRole;
       this.cloudwatchAlarms = wrappedConstruct.cloudwatchAlarms;
+      this.eventBus = wrappedConstruct.eventBus;
     }
 }

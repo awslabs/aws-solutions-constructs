@@ -72,7 +72,7 @@
               "Action": "states:StartExecution",
               "Effect": "Allow",
               "Resource": {
-                "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineD7DA108D"
+                "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineE1495D19"
               }
             }
           ],
@@ -101,41 +101,9 @@
       "Properties": {
         "Code": {
           "S3Bucket": {
-            "Ref": "AssetParametersfd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93S3Bucket0DF3E8CF"
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": {
-            "Fn::Join": [
-              "",
-              [
-                {
-                  "Fn::Select": [
-                    0,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParametersfd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93S3VersionKeyE124A528"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "Fn::Select": [
-                    1,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParametersfd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93S3VersionKeyE124A528"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            ]
-          }
+          "S3Key": "fd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93.zip"
         },
         "Role": {
           "Fn::GetAtt": [
@@ -147,7 +115,7 @@
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "STATE_MACHINE_ARN": {
-              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineD7DA108D"
+              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineE1495D19"
             }
           }
         },
@@ -180,10 +148,10 @@
         }
       }
     },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineLogGroupA191FCAA": {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineLogGroup7291796E": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/vendedlogs/states/existingfunctiontestlambdastepfunctionconstructwrappedstatemachinelog8fd8faf7ac2e"
+        "LogGroupName": "/aws/vendedlogs/states/existingfunctiontestlambdastepfunctionconstructwstatemachinelog5c7ec858442a"
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
@@ -202,7 +170,7 @@
         }
       }
     },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineRole07DDAA06": {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineRoleC001CA39": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -230,7 +198,7 @@
         }
       }
     },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineRoleDefaultPolicyCED4BF48": {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineRoleDefaultPolicyF44CF55B": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -277,10 +245,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineRoleDefaultPolicyCED4BF48",
+        "PolicyName": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineRoleDefaultPolicyF44CF55B",
         "Roles": [
           {
-            "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineRole07DDAA06"
+            "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineRoleC001CA39"
           }
         ]
       },
@@ -295,12 +263,12 @@
         }
       }
     },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineD7DA108D": {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineE1495D19": {
       "Type": "AWS::StepFunctions::StateMachine",
       "Properties": {
         "RoleArn": {
           "Fn::GetAtt": [
-            "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineRole07DDAA06",
+            "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineRoleC001CA39",
             "Arn"
           ]
         },
@@ -311,7 +279,7 @@
               "CloudWatchLogsLogGroup": {
                 "LogGroupArn": {
                   "Fn::GetAtt": [
-                    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineLogGroupA191FCAA",
+                    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineLogGroup7291796E",
                     "Arn"
                   ]
                 }
@@ -322,11 +290,11 @@
         }
       },
       "DependsOn": [
-        "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineRoleDefaultPolicyCED4BF48",
-        "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineRole07DDAA06"
+        "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineRoleDefaultPolicyF44CF55B",
+        "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineRoleC001CA39"
       ]
     },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedExecutionFailedAlarmD6BB272D": {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWExecutionFailedAlarm513E4C7C": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -336,7 +304,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineD7DA108D"
+              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineE1495D19"
             }
           }
         ],
@@ -347,7 +315,7 @@
         "Threshold": 1
       }
     },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedExecutionThrottledAlarmE8079CC5": {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWExecutionThrottledAlarm08912C4F": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -357,7 +325,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineD7DA108D"
+              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineE1495D19"
             }
           }
         ],
@@ -368,7 +336,7 @@
         "Threshold": 1
       }
     },
-    "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedExecutionAbortedAlarm3410672A": {
+    "testlambdastepfunctionconstructtestlambdastepfunctionconstructWExecutionAbortedAlarmC0CADAC2": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -378,7 +346,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructwrappedStateMachineD7DA108D"
+              "Ref": "testlambdastepfunctionconstructtestlambdastepfunctionconstructWStateMachineE1495D19"
             }
           }
         ],
@@ -391,17 +359,37 @@
     }
   },
   "Parameters": {
-    "AssetParametersfd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93S3Bucket0DF3E8CF": {
-      "Type": "String",
-      "Description": "S3 bucket for asset \"fd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93\""
-    },
-    "AssetParametersfd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93S3VersionKeyE124A528": {
-      "Type": "String",
-      "Description": "S3 key for asset version \"fd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93\""
-    },
-    "AssetParametersfd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93ArtifactHashC69F2EC4": {
-      "Type": "String",
-      "Description": "Artifact hash for asset \"fd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93\""
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
     }
   }
 }

@@ -11,30 +11,12 @@
  *  and limitations under the License.
  */
 
-import { ResourcePart, SynthUtils } from '@aws-cdk/assert';
+import { ResourcePart } from '@aws-cdk/assert';
 import { Stack } from '@aws-cdk/core';
 import '@aws-cdk/assert/jest';
 import * as logs from '@aws-cdk/aws-logs';
 import { buildLogGroup } from '../lib/cloudwatch-log-group-helper';
 import * as kms from '@aws-cdk/aws-kms';
-
-test('cw log group with default params', () => {
-  const stack = new Stack();
-  buildLogGroup(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
-test('override cw log group props with encryptionKey and retention period', () => {
-  const stack = new Stack();
-
-  const key = new kms.Key(stack, 'mykey');
-
-  buildLogGroup(stack, 'test-cw-logs-default', {
-    encryptionKey: key,
-    retention: logs.RetentionDays.FIVE_DAYS
-  });
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('override cw log group props with encryptionKey only', () => {
   const stack = new Stack();

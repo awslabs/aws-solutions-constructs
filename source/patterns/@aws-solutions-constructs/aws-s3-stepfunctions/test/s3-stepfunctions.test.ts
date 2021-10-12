@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { S3ToStepfunctions, S3ToStepfunctionsProps } from '../lib/index';
 import * as sfn from '@aws-cdk/aws-stepfunctions';
 import '@aws-cdk/assert/jest';
@@ -30,12 +29,6 @@ function deployNewStateMachine(stack: cdk.Stack) {
 
   return new S3ToStepfunctions(stack, 'test-s3-stepfunctions', props);
 }
-
-test('snapshot test S3ToStepfunctions default params', () => {
-  const stack = new cdk.Stack();
-  deployNewStateMachine(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('check deployCloudTrail = false', () => {
   const stack = new cdk.Stack();
@@ -170,4 +163,43 @@ test("Test bad call with existingBucket and bucketProps", () => {
   };
   // Assertion
   expect(app).toThrowError();
+});
+
+// --------------------------------------------------------------
+// s3 bucket with bucket, loggingBucket, and auto delete objects
+// --------------------------------------------------------------
+test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
+  const stack = new cdk.Stack();
+  const startState = new sfn.Pass(stack, 'StartState');
+
+  const testProps: S3ToStepfunctionsProps = {
+    stateMachineProps: {
+      definition: startState
+    },
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY
+    },
+    loggingBucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    }
+  };
+
+  new S3ToStepfunctions(stack, 'test-s3-stepfunctions', testProps);
+
+  expect(stack).toHaveResource("AWS::S3::Bucket", {
+    AccessControl: "LogDeliveryWrite"
+  });
+
+  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+    ServiceToken: {
+      "Fn::GetAtt": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+        "Arn"
+      ]
+    },
+    BucketName: {
+      Ref: "tests3stepfunctionsS3LoggingBucketF7586A92"
+    }
+  });
 });

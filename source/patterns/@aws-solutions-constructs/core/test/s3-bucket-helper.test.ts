@@ -11,31 +11,14 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils, expect as expectCDK, haveResource, ResourcePart } from '@aws-cdk/assert';
-import { Duration, RemovalPolicy, Stack } from '@aws-cdk/core';
+import { expect as expectCDK, haveResource, ResourcePart } from '@aws-cdk/assert';
+import { Duration, Stack, RemovalPolicy } from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as s3n from '@aws-cdk/aws-s3-notifications';
 import * as sqs from '@aws-cdk/aws-sqs';
 import * as defaults from '../index';
 import '@aws-cdk/assert/jest';
 import { Bucket, StorageClass } from '@aws-cdk/aws-s3';
-
-test('s3 bucket with default params', () => {
-  const stack = new Stack();
-  defaults.buildS3Bucket(stack, {});
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
-test('s3 bucket with default params and bucket names', () => {
-  const stack = new Stack();
-  const s3BucketProps: s3.BucketProps = {
-    bucketName: 'my-bucket'
-  };
-  defaults.buildS3Bucket(stack, {
-    bucketProps: s3BucketProps
-  });
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('check exception for Missing existingBucketObj from props for deploy = false', () => {
   const stack = new Stack();
@@ -72,6 +55,33 @@ test('s3 bucket with bucketProps', () => {
 
   expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
     BucketName: "mybucket"
+  }));
+});
+
+test('s3 bucket with default props', () => {
+  const stack = new Stack();
+
+  defaults.buildS3Bucket(stack, {});
+
+  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+    BucketEncryption: {
+      ServerSideEncryptionConfiguration: [
+        {
+          ServerSideEncryptionByDefault: {
+            SSEAlgorithm: "AES256"
+          }
+        }
+      ]
+    },
+    PublicAccessBlockConfiguration: {
+      BlockPublicAcls: true,
+      BlockPublicPolicy: true,
+      IgnorePublicAcls: true,
+      RestrictPublicBuckets: true
+    },
+    VersioningConfiguration: {
+      Status: "Enabled"
+    }
   }));
 });
 
@@ -257,16 +267,31 @@ test('s3 bucket versioning turned off', () => {
   }));
 });
 
-test('s3 bucket and logging bucket withe delete removal policy', () => {
+test('s3 bucket with LoggingBucket and auto delete objects', () => {
   const stack = new Stack();
 
   defaults.buildS3Bucket(stack, {
-    bucketProps: {
+    loggingBucketProps: {
       removalPolicy: RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
     }
   });
 
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+    AccessControl: "LogDeliveryWrite"
+  }));
+
+  expectCDK(stack).to(haveResource("Custom::S3AutoDeleteObjects", {
+    ServiceToken: {
+      "Fn::GetAtt": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+        "Arn"
+      ]
+    },
+    BucketName: {
+      Ref: "S3LoggingBucket800A2B27"
+    }
+  }));
 });
 
 test('s3 bucket versioning turned on', () => {

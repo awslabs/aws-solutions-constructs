@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { IotToLambdaToDynamoDB, IotToLambdaToDynamoDBProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as cdk from "@aws-cdk/core";
@@ -36,12 +35,6 @@ function deployStack(stack: cdk.Stack) {
 
   return new IotToLambdaToDynamoDB(stack, 'test-iot-lambda-dynamodb-stack', props);
 }
-
-test('snapshot test IotToLambdaToDynamoDB default params', () => {
-  const stack = new cdk.Stack();
-  deployStack(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('check lambda function properties', () => {
   const stack = new cdk.Stack();

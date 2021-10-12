@@ -2,6 +2,7 @@
 // Exercise all integ stacks and if they deploy, update the expected synth files
 import * as yargs from 'yargs';
 import { DEFAULT_SYNTH_OPTIONS, IntegrationTests } from '../lib/integ-helpers';
+import * as deepmerge from 'deepmerge';
 
 /* eslint-disable no-console */
 
@@ -50,7 +51,24 @@ async function main() {
       }
 
       // If this all worked, write the new expectation file
-      const actual = await test.cdkSynthFast(DEFAULT_SYNTH_OPTIONS);
+      // Enable Default KMS policy to match with CDK v2 expected KMS policy
+      const actual = await test.cdkSynthFast(deepmerge(DEFAULT_SYNTH_OPTIONS, {
+        context: {
+          '@aws-cdk/aws-kms:defaultKeyPolicies': true,
+          '@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId': true,
+          '@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021': true,
+          '@aws-cdk/aws-s3:grantWriteWithoutAcl': true,
+          '@aws-cdk/aws-efs:defaultEncryptionAtRest': true,
+          '@aws-cdk/aws-rds:lowercaseDbIdentifier': true,
+          '@aws-cdk/aws-secretsmanager:parseOwnedSecretName': true,
+          '@aws-cdk/aws-lambda:recognizeVersionProps': true,
+          '@aws-cdk/core:newStyleStackSynthesis': true,
+          '@aws-cdk/core:stackRelativeExports': true,
+          '@aws-cdk/aws-ecr-assets:dockerIgnoreSupport': true,
+          '@aws-cdk/core:enableStackNameDuplicates': true,
+          '@aws-cdk/aws-ecs-patterns:removeDefaultDesiredCount': true
+        }
+      }));
 
       await test.writeExpected(actual);
     } finally {

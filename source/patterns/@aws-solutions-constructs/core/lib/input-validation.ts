@@ -158,6 +158,16 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
+  if (propsObject.existingEventBusInterface && propsObject.eventBusProps) {
+    errorMessages += 'Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.existingWebaclObj && propsObject.webaclProps) {
+    errorMessages += 'Error - Either provide existingWebaclObj or webaclProps, but not both.\n';
+    errorFound = true;
+  }
+
   if (errorFound) {
     throw new Error(errorMessages);
   }

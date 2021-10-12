@@ -22,7 +22,7 @@ To make a Construct as flexible as possible, it should perform a single architec
 
 The construct should not create new classes or interfaces to describe services or resources. Although the new class may seem simpler now, as new capabilities are added to the construct the new class will acquire new properties – the ultimate result would be something equivalent to the CDK definition, but not compatible. The CDK definitions are well thought out and interact predictably with other CDK constructs, use them. If you want a client the ability to specify a few attributes of a ConstructProps without specifying every required value, then make the type of that attribute ConstructProps | any. This pattern exists several places in the Solutions Constructs library.
 
-Another practice that this rule prohibits is putting specific attributes of sub resources in your Solutions Constructs Props object. For instance - if your VPC needs an Internet Gateway, then the client should send VPC Props that create the Internet Gateway, don't create a property at in your Construct Props object of InternetGateway: true. 
+Another practice that this rule prohibits is putting specific attributes of sub resources in your Solutions Constructs Props object. For instance - if your VPC needs an Internet Gateway, then the client should send VPC Props that create the Internet Gateway, don't create a property at in your Construct Props object of InternetGateway: true.
 
 **The client should have the option (but not requirement) to provide any props used within the construct**
 
@@ -80,28 +80,8 @@ This version of the document also lists what Constructs currently violate these 
 Existing Inconsistencies would not be published, that’s for our internal use – only the Required Properties and Attributes on Props would be published as requirements (along with specific notes).
  
 
-
-## S3
-**Required Attributes on Props** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| existingBucketObj? | s3.Bucket | Either this or bucketProps must be provided |
-| bucketProps? | s3.BucketProps	| |
-| s3EventTypes?	| s3.EventType	| Only required when construct responds to S3 events |
-| s3EventFilters?	| s3.NotificationKeyFilter |Only required when construct responds to S3 events |
-
-
-**Required Construct Properties** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| s3Bucket	| s3.Bucket	||
-| s3LoggingBucket	| s3.Bucket	||
-
-
 ## API Gateway
-**Required Attributes on Props** 
+**Required Attributes on Props**
 
 | Name    | Type     | Notes    |
 | --- | --- | --- |
@@ -109,7 +89,7 @@ Existing Inconsistencies would not be published, that’s for our internal use �
 | allow*Name*Operation/*name*OperationTemplate	|	| Required in pairs for integration with DDB and SQS |
 | logGroupProps? | logs.LogGroupProps |  |
 
-**Required Construct Properties** 
+**Required Construct Properties**
 
 | Name    | Type     | Notes    |
 | --- | --- | --- |
@@ -118,55 +98,168 @@ Existing Inconsistencies would not be published, that’s for our internal use �
 | apiGatewayLogGroup	| logs.LogGroup	||
 | apiGatewayRole	| iam.Role	||
 
+## CloudFront
+**Required Attributes on Props**
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| cloudFrontDistributionProps?	| cloudfront.CloudFront.WebDistributionProps	||
+| insertHttpSecurityHeaders?	| boolean	||
+
+**Required Construct Properties**
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| cloudFrontLoggingBucket?	s3.Bucket	||
+| cloudFrontWebDistribution	cloudfront.CloudrontWebDistribution	||
+
+## DynamoDB
+**Required Attributes on Props**
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| dynamoTableProps?	| dynamodb.TableProps	||
+| existingTableObj?	| dynamodb.Table	||
+| tablePermissions?	| string	| Only where DynamoDB is a data store being accessed by the construct|
+| dynamoEventSourceProps?		| aws-lambda-event-sources.DynamoEventSourceProps	| Only where DynamoDB is invoking other services (dynamodb streams) |
+
+**Required Construct Properties**
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| dynamoTable	| dynamodb.Table	||
+
+## ElasticSearch
+**Required Attributes on Props**
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| esDomainProps?	| elasticsearch.CfnDomainProps	||
+| domainName	| string	||
+
+
+**Required Construct Properties**
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| elasticsearchDomain | elasticsearch.CfnDomain ||
+| elasticsearchDomainRole | iam.Role ||
+
+## Eventbridge
+**Required Attributes on Props**
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| eventRuleProps	| events.RuleProps	||
+| existingEVentBusInterface?	| events.IEventBus	||
+| eventBusProps?	| events.EventBusProps	||
+
+**Required Construct Properties**
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| eventsRule	| events.Rule	||
+| eventBus?	| events.IEventBus	| Only populated for non-default Event Buses.|
+
+
+## Firehose
+**Required Attributes on Props**
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| kinesisFirehoseProps?	| aws-kinesisfirehose.CfnDeliveryStreamProps	||
+
+**Required Construct Properties**
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| kinesisFirehose	| kinesisfirehose.CfnDeliveryStream	||
+| kinesisFirehoseRole	| iam.Role	||
+| kinesisFirehoseLogGroup	| logs.LogGroup	||
 
 ## IoT
-**Required Attributes on Props** 
+**Required Attributes on Props**
 
 | Name    | Type     | Notes    |
 | --- | --- | --- |
 | iotEndpoint	| string	| When IoT is *downstream* (e.g. – aws-apigateway-iot) |
 | iotTopicRuleProps	| iot.CfnTopicRuleProps	| When iot is *upstream* (eg – aws-iot-lambda) |
 
-**Required Construct Properties** 
+**Required Construct Properties**
 
 | Name    | Type     | Notes    |
 | --- | --- | --- |
 | iotActionsRole	| iam.Role	| For upstream IoT|
+| iotTopicRule | iot.CfnTopicRule | When iot is upstream |
 
 ## Kinesis Streams
-**Required Attributes on Props** 
+**Required Attributes on Props**
 
 | Name    | Type     | Notes    |
 | --- | --- | --- |
 | existingStreamObj?	| kinesis.Stream	| |
 | kinesisStreamProps?	| kinesis.StreamProps	||
+|createCloudWatchAlarms|`boolean`| |
 
-
-**Required Construct Properties** 
+**Required Construct Properties**
 
 | Name    | Type     | Notes    |
 | --- | --- | --- |
 | kinesisStream	| kinesis.Stream	||
 | kinesisStreamRole	| iam.Role	| Only when Kinesis is upstream (because then the role is important to the construct) |
 
-
 ## Lambda
-**Required Attributes on Props** 
+**Required Attributes on Props**
 
 | Name    | Type     | Notes    |
 | --- | --- | --- |
 | existingLambdaObj?	| lambda.Function	||
 | lambdaFunctionProps?	| lambda.FunctionProps	||
 
-
-**Required Construct Properties** 
+**Required Construct Properties**
 
 | Name    | Type     | Notes    |
 | --- | --- | --- |
 | lambdaFunction	| lambda.Function	||
 
+## S3
+**Required Attributes on Props**
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| existingBucketObj? | s3.Bucket | Either this or bucketProps must be provided |
+| bucketProps? | s3.BucketProps	| |
+| loggingBucketProps? | s3.BucketProps	| Creating an S3 Bucket will generate a Logging Bucket which users can provide props to override the default props |
+| s3EventTypes?	| s3.EventType	| Only required when construct responds to S3 events |
+| s3EventFilters?	| s3.NotificationKeyFilter |Only required when construct responds to S3 events |
+
+**Required Construct Properties**
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| s3Bucket	| s3.Bucket	||
+| s3LoggingBucket	| s3.Bucket	||
+
+## SNS
+**Required Attributes on Props**
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| existingTopicObj?	| sns.Topic	||
+| topicProps?	| sns.TopicProps	||
+| enableEncryptionWithCustomerManagedKey?	| boolean	| Sending messages from an AWS service to an encrypted Topic [requires a Customer Master key](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-key-management.html#compatibility-with-aws-services). Those constructs require these properties.  |
+| encryptionKey?		| kms.Key	|
+| encryptionKeyProps?		| kms.KeyProps	|
+
+**Required Construct Properties**
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| snsTopic	| sns.Topic	 | |
+| encryptionKey	| kms.Key	| Only required when AWS service is writing to the SNS topic (similar to SQS) |
+
 ## SQS
-**Required Attributes on Props** 
+**Required Attributes on Props**
 
 | Name    | Type     | Notes    |
 | --- | --- | --- |
@@ -178,8 +271,7 @@ Existing Inconsistencies would not be published, that’s for our internal use �
 | enableQueuePurging	| boolean	| This is only on 2 constructs, docs talk about a Lambda function role|
 | encryptionKey?	| kms.Key	| Sending messages from an AWS service to an encrypted queue [requires a Customer Master key](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-key-management.html#compatibility-with-aws-services). Those constructs require these properties. |
 
-
-**Required Construct Properties** 
+**Required Construct Properties**
 
 | Name    | Type     | Notes    |
 | --- | --- | --- |
@@ -187,101 +279,15 @@ Existing Inconsistencies would not be published, that’s for our internal use �
 | deadLetterQueue?	| sqs.Queue	||
 | encryptionKey	| kms.Key	| Only for service to SQS constructs that require a non-default CMK. |
 
-
-## CloudFront
-**Required Attributes on Props** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| cloudFrontDistributionProps?	| cloudfront.CloudFront.WebDistributionProps	||
-| insertHttpSecurityHeaders?	| boolean	||
-
-
-**Required Construct Properties** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| cloudFrontLoggingBucket?	s3.Bucket	||
-| cloudFrontWebDistribution	cloudfront.CloudrontWebDistribution	||
-
-
-## DynamoDB
-**Required Attributes on Props** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| dynamoTableProps?	| dynamodb.TableProps	||
-| existingTableObj?	| dynamodb.Table	||
-| tablePermissions?	| string	| Only where DynamoDB is a data store being accessed by the construct|
-| dynamoEventSourceProps?		| aws-lambda-event-sources.DynamoEventSourceProps	| Only where DynamoDB is invoking other services (dynamodb streams) |
-
-
-**Required Construct Properties** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| dynamoTable	| dynamodb.Table	||
-
-## Events Rules
-**Required Attributes on Props** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| eventRuleProps	| events.RuleProps	||
-
-**Required Construct Properties** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| eventsRule	| events.Rule	||
-
-## Firehose
-**Required Attributes on Props** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| kinesisFirehoseProps?	| aws-kinesisfirehose.CfnDeliveryStreamProps	||
-
-**Required Construct Properties** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| kinesisFirehose	| kinesisfirehose.CfnDeliveryStream	||
-| kinesisFirehoseRole	| iam.Role	||
-| kinesisFirehoseLogGroup	| logs.LogGroup	||
-
-
-## SNS
-**Required Attributes on Props** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| existingTopicObj?	| sns.Topic	||
-| topicProps?	| sns.TopicProps	||
-| enableEncryptionWithCustomerManagedKey?	| boolean	| Sending messages from an AWS service to an encrypted Topic [requires a Customer Master key](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-key-management.html#compatibility-with-aws-services). Those constructs require these properties.  |
-| encryptionKey?		| kms.Key	|
-| encryptionKeyProps?		| kms.KeyProps	|
-
-
-
-**Required Construct Properties** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| snsTopic	| sns.Topic	 | |
-| encryptionKey	| kms.Key	| Only required when AWS service is writing to the SNS topic (similar to SQS) |
-
-
 ## Step Functions
-**Required Attributes on Props** 
+**Required Attributes on Props**
 
 | Name    | Type     | Notes    |
 | --- | --- | --- |
 | stateMachineProps	| sfn.StateMachineProps	||
 | createCloudWatchAlarms | boolean | |
 
-
-**Required Construct Properties** 
+**Required Construct Properties**
 
 | Name    | Type     | Notes    |
 | --- | --- | --- |
@@ -289,25 +295,8 @@ Existing Inconsistencies would not be published, that’s for our internal use �
 | stateMachineLoggingGroup	| logs.LogGroup	||
 | cloudwatchAlarms? | cloudwatch.Alarm[] ||
 
-
-## ElasticSearch
-**Required Attributes on Props** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| esDomainProps?	| elasticsearch.CfnDomainProps	||
-| domainName	| string	||
-
-
-**Required Construct Properties** 
-
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| elasticsearchDomain | elasticsearch.CfnDomain ||
-| elasticsearchDomainRole | iam.Role ||
-
 ## VPC
-**Required Attributes on Props** 
+**Required Attributes on Props**
 
 | Name    | Type     | Notes    |
 | --- | --- | --- |
@@ -315,8 +304,22 @@ Existing Inconsistencies would not be published, that’s for our internal use �
 | deployVpc? | boolean| |
 | vpcProps? | ec2.VpcProps| |
 
-**Required Construct Properties** 
+**Required Construct Properties**
 
 | Name    | Type     | Notes    |
 | --- | --- | --- |
 | vpc? | ec2.IVpc |  |
+
+## WAF WebACL
+**Required Attributes on Props**
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| existingWebaclObj? | wafv2.CfnWebACL	||
+| webaclProps?	| wafv2.CfnWebACLProps	||
+
+**Required Construct Properties**
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| webacl	| wafv2.CfnWebACL	||

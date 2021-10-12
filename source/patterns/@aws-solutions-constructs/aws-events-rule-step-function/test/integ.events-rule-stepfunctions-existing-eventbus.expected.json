@@ -1,0 +1,487 @@
+{
+  "Resources": {
+    "LambdaFunctionServiceRole0C4CDE0B": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":log-group:/aws/lambda/*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy"
+          }
+        ]
+      }
+    },
+    "LambdaFunctionServiceRoleDefaultPolicy126C8897": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "LambdaFunctionServiceRoleDefaultPolicy126C8897",
+        "Roles": [
+          {
+            "Ref": "LambdaFunctionServiceRole0C4CDE0B"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+            }
+          ]
+        }
+      }
+    },
+    "LambdaFunctionBF21E41F": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c.zip"
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaFunctionServiceRole0C4CDE0B",
+            "Arn"
+          ]
+        },
+        "Environment": {
+          "Variables": {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+          }
+        },
+        "Handler": "index.handler",
+        "Runtime": "nodejs12.x",
+        "TracingConfig": {
+          "Mode": "Active"
+        }
+      },
+      "DependsOn": [
+        "LambdaFunctionServiceRoleDefaultPolicy126C8897",
+        "LambdaFunctionServiceRole0C4CDE0B"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+            },
+            {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            },
+            {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients"
+            }
+          ]
+        }
+      }
+    },
+    "existingeventbusA5B80487": {
+      "Type": "AWS::Events::EventBus",
+      "Properties": {
+        "Name": "eventsrulestepfunctionsexistingeventbusexistingeventbus1ED36585"
+      }
+    },
+    "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWStateMachineLogGroupCB5738F2": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/vendedlogs/states/eventsrulestepfunctionsexistingeventbustesteventsrulestepfunctionsneweventbusconstructwstatemachinelog58fb58335a86"
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
+            },
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+            }
+          ]
+        }
+      }
+    },
+    "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWStateMachineRole684708AB": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "states.",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ".amazonaws.com"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWStateMachineRoleDefaultPolicy066367F6": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogDelivery",
+                "logs:GetLogDelivery",
+                "logs:UpdateLogDelivery",
+                "logs:DeleteLogDelivery",
+                "logs:ListLogDeliveries"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "LambdaFunctionBF21E41F",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "logs:PutResourcePolicy",
+                "logs:DescribeResourcePolicies",
+                "logs:DescribeLogGroups"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":logs:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "eventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWStateMachineRoleDefaultPolicy066367F6",
+        "Roles": [
+          {
+            "Ref": "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWStateMachineRole684708AB"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "The 'LogDelivery' actions do not support resource-level authorizations"
+            }
+          ]
+        }
+      }
+    },
+    "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWStateMachine3577BCB1": {
+      "Type": "AWS::StepFunctions::StateMachine",
+      "Properties": {
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWStateMachineRole684708AB",
+            "Arn"
+          ]
+        },
+        "DefinitionString": {
+          "Fn::Join": [
+            "",
+            [
+              "{\"StartAt\":\"StartState\",\"States\":{\"StartState\":{\"Type\":\"Pass\",\"Next\":\"LambdaTask\"},\"LambdaTask\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":states:::lambda:invoke\",\"Parameters\":{\"FunctionName\":\"",
+              {
+                "Fn::GetAtt": [
+                  "LambdaFunctionBF21E41F",
+                  "Arn"
+                ]
+              },
+              "\",\"Payload.$\":\"$\"}}},\"TimeoutSeconds\":300}"
+            ]
+          ]
+        },
+        "LoggingConfiguration": {
+          "Destinations": [
+            {
+              "CloudWatchLogsLogGroup": {
+                "LogGroupArn": {
+                  "Fn::GetAtt": [
+                    "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWStateMachineLogGroupCB5738F2",
+                    "Arn"
+                  ]
+                }
+              }
+            }
+          ],
+          "Level": "ERROR"
+        }
+      },
+      "DependsOn": [
+        "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWStateMachineRoleDefaultPolicy066367F6",
+        "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWStateMachineRole684708AB"
+      ]
+    },
+    "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWEventsRuleRoleC458F838": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWEventsRuleRoleDefaultPolicy4F6F964E": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "states:StartExecution",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWStateMachine3577BCB1"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "steventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWEventsRuleRoleDefaultPolicy4F6F964E",
+        "Roles": [
+          {
+            "Ref": "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWEventsRuleRoleC458F838"
+          }
+        ]
+      }
+    },
+    "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWEventsRule2EC401DF": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "EventBusName": {
+          "Ref": "existingeventbusA5B80487"
+        },
+        "EventPattern": {
+          "source": [
+            "solutionsconstructs"
+          ]
+        },
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Ref": "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWStateMachine3577BCB1"
+            },
+            "Id": "Target0",
+            "RoleArn": {
+              "Fn::GetAtt": [
+                "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWEventsRuleRoleC458F838",
+                "Arn"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWExecutionFailedAlarm0B7D7949": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Alarm for the number of executions that failed exceeded the threshold of 1. ",
+        "Dimensions": [
+          {
+            "Name": "StateMachineArn",
+            "Value": {
+              "Ref": "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWStateMachine3577BCB1"
+            }
+          }
+        ],
+        "MetricName": "ExecutionsFailed",
+        "Namespace": "AWS/States",
+        "Period": 300,
+        "Statistic": "Sum",
+        "Threshold": 1
+      }
+    },
+    "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWExecutionThrottledAlarm3EFC2C2B": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Alarm for the number of executions that throttled exceeded the threshold of 1. ",
+        "Dimensions": [
+          {
+            "Name": "StateMachineArn",
+            "Value": {
+              "Ref": "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWStateMachine3577BCB1"
+            }
+          }
+        ],
+        "MetricName": "ExecutionThrottled",
+        "Namespace": "AWS/States",
+        "Period": 300,
+        "Statistic": "Sum",
+        "Threshold": 1
+      }
+    },
+    "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWExecutionAbortedAlarm265CDD35": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
+        "Dimensions": [
+          {
+            "Name": "StateMachineArn",
+            "Value": {
+              "Ref": "testeventsrulestepfunctionsneweventbusconstructtesteventsrulestepfunctionsneweventbusconstructWStateMachine3577BCB1"
+            }
+          }
+        ],
+        "MetricName": "ExecutionsAborted",
+        "Namespace": "AWS/States",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 1
+      }
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
+    }
+  }
+}

@@ -16,29 +16,9 @@ import { Stack } from "@aws-cdk/core";
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as ec2 from "@aws-cdk/aws-ec2";
 import { LambdaToSsmstringparameter } from '../lib';
-import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import { StringParameter } from "@aws-cdk/aws-ssm";
 import * as defaults from "@aws-solutions-constructs/core";
-
-// --------------------------------------------------------------
-// Test minimal deployment with new Lambda function
-// --------------------------------------------------------------
-test('Test minimal deployment with new Lambda function', () => {
-  // Stack
-  const stack = new Stack();
-  // Helper declaration
-  new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
-    lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    },
-    stringParameterProps: { stringValue: "test-string-value" }
-  });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 // --------------------------------------------------------------
 // Test lambda function custom environment variable

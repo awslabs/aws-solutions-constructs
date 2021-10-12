@@ -1,0 +1,47 @@
+#!/bin/bash
+set -euo pipefail
+
+deployment_dir=$(cd $(dirname $0) && pwd)
+source_dir="$deployment_dir/../../source"
+
+echo "============================================================================================="
+echo "aligning versions and updating package.json for CDK v2..."
+/bin/bash $deployment_dir/align-version.sh
+
+echo "============================================================================================="
+echo "updating Import statements for CDK v2..."
+/bin/bash $deployment_dir/rewrite-imports.sh
+
+echo "============================================================================================="
+echo "building cdk-integ-tools..."
+cd $source_dir/tools/cdk-integ-tools
+npm install
+npm run build
+npm link
+
+bail="--bail"
+runtarget="build+lint+test"
+cd $source_dir/
+
+export PATH=$(npm bin):$PATH
+export NODE_OPTIONS="--max-old-space-size=4096 ${NODE_OPTIONS:-}"
+
+echo "============================================================================================="
+echo "installing..."
+yarn install --frozen-lockfile
+
+echo "============================================================================================="
+echo "building..."
+time lerna run $bail --stream $runtarget || fail
+
+echo "============================================================================================="
+echo "packaging..."
+time lerna run --bail --stream jsii-pacmak || fail
+
+echo "============================================================================================="
+echo "reverting back versions and updates to package.json for CDK v2..."
+/bin/bash $deployment_dir/align-version.sh revert
+
+echo "============================================================================================="
+echo "reverting back Import statements for CDK v2..."
+/bin/bash $deployment_dir/rewrite-imports.sh revert

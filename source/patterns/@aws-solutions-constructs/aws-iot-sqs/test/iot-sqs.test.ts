@@ -14,7 +14,6 @@
 // Imports
 import { Stack } from "@aws-cdk/core";
 import { IotToSqs, IotToSqsProps } from "../lib";
-import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import * as sqs from '@aws-cdk/aws-sqs';
 import * as kms from '@aws-cdk/aws-kms';
@@ -36,8 +35,6 @@ test('Pattern deployment with default props', () => {
     }
   };
   new IotToSqs(stack, 'test-iot-sqs', props);
-
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
   // Creates a default sqs queue
   expect(stack).toHaveResource("AWS::SQS::Queue", {
@@ -106,8 +103,6 @@ test('Pattern deployment with existing queue', () => {
   };
   new IotToSqs(stack, 'test-iot-sqs', props);
 
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-
   // Creates a default sqs queue
   expect(stack).toHaveResource("AWS::SQS::Queue", {
     QueueName: "existing-queue-obj"
@@ -138,8 +133,6 @@ test('Pattern deployment with queue and dead letter queue props', () => {
     }
   };
   new IotToSqs(stack, 'test-iot-sqs', props);
-
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
   // Creates a queue using the provided props
   expect(stack).toHaveResource("AWS::SQS::Queue", {
@@ -184,8 +177,6 @@ test('Pattern deployment with dead letter queue turned off', () => {
   };
   new IotToSqs(stack, 'test-iot-sqs', props);
 
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-
   // Creates a queue using the provided props
   expect(stack).toHaveResource("AWS::SQS::Queue", {
     QueueName: "queue-name"
@@ -224,8 +215,6 @@ test('Pattern deployment with custom maxReceiveCount', () => {
   };
   new IotToSqs(stack, 'test-iot-sqs', props);
 
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-
   // Creates a queue using the provided props
   expect(stack).toHaveResource("AWS::SQS::Queue", {
     QueueName: "queue-name",
@@ -260,8 +249,6 @@ test('Pattern deployment without creating a KMS key', () => {
     }
   };
   new IotToSqs(stack, 'test-iot-sqs', props);
-
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
   // Creates a default sqs queue
   expect(stack).toHaveResource("AWS::SQS::Queue", {
@@ -323,8 +310,6 @@ test('Pattern deployment with existing KMS key', () => {
     }
   };
   new IotToSqs(stack, 'test-iot-sqs', props);
-
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
   // Creates a default sqs queue
   expect(stack).toHaveResource("AWS::SQS::Queue", {
@@ -391,8 +376,6 @@ test('Pattern deployment passing KMS key props', () => {
     }
   };
   new IotToSqs(stack, 'test-iot-sqs', props);
-
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
   // Creates a default sqs queue
   expect(stack).toHaveResource("AWS::SQS::Queue", {

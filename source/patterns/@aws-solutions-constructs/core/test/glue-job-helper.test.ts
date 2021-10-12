@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { ResourcePart, SynthUtils } from '@aws-cdk/assert';
+import { ResourcePart } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import { CfnJob, CfnJobProps } from '@aws-cdk/aws-glue';
 import { Role, ServicePrincipal } from '@aws-cdk/aws-iam';
@@ -51,9 +51,7 @@ test('Test deployment with role creation', () => {
       comment: ""
     }], 'kinesis', {STREAM_NAME: 'testStream'})
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
+
   expect(stack).toHaveResourceLike('AWS::Glue::Job', {
     Type: "AWS::Glue::Job",
     Properties: {
@@ -113,7 +111,6 @@ test('Create a Glue Job outside the construct', () => {
       comment: ""
     }], 'kinesis', {STREAM_NAME: 'testStream'})
   });
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   expect(stack).toHaveResourceLike('AWS::Glue::Job', {
     Type: "AWS::Glue::Job",
     Properties: {
@@ -174,8 +171,6 @@ test('Test custom deployment properties', () => {
       comment: ""
     }], 'kinesis', {STREAM_NAME: 'testStream'})
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
   // check if Glue Job Resource was created correctly
   expect(stack).toHaveResourceLike('AWS::Glue::Job', {
@@ -305,8 +300,6 @@ test('Test deployment with role creation', () => {
       comment: ""
     }], 'kinesis', {STREAM_NAME: 'testStream'})
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   expect(stack).toHaveResourceLike('AWS::IAM::Role', {
     Type: "AWS::IAM::Role",
     Properties: {
@@ -361,8 +354,6 @@ test('Test deployment with role creation', () => {
       comment: ""
     }], 'kinesis', {STREAM_NAME: 'testStream'})
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   expect(stack).toHaveResourceLike('AWS::S3::Bucket', {
     Type: 'AWS::S3::Bucket',
     Properties: {
@@ -489,35 +480,6 @@ test('GlueJob configuration with glueVersion 2.0 should not support maxCapacity 
   } catch (error) {
     expect(error).toBeInstanceOf(Error);
   }
-});
-
-// --------------------------------------------------------------
-// Supply maxCapacity with GlueVersion 1.0
-// --------------------------------------------------------------
-test('GlueJob configuration with glueVersion 1.0 should support maxCapacity', () => {
-  const stack = new Stack();
-  const _database = defaults.createGlueDatabase(stack);
-  defaults.buildGlueJob(stack, {
-    outputDataStore: {
-      datastoreType: defaults.SinkStoreType.S3
-    },
-    database: _database,
-    table: defaults.createGlueTable(stack, _database, defaults.DefaultGlueTableProps(_database, [{
-      name: "id",
-      type: "int",
-      comment: ""
-    }], 'kinesis', {STREAM_NAME: 'testStream'})),
-    glueJobProps: {
-      command: {
-        name: "gluejob1.0",
-        pythonVersion: '3',
-        scriptLocation: 's3://fakelocation/script'
-      },
-      glueVersion: '1.0',
-      maxCapacity: 2
-    }
-  });
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------

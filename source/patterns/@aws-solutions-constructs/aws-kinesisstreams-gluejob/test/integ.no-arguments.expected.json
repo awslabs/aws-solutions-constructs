@@ -1,19 +1,5 @@
 {
   "Description": "Integration Test for aws-kinesisstream-gluejob",
-  "Parameters": {
-    "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3Bucket4DB21A17": {
-      "Type": "String",
-      "Description": "S3 bucket for asset \"4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95\""
-    },
-    "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3VersionKeyBC9CB88A": {
-      "Type": "String",
-      "Description": "S3 key for asset version \"4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95\""
-    },
-    "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95ArtifactHash0821F50E": {
-      "Type": "String",
-      "Description": "Artifact hash for asset \"4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95\""
-    }
-  },
   "Resources": {
     "testkinesisstreamslambdaKinesisStream374D6D56": {
       "Type": "AWS::Kinesis::Stream",
@@ -135,7 +121,7 @@
                 "s3:GetBucket*",
                 "s3:List*",
                 "s3:DeleteObject*",
-                "s3:PutObject*",
+                "s3:PutObject",
                 "s3:Abort*"
               ],
               "Effect": "Allow",
@@ -178,37 +164,7 @@
                       {
                         "Ref": "AWS::Partition"
                       },
-                      ":s3:::",
-                      {
-                        "Ref": "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3Bucket4DB21A17"
-                      },
-                      "/",
-                      {
-                        "Fn::Select": [
-                          0,
-                          {
-                            "Fn::Split": [
-                              "||",
-                              {
-                                "Ref": "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3VersionKeyBC9CB88A"
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "Fn::Select": [
-                          1,
-                          {
-                            "Fn::Split": [
-                              "||",
-                              {
-                                "Ref": "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3VersionKeyBC9CB88A"
-                              }
-                            ]
-                          }
-                        ]
-                      }
+                      ":s3:::.4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95.py"
                     ]
                   ]
                 },
@@ -220,38 +176,7 @@
                       {
                         "Ref": "AWS::Partition"
                       },
-                      ":s3:::",
-                      {
-                        "Ref": "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3Bucket4DB21A17"
-                      },
-                      "/",
-                      {
-                        "Fn::Select": [
-                          0,
-                          {
-                            "Fn::Split": [
-                              "||",
-                              {
-                                "Ref": "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3VersionKeyBC9CB88A"
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "Fn::Select": [
-                          1,
-                          {
-                            "Fn::Split": [
-                              "||",
-                              {
-                                "Ref": "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3VersionKeyBC9CB88A"
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      "/*"
+                      ":s3:::.4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95.py/*"
                     ]
                   ]
                 }
@@ -449,44 +374,7 @@
         "Command": {
           "Name": "gluestreaming",
           "PythonVersion": "3",
-          "ScriptLocation": {
-            "Fn::Join": [
-              "",
-              [
-                "s3://",
-                {
-                  "Ref": "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3Bucket4DB21A17"
-                },
-                "/",
-                {
-                  "Fn::Select": [
-                    0,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3VersionKeyBC9CB88A"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "Fn::Select": [
-                    1,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95S3VersionKeyBC9CB88A"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            ]
-          }
+          "ScriptLocation": "asset.4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95.py"
         },
         "Role": {
           "Fn::GetAtt": [
@@ -768,6 +656,40 @@
           ]
         }
       }
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
     }
   }
 }

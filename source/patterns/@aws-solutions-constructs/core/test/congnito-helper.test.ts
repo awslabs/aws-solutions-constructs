@@ -11,26 +11,10 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { Stack } from '@aws-cdk/core';
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as defaults from '../index';
 import '@aws-cdk/assert/jest';
-
-test('snapshot test buildUserPool default params', () => {
-  const stack = new Stack();
-  defaults.buildUserPool(stack);
-
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
-test('snapshot test buildUserPoolClient default params', () => {
-  const stack = new Stack();
-  const userpool = defaults.buildUserPool(stack);
-  defaults.buildUserPoolClient(stack, userpool);
-
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('Test override for buildUserPool', () => {
   const stack = new Stack();

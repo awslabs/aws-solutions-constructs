@@ -1,0 +1,571 @@
+{
+  "Resources": {
+    "cloudfronts3S3LoggingBucket52EEB708": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "LogDeliveryWrite",
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W35",
+              "reason": "This S3 bucket is used as the access logging bucket for another bucket"
+            }
+          ]
+        }
+      }
+    },
+    "cloudfronts3S3LoggingBucketPolicy03B27DF7": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "cloudfronts3S3LoggingBucket52EEB708"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "cloudfronts3S3LoggingBucket52EEB708",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "cloudfronts3S3LoggingBucket52EEB708",
+                    "Arn"
+                  ]
+                }
+              ],
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "cloudfronts3S3BucketF86A1C7E": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "NoncurrentVersionTransitions": [
+                {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90
+                }
+              ],
+              "Status": "Enabled"
+            }
+          ]
+        },
+        "LoggingConfiguration": {
+          "DestinationBucketName": {
+            "Ref": "cloudfronts3S3LoggingBucket52EEB708"
+          }
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "cloudfronts3S3BucketPolicy6D89B9F2": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "cloudfronts3S3BucketF86A1C7E"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "cloudfronts3S3BucketF86A1C7E",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "cloudfronts3S3BucketF86A1C7E",
+                    "Arn"
+                  ]
+                }
+              ],
+              "Sid": "HttpsOnly"
+            },
+            {
+              "Action": "s3:GetObject",
+              "Effect": "Allow",
+              "Principal": {
+                "CanonicalUser": {
+                  "Fn::GetAtt": [
+                    "cloudfronts3CloudFrontDistributionOrigin1S3Origin972E52F0",
+                    "S3CanonicalUserId"
+                  ]
+                }
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "cloudfronts3S3BucketF86A1C7E",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "F16",
+              "reason": "Public website bucket policy requires a wildcard principal"
+            }
+          ]
+        }
+      }
+    },
+    "cloudfronts3SetHttpSecurityHeadersD1C22CC2": {
+      "Type": "AWS::CloudFront::Function",
+      "Properties": {
+        "Name": "SetHttpSecurityHeadersc82ceef09ae245c221888cea9386c4d1f7f7e3db47",
+        "AutoPublish": true,
+        "FunctionCode": "function handler(event) { var response = event.response;       var headers = response.headers;       headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'};       headers['content-security-policy'] = { value: \"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\"};       headers['x-content-type-options'] = { value: 'nosniff'};       headers['x-frame-options'] = {value: 'DENY'};       headers['x-xss-protection'] = {value: '1; mode=block'};       return response;     }",
+        "FunctionConfig": {
+          "Comment": "SetHttpSecurityHeadersc82ceef09ae245c221888cea9386c4d1f7f7e3db47",
+          "Runtime": "cloudfront-js-1.0"
+        }
+      }
+    },
+    "cloudfronts3CloudfrontLoggingBucket5B845143": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "LogDeliveryWrite",
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W35",
+              "reason": "This S3 bucket is used as the access logging bucket for CloudFront Distribution"
+            }
+          ]
+        }
+      }
+    },
+    "cloudfronts3CloudfrontLoggingBucketPolicy36460DAD": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "cloudfronts3CloudfrontLoggingBucket5B845143"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "cloudfronts3CloudfrontLoggingBucket5B845143",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "cloudfronts3CloudfrontLoggingBucket5B845143",
+                    "Arn"
+                  ]
+                }
+              ],
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "cloudfronts3CloudFrontDistributionOrigin1S3Origin972E52F0": {
+      "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+      "Properties": {
+        "CloudFrontOriginAccessIdentityConfig": {
+          "Comment": "Identity for noargumentscloudfronts3CloudFrontDistributionOrigin176C780AD"
+        }
+      }
+    },
+    "cloudfronts3CloudFrontDistributionD60CF212": {
+      "Type": "AWS::CloudFront::Distribution",
+      "Properties": {
+        "DistributionConfig": {
+          "DefaultCacheBehavior": {
+            "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+            "Compress": true,
+            "FunctionAssociations": [
+              {
+                "EventType": "viewer-response",
+                "FunctionARN": {
+                  "Fn::GetAtt": [
+                    "cloudfronts3SetHttpSecurityHeadersD1C22CC2",
+                    "FunctionARN"
+                  ]
+                }
+              }
+            ],
+            "TargetOriginId": "noargumentscloudfronts3CloudFrontDistributionOrigin176C780AD",
+            "ViewerProtocolPolicy": "redirect-to-https"
+          },
+          "DefaultRootObject": "index.html",
+          "Enabled": true,
+          "HttpVersion": "http2",
+          "IPV6Enabled": true,
+          "Logging": {
+            "Bucket": {
+              "Fn::GetAtt": [
+                "cloudfronts3CloudfrontLoggingBucket5B845143",
+                "RegionalDomainName"
+              ]
+            }
+          },
+          "Origins": [
+            {
+              "DomainName": {
+                "Fn::GetAtt": [
+                  "cloudfronts3S3BucketF86A1C7E",
+                  "RegionalDomainName"
+                ]
+              },
+              "Id": "noargumentscloudfronts3CloudFrontDistributionOrigin176C780AD",
+              "S3OriginConfig": {
+                "OriginAccessIdentity": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "origin-access-identity/cloudfront/",
+                      {
+                        "Ref": "cloudfronts3CloudFrontDistributionOrigin1S3Origin972E52F0"
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "WebACLId": {
+            "Fn::GetAtt": [
+              "testwafwebaclcloudfronts3testwafwebaclcloudfronts3WebACLC6A34449",
+              "Arn"
+            ]
+          }
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W70",
+              "reason": "Since the distribution uses the CloudFront domain name, CloudFront automatically sets the security policy to TLSv1 regardless of the value of MinimumProtocolVersion"
+            }
+          ]
+        }
+      }
+    },
+    "testwafwebaclcloudfronts3testwafwebaclcloudfronts3WebACLC6A34449": {
+      "Type": "AWS::WAFv2::WebACL",
+      "Properties": {
+        "DefaultAction": {
+          "Allow": {}
+        },
+        "Scope": "CLOUDFRONT",
+        "VisibilityConfig": {
+          "CloudWatchMetricsEnabled": true,
+          "MetricName": "webACL",
+          "SampledRequestsEnabled": true
+        },
+        "Rules": [
+          {
+            "Name": "AWS-AWSManagedRulesBotControlRuleSet",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 0,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesBotControlRuleSet",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesBotControlRuleSet",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesKnownBadInputsRuleSet",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 1,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesKnownBadInputsRuleSet",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesKnownBadInputsRuleSet",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesCommonRuleSet",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 2,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesCommonRuleSet",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesCommonRuleSet",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesAnonymousIpList",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 3,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesAnonymousIpList",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesAnonymousIpList",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesAmazonIpReputationList",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 4,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesAmazonIpReputationList",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesAmazonIpReputationList",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesAdminProtectionRuleSet",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 5,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesAdminProtectionRuleSet",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesAdminProtectionRuleSet",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesSQLiRuleSet",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 6,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesSQLiRuleSet",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesSQLiRuleSet",
+              "SampledRequestsEnabled": true
+            }
+          }
+        ]
+      }
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
+    }
+  }
+}

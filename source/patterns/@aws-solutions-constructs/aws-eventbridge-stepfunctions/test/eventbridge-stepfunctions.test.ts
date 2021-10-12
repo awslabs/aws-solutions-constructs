@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import * as events from '@aws-cdk/aws-events';
 import { EventbridgeToStepfunctions, EventbridgeToStepfunctionsProps } from '../lib/index';
 import { Duration } from '@aws-cdk/core';
@@ -35,11 +34,24 @@ function deployNewStateMachine(stack: cdk.Stack) {
   return new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions', props);
 }
 
-test('snapshot test EventbridgeToStepfunctions default params', () => {
-  const stack = new cdk.Stack();
-  deployNewStateMachine(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
+function deployNewStateMachineAndEventBus(stack: cdk.Stack) {
+
+  const startState = new sfn.Pass(stack, 'StartState');
+
+  const props: EventbridgeToStepfunctionsProps = {
+    stateMachineProps: {
+      definition: startState
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {}
+  };
+
+  return new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions-eventbus', props);
+}
 
 test('check events rule role policy permissions', () => {
   const stack = new cdk.Stack();
@@ -118,4 +130,66 @@ test('check properties with no CW Alarms', () => {
   expect(construct.stateMachine !== null);
   expect(construct.eventsRule !== null);
   expect(construct.stateMachineLogGroup !== null);
+});
+
+test('check eventbus property, snapshot & eventbus exists', () => {
+  const stack = new cdk.Stack();
+
+  const construct: EventbridgeToStepfunctions = deployNewStateMachineAndEventBus(stack);
+
+  expect(construct.cloudwatchAlarms !== null);
+  expect(construct.stateMachine !== null);
+  expect(construct.eventsRule !== null);
+  expect(construct.stateMachineLogGroup !== null);
+  expect(construct.eventBus !== null);
+
+  // Check whether eventbus exists
+  expect(stack).toHaveResource('AWS::Events::EventBus');
+});
+
+test('check exception while passing existingEventBus & eventBusProps', () => {
+  const stack = new cdk.Stack();
+  const startState = new sfn.Pass(stack, 'StartState');
+
+  const props: EventbridgeToStepfunctionsProps = {
+    stateMachineProps: {
+      definition: startState
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {},
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, {})
+  };
+
+  const app = () => {
+    new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions', props);
+  };
+  expect(app).toThrowError();
+});
+
+test('check custom event bus resource with props when deploy:true', () => {
+  const stack = new cdk.Stack();
+  const startState = new sfn.Pass(stack, 'StartState');
+
+  const props: EventbridgeToStepfunctionsProps = {
+    stateMachineProps: {
+      definition: startState
+    },
+    eventBusProps: {
+      eventBusName: 'testcustomeventbus'
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventbridgeToStepfunctions(stack, 'test-new-eventbridge-stepfunctions', props);
+
+  expect(stack).toHaveResource('AWS::Events::EventBus', {
+    Name: 'testcustomeventbus'
+  });
 });

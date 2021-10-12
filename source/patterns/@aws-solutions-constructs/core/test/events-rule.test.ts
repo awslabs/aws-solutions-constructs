@@ -11,42 +11,13 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { Stack } from '@aws-cdk/core';
-import * as lambda from '@aws-cdk/aws-lambda';
 import * as events from '@aws-cdk/aws-events';
 import * as defaults from '../index';
 import '@aws-cdk/assert/jest';
 import { Schedule } from '@aws-cdk/aws-events';
 import { Duration } from '@aws-cdk/core';
 import { overrideProps } from '../lib/utils';
-
-test('snapshot test EventsRuleProps default params', () => {
-  const stack = new Stack();
-
-  const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_12_X,
-    handler: 'index.handler',
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-  };
-
-  const fn = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
-
-  const lambdaFunc: events.IRuleTarget = {
-    bind: () => ({
-      id: '',
-      arn: fn.functionArn
-    })
-  };
-
-  const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([lambdaFunc]);
-  const eventsRuleProps = overrideProps(defaultEventsRuleProps, {
-    schedule: Schedule.rate(Duration.minutes(5))
-  });
-
-  new events.Rule(stack, 'Events', eventsRuleProps);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('test EventsRuleProps override ruleName and description', () => {
   const stack = new Stack();

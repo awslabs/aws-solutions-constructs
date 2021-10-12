@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import * as cdk from "@aws-cdk/core";
 import * as events from "@aws-cdk/aws-events";
 import * as defaults from '@aws-solutions-constructs/core';
@@ -27,11 +26,17 @@ function deployNewStack(stack: cdk.Stack) {
   return new EventsRuleToSns(stack, 'test', props);
 }
 
-test('snapshot test EventsRuleToSns default params', () => {
-  const stack = new cdk.Stack();
-  deployNewStack(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
+function deployStackWithNewEventBus(stack: cdk.Stack) {
+  const props: EventsRuleToSnsProps = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {}
+  };
+  return new EventsRuleToSns(stack, 'test-neweventbus', props);
+}
 
 test('check if the event rule has permission/policy in place in sns for it to be able to publish to the topic', () => {
   const stack = new cdk.Stack();
@@ -78,7 +83,7 @@ test('check if the event rule has permission/policy in place in sns for it to be
             }
           },
           Resource: {
-            Ref: "testSnsTopic431DB510"
+            Ref: "testtestWSnsTopicBFF33C41"
           },
           Sid: "TopicOwnerOnlyAccess"
         },
@@ -104,7 +109,7 @@ test('check if the event rule has permission/policy in place in sns for it to be
             AWS: "*"
           },
           Resource: {
-            Ref: "testSnsTopic431DB510"
+            Ref: "testtestWSnsTopicBFF33C41"
           },
           Sid: "HttpsOnly"
         },
@@ -115,7 +120,7 @@ test('check if the event rule has permission/policy in place in sns for it to be
             Service: "events.amazonaws.com"
           },
           Resource: {
-            Ref: "testSnsTopic431DB510"
+            Ref: "testtestWSnsTopicBFF33C41"
           },
           Sid: "2"
         }
@@ -124,7 +129,7 @@ test('check if the event rule has permission/policy in place in sns for it to be
     },
     Topics: [
       {
-        Ref: "testSnsTopic431DB510"
+        Ref: "testtestWSnsTopicBFF33C41"
       }
     ]
   }
@@ -141,11 +146,11 @@ test('check events rule properties', () => {
     Targets: [
       {
         Arn: {
-          Ref: "testSnsTopic431DB510"
+          Ref: "testtestWSnsTopicBFF33C41"
         },
         Id: {
           "Fn::GetAtt": [
-            "testSnsTopic431DB510",
+            "testtestWSnsTopicBFF33C41",
             "TopicName"
           ]
         }
@@ -169,7 +174,7 @@ test('check the sns topic properties', () => {
   expect(stack).toHaveResource('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "testEncryptionKey7058DF17",
+        "testtestWEncryptionKeyC6B126B6",
         "Arn"
       ]
     }
@@ -201,64 +206,60 @@ test('check the sns topic properties with existing KMS key', () => {
   });
 
   expect(stack).toHaveResource('AWS::KMS::Key', {
-    KeyPolicy: {
-      Statement: [
-        {
-          Action: [
-            "kms:Create*",
-            "kms:Describe*",
-            "kms:Enable*",
-            "kms:List*",
-            "kms:Put*",
-            "kms:Update*",
-            "kms:Revoke*",
-            "kms:Disable*",
-            "kms:Get*",
-            "kms:Delete*",
-            "kms:ScheduleKeyDeletion",
-            "kms:CancelKeyDeletion",
-            "kms:GenerateDataKey",
-            "kms:TagResource",
-            "kms:UntagResource"
-          ],
-          Effect: "Allow",
-          Principal: {
-            AWS: {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:",
-                  {
-                    Ref: "AWS::Partition"
-                  },
-                  ":iam::",
-                  {
-                    Ref: "AWS::AccountId"
-                  },
-                  ":root"
-                ]
-              ]
-            }
-          },
-          Resource: "*"
-        },
-        {
-          Action: [
-            "kms:Decrypt",
-            "kms:Encrypt",
-            "kms:ReEncrypt*",
-            "kms:GenerateDataKey*"
-          ],
-          Effect: "Allow",
-          Principal: {
-            Service: "events.amazonaws.com"
-          },
-          Resource: "*"
-        }
-      ],
-      Version: "2012-10-17"
-    },
     Description: "my-key",
     EnableKeyRotation: true
+  });
+});
+
+test('check eventbus property, snapshot & eventbus exists', () => {
+  const stack = new cdk.Stack();
+
+  const construct: EventsRuleToSns = deployStackWithNewEventBus(stack);
+
+  expect(construct.eventsRule !== null);
+  expect(construct.snsTopic !== null);
+  expect(construct.encryptionKey !== null);
+  expect(construct.eventBus !== null);
+
+  // Check whether eventbus exists
+  expect(stack).toHaveResource('AWS::Events::EventBus');
+});
+
+test('check exception while passing existingEventBus & eventBusProps', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventsRuleToSnsProps = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {},
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, {})
+  };
+
+  const app = () => {
+    new EventsRuleToSns(stack, 'test-eventsrule-sns', props);
+  };
+  expect(app).toThrowError();
+});
+
+test('check custom event bus resource with props when deploy:true', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventsRuleToSnsProps = {
+    eventBusProps: {
+      eventBusName: 'testcustomeventbus'
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventsRuleToSns(stack, 'test-new-eventsrule-sns', props);
+
+  expect(stack).toHaveResource('AWS::Events::EventBus', {
+    Name: 'testcustomeventbus'
   });
 });

@@ -32,7 +32,7 @@ export interface S3ToStepFunctionProps {
    */
   readonly existingBucketObj?: s3.IBucket,
   /**
-   * User provided props to override the default props for the S3 Bucket.
+   * Optional user provided props to override the default props for the S3 Bucket.
    *
    * @default - Default props are used
    */
@@ -44,7 +44,7 @@ export interface S3ToStepFunctionProps {
    */
   readonly stateMachineProps: sfn.StateMachineProps,
   /**
-   * User provided eventRuleProps to override the defaults
+   * Optional User provided eventRuleProps to override the defaults
    *
    * @default - None
    */
@@ -67,6 +67,12 @@ export interface S3ToStepFunctionProps {
    * @default - Default props are used
    */
   readonly logGroupProps?: logs.LogGroupProps
+  /**
+   * Optional user provided props to override the default props for the S3 Logging Bucket.
+   *
+   * @default - Default props are used
+   */
+   readonly loggingBucketProps?: s3.BucketProps
 }
 
 export class S3ToStepFunction extends Construct {
@@ -89,7 +95,12 @@ export class S3ToStepFunction extends Construct {
   constructor(scope: Construct, id: string, props: S3ToStepFunctionProps) {
     super(scope, id);
     const convertedProps: S3ToStepFunctionProps = { ...props };
-    const wrappedConstruct: S3ToStepFunction = new S3ToStepfunctions(this, `${id}-wrapped`, convertedProps);
+
+    // W (for 'wrapped') is added to the id so that the id's of the constructs with the old and new names don't collide
+    // If this character pushes you beyond the 64 character limit, just import the new named construct and instantiate
+    // it in place of the older named version. They are functionally identical, aside from the types no other changes
+    // will be required.  (eg - new S3ToStepfunctions instead of S3ToStepFunction)
+    const wrappedConstruct: S3ToStepFunction = new S3ToStepfunctions(this, `${id}W`, convertedProps);
 
     this.stateMachine = wrappedConstruct.stateMachine;
     this.stateMachineLogGroup = wrappedConstruct.stateMachineLogGroup;

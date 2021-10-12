@@ -26,23 +26,36 @@ export interface EventsRuleToLambdaProps {
    *
    * @default - None
    */
-  readonly existingLambdaObj?: lambda.Function,
+  readonly existingLambdaObj?: lambda.Function;
   /**
    * User provided props to override the default props for the Lambda function.
    *
    * @default - Default props are used
    */
-  readonly lambdaFunctionProps?: lambda.FunctionProps,
+  readonly lambdaFunctionProps?: lambda.FunctionProps;
+  /**
+   * Existing instance of a custom EventBus.
+   *
+   * @default - None
+   */
+  readonly existingEventBusInterface?: events.IEventBus;
+  /**
+   * A new custom EventBus is created with provided props.
+   *
+   * @default - None
+   */
+  readonly eventBusProps?: events.EventBusProps;
   /**
    * User provided eventRuleProps to override the defaults
    *
    * @default - None
    */
-  readonly eventRuleProps: events.RuleProps
+  readonly eventRuleProps: events.RuleProps;
 }
 
 export class EventsRuleToLambda extends Construct {
   public readonly lambdaFunction: lambda.Function;
+  public readonly eventBus?: events.IEventBus;
   public readonly eventsRule: events.Rule;
 
   /**
@@ -55,9 +68,15 @@ export class EventsRuleToLambda extends Construct {
   constructor(scope: Construct, id: string, props: EventsRuleToLambdaProps) {
     super(scope, id);
     const convertedProps: EventsRuleToLambdaProps = { ...props };
-    const wrappedConstruct: EventsRuleToLambda = new EventbridgeToLambda(this, `${id}-wrapped`, convertedProps);
+
+    // W (for 'wrapped') is added to the id so that the id's of the constructs with the old and new names don't collide
+    // If this character pushes you beyond the 64 character limit, just import the new named construct and instantiate
+    // it in place of the older named version. They are functionally identical, aside from the types no other changes
+    // will be required.  (eg - new EventbridgeToLambda instead of EventsRuleToLambda)
+    const wrappedConstruct: EventsRuleToLambda = new EventbridgeToLambda(this, `${id}W`, convertedProps);
 
     this.lambdaFunction = wrappedConstruct.lambdaFunction;
     this.eventsRule = wrappedConstruct.eventsRule;
+    this.eventBus = wrappedConstruct.eventBus;
   }
 }

@@ -1,0 +1,161 @@
+{
+  "Description": "Integration Test for aws-eventsrule-kinesisstreams with existing kinesis stream",
+  "Resources": {
+    "teststream04374A09": {
+      "Type": "AWS::Kinesis::Stream",
+      "Properties": {
+        "ShardCount": 2,
+        "RetentionPeriodHours": 24,
+        "StreamEncryption": {
+          "EncryptionType": "KMS",
+          "KeyId": "alias/aws/kinesis"
+        }
+      }
+    },
+    "existingeventbusA5B80487": {
+      "Type": "AWS::Events::EventBus",
+      "Properties": {
+        "Name": "eventsrulekinesisstreamsexistingeventbusexistingeventbus213FA4D6"
+      }
+    },
+    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWeventsRole95F9546E": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Description": "Events Rule Role"
+      }
+    },
+    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWeventsRoleDefaultPolicy1EDA1128": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "kinesis:ListShards",
+                "kinesis:PutRecord",
+                "kinesis:PutRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "teststream04374A09",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWeventsRoleDefaultPolicy1EDA1128",
+        "Roles": [
+          {
+            "Ref": "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWeventsRole95F9546E"
+          }
+        ]
+      }
+    },
+    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWEventsRule2FF4D2A3": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "EventBusName": {
+          "Ref": "existingeventbusA5B80487"
+        },
+        "EventPattern": {
+          "source": [
+            "solutionsconstructs"
+          ]
+        },
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::GetAtt": [
+                "teststream04374A09",
+                "Arn"
+              ]
+            },
+            "Id": "Target0",
+            "RoleArn": {
+              "Fn::GetAtt": [
+                "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWeventsRole95F9546E",
+                "Arn"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWKinesisStreamGetRecordsIteratorAgeAlarm43FEE706": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
+        "MetricName": "GetRecords.IteratorAgeMilliseconds",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 2592000
+      }
+    },
+    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWKinesisStreamReadProvisionedThroughputExceededAlarmC7B9BAE4": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
+        "MetricName": "ReadProvisionedThroughputExceeded",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Average",
+        "Threshold": 0
+      }
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
+    }
+  }
+}

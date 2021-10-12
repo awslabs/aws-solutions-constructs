@@ -26,42 +26,55 @@ export interface EventbridgeToSnsProps {
      *
      * @default - Default props are used
      */
-    readonly topicProps?: sns.TopicProps
+    readonly topicProps?: sns.TopicProps;
+    /**
+     * Existing instance of a custom EventBus.
+     *
+     * @default - None
+     */
+    readonly existingEventBusInterface?: events.IEventBus;
+    /**
+     * A new custom EventBus is created with provided props.
+     *
+     * @default - None
+     */
+    readonly eventBusProps?: events.EventBusProps;
     /**
      * User provided eventRuleProps to override the defaults
      *
      * @default - None
      */
-    readonly eventRuleProps: events.RuleProps
+    readonly eventRuleProps: events.RuleProps;
     /**
      * Existing instance of SNS Topic object, providing both this and topicProps will cause an error..
      *
      * @default - Default props are used
      */
-    readonly existingTopicObj?: sns.Topic,
+    readonly existingTopicObj?: sns.Topic;
     /**
      * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
      * the encryptionKey property for this construct.
      *
      * @default - true (encryption enabled, managed by this CDK app).
      */
-    readonly enableEncryptionWithCustomerManagedKey?: boolean
+    readonly enableEncryptionWithCustomerManagedKey?: boolean;
     /**
      * An optional, imported encryption key to encrypt the SQS queue, and SNS Topic.
      *
      * @default - not specified.
      */
-    readonly encryptionKey?: kms.Key
+    readonly encryptionKey?: kms.Key;
     /**
      * Optional user-provided props to override the default props for the encryption key.
      *
      * @default - Default props are used.
      */
-    readonly encryptionKeyProps?: kms.KeyProps
+    readonly encryptionKeyProps?: kms.KeyProps;
 }
 
 export class EventbridgeToSns extends Construct {
     public readonly snsTopic: sns.Topic;
+    public readonly eventBus?: events.IEventBus;
     public readonly eventsRule: events.Rule;
     public readonly encryptionKey?: kms.Key;
 
@@ -99,8 +112,14 @@ export class EventbridgeToSns extends Construct {
         })
       };
 
+      // build an event bus if existingEventBus is provided or eventBusProps are provided
+      this.eventBus = defaults.buildEventBus(this, {
+        existingEventBusInterface: props.existingEventBusInterface,
+        eventBusProps: props.eventBusProps
+      });
+
       // Setup up the event rule property.
-      const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([topicEventTarget]);
+      const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([topicEventTarget], this.eventBus);
       const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);
 
       // Setup up the event rule.
@@ -109,13 +128,12 @@ export class EventbridgeToSns extends Construct {
       // Setup up the grant policy for event to be able to publish to the sns topic.
       this.snsTopic.grantPublish(new ServicePrincipal('events.amazonaws.com'));
 
-        // Grant EventBridge service access to the SNS Topic encryption key
-        this.encryptionKey?.grant(new ServicePrincipal('events.amazonaws.com'),
-            "kms:Decrypt",
-            "kms:Encrypt",
-            "kms:ReEncrypt*",
-            "kms:GenerateDataKey*"
-        );
+      // Grant EventBridge service access to the SNS Topic encryption key
+      this.encryptionKey?.grant(new ServicePrincipal('events.amazonaws.com'),
+          "kms:Decrypt",
+          "kms:Encrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*"
+      );
     }
-
 }

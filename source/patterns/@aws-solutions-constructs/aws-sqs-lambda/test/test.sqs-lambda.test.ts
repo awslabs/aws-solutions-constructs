@@ -15,28 +15,7 @@
 import { Stack } from "@aws-cdk/core";
 import { SqsToLambda, SqsToLambdaProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
-import * as sqs from '@aws-cdk/aws-sqs';
-import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
-
-// --------------------------------------------------------------
-// Pattern deployment w/ new Lambda function and
-// default properties
-// --------------------------------------------------------------
-test('Pattern deployment w/ new Lambda function and default props', () => {
-  // Initial Setup
-  const stack = new Stack();
-  const props: SqsToLambdaProps = {
-    lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    }
-  };
-  new SqsToLambda(stack, 'test-sqs-lambda', props);
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 // --------------------------------------------------------------
 // Pattern deployment w/ new Lambda function and
@@ -72,28 +51,6 @@ test('Pattern deployment w/ new Lambda function and overridden props', () => {
       }
     }
   });
-});
-
-// --------------------------------------------------------------
-// Pattern Deployment w/ Existing Lambda function
-// --------------------------------------------------------------
-test('Pattern deployment w/ Existing Lambda Function', () => {
-  // Initial Setup
-  const stack = new Stack();
-  const fn = new lambda.Function(stack, 'ExistingLambdaFunction', {
-    runtime: lambda.Runtime.NODEJS_10_X,
-    handler: 'index.handler',
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-  });
-  const props: SqsToLambdaProps = {
-    existingLambdaObj: fn,
-    deployDeadLetterQueue: false,
-    maxReceiveCount: 0,
-    queueProps: {}
-  };
-  new SqsToLambda(stack, 'test-apigateway-lambda', props);
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
@@ -155,28 +112,6 @@ test('Test error handling for new Lambda function w/o required properties', () =
   expect(() => {
     new SqsToLambda(stack, 'test-sqs-lambda', props);
   }).toThrowError();
-});
-
-// --------------------------------------------------------------
-// Test deployment w/ existing queue
-// --------------------------------------------------------------
-test('Test deployment w/ existing queue', () => {
-  // Stack
-  const stack = new Stack();
-  // Helper declaration
-  const queue = new sqs.Queue(stack, 'existing-queue-obj', {
-    queueName: 'existing-queue-obj'
-  });
-  new SqsToLambda(stack, 'lambda-to-sqs-stack', {
-    lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    },
-    existingQueueObj: queue
-  });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------

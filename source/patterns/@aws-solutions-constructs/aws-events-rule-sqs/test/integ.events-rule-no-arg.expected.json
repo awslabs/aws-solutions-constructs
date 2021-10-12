@@ -1,6 +1,6 @@
 {
   "Resources": {
-    "testtestwrappeddeadLetterQueue36E8394D": {
+    "testtestWdeadLetterQueueADA5E2B4": {
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": "alias/aws/sqs"
@@ -8,7 +8,7 @@
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete"
     },
-    "testtestwrappeddeadLetterQueuePolicyEAD361CF": {
+    "testtestWdeadLetterQueuePolicy146CFBB4": {
       "Type": "AWS::SQS::QueuePolicy",
       "Properties": {
         "PolicyDocument": {
@@ -44,7 +44,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "testtestwrappeddeadLetterQueue36E8394D",
+                  "testtestWdeadLetterQueueADA5E2B4",
                   "Arn"
                 ]
               },
@@ -63,7 +63,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "testtestwrappeddeadLetterQueue36E8394D",
+                  "testtestWdeadLetterQueueADA5E2B4",
                   "Arn"
                 ]
               },
@@ -74,34 +74,18 @@
         },
         "Queues": [
           {
-            "Ref": "testtestwrappeddeadLetterQueue36E8394D"
+            "Ref": "testtestWdeadLetterQueueADA5E2B4"
           }
         ]
       }
     },
-    "testtestwrappedEncryptionKey3FF098D5": {
+    "testtestWEncryptionKeyC6B126B6": {
       "Type": "AWS::KMS::Key",
       "Properties": {
         "KeyPolicy": {
           "Statement": [
             {
-              "Action": [
-                "kms:Create*",
-                "kms:Describe*",
-                "kms:Enable*",
-                "kms:List*",
-                "kms:Put*",
-                "kms:Update*",
-                "kms:Revoke*",
-                "kms:Disable*",
-                "kms:Get*",
-                "kms:Delete*",
-                "kms:ScheduleKeyDeletion",
-                "kms:CancelKeyDeletion",
-                "kms:GenerateDataKey",
-                "kms:TagResource",
-                "kms:UntagResource"
-              ],
+              "Action": "kms:*",
               "Effect": "Allow",
               "Principal": {
                 "AWS": {
@@ -144,19 +128,19 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "testtestwrappedqueue64D2F079": {
+    "testtestWqueue5267657C": {
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": {
           "Fn::GetAtt": [
-            "testtestwrappedEncryptionKey3FF098D5",
+            "testtestWEncryptionKeyC6B126B6",
             "Arn"
           ]
         },
         "RedrivePolicy": {
           "deadLetterTargetArn": {
             "Fn::GetAtt": [
-              "testtestwrappeddeadLetterQueue36E8394D",
+              "testtestWdeadLetterQueueADA5E2B4",
               "Arn"
             ]
           },
@@ -166,7 +150,7 @@
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete"
     },
-    "testtestwrappedqueuePolicyF9990682": {
+    "testtestWqueuePolicy5769D7F4": {
       "Type": "AWS::SQS::QueuePolicy",
       "Properties": {
         "PolicyDocument": {
@@ -202,7 +186,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "testtestwrappedqueue64D2F079",
+                  "testtestWqueue5267657C",
                   "Arn"
                 ]
               },
@@ -221,7 +205,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "testtestwrappedqueue64D2F079",
+                  "testtestWqueue5267657C",
                   "Arn"
                 ]
               },
@@ -239,7 +223,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "testtestwrappedqueue64D2F079",
+                  "testtestWqueue5267657C",
                   "Arn"
                 ]
               }
@@ -249,12 +233,12 @@
         },
         "Queues": [
           {
-            "Ref": "testtestwrappedqueue64D2F079"
+            "Ref": "testtestWqueue5267657C"
           }
         ]
       }
     },
-    "testtestwrappedEventsRule9009C17B": {
+    "testtestWEventsRuleDF9938A8": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "ScheduleExpression": "rate(5 minutes)",
@@ -263,19 +247,53 @@
           {
             "Arn": {
               "Fn::GetAtt": [
-                "testtestwrappedqueue64D2F079",
+                "testtestWqueue5267657C",
                 "Arn"
               ]
             },
             "Id": {
               "Fn::GetAtt": [
-                "testtestwrappedqueue64D2F079",
+                "testtestWqueue5267657C",
                 "QueueName"
               ]
             }
           }
         ]
       }
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
     }
   }
 }

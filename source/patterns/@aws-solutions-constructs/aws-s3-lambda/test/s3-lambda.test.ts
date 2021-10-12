@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { S3ToLambda, S3ToLambdaProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as s3 from '@aws-cdk/aws-s3';
@@ -33,12 +32,6 @@ function deployNewFunc(stack: cdk.Stack) {
   return new S3ToLambda(stack, 'test-s3-lambda', props);
 }
 
-test('snapshot test S3ToLambda default params', () => {
-  const stack = new cdk.Stack();
-  deployNewFunc(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
 test('check properties', () => {
   const stack = new cdk.Stack();
 
@@ -47,24 +40,6 @@ test('check properties', () => {
   expect(construct.lambdaFunction !== null);
   expect(construct.s3Bucket !== null);
   expect(construct.s3LoggingBucket !== null);
-});
-
-test('snapshot test S3ToLambda with versioning turned off', () => {
-  const stack = new cdk.Stack();
-
-  const props: S3ToLambdaProps = {
-    lambdaFunctionProps: {
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
-      handler: 'index.handler'
-    },
-    bucketProps: {
-      versioned: false
-    }
-  };
-
-  new S3ToLambda(stack, 'test-s3-lambda', props);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
@@ -87,4 +62,42 @@ test("Test bad call with existingBucket and bucketProps", () => {
   };
   // Assertion
   expect(app).toThrowError();
+});
+
+// --------------------------------------------------------------
+// s3 bucket with bucket, loggingBucket, and auto delete objects
+// --------------------------------------------------------------
+test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
+  const stack = new cdk.Stack();
+
+  new S3ToLambda(stack, 's3-lambda', {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+    loggingBucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::S3::Bucket", {
+    AccessControl: "LogDeliveryWrite"
+  });
+
+  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+    ServiceToken: {
+      "Fn::GetAtt": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+        "Arn"
+      ]
+    },
+    BucketName: {
+      Ref: "s3lambdaS3LoggingBucketAC6FF14E"
+    }
+  });
 });
