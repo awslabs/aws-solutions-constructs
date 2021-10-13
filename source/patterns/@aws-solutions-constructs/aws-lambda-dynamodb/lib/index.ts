@@ -15,6 +15,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as ec2 from "@aws-cdk/aws-ec2";
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
 /**
@@ -142,15 +143,13 @@ export class LambdaToDynamoDB extends Construct {
 
     // Conditional metadata for cfn_nag
     if (props.dynamoTableProps?.billingMode === dynamodb.BillingMode.PROVISIONED) {
-      const cfnTable: dynamodb.CfnTable = this.dynamoTable.node.findChild('Resource') as dynamodb.CfnTable;
-      cfnTable.cfnOptions.metadata = {
-        cfn_nag: {
-          rules_to_suppress: [{
-            id: 'W73',
-            reason: `PROVISIONED billing mode is a default and is not explicitly applied as a setting.`
-          }]
-        }
-      };
+      defaults.addCfnSuppressRules(this.dynamoTable, [
+        {
+          id: "W73",
+          reason: `PROVISIONED billing mode is a default and is not explicitly applied as a setting.`,
+        },
+      ]);
+
     }
   }
 }

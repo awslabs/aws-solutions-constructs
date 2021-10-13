@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { ResourcePart, SynthUtils } from '@aws-cdk/assert';
+import { ResourcePart } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import { CfnDatabase, CfnJob } from '@aws-cdk/aws-glue';
 import { Stream, StreamEncryption } from '@aws-cdk/aws-kinesis';
@@ -55,9 +55,7 @@ test('Pattern minimal deployment', () => {
 
   const id = 'test-kinesisstreams-lambda';
 
-  new KinesisstreamsToGluejob(stack, id, props);
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  const construct = new KinesisstreamsToGluejob(stack, id, props);
 
   // check for role creation
   expect(stack).toHaveResourceLike('AWS::IAM::Role', {
@@ -255,6 +253,17 @@ test('Pattern minimal deployment', () => {
       }
     }
   }, ResourcePart.CompleteDefinition);
+
+  // Check for cloudwatch alarm
+  expect(stack).toCountResources('AWS::CloudWatch::Alarm', 2);
+
+  // Check for properties
+  expect(construct.database).toBeDefined();
+  expect(construct.glueJob).toBeDefined();
+  expect(construct.table).toBeDefined();
+  expect(construct.kinesisStream).toBeDefined();
+  expect(construct.glueJobRole).toBeDefined();
+  expect(construct.cloudwatchAlarms).toBeDefined();
 });
 
 // --------------------------------------------------------------
@@ -294,8 +303,6 @@ test('Test if existing Glue Job is provided', () => {
       comment: "Some value associated with the record"
     }],
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
   // check for Kinesis Stream
   expect(stack).toHaveResourceLike('AWS::Kinesis::Stream', {
@@ -348,8 +355,6 @@ test('When S3 bucket location for script exists', () => {
     }
   };
   new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', props);
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   expect(stack).toHaveResourceLike('AWS::Glue::Job', {
     Type: 'AWS::Glue::Job',
     Properties: {
@@ -405,7 +410,6 @@ test('create glue job with existing kinesis stream', () => {
     }
   });
 
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   expect(stack).toHaveResourceLike('AWS::Kinesis::Stream', {
     Type: 'AWS::Kinesis::Stream',
     Properties: {
@@ -522,8 +526,6 @@ test('When database and table are provided', () => {
     }], 'kinesis', { STREAM_NAME: 'testStream' })
   };
   new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', props);
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   expect(stack).toHaveResourceLike('AWS::Glue::Database', {
     Type: "AWS::Glue::Database",
     Properties: {
@@ -536,12 +538,13 @@ test('When database and table are provided', () => {
 });
 
 // --------------------------------------------------------------
-// When database and table are not provided
+// When database and table are not provided & cloudwatch alarms set to false
 // --------------------------------------------------------------
-test('When database and table are not provided', () => {
+test('When database and table are not provided & cloudwatch alarms set to false', () => {
   // Initial setup
   const stack = new Stack();
   const props: KinesisstreamsToGluejobProps = {
+    createCloudWatchAlarms: false,
     glueJobProps: {
       command: {
         name: 'glueetl',
@@ -567,9 +570,7 @@ test('When database and table are not provided', () => {
       comment: "Some value associated with the record"
     }]
   };
-  new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', props);
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  const construct = new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', props);
   expect(stack).toHaveResourceLike('AWS::Glue::Database', {
     Type: "AWS::Glue::Database",
     Properties: {
@@ -666,4 +667,10 @@ test('When database and table are not provided', () => {
       }
     }
   }, ResourcePart.CompleteDefinition);
+
+  // Cloudwatch alarms is set to false, no CFN def should exist
+  expect(stack).not.toHaveResource('AWS::CloudWatch::Alarm');
+
+  // Since alarms is set to false, cloudwatch alarms property should be undefined
+  expect(construct.cloudwatchAlarms).toBeUndefined();
 });

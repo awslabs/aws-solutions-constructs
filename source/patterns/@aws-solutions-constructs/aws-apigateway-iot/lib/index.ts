@@ -17,6 +17,7 @@ import * as cdk from '@aws-cdk/core';
 import * as iam from '@aws-cdk/aws-iam';
 import * as logs from '@aws-cdk/aws-logs';
 import * as defaults from '@aws-solutions-constructs/core';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
 /**
@@ -270,19 +271,19 @@ export class ApiGatewayToIot extends Construct {
       methodOptions: resourceMethodOptions
     };
 
-    const apiMethod = defaults.addProxyMethodToApiResource(resourceMethodParams);
+    const apiMethod = defaults.addProxyMethodToApiResource(
+      resourceMethodParams
+    );
 
-    // cfn Nag doesn't like having a HTTP Method with Authorization Set to None, supress the warning
     if (props.apiGatewayCreateApiKey === true) {
-      const cfnMethod = apiMethod.node.findChild('Resource') as api.CfnMethod;
-      cfnMethod.cfnOptions.metadata = {
-        cfn_nag: {
-          rules_to_suppress: [{
-            id: 'W59',
-            reason: 'When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE'
-          }]
-        }
-      };
+      // cfn Nag doesn't like having a HTTP Method with Authorization Set to None, supress the warning
+      defaults.addCfnSuppressRules(apiMethod, [
+        {
+          id: "W59",
+          reason:
+            "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE",
+        },
+      ]);
     }
   }
 }

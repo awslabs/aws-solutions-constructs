@@ -14,9 +14,10 @@
 // Imports
 import { Stack } from "@aws-cdk/core";
 import * as lambda from "@aws-cdk/aws-lambda";
+import * as ec2 from "@aws-cdk/aws-ec2";
 import * as defaults from '@aws-solutions-constructs/core';
 import { LambdaToSqsToLambda, LambdaToSqsToLambdaProps } from '../lib';
-import { SynthUtils, haveResourceLike } from '@aws-cdk/assert';
+import { haveResourceLike } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------
@@ -41,8 +42,7 @@ test('Test minimal deployment', () => {
     }
   };
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
-  // Assertion 1: snapshot test
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
   // Assertion 2: test for an producer function
   expect(stack).toHaveResource('AWS::Lambda::Function', {
     FunctionName: 'producer-function'
@@ -143,8 +143,7 @@ test('Test deployment w/ existing producer function', () => {
     }
   };
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
-  // Assertion 1: snapshot test
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
   // Assertion 2: test for the existing producer function
   expect(stack).toHaveResource('AWS::Lambda::Function', {
     FunctionName: 'existing-producer-function'
@@ -181,8 +180,7 @@ test('Test deployment w/ existing consumer function', () => {
     existingConsumerLambdaObj: existingConsumerFn
   };
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
-  // Assertion 1: snapshot test
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
   // Assertion 2: test for the deployed producer function
   expect(stack).toHaveResource('AWS::Lambda::Function', {
     FunctionName: 'deployed-producer-function'
@@ -222,8 +220,7 @@ test('Test deployment w/ existing queue', () => {
     existingQueueObj: existingQueue
   };
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
-  // Assertion 1: snapshot test
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
   // Assertion 2: test for the existing queue
   expect(stack).toHaveResource('AWS::SQS::Queue', {
     QueueName: 'existing-queue'
@@ -251,8 +248,7 @@ test('Test deployment w/ DLQ explicitly disabled', () => {
     deployDeadLetterQueue: false,
   };
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
-  // Assertion 1: snapshot test
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
   // Assertion 2: test for a non-existing DLQ
   expect(!haveResourceLike('AWS::SQS::Queue', {
     RedrivePolicy: {
@@ -283,8 +279,7 @@ test('Test deployment w/ DLQ explicitly enabled and w/ MRC override', () => {
     maxReceiveCount: 6
   };
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
-  // Assertion 1: snapshot test
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
   // Assertion 2: test for an existing DLQ
   expect(haveResourceLike('AWS::SQS::Queue', {
     RedrivePolicy: {
@@ -321,8 +316,7 @@ test('Test overrides for producer and consumer functions', () => {
     }
   };
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
-  // Assertion 1: snapshot test
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
   // Assertion 2: test for updated runtime on producer function
   expect(stack).toHaveResource('AWS::Lambda::Function', {
     Runtime: "nodejs12.x"
@@ -402,4 +396,237 @@ test('Test lambda function custom environment variable', () => {
       }
     }
   });
+});
+
+// --------------------------------------------------------------
+// Pattern deployment w/ batch size
+// --------------------------------------------------------------
+test('Pattern deployment w/ batch size', () => {
+  const stack = new Stack();
+  const props: LambdaToSqsToLambdaProps = {
+    producerLambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
+      functionName: 'producer-function'
+    },
+    consumerLambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
+      functionName: 'consumer-function'
+    },
+    sqsEventSourceProps: {
+      batchSize: 5
+    }
+  };
+  new LambdaToSqsToLambda(stack, 'test-lambda-sqs-lambda', props);
+
+  expect(stack).toHaveResource('AWS::Lambda::EventSourceMapping', {
+    BatchSize: 5
+  });
+});
+
+// --------------------------------------------------------------
+// Test minimal deployment that deploys a VPC without vpcProps
+// --------------------------------------------------------------
+test("Test minimal deployment that deploys a VPC without vpcProps", () => {
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  new LambdaToSqsToLambda(stack, "lambda-to-sqs-to-lambda-stack", {
+    producerLambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
+      functionName: 'producer-function'
+    },
+    consumerLambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
+      functionName: 'consumer-function'
+    },
+    deployVpc: true,
+  });
+
+  expect(stack).toHaveResource("AWS::Lambda::Function", {
+    VpcConfig: {
+      SecurityGroupIds: [
+        {
+          "Fn::GetAtt": [
+            "lambdatosqstolambdastacklambdatosqsReplaceDefaultSecurityGroupsecuritygroup90A497DF",
+            "GroupId",
+          ],
+        },
+      ],
+      SubnetIds: [
+        {
+          Ref: "lambdatosqstolambdastackVpcisolatedSubnet1Subnet70F24179",
+        },
+        {
+          Ref: "lambdatosqstolambdastackVpcisolatedSubnet2Subnet1D6A3FAF",
+        },
+      ],
+    },
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPC", {
+    EnableDnsHostnames: true,
+    EnableDnsSupport: true,
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+    VpcEndpointType: "Interface",
+  });
+
+  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
+  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+});
+
+// --------------------------------------------------------------
+// Test minimal deployment that deploys a VPC w/vpcProps
+// --------------------------------------------------------------
+test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  new LambdaToSqsToLambda(stack, "lambda-to-sqs-to-lambda-stack", {
+    producerLambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
+      functionName: 'producer-function'
+    },
+    consumerLambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
+      functionName: 'consumer-function'
+    },
+    vpcProps: {
+      enableDnsHostnames: false,
+      enableDnsSupport: false,
+      cidr: "192.68.0.0/16",
+    },
+    deployVpc: true,
+  });
+
+  expect(stack).toHaveResource("AWS::Lambda::Function", {
+    VpcConfig: {
+      SecurityGroupIds: [
+        {
+          "Fn::GetAtt": [
+            "lambdatosqstolambdastacklambdatosqsReplaceDefaultSecurityGroupsecuritygroup90A497DF",
+            "GroupId",
+          ],
+        },
+      ],
+      SubnetIds: [
+        {
+          Ref: "lambdatosqstolambdastackVpcisolatedSubnet1Subnet70F24179",
+        },
+        {
+          Ref: "lambdatosqstolambdastackVpcisolatedSubnet2Subnet1D6A3FAF",
+        },
+      ],
+    },
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPC", {
+    CidrBlock: "192.68.0.0/16",
+    EnableDnsHostnames: true,
+    EnableDnsSupport: true,
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+    VpcEndpointType: "Interface",
+  });
+
+  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
+  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+});
+
+// --------------------------------------------------------------
+// Test minimal deployment with an existing VPC
+// --------------------------------------------------------------
+test("Test minimal deployment with an existing VPC", () => {
+  // Stack
+  const stack = new Stack();
+
+  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
+
+  // Helper declaration
+  new LambdaToSqsToLambda(stack, "lambda-to-sqs-to-lambda-stack", {
+    producerLambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
+      functionName: 'producer-function'
+    },
+    consumerLambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
+      functionName: 'consumer-function'
+    },
+    existingVpc: testVpc,
+  });
+
+  expect(stack).toHaveResource("AWS::Lambda::Function", {
+    VpcConfig: {
+      SecurityGroupIds: [
+        {
+          "Fn::GetAtt": [
+            "lambdatosqstolambdastacklambdatosqsReplaceDefaultSecurityGroupsecuritygroup90A497DF",
+            "GroupId",
+          ],
+        },
+      ],
+      SubnetIds: [
+        {
+          Ref: "testvpcPrivateSubnet1Subnet865FB50A",
+        },
+        {
+          Ref: "testvpcPrivateSubnet2Subnet23D3396F",
+        },
+      ],
+    },
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+    VpcEndpointType: "Interface",
+  });
+});
+
+// --------------------------------------------------------------
+// Test bad call with existingVpc and deployVpc
+// --------------------------------------------------------------
+test("Test bad call with existingVpc and deployVpc", () => {
+  // Stack
+  const stack = new Stack();
+
+  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
+
+  const app = () => {
+    // Helper declaration
+    new LambdaToSqsToLambda(stack, "lambda-to-sqs-to-lambda-stack", {
+      producerLambdaFunctionProps: {
+        runtime: lambda.Runtime.NODEJS_10_X,
+        handler: 'index.handler',
+        code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
+        functionName: 'producer-function'
+      },
+      consumerLambdaFunctionProps: {
+        runtime: lambda.Runtime.NODEJS_10_X,
+        handler: 'index.handler',
+        code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
+        functionName: 'consumer-function'
+      },
+      existingVpc: testVpc,
+      deployVpc: true,
+    });
+  };
+  // Assertion
+  expect(app).toThrowError();
 });

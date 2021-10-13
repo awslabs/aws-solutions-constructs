@@ -16,6 +16,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as defaults from '@aws-solutions-constructs/core';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
 /**
@@ -29,7 +30,7 @@ export interface LambdaToS3Props {
    */
   readonly existingLambdaObj?: lambda.Function;
   /**
-   * User provided props to override the default props for the Lambda function.
+   * Optional user provided props to override the default props for the Lambda function.
    *
    * @default - Default properties are used.
    */
@@ -41,7 +42,7 @@ export interface LambdaToS3Props {
    */
   readonly existingBucketObj?: s3.IBucket;
   /**
-   * User provided props to override the default props for the S3 Bucket.
+   * Optional user provided props to override the default props for the S3 Bucket.
    *
    * @default - Default props are used
    */
@@ -68,11 +69,17 @@ export interface LambdaToS3Props {
    */
   readonly deployVpc?: boolean;
   /**
-   * Optional Name for the S3 bucket environment variable set for the Lambda function.
+   * Optional name for the S3 bucket environment variable set for the Lambda function.
    *
    * @default - None
    */
   readonly bucketEnvironmentVariableName?: string;
+  /**
+   * Optional user provided props to override the default props for the S3 Logging Bucket.
+   *
+   * @default - Default props are used
+   */
+   readonly loggingBucketProps?: s3.BucketProps
 }
 
 /**
@@ -130,7 +137,8 @@ export class LambdaToS3 extends Construct {
       // Setup S3 Bucket
       if (!props.existingBucketObj) {
         [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
-          bucketProps: props.bucketProps
+          bucketProps: props.bucketProps,
+          loggingBucketProps: props.loggingBucketProps
         });
         bucket = this.s3Bucket;
       } else {

@@ -17,7 +17,6 @@ import { SnsToSqs, SnsToSqsProps } from "../lib";
 import * as sqs from '@aws-cdk/aws-sqs';
 import * as sns from '@aws-cdk/aws-sns';
 import * as kms from '@aws-cdk/aws-kms';
-import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------
@@ -29,8 +28,7 @@ test('Pattern deployment w/ new Topic, new Queue and default props', () => {
   const stack = new Stack();
   const props: SnsToSqsProps = {};
   new SnsToSqs(stack, 'test-sns-sqs', props);
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
   // Assertion 2
   expect(stack).toHaveResource("AWS::SNS::Topic", {
     KmsMasterKeyId: {
@@ -147,8 +145,6 @@ test('Test deployment w/ existing queue, and topic', () => {
     existingTopicObj: topic,
     existingQueueObj: queue
   });
-    // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   // Assertion 2
   expect(app.snsTopic !== null);
   // Assertion 3
@@ -176,8 +172,6 @@ test('Test deployment with imported encryption key', () => {
     enableEncryptionWithCustomerManagedKey: true,
     encryptionKey: kmsKey
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   // Assertion 2
   expect(stack).toHaveResource("AWS::KMS::Key", {
     EnableKeyRotation: false
@@ -209,8 +203,6 @@ test('Test deployment with SNS managed KMS key', () => {
     },
     enableEncryptionWithCustomerManagedKey: false
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   // Assertion 2
   expect(stack).toHaveResource("AWS::SNS::Topic", {
     KmsMasterKeyId: {
@@ -241,6 +233,92 @@ test('Test deployment with SNS managed KMS key', () => {
         "snstosqsstackqueueKey743636E7",
         "Arn"
       ]
+    }
+  });
+});
+
+// --------------------------------------------------------------
+// Pattern deployment with existing Topic and FIFO queues
+// --------------------------------------------------------------
+test('Pattern deployment w/ existing topic and FIFO queue', () => {
+  // Initial Setup
+  const stack = new Stack();
+
+  const topic = new sns.Topic(stack, 'TestTopic', {
+    contentBasedDeduplication: true,
+    displayName: 'Customer subscription topic',
+    fifo: true,
+    topicName: 'customerTopic',
+  });
+
+  const props: SnsToSqsProps = {
+    enableEncryptionWithCustomerManagedKey: false,
+    existingTopicObj: topic,
+    queueProps: {
+      encryption: sqs.QueueEncryption.UNENCRYPTED,
+      fifo: true,
+    },
+    deadLetterQueueProps: {
+      encryption: sqs.QueueEncryption.UNENCRYPTED,
+      fifo: true,
+    }
+  };
+
+  new SnsToSqs(stack, 'test-sns-sqs', props);
+
+  // Assertion 1
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    FifoQueue: true,
+    RedrivePolicy: {
+      deadLetterTargetArn: {
+        "Fn::GetAtt": [
+          "testsnssqsdeadLetterQueue8DACC0A1",
+          "Arn"
+        ]
+      },
+      maxReceiveCount: 15
+    }
+  });
+});
+
+// --------------------------------------------------------------
+// Pattern deployment with existing Topic and Standard queues
+// --------------------------------------------------------------
+test('Pattern deployment w/ existing topic and Standard queue', () => {
+  // Initial Setup
+  const stack = new Stack();
+
+  const topic = new sns.Topic(stack, 'TestTopic', {
+    displayName: 'Customer subscription topic',
+    fifo: false,
+    topicName: 'customerTopic',
+  });
+
+  const props: SnsToSqsProps = {
+    enableEncryptionWithCustomerManagedKey: false,
+    existingTopicObj: topic,
+    queueProps: {
+      encryption: sqs.QueueEncryption.UNENCRYPTED,
+      fifo: false,
+    },
+    deadLetterQueueProps: {
+      encryption: sqs.QueueEncryption.UNENCRYPTED,
+      fifo: false,
+    }
+  };
+
+  new SnsToSqs(stack, 'test-sns-sqs', props);
+
+  // Assertion 1
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    RedrivePolicy: {
+      deadLetterTargetArn: {
+        "Fn::GetAtt": [
+          "testsnssqsdeadLetterQueue8DACC0A1",
+          "Arn"
+        ]
+      },
+      maxReceiveCount: 15
     }
   });
 });

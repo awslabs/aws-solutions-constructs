@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils, ResourcePart } from '@aws-cdk/assert';
+import { ResourcePart } from '@aws-cdk/assert';
 import { Stack } from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as api from '@aws-cdk/aws-apigateway';
@@ -86,13 +86,6 @@ function setupRestApi(stack: Stack, apiProps?: any): void {
     ]
   });
 }
-
-test('snapshot test RegionalApiGateway default params', () => {
-  const stack = new Stack();
-  deployRegionalApiGateway(stack);
-
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('Test override for RegionalApiGateway', () => {
   const stack = new Stack();
@@ -197,21 +190,12 @@ test('Test ApiGateway::Account resource for GlobalApiGateway', () => {
   });
 });
 
-test('Test default RestApi deployment w/o ApiGatewayProps', () => {
-  const stack = new Stack();
-  setupRestApi(stack);
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
 test('Test default RestApi deployment w/ ApiGatewayProps', () => {
   const stack = new Stack();
   setupRestApi(stack, {
     restApiName: "customRestApi"
   });
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-  // Assertion 2
+
   expect(stack).toHaveResource('AWS::ApiGateway::RestApi', {
     Name: "customRestApi"
   });
@@ -272,8 +256,6 @@ test('Test addMethodToApiResource with action', () => {
     requestTemplate: getRequestTemplate
   });
 
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-
   // Error scenario: missing action and path
   try {
     defaults.addProxyMethodToApiResource({
@@ -316,8 +298,6 @@ test('Test default RestApi w/ request model and validator', () => {
     requestValidator: validator,
     requestModel: { "application/json": api.Model.EMPTY_MODEL }
   });
-
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
   expect(stack).toHaveResource('AWS::ApiGateway::RequestValidator', {
     Name: "default-validator",
@@ -391,7 +371,7 @@ test('Test for Exception while overriding LambdaRestApiProps using endPointTypes
   const lambdaFunctionProps: lambda.FunctionProps = {
     runtime: lambda.Runtime.NODEJS_12_X,
     handler: 'index.handler',
-    code: lambda.Code.asset(`${__dirname}/lambda`)
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
 
   const fn = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
@@ -639,7 +619,7 @@ test('Test for ApiKey creation using lambdaApiProps', () => {
   const lambdaFunctionProps: lambda.FunctionProps = {
     runtime: lambda.Runtime.NODEJS_12_X,
     handler: 'index.handler',
-    code: lambda.Code.asset(`${__dirname}/lambda`)
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
 
   const fn = defaults.deployLambdaFunction(stack, lambdaFunctionProps);

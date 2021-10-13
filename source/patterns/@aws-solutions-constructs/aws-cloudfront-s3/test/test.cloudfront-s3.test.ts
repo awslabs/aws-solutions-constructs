@@ -11,27 +11,22 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
-import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
-import * as cdk from "@aws-cdk/core";
-import * as s3 from '@aws-cdk/aws-s3';
+import { ResourcePart } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
-import * as acm from '@aws-cdk/aws-certificatemanager';
+import * as s3 from '@aws-cdk/aws-s3';
+import * as cdk from "@aws-cdk/core";
 import { RemovalPolicy } from '@aws-cdk/core';
+import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
+import * as acm from '@aws-cdk/aws-certificatemanager';
 
-function deploy(stack: cdk.Stack) {
+function deploy(stack: cdk.Stack, props?: CloudFrontToS3Props) {
   return new CloudFrontToS3(stack, 'test-cloudfront-s3', {
     bucketProps: {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
-    }
+    },
+    ...props
   });
 }
-
-test('snapshot test CloudFrontToS3 default params', () => {
-  const stack = new cdk.Stack();
-  deploy(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 test('check s3Bucket default encryption', () => {
   const stack = new cdk.Stack();
@@ -94,7 +89,7 @@ test('check existing bucket', () => {
   });
 
   const props: CloudFrontToS3Props = {
-    existingBucketObj: existingBucket
+    existingBucketInterface: existingBucket
   };
 
   new CloudFrontToS3(stack, 'test-cloudfront-s3', props);
@@ -103,84 +98,18 @@ test('check existing bucket', () => {
     BucketName: "my-bucket"
   });
 
-});
-
-test('test cloudfront with custom domain names', () => {
-  const stack = new cdk.Stack();
-
-  const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012');
-
-  const props: CloudFrontToS3Props = {
-    cloudFrontDistributionProps: {
-      domainNames: ['mydomains'],
-      certificate
-    }
-  };
-
-  new CloudFrontToS3(stack, 'test-cloudfront-s3', props);
-
-  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
-    DistributionConfig: {
-      Aliases: [
-        "mydomains"
-      ],
-      DefaultCacheBehavior: {
-        CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
-        Compress: true,
-        LambdaFunctionAssociations: [
+  expect(stack).toHaveResource("AWS::S3::BucketPolicy", {
+    Metadata: {
+      cfn_nag: {
+        rules_to_suppress: [
           {
-            EventType: "origin-response",
-            LambdaFunctionARN: {
-              Ref: "testcloudfronts3SetHttpSecurityHeadersVersionF1C744BB"
-            }
+            id: "F16",
+            reason: "Public website bucket policy requires a wildcard principal"
           }
-        ],
-        TargetOriginId: "testcloudfronts3CloudFrontDistributionOrigin124051039",
-        ViewerProtocolPolicy: "redirect-to-https"
-      },
-      DefaultRootObject: "index.html",
-      Enabled: true,
-      HttpVersion: "http2",
-      IPV6Enabled: true,
-      Logging: {
-        Bucket: {
-          "Fn::GetAtt": [
-            "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
-            "RegionalDomainName"
-          ]
-        }
-      },
-      Origins: [
-        {
-          DomainName: {
-            "Fn::GetAtt": [
-              "testcloudfronts3S3BucketE0C5F76E",
-              "RegionalDomainName"
-            ]
-          },
-          Id: "testcloudfronts3CloudFrontDistributionOrigin124051039",
-          S3OriginConfig: {
-            OriginAccessIdentity: {
-              "Fn::Join": [
-                "",
-                [
-                  "origin-access-identity/cloudfront/",
-                  {
-                    Ref: "testcloudfronts3CloudFrontDistributionOrigin1S3Origin4695F058"
-                  }
-                ]
-              ]
-            }
-          }
-        }
-      ],
-      ViewerCertificate: {
-        AcmCertificateArn: "arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012",
-        MinimumProtocolVersion: "TLSv1.2_2019",
-        SslSupportMethod: "sni-only"
+        ]
       }
     }
-  });
+  }, ResourcePart.CompleteDefinition);
 });
 
 test('check exception for Missing existingObj from props for deploy = false', () => {
@@ -214,7 +143,7 @@ test("Test bad call with existingBucket and bucketProps", () => {
   const app = () => {
     // Helper declaration
     new CloudFrontToS3(stack, "bad-s3-args", {
-      existingBucketObj: testBucket,
+      existingBucketInterface: testBucket,
       bucketProps: {
         removalPolicy: RemovalPolicy.DESTROY
       },
@@ -222,4 +151,115 @@ test("Test bad call with existingBucket and bucketProps", () => {
   };
   // Assertion
   expect(app).toThrowError();
+});
+
+test("Test existingBucketInterface", () => {
+  // Stack
+  const stack = new cdk.Stack();
+  const construct: CloudFrontToS3 = new CloudFrontToS3(stack, "existingIBucket", {
+    existingBucketInterface: s3.Bucket.fromBucketName(stack, 'mybucket', 'mybucket')
+  });
+  // Assertion
+  expect(construct.cloudFrontWebDistribution !== null);
+  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+      Origins: [
+        {
+          DomainName: {
+            "Fn::Join": [
+              "",
+              [
+                "mybucket.s3.",
+                {
+                  Ref: "AWS::Region"
+                },
+                ".",
+                {
+                  Ref: "AWS::URLSuffix"
+                }
+              ]
+            ]
+          },
+          Id: "existingIBucketCloudFrontDistributionOrigin1D5849125",
+          S3OriginConfig: {
+            OriginAccessIdentity: {
+              "Fn::Join": [
+                "",
+                [
+                  "origin-access-identity/cloudfront/",
+                  {
+                    Ref: "existingIBucketCloudFrontDistributionOrigin1S3OriginDDDB1606"
+                  }
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    }
+  });
+});
+
+test('test cloudfront disable cloudfront logging', () => {
+  const stack = new cdk.Stack();
+
+  const construct = deploy(stack, {cloudFrontDistributionProps: {enableLogging: false}} );
+
+  expect(construct.cloudFrontLoggingBucket === undefined);
+});
+
+test('test cloudfront with custom domain names', () => {
+  const stack = new cdk.Stack();
+
+  const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012');
+
+  const props: CloudFrontToS3Props = {
+    cloudFrontDistributionProps: {
+      domainNames: ['mydomains'],
+      certificate
+    }
+  };
+
+  new CloudFrontToS3(stack, 'test-cloudfront-s3', props);
+
+  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+      Aliases: [
+        "mydomains"
+      ]
+    }
+  });
+});
+
+// --------------------------------------------------------------
+// s3 bucket with bucket, loggingBucket, and auto delete objects
+// --------------------------------------------------------------
+test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
+  const stack = new cdk.Stack();
+
+  new CloudFrontToS3(stack, 'cloudfront-s3', {
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+    loggingBucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::S3::Bucket", {
+    AccessControl: "LogDeliveryWrite"
+  });
+
+  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+    ServiceToken: {
+      "Fn::GetAtt": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+        "Arn"
+      ]
+    },
+    BucketName: {
+      Ref: "cloudfronts3S3LoggingBucket52EEB708"
+    }
+  });
 });

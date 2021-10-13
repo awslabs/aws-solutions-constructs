@@ -78,9 +78,19 @@ export interface BuildGlueJobProps {
   readonly outputDataStore?: SinkDataStoreProps
 }
 
-export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): [glue.CfnJob, IRole] {
+export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): [glue.CfnJob, IRole, [Bucket, (Bucket | undefined)?]?] {
   if (!props.existingCfnJob) {
     if (props.glueJobProps) {
+      if (props.glueJobProps.glueVersion === '2.0' && props.glueJobProps.maxCapacity) {
+        throw Error('Cannot set "MaxCapacity" with GlueVersion 2.0 or higher. Use "NumberOfWorkers" and "WorkerType". ' +
+        'Refer the API documentation https://docs.aws.amazon.com/glue/latest/webapi/API_Job.html for more details');
+      }
+
+      if (props.glueJobProps.maxCapacity && (props.glueJobProps.numberOfWorkers || props.glueJobProps.workerType)) {
+        throw Error('Cannot set MaxCapacity and "WorkerType" or  "NumberOfWorkers". If using glueVersion 2.0 or beyond, ' +
+        'it is recommended to use "WorkerType" or  "NumberOfWorkers"');
+      }
+
       return deployGlueJob(scope, props.glueJobProps, props.database!, props.table!, props.outputDataStore!);
     } else {
       throw Error('Either glueJobProps or existingCfnJob is required');
@@ -91,7 +101,7 @@ export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): [glue.
 }
 
 export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, database: glue.CfnDatabase, table: glue.CfnTable,
-  outputDataStore: SinkDataStoreProps): [glue.CfnJob, IRole] {
+  outputDataStore: SinkDataStoreProps): [glue.CfnJob, IRole, [Bucket, (Bucket | undefined)?]] {
 
   let _glueSecurityConfigName: string;
 
@@ -157,8 +167,8 @@ export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, 
     ...glueJobProps.defaultArguments
   };
 
-  const _newGlueJobProps: glue.CfnJobProps = overrideProps(defaults.DefaultGlueJobProps(_jobRole!, glueJobProps.command,
-    _glueSecurityConfigName, _jobArgumentsList, glueJobProps.glueVersion), glueJobProps);
+  const _newGlueJobProps: glue.CfnJobProps = overrideProps(defaults.DefaultGlueJobProps(_jobRole!, glueJobProps,
+    _glueSecurityConfigName, _jobArgumentsList), glueJobProps);
 
   let _scriptLocation: string;
   if (isJobCommandProperty(_newGlueJobProps.command)) {
@@ -173,7 +183,7 @@ export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, 
   _scriptBucketLocation.grantRead(_jobRole);
 
   const _glueJob: glue.CfnJob = new glue.CfnJob(scope, 'KinesisETLJob', _newGlueJobProps);
-  return [_glueJob, _jobRole];
+  return [_glueJob, _jobRole, _outputLocation];
 }
 
 /**

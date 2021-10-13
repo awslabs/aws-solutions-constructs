@@ -16,8 +16,11 @@ import * as iam from '@aws-cdk/aws-iam';
 import * as ec2 from "@aws-cdk/aws-ec2";
 import { DefaultLambdaFunctionProps } from './lambda-defaults';
 import * as cdk from '@aws-cdk/core';
-import { overrideProps } from './utils';
+import { overrideProps, addCfnSuppressRules } from './utils';
 import { buildSecurityGroup } from "./security-group-helper";
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
+import { Construct } from '@aws-cdk/core';
+import { IConstruct } from '@aws-cdk/core';
 
 export interface BuildLambdaFunctionProps {
   /**
@@ -40,7 +43,7 @@ export interface BuildLambdaFunctionProps {
   readonly vpc?: ec2.IVpc;
 }
 
-export function buildLambdaFunction(scope: cdk.Construct, props: BuildLambdaFunctionProps): lambda.Function {
+export function buildLambdaFunction(scope: Construct, props: BuildLambdaFunctionProps): lambda.Function {
   // Conditional lambda function creation
   if (!props.existingLambdaObj) {
     if (props.lambdaFunctionProps) {
@@ -58,7 +61,7 @@ export function buildLambdaFunction(scope: cdk.Construct, props: BuildLambdaFunc
   }
 }
 
-export function deployLambdaFunction(scope: cdk.Construct,
+export function deployLambdaFunction(scope: Construct,
   lambdaFunctionProps: lambda.FunctionProps,
   functionId?: string,
   vpc?: ec2.IVpc): lambda.Function {
@@ -138,36 +141,32 @@ export function deployLambdaFunction(scope: cdk.Construct,
 
   const cfnLambdafunction: lambda.CfnFunction = lambdafunction.node.findChild('Resource') as lambda.CfnFunction;
 
-  cfnLambdafunction.cfnOptions.metadata = {
-    cfn_nag: {
-      rules_to_suppress: [{
-        id: 'W58',
-        reason: `Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.`
-      },
-      {
-        id: 'W89',
-        reason: `This is not a rule for the general case, just for specific use cases/industries`
-      },
-      {
-        id: 'W92',
-        reason: `Impossible for us to define the correct concurrency for clients`
-      }]
+  addCfnSuppressRules(lambdafunction, [
+    {
+      id: 'W58',
+      reason: `Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.`
+    },
+    {
+      id: 'W89',
+      reason: `This is not a rule for the general case, just for specific use cases/industries`
+    },
+    {
+      id: 'W92',
+      reason: `Impossible for us to define the correct concurrency for clients`
     }
-  };
+  ]);
 
   if (cfnLambdafunction.tracingConfig) {
     // Find the X-Ray IAM Policy
     const cfnLambdafunctionDefPolicy = lambdafunction.role?.node.tryFindChild('DefaultPolicy')?.node.findChild('Resource') as iam.CfnPolicy;
 
     // Add the CFN NAG suppress to allow for "Resource": "*" for AWS X-Ray
-    cfnLambdafunctionDefPolicy.cfnOptions.metadata = {
-      cfn_nag: {
-        rules_to_suppress: [{
-          id: 'W12',
-          reason: `Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.`
-        }]
+    addCfnSuppressRules(cfnLambdafunctionDefPolicy, [
+      {
+        id: 'W12',
+        reason: `Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.`
       }
-    };
+    ]);
   }
 
   return lambdafunction;
@@ -182,7 +181,7 @@ export function addPermission(targetFunction: lambda.Function, name: string, per
 
 // Scan the current permissions for any entries with this core name and
 // return the first available synthesized name. Names are coreName-suffix.
-function GetNextId(children: cdk.IConstruct[], coreName: string): string {
+function GetNextId(children: IConstruct[], coreName: string): string {
   let lastSuffix: number = 0;
 
   children.forEach(child => {

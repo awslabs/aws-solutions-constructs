@@ -12,7 +12,7 @@
         }
       }
     },
-    "testeventsrulekinesisstreamexistingeventsRole6BFA3F09": {
+    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWeventsRole8EE694B6": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -30,7 +30,7 @@
         "Description": "Events Rule Role"
       }
     },
-    "testeventsrulekinesisstreamexistingeventsRoleDefaultPolicy7B842A0C": {
+    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWeventsRoleDefaultPolicyFE301D92": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -52,15 +52,15 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testeventsrulekinesisstreamexistingeventsRoleDefaultPolicy7B842A0C",
+        "PolicyName": "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWeventsRoleDefaultPolicyFE301D92",
         "Roles": [
           {
-            "Ref": "testeventsrulekinesisstreamexistingeventsRole6BFA3F09"
+            "Ref": "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWeventsRole8EE694B6"
           }
         ]
       }
     },
-    "testeventsrulekinesisstreamexistingEventsRule07EC6002": {
+    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWEventsRuleF8624345": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "ScheduleExpression": "rate(5 minutes)",
@@ -76,7 +76,7 @@
             "Id": "Target0",
             "RoleArn": {
               "Fn::GetAtt": [
-                "testeventsrulekinesisstreamexistingeventsRole6BFA3F09",
+                "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWeventsRole8EE694B6",
                 "Arn"
               ]
             }
@@ -84,7 +84,7 @@
         ]
       }
     },
-    "testeventsrulekinesisstreamexistingKinesisStreamGetRecordsIteratorAgeAlarm6BBE2CE5": {
+    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWKinesisStreamGetRecordsIteratorAgeAlarm197B0C62": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -97,7 +97,7 @@
         "Threshold": 2592000
       }
     },
-    "testeventsrulekinesisstreamexistingKinesisStreamReadProvisionedThroughputExceededAlarmEFD57259": {
+    "testeventsrulekinesisstreamexistingtesteventsrulekinesisstreamexistingWKinesisStreamReadProvisionedThroughputExceededAlarmB84DCE25": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanThreshold",
@@ -109,6 +109,40 @@
         "Statistic": "Average",
         "Threshold": 0
       }
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
     }
   }
 }

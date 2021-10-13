@@ -209,84 +209,6 @@ test('Test deployment w/ SSE encryption enabled using customer managed KMS CMK',
 
   // Assertion 3
   expect(stack).toHaveResource('AWS::KMS::Key', {
-    KeyPolicy: {
-      Statement: [
-        {
-          Action: [
-            "kms:Create*",
-            "kms:Describe*",
-            "kms:Enable*",
-            "kms:List*",
-            "kms:Put*",
-            "kms:Update*",
-            "kms:Revoke*",
-            "kms:Disable*",
-            "kms:Get*",
-            "kms:Delete*",
-            "kms:ScheduleKeyDeletion",
-            "kms:CancelKeyDeletion",
-            "kms:GenerateDataKey",
-            "kms:TagResource",
-            "kms:UntagResource"
-          ],
-          Effect: "Allow",
-          Principal: {
-            AWS: {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:",
-                  {
-                    Ref: "AWS::Partition"
-                  },
-                  ":iam::",
-                  {
-                    Ref: "AWS::AccountId"
-                  },
-                  ":root"
-                ]
-              ]
-            }
-          },
-          Resource: "*"
-        },
-        {
-          Action: [
-            "kms:Decrypt",
-            "kms:Encrypt",
-            "kms:ReEncrypt*",
-            "kms:GenerateDataKey*"
-          ],
-          Condition: {
-            ArnLike: {
-              "aws:SourceArn": {
-                "Fn::GetAtt": [
-                  "tests3sqsS3BucketFF76CDA6",
-                  "Arn"
-                ]
-              }
-            }
-          },
-          Effect: "Allow",
-          Principal: {
-            Service: "s3.amazonaws.com"
-          },
-          Resource: "*"
-        },
-        {
-          Action: [
-            "kms:GenerateDataKey*",
-            "kms:Decrypt"
-          ],
-          Effect: "Allow",
-          Principal: {
-            Service: "s3.amazonaws.com"
-          },
-          Resource: "*"
-        }
-      ],
-      Version: "2012-10-17"
-    },
     EnableKeyRotation: true
   });
 });
@@ -311,4 +233,37 @@ test("Test bad call with existingBucket and bucketProps", () => {
   };
   // Assertion
   expect(app).toThrowError();
+});
+
+// --------------------------------------------------------------
+// s3 bucket with bucket, loggingBucket, and auto delete objects
+// --------------------------------------------------------------
+test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
+  const stack = new Stack();
+
+  new S3ToSqs(stack, 's3-sqs', {
+    bucketProps: {
+      removalPolicy: RemovalPolicy.DESTROY,
+    },
+    loggingBucketProps: {
+      removalPolicy: RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::S3::Bucket", {
+    AccessControl: "LogDeliveryWrite"
+  });
+
+  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+    ServiceToken: {
+      "Fn::GetAtt": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+        "Arn"
+      ]
+    },
+    BucketName: {
+      Ref: "s3sqsS3LoggingBucketD877FC52"
+    }
+  });
 });

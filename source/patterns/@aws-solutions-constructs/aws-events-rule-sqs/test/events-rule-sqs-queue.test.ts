@@ -14,7 +14,6 @@
 import * as cdk from '@aws-cdk/core';
 import { EventsRuleToSqs, EventsRuleToSqsProps } from '../lib';
 import * as events from "@aws-cdk/aws-events";
-import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
 
@@ -27,11 +26,17 @@ function deployNewStack(stack: cdk.Stack) {
   return new EventsRuleToSqs(stack, 'test-events-rule-sqs', props);
 }
 
-test('snapshot test EventsRuleToSqs default params', () => {
-  const stack = new cdk.Stack();
-  deployNewStack(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
+function deployStackWithNewEventBus(stack: cdk.Stack) {
+  const props: EventsRuleToSqsProps = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {}
+  };
+  return new EventsRuleToSqs(stack, 'test-eventsrule-sqs-new-bus', props);
+}
 
 test('check the sqs queue properties', () => {
   const stack = new cdk.Stack();
@@ -39,14 +44,14 @@ test('check the sqs queue properties', () => {
   expect(stack).toHaveResource('AWS::SQS::Queue', {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "testeventsrulesqsEncryptionKey19AB0C02",
+        "testeventsrulesqstesteventsrulesqsWEncryptionKey59B6B2A9",
         "Arn"
       ]
     },
     RedrivePolicy: {
       deadLetterTargetArn: {
         "Fn::GetAtt": [
-          "testeventsrulesqsdeadLetterQueueA4A15A1C",
+          "testeventsrulesqstesteventsrulesqsWdeadLetterQueue6C5AAA92",
           "Arn"
         ]
       },
@@ -80,7 +85,7 @@ test('check the sqs queue properties with existing KMS key', () => {
     RedrivePolicy: {
       deadLetterTargetArn: {
         "Fn::GetAtt": [
-          "testeventsrulesqsdeadLetterQueueA4A15A1C",
+          "testeventsrulesqstesteventsrulesqsWdeadLetterQueue6C5AAA92",
           "Arn"
         ]
       },
@@ -89,63 +94,6 @@ test('check the sqs queue properties with existing KMS key', () => {
   });
 
   expect(stack).toHaveResource('AWS::KMS::Key', {
-    KeyPolicy: {
-      Statement: [
-        {
-          Action: [
-            "kms:Create*",
-            "kms:Describe*",
-            "kms:Enable*",
-            "kms:List*",
-            "kms:Put*",
-            "kms:Update*",
-            "kms:Revoke*",
-            "kms:Disable*",
-            "kms:Get*",
-            "kms:Delete*",
-            "kms:ScheduleKeyDeletion",
-            "kms:CancelKeyDeletion",
-            "kms:GenerateDataKey",
-            "kms:TagResource",
-            "kms:UntagResource"
-          ],
-          Effect: "Allow",
-          Principal: {
-            AWS: {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:",
-                  {
-                    Ref: "AWS::Partition"
-                  },
-                  ":iam::",
-                  {
-                    Ref: "AWS::AccountId"
-                  },
-                  ":root"
-                ]
-              ]
-            }
-          },
-          Resource: "*"
-        },
-        {
-          Action: [
-            "kms:Decrypt",
-            "kms:Encrypt",
-            "kms:ReEncrypt*",
-            "kms:GenerateDataKey*"
-          ],
-          Effect: "Allow",
-          Principal: {
-            Service: "events.amazonaws.com"
-          },
-          Resource: "*"
-        }
-      ],
-      Version: "2012-10-17"
-    },
     Description: "my-key",
     EnableKeyRotation: true
   });
@@ -188,7 +136,7 @@ test('check if the event rule has permission/policy in place in sqs queue for it
           },
           Resource:  {
             "Fn::GetAtt": [
-              "testeventsrulesqsqueueAACD0364",
+              "testeventsrulesqstesteventsrulesqsWqueue0E3B047B",
               "Arn",
             ],
           },
@@ -202,10 +150,12 @@ test('check if the event rule has permission/policy in place in sqs queue for it
             },
           },
           Effect: "Deny",
-          Principal: "*",
+          Principal: {
+            AWS: "*"
+          },
           Resource:  {
             "Fn::GetAtt": [
-              "testeventsrulesqsqueueAACD0364",
+              "testeventsrulesqstesteventsrulesqsWqueue0E3B047B",
               "Arn",
             ],
           },
@@ -223,7 +173,7 @@ test('check if the event rule has permission/policy in place in sqs queue for it
           },
           Resource: {
             "Fn::GetAtt": [
-              "testeventsrulesqsqueueAACD0364",
+              "testeventsrulesqstesteventsrulesqsWqueue0E3B047B",
               "Arn"
             ]
           }
@@ -233,7 +183,7 @@ test('check if the event rule has permission/policy in place in sqs queue for it
     },
     Queues: [
       {
-        Ref: "testeventsrulesqsqueueAACD0364",
+        Ref: "testeventsrulesqstesteventsrulesqsWqueue0E3B047B",
       }
     ]
   });
@@ -276,7 +226,7 @@ test('check if the dead letter queue policy is setup', () => {
           },
           Resource:  {
             "Fn::GetAtt": [
-              "testeventsrulesqsdeadLetterQueueA4A15A1C",
+              "testeventsrulesqstesteventsrulesqsWdeadLetterQueue6C5AAA92",
               "Arn",
             ],
           },
@@ -290,10 +240,12 @@ test('check if the dead letter queue policy is setup', () => {
             },
           },
           Effect: "Deny",
-          Principal: "*",
+          Principal: {
+            AWS: "*"
+          },
           Resource:  {
             "Fn::GetAtt": [
-              "testeventsrulesqsdeadLetterQueueA4A15A1C",
+              "testeventsrulesqstesteventsrulesqsWdeadLetterQueue6C5AAA92",
               "Arn",
             ],
           },
@@ -304,7 +256,7 @@ test('check if the dead letter queue policy is setup', () => {
     },
     Queues: [
       {
-        Ref: "testeventsrulesqsdeadLetterQueueA4A15A1C",
+        Ref: "testeventsrulesqstesteventsrulesqsWdeadLetterQueue6C5AAA92",
       },
     ]
   });
@@ -318,4 +270,57 @@ test('check properties', () => {
   expect(construct.sqsQueue !== null);
   expect(construct.encryptionKey !== null);
   expect(construct.deadLetterQueue !== null);
+});
+
+test('check eventbus property, snapshot & eventbus exists', () => {
+  const stack = new cdk.Stack();
+  const construct: EventsRuleToSqs = deployStackWithNewEventBus(stack);
+
+  expect(construct.eventsRule !== null);
+  expect(construct.sqsQueue !== null);
+  expect(construct.encryptionKey !== null);
+  expect(construct.deadLetterQueue !== null);
+  expect(construct.eventBus !== null);
+
+  // Check whether eventbus exists
+  expect(stack).toHaveResource('AWS::Events::EventBus');
+});
+
+test('check exception while passing existingEventBus & eventBusProps', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventsRuleToSqsProps = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {},
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, {})
+  };
+
+  const app = () => {
+    new EventsRuleToSqs(stack, 'test-eventsrule-sqs', props);
+  };
+  expect(app).toThrowError();
+});
+
+test('check custom event bus resource with props when deploy:true', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventsRuleToSqsProps = {
+    eventBusProps: {
+      eventBusName: 'testcustomeventbus'
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventsRuleToSqs(stack, 'test-new-eventsrule-sqs', props);
+
+  expect(stack).toHaveResource('AWS::Events::EventBus', {
+    Name: 'testcustomeventbus'
+  });
 });

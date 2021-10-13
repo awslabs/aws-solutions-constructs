@@ -52,21 +52,31 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "testfirehoses3andanalyticsstackKinesisFirehoseToS3S3LoggingBucket887A5000",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
+              "Principal": {
+                "AWS": "*"
               },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testfirehoses3andanalyticsstackKinesisFirehoseToS3S3LoggingBucket887A5000",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "testfirehoses3andanalyticsstackKinesisFirehoseToS3S3LoggingBucket887A5000",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             }
           ],
@@ -133,21 +143,31 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "testfirehoses3andanalyticsstackKinesisFirehoseToS3S3BucketAE659354",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
+              "Principal": {
+                "AWS": "*"
               },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testfirehoses3andanalyticsstackKinesisFirehoseToS3S3BucketAE659354",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "testfirehoses3andanalyticsstackKinesisFirehoseToS3S3BucketAE659354",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             }
           ],
@@ -440,6 +460,40 @@
       },
       "DependsOn": [
         "testfirehoses3andanalyticsstackKinesisAnalyticsPolicy2594304F"
+      ]
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
       ]
     }
   }

@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as events from '@aws-cdk/aws-events';
 import { EventsRuleToLambdaProps, EventsRuleToLambda } from '../lib/index';
@@ -33,11 +32,22 @@ function deployNewFunc(stack: cdk.Stack) {
   return new EventsRuleToLambda(stack, 'test-events-rule-lambda', props);
 }
 
-test('snapshot test EventsRuleToLambda default params', () => {
-  const stack = new cdk.Stack();
-  deployNewFunc(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
+function deployNewEventBus(stack: cdk.Stack) {
+  const props: EventsRuleToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    eventBusProps: {},
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  return new EventsRuleToLambda(stack, 'test-new-eventsrule-lambda', props);
+}
 
 test('check lambda function properties for deploy: true', () => {
   const stack = new cdk.Stack();
@@ -48,7 +58,7 @@ test('check lambda function properties for deploy: true', () => {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": [
-        "testeventsrulelambdaLambdaFunctionServiceRole61DEA405",
+        "testeventsrulelambdatesteventsrulelambdaWLambdaFunctionServiceRoleFF9B9BDB",
         "Arn"
       ]
     },
@@ -70,14 +80,14 @@ test('check lambda function permission for deploy: true', () => {
     Action: "lambda:InvokeFunction",
     FunctionName: {
       "Fn::GetAtt": [
-        "testeventsrulelambdaLambdaFunction1A3B9577",
+        "testeventsrulelambdatesteventsrulelambdaWLambdaFunction5EE557E8",
         "Arn"
       ]
     },
     Principal: "events.amazonaws.com",
     SourceArn: {
       "Fn::GetAtt": [
-        "testeventsrulelambdaEventsRule82B36872",
+        "testeventsrulelambdatesteventsrulelambdaWEventsRule1B328BFB",
         "Arn"
       ]
     }
@@ -155,7 +165,7 @@ test('check events rule properties for deploy: true', () => {
       {
         Arn: {
           "Fn::GetAtt": [
-            "testeventsrulelambdaLambdaFunction1A3B9577",
+            "testeventsrulelambdatesteventsrulelambdaWLambdaFunction5EE557E8",
             "Arn"
           ]
         },
@@ -188,4 +198,66 @@ test('check exception for Missing existingObj from props', () => {
   } catch (e) {
     expect(e).toBeInstanceOf(Error);
   }
+});
+
+test('check eventbus property, snapshot & eventbus exists', () => {
+  const stack = new cdk.Stack();
+
+  const construct: EventsRuleToLambda = deployNewEventBus(stack);
+
+  expect(construct.eventsRule !== null);
+  expect(construct.lambdaFunction !== null);
+  expect(construct.eventBus !== null);
+
+  // Check whether eventbus exists
+  expect(stack).toHaveResource('AWS::Events::EventBus');
+});
+
+test('check exception while passing existingEventBus & eventBusProps', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventsRuleToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: {},
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {})
+  };
+
+  const app = () => {
+    new EventsRuleToLambda(stack, 'test-eventsrule-lambda', props);
+  };
+  expect(app).toThrowError();
+});
+
+test('check custom event bus resource with props when deploy:true', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventsRuleToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    eventBusProps: {
+      eventBusName: `testeventbus`
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    }
+  };
+  new EventsRuleToLambda(stack, 'test-new-eventsrule-with-props-lambda', props);
+
+  expect(stack).toHaveResource('AWS::Events::EventBus', {
+    Name: `testeventbus`
+  });
 });

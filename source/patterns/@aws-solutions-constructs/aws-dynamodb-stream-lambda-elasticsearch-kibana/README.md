@@ -3,7 +3,9 @@
 
 ---
 
-![Stability: Experimental](https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge)
+![Stability: Deprecated](https://img.shields.io/badge/STABILITY-DEPRECATED-red?style=for-the-badge)
+
+> Some of our early constructs don’t meet the naming standards that evolved for the library. We are releasing completely feature compatible versions with corrected names. The underlying implementation code is the same regardless of whether you deploy the construct using the old or new name. We will support both names for all 1.x releases, but in 2.x we will only publish the correctly named constructs. This construct is being replaced by the functionally identical aws-dynamodbstreams-lambda-elasticsearch-kibana.
 
 > All classes are under active development and subject to non-backward compatible changes or removal in any
 > future version. These are not subject to the [Semantic Versioning](https://semver.org/) model.
@@ -31,14 +33,14 @@ import { DynamoDBStreamToLambdaToElasticSearchAndKibana, DynamoDBStreamToLambdaT
 import { Aws } from "@aws-cdk/core";
 
 const props: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps = {
-    lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_12_X,
-        handler: 'index.handler'
-    },
-    domainName: 'test-domain',
-    // TODO: Ensure the Cognito domain name is globally unique
-    cognitoDomainName: 'globallyuniquedomain' + Aws.ACCOUNT_ID;
+  lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+  },
+  domainName: 'test-domain',
+  // TODO: Ensure the Cognito domain name is globally unique
+  cognitoDomainName: 'globallyuniquedomain' + Aws.ACCOUNT_ID;
 };
 
 new DynamoDBStreamToLambdaToElasticSearchAndKibana(this, 'test-dynamodb-stream-lambda-elasticsearch-kibana', props);

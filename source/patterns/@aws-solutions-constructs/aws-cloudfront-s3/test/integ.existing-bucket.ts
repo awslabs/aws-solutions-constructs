@@ -18,7 +18,7 @@ import * as defaults from "@aws-solutions-constructs/core";
 import { CloudFrontToS3 } from "../lib";
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import { Duration } from "@aws-cdk/core/lib/duration";
+import { Duration } from "@aws-cdk/core";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
@@ -29,7 +29,7 @@ let mybucket: s3.Bucket;
 mybucket = defaults.CreateScrapBucket(stack, { removalPolicy: RemovalPolicy.DESTROY });
 
 const _construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {
-  existingBucketObj: mybucket,
+  existingBucketInterface: mybucket,
 });
 
 // Add Cache Policy

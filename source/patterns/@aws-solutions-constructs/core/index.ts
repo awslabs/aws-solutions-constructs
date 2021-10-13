@@ -61,3 +61,6 @@ export * from './lib/glue-database-helper';
 export * from './lib/input-validation';
 export * from './test/test-helper';
 export * from './lib/ssm-string-parameter-helper';
+export * from './lib/eventbridge-helper';
+export * from './lib/waf-defaults';
+export * from './lib/waf-helper';

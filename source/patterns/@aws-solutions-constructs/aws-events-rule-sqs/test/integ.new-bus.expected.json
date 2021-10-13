@@ -1,0 +1,312 @@
+{
+  "Resources": {
+    "ersqsersqsWdeadLetterQueueB06870B6": {
+      "Type": "AWS::SQS::Queue",
+      "Properties": {
+        "KmsMasterKeyId": "alias/aws/sqs"
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "ersqsersqsWdeadLetterQueuePolicyFA1CF12F": {
+      "Type": "AWS::SQS::QueuePolicy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:RemovePermission",
+                "sqs:AddPermission",
+                "sqs:SetQueueAttributes"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              },
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ersqsersqsWdeadLetterQueueB06870B6",
+                  "Arn"
+                ]
+              },
+              "Sid": "QueueOwnerOnlyAccess"
+            },
+            {
+              "Action": "SQS:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ersqsersqsWdeadLetterQueueB06870B6",
+                  "Arn"
+                ]
+              },
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Queues": [
+          {
+            "Ref": "ersqsersqsWdeadLetterQueueB06870B6"
+          }
+        ]
+      }
+    },
+    "ersqsersqsWEncryptionKeyD63FAFB3": {
+      "Type": "AWS::KMS::Key",
+      "Properties": {
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": "kms:*",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              },
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              },
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "EnableKeyRotation": true
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "ersqsersqsWqueue881EC5DE": {
+      "Type": "AWS::SQS::Queue",
+      "Properties": {
+        "KmsMasterKeyId": {
+          "Fn::GetAtt": [
+            "ersqsersqsWEncryptionKeyD63FAFB3",
+            "Arn"
+          ]
+        },
+        "RedrivePolicy": {
+          "deadLetterTargetArn": {
+            "Fn::GetAtt": [
+              "ersqsersqsWdeadLetterQueueB06870B6",
+              "Arn"
+            ]
+          },
+          "maxReceiveCount": 15
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "ersqsersqsWqueuePolicyC4BDE85A": {
+      "Type": "AWS::SQS::QueuePolicy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:RemovePermission",
+                "sqs:AddPermission",
+                "sqs:SetQueueAttributes"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              },
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ersqsersqsWqueue881EC5DE",
+                  "Arn"
+                ]
+              },
+              "Sid": "QueueOwnerOnlyAccess"
+            },
+            {
+              "Action": "SQS:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ersqsersqsWqueue881EC5DE",
+                  "Arn"
+                ]
+              },
+              "Sid": "HttpsOnly"
+            },
+            {
+              "Action": [
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              },
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ersqsersqsWqueue881EC5DE",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Queues": [
+          {
+            "Ref": "ersqsersqsWqueue881EC5DE"
+          }
+        ]
+      }
+    },
+    "ersqsersqsWCustomEventBus3249194C": {
+      "Type": "AWS::Events::EventBus",
+      "Properties": {
+        "Name": "newbusersqsersqsWCustomEventBusADE03031"
+      }
+    },
+    "ersqsersqsWEventsRule017C5D22": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "EventBusName": {
+          "Ref": "ersqsersqsWCustomEventBus3249194C"
+        },
+        "EventPattern": {
+          "source": [
+            "solutionsconstructs"
+          ]
+        },
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::GetAtt": [
+                "ersqsersqsWqueue881EC5DE",
+                "Arn"
+              ]
+            },
+            "Id": {
+              "Fn::GetAtt": [
+                "ersqsersqsWqueue881EC5DE",
+                "QueueName"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
+    }
+  }
+}

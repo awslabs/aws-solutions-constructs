@@ -143,41 +143,9 @@
       "Properties": {
         "Code": {
           "S3Bucket": {
-            "Ref": "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cS3Bucket1F467BCC"
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": {
-            "Fn::Join": [
-              "",
-              [
-                {
-                  "Fn::Select": [
-                    0,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cS3VersionKey9E4F7872"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "Fn::Select": [
-                    1,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cS3VersionKey9E4F7872"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            ]
-          }
+          "S3Key": "42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c.zip"
         },
         "Role": {
           "Fn::GetAtt": [
@@ -579,148 +547,15 @@
         "cfapilambdaoverrideLambdaRestApi6E7952FC"
       ]
     },
-    "cfapilambdaoverrideCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRole60E3862B": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "lambda.amazonaws.com"
-              }
-            },
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "edgelambda.amazonaws.com"
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "Policies": [
-          {
-            "PolicyDocument": {
-              "Statement": [
-                {
-                  "Action": [
-                    "logs:CreateLogGroup",
-                    "logs:CreateLogStream",
-                    "logs:PutLogEvents"
-                  ],
-                  "Effect": "Allow",
-                  "Resource": {
-                    "Fn::Join": [
-                      "",
-                      [
-                        "arn:",
-                        {
-                          "Ref": "AWS::Partition"
-                        },
-                        ":logs:",
-                        {
-                          "Ref": "AWS::Region"
-                        },
-                        ":",
-                        {
-                          "Ref": "AWS::AccountId"
-                        },
-                        ":log-group:/aws/lambda/*"
-                      ]
-                    ]
-                  }
-                }
-              ],
-              "Version": "2012-10-17"
-            },
-            "PolicyName": "LambdaFunctionServiceRolePolicy"
-          }
-        ]
-      }
-    },
-    "cfapilambdaoverrideCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRoleDefaultPolicy3AE9A74C": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "xray:PutTraceSegments",
-                "xray:PutTelemetryRecords"
-              ],
-              "Effect": "Allow",
-              "Resource": "*"
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "cfapilambdaoverrideCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRoleDefaultPolicy3AE9A74C",
-        "Roles": [
-          {
-            "Ref": "cfapilambdaoverrideCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRole60E3862B"
-          }
-        ]
-      },
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W12",
-              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
-            }
-          ]
-        }
-      }
-    },
     "cfapilambdaoverrideCloudFrontToApiGatewaySetHttpSecurityHeaders67E61E6E": {
-      "Type": "AWS::Lambda::Function",
+      "Type": "AWS::CloudFront::Function",
       "Properties": {
-        "Code": {
-          "ZipFile": "exports.handler = (event, context, callback) => {           const response = event.Records[0].cf.response;           const headers = response.headers;           headers['x-xss-protection'] = [             {               key: 'X-XSS-Protection',               value: '1; mode=block'             }           ];           headers['x-frame-options'] = [             {               key: 'X-Frame-Options',               value: 'DENY'             }           ];           headers['x-content-type-options'] = [             {               key: 'X-Content-Type-Options',               value: 'nosniff'             }           ];           headers['strict-transport-security'] = [             {               key: 'Strict-Transport-Security',               value: 'max-age=63072000; includeSubdomains; preload'             }           ];           headers['referrer-policy'] = [             {               key: 'Referrer-Policy',               value: 'same-origin'             }           ];           headers['content-security-policy'] = [             {               key: 'Content-Security-Policy',               value: \"default-src 'none'; base-uri 'self'; img-src 'self'; script-src 'self'; style-src 'self' https:; object-src 'none'; frame-ancestors 'none'; font-src 'self' https:; form-action 'self'; manifest-src 'self'; connect-src 'self'\"              }           ];           callback(null, response);         };"
-        },
-        "Role": {
-          "Fn::GetAtt": [
-            "cfapilambdaoverrideCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRole60E3862B",
-            "Arn"
-          ]
-        },
-        "Handler": "index.handler",
-        "Runtime": "nodejs12.x",
-        "TracingConfig": {
-          "Mode": "Active"
-        }
-      },
-      "DependsOn": [
-        "cfapilambdaoverrideCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRoleDefaultPolicy3AE9A74C",
-        "cfapilambdaoverrideCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRole60E3862B"
-      ],
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W58",
-              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
-            },
-            {
-              "id": "W89",
-              "reason": "This is not a rule for the general case, just for specific use cases/industries"
-            },
-            {
-              "id": "W92",
-              "reason": "Impossible for us to define the correct concurrency for clients"
-            }
-          ]
-        }
-      }
-    },
-    "cfapilambdaoverrideCloudFrontToApiGatewaySetHttpSecurityHeadersVersionBECBEC80": {
-      "Type": "AWS::Lambda::Version",
-      "Properties": {
-        "FunctionName": {
-          "Ref": "cfapilambdaoverrideCloudFrontToApiGatewaySetHttpSecurityHeaders67E61E6E"
+        "Name": "SetHttpSecurityHeadersc82a9e79410026b75533b53f0a37eeb986a591fa95",
+        "AutoPublish": true,
+        "FunctionCode": "function handler(event) { var response = event.response;       var headers = response.headers;       headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'};       headers['content-security-policy'] = { value: \"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\"};       headers['x-content-type-options'] = { value: 'nosniff'};       headers['x-frame-options'] = {value: 'DENY'};       headers['x-xss-protection'] = {value: '1; mode=block'};       return response;     }",
+        "FunctionConfig": {
+          "Comment": "SetHttpSecurityHeadersc82a9e79410026b75533b53f0a37eeb986a591fa95",
+          "Runtime": "cloudfront-js-1.0"
         }
       }
     },
@@ -776,21 +611,31 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "cfapilambdaoverrideCloudFrontToApiGatewayCloudfrontLoggingBucket3A71B9E0",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
+              "Principal": {
+                "AWS": "*"
               },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "cfapilambdaoverrideCloudFrontToApiGatewayCloudfrontLoggingBucket3A71B9E0",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "cfapilambdaoverrideCloudFrontToApiGatewayCloudfrontLoggingBucket3A71B9E0",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             }
           ],
@@ -818,11 +663,14 @@
               "Ref": "SomeCachePolicy40B9E4D4"
             },
             "Compress": true,
-            "LambdaFunctionAssociations": [
+            "FunctionAssociations": [
               {
-                "EventType": "origin-response",
-                "LambdaFunctionARN": {
-                  "Ref": "cfapilambdaoverrideCloudFrontToApiGatewaySetHttpSecurityHeadersVersionBECBEC80"
+                "EventType": "viewer-response",
+                "FunctionARN": {
+                  "Fn::GetAtt": [
+                    "cfapilambdaoverrideCloudFrontToApiGatewaySetHttpSecurityHeaders67E61E6E",
+                    "FunctionARN"
+                  ]
                 }
               }
             ],
@@ -1014,17 +862,37 @@
     }
   },
   "Parameters": {
-    "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cS3Bucket1F467BCC": {
-      "Type": "String",
-      "Description": "S3 bucket for asset \"42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c\""
-    },
-    "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cS3VersionKey9E4F7872": {
-      "Type": "String",
-      "Description": "S3 key for asset version \"42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c\""
-    },
-    "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cArtifactHash00A70A91": {
-      "Type": "String",
-      "Description": "Artifact hash for asset \"42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c\""
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
     }
   }
 }

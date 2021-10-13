@@ -11,11 +11,11 @@
  *  and limitations under the License.
  */
 
-import { SynthUtils } from '@aws-cdk/assert';
 import { CloudFrontToApiGatewayToLambda, CloudFrontToApiGatewayToLambdaProps } from "../lib";
 import * as cdk from "@aws-cdk/core";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as api from '@aws-cdk/aws-apigateway';
+import * as s3 from "@aws-cdk/aws-s3";
 import '@aws-cdk/assert/jest';
 
 function deployNewFunc(stack: cdk.Stack) {
@@ -42,12 +42,6 @@ function useExistingFunc(stack: cdk.Stack) {
   });
 }
 
-test('snapshot test CloudFrontToApiGatewayToLambda default params', () => {
-  const stack = new cdk.Stack();
-  deployNewFunc(stack);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-
 test('check properties', () => {
   const stack = new cdk.Stack();
 
@@ -56,7 +50,7 @@ test('check properties', () => {
   expect(construct.cloudFrontWebDistribution !== null);
   expect(construct.apiGateway !== null);
   expect(construct.lambdaFunction !== null);
-  expect(construct.edgeLambdaFunctionVersion !== null);
+  expect(construct.cloudFrontFunction !== null);
   expect(construct.cloudFrontLoggingBucket !== null);
   expect(construct.apiGatewayCloudWatchRole !== null);
   expect(construct.apiGatewayLogGroup !== null);
@@ -206,4 +200,75 @@ test('override api gateway properties without existingLambdaObj', () => {
       },
       Name: "LambdaRestApi"
     });
+});
+
+// --------------------------------------------------------------
+// Cloudfront logging bucket with destroy removal policy and auto delete objects
+// --------------------------------------------------------------
+test('Cloudfront logging bucket with destroy removal policy and auto delete objects', () => {
+  const stack = new cdk.Stack();
+
+  new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler'
+    },
+    apiGatewayProps: {
+      endpointConfiguration: {
+        types: [api.EndpointType.PRIVATE],
+      }
+    },
+    cloudFrontLoggingBucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::S3::Bucket", {
+    AccessControl: "LogDeliveryWrite"
+  });
+
+  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+    ServiceToken: {
+      "Fn::GetAtt": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+        "Arn"
+      ]
+    },
+    BucketName: {
+      Ref: "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucket7F467421"
+    }
+  });
+});
+
+// --------------------------------------------------------------
+// Cloudfront logging bucket error providing existing log bucket and logBuckerProps
+// --------------------------------------------------------------
+test('Cloudfront logging bucket error when providing existing log bucket and logBuckerProps', () => {
+  const stack = new cdk.Stack();
+  const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});
+
+  const app = () => { new CloudFrontToApiGatewayToLambda(stack, 'cloudfront-s3', {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_10_X,
+      handler: 'index.handler'
+    },
+    apiGatewayProps: {
+      endpointConfiguration: {
+        types: [api.EndpointType.PRIVATE],
+      }
+    },
+    cloudFrontLoggingBucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    },
+    cloudFrontDistributionProps: {
+      logBucket
+    },
+  });
+  };
+
+  expect(app).toThrowError();
 });

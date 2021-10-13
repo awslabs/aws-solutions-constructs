@@ -1,6 +1,6 @@
 {
   "Resources": {
-    "tests3stepfunctionconstructS3LoggingBucketE65663A6": {
+    "tests3stepfunctionconstructtests3stepfunctionconstructWS3LoggingBucket615E11F3": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "AccessControl": "LogDeliveryWrite",
@@ -36,11 +36,11 @@
         }
       }
     },
-    "tests3stepfunctionconstructS3LoggingBucketPolicy6D0EBFC8": {
+    "tests3stepfunctionconstructtests3stepfunctionconstructWS3LoggingBucketPolicyC5059059": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "tests3stepfunctionconstructS3LoggingBucketE65663A6"
+          "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructWS3LoggingBucket615E11F3"
         },
         "PolicyDocument": {
           "Statement": [
@@ -52,21 +52,31 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "tests3stepfunctionconstructS3LoggingBucketE65663A6",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
+              "Principal": {
+                "AWS": "*"
               },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "tests3stepfunctionconstructtests3stepfunctionconstructWS3LoggingBucket615E11F3",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "tests3stepfunctionconstructtests3stepfunctionconstructWS3LoggingBucket615E11F3",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             }
           ],
@@ -74,7 +84,7 @@
         }
       }
     },
-    "tests3stepfunctionconstructS3BucketE9791EAE": {
+    "tests3stepfunctionconstructtests3stepfunctionconstructWS3Bucket474FE3A1": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -101,7 +111,7 @@
         },
         "LoggingConfiguration": {
           "DestinationBucketName": {
-            "Ref": "tests3stepfunctionconstructS3LoggingBucketE65663A6"
+            "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructWS3LoggingBucket615E11F3"
           }
         },
         "PublicAccessBlockConfiguration": {
@@ -117,11 +127,11 @@
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete"
     },
-    "tests3stepfunctionconstructS3BucketPolicyF485D2A9": {
+    "tests3stepfunctionconstructtests3stepfunctionconstructWS3BucketPolicy4513F8D8": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "tests3stepfunctionconstructS3BucketE9791EAE"
+          "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructWS3Bucket474FE3A1"
         },
         "PolicyDocument": {
           "Statement": [
@@ -133,21 +143,31 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "tests3stepfunctionconstructS3BucketE9791EAE",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
+              "Principal": {
+                "AWS": "*"
               },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "tests3stepfunctionconstructtests3stepfunctionconstructWS3Bucket474FE3A1",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "tests3stepfunctionconstructtests3stepfunctionconstructWS3Bucket474FE3A1",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             }
           ],
@@ -155,7 +175,7 @@
         }
       }
     },
-    "tests3stepfunctionconstructCloudTrailS3LoggingBucket9F91E5B8": {
+    "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3LoggingBucketC008CB57": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "AccessControl": "LogDeliveryWrite",
@@ -191,11 +211,11 @@
         }
       }
     },
-    "tests3stepfunctionconstructCloudTrailS3LoggingBucketPolicyFEFD6915": {
+    "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3LoggingBucketPolicyEBACDA63": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "tests3stepfunctionconstructCloudTrailS3LoggingBucket9F91E5B8"
+          "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3LoggingBucketC008CB57"
         },
         "PolicyDocument": {
           "Statement": [
@@ -207,21 +227,31 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "tests3stepfunctionconstructCloudTrailS3LoggingBucket9F91E5B8",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
+              "Principal": {
+                "AWS": "*"
               },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3LoggingBucketC008CB57",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3LoggingBucketC008CB57",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             }
           ],
@@ -229,7 +259,7 @@
         }
       }
     },
-    "tests3stepfunctionconstructCloudTrailS3Bucket5720C055": {
+    "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3BucketACD4E98E": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -256,7 +286,7 @@
         },
         "LoggingConfiguration": {
           "DestinationBucketName": {
-            "Ref": "tests3stepfunctionconstructCloudTrailS3LoggingBucket9F91E5B8"
+            "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3LoggingBucketC008CB57"
           }
         },
         "PublicAccessBlockConfiguration": {
@@ -272,11 +302,11 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "tests3stepfunctionconstructCloudTrailS3BucketPolicy1F9D9BDB": {
+    "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3BucketPolicy25F2E4B1": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "tests3stepfunctionconstructCloudTrailS3Bucket5720C055"
+          "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3BucketACD4E98E"
         },
         "PolicyDocument": {
           "Statement": [
@@ -288,21 +318,31 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "tests3stepfunctionconstructCloudTrailS3Bucket5720C055",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
+              "Principal": {
+                "AWS": "*"
               },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3BucketACD4E98E",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3BucketACD4E98E",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             },
             {
@@ -313,7 +353,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "tests3stepfunctionconstructCloudTrailS3Bucket5720C055",
+                  "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3BucketACD4E98E",
                   "Arn"
                 ]
               }
@@ -335,7 +375,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "tests3stepfunctionconstructCloudTrailS3Bucket5720C055",
+                        "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3BucketACD4E98E",
                         "Arn"
                       ]
                     },
@@ -353,12 +393,12 @@
         }
       }
     },
-    "tests3stepfunctionconstructS3EventsTrail1D9B4A4E": {
+    "tests3stepfunctionconstructtests3stepfunctionconstructWS3EventsTrail64B14DA8": {
       "Type": "AWS::CloudTrail::Trail",
       "Properties": {
         "IsLogging": true,
         "S3BucketName": {
-          "Ref": "tests3stepfunctionconstructCloudTrailS3Bucket5720C055"
+          "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3BucketACD4E98E"
         },
         "EnableLogFileValidation": true,
         "EventSelectors": [
@@ -373,7 +413,7 @@
                       [
                         {
                           "Fn::GetAtt": [
-                            "tests3stepfunctionconstructS3BucketE9791EAE",
+                            "tests3stepfunctionconstructtests3stepfunctionconstructWS3Bucket474FE3A1",
                             "Arn"
                           ]
                         },
@@ -392,13 +432,13 @@
         "IsMultiRegionTrail": true
       },
       "DependsOn": [
-        "tests3stepfunctionconstructCloudTrailS3BucketPolicy1F9D9BDB"
+        "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3BucketPolicy25F2E4B1"
       ]
     },
-    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructStateMachineLogGroupEA0C99B8": {
+    "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructStateMachineLogGroup9A7BB9BF": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/vendedlogs/states/s3stepfunctionnoargumenttests3stepfunctionconstructeventrulestepfunctionconstructstatemachinelog4bfaa95a6924"
+        "LogGroupName": "/aws/vendedlogs/states/s3stepfunctionnoargumenttests3stepfunctionconstructweventrulestepfunctionconstructstatemachinelog0385251f0c2a"
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
@@ -417,7 +457,7 @@
         }
       }
     },
-    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructStateMachineRoleF1F934A9": {
+    "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructStateMachineRole66E57E5E": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -445,7 +485,7 @@
         }
       }
     },
-    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructStateMachineRoleDefaultPolicyCFADC36C": {
+    "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructStateMachineRoleDefaultPolicy48779FA2": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -492,10 +532,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructStateMachineRoleDefaultPolicyCFADC36C",
+        "PolicyName": "tructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructStateMachineRoleDefaultPolicy48779FA2",
         "Roles": [
           {
-            "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructStateMachineRoleF1F934A9"
+            "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructStateMachineRole66E57E5E"
           }
         ]
       },
@@ -510,12 +550,12 @@
         }
       }
     },
-    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructStateMachine968625EF": {
+    "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructStateMachine1203E9BD": {
       "Type": "AWS::StepFunctions::StateMachine",
       "Properties": {
         "RoleArn": {
           "Fn::GetAtt": [
-            "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructStateMachineRoleF1F934A9",
+            "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructStateMachineRole66E57E5E",
             "Arn"
           ]
         },
@@ -526,7 +566,7 @@
               "CloudWatchLogsLogGroup": {
                 "LogGroupArn": {
                   "Fn::GetAtt": [
-                    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructStateMachineLogGroupEA0C99B8",
+                    "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructStateMachineLogGroup9A7BB9BF",
                     "Arn"
                   ]
                 }
@@ -537,11 +577,11 @@
         }
       },
       "DependsOn": [
-        "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructStateMachineRoleDefaultPolicyCFADC36C",
-        "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructStateMachineRoleF1F934A9"
+        "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructStateMachineRoleDefaultPolicy48779FA2",
+        "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructStateMachineRole66E57E5E"
       ]
     },
-    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructEventsRuleRole67D168EC": {
+    "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructEventsRuleRole726956CE": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -558,7 +598,7 @@
         }
       }
     },
-    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructEventsRuleRoleDefaultPolicy20E07350": {
+    "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructEventsRuleRoleDefaultPolicy15081360": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -567,21 +607,21 @@
               "Action": "states:StartExecution",
               "Effect": "Allow",
               "Resource": {
-                "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructStateMachine968625EF"
+                "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructStateMachine1203E9BD"
               }
             }
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructEventsRuleRoleDefaultPolicy20E07350",
+        "PolicyName": "nstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructEventsRuleRoleDefaultPolicy15081360",
         "Roles": [
           {
-            "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructEventsRuleRole67D168EC"
+            "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructEventsRuleRole726956CE"
           }
         ]
       }
     },
-    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructEventsRuleC06E4B63": {
+    "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructEventsRule469BF966": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "EventPattern": {
@@ -603,7 +643,7 @@
             "requestParameters": {
               "bucketName": [
                 {
-                  "Ref": "tests3stepfunctionconstructS3BucketE9791EAE"
+                  "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructWS3Bucket474FE3A1"
                 }
               ]
             }
@@ -613,12 +653,12 @@
         "Targets": [
           {
             "Arn": {
-              "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructStateMachine968625EF"
+              "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructStateMachine1203E9BD"
             },
             "Id": "Target0",
             "RoleArn": {
               "Fn::GetAtt": [
-                "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructEventsRuleRole67D168EC",
+                "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructEventsRuleRole726956CE",
                 "Arn"
               ]
             }
@@ -626,7 +666,7 @@
         ]
       }
     },
-    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructExecutionFailedAlarm3832215E": {
+    "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructExecutionFailedAlarm1154DD22": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -636,7 +676,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructStateMachine968625EF"
+              "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructStateMachine1203E9BD"
             }
           }
         ],
@@ -647,7 +687,7 @@
         "Threshold": 1
       }
     },
-    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructExecutionThrottledAlarm77A13593": {
+    "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructExecutionThrottledAlarm3645C655": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -657,7 +697,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructStateMachine968625EF"
+              "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructStateMachine1203E9BD"
             }
           }
         ],
@@ -668,7 +708,7 @@
         "Threshold": 1
       }
     },
-    "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructExecutionAbortedAlarm6671CC90": {
+    "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructExecutionAbortedAlarm36625641": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -678,7 +718,7 @@
           {
             "Name": "StateMachineArn",
             "Value": {
-              "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructeventrulestepfunctionconstructStateMachine968625EF"
+              "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructStateMachine1203E9BD"
             }
           }
         ],
@@ -688,6 +728,40 @@
         "Statistic": "Maximum",
         "Threshold": 1
       }
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
     }
   }
 }

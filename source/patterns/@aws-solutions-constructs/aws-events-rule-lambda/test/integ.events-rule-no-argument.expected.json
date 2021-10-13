@@ -1,6 +1,6 @@
 {
   "Resources": {
-    "testeventsrulelambdaLambdaFunctionServiceRole61DEA405": {
+    "testeventsrulelambdatesteventsrulelambdaWLambdaFunctionServiceRoleFF9B9BDB": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -55,7 +55,7 @@
         ]
       }
     },
-    "testeventsrulelambdaLambdaFunctionServiceRoleDefaultPolicyFC5ACEAE": {
+    "testeventsrulelambdatesteventsrulelambdaWLambdaFunctionServiceRoleDefaultPolicyD705B722": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -71,10 +71,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testeventsrulelambdaLambdaFunctionServiceRoleDefaultPolicyFC5ACEAE",
+        "PolicyName": "testeventsrulelambdatesteventsrulelambdaWLambdaFunctionServiceRoleDefaultPolicyD705B722",
         "Roles": [
           {
-            "Ref": "testeventsrulelambdaLambdaFunctionServiceRole61DEA405"
+            "Ref": "testeventsrulelambdatesteventsrulelambdaWLambdaFunctionServiceRoleFF9B9BDB"
           }
         ]
       },
@@ -89,50 +89,18 @@
         }
       }
     },
-    "testeventsrulelambdaLambdaFunction1A3B9577": {
+    "testeventsrulelambdatesteventsrulelambdaWLambdaFunction5EE557E8": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
-            "Ref": "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cS3Bucket1F467BCC"
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": {
-            "Fn::Join": [
-              "",
-              [
-                {
-                  "Fn::Select": [
-                    0,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cS3VersionKey9E4F7872"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "Fn::Select": [
-                    1,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cS3VersionKey9E4F7872"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            ]
-          }
+          "S3Key": "42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c.zip"
         },
         "Role": {
           "Fn::GetAtt": [
-            "testeventsrulelambdaLambdaFunctionServiceRole61DEA405",
+            "testeventsrulelambdatesteventsrulelambdaWLambdaFunctionServiceRoleFF9B9BDB",
             "Arn"
           ]
         },
@@ -148,8 +116,8 @@
         }
       },
       "DependsOn": [
-        "testeventsrulelambdaLambdaFunctionServiceRoleDefaultPolicyFC5ACEAE",
-        "testeventsrulelambdaLambdaFunctionServiceRole61DEA405"
+        "testeventsrulelambdatesteventsrulelambdaWLambdaFunctionServiceRoleDefaultPolicyD705B722",
+        "testeventsrulelambdatesteventsrulelambdaWLambdaFunctionServiceRoleFF9B9BDB"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -170,26 +138,26 @@
         }
       }
     },
-    "testeventsrulelambdaLambdaFunctionAwsEventsLambdaInvokePermission1CC45551C": {
+    "testeventsrulelambdatesteventsrulelambdaWLambdaFunctionAwsEventsLambdaInvokePermission135EE70F4": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "testeventsrulelambdaLambdaFunction1A3B9577",
+            "testeventsrulelambdatesteventsrulelambdaWLambdaFunction5EE557E8",
             "Arn"
           ]
         },
         "Principal": "events.amazonaws.com",
         "SourceArn": {
           "Fn::GetAtt": [
-            "testeventsrulelambdaEventsRule82B36872",
+            "testeventsrulelambdatesteventsrulelambdaWEventsRule1B328BFB",
             "Arn"
           ]
         }
       }
     },
-    "testeventsrulelambdaEventsRule82B36872": {
+    "testeventsrulelambdatesteventsrulelambdaWEventsRule1B328BFB": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "ScheduleExpression": "rate(5 minutes)",
@@ -198,7 +166,7 @@
           {
             "Arn": {
               "Fn::GetAtt": [
-                "testeventsrulelambdaLambdaFunction1A3B9577",
+                "testeventsrulelambdatesteventsrulelambdaWLambdaFunction5EE557E8",
                 "Arn"
               ]
             },
@@ -209,17 +177,37 @@
     }
   },
   "Parameters": {
-    "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cS3Bucket1F467BCC": {
-      "Type": "String",
-      "Description": "S3 bucket for asset \"42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c\""
-    },
-    "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cS3VersionKey9E4F7872": {
-      "Type": "String",
-      "Description": "S3 key for asset version \"42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c\""
-    },
-    "AssetParameters42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198cArtifactHash00A70A91": {
-      "Type": "String",
-      "Description": "Artifact hash for asset \"42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c\""
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
     }
   }
 }

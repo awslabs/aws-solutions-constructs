@@ -61,13 +61,13 @@
     "@aws-cdk/core": "0.0.0",
     "@aws-cdk/aws-logs": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
+    "@aws-cdk/aws-cloudwatch": "0.0.0",
     "constructs": "^3.2.0"
   },
   "devDependencies": {
     "@aws-cdk/assert": "0.0.0",
     "@types/jest": "^26.0.22",
-    "@types/node": "^10.3.0",
-    "aws-cdk": "0.0.0"
+    "@types/node": "^10.3.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -91,7 +91,16 @@
     "@aws-cdk/aws-s3-assets": "0.0.0",
     "@aws-cdk/core": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
+    "@aws-cdk/aws-cloudwatch": "0.0.0",
     "constructs": "^3.2.0",
     "@aws-cdk/aws-logs": "0.0.0"
-  }
+  },
+  "keywords": [
+    "aws",
+    "cdk",
+    "awscdk",
+    "AWS Solutions Constructs",
+    "Amazon Kinesis Data Streams",
+    "AWS Glue"
+  ]
 }

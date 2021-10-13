@@ -60,7 +60,7 @@
     "@aws-cdk/aws-s3": "0.0.0",
     "@aws-cdk/aws-logs": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "0.0.0",
+    "@aws-solutions-constructs/aws-eventbridge-kinesisfirehose-s3": "0.0.0",
     "constructs": "^3.2.0"
   },
   "devDependencies": {
@@ -89,8 +89,17 @@
     "@aws-cdk/aws-s3": "0.0.0",
     "@aws-cdk/core": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "0.0.0",
+    "@aws-solutions-constructs/aws-eventbridge-kinesisfirehose-s3": "0.0.0",
     "constructs": "^3.2.0",
     "@aws-cdk/aws-logs": "0.0.0"
-  }
+  },
+  "keywords": [
+    "aws",
+    "cdk",
+    "awscdk",
+    "AWS Solutions Constructs",
+    "Amazon EventBridge",
+    "Amazon Kinesis Data Firehose",
+    "Amazon S3"
+  ]
 }

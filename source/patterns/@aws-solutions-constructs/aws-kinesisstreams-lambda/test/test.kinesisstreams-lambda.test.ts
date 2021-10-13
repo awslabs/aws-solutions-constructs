@@ -14,28 +14,9 @@
 // Imports
 import { Stack, Duration } from "@aws-cdk/core";
 import { KinesisStreamsToLambda, KinesisStreamsToLambdaProps } from "../lib";
-import { SynthUtils } from '@aws-cdk/assert';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as kinesis from '@aws-cdk/aws-kinesis';
 import '@aws-cdk/assert/jest';
-
-// --------------------------------------------------------------
-// Pattern minimal deployment
-// --------------------------------------------------------------
-test('Pattern minimal deployment', () => {
-  // Initial setup
-  const stack = new Stack();
-  const props: KinesisStreamsToLambdaProps = {
-    lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    }
-  };
-  new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);
-  // Assertion 1
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
 
 // --------------------------------------------------------------
 // Test properties
@@ -84,9 +65,6 @@ test('Test existing resources', () => {
     existingStreamObj: stream,
 
   });
-
-  // Assertions
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 
   expect(stack).toHaveResource('AWS::Kinesis::Stream', {
     Name: 'existing-stream',

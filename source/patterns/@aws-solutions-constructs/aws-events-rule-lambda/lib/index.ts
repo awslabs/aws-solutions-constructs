@@ -13,10 +13,9 @@
 
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as events from '@aws-cdk/aws-events';
-import * as defaults from '@aws-solutions-constructs/core';
-import * as iam from '@aws-cdk/aws-iam';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
-import { overrideProps } from '@aws-solutions-constructs/core';
+import { EventbridgeToLambda } from '@aws-solutions-constructs/aws-eventbridge-lambda';
 
 /**
  * @summary The properties for the CloudFrontToApiGateway Construct
@@ -27,23 +26,36 @@ export interface EventsRuleToLambdaProps {
    *
    * @default - None
    */
-  readonly existingLambdaObj?: lambda.Function,
+  readonly existingLambdaObj?: lambda.Function;
   /**
    * User provided props to override the default props for the Lambda function.
    *
    * @default - Default props are used
    */
-  readonly lambdaFunctionProps?: lambda.FunctionProps,
+  readonly lambdaFunctionProps?: lambda.FunctionProps;
+  /**
+   * Existing instance of a custom EventBus.
+   *
+   * @default - None
+   */
+  readonly existingEventBusInterface?: events.IEventBus;
+  /**
+   * A new custom EventBus is created with provided props.
+   *
+   * @default - None
+   */
+  readonly eventBusProps?: events.EventBusProps;
   /**
    * User provided eventRuleProps to override the defaults
    *
    * @default - None
    */
-  readonly eventRuleProps: events.RuleProps
+  readonly eventRuleProps: events.RuleProps;
 }
 
 export class EventsRuleToLambda extends Construct {
   public readonly lambdaFunction: lambda.Function;
+  public readonly eventBus?: events.IEventBus;
   public readonly eventsRule: events.Rule;
 
   /**
@@ -51,33 +63,20 @@ export class EventsRuleToLambda extends Construct {
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {EventsRuleToLambdaProps} props - user provided props for the construct
-   * @since 0.8.0
    * @access public
    */
   constructor(scope: Construct, id: string, props: EventsRuleToLambdaProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    const convertedProps: EventsRuleToLambdaProps = { ...props };
 
-    this.lambdaFunction = defaults.buildLambdaFunction(this, {
-      existingLambdaObj: props.existingLambdaObj,
-      lambdaFunctionProps: props.lambdaFunctionProps
-    });
+    // W (for 'wrapped') is added to the id so that the id's of the constructs with the old and new names don't collide
+    // If this character pushes you beyond the 64 character limit, just import the new named construct and instantiate
+    // it in place of the older named version. They are functionally identical, aside from the types no other changes
+    // will be required.  (eg - new EventbridgeToLambda instead of EventsRuleToLambda)
+    const wrappedConstruct: EventsRuleToLambda = new EventbridgeToLambda(this, `${id}W`, convertedProps);
 
-    const lambdaFunc: events.IRuleTarget = {
-      bind: () => ({
-        id: '',
-        arn: this.lambdaFunction.functionArn
-      })
-    };
-
-    const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([lambdaFunc]);
-    const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);
-
-    this.eventsRule = new events.Rule(this, 'EventsRule', eventsRuleProps);
-
-    defaults.addPermission(this.lambdaFunction, "AwsEventsLambdaInvokePermission", {
-      principal: new iam.ServicePrincipal('events.amazonaws.com'),
-      sourceArn: this.eventsRule.ruleArn
-    });
+    this.lambdaFunction = wrappedConstruct.lambdaFunction;
+    this.eventsRule = wrappedConstruct.eventsRule;
+    this.eventBus = wrappedConstruct.eventBus;
   }
 }

@@ -1,6 +1,6 @@
 {
   "Resources": {
-    "testdynamodbstreamlambdaLambdaFunctionServiceRole034E525C": {
+    "testdynamodbstreamlambdatestdynamodbstreamlambdaWLambdaFunctionServiceRoleB070F516": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -55,7 +55,7 @@
         ]
       }
     },
-    "testdynamodbstreamlambdaLambdaFunctionServiceRoleDefaultPolicy90B64ABB": {
+    "testdynamodbstreamlambdatestdynamodbstreamlambdaWLambdaFunctionServiceRoleDefaultPolicy5313D05B": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -82,7 +82,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "testdynamodbstreamlambdaDynamoTable6EB2ED0F",
+                  "testdynamodbstreamlambdatestdynamodbstreamlambdaWDynamoTable31B87C4E",
                   "StreamArn"
                 ]
               }
@@ -96,7 +96,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "testdynamodbstreamlambdaSqsDlqQueueF47B6B9A",
+                  "testdynamodbstreamlambdatestdynamodbstreamlambdaWSqsDlqQueueC4CD9C0A",
                   "Arn"
                 ]
               }
@@ -104,10 +104,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testdynamodbstreamlambdaLambdaFunctionServiceRoleDefaultPolicy90B64ABB",
+        "PolicyName": "testdynamodbstreamlambdatestdynamodbstreamlambdaWLambdaFunctionServiceRoleDefaultPolicy5313D05B",
         "Roles": [
           {
-            "Ref": "testdynamodbstreamlambdaLambdaFunctionServiceRole034E525C"
+            "Ref": "testdynamodbstreamlambdatestdynamodbstreamlambdaWLambdaFunctionServiceRoleB070F516"
           }
         ]
       },
@@ -122,50 +122,18 @@
         }
       }
     },
-    "testdynamodbstreamlambdaLambdaFunction99034597": {
+    "testdynamodbstreamlambdatestdynamodbstreamlambdaWLambdaFunction8F8F40D1": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
-            "Ref": "AssetParameters0c3255e93ffe7a906c7422e9f0e9cc4c7fd86ee996ee3bb302e2f134b38463c8S3Bucket9E1964CB"
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": {
-            "Fn::Join": [
-              "",
-              [
-                {
-                  "Fn::Select": [
-                    0,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters0c3255e93ffe7a906c7422e9f0e9cc4c7fd86ee996ee3bb302e2f134b38463c8S3VersionKey7153CEE7"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "Fn::Select": [
-                    1,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters0c3255e93ffe7a906c7422e9f0e9cc4c7fd86ee996ee3bb302e2f134b38463c8S3VersionKey7153CEE7"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            ]
-          }
+          "S3Key": "0c3255e93ffe7a906c7422e9f0e9cc4c7fd86ee996ee3bb302e2f134b38463c8.zip"
         },
         "Role": {
           "Fn::GetAtt": [
-            "testdynamodbstreamlambdaLambdaFunctionServiceRole034E525C",
+            "testdynamodbstreamlambdatestdynamodbstreamlambdaWLambdaFunctionServiceRoleB070F516",
             "Arn"
           ]
         },
@@ -181,8 +149,8 @@
         }
       },
       "DependsOn": [
-        "testdynamodbstreamlambdaLambdaFunctionServiceRoleDefaultPolicy90B64ABB",
-        "testdynamodbstreamlambdaLambdaFunctionServiceRole034E525C"
+        "testdynamodbstreamlambdatestdynamodbstreamlambdaWLambdaFunctionServiceRoleDefaultPolicy5313D05B",
+        "testdynamodbstreamlambdatestdynamodbstreamlambdaWLambdaFunctionServiceRoleB070F516"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -203,11 +171,11 @@
         }
       }
     },
-    "testdynamodbstreamlambdaLambdaFunctionDynamoDBEventSourcenoargumentstestdynamodbstreamlambdaDynamoTableD8394C81D683362F": {
+    "testdynamodbstreamlambdatestdynamodbstreamlambdaWLambdaFunctionDynamoDBEventSourcenoargumentstestdynamodbstreamlambdatestdynamodbstreamlambdaWDynamoTableCCCB3D4A68E403D3": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
         "FunctionName": {
-          "Ref": "testdynamodbstreamlambdaLambdaFunction99034597"
+          "Ref": "testdynamodbstreamlambdatestdynamodbstreamlambdaWLambdaFunction8F8F40D1"
         },
         "BatchSize": 100,
         "BisectBatchOnFunctionError": true,
@@ -215,7 +183,7 @@
           "OnFailure": {
             "Destination": {
               "Fn::GetAtt": [
-                "testdynamodbstreamlambdaSqsDlqQueueF47B6B9A",
+                "testdynamodbstreamlambdatestdynamodbstreamlambdaWSqsDlqQueueC4CD9C0A",
                 "Arn"
               ]
             }
@@ -223,7 +191,7 @@
         },
         "EventSourceArn": {
           "Fn::GetAtt": [
-            "testdynamodbstreamlambdaDynamoTable6EB2ED0F",
+            "testdynamodbstreamlambdatestdynamodbstreamlambdaWDynamoTable31B87C4E",
             "StreamArn"
           ]
         },
@@ -232,7 +200,7 @@
         "StartingPosition": "TRIM_HORIZON"
       }
     },
-    "testdynamodbstreamlambdaDynamoTable6EB2ED0F": {
+    "testdynamodbstreamlambdatestdynamodbstreamlambdaWDynamoTable31B87C4E": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
         "KeySchema": [
@@ -261,7 +229,7 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "testdynamodbstreamlambdaSqsDlqQueueF47B6B9A": {
+    "testdynamodbstreamlambdatestdynamodbstreamlambdaWSqsDlqQueueC4CD9C0A": {
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": "alias/aws/sqs"
@@ -269,7 +237,7 @@
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete"
     },
-    "testdynamodbstreamlambdaSqsDlqQueuePolicy6BA0E667": {
+    "testdynamodbstreamlambdatestdynamodbstreamlambdaWSqsDlqQueuePolicy6200BA59": {
       "Type": "AWS::SQS::QueuePolicy",
       "Properties": {
         "PolicyDocument": {
@@ -305,7 +273,7 @@
               },
               "Resource": {
                 "Fn::GetAtt": [
-                  "testdynamodbstreamlambdaSqsDlqQueueF47B6B9A",
+                  "testdynamodbstreamlambdatestdynamodbstreamlambdaWSqsDlqQueueC4CD9C0A",
                   "Arn"
                 ]
               },
@@ -319,10 +287,12 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": {
+                "AWS": "*"
+              },
               "Resource": {
                 "Fn::GetAtt": [
-                  "testdynamodbstreamlambdaSqsDlqQueueF47B6B9A",
+                  "testdynamodbstreamlambdatestdynamodbstreamlambdaWSqsDlqQueueC4CD9C0A",
                   "Arn"
                 ]
               },
@@ -333,24 +303,44 @@
         },
         "Queues": [
           {
-            "Ref": "testdynamodbstreamlambdaSqsDlqQueueF47B6B9A"
+            "Ref": "testdynamodbstreamlambdatestdynamodbstreamlambdaWSqsDlqQueueC4CD9C0A"
           }
         ]
       }
     }
   },
   "Parameters": {
-    "AssetParameters0c3255e93ffe7a906c7422e9f0e9cc4c7fd86ee996ee3bb302e2f134b38463c8S3Bucket9E1964CB": {
-      "Type": "String",
-      "Description": "S3 bucket for asset \"0c3255e93ffe7a906c7422e9f0e9cc4c7fd86ee996ee3bb302e2f134b38463c8\""
-    },
-    "AssetParameters0c3255e93ffe7a906c7422e9f0e9cc4c7fd86ee996ee3bb302e2f134b38463c8S3VersionKey7153CEE7": {
-      "Type": "String",
-      "Description": "S3 key for asset version \"0c3255e93ffe7a906c7422e9f0e9cc4c7fd86ee996ee3bb302e2f134b38463c8\""
-    },
-    "AssetParameters0c3255e93ffe7a906c7422e9f0e9cc4c7fd86ee996ee3bb302e2f134b38463c8ArtifactHash8D9AD644": {
-      "Type": "String",
-      "Description": "Artifact hash for asset \"0c3255e93ffe7a906c7422e9f0e9cc4c7fd86ee996ee3bb302e2f134b38463c8\""
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
     }
   }
 }

@@ -1,0 +1,788 @@
+{
+  "Resources": {
+    "ApiGatwayToKinesisStreamsApiAccessLogGroup96414164": {
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
+            },
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+            }
+          ]
+        }
+      }
+    },
+    "ApiGatwayToKinesisStreamsRestApi04B87154": {
+      "Type": "AWS::ApiGateway::RestApi",
+      "Properties": {
+        "EndpointConfiguration": {
+          "Types": [
+            "EDGE"
+          ]
+        },
+        "Name": "RestApi"
+      }
+    },
+    "ApiGatwayToKinesisStreamsRestApiDeployment0B980D464e655b1af940762031a1e835730dd390": {
+      "Type": "AWS::ApiGateway::Deployment",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "ApiGatwayToKinesisStreamsRestApi04B87154"
+        },
+        "Description": "Automatically created by the RestApi construct"
+      },
+      "DependsOn": [
+        "ApiGatwayToKinesisStreamsRestApirecordPOST72575022",
+        "ApiGatwayToKinesisStreamsRestApirecord72479DEC",
+        "ApiGatwayToKinesisStreamsRestApirecordsPOST20DA11E7",
+        "ApiGatwayToKinesisStreamsRestApirecords1F1985F6",
+        "ApiGatwayToKinesisStreamsRestApiPutRecordModel48264A9E",
+        "ApiGatwayToKinesisStreamsRestApiPutRecordsModel66D740EA",
+        "ApiGatwayToKinesisStreamsRestApirequestvalidator49A32ACA"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W45",
+              "reason": "ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checkes for it in AWS::ApiGateway::Deployment resource"
+            }
+          ]
+        }
+      }
+    },
+    "ApiGatwayToKinesisStreamsRestApiDeploymentStageprod12A54FFA": {
+      "Type": "AWS::ApiGateway::Stage",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "ApiGatwayToKinesisStreamsRestApi04B87154"
+        },
+        "AccessLogSetting": {
+          "DestinationArn": {
+            "Fn::GetAtt": [
+              "ApiGatwayToKinesisStreamsApiAccessLogGroup96414164",
+              "Arn"
+            ]
+          },
+          "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
+        },
+        "DeploymentId": {
+          "Ref": "ApiGatwayToKinesisStreamsRestApiDeployment0B980D464e655b1af940762031a1e835730dd390"
+        },
+        "MethodSettings": [
+          {
+            "DataTraceEnabled": false,
+            "HttpMethod": "*",
+            "LoggingLevel": "INFO",
+            "ResourcePath": "/*"
+          }
+        ],
+        "StageName": "prod",
+        "TracingEnabled": true
+      }
+    },
+    "ApiGatwayToKinesisStreamsRestApirecord72479DEC": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatwayToKinesisStreamsRestApi04B87154",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "record",
+        "RestApiId": {
+          "Ref": "ApiGatwayToKinesisStreamsRestApi04B87154"
+        }
+      }
+    },
+    "ApiGatwayToKinesisStreamsRestApirecordPOST72575022": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "ResourceId": {
+          "Ref": "ApiGatwayToKinesisStreamsRestApirecord72479DEC"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatwayToKinesisStreamsRestApi04B87154"
+        },
+        "AuthorizationType": "AWS_IAM",
+        "Integration": {
+          "Credentials": {
+            "Fn::GetAtt": [
+              "ApiGatwayToKinesisStreamsapigatewayrole7C564310",
+              "Arn"
+            ]
+          },
+          "IntegrationHttpMethod": "POST",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200"
+            },
+            {
+              "ResponseTemplates": {
+                "text/html": "Error"
+              },
+              "SelectionPattern": "500",
+              "StatusCode": "500"
+            }
+          ],
+          "PassthroughBehavior": "NEVER",
+          "RequestParameters": {
+            "integration.request.header.Content-Type": "'x-amz-json-1.1'"
+          },
+          "RequestTemplates": {
+            "application/json": {
+              "Fn::Join": [
+                "",
+                [
+                  "{ \"StreamName\": \"",
+                  {
+                    "Ref": "KinesisStream46752A3E"
+                  },
+                  "\", \"Data\": \"$util.base64Encode($input.json('$.data'))\", \"PartitionKey\": \"$input.path('$.partitionKey')\" }"
+                ]
+              ]
+            }
+          },
+          "Type": "AWS",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":kinesis:action/PutRecord"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": [
+          {
+            "ResponseParameters": {
+              "method.response.header.Content-Type": true
+            },
+            "StatusCode": "200"
+          },
+          {
+            "ResponseParameters": {
+              "method.response.header.Content-Type": true
+            },
+            "StatusCode": "500"
+          }
+        ],
+        "RequestModels": {
+          "application/json": {
+            "Ref": "ApiGatwayToKinesisStreamsRestApiPutRecordModel48264A9E"
+          }
+        },
+        "RequestValidatorId": {
+          "Ref": "ApiGatwayToKinesisStreamsRestApirequestvalidator49A32ACA"
+        }
+      }
+    },
+    "ApiGatwayToKinesisStreamsRestApirecords1F1985F6": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatwayToKinesisStreamsRestApi04B87154",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "records",
+        "RestApiId": {
+          "Ref": "ApiGatwayToKinesisStreamsRestApi04B87154"
+        }
+      }
+    },
+    "ApiGatwayToKinesisStreamsRestApirecordsPOST20DA11E7": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "ResourceId": {
+          "Ref": "ApiGatwayToKinesisStreamsRestApirecords1F1985F6"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatwayToKinesisStreamsRestApi04B87154"
+        },
+        "AuthorizationType": "AWS_IAM",
+        "Integration": {
+          "Credentials": {
+            "Fn::GetAtt": [
+              "ApiGatwayToKinesisStreamsapigatewayrole7C564310",
+              "Arn"
+            ]
+          },
+          "IntegrationHttpMethod": "POST",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200"
+            },
+            {
+              "ResponseTemplates": {
+                "text/html": "Error"
+              },
+              "SelectionPattern": "500",
+              "StatusCode": "500"
+            }
+          ],
+          "PassthroughBehavior": "NEVER",
+          "RequestParameters": {
+            "integration.request.header.Content-Type": "'x-amz-json-1.1'"
+          },
+          "RequestTemplates": {
+            "application/json": {
+              "Fn::Join": [
+                "",
+                [
+                  "{ \"StreamName\": \"",
+                  {
+                    "Ref": "KinesisStream46752A3E"
+                  },
+                  "\", \"Records\": [ #foreach($elem in $input.path('$.records')) { \"Data\": \"$util.base64Encode($elem.data)\", \"PartitionKey\": \"$elem.partitionKey\"}#if($foreach.hasNext),#end #end ] }"
+                ]
+              ]
+            }
+          },
+          "Type": "AWS",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":kinesis:action/PutRecords"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": [
+          {
+            "ResponseParameters": {
+              "method.response.header.Content-Type": true
+            },
+            "StatusCode": "200"
+          },
+          {
+            "ResponseParameters": {
+              "method.response.header.Content-Type": true
+            },
+            "StatusCode": "500"
+          }
+        ],
+        "RequestModels": {
+          "application/json": {
+            "Ref": "ApiGatwayToKinesisStreamsRestApiPutRecordsModel66D740EA"
+          }
+        },
+        "RequestValidatorId": {
+          "Ref": "ApiGatwayToKinesisStreamsRestApirequestvalidator49A32ACA"
+        }
+      }
+    },
+    "ApiGatwayToKinesisStreamsRestApiUsagePlanCA948869": {
+      "Type": "AWS::ApiGateway::UsagePlan",
+      "Properties": {
+        "ApiStages": [
+          {
+            "ApiId": {
+              "Ref": "ApiGatwayToKinesisStreamsRestApi04B87154"
+            },
+            "Stage": {
+              "Ref": "ApiGatwayToKinesisStreamsRestApiDeploymentStageprod12A54FFA"
+            },
+            "Throttle": {}
+          }
+        ]
+      }
+    },
+    "ApiGatwayToKinesisStreamsRestApirequestvalidator49A32ACA": {
+      "Type": "AWS::ApiGateway::RequestValidator",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "ApiGatwayToKinesisStreamsRestApi04B87154"
+        },
+        "Name": "request-body-validator",
+        "ValidateRequestBody": true
+      }
+    },
+    "ApiGatwayToKinesisStreamsRestApiPutRecordModel48264A9E": {
+      "Type": "AWS::ApiGateway::Model",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "ApiGatwayToKinesisStreamsRestApi04B87154"
+        },
+        "ContentType": "application/json",
+        "Description": "PutRecord proxy single-record payload",
+        "Name": "PutRecordModel",
+        "Schema": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "title": "PutRecord proxy single-record payload",
+          "type": "object",
+          "required": [
+            "data",
+            "partitionKey"
+          ],
+          "properties": {
+            "data": {
+              "type": "string"
+            },
+            "partitionKey": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "ApiGatwayToKinesisStreamsRestApiPutRecordsModel66D740EA": {
+      "Type": "AWS::ApiGateway::Model",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "ApiGatwayToKinesisStreamsRestApi04B87154"
+        },
+        "ContentType": "application/json",
+        "Description": "PutRecords proxy payload data",
+        "Name": "PutRecordsModel",
+        "Schema": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "title": "PutRecords proxy payload data",
+          "type": "object",
+          "required": [
+            "records"
+          ],
+          "properties": {
+            "records": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "data",
+                  "partitionKey"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "string"
+                  },
+                  "partitionKey": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "ApiGatwayToKinesisStreamsLambdaRestApiCloudWatchRoleF275DEDD": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "apigateway.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:DescribeLogGroups",
+                    "logs:DescribeLogStreams",
+                    "logs:PutLogEvents",
+                    "logs:GetLogEvents",
+                    "logs:FilterLogEvents"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "LambdaRestApiCloudWatchRolePolicy"
+          }
+        ]
+      }
+    },
+    "ApiGatwayToKinesisStreamsLambdaRestApiAccountAD573240": {
+      "Type": "AWS::ApiGateway::Account",
+      "Properties": {
+        "CloudWatchRoleArn": {
+          "Fn::GetAtt": [
+            "ApiGatwayToKinesisStreamsLambdaRestApiCloudWatchRoleF275DEDD",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "ApiGatwayToKinesisStreamsRestApi04B87154"
+      ]
+    },
+    "ApiGatwayToKinesisStreamsapigatewayrole7C564310": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "apigateway.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "ApiGatwayToKinesisStreamsapigatewayroleDefaultPolicy8EE2A34E": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "kinesis:ListShards",
+                "kinesis:PutRecord",
+                "kinesis:PutRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "KinesisStream46752A3E",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "ApiGatwayToKinesisStreamsapigatewayroleDefaultPolicy8EE2A34E",
+        "Roles": [
+          {
+            "Ref": "ApiGatwayToKinesisStreamsapigatewayrole7C564310"
+          }
+        ]
+      }
+    },
+    "ApiGatwayToKinesisStreamsKinesisStreamGetRecordsIteratorAgeAlarm1705B52A": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
+        "MetricName": "GetRecords.IteratorAgeMilliseconds",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 2592000
+      }
+    },
+    "ApiGatwayToKinesisStreamsKinesisStreamReadProvisionedThroughputExceededAlarm69C57002": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
+        "MetricName": "ReadProvisionedThroughputExceeded",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Average",
+        "Threshold": 0
+      }
+    },
+    "KinesisStream46752A3E": {
+      "Type": "AWS::Kinesis::Stream",
+      "Properties": {
+        "ShardCount": 1,
+        "RetentionPeriodHours": 24,
+        "StreamEncryption": {
+          "EncryptionType": "KMS",
+          "KeyId": "alias/aws/kinesis"
+        }
+      }
+    },
+    "testwafwebaclapigatewaykinesisstreamstestwafwebaclapigatewaykinesisstreamsWebACLD6490C04": {
+      "Type": "AWS::WAFv2::WebACL",
+      "Properties": {
+        "DefaultAction": {
+          "Allow": {}
+        },
+        "Scope": "REGIONAL",
+        "VisibilityConfig": {
+          "CloudWatchMetricsEnabled": true,
+          "MetricName": "webACL",
+          "SampledRequestsEnabled": true
+        },
+        "Rules": [
+          {
+            "Name": "AWS-AWSManagedRulesBotControlRuleSet",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 0,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesBotControlRuleSet",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesBotControlRuleSet",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesKnownBadInputsRuleSet",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 1,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesKnownBadInputsRuleSet",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesKnownBadInputsRuleSet",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesCommonRuleSet",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 2,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesCommonRuleSet",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesCommonRuleSet",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesAnonymousIpList",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 3,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesAnonymousIpList",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesAnonymousIpList",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesAmazonIpReputationList",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 4,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesAmazonIpReputationList",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesAmazonIpReputationList",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesAdminProtectionRuleSet",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 5,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesAdminProtectionRuleSet",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesAdminProtectionRuleSet",
+              "SampledRequestsEnabled": true
+            }
+          },
+          {
+            "Name": "AWS-AWSManagedRulesSQLiRuleSet",
+            "OverrideAction": {
+              "None": {}
+            },
+            "Priority": 6,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesSQLiRuleSet",
+                "VendorName": "AWS"
+              }
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesSQLiRuleSet",
+              "SampledRequestsEnabled": true
+            }
+          }
+        ]
+      }
+    },
+    "testwafwebaclapigatewaykinesisstreamsWebACLAssociation": {
+      "Type": "AWS::WAFv2::WebACLAssociation",
+      "Properties": {
+        "ResourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:apigateway:",
+              {
+                "Ref": "AWS::Region"
+              },
+              "::/restapis/",
+              {
+                "Ref": "ApiGatwayToKinesisStreamsRestApi04B87154"
+              },
+              "/stages/",
+              {
+                "Ref": "ApiGatwayToKinesisStreamsRestApiDeploymentStageprod12A54FFA"
+              }
+            ]
+          ]
+        },
+        "WebACLArn": {
+          "Fn::GetAtt": [
+            "testwafwebaclapigatewaykinesisstreamstestwafwebaclapigatewaykinesisstreamsWebACLD6490C04",
+            "Arn"
+          ]
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "ApiGatwayToKinesisStreamsRestApiEndpoint430099F8": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "ApiGatwayToKinesisStreamsRestApi04B87154"
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region"
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix"
+            },
+            "/",
+            {
+              "Ref": "ApiGatwayToKinesisStreamsRestApiDeploymentStageprod12A54FFA"
+            },
+            "/"
+          ]
+        ]
+      }
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
+    }
+  }
+}

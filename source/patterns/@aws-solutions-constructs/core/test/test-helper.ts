@@ -12,9 +12,9 @@
  */
 
 // Imports
-import { Bucket, CfnBucket, BucketProps } from "@aws-cdk/aws-s3";
+import { Bucket, BucketProps, BucketEncryption } from "@aws-cdk/aws-s3";
 import { Construct, RemovalPolicy } from "@aws-cdk/core";
-import { overrideProps } from "../lib/utils";
+import { overrideProps, addCfnSuppressRules } from "../lib/utils";
 import * as path from 'path';
 
 // Creates a bucket used for testing - minimal properties, destroyed after test
@@ -22,6 +22,7 @@ export function CreateScrapBucket(scope: Construct, props?: BucketProps | any) {
   const defaultProps = {
     versioned: true,
     removalPolicy: RemovalPolicy.DESTROY,
+    encryption: BucketEncryption.S3_MANAGED,
   };
 
   let synthesizedProps: BucketProps;
@@ -37,30 +38,20 @@ export function CreateScrapBucket(scope: Construct, props?: BucketProps | any) {
     synthesizedProps
   );
 
-  (scriptBucket.node.defaultChild as CfnBucket).cfnOptions.metadata = {
-    cfn_nag: {
-      rules_to_suppress: [
-        {
-          id: "W51",
-          reason:
-            "This S3 bucket is created for unit/ integration testing purposes only and not part of \
-      the actual construct implementation",
-        },
-        {
-          id: "W35",
-          reason:
-            "This S3 bucket is created for unit/ integration testing purposes only and not part of \
-      the actual construct implementation",
-        },
-        {
-          id: "W41",
-          reason:
-            "This S3 bucket is created for unit/ integration testing purposes only and not part of \
-      the actual construct",
-        },
-      ],
+  addCfnSuppressRules(scriptBucket, [
+    {
+      id: "W51",
+      reason: "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation",
     },
-  };
+    {
+      id: "W35",
+      reason: "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation",
+    },
+    {
+      id: "W41",
+      reason: "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct",
+    }
+  ]);
 
   return scriptBucket;
 }

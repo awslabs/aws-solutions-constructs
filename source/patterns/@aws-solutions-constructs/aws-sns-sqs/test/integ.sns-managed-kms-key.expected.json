@@ -7,23 +7,7 @@
         "KeyPolicy": {
           "Statement": [
             {
-              "Action": [
-                "kms:Create*",
-                "kms:Describe*",
-                "kms:Enable*",
-                "kms:List*",
-                "kms:Put*",
-                "kms:Update*",
-                "kms:Revoke*",
-                "kms:Disable*",
-                "kms:Get*",
-                "kms:Delete*",
-                "kms:ScheduleKeyDeletion",
-                "kms:CancelKeyDeletion",
-                "kms:GenerateDataKey",
-                "kms:TagResource",
-                "kms:UntagResource"
-              ],
+              "Action": "kms:*",
               "Effect": "Allow",
               "Principal": {
                 "AWS": {
@@ -42,6 +26,17 @@
                     ]
                   ]
                 }
+              },
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "kms:Decrypt",
+                "kms:GenerateDataKey"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "sns.amazonaws.com"
               },
               "Resource": "*"
             },
@@ -122,7 +117,9 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": {
+                "AWS": "*"
+              },
               "Resource": {
                 "Fn::GetAtt": [
                   "testsnssqsdeadLetterQueue8DACC0A1",
@@ -232,7 +229,9 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": {
+                "AWS": "*"
+              },
               "Resource": {
                 "Ref": "testsnssqsSnsTopic2CD0065B"
               },
@@ -320,7 +319,9 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
+              "Principal": {
+                "AWS": "*"
+              },
               "Resource": {
                 "Fn::GetAtt": [
                   "testsnssqsqueueB02504BF",
@@ -373,6 +374,40 @@
           ]
         }
       }
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
     }
   }
 }

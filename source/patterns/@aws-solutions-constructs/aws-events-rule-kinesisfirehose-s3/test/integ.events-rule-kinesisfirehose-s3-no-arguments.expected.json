@@ -1,7 +1,7 @@
 {
   "Description": "Integration Test for aws-events-rule-kinesisfirehose-s3",
   "Resources": {
-    "testeventsrulekinesisfirehoses3KinesisFirehoseToS3S3LoggingBucket44AC2AFE": {
+    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3LoggingBucketC5C17A3C": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "AccessControl": "LogDeliveryWrite",
@@ -37,11 +37,11 @@
         }
       }
     },
-    "testeventsrulekinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketPolicyF495B6C7": {
+    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3LoggingBucketPolicyB9D88D03": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "testeventsrulekinesisfirehoses3KinesisFirehoseToS3S3LoggingBucket44AC2AFE"
+          "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3LoggingBucketC5C17A3C"
         },
         "PolicyDocument": {
           "Statement": [
@@ -53,21 +53,31 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "testeventsrulekinesisfirehoses3KinesisFirehoseToS3S3LoggingBucket44AC2AFE",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
+              "Principal": {
+                "AWS": "*"
               },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3LoggingBucketC5C17A3C",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3LoggingBucketC5C17A3C",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             }
           ],
@@ -75,7 +85,7 @@
         }
       }
     },
-    "testeventsrulekinesisfirehoses3KinesisFirehoseToS3S3BucketBFD4D764": {
+    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3Bucket099FD6EC": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -102,7 +112,7 @@
         },
         "LoggingConfiguration": {
           "DestinationBucketName": {
-            "Ref": "testeventsrulekinesisfirehoses3KinesisFirehoseToS3S3LoggingBucket44AC2AFE"
+            "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3LoggingBucketC5C17A3C"
           }
         },
         "PublicAccessBlockConfiguration": {
@@ -118,11 +128,11 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "testeventsrulekinesisfirehoses3KinesisFirehoseToS3S3BucketPolicyA55908CC": {
+    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3BucketPolicyB5F556D0": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "testeventsrulekinesisfirehoses3KinesisFirehoseToS3S3BucketBFD4D764"
+          "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3Bucket099FD6EC"
         },
         "PolicyDocument": {
           "Statement": [
@@ -134,21 +144,31 @@
                 }
               },
               "Effect": "Deny",
-              "Principal": "*",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "testeventsrulekinesisfirehoses3KinesisFirehoseToS3S3BucketBFD4D764",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
+              "Principal": {
+                "AWS": "*"
               },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3Bucket099FD6EC",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3Bucket099FD6EC",
+                    "Arn"
+                  ]
+                }
+              ],
               "Sid": "HttpsOnly"
             }
           ],
@@ -156,7 +176,7 @@
         }
       }
     },
-    "testeventsrulekinesisfirehoses3KinesisFirehoseToS3firehoseloggroup1A52047F": {
+    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3firehoseloggroup9EE85371": {
       "Type": "AWS::Logs::LogGroup",
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain",
@@ -175,17 +195,17 @@
         }
       }
     },
-    "testeventsrulekinesisfirehoses3KinesisFirehoseToS3firehoseloggroupfirehoselogstreamFEF0376E": {
+    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3firehoseloggroupfirehoselogstream0ECFD952": {
       "Type": "AWS::Logs::LogStream",
       "Properties": {
         "LogGroupName": {
-          "Ref": "testeventsrulekinesisfirehoses3KinesisFirehoseToS3firehoseloggroup1A52047F"
+          "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3firehoseloggroup9EE85371"
         }
       },
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "testeventsrulekinesisfirehoses3KinesisFirehoseToS3KinesisFirehoseRole7DFE85DB": {
+    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3KinesisFirehoseRole39C4193F": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -202,7 +222,7 @@
         }
       }
     },
-    "testeventsrulekinesisfirehoses3KinesisFirehoseToS3KinesisFirehosePolicy9E420F18": {
+    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3KinesisFirehosePolicy6BDAC476": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -220,7 +240,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "testeventsrulekinesisfirehoses3KinesisFirehoseToS3S3BucketBFD4D764",
+                    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3Bucket099FD6EC",
                     "Arn"
                   ]
                 },
@@ -230,7 +250,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "testeventsrulekinesisfirehoses3KinesisFirehoseToS3S3BucketBFD4D764",
+                          "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3Bucket099FD6EC",
                           "Arn"
                         ]
                       },
@@ -261,11 +281,11 @@
                     },
                     ":log-group:",
                     {
-                      "Ref": "testeventsrulekinesisfirehoses3KinesisFirehoseToS3firehoseloggroup1A52047F"
+                      "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3firehoseloggroup9EE85371"
                     },
                     ":log-stream:",
                     {
-                      "Ref": "testeventsrulekinesisfirehoses3KinesisFirehoseToS3firehoseloggroupfirehoselogstreamFEF0376E"
+                      "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3firehoseloggroupfirehoselogstream0ECFD952"
                     }
                   ]
                 ]
@@ -274,15 +294,15 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testeventsrulekinesisfirehoses3KinesisFirehoseToS3KinesisFirehosePolicy9E420F18",
+        "PolicyName": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3KinesisFirehosePolicy6BDAC476",
         "Roles": [
           {
-            "Ref": "testeventsrulekinesisfirehoses3KinesisFirehoseToS3KinesisFirehoseRole7DFE85DB"
+            "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3KinesisFirehoseRole39C4193F"
           }
         ]
       }
     },
-    "testeventsrulekinesisfirehoses3KinesisFirehoseToS3KinesisFirehose8BD45033": {
+    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3KinesisFirehose30C8ED9D": {
       "Type": "AWS::KinesisFirehose::DeliveryStream",
       "Properties": {
         "DeliveryStreamEncryptionConfigurationInput": {
@@ -291,7 +311,7 @@
         "ExtendedS3DestinationConfiguration": {
           "BucketARN": {
             "Fn::GetAtt": [
-              "testeventsrulekinesisfirehoses3KinesisFirehoseToS3S3BucketBFD4D764",
+              "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3Bucket099FD6EC",
               "Arn"
             ]
           },
@@ -302,10 +322,10 @@
           "CloudWatchLoggingOptions": {
             "Enabled": true,
             "LogGroupName": {
-              "Ref": "testeventsrulekinesisfirehoses3KinesisFirehoseToS3firehoseloggroup1A52047F"
+              "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3firehoseloggroup9EE85371"
             },
             "LogStreamName": {
-              "Ref": "testeventsrulekinesisfirehoses3KinesisFirehoseToS3firehoseloggroupfirehoselogstreamFEF0376E"
+              "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3firehoseloggroupfirehoselogstream0ECFD952"
             }
           },
           "CompressionFormat": "GZIP",
@@ -335,14 +355,14 @@
           },
           "RoleARN": {
             "Fn::GetAtt": [
-              "testeventsrulekinesisfirehoses3KinesisFirehoseToS3KinesisFirehoseRole7DFE85DB",
+              "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3KinesisFirehoseRole39C4193F",
               "Arn"
             ]
           }
         }
       }
     },
-    "testeventsrulekinesisfirehoses3EventsRuleInvokeKinesisFirehoseRole87540EFF": {
+    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WEventsRuleInvokeKinesisFirehoseRoleAF132B5A": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -360,7 +380,7 @@
         "Description": "Events Rule To Kinesis Firehose Role"
       }
     },
-    "testeventsrulekinesisfirehoses3EventsRuleInvokeKinesisFirehosePolicy5B799D25": {
+    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WEventsRuleInvokeKinesisFirehosePolicyC8498865": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -373,7 +393,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "testeventsrulekinesisfirehoses3KinesisFirehoseToS3KinesisFirehose8BD45033",
+                  "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3KinesisFirehose30C8ED9D",
                   "Arn"
                 ]
               }
@@ -381,15 +401,15 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testeventsrulekinesisfirehoses3EventsRuleInvokeKinesisFirehosePolicy5B799D25",
+        "PolicyName": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WEventsRuleInvokeKinesisFirehosePolicyC8498865",
         "Roles": [
           {
-            "Ref": "testeventsrulekinesisfirehoses3EventsRuleInvokeKinesisFirehoseRole87540EFF"
+            "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WEventsRuleInvokeKinesisFirehoseRoleAF132B5A"
           }
         ]
       }
     },
-    "testeventsrulekinesisfirehoses3EventsRule1D7BA7FB": {
+    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WEventsRule5A650994": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "ScheduleExpression": "rate(5 minutes)",
@@ -398,20 +418,54 @@
           {
             "Arn": {
               "Fn::GetAtt": [
-                "testeventsrulekinesisfirehoses3KinesisFirehoseToS3KinesisFirehose8BD45033",
+                "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3KinesisFirehose30C8ED9D",
                 "Arn"
               ]
             },
             "Id": "Target0",
             "RoleArn": {
               "Fn::GetAtt": [
-                "testeventsrulekinesisfirehoses3EventsRuleInvokeKinesisFirehoseRole87540EFF",
+                "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WEventsRuleInvokeKinesisFirehoseRoleAF132B5A",
                 "Arn"
               ]
             }
           }
         ]
       }
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
     }
   }
 }

@@ -57,7 +57,7 @@
         "Name": "RestApi"
       }
     },
-    "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F33f28fd8ef55265fd50a39b60c5ce8e54": {
+    "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F35a5f302579207081dccaeca1e34daf59": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -96,7 +96,7 @@
           "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F33f28fd8ef55265fd50a39b60c5ce8e54"
+          "Ref": "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F35a5f302579207081dccaeca1e34daf59"
         },
         "MethodSettings": [
           {
@@ -165,11 +165,11 @@
               "Fn::Join": [
                 "",
                 [
-                  "{\r\n\"TableName\": \"",
+                  "{           \"TableName\": \"",
                   {
                     "Ref": "existingtableE51CCC93"
                   },
-                  "\",\r\n \"KeyConditionExpression\": \"oddName = :v1\",\r\n    \"ExpressionAttributeValues\": {\r\n        \":v1\": {\r\n            \"S\": \"$input.params('oddName')\"\r\n        }\r\n    }\r\n}"
+                  "\",           \"KeyConditionExpression\": \"oddName = :v1\",           \"ExpressionAttributeValues\": {             \":v1\": {               \"S\": \"$input.params('oddName')\"             }           }         }"
                 ]
               ]
             }
@@ -367,6 +367,40 @@
           ]
         ]
       }
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
     }
   }
 }

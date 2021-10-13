@@ -15,7 +15,7 @@ import * as ec2 from "@aws-cdk/aws-ec2";
 import { CfnLogGroup } from "@aws-cdk/aws-logs";
 import { Construct } from "@aws-cdk/core";
 import { buildSecurityGroup } from "./security-group-helper";
-import { overrideProps } from "./utils";
+import { overrideProps, addCfnSuppressRules } from "./utils";
 
 export interface BuildVpcProps {
   /**
@@ -60,27 +60,22 @@ export function buildVpc(scope: Construct, props: BuildVpcProps): ec2.IVpc {
   // Add Cfn Nag suppression for PUBLIC subnets to suppress WARN W33: EC2 Subnet should not have MapPublicIpOnLaunch set to true
   vpc.publicSubnets.forEach((subnet) => {
     const cfnSubnet = subnet.node.defaultChild as ec2.CfnSubnet;
-    cfnSubnet.cfnOptions.metadata = {
-      cfn_nag: {
-        rules_to_suppress: [{
-          id: 'W33',
-          reason: 'Allow Public Subnets to have MapPublicIpOnLaunch set to true'
-        }]
+    addCfnSuppressRules(cfnSubnet, [
+      {
+        id: 'W33',
+        reason: 'Allow Public Subnets to have MapPublicIpOnLaunch set to true'
       }
-    };
+    ]);
   });
 
   // Add Cfn Nag suppression for CloudWatchLogs LogGroups data is encrypted
   const cfnLogGroup: CfnLogGroup = flowLog.logGroup?.node.defaultChild as CfnLogGroup;
-
-  cfnLogGroup.cfnOptions.metadata = {
-    cfn_nag: {
-      rules_to_suppress: [{
-        id: 'W84',
-        reason: 'By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)'
-      }]
+  addCfnSuppressRules(cfnLogGroup, [
+    {
+      id: 'W84',
+      reason: 'By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)'
     }
-  };
+  ]);
 
   return vpc;
 }
@@ -90,10 +85,11 @@ export enum ServiceEndpointTypes {
   SNS = "SNS",
   SQS = "SQS",
   S3 = "S3",
-  STEPFUNCTIONS = "STEPFUNCTIONS",
+  STEP_FUNCTIONS = "STEP_FUNCTIONS",
   SAGEMAKER_RUNTIME = "SAGEMAKER_RUNTIME",
   SECRETS_MANAGER = "SECRETS_MANAGER",
   SSM = "SSM",
+  EVENTS = "CLOUDWATCH_EVENTS"
 }
 
 enum EndpointTypes {
@@ -120,6 +116,11 @@ const endpointSettings: EndpointDefinition[] = [
     endpointGatewayService: ec2.GatewayVpcEndpointAwsService.S3,
   },
   {
+    endpointName: ServiceEndpointTypes.STEP_FUNCTIONS,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.STEP_FUNCTIONS,
+  },
+  {
     endpointName: ServiceEndpointTypes.SNS,
     endpointType: EndpointTypes.INTERFACE,
     endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.SNS,
@@ -144,6 +145,11 @@ const endpointSettings: EndpointDefinition[] = [
     endpointType: EndpointTypes.INTERFACE,
     endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.SSM,
   },
+  {
+    endpointName: ServiceEndpointTypes.EVENTS,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.CLOUDWATCH_EVENTS
+  }
 ];
 
 export function AddAwsServiceEndpoint(

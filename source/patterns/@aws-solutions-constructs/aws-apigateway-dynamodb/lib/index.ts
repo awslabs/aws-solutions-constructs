@@ -14,6 +14,7 @@
 import * as api from '@aws-cdk/aws-apigateway';
 import * as iam from '@aws-cdk/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import { getPartitionKeyNameFromTable, overrideProps } from '@aws-solutions-constructs/core';
@@ -60,6 +61,14 @@ export interface ApiGatewayToDynamoDBProps {
    */
   readonly allowReadOperation?: boolean,
   /**
+   * Optional API Gateway Request template for Read method, it will use the default template if
+   * allowReadOperation is true and readRequestTemplate is not provided.
+   * The default template only supports a partition key and not partition + sort keys.
+   *
+   * @default - None
+   */
+  readonly readRequestTemplate?: string,
+  /**
    * Whether to deploy API Gateway Method for Update operation on DynamoDB table.
    *
    * @default - false
@@ -77,6 +86,14 @@ export interface ApiGatewayToDynamoDBProps {
    * @default - false
    */
   readonly allowDeleteOperation?: boolean,
+  /**
+   * Optional API Gateway Request template for Delete method, it will use the default template if
+   * allowDeleteOperation is true and deleteRequestTemplate is not provided.
+   * The default template only supports a partition key and not partition + sort keys.
+   *
+   * @default - None
+   */
+  readonly deleteRequestTemplate?: string,
   /**
    * User provided props to override the default props for the CloudWatchLogs LogGroup.
    *
@@ -155,7 +172,23 @@ export class ApiGatewayToDynamoDB extends Construct {
     }
     // Read
     if (props.allowReadOperation === undefined || props.allowReadOperation === true) {
-      const getRequestTemplate = "{\r\n\"TableName\": \"" + this.dynamoTable.tableName + "\",\r\n \"KeyConditionExpression\": \"" + partitionKeyName + " = :v1\",\r\n    \"ExpressionAttributeValues\": {\r\n        \":v1\": {\r\n            \"S\": \"$input.params('" + partitionKeyName + "')\"\r\n        }\r\n    }\r\n}";
+      let readRequestTemplate;
+
+      if (props.readRequestTemplate) {
+        readRequestTemplate = props.readRequestTemplate;
+      } else {
+        readRequestTemplate =
+        `{ \
+          "TableName": "${this.dynamoTable.tableName}", \
+          "KeyConditionExpression": "${partitionKeyName} = :v1", \
+          "ExpressionAttributeValues": { \
+            ":v1": { \
+              "S": "$input.params('${partitionKeyName}')" \
+            } \
+          } \
+        }`;
+      }
+
       this.addActionToPolicy("dynamodb:Query");
       defaults.addProxyMethodToApiResource({
         service: "dynamodb",
@@ -163,7 +196,7 @@ export class ApiGatewayToDynamoDB extends Construct {
         apiGatewayRole: this.apiGatewayRole,
         apiMethod: "GET",
         apiResource: apiGatewayResource,
-        requestTemplate: getRequestTemplate
+        requestTemplate: readRequestTemplate
       });
     }
     // Update
@@ -181,7 +214,23 @@ export class ApiGatewayToDynamoDB extends Construct {
     }
     // Delete
     if (props.allowDeleteOperation && props.allowDeleteOperation === true) {
-      const deleteRequestTemplate = "{\r\n  \"TableName\": \"" + this.dynamoTable.tableName + "\",\r\n  \"Key\": {\r\n    \"" + partitionKeyName + "\": {\r\n      \"S\": \"$input.params('" + partitionKeyName + "')\"\r\n    }\r\n  },\r\n  \"ConditionExpression\": \"attribute_not_exists(Replies)\",\r\n  \"ReturnValues\": \"ALL_OLD\"\r\n}";
+      let deleteRequestTemplate;
+
+      if (props.deleteRequestTemplate) {
+        deleteRequestTemplate = props.deleteRequestTemplate;
+      } else {
+        deleteRequestTemplate =
+        `{ \
+          "TableName": "${this.dynamoTable.tableName}", \
+          "Key": { \
+            "${partitionKeyName}": { \
+              "S": "$input.params('${partitionKeyName}')" \
+              } \
+            }, \
+          "ReturnValues": "ALL_OLD" \
+        }`;
+      }
+
       this.addActionToPolicy("dynamodb:DeleteItem");
       defaults.addProxyMethodToApiResource({
         service: "dynamodb",
