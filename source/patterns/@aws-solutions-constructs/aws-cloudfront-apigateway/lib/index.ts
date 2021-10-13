@@ -41,6 +41,12 @@ export interface CloudFrontToApiGatewayProps {
    * @default - true
    */
   readonly insertHttpSecurityHeaders?: boolean;
+  /**
+   * Optional user provided props to override the default props for the CloudFront Logging Bucket.
+   *
+   * @default - Default props are used
+   */
+  readonly cloudFrontLoggingBucketProps?: s3.BucketProps
 }
 
 export class CloudFrontToApiGateway extends Construct {
@@ -65,6 +71,6 @@ export class CloudFrontToApiGateway extends Construct {
 
     [this.cloudFrontWebDistribution, this.cloudFrontFunction, this.cloudFrontLoggingBucket] =
       defaults.CloudFrontDistributionForApiGateway(this, props.existingApiGatewayObj,
-        props.cloudFrontDistributionProps, props.insertHttpSecurityHeaders);
+        props.cloudFrontDistributionProps, props.insertHttpSecurityHeaders, props.cloudFrontLoggingBucketProps);
   }
 }
