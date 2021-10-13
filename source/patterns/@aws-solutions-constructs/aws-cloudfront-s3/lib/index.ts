@@ -52,6 +52,12 @@ export interface CloudFrontToS3Props {
     * @default - Default props are used
     */
     readonly loggingBucketProps?: s3.BucketProps
+    /**
+     * Optional user provided props to override the default props for the CloudFront Logging Bucket.
+     *
+     * @default - Default props are used
+     */
+    readonly cloudFrontLoggingBucketProps?: s3.BucketProps
  }
 
 export class CloudFrontToS3 extends Construct {
@@ -86,6 +92,6 @@ export class CloudFrontToS3 extends Construct {
 
        [this.cloudFrontWebDistribution, this.cloudFrontFunction, this.cloudFrontLoggingBucket] =
            defaults.CloudFrontDistributionForS3(this, this.s3BucketInterface,
-             props.cloudFrontDistributionProps, props.insertHttpSecurityHeaders);
+             props.cloudFrontDistributionProps, props.insertHttpSecurityHeaders, props.cloudFrontLoggingBucketProps);
      }
 }
