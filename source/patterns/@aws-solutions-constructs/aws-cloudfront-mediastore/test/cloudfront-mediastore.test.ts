@@ -13,9 +13,10 @@
 
 // Imports
 import '@aws-cdk/assert/jest';
-import { Stack } from '@aws-cdk/core';
+import { Stack, RemovalPolicy } from '@aws-cdk/core';
 import * as mediastore from '@aws-cdk/aws-mediastore';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
+import * as s3 from '@aws-cdk/aws-s3';
 import { CloudFrontToMediaStore } from '../lib';
 
 // --------------------------------------------------------------
@@ -580,4 +581,55 @@ test('Test the deployment with the user provided CloudFront properties', () => {
       }
     }
   });
+});
+
+// --------------------------------------------------------------
+// Cloudfront logging bucket with destroy removal policy and auto delete objects
+// --------------------------------------------------------------
+test('Cloudfront logging bucket with destroy removal policy and auto delete objects', () => {
+  const stack = new Stack();
+
+  new CloudFrontToMediaStore(stack, 'cloudfront-mediatstore', {
+    cloudFrontLoggingBucketProps: {
+      removalPolicy: RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::S3::Bucket", {
+    AccessControl: "LogDeliveryWrite"
+  });
+
+  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+    ServiceToken: {
+      "Fn::GetAtt": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+        "Arn"
+      ]
+    },
+    BucketName: {
+      Ref: "cloudfrontmediatstoreCloudfrontLoggingBucket2565C68A"
+    }
+  });
+});
+
+// --------------------------------------------------------------
+// Cloudfront logging bucket error providing existing log bucket and logBuckerProps
+// --------------------------------------------------------------
+test('Cloudfront logging bucket error when providing existing log bucket and logBuckerProps', () => {
+  const stack = new Stack();
+  const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});
+
+  const app = () => { new CloudFrontToMediaStore(stack, 'cloudfront-s3', {
+    cloudFrontDistributionProps: {
+      logBucket
+    },
+    cloudFrontLoggingBucketProps: {
+      removalPolicy: RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    }
+  });
+  };
+
+  expect(app).toThrowError();
 });
