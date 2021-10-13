@@ -104,6 +104,38 @@ test('Test Private API, existing VPC', () => {
 
 });
 
+test('Test Private API, new VPC', () => {
+  // Initial Setup
+  const stack = new Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  const props: Route53ToAlbProps = {
+    publicApi: false,
+    privateHostedZoneProps: {
+      zoneName: 'www.example-test.com',
+    }
+  };
+
+  new Route53ToAlb(stack, 'test-route53-alb', props);
+
+  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+    Scheme: 'internal'
+  });
+
+  expect(stack).toHaveResourceLike('AWS::EC2::VPC', {
+    EnableDnsHostnames: true,
+    EnableDnsSupport: true,
+    InstanceTenancy: "default",
+  });
+
+  expect(stack).toHaveResourceLike('AWS::Route53::RecordSet', {
+    Name: 'www.example-test.com.',
+    Type: 'A'
+  });
+
+});
+
 test('Check publicApi and zone props is an error', () => {
   // Initial Setup
   const stack = new Stack();

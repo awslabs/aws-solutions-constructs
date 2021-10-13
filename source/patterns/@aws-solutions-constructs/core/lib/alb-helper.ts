@@ -121,7 +121,7 @@ export function AddListener(
 export function CreateLambdaTargetGroup(
   scope: Construct,
   id: string,
-  lambdaFunction: lambda.Function,
+  lambdaFunction: lambda.IFunction,
   targetProps?: elb.ApplicationTargetGroupProps
 ): elb.ApplicationTargetGroup {
   const lambdaTarget = new elbt.LambdaTarget(lambdaFunction);
