@@ -97,7 +97,7 @@ export class Route53ToAlb extends Construct {
   public readonly loadBalancer: elb.ApplicationLoadBalancer;
 
   /**
-   * @summary Constructs a new instance of the LambdaToStepfunctionsProps class.
+   * @summary Constructs a new instance of the Route53ToAlb class.
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {Route53ToAlbProps} props - user provided props for the construct.

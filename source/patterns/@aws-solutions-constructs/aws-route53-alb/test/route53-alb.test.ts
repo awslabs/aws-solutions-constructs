@@ -382,3 +382,21 @@ test('Test providing an existingLoadBalancer', () => {
   });
 
 });
+
+test('Check publicApi and without an existing hosted zone is an error', () => {
+  // Initial Setup
+  const stack = new Stack();
+
+  const testExistingVpc = getTestVpc(stack);
+
+  const props: Route53ToAlbProps = {
+    publicApi: true,
+    existingVpc: testExistingVpc,
+  };
+
+  const app = () => {
+    new Route53ToAlb(stack, 'test-error', props);
+  };
+  // Assertion
+  expect(app).toThrowError();
+});
