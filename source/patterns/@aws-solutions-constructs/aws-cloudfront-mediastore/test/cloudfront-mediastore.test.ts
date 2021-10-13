@@ -614,9 +614,9 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
 });
 
 // --------------------------------------------------------------
-// Cloudfront logging bucket error providing existing log bucket and logBuckerProps
+// Cloudfront logging bucket error providing existing log bucket and logBucketProps
 // --------------------------------------------------------------
-test('Cloudfront logging bucket error when providing existing log bucket and logBuckerProps', () => {
+test('Cloudfront logging bucket error when providing existing log bucket and logBucketProps', () => {
   const stack = new Stack();
   const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});
 
