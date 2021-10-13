@@ -142,3 +142,15 @@ test('test s3Bucket override serverAccessLogsBucket', () => {
     }
   });
 });
+
+test('test createAlbLoggingBucket()', () => {
+  const stack = new Stack();
+
+  defaults.createAlbLoggingBucket(stack, 'test-bucket', {
+    bucketName: 'test-name'
+  });
+
+  expect(stack).toHaveResource("AWS::S3::Bucket", {
+    BucketName: 'test-name'
+  });
+});
