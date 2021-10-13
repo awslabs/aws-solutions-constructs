@@ -33,7 +33,7 @@ export interface CloudFrontToApiGatewayToLambdaProps {
    */
   readonly existingLambdaObj?: lambda.Function,
   /**
-   * User provided props to override the default props for the Lambda function.
+   * Optional user provided props to override the default props for the Lambda function.
    *
    * @default - Default props are used
    */
@@ -58,11 +58,17 @@ export interface CloudFrontToApiGatewayToLambdaProps {
    */
   readonly insertHttpSecurityHeaders?: boolean,
   /**
-   * User provided props to override the default props for the CloudWatchLogs LogGroup.
+   * Optional user provided props to override the default props for the CloudWatchLogs LogGroup.
    *
    * @default - Default props are used
    */
   readonly logGroupProps?: logs.LogGroupProps
+  /**
+   * Optional user provided props to override the default props for the CloudFront Logging Bucket.
+   *
+   * @default - Default props are used
+   */
+   readonly cloudFrontLoggingBucketProps?: s3.BucketProps
 }
 
 export class CloudFrontToApiGatewayToLambda extends Construct {
@@ -113,7 +119,8 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
     const apiCloudfront: CloudFrontToApiGateway = new CloudFrontToApiGateway(this, 'CloudFrontToApiGateway', {
       existingApiGatewayObj: this.apiGateway,
       cloudFrontDistributionProps: props.cloudFrontDistributionProps,
-      insertHttpSecurityHeaders: props.insertHttpSecurityHeaders
+      insertHttpSecurityHeaders: props.insertHttpSecurityHeaders,
+      cloudFrontLoggingBucketProps: props.cloudFrontLoggingBucketProps
     });
 
     this.cloudFrontWebDistribution = apiCloudfront.cloudFrontWebDistribution;
