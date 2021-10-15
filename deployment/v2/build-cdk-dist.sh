@@ -51,7 +51,29 @@ echo "--------------------------------------------------------------------------
 echo "mkdir -p $dist_dir"
 mkdir -p $dist_dir
 
-for dir in $(find $source_dir/patterns/\@aws-solutions-constructs/ -name dist | grep -v node_modules | grep -v coverage); do
+## create a list of deprecated constructs
+declare -a ignore_list=("aws-dynamodb-stream-lambda-elasticsearch-kibana" 
+"aws-dynamodb-stream-lambda" 
+"aws-events-rule-kinesisfirehose-s3" 
+"aws-events-rule-kinesisstreams" 
+"aws-events-rule-lambda" 
+"aws-events-rule-sns" 
+"aws-events-rule-sqs" 
+"aws-events-rule-step-function" 
+"aws-lambda-step-function" 
+"aws-s3-step-function")
+
+## create \| delimited string
+ignore_modules=""
+for i in "${ignore_list[@]}"
+do
+   ignore_modules=$ignore_modules"$i""\|"
+done
+
+ignore_modules=${ignore_modules::-2}
+echo "ignore_modules=${ignore_modules}"
+
+for dir in $(find $source_dir/patterns/\@aws-solutions-constructs/ -name dist | grep -v node_modules | grep -v coverage | grep -v "$ignore_modules"); do
   echo "Merging ${dir} into ${dist_dir}" >&2
   rsync -a $dir/ ${dist_dir}/
 done

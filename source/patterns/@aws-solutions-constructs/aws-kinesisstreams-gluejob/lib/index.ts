@@ -16,6 +16,7 @@ import { Effect, IRole, Policy, PolicyStatement } from '@aws-cdk/aws-iam';
 import { Stream, StreamProps } from '@aws-cdk/aws-kinesis';
 import { Bucket } from '@aws-cdk/aws-s3';
 import { Aws, Construct } from '@aws-cdk/core';
+import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import * as defaults from '@aws-solutions-constructs/core';
 
 export interface KinesisstreamsToGluejobProps {
@@ -100,6 +101,12 @@ export interface KinesisstreamsToGluejobProps {
    * include only S3, other potential stores may be added in the future.
    */
   readonly outputDataStore?: defaults.SinkDataStoreProps;
+  /**
+   * Whether to create recommended CloudWatch alarms
+   *
+   * @default - Alarms are created
+   */
+  readonly createCloudWatchAlarms?: boolean;
 }
 
 /**
@@ -119,7 +126,13 @@ export class KinesisstreamsToGluejob extends Construct {
   public readonly glueJobRole: IRole;
   public readonly database: glue.CfnDatabase;
   public readonly table: glue.CfnTable;
+  /**
+   * This property is only set if the Glue Job is created by the construct. If an exisiting Glue Job
+   * configuraton is supplied, the construct does not create an S3 bucket and hence the @outputBucket
+   * property is undefined
+   */
   public readonly outputBucket?: [Bucket, (Bucket | undefined)?];
+  public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
 
   /**
    * Constructs a new instance of KinesisstreamsToGluejob.Based on the values set in the @props
@@ -151,7 +164,7 @@ export class KinesisstreamsToGluejob extends Construct {
       });
     }
 
-    [ this.glueJob, this.glueJobRole ] = defaults.buildGlueJob(this, {
+    [ this.glueJob, this.glueJobRole, this.outputBucket ] = defaults.buildGlueJob(this, {
       existingCfnJob: props.existingGlueJob,
       glueJobProps: props.glueJobProps,
       table: this.table!,
@@ -160,6 +173,11 @@ export class KinesisstreamsToGluejob extends Construct {
     });
 
     this.glueJobRole = this.buildRolePolicy(scope, id, this.database, this.table, this.glueJob, this.glueJobRole);
+
+    if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
+      // Deploy best practices CW Alarms for Kinesis Stream
+      this.cloudwatchAlarms = defaults.buildKinesisStreamCWAlarms(this);
+    }
   }
 
   /**

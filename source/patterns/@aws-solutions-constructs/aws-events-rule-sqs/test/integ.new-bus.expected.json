@@ -1,12 +1,85 @@
 {
   "Resources": {
-    "existingeventbusA5B80487": {
-      "Type": "AWS::Events::EventBus",
+    "ersqsersqsWdeadLetterQueueB06870B6": {
+      "Type": "AWS::SQS::Queue",
       "Properties": {
-        "Name": "ebexistingbusexistingeventbusFB0366AD"
+        "KmsMasterKeyId": "alias/aws/sqs"
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "ersqsersqsWdeadLetterQueuePolicyFA1CF12F": {
+      "Type": "AWS::SQS::QueuePolicy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:RemovePermission",
+                "sqs:AddPermission",
+                "sqs:SetQueueAttributes"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              },
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ersqsersqsWdeadLetterQueueB06870B6",
+                  "Arn"
+                ]
+              },
+              "Sid": "QueueOwnerOnlyAccess"
+            },
+            {
+              "Action": "SQS:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ersqsersqsWdeadLetterQueueB06870B6",
+                  "Arn"
+                ]
+              },
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Queues": [
+          {
+            "Ref": "ersqsersqsWdeadLetterQueueB06870B6"
+          }
+        ]
       }
     },
-    "testconstructEncryptionKey6153B053": {
+    "ersqsersqsWEncryptionKeyD63FAFB3": {
       "Type": "AWS::KMS::Key",
       "Properties": {
         "KeyPolicy": {
@@ -55,41 +128,43 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "testconstructSnsTopic44188529": {
-      "Type": "AWS::SNS::Topic",
+    "ersqsersqsWqueue881EC5DE": {
+      "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": {
           "Fn::GetAtt": [
-            "testconstructEncryptionKey6153B053",
+            "ersqsersqsWEncryptionKeyD63FAFB3",
             "Arn"
           ]
+        },
+        "RedrivePolicy": {
+          "deadLetterTargetArn": {
+            "Fn::GetAtt": [
+              "ersqsersqsWdeadLetterQueueB06870B6",
+              "Arn"
+            ]
+          },
+          "maxReceiveCount": 15
         }
-      }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
-    "testconstructSnsTopicPolicy72FFD530": {
-      "Type": "AWS::SNS::TopicPolicy",
+    "ersqsersqsWqueuePolicyC4BDE85A": {
+      "Type": "AWS::SQS::QueuePolicy",
       "Properties": {
         "PolicyDocument": {
           "Statement": [
             {
               "Action": [
-                "SNS:Publish",
-                "SNS:RemovePermission",
-                "SNS:SetTopicAttributes",
-                "SNS:DeleteTopic",
-                "SNS:ListSubscriptionsByTopic",
-                "SNS:GetTopicAttributes",
-                "SNS:Receive",
-                "SNS:AddPermission",
-                "SNS:Subscribe"
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:RemovePermission",
+                "sqs:AddPermission",
+                "sqs:SetQueueAttributes"
               ],
-              "Condition": {
-                "StringEquals": {
-                  "AWS:SourceOwner": {
-                    "Ref": "AWS::AccountId"
-                  }
-                }
-              },
               "Effect": "Allow",
               "Principal": {
                 "AWS": {
@@ -110,22 +185,15 @@
                 }
               },
               "Resource": {
-                "Ref": "testconstructSnsTopic44188529"
+                "Fn::GetAtt": [
+                  "ersqsersqsWqueue881EC5DE",
+                  "Arn"
+                ]
               },
-              "Sid": "TopicOwnerOnlyAccess"
+              "Sid": "QueueOwnerOnlyAccess"
             },
             {
-              "Action": [
-                "SNS:Publish",
-                "SNS:RemovePermission",
-                "SNS:SetTopicAttributes",
-                "SNS:DeleteTopic",
-                "SNS:ListSubscriptionsByTopic",
-                "SNS:GetTopicAttributes",
-                "SNS:Receive",
-                "SNS:AddPermission",
-                "SNS:Subscribe"
-              ],
+              "Action": "SQS:*",
               "Condition": {
                 "Bool": {
                   "aws:SecureTransport": "false"
@@ -136,36 +204,51 @@
                 "AWS": "*"
               },
               "Resource": {
-                "Ref": "testconstructSnsTopic44188529"
+                "Fn::GetAtt": [
+                  "ersqsersqsWqueue881EC5DE",
+                  "Arn"
+                ]
               },
               "Sid": "HttpsOnly"
             },
             {
-              "Action": "sns:Publish",
+              "Action": [
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl"
+              ],
               "Effect": "Allow",
               "Principal": {
                 "Service": "events.amazonaws.com"
               },
               "Resource": {
-                "Ref": "testconstructSnsTopic44188529"
-              },
-              "Sid": "2"
+                "Fn::GetAtt": [
+                  "ersqsersqsWqueue881EC5DE",
+                  "Arn"
+                ]
+              }
             }
           ],
           "Version": "2012-10-17"
         },
-        "Topics": [
+        "Queues": [
           {
-            "Ref": "testconstructSnsTopic44188529"
+            "Ref": "ersqsersqsWqueue881EC5DE"
           }
         ]
       }
     },
-    "testconstructEventsRule145DBA20": {
+    "ersqsersqsWCustomEventBus3249194C": {
+      "Type": "AWS::Events::EventBus",
+      "Properties": {
+        "Name": "newbusersqsersqsWCustomEventBusADE03031"
+      }
+    },
+    "ersqsersqsWEventsRule017C5D22": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "EventBusName": {
-          "Ref": "existingeventbusA5B80487"
+          "Ref": "ersqsersqsWCustomEventBus3249194C"
         },
         "EventPattern": {
           "source": [
@@ -176,12 +259,15 @@
         "Targets": [
           {
             "Arn": {
-              "Ref": "testconstructSnsTopic44188529"
+              "Fn::GetAtt": [
+                "ersqsersqsWqueue881EC5DE",
+                "Arn"
+              ]
             },
             "Id": {
               "Fn::GetAtt": [
-                "testconstructSnsTopic44188529",
-                "TopicName"
+                "ersqsersqsWqueue881EC5DE",
+                "QueueName"
               ]
             }
           }
