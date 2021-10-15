@@ -130,12 +130,12 @@
         }
       }
     },
-    "testlambdaelasticsearchkibana3ReplaceDefaultSecurityGroupsecuritygroupfromdeployFunctionWithVpctestlambdaelasticsearchkibana3ReplaceDefaultSecurityGroupsecuritygroupFA21F139ALLPORTS8CA5070E": {
+    "testlambdaelasticsearchkibana3ReplaceDefaultSecurityGroupsecuritygroupfromdeployFunctionWithVpctestlambdaelasticsearchkibana3ReplaceDefaultSecurityGroupsecuritygroupFA21F139443B4D370DC": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "IpProtocol": "tcp",
-        "Description": "from deployFunctionWithVpctestlambdaelasticsearchkibana3ReplaceDefaultSecurityGroupsecuritygroupFA21F139:ALL PORTS",
-        "FromPort": 0,
+        "Description": "from deployFunctionWithVpctestlambdaelasticsearchkibana3ReplaceDefaultSecurityGroupsecuritygroupFA21F139:443",
+        "FromPort": 443,
         "GroupId": {
           "Fn::GetAtt": [
             "testlambdaelasticsearchkibana3ReplaceDefaultSecurityGroupsecuritygroupEB497E1A",
@@ -148,7 +148,7 @@
             "GroupId"
           ]
         },
-        "ToPort": 65535
+        "ToPort": 443
       }
     },
     "testlambdaelasticsearchkibana3LambdaFunctionE377CF86": {

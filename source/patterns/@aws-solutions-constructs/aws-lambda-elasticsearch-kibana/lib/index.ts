@@ -179,7 +179,7 @@ export class LambdaToElasticSearchAndKibana extends Construct {
       }
 
       // Add Inbound rule to allow tcp call internally
-      this.lambdaFunction.connections.allowInternally(ec2.Port.allTcp());
+      this.lambdaFunction.connections.allowInternally(ec2.Port.tcp(443));
     }
 
     this.userPool = defaults.buildUserPool(this);
