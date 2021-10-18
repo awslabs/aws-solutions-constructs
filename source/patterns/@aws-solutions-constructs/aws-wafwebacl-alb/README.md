@@ -39,6 +39,7 @@ const r53ToAlb = new Route53ToAlb(this, 'Route53ToAlbPattern', {
     zoneName: 'www.example.com',
   },
   publicApi: false,
+  logAccessLogs: false
 });
 
 // This construct can only be attached to a configured Application Load Balancer.
