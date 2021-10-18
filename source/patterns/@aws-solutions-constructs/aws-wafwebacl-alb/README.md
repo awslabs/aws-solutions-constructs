@@ -32,10 +32,12 @@ Here is a minimal deployable pattern definition in Typescript:
 import { Route53ToAlb } from '@aws-solutions-constructs/aws-route53-alb';
 import { WafwebaclToAlbProps, WafwebaclToAlb } from "@aws-solutions-constructs/aws-wafwebacl-alb";
 
+// A constructed ALB is required to be attached to the WAF Web ACL.
+// In this case, we are using this construct to create one.
 const r53ToAlb = new Route53ToAlb(this, 'Route53ToAlbPattern', {
   privateHostedZoneProps: {
     zoneName: 'www.example.com',
-  }
+  },
   publicApi: false,
 });
 
