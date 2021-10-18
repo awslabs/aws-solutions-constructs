@@ -75,7 +75,7 @@ Out of the box implementation of the Construct without any override will set the
 ### Amazon CloudFront
 * Configure Access logging for CloudFront WebDistribution
 * Enable automatic injection of best practice HTTP security headers in all responses from CloudFront WebDistribution
-* CloudFront originPath set to `'/'` if none provided
+* CloudFront originPath set to `'/'` 
 
 ### Amazon S3 Bucket
 * Configure Access logging for S3 Bucket
