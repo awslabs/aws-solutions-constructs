@@ -16,6 +16,8 @@ import { App, Stack } from "@aws-cdk/core";
 import { WafwebaclToAlb } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { Route53ToAlb } from '@aws-solutions-constructs/aws-route53-alb';
+import { CfnSecurityGroup } from "@aws-cdk/aws-ec2";
+import * as defaults from '@aws-solutions-constructs/core';
 
 const app = new App();
 
@@ -34,5 +36,9 @@ const r53ToAlb = new Route53ToAlb(stack, 'Route53ToAlbPattern', {
 new WafwebaclToAlb(stack, 'test-wafwebacl-alb', {
   existingLoadBalancerObj: r53ToAlb.loadBalancer
 });
+
+const newSecurityGroup = r53ToAlb.loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
+defaults.addCfnSuppressRules(newSecurityGroup, [{ id: 'W29', reason: 'CDK created rule that blocks all traffic.'}]);
+defaults.addCfnSuppressRules(r53ToAlb.loadBalancer, [{ id: 'W52', reason: 'This test is explicitly to test the no logging case.'}]);
 
 app.synth();

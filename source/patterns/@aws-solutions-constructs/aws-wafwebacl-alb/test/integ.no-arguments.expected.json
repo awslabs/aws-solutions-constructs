@@ -46,6 +46,16 @@
           }
         ],
         "Type": "application"
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W52",
+              "reason": "This test is explicitly to test the no logging case."
+            }
+          ]
+        }
       }
     },
     "Route53ToAlbPatternRoute53ToAlbPatternalbSecurityGroup697C26A0": {
@@ -63,6 +73,16 @@
         ],
         "VpcId": {
           "Ref": "Vpc8378EB38"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W29",
+              "reason": "CDK created rule that blocks all traffic."
+            }
+          ]
         }
       }
     },
