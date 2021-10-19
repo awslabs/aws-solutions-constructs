@@ -18,6 +18,7 @@ import * as sqs from '@aws-cdk/aws-sqs';
 import * as mediastore from '@aws-cdk/aws-mediastore';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as ec2 from '@aws-cdk/aws-ec2';
+import * as elb from '@aws-cdk/aws-elasticloadbalancingv2';
 import * as sns from '@aws-cdk/aws-sns';
 import * as glue from '@aws-cdk/aws-glue';
 import * as sagemaker from '@aws-cdk/aws-sagemaker';
@@ -66,11 +67,21 @@ export interface VerifiedProps {
   readonly encryptionKey?: kms.Key,
   readonly encryptionKeyProps?: kms.KeyProps
 
+  readonly loadBalancerProps?: elb.ApplicationLoadBalancerProps;
+  readonly existingLoadBalancerObj?: elb.ApplicationLoadBalancer;
+
+  readonly logAlbAccessLogs?: boolean;
+  readonly albLoggingBucketProps?: s3.BucketProps;
 }
 
 export function CheckProps(propsObject: VerifiedProps | any) {
   let errorMessages = '';
   let errorFound = false;
+
+  if (propsObject.loadBalancerProps && propsObject.existingLoadBalancerObj) {
+    errorMessages += 'Error - Either provide loadBalancerProps or existingLoadBalancerObj, but not both.\n';
+    errorFound = true;
+  }
 
   if (propsObject.dynamoTableProps && propsObject.existingTableObj) {
     errorMessages += 'Error - Either provide existingTableObj or dynamoTableProps, but not both.\n';
@@ -147,7 +158,6 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
-  // if (deployVpc || vpcProp) and existingVpc
   if ((propsObject.deployVpc || propsObject.vpcProps) && propsObject.existingVpc) {
     errorMessages += 'Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n';
     errorFound = true;
@@ -165,6 +175,11 @@ export function CheckProps(propsObject: VerifiedProps | any) {
 
   if (propsObject.existingWebaclObj && propsObject.webaclProps) {
     errorMessages += 'Error - Either provide existingWebaclObj or webaclProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if ((propsObject?.logAlbAccessLogs === false) && (propsObject.albLoggingBucketProps)) {
+    errorMessages += 'Error - If logAlbAccessLogs is false, supplying albLoggingBucketProps is invalid.\n';
     errorFound = true;
   }
 
