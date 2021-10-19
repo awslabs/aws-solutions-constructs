@@ -16,6 +16,7 @@ import { Aws, App, Stack } from "@aws-cdk/core";
 import { AlbToLambda, AlbToLambdaProps } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import * as lambda from '@aws-cdk/aws-lambda';
+import * as ec2 from '@aws-cdk/aws-ec2';
 import * as elb from '@aws-cdk/aws-elasticloadbalancingv2';
 import * as defaults from '@aws-solutions-constructs/core';
 
@@ -46,7 +47,7 @@ const lambdaFunction = new lambda.Function(stack, 'existingFunction', {
   vpc: myVpc,
 });
 
-const loadBalancer = new elb.ApplicationLoadBalancer(stack, 'new-lb', {
+const loadBalancer = defaults.ObtainAlb(stack, 'existing-alb', myVpc, false, undefined, {
   internetFacing: false,
   vpc: myVpc
 });
@@ -60,6 +61,7 @@ const props: AlbToLambdaProps = {
   },
   publicApi: false
 };
+
 new AlbToLambda(stack, 'test-one', props);
 
 // Synth
