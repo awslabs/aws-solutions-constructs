@@ -15,30 +15,36 @@
 import { App, Stack } from "@aws-cdk/core";
 import { WafwebaclToAlb } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import { Route53ToAlb } from '@aws-solutions-constructs/aws-route53-alb';
 import { CfnSecurityGroup } from "@aws-cdk/aws-ec2";
 import * as defaults from '@aws-solutions-constructs/core';
+import * as elb from "@aws-cdk/aws-elasticloadbalancingv2";
 
 const app = new App();
 
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const r53ToAlb = new Route53ToAlb(stack, 'Route53ToAlbPattern', {
-  privateHostedZoneProps: {
-    zoneName: 'www.example.com',
-  },
-  publicApi: false,
-  logAccessLogs: false
+const myVpc = defaults.buildVpc(stack, {
+  defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
+  constructVpcProps: {
+    enableDnsHostnames: true,
+    enableDnsSupport: true,
+    cidr: '172.168.0.0/16',
+  }
+});
+
+const loadBalancer = new elb.ApplicationLoadBalancer(stack, 'new-lb', {
+  internetFacing: false,
+  vpc: myVpc
 });
 
 // This construct can only be attached to a configured Application Load Balancer.
 new WafwebaclToAlb(stack, 'test-wafwebacl-alb', {
-  existingLoadBalancerObj: r53ToAlb.loadBalancer
+  existingLoadBalancerObj: loadBalancer
 });
 
-const newSecurityGroup = r53ToAlb.loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
+const newSecurityGroup = loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
 defaults.addCfnSuppressRules(newSecurityGroup, [{ id: 'W29', reason: 'CDK created rule that blocks all traffic.'}]);
-defaults.addCfnSuppressRules(r53ToAlb.loadBalancer, [{ id: 'W52', reason: 'This test is explicitly to test the no logging case.'}]);
+defaults.addCfnSuppressRules(loadBalancer, [{ id: 'W52', reason: 'This test is explicitly to test the no logging case.'}]);
 
 app.synth();

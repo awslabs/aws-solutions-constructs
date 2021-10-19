@@ -16,24 +16,30 @@ import * as cdk from "@aws-cdk/core";
 import { WafwebaclToAlb } from "../lib";
 import * as waf from "@aws-cdk/aws-wafv2";
 import * as defaults from '@aws-solutions-constructs/core';
-import { Route53ToAlb } from "@aws-solutions-constructs/aws-route53-alb";
+import * as elb from "@aws-cdk/aws-elasticloadbalancingv2";
 import '@aws-cdk/assert/jest';
 
-function deployR53ToAlbConstruct(stack: cdk.Stack) {
-  return new Route53ToAlb(stack, 'Route53ToAlbPattern', {
-    privateHostedZoneProps: {
-      zoneName: 'www.example.com',
-    },
-    publicApi: false,
-    logAccessLogs: false
+function deployLoadBalancer(stack: cdk.Stack) {
+  const myVpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
+    constructVpcProps: {
+      enableDnsHostnames: true,
+      enableDnsSupport: true,
+      cidr: '172.168.0.0/16',
+    }
+  });
+
+  return new elb.ApplicationLoadBalancer(stack, 'new-lb', {
+    internetFacing: false,
+    vpc: myVpc
   });
 }
 
 function deployConstruct(stack: cdk.Stack, webaclProps?: waf.CfnWebACLProps, existingWebaclObj?: waf.CfnWebACL) {
-  const r53ToAlb = deployR53ToAlbConstruct(stack);
+  const loadBalancer = deployLoadBalancer(stack);
 
   return new WafwebaclToAlb(stack, 'test-waf-alb', {
-    existingLoadBalancerObj: r53ToAlb.loadBalancer,
+    existingLoadBalancerObj: loadBalancer,
     webaclProps,
     existingWebaclObj
   });
@@ -57,11 +63,11 @@ test('Test error handling for existing WAF web ACL and user provider web ACL pro
   };
 
   const wafAcl = new waf.CfnWebACL(stack, 'test-waf', props);
-  const r53ToAlb = deployR53ToAlbConstruct(stack);
+  const loadBalancer = deployLoadBalancer(stack);
 
   expect(() => {
     new WafwebaclToAlb(stack, 'test-waf-alb', {
-      existingLoadBalancerObj: r53ToAlb.loadBalancer,
+      existingLoadBalancerObj: loadBalancer,
       existingWebaclObj: wafAcl,
       webaclProps: props
     });
