@@ -16,8 +16,6 @@ import { Aws, App, Stack } from "@aws-cdk/core";
 import { AlbToLambda, AlbToLambdaProps } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import * as lambda from '@aws-cdk/aws-lambda';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as elb from '@aws-cdk/aws-elasticloadbalancingv2';
 import * as defaults from '@aws-solutions-constructs/core';
 
 // Note: All integration tests for alb are for HTTP APIs, as certificates require
