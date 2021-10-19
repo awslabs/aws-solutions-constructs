@@ -18,8 +18,9 @@ import * as acm from '@aws-cdk/aws-certificatemanager';
 import * as cdk from "@aws-cdk/core";
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
+import { Construct } from "@aws-cdk/core";
 
-function GetFakeCertificate(scope: cdk.Construct, id: string): acm.ICertificate {
+function GetFakeCertificate(scope: Construct, id: string): acm.ICertificate {
   return acm.Certificate.fromCertificateArn(
     scope,
     id,
