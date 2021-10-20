@@ -24,7 +24,7 @@ function GetFakeCertificate(scope: Construct, id: string): acm.ICertificate {
   return acm.Certificate.fromCertificateArn(
     scope,
     id,
-    "arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-1234567890AB"
+    "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
   );
 }
 
@@ -677,7 +677,7 @@ test('Test providing certificateArns is an error', () => {
       handler: 'index.handler'
     },
     listenerProps: {
-      certificateArns: ['	arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012']
+      certificateArns: ['	arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012']
     },
     targetProps: {
       targetGroupName: 'different-name'

@@ -83,7 +83,25 @@
       "DependsOn": [
         "testonePolicyE30853FE",
         "testoneE6ACFBB6"
-      ]
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W29",
+              "reason": "CDK created rule that blocks all traffic."
+            },
+            {
+              "id": "W2",
+              "reason": "Rule does not apply for ELB."
+            },
+            {
+              "id": "W9",
+              "reason": "Rule does not apply for ELB."
+            }
+          ]
+        }
+      }
     },
     "testoneE6ACFBB6": {
       "Type": "AWS::S3::Bucket",
@@ -458,7 +476,17 @@
       },
       "DependsOn": [
         "testonefirsttgtg32EF5CD9"
-      ]
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W56",
+              "reason": "All integration tests must be HTTP because of certificate limitations."
+            }
+          ]
+        }
+      }
     },
     "Vpc8378EB38": {
       "Type": "AWS::EC2::VPC",

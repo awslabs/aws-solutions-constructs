@@ -16,6 +16,8 @@ import { Aws, App, Stack } from "@aws-cdk/core";
 import { AlbToLambda, AlbToLambdaProps } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import * as lambda from '@aws-cdk/aws-lambda';
+import * as defaults from '@aws-solutions-constructs/core';
+import { CfnSecurityGroup } from "@aws-cdk/aws-ec2";
 
 // Note: All integration tests for alb are for HTTP APIs, as certificates require
 // validation through DNS and email. This validation is impossible during our integration
@@ -39,7 +41,18 @@ const props: AlbToLambdaProps = {
   },
   publicApi: true
 };
-new AlbToLambda(stack, 'test-one', props);
+const albToLambda = new AlbToLambda(stack, 'test-one', props);
+
+defaults.addCfnSuppressRules(albToLambda.listener, [
+  { id: 'W56', reason: 'All integration tests must be HTTP because of certificate limitations.' },
+]);
+
+const newSecurityGroup = albToLambda.loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
+defaults.addCfnSuppressRules(newSecurityGroup, [
+  { id: 'W29', reason: 'CDK created rule that blocks all traffic.'},
+  { id: 'W2', reason: 'Rule does not apply for ELB.'},
+  { id: 'W9', reason: 'Rule does not apply for ELB.'}
+]);
 
 // Synth
 app.synth();

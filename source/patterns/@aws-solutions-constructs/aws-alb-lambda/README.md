@@ -32,7 +32,7 @@ Here is a minimal deployable pattern definition in Typescript:
   const certificate = acm.Certificate.fromCertificateArn(
         scope,
         'existing-cert',
-        "arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012"
+        "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
       );
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {

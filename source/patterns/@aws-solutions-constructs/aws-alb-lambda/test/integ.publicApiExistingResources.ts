@@ -16,8 +16,8 @@ import { Aws, App, Stack } from "@aws-cdk/core";
 import { AlbToLambda, AlbToLambdaProps } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import * as lambda from '@aws-cdk/aws-lambda';
-import * as elb from '@aws-cdk/aws-elasticloadbalancingv2';
 import * as defaults from '@aws-solutions-constructs/core';
+import { SecurityGroup, CfnSecurityGroup } from "@aws-cdk/aws-ec2";
 
 // Note: All integration tests for alb are for HTTP APIs, as certificates require
 // validation through DNS and email. This validation is impossible during our integration
@@ -39,15 +39,20 @@ const myVpc = defaults.buildVpc(stack, {
   }
 });
 
-const lambdaFunction = new lambda.Function(stack, 'existingFunction', {
-  code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-  runtime: lambda.Runtime.NODEJS_12_X,
-  handler: 'index.handler',
-  vpc: myVpc,
+const testSg = new SecurityGroup(stack, 'lambda-sg', { vpc: myVpc, allowAllOutbound: false});
+
+const lambdaFunction = defaults.buildLambdaFunction(stack, {
+  lambdaFunctionProps: {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_12_X,
+    handler: 'index.handler',
+    vpc: myVpc,
+    securityGroups: [ testSg ]
+  }
 });
 
-const loadBalancer = new elb.ApplicationLoadBalancer(stack, 'new-lb', {
-  internetFacing: true,
+const loadBalancer = defaults.ObtainAlb(stack, 'existing-alb', myVpc, false, undefined, {
+  internetFacing: false,
   vpc: myVpc
 });
 
@@ -60,7 +65,22 @@ const props: AlbToLambdaProps = {
   },
   publicApi: true
 };
-new AlbToLambda(stack, 'test-one', props);
+const albToLambda = new AlbToLambda(stack, 'test-one', props);
+
+defaults.addCfnSuppressRules(albToLambda.listener, [
+  { id: 'W56', reason: 'All integration tests must be HTTP because of certificate limitations.' },
+]);
+
+const newSecurityGroup = albToLambda.loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
+defaults.addCfnSuppressRules(newSecurityGroup, [
+  { id: 'W29', reason: 'CDK created rule that blocks all traffic.'},
+  { id: 'W2', reason: 'Rule does not apply for ELB.'},
+  { id: 'W9', reason: 'Rule does not apply for ELB.'}
+]);
+
+defaults.addCfnSuppressRules(testSg, [
+  { id: 'W29', reason: 'CDK created rule that blocks all traffic.'},
+]);
 
 // Synth
 app.synth();
