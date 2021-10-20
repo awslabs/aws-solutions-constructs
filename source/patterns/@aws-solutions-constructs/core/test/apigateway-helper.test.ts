@@ -207,7 +207,7 @@ test('Test default RestApi deployment w/ cloudWatchRole set to false', () => {
     cloudWatchRole: false
   });
 
-  expect(stack).toCountResources("AWS::ApiGateway::Account", 0);
+  expect(stack).not.toHaveResourceLike("AWS::ApiGateway::Account", {});
 });
 
 test('Test default RestApi deployment for Cloudwatch loggroup', () => {
