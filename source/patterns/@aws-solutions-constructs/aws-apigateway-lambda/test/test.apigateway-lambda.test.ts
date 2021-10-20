@@ -145,5 +145,5 @@ test('Test deployment ApiGateway override cloudWatchRole = false', () => {
     }
   });
   // Assertion 1
-  expect(stack).toCountResources("AWS::ApiGateway::Account", 0);
+  expect(stack).not.toHaveResource("AWS::ApiGateway::Account", {});
 });
