@@ -111,7 +111,7 @@ export interface ApiGatewayToSqsProps {
 export class ApiGatewayToSqs extends Construct {
   public readonly apiGateway: api.RestApi;
   public readonly apiGatewayRole: iam.Role;
-  public readonly apiGatewayCloudWatchRole: iam.Role;
+  public readonly apiGatewayCloudWatchRole?: iam.Role;
   public readonly apiGatewayLogGroup: logs.LogGroup;
   public readonly sqsQueue: sqs.Queue;
   public readonly deadLetterQueue?: sqs.DeadLetterQueue;
