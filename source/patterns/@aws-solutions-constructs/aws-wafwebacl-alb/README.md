@@ -1,4 +1,4 @@
-# aws-wafwebacl-apigateway module
+# aws-wafwebacl-alb module
 <!--BEGIN STABILITY BANNER-->
 
 ---
@@ -19,52 +19,52 @@
 
 | **Language**     | **Package**        |
 |:-------------|-----------------|
-|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_wafwebacl_apigateway`|
-|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-wafwebacl-apigateway`|
-|![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.wafwebaclapigateway`|
+|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_wafwebacl_alb`|
+|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-wafwebacl-alb`|
+|![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.wafwebaclalb`|
 
 ## Overview
-This AWS Solutions Construct implements an AWS WAF web ACL connected to Amazon API Gateway REST API.
+This AWS Solutions Construct implements an AWS WAF web ACL connected to an Application Load Balancer.
 
 Here is a minimal deployable pattern definition in Typescript:
 
 ``` typescript
-import * as api from '@aws-cdk/aws-apigateway';
-import * as lambda from "@aws-cdk/aws-lambda";
-import { ApiGatewayToLambda } from '@aws-solutions-constructs/aws-apigateway-lambda';
-import { WafwebaclToApiGatewayProps, WafwebaclToApiGateway } from "@aws-solutions-constructs/aws-wafwebacl-apigateway";
+import { Route53ToAlb } from '@aws-solutions-constructs/aws-route53-alb';
+import { WafwebaclToAlbProps, WafwebaclToAlb } from "@aws-solutions-constructs/aws-wafwebacl-alb";
 
-const apiGatewayToLambda = new ApiGatewayToLambda(this, 'ApiGatewayToLambdaPattern', {
-    lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`lambda`)
-    }
+// A constructed ALB is required to be attached to the WAF Web ACL.
+// In this case, we are using this construct to create one.
+const r53ToAlb = new Route53ToAlb(this, 'Route53ToAlbPattern', {
+  privateHostedZoneProps: {
+    zoneName: 'www.example.com',
+  },
+  publicApi: false,
+  logAccessLogs: false
 });
 
-// This construct can only be attached to a configured API Gateway.
-new WafwebaclToApiGateway(this, 'test-wafwebacl-apigateway', {
-    existingApiGatewayInterface: apiGatewayToLambda.apiGateway
+// This construct can only be attached to a configured Application Load Balancer.
+new WafwebaclToAlb(this, 'test-wafwebacl-alb', {
+    existingLoadBalancerObj: r53ToAlb.loadBalancer
 });
 ```
 
 ## Initializer
 
 ``` text
-new WafwebaclToApiGateway(scope: Construct, id: string, props: WafwebaclToApiGatewayProps);
+new WafwebaclToAlb(scope: Construct, id: string, props: WafwebaclToAlbProps);
 ```
 
 _Parameters_
 
 * scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
 * id `string`
-* props [`WafwebaclToApiGatewayProps`](#pattern-construct-props)
+* props [`WafwebaclToAlbProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
-|existingApiGatewayInterface|[`api.IRestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.IRestApi.html)|The existing API Gateway instance that will be protected with the WAF web ACL. *Note that a WAF web ACL can only be added to a configured API Gateway, so this construct only accepts an existing IRestApi and does not accept apiGatewayProps.*|
+|existingLoadBalancerObj|[`elbv2.ApplicationLoadBalancer`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-elasticloadbalancingv2.ApplicationLoadBalancer.html)|The existing Application Load Balancer Object that will be protected with the WAF web ACL. *Note that a WAF web ACL can only be added to a configured Application Load Balancer, so this construct only accepts an existing ApplicationLoadBalancer and does not accept applicationLoadBalancerProps.*|
 |existingWebaclObj?|[`waf.CfnWebACL`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-waf.CfnWebACL.html)|Existing instance of a WAF web ACL, an error will occur if this and props is set.|
 |webaclProps?|[`waf.CfnWebACLProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-waf.CfnWebACLProps.html)|Optional user-provided props to override the default props for the AWS WAF web ACL. To use a different collection of managed rule sets, specify a new rules property. Use our [`wrapManagedRuleSet(managedGroupName: string, vendorName: string, priority: number)`](../core/lib/waf-defaults.ts) function from core to create an array entry from each desired managed rule set.|
 
@@ -73,7 +73,7 @@ _Parameters_
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
 |webacl|[`waf.CfnWebACL`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-waf.CfnWebACL.html)|Returns an instance of the waf.CfnWebACL created by the construct.|
-|apiGateway|[`api.IRestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.IRestApi.html)|Returns an instance of the API Gateway REST API created by the pattern. |
+|loadBalancer|[`elbv2.ApplicationLoadBalancer`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-elasticloadbalancingv2.ApplicationLoadBalancer.html)|Returns an instance of the Application Load Balancer Object created by the pattern. |
 
 ## Default settings
 
@@ -92,8 +92,8 @@ Out of the box implementation of the Construct without any override will set the
     *Note that the default rules can be replaced by specifying the rules property of CfnWebACLProps*
 * Send metrics to Amazon CloudWatch
 
-### Amazon API Gateway
-* User provided API Gateway object is used as-is
+### Application Load Balancer
+* User provided Application Load Balancer object is used as-is
 
 ## Architecture
 ![Architecture Diagram](architecture.png)

@@ -201,6 +201,15 @@ test('Test default RestApi deployment w/ ApiGatewayProps', () => {
   });
 });
 
+test('Test default RestApi deployment w/ cloudWatchRole set to false', () => {
+  const stack = new Stack();
+  setupRestApi(stack, {
+    cloudWatchRole: false
+  });
+
+  expect(stack).not.toHaveResourceLike("AWS::ApiGateway::Account", {});
+});
+
 test('Test default RestApi deployment for Cloudwatch loggroup', () => {
   const stack = new Stack();
   deployRegionalApiGateway(stack);

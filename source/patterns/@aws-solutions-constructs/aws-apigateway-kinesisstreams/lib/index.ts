@@ -96,7 +96,7 @@ export interface ApiGatewayToKinesisStreamsProps {
 export class ApiGatewayToKinesisStreams extends Construct {
   public readonly apiGateway: api.RestApi;
   public readonly apiGatewayRole: iam.Role;
-  public readonly apiGatewayCloudWatchRole: iam.Role;
+  public readonly apiGatewayCloudWatchRole?: iam.Role;
   public readonly apiGatewayLogGroup: logs.LogGroup;
   public readonly kinesisStream: kinesis.Stream;
   public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
