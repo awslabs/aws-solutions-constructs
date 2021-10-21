@@ -76,7 +76,7 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
   public readonly cloudFrontFunction?: cloudfront.Function;
   public readonly cloudFrontLoggingBucket?: s3.Bucket;
   public readonly apiGateway: api.RestApi;
-  public readonly apiGatewayCloudWatchRole: iam.Role;
+  public readonly apiGatewayCloudWatchRole?: iam.Role;
   public readonly apiGatewayLogGroup: logs.LogGroup;
   public readonly lambdaFunction: lambda.Function;
 
