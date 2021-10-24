@@ -20,21 +20,21 @@ import * as defaults from "@aws-solutions-constructs/core";
 import { CfnListener, CfnTargetGroup } from "@aws-cdk/aws-elasticloadbalancingv2";
 
 export interface AlbToLambdaProps {
-   /**
-    * Optional custom properties for a new loadBalancer. Providing both this and
-    * existingLoadBalancer is an error. This cannot specify a VPC, it will use the VPC
-    * in existingVpc or the VPC created by the construct.
-    *
-    * @default - none
-    */
+  /**
+   * Optional custom properties for a new loadBalancer. Providing both this and
+   * existingLoadBalancer is an error. This cannot specify a VPC, it will use the VPC
+   * in existingVpc or the VPC created by the construct.
+   *
+   * @default - none
+   */
   readonly loadBalancerProps?: elb.ApplicationLoadBalancerProps | any;
-   /**
-    * Existing Application Load Balancer to incorporate into the
-    * construct architecture. Providing both this and loadBalancerProps is an
-    * error. The VPC containing this loadBalancer must match the VPC provided in existingVpc.
-    *
-    * @default - none
-    */
+  /**
+   * Existing Application Load Balancer to incorporate into the
+   * construct architecture. Providing both this and loadBalancerProps is an
+   * error. The VPC containing this loadBalancer must match the VPC provided in existingVpc.
+   *
+   * @default - none
+   */
   readonly existingLoadBalancerObj?: elb.ApplicationLoadBalancer;
   /**
    * Existing instance of Lambda Function object, providing both this and
@@ -49,47 +49,48 @@ export interface AlbToLambdaProps {
    * @default - Default props are used
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps;
-   /**
-    * Props to define the listener. Must be provided when adding the listener
-    * to an ALB (eg - when creating the alb), may not be provided when adding
-    * a second target to an already established listener. When provided, must include
-    * either a certificate or protocol: HTTP
-    *
-    * @default - none
-    */
+  /**
+   * Props to define the listener. Must be provided when adding the listener
+   * to an ALB (eg - when creating the alb), may not be provided when adding
+   * a second target to an already established listener. When provided, must include
+   * either a certificate or protocol: HTTP
+   *
+   * @default - none
+   */
   readonly listenerProps?: elb.ApplicationListenerProps | any;
-   /**
-    * Optional custom properties for a new target group. While this is a standard
-    * attribute of props for ALB constructs, there are few pertinent properties for a Lambda target.
-    *
-    * @default - none
-    */
+  /**
+   * Optional custom properties for a new target group. While this is a standard
+   * attribute of props for ALB constructs, there are few pertinent properties for a Lambda target.
+   *
+   * @default - none
+   *
+   */
   readonly targetProps?: elb.ApplicationTargetGroupProps;
-   /**
-    * Rules for directing traffic to the target being created. May not be specified
-    * for the first listener added to an ALB, and must be specified for the second
-    * target added to a listener. Add a second target by instantiating this construct a
-    * second time and providing the existingAlb from the first instantiation.
-    *
-    * @default - none
-    */
+  /**
+   * Rules for directing traffic to the target being created. May not be specified
+   * for the first listener added to an ALB, and must be specified for the second
+   * target added to a listener. Add a second target by instantiating this construct a
+   * second time and providing the existingAlb from the first instantiation.
+   *
+   * @default - none
+   */
   readonly ruleProps?: elb.AddRuleProps;
-   /**
-    * Optional custom properties for a VPC the construct will create. This VPC will
-    * be used by the new ALB and any Private Hosted Zone the construct creates (that's
-    * why loadBalancerProps and privateHostedZoneProps can't include a VPC). Providing
-    * both this and existingVpc is an error.
-    *
-    * @default - none
-    */
+  /**
+   * Optional custom properties for a VPC the construct will create. This VPC will
+   * be used by the new ALB and any Private Hosted Zone the construct creates (that's
+   * why loadBalancerProps and privateHostedZoneProps can't include a VPC). Providing
+   * both this and existingVpc is an error.
+   *
+   * @default - none
+   */
   readonly vpcProps?: ec2.VpcProps;
-   /**
-    * An existing VPC in which to deploy the construct. Providing both this and
-    * vpcProps is an error. If the client provides an existing load balancer and/or
-    * existing Private Hosted Zone, those constructs must exist in this VPC.
-    *
-    * @default - none
-    */
+  /**
+   * An existing VPC in which to deploy the construct. Providing both this and
+   * vpcProps is an error. If the client provides an existing load balancer and/or
+   * existing Private Hosted Zone, those constructs must exist in this VPC.
+   *
+   * @default - none
+   */
   readonly existingVpc?: ec2.IVpc;
   /**
    * Whether to turn on Access Logs for the Application Load Balancer. Uses an S3 bucket
@@ -98,18 +99,18 @@ export interface AlbToLambdaProps {
    * @default - true
    */
   readonly logAlbAccessLogs?: boolean,
-   /**
-    * Optional properties to customize the bucket used to store the ALB Access
-    * Logs. Supplying this and setting logAccessLogs to false is an error.
-    *
-    * @default - none
-    */
+  /**
+   * Optional properties to customize the bucket used to store the ALB Access
+   * Logs. Supplying this and setting logAccessLogs to false is an error.
+   *
+   * @default - none
+   */
   readonly albLoggingBucketProps?: s3.BucketProps,
-   /**
-    * Whether the construct is deploying a private or public API. This has implications for the VPC and ALB.
-    *
-    * @default - none
-    */
+  /**
+   * Whether the construct is deploying a private or public API. This has implications for the VPC and ALB.
+   *
+   * @default - none
+   */
   readonly publicApi: boolean;
 }
 
@@ -200,7 +201,10 @@ export class AlbToLambda extends Construct {
 
     if (this.loadBalancer.listeners.length === 0) {
       // This is a new listener, we need to create it along with the default target
-      const newTargetGroup = defaults.CreateLambdaTargetGroup(this, 'first-tg', this.lambdaFunction, props.targetProps);
+      const newTargetGroup = defaults.CreateLambdaTargetGroup(this,
+        `tg${this.loadBalancer.listeners.length + 1}`,
+        this.lambdaFunction,
+        props.targetProps);
       this.listener = defaults.AddListener(
         this,
         this.loadBalancer,
@@ -221,7 +225,7 @@ export class AlbToLambda extends Construct {
         this,
         defaults.CreateLambdaTargetGroup(
           this,
-          `tg${this.loadBalancer.listeners.length}`,
+          `tg${this.loadBalancer.listeners.length + 1}`,
           this.lambdaFunction,
           props.targetProps
         ),

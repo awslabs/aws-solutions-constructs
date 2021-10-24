@@ -1084,7 +1084,7 @@
         }
       }
     },
-    "testonefirsttgtg32EF5CD9": {
+    "testonetg1tgDC5C1350": {
       "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
       "Properties": {
         "Targets": [
@@ -1109,7 +1109,7 @@
         "DefaultActions": [
           {
             "TargetGroupArn": {
-              "Ref": "testonefirsttgtg32EF5CD9"
+              "Ref": "testonetg1tgDC5C1350"
             },
             "Type": "forward"
           }
@@ -1121,7 +1121,7 @@
         "Protocol": "HTTP"
       },
       "DependsOn": [
-        "testonefirsttgtg32EF5CD9"
+        "testonetg1tgDC5C1350"
       ],
       "Metadata": {
         "cfn_nag": {
