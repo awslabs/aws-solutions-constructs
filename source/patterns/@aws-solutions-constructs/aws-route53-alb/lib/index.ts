@@ -56,14 +56,14 @@ export interface Route53ToAlbProps {
    *
    * @default - true
    */
-  readonly logAccessLogs?: boolean,
+  readonly logAlbAccessLogs?: boolean,
   /**
    * Optional properties to customize the bucket used to store the ALB Access
    * Logs. Supplying this and setting logAccessLogs to false is an error.
    *
    * @default - none
    */
-  readonly loggingBucketProps?: s3.BucketProps,
+  readonly albLoggingBucketProps?: s3.BucketProps,
   /**
    * Custom properties for a new VPC. Providing both this and existingVpc is
    * an error. If an existingAlb or existing Private Hosted Zone is provided, those
@@ -106,10 +106,6 @@ export class Route53ToAlb extends Construct {
   constructor(scope: Construct, id: string, props: Route53ToAlbProps) {
     super(scope, id);
     defaults.CheckProps(props);
-
-    if ((props?.logAccessLogs === false) && (props.loggingBucketProps)) {
-      throw new Error('If logAccessLogs is false, supplying loggingBucketProps is invalid.');
-    }
 
     if (props?.loadBalancerProps?.vpc) {
       throw new Error('Specify any existing VPC at the construct level, not within loadBalancerProps.');
@@ -160,8 +156,8 @@ export class Route53ToAlb extends Construct {
       props.publicApi,
       props.existingLoadBalancerObj,
       props.loadBalancerProps,
-      props.logAccessLogs,
-      props.loggingBucketProps
+      props.logAlbAccessLogs,
+      props.albLoggingBucketProps
     );
 
     // Add the ALB to the HostedZone as a target
