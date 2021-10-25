@@ -211,7 +211,7 @@ test('test cloudfront disable cloudfront logging', () => {
 test('test cloudfront with custom domain names', () => {
   const stack = new cdk.Stack();
 
-  const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012');
+  const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012');
 
   const props: CloudFrontToS3Props = {
     cloudFrontDistributionProps: {
@@ -262,4 +262,55 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
       Ref: "cloudfronts3S3LoggingBucket52EEB708"
     }
   });
+});
+
+// --------------------------------------------------------------
+// Cloudfront logging bucket with destroy removal policy and auto delete objects
+// --------------------------------------------------------------
+test('Cloudfront logging bucket with destroy removal policy and auto delete objects', () => {
+  const stack = new cdk.Stack();
+
+  new CloudFrontToS3(stack, 'cloudfront-s3', {
+    cloudFrontLoggingBucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::S3::Bucket", {
+    AccessControl: "LogDeliveryWrite"
+  });
+
+  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+    ServiceToken: {
+      "Fn::GetAtt": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+        "Arn"
+      ]
+    },
+    BucketName: {
+      Ref: "cloudfronts3CloudfrontLoggingBucket5B845143"
+    }
+  });
+});
+
+// --------------------------------------------------------------
+// Cloudfront logging bucket error providing existing log bucket and logBucketProps
+// --------------------------------------------------------------
+test('Cloudfront logging bucket error when providing existing log bucket and logBucketProps', () => {
+  const stack = new cdk.Stack();
+  const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});
+
+  const app = () => { new CloudFrontToS3(stack, 'cloudfront-s3', {
+    cloudFrontDistributionProps: {
+      logBucket
+    },
+    cloudFrontLoggingBucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    }
+  });
+  };
+
+  expect(app).toThrowError();
 });

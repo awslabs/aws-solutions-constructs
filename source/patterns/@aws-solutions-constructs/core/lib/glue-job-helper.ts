@@ -78,7 +78,7 @@ export interface BuildGlueJobProps {
   readonly outputDataStore?: SinkDataStoreProps
 }
 
-export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): [glue.CfnJob, IRole] {
+export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): [glue.CfnJob, IRole, [Bucket, (Bucket | undefined)?]?] {
   if (!props.existingCfnJob) {
     if (props.glueJobProps) {
       if (props.glueJobProps.glueVersion === '2.0' && props.glueJobProps.maxCapacity) {
@@ -101,7 +101,7 @@ export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): [glue.
 }
 
 export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, database: glue.CfnDatabase, table: glue.CfnTable,
-  outputDataStore: SinkDataStoreProps): [glue.CfnJob, IRole] {
+  outputDataStore: SinkDataStoreProps): [glue.CfnJob, IRole, [Bucket, (Bucket | undefined)?]] {
 
   let _glueSecurityConfigName: string;
 
@@ -183,7 +183,7 @@ export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, 
   _scriptBucketLocation.grantRead(_jobRole);
 
   const _glueJob: glue.CfnJob = new glue.CfnJob(scope, 'KinesisETLJob', _newGlueJobProps);
-  return [_glueJob, _jobRole];
+  return [_glueJob, _jobRole, _outputLocation];
 }
 
 /**

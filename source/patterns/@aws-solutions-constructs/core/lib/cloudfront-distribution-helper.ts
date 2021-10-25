@@ -65,12 +65,13 @@ function defaultCloudfrontFunction(scope: Construct): cloudfront.Function {
 export function CloudFrontDistributionForApiGateway(scope: Construct,
   apiEndPoint: api.RestApi,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
-  httpSecurityHeaders: boolean = true): [cloudfront.Distribution,
-    cloudfront.Function?, s3.Bucket?] {
+  httpSecurityHeaders: boolean = true,
+  cloudFrontLoggingBucketProps?: s3.BucketProps
+): [cloudfront.Distribution, cloudfront.Function?, s3.Bucket?] {
 
   const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
-  const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope);
+  const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope, cloudFrontLoggingBucketProps);
 
   const defaultprops = DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint, loggingBucket, httpSecurityHeaders, cloudfrontFunction);
 
@@ -85,12 +86,13 @@ export function CloudFrontDistributionForApiGateway(scope: Construct,
 export function CloudFrontDistributionForS3(scope: Construct,
   sourceBucket: s3.IBucket,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
-  httpSecurityHeaders: boolean = true): [cloudfront.Distribution,
+  httpSecurityHeaders: boolean = true,
+  cloudFrontLoggingBucketProps?: s3.BucketProps): [cloudfront.Distribution,
     cloudfront.Function?, s3.Bucket?] {
 
   const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
-  const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope);
+  const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope, cloudFrontLoggingBucketProps);
 
   const defaultprops = DefaultCloudFrontWebDistributionForS3Props(sourceBucket, loggingBucket, httpSecurityHeaders, cloudfrontFunction);
 
@@ -116,12 +118,13 @@ export function CloudFrontDistributionForS3(scope: Construct,
 export function CloudFrontDistributionForMediaStore(scope: Construct,
   mediaStoreContainer: mediastore.CfnContainer,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
-  httpSecurityHeaders: boolean = true): [cloudfront.Distribution,
+  httpSecurityHeaders: boolean = true,
+  cloudFrontLoggingBucketProps?: s3.BucketProps): [cloudfront.Distribution,
     s3.Bucket | undefined, cloudfront.OriginRequestPolicy, cloudfront.Function?] {
 
   let originRequestPolicy: cloudfront.OriginRequestPolicy;
 
-  const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope);
+  const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope, cloudFrontLoggingBucketProps);
 
   if (cloudFrontDistributionProps
     && cloudFrontDistributionProps.defaultBehavior
@@ -183,12 +186,23 @@ export function CloudFrontOriginAccessIdentity(scope: Construct, comment?: strin
   });
 }
 
-function getLoggingBucket(cloudFrontDistributionProps: cloudfront.DistributionProps | any, scope: Construct): s3.Bucket | undefined {
+function getLoggingBucket(
+  cloudFrontDistributionProps: cloudfront.DistributionProps | any, scope: Construct,
+  cloudFrontLoggingBucketProps?: s3.BucketProps
+): s3.Bucket | undefined {
   const isLoggingDisabled = cloudFrontDistributionProps?.enableLogging === false;
   const userSuppliedLogBucket = cloudFrontDistributionProps?.logBucket;
+
+  if (userSuppliedLogBucket && cloudFrontLoggingBucketProps) {
+    throw Error('Either cloudFrontDistributionProps.logBucket or cloudFrontLoggingBucketProps can be set.');
+  }
+
   return isLoggingDisabled
     ? undefined
-    : userSuppliedLogBucket ?? createLoggingBucket(scope, 'CloudfrontLoggingBucket', DefaultS3Props());
+    : userSuppliedLogBucket ?? createLoggingBucket(
+      scope,
+      'CloudfrontLoggingBucket',
+      cloudFrontLoggingBucketProps ? overrideProps(DefaultS3Props(), cloudFrontLoggingBucketProps) : DefaultS3Props());
 }
 
 function getCloudfrontFunction(httpSecurityHeaders: boolean, scope: Construct) {

@@ -97,8 +97,9 @@ _Parameters_
 | tableProps?         | [`CfnTableProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.TableProps.html)                          | User provided AWS Glue Table props to override default props used to create a Glue Table.                        |
 | fieldSchema?        | [`CfnTable.ColumnProperty[]`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnTable.ColumnProperty.html) | User provided schema structure to create an AWS Glue Table.                                                      |
 | outputDataStore?    | [`SinkDataStoreProps`](#sinkdatastoreprops)                                                                                   | User provided properties for S3 bucket that stores Glue Job output. Current datastore types suported is only S3. |
+|createCloudWatchAlarms?|`boolean`|Whether to create recommended CloudWatch alarms for Kinesis Data Stream. Default value is set to `true`|
 
-## SinkDataStoreProps
+### SinkDataStoreProps
 
 | **Name**                | **Type**                                                                                          | **Description**                                                                                                |
 | :---------------------- | :------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
@@ -106,7 +107,7 @@ _Parameters_
 | outputBucketProps       | [`BucketProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html) | User provided bucket properties to create the S3 bucket to store the output from the AWS Glue Job.             |
 | datastoreType           | [`SinkStoreType`](#sinkstoretype)                                                                 | Sink data store type.                                                                                          |
 
-## SinkStoreType
+### SinkStoreType
 
 Enumeration of data store types that could include S3, DynamoDB, DocumentDB, RDS or Redshift. Current construct implementation only supports S3, but potential to add other output types in the future.
 
@@ -114,36 +115,51 @@ Enumeration of data store types that could include S3, DynamoDB, DocumentDB, RDS
 | :------- | :------- | --------------- |
 | S3       | `string` | S3 storage type |
 
-# Default settings
+## Pattern Properties
+
+| **Name**     | **Type**        | **Description** |
+|:-------------|:----------------|-----------------|
+|cloudwatchAlarms?|[`cloudwatch.Alarm[]`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudwatch.Alarm.html)|Returns an array of recommended CloudWatch Alarms created by the construct for Kinesis Data stream|
+|glueJob|[`CfnJob`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnJob.html)|Returns an instance of AWS Glue Job created by the construct|
+|glueJobRole|[`iam.Role`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)|Returns an instance of the IAM Role created by the construct for the Glue Job|
+|database|[`CfnDatabase`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnDatabase.html)|Returns an instance of AWS Glue Database created by the construct|
+|table|[`CfnTable`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnTable.html)|Returns an instance of the AWS Glue Table created by the construct|
+
+## Default settings
 
 Out of the box implementation of the Construct without any override will set the following defaults:
 
 ### Amazon Kinesis Stream
 
--   Configure least privilege access IAM role for Kinesis Stream
--   Enable server-side encryption for Kinesis Stream using AWS Managed KMS Key
--   Deploy best practices CloudWatch Alarms for the Kinesis Stream
+- Configure least privilege access IAM role for Kinesis Stream
+- Enable server-side encryption for Kinesis Stream using AWS Managed KMS Key
+- Deploy best practices CloudWatch Alarms for the Kinesis Stream
 
 ### Glue Job
 
--   Create a Glue Security Config that configures encryption for CloudWatch, Job Bookmarks, and S3. CloudWatch and Job Bookmarks are encrypted using AWS Managed KMS Key created for AWS Glue Service. The S3 bucket is configured with SSE-S3 encryption mode
--   Configure service role policies that allow AWS Glue to read from Kinesis Data Streams
+- Create a Glue Security Config that configures encryption for CloudWatch, Job Bookmarks, and S3. CloudWatch and Job Bookmarks are encrypted using AWS Managed KMS Key created for AWS Glue Service. The S3 bucket is configured with SSE-S3 encryption mode
+- Configure service role policies that allow AWS Glue to read from Kinesis Data Streams
 
 ### Glue Database
 
--   Create an AWS Glue database. An AWS Glue Table will be added to the database. This table defines the schema for the records buffered in the Amazon Kinesis Data Streams
+- Create an AWS Glue database. An AWS Glue Table will be added to the database. This table defines the schema for the records buffered in the Amazon Kinesis Data Streams
 
 ### Glue Table
 
--   Create an AWS Glue table. The table schema definition is based on the JSON structure of the records buffered in the Amazon Kinesis Data Streams
+- Create an AWS Glue table. The table schema definition is based on the JSON structure of the records buffered in the Amazon Kinesis Data Streams
 
 ### IAM Role
 
--   A job execution role that has privileges to 1) read the ETL script from the S3 bucket location, 2) read records from the Kinesis Stream, and 3) execute the Glue Job
+- A job execution role that has privileges to 1) read the ETL script from the S3 bucket location, 2) read records from the Kinesis Stream, and 3) execute the Glue Job
 
 ### Output S3 Bucket
 
--   An S3 bucket to store the output of the ETL transformation. This bucket will be passed as an argument to the created glue job so that it can be used in the ETL script to write data into it
+- An S3 bucket to store the output of the ETL transformation. This bucket will be passed as an argument to the created glue job so that it can be used in the ETL script to write data into it
+
+### Cloudwatch Alarms
+
+- A CloudWatch Alarm to report when consumer application is reading data slower than expected
+- A CloudWatch Alarm to report when consumer record processing is falling behind (to avoid risk of data loss due to record expiration)
 
 ## Architecture
 
@@ -153,4 +169,4 @@ Out of the box implementation of the Construct without any override will set the
 
 A sample use case which uses this pattern is available under [`use_cases/aws-custom-glue-etl`](https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-custom-glue-etl).
 
-&copy; Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+&copy; Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
