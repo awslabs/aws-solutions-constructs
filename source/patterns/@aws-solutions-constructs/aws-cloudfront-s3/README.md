@@ -5,10 +5,6 @@
 
 ![Stability: Stable](https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-the-badge)
 
-> All classes are under active development and subject to non-backward compatible changes or removal in any
-> future version. These are not subject to the [Semantic Versioning](https://semver.org/) model.
-> This means that while you may use them, you may need to update your source code when upgrading to a newer version of this package.
-
 ---
 <!--END STABILITY BANNER-->
 
@@ -54,6 +50,7 @@ _Parameters_
 |cloudFrontDistributionProps?|[`cloudfront.DistributionProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudfront.DistributionProps.html)|Optional user provided props to override the default props for CloudFront Distribution|
 |insertHttpSecurityHeaders?|`boolean`|Optional user provided props to turn on/off the automatic injection of best practice HTTP security headers in all responses from CloudFront|
 |loggingBucketProps?|[`s3.BucketProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html)|Optional user provided props to override the default props for the S3 Logging Bucket.|
+|cloudFrontLoggingBucketProps?|[`s3.BucketProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html)|Optional user provided props to override the default props for the CloudFront Logging Bucket.|
 
 ## Pattern Properties
 

@@ -15,7 +15,7 @@ import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as mediastore from '@aws-cdk/aws-mediastore';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as defaults from '@aws-solutions-constructs/core';
-import { Construct, Aws} from '@aws-cdk/core';
+import { Construct, Aws } from '@aws-cdk/core';
 
 /**
  * @summary The properties for the CloudFrontToMediaStore Construct
@@ -46,6 +46,12 @@ export interface CloudFrontToMediaStoreProps {
    * @default - true
    */
   readonly insertHttpSecurityHeaders?: boolean;
+  /**
+   * Optional user provided props to override the default props for the CloudFront Logging Bucket.
+   *
+   * @default - Default props are used
+   */
+  readonly cloudFrontLoggingBucketProps?: s3.BucketProps
 }
 
 export class CloudFrontToMediaStore extends Construct {
@@ -65,7 +71,7 @@ export class CloudFrontToMediaStore extends Construct {
    * @access public
    */
   constructor(scope: Construct, id: string, props: CloudFrontToMediaStoreProps) {
-    super (scope, id);
+    super(scope, id);
     defaults.CheckProps(props);
 
     let cloudFrontDistributionProps = props.cloudFrontDistributionProps;
@@ -122,6 +128,11 @@ export class CloudFrontToMediaStore extends Construct {
     }
 
     [this.cloudFrontWebDistribution, this.cloudFrontLoggingBucket, this.cloudFrontOriginRequestPolicy, this.cloudFrontFunction]
-      = defaults.CloudFrontDistributionForMediaStore(this, this.mediaStoreContainer, cloudFrontDistributionProps, props.insertHttpSecurityHeaders);
+      = defaults.CloudFrontDistributionForMediaStore(
+        this, this.mediaStoreContainer,
+        cloudFrontDistributionProps,
+        props.insertHttpSecurityHeaders,
+        props.cloudFrontLoggingBucketProps
+      );
   }
 }
