@@ -56,6 +56,12 @@ export interface IotToKinesisFirehoseToS3Props {
    * @default - Default props are used
    */
   readonly logGroupProps?: logs.LogGroupProps
+  /**
+   * Optional user provided props to override the default props for the S3 Logging Bucket.
+   *
+   * @default - Default props are used
+   */
+   readonly loggingBucketProps?: s3.BucketProps
 }
 
 export class IotToKinesisFirehoseToS3 extends Construct {
@@ -79,15 +85,12 @@ export class IotToKinesisFirehoseToS3 extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
 
-    if (props.existingBucketObj && props.bucketProps) {
-      throw new Error('Cannot specify both bucket properties and an existing bucket');
-    }
-
     const firehoseToS3 = new KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {
       kinesisFirehoseProps: props.kinesisFirehoseProps,
       existingBucketObj: props.existingBucketObj,
       bucketProps: props.bucketProps,
-      logGroupProps: props.logGroupProps
+      logGroupProps: props.logGroupProps,
+      loggingBucketProps: props.loggingBucketProps
     });
     this.kinesisFirehose = firehoseToS3.kinesisFirehose;
     this.s3Bucket = firehoseToS3.s3Bucket;
