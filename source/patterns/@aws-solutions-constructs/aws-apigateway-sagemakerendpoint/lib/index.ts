@@ -78,7 +78,7 @@ export interface ApiGatewayToSageMakerEndpointProps {
 export class ApiGatewayToSageMakerEndpoint extends Construct {
   public readonly apiGateway: api.RestApi;
   public readonly apiGatewayRole: iam.Role;
-  public readonly apiGatewayCloudWatchRole: iam.Role;
+  public readonly apiGatewayCloudWatchRole?: iam.Role;
   public readonly apiGatewayLogGroup: logs.LogGroup;
 
   /**

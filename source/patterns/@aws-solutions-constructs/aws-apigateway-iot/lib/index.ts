@@ -61,7 +61,7 @@ export interface ApiGatewayToIotProps {
  */
 export class ApiGatewayToIot extends Construct {
   public readonly apiGateway: api.RestApi;
-  public readonly apiGatewayCloudWatchRole: iam.Role;
+  public readonly apiGatewayCloudWatchRole?: iam.Role;
   public readonly apiGatewayLogGroup: logs.LogGroup;
   public readonly apiGatewayRole: iam.IRole;
   private readonly iotEndpoint: string;

@@ -1,6 +1,12 @@
 {
   "Resources": {
-    "MyKey6AB29FA6": {
+    "eventbus7CF8FDD5": {
+      "Type": "AWS::Events::EventBus",
+      "Properties": {
+        "Name": "existbuseventbus683F9152"
+      }
+    },
+    "testtestWEncryptionKeyC6B126B6": {
       "Type": "AWS::KMS::Key",
       "Properties": {
         "KeyPolicy": {
@@ -49,62 +55,117 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "MyQueueE6CA6235": {
-      "Type": "AWS::SQS::Queue",
+    "testtestWSnsTopicBFF33C41": {
+      "Type": "AWS::SNS::Topic",
       "Properties": {
         "KmsMasterKeyId": {
           "Fn::GetAtt": [
-            "MyKey6AB29FA6",
+            "testtestWEncryptionKeyC6B126B6",
             "Arn"
           ]
         }
-      },
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
+      }
     },
-    "MyQueuePolicy6BBEDDAC": {
-      "Type": "AWS::SQS::QueuePolicy",
+    "testtestWSnsTopicPolicy2A17B1B5": {
+      "Type": "AWS::SNS::TopicPolicy",
       "Properties": {
         "PolicyDocument": {
           "Statement": [
             {
               "Action": [
-                "sqs:SendMessage",
-                "sqs:GetQueueAttributes",
-                "sqs:GetQueueUrl"
+                "SNS:Publish",
+                "SNS:RemovePermission",
+                "SNS:SetTopicAttributes",
+                "SNS:DeleteTopic",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:GetTopicAttributes",
+                "SNS:Receive",
+                "SNS:AddPermission",
+                "SNS:Subscribe"
               ],
+              "Condition": {
+                "StringEquals": {
+                  "AWS:SourceOwner": {
+                    "Ref": "AWS::AccountId"
+                  }
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              },
+              "Resource": {
+                "Ref": "testtestWSnsTopicBFF33C41"
+              },
+              "Sid": "TopicOwnerOnlyAccess"
+            },
+            {
+              "Action": [
+                "SNS:Publish",
+                "SNS:RemovePermission",
+                "SNS:SetTopicAttributes",
+                "SNS:DeleteTopic",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:GetTopicAttributes",
+                "SNS:Receive",
+                "SNS:AddPermission",
+                "SNS:Subscribe"
+              ],
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": {
+                "Ref": "testtestWSnsTopicBFF33C41"
+              },
+              "Sid": "HttpsOnly"
+            },
+            {
+              "Action": "sns:Publish",
               "Effect": "Allow",
               "Principal": {
                 "Service": "events.amazonaws.com"
               },
               "Resource": {
-                "Fn::GetAtt": [
-                  "MyQueueE6CA6235",
-                  "Arn"
-                ]
-              }
+                "Ref": "testtestWSnsTopicBFF33C41"
+              },
+              "Sid": "2"
             }
           ],
           "Version": "2012-10-17"
         },
-        "Queues": [
+        "Topics": [
           {
-            "Ref": "MyQueueE6CA6235"
+            "Ref": "testtestWSnsTopicBFF33C41"
           }
         ]
       }
     },
-    "existingeventbusA5B80487": {
-      "Type": "AWS::Events::EventBus",
-      "Properties": {
-        "Name": "eventbridgeexistingeventbusexistingeventbus41AE8F43"
-      }
-    },
-    "constructEventsRule43880ADB": {
+    "testtestWEventsRuleDF9938A8": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "EventBusName": {
-          "Ref": "existingeventbusA5B80487"
+          "Ref": "eventbus7CF8FDD5"
         },
         "EventPattern": {
           "source": [
@@ -115,15 +176,12 @@
         "Targets": [
           {
             "Arn": {
-              "Fn::GetAtt": [
-                "MyQueueE6CA6235",
-                "Arn"
-              ]
+              "Ref": "testtestWSnsTopicBFF33C41"
             },
             "Id": {
               "Fn::GetAtt": [
-                "MyQueueE6CA6235",
-                "QueueName"
+                "testtestWSnsTopicBFF33C41",
+                "TopicName"
               ]
             }
           }

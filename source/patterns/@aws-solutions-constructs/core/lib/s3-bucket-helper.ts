@@ -100,6 +100,28 @@ export function createLoggingBucket(scope: Construct,
   return loggingBucket;
 }
 
+export function createAlbLoggingBucket(scope: Construct,
+  bucketId: string,
+  loggingBucketProps: s3.BucketProps): s3.Bucket {
+
+  // Create the Logging Bucket
+  const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, loggingBucketProps);
+
+  applySecureBucketPolicy(loggingBucket);
+
+  // Extract the CfnBucket from the loggingBucket
+  const loggingBucketResource = loggingBucket.node.findChild('Resource') as s3.CfnBucket;
+
+  addCfnSuppressRules(loggingBucketResource, [
+    {
+      id: 'W35',
+      reason: "This is a log bucket for an Application Load Balancer"
+    }
+  ]);
+
+  return loggingBucket;
+}
+
 function s3BucketWithLogging(scope: Construct,
   s3BucketProps?: s3.BucketProps,
   bucketId?: string,

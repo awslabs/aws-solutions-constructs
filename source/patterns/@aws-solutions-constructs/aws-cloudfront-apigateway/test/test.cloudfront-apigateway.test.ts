@@ -14,6 +14,7 @@
 import { ResourcePart } from '@aws-cdk/assert';
 import { CloudFrontToApiGateway } from "../lib";
 import * as cdk from "@aws-cdk/core";
+import * as s3 from "@aws-cdk/aws-s3";
 import * as defaults from '@aws-solutions-constructs/core';
 import * as lambda from '@aws-cdk/aws-lambda';
 import '@aws-cdk/assert/jest';
@@ -157,4 +158,78 @@ test('test api gateway lambda service role', () => {
       }
     ]
   });
+});
+
+// --------------------------------------------------------------
+// Cloudfront logging bucket with destroy removal policy and auto delete objects
+// --------------------------------------------------------------
+test('Cloudfront logging bucket with destroy removal policy and auto delete objects', () => {
+  const stack = new cdk.Stack();
+
+  const inProps: lambda.FunctionProps = {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: 'index.handler'
+  };
+
+  const func = defaults.deployLambdaFunction(stack, inProps);
+
+  const [_api] = defaults.RegionalLambdaRestApi(stack, func);
+
+  new CloudFrontToApiGateway(stack, 'cloudfront-apigateway', {
+    existingApiGatewayObj: _api,
+    cloudFrontLoggingBucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::S3::Bucket", {
+    AccessControl: "LogDeliveryWrite"
+  });
+
+  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+    ServiceToken: {
+      "Fn::GetAtt": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+        "Arn"
+      ]
+    },
+    BucketName: {
+      Ref: "cloudfrontapigatewayCloudfrontLoggingBucket5948F496"
+    }
+  });
+});
+
+// --------------------------------------------------------------
+// Cloudfront logging bucket error providing existing log bucket and logBucketProps
+// --------------------------------------------------------------
+test('Cloudfront logging bucket error when providing existing log bucket and logBucketProps', () => {
+  const stack = new cdk.Stack();
+
+  const inProps: lambda.FunctionProps = {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_10_X,
+    handler: 'index.handler'
+  };
+
+  const func = defaults.deployLambdaFunction(stack, inProps);
+
+  const [_api] = defaults.RegionalLambdaRestApi(stack, func);
+
+  const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});
+
+  const app = () => { new CloudFrontToApiGateway(stack, 'cloudfront-apigateway', {
+    existingApiGatewayObj: _api,
+    cloudFrontDistributionProps: {
+      logBucket
+    },
+    cloudFrontLoggingBucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    }
+  });
+  };
+
+  expect(app).toThrowError();
 });
