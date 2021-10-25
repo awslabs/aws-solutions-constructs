@@ -56,6 +56,12 @@ export interface KinesisFirehoseToS3Props {
    * @default - Default props are used
    */
   readonly logGroupProps?: logs.LogGroupProps;
+  /**
+   * Optional user provided props to override the default props for the S3 Logging Bucket.
+   *
+   * @default - Default props are used
+   */
+  readonly loggingBucketProps?: s3.BucketProps
 }
 
 export class KinesisFirehoseToS3 extends Construct {
@@ -88,7 +94,7 @@ export class KinesisFirehoseToS3 extends Construct {
       let { bucketProps } = props;
 
       // Setup logging S3 Bucket
-      if (props.existingLoggingBucketObj) {
+      if (props.existingLoggingBucketObj && !props.loggingBucketProps) {
         if (!bucketProps) {
           bucketProps = {};
         }
@@ -99,7 +105,8 @@ export class KinesisFirehoseToS3 extends Construct {
       }
 
       [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
-        bucketProps
+        bucketProps,
+        loggingBucketProps: props.loggingBucketProps
       });
 
       bucket = this.s3Bucket;

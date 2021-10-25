@@ -148,6 +148,8 @@ function s3BucketWithLogging(scope: Construct,
     } else {
       bucketprops = DefaultS3Props();
     }
+  } else if (s3BucketProps?.serverAccessLogsBucket && userLoggingBucketProps) {
+    throw new Error('Cannot specify both logging bucket properties and an existing logging bucket');
   } else {
     // Create the Logging Bucket
     let loggingBucketProps;
