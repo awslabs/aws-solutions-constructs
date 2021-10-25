@@ -13,17 +13,16 @@
 
 /// !cdk-integ *
 import { App, Stack } from "@aws-cdk/core";
-import * as s3 from '@aws-cdk/aws-s3';
 import { IotToS3, IotToS3Props } from "../lib";
+import * as defaults from '@aws-solutions-constructs/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
-const bucketProps: s3.BucketProps = {
-  encryption: s3.BucketEncryption.KMS
-};
-const existingBucketObj = new s3.Bucket(stack, `existingBucket`, bucketProps);
 
+let existingBucketObj;
+
+[existingBucketObj] = defaults.buildS3Bucket(stack, {});
 const props: IotToS3Props = {
   iotTopicRuleProps: {
     topicRulePayload: {

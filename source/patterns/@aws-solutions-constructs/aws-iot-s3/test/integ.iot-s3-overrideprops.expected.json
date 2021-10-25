@@ -1,62 +1,179 @@
 {
   "Resources": {
-    "existingBucketKey8738D66E": {
-      "Type": "AWS::KMS::Key",
+    "S3LoggingBucket800A2B27": {
+      "Type": "AWS::S3::Bucket",
       "Properties": {
-        "KeyPolicy": {
+        "AccessControl": "LogDeliveryWrite",
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W35",
+              "reason": "This S3 bucket is used as the access logging bucket for another bucket"
+            }
+          ]
+        }
+      }
+    },
+    "S3LoggingBucketPolicy6B3AA8AF": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "S3LoggingBucket800A2B27"
+        },
+        "PolicyDocument": {
           "Statement": [
             {
-              "Action": "kms:*",
-              "Effect": "Allow",
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
               "Principal": {
-                "AWS": {
+                "AWS": "*"
+              },
+              "Resource": [
+                {
                   "Fn::Join": [
                     "",
                     [
-                      "arn:",
                       {
-                        "Ref": "AWS::Partition"
+                        "Fn::GetAtt": [
+                          "S3LoggingBucket800A2B27",
+                          "Arn"
+                        ]
                       },
-                      ":iam::",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":root"
+                      "/*"
                     ]
                   ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "S3LoggingBucket800A2B27",
+                    "Arn"
+                  ]
                 }
-              },
-              "Resource": "*"
+              ],
+              "Sid": "HttpsOnly"
             }
           ],
           "Version": "2012-10-17"
-        },
-        "Description": "Created by iot-s3-overrideprops/existingBucket"
-      },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
+        }
+      }
     },
-    "existingBucket9529822F": {
+    "S3Bucket07682993": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
           "ServerSideEncryptionConfiguration": [
             {
               "ServerSideEncryptionByDefault": {
-                "KMSMasterKeyID": {
-                  "Fn::GetAtt": [
-                    "existingBucketKey8738D66E",
-                    "Arn"
-                  ]
-                },
-                "SSEAlgorithm": "aws:kms"
+                "SSEAlgorithm": "AES256"
               }
             }
           ]
+        },
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "NoncurrentVersionTransitions": [
+                {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90
+                }
+              ],
+              "Status": "Enabled"
+            }
+          ]
+        },
+        "LoggingConfiguration": {
+          "DestinationBucketName": {
+            "Ref": "S3LoggingBucket800A2B27"
+          }
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
         }
       },
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
+    },
+    "S3BucketPolicyF560589A": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "S3Bucket07682993"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "S3Bucket07682993",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::GetAtt": [
+                    "S3Bucket07682993",
+                    "Arn"
+                  ]
+                }
+              ],
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
     },
     "testiots3integrationiotactionsrole04473665": {
       "Type": "AWS::IAM::Role",
@@ -75,36 +192,6 @@
         }
       }
     },
-    "testiots3integrationiotactionsroleDefaultPolicy735A8FB6": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "kms:Encrypt",
-                "kms:ReEncrypt*",
-                "kms:GenerateDataKey*"
-              ],
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "existingBucketKey8738D66E",
-                  "Arn"
-                ]
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "testiots3integrationiotactionsroleDefaultPolicy735A8FB6",
-        "Roles": [
-          {
-            "Ref": "testiots3integrationiotactionsrole04473665"
-          }
-        ]
-      }
-    },
     "testiots3integrationIotActionsPolicyE1646C38": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
@@ -116,7 +203,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "existingBucket9529822F",
+                    "S3Bucket07682993",
                     "Arn"
                   ]
                 },
@@ -126,7 +213,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "existingBucket9529822F",
+                          "S3Bucket07682993",
                           "Arn"
                         ]
                       },
@@ -155,7 +242,7 @@
             {
               "S3": {
                 "BucketName": {
-                  "Ref": "existingBucket9529822F"
+                  "Ref": "S3Bucket07682993"
                 },
                 "Key": "test/${timestamp()}",
                 "RoleArn": {

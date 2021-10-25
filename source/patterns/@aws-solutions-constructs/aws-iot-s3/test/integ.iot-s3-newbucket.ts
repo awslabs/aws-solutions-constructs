@@ -13,12 +13,16 @@
 
 /// !cdk-integ *
 import { App, Stack } from "@aws-cdk/core";
-import * as s3 from '@aws-cdk/aws-s3';
+import * as kms from '@aws-cdk/aws-kms';
 import { IotToS3, IotToS3Props } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { BucketEncryption } from "@aws-cdk/aws-s3";
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+const existingKey = new kms.Key(stack, `existingKey`, {
+  enableKeyRotation: true
+});
 
 const props: IotToS3Props = {
   iotTopicRuleProps: {
@@ -30,7 +34,8 @@ const props: IotToS3Props = {
     }
   },
   bucketProps: {
-    encryption: s3.BucketEncryption.KMS
+    encryption: BucketEncryption.KMS,
+    encryptionKey: existingKey
   }
 };
 

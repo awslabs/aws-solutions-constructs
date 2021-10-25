@@ -1,5 +1,41 @@
 {
   "Resources": {
+    "existingKeyB52D6AF1": {
+      "Type": "AWS::KMS::Key",
+      "Properties": {
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": "kms:*",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              },
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "EnableKeyRotation": true
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
     "testiots3integrationS3LoggingBucket606446CC": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
@@ -84,42 +120,6 @@
         }
       }
     },
-    "testiots3integrationS3BucketKey127368C9": {
-      "Type": "AWS::KMS::Key",
-      "Properties": {
-        "KeyPolicy": {
-          "Statement": [
-            {
-              "Action": "kms:*",
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":iam::",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":root"
-                    ]
-                  ]
-                }
-              },
-              "Resource": "*"
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "Description": "Created by iot-s3-newbucket/test-iot-s3-integration/S3Bucket"
-      },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
-    },
     "testiots3integrationS3Bucket9B8B180C": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
@@ -129,7 +129,7 @@
               "ServerSideEncryptionByDefault": {
                 "KMSMasterKeyID": {
                   "Fn::GetAtt": [
-                    "testiots3integrationS3BucketKey127368C9",
+                    "existingKeyB52D6AF1",
                     "Arn"
                   ]
                 },
@@ -248,7 +248,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "testiots3integrationS3BucketKey127368C9",
+                  "existingKeyB52D6AF1",
                   "Arn"
                 ]
               }
