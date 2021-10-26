@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.126.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.0.0-rc.1...v1.126.0) (2021-10-25)
+
+* Upgraded all patterns to CDK v1.126.0
+
+### Features
+
+* **aws-alb-lambda:** New Construct - aws-alb-lambda ([#467](https://github.com/awslabs/aws-solutions-constructs/issues/467)) ([4fb7eb9](https://github.com/awslabs/aws-solutions-constructs/commit/4fb7eb95d64959dbf8410a45c824dd1b5f1f5418))
+* **aws-cloudfront-apigateway-lambda:** added cloudFrontLoggingBucketProps to cloudfront-apigateway-lambda ([#455](https://github.com/awslabs/aws-solutions-constructs/issues/455)) ([5e42612](https://github.com/awslabs/aws-solutions-constructs/commit/5e42612d67a2e3cd9e2291cf814ea78c0a3c725f))
+* **aws-cloudfront-mediastore:** added cloudFrontLoggingBucketProp to cloudfront-mediastore ([#457](https://github.com/awslabs/aws-solutions-constructs/issues/457)) ([ffd8d17](https://github.com/awslabs/aws-solutions-constructs/commit/ffd8d17614047976c8fdbfd647ab9179bfd45f07))
+* **aws-cloudfront-s3:** added added cloudFrontLoggingBucketProps ([#457](https://github.com/awslabs/aws-solutions-constructs/issues/460))
+* **aws-wafwebacl-alb:** created aws-wafwebacl-alb construct ([#465](https://github.com/awslabs/aws-solutions-constructs/issues/465)) ([cd5c4f4](https://github.com/awslabs/aws-solutions-constructs/commit/cd5c4f432123983af7bd89477044e7639e7c8e75))
+* **Implement aws-route53-alb:** Implement new construct ([#421](https://github.com/awslabs/aws-solutions-constructs/issues/421)) ([afd0811](https://github.com/awslabs/aws-solutions-constructs/commit/afd0811cd3c316a7c26931d83c33ab3b6faeab2b))
+
+### Bug Fixes
+
+* **apigateway-helper:** fixed condition for cloudWatchRole creation ([#468](https://github.com/awslabs/aws-solutions-constructs/issues/468)) ([e454349](https://github.com/awslabs/aws-solutions-constructs/commit/e45434928a17cde580698a82ee53f6ee7463c6cf))
+* **Set outputBucket property on aws-kinesisstreams-gluejob:** Issue [#448](https://github.com/awslabs/aws-solutions-constructs/issues/448) to include S3 bucket for Glue Job that the consturct creates ([#452](https://github.com/awslabs/aws-solutions-constructs/issues/452)) ([c40e1f7](https://github.com/awslabs/aws-solutions-constructs/commit/c40e1f7c3524652ac8e3277b1c482975e6df9e36))
+
 ## [1.125.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.124.0...v1.125.0) (2021-10-08)
 
 * Upgraded all patterns to CDK v1.125.0
