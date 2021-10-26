@@ -43,25 +43,32 @@ export interface IotToKinesisFirehoseToS3Props {
    *
    * @default - None
    */
-  readonly existingBucketObj?: s3.IBucket,
+  readonly existingBucketObj?: s3.IBucket;
   /**
    * User provided props to override the default props for the S3 Bucket.
    *
    * @default - Default props are used
    */
-  readonly bucketProps?: s3.BucketProps,
+  readonly bucketProps?: s3.BucketProps;
   /**
    * User provided props to override the default props for the CloudWatchLogs LogGroup.
    *
    * @default - Default props are used
    */
-  readonly logGroupProps?: logs.LogGroupProps
+  readonly logGroupProps?: logs.LogGroupProps;
   /**
    * Optional user provided props to override the default props for the S3 Logging Bucket.
    *
    * @default - Default props are used
    */
-   readonly loggingBucketProps?: s3.BucketProps
+   readonly loggingBucketProps?: s3.BucketProps;
+  /**
+   * Whether to turn on Access Logs for the S3 bucket with the associated storage costs.
+   * Enabling Access Logging is a best practice.
+   *
+   * @default - true
+   */
+   readonly logS3AccessLogs?: boolean;
 }
 
 export class IotToKinesisFirehoseToS3 extends Construct {
@@ -90,7 +97,8 @@ export class IotToKinesisFirehoseToS3 extends Construct {
       existingBucketObj: props.existingBucketObj,
       bucketProps: props.bucketProps,
       logGroupProps: props.logGroupProps,
-      loggingBucketProps: props.loggingBucketProps
+      loggingBucketProps: props.loggingBucketProps,
+      logS3AccessLogs: props.logS3AccessLogs
     });
     this.kinesisFirehose = firehoseToS3.kinesisFirehose;
     this.s3Bucket = firehoseToS3.s3Bucket;

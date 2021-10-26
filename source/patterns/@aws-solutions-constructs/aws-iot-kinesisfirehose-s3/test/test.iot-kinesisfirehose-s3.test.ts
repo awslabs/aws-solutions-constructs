@@ -195,3 +195,55 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
     }
   });
 });
+
+// --------------------------------------------------------------
+// Test bad call with logS3AccessLogs as false and bucketProps
+// --------------------------------------------------------------
+test("Test bad call with logS3AccessLogs as false and bucketProps", () => {
+  // Stack
+  const stack = new cdk.Stack();
+
+  const app = () => {
+    // Helper declaration
+    new IotToKinesisFirehoseToS3(stack, "bad-s3-args", {
+      iotTopicRuleProps: {
+        topicRulePayload: {
+          ruleDisabled: false,
+          description: "Persistent storage of connected vehicle telematics data",
+          sql: "SELECT * FROM 'connectedcar/telemetry/#'",
+          actions: []
+        }
+      },
+      loggingBucketProps: {
+        removalPolicy: cdk.RemovalPolicy.DESTROY
+      },
+      logS3AccessLogs: false
+    });
+  };
+  // Assertion
+  expect(app).toThrowError('Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n');
+});
+
+// --------------------------------------------------------------
+// s3 bucket with one content bucket and no logging bucket
+// --------------------------------------------------------------
+test('s3 bucket with one content bucket and no logging bucket', () => {
+  const stack = new cdk.Stack();
+
+  new IotToKinesisFirehoseToS3(stack, 'iot-kinsisfirehose-s3', {
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "Persistent storage of connected vehicle telematics data",
+        sql: "SELECT * FROM 'connectedcar/telemetry/#'",
+        actions: []
+      }
+    },
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+    logS3AccessLogs: false
+  });
+
+  expect(stack).toCountResources("AWS::S3::Bucket", 1);
+});
