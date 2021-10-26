@@ -243,3 +243,64 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
     }
   });
 });
+
+// --------------------------------------------------------------
+// Test bad call with existingLoggingBucketObj and loggingBucketProps
+// --------------------------------------------------------------
+test("Test bad call with existingLoggingBucketObj and loggingBucketProps", () => {
+  // Stack
+  const stack = new cdk.Stack();
+
+  const testBucket = new s3.Bucket(stack, 'test-bucket', {});
+
+  const app = () => {
+    // Helper declaration
+    new KinesisFirehoseToS3(stack, "bad-s3-args", {
+      existingLoggingBucketObj: testBucket,
+      loggingBucketProps: {
+        removalPolicy: cdk.RemovalPolicy.DESTROY
+      },
+    });
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingLoggingBucketObj or loggingBucketProps, but not both.\n');
+});
+
+// --------------------------------------------------------------
+// Test bad call with logS3AccessLogs as false and bucketProps
+// --------------------------------------------------------------
+test("Test bad call with logS3AccessLogs as false and bucketProps", () => {
+  // Stack
+  const stack = new cdk.Stack();
+
+  const app = () => {
+    // Helper declaration
+    new KinesisFirehoseToS3(stack, "bad-s3-args", {
+      loggingBucketProps: {
+        removalPolicy: cdk.RemovalPolicy.DESTROY
+      },
+      logS3AccessLogs: false
+    });
+  };
+  // Assertion
+  expect(app).toThrowError('Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n');
+});
+
+// --------------------------------------------------------------
+// s3 bucket with one content bucket and no logging bucket
+// --------------------------------------------------------------
+test('s3 bucket with one content bucket and no logging bucket', () => {
+  const stack = new cdk.Stack();
+
+  new KinesisFirehoseToS3(stack, 'kinsisfirehose-s3', {
+    kinesisFirehoseProps: {
+      deliveryStreamType: 'KinesisStreamAsSource'
+    },
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+    logS3AccessLogs: false
+  });
+
+  expect(stack).toCountResources("AWS::S3::Bucket", 1);
+});
