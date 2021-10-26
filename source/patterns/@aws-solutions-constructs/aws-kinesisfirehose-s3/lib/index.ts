@@ -61,7 +61,14 @@ export interface KinesisFirehoseToS3Props {
    *
    * @default - Default props are used
    */
-  readonly loggingBucketProps?: s3.BucketProps
+  readonly loggingBucketProps?: s3.BucketProps;
+  /**
+   * Whether to turn on Access Logs for the S3 bucket with the associated storage costs.
+   * Enabling Access Logging is a best practice.
+   *
+   * @default - true
+   */
+   readonly logS3AccessLogs?: boolean;
 }
 
 export class KinesisFirehoseToS3 extends Construct {
@@ -85,10 +92,6 @@ export class KinesisFirehoseToS3 extends Construct {
 
     let bucket: s3.IBucket;
 
-    if (props.existingBucketObj && props.bucketProps) {
-      throw new Error('Cannot specify both bucket properties and an existing bucket');
-    }
-
     // Setup S3 Bucket
     if (!props.existingBucketObj) {
       let { bucketProps } = props;
@@ -106,7 +109,8 @@ export class KinesisFirehoseToS3 extends Construct {
 
       [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
         bucketProps,
-        loggingBucketProps: props.loggingBucketProps
+        loggingBucketProps: props.loggingBucketProps,
+        logS3AccessLogs: props.logS3AccessLogs
       });
 
       bucket = this.s3Bucket;

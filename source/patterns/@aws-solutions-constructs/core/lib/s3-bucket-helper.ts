@@ -29,17 +29,24 @@ export interface BuildS3BucketProps {
    *
    * @default - Default props are used
    */
-  readonly bucketProps?: s3.BucketProps
+  readonly bucketProps?: s3.BucketProps;
   /**
    * User provided props to override the default props for the S3 Logging Bucket.
    *
    * @default - Default props are used
    */
-  readonly loggingBucketProps?: s3.BucketProps
+  readonly loggingBucketProps?: s3.BucketProps;
+  /**
+   * Whether to turn on Access Logs for S3. Uses an S3 bucket with associated storage costs.
+   * Enabling Access Logging is a best practice.
+   *
+   * @default - true
+   */
+   readonly logS3AccessLogs?: boolean;
 }
 
 export function buildS3Bucket(scope: Construct, props: BuildS3BucketProps, bucketId?: string): [s3.Bucket, s3.Bucket?] {
-  return s3BucketWithLogging(scope, props.bucketProps, bucketId, props.loggingBucketProps);
+  return s3BucketWithLogging(scope, props.bucketProps, bucketId, props.loggingBucketProps, props.logS3AccessLogs);
 }
 
 export function applySecureBucketPolicy(s3Bucket: s3.Bucket): void {
@@ -125,7 +132,8 @@ export function createAlbLoggingBucket(scope: Construct,
 function s3BucketWithLogging(scope: Construct,
   s3BucketProps?: s3.BucketProps,
   bucketId?: string,
-  userLoggingBucketProps?: s3.BucketProps): [s3.Bucket, s3.Bucket?] {
+  userLoggingBucketProps?: s3.BucketProps,
+  logS3AccessLogs?: boolean ): [s3.Bucket, s3.Bucket?] {
 
   /** Default Life Cycle policy to transition older versions to Glacier after 90 days */
   const lifecycleRules: s3.LifecycleRule[] = [{
@@ -148,7 +156,7 @@ function s3BucketWithLogging(scope: Construct,
     } else {
       bucketprops = DefaultS3Props();
     }
-  } else {
+  } else if (logS3AccessLogs !== false) {
     // Create the Logging Bucket
     let loggingBucketProps;
 
@@ -167,6 +175,14 @@ function s3BucketWithLogging(scope: Construct,
       bucketprops = DefaultS3Props(loggingBucket, lifecycleRules);
     } else {
       bucketprops = DefaultS3Props(loggingBucket);
+    }
+  } else {
+    // No Logging Bucket
+    // Attach the Default Life Cycle policy ONLY IF the versioning is ENABLED
+    if (s3BucketProps?.versioned === undefined || s3BucketProps.versioned) {
+      bucketprops = DefaultS3Props(undefined, lifecycleRules);
+    } else {
+      bucketprops = DefaultS3Props();
     }
   }
 
