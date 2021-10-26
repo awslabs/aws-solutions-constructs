@@ -197,70 +197,7 @@ test('check for overriden props', () => {
   expect(stack).toHaveResource('AWS::IAM::Policy', s3BucketAccessPolicy);
 
   // Check for automatically created CMK KMS Key
-  expect(stack).toHaveResource('AWS::KMS::Key', {
-    KeyPolicy: {
-      Statement: [
-        {
-          Action: [
-            "kms:Create*",
-            "kms:Describe*",
-            "kms:Enable*",
-            "kms:List*",
-            "kms:Put*",
-            "kms:Update*",
-            "kms:Revoke*",
-            "kms:Disable*",
-            "kms:Get*",
-            "kms:Delete*",
-            "kms:ScheduleKeyDeletion",
-            "kms:CancelKeyDeletion",
-            "kms:GenerateDataKey",
-            "kms:TagResource",
-            "kms:UntagResource"
-          ],
-          Effect: "Allow",
-          Principal: {
-            AWS: {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:",
-                  {
-                    Ref: "AWS::Partition"
-                  },
-                  ":iam::",
-                  {
-                    Ref: "AWS::AccountId"
-                  },
-                  ":root"
-                ]
-              ]
-            }
-          },
-          Resource: "*"
-        },
-        {
-          Action: [
-            "kms:Encrypt",
-            "kms:ReEncrypt*",
-            "kms:GenerateDataKey*"
-          ],
-          Effect: "Allow",
-          Principal: {
-            AWS: {
-              "Fn::GetAtt": [
-                "testiots3integrationiotactionsrole04473665",
-                "Arn"
-              ]
-            }
-          },
-          Resource: "*"
-        }
-      ],
-      Version: "2012-10-17"
-    },
-    Description: "Created by Default/test-iot-s3-integration/S3Bucket"
-  });
+  expect(stack).toCountResources('AWS::KMS::Key', 1);
 
   // Check for IoT Topic Rule permissions to KMS key to store msgs to S3 Bucket
   expect(stack).toHaveResource("AWS::IAM::Policy", {
