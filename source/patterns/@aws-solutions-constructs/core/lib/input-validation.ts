@@ -72,6 +72,9 @@ export interface VerifiedProps {
 
   readonly logAlbAccessLogs?: boolean;
   readonly albLoggingBucketProps?: s3.BucketProps;
+
+  readonly existingLoggingBucketObj?: s3.IBucket;
+  readonly loggingBucketProps?: s3.BucketProps;
 }
 
 export function CheckProps(propsObject: VerifiedProps | any) {
@@ -180,6 +183,11 @@ export function CheckProps(propsObject: VerifiedProps | any) {
 
   if ((propsObject?.logAlbAccessLogs === false) && (propsObject.albLoggingBucketProps)) {
     errorMessages += 'Error - If logAlbAccessLogs is false, supplying albLoggingBucketProps is invalid.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.existingLoggingBucketObj && propsObject.loggingBucketProps) {
+    errorMessages += 'Error - Either provide existingLoggingBucketObj or loggingBucketProps, but not both.\n';
     errorFound = true;
   }
 

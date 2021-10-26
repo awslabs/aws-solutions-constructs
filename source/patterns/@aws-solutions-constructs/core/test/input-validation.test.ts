@@ -427,3 +427,21 @@ test('Test fail multiple failures message', () => {
     'Error - Either provide secretProps or existingSecretObj, but not both.\n'
   );
 });
+
+test('Test fail Log Bucket check', () => {
+  const stack = new Stack();
+
+  const props: defaults.VerifiedProps = {
+    existingLoggingBucketObj: new s3.Bucket(stack, 'logging-bucket'),
+    loggingBucketProps: {
+      autoDeleteObjects: true
+    }
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingLoggingBucketObj or loggingBucketProps, but not both.\n');
+});
