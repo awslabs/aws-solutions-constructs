@@ -198,7 +198,7 @@ export function CheckProps(propsObject: VerifiedProps | any) {
   }
 
   if (propsObject.existingBucketObj && (propsObject.loggingBucketProps || propsObject.logS3AccessLogs)) {
-    errorMessages += 'Error - If existingBucketObj is provided, supplying loggingBucketProps or logS3AccessLogs is ignored.\n';
+    errorMessages += 'Error - If existingBucketObj is provided, supplying loggingBucketProps or logS3AccessLogs is an error.\n';
     errorFound = true;
   }
 

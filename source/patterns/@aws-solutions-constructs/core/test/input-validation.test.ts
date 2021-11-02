@@ -477,7 +477,7 @@ test('Test fail existingBucketObj and loggingBucketProps check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - If existingBucketObj is provided, supplying loggingBucketProps or logS3AccessLogs is ignored.\n');
+  expect(app).toThrowError('Error - If existingBucketObj is provided, supplying loggingBucketProps or logS3AccessLogs is an error.\n');
 });
 
 test('Test fail false logAlbAccessLogs and albLoggingBucketProps check', () => {

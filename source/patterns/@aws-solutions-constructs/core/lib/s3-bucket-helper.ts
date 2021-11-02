@@ -45,14 +45,8 @@ export interface BuildS3BucketProps {
   readonly logS3AccessLogs?: boolean;
 }
 
-export function buildS3Bucket(scope: Construct, props: BuildS3BucketProps, bucketId?: string): [s3.Bucket, s3.Bucket?] {
-  return s3BucketWithLogging(scope, props.bucketProps, bucketId, props.loggingBucketProps, props.logS3AccessLogs);
-}
-
 export function applySecureBucketPolicy(s3Bucket: s3.Bucket): void {
-
   // Apply bucket policy to enforce encryption of data in transit
-
   s3Bucket.addToResourcePolicy(
     new PolicyStatement({
       sid: 'HttpsOnly',
@@ -129,11 +123,9 @@ export function createAlbLoggingBucket(scope: Construct,
   return loggingBucket;
 }
 
-function s3BucketWithLogging(scope: Construct,
-  userBucketProps?: s3.BucketProps,
-  bucketId?: string,
-  userLoggingBucketProps?: s3.BucketProps,
-  logS3AccessLogs?: boolean): [s3.Bucket, s3.Bucket?] {
+export function buildS3Bucket(scope: Construct,
+  props: BuildS3BucketProps,
+  bucketId?: string): [s3.Bucket, s3.Bucket?] {
 
   /** Default Life Cycle policy to transition older versions to Glacier after 90 days */
   const lifecycleRules: s3.LifecycleRule[] = [{
@@ -144,38 +136,37 @@ function s3BucketWithLogging(scope: Construct,
   }];
 
   // Create the Application Bucket
-  let bucketProps: s3.BucketProps;
+  let customBucketProps: s3.BucketProps;
   let loggingBucket;
   const _bucketId = bucketId ? bucketId + 'S3Bucket' : 'S3Bucket';
   const _loggingBucketId = bucketId ? bucketId + 'S3LoggingBucket' : 'S3LoggingBucket';
 
-  if (logS3AccessLogs !== false && !userBucketProps?.serverAccessLogsBucket) {
+  // If logging S3 access logs is enabled/undefined and an existing bucket object is not provided
+  if (props.logS3AccessLogs !== false && !(props.bucketProps?.serverAccessLogsBucket)) {
     // Create the Logging Bucket
-    let loggingBucketProps;
+    let loggingBucketProps = DefaultS3Props();
 
-    if (userLoggingBucketProps) {
+    if (props.loggingBucketProps) {
       // User provided logging bucket props
-      loggingBucketProps = overrideProps(DefaultS3Props(), userLoggingBucketProps);
-    } else if (userBucketProps?.removalPolicy) {
-      // Deletes logging bucket only if it is empty
-      loggingBucketProps = overrideProps(DefaultS3Props(), { removalPolicy: userBucketProps.removalPolicy });
-    } else {
-      // Default S3 bucket props
-      loggingBucketProps = DefaultS3Props();
+      loggingBucketProps = overrideProps(loggingBucketProps, props.loggingBucketProps);
+    } else if (props.bucketProps?.removalPolicy) {
+      // If the client explicitly specified a removal policy for the main bucket,
+      // then replicate that policy on the logging bucket
+      loggingBucketProps = overrideProps(loggingBucketProps, { removalPolicy: props.bucketProps.removalPolicy });
     }
 
     loggingBucket = createLoggingBucket(scope, _loggingBucketId, loggingBucketProps);
   }
   // Attach the Default Life Cycle policy ONLY IF the versioning is ENABLED
-  if (userBucketProps?.versioned === undefined || userBucketProps.versioned) {
-    bucketProps = DefaultS3Props(loggingBucket, lifecycleRules);
+  if (props.bucketProps?.versioned === undefined || props.bucketProps.versioned) {
+    customBucketProps = DefaultS3Props(loggingBucket, lifecycleRules);
   } else {
-    bucketProps = DefaultS3Props(loggingBucket);
+    customBucketProps = DefaultS3Props(loggingBucket);
   }
 
-  bucketProps = userBucketProps ? overrideProps(bucketProps, userBucketProps) : bucketProps;
+  customBucketProps = props.bucketProps ? overrideProps(customBucketProps, props.bucketProps) : customBucketProps;
 
-  const s3Bucket: s3.Bucket = new s3.Bucket(scope, _bucketId, bucketProps);
+  const s3Bucket: s3.Bucket = new s3.Bucket(scope, _bucketId, customBucketProps);
 
   applySecureBucketPolicy(s3Bucket);
 

@@ -12,6 +12,7 @@
  */
 
 import { KinesisFirehoseToS3, KinesisFirehoseToS3Props } from "../lib";
+import { ResourcePart } from '@aws-cdk/assert';
 import * as cdk from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
 import '@aws-cdk/assert/jest';
@@ -27,7 +28,7 @@ test('check s3Bucket default encryption', () => {
   expect(stack).toHaveResource('AWS::S3::Bucket', {
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [{
-        ServerSideEncryptionByDefault : {
+        ServerSideEncryptionByDefault: {
           SSEAlgorithm: "AES256"
         }
       }]
@@ -92,7 +93,8 @@ test('test kinesisFirehose override ', () => {
         IntervalInSeconds: 600,
         SizeInMBs: 55
       }
-    }});
+    }
+  });
 });
 
 test('check default properties', () => {
@@ -303,4 +305,25 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
   });
 
   expect(stack).toCountResources("AWS::S3::Bucket", 1);
+});
+
+test('test s3Bucket removalPolicy override', () => {
+  const stack = new cdk.Stack();
+
+  new KinesisFirehoseToS3(stack, 'kinsisfirehose-s3', {
+    kinesisFirehoseProps: {
+      deliveryStreamType: 'KinesisStreamAsSource'
+    },
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+  });
+  expect(stack).toHaveResourceLike("AWS::S3::Bucket", {
+    Type: 'AWS::S3::Bucket',
+    Properties: {
+      AccessControl: "LogDeliveryWrite"
+    },
+    UpdateReplacePolicy: "Delete",
+    DeletionPolicy: "Delete"
+  }, ResourcePart.CompleteDefinition);
 });

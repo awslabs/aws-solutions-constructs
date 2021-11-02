@@ -122,35 +122,3 @@ test('test s3Bucket add lifecycleConfiguration', () => {
     }
   });
 });
-
-test('test s3Bucket override serverAccessLogsBucket', () => {
-  const stack = new Stack();
-
-  const myLoggingBucket: s3.Bucket = new s3.Bucket(stack, 'MyS3LoggingBucket', defaults.DefaultS3Props());
-
-  const myS3Props: s3.BucketProps = defaults.DefaultS3Props(myLoggingBucket);
-
-  defaults.buildS3Bucket(stack, {
-    bucketProps: myS3Props
-  });
-
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
-    LoggingConfiguration: {
-      DestinationBucketName: {
-        Ref: "MyS3LoggingBucket119BE896"
-      }
-    }
-  });
-});
-
-test('test createAlbLoggingBucket()', () => {
-  const stack = new Stack();
-
-  defaults.createAlbLoggingBucket(stack, 'test-bucket', {
-    bucketName: 'test-name'
-  });
-
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
-    BucketName: 'test-name'
-  });
-});
