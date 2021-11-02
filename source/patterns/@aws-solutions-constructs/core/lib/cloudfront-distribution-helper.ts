@@ -86,12 +86,13 @@ export function CloudFrontDistributionForApiGateway(scope: Construct,
 export function CloudFrontDistributionForS3(scope: Construct,
   sourceBucket: s3.IBucket,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
-  httpSecurityHeaders: boolean = true): [cloudfront.Distribution,
+  httpSecurityHeaders: boolean = true,
+  cloudFrontLoggingBucketProps?: s3.BucketProps): [cloudfront.Distribution,
     cloudfront.Function?, s3.Bucket?] {
 
   const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
-  const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope);
+  const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope, cloudFrontLoggingBucketProps);
 
   const defaultprops = DefaultCloudFrontWebDistributionForS3Props(sourceBucket, loggingBucket, httpSecurityHeaders, cloudfrontFunction);
 
@@ -117,12 +118,13 @@ export function CloudFrontDistributionForS3(scope: Construct,
 export function CloudFrontDistributionForMediaStore(scope: Construct,
   mediaStoreContainer: mediastore.CfnContainer,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
-  httpSecurityHeaders: boolean = true): [cloudfront.Distribution,
+  httpSecurityHeaders: boolean = true,
+  cloudFrontLoggingBucketProps?: s3.BucketProps): [cloudfront.Distribution,
     s3.Bucket | undefined, cloudfront.OriginRequestPolicy, cloudfront.Function?] {
 
   let originRequestPolicy: cloudfront.OriginRequestPolicy;
 
-  const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope);
+  const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope, cloudFrontLoggingBucketProps);
 
   if (cloudFrontDistributionProps
     && cloudFrontDistributionProps.defaultBehavior

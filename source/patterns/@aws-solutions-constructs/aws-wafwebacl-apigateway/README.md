@@ -89,7 +89,7 @@ Out of the box implementation of the Construct without any override will set the
     * AWSManagedRulesAdminProtectionRuleSet
     * AWSManagedRulesSQLiRuleSet
 
-    *Note that the default rules can be replaced by specifying the rules property of CfnWebACLProps* 
+    *Note that the default rules can be replaced by specifying the rules property of CfnWebACLProps*
 * Send metrics to Amazon CloudWatch
 
 ### Amazon API Gateway

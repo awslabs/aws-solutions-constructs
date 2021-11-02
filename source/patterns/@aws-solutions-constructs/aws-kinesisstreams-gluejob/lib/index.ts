@@ -126,6 +126,11 @@ export class KinesisstreamsToGluejob extends Construct {
   public readonly glueJobRole: IRole;
   public readonly database: glue.CfnDatabase;
   public readonly table: glue.CfnTable;
+  /**
+   * This property is only set if the Glue Job is created by the construct. If an exisiting Glue Job
+   * configuraton is supplied, the construct does not create an S3 bucket and hence the @outputBucket
+   * property is undefined
+   */
   public readonly outputBucket?: [Bucket, (Bucket | undefined)?];
   public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
 
@@ -159,7 +164,7 @@ export class KinesisstreamsToGluejob extends Construct {
       });
     }
 
-    [ this.glueJob, this.glueJobRole ] = defaults.buildGlueJob(this, {
+    [ this.glueJob, this.glueJobRole, this.outputBucket ] = defaults.buildGlueJob(this, {
       existingCfnJob: props.existingGlueJob,
       glueJobProps: props.glueJobProps,
       table: this.table!,
