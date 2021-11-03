@@ -27,7 +27,7 @@ test('check s3Bucket default encryption', () => {
   expect(stack).toHaveResource('AWS::S3::Bucket', {
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [{
-        ServerSideEncryptionByDefault : {
+        ServerSideEncryptionByDefault: {
           SSEAlgorithm: "AES256"
         }
       }]
@@ -92,7 +92,8 @@ test('test kinesisFirehose override ', () => {
         IntervalInSeconds: 600,
         SizeInMBs: 55
       }
-    }});
+    }
+  });
 });
 
 test('check default properties', () => {

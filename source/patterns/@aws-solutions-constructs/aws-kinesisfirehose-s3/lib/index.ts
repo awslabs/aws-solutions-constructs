@@ -68,7 +68,7 @@ export interface KinesisFirehoseToS3Props {
    *
    * @default - true
    */
-   readonly logS3AccessLogs?: boolean;
+  readonly logS3AccessLogs?: boolean;
 }
 
 export class KinesisFirehoseToS3 extends Construct {
@@ -77,6 +77,7 @@ export class KinesisFirehoseToS3 extends Construct {
   public readonly kinesisFirehoseRole: iam.Role;
   public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
+  public readonly s3BucketInterface: s3.IBucket;
 
   /**
    * Constructs a new instance of the KinesisFirehoseToS3 class.
@@ -94,29 +95,24 @@ export class KinesisFirehoseToS3 extends Construct {
 
     // Setup S3 Bucket
     if (!props.existingBucketObj) {
-      let { bucketProps } = props;
+      let bucketProps = props.bucketProps ?? {};
+      bucketProps = props.existingLoggingBucketObj ?
+        overrideProps(bucketProps, { serverAccessLogsBucket: props.existingLoggingBucketObj }) :
+        bucketProps;
 
       // Setup logging S3 Bucket
-      if (props.existingLoggingBucketObj && !props.loggingBucketProps) {
-        if (!bucketProps) {
-          bucketProps = {};
-        }
-
-        bucketProps = overrideProps(bucketProps, {
-          serverAccessLogsBucket: props.existingLoggingBucketObj
-        });
-      }
-
       [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
         bucketProps,
         loggingBucketProps: props.loggingBucketProps,
-        logS3AccessLogs: props.logS3AccessLogs
+        logS3AccessLogs: props.logS3AccessLogs,
       });
 
       bucket = this.s3Bucket;
     } else {
       bucket = props.existingBucketObj;
     }
+
+    this.s3BucketInterface = bucket;
 
     // Setup Cloudwatch Log group & stream for Kinesis Firehose
     this.kinesisFirehoseLogGroup = defaults.buildLogGroup(
@@ -177,8 +173,8 @@ export class KinesisFirehoseToS3 extends Construct {
     printWarning(`kinesisFirehoseProps: ${JSON.stringify(props.kinesisFirehoseProps, null, 2)}`);
     // if the client didn't explicity say it was a Kinesis client, then turn on encryption
     if (!props.kinesisFirehoseProps ||
-        !props.kinesisFirehoseProps.deliveryStreamType ||
-        props.kinesisFirehoseProps.deliveryStreamType !== 'KinesisStreamAsSource'
+      !props.kinesisFirehoseProps.deliveryStreamType ||
+      props.kinesisFirehoseProps.deliveryStreamType !== 'KinesisStreamAsSource'
     ) {
       defaultKinesisFirehoseProps = defaults.overrideProps(
         defaultKinesisFirehoseProps,
