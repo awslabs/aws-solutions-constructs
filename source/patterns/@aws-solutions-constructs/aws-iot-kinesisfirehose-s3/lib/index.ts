@@ -79,6 +79,7 @@ export class IotToKinesisFirehoseToS3 extends Construct {
   public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
   public readonly iotActionsRole: iam.Role;
+  public readonly s3BucketInterface: s3.IBucket;
 
   /**
    * @summary Constructs a new instance of the IotToKinesisFirehoseToS3 class.
@@ -102,6 +103,7 @@ export class IotToKinesisFirehoseToS3 extends Construct {
     });
     this.kinesisFirehose = firehoseToS3.kinesisFirehose;
     this.s3Bucket = firehoseToS3.s3Bucket;
+    this.s3BucketInterface = firehoseToS3.s3BucketInterface;
 
     // Setup the IAM Role for IoT Actions
     this.iotActionsRole = new iam.Role(this, 'IotActionsRole', {
