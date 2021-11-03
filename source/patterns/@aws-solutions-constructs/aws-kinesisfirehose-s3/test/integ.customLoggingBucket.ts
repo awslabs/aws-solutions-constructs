@@ -11,24 +11,26 @@
  *  and limitations under the License.
  */
 
-// Imports
+/// !cdk-integ *
 import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
+import { BucketEncryption } from "@aws-cdk/aws-s3";
 import { KinesisFirehoseToS3 } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
-// Setup
 const app = new App();
-const stack = new Stack(app, generateIntegStackName(__filename));
-stack.templateOptions.description = 'Integration Test for aws-cdk-apl-kinesisfirehose-s3';
 
-new KinesisFirehoseToS3(stack, 'test-firehose-s3', {
+// Empty arguments
+const stack = new Stack(app, generateIntegStackName(__filename));
+
+new KinesisFirehoseToS3(stack, 'test-kinesisfirehose-s3', {
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
   },
   loggingBucketProps: {
-    removalPolicy: RemovalPolicy.DESTROY
+    removalPolicy: RemovalPolicy.DESTROY,
+    bucketName: 'custom-logging-bucket',
+    encryption: BucketEncryption.S3_MANAGED,
+    versioned: true
   }
 });
-
-// Synth
 app.synth();
