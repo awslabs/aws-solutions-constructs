@@ -16,15 +16,13 @@ import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { BucketEncryption } from "@aws-cdk/aws-s3";
 import { KinesisFirehoseToAnalyticsAndS3 } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import * as s3 from "@aws-cdk/aws-s3";
-import * as defaults from '@aws-solutions-constructs/core';
 
 const app = new App();
 
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const construct = new KinesisFirehoseToAnalyticsAndS3(stack, 'test-kinesisfirehose-analytics-s3', {
+new KinesisFirehoseToAnalyticsAndS3(stack, 'test-kinesisfirehose-analytics-s3', {
   kinesisAnalyticsProps: {
     inputs: [{
       inputSchema: {
@@ -63,12 +61,5 @@ const construct = new KinesisFirehoseToAnalyticsAndS3(stack, 'test-kinesisfireho
     versioned: true
   }
 });
-
-const s3Bucket = construct.s3Bucket as s3.Bucket;
-
-defaults.addCfnSuppressRules(s3Bucket, [
-  { id: 'W35',
-    reason: 'This S3 bucket is created for unit/ integration testing purposes only.' },
-]);
 
 app.synth();
