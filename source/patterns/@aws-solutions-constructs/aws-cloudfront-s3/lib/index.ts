@@ -45,13 +45,20 @@ export interface CloudFrontToS3Props {
     *
     * @default - true
     */
-   readonly insertHttpSecurityHeaders?: boolean;
-   /**
-    * Optional user provided props to override the default props for the S3 Logging Bucket.
-    *
-    * @default - Default props are used
-    */
-    readonly loggingBucketProps?: s3.BucketProps
+    readonly insertHttpSecurityHeaders?: boolean,
+    /**
+     * Optional user provided props to provide an originPath that CloudFront appends to the
+     * origin domain name when CloudFront requests content from the origin.
+     * The string should start with a `/`, for example `/production`.
+     * @dafault = '/'
+     */
+    readonly originPath?: string,
+    /**
+     * Optional user provided props to override the default props for the S3 Logging Bucket.
+     *
+     * @default - Default props are used
+     */
+    readonly loggingBucketProps?: s3.BucketProps,
     /**
      * Optional user provided props to override the default props for the CloudFront Logging Bucket.
      *
@@ -92,6 +99,6 @@ export class CloudFrontToS3 extends Construct {
 
        [this.cloudFrontWebDistribution, this.cloudFrontFunction, this.cloudFrontLoggingBucket] =
            defaults.CloudFrontDistributionForS3(this, this.s3BucketInterface,
-             props.cloudFrontDistributionProps, props.insertHttpSecurityHeaders, props.cloudFrontLoggingBucketProps);
+             props.cloudFrontDistributionProps, props.insertHttpSecurityHeaders, props.originPath, props.cloudFrontLoggingBucketProps);
      }
 }
