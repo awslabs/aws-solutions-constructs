@@ -31,7 +31,7 @@ const props: Route53ToAlbProps = {
   privateHostedZoneProps: {
     zoneName: 'www.example.com'
   },
-  logAccessLogs: false,
+  logAlbAccessLogs: false,
 };
 
 const testConstruct = new Route53ToAlb(stack, 'no-logging-stack', props);

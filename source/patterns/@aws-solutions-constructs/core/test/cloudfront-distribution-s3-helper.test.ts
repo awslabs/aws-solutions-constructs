@@ -485,7 +485,7 @@ test('test override cloudfront replace custom lambda@edge', () => {
 test('test cloudfront override cloudfront custom domain names ', () => {
   const stack = new Stack();
   const [sourceBucket] = buildS3Bucket(stack, {});
-  const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012');
+  const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012');
 
   const myprops = {
     domainNames: ['mydomains'],

@@ -77,7 +77,7 @@ function configureCloudwatchRoleForApi(scope: Construct, _api: api.RestApi): iam
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 function configureLambdaRestApi(scope: Construct, defaultApiGatewayProps: api.LambdaRestApiProps,
-  apiGatewayProps?: api.LambdaRestApiProps): [api.RestApi, iam.Role] {
+  apiGatewayProps?: api.LambdaRestApiProps): [api.RestApi, iam.Role | undefined] {
 
   // API Gateway doesn't allow both endpointTypes and endpointConfiguration, check whether endPointTypes exists
   if (apiGatewayProps?.endpointTypes) {
@@ -88,14 +88,18 @@ function configureLambdaRestApi(scope: Construct, defaultApiGatewayProps: api.La
   let _api: api.RestApi;
   if (apiGatewayProps) {
     // If property overrides have been provided, incorporate them and deploy
-    const _apiGatewayProps = overrideProps(defaultApiGatewayProps, apiGatewayProps);
+    const _apiGatewayProps = overrideProps(defaultApiGatewayProps, { ...apiGatewayProps, cloudWatchRole: false });
     _api = new api.LambdaRestApi(scope, 'LambdaRestApi', _apiGatewayProps);
   } else {
     // If no property overrides, deploy using the default configuration
     _api = new api.LambdaRestApi(scope, 'LambdaRestApi', defaultApiGatewayProps);
   }
   // Configure API access logging
-  const cwRole = configureCloudwatchRoleForApi(scope, _api);
+  let cwRole;
+
+  if (apiGatewayProps?.cloudWatchRole !== false) {
+    cwRole = configureCloudwatchRoleForApi(scope, _api);
+  }
 
   let usagePlanProps: api.UsagePlanProps = {
     apiStages: [{
@@ -123,7 +127,7 @@ function configureLambdaRestApi(scope: Construct, defaultApiGatewayProps: api.La
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 function configureRestApi(scope: Construct, defaultApiGatewayProps: api.RestApiProps,
-  apiGatewayProps?: api.RestApiProps): [api.RestApi, iam.Role] {
+  apiGatewayProps?: api.RestApiProps): [api.RestApi, iam.Role | undefined] {
 
   // API Gateway doesn't allow both endpointTypes and endpointConfiguration, check whether endPointTypes exists
   if (apiGatewayProps?.endpointTypes) {
@@ -134,14 +138,19 @@ function configureRestApi(scope: Construct, defaultApiGatewayProps: api.RestApiP
   let _api: api.RestApi;
   if (apiGatewayProps) {
     // If property overrides have been provided, incorporate them and deploy
-    const _apiGatewayProps = overrideProps(defaultApiGatewayProps, apiGatewayProps);
+    const _apiGatewayProps = overrideProps(defaultApiGatewayProps, { ...apiGatewayProps, cloudWatchRole: false });
     _api = new api.RestApi(scope, 'RestApi', _apiGatewayProps);
   } else {
     // If no property overrides, deploy using the default configuration
     _api = new api.RestApi(scope, 'RestApi', defaultApiGatewayProps);
   }
+
+  let cwRole;
+
   // Configure API access logging
-  const cwRole = configureCloudwatchRoleForApi(scope, _api);
+  if (apiGatewayProps?.cloudWatchRole !== false) {
+    cwRole = configureCloudwatchRoleForApi(scope, _api);
+  }
 
   let usagePlanProps: api.UsagePlanProps = {
     apiStages: [{
@@ -170,7 +179,7 @@ function configureRestApi(scope: Construct, defaultApiGatewayProps: api.RestApiP
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 export function GlobalLambdaRestApi(scope: Construct, _existingLambdaObj: lambda.Function,
-  apiGatewayProps?: api.LambdaRestApiProps, logGroupProps?: logs.LogGroupProps): [api.RestApi, iam.Role, logs.LogGroup] {
+  apiGatewayProps?: api.LambdaRestApiProps, logGroupProps?: logs.LogGroupProps): [api.RestApi, iam.Role | undefined, logs.LogGroup] {
   // Configure log group for API Gateway AccessLogging
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
 
@@ -186,7 +195,7 @@ export function GlobalLambdaRestApi(scope: Construct, _existingLambdaObj: lambda
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 export function RegionalLambdaRestApi(scope: Construct, _existingLambdaObj: lambda.Function,
-  apiGatewayProps?: api.LambdaRestApiProps, logGroupProps?: logs.LogGroupProps): [api.RestApi, iam.Role, logs.LogGroup] {
+  apiGatewayProps?: api.LambdaRestApiProps, logGroupProps?: logs.LogGroupProps): [api.RestApi, iam.Role | undefined, logs.LogGroup] {
   // Configure log group for API Gateway AccessLogging
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
 
@@ -201,7 +210,7 @@ export function RegionalLambdaRestApi(scope: Construct, _existingLambdaObj: lamb
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 export function GlobalRestApi(scope: Construct, apiGatewayProps?: api.RestApiProps,
-  logGroupProps?: logs.LogGroupProps): [api.RestApi, iam.Role, logs.LogGroup] {
+  logGroupProps?: logs.LogGroupProps): [api.RestApi, iam.Role | undefined, logs.LogGroup] {
   // Configure log group for API Gateway AccessLogging
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
 
@@ -216,7 +225,7 @@ export function GlobalRestApi(scope: Construct, apiGatewayProps?: api.RestApiPro
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 export function RegionalRestApi(scope: Construct, apiGatewayProps?: api.RestApiProps,
-  logGroupProps?: logs.LogGroupProps): [api.RestApi, iam.Role, logs.LogGroup] {
+  logGroupProps?: logs.LogGroupProps): [api.RestApi, iam.Role | undefined, logs.LogGroup] {
   // Configure log group for API Gateway AccessLogging
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
 
