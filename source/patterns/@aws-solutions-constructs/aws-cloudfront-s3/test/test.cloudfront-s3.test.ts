@@ -128,7 +128,7 @@ test('check properties', () => {
   const construct: CloudFrontToS3 = deploy(stack);
 
   expect(construct.cloudFrontWebDistribution !== null);
-  expect(construct.s3Bucket  !== null);
+  expect(construct.s3Bucket !== null);
 });
 
 // --------------------------------------------------------------
@@ -313,4 +313,45 @@ test('Cloudfront logging bucket error when providing existing log bucket and log
   };
 
   expect(app).toThrowError();
+});
+
+// --------------------------------------------------
+// CloudFront origin path
+// --------------------------------------------------
+test('CloudFront origin path present when provided', () => {
+  const stack = new cdk.Stack();
+
+  new CloudFrontToS3(stack, 'cloudfront-s3', {
+    originPath: '/testPath'
+  });
+
+  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig:
+    {
+      Origins: [
+        {
+          OriginPath: "/testPath",
+        }
+      ]
+    }
+  }
+  );
+});
+
+test('CloudFront origin path should not be present if not provided', () => {
+  const stack = new cdk.Stack();
+
+  new CloudFrontToS3(stack, 'cloudfront-s3', {});
+
+  expect(stack).not.toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig:
+    {
+      Origins: [
+        {
+          OriginPath: "/testPath",
+        }
+      ]
+    }
+  }
+  );
 });
