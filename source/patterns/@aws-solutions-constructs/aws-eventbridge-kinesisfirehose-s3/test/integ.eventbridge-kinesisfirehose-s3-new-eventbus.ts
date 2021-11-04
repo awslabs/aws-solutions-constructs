@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { App, Stack } from '@aws-cdk/core';
+import { App, RemovalPolicy, Stack } from '@aws-cdk/core';
 import { EventbridgeToKinesisFirehoseToS3, EventbridgeToKinesisFirehoseToS3Props } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
@@ -25,7 +25,13 @@ const props: EventbridgeToKinesisFirehoseToS3Props = {
       source: ['solutionsconstructs']
     }
   },
-  eventBusProps: {}
+  eventBusProps: {},
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY
+  },
+  logGroupProps: {
+    removalPolicy: RemovalPolicy.DESTROY
+  }
 };
 
 new EventbridgeToKinesisFirehoseToS3(stack, 'test-eventbridge-kinesisfirehose-s3', props);
