@@ -145,12 +145,5 @@ test('Test deployment ApiGateway override cloudWatchRole = false', () => {
     }
   });
   // Assertion 1
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::Account", {
-    CloudWatchRoleArn: {
-      "Fn::GetAtt": [
-        "apigatewaylambdaLambdaRestApiCloudWatchRoleA759E8AC",
-        "Arn"
-      ]
-    }
-  });
+  expect(stack).not.toHaveResource("AWS::ApiGateway::Account", {});
 });

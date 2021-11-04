@@ -66,7 +66,7 @@ export class CognitoToApiGatewayToLambda extends Construct {
   public readonly userPool: cognito.UserPool;
   public readonly userPoolClient: cognito.UserPoolClient;
   public readonly apiGateway: api.RestApi;
-  public readonly apiGatewayCloudWatchRole: iam.Role;
+  public readonly apiGatewayCloudWatchRole?: iam.Role;
   public readonly apiGatewayLogGroup: logs.LogGroup;
   public readonly apiGatewayAuthorizer: api.CfnAuthorizer;
   public readonly lambdaFunction: lambda.Function;

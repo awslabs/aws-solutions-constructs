@@ -128,7 +128,7 @@ test('check properties', () => {
   const construct: CloudFrontToS3 = deploy(stack);
 
   expect(construct.cloudFrontWebDistribution !== null);
-  expect(construct.s3Bucket  !== null);
+  expect(construct.s3Bucket !== null);
 });
 
 // --------------------------------------------------------------
@@ -211,7 +211,7 @@ test('test cloudfront disable cloudfront logging', () => {
 test('test cloudfront with custom domain names', () => {
   const stack = new cdk.Stack();
 
-  const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012');
+  const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012');
 
   const props: CloudFrontToS3Props = {
     cloudFrontDistributionProps: {
@@ -313,4 +313,45 @@ test('Cloudfront logging bucket error when providing existing log bucket and log
   };
 
   expect(app).toThrowError();
+});
+
+// --------------------------------------------------
+// CloudFront origin path
+// --------------------------------------------------
+test('CloudFront origin path present when provided', () => {
+  const stack = new cdk.Stack();
+
+  new CloudFrontToS3(stack, 'cloudfront-s3', {
+    originPath: '/testPath'
+  });
+
+  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig:
+    {
+      Origins: [
+        {
+          OriginPath: "/testPath",
+        }
+      ]
+    }
+  }
+  );
+});
+
+test('CloudFront origin path should not be present if not provided', () => {
+  const stack = new cdk.Stack();
+
+  new CloudFrontToS3(stack, 'cloudfront-s3', {});
+
+  expect(stack).not.toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig:
+    {
+      Origins: [
+        {
+          OriginPath: "/testPath",
+        }
+      ]
+    }
+  }
+  );
 });

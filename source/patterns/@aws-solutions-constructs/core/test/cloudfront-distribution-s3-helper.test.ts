@@ -234,7 +234,7 @@ test('test cloudfront override properties', () => {
   const [sourceBucket] = buildS3Bucket(stack, {});
   const props: cloudfront.DistributionProps = {
     defaultBehavior: {
-      origin: new origins.S3Origin(sourceBucket),
+      origin: new origins.S3Origin(sourceBucket, {originPath: '/testPath'}),
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
       cachedMethods: cloudfront.CachedMethods.CACHE_GET_HEAD_OPTIONS
@@ -297,6 +297,7 @@ test('test cloudfront override properties', () => {
             ]
           },
           Id: "CloudFrontDistributionOrigin176EC3A12",
+          OriginPath: '/testPath',
           S3OriginConfig: {
             OriginAccessIdentity: {
               "Fn::Join": [
@@ -484,7 +485,7 @@ test('test override cloudfront replace custom lambda@edge', () => {
 test('test cloudfront override cloudfront custom domain names ', () => {
   const stack = new Stack();
   const [sourceBucket] = buildS3Bucket(stack, {});
-  const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012');
+  const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012');
 
   const myprops = {
     domainNames: ['mydomains'],
