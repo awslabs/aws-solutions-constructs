@@ -42,11 +42,12 @@ export function DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint: 
 
 export function DefaultCloudFrontWebDistributionForS3Props(sourceBucket: s3.IBucket, loggingBucket: s3.Bucket | undefined,
   setHttpSecurityHeaders: boolean,
+  originPath?: string | '/',
   cfFunction?: cloudfront.IFunction): cloudfront.DistributionProps {
 
   return {
     defaultBehavior: {
-      origin: new origins.S3Origin(sourceBucket),
+      origin: new origins.S3Origin(sourceBucket, { originPath }),
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       ...getFunctionAssociationsProp(setHttpSecurityHeaders, cfFunction)
     },
