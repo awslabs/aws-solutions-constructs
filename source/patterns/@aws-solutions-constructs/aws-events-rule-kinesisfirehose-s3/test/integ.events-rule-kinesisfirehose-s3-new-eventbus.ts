@@ -31,13 +31,11 @@ const props: EventsRuleToKinesisFirehoseToS3Props = {
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY
   },
+  logS3AccessLogs: false,
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY
-  },
-  logS3AccessLogs: false
+  }
 };
-
-new EventsRuleToKinesisFirehoseToS3(stack, 'test-eventsrule-kinesisfirehose-s3', props);
 
 const construct = new EventsRuleToKinesisFirehoseToS3(stack, 'test-events-rule-kinesisfirehose-s3', props);
 
