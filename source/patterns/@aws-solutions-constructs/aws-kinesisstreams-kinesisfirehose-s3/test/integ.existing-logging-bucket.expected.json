@@ -143,8 +143,8 @@
     },
     "testexistingloggingbucketstreamsfirehoses3stackKinesisFirehoseToS3firehoseloggroup95C63148": {
       "Type": "AWS::Logs::LogGroup",
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [

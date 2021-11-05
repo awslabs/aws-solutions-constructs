@@ -1,7 +1,6 @@
 {
-  "Description": "Integration Test for aws-kinesisstreams-kinesisfirehose-s3",
   "Resources": {
-    "teststreamfirehoses3KinesisStream3165E68E": {
+    "testkinesisfirehoses3KinesisStreamA5D50D48": {
       "Type": "AWS::Kinesis::Stream",
       "Properties": {
         "ShardCount": 1,
@@ -12,7 +11,7 @@
         }
       }
     },
-    "teststreamfirehoses3KinesisFirehoseToS3S3LoggingBucketFB87BEBC": {
+    "testkinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketCF5B8A5C": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "AccessControl": "LogDeliveryWrite",
@@ -25,6 +24,7 @@
             }
           ]
         },
+        "BucketName": "custom-logging-bucket",
         "PublicAccessBlockConfiguration": {
           "BlockPublicAcls": true,
           "BlockPublicPolicy": true,
@@ -48,11 +48,11 @@
         }
       }
     },
-    "teststreamfirehoses3KinesisFirehoseToS3S3LoggingBucketPolicy4A393931": {
+    "testkinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketPolicyCF0D71BD": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "teststreamfirehoses3KinesisFirehoseToS3S3LoggingBucketFB87BEBC"
+          "Ref": "testkinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketCF5B8A5C"
         },
         "PolicyDocument": {
           "Statement": [
@@ -74,7 +74,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "teststreamfirehoses3KinesisFirehoseToS3S3LoggingBucketFB87BEBC",
+                          "testkinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketCF5B8A5C",
                           "Arn"
                         ]
                       },
@@ -84,7 +84,7 @@
                 },
                 {
                   "Fn::GetAtt": [
-                    "teststreamfirehoses3KinesisFirehoseToS3S3LoggingBucketFB87BEBC",
+                    "testkinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketCF5B8A5C",
                     "Arn"
                   ]
                 }
@@ -96,7 +96,7 @@
         }
       }
     },
-    "teststreamfirehoses3KinesisFirehoseToS3S3Bucket315B67A3": {
+    "testkinesisfirehoses3KinesisFirehoseToS3S3Bucket303877FF": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -123,7 +123,7 @@
         },
         "LoggingConfiguration": {
           "DestinationBucketName": {
-            "Ref": "teststreamfirehoses3KinesisFirehoseToS3S3LoggingBucketFB87BEBC"
+            "Ref": "testkinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketCF5B8A5C"
           }
         },
         "PublicAccessBlockConfiguration": {
@@ -139,11 +139,11 @@
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete"
     },
-    "teststreamfirehoses3KinesisFirehoseToS3S3BucketPolicy6A903D55": {
+    "testkinesisfirehoses3KinesisFirehoseToS3S3BucketPolicy46BDB29D": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "teststreamfirehoses3KinesisFirehoseToS3S3Bucket315B67A3"
+          "Ref": "testkinesisfirehoses3KinesisFirehoseToS3S3Bucket303877FF"
         },
         "PolicyDocument": {
           "Statement": [
@@ -165,7 +165,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "teststreamfirehoses3KinesisFirehoseToS3S3Bucket315B67A3",
+                          "testkinesisfirehoses3KinesisFirehoseToS3S3Bucket303877FF",
                           "Arn"
                         ]
                       },
@@ -175,7 +175,7 @@
                 },
                 {
                   "Fn::GetAtt": [
-                    "teststreamfirehoses3KinesisFirehoseToS3S3Bucket315B67A3",
+                    "testkinesisfirehoses3KinesisFirehoseToS3S3Bucket303877FF",
                     "Arn"
                   ]
                 }
@@ -187,7 +187,7 @@
         }
       }
     },
-    "teststreamfirehoses3KinesisFirehoseToS3firehoseloggroupEE4052E0": {
+    "testkinesisfirehoses3KinesisFirehoseToS3firehoseloggroupDDB24FE5": {
       "Type": "AWS::Logs::LogGroup",
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
@@ -206,17 +206,17 @@
         }
       }
     },
-    "teststreamfirehoses3KinesisFirehoseToS3firehoseloggroupfirehoselogstream444A1C47": {
+    "testkinesisfirehoses3KinesisFirehoseToS3firehoseloggroupfirehoselogstreamEC0EA660": {
       "Type": "AWS::Logs::LogStream",
       "Properties": {
         "LogGroupName": {
-          "Ref": "teststreamfirehoses3KinesisFirehoseToS3firehoseloggroupEE4052E0"
+          "Ref": "testkinesisfirehoses3KinesisFirehoseToS3firehoseloggroupDDB24FE5"
         }
       },
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "teststreamfirehoses3KinesisFirehoseToS3KinesisFirehoseRole4FEDEB9A": {
+    "testkinesisfirehoses3KinesisFirehoseToS3KinesisFirehoseRole18870C08": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -233,7 +233,7 @@
         }
       }
     },
-    "teststreamfirehoses3KinesisFirehoseToS3KinesisFirehosePolicy10E28125": {
+    "testkinesisfirehoses3KinesisFirehoseToS3KinesisFirehosePolicyD6A1BC51": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -251,7 +251,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "teststreamfirehoses3KinesisFirehoseToS3S3Bucket315B67A3",
+                    "testkinesisfirehoses3KinesisFirehoseToS3S3Bucket303877FF",
                     "Arn"
                   ]
                 },
@@ -261,7 +261,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "teststreamfirehoses3KinesisFirehoseToS3S3Bucket315B67A3",
+                          "testkinesisfirehoses3KinesisFirehoseToS3S3Bucket303877FF",
                           "Arn"
                         ]
                       },
@@ -292,11 +292,11 @@
                     },
                     ":log-group:",
                     {
-                      "Ref": "teststreamfirehoses3KinesisFirehoseToS3firehoseloggroupEE4052E0"
+                      "Ref": "testkinesisfirehoses3KinesisFirehoseToS3firehoseloggroupDDB24FE5"
                     },
                     ":log-stream:",
                     {
-                      "Ref": "teststreamfirehoses3KinesisFirehoseToS3firehoseloggroupfirehoselogstream444A1C47"
+                      "Ref": "testkinesisfirehoses3KinesisFirehoseToS3firehoseloggroupfirehoselogstreamEC0EA660"
                     }
                   ]
                 ]
@@ -305,22 +305,22 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "teststreamfirehoses3KinesisFirehoseToS3KinesisFirehosePolicy10E28125",
+        "PolicyName": "testkinesisfirehoses3KinesisFirehoseToS3KinesisFirehosePolicyD6A1BC51",
         "Roles": [
           {
-            "Ref": "teststreamfirehoses3KinesisFirehoseToS3KinesisFirehoseRole4FEDEB9A"
+            "Ref": "testkinesisfirehoses3KinesisFirehoseToS3KinesisFirehoseRole18870C08"
           }
         ]
       }
     },
-    "teststreamfirehoses3KinesisFirehoseToS3KinesisFirehose7303FF77": {
+    "testkinesisfirehoses3KinesisFirehoseToS3KinesisFirehoseEB65C83D": {
       "Type": "AWS::KinesisFirehose::DeliveryStream",
       "Properties": {
         "DeliveryStreamType": "KinesisStreamAsSource",
         "ExtendedS3DestinationConfiguration": {
           "BucketARN": {
             "Fn::GetAtt": [
-              "teststreamfirehoses3KinesisFirehoseToS3S3Bucket315B67A3",
+              "testkinesisfirehoses3KinesisFirehoseToS3S3Bucket303877FF",
               "Arn"
             ]
           },
@@ -331,10 +331,10 @@
           "CloudWatchLoggingOptions": {
             "Enabled": true,
             "LogGroupName": {
-              "Ref": "teststreamfirehoses3KinesisFirehoseToS3firehoseloggroupEE4052E0"
+              "Ref": "testkinesisfirehoses3KinesisFirehoseToS3firehoseloggroupDDB24FE5"
             },
             "LogStreamName": {
-              "Ref": "teststreamfirehoses3KinesisFirehoseToS3firehoseloggroupfirehoselogstream444A1C47"
+              "Ref": "testkinesisfirehoses3KinesisFirehoseToS3firehoseloggroupfirehoselogstreamEC0EA660"
             }
           },
           "CompressionFormat": "GZIP",
@@ -364,7 +364,7 @@
           },
           "RoleARN": {
             "Fn::GetAtt": [
-              "teststreamfirehoses3KinesisFirehoseToS3KinesisFirehoseRole4FEDEB9A",
+              "testkinesisfirehoses3KinesisFirehoseToS3KinesisFirehoseRole18870C08",
               "Arn"
             ]
           }
@@ -372,7 +372,7 @@
         "KinesisStreamSourceConfiguration": {
           "KinesisStreamARN": {
             "Fn::GetAtt": [
-              "teststreamfirehoses3KinesisStream3165E68E",
+              "testkinesisfirehoses3KinesisStreamA5D50D48",
               "Arn"
             ]
           },
@@ -385,7 +385,7 @@
         }
       }
     },
-    "teststreamfirehoses3KinesisStreamGetRecordsIteratorAgeAlarm8C693DF4": {
+    "testkinesisfirehoses3KinesisStreamGetRecordsIteratorAgeAlarm52FF77D1": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
@@ -398,7 +398,7 @@
         "Threshold": 2592000
       }
     },
-    "teststreamfirehoses3KinesisStreamReadProvisionedThroughputExceededAlarm7C631AC0": {
+    "testkinesisfirehoses3KinesisStreamReadProvisionedThroughputExceededAlarm4A9C6943": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ComparisonOperator": "GreaterThanThreshold",
@@ -440,7 +440,7 @@
                   "Effect": "Allow",
                   "Resource": {
                     "Fn::GetAtt": [
-                      "teststreamfirehoses3KinesisStream3165E68E",
+                      "testkinesisfirehoses3KinesisStreamA5D50D48",
                       "Arn"
                     ]
                   }

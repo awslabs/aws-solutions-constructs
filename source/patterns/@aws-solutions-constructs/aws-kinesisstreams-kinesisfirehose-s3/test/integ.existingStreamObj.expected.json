@@ -162,7 +162,7 @@
           }
         },
         "Handler": "index.handler",
-        "Runtime": "nodejs10.x",
+        "Runtime": "nodejs14.x",
         "TracingConfig": {
           "Mode": "Active"
         }
@@ -324,90 +324,6 @@
         "Threshold": 0
       }
     },
-    "testexistingstreamfirehoses3stackKinesisFirehoseToS3S3LoggingBucketBE173630": {
-      "Type": "AWS::S3::Bucket",
-      "Properties": {
-        "AccessControl": "LogDeliveryWrite",
-        "BucketEncryption": {
-          "ServerSideEncryptionConfiguration": [
-            {
-              "ServerSideEncryptionByDefault": {
-                "SSEAlgorithm": "AES256"
-              }
-            }
-          ]
-        },
-        "PublicAccessBlockConfiguration": {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true
-        },
-        "VersioningConfiguration": {
-          "Status": "Enabled"
-        }
-      },
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete",
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W35",
-              "reason": "This S3 bucket is used as the access logging bucket for another bucket"
-            }
-          ]
-        }
-      }
-    },
-    "testexistingstreamfirehoses3stackKinesisFirehoseToS3S3LoggingBucketPolicy0BA2CCA5": {
-      "Type": "AWS::S3::BucketPolicy",
-      "Properties": {
-        "Bucket": {
-          "Ref": "testexistingstreamfirehoses3stackKinesisFirehoseToS3S3LoggingBucketBE173630"
-        },
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": "*",
-              "Condition": {
-                "Bool": {
-                  "aws:SecureTransport": "false"
-                }
-              },
-              "Effect": "Deny",
-              "Principal": {
-                "AWS": "*"
-              },
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "testexistingstreamfirehoses3stackKinesisFirehoseToS3S3LoggingBucketBE173630",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::GetAtt": [
-                    "testexistingstreamfirehoses3stackKinesisFirehoseToS3S3LoggingBucketBE173630",
-                    "Arn"
-                  ]
-                }
-              ],
-              "Sid": "HttpsOnly"
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      }
-    },
     "testexistingstreamfirehoses3stackKinesisFirehoseToS3S3BucketF4CE72AB": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
@@ -432,11 +348,6 @@
               "Status": "Enabled"
             }
           ]
-        },
-        "LoggingConfiguration": {
-          "DestinationBucketName": {
-            "Ref": "testexistingstreamfirehoses3stackKinesisFirehoseToS3S3LoggingBucketBE173630"
-          }
         },
         "PublicAccessBlockConfiguration": {
           "BlockPublicAcls": true,
@@ -501,8 +412,8 @@
     },
     "testexistingstreamfirehoses3stackKinesisFirehoseToS3firehoseloggroupE425A6C8": {
       "Type": "AWS::Logs::LogGroup",
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [

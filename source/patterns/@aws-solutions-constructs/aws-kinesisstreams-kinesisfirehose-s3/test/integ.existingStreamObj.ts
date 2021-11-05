@@ -25,7 +25,7 @@ stack.templateOptions.description = 'Integration Test for aws-kinesisstreams-kin
 
 const construct = new KinesisStreamsToLambda(stack, 'test-kinesis-lambda', {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_10_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   },
@@ -36,7 +36,11 @@ new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-existing-stream-firehose-s3
   createCloudWatchAlarms: false,
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-  }
+  },
+  logGroupProps: {
+    removalPolicy: RemovalPolicy.DESTROY
+  },
+  logS3AccessLogs: false
 });
 
 // Synth
