@@ -334,8 +334,7 @@ test('CloudFront origin path present when provided', () => {
         }
       ]
     }
-  }
-  );
+  });
 });
 
 test('CloudFront origin path should not be present if not provided', () => {
@@ -352,6 +351,5 @@ test('CloudFront origin path should not be present if not provided', () => {
         }
       ]
     }
-  }
-  );
+  });
 });
