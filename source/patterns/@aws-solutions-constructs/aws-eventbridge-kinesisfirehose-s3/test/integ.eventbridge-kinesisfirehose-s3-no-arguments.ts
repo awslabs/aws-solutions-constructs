@@ -15,8 +15,6 @@ import * as events from '@aws-cdk/aws-events';
 import { App, Stack, Duration, RemovalPolicy } from '@aws-cdk/core';
 import { EventbridgeToKinesisFirehoseToS3, EventbridgeToKinesisFirehoseToS3Props } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import * as s3 from "@aws-cdk/aws-s3";
-import * as defaults from '@aws-solutions-constructs/core';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
@@ -31,17 +29,9 @@ const props: EventbridgeToKinesisFirehoseToS3Props = {
   },
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY
-  },
-  logS3AccessLogs: false
+  }
 };
 
-const construct = new EventbridgeToKinesisFirehoseToS3(stack, 'test-eventbridge-kinesisfirehose-s3', props);
-
-const s3Bucket = construct.s3Bucket as s3.Bucket;
-
-defaults.addCfnSuppressRules(s3Bucket, [
-  { id: 'W35',
-    reason: 'This S3 bucket is created for unit/ integration testing purposes only.' },
-]);
+new EventbridgeToKinesisFirehoseToS3(stack, 'test-eventbridge-kinesisfirehose-s3', props);
 
 app.synth();

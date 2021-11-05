@@ -126,17 +126,7 @@
         }
       },
       "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete",
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W35",
-              "reason": "This S3 bucket is created for unit/ integration testing purposes only."
-            }
-          ]
-        }
-      }
+      "DeletionPolicy": "Delete"
     },
     "testkinesisfirehoses3KinesisFirehoseToS3S3BucketPolicy46BDB29D": {
       "Type": "AWS::S3::BucketPolicy",
