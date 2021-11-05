@@ -12,7 +12,7 @@
  */
 
 import * as events from '@aws-cdk/aws-events';
-import { App, Stack } from '@aws-cdk/core';
+import { App, RemovalPolicy, Stack } from '@aws-cdk/core';
 import { EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
@@ -26,7 +26,14 @@ const props: EventsRuleToKinesisFirehoseToS3Props = {
       source: ['solutionsconstructs']
     }
   },
-  existingEventBusInterface: existingEventBus
+  existingEventBusInterface: existingEventBus,
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY
+  },
+  logGroupProps: {
+    removalPolicy: RemovalPolicy.DESTROY
+  },
+  logS3AccessLogs: false
 };
 
 new EventsRuleToKinesisFirehoseToS3(stack, 'test-eventsrule-kinesisfirehose-s3', props);

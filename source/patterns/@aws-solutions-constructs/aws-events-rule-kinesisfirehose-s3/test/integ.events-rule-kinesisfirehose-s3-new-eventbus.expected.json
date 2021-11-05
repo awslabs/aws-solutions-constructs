@@ -1,90 +1,6 @@
 {
   "Description": "Integration Test for aws-eventsrule-kinesisfirehose-s3",
   "Resources": {
-    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3LoggingBucketF39FAD06": {
-      "Type": "AWS::S3::Bucket",
-      "Properties": {
-        "AccessControl": "LogDeliveryWrite",
-        "BucketEncryption": {
-          "ServerSideEncryptionConfiguration": [
-            {
-              "ServerSideEncryptionByDefault": {
-                "SSEAlgorithm": "AES256"
-              }
-            }
-          ]
-        },
-        "PublicAccessBlockConfiguration": {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true
-        },
-        "VersioningConfiguration": {
-          "Status": "Enabled"
-        }
-      },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W35",
-              "reason": "This S3 bucket is used as the access logging bucket for another bucket"
-            }
-          ]
-        }
-      }
-    },
-    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3LoggingBucketPolicyF9460CFD": {
-      "Type": "AWS::S3::BucketPolicy",
-      "Properties": {
-        "Bucket": {
-          "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3LoggingBucketF39FAD06"
-        },
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": "*",
-              "Condition": {
-                "Bool": {
-                  "aws:SecureTransport": "false"
-                }
-              },
-              "Effect": "Deny",
-              "Principal": {
-                "AWS": "*"
-              },
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3LoggingBucketF39FAD06",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::GetAtt": [
-                    "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3LoggingBucketF39FAD06",
-                    "Arn"
-                  ]
-                }
-              ],
-              "Sid": "HttpsOnly"
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      }
-    },
     "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3BucketF9EB0248": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
@@ -110,11 +26,6 @@
             }
           ]
         },
-        "LoggingConfiguration": {
-          "DestinationBucketName": {
-            "Ref": "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3LoggingBucketF39FAD06"
-          }
-        },
         "PublicAccessBlockConfiguration": {
           "BlockPublicAcls": true,
           "BlockPublicPolicy": true,
@@ -125,8 +36,8 @@
           "Status": "Enabled"
         }
       },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3S3BucketPolicy908B8F80": {
       "Type": "AWS::S3::BucketPolicy",
@@ -178,8 +89,8 @@
     },
     "testeventsrulekinesisfirehoses3testeventsrulekinesisfirehoses3WKinesisFirehoseToS3firehoseloggroup7B174BA1": {
       "Type": "AWS::Logs::LogGroup",
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [

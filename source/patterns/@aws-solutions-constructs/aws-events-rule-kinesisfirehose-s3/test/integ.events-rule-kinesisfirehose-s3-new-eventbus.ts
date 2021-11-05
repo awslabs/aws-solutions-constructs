@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { App, Stack } from '@aws-cdk/core';
+import { App, Stack, RemovalPolicy } from '@aws-cdk/core';
 import { EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
@@ -25,7 +25,14 @@ const props: EventsRuleToKinesisFirehoseToS3Props = {
       source: ['solutionsconstructs']
     }
   },
-  eventBusProps: {}
+  eventBusProps: {},
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY
+  },
+  logGroupProps: {
+    removalPolicy: RemovalPolicy.DESTROY
+  },
+  logS3AccessLogs: false
 };
 
 new EventsRuleToKinesisFirehoseToS3(stack, 'test-eventsrule-kinesisfirehose-s3', props);
