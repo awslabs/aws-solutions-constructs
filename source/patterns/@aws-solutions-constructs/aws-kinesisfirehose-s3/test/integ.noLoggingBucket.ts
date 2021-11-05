@@ -11,24 +11,30 @@
  *  and limitations under the License.
  */
 
-// Imports
+/// !cdk-integ *
 import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { KinesisFirehoseToS3 } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import * as s3 from "@aws-cdk/aws-s3";
+import * as defaults from '@aws-solutions-constructs/core';
 
-// Setup
 const app = new App();
-const stack = new Stack(app, generateIntegStackName(__filename));
-stack.templateOptions.description = 'Integration Test for aws-cdk-apl-kinesisfirehose-s3';
 
-new KinesisFirehoseToS3(stack, 'test-firehose-s3', {
+// Empty arguments
+const stack = new Stack(app, generateIntegStackName(__filename));
+
+const construct = new KinesisFirehoseToS3(stack, 'test-kinesisfirehose-s3', {
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
   },
-  loggingBucketProps: {
-    removalPolicy: RemovalPolicy.DESTROY
-  }
+  logS3AccessLogs: false
 });
 
-// Synth
+const s3Bucket = construct.s3Bucket as s3.Bucket;
+
+defaults.addCfnSuppressRules(s3Bucket, [
+  { id: 'W35',
+    reason: 'This S3 bucket is created for unit/ integration testing purposes only.' },
+]);
+
 app.synth();

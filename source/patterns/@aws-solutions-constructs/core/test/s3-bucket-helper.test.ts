@@ -387,3 +387,22 @@ test('Suppress cfn-nag warning for s3 bucket notification', () => {
     }
   }, ResourcePart.CompleteDefinition));
 });
+
+test('test s3Bucket removalPolicy override', () => {
+  const stack = new Stack();
+
+  defaults.buildS3Bucket(stack, {
+    bucketProps: {
+      removalPolicy: RemovalPolicy.DESTROY,
+    },
+  }, 'test-bucket');
+
+  expect(stack).toHaveResourceLike("AWS::S3::Bucket", {
+    Type: 'AWS::S3::Bucket',
+    Properties: {
+      AccessControl: "LogDeliveryWrite"
+    },
+    UpdateReplacePolicy: "Delete",
+    DeletionPolicy: "Delete"
+  }, ResourcePart.CompleteDefinition);
+});
