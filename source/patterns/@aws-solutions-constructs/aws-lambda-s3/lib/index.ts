@@ -80,6 +80,13 @@ export interface LambdaToS3Props {
    * @default - Default props are used
    */
    readonly loggingBucketProps?: s3.BucketProps
+  /**
+   * Whether to turn on Access Logs for the S3 bucket with the associated storage costs.
+   * Enabling Access Logging is a best practice.
+   *
+   * @default - true
+   */
+    readonly logS3AccessLogs?: boolean;
 }
 
 /**
@@ -90,6 +97,7 @@ export class LambdaToS3 extends Construct {
     public readonly s3Bucket?: s3.Bucket;
     public readonly s3LoggingBucket?: s3.Bucket;
     public readonly vpc?: ec2.IVpc;
+    public readonly s3BucketInterface: s3.IBucket;
 
     /**
      * @summary Constructs a new instance of the LambdaToS3 class.
@@ -105,15 +113,7 @@ export class LambdaToS3 extends Construct {
 
       let bucket: s3.IBucket;
 
-      if (props.existingBucketObj && props.bucketProps) {
-        throw new Error('Cannot specify both bucket properties and an existing bucket');
-      }
-
       if (props.deployVpc || props.existingVpc) {
-        if (props.deployVpc && props.existingVpc) {
-          throw new Error("More than 1 VPC specified in the properties");
-        }
-
         this.vpc = defaults.buildVpc(scope, {
           defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
           existingVpc: props.existingVpc,
@@ -138,12 +138,15 @@ export class LambdaToS3 extends Construct {
       if (!props.existingBucketObj) {
         [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
           bucketProps: props.bucketProps,
-          loggingBucketProps: props.loggingBucketProps
+          loggingBucketProps: props.loggingBucketProps,
+          logS3AccessLogs: props.logS3AccessLogs
         });
         bucket = this.s3Bucket;
       } else {
         bucket = props.existingBucketObj;
       }
+
+      this.s3BucketInterface = bucket;
 
       // Configure environment variables
       const bucketEnvironmentVariableName = props.bucketEnvironmentVariableName || 'S3_BUCKET_NAME';
