@@ -33,7 +33,7 @@ test('Test the properties', () => {
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
-    bucketPermissions: ['Write']
+    bucketPermissions: ['Write', 'Delete', 'Put', 'Read', 'ReadWrite']
   });
     // Assertion 1
   const func = pattern.lambdaFunction;
@@ -273,7 +273,7 @@ test("Test bad call with existingVpc and deployVpc", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 // --------------------------------------------------------------
@@ -402,4 +402,25 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
       Ref: "lambdas3S3LoggingBucket498F3BDD"
     }
   });
+});
+
+// --------------------------------------------------------------
+// s3 bucket with one content bucket and no logging bucket
+// --------------------------------------------------------------
+test('s3 bucket with one content bucket and no logging bucket', () => {
+  const stack = new Stack();
+
+  new LambdaToS3(stack, 'lambda-s3', {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    bucketProps: {
+      removalPolicy: RemovalPolicy.DESTROY,
+    },
+    logS3AccessLogs: false
+  });
+
+  expect(stack).toCountResources("AWS::S3::Bucket", 1);
 });
