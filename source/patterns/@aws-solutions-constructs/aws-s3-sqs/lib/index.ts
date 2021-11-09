@@ -103,6 +103,13 @@ export interface S3ToSqsProps {
      * @default - Default props are used
      */
     readonly loggingBucketProps?: s3.BucketProps
+    /**
+     * Whether to turn on Access Logs for the S3 bucket with the associated storage costs.
+     * Enabling Access Logging is a best practice.
+     *
+     * @default - true
+     */
+    readonly logS3AccessLogs?: boolean;
 }
 
 /**
@@ -114,6 +121,7 @@ export class S3ToSqs extends Construct {
     public readonly s3Bucket?: s3.Bucket;
     public readonly s3LoggingBucket?: s3.Bucket;
     public readonly encryptionKey?: kms.IKey;
+    public readonly s3BucketInterface: s3.IBucket;
 
     /**
      * @summary Constructs a new instance of the S3ToSqs class.
@@ -130,10 +138,6 @@ export class S3ToSqs extends Construct {
       let bucket: s3.Bucket;
       let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
 
-      if (props.existingBucketObj && props.bucketProps) {
-        throw new Error('Cannot specify both bucket properties and an existing bucket');
-      }
-
       if (props.enableEncryptionWithCustomerManagedKey === undefined ||
           props.enableEncryptionWithCustomerManagedKey === true) {
         enableEncryptionParam = true;
@@ -143,12 +147,15 @@ export class S3ToSqs extends Construct {
       if (!props.existingBucketObj) {
         [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
           bucketProps: props.bucketProps,
-          loggingBucketProps: props.loggingBucketProps
+          loggingBucketProps: props.loggingBucketProps,
+          logS3AccessLogs: props.logS3AccessLogs
         });
         bucket = this.s3Bucket;
       } else {
         bucket = props.existingBucketObj;
       }
+
+      this.s3BucketInterface = bucket;
 
       // Setup the dead letter queue, if applicable
       this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
