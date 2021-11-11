@@ -441,8 +441,8 @@
       "Properties": {
         "LogGroupName": "/aws/vendedlogs/states/customloggingbuckettests3stepfunctionseventrulestepfunctionconstructstatemachineloga4e9bc58c9e9"
       },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [

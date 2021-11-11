@@ -74,6 +74,13 @@ export interface S3ToStepfunctionsProps {
    * @default - Default props are used
    */
    readonly loggingBucketProps?: s3.BucketProps
+  /**
+   * Whether to turn on Access Logs for the S3 bucket with the associated storage costs.
+   * Enabling Access Logging is a best practice.
+   *
+   * @default - true
+   */
+  readonly logS3AccessLogs?: boolean;
 }
 
 export class S3ToStepfunctions extends Construct {
@@ -85,6 +92,7 @@ export class S3ToStepfunctions extends Construct {
   public readonly cloudtrail?: cloudtrail.Trail;
   public readonly cloudtrailBucket?: s3.Bucket;
   public readonly cloudtrailLoggingBucket?: s3.Bucket;
+  public readonly s3BucketInterface: s3.IBucket;
 
   /**
    * @summary Constructs a new instance of the S3ToStepfunctions class.
@@ -99,19 +107,18 @@ export class S3ToStepfunctions extends Construct {
 
     let bucket: s3.IBucket;
 
-    if (props.existingBucketObj && props.bucketProps) {
-      throw new Error('Cannot specify both bucket properties and an existing bucket');
-    }
-
     if (!props.existingBucketObj) {
       [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
         bucketProps: props.bucketProps,
-        loggingBucketProps: props.loggingBucketProps
+        loggingBucketProps: props.loggingBucketProps,
+        logS3AccessLogs: props.logS3AccessLogs
       });
       bucket = this.s3Bucket;
     } else {
       bucket = props.existingBucketObj;
     }
+
+    this.s3BucketInterface = bucket;
 
     if (props.deployCloudTrail === undefined || props.deployCloudTrail) {
       [this.cloudtrailBucket, this.cloudtrailLoggingBucket] = defaults.buildS3Bucket(this, {}, 'CloudTrail');
