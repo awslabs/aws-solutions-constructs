@@ -48,7 +48,7 @@ export interface S3ToStepFunctionProps {
    *
    * @default - None
    */
-  readonly eventRuleProps?: events.RuleProps;
+  readonly eventRuleProps?: events.RuleProps,
   /**
    * Whether to deploy a Trail in AWS CloudTrail to log API events in Amazon S3
    *
@@ -66,13 +66,20 @@ export interface S3ToStepFunctionProps {
    *
    * @default - Default props are used
    */
-  readonly logGroupProps?: logs.LogGroupProps
+  readonly logGroupProps?: logs.LogGroupProps,
   /**
    * Optional user provided props to override the default props for the S3 Logging Bucket.
    *
    * @default - Default props are used
    */
-   readonly loggingBucketProps?: s3.BucketProps
+   readonly loggingBucketProps?: s3.BucketProps,
+  /**
+   * Whether to turn on Access Logs for the S3 bucket with the associated storage costs.
+   * Enabling Access Logging is a best practice.
+   *
+   * @default - true
+   */
+  readonly logS3AccessLogs?: boolean;
 }
 
 export class S3ToStepFunction extends Construct {
@@ -84,6 +91,7 @@ export class S3ToStepFunction extends Construct {
   public readonly cloudtrail?: cloudtrail.Trail;
   public readonly cloudtrailBucket?: s3.Bucket;
   public readonly cloudtrailLoggingBucket?: s3.Bucket;
+  public readonly s3BucketInterface: s3.IBucket;
 
   /**
    * @summary Constructs a new instance of the S3ToStepFunction class.
@@ -110,5 +118,6 @@ export class S3ToStepFunction extends Construct {
     this.cloudtrail = wrappedConstruct.cloudtrail;
     this.cloudtrailBucket = wrappedConstruct.cloudtrailBucket;
     this.cloudtrailLoggingBucket = wrappedConstruct.cloudtrailLoggingBucket;
+    this.s3BucketInterface = wrappedConstruct.s3BucketInterface;
   }
 }

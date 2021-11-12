@@ -49,7 +49,7 @@ export interface S3ToStepfunctionsProps {
    *
    * @default - None
    */
-  readonly eventRuleProps?: events.RuleProps;
+  readonly eventRuleProps?: events.RuleProps,
   /**
    * Whether to deploy a Trail in AWS CloudTrail to log API events in Amazon S3
    *
@@ -67,13 +67,13 @@ export interface S3ToStepfunctionsProps {
    *
    * @default - Default props are used
    */
-  readonly logGroupProps?: logs.LogGroupProps
+  readonly logGroupProps?: logs.LogGroupProps,
   /**
    * Optional user provided props to override the default props for the S3 Logging Bucket.
    *
    * @default - Default props are used
    */
-   readonly loggingBucketProps?: s3.BucketProps
+   readonly loggingBucketProps?: s3.BucketProps,
   /**
    * Whether to turn on Access Logs for the S3 bucket with the associated storage costs.
    * Enabling Access Logging is a best practice.
