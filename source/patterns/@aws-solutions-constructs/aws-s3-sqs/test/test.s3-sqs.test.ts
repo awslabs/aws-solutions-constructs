@@ -232,7 +232,7 @@ test("Test bad call with existingBucket and bucketProps", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
 });
 
 // --------------------------------------------------------------
@@ -266,4 +266,20 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
       Ref: "s3sqsS3LoggingBucketD877FC52"
     }
   });
+});
+
+// --------------------------------------------------------------
+// s3 bucket with one content bucket and no logging bucket
+// --------------------------------------------------------------
+test('s3 bucket with one content bucket and no logging bucket', () => {
+  const stack = new Stack();
+
+  new S3ToSqs(stack, 's3-sqs', {
+    bucketProps: {
+      removalPolicy: RemovalPolicy.DESTROY,
+    },
+    logS3AccessLogs: false
+  });
+
+  expect(stack).toCountResources("AWS::S3::Bucket", 1);
 });

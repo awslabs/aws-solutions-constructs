@@ -35,6 +35,9 @@ new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-existing-logging-bucket-str
   existingLoggingBucketObj: myLoggingBucket,
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+  },
+  logGroupProps: {
+    removalPolicy: RemovalPolicy.DESTROY
   }
 });
 

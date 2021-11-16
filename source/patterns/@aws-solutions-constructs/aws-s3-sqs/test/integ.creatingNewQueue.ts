@@ -17,6 +17,7 @@ import { S3ToSqs, S3ToSqsProps } from "../lib";
 import * as kms from '@aws-cdk/aws-kms';
 import * as s3 from '@aws-cdk/aws-s3';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -48,10 +49,17 @@ const props: S3ToSqsProps = {
   s3EventFilters: [filter],
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-  }
+  },
+  logS3AccessLogs: false
 };
 
-new S3ToSqs(stack, 'test-s3-sqs', props);
+const construct = new S3ToSqs(stack, 'test-s3-sqs', props);
+const s3Bucket = construct.s3Bucket as s3.Bucket;
+
+defaults.addCfnSuppressRules(s3Bucket, [
+  { id: 'W35',
+    reason: 'This S3 bucket is created for unit/ integration testing purposes only.' },
+]);
 
 // Synth
 app.synth();

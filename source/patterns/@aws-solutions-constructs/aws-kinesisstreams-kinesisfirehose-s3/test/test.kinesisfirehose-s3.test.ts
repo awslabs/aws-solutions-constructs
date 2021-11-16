@@ -179,3 +179,58 @@ test("Test bad call with existingBucket and bucketProps", () => {
   // Assertion
   expect(app).toThrowError();
 });
+
+// --------------------------------------------------------------
+// s3 bucket with bucket, loggingBucket, and auto delete objects
+// --------------------------------------------------------------
+test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
+  const stack = new cdk.Stack();
+
+  new KinesisStreamsToKinesisFirehoseToS3(stack, 'kinsisfirehose-s3', {
+    kinesisFirehoseProps: {
+      deliveryStreamType: 'KinesisStreamAsSource'
+    },
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+    loggingBucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::S3::Bucket", {
+    AccessControl: "LogDeliveryWrite"
+  });
+
+  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+    ServiceToken: {
+      "Fn::GetAtt": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+        "Arn"
+      ]
+    },
+    BucketName: {
+      Ref: "kinsisfirehoses3KinesisFirehoseToS3S3LoggingBucket1CC9C6B7"
+    }
+  });
+});
+
+// --------------------------------------------------------------
+// s3 bucket with one content bucket and no logging bucket
+// --------------------------------------------------------------
+test('s3 bucket with one content bucket and no logging bucket', () => {
+  const stack = new cdk.Stack();
+
+  new KinesisStreamsToKinesisFirehoseToS3(stack, 'kinsisfirehose-s3', {
+    kinesisFirehoseProps: {
+      deliveryStreamType: 'KinesisStreamAsSource'
+    },
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+    logS3AccessLogs: false
+  });
+
+  expect(stack).toCountResources("AWS::S3::Bucket", 1);
+});

@@ -56,6 +56,19 @@ export interface KinesisFirehoseToAnalyticsAndS3Props {
    * @default - Default props are used
    */
   readonly logGroupProps?: logs.LogGroupProps
+  /**
+   * Optional user provided props to override the default props for the S3 Logging Bucket.
+   *
+   * @default - Default props are used
+   */
+   readonly loggingBucketProps?: s3.BucketProps;
+  /**
+   * Whether to turn on Access Logs for the S3 bucket with the associated storage costs.
+   * Enabling Access Logging is a best practice.
+   *
+   * @default - true
+   */
+   readonly logS3AccessLogs?: boolean;
 }
 
 /**
@@ -68,6 +81,7 @@ export class KinesisFirehoseToAnalyticsAndS3 extends Construct {
   public readonly kinesisFirehoseLogGroup: logs.LogGroup;
   public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
+  public readonly s3BucketInterface: s3.IBucket;
 
   /**
    * @summary Constructs a new instance of the KinesisFirehoseToAnalyticsAndS3 class.
@@ -81,16 +95,14 @@ export class KinesisFirehoseToAnalyticsAndS3 extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
 
-    if (props.existingBucketObj && props.bucketProps) {
-      throw new Error('Cannot specify both bucket properties and an existing bucket');
-    }
-
     // Setup the kinesisfirehose-s3 pattern
     const kinesisFirehoseToS3Props: KinesisFirehoseToS3Props = {
       kinesisFirehoseProps: props.kinesisFirehoseProps,
       existingBucketObj: props.existingBucketObj,
       bucketProps: props.bucketProps,
-      logGroupProps: props.logGroupProps
+      logGroupProps: props.logGroupProps,
+      loggingBucketProps: props.loggingBucketProps,
+      logS3AccessLogs: props.logS3AccessLogs
     };
 
     // Add the kinesisfirehose-s3 pattern
@@ -107,5 +119,6 @@ export class KinesisFirehoseToAnalyticsAndS3 extends Construct {
     this.kinesisFirehoseRole = kfs.kinesisFirehoseRole;
     this.s3Bucket = kfs.s3Bucket;
     this.s3LoggingBucket = kfs.s3LoggingBucket;
+    this.s3BucketInterface = kfs.s3BucketInterface;
   }
 }

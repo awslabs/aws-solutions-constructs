@@ -24,6 +24,9 @@ stack.templateOptions.description = 'Integration Test for aws-cdk-apl-kinesisfir
 new KinesisFirehoseToS3(stack, 'test-firehose-s3', {
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+  },
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY
   }
 });
 

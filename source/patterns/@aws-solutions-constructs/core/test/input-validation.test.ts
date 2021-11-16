@@ -427,3 +427,71 @@ test('Test fail multiple failures message', () => {
     'Error - Either provide secretProps or existingSecretObj, but not both.\n'
   );
 });
+
+test('Test fail existing log bucket and log bucket prop check', () => {
+  const stack = new Stack();
+
+  const props: defaults.VerifiedProps = {
+    existingLoggingBucketObj: new s3.Bucket(stack, 'logging-bucket'),
+    loggingBucketProps: {
+      autoDeleteObjects: true
+    }
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingLoggingBucketObj or loggingBucketProps, but not both.\n');
+});
+
+test('Test fail false logS3Accesslogs and loggingBucketProps check', () => {
+  const stack = new Stack();
+
+  const props: defaults.VerifiedProps = {
+    existingLoggingBucketObj: new s3.Bucket(stack, 'logging-bucket'),
+    logS3AccessLogs: false
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n');
+});
+
+test('Test fail existingBucketObj and loggingBucketProps check', () => {
+  const stack = new Stack();
+
+  const props: defaults.VerifiedProps = {
+    existingBucketObj: new s3.Bucket(stack, 'temp-bucket'),
+    loggingBucketProps: {
+      autoDeleteObjects: true
+    }
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If existingBucketObj is provided, supplying loggingBucketProps or logS3AccessLogs is an error.\n');
+});
+
+test('Test fail false logAlbAccessLogs and albLoggingBucketProps check', () => {
+  const props: defaults.VerifiedProps = {
+    logAlbAccessLogs: false,
+    albLoggingBucketProps: {
+      autoDeleteObjects: true
+    }
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If logAlbAccessLogs is false, supplying albLoggingBucketProps is invalid.\n');
+});
