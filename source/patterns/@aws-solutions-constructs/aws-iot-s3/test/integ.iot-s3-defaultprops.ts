@@ -12,7 +12,7 @@
  */
 
 /// !cdk-integ *
-import { App, Stack } from "@aws-cdk/core";
+import { App, RemovalPolicy, Stack } from "@aws-cdk/core";
 import { IotToS3, IotToS3Props } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
@@ -27,6 +27,11 @@ const props: IotToS3Props = {
       sql: "SELECT * FROM 'solutions/constructs'",
       actions: []
     }
+  },
+  logS3AccessLogs: false,
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
   }
 };
 

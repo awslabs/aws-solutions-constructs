@@ -12,18 +12,25 @@
  */
 
 /// !cdk-integ *
-import { App, Stack } from "@aws-cdk/core";
-import * as kms from '@aws-cdk/aws-kms';
+import { App, RemovalPolicy, Stack } from "@aws-cdk/core";
 import { IotToS3, IotToS3Props } from "../lib";
+import * as defaults from '@aws-solutions-constructs/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { BucketEncryption } from "@aws-cdk/aws-s3";
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
-const existingKey = new kms.Key(stack, `existingKey`, {
-  enableKeyRotation: true
-});
 
+let existingBucketObj;
+
+[existingBucketObj] = defaults.buildS3Bucket(stack, {
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
+    encryption: BucketEncryption.KMS_MANAGED
+  },
+  logS3AccessLogs: false
+});
 const props: IotToS3Props = {
   iotTopicRuleProps: {
     topicRulePayload: {
@@ -33,10 +40,8 @@ const props: IotToS3Props = {
       actions: []
     }
   },
-  bucketProps: {
-    encryption: BucketEncryption.KMS,
-    encryptionKey: existingKey
-  }
+  existingBucketObj,
+  s3Key: 'test/${timestamp()}'
 };
 
 new IotToS3(stack, 'test-iot-s3-integration', props);

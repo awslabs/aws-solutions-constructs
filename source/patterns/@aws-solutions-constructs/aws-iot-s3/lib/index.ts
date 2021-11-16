@@ -52,6 +52,13 @@ export interface IotToS3Props {
    * @default - Default value '${topic()}/${timestamp()}' is used
    */
   readonly s3Key?: string;
+  /**
+   * Whether to turn on Access Logs for the S3 bucket with the associated storage costs.
+   * Enabling Access Logging is a best practice.
+   *
+   * @default - true
+   */
+  readonly logS3AccessLogs?: boolean;
 }
 
 export class IotToS3 extends Construct {
@@ -75,7 +82,8 @@ export class IotToS3 extends Construct {
     if (!props.existingBucketObj) {
       [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
         bucketProps: props.bucketProps,
-        loggingBucketProps: props.loggingBucketProps
+        loggingBucketProps: props.loggingBucketProps,
+        logS3AccessLogs: props.logS3AccessLogs
       });
     } else {
       this.s3Bucket = props.existingBucketObj;
@@ -87,17 +95,7 @@ export class IotToS3 extends Construct {
     });
 
     // Setup the IAM policy for IoT Actions
-    const iotActionsPolicy = new iam.Policy(this, 'IotActionsPolicy', {
-      statements: [new iam.PolicyStatement({
-        actions: [
-          's3:PutObject'
-        ],
-        resources: [this.s3Bucket.bucketArn, `${this.s3Bucket.bucketArn}/*`]
-      })]
-    });
-
-    // Attach policy to role
-    iotActionsPolicy.attachToRole(this.iotActionsRole);
+    this.s3Bucket.grantWrite(this.iotActionsRole);
 
     const defaultIotTopicProps = defaults.DefaultCfnTopicRuleProps([{
       s3: {
@@ -112,7 +110,7 @@ export class IotToS3 extends Construct {
     this.iotTopicRule = new iot.CfnTopicRule(this, 'IotTopicRule', iotTopicProps);
 
     // If bucket has a KMS CMK, explicitly provide IoTActionsRole necessary access to write to the bucket
-    if (this.s3Bucket && this.s3Bucket.encryptionKey) {
+    if (this.s3Bucket && this.s3Bucket.encryptionKey && props.existingBucketObj) {
       this.s3Bucket.encryptionKey.grantEncrypt(this.iotActionsRole);
     }
   }

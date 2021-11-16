@@ -15,6 +15,7 @@ import { IotToS3, IotToS3Props } from "../lib";
 import * as cdk from "@aws-cdk/core";
 import '@aws-cdk/assert/jest';
 import * as s3 from "@aws-cdk/aws-s3";
+import { RemovalPolicy } from "@aws-cdk/core";
 
 function deployNewFunc(stack: cdk.Stack) {
   const props: IotToS3Props = {
@@ -34,7 +35,10 @@ const s3BucketAccessPolicy = {
   PolicyDocument: {
     Statement: [
       {
-        Action: "s3:PutObject",
+        Action: [
+          "s3:DeleteObject*",
+          "s3:PutObject*",
+          "s3:Abort*"],
         Effect: "Allow",
         Resource: [
           {
@@ -62,7 +66,7 @@ const s3BucketAccessPolicy = {
     ],
     Version: "2012-10-17"
   },
-  PolicyName: "testiots3integrationIotActionsPolicyE1646C38",
+  PolicyName: "testiots3integrationiotactionsroleDefaultPolicy735A8FB6",
   Roles: [
     {
       Ref: "testiots3integrationiotactionsrole04473665"
@@ -193,21 +197,48 @@ test('check for overriden props', () => {
     }
   });
 
-  // Check for IAM policy to have access to s3 bucket
-  expect(stack).toHaveResource('AWS::IAM::Policy', s3BucketAccessPolicy);
-
   // Check for automatically created CMK KMS Key
   expect(stack).toCountResources('AWS::KMS::Key', 1);
 
-  // Check for IoT Topic Rule permissions to KMS key to store msgs to S3 Bucket
+  // Check for IoT Topic Rule permissions to KMS key to store msgs to S3 Bucket and access to put data to s3 bucket
   expect(stack).toHaveResource("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
           Action: [
+            "s3:DeleteObject*",
+            "s3:PutObject*",
+            "s3:Abort*"],
+          Effect: "Allow",
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                "testiots3integrationS3Bucket9B8B180C",
+                "Arn"
+              ]
+            },
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "testiots3integrationS3Bucket9B8B180C",
+                      "Arn"
+                    ]
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          Action: [
             "kms:Encrypt",
             "kms:ReEncrypt*",
-            "kms:GenerateDataKey*"
+            "kms:GenerateDataKey*",
+            "kms:Decrypt"
           ],
           Effect: "Allow",
           Resource: {
@@ -285,7 +316,10 @@ test('check for existing bucket', () => {
     PolicyDocument: {
       Statement: [
         {
-          Action: "s3:PutObject",
+          Action: [
+            "s3:DeleteObject*",
+            "s3:PutObject*",
+            "s3:Abort*"],
           Effect: "Allow",
           Resource: [
             {
@@ -313,13 +347,15 @@ test('check for existing bucket', () => {
       ],
       Version: "2012-10-17"
     },
-    PolicyName: "testiots3integrationIotActionsPolicyE1646C38",
+    PolicyName: "testiots3integrationiotactionsroleDefaultPolicy735A8FB6",
     Roles: [
       {
         Ref: "testiots3integrationiotactionsrole04473665"
       }
     ]
   });
+
+  expect(stack).toHaveResource('AWS::IAM::Policy', {});
 
   // since existing bucket is supplied, no key should exist
   expect(stack).not.toHaveResource('AWS::KMS::Key', {});
@@ -336,7 +372,7 @@ test('check for existing bucket', () => {
 
 test('check for both bucketProps and existingBucket', () => {
   const stack = new cdk.Stack();
-  const existingBucket = new s3.Bucket(stack, `existingBucket`);
+  const existingBucket = new s3.Bucket(stack, `existingBucket`, {encryption: s3.BucketEncryption.KMS});
   const props: IotToS3Props = {
     iotTopicRuleProps: {
       topicRulePayload: {
@@ -370,6 +406,10 @@ test('check for name collision', () => {
         sql: "SELECT * FROM 'test/constructs'",
         actions: []
       }
+    },
+    bucketProps: {
+      autoDeleteObjects: true,
+      removalPolicy: RemovalPolicy.DESTROY
     }
   };
 
