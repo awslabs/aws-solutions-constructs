@@ -24,7 +24,8 @@ stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3';
 new CloudFrontToS3(stack, 'test-cloudfront-s3', {
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-  }
+  },
+  logS3AccessLogs: false
 });
 
 // Synth
