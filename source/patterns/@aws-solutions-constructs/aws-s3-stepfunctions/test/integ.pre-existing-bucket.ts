@@ -35,7 +35,10 @@ const props: S3ToStepfunctionsProps = {
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY
   },
+  logS3AccessLogs: false,
+  deployCloudTrail: false
 };
 
 new S3ToStepfunctions(stack, 'test-s3-stepfunctions-pre-existing-bucket-construct', props);
+
 app.synth();
