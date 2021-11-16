@@ -14,8 +14,8 @@
 // Imports
 import { CfnJob } from '@aws-cdk/aws-glue';
 import { Role, ServicePrincipal } from '@aws-cdk/aws-iam';
-import { Bucket, CfnBucket } from '@aws-cdk/aws-s3';
-import { App, Duration, Stack } from '@aws-cdk/core';
+import { Bucket, BucketEncryption, CfnBucket } from '@aws-cdk/aws-s3';
+import { App, Duration, RemovalPolicy, Stack } from '@aws-cdk/core';
 import { generateIntegStackName, SinkStoreType } from '@aws-solutions-constructs/core';
 import { KinesisstreamsToGluejob } from '../lib';
 
@@ -28,7 +28,9 @@ const scriptBucket = new Bucket(stack, 'existingScriptLocation', {
   versioned: false,
   lifecycleRules: [{
     expiration: Duration.days(30)
-  }]
+  }],
+  removalPolicy: RemovalPolicy.DESTROY,
+  encryption: BucketEncryption.S3_MANAGED
 });
 
 (scriptBucket.node.defaultChild as CfnBucket).cfnOptions.metadata = {
