@@ -47,7 +47,7 @@ new EventbridgeToStepfunctions(this, 'test-s3-stepfunctions-stack', {
 ## Initializer
 
 ``` text
-new S3ToEventbridge(scope: Construct, id: string, props: S3ToStepfunctionsProps);
+new S3ToEventbridge(scope: Construct, id: string, props: S3ToEventbridgeProps);
 ```
 
 _Parameters_
