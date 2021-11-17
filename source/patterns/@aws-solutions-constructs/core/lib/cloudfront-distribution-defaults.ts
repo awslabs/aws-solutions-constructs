@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { anything } from '@aws-cdk/assert';
 import * as api from '@aws-cdk/aws-apigateway';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import { FunctionEventType, IOrigin } from '@aws-cdk/aws-cloudfront';
