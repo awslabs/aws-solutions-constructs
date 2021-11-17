@@ -15,17 +15,27 @@
 import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { CloudFrontToS3 } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import * as s3 from "@aws-cdk/aws-s3";
+import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3';
 
-new CloudFrontToS3(stack, 'test-cloudfront-s3', {
+const construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-  }
+  },
+  logS3AccessLogs: false
 });
+
+const s3Bucket = construct.s3Bucket as s3.Bucket;
+
+defaults.addCfnSuppressRules(s3Bucket, [
+  { id: 'W35',
+    reason: 'This S3 bucket is created for unit/ integration testing purposes only.' },
+]);
 
 // Synth
 app.synth();
