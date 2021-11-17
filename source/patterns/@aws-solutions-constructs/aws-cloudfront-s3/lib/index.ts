@@ -21,77 +21,89 @@ import * as defaults from '@aws-solutions-constructs/core';
  * @summary The properties for the CloudFrontToS3 Construct
  */
 export interface CloudFrontToS3Props {
-   /**
-    * Existing instance of S3 Bucket object, providing both this and `bucketProps` will cause an error.
-    *
-    * @default - None
-    */
-   readonly existingBucketInterface?: s3.IBucket,
-   /**
-    * Optional user provided props to override the default props for the S3 Bucket.
-    *
-    * @default - Default props are used
-    */
-   readonly bucketProps?: s3.BucketProps,
-   /**
-    * Optional user provided props to override the default props
-    *
-    * @default - Default props are used
-    */
-   readonly cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
-   /**
-    * Optional user provided props to turn on/off the automatic injection of best practice HTTP
-    * security headers in all responses from cloudfront
-    *
-    * @default - true
-    */
-   readonly insertHttpSecurityHeaders?: boolean;
-   /**
-    * Optional user provided props to override the default props for the S3 Logging Bucket.
-    *
-    * @default - Default props are used
-    */
-    readonly loggingBucketProps?: s3.BucketProps
-    /**
-     * Optional user provided props to override the default props for the CloudFront Logging Bucket.
-     *
-     * @default - Default props are used
-     */
-    readonly cloudFrontLoggingBucketProps?: s3.BucketProps
- }
+  /**
+   * Existing instance of S3 Bucket object, providing both this and `bucketProps` will cause an error.
+   *
+   * @default - None
+   */
+  readonly existingBucketObj?: s3.IBucket,
+  /**
+   * Optional user provided props to override the default props for the S3 Bucket.
+   *
+   * @default - Default props are used
+   */
+  readonly bucketProps?: s3.BucketProps,
+  /**
+   * Optional user provided props to override the default props
+   *
+   * @default - Default props are used
+   */
+  readonly cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
+  /**
+   * Optional user provided props to turn on/off the automatic injection of best practice HTTP
+   * security headers in all responses from cloudfront
+   *
+   * @default - true
+   */
+  readonly insertHttpSecurityHeaders?: boolean;
+  /**
+   * Optional user provided props to override the default props for the S3 Logging Bucket.
+   *
+   * @default - Default props are used
+   */
+  readonly loggingBucketProps?: s3.BucketProps
+  /**
+   * Optional user provided props to override the default props for the CloudFront Logging Bucket.
+   *
+   * @default - Default props are used
+   */
+  readonly cloudFrontLoggingBucketProps?: s3.BucketProps
+  /**
+   * Whether to turn on Access Logs for the S3 bucket with the associated storage costs.
+   * Enabling Access Logging is a best practice.
+   *
+   * @default - true
+   */
+  readonly logS3AccessLogs?: boolean;
+}
 
 export class CloudFrontToS3 extends Construct {
-     public readonly cloudFrontWebDistribution: cloudfront.Distribution;
-     public readonly cloudFrontFunction?: cloudfront.Function;
-     public readonly cloudFrontLoggingBucket?: s3.Bucket;
-     public readonly s3BucketInterface: s3.IBucket;
-     public readonly s3Bucket?: s3.Bucket;
-     public readonly s3LoggingBucket?: s3.Bucket;
+  public readonly cloudFrontWebDistribution: cloudfront.Distribution;
+  public readonly cloudFrontFunction?: cloudfront.Function;
+  public readonly cloudFrontLoggingBucket?: s3.Bucket;
+  public readonly s3BucketInterface: s3.IBucket;
+  public readonly s3Bucket?: s3.Bucket;
+  public readonly s3LoggingBucket?: s3.Bucket;
 
-     /**
-      * @summary Constructs a new instance of the CloudFrontToS3 class.
-      * @param {cdk.App} scope - represents the scope for all the resources.
-      * @param {string} id - this is a a scope-unique id.
-      * @param {CloudFrontToS3Props} props - user provided props for the construct
-      * @since 0.8.0
-      * @access public
-      */
-     constructor(scope: Construct, id: string, props: CloudFrontToS3Props) {
-       super(scope, id);
-       defaults.CheckProps(props);
+  /**
+   * @summary Constructs a new instance of the CloudFrontToS3 class.
+   * @param {cdk.App} scope - represents the scope for all the resources.
+   * @param {string} id - this is a a scope-unique id.
+   * @param {CloudFrontToS3Props} props - user provided props for the construct
+   * @since 0.8.0
+   * @access public
+   */
+  constructor(scope: Construct, id: string, props: CloudFrontToS3Props) {
+    super(scope, id);
+    defaults.CheckProps(props);
 
-       if (!props.existingBucketInterface) {
-         [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
-           bucketProps: props.bucketProps,
-           loggingBucketProps: props.loggingBucketProps
-         });
-         this.s3BucketInterface = this.s3Bucket;
-       } else {
-         this.s3BucketInterface = props.existingBucketInterface;
-       }
+    let bucket: s3.IBucket;
 
-       [this.cloudFrontWebDistribution, this.cloudFrontFunction, this.cloudFrontLoggingBucket] =
-           defaults.CloudFrontDistributionForS3(this, this.s3BucketInterface,
-             props.cloudFrontDistributionProps, props.insertHttpSecurityHeaders, props.cloudFrontLoggingBucketProps);
-     }
+    if (!props.existingBucketObj) {
+      [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
+        bucketProps: props.bucketProps,
+        loggingBucketProps: props.loggingBucketProps,
+        logS3AccessLogs: props.logS3AccessLogs
+      });
+      bucket = this.s3Bucket;
+    } else {
+      bucket = props.existingBucketObj;
+    }
+
+    this.s3BucketInterface = bucket;
+
+    [this.cloudFrontWebDistribution, this.cloudFrontFunction, this.cloudFrontLoggingBucket] =
+      defaults.CloudFrontDistributionForS3(this, this.s3BucketInterface,
+        props.cloudFrontDistributionProps, props.insertHttpSecurityHeaders, props.cloudFrontLoggingBucketProps);
+  }
 }
