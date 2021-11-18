@@ -51,8 +51,8 @@
     },
     "testexistingbucketfirehoses3stackKinesisFirehoseToS3firehoseloggroup79E81F14": {
       "Type": "AWS::Logs::LogGroup",
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [

@@ -89,7 +89,7 @@ test('check existing bucket', () => {
   });
 
   const props: CloudFrontToS3Props = {
-    existingBucketInterface: existingBucket
+    existingBucketObj: existingBucket
   };
 
   new CloudFrontToS3(stack, 'test-cloudfront-s3', props);
@@ -143,7 +143,7 @@ test("Test bad call with existingBucket and bucketProps", () => {
   const app = () => {
     // Helper declaration
     new CloudFrontToS3(stack, "bad-s3-args", {
-      existingBucketInterface: testBucket,
+      existingBucketObj: testBucket,
       bucketProps: {
         removalPolicy: RemovalPolicy.DESTROY
       },
@@ -153,11 +153,11 @@ test("Test bad call with existingBucket and bucketProps", () => {
   expect(app).toThrowError();
 });
 
-test("Test existingBucketInterface", () => {
+test("Test existingBucketObj", () => {
   // Stack
   const stack = new cdk.Stack();
   const construct: CloudFrontToS3 = new CloudFrontToS3(stack, "existingIBucket", {
-    existingBucketInterface: s3.Bucket.fromBucketName(stack, 'mybucket', 'mybucket')
+    existingBucketObj: s3.Bucket.fromBucketName(stack, 'mybucket', 'mybucket')
   });
   // Assertion
   expect(construct.cloudFrontWebDistribution !== null);
@@ -314,6 +314,22 @@ test('Cloudfront logging bucket error when providing existing log bucket and log
 
   expect(app).toThrowError();
 });
+
+// --------------------------------------------------------------
+// s3 bucket with one content bucket and no logging bucket
+// --------------------------------------------------------------
+test('s3 bucket with one content bucket and no logging bucket', () => {
+  const stack = new cdk.Stack();
+
+  const construct = new CloudFrontToS3(stack, 'cloudfront-s3', {
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+    logS3AccessLogs: false
+  });
+
+  expect(stack).toCountResources("AWS::S3::Bucket", 2);
+  expect(construct.s3LoggingBucket).toEqual(undefined);
 
 // --------------------------------------------------
 // CloudFront origin path

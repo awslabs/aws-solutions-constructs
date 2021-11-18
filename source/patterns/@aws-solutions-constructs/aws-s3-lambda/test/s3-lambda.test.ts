@@ -16,6 +16,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as cdk from "@aws-cdk/core";
 import '@aws-cdk/assert/jest';
+import { CreateScrapBucket } from '@aws-solutions-constructs/core';
 
 function deployNewFunc(stack: cdk.Stack) {
   const props: S3ToLambdaProps = {
@@ -100,4 +101,42 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
       Ref: "s3lambdaS3LoggingBucketAC6FF14E"
     }
   });
+});
+
+// --------------------------------------------------------------
+// s3 bucket with one content bucket and no logging bucket
+// --------------------------------------------------------------
+test('s3 bucket with one content bucket and no logging bucket', () => {
+  const stack = new cdk.Stack();
+
+  new S3ToLambda(stack, 's3-lambda', {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+    logS3AccessLogs: false
+  });
+
+  expect(stack).toCountResources("AWS::S3::Bucket", 1);
+});
+
+test('check properties with existing S3 bucket', () => {
+  const stack = new cdk.Stack();
+  const existingBucket = CreateScrapBucket(stack, {});
+  const construct = new S3ToLambda(stack, 's3-lambda', {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler'
+    },
+    existingBucketObj: existingBucket
+  });
+
+  expect(construct.s3Bucket).toEqual(undefined);
+  expect(construct.s3BucketInterface).not.toEqual(undefined);
+  expect(construct.s3LoggingBucket).toEqual(undefined);
 });

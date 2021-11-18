@@ -181,90 +181,6 @@
         ]
       }
     },
-    "tests3sqsS3LoggingBucket0B0BC86A": {
-      "Type": "AWS::S3::Bucket",
-      "Properties": {
-        "AccessControl": "LogDeliveryWrite",
-        "BucketEncryption": {
-          "ServerSideEncryptionConfiguration": [
-            {
-              "ServerSideEncryptionByDefault": {
-                "SSEAlgorithm": "AES256"
-              }
-            }
-          ]
-        },
-        "PublicAccessBlockConfiguration": {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true
-        },
-        "VersioningConfiguration": {
-          "Status": "Enabled"
-        }
-      },
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete",
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W35",
-              "reason": "This S3 bucket is used as the access logging bucket for another bucket"
-            }
-          ]
-        }
-      }
-    },
-    "tests3sqsS3LoggingBucketPolicy3A15958C": {
-      "Type": "AWS::S3::BucketPolicy",
-      "Properties": {
-        "Bucket": {
-          "Ref": "tests3sqsS3LoggingBucket0B0BC86A"
-        },
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": "*",
-              "Condition": {
-                "Bool": {
-                  "aws:SecureTransport": "false"
-                }
-              },
-              "Effect": "Deny",
-              "Principal": {
-                "AWS": "*"
-              },
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "tests3sqsS3LoggingBucket0B0BC86A",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::GetAtt": [
-                    "tests3sqsS3LoggingBucket0B0BC86A",
-                    "Arn"
-                  ]
-                }
-              ],
-              "Sid": "HttpsOnly"
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      }
-    },
     "tests3sqsS3BucketNotifications32539247": {
       "Type": "Custom::S3BucketNotifications",
       "Properties": {
@@ -324,11 +240,6 @@
             }
           ]
         },
-        "LoggingConfiguration": {
-          "DestinationBucketName": {
-            "Ref": "tests3sqsS3LoggingBucket0B0BC86A"
-          }
-        },
         "PublicAccessBlockConfiguration": {
           "BlockPublicAcls": true,
           "BlockPublicPolicy": true,
@@ -340,7 +251,17 @@
         }
       },
       "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W35",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only."
+            }
+          ]
+        }
+      }
     },
     "tests3sqsS3BucketPolicyA477877B": {
       "Type": "AWS::S3::BucketPolicy",

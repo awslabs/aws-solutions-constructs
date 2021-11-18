@@ -11,27 +11,29 @@
  *  and limitations under the License.
  */
 
-import * as events from '@aws-cdk/aws-events';
-import { App, Stack, Duration, RemovalPolicy } from '@aws-cdk/core';
-import {EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props} from '../lib';
+/// !cdk-integ *
+import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
+import { BucketEncryption } from "@aws-cdk/aws-s3";
+import { KinesisStreamsToKinesisFirehoseToS3 } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
-const stack = new Stack(app, generateIntegStackName(__filename));
-stack.templateOptions.description = 'Integration Test for aws-events-rule-kinesisfirehose-s3';
 
-const props: EventsRuleToKinesisFirehoseToS3Props = {
-  eventRuleProps: {
-    schedule: events.Schedule.rate(Duration.minutes(5))
-  },
+// Empty arguments
+const stack = new Stack(app, generateIntegStackName(__filename));
+
+new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-kinesisfirehose-s3', {
   bucketProps: {
-    removalPolicy: RemovalPolicy.DESTROY
+    removalPolicy: RemovalPolicy.DESTROY,
+  },
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    bucketName: 'custom-logging-bucket',
+    encryption: BucketEncryption.S3_MANAGED,
+    versioned: true
   },
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY
   }
-};
-
-new EventsRuleToKinesisFirehoseToS3(stack, 'test-events-rule-kinesisfirehose-s3', props);
-
+});
 app.synth();
