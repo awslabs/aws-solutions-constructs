@@ -34,7 +34,7 @@ test('check s3Bucket default encryption', () => {
   expect(stack).toHaveResource('AWS::S3::Bucket', {
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [{
-        ServerSideEncryptionByDefault : {
+        ServerSideEncryptionByDefault: {
           SSEAlgorithm: "AES256"
         }
       }]
@@ -203,7 +203,7 @@ test("Test existingBucketObj", () => {
 test('test cloudfront disable cloudfront logging', () => {
   const stack = new cdk.Stack();
 
-  const construct = deploy(stack, {cloudFrontDistributionProps: {enableLogging: false}} );
+  const construct = deploy(stack, { cloudFrontDistributionProps: { enableLogging: false } });
 
   expect(construct.cloudFrontLoggingBucket === undefined);
 });
@@ -301,15 +301,16 @@ test('Cloudfront logging bucket error when providing existing log bucket and log
   const stack = new cdk.Stack();
   const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});
 
-  const app = () => { new CloudFrontToS3(stack, 'cloudfront-s3', {
-    cloudFrontDistributionProps: {
-      logBucket
-    },
-    cloudFrontLoggingBucketProps: {
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-      autoDeleteObjects: true
-    }
-  });
+  const app = () => {
+    new CloudFrontToS3(stack, 'cloudfront-s3', {
+      cloudFrontDistributionProps: {
+        logBucket
+      },
+      cloudFrontLoggingBucketProps: {
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+        autoDeleteObjects: true
+      }
+    });
   };
 
   expect(app).toThrowError();
@@ -330,6 +331,7 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
 
   expect(stack).toCountResources("AWS::S3::Bucket", 2);
   expect(construct.s3LoggingBucket).toEqual(undefined);
+});
 
 // --------------------------------------------------
 // CloudFront origin path
