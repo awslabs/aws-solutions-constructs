@@ -96,6 +96,9 @@ Out of the box implementation of the Construct without any override will set the
 ### AWS CloudTrail
 * Configure a Trail in AWS CloudTrail to log API events in Amazon S3 related to the Bucket created by the Construct
 
+### Amazon EventBridge Rule
+* Configure least privilege access IAM role for Amazon EventBridge Rule to invoke a Lambda function.
+
 ## Architecture
 ![Architecture Diagram](architecture.png)
 
