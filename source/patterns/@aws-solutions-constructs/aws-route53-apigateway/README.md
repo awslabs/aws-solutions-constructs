@@ -31,6 +31,7 @@ Here is a minimal deployable pattern definition in Typescript:
 ``` typescript
 import * as api from '@aws-cdk/aws-apigateway';
 import * as lambda from "@aws-cdk/aws-lambda";
+import * as route53 from "@aws-cdk/aws-route53";
 import { Route53ToApigateway } from '@aws-solutions-constructs/aws-route53-apigateway';
 
 const lambdaProps: lambda.FunctionProps = {
