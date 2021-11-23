@@ -53,13 +53,15 @@ const apiGatewayProps: api.LambdaRestApiProps = {
 
 const apiGateway = new api.LambdaRestApi(this, 'LambdaRestApi', apiGatewayProps);
 
+const parentZone = new route53.PublicHostedZone(this, 'HostedZone', {
+  zoneName: 'example.com',
+});
+
 // This construct can only be attached to a configured API Gateway.
 new Route53ToApigateway(this, 'Route53ToApigatewayPattern', {
     existingApiGatewayObj: apiGateway,
-    privateHostedZoneProps: {
-        zoneName: 'www.example.com'
-    },
-    publicApi: false
+    existingHostedZoneInterface: parentZone,
+    publicApi: true
 });
 
 ```
