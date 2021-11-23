@@ -56,7 +56,10 @@ const apiGateway = new api.LambdaRestApi(this, 'LambdaRestApi', apiGatewayProps)
 // This construct can only be attached to a configured API Gateway.
 new Route53ToApigateway(this, 'Route53ToApigatewayPattern', {
     existingApiGatewayObj: apiGateway,
-    publicApi: true
+    privateHostedZoneProps: {
+        zoneName: 'www.example.com'
+    },
+    publicApi: false
 });
 
 ```
