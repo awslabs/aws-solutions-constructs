@@ -296,7 +296,7 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
       }
     },
     eventBusProps: {},
-    existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, {})
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, {  eventBusName: 'test'  })
   };
 
   const app = () => {

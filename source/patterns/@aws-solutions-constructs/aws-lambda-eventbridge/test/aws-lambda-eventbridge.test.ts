@@ -161,7 +161,7 @@ test("Test bad call with existingVpc and deployVpc", () => {
         code: lambda.Code.fromAsset(`${__dirname}/lambda`)
       },
       eventBusProps: {},
-      existingEventBusInterface: new events.EventBus(stack, `new-event-bus`, {})
+      existingEventBusInterface: new events.EventBus(stack, `new-event-bus`, {  eventBusName: 'test'  })
     });
   };
   // Assertion
