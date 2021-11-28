@@ -203,3 +203,23 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
     }
   });
 });
+
+// --------------------------------------------------------------
+// s3 bucket with one content bucket and no logging bucket
+// --------------------------------------------------------------
+test('s3 bucket with no logging bucket', () => {
+  const stack = new cdk.Stack();
+  const startState = new sfn.Pass(stack, 'StartState');
+
+  const construct = new S3ToStepfunctions(stack, 's3-stepfunctions', {
+    stateMachineProps: {
+      definition: startState
+    },
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+    logS3AccessLogs: false
+  });
+
+  expect(construct.s3LoggingBucket).toEqual(undefined);
+});

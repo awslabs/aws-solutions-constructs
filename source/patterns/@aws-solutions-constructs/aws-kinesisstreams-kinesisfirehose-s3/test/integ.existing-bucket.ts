@@ -27,6 +27,9 @@ const existingBucket = CreateScrapBucket(stack, { removalPolicy: RemovalPolicy.D
 const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);
 new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-existing-bucket-firehose-s3-stack', {
   existingBucketObj: mybucket,
+  logGroupProps: {
+    removalPolicy: RemovalPolicy.DESTROY
+  }
 });
 
 // Synth

@@ -21,21 +21,31 @@ import { generateIntegStackName } from '@aws-solutions-constructs/core';
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = "Integration Test for aws-lambda-s3";
+import * as s3 from "@aws-cdk/aws-s3";
+import * as defaults from '@aws-solutions-constructs/core';
 
 // Definitions
 const props: LambdaToS3Props = {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_10_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   },
   deployVpc: true,
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-  }
+  },
+  logS3AccessLogs: false
 };
 
-new LambdaToS3(stack, "test-lambda-s3", props);
+const construct = new LambdaToS3(stack, "test-lambda-s3", props);
+
+const s3Bucket = construct.s3Bucket as s3.Bucket;
+
+defaults.addCfnSuppressRules(s3Bucket, [
+  { id: 'W35',
+    reason: 'This S3 bucket is created for unit/ integration testing purposes only.' },
+]);
 
 // Synth
 app.synth();

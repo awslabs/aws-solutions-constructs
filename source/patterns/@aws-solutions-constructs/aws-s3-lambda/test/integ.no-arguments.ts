@@ -16,6 +16,8 @@ import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { S3ToLambda, S3ToLambdaProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import * as s3 from "@aws-cdk/aws-s3";
+import * as defaults from '@aws-solutions-constructs/core';
 
 const app = new App();
 
@@ -30,8 +32,16 @@ const props: S3ToLambdaProps = {
   },
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-  }
+  },
+  logS3AccessLogs: false
 };
 
-new S3ToLambda(stack, 'test-s3-lambda', props);
+const construct = new S3ToLambda(stack, 'test-s3-lambda', props);
+const s3Bucket = construct.s3Bucket as s3.Bucket;
+
+defaults.addCfnSuppressRules(s3Bucket, [
+  { id: 'W35',
+    reason: 'This S3 bucket is created for unit/ integration testing purposes only.' },
+]);
+
 app.synth();

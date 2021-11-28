@@ -37,6 +37,10 @@ new S3ToStepFunction(stack, 'test-s3-step-function', {
     bucketName: 'custom-logging-bucket',
     encryption: BucketEncryption.S3_MANAGED,
     versioned: true
-  }
+  },
+  logGroupProps: {
+    removalPolicy: RemovalPolicy.DESTROY
+  },
+  deployCloudTrail: false
 });
 app.synth();

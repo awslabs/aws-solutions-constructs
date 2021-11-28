@@ -234,7 +234,7 @@ test('test cloudfront override properties', () => {
   const [sourceBucket] = buildS3Bucket(stack, {});
   const props: cloudfront.DistributionProps = {
     defaultBehavior: {
-      origin: new origins.S3Origin(sourceBucket),
+      origin: new origins.S3Origin(sourceBucket, {originPath: '/testPath'}),
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
       cachedMethods: cloudfront.CachedMethods.CACHE_GET_HEAD_OPTIONS
@@ -297,6 +297,7 @@ test('test cloudfront override properties', () => {
             ]
           },
           Id: "CloudFrontDistributionOrigin176EC3A12",
+          OriginPath: '/testPath',
           S3OriginConfig: {
             OriginAccessIdentity: {
               "Fn::Join": [
