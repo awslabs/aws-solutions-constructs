@@ -60,17 +60,17 @@
         ]
       }
     },
-    "testeventbridgekinesisstreamCustomEventBus591309EC": {
+    "testeventbridgekinesisstreamtestDC87749D": {
       "Type": "AWS::Events::EventBus",
       "Properties": {
-        "Name": "eventbridgekinesisstreamsneweventbustesteventbridgekinesisstreamCustomEventBus825386CE"
+        "Name": "test"
       }
     },
     "testeventbridgekinesisstreamEventsRuleC4E74981": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "EventBusName": {
-          "Ref": "testeventbridgekinesisstreamCustomEventBus591309EC"
+          "Ref": "testeventbridgekinesisstreamtestDC87749D"
         },
         "EventPattern": {
           "source": [

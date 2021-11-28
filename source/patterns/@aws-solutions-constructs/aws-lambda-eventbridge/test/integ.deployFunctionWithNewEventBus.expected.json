@@ -85,7 +85,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "testlambdaeventbridgeCustomEventBus5F110E81",
+                  "testlambdaeventbridgetest01C41A39",
                   "Arn"
                 ]
               }
@@ -160,7 +160,7 @@
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "EVENTBUS_NAME": {
-              "Ref": "testlambdaeventbridgeCustomEventBus5F110E81"
+              "Ref": "testlambdaeventbridgetest01C41A39"
             }
           }
         },
@@ -214,10 +214,10 @@
         }
       }
     },
-    "testlambdaeventbridgeCustomEventBus5F110E81": {
+    "testlambdaeventbridgetest01C41A39": {
       "Type": "AWS::Events::EventBus",
       "Properties": {
-        "Name": "deployFunctionWithNewEventBustestlambdaeventbridgeCustomEventBusF8520BFF"
+        "Name": "test"
       }
     },
     "Vpc8378EB38": {

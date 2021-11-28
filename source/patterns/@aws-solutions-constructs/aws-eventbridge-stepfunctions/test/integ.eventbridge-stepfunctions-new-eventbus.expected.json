@@ -352,17 +352,17 @@
         ]
       }
     },
-    "testeventbridgestepfunctionsneweventbusconstructCustomEventBusB298D5B4": {
+    "testeventbridgestepfunctionsneweventbusconstructtestE4F3554B": {
       "Type": "AWS::Events::EventBus",
       "Properties": {
-        "Name": "eventbridgestepfunctionsneweventbustesteventbridgestepfunctionsneweventbusconstructCustomEventBus19132B7D"
+        "Name": "test"
       }
     },
     "testeventbridgestepfunctionsneweventbusconstructEventsRule471B9F20": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "EventBusName": {
-          "Ref": "testeventbridgestepfunctionsneweventbusconstructCustomEventBusB298D5B4"
+          "Ref": "testeventbridgestepfunctionsneweventbusconstructtestE4F3554B"
         },
         "EventPattern": {
           "source": [
