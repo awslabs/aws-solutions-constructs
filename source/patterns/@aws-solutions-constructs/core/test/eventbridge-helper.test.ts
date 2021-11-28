@@ -36,7 +36,7 @@ test('Test deployment with existing EventBus', () => {
   const stack = new Stack();
   // Helper declaration
   defaults.buildEventBus(stack, {
-    existingEventBusInterface: new events.EventBus(stack, `existing-event-bus`, { event_bus_name: 'test-bus'})
+    existingEventBusInterface: new events.EventBus(stack, `existing-event-bus`, { eventBusName: 'test-bus'})
   });
 
   expect(stack).toHaveResource('AWS::Events::EventBus');
