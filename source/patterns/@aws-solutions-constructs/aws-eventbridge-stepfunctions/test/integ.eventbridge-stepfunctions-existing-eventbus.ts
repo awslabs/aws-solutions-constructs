@@ -37,7 +37,7 @@ const submitJob = new tasks.LambdaInvoke(stack, 'LambdaTask', {
 const startState = new stepfunctions.Pass(stack, 'StartState');
 startState.next(submitJob);
 
-const existingEventBus = new EventBus(stack, `existing-event-bus`, {});
+const existingEventBus = new EventBus(stack, `existing-event-bus`, { eventBusName: 'test'});
 const props: EventbridgeToStepfunctionsProps = {
   stateMachineProps: {
     definition: startState,

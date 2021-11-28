@@ -330,17 +330,17 @@
         ]
       }
     },
-    "testeventbridgekinesisfirehoses3CustomEventBusE21F8525": {
+    "testeventbridgekinesisfirehoses3testF99202BA": {
       "Type": "AWS::Events::EventBus",
       "Properties": {
-        "Name": "eventbridgekinesisfirehoses3neweventbustesteventbridgekinesisfirehoses3CustomEventBus9704AA81"
+        "Name": "test"
       }
     },
     "testeventbridgekinesisfirehoses3EventsRule9641436B": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "EventBusName": {
-          "Ref": "testeventbridgekinesisfirehoses3CustomEventBusE21F8525"
+          "Ref": "testeventbridgekinesisfirehoses3testF99202BA"
         },
         "EventPattern": {
           "source": [

@@ -30,7 +30,7 @@ const props: LambdaToEventbridgeProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   },
   deployVpc: true,
-  eventBusProps: {}
+  eventBusProps: { eventBusName: 'test' }
 };
 
 new LambdaToEventbridge(stack, "test-lambda-eventbridge", props);

@@ -21,7 +21,7 @@ import * as s3 from "@aws-cdk/aws-s3";
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-eventsrule-kinesisfirehose-s3';
-const existingEventBus = new events.EventBus(stack, `test-existing-eventbus`, {});
+const existingEventBus = new events.EventBus(stack, `test-existing-eventbus`, {  eventBusName: 'test'  });
 const props: EventsRuleToKinesisFirehoseToS3Props = {
   eventRuleProps: {
     eventPattern: {

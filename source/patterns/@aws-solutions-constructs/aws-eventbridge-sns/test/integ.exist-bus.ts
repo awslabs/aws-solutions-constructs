@@ -19,7 +19,7 @@ import { generateIntegStackName } from '@aws-solutions-constructs/core';
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 // Create existing custom EventBus
-const existingEventBus = new events.EventBus(stack, `existing-event-bus`, {});
+const existingEventBus = new events.EventBus(stack, `existing-event-bus`, {  eventBusName: 'test'  });
 const props: EventbridgeToSnsProps = {
   eventRuleProps: {
     eventPattern: {
