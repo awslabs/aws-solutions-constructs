@@ -39,7 +39,7 @@ test('Test deployment with existing EventBus', () => {
     existingEventBusInterface: new events.EventBus(stack, `existing-event-bus`, {})
   });
 
-  expect(stack).toHaveResource('AWS::Events::EventBus', {});
+  expect(stack).toHaveResource('AWS::Events::EventBus');
 });
 
 // --------------------------------------------------------------
