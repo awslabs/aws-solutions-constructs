@@ -46,7 +46,7 @@ const props: EventbridgeToStepfunctionsProps = {
       source: ['solutionsconstructs']
     }
   },
-  eventBusProps: {},
+  eventBusProps: { eventBusName: 'test' },
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY
   },

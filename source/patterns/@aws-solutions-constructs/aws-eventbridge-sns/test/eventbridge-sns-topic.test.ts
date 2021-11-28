@@ -33,7 +33,7 @@ function deployStackWithNewEventBus(stack: cdk.Stack) {
         source: ['solutionsconstructs']
       }
     },
-    eventBusProps: {}
+    eventBusProps: { eventBusName: 'test' }
   };
   return new EventbridgeToSns(stack, 'test-neweventbus', props);
 }

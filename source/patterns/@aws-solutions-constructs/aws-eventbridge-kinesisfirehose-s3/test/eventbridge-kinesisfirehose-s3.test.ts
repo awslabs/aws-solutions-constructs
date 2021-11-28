@@ -152,7 +152,7 @@ test('check eventbus property, snapshot & eventbus exists', () => {
         source: ['solutionsconstructs']
       }
     },
-    eventBusProps: {}
+    eventBusProps: { eventBusName: 'test' }
   };
   const construct = new EventbridgeToKinesisFirehoseToS3(stack, 'test-eventbridge-kinesis-firehose-default-parameters', props);
 
@@ -177,7 +177,7 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
         source: ['solutionsconstructs']
       }
     },
-    eventBusProps: {},
+    eventBusProps: { eventBusName: 'test' },
     existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, { eventBusName: 'test' })
   };
 

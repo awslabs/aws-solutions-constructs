@@ -98,7 +98,7 @@ test('check eventbus property, snapshot & eventbus exists', () => {
         source: ['solutionsconstructs']
       }
     },
-    eventBusProps: {}
+    eventBusProps: { eventBusName: 'test' }
   };
   const construct = new EventsRuleToKinesisStreams(stack, 'test-events-rule-kinesis-streams-default-parameters', props);
 
@@ -119,7 +119,7 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
         source: ['solutionsconstructs']
       }
     },
-    eventBusProps: {},
+    eventBusProps: { eventBusName: 'test' },
     existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {  eventBusName: 'test'  })
   };
 

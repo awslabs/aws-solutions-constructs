@@ -160,7 +160,7 @@ test("Test bad call with existingVpc and deployVpc", () => {
         handler: 'index.handler',
         code: lambda.Code.fromAsset(`${__dirname}/lambda`)
       },
-      eventBusProps: {},
+      eventBusProps: { eventBusName: 'test' },
       existingEventBusInterface: new events.EventBus(stack, `new-event-bus`, {  eventBusName: 'test'  })
     });
   };
@@ -442,7 +442,7 @@ test('check multiple constructs in a single stack', () => {
       runtime: lambda.Runtime.NODEJS_12_X,
       handler: 'index.handler'
     },
-    eventBusProps: {}
+    eventBusProps: { eventBusName: 'test' }
   };
   new LambdaToEventbridge(stack, 'test-new-lambda-eventbridge1', props);
   new LambdaToEventbridge(stack, 'test-new-lambda-eventbridge2', props);
@@ -458,7 +458,7 @@ test('check multiple lambda functions publishing to single event bus', () => {
       runtime: lambda.Runtime.NODEJS_12_X,
       handler: 'index.handler'
     },
-    eventBusProps: {}
+    eventBusProps: { eventBusName: 'test' }
   };
   const construct = new LambdaToEventbridge(stack, 'test-new-lambda-eventbridge1', props1);
 
@@ -488,7 +488,7 @@ test('check multiple lambda functions publishing to single event bus', () => {
           Effect: "Allow",
           Resource: {
             "Fn::GetAtt": [
-              "testnewlambdaeventbridge1CustomEventBusA089F10A",
+              "testnewlambdaeventbridge1test13E0B622",
               "Arn"
             ]
           }
@@ -505,7 +505,7 @@ test('check multiple lambda functions publishing to single event bus', () => {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
         EVENTBUS_NAME: {
-          Ref: "testnewlambdaeventbridge1CustomEventBusA089F10A"
+          Ref: "testnewlambdaeventbridge1test13E0B622"
         }
       }
     }

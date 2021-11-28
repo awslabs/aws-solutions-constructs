@@ -24,7 +24,7 @@ const props: EventbridgeToSqsProps = {
       source: ['solutionsconstructs']
     }
   },
-  eventBusProps: {}
+  eventBusProps: { eventBusName: 'test' }
 };
 
 new EventbridgeToSqs(stack, 'construct', props);

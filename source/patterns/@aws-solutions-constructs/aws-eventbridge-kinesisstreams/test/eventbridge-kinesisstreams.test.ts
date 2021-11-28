@@ -97,7 +97,7 @@ test('check eventbus property, snapshot & eventbus exists', () => {
         source: ['solutionsconstructs']
       }
     },
-    eventBusProps: {}
+    eventBusProps: { eventBusName: 'test' }
   };
   const construct = new EventbridgeToKinesisStreams(stack, 'test-eventbridge-kinesis-streams-default-parameters', props);
 

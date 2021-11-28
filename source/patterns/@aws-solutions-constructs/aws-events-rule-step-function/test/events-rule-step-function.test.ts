@@ -47,7 +47,7 @@ function deployNewStateMachineAndEventBus(stack: cdk.Stack) {
         source: ['solutionsconstructs']
       }
     },
-    eventBusProps: {}
+    eventBusProps: { eventBusName: 'test' }
   };
 
   return new EventsRuleToStepFunction(stack, 'test-eventrules-stepfunctions-eventbus', props);
@@ -160,7 +160,7 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
         source: ['solutionsconstructs']
       }
     },
-    eventBusProps: {},
+    eventBusProps: { eventBusName: 'test' },
     existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, {  eventBusName: 'test'  })
   };
 

@@ -60,17 +60,17 @@
         ]
       }
     },
-    "testeventsrulekinesisstreamtesteventsrulekinesisstreamWCustomEventBusAF7D2D89": {
+    "testeventsrulekinesisstreamtesteventsrulekinesisstreamWtestFD85A614": {
       "Type": "AWS::Events::EventBus",
       "Properties": {
-        "Name": "eventsrulekinesisstreamsneweventbustesteventsrulekinesisstreamtesteventsrulekinesisstreamWCustomEventBusB7D74ACD"
+        "Name": "test"
       }
     },
     "testeventsrulekinesisstreamtesteventsrulekinesisstreamWEventsRuleC03ABB43": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "EventBusName": {
-          "Ref": "testeventsrulekinesisstreamtesteventsrulekinesisstreamWCustomEventBusAF7D2D89"
+          "Ref": "testeventsrulekinesisstreamtesteventsrulekinesisstreamWtestFD85A614"
         },
         "EventPattern": {
           "source": [
