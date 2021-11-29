@@ -25,7 +25,7 @@ const props: EventbridgeToKinesisStreamsProps = {
       source: ['solutionsconstructs']
     }
   },
-  eventBusProps: {}
+  eventBusProps: { eventBusName: 'test' }
 };
 
 new EventbridgeToKinesisStreams(stack, 'test-eventbridge-kinesis-stream', props);

@@ -24,7 +24,7 @@ const props: EventsRuleToSqsProps = {
       source: ['solutionsconstructs']
     }
   },
-  eventBusProps: {}
+  eventBusProps: { eventBusName: 'test' }
 };
 
 new EventsRuleToSqs(stack, 'ersqs', props);
