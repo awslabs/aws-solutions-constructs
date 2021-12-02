@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.0.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.0.0-rc.2...v2.0.0) (2021-12-02)
 
+* Includes all funcionality of V1.129.0
 
 ### Features
 
