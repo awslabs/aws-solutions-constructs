@@ -189,8 +189,8 @@
     },
     "teststreamfirehoses3KinesisFirehoseToS3firehoseloggroupEE4052E0": {
       "Type": "AWS::Logs::LogGroup",
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [

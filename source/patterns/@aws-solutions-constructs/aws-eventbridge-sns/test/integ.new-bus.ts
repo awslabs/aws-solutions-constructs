@@ -24,7 +24,7 @@ const props: EventbridgeToSnsProps = {
       source: ['solutionsconstructs']
     }
   },
-  eventBusProps: {} // Pass props to create new custom EventBus
+  eventBusProps: { eventBusName: 'test' } // Pass props to create new custom EventBus
 };
 
 new EventbridgeToSns(stack, 'test-construct', props);

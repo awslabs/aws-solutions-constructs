@@ -16,6 +16,7 @@ import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { S3ToSqs, S3ToSqsProps } from "../lib";
 import * as defaults from '@aws-solutions-constructs/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import * as s3 from "@aws-cdk/aws-s3";
 
 const app = new App();
 
@@ -29,8 +30,16 @@ const props: S3ToSqsProps = {
   existingQueueObj: myQueue,
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-  }
+  },
+  logS3AccessLogs: false
 };
 
-new S3ToSqs(stack, 'test-s3-sqs', props);
+const construct = new S3ToSqs(stack, 'test-s3-sqs', props);
+const s3Bucket = construct.s3Bucket as s3.Bucket;
+
+defaults.addCfnSuppressRules(s3Bucket, [
+  { id: 'W35',
+    reason: 'This S3 bucket is created for unit/ integration testing purposes only.' },
+]);
+
 app.synth();

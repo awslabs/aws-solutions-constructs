@@ -438,32 +438,13 @@
         "Principal": "elasticloadbalancing.amazonaws.com"
       }
     },
-    "testonetg1tgDC5C1350": {
-      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
-      "Properties": {
-        "Targets": [
-          {
-            "Id": {
-              "Fn::GetAtt": [
-                "testoneLambdaFunctionCC9B03E1",
-                "Arn"
-              ]
-            }
-          }
-        ],
-        "TargetType": "lambda"
-      },
-      "DependsOn": [
-        "testoneLambdaFunctionInvokeServicePrincipalelasticloadbalancingamazonawscom776E5E70"
-      ]
-    },
     "testonelistener5EBC4D40": {
       "Type": "AWS::ElasticLoadBalancingV2::Listener",
       "Properties": {
         "DefaultActions": [
           {
             "TargetGroupArn": {
-              "Ref": "testonetg1tgDC5C1350"
+              "Ref": "testonetg2tg6459EC7C"
             },
             "Type": "forward"
           }
@@ -475,7 +456,7 @@
         "Protocol": "HTTP"
       },
       "DependsOn": [
-        "testonetg1tgDC5C1350"
+        "testonetg2tg6459EC7C"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -514,6 +495,25 @@
         },
         "Priority": 10
       }
+    },
+    "testonetg2tg6459EC7C": {
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+      "Properties": {
+        "Targets": [
+          {
+            "Id": {
+              "Fn::GetAtt": [
+                "testoneLambdaFunctionCC9B03E1",
+                "Arn"
+              ]
+            }
+          }
+        ],
+        "TargetType": "lambda"
+      },
+      "DependsOn": [
+        "testoneLambdaFunctionInvokeServicePrincipalelasticloadbalancingamazonawscom776E5E70"
+      ]
     },
     "Vpc8378EB38": {
       "Type": "AWS::EC2::VPC",

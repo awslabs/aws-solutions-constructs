@@ -98,7 +98,8 @@ test('test kinesisFirehose override ', () => {
         IntervalInSeconds: 600,
         SizeInMBs: 55
       }
-    }});
+    }
+  });
 });
 
 // --------------------------------------------------------------
@@ -121,4 +122,93 @@ test("Test bad call with existingBucket and bucketProps", () => {
   };
   // Assertion
   expect(app).toThrowError();
+});
+
+// --------------------------------------------------------------
+// s3 bucket with bucket, loggingBucket, and auto delete objects
+// --------------------------------------------------------------
+test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
+  const stack = new Stack();
+
+  new KinesisFirehoseToAnalyticsAndS3(stack, 'kinsisfirehose-s3-analytics', {
+    kinesisAnalyticsProps: {
+      inputs: [{
+        inputSchema: {
+          recordColumns: [{
+            name: 'ts',
+            sqlType: 'TIMESTAMP',
+            mapping: '$.timestamp'
+          }, {
+            name: 'trip_id',
+            sqlType: 'VARCHAR(64)',
+            mapping: '$.trip_id'
+          }],
+          recordFormat: {
+            recordFormatType: 'JSON'
+          },
+          recordEncoding: 'UTF-8'
+        },
+        namePrefix: 'SOURCE_SQL_STREAM'
+      }]
+    },
+    loggingBucketProps: {
+      removalPolicy: RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::S3::Bucket", {
+    AccessControl: "LogDeliveryWrite"
+  });
+
+  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+    ServiceToken: {
+      "Fn::GetAtt": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+        "Arn"
+      ]
+    },
+    BucketName: {
+      Ref: "kinsisfirehoses3analyticsKinesisFirehoseToS3S3LoggingBucket6EE455EF"
+    }
+  });
+});
+
+// --------------------------------------------------------------
+// s3 bucket with one content bucket and no logging bucket
+// --------------------------------------------------------------
+test('s3 bucket with one content bucket and no logging bucket', () => {
+  const stack = new Stack();
+
+  new KinesisFirehoseToAnalyticsAndS3(stack, 'kinsisfirehose-s3-analytics', {
+    kinesisAnalyticsProps: {
+      inputs: [{
+        inputSchema: {
+          recordColumns: [{
+            name: 'ts',
+            sqlType: 'TIMESTAMP',
+            mapping: '$.timestamp'
+          }, {
+            name: 'trip_id',
+            sqlType: 'VARCHAR(64)',
+            mapping: '$.trip_id'
+          }],
+          recordFormat: {
+            recordFormatType: 'JSON'
+          },
+          recordEncoding: 'UTF-8'
+        },
+        namePrefix: 'SOURCE_SQL_STREAM'
+      }]
+    },
+    kinesisFirehoseProps: {
+      deliveryStreamType: 'KinesisStreamAsSource'
+    },
+    bucketProps: {
+      removalPolicy: RemovalPolicy.DESTROY,
+    },
+    logS3AccessLogs: false
+  });
+
+  expect(stack).toCountResources("AWS::S3::Bucket", 1);
 });

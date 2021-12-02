@@ -1,90 +1,6 @@
 {
   "Description": "Integration Test for aws-eventbridge-kinesisfirehose-s3",
   "Resources": {
-    "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3LoggingBucket703E6C44": {
-      "Type": "AWS::S3::Bucket",
-      "Properties": {
-        "AccessControl": "LogDeliveryWrite",
-        "BucketEncryption": {
-          "ServerSideEncryptionConfiguration": [
-            {
-              "ServerSideEncryptionByDefault": {
-                "SSEAlgorithm": "AES256"
-              }
-            }
-          ]
-        },
-        "PublicAccessBlockConfiguration": {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true
-        },
-        "VersioningConfiguration": {
-          "Status": "Enabled"
-        }
-      },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W35",
-              "reason": "This S3 bucket is used as the access logging bucket for another bucket"
-            }
-          ]
-        }
-      }
-    },
-    "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketPolicy1A5A1E6B": {
-      "Type": "AWS::S3::BucketPolicy",
-      "Properties": {
-        "Bucket": {
-          "Ref": "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3LoggingBucket703E6C44"
-        },
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": "*",
-              "Condition": {
-                "Bool": {
-                  "aws:SecureTransport": "false"
-                }
-              },
-              "Effect": "Deny",
-              "Principal": {
-                "AWS": "*"
-              },
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3LoggingBucket703E6C44",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::GetAtt": [
-                    "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3LoggingBucket703E6C44",
-                    "Arn"
-                  ]
-                }
-              ],
-              "Sid": "HttpsOnly"
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      }
-    },
     "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3BucketF3A3F845": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
@@ -110,11 +26,6 @@
             }
           ]
         },
-        "LoggingConfiguration": {
-          "DestinationBucketName": {
-            "Ref": "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3LoggingBucket703E6C44"
-          }
-        },
         "PublicAccessBlockConfiguration": {
           "BlockPublicAcls": true,
           "BlockPublicPolicy": true,
@@ -125,8 +36,18 @@
           "Status": "Enabled"
         }
       },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W35",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only."
+            }
+          ]
+        }
+      }
     },
     "testeventbridgekinesisfirehoses3KinesisFirehoseToS3S3BucketPolicy6ECA7017": {
       "Type": "AWS::S3::BucketPolicy",
@@ -178,8 +99,8 @@
     },
     "testeventbridgekinesisfirehoses3KinesisFirehoseToS3firehoseloggroupA843D276": {
       "Type": "AWS::Logs::LogGroup",
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
@@ -409,17 +330,17 @@
         ]
       }
     },
-    "testeventbridgekinesisfirehoses3CustomEventBusE21F8525": {
+    "testeventbridgekinesisfirehoses3testF99202BA": {
       "Type": "AWS::Events::EventBus",
       "Properties": {
-        "Name": "eventbridgekinesisfirehoses3neweventbustesteventbridgekinesisfirehoses3CustomEventBus9704AA81"
+        "Name": "test"
       }
     },
     "testeventbridgekinesisfirehoses3EventsRule9641436B": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "EventBusName": {
-          "Ref": "testeventbridgekinesisfirehoses3CustomEventBusE21F8525"
+          "Ref": "testeventbridgekinesisfirehoses3testF99202BA"
         },
         "EventPattern": {
           "source": [

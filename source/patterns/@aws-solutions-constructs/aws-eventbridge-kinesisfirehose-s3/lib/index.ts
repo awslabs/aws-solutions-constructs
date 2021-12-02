@@ -68,6 +68,19 @@ export interface EventbridgeToKinesisFirehoseToS3Props {
    * @default - Default props are used
    */
   readonly logGroupProps?: logs.LogGroupProps;
+  /**
+   * Optional user provided props to override the default props for the S3 Logging Bucket.
+   *
+   * @default - Default props are used
+   */
+   readonly loggingBucketProps?: s3.BucketProps;
+   /**
+    * Whether to turn on Access Logs for the S3 bucket with the associated storage costs.
+    * Enabling Access Logging is a best practice.
+    *
+    * @default - true
+    */
+   readonly logS3AccessLogs?: boolean;
 }
 
 export class EventbridgeToKinesisFirehoseToS3 extends Construct {
@@ -79,6 +92,7 @@ export class EventbridgeToKinesisFirehoseToS3 extends Construct {
   public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
   public readonly eventBus?: events.IEventBus;
+  public readonly s3BucketInterface: s3.IBucket;
 
   /**
    * @summary Constructs a new instance of the EventbridgeToKinesisFirehoseToS3 class.
@@ -91,22 +105,21 @@ export class EventbridgeToKinesisFirehoseToS3 extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
 
-    if (props.existingBucketObj && props.bucketProps) {
-      throw new Error('Cannot specify both bucket properties and an existing bucket');
-    }
-
     // Set up the Kinesis Firehose using KinesisFirehoseToS3 construct
     const firehoseToS3 = new KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {
       kinesisFirehoseProps: props.kinesisFirehoseProps,
       existingBucketObj: props.existingBucketObj,
       bucketProps: props.bucketProps,
-      logGroupProps: props.logGroupProps
+      logGroupProps: props.logGroupProps,
+      loggingBucketProps: props.loggingBucketProps,
+      logS3AccessLogs: props.logS3AccessLogs
     });
     this.kinesisFirehose = firehoseToS3.kinesisFirehose;
     this.s3Bucket = firehoseToS3.s3Bucket;
     this.kinesisFirehoseRole = firehoseToS3.kinesisFirehoseRole;
     this.s3LoggingBucket = firehoseToS3.s3LoggingBucket;
     this.kinesisFirehoseLogGroup = firehoseToS3.kinesisFirehoseLogGroup;
+    this.s3BucketInterface = firehoseToS3.s3BucketInterface;
 
     // Create an events service role
     this.eventsRole = new iam.Role(this, 'EventsRuleInvokeKinesisFirehoseRole', {
