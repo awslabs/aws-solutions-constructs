@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.0.0-rc.2...v2.0.0) (2021-12-02)
+
+
+### Features
+
+* **aws-cloudfront-s3:** added logS3AccessLogs prop ([#506](https://github.com/awslabs/aws-solutions-constructs/issues/506)) ([6d3c7c9](https://github.com/awslabs/aws-solutions-constructs/commit/6d3c7c94dbe1398fc2eef16a7862704bb15a8bb9))
+* **aws-events-rule-kinesisfirehose-s3:** added logS3AccessLogs and loggingBucketProps ([#492](https://github.com/awslabs/aws-solutions-constructs/issues/492)) ([0af95f5](https://github.com/awslabs/aws-solutions-constructs/commit/0af95f58c395f766d29d1ece791d0307621f63e6))
+* **aws-iot-kinesisfirehose-s3:** added custom loggingBucketProps ([#480](https://github.com/awslabs/aws-solutions-constructs/issues/480)) ([76c0aa9](https://github.com/awslabs/aws-solutions-constructs/commit/76c0aa9ed4be859319a830d29be1a397b3322a43))
+* **aws-kinesisfirehose-s3-and-kinesisanalytics:** added logS3AccessLogs and loggingBucketProps ([#490](https://github.com/awslabs/aws-solutions-constructs/issues/490)) ([3d8fec6](https://github.com/awslabs/aws-solutions-constructs/commit/3d8fec6632c76711ee26c323893ca5a7a58d917f))
+* **aws-kinesisfirehose-s3:** added custom logging bucket props to kinesisfirehose-s3 ([#478](https://github.com/awslabs/aws-solutions-constructs/issues/478)) ([6fab3e5](https://github.com/awslabs/aws-solutions-constructs/commit/6fab3e50de4ef73d2e9f2dbde358d9d6f14e9831))
+* **aws-kinesisstreams-gluejob:** encrypted bucket in existing job integ test ([#504](https://github.com/awslabs/aws-solutions-constructs/issues/504)) ([04d0642](https://github.com/awslabs/aws-solutions-constructs/commit/04d06424663b3f7cb5cc4ef6a9995f5eedce1721))
+* **aws-kinesisstreams-kinesisfirehose-s3:** added loggingBucketProps and logS3AccessLogs ([#493](https://github.com/awslabs/aws-solutions-constructs/issues/493)) ([85b5f7a](https://github.com/awslabs/aws-solutions-constructs/commit/85b5f7ada3e197dcc83a1ad1bd9e23efedf9f63e))
+* **aws-lambda-s3:** added logS3AccessLogs and updated tests ([#496](https://github.com/awslabs/aws-solutions-constructs/issues/496)) ([9922938](https://github.com/awslabs/aws-solutions-constructs/commit/992293810b92b3272e08e6b408c868243007049e))
+* **aws-s3-sqs:** added logS3AccessLogs and S3BucketInterface  ([#499](https://github.com/awslabs/aws-solutions-constructs/issues/499)) ([c8320bd](https://github.com/awslabs/aws-solutions-constructs/commit/c8320bdd9cc47e519556a40b2a2e7f163922edc7))
+* **aws-s3-stepfunctions:** added logS3AccessLogs and S3BucketInterface ([#500](https://github.com/awslabs/aws-solutions-constructs/issues/500)) ([d7d10f6](https://github.com/awslabs/aws-solutions-constructs/commit/d7d10f683e74276e1f737db8fbac434e0b48cd5e))
+
+
+### Bug Fixes
+
+* **Update reference from existingBucketInterface to existingBucketObj:** Update Documentation [#520](https://github.com/awslabs/aws-solutions-constructs/issues/520) ([0c030e8](https://github.com/awslabs/aws-solutions-constructs/commit/0c030e82a83ffffd61b0ede90b379e7903008ab8))
+
 ## [2.0.0-rc.2](https://github.com/awslabs/aws-solutions-constructs/compare/v2.0.0-rc.1...v2.0.0-rc.2) (2021-11-02)
 
 ### Features
