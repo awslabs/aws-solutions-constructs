@@ -149,6 +149,8 @@ export function AddLambdaTarget(
       targetGroups: [newTargetGroup],
     });
   }
+  newTargetGroup.setAttribute('stickiness.enabled', undefined);
+
   return newTargetGroup;
 }
 
