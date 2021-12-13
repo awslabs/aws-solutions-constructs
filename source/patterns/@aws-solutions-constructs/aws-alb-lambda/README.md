@@ -45,7 +45,7 @@ Here is a minimal deployable pattern definition in Typescript:
     },
     publicApi: true
   };
-  new AlbToLambda(stack, 'new-construct', props);
+  new AlbToLambda(stack, 'alb-lambda', props);
 
 ```
 
