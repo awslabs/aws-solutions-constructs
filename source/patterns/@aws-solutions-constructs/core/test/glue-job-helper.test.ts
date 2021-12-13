@@ -86,7 +86,7 @@ test('Create a Glue Job outside the construct', () => {
     command: {
       name: 'pythonshell',
       pythonVersion: '2',
-      scriptLocation: 's3://existingFakeLocation/existingScript'
+      scriptLocation: 's3://existingFakeLocation'
     },
     role: new Role(stack, 'ExistingJobRole', {
       assumedBy: new ServicePrincipal('glue.amazon.com'),
@@ -122,7 +122,7 @@ test('Create a Glue Job outside the construct', () => {
       Command: {
         Name: "pythonshell",
         PythonVersion: "2",
-        ScriptLocation: "s3://existingFakeLocation/existingScript",
+        ScriptLocation: "s3://existingFakeLocation",
       },
       GlueVersion: "1",
       MaxCapacity: 4,
