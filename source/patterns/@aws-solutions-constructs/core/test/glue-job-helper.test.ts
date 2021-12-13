@@ -150,7 +150,7 @@ test('Test custom deployment properties', () => {
     command: {
       name: _commandName,
       pythonVersion: '3',
-      scriptLocation: 's3://existingFakeLocation/existingScript'
+      scriptLocation: 's3://existingFakeLocation'
     },
     role: new Role(stack, 'ExistingJobRole', {
       assumedBy: new ServicePrincipal('glue.amazon.com'),
@@ -182,7 +182,7 @@ test('Test custom deployment properties', () => {
       Command: {
         Name: "glueetl",
         PythonVersion: "3",
-        ScriptLocation: "s3://existingFakeLocation/existingScript",
+        ScriptLocation: "s3://existingFakeLocation",
       },
       GlueVersion: "1",
       NumberOfWorkers: 2,
