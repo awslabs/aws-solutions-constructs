@@ -37,7 +37,7 @@ Here is a minimal deployable pattern definition in Typescript:
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     listenerProps: {
