@@ -34,34 +34,18 @@ import * as lambda from "@aws-cdk/aws-lambda";
 import * as route53 from "@aws-cdk/aws-route53";
 import { Route53ToApigateway } from '@aws-solutions-constructs/aws-route53-apigateway';
 
-const lambdaProps: lambda.FunctionProps = {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_12_X,
-    handler: 'index.handler'
-};
+// The construct requires an existing REST API, this can be created in raw CDK or extracted
+// from a previously instantiated construct that created an API Gateway REST API
+const existingRestApi = previouslyCreatedApigatewayToLambdaConstruct.apiGateway;
 
-const lambdaFunction = new lambda.Function(this, 'LambdaFunction', lambdaProps);
-
-const apiGatewayProps: api.LambdaRestApiProps = {
-    handler: lambdaFunction,
-    endpointConfiguration: {
-        types: [api.EndpointType.REGIONAL]
-    },
-    defaultMethodOptions: {
-        authorizationType: api.AuthorizationType.NONE
-    }
-};
-
-const apiGateway = new api.LambdaRestApi(this, 'LambdaRestApi', apiGatewayProps);
-
-const parentZone = new route53.PublicHostedZone(this, 'HostedZone', {
-  zoneName: 'example.com',
-});
+const ourHostedZone = route53.HostedZone.fromLookup(this, 'HostedZone', {
+    domainName: "example.com",
+  });
 
 // This construct can only be attached to a configured API Gateway.
 new Route53ToApigateway(this, 'Route53ToApigatewayPattern', {
-    existingApiGatewayObj: apiGateway,
-    existingHostedZoneInterface: parentZone,
+    existingApiGatewayObj: existingRestApi,
+    existingHostedZoneInterface: ourHostedZone,
     publicApi: true
 });
 
@@ -83,14 +67,13 @@ _Parameters_
 
 This construct cannot create a new Public Hosted Zone, if you are creating a public API you must supply an existing Public Hosted Zone that will be reconfigured with a new Alias record. Public Hosted Zones are configured with public domain names and are not well suited to be launched and torn down dynamically, so this construct will only reconfigure existing Public Hosted Zones.
 
-This construct can create Private Hosted Zones. If you want a Private Hosted Zone, then you can either provide an existing Private Hosted Zone or a privateHostedZoneProps value with at least the Domain Name defined.
+This construct can create Private Hosted Zones. If you want a Private Hosted Zone, then you can either provide an existing Private Hosted Zone or a privateHostedZoneProps value with at least the Domain Name defined. A private API will already define the VPC and we only accept existing APIs, so this construct will never create a VPC. Users can bring private APIs they created via the CDK through the existingVpc prop.
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
 | privateHostedZoneProps? | [route53.PrivateHostedZoneProps](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-route53.PrivateHostedZoneProps.html) | Optional custom properties for a new Private Hosted Zone. Cannot be specified for a public API. Cannot specify a VPC, it will use the VPC in existingVpc or the VPC created by the construct. Providing both this and existingHostedZoneInterface is an error. |
 | existingHostedZoneInterface? | [route53.IHostedZone](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-route53.IHostedZone.html) | Existing Public or Private Hosted Zone (type must match publicApi setting). Specifying both this and privateHostedZoneProps is an error. If this is a Private Hosted Zone, the associated VPC must be provided as the existingVpc property.|
 | publicApi | boolean | Whether the construct is deploying a private or public API. This has implications for the Hosted Zone and VPC. |
-| vpcProps? | [ec2.VpcProps](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.VpcProps.html) | Optional custom properties for a VPC the construct will create. This VPC will be used by any Private Hosted Zone the construct creates (The privateHostedZoneProps cannot include a VPC). Providing both this and existingVpc is an error. |
 | existingVpc? | [ec2.IVpc](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.IVpc.html) | An existing VPC in which to deploy the construct. Providing both this and vpcProps is an error.|
 |existingApiGatewayInterface|[`api.IRestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.IRestApi.html)|The existing API Gateway instance that will be connected to the Route 53 hosted zone. *Note that Route 53 can only be connected to a configured API Gateway, so this construct only accepts an existing IRestApi and does not accept apiGatewayProps.*|
 
@@ -101,9 +84,6 @@ This construct can create Private Hosted Zones. If you want a Private Hosted Zon
 |hostedZone|[route53.IHostedZone](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-route53.IHostedZone.html)|The hosted zone used by the construct (whether created by the construct or provided by the client) |
 | vpc? | [ec2.IVpc](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.IVpc.html) | The VPC used by the construct (whether created by the construct or provided by the client) |
 |apiGateway|[`api.RestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.RestApi.html)|Returns an instance of the API Gateway REST API created by the pattern.|
-|apiGatewayRole|[`iam.Role`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)|Returns an instance of the iam.Role created by the construct for API Gateway.|
-|apiGatewayCloudWatchRole?|[`iam.Role`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)|Returns an instance of the iam.Role created by the construct for API Gateway for CloudWatch access.|
-|apiGatewayLogGroup|[`logs.LogGroup`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-logs.LogGroup.html)|Returns an instance of the LogGroup created by the construct for API Gateway access logging to CloudWatch.|
 
 ## Default settings
 Out of the box implementation of the Construct without any override will set the following defaults:
