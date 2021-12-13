@@ -86,7 +86,7 @@ test('Create a Glue Job outside the construct', () => {
     command: {
       name: 'pythonshell',
       pythonVersion: '2',
-      scriptLocation: 's3://existingFakeLocation'
+      scriptLocation: 's3://existingfakelocation'
     },
     role: new Role(stack, 'ExistingJobRole', {
       assumedBy: new ServicePrincipal('glue.amazon.com'),
@@ -122,7 +122,7 @@ test('Create a Glue Job outside the construct', () => {
       Command: {
         Name: "pythonshell",
         PythonVersion: "2",
-        ScriptLocation: "s3://existingFakeLocation",
+        ScriptLocation: "s3://existingfakelocation",
       },
       GlueVersion: "1",
       MaxCapacity: 4,
@@ -150,7 +150,7 @@ test('Test custom deployment properties', () => {
     command: {
       name: _commandName,
       pythonVersion: '3',
-      scriptLocation: 's3://existingFakeLocation'
+      scriptLocation: 's3://existingfakelocation'
     },
     role: new Role(stack, 'ExistingJobRole', {
       assumedBy: new ServicePrincipal('glue.amazon.com'),
@@ -182,7 +182,7 @@ test('Test custom deployment properties', () => {
       Command: {
         Name: "glueetl",
         PythonVersion: "3",
-        ScriptLocation: "s3://existingFakeLocation",
+        ScriptLocation: "s3://existingfakelocation",
       },
       GlueVersion: "1",
       NumberOfWorkers: 2,
