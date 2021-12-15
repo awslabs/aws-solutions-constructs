@@ -1084,7 +1084,38 @@
         }
       }
     },
-    "testonetg1tgDC5C1350": {
+    "testonelistener5EBC4D40": {
+      "Type": "AWS::ElasticLoadBalancingV2::Listener",
+      "Properties": {
+        "DefaultActions": [
+          {
+            "TargetGroupArn": {
+              "Ref": "testonetg2tg6459EC7C"
+            },
+            "Type": "forward"
+          }
+        ],
+        "LoadBalancerArn": {
+          "Ref": "existingalbalb3A941601"
+        },
+        "Port": 80,
+        "Protocol": "HTTP"
+      },
+      "DependsOn": [
+        "testonetg2tg6459EC7C"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W56",
+              "reason": "All integration tests must be HTTP because of certificate limitations."
+            }
+          ]
+        }
+      }
+    },
+    "testonetg2tg6459EC7C": {
       "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
       "Properties": {
         "Targets": [
@@ -1102,44 +1133,13 @@
       "DependsOn": [
         "LambdaFunctionInvokeServicePrincipalelasticloadbalancingamazonawscom842E1595"
       ]
-    },
-    "testonelistener5EBC4D40": {
-      "Type": "AWS::ElasticLoadBalancingV2::Listener",
-      "Properties": {
-        "DefaultActions": [
-          {
-            "TargetGroupArn": {
-              "Ref": "testonetg1tgDC5C1350"
-            },
-            "Type": "forward"
-          }
-        ],
-        "LoadBalancerArn": {
-          "Ref": "existingalbalb3A941601"
-        },
-        "Port": 80,
-        "Protocol": "HTTP"
-      },
-      "DependsOn": [
-        "testonetg1tgDC5C1350"
-      ],
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W56",
-              "reason": "All integration tests must be HTTP because of certificate limitations."
-            }
-          ]
-        }
-      }
     }
   },
   "Parameters": {
     "BootstrapVersion": {
       "Type": "AWS::SSM::Parameter::Value<String>",
       "Default": "/cdk-bootstrap/hnb659fds/version",
-      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
     }
   },
   "Rules": {
