@@ -50,6 +50,12 @@ export interface S3ToStepfunctionsProps {
    */
   readonly eventRuleProps?: events.RuleProps,
   /**
+   * Whether to deploy a Trail in AWS CloudTrail to log API events in Amazon S3
+   *
+   * @default - true
+   */
+   readonly deployCloudTrail?: boolean,
+  /**
    * Whether to create recommended CloudWatch alarms
    *
    * @default - Alarms are created
@@ -96,6 +102,10 @@ export class S3ToStepfunctions extends Construct {
     defaults.CheckProps(props);
 
     let bucket: s3.IBucket;
+
+    if(props.deployCloudTrail != undefined) {
+      defaults.printWarning("The deployCloudTrail prop has been deprecated since it no longer requires CloudTrail.");
+    };
 
     if (!props.existingBucketObj) {
       [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {

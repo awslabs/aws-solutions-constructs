@@ -51,7 +51,8 @@ test('override eventRuleProps', () => {
           }
         }
       }
-    }
+    },
+    deployCloudTrail: false // Testing warning
   };
 
   new S3ToStepfunctions(stack, 'test-s3-stepfunctions', props);

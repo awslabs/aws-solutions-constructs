@@ -49,6 +49,12 @@ export interface S3ToStepFunctionProps {
    */
   readonly eventRuleProps?: events.RuleProps,
   /**
+   * Whether to deploy a Trail in AWS CloudTrail to log API events in Amazon S3
+   *
+   * @default - true
+   */
+   readonly deployCloudTrail?: boolean,
+  /**
    * Whether to create recommended CloudWatch alarms
    *
    * @default - Alarms are created
