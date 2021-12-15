@@ -24,7 +24,7 @@
 
 This AWS Solutions Construct implements an Amazon S3 bucket connected to an AWS Step Functions.
 
-*Note - This construct uses Amazon EventBridge (Amazon CloudWatch Events) to trigger AWS Step Functions State Machine executions. EventBridge is more flexible, but triggering executions with S3 Event Notifications has less latency and is more cost effective. If cost and/or latency is an issue, you should consider deploying aws-s3-lambda and aws-lambda-stepfunctions in place of this construct.*
+*Note - This construct uses Amazon EventBridge (S3 Event Notifications) to trigger AWS Step Functions State Machine executions. EventBridge is more flexible, but triggering executions with S3 Event Notifications has less latency and is more cost effective. If cost is an issue, you should consider deploying aws-s3-lambda and aws-lambda-stepfunctions in place of this construct.*
 
 Here is a minimal deployable pattern definition in Typescript:
 
@@ -57,12 +57,10 @@ _Parameters_
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
-|existingBucketObj?|[`s3.IBucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.IBucket.html)|Existing instance of S3 Bucket object. If this is provided, then also providing bucketProps is an error. |
+|existingBucketObj?|[`s3.IBucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.IBucket.html)|Existing instance of S3 Bucket object. EventBridge must be enabled in the existing bucket for this to work. If this is provided, then also providing bucketProps is an error.|
 |bucketProps?|[`s3.BucketProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html)|Optional user provided props to override the default props for the S3 Bucket.|
 |stateMachineProps|[`sfn.StateMachineProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-stepfunctions.StateMachineProps.html)|User provided props to override the default props for sfn.StateMachine.|
 |eventRuleProps?|[`events.RuleProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-events.RuleProps.html)|Optional user provided eventRuleProps to override the defaults.|
-|deployCloudTrail?|`boolean`|Whether to deploy a Trail in AWS CloudTrail to log API events in Amazon S3. Defaults to `true`.|
-|createCloudWatchAlarms|`boolean`|Whether to create recommended CloudWatch alarms.|
 |logGroupProps?|[`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-logs.LogGroupProps.html)|Optional user provided props to override the default props for for the CloudWatchLogs LogGroup.|
 |loggingBucketProps?|[`s3.BucketProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html)|Optional user provided props to override the default props for the S3 Logging Bucket.|
 |logS3AccessLogs?| boolean|Whether to turn on Access Logging for the S3 bucket. Creates an S3 bucket with associated storage costs for the logs. Enabling Access Logging is a best practice. default - true|
@@ -76,9 +74,6 @@ _Parameters_
 |cloudwatchAlarms?|[`cloudwatch.Alarm[]`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudwatch.Alarm.html)|Returns a list of cloudwatch.Alarm created by the construct.|
 |s3Bucket?|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html)|Returns an instance of the s3.Bucket created by the construct.|
 |s3LoggingBucket?|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html)|Returns an instance of s3.Bucket created by the construct as the logging bucket for the primary bucket.|
-|cloudtrail|[`cloudtrail.Trail`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudtrail.Trail.html)|Returns an instance of the cloudtrail.Trail created by the construct.|
-|cloudtrailBucket|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html)|Returns an instance of the s3.Bucket created by the construct for CloudTrail.|
-|cloudtrailLoggingBucket|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html)|Returns an instance of s3.Bucket created by the construct as the logging bucket for the primary CloudTrail bucket.|
 |s3BucketInterface|[`s3.IBucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.IBucket.html)|Returns an instance of s3.IBucket created by the construct.|
 
 ## Default settings
@@ -86,6 +81,7 @@ _Parameters_
 Out of the box implementation of the Construct without any override will set the following defaults:
 
 ### Amazon S3 Bucket
+* Enable EventBridge to send events from the S3 Bucket
 * Configure Access logging for S3 Bucket
 * Enable server-side encryption for S3 Bucket using AWS managed KMS Key
 * Enforce encryption of data in transit
@@ -94,8 +90,8 @@ Out of the box implementation of the Construct without any override will set the
 * Retain the S3 Bucket when deleting the CloudFormation stack
 * Applies Lifecycle rule to move noncurrent object versions to Glacier storage after 90 days
 
-### AWS CloudTrail
-* Configure a Trail in AWS CloudTrail to log API events in Amazon S3 related to the Bucket created by the Construct
+### AWS S3 Event Notification
+* Enable S3 to send events to EventBridge when an object is created.
 
 ### Amazon CloudWatch Events Rule
 * Grant least privilege permissions to CloudWatch Events to trigger the Lambda Function

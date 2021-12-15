@@ -17,7 +17,6 @@ import { S3ToStepfunctions } from '@aws-solutions-constructs/aws-s3-stepfunction
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
-import * as cloudtrail from '@aws-cdk/aws-cloudtrail';
 import * as events from '@aws-cdk/aws-events';
 import * as logs from '@aws-cdk/aws-logs';
 
@@ -49,12 +48,6 @@ export interface S3ToStepFunctionProps {
    * @default - None
    */
   readonly eventRuleProps?: events.RuleProps,
-  /**
-   * Whether to deploy a Trail in AWS CloudTrail to log API events in Amazon S3
-   *
-   * @default - true
-   */
-  readonly deployCloudTrail?: boolean,
   /**
    * Whether to create recommended CloudWatch alarms
    *
@@ -88,9 +81,6 @@ export class S3ToStepFunction extends Construct {
   public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
   public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
-  public readonly cloudtrail?: cloudtrail.Trail;
-  public readonly cloudtrailBucket?: s3.Bucket;
-  public readonly cloudtrailLoggingBucket?: s3.Bucket;
   public readonly s3BucketInterface: s3.IBucket;
 
   /**
@@ -115,9 +105,6 @@ export class S3ToStepFunction extends Construct {
     this.s3Bucket = wrappedConstruct.s3Bucket;
     this.s3LoggingBucket = wrappedConstruct.s3LoggingBucket;
     this.cloudwatchAlarms = wrappedConstruct.cloudwatchAlarms;
-    this.cloudtrail = wrappedConstruct.cloudtrail;
-    this.cloudtrailBucket = wrappedConstruct.cloudtrailBucket;
-    this.cloudtrailLoggingBucket = wrappedConstruct.cloudtrailLoggingBucket;
     this.s3BucketInterface = wrappedConstruct.s3BucketInterface;
   }
 }

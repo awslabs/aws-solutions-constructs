@@ -18,7 +18,6 @@ import { EventbridgeToStepfunctions } from '@aws-solutions-constructs/aws-eventb
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
-import * as cloudtrail from '@aws-cdk/aws-cloudtrail';
 import * as events from '@aws-cdk/aws-events';
 import * as logs from '@aws-cdk/aws-logs';
 
@@ -51,12 +50,6 @@ export interface S3ToStepfunctionsProps {
    */
   readonly eventRuleProps?: events.RuleProps,
   /**
-   * Whether to deploy a Trail in AWS CloudTrail to log API events in Amazon S3
-   *
-   * @default - true
-   */
-  readonly deployCloudTrail?: boolean,
-  /**
    * Whether to create recommended CloudWatch alarms
    *
    * @default - Alarms are created
@@ -73,7 +66,7 @@ export interface S3ToStepfunctionsProps {
    *
    * @default - Default props are used
    */
-   readonly loggingBucketProps?: s3.BucketProps,
+  readonly loggingBucketProps?: s3.BucketProps,
   /**
    * Whether to turn on Access Logs for the S3 bucket with the associated storage costs.
    * Enabling Access Logging is a best practice.
@@ -89,9 +82,6 @@ export class S3ToStepfunctions extends Construct {
   public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
   public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
-  public readonly cloudtrail?: cloudtrail.Trail;
-  public readonly cloudtrailBucket?: s3.Bucket;
-  public readonly cloudtrailLoggingBucket?: s3.Bucket;
   public readonly s3BucketInterface: s3.IBucket;
 
   /**
@@ -114,49 +104,29 @@ export class S3ToStepfunctions extends Construct {
         logS3AccessLogs: props.logS3AccessLogs
       });
       bucket = this.s3Bucket;
+
+      const cfnBucket = bucket.node.defaultChild as s3.CfnBucket;
+      cfnBucket.addPropertyOverride('NotificationConfiguration.EventBridgeConfiguration.EventBridgeEnabled', true);
+
     } else {
       bucket = props.existingBucketObj;
     }
 
     this.s3BucketInterface = bucket;
 
-    if (props.deployCloudTrail === undefined || props.deployCloudTrail) {
-      [this.cloudtrailBucket, this.cloudtrailLoggingBucket] = defaults.buildS3Bucket(this, {}, 'CloudTrail');
-
-      this.cloudtrail = new cloudtrail.Trail(this, 'S3EventsTrail', {
-        bucket: this.cloudtrailBucket
-      });
-
-      this.cloudtrail.addS3EventSelector([{
-        bucket
-      }], {
-        readWriteType: cloudtrail.ReadWriteType.ALL,
-        includeManagementEvents: false
-      });
-    }
-
     let _eventRuleProps = {};
     if (props.eventRuleProps) {
       _eventRuleProps = props.eventRuleProps;
     } else {
-      // By default the CW Events Rule will filter any 's3:PutObject' events for the S3 Bucket
+      // By default the EventBridge Rule will filter any PutObject, POST Object, CopyObject,
+      // or CompleteMultipartUpload events for the S3 Bucket
       _eventRuleProps = {
         eventPattern: {
           source: ['aws.s3'],
-          detailType: ['AWS API Call via CloudTrail'],
+          detailType: ["Object Created"],
           detail: {
-            eventSource: [
-              "s3.amazonaws.com"
-            ],
-            eventName: [
-              "PutObject",
-              "CopyObject",
-              "CompleteMultipartUpload"
-            ],
-            requestParameters: {
-              bucketName: [
-                bucket.bucketName
-              ]
+            bucket: {
+              name: [bucket.bucketName]
             }
           }
         }
