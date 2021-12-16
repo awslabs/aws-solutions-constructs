@@ -103,9 +103,9 @@ export class S3ToStepfunctions extends Construct {
 
     let bucket: s3.IBucket;
 
-    if(props.deployCloudTrail != undefined) {
+    if (props.deployCloudTrail !== undefined) {
       defaults.printWarning("The deployCloudTrail prop has been deprecated since it no longer requires CloudTrail.");
-    };
+    }
 
     if (!props.existingBucketObj) {
       [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
