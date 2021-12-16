@@ -54,7 +54,7 @@ export interface S3ToStepfunctionsProps {
    *
    * @default - true
    */
-   readonly deployCloudTrail?: boolean,
+  readonly deployCloudTrail?: boolean,
   /**
    * Whether to create recommended CloudWatch alarms
    *

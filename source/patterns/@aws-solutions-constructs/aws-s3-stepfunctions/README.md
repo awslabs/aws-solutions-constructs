@@ -24,9 +24,9 @@
 
 This AWS Solutions Construct implements an Amazon S3 bucket connected to an AWS Step Functions.
 
-*Note - This construct uses Amazon EventBridge (S3 Event Notifications) to trigger AWS Step Functions State Machine executions. This method is more flexible, more expensive, and has higher latency.*
+*Note - This constructs sends S3 Event Notification to EventBridge, then triggers AWS Step Functions State Machine executions from EventBridge.*
 
-*If cost and/or latency is an issue, you should consider deploying aws-s3-lambda and aws-lambda-stepfunctions in place of this construct. This will create a trigger in the Lambda function from the S3 source and have the Lambda function invoke the Step Functions state machine. This method is less flexible, more work, more cost effective, and has lower latency.*
+*An alternative architecture can be built that triggers a Lambda function from S3 Event notifications using aws-s3-lambda and aws-lambda-stepfunctions. Channelling the S3 events through Lambda is less flexible than EventBridge, but is more cost effective and has lower latency.*
 
 Here is a minimal deployable pattern definition in Typescript:
 
@@ -59,7 +59,7 @@ _Parameters_
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
-|existingBucketObj?|[`s3.IBucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.IBucket.html)|Existing instance of S3 Bucket object. EventBridge must be enabled in the existing bucket for this to work. If this is provided, then also providing bucketProps is an error.|
+|existingBucketObj?|[`s3.IBucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.IBucket.html)|Existing instance of S3 Bucket object. The existing bucket must have [EventBridge enabled](https://docs.aws.amazon.com/AmazonS3/latest/userguide/enable-event-notifications-eventbridge.html) for this to work. If this is provided, then also providing bucketProps is an error.|
 |bucketProps?|[`s3.BucketProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html)|Optional user provided props to override the default props for the S3 Bucket.|
 |stateMachineProps|[`sfn.StateMachineProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-stepfunctions.StateMachineProps.html)|User provided props to override the default props for sfn.StateMachine.|
 |eventRuleProps?|[`events.RuleProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-events.RuleProps.html)|Optional user provided eventRuleProps to override the defaults.|
@@ -79,6 +79,11 @@ _Parameters_
 |s3Bucket?|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html)|Returns an instance of the s3.Bucket created by the construct.|
 |s3LoggingBucket?|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html)|Returns an instance of s3.Bucket created by the construct as the logging bucket for the primary bucket.|
 |s3BucketInterface|[`s3.IBucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.IBucket.html)|Returns an instance of s3.IBucket created by the construct.|
+
+*Note - CloudTrail related properties have been removed since it is not required for this construct.*
+- cloudtrail
+- cloudtrailBucket
+- cloudtrailLoggingBucket
 
 ## Default settings
 
