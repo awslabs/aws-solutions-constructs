@@ -48,7 +48,7 @@ new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', {
       pythonVersion: '3',
       scriptLocation: new Asset(stack, 'ScriptLocation', {
         path: `${__dirname}/transform.py`
-      }).assetPath
+      }).s3ObjectUrl
     }
   },
   fieldSchema
