@@ -17,6 +17,8 @@ import { KinesisStreamsToKinesisFirehoseToS3 } from '../lib';
 import { KinesisStreamsToLambda } from '@aws-solutions-constructs/aws-kinesisstreams-lambda';
 import * as lambda from '@aws-cdk/aws-lambda';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import * as s3 from "@aws-cdk/aws-s3";
+import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -25,19 +27,30 @@ stack.templateOptions.description = 'Integration Test for aws-kinesisstreams-kin
 
 const construct = new KinesisStreamsToLambda(stack, 'test-kinesis-lambda', {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_10_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   },
 });
 
-new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-existing-stream-firehose-s3-stack', {
+const streamFirehoseS3 = new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-existing-stream-firehose-s3-stack', {
   existingStreamObj: construct.kinesisStream,
   createCloudWatchAlarms: false,
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-  }
+  },
+  logGroupProps: {
+    removalPolicy: RemovalPolicy.DESTROY
+  },
+  logS3AccessLogs: false
 });
+
+const s3Bucket = streamFirehoseS3.s3Bucket as s3.Bucket;
+
+defaults.addCfnSuppressRules(s3Bucket, [
+  { id: 'W35',
+    reason: 'This S3 bucket is created for unit/ integration testing purposes only.' },
+]);
 
 // Synth
 app.synth();

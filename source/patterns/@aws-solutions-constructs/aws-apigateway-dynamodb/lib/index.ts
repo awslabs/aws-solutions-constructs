@@ -109,7 +109,7 @@ export class ApiGatewayToDynamoDB extends Construct {
   public readonly dynamoTable: dynamodb.Table;
   public readonly apiGatewayRole: iam.Role;
   public readonly apiGateway: api.RestApi;
-  public readonly apiGatewayCloudWatchRole: iam.Role;
+  public readonly apiGatewayCloudWatchRole?: iam.Role;
   public readonly apiGatewayLogGroup: logs.LogGroup;
   /**
    * @summary Constructs a new instance of the ApiGatewayToDynamoDB class.

@@ -152,7 +152,7 @@ test('check eventbus property, snapshot & eventbus exists', () => {
         source: ['solutionsconstructs']
       }
     },
-    eventBusProps: {}
+    eventBusProps: { eventBusName: 'test' }
   };
   const construct = new EventsRuleToKinesisFirehoseToS3(stack, 'test-eventsrule-kinesis-firehose-default-parameters', props);
 
@@ -177,8 +177,8 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
         source: ['solutionsconstructs']
       }
     },
-    eventBusProps: {},
-    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {})
+    eventBusProps: { eventBusName: 'test' },
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {  eventBusName: 'test'  })
   };
 
   const app = () => {
@@ -205,4 +205,61 @@ test('check custom event bus resource with props when deploy:true', () => {
   expect(stack).toHaveResource('AWS::Events::EventBus', {
     Name: `testeventbus`
   });
+});
+
+// --------------------------------------------------------------
+// s3 bucket with bucket, loggingBucket, and auto delete objects
+// --------------------------------------------------------------
+test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
+  const stack = new cdk.Stack();
+
+  new EventsRuleToKinesisFirehoseToS3(stack, 'events-rule-kinsisfirehose-s3', {
+    eventRuleProps: {
+      description: 'event rule props',
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+    loggingBucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::S3::Bucket", {
+    AccessControl: "LogDeliveryWrite"
+  });
+
+  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+    ServiceToken: {
+      "Fn::GetAtt": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+        "Arn"
+      ]
+    },
+    BucketName: {
+      Ref: "eventsrulekinsisfirehoses3eventsrulekinsisfirehoses3WKinesisFirehoseToS3S3LoggingBucket9FCAE876"
+    }
+  });
+});
+
+// --------------------------------------------------------------
+// s3 bucket with one content bucket and no logging bucket
+// --------------------------------------------------------------
+test('s3 bucket with one content bucket and no logging bucket', () => {
+  const stack = new cdk.Stack();
+
+  new EventsRuleToKinesisFirehoseToS3(stack, 'events-rule-kinsisfirehose-s3', {
+    eventRuleProps: {
+      description: 'event rule props',
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+    logS3AccessLogs: false
+  });
+
+  expect(stack).toCountResources("AWS::S3::Bucket", 1);
 });

@@ -34,7 +34,7 @@ test('check s3Bucket default encryption', () => {
   expect(stack).toHaveResource('AWS::S3::Bucket', {
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [{
-        ServerSideEncryptionByDefault : {
+        ServerSideEncryptionByDefault: {
           SSEAlgorithm: "AES256"
         }
       }]
@@ -89,7 +89,7 @@ test('check existing bucket', () => {
   });
 
   const props: CloudFrontToS3Props = {
-    existingBucketInterface: existingBucket
+    existingBucketObj: existingBucket
   };
 
   new CloudFrontToS3(stack, 'test-cloudfront-s3', props);
@@ -128,7 +128,7 @@ test('check properties', () => {
   const construct: CloudFrontToS3 = deploy(stack);
 
   expect(construct.cloudFrontWebDistribution !== null);
-  expect(construct.s3Bucket  !== null);
+  expect(construct.s3Bucket !== null);
 });
 
 // --------------------------------------------------------------
@@ -143,7 +143,7 @@ test("Test bad call with existingBucket and bucketProps", () => {
   const app = () => {
     // Helper declaration
     new CloudFrontToS3(stack, "bad-s3-args", {
-      existingBucketInterface: testBucket,
+      existingBucketObj: testBucket,
       bucketProps: {
         removalPolicy: RemovalPolicy.DESTROY
       },
@@ -153,11 +153,11 @@ test("Test bad call with existingBucket and bucketProps", () => {
   expect(app).toThrowError();
 });
 
-test("Test existingBucketInterface", () => {
+test("Test existingBucketObj", () => {
   // Stack
   const stack = new cdk.Stack();
   const construct: CloudFrontToS3 = new CloudFrontToS3(stack, "existingIBucket", {
-    existingBucketInterface: s3.Bucket.fromBucketName(stack, 'mybucket', 'mybucket')
+    existingBucketObj: s3.Bucket.fromBucketName(stack, 'mybucket', 'mybucket')
   });
   // Assertion
   expect(construct.cloudFrontWebDistribution !== null);
@@ -203,7 +203,7 @@ test("Test existingBucketInterface", () => {
 test('test cloudfront disable cloudfront logging', () => {
   const stack = new cdk.Stack();
 
-  const construct = deploy(stack, {cloudFrontDistributionProps: {enableLogging: false}} );
+  const construct = deploy(stack, { cloudFrontDistributionProps: { enableLogging: false } });
 
   expect(construct.cloudFrontLoggingBucket === undefined);
 });
@@ -211,7 +211,7 @@ test('test cloudfront disable cloudfront logging', () => {
 test('test cloudfront with custom domain names', () => {
   const stack = new cdk.Stack();
 
-  const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012');
+  const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012');
 
   const props: CloudFrontToS3Props = {
     cloudFrontDistributionProps: {
@@ -260,6 +260,114 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
     },
     BucketName: {
       Ref: "cloudfronts3S3LoggingBucket52EEB708"
+    }
+  });
+});
+
+// --------------------------------------------------------------
+// Cloudfront logging bucket with destroy removal policy and auto delete objects
+// --------------------------------------------------------------
+test('Cloudfront logging bucket with destroy removal policy and auto delete objects', () => {
+  const stack = new cdk.Stack();
+
+  new CloudFrontToS3(stack, 'cloudfront-s3', {
+    cloudFrontLoggingBucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::S3::Bucket", {
+    AccessControl: "LogDeliveryWrite"
+  });
+
+  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+    ServiceToken: {
+      "Fn::GetAtt": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+        "Arn"
+      ]
+    },
+    BucketName: {
+      Ref: "cloudfronts3CloudfrontLoggingBucket5B845143"
+    }
+  });
+});
+
+// --------------------------------------------------------------
+// Cloudfront logging bucket error providing existing log bucket and logBucketProps
+// --------------------------------------------------------------
+test('Cloudfront logging bucket error when providing existing log bucket and logBucketProps', () => {
+  const stack = new cdk.Stack();
+  const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});
+
+  const app = () => {
+    new CloudFrontToS3(stack, 'cloudfront-s3', {
+      cloudFrontDistributionProps: {
+        logBucket
+      },
+      cloudFrontLoggingBucketProps: {
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+        autoDeleteObjects: true
+      }
+    });
+  };
+
+  expect(app).toThrowError();
+});
+
+// --------------------------------------------------------------
+// s3 bucket with one content bucket and no logging bucket
+// --------------------------------------------------------------
+test('s3 bucket with one content bucket and no logging bucket', () => {
+  const stack = new cdk.Stack();
+
+  const construct = new CloudFrontToS3(stack, 'cloudfront-s3', {
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+    logS3AccessLogs: false
+  });
+
+  expect(stack).toCountResources("AWS::S3::Bucket", 2);
+  expect(construct.s3LoggingBucket).toEqual(undefined);
+});
+
+// --------------------------------------------------
+// CloudFront origin path
+// --------------------------------------------------
+test('CloudFront origin path present when provided', () => {
+  const stack = new cdk.Stack();
+
+  new CloudFrontToS3(stack, 'cloudfront-s3', {
+    originPath: '/testPath'
+  });
+
+  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig:
+    {
+      Origins: [
+        {
+          OriginPath: "/testPath",
+        }
+      ]
+    }
+  });
+});
+
+test('CloudFront origin path should not be present if not provided', () => {
+  const stack = new cdk.Stack();
+
+  new CloudFrontToS3(stack, 'cloudfront-s3', {});
+
+  expect(stack).not.toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig:
+    {
+      Origins: [
+        {
+          OriginPath: "/testPath",
+        }
+      ]
     }
   });
 });

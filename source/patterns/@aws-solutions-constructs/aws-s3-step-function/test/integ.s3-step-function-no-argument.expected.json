@@ -1,89 +1,5 @@
 {
   "Resources": {
-    "tests3stepfunctionconstructtests3stepfunctionconstructWS3LoggingBucket615E11F3": {
-      "Type": "AWS::S3::Bucket",
-      "Properties": {
-        "AccessControl": "LogDeliveryWrite",
-        "BucketEncryption": {
-          "ServerSideEncryptionConfiguration": [
-            {
-              "ServerSideEncryptionByDefault": {
-                "SSEAlgorithm": "AES256"
-              }
-            }
-          ]
-        },
-        "PublicAccessBlockConfiguration": {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true
-        },
-        "VersioningConfiguration": {
-          "Status": "Enabled"
-        }
-      },
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete",
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W35",
-              "reason": "This S3 bucket is used as the access logging bucket for another bucket"
-            }
-          ]
-        }
-      }
-    },
-    "tests3stepfunctionconstructtests3stepfunctionconstructWS3LoggingBucketPolicyC5059059": {
-      "Type": "AWS::S3::BucketPolicy",
-      "Properties": {
-        "Bucket": {
-          "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructWS3LoggingBucket615E11F3"
-        },
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": "*",
-              "Condition": {
-                "Bool": {
-                  "aws:SecureTransport": "false"
-                }
-              },
-              "Effect": "Deny",
-              "Principal": {
-                "AWS": "*"
-              },
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "tests3stepfunctionconstructtests3stepfunctionconstructWS3LoggingBucket615E11F3",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::GetAtt": [
-                    "tests3stepfunctionconstructtests3stepfunctionconstructWS3LoggingBucket615E11F3",
-                    "Arn"
-                  ]
-                }
-              ],
-              "Sid": "HttpsOnly"
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      }
-    },
     "tests3stepfunctionconstructtests3stepfunctionconstructWS3Bucket474FE3A1": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
@@ -109,11 +25,6 @@
             }
           ]
         },
-        "LoggingConfiguration": {
-          "DestinationBucketName": {
-            "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructWS3LoggingBucket615E11F3"
-          }
-        },
         "PublicAccessBlockConfiguration": {
           "BlockPublicAcls": true,
           "BlockPublicPolicy": true,
@@ -125,7 +36,17 @@
         }
       },
       "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W35",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only."
+            }
+          ]
+        }
+      }
     },
     "tests3stepfunctionconstructtests3stepfunctionconstructWS3BucketPolicy4513F8D8": {
       "Type": "AWS::S3::BucketPolicy",
@@ -174,266 +95,6 @@
           "Version": "2012-10-17"
         }
       }
-    },
-    "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3LoggingBucketC008CB57": {
-      "Type": "AWS::S3::Bucket",
-      "Properties": {
-        "AccessControl": "LogDeliveryWrite",
-        "BucketEncryption": {
-          "ServerSideEncryptionConfiguration": [
-            {
-              "ServerSideEncryptionByDefault": {
-                "SSEAlgorithm": "AES256"
-              }
-            }
-          ]
-        },
-        "PublicAccessBlockConfiguration": {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true
-        },
-        "VersioningConfiguration": {
-          "Status": "Enabled"
-        }
-      },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W35",
-              "reason": "This S3 bucket is used as the access logging bucket for another bucket"
-            }
-          ]
-        }
-      }
-    },
-    "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3LoggingBucketPolicyEBACDA63": {
-      "Type": "AWS::S3::BucketPolicy",
-      "Properties": {
-        "Bucket": {
-          "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3LoggingBucketC008CB57"
-        },
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": "*",
-              "Condition": {
-                "Bool": {
-                  "aws:SecureTransport": "false"
-                }
-              },
-              "Effect": "Deny",
-              "Principal": {
-                "AWS": "*"
-              },
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3LoggingBucketC008CB57",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::GetAtt": [
-                    "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3LoggingBucketC008CB57",
-                    "Arn"
-                  ]
-                }
-              ],
-              "Sid": "HttpsOnly"
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      }
-    },
-    "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3BucketACD4E98E": {
-      "Type": "AWS::S3::Bucket",
-      "Properties": {
-        "BucketEncryption": {
-          "ServerSideEncryptionConfiguration": [
-            {
-              "ServerSideEncryptionByDefault": {
-                "SSEAlgorithm": "AES256"
-              }
-            }
-          ]
-        },
-        "LifecycleConfiguration": {
-          "Rules": [
-            {
-              "NoncurrentVersionTransitions": [
-                {
-                  "StorageClass": "GLACIER",
-                  "TransitionInDays": 90
-                }
-              ],
-              "Status": "Enabled"
-            }
-          ]
-        },
-        "LoggingConfiguration": {
-          "DestinationBucketName": {
-            "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3LoggingBucketC008CB57"
-          }
-        },
-        "PublicAccessBlockConfiguration": {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true
-        },
-        "VersioningConfiguration": {
-          "Status": "Enabled"
-        }
-      },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
-    },
-    "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3BucketPolicy25F2E4B1": {
-      "Type": "AWS::S3::BucketPolicy",
-      "Properties": {
-        "Bucket": {
-          "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3BucketACD4E98E"
-        },
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": "*",
-              "Condition": {
-                "Bool": {
-                  "aws:SecureTransport": "false"
-                }
-              },
-              "Effect": "Deny",
-              "Principal": {
-                "AWS": "*"
-              },
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3BucketACD4E98E",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::GetAtt": [
-                    "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3BucketACD4E98E",
-                    "Arn"
-                  ]
-                }
-              ],
-              "Sid": "HttpsOnly"
-            },
-            {
-              "Action": "s3:GetBucketAcl",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "cloudtrail.amazonaws.com"
-              },
-              "Resource": {
-                "Fn::GetAtt": [
-                  "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3BucketACD4E98E",
-                  "Arn"
-                ]
-              }
-            },
-            {
-              "Action": "s3:PutObject",
-              "Condition": {
-                "StringEquals": {
-                  "s3:x-amz-acl": "bucket-owner-full-control"
-                }
-              },
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "cloudtrail.amazonaws.com"
-              },
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3BucketACD4E98E",
-                        "Arn"
-                      ]
-                    },
-                    "/AWSLogs/",
-                    {
-                      "Ref": "AWS::AccountId"
-                    },
-                    "/*"
-                  ]
-                ]
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      }
-    },
-    "tests3stepfunctionconstructtests3stepfunctionconstructWS3EventsTrail64B14DA8": {
-      "Type": "AWS::CloudTrail::Trail",
-      "Properties": {
-        "IsLogging": true,
-        "S3BucketName": {
-          "Ref": "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3BucketACD4E98E"
-        },
-        "EnableLogFileValidation": true,
-        "EventSelectors": [
-          {
-            "DataResources": [
-              {
-                "Type": "AWS::S3::Object",
-                "Values": [
-                  {
-                    "Fn::Join": [
-                      "",
-                      [
-                        {
-                          "Fn::GetAtt": [
-                            "tests3stepfunctionconstructtests3stepfunctionconstructWS3Bucket474FE3A1",
-                            "Arn"
-                          ]
-                        },
-                        "/"
-                      ]
-                    ]
-                  }
-                ]
-              }
-            ],
-            "IncludeManagementEvents": false,
-            "ReadWriteType": "All"
-          }
-        ],
-        "IncludeGlobalServiceEvents": true,
-        "IsMultiRegionTrail": true
-      },
-      "DependsOn": [
-        "tests3stepfunctionconstructtests3stepfunctionconstructWCloudTrailS3BucketPolicy25F2E4B1"
-      ]
     },
     "tests3stepfunctionconstructtests3stepfunctionconstructWtests3stepfunctionconstructWeventrulestepfunctionconstructStateMachineLogGroup9A7BB9BF": {
       "Type": "AWS::Logs::LogGroup",
@@ -734,7 +395,7 @@
     "BootstrapVersion": {
       "Type": "AWS::SSM::Parameter::Value<String>",
       "Default": "/cdk-bootstrap/hnb659fds/version",
-      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
     }
   },
   "Rules": {

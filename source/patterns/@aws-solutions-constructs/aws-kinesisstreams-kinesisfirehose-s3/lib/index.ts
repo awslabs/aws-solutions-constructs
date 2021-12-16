@@ -76,6 +76,19 @@ export interface KinesisStreamsToKinesisFirehoseToS3Props {
    * @default - Default props are used
    */
   readonly logGroupProps?: logs.LogGroupProps;
+  /**
+   * Optional user provided props to override the default props for the S3 Logging Bucket.
+   *
+   * @default - Default props are used
+   */
+   readonly loggingBucketProps?: s3.BucketProps;
+   /**
+    * Whether to turn on Access Logs for the S3 bucket with the associated storage costs.
+    * Enabling Access Logging is a best practice.
+    *
+    * @default - true
+    */
+   readonly logS3AccessLogs?: boolean;
 }
 
 export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
@@ -87,6 +100,7 @@ export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
   public readonly kinesisStreamRole: iam.Role;
   public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
+  public readonly s3BucketInterface: s3.IBucket;
 
   /**
    * @summary Constructs a new instance of the KinesisStreamsToKinesisFirehoseToS3 class.
@@ -99,10 +113,6 @@ export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
   constructor(scope: Construct, id: string, props: KinesisStreamsToKinesisFirehoseToS3Props) {
     super(scope, id);
     defaults.CheckProps(props);
-
-    if (props.existingBucketObj && props.bucketProps) {
-      throw new Error('Cannot specify both bucket properties and an existing bucket');
-    }
 
     // Setup the Kinesis Stream
     this.kinesisStream = defaults.buildKinesisStream(this, {
@@ -151,7 +161,9 @@ export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
       existingBucketObj: props.existingBucketObj,
       existingLoggingBucketObj: props.existingLoggingBucketObj,
       bucketProps: props.bucketProps,
-      logGroupProps: props.logGroupProps
+      logGroupProps: props.logGroupProps,
+      loggingBucketProps: props.loggingBucketProps,
+      logS3AccessLogs: props.logS3AccessLogs
     });
 
     this.kinesisFirehose = kdfToS3Construct.kinesisFirehose;
@@ -159,6 +171,7 @@ export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
     this.kinesisFirehoseLogGroup = kdfToS3Construct.kinesisFirehoseLogGroup;
     this.s3Bucket = kdfToS3Construct.s3Bucket;
     this.s3LoggingBucket = kdfToS3Construct.s3LoggingBucket;
+    this.s3BucketInterface = kdfToS3Construct.s3BucketInterface;
 
     if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
       // Deploy best practices CW Alarms for Kinesis Stream

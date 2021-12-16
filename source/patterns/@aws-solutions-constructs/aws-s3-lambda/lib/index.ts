@@ -58,12 +58,20 @@ export interface S3ToLambdaProps {
    * @default - Default props are used
    */
    readonly loggingBucketProps?: s3.BucketProps
+  /**
+   * Whether to turn on Access Logs for the S3 bucket with the associated storage costs.
+   * Enabling Access Logging is a best practice.
+   *
+   * @default - true
+   */
+  readonly logS3AccessLogs?: boolean;
 }
 
 export class S3ToLambda extends Construct {
   public readonly lambdaFunction: lambda.Function;
   public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
+  public readonly s3BucketInterface: s3.IBucket;
 
   /**
    * @summary Constructs a new instance of the S3ToLambda class.
@@ -79,10 +87,6 @@ export class S3ToLambda extends Construct {
 
     let bucket: s3.Bucket;
 
-    if (props.existingBucketObj && props.bucketProps) {
-      throw new Error('Cannot specify both bucket properties and an existing bucket');
-    }
-
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps
@@ -91,12 +95,15 @@ export class S3ToLambda extends Construct {
     if (!props.existingBucketObj) {
       [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
         bucketProps: props.bucketProps,
-        loggingBucketProps: props.loggingBucketProps
+        loggingBucketProps: props.loggingBucketProps,
+        logS3AccessLogs: props.logS3AccessLogs
       });
       bucket = this.s3Bucket;
     } else {
       bucket = props.existingBucketObj;
     }
+
+    this.s3BucketInterface = bucket;
 
     // Create S3 trigger to invoke lambda function
     this.lambdaFunction.addEventSource(new S3EventSource(bucket,

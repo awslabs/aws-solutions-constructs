@@ -24,6 +24,9 @@ stack.templateOptions.description = 'Integration Test for aws-kinesisstreams-kin
 new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-stream-firehose-s3', {
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+  },
+  logGroupProps: {
+    removalPolicy: RemovalPolicy.DESTROY
   }
 });
 

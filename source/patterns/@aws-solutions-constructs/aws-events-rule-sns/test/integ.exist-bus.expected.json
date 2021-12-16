@@ -3,7 +3,7 @@
     "eventbus7CF8FDD5": {
       "Type": "AWS::Events::EventBus",
       "Properties": {
-        "Name": "existbuseventbus683F9152"
+        "Name": "test"
       }
     },
     "testtestWEncryptionKeyC6B126B6": {
@@ -193,7 +193,7 @@
     "BootstrapVersion": {
       "Type": "AWS::SSM::Parameter::Value<String>",
       "Default": "/cdk-bootstrap/hnb659fds/version",
-      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
     }
   },
   "Rules": {

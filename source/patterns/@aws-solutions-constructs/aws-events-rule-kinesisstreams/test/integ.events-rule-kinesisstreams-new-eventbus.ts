@@ -25,7 +25,7 @@ const props: EventsRuleToKinesisStreamsProps = {
       source: ['solutionsconstructs']
     }
   },
-  eventBusProps: {}
+  eventBusProps: { eventBusName: 'test'}
 };
 
 new EventsRuleToKinesisStreams(stack, 'test-eventsrule-kinesis-stream', props);

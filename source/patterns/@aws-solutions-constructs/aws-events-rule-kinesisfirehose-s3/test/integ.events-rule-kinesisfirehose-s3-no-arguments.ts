@@ -12,7 +12,7 @@
  */
 
 import * as events from '@aws-cdk/aws-events';
-import { App, Stack, Duration } from '@aws-cdk/core';
+import { App, Stack, Duration, RemovalPolicy } from '@aws-cdk/core';
 import {EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props} from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
@@ -23,6 +23,12 @@ stack.templateOptions.description = 'Integration Test for aws-events-rule-kinesi
 const props: EventsRuleToKinesisFirehoseToS3Props = {
   eventRuleProps: {
     schedule: events.Schedule.rate(Duration.minutes(5))
+  },
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY
+  },
+  logGroupProps: {
+    removalPolicy: RemovalPolicy.DESTROY
   }
 };
 

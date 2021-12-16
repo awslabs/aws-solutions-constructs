@@ -55,6 +55,8 @@
     "@aws-cdk/aws-cloudfront": "0.0.0",
     "@aws-cdk/aws-cloudfront-origins": "0.0.0",
     "@aws-cdk/aws-dynamodb": "0.0.0",
+    "@aws-cdk/aws-elasticloadbalancingv2": "0.0.0",
+    "@aws-cdk/aws-elasticloadbalancingv2-targets": "0.0.0",
     "@aws-cdk/aws-glue": "0.0.0",
     "@aws-cdk/aws-iot": "0.0.0",
     "@aws-cdk/aws-kinesis": "0.0.0",
@@ -84,13 +86,13 @@
     "@aws-cdk/aws-secretsmanager": "0.0.0",
     "@aws-cdk/aws-ssm": "0.0.0",
     "@aws-cdk/aws-wafv2": "0.0.0",
-    "@types/deep-diff": "^1.0.0",
-    "@types/npmlog": "^4.1.2",
     "deep-diff": "^1.0.2",
     "deepmerge": "^4.0.0",
     "npmlog": "^4.1.2"
   },
   "devDependencies": {
+    "@types/deep-diff": "^1.0.0",
+    "@types/npmlog": "^4.1.2",
     "@aws-cdk/assert": "0.0.0",
     "@types/jest": "^26.0.22",
     "@types/node": "^10.3.0"
@@ -112,9 +114,7 @@
   "bundledDependencies": [
     "deepmerge",
     "npmlog",
-    "@types/npmlog",
-    "deep-diff",
-    "@types/deep-diff"
+    "deep-diff"
   ],
   "peerDependencies": {
     "@aws-cdk/aws-cloudfront": "0.0.0",

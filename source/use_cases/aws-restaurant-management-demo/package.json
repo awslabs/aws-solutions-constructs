@@ -16,7 +16,7 @@
   },
   "license": "Apache-2.0",
   "scripts": {
-    "postinstall": "cd lib/lambda/service-staff/create-order && && npm install && cd ../../../..",
+    "postinstall": "cd lib/lambda/service-staff/create-order && npm install && cd ../../../..",
     "build": "tsc",
     "lint": "eslint -c ../eslintrc.yml --ext=.js,.ts . && tslint --project .",
     "lint-fix": "eslint -c ../eslintrc.yml --ext=.js,.ts --fix .",

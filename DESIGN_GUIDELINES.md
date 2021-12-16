@@ -98,6 +98,27 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | apiGatewayLogGroup	| logs.LogGroup	||
 | apiGatewayRole	| iam.Role	||
 
+## Application Load Balancer
+**Required Attributes on Props**
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| loadBalancerProps?| elasticloadbalancingv2.ApplicationLoadBalancerProps	| Optional custom properties for a new loadBalancer. Providing both this and existingLoadBalancer is an error. This cannot specify a VPC, it will use the VPC in existingVpc or the VPC created by the construct. |
+| existingLoadBalancerObj? | elasticloadbalancingv2.ApplicationLoadBalancer | Existing Application Load Balancer to incorporate into the construct architecture. Providing both this and loadBalancerProps is an error. The VPC containing this loadBalancer must match the VPC provided in existingVpc. |
+| listenerProps? | ApplicationListenerProps | Props to define the listener. Must be provided when adding the listener to an ALB (eg - when creating the alb), may not be provided when adding a second target to an already established listener. When provided, must include either a certificate or protocol: HTTP |
+| targetProps? | ApplicationTargetGroupProps | Optional custom properties for a new target group. While this is a standard attribute of props for ALB constructs, there are few pertinent properties for a Lambda target. |
+| ruleProps? | AddRuleProps | Rules for directing traffic to the target being created. May not be specified for the first listener added to an ALB, and must be specified for the second target added to a listener. Add a second target by instantiating this construct a second time and providing the existingAlb from the first instantiation. |
+| logAlbAccessLogs? | boolean | Whether to turn on Access Logs for the Application Load Balancer. Uses an S3 bucket with associated storage costs.Enabling Access Logging is a best practice. default - true |
+| albLoggingBucketProps? | s3.BucketProps | Optional properties to customize the bucket used to store the ALB Access Logs. Supplying this and setting logAccessLogs to false is an error. @default - none |
+| publicApi | boolean | Whether the construct is deploying a private or public API. This has implications for the VPC and ALB. |
+
+**Required Construct Properties**
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| loadBalancer | ec2.IVpc | The VPC used by the construct (whether created by the construct or providedb by the client) |
+| Listener? | elb.ApplicationListener | The listener used by this pattern, if the pattern requires a listener (eg - this is not set by aws-route53-alb). |
+
 ## CloudFront
 **Required Attributes on Props**
 
@@ -105,6 +126,8 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | --- | --- | --- |
 | cloudFrontDistributionProps?	| cloudfront.CloudFront.WebDistributionProps	||
 | insertHttpSecurityHeaders?	| boolean	||
+| insertHttpSecurityHeaders?|`boolean`|Optional user provided props to turn on/off the automatic injection of best practice HTTP security headers in all responses from CloudFront|
+| cloudFrontLoggingBucketProps?|[`s3.BucketProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html)|Optional user provided props to override the default props for the CloudFront Logging Bucket.|
 
 **Required Construct Properties**
 
@@ -112,6 +135,7 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | --- | --- | --- |
 | cloudFrontLoggingBucket?	s3.Bucket	||
 | cloudFrontWebDistribution	cloudfront.CloudrontWebDistribution	||
+| cloudFrontFunction?|[`cloudfront.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudfront.Function.html)|Returns an instance of the Cloudfront function created by the pattern.|
 
 ## DynamoDB
 **Required Attributes on Props**
@@ -160,7 +184,6 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | --- | --- | --- |
 | eventsRule	| events.Rule	||
 | eventBus?	| events.IEventBus	| Only populated for non-default Event Buses.|
-
 
 ## Firehose
 **Required Attributes on Props**
@@ -222,6 +245,21 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | --- | --- | --- |
 | lambdaFunction	| lambda.Function	||
 
+## Route53
+**Required Attributes on Props**
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| privateHostedZoneProps? | [route53.PrivateHostedZoneProps](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-route53.PrivateHostedZoneProps.html) | Optional custom properties for a new Private Hosted Zone. Cannot be specified for a public API. Cannot specify a VPC, it will use the VPC in existingVpc or the VPC created by the construct. Providing both this and existingHostedZoneInterfaceis an error. |
+| existingHostedZoneInterface? | [route53.IHostedZone](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-route53.IHostedZone.html) | Existing Public or Private Hosted Zone (type must match publicApi setting). Specifying both this and privateHostedZoneProps is an error. If this is a Private Hosted Zone, the associated VPC must be provided as the existingVpc property |
+| publicApi | boolean | Whether the construct is deploying a private or public API. This has implications for the Hosted Zone, VPC and ALB. |
+
+**Required Construct Properties**
+
+| Name    | Type     | Notes    |
+| --- | --- | --- |
+| hostedZone | [route53.IHostedZone](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-route53.IHostedZone.html) | The hosted zone used by the construct (whether created by the construct or providedb by the client) |
+
 ## S3
 **Required Attributes on Props**
 
@@ -229,15 +267,17 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | --- | --- | --- |
 | existingBucketObj? | s3.Bucket | Either this or bucketProps must be provided |
 | bucketProps? | s3.BucketProps	| |
-| loggingBucketProps? | s3.BucketProps	| Creating an S3 Bucket will generate a Logging Bucket which users can provide props to override the default props |
 | s3EventTypes?	| s3.EventType	| Only required when construct responds to S3 events |
 | s3EventFilters?	| s3.NotificationKeyFilter |Only required when construct responds to S3 events |
+|loggingBucketProps?|[`s3.BucketProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html)|Optional user provided props to override the default props for the S3 Logging Bucket.|
+| logS3AccessLogs? | boolean| Whether to turn on Access Logs for the S3 bucket with the associated storage costs. Enabling Access Logging is a best practice.|
 
 **Required Construct Properties**
 
 | Name    | Type     | Notes    |
 | --- | --- | --- |
-| s3Bucket	| s3.Bucket	||
+| s3Bucket?	| s3.Bucket	| If the construct created a new bucket. If an existing bucket interface was submitted, this is undefined. |
+| s3BucketInterface |[`s3.IBucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.IBucket.html)|Returns an instance of s3.IBucket created by the construct|
 | s3LoggingBucket	| s3.Bucket	||
 
 ## SNS

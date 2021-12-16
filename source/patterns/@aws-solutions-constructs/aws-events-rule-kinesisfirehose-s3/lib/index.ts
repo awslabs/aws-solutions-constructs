@@ -66,6 +66,19 @@ export interface EventsRuleToKinesisFirehoseToS3Props {
    * @default - Default props are used
    */
   readonly logGroupProps?: logs.LogGroupProps;
+  /**
+   * Optional user provided props to override the default props for the S3 Logging Bucket.
+   *
+   * @default - Default props are used
+   */
+   readonly loggingBucketProps?: s3.BucketProps;
+   /**
+    * Whether to turn on Access Logs for the S3 bucket with the associated storage costs.
+    * Enabling Access Logging is a best practice.
+    *
+    * @default - true
+    */
+   readonly logS3AccessLogs?: boolean;
 }
 
 export class EventsRuleToKinesisFirehoseToS3 extends Construct {
@@ -77,6 +90,7 @@ export class EventsRuleToKinesisFirehoseToS3 extends Construct {
   public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
   public readonly eventBus?: events.IEventBus;
+  public readonly s3BucketInterface: s3.IBucket;
 
   /**
    * @summary Constructs a new instance of the EventsRuleToKinesisFirehoseToS3 class.
@@ -102,5 +116,6 @@ export class EventsRuleToKinesisFirehoseToS3 extends Construct {
     this.s3Bucket = wrappedConstruct.s3Bucket;
     this.s3LoggingBucket = wrappedConstruct.s3LoggingBucket;
     this.eventBus = wrappedConstruct.eventBus;
+    this.s3BucketInterface = wrappedConstruct.s3BucketInterface;
   }
 }
