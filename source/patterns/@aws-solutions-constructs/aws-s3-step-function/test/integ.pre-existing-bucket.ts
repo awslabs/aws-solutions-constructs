@@ -24,11 +24,14 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 
 const existingBucket = CreateScrapBucket(stack, {});
 
-const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);
+const bucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);
+const cfnBucket = bucket.node.defaultChild as s3.CfnBucket;
+cfnBucket.addPropertyOverride('NotificationConfiguration.EventBridgeConfiguration.EventBridgeEnabled', true);
+
 const startState = new stepfunctions.Pass(stack, 'StartState');
 
 const props: S3ToStepFunctionProps = {
-  existingBucketObj: mybucket,
+  existingBucketObj: bucket,
   stateMachineProps: {
     definition: startState
   },
