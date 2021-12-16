@@ -164,7 +164,7 @@
                       {
                         "Ref": "AWS::Partition"
                       },
-                      ":s3:::.4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95.py"
+                      ":s3:::fakelocation/fakefile.py"
                     ]
                   ]
                 },
@@ -176,7 +176,7 @@
                       {
                         "Ref": "AWS::Partition"
                       },
-                      ":s3:::.4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95.py/*"
+                      ":s3:::fakelocation/fakefile.py/*"
                     ]
                   ]
                 }
@@ -374,7 +374,7 @@
         "Command": {
           "Name": "gluestreaming",
           "PythonVersion": "3",
-          "ScriptLocation": "asset.4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95.py"
+          "ScriptLocation": "s3://fakelocation/fakefile.py"
         },
         "Role": {
           "Fn::GetAtt": [
