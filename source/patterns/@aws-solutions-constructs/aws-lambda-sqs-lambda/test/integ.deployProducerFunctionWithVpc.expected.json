@@ -169,7 +169,7 @@
           }
         },
         "Handler": "index.handler",
-        "Runtime": "nodejs10.x",
+        "Runtime": "nodejs14.x",
         "TracingConfig": {
           "Mode": "Active"
         },
@@ -616,7 +616,13 @@
     "testlambdasqsVpcFlowLogLogGroup5E27ADE6": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "RetentionInDays": 731
+        "RetentionInDays": 731,
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "deployProducerFunctionWithVpc/test-lambda-sqs/Vpc"
+          }
+        ]
       },
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain",
@@ -882,7 +888,7 @@
           }
         },
         "Handler": "index.handler",
-        "Runtime": "nodejs10.x",
+        "Runtime": "nodejs14.x",
         "TracingConfig": {
           "Mode": "Active"
         }
