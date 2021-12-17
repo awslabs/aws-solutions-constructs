@@ -30,23 +30,6 @@ function deployNewStateMachine(stack: cdk.Stack) {
   return new S3ToStepfunctions(stack, 'test-s3-stepfunctions', props);
 }
 
-test('check deployCloudTrail = false', () => {
-  const stack = new cdk.Stack();
-
-  const startState = new sfn.Pass(stack, 'StartState');
-
-  const props: S3ToStepfunctionsProps = {
-    stateMachineProps: {
-      definition: startState
-    },
-    deployCloudTrail: false
-  };
-
-  const construct = new S3ToStepfunctions(stack, 'test-s3-stepfunctions', props);
-
-  expect(construct.cloudtrail === undefined);
-});
-
 test('override eventRuleProps', () => {
   const stack = new cdk.Stack();
 
@@ -61,22 +44,15 @@ test('override eventRuleProps', () => {
     eventRuleProps: {
       eventPattern: {
         source: ['aws.s3'],
-        detailType: ['AWS API Call via CloudTrail'],
+        detailType: ['Object Created'],
         detail: {
-          eventSource: [
-            "s3.amazonaws.com"
-          ],
-          eventName: [
-            "GetObject"
-          ],
-          requestParameters: {
-            bucketName: [
-              mybucket.bucketName
-            ]
+          bucket: {
+            name: [mybucket.bucketName]
           }
         }
       }
-    }
+    },
+    deployCloudTrail: false // Testing warning
   };
 
   new S3ToStepfunctions(stack, 'test-s3-stepfunctions', props);
@@ -87,20 +63,13 @@ test('override eventRuleProps', () => {
         "aws.s3"
       ],
       "detail-type": [
-        "AWS API Call via CloudTrail"
+        "Object Created"
       ],
       "detail": {
-        eventSource: [
-          "s3.amazonaws.com"
-        ],
-        eventName: [
-          "GetObject"
-        ],
-        requestParameters: {
-          bucketName: [
-            {
-              Ref: "mybucket160F8132"
-            }
+        bucket: {
+          name: [{
+            Ref: "mybucket160F8132"
+          }
           ]
         }
       }
@@ -128,15 +97,11 @@ test('check properties', () => {
 
   const construct: S3ToStepfunctions = deployNewStateMachine(stack);
 
-  expect(construct.cloudtrail !== null);
   expect(construct.stateMachine !== null);
   expect(construct.s3Bucket !== null);
   expect(construct.cloudwatchAlarms !== null);
   expect(construct.stateMachineLogGroup !== null);
   expect(construct.s3LoggingBucket !== null);
-  expect(construct.cloudtrail !== null);
-  expect(construct.cloudtrailBucket !== null);
-  expect(construct.cloudtrailLoggingBucket !== null);
 });
 
 // --------------------------------------------------------------
