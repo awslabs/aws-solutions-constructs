@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.133.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.132.0...v1.133.0) (2021-12-17)
+
+
+### Features
+
+* **s3-stepfunctions:** removed CloudTrail dependency after new S3 feature ([#529](https://github.com/awslabs/aws-solutions-constructs/issues/529)) ([639f473](https://github.com/awslabs/aws-solutions-constructs/commit/639f47396f868846a81d0f81b6eb8160c61c6ae3))
+
 ## [1.132.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.131.0...v1.132.0) (2021-12-16)
 
 * Upgraded all patterns to CDK v1.132.0
