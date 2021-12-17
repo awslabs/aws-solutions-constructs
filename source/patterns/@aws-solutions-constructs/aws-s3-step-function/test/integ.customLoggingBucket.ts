@@ -40,7 +40,6 @@ new S3ToStepFunction(stack, 'test-s3-step-function', {
   },
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY
-  },
-  deployCloudTrail: false
+  }
 });
 app.synth();

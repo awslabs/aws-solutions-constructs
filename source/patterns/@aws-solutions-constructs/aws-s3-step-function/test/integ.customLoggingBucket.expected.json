@@ -115,6 +115,11 @@
             "Ref": "tests3stepfunctiontests3stepfunctionWS3LoggingBucketB716417C"
           }
         },
+        "NotificationConfiguration": {
+          "EventBridgeConfiguration": {
+            "EventBridgeEnabled": true
+          }
+        },
         "PublicAccessBlockConfiguration": {
           "BlockPublicAcls": true,
           "BlockPublicPolicy": true,
@@ -370,19 +375,11 @@
             "aws.s3"
           ],
           "detail-type": [
-            "AWS API Call via CloudTrail"
+            "Object Created"
           ],
           "detail": {
-            "eventSource": [
-              "s3.amazonaws.com"
-            ],
-            "eventName": [
-              "PutObject",
-              "CopyObject",
-              "CompleteMultipartUpload"
-            ],
-            "requestParameters": {
-              "bucketName": [
+            "bucket": {
+              "name": [
                 {
                   "Ref": "tests3stepfunctiontests3stepfunctionWS3Bucket9BE64924"
                 }
