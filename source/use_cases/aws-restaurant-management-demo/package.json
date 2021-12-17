@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-restaurant-management-demo",
-  "version": "0.0.0",
+  "version": "1.133.0",
   "description": "Use case pattern for deploying a complex business system and reference architecture.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -29,7 +29,7 @@
     "build+lint+test": "npm run build && npm run lint && npm test && npm run integ-assert"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "0.0.0",
+    "@aws-cdk/assert": "1.133.0",
     "@types/jest": "^26.0.22",
     "@types/node": "^10.3.0"
   },
@@ -39,23 +39,23 @@
     ]
   },
   "dependencies": {
-    "@aws-cdk/aws-apigateway": "0.0.0",
-    "@aws-cdk/aws-dynamodb": "0.0.0",
-    "@aws-cdk/aws-ec2": "0.0.0",
-    "@aws-cdk/aws-events": "0.0.0",
-    "@aws-cdk/aws-iam": "0.0.0",
-    "@aws-cdk/aws-lambda": "0.0.0",
-    "@aws-cdk/aws-ssm": "0.0.0",
-    "@aws-cdk/aws-redshift": "0.0.0",
-    "@aws-cdk/aws-stepfunctions": "0.0.0",
-    "@aws-cdk/aws-stepfunctions-tasks": "0.0.0",
-    "@aws-cdk/core": "0.0.0",
-    "@aws-solutions-constructs/aws-cognito-apigateway-lambda": "0.0.0",
-    "@aws-solutions-constructs/aws-events-rule-lambda": "0.0.0",
-    "@aws-solutions-constructs/aws-lambda-dynamodb": "0.0.0",
-    "@aws-solutions-constructs/aws-lambda-s3": "0.0.0",
-    "@aws-solutions-constructs/aws-lambda-sns": "0.0.0",
-    "@aws-solutions-constructs/aws-lambda-step-function": "0.0.0",
+    "@aws-cdk/aws-apigateway": "1.133.0",
+    "@aws-cdk/aws-dynamodb": "1.133.0",
+    "@aws-cdk/aws-ec2": "1.133.0",
+    "@aws-cdk/aws-events": "1.133.0",
+    "@aws-cdk/aws-iam": "1.133.0",
+    "@aws-cdk/aws-lambda": "1.133.0",
+    "@aws-cdk/aws-ssm": "1.133.0",
+    "@aws-cdk/aws-redshift": "1.133.0",
+    "@aws-cdk/aws-stepfunctions": "1.133.0",
+    "@aws-cdk/aws-stepfunctions-tasks": "1.133.0",
+    "@aws-cdk/core": "1.133.0",
+    "@aws-solutions-constructs/aws-cognito-apigateway-lambda": "1.133.0",
+    "@aws-solutions-constructs/aws-events-rule-lambda": "1.133.0",
+    "@aws-solutions-constructs/aws-lambda-dynamodb": "1.133.0",
+    "@aws-solutions-constructs/aws-lambda-s3": "1.133.0",
+    "@aws-solutions-constructs/aws-lambda-sns": "1.133.0",
+    "@aws-solutions-constructs/aws-lambda-step-function": "1.133.0",
     "source-map-support": "^0.5.16",
     "typescript": "^4.2.4"
   }

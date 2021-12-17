@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-eventbridge-kinesisfirehose-s3",
-  "version": "0.0.0",
+  "version": "1.133.0",
   "description": "CDK Constructs for Amazon CloudWatch Events Rule to Amazon Kinesis Firehose to Amazon S3 integration.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -53,18 +53,18 @@
     }
   },
   "dependencies": {
-    "@aws-cdk/aws-iam": "0.0.0",
-    "@aws-cdk/aws-kinesisfirehose": "0.0.0",
-    "@aws-cdk/aws-events": "0.0.0",
-    "@aws-cdk/core": "0.0.0",
-    "@aws-cdk/aws-s3": "0.0.0",
-    "@aws-cdk/aws-logs": "0.0.0",
-    "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "0.0.0",
+    "@aws-cdk/aws-iam": "1.133.0",
+    "@aws-cdk/aws-kinesisfirehose": "1.133.0",
+    "@aws-cdk/aws-events": "1.133.0",
+    "@aws-cdk/core": "1.133.0",
+    "@aws-cdk/aws-s3": "1.133.0",
+    "@aws-cdk/aws-logs": "1.133.0",
+    "@aws-solutions-constructs/core": "1.133.0",
+    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "1.133.0",
     "constructs": "^3.2.0"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "0.0.0",
+    "@aws-cdk/assert": "1.133.0",
     "@types/jest": "^26.0.22",
     "@types/node": "^10.3.0"
   },
@@ -83,15 +83,15 @@
     ]
   },
   "peerDependencies": {
-    "@aws-cdk/aws-iam": "0.0.0",
-    "@aws-cdk/aws-kinesisfirehose": "0.0.0",
-    "@aws-cdk/aws-events": "0.0.0",
-    "@aws-cdk/aws-s3": "0.0.0",
-    "@aws-cdk/core": "0.0.0",
-    "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "0.0.0",
+    "@aws-cdk/aws-iam": "1.133.0",
+    "@aws-cdk/aws-kinesisfirehose": "1.133.0",
+    "@aws-cdk/aws-events": "1.133.0",
+    "@aws-cdk/aws-s3": "1.133.0",
+    "@aws-cdk/core": "1.133.0",
+    "@aws-solutions-constructs/core": "1.133.0",
+    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "1.133.0",
     "constructs": "^3.2.0",
-    "@aws-cdk/aws-logs": "0.0.0"
+    "@aws-cdk/aws-logs": "1.133.0"
   },
   "keywords": [
     "aws",
