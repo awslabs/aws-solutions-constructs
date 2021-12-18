@@ -634,12 +634,12 @@
     "testcognitoapigatewaylambdaCognitoAuthorizer170CACC9": {
       "Type": "AWS::ApiGateway::Authorizer",
       "Properties": {
+        "Name": "authorizer",
         "RestApiId": {
           "Ref": "testcognitoapigatewaylambdaLambdaRestApi2E272431"
         },
         "Type": "COGNITO_USER_POOLS",
         "IdentitySource": "method.request.header.Authorization",
-        "Name": "authorizer",
         "ProviderARNs": [
           {
             "Fn::GetAtt": [
