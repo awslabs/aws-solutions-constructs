@@ -11,260 +11,363 @@
  *  and limitations under the License.
  */
 
- import { CloudFrontToApiGatewayToLambda, CloudFrontToApiGatewayToLambdaProps } from "../lib";
- import * as cdk from "@aws-cdk/core";
- import * as lambda from '@aws-cdk/aws-lambda';
- import * as api from '@aws-cdk/aws-apigateway';
- import * as s3 from "@aws-cdk/aws-s3";
- import '@aws-cdk/assert/jest';
+import { ResourcePart } from '@aws-cdk/assert';
+import '@aws-cdk/assert/jest';
+import * as s3 from '@aws-cdk/aws-s3';
+import * as cdk from "@aws-cdk/core";
+import { RemovalPolicy } from '@aws-cdk/core';
+import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
+import * as acm from '@aws-cdk/aws-certificatemanager';
 
- function deployNewFunc(stack: cdk.Stack) {
-   const lambdaFunctionProps: lambda.FunctionProps = {
-     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-     runtime: lambda.Runtime.NODEJS_10_X,
-     handler: 'index.handler'
-   };
+function deploy(stack: cdk.Stack, props?: CloudFrontToS3Props) {
+  return new CloudFrontToS3(stack, 'test-cloudfront-s3', {
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+    ...props
+  });
+}
 
-   return new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
-     lambdaFunctionProps
-   });
- }
+test('check s3Bucket default encryption', () => {
+  const stack = new cdk.Stack();
+  deploy(stack);
+  expect(stack).toHaveResource('AWS::S3::Bucket', {
+    BucketEncryption: {
+      ServerSideEncryptionConfiguration: [{
+        ServerSideEncryptionByDefault: {
+          SSEAlgorithm: "AES256"
+        }
+      }]
+    }
+  });
+});
 
- function useExistingFunc(stack: cdk.Stack) {
-   const lambdaFunctionProps: lambda.FunctionProps = {
-     runtime: lambda.Runtime.NODEJS_10_X,
-     handler: 'index.handler',
-     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-   };
+test('check s3Bucket public access block configuration', () => {
+  const stack = new cdk.Stack();
+  deploy(stack);
+  expect(stack).toHaveResource('AWS::S3::Bucket', {
+    PublicAccessBlockConfiguration: {
+      BlockPublicAcls: true,
+      BlockPublicPolicy: true,
+      IgnorePublicAcls: true,
+      RestrictPublicBuckets: true
+    }
+  });
+});
 
-   return new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
-     existingLambdaObj: new lambda.Function(stack, 'MyExistingFunction', lambdaFunctionProps)
-   });
- }
+test('test s3Bucket override publicAccessBlockConfiguration', () => {
+  const stack = new cdk.Stack();
 
- test('check properties', () => {
-   const stack = new cdk.Stack();
+  const props: CloudFrontToS3Props = {
+    bucketProps: {
+      blockPublicAccess: {
+        blockPublicAcls: false,
+        blockPublicPolicy: true,
+        ignorePublicAcls: false,
+        restrictPublicBuckets: true
+      }
+    }
+  };
 
-   const construct: CloudFrontToApiGatewayToLambda = deployNewFunc(stack);
+  new CloudFrontToS3(stack, 'test-cloudfront-s3', props);
 
-   expect(construct.cloudFrontWebDistribution !== null);
-   expect(construct.apiGateway !== null);
-   expect(construct.lambdaFunction !== null);
-   expect(construct.cloudFrontFunction !== null);
-   expect(construct.cloudFrontLoggingBucket !== null);
-   expect(construct.apiGatewayCloudWatchRole !== null);
-   expect(construct.apiGatewayLogGroup !== null);
- });
+  expect(stack).toHaveResource("AWS::S3::Bucket", {
+    PublicAccessBlockConfiguration: {
+      BlockPublicAcls: false,
+      BlockPublicPolicy: true,
+      IgnorePublicAcls: false,
+      RestrictPublicBuckets: true
+    },
+  });
+});
 
- test('check lambda function properties for deploy: true', () => {
-   const stack = new cdk.Stack();
+test('check existing bucket', () => {
+  const stack = new cdk.Stack();
 
-   deployNewFunc(stack);
+  const existingBucket = new s3.Bucket(stack, 'my-bucket', {
+    bucketName: 'my-bucket'
+  });
 
-   expect(stack).toHaveResource('AWS::Lambda::Function', {
-     Handler: "index.handler",
-     Role: {
-       "Fn::GetAtt": [
-         "testcloudfrontapigatewaylambdaLambdaFunctionServiceRoleCB74590F",
-         "Arn"
-       ]
-     },
-     Runtime: "nodejs10.x",
-     Environment: {
-       Variables: {
-         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
-       }
-     }
-   });
- });
+  const props: CloudFrontToS3Props = {
+    existingBucketObj: existingBucket
+  };
 
- test('check lambda function role for deploy: false', () => {
-   const stack = new cdk.Stack();
+  new CloudFrontToS3(stack, 'test-cloudfront-s3', props);
 
-   useExistingFunc(stack);
+  expect(stack).toHaveResource("AWS::S3::Bucket", {
+    BucketName: "my-bucket"
+  });
 
-   expect(stack).toHaveResource('AWS::IAM::Role', {
-     AssumeRolePolicyDocument: {
-       Statement: [
-         {
-           Action: "sts:AssumeRole",
-           Effect: "Allow",
-           Principal: {
-             Service: "lambda.amazonaws.com"
-           }
-         }
-       ],
-       Version: "2012-10-17"
-     },
-     ManagedPolicyArns: [
-       {
-         "Fn::Join": [
-           "",
-           [
-             "arn:",
-             {
-               Ref: "AWS::Partition"
-             },
-             ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-           ]
-         ]
-       }
-     ]
-   });
- });
+  expect(stack).toHaveResource("AWS::S3::BucketPolicy", {
+    Metadata: {
+      cfn_nag: {
+        rules_to_suppress: [
+          {
+            id: "F16",
+            reason: "Public website bucket policy requires a wildcard principal"
+          }
+        ]
+      }
+    }
+  }, ResourcePart.CompleteDefinition);
+});
 
- test('check exception for Missing existingObj from props', () => {
-   const stack = new cdk.Stack();
+test('check exception for Missing existingObj from props for deploy = false', () => {
+  const stack = new cdk.Stack();
 
-   const props: CloudFrontToApiGatewayToLambdaProps = {
-   };
+  try {
+    new CloudFrontToS3(stack, 'test-cloudfront-s3', {});
+  } catch (e) {
+    expect(e).toBeInstanceOf(Error);
+  }
+});
 
-   try {
-     new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', props);
-   } catch (e) {
-     expect(e).toBeInstanceOf(Error);
-   }
- });
+test('check properties', () => {
+  const stack = new cdk.Stack();
 
- test('check no prop', () => {
-   const stack = new cdk.Stack();
+  const construct: CloudFrontToS3 = deploy(stack);
 
-   const props: CloudFrontToApiGatewayToLambdaProps = {
-   };
+  expect(construct.cloudFrontWebDistribution !== null);
+  expect(construct.s3Bucket !== null);
+});
 
-   try {
-     new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', props);
-   } catch (e) {
-     expect(e).toBeInstanceOf(Error);
-   }
- });
+// --------------------------------------------------------------
+// Test bad call with existingBucket and bucketProps
+// --------------------------------------------------------------
+test("Test bad call with existingBucket and bucketProps", () => {
+  // Stack
+  const stack = new cdk.Stack();
 
- test('override api gateway properties with existingLambdaObj', () => {
-   const stack = new cdk.Stack();
+  const testBucket = new s3.Bucket(stack, 'test-bucket', {});
 
-   const lambdaFunctionProps: lambda.FunctionProps = {
-     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-     runtime: lambda.Runtime.NODEJS_10_X,
-     handler: 'index.handler'
-   };
+  const app = () => {
+    // Helper declaration
+    new CloudFrontToS3(stack, "bad-s3-args", {
+      existingBucketObj: testBucket,
+      bucketProps: {
+        removalPolicy: RemovalPolicy.DESTROY
+      },
+    });
+  };
+  // Assertion
+  expect(app).toThrowError();
+});
 
-   const fn: lambda.Function = new lambda.Function(stack, 'MyExistingFunction', lambdaFunctionProps);
+test("Test existingBucketObj", () => {
+  // Stack
+  const stack = new cdk.Stack();
+  const construct: CloudFrontToS3 = new CloudFrontToS3(stack, "existingIBucket", {
+    existingBucketObj: s3.Bucket.fromBucketName(stack, 'mybucket', 'mybucket')
+  });
+  // Assertion
+  expect(construct.cloudFrontWebDistribution !== null);
+  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+      Origins: [
+        {
+          DomainName: {
+            "Fn::Join": [
+              "",
+              [
+                "mybucket.s3.",
+                {
+                  Ref: "AWS::Region"
+                },
+                ".",
+                {
+                  Ref: "AWS::URLSuffix"
+                }
+              ]
+            ]
+          },
+          Id: "existingIBucketCloudFrontDistributionOrigin1D5849125",
+          S3OriginConfig: {
+            OriginAccessIdentity: {
+              "Fn::Join": [
+                "",
+                [
+                  "origin-access-identity/cloudfront/",
+                  {
+                    Ref: "existingIBucketCloudFrontDistributionOrigin1S3OriginDDDB1606"
+                  }
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    }
+  });
+});
 
-   new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
-     existingLambdaObj: fn,
-     apiGatewayProps: {
-       description: "Override description"
-     }
-   });
+test('test cloudfront disable cloudfront logging', () => {
+  const stack = new cdk.Stack();
 
-   expect(stack).toHaveResource('AWS::ApiGateway::RestApi',
-     {
-       Description: "Override description",
-       EndpointConfiguration: {
-         Types: [
-           "REGIONAL"
-         ]
-       },
-       Name: "LambdaRestApi"
-     });
- });
+  const construct = deploy(stack, { cloudFrontDistributionProps: { enableLogging: false } });
 
- test('override api gateway properties without existingLambdaObj', () => {
-   const stack = new cdk.Stack();
+  expect(construct.cloudFrontLoggingBucket === undefined);
+});
 
-   new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
-     lambdaFunctionProps: {
-       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-       runtime: lambda.Runtime.NODEJS_10_X,
-       handler: 'index.handler'
-     },
-     apiGatewayProps: {
-       endpointConfiguration: {
-         types: [api.EndpointType.PRIVATE],
-       },
-       description: "Override description"
-     }
-   });
+test('test cloudfront with custom domain names', () => {
+  const stack = new cdk.Stack();
 
-   expect(stack).toHaveResource('AWS::ApiGateway::RestApi',
-     {
-       Description: "Override description",
-       EndpointConfiguration: {
-         Types: [
-           "PRIVATE"
-         ]
-       },
-       Name: "LambdaRestApi"
-     });
- });
+  const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012');
 
- // --------------------------------------------------------------
- // Cloudfront logging bucket with destroy removal policy and auto delete objects
- // --------------------------------------------------------------
- test('Cloudfront logging bucket with destroy removal policy and auto delete objects', () => {
-   const stack = new cdk.Stack();
+  const props: CloudFrontToS3Props = {
+    cloudFrontDistributionProps: {
+      domainNames: ['mydomains'],
+      certificate
+    }
+  };
 
-   new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
-     lambdaFunctionProps: {
-       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-       runtime: lambda.Runtime.NODEJS_10_X,
-       handler: 'index.handler'
-     },
-     apiGatewayProps: {
-       endpointConfiguration: {
-         types: [api.EndpointType.PRIVATE],
-       }
-     },
-     cloudFrontLoggingBucketProps: {
-       removalPolicy: cdk.RemovalPolicy.DESTROY,
-       autoDeleteObjects: true
-     }
-   });
+  new CloudFrontToS3(stack, 'test-cloudfront-s3', props);
 
-   expect(stack).toHaveResource("AWS::S3::Bucket", {
-     AccessControl: "LogDeliveryWrite"
-   });
+  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+      Aliases: [
+        "mydomains"
+      ]
+    }
+  });
+});
 
-   expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
-     ServiceToken: {
-       "Fn::GetAtt": [
-         "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
-         "Arn"
-       ]
-     },
-     BucketName: {
-       Ref: "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucket7F467421"
-     }
-   });
- });
+// --------------------------------------------------------------
+// s3 bucket with bucket, loggingBucket, and auto delete objects
+// --------------------------------------------------------------
+test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
+  const stack = new cdk.Stack();
 
- // --------------------------------------------------------------
- // Cloudfront logging bucket error providing existing log bucket and logBucketProps
- // --------------------------------------------------------------
- test('Cloudfront logging bucket error when providing existing log bucket and logBucketProps', () => {
-   const stack = new cdk.Stack();
-   const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});
+  new CloudFrontToS3(stack, 'cloudfront-s3', {
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+    loggingBucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    }
+  });
 
-   const app = () => { new CloudFrontToApiGatewayToLambda(stack, 'cloudfront-s3', {
-     lambdaFunctionProps: {
-       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-       runtime: lambda.Runtime.NODEJS_10_X,
-       handler: 'index.handler'
-     },
-     apiGatewayProps: {
-       endpointConfiguration: {
-         types: [api.EndpointType.PRIVATE],
-       }
-     },
-     cloudFrontLoggingBucketProps: {
-       removalPolicy: cdk.RemovalPolicy.DESTROY,
-       autoDeleteObjects: true
-     },
-     cloudFrontDistributionProps: {
-       logBucket
-     },
-   });
-   };
+  expect(stack).toHaveResource("AWS::S3::Bucket", {
+    AccessControl: "LogDeliveryWrite"
+  });
 
-   expect(app).toThrowError();
- });
+  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+    ServiceToken: {
+      "Fn::GetAtt": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+        "Arn"
+      ]
+    },
+    BucketName: {
+      Ref: "cloudfronts3S3LoggingBucket52EEB708"
+    }
+  });
+});
+
+// --------------------------------------------------------------
+// Cloudfront logging bucket with destroy removal policy and auto delete objects
+// --------------------------------------------------------------
+test('Cloudfront logging bucket with destroy removal policy and auto delete objects', () => {
+  const stack = new cdk.Stack();
+
+  new CloudFrontToS3(stack, 'cloudfront-s3', {
+    cloudFrontLoggingBucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::S3::Bucket", {
+    AccessControl: "LogDeliveryWrite"
+  });
+
+  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+    ServiceToken: {
+      "Fn::GetAtt": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+        "Arn"
+      ]
+    },
+    BucketName: {
+      Ref: "cloudfronts3CloudfrontLoggingBucket5B845143"
+    }
+  });
+});
+
+// --------------------------------------------------------------
+// Cloudfront logging bucket error providing existing log bucket and logBucketProps
+// --------------------------------------------------------------
+test('Cloudfront logging bucket error when providing existing log bucket and logBucketProps', () => {
+  const stack = new cdk.Stack();
+  const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});
+
+  const app = () => {
+    new CloudFrontToS3(stack, 'cloudfront-s3', {
+      cloudFrontDistributionProps: {
+        logBucket
+      },
+      cloudFrontLoggingBucketProps: {
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+        autoDeleteObjects: true
+      }
+    });
+  };
+
+  expect(app).toThrowError();
+});
+
+// --------------------------------------------------------------
+// s3 bucket with one content bucket and no logging bucket
+// --------------------------------------------------------------
+test('s3 bucket with one content bucket and no logging bucket', () => {
+  const stack = new cdk.Stack();
+
+  const construct = new CloudFrontToS3(stack, 'cloudfront-s3', {
+    bucketProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+    logS3AccessLogs: false
+  });
+
+  expect(stack).toCountResources("AWS::S3::Bucket", 2);
+  expect(construct.s3LoggingBucket).toEqual(undefined);
+});
+
+// --------------------------------------------------
+// CloudFront origin path
+// --------------------------------------------------
+test('CloudFront origin path present when provided', () => {
+  const stack = new cdk.Stack();
+
+  new CloudFrontToS3(stack, 'cloudfront-s3', {
+    originPath: '/testPath'
+  });
+
+  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig:
+    {
+      Origins: [
+        {
+          OriginPath: "/testPath",
+        }
+      ]
+    }
+  });
+});
+
+test('CloudFront origin path should not be present if not provided', () => {
+  const stack = new cdk.Stack();
+
+  new CloudFrontToS3(stack, 'cloudfront-s3', {});
+
+  expect(stack).not.toHaveResourceLike("AWS::CloudFront::Distribution", {
+    DistributionConfig:
+    {
+      Origins: [
+        {
+          OriginPath: "/testPath",
+        }
+      ]
+    }
+  });
+});
