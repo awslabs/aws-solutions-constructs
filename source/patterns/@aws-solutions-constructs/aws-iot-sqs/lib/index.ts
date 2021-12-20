@@ -24,12 +24,17 @@ import { Construct } from '@aws-cdk/core';
  */
 export interface IotToSqsProps {
   /**
+   * User provided CfnTopicRuleProps to override the defaults
+   *
+   * @default - None
+   */
+  readonly iotTopicRuleProps: iot.CfnTopicRuleProps;
+  /**
    * Existing instance of SQS queue object, providing both this and queueProps will cause an error.
    *
    * @default - None
    */
   readonly existingQueueObj?: sqs.Queue;
-
   /**
    * User provided props to override the default props for the SQS queue.
    *
@@ -79,13 +84,6 @@ export interface IotToSqsProps {
    * @default - Default props are used.
    */
   readonly encryptionKeyProps?: kms.KeyProps;
-
-  /**
-   * User provided CfnTopicRuleProps to override the defaults
-   *
-   * @default - None
-   */
-  readonly iotTopicRuleProps: iot.CfnTopicRuleProps;
 }
 
 export class IotToSqs extends Construct {
