@@ -20,7 +20,7 @@ function deployStack(stack: cdk.Stack) {
   const props: IotToLambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     iotTopicRuleProps: {
@@ -49,7 +49,7 @@ test('check lambda function properties', () => {
         "Arn"
       ]
     },
-    Runtime: "nodejs10.x",
+    Runtime: "nodejs14.x",
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
