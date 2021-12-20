@@ -35,7 +35,7 @@ const vpc = defaults.buildVpc(stack, {
 // Definitions
 const props: LambdaToSsmstringparameterProps = {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_10_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   },
