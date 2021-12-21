@@ -20,7 +20,7 @@ function deployNewFunc(stack: cdk.Stack) {
   const props: IotToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     iotTopicRuleProps: {
@@ -72,7 +72,7 @@ test('check lambda function properties for deploy: true', () => {
         "Arn"
       ]
     },
-    Runtime: "nodejs10.x"
+    Runtime: "nodejs14.x"
   });
 });
 

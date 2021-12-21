@@ -21,7 +21,7 @@ function deployNewFunc(stack: cdk.Stack) {
   const props: EventsRuleToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     eventRuleProps: {
@@ -36,7 +36,7 @@ function deployNewEventBus(stack: cdk.Stack) {
   const props: EventsRuleToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     eventBusProps: { eventBusName: 'test' },
@@ -62,7 +62,7 @@ test('check lambda function properties for deploy: true', () => {
         "Arn"
       ]
     },
-    Runtime: "nodejs12.x",
+    Runtime: "nodejs14.x",
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
@@ -219,7 +219,7 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
   const props: EventsRuleToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     eventRuleProps: {
@@ -243,7 +243,7 @@ test('check custom event bus resource with props when deploy:true', () => {
   const props: EventsRuleToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     eventBusProps: {

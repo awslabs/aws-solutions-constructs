@@ -29,7 +29,7 @@ import { ApiGatewayToLambda } from '@aws-solutions-constructs/aws-apigateway-lam
 
 new ApiGatewayToLambda(this, 'ApiGatewayToLambdaPattern', {
     lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
+        runtime: lambda.Runtime.NODEJS_14_X,
         handler: 'index.handler',
         code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }

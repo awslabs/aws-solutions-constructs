@@ -72,7 +72,7 @@ test('Test properties', () => {
   const stack = new Stack();
   const props: ApiGatewayToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }
@@ -115,7 +115,7 @@ test('Test deployment ApiGateway AuthorizationType override', () => {
       }
     },
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }

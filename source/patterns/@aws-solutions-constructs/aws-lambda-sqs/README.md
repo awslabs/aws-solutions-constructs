@@ -27,7 +27,7 @@ import { LambdaToSqs, LambdaToSqsProps } from "@aws-solutions-constructs/aws-lam
 
 new LambdaToSqs(this, 'LambdaToSqsPattern', {
     lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_12_X,
+        runtime: lambda.Runtime.NODEJS_14_X,
         handler: 'index.handler',
         code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }
