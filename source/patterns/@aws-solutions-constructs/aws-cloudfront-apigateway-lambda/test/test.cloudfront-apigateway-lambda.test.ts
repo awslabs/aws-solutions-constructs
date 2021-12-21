@@ -153,9 +153,7 @@ test('override api gateway properties with existingLambdaObj', () => {
   new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
     existingLambdaObj: fn,
     apiGatewayProps: {
-      options: {
-        description: "Override description"
-      }
+      description: "Override description"
     }
   });
 
@@ -184,9 +182,7 @@ test('override api gateway properties without existingLambdaObj', () => {
       endpointConfiguration: {
         types: [api.EndpointType.PRIVATE],
       },
-      options: {
-        description: "Override description"
-      }
+      description: "Override description"
     }
   });
 
