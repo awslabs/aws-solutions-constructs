@@ -116,7 +116,7 @@ test('override topicProps', () => {
   const props: LambdaToSnsProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     topicProps: {

@@ -30,7 +30,7 @@ export class ServerlessBackendStack extends Stack {
     const construct = new CognitoToApiGatewayToLambda(this, 'CognitoToApiGatewayToLambda', {
       lambdaFunctionProps: {
         code: lambda.Code.fromAsset(`${__dirname}/lambda/business-logic`),
-        runtime: lambda.Runtime.NODEJS_12_X,
+        runtime: lambda.Runtime.NODEJS_14_X,
         handler: 'index.handler'
       },
       cognitoUserPoolProps: {

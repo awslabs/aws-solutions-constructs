@@ -34,7 +34,7 @@ You can then use the pattern in your CDK project code as shown below in the mini
 ```typescript
 new ServerlessImageHandler(this, 'ServerlessImageHandlerPattern', {
     lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_12_X,
+        runtime: lambda.Runtime.NODEJS_14_X,
         handler: 'index.handler',
         code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }

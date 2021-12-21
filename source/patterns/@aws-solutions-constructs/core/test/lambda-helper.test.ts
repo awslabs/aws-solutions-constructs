@@ -44,7 +44,7 @@ test("test FunctionProps override timeout", () => {
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_12_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: "index.handler",
     timeout: Duration.seconds(5),
   };
@@ -56,7 +56,7 @@ test("test FunctionProps override timeout", () => {
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
     },
-    Runtime: "nodejs12.x",
+    Runtime: "nodejs14.x",
     Timeout: 5,
   });
 });
@@ -117,7 +117,7 @@ test("test buildLambdaFunction with deploy = true", () => {
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda-test`),
-    runtime: lambda.Runtime.NODEJS_12_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: "index.handler",
   };
 
@@ -130,7 +130,7 @@ test("test buildLambdaFunction with deploy = true", () => {
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
     },
-    Runtime: "nodejs12.x",
+    Runtime: "nodejs14.x",
   });
 });
 
@@ -139,7 +139,7 @@ test("test buildLambdaFunction with existing Lambda function (no VPC)", () => {
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda-test`),
-    runtime: lambda.Runtime.NODEJS_12_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: "index.handler",
   };
 
@@ -210,7 +210,7 @@ test("test buildLambdaFunction when Lambda properties includes a VPC", () => {
   const fakeVpc = new ec2.Vpc(stack, "vpc", {});
 
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_12_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     vpc: fakeVpc,
@@ -249,7 +249,7 @@ test("Test for error if VPC in arguments AND in Lambda Function properties", () 
   const fakeVpc = new ec2.Vpc(stack, "vpc", {});
 
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_12_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     vpc: fakeVpc,

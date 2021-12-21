@@ -303,13 +303,13 @@ test('Test overrides for producer and consumer functions', () => {
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
@@ -319,11 +319,11 @@ test('Test overrides for producer and consumer functions', () => {
 
   // Assertion 2: test for updated runtime on producer function
   expect(stack).toHaveResource('AWS::Lambda::Function', {
-    Runtime: "nodejs12.x"
+    Runtime: "nodejs14.x"
   });
   // Assertion 3: test for updated runtime on consumer function
   expect(stack).toHaveResource('AWS::Lambda::Function', {
-    Runtime: "nodejs12.x"
+    Runtime: "nodejs14.x"
   });
 });
 

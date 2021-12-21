@@ -375,7 +375,7 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   new LambdaToS3(stack, 'lambda-s3', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     bucketProps: {
@@ -413,7 +413,7 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
   new LambdaToS3(stack, 'lambda-s3', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     bucketProps: {
