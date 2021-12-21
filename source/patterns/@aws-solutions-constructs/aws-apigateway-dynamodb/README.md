@@ -24,7 +24,7 @@
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.apigatewaydynamodb`|
 
 ## Overview
-This AWS Solutions Construct implements an Amazon API Gateway REST API connected to Amazon DynamoDB table.
+This AWS Solutions Construct implements an Amazon API Gateway REST API connected to Amazon DynamoDB Table.
 
 Here is a minimal deployable pattern definition in Typescript:
 
