@@ -21,7 +21,7 @@ import '@aws-cdk/assert/jest';
 
 function deployRegionalApiGateway(stack: Stack) {
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_12_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
@@ -91,7 +91,7 @@ test('Test override for RegionalApiGateway', () => {
   const stack = new Stack();
 
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_12_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
@@ -121,7 +121,7 @@ test('Test override for GlobalApiGateway', () => {
   const stack = new Stack();
 
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_12_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
@@ -149,7 +149,7 @@ test('Test override for GlobalApiGateway', () => {
 test('Test ApiGateway::Account resource for RegionalApiGateway', () => {
   const stack = new Stack();
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_12_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
@@ -171,7 +171,7 @@ test('Test ApiGateway::Account resource for RegionalApiGateway', () => {
 test('Test ApiGateway::Account resource for GlobalApiGateway', () => {
   const stack = new Stack();
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_12_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
@@ -378,7 +378,7 @@ test('Test for Exception while overriding restApiProps using endPointTypes', () 
 test('Test for Exception while overriding LambdaRestApiProps using endPointTypes', () => {
   const stack = new Stack();
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_12_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
@@ -626,7 +626,7 @@ test('Test for ApiKey creation using restApiProps', () => {
 test('Test for ApiKey creation using lambdaApiProps', () => {
   const stack = new Stack();
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_12_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };

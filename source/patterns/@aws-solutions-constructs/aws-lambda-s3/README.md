@@ -27,7 +27,7 @@ import { LambdaToS3 } from '@aws-solutions-constructs/aws-lambda-s3';
 
 new LambdaToS3(this, 'LambdaToS3Pattern', {
     lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
+        runtime: lambda.Runtime.NODEJS_14_X,
         handler: 'index.handler',
         code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }

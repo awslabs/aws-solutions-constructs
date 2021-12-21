@@ -82,7 +82,7 @@ test('Test minimal deployment with new Lambda function', () => {
   // Helper declaration
   const construct = new LambdaToEventbridge(stack, 'lambda-to-eventbridge-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }
@@ -133,7 +133,7 @@ test("Test bad call with existingVpc and deployVpc", () => {
     // Helper declaration
     new LambdaToEventbridge(stack, "lambda-to-eventbridge-stack", {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
+        runtime: lambda.Runtime.NODEJS_14_X,
         handler: "index.handler",
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       },
@@ -156,7 +156,7 @@ test("Test bad call with existingVpc and deployVpc", () => {
     // Helper declaration
     new LambdaToEventbridge(stack, 'lambda-to-eventbridge-stack', {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_12_X,
+        runtime: lambda.Runtime.NODEJS_14_X,
         handler: 'index.handler',
         code: lambda.Code.fromAsset(`${__dirname}/lambda`)
       },
@@ -181,7 +181,7 @@ test('Test deployment w/ existing eventbus', () => {
 
   new LambdaToEventbridge(stack, 'lambda-to-eventbridge-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -220,7 +220,7 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Helper declaration
   new LambdaToEventbridge(stack, "lambda-to-eventbridge-stack", {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -251,7 +251,7 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Helper declaration
   new LambdaToEventbridge(stack, "lambda-to-eventbridge-stack", {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -291,7 +291,7 @@ test("Test minimal deployment with an existing VPC", () => {
   // Helper declaration
   new LambdaToEventbridge(stack, "lambda-to-eventbridge-stack", {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -356,7 +356,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   const stack = new Stack();
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
-    runtime: lambda.Runtime.NODEJS_12_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -387,7 +387,7 @@ test('Test lambda function custom environment variable', () => {
   // Helper declaration
   new LambdaToEventbridge(stack, 'lambda-to-eventbridge-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -398,7 +398,7 @@ test('Test lambda function custom environment variable', () => {
   // Check environment variables
   expect(stack).toHaveResource('AWS::Lambda::Function', {
     Handler: 'index.handler',
-    Runtime: 'nodejs12.x',
+    Runtime: 'nodejs14.x',
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
@@ -439,7 +439,7 @@ test('check multiple constructs in a single stack', () => {
   const props: LambdaToEventbridgeProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     eventBusProps: { eventBusName: 'test' }
@@ -455,7 +455,7 @@ test('check multiple lambda functions publishing to single event bus', () => {
   const props1: LambdaToEventbridgeProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     eventBusProps: { eventBusName: 'test' }
@@ -465,7 +465,7 @@ test('check multiple lambda functions publishing to single event bus', () => {
   const props2: LambdaToEventbridgeProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     existingEventBusInterface: construct.eventBus
@@ -500,7 +500,7 @@ test('check multiple lambda functions publishing to single event bus', () => {
   // Check environment variables
   expect(stack).toHaveResource('AWS::Lambda::Function', {
     Handler: 'index.handler',
-    Runtime: 'nodejs12.x',
+    Runtime: 'nodejs14.x',
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',

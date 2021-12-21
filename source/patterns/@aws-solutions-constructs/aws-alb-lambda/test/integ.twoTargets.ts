@@ -34,7 +34,7 @@ stack.templateOptions.description = 'Integration test for alb with 2 Lambda targ
 const props: AlbToLambdaProps = {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_12_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler'
   },
   listenerProps: {
@@ -47,7 +47,7 @@ const firstConstruct = new AlbToLambda(stack, 'test-one', props);
 const secondProps: AlbToLambdaProps = {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_12_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler'
   },
   ruleProps: {
