@@ -154,3 +154,177 @@ test('test createAlbLoggingBucket()', () => {
     BucketName: 'test-name'
   });
 });
+
+test('Test bucket policy that only accepts SSL requests only', () => {
+  const stack = new Stack();
+
+  defaults.buildS3Bucket(stack, {
+    bucketProps: {
+      enforceSSL: true
+    }
+  }, 'test-bucket');
+
+  expect(stack).toHaveResource("AWS::S3::BucketPolicy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: "s3:*",
+          Condition: {
+            Bool: {
+              "aws:SecureTransport": "false"
+            }
+          },
+          Effect: "Deny",
+          Principal: {
+            AWS: "*"
+          },
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                "testbucketS3Bucket87F6BFFC",
+                "Arn"
+              ]
+            },
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "testbucketS3Bucket87F6BFFC",
+                      "Arn"
+                    ]
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          Action: "*",
+          Condition: {
+            Bool: {
+              "aws:SecureTransport": "false"
+            }
+          },
+          Effect: "Deny",
+          Principal: {
+            AWS: "*"
+          },
+          Resource: [
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "testbucketS3Bucket87F6BFFC",
+                      "Arn"
+                    ]
+                  },
+                  "/*"
+                ]
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "testbucketS3Bucket87F6BFFC",
+                "Arn"
+              ]
+            }
+          ],
+          Sid: "HttpsOnly"
+        },
+      ],
+      Version: "2012-10-17"
+    }
+  });
+});
+
+test('Test bucket policy that accepts any requests', () => {
+  const stack = new Stack();
+
+  defaults.buildS3Bucket(stack, {
+    bucketProps: {
+      enforceSSL: false
+    }
+  }, 'test-bucket');
+
+  expect(stack).not.toHaveResource("AWS::S3::BucketPolicy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: "s3:*",
+          Condition: {
+            Bool: {
+              "aws:SecureTransport": "false"
+            }
+          },
+          Effect: "Deny",
+          Principal: {
+            AWS: "*"
+          },
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                "testbucketS3Bucket87F6BFFC",
+                "Arn"
+              ]
+            },
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "testbucketS3Bucket87F6BFFC",
+                      "Arn"
+                    ]
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          Action: "*",
+          Condition: {
+            Bool: {
+              "aws:SecureTransport": "false"
+            }
+          },
+          Effect: "Deny",
+          Principal: {
+            AWS: "*"
+          },
+          Resource: [
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "testbucketS3Bucket87F6BFFC",
+                      "Arn"
+                    ]
+                  },
+                  "/*"
+                ]
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "testbucketS3Bucket87F6BFFC",
+                "Arn"
+              ]
+            }
+          ],
+          Sid: "HttpsOnly"
+        },
+      ],
+      Version: "2012-10-17"
+    }
+  });
+});

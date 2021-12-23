@@ -168,7 +168,9 @@ export function buildS3Bucket(scope: Construct,
 
   const s3Bucket: s3.Bucket = new s3.Bucket(scope, _bucketId, customBucketProps);
 
-  applySecureBucketPolicy(s3Bucket);
+  if (customBucketProps.enforceSSL !== false) {
+    applySecureBucketPolicy(s3Bucket);
+  }
 
   return [s3Bucket, loggingBucket];
 }
