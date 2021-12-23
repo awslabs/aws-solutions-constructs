@@ -166,8 +166,10 @@ export function buildS3Bucket(scope: Construct,
 
   customBucketProps = props.bucketProps ? overrideProps(customBucketProps, props.bucketProps) : customBucketProps;
 
-  const s3Bucket: s3.Bucket = new s3.Bucket(scope, _bucketId, customBucketProps);
+  // Set enforceSSL to always false to prevent duplicate policy statement
+  const s3Bucket: s3.Bucket = new s3.Bucket(scope, _bucketId, { ...customBucketProps, enforceSSL: false });
 
+  // Apple secure bucket policy through appleSecureBucketPolicy function and not with enforceSSL prop
   if (customBucketProps.enforceSSL !== false) {
     applySecureBucketPolicy(s3Bucket);
   }

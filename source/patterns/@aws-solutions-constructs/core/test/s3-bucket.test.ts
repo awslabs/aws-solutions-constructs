@@ -168,40 +168,6 @@ test('Test bucket policy that only accepts SSL requests only', () => {
     PolicyDocument: {
       Statement: [
         {
-          Action: "s3:*",
-          Condition: {
-            Bool: {
-              "aws:SecureTransport": "false"
-            }
-          },
-          Effect: "Deny",
-          Principal: {
-            AWS: "*"
-          },
-          Resource: [
-            {
-              "Fn::GetAtt": [
-                "testbucketS3Bucket87F6BFFC",
-                "Arn"
-              ]
-            },
-            {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Fn::GetAtt": [
-                      "testbucketS3Bucket87F6BFFC",
-                      "Arn"
-                    ]
-                  },
-                  "/*"
-                ]
-              ]
-            }
-          ]
-        },
-        {
           Action: "*",
           Condition: {
             Bool: {
@@ -255,7 +221,7 @@ test('Test bucket policy that accepts any requests', () => {
     PolicyDocument: {
       Statement: [
         {
-          Action: "s3:*",
+          Action: "*",
           Condition: {
             Bool: {
               "aws:SecureTransport": "false"
@@ -266,12 +232,6 @@ test('Test bucket policy that accepts any requests', () => {
             AWS: "*"
           },
           Resource: [
-            {
-              "Fn::GetAtt": [
-                "testbucketS3Bucket87F6BFFC",
-                "Arn"
-              ]
-            },
             {
               "Fn::Join": [
                 "",
@@ -285,9 +245,84 @@ test('Test bucket policy that accepts any requests', () => {
                   "/*"
                 ]
               ]
+            },
+            {
+              "Fn::GetAtt": [
+                "testbucketS3Bucket87F6BFFC",
+                "Arn"
+              ]
             }
-          ]
+          ],
+          Sid: "HttpsOnly"
         },
+      ],
+      Version: "2012-10-17"
+    }
+  });
+});
+
+test('Test enforcing SSL when bucketProps is not provided', () => {
+  const stack = new Stack();
+
+  defaults.buildS3Bucket(stack, {}, 'test-bucket');
+
+  expect(stack).toHaveResource("AWS::S3::BucketPolicy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: "*",
+          Condition: {
+            Bool: {
+              "aws:SecureTransport": "false"
+            }
+          },
+          Effect: "Deny",
+          Principal: {
+            AWS: "*"
+          },
+          Resource: [
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "testbucketS3Bucket87F6BFFC",
+                      "Arn"
+                    ]
+                  },
+                  "/*"
+                ]
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "testbucketS3Bucket87F6BFFC",
+                "Arn"
+              ]
+            }
+          ],
+          Sid: "HttpsOnly"
+        },
+      ],
+      Version: "2012-10-17"
+    }
+  });
+});
+
+test('Test enforcing SSL when bucketProps is provided and enforceSSL is not set', () => {
+  const stack = new Stack();
+
+  defaults.buildS3Bucket(stack, {
+    bucketProps: {
+      versioned: false,
+      publicReadAccess: false
+    }
+  }, 'test-bucket');
+
+  expect(stack).toHaveResource("AWS::S3::BucketPolicy", {
+    PolicyDocument: {
+      Statement: [
         {
           Action: "*",
           Condition: {
