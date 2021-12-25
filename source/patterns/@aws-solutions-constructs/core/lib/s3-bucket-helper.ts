@@ -17,7 +17,6 @@ import * as s3 from '@aws-cdk/aws-s3';
 import * as cdk from '@aws-cdk/core';
 import { DefaultS3Props } from './s3-bucket-defaults';
 import { overrideProps, addCfnSuppressRules } from './utils';
-import { PolicyStatement, Effect, AnyPrincipal } from '@aws-cdk/aws-iam';
 import { StorageClass } from '@aws-cdk/aws-s3';
 import { Duration } from '@aws-cdk/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
@@ -45,36 +44,12 @@ export interface BuildS3BucketProps {
   readonly logS3AccessLogs?: boolean;
 }
 
-export function applySecureBucketPolicy(s3Bucket: s3.Bucket): void {
-  // Apply bucket policy to enforce encryption of data in transit
-  s3Bucket.addToResourcePolicy(
-    new PolicyStatement({
-      sid: 'HttpsOnly',
-      resources: [
-        `${s3Bucket.bucketArn}/*`,
-        `${s3Bucket.bucketArn}`
-      ],
-      actions: ['*'],
-      principals: [new AnyPrincipal()],
-      effect: Effect.DENY,
-      conditions:
-      {
-        Bool: {
-          'aws:SecureTransport': 'false'
-        }
-      }
-    })
-  );
-}
-
 export function createLoggingBucket(scope: Construct,
   bucketId: string,
   loggingBucketProps: s3.BucketProps): s3.Bucket {
 
   // Create the Logging Bucket
   const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, loggingBucketProps);
-
-  applySecureBucketPolicy(loggingBucket);
 
   // Extract the CfnBucket from the loggingBucket
   const loggingBucketResource = loggingBucket.node.findChild('Resource') as s3.CfnBucket;
@@ -107,8 +82,6 @@ export function createAlbLoggingBucket(scope: Construct,
 
   // Create the Logging Bucket
   const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, loggingBucketProps);
-
-  applySecureBucketPolicy(loggingBucket);
 
   // Extract the CfnBucket from the loggingBucket
   const loggingBucketResource = loggingBucket.node.findChild('Resource') as s3.CfnBucket;
@@ -166,13 +139,7 @@ export function buildS3Bucket(scope: Construct,
 
   customBucketProps = props.bucketProps ? overrideProps(customBucketProps, props.bucketProps) : customBucketProps;
 
-  // Set enforceSSL to always false to prevent duplicate policy statement
-  const s3Bucket: s3.Bucket = new s3.Bucket(scope, _bucketId, { ...customBucketProps, enforceSSL: false });
-
-  // Apple secure bucket policy through appleSecureBucketPolicy function and not with enforceSSL prop
-  if (customBucketProps.enforceSSL !== false) {
-    applySecureBucketPolicy(s3Bucket);
-  }
+  const s3Bucket: s3.Bucket = new s3.Bucket(scope, _bucketId, customBucketProps );
 
   return [s3Bucket, loggingBucket];
 }

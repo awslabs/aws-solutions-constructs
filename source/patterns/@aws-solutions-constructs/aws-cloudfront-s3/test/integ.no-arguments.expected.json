@@ -58,7 +58,7 @@
         "PolicyDocument": {
           "Statement": [
             {
-              "Action": "*",
+              "Action": "s3:*",
               "Condition": {
                 "Bool": {
                   "aws:SecureTransport": "false"
@@ -69,6 +69,12 @@
                 "AWS": "*"
               },
               "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testcloudfronts3S3BucketE0C5F76E",
+                    "Arn"
+                  ]
+                },
                 {
                   "Fn::Join": [
                     "",
@@ -82,15 +88,8 @@
                       "/*"
                     ]
                   ]
-                },
-                {
-                  "Fn::GetAtt": [
-                    "testcloudfronts3S3BucketE0C5F76E",
-                    "Arn"
-                  ]
                 }
-              ],
-              "Sid": "HttpsOnly"
+              ]
             },
             {
               "Action": "s3:GetObject",
@@ -190,7 +189,7 @@
         "PolicyDocument": {
           "Statement": [
             {
-              "Action": "*",
+              "Action": "s3:*",
               "Condition": {
                 "Bool": {
                   "aws:SecureTransport": "false"
@@ -201,6 +200,12 @@
                 "AWS": "*"
               },
               "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
+                    "Arn"
+                  ]
+                },
                 {
                   "Fn::Join": [
                     "",
@@ -214,15 +219,8 @@
                       "/*"
                     ]
                   ]
-                },
-                {
-                  "Fn::GetAtt": [
-                    "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
-                    "Arn"
-                  ]
                 }
-              ],
-              "Sid": "HttpsOnly"
+              ]
             }
           ],
           "Version": "2012-10-17"

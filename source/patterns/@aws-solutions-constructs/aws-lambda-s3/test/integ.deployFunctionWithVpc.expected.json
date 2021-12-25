@@ -294,7 +294,7 @@
         "PolicyDocument": {
           "Statement": [
             {
-              "Action": "*",
+              "Action": "s3:*",
               "Condition": {
                 "Bool": {
                   "aws:SecureTransport": "false"
@@ -305,6 +305,12 @@
                 "AWS": "*"
               },
               "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testlambdas3S3Bucket179A52E6",
+                    "Arn"
+                  ]
+                },
                 {
                   "Fn::Join": [
                     "",
@@ -318,15 +324,8 @@
                       "/*"
                     ]
                   ]
-                },
-                {
-                  "Fn::GetAtt": [
-                    "testlambdas3S3Bucket179A52E6",
-                    "Arn"
-                  ]
                 }
-              ],
-              "Sid": "HttpsOnly"
+              ]
             }
           ],
           "Version": "2012-10-17"

@@ -62,7 +62,7 @@
         "PolicyDocument": {
           "Statement": [
             {
-              "Action": "*",
+              "Action": "s3:*",
               "Condition": {
                 "Bool": {
                   "aws:SecureTransport": "false"
@@ -73,6 +73,12 @@
                 "AWS": "*"
               },
               "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "tests3stepfunctionsconstructS3Bucket78CA0724",
+                    "Arn"
+                  ]
+                },
                 {
                   "Fn::Join": [
                     "",
@@ -86,15 +92,8 @@
                       "/*"
                     ]
                   ]
-                },
-                {
-                  "Fn::GetAtt": [
-                    "tests3stepfunctionsconstructS3Bucket78CA0724",
-                    "Arn"
-                  ]
                 }
-              ],
-              "Sid": "HttpsOnly"
+              ]
             }
           ],
           "Version": "2012-10-17"

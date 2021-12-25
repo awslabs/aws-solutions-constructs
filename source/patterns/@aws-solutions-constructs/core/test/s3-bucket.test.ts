@@ -168,7 +168,7 @@ test('Test bucket policy that only accepts SSL requests only', () => {
     PolicyDocument: {
       Statement: [
         {
-          Action: "*",
+          Action: "s3:*",
           Condition: {
             Bool: {
               "aws:SecureTransport": "false"
@@ -179,6 +179,12 @@ test('Test bucket policy that only accepts SSL requests only', () => {
             AWS: "*"
           },
           Resource: [
+            {
+              "Fn::GetAtt": [
+                "testbucketS3Bucket87F6BFFC",
+                "Arn"
+              ]
+            },
             {
               "Fn::Join": [
                 "",
@@ -192,16 +198,9 @@ test('Test bucket policy that only accepts SSL requests only', () => {
                   "/*"
                 ]
               ]
-            },
-            {
-              "Fn::GetAtt": [
-                "testbucketS3Bucket87F6BFFC",
-                "Arn"
-              ]
             }
-          ],
-          Sid: "HttpsOnly"
-        },
+          ]
+        }
       ],
       Version: "2012-10-17"
     }
@@ -221,7 +220,7 @@ test('Test bucket policy that accepts any requests', () => {
     PolicyDocument: {
       Statement: [
         {
-          Action: "*",
+          Action: "s3:*",
           Condition: {
             Bool: {
               "aws:SecureTransport": "false"
@@ -232,6 +231,12 @@ test('Test bucket policy that accepts any requests', () => {
             AWS: "*"
           },
           Resource: [
+            {
+              "Fn::GetAtt": [
+                "testbucketS3Bucket87F6BFFC",
+                "Arn"
+              ]
+            },
             {
               "Fn::Join": [
                 "",
@@ -245,16 +250,9 @@ test('Test bucket policy that accepts any requests', () => {
                   "/*"
                 ]
               ]
-            },
-            {
-              "Fn::GetAtt": [
-                "testbucketS3Bucket87F6BFFC",
-                "Arn"
-              ]
             }
-          ],
-          Sid: "HttpsOnly"
-        },
+          ]
+        }
       ],
       Version: "2012-10-17"
     }
@@ -270,7 +268,7 @@ test('Test enforcing SSL when bucketProps is not provided', () => {
     PolicyDocument: {
       Statement: [
         {
-          Action: "*",
+          Action: "s3:*",
           Condition: {
             Bool: {
               "aws:SecureTransport": "false"
@@ -281,6 +279,12 @@ test('Test enforcing SSL when bucketProps is not provided', () => {
             AWS: "*"
           },
           Resource: [
+            {
+              "Fn::GetAtt": [
+                "testbucketS3Bucket87F6BFFC",
+                "Arn"
+              ]
+            },
             {
               "Fn::Join": [
                 "",
@@ -294,16 +298,9 @@ test('Test enforcing SSL when bucketProps is not provided', () => {
                   "/*"
                 ]
               ]
-            },
-            {
-              "Fn::GetAtt": [
-                "testbucketS3Bucket87F6BFFC",
-                "Arn"
-              ]
             }
-          ],
-          Sid: "HttpsOnly"
-        },
+          ]
+        }
       ],
       Version: "2012-10-17"
     }
@@ -324,7 +321,7 @@ test('Test enforcing SSL when bucketProps is provided and enforceSSL is not set'
     PolicyDocument: {
       Statement: [
         {
-          Action: "*",
+          Action: "s3:*",
           Condition: {
             Bool: {
               "aws:SecureTransport": "false"
@@ -335,6 +332,12 @@ test('Test enforcing SSL when bucketProps is provided and enforceSSL is not set'
             AWS: "*"
           },
           Resource: [
+            {
+              "Fn::GetAtt": [
+                "testbucketS3Bucket87F6BFFC",
+                "Arn"
+              ]
+            },
             {
               "Fn::Join": [
                 "",
@@ -348,16 +351,9 @@ test('Test enforcing SSL when bucketProps is provided and enforceSSL is not set'
                   "/*"
                 ]
               ]
-            },
-            {
-              "Fn::GetAtt": [
-                "testbucketS3Bucket87F6BFFC",
-                "Arn"
-              ]
             }
-          ],
-          Sid: "HttpsOnly"
-        },
+          ]
+        }
       ],
       Version: "2012-10-17"
     }
