@@ -643,7 +643,7 @@
         "PolicyDocument": {
           "Statement": [
             {
-              "Action": "*",
+              "Action": "s3:*",
               "Condition": {
                 "Bool": {
                   "aws:SecureTransport": "false"
@@ -654,6 +654,12 @@
                 "AWS": "*"
               },
               "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testcloudfrontapigatewayCloudfrontLoggingBucket9811F6E8",
+                    "Arn"
+                  ]
+                },
                 {
                   "Fn::Join": [
                     "",
@@ -667,15 +673,8 @@
                       "/*"
                     ]
                   ]
-                },
-                {
-                  "Fn::GetAtt": [
-                    "testcloudfrontapigatewayCloudfrontLoggingBucket9811F6E8",
-                    "Arn"
-                  ]
                 }
-              ],
-              "Sid": "HttpsOnly"
+              ]
             }
           ],
           "Version": "2012-10-17"

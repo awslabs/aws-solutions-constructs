@@ -41,8 +41,8 @@
     "testexistingbucketfirehoses3stackKinesisStreamCA3487EE": {
       "Type": "AWS::Kinesis::Stream",
       "Properties": {
-        "ShardCount": 1,
         "RetentionPeriodHours": 24,
+        "ShardCount": 1,
         "StreamEncryption": {
           "EncryptionType": "KMS",
           "KeyId": "alias/aws/kinesis"

@@ -4,8 +4,8 @@
     "testkinesisstreamslambdaKinesisStream374D6D56": {
       "Type": "AWS::Kinesis::Stream",
       "Properties": {
-        "ShardCount": 1,
         "RetentionPeriodHours": 24,
+        "ShardCount": 1,
         "StreamEncryption": {
           "EncryptionType": "KMS",
           "KeyId": "alias/aws/kinesis"
@@ -238,7 +238,7 @@
         "PolicyDocument": {
           "Statement": [
             {
-              "Action": "*",
+              "Action": "s3:*",
               "Condition": {
                 "Bool": {
                   "aws:SecureTransport": "false"
@@ -249,6 +249,12 @@
                 "AWS": "*"
               },
               "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testkinesisstreamslambdaS3LoggingBucket48F70267",
+                    "Arn"
+                  ]
+                },
                 {
                   "Fn::Join": [
                     "",
@@ -262,15 +268,8 @@
                       "/*"
                     ]
                   ]
-                },
-                {
-                  "Fn::GetAtt": [
-                    "testkinesisstreamslambdaS3LoggingBucket48F70267",
-                    "Arn"
-                  ]
                 }
-              ],
-              "Sid": "HttpsOnly"
+              ]
             }
           ],
           "Version": "2012-10-17"
@@ -329,7 +328,7 @@
         "PolicyDocument": {
           "Statement": [
             {
-              "Action": "*",
+              "Action": "s3:*",
               "Condition": {
                 "Bool": {
                   "aws:SecureTransport": "false"
@@ -340,6 +339,12 @@
                 "AWS": "*"
               },
               "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testkinesisstreamslambdaS3Bucket54759F5C",
+                    "Arn"
+                  ]
+                },
                 {
                   "Fn::Join": [
                     "",
@@ -353,15 +358,8 @@
                       "/*"
                     ]
                   ]
-                },
-                {
-                  "Fn::GetAtt": [
-                    "testkinesisstreamslambdaS3Bucket54759F5C",
-                    "Arn"
-                  ]
                 }
-              ],
-              "Sid": "HttpsOnly"
+              ]
             }
           ],
           "Version": "2012-10-17"
