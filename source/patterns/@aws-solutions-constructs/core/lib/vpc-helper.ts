@@ -89,6 +89,8 @@ export enum ServiceEndpointTypes {
   SAGEMAKER_RUNTIME = "SAGEMAKER_RUNTIME",
   SECRETS_MANAGER = "SECRETS_MANAGER",
   SSM = "SSM",
+  ECR_API = "ECR_API",
+  ECR_DKR = "ECR_DKR",
   EVENTS = "CLOUDWATCH_EVENTS"
 }
 
@@ -144,6 +146,16 @@ const endpointSettings: EndpointDefinition[] = [
     endpointName: ServiceEndpointTypes.SSM,
     endpointType: EndpointTypes.INTERFACE,
     endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.SSM,
+  },
+  {
+    endpointName: ServiceEndpointTypes.ECR_API,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.ECR
+  },
+  {
+    endpointName: ServiceEndpointTypes.ECR_DKR,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.ECR_DOCKER
   },
   {
     endpointName: ServiceEndpointTypes.EVENTS,

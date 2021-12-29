@@ -958,5 +958,6 @@ test('Test existingLoadBalancerObj and no existingVpc is an error', () => {
     new AlbToLambda(stack, 'test-one', props);
   };
   // Assertion
-  expect(app).toThrowError(/An existing ALB already exists in a VPC, that VPC must be provided in props.existingVpc for the rest of the construct to use./);
+  expect(app).toThrowError(
+    /An existing ALB is already in a VPC, that VPC must be provided in props.existingVpc for the rest of the construct to use./);
 });

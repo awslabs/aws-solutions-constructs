@@ -1,4 +1,4 @@
-# aws-route53-alb module
+# aws-alb-lambda module
 <!--BEGIN STABILITY BANNER-->
 
 ---

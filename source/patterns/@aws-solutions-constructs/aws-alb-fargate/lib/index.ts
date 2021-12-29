@@ -14,13 +14,13 @@
 import * as elb from "@aws-cdk/aws-elasticloadbalancingv2";
 import * as ec2 from "@aws-cdk/aws-ec2";
 import * as s3 from "@aws-cdk/aws-s3";
-import * as lambda from "@aws-cdk/aws-lambda";
 import { Construct } from "@aws-cdk/core";
 import * as defaults from "@aws-solutions-constructs/core";
-import { CfnListener, CfnTargetGroup } from "@aws-cdk/aws-elasticloadbalancingv2";
+import * as ecs from "@aws-cdk/aws-ecs";
 import { GetActiveListener } from "@aws-solutions-constructs/core";
+import { CfnListener, CfnTargetGroup } from "@aws-cdk/aws-elasticloadbalancingv2";
 
-export interface AlbToLambdaProps {
+export interface AlbToFargateProps {
   /**
    * Optional custom properties for a new loadBalancer. Providing both this and
    * existingLoadBalancer is an error. This cannot specify a VPC, it will use the VPC
@@ -38,19 +38,6 @@ export interface AlbToLambdaProps {
    */
   readonly existingLoadBalancerObj?: elb.ApplicationLoadBalancer;
   /**
-   * Existing instance of Lambda Function object, providing both this and
-   * `lambdaFunctionProps` will cause an error.
-   *
-   * @default - None
-   */
-  readonly existingLambdaObj?: lambda.Function;
-  /**
-   * User provided props to override the default props for the Lambda function.
-   *
-   * @default - Default props are used
-   */
-  readonly lambdaFunctionProps?: lambda.FunctionProps;
-  /**
    * Props to define the listener. Must be provided when adding the listener
    * to an ALB (eg - when creating the alb), may not be provided when adding
    * a second target to an already established listener. When provided, must include
@@ -66,7 +53,7 @@ export interface AlbToLambdaProps {
    * @default - none
    *
    */
-  readonly targetProps?: elb.ApplicationTargetGroupProps;
+  readonly targetGroupProps?: elb.ApplicationTargetGroupProps;
   /**
    * Rules for directing traffic to the target being created. May not be specified
    * for the first listener added to an ALB, and must be specified for the second
@@ -99,53 +86,109 @@ export interface AlbToLambdaProps {
    *
    * @default - true
    */
-  readonly logAlbAccessLogs?: boolean,
+  readonly logAlbAccessLogs?: boolean;
   /**
    * Optional properties to customize the bucket used to store the ALB Access
    * Logs. Supplying this and setting logAccessLogs to false is an error.
    *
    * @default - none
    */
-  readonly albLoggingBucketProps?: s3.BucketProps,
+  readonly albLoggingBucketProps?: s3.BucketProps;
   /**
    * Whether the construct is deploying a private or public API. This has implications for the VPC and ALB.
    *
    * @default - none
    */
   readonly publicApi: boolean;
+  /**
+   * Optional properties to create a new ECS cluster
+   */
+  readonly clusterProps?: ecs.ClusterProps;
+  /**
+   * The arn of an ECR Repository containing the image to use
+   * to generate the containers
+   *
+   * format:
+   *   arn:aws:ecr:[region]:[account number]:repository/[Repository Name]
+   */
+  readonly ecrRepositoryArn?: string;
+  /**
+   * The version of the image to use from the repository
+   *
+   * @default - none
+   */
+  readonly ecrImageVersion?: string;
+  /**
+   * Optional existing image found in some repository
+   *
+   * @default - 'latest'
+   */
+  readonly existingImageObject?: ecs.ContainerImage;
+  /**
+   * Optional props to define the container created for the Fargate Service
+   *
+   * @default - see fargate-defaults.t
+   */
+  readonly containerDefinitionProps?: ecs.ContainerDefinitionProps | any;
+  /**
+   * Optional props to define the Fargate Task Definition for this construct
+   *
+   * @default - see fargate-defaults.ts
+   */
+  readonly fargateTaskDefinitionProps?: ecs.FargateTaskDefinitionProps | any;
+  /**
+   * Optional properties to override default values for the Fargate service.
+   * Service will set up in the Public or Isolated subnets of the VPC by default,
+   * override that (e.g. - choose Private subnets) by setting vpcSubnets on this
+   * object.
+   */
+  readonly fargateServiceProps?: ecs.FargateServiceProps | any;
+  /**
+   * A Fargate Service already instantiated (probably by another Solutions Construct). If
+   * this is specified, then no props defining a new service can be provided, including:
+   * existingImageObject, ecrImageVersion, containerDefintionProps, fargateTaskDefinitionProps,
+   * ecrRepositoryArn, fargateServiceProps, clusterProps, existingClusterInterface
+   *
+   * @default - none
+   */
+  readonly existingFargateServiceObject?: ecs.FargateService;
+
+  readonly existingContainerDefinitionObject?: ecs.ContainerDefinition;
 }
 
-export class AlbToLambda extends Construct {
+export class AlbToFargate extends Construct {
   public readonly loadBalancer: elb.ApplicationLoadBalancer;
   public readonly vpc: ec2.IVpc;
-  public readonly lambdaFunction: lambda.Function;
   public readonly listener: elb.ApplicationListener;
+  public readonly service: ecs.FargateService;
+  public readonly container: ecs.ContainerDefinition;
 
-  constructor(scope: Construct, id: string, props: AlbToLambdaProps) {
+  constructor(scope: Construct, id: string, props: AlbToFargateProps) {
     super(scope, id);
     defaults.CheckProps(props);
     defaults.CheckAlbProps(props);
+    defaults.CheckFargateProps(props);
 
     // Obtain VPC for construct (existing or created)
     // Determine all the resources to use (existing or launch new)
     if (props.existingVpc) {
       this.vpc = props.existingVpc;
     } else {
-      this.vpc = defaults.buildVpc(scope, props.publicApi ? {
-        // public api props
-        defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
+      this.vpc = defaults.buildVpc(scope, {
+        defaultVpcProps: props.publicApi
+          ? defaults.DefaultPublicPrivateVpcProps()
+          : defaults.DefaultIsolatedVpcProps(),
         userVpcProps: props.vpcProps,
-      } : {
-        // private api props
-        defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
-        userVpcProps: props.vpcProps,
-        constructVpcProps: { enableDnsHostnames: true, enableDnsSupport: true },
+        constructVpcProps: props.publicApi
+          ? undefined
+          : { enableDnsHostnames: true, enableDnsSupport: true },
       });
     }
 
+    // Set up the ALB
     this.loadBalancer = defaults.ObtainAlb(
-      this,
-      id,
+      scope,
+      `${id}-lb`,
       this.vpc,
       props.publicApi,
       props.existingLoadBalancerObj,
@@ -153,13 +196,6 @@ export class AlbToLambda extends Construct {
       props.logAlbAccessLogs,
       props.albLoggingBucketProps
     );
-
-    // Obtain Lambda function for construct (existing or created)
-    this.lambdaFunction = defaults.buildLambdaFunction(this, {
-      existingLambdaObj: props.existingLambdaObj,
-      lambdaFunctionProps: props.lambdaFunctionProps,
-      vpc: this.vpc,
-    });
 
     let newListener: boolean;
     if (this.loadBalancer.listeners.length === 0) {
@@ -180,13 +216,38 @@ export class AlbToLambda extends Construct {
       this.listener = GetActiveListener(this.loadBalancer.listeners);
     }
 
-    const newTargetGroup = defaults.AddLambdaTarget(
-      this,
-      `tg${this.loadBalancer.listeners.length + 1}`,
+    if (props.existingFargateServiceObject) {
+      this.service = props.existingFargateServiceObject;
+      // CheckFargateProps confirms that the container is provided
+      this.container = props.existingContainerDefinitionObject!;
+    } else {
+      [this.service, this.container] = defaults.CreateFargateService(
+        scope,
+        id,
+        this.vpc,
+        props.clusterProps,
+        props.ecrRepositoryArn,
+        props.ecrImageVersion,
+        props.fargateTaskDefinitionProps,
+        props.containerDefinitionProps,
+        props.fargateServiceProps
+      );
+    }
+    // Add the Fargate Service to the
+    // to the ALB Listener we set up earlier
+    const applicationTargetGroupProps = defaults.consolidateProps(
+      defaults.DefaultApplicationTargetGroupProps(this.vpc),
+      props.targetGroupProps
+    );
+
+    const newTargetGroup = defaults.AddFargateTarget(
+      scope,
+      `${id}-target`,
       this.listener,
-      this.lambdaFunction,
+      this.service,
       props.ruleProps,
-      props.targetProps);
+      applicationTargetGroupProps
+    );
 
     // this.listener needs to be set on the construct.
     // could be above: else { defaults.GetActiveListener }

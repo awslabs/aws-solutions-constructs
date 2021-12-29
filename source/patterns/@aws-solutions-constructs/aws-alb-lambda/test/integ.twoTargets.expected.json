@@ -438,7 +438,7 @@
         "Principal": "elasticloadbalancing.amazonaws.com"
       }
     },
-    "testonelistener5EBC4D40": {
+    "testonetestonelistener51CF582F": {
       "Type": "AWS::ElasticLoadBalancingV2::Listener",
       "Properties": {
         "DefaultActions": [
@@ -469,7 +469,7 @@
         }
       }
     },
-    "testonelistenertesttwotargetsRuleE0E52701": {
+    "testonetestonelistenertesttwotargetsRule3ACCF5EF": {
       "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
       "Properties": {
         "Actions": [
@@ -491,7 +491,7 @@
           }
         ],
         "ListenerArn": {
-          "Ref": "testonelistener5EBC4D40"
+          "Ref": "testonetestonelistener51CF582F"
         },
         "Priority": 10
       }
