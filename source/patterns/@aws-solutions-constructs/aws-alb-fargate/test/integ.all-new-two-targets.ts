@@ -25,7 +25,6 @@ const stack = new Stack(app, defaults.generateIntegStackName(__filename), {
 });
 stack.templateOptions.description = 'Integration Test for public HTTP API with new VPC, LoadBalancer and Service and 2 targets';
 
-// const testEcrRepoArn = 'arn:aws:ecr:us-east-1:515290864834:repository/biffapi';
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
 const testProps: AlbToFargateProps = {
