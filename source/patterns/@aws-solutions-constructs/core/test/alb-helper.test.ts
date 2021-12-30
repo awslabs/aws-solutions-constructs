@@ -13,7 +13,6 @@
 
 import { Stack } from '@aws-cdk/core';
 import * as elb from "@aws-cdk/aws-elasticloadbalancingv2";
-import * as acm from "@aws-cdk/aws-certificatemanager";
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as defaults from '../index';
 import * as ec2 from '@aws-cdk/aws-ec2';
