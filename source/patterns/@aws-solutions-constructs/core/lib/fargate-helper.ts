@@ -97,7 +97,7 @@ export function CreateFargateService(
       allowAllOutbound: true,
       disableInlineRules: false,
       vpc: constructVpc,
-      securityGroupName: 'defaultSecurityGroup'
+      description: 'Construct created security group'
     });
     defaultFargateServiceProps = overrideProps(defaults.DefaultFargateServiceProps(), { securityGroups: [ serviceSecurityGroup ]});
     defaults.addCfnSuppressRules(serviceSecurityGroup, [

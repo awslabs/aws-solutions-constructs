@@ -85,7 +85,7 @@ test('Test with all defaults', () => {
     ],
   });
   expect(stack).toHaveResourceLike("AWS::EC2::SecurityGroup", {
-    GroupName: 'defaultSecurityGroup'
+    GroupDescription: 'Construct created security group'
   });
 
   expect(stack).toCountResources("AWS::EC2::VPCEndpoint", 3);
@@ -270,7 +270,7 @@ test('Test with custom Fargate Service props', () => {
 
 test('Test with custom security group', () => {
   const stack = new Stack();
-  const groupName = 'customerSg';
+  const groupDescription = 'Test generated security group';
 
   const testVpc = CreateIsolatedTestVpc(stack);
 
@@ -278,7 +278,7 @@ test('Test with custom security group', () => {
     disableInlineRules: true,
     allowAllOutbound: false,
     vpc: testVpc,
-    securityGroupName: groupName
+    description: groupDescription
   });
 
   CreateFargateService(stack,
@@ -293,10 +293,10 @@ test('Test with custom security group', () => {
   );
 
   expect(stack).toHaveResource("AWS::EC2::SecurityGroup", {
-    GroupName: groupName,
+    GroupDescription: groupDescription,
   });
   expect(stack).not.toHaveResource("AWS::EC2::SecurityGroup", {
-    GroupName: 'defaultSecurityGroup',
+    GroupDescription: 'Construct created security group',
   });
 });
 
