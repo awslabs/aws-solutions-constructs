@@ -119,12 +119,6 @@ export interface AlbToFargateProps {
    */
   readonly ecrImageVersion?: string;
   /**
-   * Optional existing image found in some repository
-   *
-   * @default - 'latest'
-   */
-  readonly existingImageObject?: ecs.ContainerImage;
-  /**
    * Optional props to define the container created for the Fargate Service
    *
    * @default - see fargate-defaults.t
@@ -146,7 +140,7 @@ export interface AlbToFargateProps {
   /**
    * A Fargate Service already instantiated (probably by another Solutions Construct). If
    * this is specified, then no props defining a new service can be provided, including:
-   * existingImageObject, ecrImageVersion, containerDefintionProps, fargateTaskDefinitionProps,
+   * ecrImageVersion, containerDefintionProps, fargateTaskDefinitionProps,
    * ecrRepositoryArn, fargateServiceProps, clusterProps, existingClusterInterface
    *
    * @default - none
