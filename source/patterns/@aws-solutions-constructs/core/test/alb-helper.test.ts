@@ -542,14 +542,6 @@ function CreateTestLoadBalancer(stack: Stack, vpc: ec2.IVpc): elb.ApplicationLoa
   });
 }
 
-function GetCert(stack: Stack): acm.ICertificate {
-  return acm.Certificate.fromCertificateArn(
-    stack,
-    'not-really-a-cert',
-    "arn:aws:acm:us-east-1:123456789012:certificate/85c52dc8-1b37-4afd-a7aa-f03aac2db0cc"
-  );
-}
-
 function CreateTestFunction(stack: Stack, id: string): lambda.Function {
   return new lambda.Function(stack, id, {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
