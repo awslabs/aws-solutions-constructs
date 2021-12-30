@@ -1228,6 +1228,7 @@
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "all-new-two-targets/test-construct-sg",
+        "GroupName": "defaultSecurityGroup",
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",

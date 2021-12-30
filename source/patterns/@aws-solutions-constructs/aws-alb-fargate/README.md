@@ -72,7 +72,7 @@ _Parameters_
 | existingVpc? | [ec2.IVpc](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.IVpc.html) | An existing VPC in which to deploy the construct. Providing both this and vpcProps is an error. If the client provides an existing load balancer and/or existing Private Hosted Zone, those constructs must exist in this VPC. |
 | logAlbAccessLogs? | boolean| Whether to turn on Access Logs for the Application Load Balancer. Uses an S3 bucket with associated storage costs.Enabling Access Logging is a best practice. default - true |
 | albLoggingBucketProps? | [s3.BucketProps](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html) | Optional properties to customize the bucket used to store the ALB Access Logs. Supplying this and setting logAccessLogs to false is an error. @default - none |
-| clusterProps | [ecs.ClusterProps]() | Optional properties to create a new ECS cluster |
+| clusterProps | [ecs.ClusterProps]() | Optional properties to create a new ECS cluster. To provide an existing cluster, use the cluster attribute of fargateServiceProps. |
 | ecrRepositoryArn | string]() | The arn of an ECR Repository containing the image to use to generate the containers. Either this or the image property of containerDefinitionProps must be provided. format: arn:aws:ecr:*region*:*account number*:repository/*Repository Name* |
 | ecrImageVersion | string]() | The version of the image to use from the repository. Defaults to 'Latest' |
 | containerDefinitionProps | [ecs.ContainerDefinitionProps | any]() | Optional props to define the container created for the Fargate Service (defaults found in fargate-defaults.ts) |
@@ -110,4 +110,4 @@ Out of the box implementation of the Construct without any override will set the
 ![Architecture Diagram](architecture.png)
 
 ***
-&copy; Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+&copy; Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.

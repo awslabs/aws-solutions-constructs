@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -14,6 +14,7 @@
 import * as defaults from "..";
 import { Stack } from '@aws-cdk/core';
 import { CreateFargateService } from "..";
+import * as ec2 from "@aws-cdk/aws-ec2";
 import * as ecs from "@aws-cdk/aws-ecs";
 import * as ecr from "@aws-cdk/aws-ecr";
 import '@aws-cdk/assert/jest';
@@ -82,6 +83,9 @@ test('Test with all defaults', () => {
         },
       }
     ],
+  });
+  expect(stack).toHaveResourceLike("AWS::EC2::SecurityGroup", {
+    GroupName: 'defaultSecurityGroup'
   });
 
   expect(stack).toCountResources("AWS::EC2::VPCEndpoint", 3);
@@ -261,6 +265,38 @@ test('Test with custom Fargate Service props', () => {
 
   expect(stack).toHaveResourceLike("AWS::ECS::Service", {
     ServiceName: serviceName,
+  });
+});
+
+test('Test with custom security group', () => {
+  const stack = new Stack();
+  const groupName = 'customerSg';
+
+  const testVpc = CreateIsolatedTestVpc(stack);
+
+  const customSg = new ec2.SecurityGroup(stack, 'custom-sg', {
+    disableInlineRules: true,
+    allowAllOutbound: false,
+    vpc: testVpc,
+    securityGroupName: groupName
+  });
+
+  CreateFargateService(stack,
+    'test',
+    testVpc,
+    undefined,
+    'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo',
+    undefined,
+    undefined,
+    undefined,
+    { securityGroups: [ customSg ]  }
+  );
+
+  expect(stack).toHaveResource("AWS::EC2::SecurityGroup", {
+    GroupName: groupName,
+  });
+  expect(stack).not.toHaveResource("AWS::EC2::SecurityGroup", {
+    GroupName: 'defaultSecurityGroup',
   });
 });
 
