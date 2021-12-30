@@ -16,6 +16,7 @@ import * as ec2 from "@aws-cdk/aws-ec2";
 import * as ecs from "@aws-cdk/aws-ecs";
 import * as ecr from "@aws-cdk/aws-ecr";
 import * as defaults from "..";
+import { overrideProps } from "..";
 
 export function CreateFargateService(
   scope: Construct,
@@ -89,8 +90,31 @@ export function CreateFargateService(
     }
   }
 
+  let defaultFargateServiceProps;
+
+  if (!clientFargateServiceProps?.securityGroups) {
+    const serviceSecurityGroup = new ec2.SecurityGroup(scope, `${id}-sg`, {
+      allowAllOutbound: true,
+      disableInlineRules: false,
+      vpc: constructVpc,
+    });
+    defaultFargateServiceProps = overrideProps(defaults.DefaultFargateServiceProps(), { securityGroups: [ serviceSecurityGroup ]});
+    defaults.addCfnSuppressRules(serviceSecurityGroup, [
+      {
+        id: 'W5',
+        reason: 'Egress of 0.0.0.0/0 is default and generally considered OK',
+      },
+      {
+        id: 'W40',
+        reason: 'Egress IPProtocol of -1 is default and generally considered OK',
+      }
+    ]);
+  } else {
+    defaultFargateServiceProps = defaults.DefaultFargateServiceProps();
+  }
+
   const fargateServiceProps = defaults.consolidateProps(
-    defaults.DefaultFargateServiceProps(),
+    defaultFargateServiceProps,
     clientFargateServiceProps,
     fargateServiceDefintionConstructProps
   );
@@ -98,7 +122,7 @@ export function CreateFargateService(
   const newService = new ecs.FargateService(
     scope,
     `${id}-service`,
-    fargateServiceProps
+    fargateServiceProps,
   );
   // We just created this container, so there should never be a situation where it doesn't exist
   const newContainer = newService.taskDefinition.findContainer(

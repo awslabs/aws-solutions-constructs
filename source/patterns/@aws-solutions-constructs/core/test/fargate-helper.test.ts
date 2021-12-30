@@ -45,7 +45,7 @@ test('Test with all defaults', () => {
         SecurityGroups: [
           {
             "Fn::GetAtt": [
-              "testserviceSecurityGroup8BB2A30A",
+              "testsg872EB48A",
               "GroupId"
             ]
           }
@@ -121,7 +121,7 @@ test('Test with all defaults in isolated VPC', () => {
         SecurityGroups: [
           {
             "Fn::GetAtt": [
-              "testserviceSecurityGroup8BB2A30A",
+              "testsg872EB48A",
               "GroupId"
             ]
           }

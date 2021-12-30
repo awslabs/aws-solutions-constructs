@@ -927,6 +927,57 @@
         }
       }
     },
+    "testsg872EB48A": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "all-existing-private-http/test-sg",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W5",
+              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK"
+            },
+            {
+              "id": "W40",
+              "reason": "Egress IPProtocol of -1 is default and generally considered OK"
+            }
+          ]
+        }
+      }
+    },
+    "testsgfromallexistingprivatehttptestalbSecurityGroup4B36914B80803EB3A82F": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "IpProtocol": "tcp",
+        "Description": "Load balancer to target",
+        "FromPort": 8080,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "testsg872EB48A",
+            "GroupId"
+          ]
+        },
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "testalbSecurityGroup0C84CDF9",
+            "GroupId"
+          ]
+        },
+        "ToPort": 8080
+      }
+    },
     "testserviceService2730C249": {
       "Type": "AWS::ECS::Service",
       "Properties": {
@@ -956,7 +1007,7 @@
             "SecurityGroups": [
               {
                 "Fn::GetAtt": [
-                  "testserviceSecurityGroup8BB2A30A",
+                  "testsg872EB48A",
                   "GroupId"
                 ]
               }
@@ -982,43 +1033,6 @@
       "DependsOn": [
         "testconstructtestconstructlistener484444F1"
       ]
-    },
-    "testserviceSecurityGroup8BB2A30A": {
-      "Type": "AWS::EC2::SecurityGroup",
-      "Properties": {
-        "GroupDescription": "all-existing-private-http/test-service/SecurityGroup",
-        "SecurityGroupEgress": [
-          {
-            "CidrIp": "0.0.0.0/0",
-            "Description": "Allow all outbound traffic by default",
-            "IpProtocol": "-1"
-          }
-        ],
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        }
-      }
-    },
-    "testserviceSecurityGroupfromallexistingprivatehttptestalbSecurityGroup4B36914B8080E9C7123E": {
-      "Type": "AWS::EC2::SecurityGroupIngress",
-      "Properties": {
-        "IpProtocol": "tcp",
-        "Description": "Load balancer to target",
-        "FromPort": 8080,
-        "GroupId": {
-          "Fn::GetAtt": [
-            "testserviceSecurityGroup8BB2A30A",
-            "GroupId"
-          ]
-        },
-        "SourceSecurityGroupId": {
-          "Fn::GetAtt": [
-            "testalbSecurityGroup0C84CDF9",
-            "GroupId"
-          ]
-        },
-        "ToPort": 8080
-      }
     },
     "testalb9AFCD824": {
       "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
@@ -1055,7 +1069,17 @@
         "VpcPublicSubnet1DefaultRoute3DA9E72A",
         "VpcPublicSubnet2DefaultRoute97F91067",
         "VpcPublicSubnet3DefaultRoute4697774F"
-      ]
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W52",
+              "reason": "This test is explicitly to test the no logging case."
+            }
+          ]
+        }
+      }
     },
     "testalbSecurityGroup0C84CDF9": {
       "Type": "AWS::EC2::SecurityGroup",
@@ -1073,9 +1097,27 @@
         "VpcId": {
           "Ref": "Vpc8378EB38"
         }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W29",
+              "reason": "CDK created rule that blocks all traffic."
+            },
+            {
+              "id": "W2",
+              "reason": "Rule does not apply for ELB."
+            },
+            {
+              "id": "W9",
+              "reason": "Rule does not apply for ELB."
+            }
+          ]
+        }
       }
     },
-    "testalbSecurityGrouptoallexistingprivatehttptestserviceSecurityGroupD6E2E538808096DA72B6": {
+    "testalbSecurityGrouptoallexistingprivatehttptestsgC280D41D8080C6A2C196": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
         "GroupId": {
@@ -1088,7 +1130,7 @@
         "Description": "Load balancer to target",
         "DestinationSecurityGroupId": {
           "Fn::GetAtt": [
-            "testserviceSecurityGroup8BB2A30A",
+            "testsg872EB48A",
             "GroupId"
           ]
         },
@@ -1115,7 +1157,17 @@
       },
       "DependsOn": [
         "testconstructtargettg7CB2E212"
-      ]
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W56",
+              "reason": "All integration tests must be HTTP because of certificate limitations."
+            }
+          ]
+        }
+      }
     },
     "testconstructtargettg7CB2E212": {
       "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",

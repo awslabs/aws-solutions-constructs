@@ -16,6 +16,8 @@ import { Aws, App, Stack } from "@aws-cdk/core";
 import { AlbToFargate, AlbToFargateProps } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import * as ecs from '@aws-cdk/aws-ecs';
+import * as defaults from '@aws-solutions-constructs/core';
+import { CfnSecurityGroup } from "@aws-cdk/aws-ec2";
 
 // Setup
 const app = new App();
@@ -36,7 +38,18 @@ const testProps: AlbToFargateProps = {
   },
 };
 
-new AlbToFargate(stack, 'test-construct', testProps);
+const albToFargate = new AlbToFargate(stack, 'test-construct', testProps);
+
+defaults.addCfnSuppressRules(albToFargate.listener, [
+  { id: 'W56', reason: 'All integration tests must be HTTP because of certificate limitations.' },
+]);
+
+const newSecurityGroup = albToFargate.loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
+defaults.addCfnSuppressRules(newSecurityGroup, [
+  { id: 'W29', reason: 'CDK created rule that blocks all traffic.'},
+  { id: 'W2', reason: 'Rule does not apply for ELB.'},
+  { id: 'W9', reason: 'Rule does not apply for ELB.'}
+]);
 
 // Synth
 app.synth();

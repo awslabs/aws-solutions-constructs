@@ -20,7 +20,17 @@
       },
       "DependsOn": [
         "testconstructtargettg7CB2E212"
-      ]
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W56",
+              "reason": "All integration tests must be HTTP because of certificate limitations."
+            }
+          ]
+        }
+      }
     },
     "Vpc8378EB38": {
       "Type": "AWS::EC2::VPC",
@@ -853,9 +863,27 @@
       "DependsOn": [
         "testconstructlbPolicy3FF14C4B",
         "testconstructlb40BC0490"
-      ]
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W29",
+              "reason": "CDK created rule that blocks all traffic."
+            },
+            {
+              "id": "W2",
+              "reason": "Rule does not apply for ELB."
+            },
+            {
+              "id": "W9",
+              "reason": "Rule does not apply for ELB."
+            }
+          ]
+        }
+      }
     },
-    "testconstructlbalbSecurityGrouptoallnewpublichttptestconstructserviceSecurityGroup1B4D4FC28080F157BBEC": {
+    "testconstructlbalbSecurityGrouptoallnewpublichttptestconstructsgEFBACDED8080226DB910": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
         "GroupId": {
@@ -868,7 +896,7 @@
         "Description": "Load balancer to target",
         "DestinationSecurityGroupId": {
           "Fn::GetAtt": [
-            "testconstructserviceSecurityGroupFFB8D445",
+            "testconstructsgA602AA29",
             "GroupId"
           ]
         },
@@ -1169,6 +1197,57 @@
         }
       }
     },
+    "testconstructsgA602AA29": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "all-new-public-http/test-construct-sg",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W5",
+              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK"
+            },
+            {
+              "id": "W40",
+              "reason": "Egress IPProtocol of -1 is default and generally considered OK"
+            }
+          ]
+        }
+      }
+    },
+    "testconstructsgfromallnewpublichttptestconstructlbalbSecurityGroupA1A7ABDB8080D3FFEE20": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "IpProtocol": "tcp",
+        "Description": "Load balancer to target",
+        "FromPort": 8080,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "testconstructsgA602AA29",
+            "GroupId"
+          ]
+        },
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "testconstructlbalbSecurityGroup5F187AF4",
+            "GroupId"
+          ]
+        },
+        "ToPort": 8080
+      }
+    },
     "testconstructserviceService13074A8F": {
       "Type": "AWS::ECS::Service",
       "Properties": {
@@ -1198,7 +1277,7 @@
             "SecurityGroups": [
               {
                 "Fn::GetAtt": [
-                  "testconstructserviceSecurityGroupFFB8D445",
+                  "testconstructsgA602AA29",
                   "GroupId"
                 ]
               }
@@ -1224,43 +1303,6 @@
       "DependsOn": [
         "testconstructtestconstructlistener484444F1"
       ]
-    },
-    "testconstructserviceSecurityGroupFFB8D445": {
-      "Type": "AWS::EC2::SecurityGroup",
-      "Properties": {
-        "GroupDescription": "all-new-public-http/test-construct-service/SecurityGroup",
-        "SecurityGroupEgress": [
-          {
-            "CidrIp": "0.0.0.0/0",
-            "Description": "Allow all outbound traffic by default",
-            "IpProtocol": "-1"
-          }
-        ],
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        }
-      }
-    },
-    "testconstructserviceSecurityGroupfromallnewpublichttptestconstructlbalbSecurityGroupA1A7ABDB8080C8355C7D": {
-      "Type": "AWS::EC2::SecurityGroupIngress",
-      "Properties": {
-        "IpProtocol": "tcp",
-        "Description": "Load balancer to target",
-        "FromPort": 8080,
-        "GroupId": {
-          "Fn::GetAtt": [
-            "testconstructserviceSecurityGroupFFB8D445",
-            "GroupId"
-          ]
-        },
-        "SourceSecurityGroupId": {
-          "Fn::GetAtt": [
-            "testconstructlbalbSecurityGroup5F187AF4",
-            "GroupId"
-          ]
-        },
-        "ToPort": 8080
-      }
     },
     "testconstructtargettg7CB2E212": {
       "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
