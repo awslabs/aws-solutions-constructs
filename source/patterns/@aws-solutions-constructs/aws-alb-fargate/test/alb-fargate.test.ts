@@ -134,7 +134,7 @@ test('Test existing load balancer, vpc, service', () => {
     'test',
     testExistingVpc,
     undefined,
-    'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo');
+    testEcrRepoArn);
 
   const existingAlb = new elb.ApplicationLoadBalancer(stack, 'test-alb', {
     vpc: testExistingVpc,

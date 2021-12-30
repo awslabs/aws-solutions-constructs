@@ -312,7 +312,7 @@ test('Test adding a listener with defaults', () => {
   // Set up test framework independent of our code for unit testing
   const testVpc = CreateTestVpc(stack);
   const testAlb = CreateTestLoadBalancer(stack, testVpc);
-  const testCert = GetCert(stack);
+  const testCert = defaults.getFakeCertificate(stack, 'not-really-a-cert');
 
   const listener = defaults.AddListener(stack, 'test', testAlb, { certificates: [ testCert ] });
 
@@ -349,7 +349,7 @@ test('Test adding an HTTP listener with a cert (error)', () => {
   // Set up test framework independent of our code for unit testing
   const testVpc = CreateTestVpc(stack);
   const testAlb = CreateTestLoadBalancer(stack, testVpc);
-  const testCert = GetCert(stack);
+  const testCert = defaults.getFakeCertificate(stack, 'not-really-a-cert');
 
   const app = () => {
     defaults.AddListener(stack, 'test', testAlb, { protocol: 'HTTP', certificates: [ testCert ] });
@@ -425,7 +425,7 @@ test('Test GetActiveListener with 2 listeners', () => {
   // Set up test framework independent of our code for unit testing
   const testVpc = CreateTestVpc(stack);
   const testAlb = CreateTestLoadBalancer(stack, testVpc);
-  const testCert = GetCert(stack);
+  const testCert = defaults.getFakeCertificate(stack, 'not-really-a-cert');
 
   defaults.AddListener(stack, 'test', testAlb, { certificates: [ testCert ] });
   const listener = defaults.GetActiveListener(testAlb.listeners);

@@ -30,14 +30,7 @@ const stack = new Stack(app, generateIntegStackName(__filename), {
 });
 stack.templateOptions.description = 'Integration Test for private HTTP API with a existing function and ALB';
 
-const myVpc = defaults.buildVpc(stack, {
-  defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
-  constructVpcProps: {
-    enableDnsHostnames: true,
-    enableDnsSupport: true,
-    cidr: '172.168.0.0/16',
-  }
-});
+const myVpc = defaults.getTestVpc(stack);
 
 const testSg = new SecurityGroup(stack, 'lambda-sg', { vpc: myVpc, allowAllOutbound: false});
 

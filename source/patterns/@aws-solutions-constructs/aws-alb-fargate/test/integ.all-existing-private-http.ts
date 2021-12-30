@@ -28,7 +28,7 @@ stack.templateOptions.description = 'Integration Test for private HTTPS API with
 
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
-const testExistingVpc = getTestVpc(stack);
+const testExistingVpc = defaults.getTestVpc(stack);
 
 const [testService, testContainer] = defaults.CreateFargateService(stack,
   'test',
@@ -73,15 +73,3 @@ defaults.addCfnSuppressRules(newSecurityGroup, [
 
 // Synth
 app.synth();
-
-// Helper Functions
-function getTestVpc(scope: Stack) {
-  return defaults.buildVpc(scope, {
-    defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
-    constructVpcProps: {
-      enableDnsHostnames: true,
-      enableDnsSupport: true,
-      cidr: '172.168.0.0/16',
-    },
-  });
-}
