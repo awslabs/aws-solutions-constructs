@@ -20,14 +20,7 @@ import * as elb from "@aws-cdk/aws-elasticloadbalancingv2";
 import '@aws-cdk/assert/jest';
 
 function deployLoadBalancer(stack: cdk.Stack) {
-  const myVpc = defaults.buildVpc(stack, {
-    defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
-    constructVpcProps: {
-      enableDnsHostnames: true,
-      enableDnsSupport: true,
-      cidr: '172.168.0.0/16',
-    }
-  });
+  const myVpc = defaults.getTestVpc(stack);
 
   return new elb.ApplicationLoadBalancer(stack, 'new-lb', {
     internetFacing: false,

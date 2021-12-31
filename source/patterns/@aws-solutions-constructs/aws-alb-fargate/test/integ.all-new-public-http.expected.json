@@ -1307,7 +1307,7 @@
     "testconstructtargettg7CB2E212": {
       "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
       "Properties": {
-        "HealthCheckPath": "/url",
+        "HealthCheckPath": "/",
         "Port": 8080,
         "Protocol": "HTTP",
         "ProtocolVersion": "HTTP1",

@@ -19,15 +19,17 @@ import * as ecs from "@aws-cdk/aws-ecs";
 import * as ecr from "@aws-cdk/aws-ecr";
 import '@aws-cdk/assert/jest';
 
+export const fakeEcrRepoArn = 'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo';
+
 test('Test with all defaults', () => {
   const stack = new Stack();
 
-  const testVpc = CreateTestVpc(stack);
+  const testVpc = defaults.getTestVpc(stack);
   CreateFargateService(stack,
     'test',
     testVpc,
     undefined,
-    'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo');
+    fakeEcrRepoArn);
 
   expect(stack).toHaveResource("AWS::ECS::Service", {
     Cluster: {
@@ -106,7 +108,7 @@ test('Test with all defaults in isolated VPC', () => {
     'test',
     testVpc,
     undefined,
-    'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo');
+    fakeEcrRepoArn);
 
   expect(stack).toHaveResource("AWS::ECS::Service", {
     Cluster: {
@@ -218,7 +220,7 @@ test('Test with custom container definition', () => {
     'test',
     testVpc,
     undefined,
-    'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo',
+    fakeEcrRepoArn,
     undefined,
     { cpu: 256, memoryLimitMiB: 512  }
   );
@@ -238,7 +240,7 @@ test('Test with custom cluster props', () => {
     'test',
     testVpc,
     { clusterName },
-    'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo',
+    fakeEcrRepoArn,
     undefined,
   );
 
@@ -256,7 +258,7 @@ test('Test with custom Fargate Service props', () => {
     'test',
     testVpc,
     undefined,
-    'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo',
+    fakeEcrRepoArn,
     undefined,
     undefined,
     undefined,
@@ -285,7 +287,7 @@ test('Test with custom security group', () => {
     'test',
     testVpc,
     undefined,
-    'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo',
+    fakeEcrRepoArn,
     undefined,
     undefined,
     undefined,
@@ -407,12 +409,6 @@ test('Check providing existing service without existing container and existing V
 });
 
 // Helper functions
-function CreateTestVpc(stack: Stack) {
-  return defaults.buildVpc(stack, {
-    defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
-  });
-}
-
 function CreateIsolatedTestVpc(stack: Stack) {
   return defaults.buildVpc(stack, {
     defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
@@ -424,6 +420,7 @@ function CreateImage(stack: Stack): ecs.ContainerImage {
     ecr.Repository.fromRepositoryArn(
       stack,
       `test-container`,
+      // This is different than fakeEcrRepoArn because we're testing custom image
       "arn:aws:ecr:us-east-1:123456789012:repository/existingImage"
     ),
     "latest"

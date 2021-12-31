@@ -1075,7 +1075,7 @@
           "rules_to_suppress": [
             {
               "id": "W52",
-              "reason": "This test is explicitly to test the no logging case."
+              "reason": "This ALB is created only for test purposes, is never accessed and is destroyed immediately"
             }
           ]
         }
@@ -1172,7 +1172,7 @@
     "testconstructtargettg7CB2E212": {
       "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
       "Properties": {
-        "HealthCheckPath": "/url",
+        "HealthCheckPath": "/",
         "Port": 8080,
         "Protocol": "HTTP",
         "ProtocolVersion": "HTTP1",

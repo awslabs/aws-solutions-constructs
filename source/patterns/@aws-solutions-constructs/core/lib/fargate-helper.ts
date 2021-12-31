@@ -67,16 +67,15 @@ export function CreateFargateService(
       ecrImageVersion
     );
   }
-  const taskDefinition = CreateTaskDefinition(
+
+  // Create the Fargate Service
+  fargateServiceDefintionConstructProps.taskDefinition = CreateTaskDefinition(
     scope,
     id,
     clientFargateTaskDefinitionProps,
     clientContainerDefinitionProps,
     containerDefintionConstructProps
   );
-
-  // Create the Fargate Service
-  fargateServiceDefintionConstructProps.taskDefinition = taskDefinition;
 
   if (!clientFargateServiceProps?.vpcSubnets) {
     if (constructVpc.isolatedSubnets.length) {
@@ -97,6 +96,7 @@ export function CreateFargateService(
       allowAllOutbound: true,
       disableInlineRules: false,
       vpc: constructVpc,
+      // We add a description here so that this SG can be easily identified in tests
       description: 'Construct created security group'
     });
     defaultFargateServiceProps = overrideProps(defaults.DefaultFargateServiceProps(), { securityGroups: [ serviceSecurityGroup ]});

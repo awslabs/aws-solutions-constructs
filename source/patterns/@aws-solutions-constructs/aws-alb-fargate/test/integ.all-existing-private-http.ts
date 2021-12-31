@@ -58,7 +58,7 @@ const testProps: AlbToFargateProps = {
 
 const albToFargate = new AlbToFargate(stack, 'test-construct', testProps);
 
-defaults.addCfnSuppressRules(existingAlb, [{ id: 'W52', reason: 'This test is explicitly to test the no logging case.'}]);
+defaults.addCfnSuppressRules(existingAlb, [{ id: 'W52', reason: 'This ALB is created only for test purposes, is never accessed and is destroyed immediately'}]);
 
 defaults.addCfnSuppressRules(albToFargate.listener, [
   { id: 'W56', reason: 'All integration tests must be HTTP because of certificate limitations.' },

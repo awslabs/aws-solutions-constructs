@@ -164,20 +164,12 @@ export class AlbToFargate extends Construct {
     defaults.CheckFargateProps(props);
 
     // Obtain VPC for construct (existing or created)
-    // Determine all the resources to use (existing or launch new)
-    if (props.existingVpc) {
-      this.vpc = props.existingVpc;
-    } else {
-      this.vpc = defaults.buildVpc(scope, {
-        defaultVpcProps: props.publicApi
-          ? defaults.DefaultPublicPrivateVpcProps()
-          : defaults.DefaultIsolatedVpcProps(),
-        userVpcProps: props.vpcProps,
-        constructVpcProps: props.publicApi
-          ? undefined
-          : { enableDnsHostnames: true, enableDnsSupport: true },
-      });
-    }
+    this.vpc = defaults.buildVpc(scope, {
+      existingVpc: props.existingVpc,
+      defaultVpcProps: props.publicApi ? defaults.DefaultPublicPrivateVpcProps() : defaults.DefaultIsolatedVpcProps(),
+      userVpcProps: props.vpcProps,
+      constructVpcProps: props.publicApi ? {} : { enableDnsHostnames: true, enableDnsSupport: true }
+    });
 
     // Set up the ALB
     this.loadBalancer = defaults.ObtainAlb(
@@ -243,10 +235,6 @@ export class AlbToFargate extends Construct {
       applicationTargetGroupProps
     );
 
-    // this.listener needs to be set on the construct.
-    // could be above: else { defaults.GetActiveListener }
-    // do we then move that funcionality back into the construct (not the function). If so do
-    // we leave it in AddNewTarget or just do it here and pass the listener?
     if (newListener && this.listener) {
       const levelOneListener = this.listener.node.defaultChild as CfnListener;
       const cfnTargetGroup = newTargetGroup.node.defaultChild as CfnTargetGroup;

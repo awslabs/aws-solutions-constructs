@@ -108,7 +108,7 @@ test('Test add single lambda target group with no customization', () => {
 
   // Set up test framework independent of our code for unit testing
   const testFunction = CreateTestFunction(stack, 'test-function');
-  const testVpc = CreateTestVpc(stack);
+  const testVpc = defaults.getTestVpc(stack);
   const testAlb = CreateTestLoadBalancer(stack, testVpc);
   const testListener = CreateTestListener(stack, 'test-listener', testAlb);
 
@@ -141,7 +141,7 @@ test('Test add single lambda target group with target group props', () => {
 
   // Set up test framework independent of our code for unit testing
   const testFunction = CreateTestFunction(stack, 'test-function');
-  const testVpc = CreateTestVpc(stack);
+  const testVpc = defaults.getTestVpc(stack);
   const testAlb = CreateTestLoadBalancer(stack, testVpc);
   const testListener = CreateTestListener(stack, 'test-listener', testAlb);
   const targetGroupName = 'test-group';
@@ -168,7 +168,7 @@ test('Test add rule props for second lambda target group', () => {
 
   // Set up test framework independent of our code for unit testing
   const testFunction = CreateTestFunction(stack, 'test-function');
-  const testVpc = CreateTestVpc(stack);
+  const testVpc = defaults.getTestVpc(stack);
   const testAlb = CreateTestLoadBalancer(stack, testVpc);
   const testListener = CreateTestListener(stack, 'test-listener', testAlb);
   const targetGroupName = 'test-group';
@@ -217,7 +217,7 @@ test('Test add single fargate target with no customization', () => {
   const stack = new Stack();
 
   // Set up test framework independent of our code for unit testing
-  const testVpc = CreateTestVpc(stack);
+  const testVpc = defaults.getTestVpc(stack);
   const testService = CreateTestFargateService(stack, 'test-service', testVpc);
   const testAlb = CreateTestLoadBalancer(stack, testVpc);
   const testListener = CreateTestListener(stack, 'test-listener', testAlb);
@@ -255,7 +255,7 @@ test('Test add two fargate targets with rules', () => {
   const stack = new Stack();
 
   // Set up test framework independent of our code for unit testing
-  const testVpc = CreateTestVpc(stack);
+  const testVpc = defaults.getTestVpc(stack);
   const testService = CreateTestFargateService(stack, 'test-service', testVpc);
   const testAlb = CreateTestLoadBalancer(stack, testVpc);
   const testListener = CreateTestListener(stack, 'test-listener', testAlb);
@@ -309,7 +309,7 @@ test('Test adding a listener with defaults', () => {
   const stack = new Stack();
 
   // Set up test framework independent of our code for unit testing
-  const testVpc = CreateTestVpc(stack);
+  const testVpc = defaults.getTestVpc(stack);
   const testAlb = CreateTestLoadBalancer(stack, testVpc);
   const testCert = defaults.getFakeCertificate(stack, 'not-really-a-cert');
 
@@ -332,7 +332,7 @@ test('Test adding an HTTPS listener with no cert (error)', () => {
   const stack = new Stack();
 
   // Set up test framework independent of our code for unit testing
-  const testVpc = CreateTestVpc(stack);
+  const testVpc = defaults.getTestVpc(stack);
   const testAlb = CreateTestLoadBalancer(stack, testVpc);
 
   const app = () => {
@@ -346,7 +346,7 @@ test('Test adding an HTTP listener with a cert (error)', () => {
   const stack = new Stack();
 
   // Set up test framework independent of our code for unit testing
-  const testVpc = CreateTestVpc(stack);
+  const testVpc = defaults.getTestVpc(stack);
   const testAlb = CreateTestLoadBalancer(stack, testVpc);
   const testCert = defaults.getFakeCertificate(stack, 'not-really-a-cert');
 
@@ -361,7 +361,7 @@ test('Test adding a HTTP listener', () => {
   const stack = new Stack();
 
   // Set up test framework independent of our code for unit testing
-  const testVpc = CreateTestVpc(stack);
+  const testVpc = defaults.getTestVpc(stack);
   const testAlb = CreateTestLoadBalancer(stack, testVpc);
 
   const listener = defaults.AddListener(stack, 'test', testAlb, { protocol: 'HTTP' });
@@ -379,7 +379,7 @@ test('Test sending custom logging bucket props', () => {
   const stack = new Stack();
 
   // Set up test framework independent of our code for unit testing
-  const testVpc = CreateTestVpc(stack);
+  const testVpc = defaults.getTestVpc(stack);
   const testAlb = CreateTestLoadBalancer(stack, testVpc);
 
   const listener = defaults.AddListener(stack, 'test', testAlb, { protocol: 'HTTP' });
@@ -393,7 +393,7 @@ test('Test GetActiveListener with 0 listeners', () => {
   const stack = new Stack();
 
   // Set up test framework independent of our code for unit testing
-  const testVpc = CreateTestVpc(stack);
+  const testVpc = defaults.getTestVpc(stack);
   const testAlb = CreateTestLoadBalancer(stack, testVpc);
 
   const app = () => {
@@ -408,7 +408,7 @@ test('Test GetActiveListener with 1 listener', () => {
   const stack = new Stack();
 
   // Set up test framework independent of our code for unit testing
-  const testVpc = CreateTestVpc(stack);
+  const testVpc = defaults.getTestVpc(stack);
   const testAlb = CreateTestLoadBalancer(stack, testVpc);
 
   defaults.AddListener(stack, 'test', testAlb, { protocol: 'HTTP' });
@@ -422,7 +422,7 @@ test('Test GetActiveListener with 2 listeners', () => {
   const stack = new Stack();
 
   // Set up test framework independent of our code for unit testing
-  const testVpc = CreateTestVpc(stack);
+  const testVpc = defaults.getTestVpc(stack);
   const testAlb = CreateTestLoadBalancer(stack, testVpc);
   const testCert = defaults.getFakeCertificate(stack, 'not-really-a-cert');
 
@@ -525,13 +525,6 @@ test('Test sending VPC in loadBalancerProps error', () => {
 
   expect(app).toThrowError('Specify any existing VPC at the construct level, not within loadBalancerProps.\n');
 });
-
-// Helper functions
-function CreateTestVpc(stack: Stack) {
-  return defaults.buildVpc(stack, {
-    defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
-  });
-}
 
 function CreateTestLoadBalancer(stack: Stack, vpc: ec2.IVpc): elb.ApplicationLoadBalancer {
   return new elb.ApplicationLoadBalancer(stack, 'load-balancer', {

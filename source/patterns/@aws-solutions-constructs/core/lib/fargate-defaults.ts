@@ -46,7 +46,7 @@ export function DefaultApplicationTargetGroupProps(vpc: ec2.IVpc): elb.Applicati
     protocolVersion: elb.ApplicationProtocolVersion.HTTP1,
     targetType: elb.TargetType.IP,
     vpc,
-    healthCheck: { path: '/url' }
+    healthCheck: { path: '/' }
   };
 }
 

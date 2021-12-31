@@ -138,8 +138,8 @@ export function AddLambdaTarget(
     healthCheck: targetProps ? targetProps.healthCheck : undefined
   });
 
-  // AddRuleProps includes conditions and priority, combine that with targetGroups and
-  // we can assemble AddApplicationTargetGroupProps
+  // The interface AddRuleProps includes conditions and priority, combine that
+  // with targetGroups and we can assemble AddApplicationTargetGroupProps
   if (ruleProps) {
     const consolidatedTargetProps = overrideProps(ruleProps, { targetGroups: [newTargetGroup] });
     currentListener.addTargetGroups(`${scope.node.id}-targets`, consolidatedTargetProps);
@@ -161,11 +161,10 @@ export function AddFargateTarget(
   targetProps?: elb.ApplicationTargetGroupProps,
 ): elb.ApplicationTargetGroup  {
 
-  // Need to add a health check of /url to this
   const newTargetGroup = new elb.ApplicationTargetGroup(scope, `${id}-tg`, targetProps);
 
-  // AddRuleProps includes conditions and priority, combine that with targetGroups and
-  // we can assemble AddApplicationTargetGroupProps
+  // The interface AddRuleProps includes conditions and priority, combine that
+  // with targetGroups and we can assemble AddApplicationTargetGroupProps
   if (ruleProps) {
     const consolidatedTargetProps = overrideProps(ruleProps, { targetGroups: [newTargetGroup] });
     currentListener.addTargetGroups(`${scope.node.id}-targets`, consolidatedTargetProps);

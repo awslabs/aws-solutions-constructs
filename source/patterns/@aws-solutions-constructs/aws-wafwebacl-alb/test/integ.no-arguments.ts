@@ -24,14 +24,7 @@ const app = new App();
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const myVpc = defaults.buildVpc(stack, {
-  defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
-  constructVpcProps: {
-    enableDnsHostnames: true,
-    enableDnsSupport: true,
-    cidr: '172.168.0.0/16',
-  }
-});
+const myVpc = defaults.getTestVpc(stack);
 
 const loadBalancer = new elb.ApplicationLoadBalancer(stack, 'new-lb', {
   internetFacing: false,

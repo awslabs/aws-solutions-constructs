@@ -17,16 +17,16 @@ import * as elb from '@aws-cdk/aws-elasticloadbalancingv2';
 import * as cdk from "@aws-cdk/core";
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
-
-const testEcrRepoArn = 'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo';
+import { fakeEcrRepoArn } from '../../core/test/fargate-helper.test';
 
 test('Test new vpc, load balancer, service', () => {
+  // An environment with region is required to enable logging on an ALB
   const stack = new cdk.Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });
   const testProps: AlbToFargateProps = {
     publicApi: true,
-    ecrRepositoryArn: testEcrRepoArn,
+    ecrRepositoryArn: fakeEcrRepoArn,
     listenerProps: {
       protocol: 'HTTP'
     },
@@ -56,7 +56,7 @@ test('Test new load balancer, service, existing vpc', () => {
   const testProps: AlbToFargateProps = {
     existingVpc: defaults.getTestVpc(stack),
     publicApi: true,
-    ecrRepositoryArn: testEcrRepoArn,
+    ecrRepositoryArn: fakeEcrRepoArn,
     listenerProps: {
       protocol: 'HTTP'
     },
@@ -83,18 +83,18 @@ test('Test new service, existing load balancer, vpc', () => {
   });
   const testName = 'test-value';
 
-  const testExistingVpc = defaults.getTestVpc(stack);
+  const existingVpc = defaults.getTestVpc(stack);
 
   const existingAlb = new elb.ApplicationLoadBalancer(stack, 'test-alb', {
-    vpc: testExistingVpc,
+    vpc: existingVpc,
     internetFacing: true,
     loadBalancerName: testName,
   });
 
   const testProps: AlbToFargateProps = {
-    existingVpc: testExistingVpc,
+    existingVpc,
     publicApi: true,
-    ecrRepositoryArn: testEcrRepoArn,
+    ecrRepositoryArn: fakeEcrRepoArn,
     existingLoadBalancerObj: existingAlb,
     listenerProps: {
       protocol: 'HTTP'
@@ -128,22 +128,22 @@ test('Test existing load balancer, vpc, service', () => {
   });
   const testName = 'test-value';
 
-  const testExistingVpc = defaults.getTestVpc(stack);
+  const existingVpc = defaults.getTestVpc(stack);
 
   const [testService, testContainer] = defaults.CreateFargateService(stack,
     'test',
-    testExistingVpc,
+    existingVpc,
     undefined,
-    testEcrRepoArn);
+    fakeEcrRepoArn);
 
   const existingAlb = new elb.ApplicationLoadBalancer(stack, 'test-alb', {
-    vpc: testExistingVpc,
+    vpc: existingVpc,
     internetFacing: true,
     loadBalancerName: testName,
   });
 
   const testProps: AlbToFargateProps = {
-    existingVpc: testExistingVpc,
+    existingVpc,
     publicApi: true,
     existingFargateServiceObject: testService,
     existingContainerDefinitionObject: testContainer,
@@ -181,7 +181,7 @@ test('Test add a second target with rules', () => {
   const testProps: AlbToFargateProps = {
     existingVpc: defaults.getTestVpc(stack),
     publicApi: true,
-    ecrRepositoryArn: testEcrRepoArn,
+    ecrRepositoryArn: fakeEcrRepoArn,
     listenerProps: {
       protocol: 'HTTP'
     },
@@ -211,6 +211,18 @@ test('Test add a second target with rules', () => {
   });
   expect(stack).toCountResources('AWS::ElasticLoadBalancingV2::TargetGroup', 2);
   expect(stack).toCountResources('AWS::ElasticLoadBalancingV2::ListenerRule', 1);
+  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::ListenerRule', {
+    Conditions: [
+      {
+        Field: "path-pattern",
+        PathPatternConfig: {
+          Values: [
+            "*admin*"
+          ]
+        }
+      }
+    ],
+  });
   expect(stack).toHaveResource('AWS::EC2::VPC', {
     EnableDnsHostnames: true,
     CidrBlock: '172.168.0.0/16'
@@ -222,16 +234,16 @@ test('Test new vpc, load balancer, service - custom Service Props', () => {
   const stack = new cdk.Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });
-  const testValue = 'test-value';
+  const serviceName = 'test-value';
 
   const testProps: AlbToFargateProps = {
     publicApi: true,
-    ecrRepositoryArn: testEcrRepoArn,
+    ecrRepositoryArn: fakeEcrRepoArn,
     listenerProps: {
       protocol: 'HTTP'
     },
     fargateServiceProps: {
-      serviceName: testValue
+      serviceName
     }
   };
 
@@ -239,7 +251,7 @@ test('Test new vpc, load balancer, service - custom Service Props', () => {
 
   expect(stack).toHaveResourceLike("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
-    ServiceName: testValue,
+    ServiceName: serviceName,
   });
   expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP'
@@ -260,7 +272,7 @@ test('Test new vpc, load balancer, service - custom VPC Props', () => {
 
   const testProps: AlbToFargateProps = {
     publicApi: true,
-    ecrRepositoryArn: testEcrRepoArn,
+    ecrRepositoryArn: fakeEcrRepoArn,
     listenerProps: {
       protocol: 'HTTP'
     },
@@ -293,7 +305,7 @@ test('Test new vpc, load balancer, service - custom LoadBalancer and targetGroup
 
   const testProps: AlbToFargateProps = {
     publicApi: true,
-    ecrRepositoryArn: testEcrRepoArn,
+    ecrRepositoryArn: fakeEcrRepoArn,
     listenerProps: {
       protocol: 'HTTP'
     },
@@ -331,14 +343,14 @@ test('Test HTTPS API with new vpc, load balancer, service', () => {
   const stack = new cdk.Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });
-  const testCert = defaults.getFakeCertificate(stack, 'fake-cert');
+  const fakeCert = defaults.getFakeCertificate(stack, 'fake-cert');
 
   const testProps: AlbToFargateProps = {
     publicApi: true,
-    ecrRepositoryArn: testEcrRepoArn,
+    ecrRepositoryArn: fakeEcrRepoArn,
     listenerProps: {
       protocol: 'HTTPS',
-      certificates: [ testCert ]
+      certificates: [ fakeCert ]
     },
   };
 
@@ -373,14 +385,14 @@ test('Test HTTPS API with new vpc, load balancer, service and private API', () =
   const stack = new cdk.Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });
-  const testCert = defaults.getFakeCertificate(stack, 'fake-cert');
+  const fakeCert = defaults.getFakeCertificate(stack, 'fake-cert');
 
   const testProps: AlbToFargateProps = {
     publicApi: false,
-    ecrRepositoryArn: testEcrRepoArn,
+    ecrRepositoryArn: fakeEcrRepoArn,
     listenerProps: {
       protocol: 'HTTPS',
-      certificates: [ testCert ]
+      certificates: [ fakeCert ]
     },
   };
 

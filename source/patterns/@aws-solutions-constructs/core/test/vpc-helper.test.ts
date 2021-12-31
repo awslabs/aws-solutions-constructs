@@ -51,11 +51,11 @@ test('Test deployment w/ user provided custom properties', () => {
     userVpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
-      cidr: '172.168.0.0/16',
+      cidr: '172.168.0.0/19',
     },
   });
   expect(stack).toHaveResource('AWS::EC2::VPC', {
-    CidrBlock: '172.168.0.0/16',
+    CidrBlock: '172.168.0.0/19',
     EnableDnsHostnames: false,
     EnableDnsSupport: false,
   });
@@ -73,11 +73,11 @@ test('Test deployment w/ construct provided custom properties', () => {
     constructVpcProps: {
       enableDnsHostnames: true,
       enableDnsSupport: true,
-      cidr: '172.168.0.0/16',
+      cidr: '172.168.0.0/19',
     },
   });
   expect(stack).toHaveResource('AWS::EC2::VPC', {
-    CidrBlock: '172.168.0.0/16',
+    CidrBlock: '172.168.0.0/19',
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
@@ -100,11 +100,11 @@ test('Test deployment w/ construct and user provided custom properties', () => {
     constructVpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
-      cidr: '172.168.0.0/16',
+      cidr: '172.168.0.0/19',
     },
   });
   expect(stack).toHaveResource('AWS::EC2::VPC', {
-    CidrBlock: '172.168.0.0/16',
+    CidrBlock: '172.168.0.0/19',
     EnableDnsHostnames: false,
     EnableDnsSupport: false,
   });
@@ -151,14 +151,7 @@ test('Test deployment w/ existing VPC provided', () => {
   // Stack
   const stack = new Stack();
   // Build VPC
-  const testExistingVpc = defaults.buildVpc(stack, {
-    defaultVpcProps: DefaultPublicPrivateVpcProps(),
-    constructVpcProps: {
-      enableDnsHostnames: false,
-      enableDnsSupport: false,
-      cidr: '172.168.0.0/16',
-    },
-  });
+  const testExistingVpc = defaults.getTestVpc(stack);
 
   const newVpc = defaults.buildVpc(stack, {
     defaultVpcProps: DefaultPublicPrivateVpcProps(),

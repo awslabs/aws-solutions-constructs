@@ -127,21 +127,12 @@ export class AlbToLambda extends Construct {
     defaults.CheckAlbProps(props);
 
     // Obtain VPC for construct (existing or created)
-    // Determine all the resources to use (existing or launch new)
-    if (props.existingVpc) {
-      this.vpc = props.existingVpc;
-    } else {
-      this.vpc = defaults.buildVpc(scope, props.publicApi ? {
-        // public api props
-        defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
-        userVpcProps: props.vpcProps,
-      } : {
-        // private api props
-        defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
-        userVpcProps: props.vpcProps,
-        constructVpcProps: { enableDnsHostnames: true, enableDnsSupport: true },
-      });
-    }
+    this.vpc = defaults.buildVpc(scope, {
+      existingVpc: props.existingVpc,
+      defaultVpcProps: props.publicApi ? defaults.DefaultPublicPrivateVpcProps() : defaults.DefaultIsolatedVpcProps(),
+      userVpcProps: props.vpcProps,
+      constructVpcProps: props.publicApi ? {} : { enableDnsHostnames: true, enableDnsSupport: true }
+    });
 
     this.loadBalancer = defaults.ObtainAlb(
       this,
