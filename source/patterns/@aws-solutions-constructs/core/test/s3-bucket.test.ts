@@ -154,3 +154,208 @@ test('test createAlbLoggingBucket()', () => {
     BucketName: 'test-name'
   });
 });
+
+test('Test bucket policy that only accepts SSL requests only', () => {
+  const stack = new Stack();
+
+  defaults.buildS3Bucket(stack, {
+    bucketProps: {
+      enforceSSL: true
+    }
+  }, 'test-bucket');
+
+  expect(stack).toHaveResource("AWS::S3::BucketPolicy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: "s3:*",
+          Condition: {
+            Bool: {
+              "aws:SecureTransport": "false"
+            }
+          },
+          Effect: "Deny",
+          Principal: {
+            AWS: "*"
+          },
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                "testbucketS3Bucket87F6BFFC",
+                "Arn"
+              ]
+            },
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "testbucketS3Bucket87F6BFFC",
+                      "Arn"
+                    ]
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      Version: "2012-10-17"
+    }
+  });
+});
+
+test('Test bucket policy that accepts any requests', () => {
+  const stack = new Stack();
+
+  defaults.buildS3Bucket(stack, {
+    bucketProps: {
+      enforceSSL: false
+    }
+  }, 'test-bucket');
+
+  expect(stack).not.toHaveResource("AWS::S3::BucketPolicy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: "s3:*",
+          Condition: {
+            Bool: {
+              "aws:SecureTransport": "false"
+            }
+          },
+          Effect: "Deny",
+          Principal: {
+            AWS: "*"
+          },
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                "testbucketS3Bucket87F6BFFC",
+                "Arn"
+              ]
+            },
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "testbucketS3Bucket87F6BFFC",
+                      "Arn"
+                    ]
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      Version: "2012-10-17"
+    }
+  });
+});
+
+test('Test enforcing SSL when bucketProps is not provided', () => {
+  const stack = new Stack();
+
+  defaults.buildS3Bucket(stack, {}, 'test-bucket');
+
+  expect(stack).toHaveResource("AWS::S3::BucketPolicy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: "s3:*",
+          Condition: {
+            Bool: {
+              "aws:SecureTransport": "false"
+            }
+          },
+          Effect: "Deny",
+          Principal: {
+            AWS: "*"
+          },
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                "testbucketS3Bucket87F6BFFC",
+                "Arn"
+              ]
+            },
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "testbucketS3Bucket87F6BFFC",
+                      "Arn"
+                    ]
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      Version: "2012-10-17"
+    }
+  });
+});
+
+test('Test enforcing SSL when bucketProps is provided and enforceSSL is not set', () => {
+  const stack = new Stack();
+
+  defaults.buildS3Bucket(stack, {
+    bucketProps: {
+      versioned: false,
+      publicReadAccess: false
+    }
+  }, 'test-bucket');
+
+  expect(stack).toHaveResource("AWS::S3::BucketPolicy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: "s3:*",
+          Condition: {
+            Bool: {
+              "aws:SecureTransport": "false"
+            }
+          },
+          Effect: "Deny",
+          Principal: {
+            AWS: "*"
+          },
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                "testbucketS3Bucket87F6BFFC",
+                "Arn"
+              ]
+            },
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "testbucketS3Bucket87F6BFFC",
+                      "Arn"
+                    ]
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      Version: "2012-10-17"
+    }
+  });
+});

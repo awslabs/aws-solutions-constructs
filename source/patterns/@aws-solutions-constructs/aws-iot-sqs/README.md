@@ -59,6 +59,7 @@ _Parameters_
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
+|iotTopicRuleProps|[`iot.CfnTopicRuleProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iot.CfnTopicRuleProps.html)|User provided CfnTopicRuleProps to override the defaults|
 |existingQueueObj?|[`sqs.Queue`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sqs.Queue.html)|Existing instance of SQS queue object, providing both this and `queueProps` will cause an error.|
 |queueProps?|[`sqs.QueueProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sqs.QueueProps.html)|User provided props to override the default props for the SQS queue.|
 |deadLetterQueueProps?|[`sqs.QueueProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sqs.QueueProps.html)|Optional user provided properties for the dead letter queue.|
@@ -67,7 +68,7 @@ _Parameters_
 |enableEncryptionWithCustomerManagedKey?|`boolean`|Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in the `encryptionKey` property for this construct.|
 |encryptionKey?|[`kms.Key`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kms.Key.html)|An optional, imported encryption key to encrypt the SQS queue.|
 |encryptionKeyProps?|[`kms.KeyProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kms.KeyProps.html)|Optional user-provided props to override the default props for the encryption key.|
-|iotTopicRuleProps?|[`iot.CfnTopicRuleProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iot.CfnTopicRuleProps.html)|User provided CfnTopicRuleProps to override the defaults|
+
 
 ## Pattern Properties
 
@@ -90,9 +91,9 @@ Out of the box implementation of the Construct without any override will set the
 * Configure least privilege access IAM role for Amazon IoT to be able to publish messages to the SQS Queue
 
 ### Amazon SQS Queue
-* Deploy a dead-letter queue for the source queue. 
+* Deploy a dead-letter queue for the source queue.
 * Enable server-side encryption for the source queue using a customer-managed AWS KMS key.
-* Enforce encryption of data in transit. 
+* Enforce encryption of data in transit.
 
 ## Architecture
 ![Architecture Diagram](architecture.png)
