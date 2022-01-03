@@ -26,8 +26,8 @@ let existingBucketObj;
 [existingBucketObj] = defaults.buildS3Bucket(stack, {
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-    autoDeleteObjects: true,
-    encryption: BucketEncryption.KMS_MANAGED
+    encryption: BucketEncryption.KMS_MANAGED,
+    serverAccessLogsPrefix: 'logs'
   },
   logS3AccessLogs: false
 });

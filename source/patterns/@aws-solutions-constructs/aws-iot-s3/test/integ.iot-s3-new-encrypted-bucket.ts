@@ -37,8 +37,8 @@ const props: IotToS3Props = {
   bucketProps: {
     encryption: BucketEncryption.KMS,
     encryptionKey: existingKey,
-    autoDeleteObjects: true,
-    removalPolicy: RemovalPolicy.DESTROY
+    removalPolicy: RemovalPolicy.DESTROY,
+    serverAccessLogsPrefix: 'logs'
   }
 };
 

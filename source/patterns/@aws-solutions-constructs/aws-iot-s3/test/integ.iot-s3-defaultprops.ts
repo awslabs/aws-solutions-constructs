@@ -31,9 +31,8 @@ const props: IotToS3Props = {
   logS3AccessLogs: false,
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-    autoDeleteObjects: true
+    serverAccessLogsPrefix: 'logs'
   }
 };
-
 new IotToS3(stack, 'test-iot-s3-integration', props);
 app.synth();
