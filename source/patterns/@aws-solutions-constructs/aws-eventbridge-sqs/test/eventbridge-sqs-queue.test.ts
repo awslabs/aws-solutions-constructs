@@ -33,7 +33,7 @@ function deployStackWithNewEventBus(stack: cdk.Stack) {
         source: ['solutionsconstructs']
       }
     },
-    eventBusProps: {}
+    eventBusProps: { eventBusName: 'test' }
   };
   return new EventbridgeToSqs(stack, 'test-eventbridge-sqs-new-bus', props);
 }
@@ -295,8 +295,8 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
         source: ['solutionsconstructs']
       }
     },
-    eventBusProps: {},
-    existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, {})
+    eventBusProps: { eventBusName: 'test' },
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, {  eventBusName: 'test'  })
   };
 
   const app = () => {

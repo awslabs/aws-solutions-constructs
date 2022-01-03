@@ -11,25 +11,19 @@
  *  and limitations under the License.
  */
 
-/// !cdk-integ *
+// Imports
 import { App, Stack } from "@aws-cdk/core";
-import { DynamoDBStreamToLambdaToElasticSearchAndKibanaProps, DynamoDBStreamToLambdaToElasticSearchAndKibana } from "../lib";
-import * as lambda from '@aws-cdk/aws-lambda';
+import { CloudFrontToS3 } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
+// Setup
 const app = new App();
-
-// Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
+stack.templateOptions.description = 'Integration Test for originPath with aws-cloudfront-s3';
 
-const props: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps = {
-  lambdaFunctionProps: {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
-    handler: 'index.handler'
-  },
-  domainName: 'testdomainconstructs'
-};
+new CloudFrontToS3(stack, 'test-cloudfront-s3', {
+  originPath: '/testPath'
+});
 
-new DynamoDBStreamToLambdaToElasticSearchAndKibana(stack, 'test', props);
+// Synth
 app.synth();

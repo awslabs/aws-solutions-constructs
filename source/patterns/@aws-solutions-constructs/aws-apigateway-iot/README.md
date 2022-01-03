@@ -78,7 +78,7 @@ Out of the box implementation of the Construct without any override will set the
 
 ### Amazon API Gateway
 
-* Deploy an edge-optimized API endpoint
+* Deploy an edge-optimized API Endpoint
 * Creates API Resources with `POST` Method to publish messages to IoT Topics
 * Creates API Resources with `POST` Method to publish messages to ThingShadow & NamedShadows
 * Enable CloudWatch logging for API Gateway

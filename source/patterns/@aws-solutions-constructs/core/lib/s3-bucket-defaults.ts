@@ -21,6 +21,7 @@ export function DefaultS3Props(loggingBucket?: Bucket, lifecycleRules?: s3.Lifec
     versioned: true,
     blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
     removalPolicy: RemovalPolicy.RETAIN,
+    enforceSSL: true,
     ...((lifecycleRules !== undefined) && { lifecycleRules }),
     ...((loggingBucket !== undefined) && { serverAccessLogsBucket: loggingBucket })
   } as BucketProps;
@@ -32,6 +33,7 @@ export function DefaultLoggingBucketProps(): s3.BucketProps {
     versioned: true,
     blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
     removalPolicy: RemovalPolicy.RETAIN,
+    enforceSSL: true,
   } as BucketProps;
 }
 

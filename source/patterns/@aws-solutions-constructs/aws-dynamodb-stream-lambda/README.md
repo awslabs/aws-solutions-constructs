@@ -29,7 +29,7 @@ import { DynamoDBStreamToLambdaProps,  DynamoDBStreamToLambda} from '@aws-soluti
 new DynamoDBStreamToLambda(this, 'test-dynamodb-stream-lambda', {
     lambdaFunctionProps: {
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_12_X,
+        runtime: lambda.Runtime.NODEJS_14_X,
         handler: 'index.handler'
     },
 });

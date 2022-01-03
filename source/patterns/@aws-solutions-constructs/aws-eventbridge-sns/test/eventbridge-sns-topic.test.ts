@@ -33,7 +33,7 @@ function deployStackWithNewEventBus(stack: cdk.Stack) {
         source: ['solutionsconstructs']
       }
     },
-    eventBusProps: {}
+    eventBusProps: { eventBusName: 'test' }
   };
   return new EventbridgeToSns(stack, 'test-neweventbus', props);
 }
@@ -235,7 +235,7 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
       }
     },
     eventBusProps: {},
-    existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, {})
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, { eventBusName: 'test' })
   };
 
   const app = () => {

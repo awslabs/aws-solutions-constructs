@@ -34,8 +34,7 @@ const props: S3ToStepFunctionProps = {
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY
   },
-  logS3AccessLogs: false,
-  deployCloudTrail: false
+  logS3AccessLogs: false
 };
 
 const construct = new S3ToStepFunction(stack, 'test-s3-step-function-construct', props);

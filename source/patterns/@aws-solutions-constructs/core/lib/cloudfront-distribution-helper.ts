@@ -87,6 +87,7 @@ export function CloudFrontDistributionForS3(scope: Construct,
   sourceBucket: s3.IBucket,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
   httpSecurityHeaders: boolean = true,
+  originPath?: string,
   cloudFrontLoggingBucketProps?: s3.BucketProps): [cloudfront.Distribution,
     cloudfront.Function?, s3.Bucket?] {
 
@@ -94,7 +95,7 @@ export function CloudFrontDistributionForS3(scope: Construct,
 
   const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope, cloudFrontLoggingBucketProps);
 
-  const defaultprops = DefaultCloudFrontWebDistributionForS3Props(sourceBucket, loggingBucket, httpSecurityHeaders, cloudfrontFunction);
+  const defaultprops = DefaultCloudFrontWebDistributionForS3Props(sourceBucket, loggingBucket, httpSecurityHeaders, originPath, cloudfrontFunction);
 
   const cfprops = cloudFrontDistributionProps ? overrideProps(defaultprops, cloudFrontDistributionProps, false) : defaultprops;
   // Create the Cloudfront Distribution

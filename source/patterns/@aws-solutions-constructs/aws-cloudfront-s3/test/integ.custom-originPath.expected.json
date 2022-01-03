@@ -1,5 +1,5 @@
 {
-  "Description": "Integration Test for aws-cloudfront-s3 custom CloudFront Logging Bubkcet",
+  "Description": "Integration Test for originPath with aws-cloudfront-s3",
   "Resources": {
     "testcloudfronts3S3LoggingBucket90D239DD": {
       "Type": "AWS::S3::Bucket",
@@ -24,8 +24,8 @@
           "Status": "Enabled"
         }
       },
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete",
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
@@ -124,8 +124,8 @@
           "Status": "Enabled"
         }
       },
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
     },
     "testcloudfronts3S3BucketPolicy250F1F61": {
       "Type": "AWS::S3::BucketPolicy",
@@ -213,11 +213,11 @@
     "testcloudfronts3SetHttpSecurityHeaders6C5A1E69": {
       "Type": "AWS::CloudFront::Function",
       "Properties": {
-        "Name": "SetHttpSecurityHeadersc88d4d30b2e66a3bd009aa7f11e35596ee70824ece",
+        "Name": "SetHttpSecurityHeadersc824484dfea4176847245e871498ffd7e454223fe4",
         "AutoPublish": true,
         "FunctionCode": "function handler(event) { var response = event.response;       var headers = response.headers;       headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'};       headers['content-security-policy'] = { value: \"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\"};       headers['x-content-type-options'] = { value: 'nosniff'};       headers['x-frame-options'] = {value: 'DENY'};       headers['x-xss-protection'] = {value: '1; mode=block'};       return response;     }",
         "FunctionConfig": {
-          "Comment": "SetHttpSecurityHeadersc88d4d30b2e66a3bd009aa7f11e35596ee70824ece",
+          "Comment": "SetHttpSecurityHeadersc824484dfea4176847245e871498ffd7e454223fe4",
           "Runtime": "cloudfront-js-1.0"
         }
       }
@@ -245,8 +245,8 @@
           "Status": "Enabled"
         }
       },
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete",
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
@@ -309,7 +309,7 @@
       "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
       "Properties": {
         "CloudFrontOriginAccessIdentityConfig": {
-          "Comment": "Identity for customCloudFrontLoggingBuckettestcloudfronts3CloudFrontDistributionOrigin115B4D0FD"
+          "Comment": "Identity for customoriginPathtestcloudfronts3CloudFrontDistributionOrigin1B44CC042"
         }
       }
     },
@@ -331,7 +331,7 @@
                 }
               }
             ],
-            "TargetOriginId": "customCloudFrontLoggingBuckettestcloudfronts3CloudFrontDistributionOrigin115B4D0FD",
+            "TargetOriginId": "customoriginPathtestcloudfronts3CloudFrontDistributionOrigin1B44CC042",
             "ViewerProtocolPolicy": "redirect-to-https"
           },
           "DefaultRootObject": "index.html",
@@ -354,7 +354,8 @@
                   "RegionalDomainName"
                 ]
               },
-              "Id": "customCloudFrontLoggingBuckettestcloudfronts3CloudFrontDistributionOrigin115B4D0FD",
+              "Id": "customoriginPathtestcloudfronts3CloudFrontDistributionOrigin1B44CC042",
+              "OriginPath": "/testPath",
               "S3OriginConfig": {
                 "OriginAccessIdentity": {
                   "Fn::Join": [

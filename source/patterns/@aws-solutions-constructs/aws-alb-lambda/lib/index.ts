@@ -18,6 +18,7 @@ import * as lambda from "@aws-cdk/aws-lambda";
 import { Construct } from "@aws-cdk/core";
 import * as defaults from "@aws-solutions-constructs/core";
 import { CfnListener, CfnTargetGroup } from "@aws-cdk/aws-elasticloadbalancingv2";
+import { GetActiveListener } from "@aws-solutions-constructs/core";
 
 export interface AlbToLambdaProps {
   /**
@@ -199,56 +200,41 @@ export class AlbToLambda extends Construct {
       vpc: this.vpc,
     });
 
+    let newListener: boolean;
     if (this.loadBalancer.listeners.length === 0) {
-      // This is a new listener, we need to create it along with the default target
-      const newTargetGroup = defaults.CreateLambdaTargetGroup(this,
-        `tg${this.loadBalancer.listeners.length + 1}`,
-        this.lambdaFunction,
-        props.targetProps);
+      newListener = true;
+    } else {
+      newListener = false;
+    }
+
+    // If there's no listener, then we add one here
+    if (newListener) {
       this.listener = defaults.AddListener(
         this,
         this.loadBalancer,
-        newTargetGroup,
         props.listenerProps
       );
-      // Testing occasionally caused a TargetGroup not found error, this
-      // code ensures the Group will be complete before the Listener tries
-      // to access it.
-      const newListener = this.listener.node.defaultChild as CfnListener;
-      const cfnTargetGroup = newTargetGroup.node.defaultChild as CfnTargetGroup;
-      newListener.addDependsOn(cfnTargetGroup);
     } else {
-      // We're adding a target to an existing listener. If this.loadBalancer.listeners.length
-      // is >0, then this.loadBalancer was set from existingLoadBalancer
       this.listener = GetActiveListener(this.loadBalancer.listeners);
-      defaults.AddTarget(
-        this,
-        defaults.CreateLambdaTargetGroup(
-          this,
-          `tg${this.loadBalancer.listeners.length + 1}`,
-          this.lambdaFunction,
-          props.targetProps
-        ),
-        this.listener,
-        props.ruleProps
-      );
     }
-  }
-}
 
-function GetActiveListener(listeners: elb.ApplicationListener[]): elb.ApplicationListener {
-  let listener: elb.ApplicationListener;
+    const newTargetGroup = defaults.AddLambdaTarget(
+      this,
+      `tg${this.loadBalancer.listeners.length + 1}`,
+      this.listener,
+      this.lambdaFunction,
+      props.ruleProps,
+      props.targetProps);
 
-  if (listeners.length === 1 ) {
-    listener = listeners[0];
-  } else {
-    const correctListener = listeners.find(i => (i.node.children[0] as elb.CfnListener).protocol === "HTTPS");
-    if (correctListener) {
-      listener = correctListener;
-    } else {
-      // This line should be unreachable
-      throw new Error(`Two listeners in the ALB, but neither are HTTPS`);
+    // this.listener needs to be set on the construct.
+    // could be above: else { defaults.GetActiveListener }
+    // do we then move that funcionality back into the construct (not the function). If so do
+    // we leave it in AddNewTarget or just do it here and pass the listener?
+    if (newListener && this.listener) {
+      const levelOneListener = this.listener.node.defaultChild as CfnListener;
+      const cfnTargetGroup = newTargetGroup.node.defaultChild as CfnTargetGroup;
+      levelOneListener.addDependsOn(cfnTargetGroup);
     }
+
   }
-  return listener;
 }

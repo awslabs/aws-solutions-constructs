@@ -46,7 +46,7 @@
         "PolicyDocument": {
           "Statement": [
             {
-              "Action": "*",
+              "Action": "s3:*",
               "Condition": {
                 "Bool": {
                   "aws:SecureTransport": "false"
@@ -57,6 +57,12 @@
                 "AWS": "*"
               },
               "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "tests3stepfunctiontests3stepfunctionWS3LoggingBucketB716417C",
+                    "Arn"
+                  ]
+                },
                 {
                   "Fn::Join": [
                     "",
@@ -70,15 +76,8 @@
                       "/*"
                     ]
                   ]
-                },
-                {
-                  "Fn::GetAtt": [
-                    "tests3stepfunctiontests3stepfunctionWS3LoggingBucketB716417C",
-                    "Arn"
-                  ]
                 }
-              ],
-              "Sid": "HttpsOnly"
+              ]
             }
           ],
           "Version": "2012-10-17"
@@ -115,6 +114,11 @@
             "Ref": "tests3stepfunctiontests3stepfunctionWS3LoggingBucketB716417C"
           }
         },
+        "NotificationConfiguration": {
+          "EventBridgeConfiguration": {
+            "EventBridgeEnabled": true
+          }
+        },
         "PublicAccessBlockConfiguration": {
           "BlockPublicAcls": true,
           "BlockPublicPolicy": true,
@@ -137,7 +141,7 @@
         "PolicyDocument": {
           "Statement": [
             {
-              "Action": "*",
+              "Action": "s3:*",
               "Condition": {
                 "Bool": {
                   "aws:SecureTransport": "false"
@@ -148,6 +152,12 @@
                 "AWS": "*"
               },
               "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "tests3stepfunctiontests3stepfunctionWS3Bucket9BE64924",
+                    "Arn"
+                  ]
+                },
                 {
                   "Fn::Join": [
                     "",
@@ -161,15 +171,8 @@
                       "/*"
                     ]
                   ]
-                },
-                {
-                  "Fn::GetAtt": [
-                    "tests3stepfunctiontests3stepfunctionWS3Bucket9BE64924",
-                    "Arn"
-                  ]
                 }
-              ],
-              "Sid": "HttpsOnly"
+              ]
             }
           ],
           "Version": "2012-10-17"
@@ -370,19 +373,11 @@
             "aws.s3"
           ],
           "detail-type": [
-            "AWS API Call via CloudTrail"
+            "Object Created"
           ],
           "detail": {
-            "eventSource": [
-              "s3.amazonaws.com"
-            ],
-            "eventName": [
-              "PutObject",
-              "CopyObject",
-              "CompleteMultipartUpload"
-            ],
-            "requestParameters": {
-              "bucketName": [
+            "bucket": {
+              "name": [
                 {
                   "Ref": "tests3stepfunctiontests3stepfunctionWS3Bucket9BE64924"
                 }
@@ -475,7 +470,7 @@
     "BootstrapVersion": {
       "Type": "AWS::SSM::Parameter::Value<String>",
       "Default": "/cdk-bootstrap/hnb659fds/version",
-      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
     }
   },
   "Rules": {
