@@ -135,6 +135,8 @@ export interface AlbToFargateProps {
    * Service will set up in the Public or Isolated subnets of the VPC by default,
    * override that (e.g. - choose Private subnets) by setting vpcSubnets on this
    * object.
+   *
+   * @default - see core/lib/fargate-defaults.ts
    */
   readonly fargateServiceProps?: ecs.FargateServiceProps | any;
   /**
@@ -146,7 +148,12 @@ export interface AlbToFargateProps {
    * @default - none
    */
   readonly existingFargateServiceObject?: ecs.FargateService;
-
+  /**
+   * The container associated with the service supplied in existingFargateServiceObject.
+   * This and existingFargateServiceObject must either both be provided or neither.
+   *
+   * @default - none
+   */
   readonly existingContainerDefinitionObject?: ecs.ContainerDefinition;
 }
 
@@ -183,12 +190,7 @@ export class AlbToFargate extends Construct {
       props.albLoggingBucketProps
     );
 
-    let newListener: boolean;
-    if (this.loadBalancer.listeners.length === 0) {
-      newListener = true;
-    } else {
-      newListener = false;
-    }
+    const newListener: boolean = this.loadBalancer.listeners.length === 0;
 
     // If there's no listener, then we add one here
     if (newListener) {
