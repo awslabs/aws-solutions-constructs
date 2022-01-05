@@ -34,7 +34,8 @@ export interface Route53ToApiGatewayProps {
   readonly publicApi: boolean
   /**
    * Custom properties for a new Private Hosted Zone. Cannot be specified for a
-   * public API. Cannot specify a VPC
+   * public API. Cannot specify a VPC. Either privateHostedZoneProps or existingHostedZoneInterface
+   * must be provided. Providing both will cause an error.
    *
    * @default - None
    */
@@ -47,7 +48,7 @@ export interface Route53ToApiGatewayProps {
    */
   readonly existingHostedZoneInterface?: route53.IHostedZone,
   /**
-   * An existing VPC. Providing both this and vpcProps is an error. If an existingAlb or existing
+   * An existing VPC. Providing both this and vpcProps is an error. If an existing
    * Private Hosted Zone is provided, this value must be the VPC associated with those resources.
    *
    * @default - None
@@ -94,6 +95,13 @@ export class Route53ToApiGateway extends Construct {
     // Existing Public or Private Hosted Zone
     if (props.existingHostedZoneInterface) {
       this.hostedZone = props.existingHostedZoneInterface;
+
+      if (props.existingVpc) {
+        throw new Error('Cannot provide an existing VPC to an existing Private Hosted Zone.');
+      }
+      if (props.privateHostedZoneProps) {
+        throw new Error('Must provide either existingHostedZoneInterface or privateHostedZoneProps.');
+      }
     } else { // Creating a Private Hosted Zone
       if (props.publicApi) {
         throw new Error('Public APIs require an existingHostedZone be passed in the Props object.');
