@@ -30,9 +30,9 @@ stack.templateOptions.description = 'Dummy Integration Test for aws-route53-apig
 
 // Create dummy integ with atleast one resource
 const func = defaults.deployLambdaFunction(stack, {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
-    handler: 'index.handler'
+  code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  runtime: lambda.Runtime.NODEJS_14_X,
+  handler: 'index.handler'
 });
 
 defaults.RegionalLambdaRestApi(stack, func);
