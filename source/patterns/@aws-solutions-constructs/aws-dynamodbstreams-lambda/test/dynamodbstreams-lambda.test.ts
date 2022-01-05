@@ -21,7 +21,7 @@ function deployNewFunc(stack: cdk.Stack) {
   const props: DynamoDBStreamsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
   };
@@ -56,7 +56,7 @@ test('check DynamoEventSourceProps override', () => {
   const props: DynamoDBStreamsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     dynamoEventSourceProps: {
@@ -141,7 +141,7 @@ test('check dynamodb table stream override', () => {
   const props: DynamoDBStreamsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     dynamoTableProps: {
@@ -202,7 +202,7 @@ test('check getter methods with existingTableInterface', () => {
     }),
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
   });
@@ -233,7 +233,7 @@ test('check dynamodb table stream override with ITable', () => {
   const props: DynamoDBStreamsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     existingTableInterface

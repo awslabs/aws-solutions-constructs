@@ -27,7 +27,7 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 const props: S3ToLambdaProps = {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_12_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler'
   },
   bucketProps: {

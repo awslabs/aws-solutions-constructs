@@ -26,7 +26,7 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
 const submitLambda = deployLambdaFunction(stack, {
-  runtime: lambda.Runtime.NODEJS_12_X,
+  runtime: lambda.Runtime.NODEJS_14_X,
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   handler: 'index.handler'
 });
@@ -37,7 +37,7 @@ const submitJob = new tasks.LambdaInvoke(stack, 'LambdaTask', {
 const startState = new stepfunctions.Pass(stack, 'StartState');
 startState.next(submitJob);
 
-const existingEventBus = new EventBus(stack, `existing-event-bus`, {});
+const existingEventBus = new EventBus(stack, `existing-event-bus`, { eventBusName: 'test'});
 const props: EventbridgeToStepfunctionsProps = {
   stateMachineProps: {
     definition: startState,

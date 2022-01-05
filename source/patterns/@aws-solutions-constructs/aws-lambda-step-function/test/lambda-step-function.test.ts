@@ -30,7 +30,7 @@ test('Test deployment with new Lambda function', () => {
   const startState = new stepfunctions.Pass(stack, 'StartState');
   new LambdaToStepFunction(stack, 'lambda-to-step-function-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {
@@ -63,7 +63,7 @@ test('Test deployment with existing Lambda function', () => {
   // Helper declaration
   const startState = new stepfunctions.Pass(stack, 'StartState');
   const lambdaFunctionProps = {
-    runtime: lambda.Runtime.NODEJS_10_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     environment: {
@@ -97,7 +97,7 @@ test('Test invocation permissions', () => {
   // Helper declaration
   const startState = new stepfunctions.Pass(stack, 'StartState');
   const lambdaFunctionProps = {
-    runtime: lambda.Runtime.NODEJS_10_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     environment: {
@@ -147,7 +147,7 @@ test('Test the properties', () => {
   const startState = new stepfunctions.Pass(stack, 'StartState');
   const pattern = new LambdaToStepFunction(stack, 'lambda-to-step-function-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {
@@ -180,7 +180,7 @@ test('Test the properties with no CW Alarms', () => {
   const startState = new stepfunctions.Pass(stack, 'StartState');
   const pattern = new LambdaToStepFunction(stack, 'lambda-to-step-function-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {
@@ -247,7 +247,7 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Helper declaration
   new LambdaToStepFunction(stack, "lambda-to-step-function-stack", {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -301,7 +301,7 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Helper declaration
   new LambdaToStepFunction(stack, "lambda-to-step-function-stack", {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -363,7 +363,7 @@ test("Test minimal deployment with an existing VPC", () => {
   // Helper declaration
   new LambdaToStepFunction(stack, "lambda-to-step-function-stack", {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -411,7 +411,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   const startState = new stepfunctions.Pass(stack, 'StartState');
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
-    runtime: lambda.Runtime.NODEJS_10_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -448,7 +448,7 @@ test("Test bad call with existingVpc and deployVpc", () => {
     // Helper declaration
     new LambdaToStepFunction(stack, "lambda-to-step-function-stack", {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
+        runtime: lambda.Runtime.NODEJS_14_X,
         handler: 'index.handler',
         code: lambda.Code.fromAsset(`${__dirname}/lambda`)
       },

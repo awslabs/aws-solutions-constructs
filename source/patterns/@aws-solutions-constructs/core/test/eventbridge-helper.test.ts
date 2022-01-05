@@ -23,7 +23,11 @@ test('Test deployment with no properties', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  defaults.buildEventBus(stack, {});
+  defaults.buildEventBus(stack, {
+    eventBusProps: {
+      eventBusName: 'testneweventbus'
+    }
+  });
 
   expect(stack).not.toHaveResource("AWS::EventBridge::EventBus");
 });
@@ -36,10 +40,10 @@ test('Test deployment with existing EventBus', () => {
   const stack = new Stack();
   // Helper declaration
   defaults.buildEventBus(stack, {
-    existingEventBusInterface: new events.EventBus(stack, `existing-event-bus`, {})
+    existingEventBusInterface: new events.EventBus(stack, `existing-event-bus`, { eventBusName: 'test-bus' })
   });
 
-  expect(stack).toHaveResource('AWS::Events::EventBus', {});
+  expect(stack).toHaveResource('AWS::Events::EventBus');
 });
 
 // --------------------------------------------------------------

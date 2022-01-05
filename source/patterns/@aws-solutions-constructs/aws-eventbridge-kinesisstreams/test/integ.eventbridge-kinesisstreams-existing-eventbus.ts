@@ -26,7 +26,7 @@ const stream = new kinesis.Stream(stack, 'test-stream', {
   encryption: kinesis.StreamEncryption.MANAGED
 });
 
-const existingEventBus = new events.EventBus(stack, `existing-event-bus`, {});
+const existingEventBus = new events.EventBus(stack, `existing-event-bus`, { eventBusName: 'test' });
 const props: EventbridgeToKinesisStreamsProps = {
   eventRuleProps: {
     eventPattern: {

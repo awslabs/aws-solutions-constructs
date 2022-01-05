@@ -21,7 +21,7 @@ import '@aws-cdk/assert/jest';
 function deployNewFunc(stack: cdk.Stack) {
   const lambdaFunctionProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_10_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler'
   };
 
@@ -32,7 +32,7 @@ function deployNewFunc(stack: cdk.Stack) {
 
 function useExistingFunc(stack: cdk.Stack) {
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_10_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
@@ -69,7 +69,7 @@ test('check lambda function properties for deploy: true', () => {
         "Arn"
       ]
     },
-    Runtime: "nodejs10.x",
+    Runtime: "nodejs14.x",
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
@@ -144,7 +144,7 @@ test('override api gateway properties with existingLambdaObj', () => {
 
   const lambdaFunctionProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_10_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler'
   };
 
@@ -153,9 +153,7 @@ test('override api gateway properties with existingLambdaObj', () => {
   new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
     existingLambdaObj: fn,
     apiGatewayProps: {
-      options: {
-        description: "Override description"
-      }
+      description: "Override description"
     }
   });
 
@@ -177,16 +175,14 @@ test('override api gateway properties without existingLambdaObj', () => {
   new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     apiGatewayProps: {
       endpointConfiguration: {
         types: [api.EndpointType.PRIVATE],
       },
-      options: {
-        description: "Override description"
-      }
+      description: "Override description"
     }
   });
 
@@ -211,7 +207,7 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
   new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     apiGatewayProps: {
@@ -252,7 +248,7 @@ test('Cloudfront logging bucket error when providing existing log bucket and log
   const app = () => { new CloudFrontToApiGatewayToLambda(stack, 'cloudfront-s3', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     apiGatewayProps: {

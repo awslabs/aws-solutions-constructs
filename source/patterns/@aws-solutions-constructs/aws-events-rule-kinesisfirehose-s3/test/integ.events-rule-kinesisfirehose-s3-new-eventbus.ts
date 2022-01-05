@@ -27,7 +27,7 @@ const props: EventsRuleToKinesisFirehoseToS3Props = {
       source: ['solutionsconstructs']
     }
   },
-  eventBusProps: {},
+  eventBusProps: { eventBusName: 'test' },
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY
   },

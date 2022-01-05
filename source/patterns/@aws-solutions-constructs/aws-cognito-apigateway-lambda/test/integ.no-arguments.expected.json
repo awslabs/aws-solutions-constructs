@@ -110,7 +110,7 @@
           }
         },
         "Handler": "index.handler",
-        "Runtime": "nodejs12.x",
+        "Runtime": "nodejs14.x",
         "TracingConfig": {
           "Mode": "Active"
         }
@@ -634,12 +634,12 @@
     "testcognitoapigatewaylambdaCognitoAuthorizer170CACC9": {
       "Type": "AWS::ApiGateway::Authorizer",
       "Properties": {
+        "Name": "authorizer",
         "RestApiId": {
           "Ref": "testcognitoapigatewaylambdaLambdaRestApi2E272431"
         },
         "Type": "COGNITO_USER_POOLS",
         "IdentitySource": "method.request.header.Authorization",
-        "Name": "authorizer",
         "ProviderARNs": [
           {
             "Fn::GetAtt": [
@@ -683,7 +683,7 @@
     "BootstrapVersion": {
       "Type": "AWS::SSM::Parameter::Value<String>",
       "Default": "/cdk-bootstrap/hnb659fds/version",
-      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
     }
   },
   "Rules": {
