@@ -14,18 +14,28 @@
 // Imports
 import { App, Stack } from "@aws-cdk/core";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
-
+import * as defaults from '@aws-solutions-constructs/core';
+import * as lambda from '@aws-cdk/aws-lambda';
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename), {});
 
-stack.templateOptions.description = 'Empty Integration Test for aws-route53-apigateway';
+stack.templateOptions.description = 'Dummy Integration Test for aws-route53-apigateway';
 
-// This is an empty integ test in order to bypass the CodeBuild integ test scans.
+// This is an dummy integ test in order to bypass the CodeBuild integ test scans.
 // Route53ToApiGateway construct requires a legitimate DNS and certificate to be deployed.
 // If a fake DNS and certificate is provided, the deployment will hang and cause it to fail.
 // Legitimate DNS and certificate cannot be provided in integ tests as it is user specific
 // and will need to be regenerated.
+
+// Create dummy integ with atleast one resource
+const func = defaults.deployLambdaFunction(stack, {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler'
+});
+
+defaults.RegionalLambdaRestApi(stack, func);
 
 // Synth
 app.synth();

@@ -33,9 +33,9 @@ export interface Route53ToApiGatewayProps {
    */
   readonly publicApi: boolean
   /**
-   * Custom properties for a new Private Hosted Zone. Cannot be specified for a
-   * public API. Cannot specify a VPC. Either privateHostedZoneProps or existingHostedZoneInterface
-   * must be provided. Providing both will cause an error.
+   * Optional custom properties for a new Private Hosted Zone. Cannot be specified for a
+   * public API. Cannot specify a VPC, it will use the VPC in existingVpc or the VPC created by the construct.
+   * Providing both this and existingHostedZoneInterface is an error.
    *
    * @default - None
    */
