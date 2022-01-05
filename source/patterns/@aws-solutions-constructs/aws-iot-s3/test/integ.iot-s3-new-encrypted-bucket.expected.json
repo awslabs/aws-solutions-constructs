@@ -271,8 +271,7 @@
               "Action": [
                 "kms:Encrypt",
                 "kms:ReEncrypt*",
-                "kms:GenerateDataKey*",
-                "kms:Decrypt"
+                "kms:GenerateDataKey*"
               ],
               "Effect": "Allow",
               "Resource": {
@@ -301,7 +300,30 @@
             {
               "S3": {
                 "BucketName": {
-                  "Ref": "testiots3integrationS3Bucket9B8B180C"
+                  "Fn::Select": [
+                    0,
+                    {
+                      "Fn::Split": [
+                        "/",
+                        {
+                          "Fn::Select": [
+                            5,
+                            {
+                              "Fn::Split": [
+                                ":",
+                                {
+                                  "Fn::GetAtt": [
+                                    "testiots3integrationS3Bucket9B8B180C",
+                                    "Arn"
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
                 },
                 "Key": "${topic()}/${timestamp()}",
                 "RoleArn": {

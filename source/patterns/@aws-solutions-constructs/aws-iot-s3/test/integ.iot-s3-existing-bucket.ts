@@ -40,7 +40,7 @@ const props: IotToS3Props = {
       actions: []
     }
   },
-  existingBucketObj,
+  existingBucketInterface: existingBucketObj,
   s3Key: 'test/${timestamp()}'
 };
 

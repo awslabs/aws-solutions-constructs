@@ -45,7 +45,30 @@ test('check for default props', () => {
         {
           S3: {
             BucketName: {
-              Ref: "testiots3integrationS3Bucket9B8B180C"
+              "Fn::Select": [
+                0,
+                {
+                  "Fn::Split": [
+                    "/",
+                    {
+                      "Fn::Select": [
+                        5,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "testiots3integrationS3Bucket9B8B180C",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             },
             Key: "${topic()}/${timestamp()}",
             RoleArn: {
@@ -71,6 +94,7 @@ test('check for default props', () => {
 
   // Check for properties
   expect(construct.s3Bucket).toBeDefined();
+  expect(construct.s3BucketInterface).toBeDefined();
   expect(construct.s3LoggingBucket).toBeDefined();
   expect(construct.iotActionsRole).toBeDefined();
   expect(construct.iotTopicRule).toBeDefined();
@@ -139,7 +163,30 @@ test('check for overriden props', () => {
         {
           S3: {
             BucketName: {
-              Ref: "testiots3integrationS3Bucket9B8B180C"
+              "Fn::Select": [
+                0,
+                {
+                  "Fn::Split": [
+                    "/",
+                    {
+                      "Fn::Select": [
+                        5,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "testiots3integrationS3Bucket9B8B180C",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             },
             Key: "test/key",
             RoleArn: {
@@ -168,6 +215,7 @@ test('check for overriden props', () => {
 
   // Check for properties
   expect(construct.s3Bucket).toBeDefined();
+  expect(construct.s3BucketInterface).toBeDefined();
   expect(construct.s3LoggingBucket).toBeDefined();
   expect(construct.iotActionsRole).toBeDefined();
   expect(construct.iotTopicRule).toBeDefined();
@@ -186,7 +234,7 @@ test('check for existing bucket', () => {
       }
     },
     s3Key: 'existingtest/key',
-    existingBucketObj: existingBucket
+    existingBucketInterface: existingBucket
   };
   const construct = new IotToS3(stack, 'test-iot-s3-integration', props);
 
@@ -231,7 +279,8 @@ test('check for existing bucket', () => {
   expect(stack).toCountResources("AWS::IAM::Policy", 1);
 
   // Check for properties
-  expect(construct.s3Bucket).toBeDefined();
+  expect(construct.s3Bucket).toBeUndefined();
+  expect(construct.s3BucketInterface).toBeDefined();
   expect(construct.s3LoggingBucket).toBeUndefined();
   expect(construct.iotActionsRole).toBeDefined();
   expect(construct.iotTopicRule).toBeDefined();
@@ -252,7 +301,7 @@ test('check for both bucketProps and existingBucket', () => {
     bucketProps: {
       encryption: s3.BucketEncryption.KMS_MANAGED
     },
-    existingBucketObj: existingBucket
+    existingBucketInterface: existingBucket
   };
 
   // since bucketprops and existing bucket is supplied, this should result in error
@@ -313,7 +362,7 @@ test('check for chaining of resource', () => {
         actions: []
       }
     },
-    existingBucketObj: construct.s3Bucket
+    existingBucketInterface: construct.s3Bucket
   };
   new IotToS3(stack, 'test-iot-s3-integration1', props1);
 

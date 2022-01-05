@@ -23,11 +23,11 @@ import { Construct } from '@aws-cdk/core';
  */
 export interface IotToS3Props {
   /**
-   * Existing instance of S3 Bucket object, providing both this and `bucketProps` will cause an error.
+   * Existing S3 Bucket interface, providing both this and `bucketProps` will cause an error.
    *
    * @default - None
    */
-  readonly existingBucketObj?: s3.Bucket;
+  readonly existingBucketInterface?: s3.IBucket;
   /**
    * User provided props to override the default props for the S3 Bucket.
    *
@@ -62,7 +62,8 @@ export interface IotToS3Props {
 }
 
 export class IotToS3 extends Construct {
-  public readonly s3Bucket: s3.Bucket;
+  public readonly s3Bucket?: s3.Bucket;
+  public readonly s3BucketInterface: s3.IBucket;
   public readonly s3LoggingBucket?: s3.Bucket;
   public readonly iotActionsRole: iam.Role;
   public readonly iotTopicRule: iot.CfnTopicRule;
@@ -79,14 +80,15 @@ export class IotToS3 extends Construct {
     defaults.CheckProps(props);
 
     // Setup S3 Bucket
-    if (!props.existingBucketObj) {
+    if (!props.existingBucketInterface) {
       [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
         bucketProps: props.bucketProps,
         loggingBucketProps: props.loggingBucketProps,
         logS3AccessLogs: props.logS3AccessLogs
       });
+      this.s3BucketInterface = s3.Bucket.fromBucketArn(this, `S3BucketInterface`, this.s3Bucket.bucketArn);
     } else {
-      this.s3Bucket = props.existingBucketObj;
+      this.s3BucketInterface = props.existingBucketInterface;
     }
 
     // Role to allow IoT to send messages to the S3 Bucket
@@ -95,12 +97,12 @@ export class IotToS3 extends Construct {
     });
 
     // Setup the IAM policy for IoT Actions
-    this.s3Bucket.grantWrite(this.iotActionsRole);
+    this.s3BucketInterface.grantWrite(this.iotActionsRole);
 
     const defaultIotTopicProps = defaults.DefaultCfnTopicRuleProps([{
       s3: {
         key: props.s3Key || '${topic()}/${timestamp()}',
-        bucketName: this.s3Bucket?.bucketName,
+        bucketName: this.s3BucketInterface.bucketName,
         roleArn: this.iotActionsRole.roleArn
       }
     }]);
@@ -109,8 +111,8 @@ export class IotToS3 extends Construct {
     // Create the IoT topic rule
     this.iotTopicRule = new iot.CfnTopicRule(this, 'IotTopicRule', iotTopicProps);
 
-    // If bucket has a KMS CMK, explicitly provide IoTActionsRole necessary access to write to the bucket
-    if (this.s3Bucket && this.s3Bucket.encryptionKey && props.existingBucketObj) {
+    // If existing bucket has a KMS CMK, explicitly provide IoTActionsRole necessary access to write to the bucket
+    if (this.s3Bucket && this.s3Bucket.encryptionKey) {
       this.s3Bucket.encryptionKey.grantEncrypt(this.iotActionsRole);
     }
   }
