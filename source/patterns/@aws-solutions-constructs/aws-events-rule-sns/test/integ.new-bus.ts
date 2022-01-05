@@ -24,7 +24,7 @@ const props: EventsRuleToSnsProps = {
       source: ['solutionsconstructs']
     }
   },
-  eventBusProps: {} // Pass props to create new custom EventBus
+  eventBusProps: { eventBusName: 'test' } // Pass props to create new custom EventBus
 };
 
 new EventsRuleToSns(stack, 'test', props);

@@ -4,8 +4,8 @@
     "testkinesisstreamslambdaKinesisStream374D6D56": {
       "Type": "AWS::Kinesis::Stream",
       "Properties": {
-        "ShardCount": 1,
         "RetentionPeriodHours": 24,
+        "ShardCount": 1,
         "StreamEncryption": {
           "EncryptionType": "KMS",
           "KeyId": "alias/aws/kinesis"
@@ -164,7 +164,7 @@
                       {
                         "Ref": "AWS::Partition"
                       },
-                      ":s3:::.4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95.py"
+                      ":s3:::fakelocation/fakefile.py"
                     ]
                   ]
                 },
@@ -176,7 +176,7 @@
                       {
                         "Ref": "AWS::Partition"
                       },
-                      ":s3:::.4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95.py/*"
+                      ":s3:::fakelocation/fakefile.py/*"
                     ]
                   ]
                 }
@@ -238,7 +238,7 @@
         "PolicyDocument": {
           "Statement": [
             {
-              "Action": "*",
+              "Action": "s3:*",
               "Condition": {
                 "Bool": {
                   "aws:SecureTransport": "false"
@@ -249,6 +249,12 @@
                 "AWS": "*"
               },
               "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testkinesisstreamslambdaS3LoggingBucket48F70267",
+                    "Arn"
+                  ]
+                },
                 {
                   "Fn::Join": [
                     "",
@@ -262,15 +268,8 @@
                       "/*"
                     ]
                   ]
-                },
-                {
-                  "Fn::GetAtt": [
-                    "testkinesisstreamslambdaS3LoggingBucket48F70267",
-                    "Arn"
-                  ]
                 }
-              ],
-              "Sid": "HttpsOnly"
+              ]
             }
           ],
           "Version": "2012-10-17"
@@ -329,7 +328,7 @@
         "PolicyDocument": {
           "Statement": [
             {
-              "Action": "*",
+              "Action": "s3:*",
               "Condition": {
                 "Bool": {
                   "aws:SecureTransport": "false"
@@ -340,6 +339,12 @@
                 "AWS": "*"
               },
               "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testkinesisstreamslambdaS3Bucket54759F5C",
+                    "Arn"
+                  ]
+                },
                 {
                   "Fn::Join": [
                     "",
@@ -353,15 +358,8 @@
                       "/*"
                     ]
                   ]
-                },
-                {
-                  "Fn::GetAtt": [
-                    "testkinesisstreamslambdaS3Bucket54759F5C",
-                    "Arn"
-                  ]
                 }
-              ],
-              "Sid": "HttpsOnly"
+              ]
             }
           ],
           "Version": "2012-10-17"
@@ -374,7 +372,7 @@
         "Command": {
           "Name": "gluestreaming",
           "PythonVersion": "3",
-          "ScriptLocation": "asset.4d6b6e64d28273dfb8ab06e43c8c5d13e10c44ea56a2996de4b2f693adbe2b95.py"
+          "ScriptLocation": "s3://fakelocation/fakefile.py"
         },
         "Role": {
           "Fn::GetAtt": [
@@ -688,7 +686,7 @@
     "BootstrapVersion": {
       "Type": "AWS::SSM::Parameter::Value<String>",
       "Default": "/cdk-bootstrap/hnb659fds/version",
-      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
     }
   },
   "Rules": {

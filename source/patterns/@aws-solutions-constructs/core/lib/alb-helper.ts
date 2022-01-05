@@ -30,15 +30,15 @@ export function ObtainAlb(
   id: string,
   vpc: ec2.IVpc,
   publicApi: boolean,
-  existingLoadBalancerInterface?: elb.ApplicationLoadBalancer,
+  existingLoadBalancerObj?: elb.ApplicationLoadBalancer,
   loadBalancerProps?: elb.ApplicationLoadBalancerProps | any,
   logAccessLogs?: boolean,
   loggingBucketProps?: s3.BucketProps
 ): elb.ApplicationLoadBalancer {
   let loadBalancer: elb.ApplicationLoadBalancer;
 
-  if (existingLoadBalancerInterface) {
-    loadBalancer = existingLoadBalancerInterface;
+  if (existingLoadBalancerObj) {
+    loadBalancer = existingLoadBalancerObj;
   } else {
     const consolidatedProps = loadBalancerProps
       ? overrideProps(loadBalancerProps, { vpc, internetFacing: publicApi })
@@ -62,7 +62,6 @@ export function ObtainAlb(
 export function AddListener(
   scope: Construct,
   loadBalancer: elb.ApplicationLoadBalancer,
-  targetGroup: elb.ApplicationTargetGroup,
   listenerProps: elb.ApplicationListenerProps | any
 ): elb.ApplicationListener {
   let consolidatedListenerProps: elb.ApplicationListenerProps;
@@ -114,39 +113,59 @@ export function AddListener(
     loadBalancer.listeners.push(httpListener);
   }
 
-  AddTarget(scope, targetGroup, listener);
   return listener;
 }
 
-export function CreateLambdaTargetGroup(
+// Creates a Target Group for Lambda functions and adds the
+// provided functions as a target to that group. Then adds
+// the new Target Group to the provided Listener. The expectaion
+// is that Lambda specific code is included here, and next we will
+// add AddFargateTarget(), with Fargate specific code isolated in that
+// function.
+export function AddLambdaTarget(
   scope: Construct,
   id: string,
+  currentListener: elb.ApplicationListener,
   lambdaFunction: lambda.IFunction,
-  targetProps?: elb.ApplicationTargetGroupProps
-): elb.ApplicationTargetGroup {
+  ruleProps?: elb.AddRuleProps,
+  targetProps?: elb.ApplicationTargetGroupProps,
+): elb.ApplicationTargetGroup  {
+
+  //  Create the target and assign it to a new target group
   const lambdaTarget = new elbt.LambdaTarget(lambdaFunction);
-  return new elb.ApplicationTargetGroup(scope, `${id}-tg`, {
+  const newTargetGroup = new elb.ApplicationTargetGroup(scope, `${id}-tg`, {
     targets: [lambdaTarget],
     targetGroupName: targetProps ? targetProps.targetGroupName : undefined,
     healthCheck: targetProps ? targetProps.healthCheck : undefined
   });
-}
 
-export function AddTarget(
-  scope: Construct,
-  targetGroup: elb.ApplicationTargetGroup,
-  listener: elb.ApplicationListener,
-  ruleProps?: elb.AddRuleProps
-) {
   // AddRuleProps includes conditions and priority, combine that with targetGroups and
   // we can assemble AddApplicationTargetGroupProps
   if (ruleProps) {
-    const consolidatedTargetProps = overrideProps(ruleProps, { targetGroups: [targetGroup] });
-    listener.addTargetGroups(`${scope.node.id}-targets`, consolidatedTargetProps);
+    const consolidatedTargetProps = overrideProps(ruleProps, { targetGroups: [newTargetGroup] });
+    currentListener.addTargetGroups(`${scope.node.id}-targets`, consolidatedTargetProps);
   } else {
-    listener.addTargetGroups("targets", {
-      targetGroups: [targetGroup],
+    currentListener.addTargetGroups("targets", {
+      targetGroups: [newTargetGroup],
     });
   }
-  return;
+  newTargetGroup.setAttribute('stickiness.enabled', undefined);
+  return newTargetGroup;
+}
+
+// Looks for the listener associated with Target Groups
+// If there is a single listener, this returns it whether it is HTTP or HTTPS
+// If there are 2 listeners, it finds the HTTPS listener (we assume the HTTP listener redirects to HTTPS)
+export function GetActiveListener(listeners: elb.ApplicationListener[]): elb.ApplicationListener {
+  let listener: elb.ApplicationListener;
+
+  if (listeners.length === 0 ) {
+    throw new Error(`There are no listeners in the ALB`);
+  }
+  if (listeners.length === 1 ) {
+    listener = listeners[0];
+  } else {
+    listener = listeners.find(i => (i.node.children[0] as elb.CfnListener).protocol === "HTTPS") as elb.ApplicationListener;
+  }
+  return listener;
 }

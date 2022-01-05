@@ -155,8 +155,7 @@ test('Check S3 Bucket policy', () => {
       PolicyDocument: {
         Statement: [
           {
-            Sid: "HttpsOnly",
-            Action: "*",
+            Action: "s3:*",
             Condition: {
               Bool: {
                 "aws:SecureTransport": "false",
@@ -168,20 +167,23 @@ test('Check S3 Bucket policy', () => {
             },
             Resource: [
               {
+                "Fn::GetAtt": [
+                  "S3Bucket07682993",
+                  "Arn"
+                ]
+              },
+              {
                 "Fn::Join": [
                   "",
                   [
                     {
-                      "Fn::GetAtt": ["S3Bucket07682993", "Arn"],
+                      "Fn::GetAtt": [
+                        "S3Bucket07682993",
+                        "Arn"
+                      ]
                     },
-                    "/*",
-                  ],
-                ],
-              },
-              {
-                "Fn::GetAtt": [
-                  "S3Bucket07682993",
-                  "Arn"
+                    "/*"
+                  ]
                 ]
               }
             ]

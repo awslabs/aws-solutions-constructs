@@ -26,7 +26,7 @@ stack.templateOptions.description = 'Integration Test for aws-cloudfront-apigate
 
 const inProps: lambda.FunctionProps = {
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-  runtime: lambda.Runtime.NODEJS_10_X,
+  runtime: lambda.Runtime.NODEJS_14_X,
   handler: 'index.handler'
 };
 

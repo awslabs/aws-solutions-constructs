@@ -23,10 +23,10 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 const props: EventsRuleToLambdaProps = {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_12_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler'
   },
-  eventBusProps: {},
+  eventBusProps: { eventBusName: 'test' },
   eventRuleProps: {
     eventPattern: {
       source: ['solutionsconstructs']
