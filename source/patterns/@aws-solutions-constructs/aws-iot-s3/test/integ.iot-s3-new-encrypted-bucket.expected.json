@@ -44,7 +44,7 @@
           "ServerSideEncryptionConfiguration": [
             {
               "ServerSideEncryptionByDefault": {
-                "SSEAlgorithm": "AES256"
+                "SSEAlgorithm": "aws:kms"
               }
             }
           ]
@@ -153,8 +153,7 @@
         "LoggingConfiguration": {
           "DestinationBucketName": {
             "Ref": "testiots3integrationS3LoggingBucket606446CC"
-          },
-          "LogFilePrefix": "logs"
+          }
         },
         "PublicAccessBlockConfiguration": {
           "BlockPublicAcls": true,
