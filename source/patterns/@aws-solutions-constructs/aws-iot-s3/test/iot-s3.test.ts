@@ -17,7 +17,9 @@ import '@aws-cdk/assert/jest';
 import * as s3 from "@aws-cdk/aws-s3";
 import { RemovalPolicy } from "@aws-cdk/core";
 
-function deployNewFunc(stack: cdk.Stack) {
+test('check for default props', () => {
+  const stack = new cdk.Stack();
+
   const props: IotToS3Props = {
     iotTopicRuleProps: {
       topicRulePayload: {
@@ -28,12 +30,7 @@ function deployNewFunc(stack: cdk.Stack) {
       }
     }
   };
-  return new IotToS3(stack, 'test-iot-s3-integration', props);
-}
-
-test('check for default props', () => {
-  const stack = new cdk.Stack();
-  const construct = deployNewFunc(stack);
+  const construct = new IotToS3(stack, 'test-iot-s3-integration', props);
 
   // Check whether construct has two s3 buckets for storing msgs and logging
   expect(stack).toCountResources('AWS::S3::Bucket', 2);
@@ -45,30 +42,7 @@ test('check for default props', () => {
         {
           S3: {
             BucketName: {
-              "Fn::Select": [
-                0,
-                {
-                  "Fn::Split": [
-                    "/",
-                    {
-                      "Fn::Select": [
-                        5,
-                        {
-                          "Fn::Split": [
-                            ":",
-                            {
-                              "Fn::GetAtt": [
-                                "testiots3integrationS3Bucket9B8B180C",
-                                "Arn"
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
+              Ref: "testiots3integrationS3Bucket9B8B180C"
             },
             Key: "${topic()}/${timestamp()}",
             RoleArn: {
@@ -163,30 +137,7 @@ test('check for overriden props', () => {
         {
           S3: {
             BucketName: {
-              "Fn::Select": [
-                0,
-                {
-                  "Fn::Split": [
-                    "/",
-                    {
-                      "Fn::Select": [
-                        5,
-                        {
-                          "Fn::Split": [
-                            ":",
-                            {
-                              "Fn::GetAtt": [
-                                "testiots3integrationS3Bucket9B8B180C",
-                                "Arn"
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
+              Ref: "testiots3integrationS3Bucket9B8B180C"
             },
             Key: "test/key",
             RoleArn: {

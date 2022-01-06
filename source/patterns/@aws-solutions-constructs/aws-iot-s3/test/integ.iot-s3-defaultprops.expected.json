@@ -159,30 +159,7 @@
             {
               "S3": {
                 "BucketName": {
-                  "Fn::Select": [
-                    0,
-                    {
-                      "Fn::Split": [
-                        "/",
-                        {
-                          "Fn::Select": [
-                            5,
-                            {
-                              "Fn::Split": [
-                                ":",
-                                {
-                                  "Fn::GetAtt": [
-                                    "testiots3integrationS3Bucket9B8B180C",
-                                    "Arn"
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
+                  "Ref": "testiots3integrationS3Bucket9B8B180C"
                 },
                 "Key": "${topic()}/${timestamp()}",
                 "RoleArn": {

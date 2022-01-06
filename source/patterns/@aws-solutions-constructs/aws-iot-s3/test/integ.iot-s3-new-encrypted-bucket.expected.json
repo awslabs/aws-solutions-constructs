@@ -271,6 +271,21 @@
               "Action": [
                 "kms:Encrypt",
                 "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+                "kms:Decrypt"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "existingKeyB52D6AF1",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
                 "kms:GenerateDataKey*"
               ],
               "Effect": "Allow",
@@ -300,30 +315,7 @@
             {
               "S3": {
                 "BucketName": {
-                  "Fn::Select": [
-                    0,
-                    {
-                      "Fn::Split": [
-                        "/",
-                        {
-                          "Fn::Select": [
-                            5,
-                            {
-                              "Fn::Split": [
-                                ":",
-                                {
-                                  "Fn::GetAtt": [
-                                    "testiots3integrationS3Bucket9B8B180C",
-                                    "Arn"
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
+                  "Ref": "testiots3integrationS3Bucket9B8B180C"
                 },
                 "Key": "${topic()}/${timestamp()}",
                 "RoleArn": {
