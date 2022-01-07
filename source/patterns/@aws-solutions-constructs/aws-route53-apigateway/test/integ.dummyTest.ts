@@ -15,7 +15,7 @@
 import { App, Stack } from "@aws-cdk/core";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as lambda from '@aws-cdk/aws-lambda';
+
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename), {});
@@ -28,14 +28,9 @@ stack.templateOptions.description = 'Dummy Integration Test for aws-route53-apig
 // Legitimate DNS and certificate cannot be provided in integ tests as it is user specific
 // and will need to be regenerated.
 
-// Create dummy integ with atleast one resource
-const func = defaults.deployLambdaFunction(stack, {
-  code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-  runtime: lambda.Runtime.NODEJS_14_X,
-  handler: 'index.handler'
-});
-
-defaults.RegionalLambdaRestApi(stack, func);
+// Create dummy integ with at least one resource to pass CFN scan
+const [restApi] = defaults.RegionalRestApi(stack);
+restApi.root.addMethod('GET');
 
 // Synth
 app.synth();

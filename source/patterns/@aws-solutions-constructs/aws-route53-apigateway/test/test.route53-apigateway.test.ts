@@ -15,7 +15,6 @@
 import * as cdk from "@aws-cdk/core";
 import { Route53ToApiGateway, Route53ToApiGatewayProps } from "../lib";
 import * as route53 from "@aws-cdk/aws-route53";
-import * as lambda from "@aws-cdk/aws-lambda";
 import * as defaults from "@aws-solutions-constructs/core";
 import * as acm from "@aws-cdk/aws-certificatemanager";
 import "@aws-cdk/assert/jest";
@@ -23,22 +22,18 @@ import "@aws-cdk/assert/jest";
 // Deploying Public/Private Existing Hosted Zones
 function deployApi(
   stack: cdk.Stack,
-  publicApi: boolean,
-  cert?: acm.ICertificate
+  publicApi: boolean
 ) {
-  const func = defaults.deployLambdaFunction(stack, {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
-    handler: "index.handler",
-  });
+  const [restApi] = defaults.RegionalRestApi(stack);
+  restApi.root.addMethod('GET');
 
-  const [restApi] = defaults.RegionalLambdaRestApi(stack, func);
+  const domainName = "www.test-example.com";
 
   let newZone: route53.PublicHostedZone | route53.PrivateHostedZone;
 
   if (publicApi) {
     newZone = new route53.PublicHostedZone(stack, "new-zone", {
-      zoneName: "www.test-example.com",
+      zoneName: domainName,
     });
   } else {
     const vpc = defaults.buildVpc(stack, {
@@ -51,17 +46,23 @@ function deployApi(
     });
 
     newZone = new route53.PrivateHostedZone(stack, "new-zone", {
-      zoneName: "www.test-example.com",
+      zoneName: domainName,
       vpc
     });
   }
+
+  const certificate = acm.Certificate.fromCertificateArn(
+    stack,
+    "fake-cert",
+    "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
+  );
 
   // Definitions
   const props: Route53ToApiGatewayProps = {
     publicApi,
     existingHostedZoneInterface: newZone,
     existingApiGatewayInterface: restApi,
-    existingCertificateInterface: cert,
+    existingCertificateInterface: certificate,
   };
 
   return new Route53ToApiGateway(stack, "api-stack", props);
@@ -73,12 +74,7 @@ function deployApi(
 test("Test for default params construct props", () => {
   // Initial Setup
   const stack = new cdk.Stack();
-  const cert = acm.Certificate.fromCertificateArn(
-    stack,
-    "fake-cert",
-    "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
-  );
-  const construct = deployApi(stack, false, cert);
+  const construct = deployApi(stack, false);
 
   // Assertion
   expect(construct.apiGateway).not.toBeNull();
@@ -93,14 +89,8 @@ test("Test for default params construct props", () => {
 test("Test for errors when creating a private hosted zone", () => {
   // Initial Setup
   const stack = new cdk.Stack();
-
-  const func = defaults.deployLambdaFunction(stack, {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
-    handler: "index.handler",
-  });
-
-  const [restApi] = defaults.RegionalLambdaRestApi(stack, func);
+  const [restApi] = defaults.RegionalRestApi(stack);
+  const domainName = "www.test-example.com";
 
   const vpc = defaults.buildVpc(stack, {
     defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
@@ -112,14 +102,21 @@ test("Test for errors when creating a private hosted zone", () => {
   });
 
   const newZone = new route53.PrivateHostedZone(stack, "new-zone", {
-    zoneName: "www.test-example.com",
+    zoneName: domainName,
     vpc
   });
+
+  const certificate = acm.Certificate.fromCertificateArn(
+    stack,
+    "fake-cert",
+    "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
+  );
 
   let app = () =>
     new Route53ToApiGateway(stack, "api-stack1", {
       publicApi: true,
       existingApiGatewayInterface: restApi,
+      existingCertificateInterface: certificate
     });
   // Assertion 1
   expect(app).toThrowError(
@@ -130,6 +127,7 @@ test("Test for errors when creating a private hosted zone", () => {
     new Route53ToApiGateway(stack, "api-stack2", {
       publicApi: false,
       existingApiGatewayInterface: restApi,
+      existingCertificateInterface: certificate
     });
 
   // Assertion 2
@@ -145,6 +143,7 @@ test("Test for errors when creating a private hosted zone", () => {
         vpc,
       },
       existingApiGatewayInterface: restApi,
+      existingCertificateInterface: certificate
     });
 
   // Assertion 3
@@ -158,6 +157,7 @@ test("Test for errors when creating a private hosted zone", () => {
       existingHostedZoneInterface: newZone,
       existingVpc: vpc,
       existingApiGatewayInterface: restApi,
+      existingCertificateInterface: certificate
     });
 
   // Assertion 4
@@ -172,12 +172,43 @@ test("Test for errors when creating a private hosted zone", () => {
       existingApiGatewayInterface: restApi,
       privateHostedZoneProps: {
         domainName: "test-example.com"
-      }
+      },
+      existingCertificateInterface: certificate
     });
 
   // Assertion 5
   expect(app).toThrowError(
     "Must provide either existingHostedZoneInterface or privateHostedZoneProps."
+  );
+
+  app = () =>
+    new Route53ToApiGateway(stack, "api-stack6", {
+      publicApi: false,
+      privateHostedZoneProps: {
+        domainName: "test.example.com"
+      },
+      existingApiGatewayInterface: restApi,
+      existingCertificateInterface: certificate
+    });
+
+  // Assertion 7
+  expect(app).toThrowError(
+    'Must supply zoneName for Private Hosted Zone Props.'
+  );
+
+  app = () =>
+    new Route53ToApiGateway(stack, "api-stack7", {
+      publicApi: false,
+      privateHostedZoneProps: {
+        zoneName: "test.example.com"
+      },
+      existingApiGatewayInterface: restApi,
+      existingCertificateInterface: certificate
+    });
+
+  // Assertion 6
+  expect(app).toThrowError(
+    'Must supply an existing VPC for Private Hosted Zone Props.'
   );
 });
 
@@ -187,14 +218,10 @@ test("Test for errors when creating a private hosted zone", () => {
 test("Test for providing private hosted zone props", () => {
   // Initial Setup
   const stack = new cdk.Stack();
+  const [restApi] = defaults.RegionalRestApi(stack);
+  restApi.root.addMethod('GET');
 
-  const func = defaults.deployLambdaFunction(stack, {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
-    handler: "index.handler",
-  });
-
-  const [restApi] = defaults.RegionalLambdaRestApi(stack, func);
+  const domainName = "www.private-zone.com";
 
   const vpc = defaults.buildVpc(stack, {
     defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
@@ -205,26 +232,20 @@ test("Test for providing private hosted zone props", () => {
     },
   });
 
+  const certificate = acm.Certificate.fromCertificateArn(
+    stack,
+    "fake-cert",
+    "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
+  );
+
   new Route53ToApiGateway(stack, "api-stack1", {
     publicApi: false,
     existingApiGatewayInterface: restApi,
     privateHostedZoneProps: {
-      zoneName: "www.private-zone.com",
+      zoneName: domainName,
     },
     existingVpc: vpc,
-  });
-
-  expect(stack).toHaveResource("AWS::CertificateManager::Certificate", {
-    DomainName: "www.private-zone.com",
-    DomainValidationOptions: [
-      {
-        DomainName: "www.private-zone.com",
-        HostedZoneId: {
-          Ref: "apistack1apistack1zone32E121CC",
-        },
-      },
-    ],
-    ValidationMethod: "DNS",
+    existingCertificateInterface: certificate
   });
 
   expect(stack).toHaveResource("AWS::Route53::HostedZone", {
@@ -245,38 +266,25 @@ test("Test for providing private hosted zone props", () => {
 // --------------------------------------------------------------
 // Check for A record creation in Public Hosted Zone
 // --------------------------------------------------------------
-test("Test for A record creation in Public Hosted Zone ", () => {
+test("Integration test for A record creation in Public Hosted Zone ", () => {
   // Initial Setup
   const stack = new cdk.Stack();
   deployApi(stack, true);
 
   // Assertions
-  expect(stack).toHaveResource("AWS::CertificateManager::Certificate", {
-    DomainName: "www.test-example.com",
-    DomainValidationOptions: [
-      {
-        DomainName: "www.test-example.com",
-        HostedZoneId: {
-          Ref: "newzone1D011936",
-        },
-      },
-    ],
-    ValidationMethod: "DNS",
-  });
-
   expect(stack).toHaveResourceLike("AWS::Route53::RecordSet", {
     Name: "www.test-example.com.",
     Type: "A",
     AliasTarget: {
       DNSName: {
         "Fn::GetAtt": [
-          "LambdaRestApiCustomDomainName18B2BF2D",
+          "RestApiCustomDomainName94F28E16",
           "RegionalDomainName",
         ],
       },
       HostedZoneId: {
         "Fn::GetAtt": [
-          "LambdaRestApiCustomDomainName18B2BF2D",
+          "RestApiCustomDomainName94F28E16",
           "RegionalHostedZoneId",
         ],
       },
@@ -292,45 +300,32 @@ test("Test for A record creation in Public Hosted Zone ", () => {
         "REGIONAL"
       ]
     },
-    Name: "LambdaRestApi"
+    Name: "RestApi"
   });
 });
 
 // --------------------------------------------------------------
 // Check for A record creation in Private Hosted Zone
 // --------------------------------------------------------------
-test("Test for A record creation in Private Hosted Zone ", () => {
+test("Integration test for A record creation in Private Hosted Zone ", () => {
   // Initial Setup
   const stack = new cdk.Stack();
   deployApi(stack, false);
 
   // Assertions
-  expect(stack).toHaveResource("AWS::CertificateManager::Certificate", {
-    DomainName: "www.test-example.com",
-    DomainValidationOptions: [
-      {
-        DomainName: "www.test-example.com",
-        HostedZoneId: {
-          Ref: "newzone1D011936",
-        },
-      },
-    ],
-    ValidationMethod: "DNS",
-  });
-
   expect(stack).toHaveResourceLike("AWS::Route53::RecordSet", {
     Name: "www.test-example.com.",
     Type: "A",
     AliasTarget: {
       DNSName: {
         "Fn::GetAtt": [
-          "LambdaRestApiCustomDomainName18B2BF2D",
+          "RestApiCustomDomainName94F28E16",
           "RegionalDomainName",
         ],
       },
       HostedZoneId: {
         "Fn::GetAtt": [
-          "LambdaRestApiCustomDomainName18B2BF2D",
+          "RestApiCustomDomainName94F28E16",
           "RegionalHostedZoneId",
         ],
       },
@@ -360,6 +355,6 @@ test("Test for A record creation in Private Hosted Zone ", () => {
         "REGIONAL"
       ]
     },
-    Name: "LambdaRestApi"
+    Name: "RestApi"
   });
 });

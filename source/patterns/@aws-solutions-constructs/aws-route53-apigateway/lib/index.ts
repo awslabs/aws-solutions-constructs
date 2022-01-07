@@ -48,14 +48,14 @@ export interface Route53ToApiGatewayProps {
    */
   readonly existingHostedZoneInterface?: route53.IHostedZone,
   /**
-   * An existing VPC. Providing both this and vpcProps is an error. If an existing
-   * Private Hosted Zone is provided, this value must be the VPC associated with those resources.
+   * An existing VPC. If an existing Private Hosted Zone is provided,
+   * this value must be the VPC associated with those resources.
    *
    * @default - None
    */
   readonly existingVpc?: ec2.IVpc,
   /**
-   * The existing API Gateway instance that will be protected with the WAF web ACL.
+   * The existing API Gateway instance that will be protected with the Route 53 hosted zone.
    *
    * @default - None
    */
@@ -65,7 +65,7 @@ export interface Route53ToApiGatewayProps {
    *
    * @defualt - None
    */
-  readonly existingCertificateInterface?: certificatemanager.ICertificate;
+  readonly existingCertificateInterface: certificatemanager.ICertificate;
 }
 
 /**
@@ -88,6 +88,11 @@ export class Route53ToApiGateway extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
 
+    // Certificate must already be issued when the user is bringing an existing one
+    // If you are using privateHostedZoneProps, the certificate must already be issued
+    // from a previous domain in order to be used in the newly created Private Hosted Zone.
+    this.certificate = props.existingCertificateInterface;
+
     if (props.existingVpc) {
       this.vpc = props.existingVpc;
     }
@@ -107,24 +112,20 @@ export class Route53ToApiGateway extends Construct {
         throw new Error('Public APIs require an existingHostedZone be passed in the Props object.');
       } else {
         if (!props.privateHostedZoneProps) {
-          throw new Error('Must supply privateHostedZoneProps to create a private API');
+          throw new Error('Must supply privateHostedZoneProps to create a private API.');
         }
         if (props.privateHostedZoneProps.vpc) {
-          throw new Error('All VPC specs must be provided at the Construct level in Route53ToApiGatewayProps');
+          throw new Error('All VPC specs must be provided at the Construct level in Route53ToApiGatewayProps.');
+        }
+        if (!props.privateHostedZoneProps.zoneName) {
+          throw new Error('Must supply zoneName for Private Hosted Zone Props.');
+        }
+        if ( !this.vpc ) {
+          throw new Error('Must supply an existing VPC for Private Hosted Zone Props.');
         }
         const manufacturedProps: route53.PrivateHostedZoneProps = defaults.overrideProps(props.privateHostedZoneProps, { vpc: this.vpc });
         this.hostedZone = new route53.PrivateHostedZone(this, `${id}-zone`, manufacturedProps);
       }
-    }
-
-    // Create certificate and validate CNAME Record with DNS
-    if (props.existingCertificateInterface) { // Certificate must already be issued if user is bringing an existing one
-      this.certificate = props.existingCertificateInterface;
-    } else {
-      this.certificate = new certificatemanager.Certificate(this, 'Certificate', {
-        domainName: this.hostedZone.zoneName,
-        validation: certificatemanager.CertificateValidation.fromDns(this.hostedZone),
-      });
     }
 
     // Convert IRestApi to RestApi
