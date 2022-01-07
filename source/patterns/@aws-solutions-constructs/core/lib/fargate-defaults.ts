@@ -24,7 +24,7 @@ export function DefaultClusterProps() {
 export function DefaultFargateServiceProps(
 ) {
   return {
-    assignPublicIp: true,
+    assignPublicIp: false,
     desiredCount: 2,
     maxHealthyPercent: 200,
     minHealthyPercent: 100,

@@ -44,7 +44,7 @@ test('Test with all defaults', () => {
     LaunchType: "FARGATE",
     NetworkConfiguration: {
       AwsvpcConfiguration: {
-        AssignPublicIp: "ENABLED",
+        AssignPublicIp: "DISABLED",
         SecurityGroups: [
           {
             "Fn::GetAtt": [
@@ -123,7 +123,7 @@ test('Test with all defaults in isolated VPC', () => {
     LaunchType: "FARGATE",
     NetworkConfiguration: {
       AwsvpcConfiguration: {
-        AssignPublicIp: "ENABLED",
+        AssignPublicIp: "DISABLED",
         SecurityGroups: [
           {
             "Fn::GetAtt": [
