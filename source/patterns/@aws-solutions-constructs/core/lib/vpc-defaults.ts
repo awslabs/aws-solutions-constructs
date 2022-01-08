@@ -36,3 +36,19 @@ export function DefaultIsolatedVpcProps(): ec2.VpcProps {
     ]
   } as ec2.VpcProps;
 }
+
+/**
+ * Default VPC with private subnets w/NAT
+ */
+export function DefaultPrivateVpcProps(): ec2.VpcProps {
+  return {
+    natGateways: 0,
+    subnetConfiguration: [
+      {
+        cidrMask: 18,
+        name: "private",
+        subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
+      }
+    ]
+  } as ec2.VpcProps;
+}

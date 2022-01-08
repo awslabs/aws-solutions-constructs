@@ -27,14 +27,7 @@ const stack = new Stack(app, generateIntegStackName(__filename), {
 });
 stack.templateOptions.description = 'Integration Test for aws-route53-alb';
 
-const newVpc = defaults.buildVpc(stack, {
-  defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
-  constructVpcProps: {
-    enableDnsHostnames: true,
-    enableDnsSupport: true,
-    cidr: '172.168.0.0/16',
-  },
-});
+const newVpc = defaults.getTestVpc(stack);
 
 const newZone = new PublicHostedZone(stack, 'new-zone', {
   zoneName: 'www.test-example.com',

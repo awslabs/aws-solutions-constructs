@@ -1,17 +1,75 @@
 {
-  "Description": "Integration Test for public HTTP API with a existing function and ALB",
+  "Description": "Integration Test for public HTTP API with new VPC, LoadBalancer and Service and 2 targets",
   "Resources": {
+    "testconstructtestconstructlistener484444F1": {
+      "Type": "AWS::ElasticLoadBalancingV2::Listener",
+      "Properties": {
+        "DefaultActions": [
+          {
+            "TargetGroupArn": {
+              "Ref": "testconstructtargettg7CB2E212"
+            },
+            "Type": "forward"
+          }
+        ],
+        "LoadBalancerArn": {
+          "Ref": "testconstructlbalb33E0EB59"
+        },
+        "Port": 80,
+        "Protocol": "HTTP"
+      },
+      "DependsOn": [
+        "testconstructtargettg7CB2E212"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W56",
+              "reason": "All integration tests must be HTTP because of certificate limitations."
+            }
+          ]
+        }
+      }
+    },
+    "testconstructtestconstructlistenerallnewtwotargetstargetsRule897FD7B6": {
+      "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+      "Properties": {
+        "Actions": [
+          {
+            "TargetGroupArn": {
+              "Ref": "testtwoconstructtargettgF3C0495D"
+            },
+            "Type": "forward"
+          }
+        ],
+        "Conditions": [
+          {
+            "Field": "path-pattern",
+            "PathPatternConfig": {
+              "Values": [
+                "*admin*"
+              ]
+            }
+          }
+        ],
+        "ListenerArn": {
+          "Ref": "testconstructtestconstructlistener484444F1"
+        },
+        "Priority": 10
+      }
+    },
     "Vpc8378EB38": {
       "Type": "AWS::EC2::VPC",
       "Properties": {
-        "CidrBlock": "172.168.0.0/16",
+        "CidrBlock": "10.0.0.0/16",
         "EnableDnsHostnames": true,
         "EnableDnsSupport": true,
         "InstanceTenancy": "default",
         "Tags": [
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc"
+            "Value": "all-new-two-targets/Vpc"
           }
         ]
       }
@@ -19,7 +77,7 @@
     "VpcPublicSubnet1Subnet5C2D37C4": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "CidrBlock": "172.168.0.0/19",
+        "CidrBlock": "10.0.0.0/19",
         "VpcId": {
           "Ref": "Vpc8378EB38"
         },
@@ -36,7 +94,7 @@
           },
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc/PublicSubnet1"
+            "Value": "all-new-two-targets/Vpc/PublicSubnet1"
           }
         ]
       },
@@ -60,7 +118,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc/PublicSubnet1"
+            "Value": "all-new-two-targets/Vpc/PublicSubnet1"
           }
         ]
       }
@@ -98,7 +156,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc/PublicSubnet1"
+            "Value": "all-new-two-targets/Vpc/PublicSubnet1"
           }
         ]
       }
@@ -118,7 +176,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc/PublicSubnet1"
+            "Value": "all-new-two-targets/Vpc/PublicSubnet1"
           }
         ]
       }
@@ -126,7 +184,7 @@
     "VpcPublicSubnet2Subnet691E08A3": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "CidrBlock": "172.168.32.0/19",
+        "CidrBlock": "10.0.32.0/19",
         "VpcId": {
           "Ref": "Vpc8378EB38"
         },
@@ -143,7 +201,7 @@
           },
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc/PublicSubnet2"
+            "Value": "all-new-two-targets/Vpc/PublicSubnet2"
           }
         ]
       },
@@ -167,7 +225,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc/PublicSubnet2"
+            "Value": "all-new-two-targets/Vpc/PublicSubnet2"
           }
         ]
       }
@@ -205,7 +263,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc/PublicSubnet2"
+            "Value": "all-new-two-targets/Vpc/PublicSubnet2"
           }
         ]
       }
@@ -225,7 +283,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc/PublicSubnet2"
+            "Value": "all-new-two-targets/Vpc/PublicSubnet2"
           }
         ]
       }
@@ -233,7 +291,7 @@
     "VpcPublicSubnet3SubnetBE12F0B6": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "CidrBlock": "172.168.64.0/19",
+        "CidrBlock": "10.0.64.0/19",
         "VpcId": {
           "Ref": "Vpc8378EB38"
         },
@@ -250,7 +308,7 @@
           },
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc/PublicSubnet3"
+            "Value": "all-new-two-targets/Vpc/PublicSubnet3"
           }
         ]
       },
@@ -274,7 +332,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc/PublicSubnet3"
+            "Value": "all-new-two-targets/Vpc/PublicSubnet3"
           }
         ]
       }
@@ -312,7 +370,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc/PublicSubnet3"
+            "Value": "all-new-two-targets/Vpc/PublicSubnet3"
           }
         ]
       }
@@ -332,7 +390,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc/PublicSubnet3"
+            "Value": "all-new-two-targets/Vpc/PublicSubnet3"
           }
         ]
       }
@@ -340,7 +398,7 @@
     "VpcPrivateSubnet1Subnet536B997A": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "CidrBlock": "172.168.96.0/19",
+        "CidrBlock": "10.0.96.0/19",
         "VpcId": {
           "Ref": "Vpc8378EB38"
         },
@@ -357,7 +415,7 @@
           },
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc/PrivateSubnet1"
+            "Value": "all-new-two-targets/Vpc/PrivateSubnet1"
           }
         ]
       }
@@ -371,7 +429,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc/PrivateSubnet1"
+            "Value": "all-new-two-targets/Vpc/PrivateSubnet1"
           }
         ]
       }
@@ -402,7 +460,7 @@
     "VpcPrivateSubnet2Subnet3788AAA1": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "CidrBlock": "172.168.128.0/19",
+        "CidrBlock": "10.0.128.0/19",
         "VpcId": {
           "Ref": "Vpc8378EB38"
         },
@@ -419,7 +477,7 @@
           },
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc/PrivateSubnet2"
+            "Value": "all-new-two-targets/Vpc/PrivateSubnet2"
           }
         ]
       }
@@ -433,7 +491,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc/PrivateSubnet2"
+            "Value": "all-new-two-targets/Vpc/PrivateSubnet2"
           }
         ]
       }
@@ -464,7 +522,7 @@
     "VpcPrivateSubnet3SubnetF258B56E": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "CidrBlock": "172.168.160.0/19",
+        "CidrBlock": "10.0.160.0/19",
         "VpcId": {
           "Ref": "Vpc8378EB38"
         },
@@ -481,7 +539,7 @@
           },
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc/PrivateSubnet3"
+            "Value": "all-new-two-targets/Vpc/PrivateSubnet3"
           }
         ]
       }
@@ -495,7 +553,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc/PrivateSubnet3"
+            "Value": "all-new-two-targets/Vpc/PrivateSubnet3"
           }
         ]
       }
@@ -529,7 +587,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc"
+            "Value": "all-new-two-targets/Vpc"
           }
         ]
       }
@@ -563,7 +621,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc"
+            "Value": "all-new-two-targets/Vpc"
           }
         ]
       }
@@ -615,7 +673,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc"
+            "Value": "all-new-two-targets/Vpc"
           }
         ]
       },
@@ -653,223 +711,113 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "publicApiExistingResources/Vpc"
+            "Value": "all-new-two-targets/Vpc"
           }
         ]
       }
     },
-    "lambdasg93781054": {
-      "Type": "AWS::EC2::SecurityGroup",
+    "VpcECRAPI9A3B6A2B": {
+      "Type": "AWS::EC2::VPCEndpoint",
       "Properties": {
-        "GroupDescription": "publicApiExistingResources/lambda-sg",
-        "SecurityGroupEgress": [
-          {
-            "CidrIp": "255.255.255.255/32",
-            "Description": "Disallow all traffic",
-            "FromPort": 252,
-            "IpProtocol": "icmp",
-            "ToPort": 86
-          }
-        ],
+        "ServiceName": "com.amazonaws.us-east-1.ecr.api",
         "VpcId": {
           "Ref": "Vpc8378EB38"
-        }
-      },
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W29",
-              "reason": "CDK created rule that blocks all traffic."
-            }
-          ]
-        }
-      }
-    },
-    "LambdaFunctionServiceRole0C4CDE0B": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "lambda.amazonaws.com"
-              }
-            }
-          ],
-          "Version": "2012-10-17"
         },
-        "Policies": [
+        "PrivateDnsEnabled": true,
+        "SecurityGroupIds": [
           {
-            "PolicyDocument": {
-              "Statement": [
-                {
-                  "Action": [
-                    "logs:CreateLogGroup",
-                    "logs:CreateLogStream",
-                    "logs:PutLogEvents"
-                  ],
-                  "Effect": "Allow",
-                  "Resource": {
-                    "Fn::Join": [
-                      "",
-                      [
-                        "arn:",
-                        {
-                          "Ref": "AWS::Partition"
-                        },
-                        ":logs:",
-                        {
-                          "Ref": "AWS::Region"
-                        },
-                        ":",
-                        {
-                          "Ref": "AWS::AccountId"
-                        },
-                        ":log-group:/aws/lambda/*"
-                      ]
-                    ]
-                  }
-                }
-              ],
-              "Version": "2012-10-17"
-            },
-            "PolicyName": "LambdaFunctionServiceRolePolicy"
+            "Fn::GetAtt": [
+              "allnewtwotargetsECRAPIsecuritygroupCC5C870C",
+              "GroupId"
+            ]
           }
-        ]
-      }
-    },
-    "LambdaFunctionServiceRoleDefaultPolicy126C8897": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "ec2:CreateNetworkInterface",
-                "ec2:DescribeNetworkInterfaces",
-                "ec2:DeleteNetworkInterface",
-                "ec2:AssignPrivateIpAddresses",
-                "ec2:UnassignPrivateIpAddresses"
-              ],
-              "Effect": "Allow",
-              "Resource": "*"
-            },
-            {
-              "Action": [
-                "xray:PutTraceSegments",
-                "xray:PutTelemetryRecords"
-              ],
-              "Effect": "Allow",
-              "Resource": "*"
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "LambdaFunctionServiceRoleDefaultPolicy126C8897",
-        "Roles": [
+        ],
+        "SubnetIds": [
           {
-            "Ref": "LambdaFunctionServiceRole0C4CDE0B"
-          }
-        ]
-      },
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W12",
-              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
-            }
-          ]
-        }
-      }
-    },
-    "LambdaFunctionBF21E41F": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Code": {
-          "S3Bucket": {
-            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1"
+            "Ref": "VpcPrivateSubnet1Subnet536B997A"
           },
-          "S3Key": "7caf594b8ad91abecca72f7f10a23a5cf446d05dc00d6194619935e7e3fd5a79.zip"
-        },
-        "Role": {
-          "Fn::GetAtt": [
-            "LambdaFunctionServiceRole0C4CDE0B",
-            "Arn"
-          ]
-        },
-        "Environment": {
-          "Variables": {
-            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+          {
+            "Ref": "VpcPrivateSubnet2Subnet3788AAA1"
+          },
+          {
+            "Ref": "VpcPrivateSubnet3SubnetF258B56E"
           }
-        },
-        "Handler": "index.handler",
-        "Runtime": "nodejs14.x",
-        "TracingConfig": {
-          "Mode": "Active"
-        },
-        "VpcConfig": {
-          "SecurityGroupIds": [
-            {
-              "Fn::GetAtt": [
-                "lambdasg93781054",
-                "GroupId"
-              ]
-            }
-          ],
-          "SubnetIds": [
-            {
-              "Ref": "VpcPrivateSubnet1Subnet536B997A"
-            },
-            {
-              "Ref": "VpcPrivateSubnet2Subnet3788AAA1"
-            },
-            {
-              "Ref": "VpcPrivateSubnet3SubnetF258B56E"
-            }
-          ]
-        }
-      },
-      "DependsOn": [
-        "LambdaFunctionServiceRoleDefaultPolicy126C8897",
-        "LambdaFunctionServiceRole0C4CDE0B"
-      ],
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W58",
-              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
-            },
-            {
-              "id": "W89",
-              "reason": "This is not a rule for the general case, just for specific use cases/industries"
-            },
-            {
-              "id": "W92",
-              "reason": "Impossible for us to define the correct concurrency for clients"
-            }
-          ]
-        }
+        ],
+        "VpcEndpointType": "Interface"
       }
     },
-    "LambdaFunctionInvokeServicePrincipalelasticloadbalancingamazonawscom842E1595": {
-      "Type": "AWS::Lambda::Permission",
+    "VpcECRDKR604E039F": {
+      "Type": "AWS::EC2::VPCEndpoint",
       "Properties": {
-        "Action": "lambda:InvokeFunction",
-        "FunctionName": {
-          "Fn::GetAtt": [
-            "LambdaFunctionBF21E41F",
-            "Arn"
-          ]
+        "ServiceName": "com.amazonaws.us-east-1.ecr.dkr",
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
         },
-        "Principal": "elasticloadbalancing.amazonaws.com"
+        "PrivateDnsEnabled": true,
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "allnewtwotargetsECRDKRsecuritygroup3CC9849F",
+              "GroupId"
+            ]
+          }
+        ],
+        "SubnetIds": [
+          {
+            "Ref": "VpcPrivateSubnet1Subnet536B997A"
+          },
+          {
+            "Ref": "VpcPrivateSubnet2Subnet3788AAA1"
+          },
+          {
+            "Ref": "VpcPrivateSubnet3SubnetF258B56E"
+          }
+        ],
+        "VpcEndpointType": "Interface"
       }
     },
-    "existingalbalb3A941601": {
+    "VpcS3A5408339": {
+      "Type": "AWS::EC2::VPCEndpoint",
+      "Properties": {
+        "ServiceName": {
+          "Fn::Join": [
+            "",
+            [
+              "com.amazonaws.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".s3"
+            ]
+          ]
+        },
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "RouteTableIds": [
+          {
+            "Ref": "VpcPrivateSubnet1RouteTableB2C5B500"
+          },
+          {
+            "Ref": "VpcPrivateSubnet2RouteTableA678073B"
+          },
+          {
+            "Ref": "VpcPrivateSubnet3RouteTableD98824C7"
+          },
+          {
+            "Ref": "VpcPublicSubnet1RouteTable6C95E38E"
+          },
+          {
+            "Ref": "VpcPublicSubnet2RouteTable94F7E489"
+          },
+          {
+            "Ref": "VpcPublicSubnet3RouteTable93458DBB"
+          }
+        ],
+        "VpcEndpointType": "Gateway"
+      }
+    },
+    "testconstructlbalb33E0EB59": {
       "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
       "Properties": {
         "LoadBalancerAttributes": [
@@ -884,7 +832,7 @@
           {
             "Key": "access_logs.s3.bucket",
             "Value": {
-              "Ref": "existingalb0F60CC48"
+              "Ref": "testconstructlb40BC0490"
             }
           },
           {
@@ -892,46 +840,40 @@
             "Value": ""
           }
         ],
-        "Scheme": "internal",
+        "Scheme": "internet-facing",
         "SecurityGroups": [
           {
             "Fn::GetAtt": [
-              "existingalbalbSecurityGroupC8DD2920",
+              "testconstructlbalbSecurityGroup5F187AF4",
               "GroupId"
             ]
           }
         ],
         "Subnets": [
           {
-            "Ref": "VpcPrivateSubnet1Subnet536B997A"
+            "Ref": "VpcPublicSubnet1Subnet5C2D37C4"
           },
           {
-            "Ref": "VpcPrivateSubnet2Subnet3788AAA1"
+            "Ref": "VpcPublicSubnet2Subnet691E08A3"
           },
           {
-            "Ref": "VpcPrivateSubnet3SubnetF258B56E"
+            "Ref": "VpcPublicSubnet3SubnetBE12F0B6"
           }
         ],
         "Type": "application"
       },
       "DependsOn": [
-        "existingalbPolicy6C7AF240",
-        "existingalb0F60CC48"
+        "testconstructlbPolicy3FF14C4B",
+        "testconstructlb40BC0490",
+        "VpcPublicSubnet1DefaultRoute3DA9E72A",
+        "VpcPublicSubnet2DefaultRoute97F91067",
+        "VpcPublicSubnet3DefaultRoute4697774F"
       ]
     },
-    "existingalbalbSecurityGroupC8DD2920": {
+    "testconstructlbalbSecurityGroup5F187AF4": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "Automatically created Security Group for ELB publicApiExistingResourcesexistingalbalb2415E979",
-        "SecurityGroupEgress": [
-          {
-            "CidrIp": "255.255.255.255/32",
-            "Description": "Disallow all traffic",
-            "FromPort": 252,
-            "IpProtocol": "icmp",
-            "ToPort": 86
-          }
-        ],
+        "GroupDescription": "Automatically created Security Group for ELB allnewtwotargetstestconstructlbalb803F4823",
         "SecurityGroupIngress": [
           {
             "CidrIp": "0.0.0.0/0",
@@ -946,8 +888,8 @@
         }
       },
       "DependsOn": [
-        "existingalbPolicy6C7AF240",
-        "existingalb0F60CC48"
+        "testconstructlbPolicy3FF14C4B",
+        "testconstructlb40BC0490"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -968,7 +910,32 @@
         }
       }
     },
-    "existingalb0F60CC48": {
+    "testconstructlbalbSecurityGrouptoallnewtwotargetstestconstructsgCB4347D58080785349CD": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Fn::GetAtt": [
+            "testconstructlbalbSecurityGroup5F187AF4",
+            "GroupId"
+          ]
+        },
+        "IpProtocol": "tcp",
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": {
+          "Fn::GetAtt": [
+            "testconstructsgA602AA29",
+            "GroupId"
+          ]
+        },
+        "FromPort": 8080,
+        "ToPort": 8080
+      },
+      "DependsOn": [
+        "testconstructlbPolicy3FF14C4B",
+        "testconstructlb40BC0490"
+      ]
+    },
+    "testconstructlb40BC0490": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -1003,11 +970,11 @@
         }
       }
     },
-    "existingalbPolicy6C7AF240": {
+    "testconstructlbPolicy3FF14C4B": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "existingalb0F60CC48"
+          "Ref": "testconstructlb40BC0490"
         },
         "PolicyDocument": {
           "Statement": [
@@ -1025,7 +992,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "existingalb0F60CC48",
+                    "testconstructlb40BC0490",
                     "Arn"
                   ]
                 },
@@ -1035,7 +1002,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "existingalb0F60CC48",
+                          "testconstructlb40BC0490",
                           "Arn"
                         ]
                       },
@@ -1071,7 +1038,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "existingalb0F60CC48",
+                        "testconstructlb40BC0490",
                         "Arn"
                       ]
                     },
@@ -1089,55 +1056,326 @@
         }
       }
     },
-    "testonetestonelistener51CF582F": {
-      "Type": "AWS::ElasticLoadBalancingV2::Listener",
+    "allnewtwotargetsECRAPIsecuritygroupCC5C870C": {
+      "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "DefaultActions": [
+        "GroupDescription": "all-new-two-targets/all-new-two-targets-ECR_API-security-group",
+        "SecurityGroupEgress": [
           {
-            "TargetGroupArn": {
-              "Ref": "testonetg2tg6459EC7C"
-            },
-            "Type": "forward"
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
           }
         ],
-        "LoadBalancerArn": {
-          "Ref": "existingalbalb3A941601"
-        },
-        "Port": 80,
-        "Protocol": "HTTP"
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": {
+              "Fn::GetAtt": [
+                "Vpc8378EB38",
+                "CidrBlock"
+              ]
+            },
+            "Description": {
+              "Fn::Join": [
+                "",
+                [
+                  "from ",
+                  {
+                    "Fn::GetAtt": [
+                      "Vpc8378EB38",
+                      "CidrBlock"
+                    ]
+                  },
+                  ":443"
+                ]
+              ]
+            },
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443
+          }
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       },
-      "DependsOn": [
-        "testonetg2tg6459EC7C"
-      ],
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
             {
-              "id": "W56",
-              "reason": "All integration tests must be HTTP because of certificate limitations."
+              "id": "W5",
+              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK"
+            },
+            {
+              "id": "W40",
+              "reason": "Egress IPProtocol of -1 is default and generally considered OK"
             }
           ]
         }
       }
     },
-    "testonetg2tg6459EC7C": {
-      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+    "allnewtwotargetsECRDKRsecuritygroup3CC9849F": {
+      "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "Targets": [
+        "GroupDescription": "all-new-two-targets/all-new-two-targets-ECR_DKR-security-group",
+        "SecurityGroupEgress": [
           {
-            "Id": {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": {
               "Fn::GetAtt": [
-                "LambdaFunctionBF21E41F",
-                "Arn"
+                "Vpc8378EB38",
+                "CidrBlock"
               ]
+            },
+            "Description": {
+              "Fn::Join": [
+                "",
+                [
+                  "from ",
+                  {
+                    "Fn::GetAtt": [
+                      "Vpc8378EB38",
+                      "CidrBlock"
+                    ]
+                  },
+                  ":443"
+                ]
+              ]
+            },
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443
+          }
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W5",
+              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK"
+            },
+            {
+              "id": "W40",
+              "reason": "Egress IPProtocol of -1 is default and generally considered OK"
+            }
+          ]
+        }
+      }
+    },
+    "testconstructcluster7B6231C5": {
+      "Type": "AWS::ECS::Cluster"
+    },
+    "testconstructtaskdefTaskRoleC60414C4": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ecs-tasks.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "testconstructtaskdef8BD1F9E4": {
+      "Type": "AWS::ECS::TaskDefinition",
+      "Properties": {
+        "ContainerDefinitions": [
+          {
+            "Essential": true,
+            "Image": "nginx",
+            "MemoryReservation": 512,
+            "Name": "test-construct-container",
+            "PortMappings": [
+              {
+                "ContainerPort": 8080,
+                "Protocol": "tcp"
+              }
+            ]
+          }
+        ],
+        "Cpu": "256",
+        "Family": "allnewtwotargetstestconstructtaskdef8EF55A85",
+        "Memory": "512",
+        "NetworkMode": "awsvpc",
+        "RequiresCompatibilities": [
+          "FARGATE"
+        ],
+        "TaskRoleArn": {
+          "Fn::GetAtt": [
+            "testconstructtaskdefTaskRoleC60414C4",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "testconstructsgA602AA29": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Construct created security group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W5",
+              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK"
+            },
+            {
+              "id": "W40",
+              "reason": "Egress IPProtocol of -1 is default and generally considered OK"
+            }
+          ]
+        }
+      }
+    },
+    "testconstructsgfromallnewtwotargetstestconstructlbalbSecurityGroup7AE13AD9808027E2CC4F": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "IpProtocol": "tcp",
+        "Description": "Load balancer to target",
+        "FromPort": 8080,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "testconstructsgA602AA29",
+            "GroupId"
+          ]
+        },
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "testconstructlbalbSecurityGroup5F187AF4",
+            "GroupId"
+          ]
+        },
+        "ToPort": 8080
+      }
+    },
+    "testconstructserviceService13074A8F": {
+      "Type": "AWS::ECS::Service",
+      "Properties": {
+        "Cluster": {
+          "Ref": "testconstructcluster7B6231C5"
+        },
+        "DeploymentConfiguration": {
+          "MaximumPercent": 150,
+          "MinimumHealthyPercent": 75
+        },
+        "DesiredCount": 2,
+        "EnableECSManagedTags": false,
+        "HealthCheckGracePeriodSeconds": 60,
+        "LaunchType": "FARGATE",
+        "LoadBalancers": [
+          {
+            "ContainerName": "test-construct-container",
+            "ContainerPort": 8080,
+            "TargetGroupArn": {
+              "Ref": "testconstructtargettg7CB2E212"
+            }
+          },
+          {
+            "ContainerName": "test-construct-container",
+            "ContainerPort": 8080,
+            "TargetGroupArn": {
+              "Ref": "testtwoconstructtargettgF3C0495D"
             }
           }
         ],
-        "TargetType": "lambda"
+        "NetworkConfiguration": {
+          "AwsvpcConfiguration": {
+            "AssignPublicIp": "DISABLED",
+            "SecurityGroups": [
+              {
+                "Fn::GetAtt": [
+                  "testconstructsgA602AA29",
+                  "GroupId"
+                ]
+              }
+            ],
+            "Subnets": [
+              {
+                "Ref": "VpcPrivateSubnet1Subnet536B997A"
+              },
+              {
+                "Ref": "VpcPrivateSubnet2Subnet3788AAA1"
+              },
+              {
+                "Ref": "VpcPrivateSubnet3SubnetF258B56E"
+              }
+            ]
+          }
+        },
+        "PlatformVersion": "LATEST",
+        "TaskDefinition": {
+          "Ref": "testconstructtaskdef8BD1F9E4"
+        }
       },
       "DependsOn": [
-        "LambdaFunctionInvokeServicePrincipalelasticloadbalancingamazonawscom842E1595"
+        "testconstructtestconstructlistenerallnewtwotargetstargetsRule897FD7B6",
+        "testconstructtestconstructlistener484444F1"
       ]
+    },
+    "testconstructtargettg7CB2E212": {
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+      "Properties": {
+        "HealthCheckPath": "/",
+        "Port": 8080,
+        "Protocol": "HTTP",
+        "ProtocolVersion": "HTTP1",
+        "TargetGroupAttributes": [
+          {
+            "Key": "stickiness.enabled",
+            "Value": "false"
+          }
+        ],
+        "TargetType": "ip",
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
+      }
+    },
+    "testtwoconstructtargettgF3C0495D": {
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+      "Properties": {
+        "HealthCheckPath": "/",
+        "Port": 8080,
+        "Protocol": "HTTP",
+        "ProtocolVersion": "HTTP1",
+        "TargetGroupAttributes": [
+          {
+            "Key": "stickiness.enabled",
+            "Value": "false"
+          }
+        ],
+        "TargetType": "ip",
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
+      }
     }
   },
   "Parameters": {
