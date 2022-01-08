@@ -161,10 +161,14 @@ export function AddFargateTarget(
   targetProps?: elb.ApplicationTargetGroupProps,
 ): elb.ApplicationTargetGroup  {
 
+  if (targetProps?.protocol !== elb.ApplicationProtocol.HTTPS) {
+    printWarning('AWS recommends using HTTPS protocol for Target Groups in production applications');
+  }
+
   const newTargetGroup = new elb.ApplicationTargetGroup(scope, `${id}-tg`, targetProps);
 
   // The interface AddRuleProps includes conditions and priority, combine that
-  // with targetGroups and we can assemble AddApplicationTargetGroupProps
+  // with targetGroups and we can assemble an AddApplicationTargetGroupProps object
   if (ruleProps) {
     const consolidatedTargetProps = overrideProps(ruleProps, { targetGroups: [newTargetGroup] });
     currentListener.addTargetGroups(`${scope.node.id}-targets`, consolidatedTargetProps);
