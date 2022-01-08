@@ -36,8 +36,8 @@ test('Test with all defaults', () => {
       Ref: "testclusterDF8B0D19"
     },
     DeploymentConfiguration: {
-      MaximumPercent: 200,
-      MinimumHealthyPercent: 100
+      MaximumPercent: 150,
+      MinimumHealthyPercent: 75
     },
     DesiredCount: 2,
     EnableECSManagedTags: false,
@@ -115,8 +115,8 @@ test('Test with all defaults in isolated VPC', () => {
       Ref: "testclusterDF8B0D19"
     },
     DeploymentConfiguration: {
-      MaximumPercent: 200,
-      MinimumHealthyPercent: 100
+      MaximumPercent: 150,
+      MinimumHealthyPercent: 75
     },
     DesiredCount: 2,
     EnableECSManagedTags: false,

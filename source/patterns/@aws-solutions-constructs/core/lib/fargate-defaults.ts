@@ -26,16 +26,16 @@ export function DefaultFargateServiceProps(
   return {
     assignPublicIp: false,
     desiredCount: 2,
-    maxHealthyPercent: 200,
-    minHealthyPercent: 100,
+    maxHealthyPercent: 150,
+    minHealthyPercent: 75,
     platformVersion: ecs.FargatePlatformVersion.LATEST,
   };
 }
 
 export function DefaultFargateTaskDefinitionProps(): ecs.FargateTaskDefinitionProps {
   return {
-    cpu: 512,
-    memoryLimitMiB: 1024,
+    cpu: 256,
+    memoryLimitMiB: 512,
   };
 }
 
@@ -52,7 +52,7 @@ export function DefaultApplicationTargetGroupProps(vpc: ec2.IVpc): elb.Applicati
 
 export function DefaultContainerDefinitionProps(): ecs.ContainerDefinitionOptions | any {
   return {
-    memoryReservationMiB: 1024,
+    memoryReservationMiB: 512,
     portMappings: [ { containerPort: 8080 } ],
   };
 }

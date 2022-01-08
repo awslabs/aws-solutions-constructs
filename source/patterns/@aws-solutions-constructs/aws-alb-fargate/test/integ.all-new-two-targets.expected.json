@@ -1199,7 +1199,7 @@
           {
             "Essential": true,
             "Image": "nginx",
-            "MemoryReservation": 1024,
+            "MemoryReservation": 512,
             "Name": "test-construct-container",
             "PortMappings": [
               {
@@ -1209,9 +1209,9 @@
             ]
           }
         ],
-        "Cpu": "512",
+        "Cpu": "256",
         "Family": "allnewtwotargetstestconstructtaskdef8EF55A85",
-        "Memory": "1024",
+        "Memory": "512",
         "NetworkMode": "awsvpc",
         "RequiresCompatibilities": [
           "FARGATE"
@@ -1282,8 +1282,8 @@
           "Ref": "testconstructcluster7B6231C5"
         },
         "DeploymentConfiguration": {
-          "MaximumPercent": 200,
-          "MinimumHealthyPercent": 100
+          "MaximumPercent": 150,
+          "MinimumHealthyPercent": 75
         },
         "DesiredCount": 2,
         "EnableECSManagedTags": false,
