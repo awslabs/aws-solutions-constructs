@@ -107,6 +107,8 @@ export class Route53ToAlb extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
 
+    // NOTE: We don't call CheckAlbProps() here, because this construct creates an ALB
+    // with no listener or target, so some of those checks don't apply
     if (props?.loadBalancerProps?.vpc) {
       throw new Error('Specify any existing VPC at the construct level, not within loadBalancerProps.');
     }
