@@ -4,12 +4,12 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [1.137.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.136.0...v1.137.0) (2022-01-10)
 
+* Upgraded all patterns to CDK v1.137.0
 
 ### Features
 
 * **aws-alb-fargate:** New Construct ([#560](https://github.com/awslabs/aws-solutions-constructs/issues/560)) ([5a21b76](https://github.com/awslabs/aws-solutions-constructs/commit/5a21b7652be0be2c77957155a504a9582830eeba))
 * **aws-iot-s3:** new construct implementation ([#469](https://github.com/awslabs/aws-solutions-constructs/issues/469)) ([ea024fc](https://github.com/awslabs/aws-solutions-constructs/commit/ea024fc87f40b288fc47f3a681907193c0f7ca6c))
-
 
 ### Bug Fixes
 
