@@ -88,9 +88,6 @@ export class Route53ToApiGateway extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
 
-    // Certificate must already be issued when the user is bringing an existing one
-    // If you are using privateHostedZoneProps, the certificate must already be issued
-    // from a previous domain in order to be used in the newly created Private Hosted Zone.
     this.certificate = props.existingCertificateInterface;
 
     if (props.existingVpc) {
@@ -105,14 +102,14 @@ export class Route53ToApiGateway extends Construct {
         throw new Error('Cannot provide an existing VPC to an existing Private Hosted Zone.');
       }
       if (props.privateHostedZoneProps) {
-        throw new Error('Must provide either existingHostedZoneInterface or privateHostedZoneProps.');
+        throw new Error('Must provide either existingHostedZoneInterface or privateHostedZoneProps, but not both.');
       }
     } else { // Creating a Private Hosted Zone
       if (props.publicApi) {
         throw new Error('Public APIs require an existingHostedZone be passed in the Props object.');
       } else {
         if (!props.privateHostedZoneProps) {
-          throw new Error('Must supply privateHostedZoneProps to create a private API.');
+          throw new Error('Must provide either existingHostedZoneInterface or privateHostedZoneProps.');
         }
         if (props.privateHostedZoneProps.vpc) {
           throw new Error('All VPC specs must be provided at the Construct level in Route53ToApiGatewayProps.');
@@ -121,7 +118,7 @@ export class Route53ToApiGateway extends Construct {
           throw new Error('Must supply zoneName for Private Hosted Zone Props.');
         }
         if ( !this.vpc ) {
-          throw new Error('Must supply an existing VPC for Private Hosted Zone Props.');
+          throw new Error('Must specify an existingVPC for the Private Hosted Zone in the construct props.');
         }
         const manufacturedProps: route53.PrivateHostedZoneProps = defaults.overrideProps(props.privateHostedZoneProps, { vpc: this.vpc });
         this.hostedZone = new route53.PrivateHostedZone(this, `${id}-zone`, manufacturedProps);

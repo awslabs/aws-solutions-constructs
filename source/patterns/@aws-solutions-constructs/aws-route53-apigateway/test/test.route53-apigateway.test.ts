@@ -132,7 +132,7 @@ test("Test for errors when creating a private hosted zone", () => {
 
   // Assertion 2
   expect(app).toThrowError(
-    "Must supply privateHostedZoneProps to create a private API"
+    "Must provide either existingHostedZoneInterface or privateHostedZoneProps."
   );
 
   app = () =>
@@ -178,7 +178,7 @@ test("Test for errors when creating a private hosted zone", () => {
 
   // Assertion 5
   expect(app).toThrowError(
-    "Must provide either existingHostedZoneInterface or privateHostedZoneProps."
+    "Must provide either existingHostedZoneInterface or privateHostedZoneProps, but not both."
   );
 
   app = () =>
@@ -191,7 +191,7 @@ test("Test for errors when creating a private hosted zone", () => {
       existingCertificateInterface: certificate
     });
 
-  // Assertion 7
+  // Assertion 6
   expect(app).toThrowError(
     'Must supply zoneName for Private Hosted Zone Props.'
   );
@@ -206,9 +206,9 @@ test("Test for errors when creating a private hosted zone", () => {
       existingCertificateInterface: certificate
     });
 
-  // Assertion 6
+  // Assertion 7
   expect(app).toThrowError(
-    'Must supply an existing VPC for Private Hosted Zone Props.'
+    'Must specify an existingVPC for the Private Hosted Zone in the construct props.'
   );
 });
 
@@ -272,7 +272,7 @@ test("Integration test for A record creation in Public Hosted Zone ", () => {
   deployApi(stack, true);
 
   // Assertions
-  expect(stack).toHaveResourceLike("AWS::Route53::RecordSet", {
+  expect(stack).toHaveResource("AWS::Route53::RecordSet", {
     Name: "www.test-example.com.",
     Type: "A",
     AliasTarget: {
@@ -313,7 +313,7 @@ test("Integration test for A record creation in Private Hosted Zone ", () => {
   deployApi(stack, false);
 
   // Assertions
-  expect(stack).toHaveResourceLike("AWS::Route53::RecordSet", {
+  expect(stack).toHaveResource("AWS::Route53::RecordSet", {
     Name: "www.test-example.com.",
     Type: "A",
     AliasTarget: {
