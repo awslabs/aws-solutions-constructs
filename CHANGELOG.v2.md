@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.0.0...v2.1.0) (2022-01-11)
+
+### Features
+
+* Includes all funcionality of V1.137.0
+* Build upon underlying CDK version V2.4.0
+
+* **aws-alb-fargate:** New Construct ([#560](https://github.com/awslabs/aws-solutions-constructs/issues/560)) ([5a21b76](https://github.com/awslabs/aws-solutions-constructs/commit/5a21b7652be0be2c77957155a504a9582830eeba))
+* **aws-iot-s3:** new construct implementation ([#469](https://github.com/awslabs/aws-solutions-constructs/issues/469)) ([ea024fc](https://github.com/awslabs/aws-solutions-constructs/commit/ea024fc87f40b288fc47f3a681907193c0f7ca6c))
+* **s3-stepfunctions:** removed CloudTrail dependency after new S3 feature ([#529](https://github.com/awslabs/aws-solutions-constructs/issues/529)) ([639f473](https://github.com/awslabs/aws-solutions-constructs/commit/639f47396f868846a81d0f81b6eb8160c61c6ae3))
+
+### Bug Fixes
+
+* **aws-apigateway-iot and aws-cloudfront-apigateway-lambda:** fixed deprecated warnings ([#554](https://github.com/awslabs/aws-solutions-constructs/issues/554)) ([655c4af](https://github.com/awslabs/aws-solutions-constructs/commit/655c4aff27eff5cc4c82e170d90466fddc1aac04))
+* **aws-s3-cloudfront:** Recognize when client specifies enforceSSL: false ([#559](https://github.com/awslabs/aws-solutions-constructs/issues/559)) ([fc4fab8](https://github.com/awslabs/aws-solutions-constructs/commit/fc4fab88a9cecef65a5dad84c1539daee7862887))
+
 ## [2.0.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.0.0-rc.2...v2.0.0) (2021-12-02)
 
 * Includes all funcionality of V1.129.0
