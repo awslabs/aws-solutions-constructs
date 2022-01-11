@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -32,6 +32,22 @@ export function DefaultIsolatedVpcProps(): ec2.VpcProps {
         cidrMask: 18,
         name: "isolated",
         subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
+      }
+    ]
+  } as ec2.VpcProps;
+}
+
+/**
+ * Default VPC with private subnets w/NAT
+ */
+export function DefaultPrivateVpcProps(): ec2.VpcProps {
+  return {
+    natGateways: 0,
+    subnetConfiguration: [
+      {
+        cidrMask: 18,
+        name: "private",
+        subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
       }
     ]
   } as ec2.VpcProps;

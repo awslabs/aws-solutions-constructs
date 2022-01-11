@@ -2,9 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.137.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.136.0...v1.137.0) (2022-01-10)
+
+* Upgraded all patterns to CDK v1.137.0
+
+### Features
+
+* **aws-alb-fargate:** New Construct ([#560](https://github.com/awslabs/aws-solutions-constructs/issues/560)) ([5a21b76](https://github.com/awslabs/aws-solutions-constructs/commit/5a21b7652be0be2c77957155a504a9582830eeba))
+* **aws-iot-s3:** new construct implementation ([#469](https://github.com/awslabs/aws-solutions-constructs/issues/469)) ([ea024fc](https://github.com/awslabs/aws-solutions-constructs/commit/ea024fc87f40b288fc47f3a681907193c0f7ca6c))
+
+### Bug Fixes
+
+* **aws-apigateway-iot and aws-cloudfront-apigateway-lambda:** fixed deprecated warnings ([#554](https://github.com/awslabs/aws-solutions-constructs/issues/554)) ([655c4af](https://github.com/awslabs/aws-solutions-constructs/commit/655c4aff27eff5cc4c82e170d90466fddc1aac04))
+* **aws-s3-cloudfront:** Recognize when client specifies enforceSSL: false ([#559](https://github.com/awslabs/aws-solutions-constructs/issues/559)) ([fc4fab8](https://github.com/awslabs/aws-solutions-constructs/commit/fc4fab88a9cecef65a5dad84c1539daee7862887))
+
 ## [1.136.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.135.0...v1.136.0) (2021-12-20)
 
 * Upgraded all patterns to CDK v1.136.0
+* Set underlying CDK library to 2.2.0
 
 ## [1.135.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.134.0...v1.135.0) (2021-12-17)
 

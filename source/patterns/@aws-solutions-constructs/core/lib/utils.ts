@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -151,5 +151,29 @@ export function addCfnSuppressRules(resource: cdk.Resource | cdk.CfnResource, ru
       rules_to_suppress: rules
     });
   }
+}
 
+/**
+ * Creates the props to be used to instantiate a CDK L2 construct within a Solutions Construct
+ *
+ * @param defaultProps The default props to be used by the construct
+ * @param clientProps Optional properties passed in from the client in the props object
+ * @param constructProps Optional properties required by the construct for the construct to work (override any other values)
+ * @returns The properties to use - all values prioritized:
+ *  1) constructProps value
+ *  2) clientProps value
+ *  3) defaultProps value
+ */
+export function consolidateProps(defaultProps: object, clientProps?: object, constructProps?: object): any {
+  let result: object = defaultProps;
+
+  if (clientProps) {
+    result = overrideProps(result, clientProps);
+  }
+
+  if (constructProps) {
+    result = overrideProps(result, constructProps);
+  }
+
+  return result;
 }

@@ -147,7 +147,7 @@
         "PolicyDocument": {
           "Statement": [
             {
-              "Action": "*",
+              "Action": "s3:*",
               "Condition": {
                 "Bool": {
                   "aws:SecureTransport": "false"
@@ -158,6 +158,12 @@
                 "AWS": "*"
               },
               "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testoneE6ACFBB6",
+                    "Arn"
+                  ]
+                },
                 {
                   "Fn::Join": [
                     "",
@@ -171,15 +177,8 @@
                       "/*"
                     ]
                   ]
-                },
-                {
-                  "Fn::GetAtt": [
-                    "testoneE6ACFBB6",
-                    "Arn"
-                  ]
                 }
-              ],
-              "Sid": "HttpsOnly"
+              ]
             },
             {
               "Action": [
@@ -376,7 +375,7 @@
           }
         },
         "Handler": "index.handler",
-        "Runtime": "nodejs12.x",
+        "Runtime": "nodejs14.x",
         "TracingConfig": {
           "Mode": "Active"
         },
@@ -438,7 +437,7 @@
         "Principal": "elasticloadbalancing.amazonaws.com"
       }
     },
-    "testonelistener5EBC4D40": {
+    "testonetestonelistener51CF582F": {
       "Type": "AWS::ElasticLoadBalancingV2::Listener",
       "Properties": {
         "DefaultActions": [

@@ -4,18 +4,6 @@ set -euo pipefail
 deployment_dir=$(cd $(dirname $0) && pwd)
 source_dir="$deployment_dir/../../source"
 
-if [ ! -d $source_dir/tools/aws-cdk-migration/node_modules ]; then
-  echo "============================================================================================="
-  echo "building aws-cdk-migration..."
-  cd $source_dir/tools/aws-cdk-migration
-  npm install
-  npm run build
-  npm link
-else
-  cd $source_dir/tools/aws-cdk-migration
-  npm link
-fi
-
 cd $source_dir/
 
 if [ $# -eq 0 ]; then

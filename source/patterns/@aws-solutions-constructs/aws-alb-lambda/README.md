@@ -1,4 +1,4 @@
-# aws-route53-alb module
+# aws-alb-lambda module
 <!--BEGIN STABILITY BANNER-->
 
 ---
@@ -37,7 +37,7 @@ Here is a minimal deployable pattern definition in Typescript:
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     listenerProps: {
@@ -94,7 +94,7 @@ Out of the box implementation of the Construct without any override will set the
 ### Application Load Balancer
 * Creates or configures an Application Load Balancer with:
   * Required listeners
-  * New target group with routing rules if appropriate 
+  * New target group with routing rules if appropriate
 
 ### AWS Lambda Function
 * Configure limited privilege access IAM role for Lambda function
