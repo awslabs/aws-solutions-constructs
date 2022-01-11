@@ -1171,7 +1171,21 @@
         "ContainerDefinitions": [
           {
             "Essential": true,
-            "Image": "nginx",
+            "Image": {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ".dkr.ecr.us-east-1.",
+                  {
+                    "Ref": "AWS::URLSuffix"
+                  },
+                  "/nginx:latest"
+                ]
+              ]
+            },
             "MemoryReservation": 512,
             "Name": "test-construct-container",
             "PortMappings": [
@@ -1183,6 +1197,12 @@
           }
         ],
         "Cpu": "256",
+        "ExecutionRoleArn": {
+          "Fn::GetAtt": [
+            "testconstructtaskdefExecutionRole794591FA",
+            "Arn"
+          ]
+        },
         "Family": "allnewpublichttptestconstructtaskdefDF932EBD",
         "Memory": "512",
         "NetworkMode": "awsvpc",
@@ -1195,6 +1215,68 @@
             "Arn"
           ]
         }
+      }
+    },
+    "testconstructtaskdefExecutionRole794591FA": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ecs-tasks.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "testconstructtaskdefExecutionRoleDefaultPolicy5F290E6C": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":ecr:us-east-1:",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":repository/nginx"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testconstructtaskdefExecutionRoleDefaultPolicy5F290E6C",
+        "Roles": [
+          {
+            "Ref": "testconstructtaskdefExecutionRole794591FA"
+          }
+        ]
       }
     },
     "testconstructsgA602AA29": {

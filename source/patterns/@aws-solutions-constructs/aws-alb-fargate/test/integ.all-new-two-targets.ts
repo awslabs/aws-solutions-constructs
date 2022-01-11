@@ -16,6 +16,7 @@ import { Aws, App, Stack } from "@aws-cdk/core";
 import { AlbToFargate, AlbToFargateProps } from "../lib";
 import * as elb from '@aws-cdk/aws-elasticloadbalancingv2';
 import * as ecs from '@aws-cdk/aws-ecs';
+import * as ecr from '@aws-cdk/aws-ecr';
 import * as defaults from '@aws-solutions-constructs/core';
 import { CfnSecurityGroup } from "@aws-cdk/aws-ec2";
 
@@ -26,7 +27,8 @@ const stack = new Stack(app, defaults.generateIntegStackName(__filename), {
 });
 stack.templateOptions.description = 'Integration Test for public HTTP API with new VPC, LoadBalancer and Service and 2 targets';
 
-const image = ecs.ContainerImage.fromRegistry('nginx');
+const testRepo = ecr.Repository.fromRepositoryName(stack, 'test-repo', 'nginx');
+const image = ecs.ContainerImage.fromEcrRepository(testRepo);
 
 const testProps: AlbToFargateProps = {
   publicApi: true,
