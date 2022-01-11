@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -21,6 +21,7 @@ export function DefaultS3Props(loggingBucket?: Bucket, lifecycleRules?: s3.Lifec
     versioned: true,
     blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
     removalPolicy: RemovalPolicy.RETAIN,
+    enforceSSL: true,
     ...((lifecycleRules !== undefined) && { lifecycleRules }),
     ...((loggingBucket !== undefined) && { serverAccessLogsBucket: loggingBucket })
   } as BucketProps;
@@ -32,6 +33,7 @@ export function DefaultLoggingBucketProps(): s3.BucketProps {
     versioned: true,
     blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
     removalPolicy: RemovalPolicy.RETAIN,
+    enforceSSL: true,
   } as BucketProps;
 }
 

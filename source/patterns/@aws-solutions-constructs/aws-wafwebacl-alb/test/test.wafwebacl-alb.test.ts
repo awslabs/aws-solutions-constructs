@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -20,14 +20,7 @@ import * as elb from "@aws-cdk/aws-elasticloadbalancingv2";
 import '@aws-cdk/assert/jest';
 
 function deployLoadBalancer(stack: cdk.Stack) {
-  const myVpc = defaults.buildVpc(stack, {
-    defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
-    constructVpcProps: {
-      enableDnsHostnames: true,
-      enableDnsSupport: true,
-      cidr: '172.168.0.0/16',
-    }
-  });
+  const myVpc = defaults.getTestVpc(stack);
 
   return new elb.ApplicationLoadBalancer(stack, 'new-lb', {
     internetFacing: false,

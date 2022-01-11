@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -68,7 +68,7 @@ test('test cloudfront check bucket policy', () => {
     PolicyDocument: {
       Statement: [
         {
-          Action: "*",
+          Action: "s3:*",
           Condition: {
             Bool: {
               "aws:SecureTransport": "false"
@@ -80,23 +80,52 @@ test('test cloudfront check bucket policy', () => {
           },
           Resource: [
             {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Fn::GetAtt": ["S3Bucket07682993", "Arn"],
-                  },
-                  "/*",
-                ],
-              ],
-            },
-            {
               "Fn::GetAtt": [
                 "S3Bucket07682993",
                 "Arn"
               ]
+            },
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "S3Bucket07682993",
+                      "Arn"
+                    ]
+                  },
+                  "/*"
+                ]
+              ]
             }
           ]
+        },
+        {
+          Action: "s3:GetObject",
+          Effect: "Allow",
+          Principal: {
+            CanonicalUser: {
+              "Fn::GetAtt": [
+                "CloudFrontDistributionOrigin1S3Origin3D9CA0E9",
+                "S3CanonicalUserId"
+              ]
+            }
+          },
+          Resource: {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Fn::GetAtt": [
+                    "S3Bucket07682993",
+                    "Arn"
+                  ]
+                },
+                "/*"
+              ]
+            ]
+          }
         }
       ],
       Version: "2012-10-17"
@@ -234,7 +263,7 @@ test('test cloudfront override properties', () => {
   const [sourceBucket] = buildS3Bucket(stack, {});
   const props: cloudfront.DistributionProps = {
     defaultBehavior: {
-      origin: new origins.S3Origin(sourceBucket, {originPath: '/testPath'}),
+      origin: new origins.S3Origin(sourceBucket, { originPath: '/testPath' }),
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
       cachedMethods: cloudfront.CachedMethods.CACHE_GET_HEAD_OPTIONS
@@ -403,7 +432,7 @@ test('test override cloudfront replace custom lambda@edge', () => {
   // custom lambda@edg function
   const handler = new lambda.Function(stack, 'SomeHandler', {
     functionName: 'SomeHandler',
-    runtime: lambda.Runtime.NODEJS_12_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });

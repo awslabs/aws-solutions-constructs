@@ -265,7 +265,8 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 
 | Name    | Type     | Notes    |
 | --- | --- | --- |
-| existingBucketObj? | s3.Bucket | Either this or bucketProps must be provided |
+| existingBucketObj? | s3.Bucket | Either this, existingBucketInterface or bucketProps must be provided |
+| existingBucketInterface? | s3.IBucket | Either this, existingBucketObject or bucketProps must be provided |
 | bucketProps? | s3.BucketProps	| |
 | s3EventTypes?	| s3.EventType	| Only required when construct responds to S3 events |
 | s3EventFilters?	| s3.NotificationKeyFilter |Only required when construct responds to S3 events |

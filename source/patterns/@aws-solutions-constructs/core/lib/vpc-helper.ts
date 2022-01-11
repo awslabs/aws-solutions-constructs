@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -89,6 +89,8 @@ export enum ServiceEndpointTypes {
   SAGEMAKER_RUNTIME = "SAGEMAKER_RUNTIME",
   SECRETS_MANAGER = "SECRETS_MANAGER",
   SSM = "SSM",
+  ECR_API = "ECR_API",
+  ECR_DKR = "ECR_DKR",
   EVENTS = "CLOUDWATCH_EVENTS"
 }
 
@@ -144,6 +146,16 @@ const endpointSettings: EndpointDefinition[] = [
     endpointName: ServiceEndpointTypes.SSM,
     endpointType: EndpointTypes.INTERFACE,
     endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.SSM,
+  },
+  {
+    endpointName: ServiceEndpointTypes.ECR_API,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.ECR
+  },
+  {
+    endpointName: ServiceEndpointTypes.ECR_DKR,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.ECR_DOCKER
   },
   {
     endpointName: ServiceEndpointTypes.EVENTS,

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -101,20 +101,22 @@ function configureLambdaRestApi(scope: Construct, defaultApiGatewayProps: api.La
     cwRole = configureCloudwatchRoleForApi(scope, _api);
   }
 
-  let usagePlanProps: api.UsagePlanProps = {
+  // Configure Usage Plan
+  const usagePlanProps: api.UsagePlanProps = {
     apiStages: [{
       api: _api,
       stage: _api.deploymentStage
     }]
   };
-    // If requireApiKey param is set to true, create a api key & associate to Usage Plan
-  if (apiGatewayProps?.defaultMethodOptions?.apiKeyRequired === true) {
-    const extraParams = { apiKey: _api.addApiKey('ApiKey')};
-    usagePlanProps = Object.assign(usagePlanProps, extraParams);
-  }
 
-  // Configure Usage Plan
-  _api.addUsagePlan('UsagePlan', usagePlanProps);
+  const plan = _api.addUsagePlan('UsagePlan', usagePlanProps);
+
+  // If requireApiKey param is set to true, create a api key & associate to Usage Plan
+  if (apiGatewayProps?.defaultMethodOptions?.apiKeyRequired === true) {
+    // Configure Usage Plan with API Key
+    const key = _api.addApiKey('ApiKey');
+    plan.addApiKey(key);
+  }
 
   // Return the API and CW Role
   return [_api, cwRole];
@@ -152,21 +154,22 @@ function configureRestApi(scope: Construct, defaultApiGatewayProps: api.RestApiP
     cwRole = configureCloudwatchRoleForApi(scope, _api);
   }
 
-  let usagePlanProps: api.UsagePlanProps = {
+  // Configure Usage Plan
+  const usagePlanProps: api.UsagePlanProps = {
     apiStages: [{
       api: _api,
       stage: _api.deploymentStage
     }]
   };
 
+  const plan = _api.addUsagePlan('UsagePlan', usagePlanProps);
+
   // If requireApiKey param is set to true, create a api key & associate to Usage Plan
   if (apiGatewayProps?.defaultMethodOptions?.apiKeyRequired === true) {
-    const extraParams = { apiKey: _api.addApiKey('ApiKey')};
-    usagePlanProps = Object.assign(usagePlanProps, extraParams);
+    // Configure Usage Plan with API Key
+    const key = _api.addApiKey('ApiKey');
+    plan.addApiKey(key);
   }
-
-  // Configure Usage Plan
-  _api.addUsagePlan('UsagePlan', usagePlanProps);
 
   // Return the API and CW Role
   return [_api, cwRole];
