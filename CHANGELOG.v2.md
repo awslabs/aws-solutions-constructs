@@ -4,13 +4,14 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.1.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.0.0...v2.1.0) (2022-01-11)
 
-
 ### Features
+
+* Includes all funcionality of V1.137.0
+* Build upon underlying CDK version V2.4.0
 
 * **aws-alb-fargate:** New Construct ([#560](https://github.com/awslabs/aws-solutions-constructs/issues/560)) ([5a21b76](https://github.com/awslabs/aws-solutions-constructs/commit/5a21b7652be0be2c77957155a504a9582830eeba))
 * **aws-iot-s3:** new construct implementation ([#469](https://github.com/awslabs/aws-solutions-constructs/issues/469)) ([ea024fc](https://github.com/awslabs/aws-solutions-constructs/commit/ea024fc87f40b288fc47f3a681907193c0f7ca6c))
 * **s3-stepfunctions:** removed CloudTrail dependency after new S3 feature ([#529](https://github.com/awslabs/aws-solutions-constructs/issues/529)) ([639f473](https://github.com/awslabs/aws-solutions-constructs/commit/639f47396f868846a81d0f81b6eb8160c61c6ae3))
-
 
 ### Bug Fixes
 
