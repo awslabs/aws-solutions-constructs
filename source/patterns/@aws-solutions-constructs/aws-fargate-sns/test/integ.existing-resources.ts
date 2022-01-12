@@ -14,7 +14,7 @@
 // Imports
 import { Aws, App, Stack } from "@aws-cdk/core";
 import { FargateToSns, FargateToSnsProps } from "../lib";
-import { generateIntegStackName, getTestVpc, CreateFargateService } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, getTestVpc, CreateFargateService, addCfnSuppressRules } from '@aws-solutions-constructs/core';
 import * as ecs from '@aws-cdk/aws-ecs';
 import * as sns from '@aws-cdk/aws-sns';
 
@@ -27,6 +27,7 @@ stack.templateOptions.description = 'Integration Test with new VPC, Service and 
 
 const existingVpc = getTestVpc(stack);
 const existingTopic = new sns.Topic(stack, 'test-topic', {});
+addCfnSuppressRules(existingTopic, [ { id: "W47", reason: "Stub topic for placehoder in Integration test" } ]);
 
 const image = ecs.ContainerImage.fromRegistry('nginx');
 

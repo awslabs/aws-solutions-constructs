@@ -790,7 +790,17 @@
       }
     },
     "testtopicB3D54793": {
-      "Type": "AWS::SNS::Topic"
+      "Type": "AWS::SNS::Topic",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W47",
+              "reason": "Stub topic for placehoder in Integration test"
+            }
+          ]
+        }
+      }
     },
     "existingresourcesECRAPIsecuritygroup78294485": {
       "Type": "AWS::EC2::SecurityGroup",
