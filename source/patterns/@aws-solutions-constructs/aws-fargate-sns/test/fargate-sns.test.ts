@@ -18,8 +18,6 @@ import { FargateToSns } from "../lib";
 import * as sns from '@aws-cdk/aws-sns';
 import * as ecs from '@aws-cdk/aws-ecs';
 
-// TODO: Is deployVpc needed?
-
 test('New service/new topic, public API, new VPC', () => {
 
   // An environment with region is required to enable logging on an ALB
@@ -27,11 +25,20 @@ test('New service/new topic, public API, new VPC', () => {
     env: { account: "123456789012", region: 'us-east-1' },
   });
   const publicApi = true;
+  const clusterName = "custom-cluster-name";
+  const containerName = "custom-container-name";
+  const serviceName = "custom-service-name";
+  const topicName = "custom-topic-name";
 
   new FargateToSns(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' }
+    vpcProps: { cidr: '172.0.0.0/16' },
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: 'family-name' },
+    fargateServiceProps: { serviceName },
+    topicProps: { topicName },
   });
 
   expect(stack).toHaveResourceLike("AWS::ECS::Service", {
@@ -44,8 +51,47 @@ test('New service/new topic, public API, new VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(stack).toHaveResourceLike("AWS::SNS::Topic", {
+  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+    ServiceName: serviceName
+  });
+  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+    Family: 'family-name'
+  });
 
+  expect(stack).toHaveResourceLike("AWS::ECS::Cluster", {
+    ClusterName: clusterName
+  });
+
+  expect(stack).toHaveResourceLike("AWS::SNS::Topic", {
+    TopicName: topicName
+  });
+
+  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+    ContainerDefinitions: [
+      {
+        Essential: true,
+        Image: {
+          "Fn::Join": [
+            "",
+            [
+              "123456789012.dkr.ecr.us-east-1.",
+              {
+                Ref: "AWS::URLSuffix"
+              },
+              "/fake-repo:latest"
+            ]
+          ]
+        },
+        MemoryReservation: 512,
+        Name: containerName,
+        PortMappings: [
+          {
+            ContainerPort: 8080,
+            Protocol: "tcp"
+          }
+        ]
+      }
+    ]
   });
 
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
@@ -314,5 +360,3 @@ test('Existing service/existing topic, private API, existing VPC', () => {
   expect(stack).toCountResources('AWS::SNS::Topic', 1);
   expect(stack).toCountResources('AWS::ECS::Service', 1);
 });
-
-// Confirm environment variable is set correctly

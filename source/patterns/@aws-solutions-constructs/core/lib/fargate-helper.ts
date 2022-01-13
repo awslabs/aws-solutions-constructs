@@ -69,7 +69,8 @@ export function CreateFargateService(
   }
 
   // Create the Fargate Service
-  fargateServiceDefintionConstructProps.taskDefinition = CreateTaskDefinition(
+  let newContainerDefinition;
+  [fargateServiceDefintionConstructProps.taskDefinition, newContainerDefinition] = CreateTaskDefinition(
     scope,
     id,
     clientFargateTaskDefinitionProps,
@@ -125,12 +126,8 @@ export function CreateFargateService(
     `${id}-service`,
     fargateServiceProps,
   );
-  // We just created this container, so there should never be a situation where it doesn't exist
-  const newContainer = newService.taskDefinition.findContainer(
-    `${id}-container`
-  ) as ecs.ContainerDefinition;
 
-  return [newService, newContainer];
+  return [newService, newContainerDefinition];
 }
 
 function CreateCluster(
@@ -173,7 +170,7 @@ function CreateTaskDefinition(
   clientFargateTaskDefinitionProps?: ecs.FargateTaskDefinitionProps,
   clientContainerDefinitionProps?: ecs.ContainerDefinitionProps,
   constructContainerDefintionProps?: ecs.ContainerDefinitionProps
-): ecs.FargateTaskDefinition {
+): [ecs.FargateTaskDefinition, ecs.ContainerDefinition] {
   const taskDefinitionProps = defaults.consolidateProps(
     defaults.DefaultFargateTaskDefinitionProps(),
     clientFargateTaskDefinitionProps
@@ -184,15 +181,16 @@ function CreateTaskDefinition(
     taskDefinitionProps
   );
 
+  const defaultContainerDefinitionProps = defaults.consolidateProps(defaults.DefaultContainerDefinitionProps(), {
+    containerName: `${id}-container`,
+  });
   const containerDefinitionProps = defaults.consolidateProps(
-    defaults.DefaultContainerDefinitionProps(),
+    defaultContainerDefinitionProps,
     clientContainerDefinitionProps,
-    defaults.consolidateProps({}, constructContainerDefintionProps, {
-      containerName: `${id}-container`,
-    })
+    constructContainerDefintionProps,
   );
-  taskDefinition.addContainer(`${id}-container`, containerDefinitionProps);
-  return taskDefinition;
+  const containerDefinition = taskDefinition.addContainer(`${id}-container`, containerDefinitionProps);
+  return [taskDefinition, containerDefinition];
 }
 
 export function CheckFargateProps(props: any) {

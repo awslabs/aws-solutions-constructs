@@ -19,17 +19,28 @@ import * as defaults from "@aws-solutions-constructs/core";
 import * as ecs from "@aws-cdk/aws-ecs";
 
 export interface FargateToSnsProps {
+  /**
+   * Optional custom properties for a VPC the construct will create. This VPC will
+   * be used by the new Fargate service the construct creates (that's
+   * why targetGroupProps can't include a VPC). Providing
+   * both this and existingVpc is an error. An SNS Interface
+   * endpoint will be included in this VPC.
+   *
+   * @default - none
+   */
   readonly vpcProps?: ec2.VpcProps;
   /**
    * An existing VPC in which to deploy the construct. Providing both this and
-   * vpcProps is an error. If the client provides an existing load balancer and/or
-   * existing Private Hosted Zone, those constructs must exist in this VPC.
+   * vpcProps is an error. If the client provides an existing Fargate service,
+   * this value must be the VPC where the service is running. An SNS Interface
+   * endpoint will be added to this VPC.
    *
    * @default - none
    */
   readonly existingVpc?: ec2.IVpc;
   /**
-   * Whether the construct is deploying a private or public API. This has implications for the VPC and ALB.
+   * Whether the construct is deploying a private or public API. This has implications for the VPC deployed
+   * by this construct.
    *
    * @default - none
    */
@@ -52,26 +63,37 @@ export interface FargateToSnsProps {
    * @default - 'latest'
    */
   readonly ecrImageVersion?: string;
-  readonly existingImageObject?: ecs.ContainerImage;
+  /*
+   * Optional props to define the container created for the Fargate Service
+   *
+   * defaults - fargate-defaults.ts
+   */
   readonly containerDefinitionProps?: ecs.ContainerDefinitionProps | any;
+  /*
+   * Optional props to define the Fargate Task Definition for this construct
+   *
+   * defaults - fargate-defaults.ts
+   */
   readonly fargateTaskDefinitionProps?: ecs.FargateTaskDefinitionProps | any;
   /**
-   * Optional properties to override default values for the Fargate service.
-   * Service will set up in the Public or Isolated subnets of the VPC by default,
-   * override that (e.g. - choose Private subnets) by setting vpcSubnets on this
-   * object.
+   * Optional values to override default Fargate Task definition properties
+   * (fargate-defaults.ts). The construct will default to launching the service
+   * is the most isolated subnets available (precedence: Isolated, Private and
+   * Public). Override those and other defaults here.
+   *
+   * defaults - fargate-defaults.ts
    */
   readonly fargateServiceProps?: ecs.FargateServiceProps | any;
   /**
    * A Fargate Service already instantiated (probably by another Solutions Construct). If
    * this is specified, then no props defining a new service can be provided, including:
    * existingImageObject, ecrImageVersion, containerDefintionProps, fargateTaskDefinitionProps,
-   * ecrRepositoryArn, fargateServiceProps, clusterProps, existingClusterInterface
+   * ecrRepositoryArn, fargateServiceProps, clusterProps, existingClusterInterface. If this value
+   * is provided, then existingContainerDefinitionObject must be provided as well.
    *
    * @default - none
    */
   readonly existingFargateServiceObject?: ecs.FargateService;
-
   /**
    * Existing instance of SNS Topic object, providing both this and topicProps will cause an error..
    *
@@ -96,7 +118,12 @@ export interface FargateToSnsProps {
    * @default - None
    */
   readonly topicNameEnvironmentVariableName?: string;
-
+  /*
+   * A container definition already instantiated as part of a Fargate service. This must
+   * be the container in the existingFargateServiceObject.
+   *
+   * @default - None
+   */
   readonly existingContainerDefinitionObject?: ecs.ContainerDefinition;
 }
 
@@ -111,19 +138,12 @@ export class FargateToSns extends Construct {
     defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
 
-    if (props.existingVpc) {
-      this.vpc = props.existingVpc;
-    } else {
-      this.vpc = defaults.buildVpc(scope, {
-        defaultVpcProps: props.publicApi
-          ? defaults.DefaultPublicPrivateVpcProps()
-          : defaults.DefaultIsolatedVpcProps(),
-        userVpcProps: props.vpcProps,
-        constructVpcProps: props.publicApi
-          ? undefined
-          : { enableDnsHostnames: true, enableDnsSupport: true },
-      });
-    }
+    this.vpc = defaults.buildVpc(scope, {
+      existingVpc: props.existingVpc,
+      defaultVpcProps: props.publicApi ? defaults.DefaultPublicPrivateVpcProps() : defaults.DefaultIsolatedVpcProps(),
+      userVpcProps: props.vpcProps,
+      constructVpcProps: props.publicApi ? {} : { enableDnsHostnames: true, enableDnsSupport: true }
+    });
 
     defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.SNS);
 
