@@ -45,12 +45,12 @@ export function CreateFargateService(
     defaults.ServiceEndpointTypes.S3
   );
 
-  const containerDefintionConstructProps: any = {};
-  const fargateServiceDefintionConstructProps: any = {};
+  const constructContainerDefintionProps: any = {};
+  const constructFargateServiceDefinitionProps: any = {};
 
   if (!clientFargateServiceProps?.cluster) {
     // Construct Fargate Service
-    fargateServiceDefintionConstructProps.cluster = CreateCluster(
+    constructFargateServiceDefinitionProps.cluster = CreateCluster(
       scope,
       `${id}-cluster`,
       constructVpc,
@@ -60,7 +60,7 @@ export function CreateFargateService(
 
   // Set up the Fargate service
   if (!clientContainerDefinitionProps?.image) {
-    containerDefintionConstructProps.image = CreateImage(
+    constructContainerDefintionProps.image = CreateImage(
       scope,
       id,
       ecrRepositoryArn,
@@ -70,21 +70,21 @@ export function CreateFargateService(
 
   // Create the Fargate Service
   let newContainerDefinition;
-  [fargateServiceDefintionConstructProps.taskDefinition, newContainerDefinition] = CreateTaskDefinition(
+  [constructFargateServiceDefinitionProps.taskDefinition, newContainerDefinition] = CreateTaskDefinition(
     scope,
     id,
     clientFargateTaskDefinitionProps,
     clientContainerDefinitionProps,
-    containerDefintionConstructProps
+    constructContainerDefintionProps
   );
 
   if (!clientFargateServiceProps?.vpcSubnets) {
     if (constructVpc.isolatedSubnets.length) {
-      fargateServiceDefintionConstructProps.vpcSubnets = {
+      constructFargateServiceDefinitionProps.vpcSubnets = {
         subnets: constructVpc.isolatedSubnets,
       };
     } else {
-      fargateServiceDefintionConstructProps.vpcSubnets = {
+      constructFargateServiceDefinitionProps.vpcSubnets = {
         subnets: constructVpc.privateSubnets,
       };
     }
@@ -118,7 +118,7 @@ export function CreateFargateService(
   const fargateServiceProps = defaults.consolidateProps(
     defaultFargateServiceProps,
     clientFargateServiceProps,
-    fargateServiceDefintionConstructProps
+    constructFargateServiceDefinitionProps
   );
 
   const newService = new ecs.FargateService(
@@ -169,7 +169,7 @@ function CreateTaskDefinition(
   id: string,
   clientFargateTaskDefinitionProps?: ecs.FargateTaskDefinitionProps,
   clientContainerDefinitionProps?: ecs.ContainerDefinitionProps,
-  constructContainerDefintionProps?: ecs.ContainerDefinitionProps
+  constructContainerDefinitionProps?: ecs.ContainerDefinitionProps
 ): [ecs.FargateTaskDefinition, ecs.ContainerDefinition] {
   const taskDefinitionProps = defaults.consolidateProps(
     defaults.DefaultFargateTaskDefinitionProps(),
@@ -187,7 +187,7 @@ function CreateTaskDefinition(
   const containerDefinitionProps = defaults.consolidateProps(
     defaultContainerDefinitionProps,
     clientContainerDefinitionProps,
-    constructContainerDefintionProps,
+    constructContainerDefinitionProps,
   );
   const containerDefinition = taskDefinition.addContainer(`${id}-container`, containerDefinitionProps);
   return [taskDefinition, containerDefinition];
