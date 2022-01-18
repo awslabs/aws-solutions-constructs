@@ -97,6 +97,8 @@ test('New service/new topic, public API, new VPC', () => {
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
     CidrBlock: '172.0.0.0/16'
   });
+  // Confirm we created a Public/Private VPC
+  expect(stack).toHaveResourceLike('AWS::EC2::InternetGateway', {});
   expect(stack).toCountResources('AWS::EC2::VPC', 1);
   expect(stack).toCountResources('AWS::SNS::Topic', 1);
   expect(stack).toCountResources('AWS::ECS::Service', 1);
@@ -133,6 +135,8 @@ test('New service/new topic, private API, new VPC', () => {
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
     CidrBlock: '172.0.0.0/16'
   });
+  // Confirm we created an Isolated VPC
+  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
   expect(stack).toCountResources('AWS::EC2::VPC', 1);
   expect(stack).toCountResources('AWS::SNS::Topic', 1);
   expect(stack).toCountResources('AWS::ECS::Service', 1);

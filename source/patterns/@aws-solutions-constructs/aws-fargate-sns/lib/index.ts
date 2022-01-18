@@ -107,13 +107,13 @@ export interface FargateToSnsProps {
    */
   readonly topicProps?: sns.TopicProps;
   /**
-   * Optional Name for the SNS topic arn environment variable set for the Lambda function.
+   * Optional Name for the SNS topic arn environment variable set for the container.
    *
    * @default - None
    */
   readonly topicArnEnvironmentVariableName?: string;
   /**
-   * Optional Name for the SNS topic name environment variable set for the Lambda function.
+   * Optional Name for the SNS topic name environment variable set for the container.
    *
    * @default - None
    */
@@ -142,7 +142,7 @@ export class FargateToSns extends Construct {
       existingVpc: props.existingVpc,
       defaultVpcProps: props.publicApi ? defaults.DefaultPublicPrivateVpcProps() : defaults.DefaultIsolatedVpcProps(),
       userVpcProps: props.vpcProps,
-      constructVpcProps: props.publicApi ? {} : { enableDnsHostnames: true, enableDnsSupport: true }
+      constructVpcProps: { enableDnsHostnames: true, enableDnsSupport: true }
     });
 
     defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.SNS);

@@ -63,10 +63,10 @@ _Parameters_
 | fargateServiceProps | [ecs.FargateServiceProps \| any](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.FargateServiceProps.html) | Optional values to override default Fargate Task definition properties (fargate-defaults.ts). The construct will default to launching the service is the most isolated subnets available (precedence: Isolated, Private and Public). Override those and other defaults here. |
 | existingFargateServiceObject | [ecs.FargateService](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.FargateService.html) | A Fargate Service already instantiated (probably by another Solutions Construct). If this is specified, then no props defining a new service can be provided, including: existingImageObject, ecrImageVersion, containerDefintionProps, fargateTaskDefinitionProps, ecrRepositoryArn, fargateServiceProps, clusterProps, existingClusterInterface |
 | existingContainerDefinitionObject | [ecs.ContainerDefinition](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.ContainerDefinition.html) | A container definition already instantiated as part of a Fargate service. This must be the container in the existingFargateServiceObject |
-|existingTopicObj?|[`sns.Topic`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)|Existing instance of SNS Topic object, providing both this and `topicProps` will cause an error.|
+|existingTopicObj?|[`sns.Topic`](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-sns.Topic.html)|Existing instance of SNS Topic object, providing both this and `topicProps` will cause an error.|
 |topicProps?|[`sns.TopicProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sns.TopicProps.html)|Optional user provided properties to override the default properties for the SNS topic.|
-|topicArnEnvironmentVariableName?|`string`|Optional Name for the SNS topic arn environment variable set for the Lambda function.|
-|topicNameEnvironmentVariableName?|`string`|Optional Name for the SNS topic name environment variable set for the Lambda function.|
+|topicArnEnvironmentVariableName?|`string`|Optional Name for the SNS topic arn environment variable set for the container.|
+|topicNameEnvironmentVariableName?|`string`|Optional Name for the SNS topic name environment variable set for the container.|
 
 ## Pattern Properties
 
