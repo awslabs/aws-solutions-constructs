@@ -28,7 +28,6 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
-<<<<<<< HEAD
 import { AlbToFargate, AlbToFargateProps } from '@aws-solutions-constructs/aws-alb-fargate';
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 
@@ -40,18 +39,6 @@ const certificate = acm.Certificate.fromCertificateArn(
 );
 
 const props: AlbToFargateProps = {
-=======
-  import { AlbToFargate, AlbToFargateProps } from '@aws-solutions-constructs/aws-alb-fargate';
-
-  // Obtain a pre-existing certificate from your account
-  const certificate = acm.Certificate.fromCertificateArn(
-        scope,
-        'existing-cert',
-        "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
-      );
-
-  const props: AlbToFargateProps = {
->>>>>>> e0a7e9a13c0997a00685f6aa89019e5cdb0dfe9d
     ecrRepositoryArn: "arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo",
     ecrImageVersion: "latest",
     listenerProps: {
