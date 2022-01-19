@@ -45,12 +45,12 @@ export function CreateFargateService(
     defaults.ServiceEndpointTypes.S3
   );
 
-  const containerDefintionConstructProps: any = {};
-  const fargateServiceDefintionConstructProps: any = {};
+  const constructContainerDefintionProps: any = {};
+  const constructFargateServiceDefinitionProps: any = {};
 
   if (!clientFargateServiceProps?.cluster) {
     // Construct Fargate Service
-    fargateServiceDefintionConstructProps.cluster = CreateCluster(
+    constructFargateServiceDefinitionProps.cluster = CreateCluster(
       scope,
       `${id}-cluster`,
       constructVpc,
@@ -60,7 +60,7 @@ export function CreateFargateService(
 
   // Set up the Fargate service
   if (!clientContainerDefinitionProps?.image) {
-    containerDefintionConstructProps.image = CreateImage(
+    constructContainerDefintionProps.image = CreateImage(
       scope,
       id,
       ecrRepositoryArn,
@@ -69,21 +69,22 @@ export function CreateFargateService(
   }
 
   // Create the Fargate Service
-  fargateServiceDefintionConstructProps.taskDefinition = CreateTaskDefinition(
+  let newContainerDefinition;
+  [constructFargateServiceDefinitionProps.taskDefinition, newContainerDefinition] = CreateTaskDefinition(
     scope,
     id,
     clientFargateTaskDefinitionProps,
     clientContainerDefinitionProps,
-    containerDefintionConstructProps
+    constructContainerDefintionProps
   );
 
   if (!clientFargateServiceProps?.vpcSubnets) {
     if (constructVpc.isolatedSubnets.length) {
-      fargateServiceDefintionConstructProps.vpcSubnets = {
+      constructFargateServiceDefinitionProps.vpcSubnets = {
         subnets: constructVpc.isolatedSubnets,
       };
     } else {
-      fargateServiceDefintionConstructProps.vpcSubnets = {
+      constructFargateServiceDefinitionProps.vpcSubnets = {
         subnets: constructVpc.privateSubnets,
       };
     }
@@ -117,7 +118,7 @@ export function CreateFargateService(
   const fargateServiceProps = defaults.consolidateProps(
     defaultFargateServiceProps,
     clientFargateServiceProps,
-    fargateServiceDefintionConstructProps
+    constructFargateServiceDefinitionProps
   );
 
   const newService = new ecs.FargateService(
@@ -125,12 +126,8 @@ export function CreateFargateService(
     `${id}-service`,
     fargateServiceProps,
   );
-  // We just created this container, so there should never be a situation where it doesn't exist
-  const newContainer = newService.taskDefinition.findContainer(
-    `${id}-container`
-  ) as ecs.ContainerDefinition;
 
-  return [newService, newContainer];
+  return [newService, newContainerDefinition];
 }
 
 function CreateCluster(
@@ -172,8 +169,8 @@ function CreateTaskDefinition(
   id: string,
   clientFargateTaskDefinitionProps?: ecs.FargateTaskDefinitionProps,
   clientContainerDefinitionProps?: ecs.ContainerDefinitionProps,
-  constructContainerDefintionProps?: ecs.ContainerDefinitionProps
-): ecs.FargateTaskDefinition {
+  constructContainerDefinitionProps?: ecs.ContainerDefinitionProps
+): [ecs.FargateTaskDefinition, ecs.ContainerDefinition] {
   const taskDefinitionProps = defaults.consolidateProps(
     defaults.DefaultFargateTaskDefinitionProps(),
     clientFargateTaskDefinitionProps
@@ -184,15 +181,16 @@ function CreateTaskDefinition(
     taskDefinitionProps
   );
 
+  const defaultContainerDefinitionProps = defaults.consolidateProps(defaults.DefaultContainerDefinitionProps(), {
+    containerName: `${id}-container`,
+  });
   const containerDefinitionProps = defaults.consolidateProps(
-    defaults.DefaultContainerDefinitionProps(),
+    defaultContainerDefinitionProps,
     clientContainerDefinitionProps,
-    defaults.consolidateProps({}, constructContainerDefintionProps, {
-      containerName: `${id}-container`,
-    })
+    constructContainerDefinitionProps,
   );
-  taskDefinition.addContainer(`${id}-container`, containerDefinitionProps);
-  return taskDefinition;
+  const containerDefinition = taskDefinition.addContainer(`${id}-container`, containerDefinitionProps);
+  return [taskDefinition, containerDefinition];
 }
 
 export function CheckFargateProps(props: any) {

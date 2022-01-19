@@ -28,6 +28,7 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+<<<<<<< HEAD
 import { AlbToFargate, AlbToFargateProps } from '@aws-solutions-constructs/aws-alb-fargate';
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 
@@ -39,6 +40,18 @@ const certificate = acm.Certificate.fromCertificateArn(
 );
 
 const props: AlbToFargateProps = {
+=======
+  import { AlbToFargate, AlbToFargateProps } from '@aws-solutions-constructs/aws-alb-fargate';
+
+  // Obtain a pre-existing certificate from your account
+  const certificate = acm.Certificate.fromCertificateArn(
+        scope,
+        'existing-cert',
+        "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
+      );
+
+  const props: AlbToFargateProps = {
+>>>>>>> e0a7e9a13c0997a00685f6aa89019e5cdb0dfe9d
     ecrRepositoryArn: "arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo",
     ecrImageVersion: "latest",
     listenerProps: {
@@ -91,14 +104,14 @@ AlbToFargate(self, 'new-construct', props)
 | existingVpc? | [ec2.IVpc](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.IVpc.html) | An existing VPC in which to deploy the construct. Providing both this and vpcProps is an error. If the client provides an existing load balancer and/or existing Private Hosted Zone, those constructs must exist in this VPC. |
 | logAlbAccessLogs? | boolean| Whether to turn on Access Logs for the Application Load Balancer. Uses an S3 bucket with associated storage costs.Enabling Access Logging is a best practice. default - true |
 | albLoggingBucketProps? | [s3.BucketProps](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html) | Optional properties to customize the bucket used to store the ALB Access Logs. Supplying this and setting logAccessLogs to false is an error. @default - none |
-| clusterProps | [ecs.ClusterProps]() | Optional properties to create a new ECS cluster. To provide an existing cluster, use the cluster attribute of fargateServiceProps. |
-| ecrRepositoryArn | string]() | The arn of an ECR Repository containing the image to use to generate the containers. Either this or the image property of containerDefinitionProps must be provided. format: arn:aws:ecr:*region*:*account number*:repository/*Repository Name* |
-| ecrImageVersion | string]() | The version of the image to use from the repository. Defaults to 'Latest' |
-| containerDefinitionProps | [ecs.ContainerDefinitionProps /| any]() | Optional props to define the container created for the Fargate Service (defaults found in fargate-defaults.ts) |
-| fargateTaskDefinitionProps | [ecs.FargateTaskDefinitionProps /| any]() | Optional props to define the Fargate Task Definition for this construct  (defaults found in fargate-defaults.ts) |
-| fargateServiceProps | [ecs.FargateServiceProps /| any]() | Optional properties to override default values for the Fargate service. Service will set up in the Public or Isolated subnets of the VPC by default, override that (e.g. - choose Private subnets) by setting vpcSubnets on this object. |
-| existingFargateServiceObject | [ecs.FargateService]() | A Fargate Service already instantiated (probably by another Solutions Construct). If this is specified, then no props defining a new service can be provided, including: existingImageObject, ecrImageVersion, containerDefintionProps, fargateTaskDefinitionProps, ecrRepositoryArn, fargateServiceProps, clusterProps, existingClusterInterface |
-| existingContainerDefinitionObject | [ecs.ContainerDefinition]() | A container definition already instantiated as part of a Fargate service. This much be the container in the existingFargateServiceObject |
+| clusterProps? | [ecs.ClusterProps](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.ClusterProps.html) | Optional properties to create a new ECS cluster. To provide an existing cluster, use the cluster attribute of fargateServiceProps. |
+| ecrRepositoryArn? | string | The arn of an ECR Repository containing the image to use to generate the containers. Either this or the image property of containerDefinitionProps must be provided. format: arn:aws:ecr:*region*:*account number*:repository/*Repository Name* |
+| ecrImageVersion? | string | The version of the image to use from the repository. Defaults to 'Latest' |
+| containerDefinitionProps? | [ecs.ContainerDefinitionProps \| any](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.ContainerDefinitionProps.html) | Optional props to define the container created for the Fargate Service (defaults found in fargate-defaults.ts) |
+| fargateTaskDefinitionProps? | [ecs.FargateTaskDefinitionProps \| any](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.FargateTaskDefinitionProps.html) | Optional props to define the Fargate Task Definition for this construct  (defaults found in fargate-defaults.ts) |
+| fargateServiceProps? | [ecs.FargateServiceProps \| any](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.FargateServiceProps.html) | Optional properties to override default values for the Fargate service. Service will set up in the Public or Isolated subnets of the VPC by default, override that (e.g. - choose Private subnets) by setting vpcSubnets on this object. |
+| existingFargateServiceObject? | [ecs.FargateService](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.FargateService.html) | A Fargate Service already instantiated (probably by another Solutions Construct). If this is specified, then no props defining a new service can be provided, including: existingImageObject, ecrImageVersion, containerDefintionProps, fargateTaskDefinitionProps, ecrRepositoryArn, fargateServiceProps, clusterProps, existingClusterInterface |
+| existingContainerDefinitionObject? | [ecs.ContainerDefinition](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.ContainerDefinition.html) | A container definition already instantiated as part of a Fargate service. This must be the container in the existingFargateServiceObject |
 
 ## Pattern Properties
 
