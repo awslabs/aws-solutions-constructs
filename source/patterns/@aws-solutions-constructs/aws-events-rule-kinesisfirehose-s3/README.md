@@ -27,8 +27,8 @@ Here is a minimal deployable pattern definition:
 Typescript
 ``` typescript
 import { EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props } from '@aws-solutions-constructs/aws-events-rule-kinesisfirehose-s3';
-import * as events from 'aws-cdk-lib/aws-events';
-import { Duration } from 'aws-cdk-lib';
+import * as events from '@aws-cdk/aws-events';
+import { Duration } from '@aws-cdk/core';
 
 const eventsRuleToKinesisFirehoseToS3Props: EventsRuleToKinesisFirehoseToS3Props = {
     eventRuleProps: {

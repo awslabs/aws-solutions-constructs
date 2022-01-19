@@ -26,7 +26,7 @@ Here is a minimal deployable pattern definition:
 Typescript
 ``` typescript
 import { DynamoDBStreamToLambdaProps, DynamoDBStreamToLambda } from '@aws-solutions-constructs/aws-dynamodb-stream-lambda';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as lambda from '@aws-cdk/aws-lambda';
 
 new DynamoDBStreamToLambda(this, 'test-dynamodb-stream-lambda', {
     lambdaFunctionProps: {

@@ -27,9 +27,9 @@ Here is a minimal deployable pattern definition:
 Typescript
 ``` javascript
 import { EventRulesToStepFunction, EventRulesToStepFunctionProps } from '@aws-solutions-constructs/aws-event-rules-step-function';
-import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
-import * as events from 'aws-cdk-lib/aws-events';
-import { Duration } from 'aws-cdk-lib';
+import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
+import * as events from '@aws-cdk/aws-events';
+import { Duration } from '@aws-cdk/core';
 
 const startState = new stepfunctions.Pass(this, 'StartState');
 

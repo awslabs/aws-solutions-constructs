@@ -27,8 +27,8 @@ Here is a minimal deployable pattern definition:
 Typescript
 ``` typescript
 import { EventsRuleToKinesisStreams, EventsRuleToKinesisStreamsProps } from "@aws-solutions-constructs/aws-events-rule-kinesisstreams";
-import * as events from 'aws-cdk-lib/aws-events';
-import { Duration } from 'aws-cdk-lib';
+import * as events from '@aws-cdk/aws-events';
+import { Duration } from '@aws-cdk/core';
 
 const props: EventsRuleToKinesisStreamsProps = {
     eventRuleProps: {

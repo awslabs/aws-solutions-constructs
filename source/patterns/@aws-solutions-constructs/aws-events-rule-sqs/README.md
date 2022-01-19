@@ -26,9 +26,9 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
-import { Duration } from 'aws-cdk-lib';
-import * as events from 'aws-cdk-lib/aws-events';
-import * as iam from 'aws-cdk-lib/aws-iam';
+import { Duration } from '@aws-cdk/core';
+import * as events from '@aws-cdk/aws-events';
+import * as iam from '@aws-cdk/aws-iam';
 import { EventRulesToSqsProps, EventRulesToSqs } from "@aws-solutions-constructs/aws-event-rules-sqs";
 
 const props: EventRulesToSqsProps = {

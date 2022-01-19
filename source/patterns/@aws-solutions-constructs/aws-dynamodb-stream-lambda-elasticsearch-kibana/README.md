@@ -27,7 +27,7 @@ Here is a minimal deployable pattern definition:
 Typescript
 ``` typescript
 import { DynamoDBStreamToLambdaToElasticSearchAndKibana, DynamoDBStreamToLambdaToElasticSearchAndKibanaProps } from '@aws-solutions-constructs/aws-dynamodb-stream-lambda-elasticsearch-kibana';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as lambda from '@aws-cdk/aws-lambda';
 import { Aws } from "@aws-cdk/core";
 
 const props: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps = {

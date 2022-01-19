@@ -30,8 +30,8 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
-import * as api from '@aws-cdk/aws-apigateway';
-import * as lambda from "@aws-cdk/aws-lambda";
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as lambda from "aws-cdk-lib/aws-lambda";
 import { ApiGatewayToLambda } from '@aws-solutions-constructs/aws-apigateway-lambda';
 import { WafwebaclToApiGatewayProps, WafwebaclToApiGateway } from "@aws-solutions-constructs/aws-wafwebacl-apigateway";
 

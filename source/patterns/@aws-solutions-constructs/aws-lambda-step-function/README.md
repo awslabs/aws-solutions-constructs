@@ -27,8 +27,8 @@ Here is a minimal deployable pattern definition:
 Typescript
 ``` typescript
 import { LambdaToStepFunction } from '@aws-solutions-constructs/aws-lambda-step-function';
-import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
+import * as lambda from '@aws-cdk/aws-lambda';
 
 const startState = new stepfunctions.Pass(this, 'StartState');
 
