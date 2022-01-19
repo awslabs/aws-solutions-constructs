@@ -24,37 +24,48 @@
 
 This AWS Solutions Construct implements an AWS Fargate service that can write to an Amazon SNS topic
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-  import { FargateToSns, FargateToSnsProps } from '@aws-solutions-constructs/aws-fargate-sns';
+import { FargateToSns, FargateToSnsProps } from '@aws-solutions-constructs/aws-fargate-sns';
+import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 
-  // Obtain a pre-existing certificate from your account
-  const certificate = acm.Certificate.fromCertificateArn(
-        scope,
-        'existing-cert',
-        "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
-      );
+// Obtain a pre-existing certificate from your account
+const certificate = acm.Certificate.fromCertificateArn(
+    this,
+    'existing-cert',
+    "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
+);
 
-  const props: FargateToSnsProps = {
+const props: FargateToSnsProps = {
     publicApi: true,
-    ecrRepositoryArn: "arn of a repo in ECR in your account",
-  });
+    ecrRepositoryArn: "arn of a repo in ECR in your account"
+};
 
-  new FargateToSns(stack, 'test-construct', props);
+new FargateToSns(this, 'test-construct', props);
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_fargate_sns import FargateToSns, FargateToSnsProps
+from aws_cdk import aws_certificatemanager as acm
 
-``` text
-new FargateToSns(scope: Construct, id: string, props: FargateToSnsProps);
+# Obtain a pre_existing certificate from your account
+certificate = acm.Certificate.from_certificate_arn(
+    self,
+    'existing-cert',
+    "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
+)
+
+props = FargateToSnsProps(
+    public_api=True,
+    ecr_repository_arn="arn of a repo in ECR in your account"
+)
+
+FargateToSns(self, 'test_construct', props)
+
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`FargateToSnsProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 
