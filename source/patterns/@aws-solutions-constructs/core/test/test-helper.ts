@@ -15,10 +15,12 @@
 import { Bucket, BucketProps, BucketEncryption } from "@aws-cdk/aws-s3";
 import { Construct, RemovalPolicy, Stack } from "@aws-cdk/core";
 import { buildVpc } from '../lib/vpc-helper';
-import { DefaultPublicPrivateVpcProps } from '../lib/vpc-defaults';
+import { DefaultPublicPrivateVpcProps, DefaultIsolatedVpcProps } from '../lib/vpc-defaults';
 import { overrideProps, addCfnSuppressRules } from "../lib/utils";
 import * as path from 'path';
 import * as acm from '@aws-cdk/aws-certificatemanager';
+
+export const fakeEcrRepoArn = 'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo';
 
 // Creates a bucket used for testing - minimal properties, destroyed after test
 export function CreateScrapBucket(scope: Construct, props?: BucketProps | any) {
@@ -72,9 +74,11 @@ export function generateIntegStackName(filename: string): string {
 }
 
 // Helper Functions
-export function getTestVpc(stack: Stack) {
+export function getTestVpc(stack: Stack, publicFacing: boolean = true) {
   return buildVpc(stack, {
-    defaultVpcProps: DefaultPublicPrivateVpcProps(),
+    defaultVpcProps: publicFacing ?
+      DefaultPublicPrivateVpcProps() :
+      DefaultIsolatedVpcProps(),
     constructVpcProps: {
       enableDnsHostnames: true,
       enableDnsSupport: true,
