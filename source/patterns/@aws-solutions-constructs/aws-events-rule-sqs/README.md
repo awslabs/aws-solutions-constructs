@@ -22,44 +22,61 @@
 
 This AWS Solutions Construct implements an AWS Events rule and an AWS SQS Queue.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-import { Duration } from '@aws-cdk/core';
-import * as events from '@aws-cdk/aws-events';
-import * as iam from '@aws-cdk/aws-iam';
-import { EventsRuleToSqsProps, EventsRuleToSqs } from "@aws-solutions-constructs/aws-events-rule-sqs";
+import { Duration } from 'aws-cdk-lib';
+import * as events from 'aws-cdk-lib/aws-events';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import { EventRulesToSqsProps, EventRulesToSqs } from "@aws-solutions-constructs/aws-event-rules-sqs";
 
-const props: EventsRuleToSqsProps = {
+const props: EventRulesToSqsProps = {
     eventRuleProps: {
-      schedule: events.Schedule.rate(Duration.minutes(5))
+        schedule: events.Schedule.rate(Duration.minutes(5))
     }
 };
 
-const constructStack = new EventsRuleToSqs(this, 'test-construct', props);
+const constructStack = new EventRulesToSqs(this, 'test-construct', props);
 
 // Grant yourself permissions to use the Customer Managed KMS Key
 const policyStatement = new iam.PolicyStatement({
     actions: ["kms:Encrypt", "kms:Decrypt"],
     effect: iam.Effect.ALLOW,
-    principals: [ new iam.AccountRootPrincipal() ],
-    resources: [ "*" ]
+    principals: [new iam.AccountRootPrincipal()],
+    resources: ["*"]
 });
 
 constructStack.encryptionKey?.addToResourcePolicy(policyStatement);
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_event_rules_sqs import EventRulesToSqsProps, EventRulesToSqs
+from aws_cdk import (
+    aws_events as events,
+    aws_iam as iam,
+    Duration
+)
 
-``` text
-new EventsRuleToSqs(scope: Construct, id: string, props: EventsRuleToSqsProps);
+props = EventRulesToSqsProps(
+    event_rule_props=events.RuleProps(
+        schedule=events.Schedule.rate(Duration.minutes(5))
+    )
+)
+
+construct_stack = EventRulesToSqs(self, 'test-construct', props)
+
+# Grant yourself permissions to use the Customer Managed KMS Key
+policy_statement = iam.PolicyStatement(
+    actions=["kms:Encrypt", "kms:Decrypt"],
+    effect=iam.Effect.ALLOW,
+    principals=[iam.AccountRootPrincipal()],
+    resources=["*"]
+)
+
+construct_stack.encryption_key.add_to_resource_policy(policy_statement)
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`EventsRuleToSqsProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

@@ -24,42 +24,64 @@
 
 This AWS Solutions Construct implements an an Application Load Balancer to an AWS Lambda function
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
+import { AlbToLambda, AlbToLambdaProps } from '@aws-solutions-constructs/aws-alb-lambda';
+import * as acm from 'aws-cdk-lib/aws-certificatemager';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
-  // Obtain a pre-existing certificate from your account
-  const certificate = acm.Certificate.fromCertificateArn(
-        scope,
-        'existing-cert',
-        "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
-      );
-  const props: AlbToLambdaProps = {
+// Obtain a pre-existing certificate from your account
+const certificate = acm.Certificate.fromCertificateArn(
+    this,
+    'existing-cert',
+    "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
+);
+const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
-      handler: 'index.handler'
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+        runtime: lambda.Runtime.NODEJS_14_X,
+        handler: 'index.handler'
     },
     listenerProps: {
-      certificates: [ certificate ]
+        certificates: [certificate]
     },
     publicApi: true
-  };
-  new AlbToLambda(stack, 'new-construct', props);
-
+};
+new AlbToLambda(this, 'new-construct', props);
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_alb_lambda import AlbToLambda, AlbToLambdaProps
+from aws_cdk import (
+    aws_certificatemanager as acm,
+    aws_lambda as _lambda,
+    aws_elasticloadbalancingv2 as alb
+)
 
-``` text
-new AlbToLambda(scope: Construct, id: string, props: AlbToLambdaProps);
+# Obtain a pre-existing certificate from your account
+certificate = acm.Certificate.from_certificate_arn(
+  self,
+  'existing-cert',
+  "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
+)
+
+props = AlbToLambdaProps(
+  lambda_function_props=_lambda.FunctionProps(
+    runtime=_lambda.Runtime.PYTHON_3_7,
+    code=_lambda.Code.asset('lambda'),
+    handler='hitcounter.handler',
+  ),
+  listener_props=alb.ApplicationListenerProps(
+    certificates=[ certificate ]
+  ),
+  publicApi=True
+)
+
+AlbToLambda(self, 'new-construct', props)
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`AlbToLambdaProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

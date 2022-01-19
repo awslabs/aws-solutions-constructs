@@ -20,12 +20,13 @@
 
 This AWS Solutions Construct implements an AWS CloudFront fronting an Amazon API Gateway REST API.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
-``` javascript
-import * as api from '@aws-cdk/aws-apigateway';
-import * as lambda from "@aws-cdk/aws-lambda";
+Typescript
+``` typescript
 import { CloudFrontToApiGateway } from '@aws-solutions-constructs/aws-cloudfront-apigateway';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as api from 'aws-cdk-lib/aws-apigateway';
 
 const lambdaProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
@@ -36,13 +37,13 @@ const lambdaProps: lambda.FunctionProps = {
 const lambdafunction = new lambda.Function(this, 'LambdaFunction', lambdaProps);
 
 const apiGatewayProps: api.LambdaRestApiProps = {
-        handler: lambdafunction,
-        endpointConfiguration: {
-            types: [api.EndpointType.REGIONAL]
-        },
-        defaultMethodOptions: {
-            authorizationType: api.AuthorizationType.NONE
-        }
+    handler: lambdafunction,
+    endpointConfiguration: {
+        types: [api.EndpointType.REGIONAL]
+    },
+    defaultMethodOptions: {
+        authorizationType: api.AuthorizationType.NONE
+    }
 };
 
 const apiGateway = new api.LambdaRestApi(this, 'LambdaRestApi', apiGatewayProps);
@@ -50,20 +51,41 @@ const apiGateway = new api.LambdaRestApi(this, 'LambdaRestApi', apiGatewayProps)
 new CloudFrontToApiGateway(this, 'test-cloudfront-apigateway', {
     existingApiGatewayObj: apiGateway
 });
-
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_cloudfront_apigateway import CloudFrontToApiGateway
+from aws_cdk import (
+    aws_lambda as _lambda,
+    aws_apigateway as api
+)
 
-``` text
-new CloudFrontToApiGateway(scope: Construct, id: string, props: CloudFrontToApiGatewayProps);
+lambda_props = _lambda.FunctionProps(
+    code=_lambda.Code.from_asset('lambda'),
+    runtime=_lambda.Runtime.PYTHON_3_9,
+    handler='index.handler'
+)
+
+lambda_function = _lambda.Function(self, 'LambdaFunction', lambda_props)
+
+api_gateway_props = api.LambdaRestApiProps(
+    handler=lambda_function,
+    endpoint_configuration=api.EndpointConfiguration(
+        types=[api.EndpointType.REGIONAL]
+    ),
+    default_method_options=api.MethodOptions(
+        authorizationType=api.AuthorizationType.NONE
+    )
+)
+
+api_gateway = api.LambdaRestApi(self, 'LambdaRestApi', api_gateway_props)
+
+CloudFrontToApiGateway(self, 'test-cloudfront-apigateway',
+                       existingApiGatewayObj=api_gateway
+                       )
+
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`CloudFrontToApiGatewayProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

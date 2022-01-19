@@ -24,10 +24,12 @@
 
 This AWS Solutions Construct implements an AWS Lambda function connected to an Amazon EventBridge.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
 import { LambdaToEventbridge, LambdaToEventbridgeProps } from "@aws-solutions-constructs/aws-lambda-eventbridge";
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 new LambdaToEventbridge(this, 'LambdaToEventbridgePattern', {
     lambdaFunctionProps: {
@@ -36,20 +38,25 @@ new LambdaToEventbridge(this, 'LambdaToEventbridgePattern', {
         code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }
 });
-
 ```
 
-## Initializer
+Python
+```python
+from aws_solutions_constructs.aws_lambda_eventbridge import LambdaToEventbridge
+from aws_cdk import (
+    aws_lambda as _lambda,
+    Aws
+)
 
-``` text
-new LambdaToEventbridge(scope: Construct, id: string, props: LambdaToEventbridgeProps);
+LambdaToEventbridge(self, 'LambdaToEventbridgePattern',
+                    lambda_function_props=_lambda.FunctionProps(
+                        code=_lambda.Code.from_asset('{__dirname}/lambda'),
+                        runtime=_lambda.Runtime.PYTHON_3_9,
+                        handler='index.handler'
+                    )
+                    )
+
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`LambdaToEventbridgeProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

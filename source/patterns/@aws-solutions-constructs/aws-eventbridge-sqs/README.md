@@ -20,44 +20,61 @@
 
 This AWS Solutions Construct implements an Amazon EventBridge rule and an AWS SQS Queue.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-import { Duration } from '@aws-cdk/core';
-import * as events from '@aws-cdk/aws-events';
-import * as iam from '@aws-cdk/aws-iam';
+import { Duration } from 'aws-cdk-lib';
+import * as events from 'aws-cdk-lib/aws-events';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import { EventbridgeToSqsProps, EventbridgeToSqs } from "@aws-solutions-constructs/aws-eventbridge-sqs";
 
 const props: EventbridgeToSqsProps = {
-  eventRuleProps: {
-    schedule: events.Schedule.rate(Duration.minutes(5))
-  }
+    eventRuleProps: {
+        schedule: events.Schedule.rate(Duration.minutes(5))
+    }
 };
 
 const constructStack = new EventbridgeToSqs(this, 'test-construct', props);
 
 // Grant yourself permissions to use the Customer Managed KMS Key
 const policyStatement = new iam.PolicyStatement({
-  actions: ["kms:Encrypt", "kms:Decrypt"],
-  effect: iam.Effect.ALLOW,
-  principals: [ new iam.AccountRootPrincipal() ],
-  resources: [ "*" ]
+    actions: ["kms:Encrypt", "kms:Decrypt"],
+    effect: iam.Effect.ALLOW,
+    principals: [new iam.AccountRootPrincipal()],
+    resources: ["*"]
 });
 
 constructStack.encryptionKey?.addToResourcePolicy(policyStatement);
 ```
 
-## Initializer
+Python
+``` Python
+from aws_solutions_constructs.aws_eventbridge_sqs import EventbridgeToSqsProps, EventbridgeToSqs
+from aws_cdk import (
+    aws_events as events,
+    aws_iam as iam,
+    Duration
+)
 
-``` text
-new EventbridgeToSqs(scope: Construct, id: string, props: EventbridgeToSqsProps);
+props = EventbridgeToSqsProps(
+    event_rule_props=events.RuleProps(
+        schedule=events.Schedule.rate(Duration.minutes(5))
+    )
+)
+
+construct_stack = EventbridgeToSqs(self, 'test-construct', props)
+
+# Grant yourself permissions to use the Customer Managed KMS Key
+policy_statement = iam.PolicyStatement(
+    actions=["kms:Encrypt", "kms:Decrypt"],
+    effect=iam.Effect.ALLOW,
+    principals=[iam.AccountRootPrincipal()],
+    resources=["*"]
+)
+
+construct_stack.encryption_key.add_to_resource_policy(policy_statement)
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`EventbridgeToSqsProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

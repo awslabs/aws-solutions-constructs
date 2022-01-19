@@ -26,8 +26,9 @@
 ## Overview
 This AWS Solutions Construct implements an AWS WAF web ACL connected to an Application Load Balancer.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
 import { Route53ToAlb } from '@aws-solutions-constructs/aws-route53-alb';
 import { WafwebaclToAlbProps, WafwebaclToAlb } from "@aws-solutions-constructs/aws-wafwebacl-alb";
@@ -48,18 +49,27 @@ new WafwebaclToAlb(this, 'test-wafwebacl-alb', {
 });
 ```
 
-## Initializer
+Python
+```python
+from aws_solutions_constructs.aws_route53_alb import Route53ToAlb
+from aws_solutions_constructs.aws_wafwebacl_alb import WafwebaclToAlbProps, WafwebaclToAlb
+from aws_cdk import aws_route53 as route53
 
-``` text
-new WafwebaclToAlb(scope: Construct, id: string, props: WafwebaclToAlbProps);
+# A constructed ALB is required to be attached to the WAF Web ACL.
+# In this case, we are using this construct to create one.
+r53ToAlb = Route53ToAlb(self, 'Route53ToAlbPattern',
+                        private_hosted_zone_props=route53.PrivateHostedZoneProps(
+                            zone_name='www.example.com',
+                        ),
+                        public_api=False,
+                        log_access_logs=False
+                        )
+
+# This construct can only be attached to a configured Application Load Balancer.
+WafwebaclToAlb(self, 'test_wafwebacl_alb',
+               existing_load_balancer_obj=r53ToAlb.load_balancer
+               )
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`WafwebaclToAlbProps`](#pattern-construct-props)
-
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

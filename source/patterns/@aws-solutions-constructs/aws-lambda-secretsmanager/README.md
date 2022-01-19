@@ -24,35 +24,42 @@
 
 This AWS Solutions Construct implements the AWS Lambda function and AWS Secrets Manager secret with the least privileged permissions.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
-const { LambdaToSecretsmanagerProps,  LambdaToSecretsmanager } from '@aws-solutions-constructs/aws-lambda-secretsmanager';
+import { LambdaToSecretsmanagerProps, LambdaToSecretsmanager } from '@aws-solutions-constructs/aws-lambda-secretsmanager';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 const props: LambdaToSecretsmanagerProps = {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
-      // This assumes a handler function in lib/lambda/index.js
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      handler: 'index.handler'
+        runtime: lambda.Runtime.NODEJS_14_X,
+        // This assumes a handler function in lib/lambda/index.js
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+        handler: 'index.handler'
     },
 };
 
 new LambdaToSecretsmanager(this, 'test-lambda-secretsmanager-stack', props);
-
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_lambda_secretsmanager import LambdaToSecretsmanagerProps, LambdaToSecretsmanager
+from aws_cdk import (
+    aws_lambda as _lambda,
+)
 
-``` text
-new LambdaToSecretsmanager(scope: Construct, id: string, props: LambdaToSecretsmanagerProps);
+
+LambdaToSecretsmanager(
+    self, 'test-lambda-secretsmanager-stack',
+    lambda_function_props=_lambda.FunctionProps(
+        code=_lambda.Code.from_asset('{__dirname}/lambda'),
+        runtime=_lambda.Runtime.PYTHON_3_9,
+        handler='index.handler'
+    )
+)
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`LambdaToSecretsmanagerProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

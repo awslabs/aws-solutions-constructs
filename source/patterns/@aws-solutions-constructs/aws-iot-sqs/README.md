@@ -24,10 +24,11 @@
 
 This AWS Solutions Construct implements an AWS IoT MQTT topic rule and an AWS SQS Queue pattern.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-const { IotToSqsProps, IotToSqs } from '@aws-solutions-constructs/aws-iot-sqs';
+import { IotToSqsProps, IotToSqs } from '@aws-solutions-constructs/aws-iot-sqs';
 
 const props: IotToSqsProps = {
     iotTopicRuleProps: {
@@ -43,17 +44,26 @@ const props: IotToSqsProps = {
 new IotToSqs(this, 'test-iot-sqs-integration', props);
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_iot_sqs import IotToSqsProps, IotToSqs
+from aws_cdk import (
+    aws_iot as iot,
+)
+props = IotToSqsProps(
+    iot_topic_rule_props=iot.CfnTopicRuleProps(
+        topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
+            rule_disabled=False,
+            description="Testing the IotToSqs Pattern",
+            sql="SELECT * FROM 'iot/sqs/#'",
+            actions=[]
+        )
+    )
+)
 
-``` text
-new IotToSqs(scope: Construct, id: string, props: IotToSqsProps);
+IotToSqs(self, 'test_iot_sqs', props)
 ```
 
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`IotToSqsProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

@@ -20,36 +20,51 @@
 
 This AWS Solutions Construct implements an AWS Events rule and an AWS Step Functions State Machine
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
-const { EventbridgeToStepfunctions, EventbridgeToStepfunctionsProps } from '@aws-solutions-constructs/aws-eventbridge-stepfunctions';
+import { EventbridgeToStepfunctions, EventbridgeToStepfunctionsProps } from '@aws-solutions-constructs/aws-eventbridge-stepfunctions';
+import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
+import * as events from 'aws-cdk-lib/aws-events';
+import { Duration } from 'aws-cdk-lib';
 
 const startState = new stepfunctions.Pass(this, 'StartState');
 
 const props: EventbridgeToStepfunctionsProps = {
     stateMachineProps: {
-      definition: startState
+        definition: startState
     },
     eventRuleProps: {
-      schedule: events.Schedule.rate(Duration.minutes(5))
+        schedule: events.Schedule.rate(Duration.minutes(5))
     }
 };
 
-new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions-stack', props);
+new EventbridgeToStepfunctions(this, 'test-eventbridge-stepfunctions-stack', props);
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_eventbridge_stepfunctions import EventbridgeToStepfunctions, EventbridgeToStepfunctionsProps
+from aws_cdk import (
+    aws_stepfunctions as stepfunctions,
+    aws_events as events,
+    Duration
+)
 
-``` text
-new EventbridgeToStepfunctions(scope: Construct, id: string, props: EventbridgeToStepfunctionsProps);
+startState = stepfunctions.Pass(self, 'StartState')
+
+props = EventbridgeToStepfunctionsProps(
+    state_machine_props=stepfunctions.StateMachineProps(
+        definition=startState
+    ),
+    evnet_rule_props=events.RuleProps(
+        schedule=events.Schedule.rate(Duration.minutes(5))
+    )
+)
+
+EventbridgeToStepfunctions(self, 'test-eventbridge-stepfunctions-stack', props)
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`EventbridgeToStepfunctionsProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

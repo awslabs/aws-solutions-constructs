@@ -26,14 +26,15 @@
 
 This AWS Solutions Construct implements an Amazon API Gateway connected to an Amazon SageMaker endpoint pattern.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
-``` javascript
+Typescript
+``` typescript
 import { ApiGatewayToSageMakerEndpoint, ApiGatewayToSageMakerEndpointProps } from '@aws-solutions-constructs/aws-apigateway-sagemakerendpoint';
 
 // Below is an example VTL (Velocity Template Language) mapping template for mapping the Api GET request to the Sagemaker POST request
 const requestTemplate =
-`{
+    `{
     "instances": [
 #set( $user_id = $input.params("user_id") )
 #set( $items = $input.params("items") )
@@ -52,17 +53,20 @@ new ApiGatewayToSageMakerEndpoint(this, 'test-apigw-sagemakerendpoint', {
 });
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_apigateway_sagemakerendpoint import ApiGatewayToSageMakerEndpoint
 
-``` text
-new ApiGatewayToSageMakerEndpoint(scope: Construct, id: string, props: ApiGatewayToSageMakerEndpointProps);
+# Create an example VTL (Velocity Template Language) mapping template for mapping the Api GET request to the Sagemaker POST request
+
+# Replace 'my-endpoint' with your Sagemaker Inference Endpoint
+ApiGatewayToSageMakerEndpoint(self, 'test-apigw-sagemakerendpoint',
+                              endpoint_name='my-endpoint',
+                              resource_path='{user_id}',
+                              request_mapping_template=request_template
+                              )
+
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`ApiGatewayToSageMakerEndpointProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

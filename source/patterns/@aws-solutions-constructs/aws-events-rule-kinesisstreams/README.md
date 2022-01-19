@@ -22,32 +22,39 @@
 
 This AWS Solutions Construct implements an Amazon CloudWatch Events rule to send data to an Amazon Kinesis data stream.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-import * as cdk from '@aws-cdk/core';
-import {EventsRuleToKinesisStreams, EventsRuleToKinesisStreamsProps} from "@aws-solutions-constructs/aws-events-rule-kinesisstreams";
+import { EventsRuleToKinesisStreams, EventsRuleToKinesisStreamsProps } from "@aws-solutions-constructs/aws-events-rule-kinesisstreams";
+import * as events from 'aws-cdk-lib/aws-events';
+import { Duration } from 'aws-cdk-lib';
 
 const props: EventsRuleToKinesisStreamsProps = {
     eventRuleProps: {
-      schedule: events.Schedule.rate(Duration.minutes(5)),
+        schedule: events.Schedule.rate(Duration.minutes(5)),
     }
 };
 
 new EventsRuleToKinesisStreams(this, 'test-events-rule-kinesis-streams', props);
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_events_rule_kinesisstreams import EventsRuleToKinesisStreams, EventsRuleToKinesisStreamsProps
+from aws_cdk import (
+    aws_events as events,
+    Duration
+)
 
-``` text
-new EventsRuleToKinesisStreams(scope: Construct, id: string, props: EventsRuleToKinesisStreamsProps);
+props = EventsRuleToKinesisStreamsProps(
+    event_rule_props=events.RuleProps(
+        schedule=events.Schedule.rate(Duration.minutes(5)),
+    )
+)
+
+EventsRuleToKinesisStreams(self, 'test_events_rule_kinesis_streams', props)
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`EventsRuleToKinesisStreamsProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

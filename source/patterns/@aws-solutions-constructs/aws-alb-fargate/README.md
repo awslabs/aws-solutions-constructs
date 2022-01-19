@@ -24,39 +24,58 @@
 
 This AWS Solutions Construct implements an an Application Load Balancer to an AWS Fargate service
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-  // Obtain a pre-existing certificate from your account
-  const certificate = acm.Certificate.fromCertificateArn(
-        scope,
-        'existing-cert',
-        "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
-      );
+import { AlbToFargate, AlbToFargateProps } from '@aws-solutions-constructs/aws-alb-fargate';
+import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 
-  const props: AlbToLambdaProps = {
+// Obtain a pre-existing certificate from your account
+const certificate = acm.Certificate.fromCertificateArn(
+    this,
+    'existing-cert',
+    "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
+);
+
+const props: AlbToFargateProps = {
     ecrRepositoryArn: "arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo",
     ecrImageVersion: "latest",
     listenerProps: {
-      certificates: [ certificate ]
+        certificates: [certificate]
     },
     publicApi: true
-  };
+};
 
-  new AlbToFargate(stack, 'new-construct', props);
+new AlbToFargate(this, 'new-construct', props);
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_alb_fargate import AlbToFargate, AlbToFargateProps
+from aws_cdk import (
+    aws_certificatemanager as acm,
+    aws_elasticloadbalancingv2 as alb
+)
 
-``` text
-new AlbToFargate(scope: Construct, id: string, props: AlbToFargateProps);
+# Obtain a pre-existing certificate from your account
+certificate = acm.Certificate.from_certificate_arn(
+      self,
+      'existing-cert',
+      "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
+    )
+
+props = AlbToFargateProps(
+  ecr_repository_arn="arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo",
+  ecr_image_version="latest",
+  listener_props=alb.ApplicationListenerProps(
+      certificates=[ certificate ]
+  ),
+  publicApi=True
+)
+
+AlbToFargate(self, 'new-construct', props)
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`AlbToFargateProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

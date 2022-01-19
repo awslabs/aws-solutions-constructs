@@ -22,26 +22,21 @@
 
 This AWS Solutions Construct implements an Amazon API Gateway connected to an Amazon SQS queue pattern.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
 import { ApiGatewayToSqs, ApiGatewayToSqsProps } from "@aws-solutions-constructs/aws-apigateway-sqs";
 
 new ApiGatewayToSqs(this, 'ApiGatewayToSqsPattern', {});
-
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_apigateway_sqs as ApiGatewayToSqs
 
-``` text
-new ApiGatewayToSqs(scope: Construct, id: string, props: ApiGatewayToSqsProps);
+ApiGatewayToSqs(self, 'ApiGatewayToSqsPattern')
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`ApiGatewayToSqsProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

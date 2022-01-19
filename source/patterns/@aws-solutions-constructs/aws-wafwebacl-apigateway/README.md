@@ -26,8 +26,9 @@
 ## Overview
 This AWS Solutions Construct implements an AWS WAF web ACL connected to Amazon API Gateway REST API.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
 import * as api from '@aws-cdk/aws-apigateway';
 import * as lambda from "@aws-cdk/aws-lambda";
@@ -48,17 +49,29 @@ new WafwebaclToApiGateway(this, 'test-wafwebacl-apigateway', {
 });
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_apigateway_lambda import ApiGatewayToLambda
+from aws_solutions_constructs.aws_wafwebacl_apigateway import WafwebaclToApiGatewayProps, WafwebaclToApiGateway
+from aws_cdk import (
+    aws_apigateway as api,
+    aws_lambda as _lambda
+)
 
-``` text
-new WafwebaclToApiGateway(scope: Construct, id: string, props: WafwebaclToApiGatewayProps);
+api_gateway_to_lambda = ApiGatewayToLambda(self, 'ApiGatewayToLambdaPattern',
+                                           lambda_function_props=_lambda.FunctionProps(
+                                               code=_lambda.Code.from_asset(
+                                                   '{__dirname}/lambda'),
+                                               runtime=_lambda.Runtime.PYTHON_3_9,
+                                               handler='index.handler'
+                                           )
+                                           )
+
+# This construct can only be attached to a configured API Gateway.
+WafwebaclToApiGateway(self, 'test_wafwebacl_apigateway',
+                      existing_api_gateway_interface=api_gateway_to_lambda.apiGateway
+                      )
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`WafwebaclToApiGatewayProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

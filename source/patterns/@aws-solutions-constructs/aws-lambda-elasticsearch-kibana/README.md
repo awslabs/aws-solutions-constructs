@@ -24,11 +24,13 @@
 
 This AWS Solutions Construct implements the AWS Lambda function and Amazon Elasticsearch Service with the least privileged permissions.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
 import { LambdaToElasticSearchAndKibana } from '@aws-solutions-constructs/aws-lambda-elasticsearch-kibana';
-import { Aws } from "@aws-cdk/core";
+import { Aws } from "aws-cdk-lib";
+import * as lambda from "aws-cdk-lib/aws-lambda";
 
 const lambdaProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
@@ -40,22 +42,30 @@ new LambdaToElasticSearchAndKibana(this, 'test-lambda-elasticsearch-kibana', {
     lambdaFunctionProps: lambdaProps,
     domainName: 'test-domain',
     // TODO: Ensure the Cognito domain name is globally unique
-    cognitoDomainName: 'globallyuniquedomain' + Aws.ACCOUNT_ID;
+    cognitoDomainName: 'globallyuniquedomain' + Aws.ACCOUNT_ID
 });
-
 ```
 
-## Initializer
+Python
+```python
+from aws_solutions_constructs.aws_lambda_elasticsearch_kibana import LambdaToElasticSearchAndKibana
+from aws_cdk import (
+    aws_lambda as _lambda,
+    Aws
+)
+lambda_props = _lambda.FunctionProps(
+    code=_lambda.Code.from_asset('{__dirname}/lambda'),
+    runtime=_lambda.Runtime.PYTHON_3_9,
+    handler='index.handler'
+)
 
-``` text
-new LambdaToElasticSearchAndKibana(scope: Construct, id: string, props: LambdaToElasticSearchAndKibanaProps);
+LambdaToElasticSearchAndKibana(self, 'test_lambda_elasticsearch_kibana',
+                               lambda_function_props=lambda_props,
+                               domain_name='test_domain',
+                               # TODO: Ensure the Cognito domain name is globally unique
+                               cognito_domain_name='globallyuniquedomain' + Aws.ACCOUNT_ID
+                               )
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`LambdaToElasticSearchAndKibanaProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

@@ -24,10 +24,11 @@
 
 This AWS Solutions Construct implements an AWS IoT MQTT topic rule to send data to an Amazon Kinesis Data Firehose delivery stream connected to an Amazon S3 bucket.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
-const { IotToKinesisFirehoseToS3Props, IotToKinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-iot-kinesisfirehose-s3';
+import { IotToKinesisFirehoseToS3Props, IotToKinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-iot-kinesisfirehose-s3';
 
 const props: IotToKinesisFirehoseToS3Props = {
     iotTopicRuleProps: {
@@ -41,20 +42,28 @@ const props: IotToKinesisFirehoseToS3Props = {
 };
 
 new IotToKinesisFirehoseToS3(this, 'test-iot-firehose-s3', props);
-
 ```
 
-## Initializer
+Python
+```python
+from aws_solutions_constructs.aws_iot_kinesisfirehose_s3 import IotToKinesisFirehoseToS3Props, IotToKinesisFirehoseToS3
+from aws_cdk import (
+    aws_iot as iot
+)
+props = IotToKinesisFirehoseToS3Props(
+    iot_topic_rule_props=iot.CfnTopicRuleProps(
+        topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
+            rule_disabled=False,
+            description="Persistent storage of connected vehicle telematics data",
+            sql="SELECT * FROM 'connectedcar/telemetry/#'",
+            actions=[]
+        )
+    )
+)
 
-``` text
-new IotToKinesisFirehoseToS3(scope: Construct, id: string, props: IotToKinesisFirehoseToS3Props);
+IotToKinesisFirehoseToS3(self, 'test_iot_firehose_s3', props)
 ```
 
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`IotToKinesisFirehoseToS3Props`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

@@ -24,10 +24,12 @@
 
 This AWS Solutions Construct implements an AWS IoT topic rule, an AWS Lambda function and Amazon DynamoDB table with the least privileged permissions.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
-const { IotToLambdaToDynamoDBProps,  IotToLambdaToDynamoDB } from '@aws-solutions-constructs/aws-iot-lambda-dynamodb';
+import { IotToLambdaToDynamoDBProps, IotToLambdaToDynamoDB } from '@aws-solutions-constructs/aws-iot-lambda-dynamodb';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 const props: IotToLambdaToDynamoDBProps = {
     lambdaFunctionProps: {
@@ -46,20 +48,34 @@ const props: IotToLambdaToDynamoDBProps = {
 };
 
 new IotToLambdaToDynamoDB(this, 'test-iot-lambda-dynamodb-stack', props);
-
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_iot_dynamodb import IotToDynamoDBProps, IotToDynamoDB
+from aws_cdk import (
+    aws_iot as iot,
+    aws_lambda as _lambda
+)
+props = IotToDynamoDBProps(
+    lambda_function_props=_lambda.FunctionProps(
+        code=_lambda.Code.from_asset('lambda'),
+        runtime=_lambda.Runtime.PYTHON_3_9,
+        handler='index.handler'
+    ),
+    iot_topic_rule_props=iot.CfnTopicRuleProps(
+        topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
+            rule_disabled=False,
+            description="Processing of DTC messages from the AWS Connected Vehicle Solution.",
+            sql="SELECT * FROM 'connectedcar/dtc/#'",
+            actions=[]
+        )
+    )
+)
 
-``` text
-new IotToLambdaToDynamoDB(scope: Construct, id: string, props: IotToLambdaToDynamoDBProps);
+IotToDynamoDB(self, 'test_iot_lambda', props)
+
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`IotToLambdaToDynamoDBProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

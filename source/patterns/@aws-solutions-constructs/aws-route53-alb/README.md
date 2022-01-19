@@ -24,8 +24,9 @@
 
 This AWS Solutions Construct implements an Amazon Route53 Hosted Zone routing to an Application Load Balancer
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
 import { Route53ToAlb } from '@aws-solutions-constructs/aws-route53-alb';
 
@@ -35,20 +36,21 @@ new Route53ToAlb(this, 'Route53ToAlbPattern', {
   }
   publicApi: false,
 });
-
 ```
 
-## Initializer
+Python
+```python
+from typing_extensions import Self
+from aws_solutions_constructs.aws_route53_alb import Route53ToAlb
+from aws_cdk import aws_route53 as route53
 
-``` text
-new Route53ToAlb(scope: Construct, id: string, props: Route53ToAlbProps);
+Route53ToAlb(self, 'Route53ToAlbPattern',
+             private_hosted_zone_props=route53.PrivateHostedZoneProps(
+                 zone_name='www.example.com',
+             )
+             public_api=False,
+             )
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`Route53ToAlbProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

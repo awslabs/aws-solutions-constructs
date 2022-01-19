@@ -22,26 +22,23 @@
 
 This AWS Solutions Construct implements an Amazon API Gateway connected to an Amazon Kinesis Data Stream pattern.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
-``` javascript
+Typescript
+``` typescript
 import { ApiGatewayToKinesisStreams, ApiGatewayToKinesisStreamsProps } from '@aws-solutions-constructs/aws-apigateway-kinesisstreams';
 
 new ApiGatewayToKinesisStreams(this, 'test-apigw-kinesis', {});
+```
+
+Python
+``` python
+from aws_solutions_constructs.aws_apigateway_kinesisstreams import ApiGatewayToKinesisStreams
+
+ApiGatewayToKinesisStreams(self, 'test-apigw-kinesis')
 
 ```
 
-## Initializer
-
-``` text
-new ApiGatewayToKinesisStreams(scope: Construct, id: string, props: ApiGatewayToKinesisStreamsProps);
-```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`ApiGatewayToKinesisStreamsProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

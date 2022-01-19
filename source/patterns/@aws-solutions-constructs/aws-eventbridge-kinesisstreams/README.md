@@ -24,32 +24,36 @@
 
 This AWS Solutions Construct implements an Amazon EventBridge rule to send data to an Amazon Kinesis Data Stream
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-import * as cdk from '@aws-cdk/core';
-import {EventbridgeToKinesisStreams, EventbridgeToKinesisStreamsProps} from "@aws-solutions-constructs/aws-eventbridge-kinesisstreams";
+import { EventbridgeToKinesisStreams, EventbridgeToKinesisStreamsProps } from "@aws-solutions-constructs/aws-eventbridge-kinesisstreams";
+import * as events from 'aws-cdk-lib/aws-events';
+import { Duration } from 'aws-cdk-lib';
 
 const props: EventbridgeToKinesisStreamsProps = {
     eventRuleProps: {
-      schedule: events.Schedule.rate(Duration.minutes(5)),
+        schedule: events.Schedule.rate(Duration.minutes(5)),
     }
 };
 
 new EventbridgeToKinesisStreams(this, 'test-eventbridge-kinesis-streams', props);
 ```
 
-## Initializer
+Python
+``` Python
+from aws_solutions_constructs.aws_eventbridge_kinesisstreams import EventbridgeToKinesisStreams, EventbridgeToKinesisStreamsProps
+from aws_cdk import aws_events as events, core as cdk
 
-``` text
-new EventbridgeToKinesisStreams(scope: Construct, id: string, props: EventbridgeToKinesisStreamsProps);
+props = EventbridgeToKinesisStreamsProps(
+    event_rule_props=events.RuleProps(
+        schedule=events.Schedule.rate(cdk.Duration.minutes(5)),
+    )
+)
+
+EventbridgeToKinesisStreams(self, 'test-eventbridge-kinesis-streams', props)
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`EventbridgeToKinesisStreamsProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

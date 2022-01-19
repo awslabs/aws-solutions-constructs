@@ -24,10 +24,11 @@
 
 This AWS Solutions Construct implements an AWS IoT MQTT topic rule and an Amazon S3 Bucket pattern.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-const { IotToS3Props, IotToS3 } from '@aws-solutions-constructs/aws-iot-s3';
+import { IotToS3Props, IotToS3 } from '@aws-solutions-constructs/aws-iot-s3';
 
 const props: IotToS3Props = {
     iotTopicRuleProps: {
@@ -43,17 +44,27 @@ const props: IotToS3Props = {
 new IotToS3(this, 'test-iot-s3-integration', props);
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_iot_s3 import IotToS3Props, IotToS3
+from aws_cdk import (
+    aws_iot as iot,
+)
+props = IotToS3Props(
+    iot_topic_rule_props=iot.CfnTopicRuleProps(
+        topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
+            rule_disabled=False,
+            description="Testing the IotToS3 Pattern",
+            sql="SELECT * FROM 'solutions/constructs'",
+            actions=[]
+        )
+    )
+)
 
-``` text
-new IotToS3(scope: Construct, id: string, props: IotToS3Props);
+IotToS3(self, 'test_iot_s3', props)
+
 ```
 
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`IotToS3Props`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

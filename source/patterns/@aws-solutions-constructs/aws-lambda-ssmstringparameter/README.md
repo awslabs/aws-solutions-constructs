@@ -24,10 +24,12 @@
 
 This AWS Solutions Construct implements the AWS Lambda function and AWS Systems Manager Parameter Store String parameter with the least privileged permissions.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
-const { LambdaToSsmstringparameterProps,  LambdaToSsmstringparameter } from '@aws-solutions-constructs/aws-lambda-ssmstringparameter';
+import { LambdaToSsmstringparameterProps,  LambdaToSsmstringparameter } from '@aws-solutions-constructs/aws-lambda-ssmstringparameter';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 const props: LambdaToSsmstringparameterProps = {
     lambdaFunctionProps: {
@@ -35,25 +37,32 @@ const props: LambdaToSsmstringparameterProps = {
       // This assumes a handler function in lib/lambda/index.js
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       handler: 'index.handler'
-    }, 
+    },
     stringParameterProps: { stringValue: "test-string-value" }
 };
 
 new LambdaToSsmstringparameter(this, 'test-lambda-ssmstringparameter-stack', props);
-
 ```
 
-## Initializer
+Python
+```python
+from aws_solutions_constructs.aws_lambda_ssmstringparameter import LambdaToSsmstringparameter
+from aws_cdk import (
+    aws_lambda as _lambda,
+    aws_ssm as ssm
+)
 
-``` text
-new LambdaToSsmstringparameter(scope: Construct, id: string, props: LambdaToSsmstringparameterProps);
+LambdaToSsmstringparameter(
+    self, 'test-lambda-ssmstringparameter-stack',
+    lambda_function_props=_lambda.FunctionProps(
+        code=_lambda.Code.from_asset('{__dirname}/producer_lambda'),
+        runtime=_lambda.Runtime.PYTHON_3_9,
+        handler='index.handler'
+    ),
+    string_parameter_props=ssm.StringParameterProps(
+        string_value="test-string-value")
+)
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`LambdaToSsmstringparameterProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

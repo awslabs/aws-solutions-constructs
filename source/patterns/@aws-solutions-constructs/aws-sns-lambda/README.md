@@ -20,10 +20,12 @@
 
 This AWS Solutions Construct implements an Amazon SNS connected to an AWS Lambda function.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
 import { SnsToLambda, SnsToLambdaProps } from "@aws-solutions-constructs/aws-sns-lambda";
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 new SnsToLambda(this, 'test-sns-lambda', {
     lambdaFunctionProps: {
@@ -32,20 +34,21 @@ new SnsToLambda(this, 'test-sns-lambda', {
         code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }
 });
+```
+Python
+```python
+from aws_solutions_constructs.aws_sns_lambda import SnsToLambda
+from aws_cdk import aws_lambda as _lambda
+
+SnsToLambda(self, 'test_sns_lambda',
+            lambda_function_props=_lambda.FunctionProps(
+                code=_lambda.Code.from_asset('{__dirname}/lambda'),
+                runtime=_lambda.Runtime.PYTHON_3_9,
+                handler='index.handler'
+            )
+            )
 
 ```
-
-## Initializer
-
-``` text
-new SnsToLambda(scope: Construct, id: string, props: SnsToLambdaProps);
-```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`SnsToLambdaProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

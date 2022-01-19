@@ -20,26 +20,21 @@
 
 This AWS Solutions Construct implements an Amazon Kinesis Data Stream (KDS) connected to Amazon Kinesis Data Firehose (KDF) delivery stream connected to an Amazon S3 bucket.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
 import { KinesisStreamsToKinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-kinesisstreams-kinesisfirehose-s3';
 
 new KinesisStreamsToKinesisFirehoseToS3(this, 'test-stream-firehose-s3', {});
-
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_kinesisstreams_kinesisfirehose_s3 import KinesisStreamsToKinesisFirehoseToS3
 
-``` text
-new KinesisStreamsToKinesisFirehoseToS3(scope: Construct, id: string, props: KinesisStreamsToKinesisFirehoseToS3Props);
+KinesisStreamsToKinesisFirehoseToS3(self, 'test_stream_firehose_s3')
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`KinesisStreamsToKinesisFirehoseToS3Props`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

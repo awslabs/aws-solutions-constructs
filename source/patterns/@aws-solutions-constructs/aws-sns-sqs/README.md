@@ -24,8 +24,9 @@
 
 This AWS Solutions Construct implements an Amazon SNS topic connected to an Amazon SQS queue.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
 import { SnsToSqs, SnsToSqsProps } from "@aws-solutions-constructs/aws-sns-sqs";
 import * as iam from '@aws-cdk/aws-iam';
@@ -41,20 +42,25 @@ const policyStatement = new iam.PolicyStatement({
 });
 
 snsToSqsStack.encryptionKey?.addToResourcePolicy(policyStatement);
-
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_sns_lambda import SnsToSqs
+from aws_cdk import aws_iam as iam
 
-``` text
-new SnsToSqs(scope: Construct, id: string, props: SnsToSqsProps);
+
+construct_stack = SnsToSqs(self, 'SnsToSqsPattern')
+
+policy_statement = iam.PolicyStatement(
+    actions=["kms:Encrypt", "kms:Decrypt"],
+    effect=iam.Effect.ALLOW,
+    principals=[iam.AccountRootPrincipal()],
+    resources=["*"]
+)
+
+construct_stack.encryption_key.add_to_resource_policy(policy_statement)
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`SnsToSqsProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

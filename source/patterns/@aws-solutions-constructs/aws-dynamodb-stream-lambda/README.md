@@ -21,10 +21,12 @@
 
 This AWS Solutions Construct implements a pattern Amazon DynamoDB table with stream to invoke the AWS Lambda function  with the least privileged permissions.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-import { DynamoDBStreamToLambdaProps,  DynamoDBStreamToLambda} from '@aws-solutions-constructs/aws-dynamodb-stream-lambda';
+import { DynamoDBStreamToLambdaProps, DynamoDBStreamToLambda } from '@aws-solutions-constructs/aws-dynamodb-stream-lambda';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 new DynamoDBStreamToLambda(this, 'test-dynamodb-stream-lambda', {
     lambdaFunctionProps: {
@@ -33,20 +35,22 @@ new DynamoDBStreamToLambda(this, 'test-dynamodb-stream-lambda', {
         handler: 'index.handler'
     },
 });
-
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_dynamodb_stream_lambda import DynamoDBStreamToLambda
+from aws_cdk import aws_lambda as _lambda
 
-``` text
-new DynamoDBStreamToLambda(scope: Construct, id: string, props: DynamoDBStreamToLambdaProps);
+DynamoDBStreamToLambda(self, 'test-dynamodb-stream-lambda',
+                       lambda_function_props=_lambda.FunctionProps(
+                           code=_lambda.Code.from_asset('lambda'),
+                           runtime=_lambda.Runtime.PYTHON_3_9,
+                           handler='index.handler'
+                       )
+                       )
+
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`DynamoDBStreamToLambdaProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

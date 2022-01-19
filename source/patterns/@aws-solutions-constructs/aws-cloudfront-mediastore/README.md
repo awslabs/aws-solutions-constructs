@@ -22,26 +22,19 @@
 ## Overview
 This AWS Solutions Construct implements an Amazon CloudFront distribution to an AWS Elemental MediaStore container.
 
-Here is a minimal deployable pattern definition in TypeScript:
+Here is a minimal deployable pattern definition:
 
 ``` typescript
 import { CloudFrontToMediaStore } from '@aws-solutions-constructs/aws-cloudfront-mediastore';
 
 new CloudFrontToMediaStore(this, 'test-cloudfront-mediastore-default', {});
-
 ```
 
-## Initializer
+``` python
+from aws_solutions_constructs.aws_cloudfront_mediastore import CloudFrontToMediaStore
 
-``` text
-new CloudFrontToMediaStore(scope: Construct, id: string, props: CloudFrontToMediaStoreProps);
+CloudFrontToMediaStore(self, 'test-cloudfront-mediastore-default')
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`CloudFrontToMediaStoreProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

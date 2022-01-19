@@ -24,12 +24,13 @@
 
 This AWS Solutions Construct implements an Amazon Kinesis Firehose delivery stream connected to an Amazon S3 bucket, and an Amazon Kinesis Analytics application.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
 const { KinesisFirehoseToAnalyticsAndS3 } from '@aws-solutions-constructs/aws-kinesisfirehose-s3-and-kinesisanalytics';
 
-new KinesisFirehoseToAnalyticsAndS3(this, 'FirehoseToS3AndAnalyticsPattern', {
+import KinesisFirehoseToAnalyticsAndS3(this, 'FirehoseToS3AndAnalyticsPattern', {
     kinesisAnalyticsProps: {
         inputs: [{
             inputSchema: {
@@ -59,20 +60,44 @@ new KinesisFirehoseToAnalyticsAndS3(this, 'FirehoseToS3AndAnalyticsPattern', {
         }]
     }
 });
-
 ```
 
-## Initializer
+Python
+```python
+from aws_solutions_constructs.aws_kinesisfirehose_s3_and_kinesisanalytics import KinesisFirehoseToAnalyticsAndS3
+from aws_cdk import aws_kinesisanalytics as kinesisanalytics
 
-``` text
-new KinesisFirehoseToAnalyticsAndS3(scope: Construct, id: string, props: KinesisFirehoseToAnalyticsAndS3Props);
+KinesisFirehoseToAnalyticsAndS3(self, 'FirehoseToS3AndAnalyticsPattern',
+                                kinesis_analytics_props=kinesisanalytics.CfnApplicationProps(
+                                    inputs=[kinesisanalytics.CfnApplication.InputProperty(
+                                        input_schema=kinesisanalytics.CfnApplication.InputSchemaProperty(
+                                            record_columns=[kinesisanalytics.CfnApplication.RecordColumnProperty(
+                                                name='ticker_symbol',
+                                                sql_type='VARCHAR(4)',
+                                                mapping='$.ticker_symbol'
+                                            ), kinesisanalytics.CfnApplication.RecordColumnProperty(
+                                                name='sector',
+                                                sql_type='VARCHAR(16)',
+                                                mapping='$.sector'
+                                            ), kinesisanalytics.CfnApplication.RecordColumnProperty(
+                                                name='change',
+                                                sql_type='REAL',
+                                                mapping='$.change'
+                                            ), kinesisanalytics.CfnApplication.RecordColumnProperty(
+                                                name='price',
+                                                sql_type='REAL',
+                                                mapping='$.price'
+                                            )],
+                                            record_format=kinesisanalytics.CfnApplication.RecordFormatProperty(
+                                                record_format_type='JSON'
+                                            ),
+                                            record_encoding='UTF_8'
+                                        ),
+                                        name_prefix='SOURCE_SQL_STREAM'
+                                    )]
+                                )
+                                )
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`KinesisFirehoseToAnalyticsAndS3Props`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

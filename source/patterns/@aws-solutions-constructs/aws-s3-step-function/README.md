@@ -26,13 +26,14 @@ This AWS Solutions Construct implements an Amazon S3 bucket connected to an AWS 
 
 *An alternative architecture can be built that triggers a Lambda function from S3 Event notifications using aws-s3-lambda and aws-lambda-stepfunctions. Channelling the S3 events through Lambda is less flexible than EventBridge, but is more cost effective and has lower latency.*
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
 import { S3ToStepFunction, S3ToStepFunctionProps } from '@aws-solutions-constructs/aws-s3-step-function';
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
 
-const startState = new stepfunctions.Pass(stack, 'StartState');
+const startState = new stepfunctions.Pass(this, 'StartState');
 
 new S3ToStepFunction(this, 'test-s3-step-function-stack', {
     stateMachineProps: {
@@ -41,17 +42,19 @@ new S3ToStepFunction(this, 'test-s3-step-function-stack', {
 });
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_s3_step_function import S3ToStepFunction
+from aws_cdk import aws_stepfunctions as stepfunctions
 
-``` text
-new S3ToStepFunction(scope: Construct, id: string, props: S3ToStepFunctionProps);
+start_state = stepfunctions.Pass(self, 'start_state')
+
+S3ToStepFunction(
+    self, 'test_s3_step_function_stack',
+    state_machine_props=stepfunctions.StateMachineProps(
+        definition=start_state)
+)
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`S3ToStepFunctionProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

@@ -21,44 +21,61 @@
 
 This AWS Solutions Construct implements an AWS Events rule and an AWS SNS Topic.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
 import { Duration } from '@aws-cdk/core';
 import * as events from '@aws-cdk/aws-events';
 import * as iam from '@aws-cdk/aws-iam';
-import { EventsRuleToSnsProps, EventsRuleToSns } from "@aws-solutions-constructs/aws-events-rule-sns";
+import { EventRulesToSnsProps, EventRulesToSns } from "@aws-solutions-constructs/aws-events-rule-sns";
 
-const props: EventsRuleToSnsProps = {
+const props: EventRulesToSnsProps = {
     eventRuleProps: {
-      schedule: events.Schedule.rate(Duration.minutes(5)),
+        schedule: events.Schedule.rate(Duration.minutes(5)),
     }
 };
 
-const constructStack = new EventsRuleToSns(this, 'test-construct', props);
+const constructStack = new EventRulesToSns(this, 'test-construct', props);
 
 // Grant yourself permissions to use the Customer Managed KMS Key
 const policyStatement = new iam.PolicyStatement({
     actions: ["kms:Encrypt", "kms:Decrypt"],
     effect: iam.Effect.ALLOW,
-    principals: [ new iam.AccountRootPrincipal() ],
-    resources: [ "*" ]
+    principals: [new iam.AccountRootPrincipal()],
+    resources: ["*"]
 });
 
 constructStack.encryptionKey?.addToResourcePolicy(policyStatement);
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_event_rules_sns import EventRulesToSns, EventRulesToSnsProps
+from aws_cdk import (
+    aws_events as events,
+    aws_iam as iam
+)
 
-``` text
-new EventsRuleToSns(scope: Construct, id: string, props: EventsRuleToSnsProps);
+props = EventRulesToSnsProps(
+    event_rule_props=events.RuleProps(
+        schedule=events.Schedule.rate(Duration.minutes(5))
+    )
+)
+
+
+construct_stack = EventRulesToSns(self, 'test-construct', props)
+
+# Grant yourself permissions to use the Customer Managed KMS Key
+policy_statement = iam.PolicyStatement(
+    actions=["kms:Encrypt", "kms:Decrypt"],
+    effect=iam.Effect.ALLOW,
+    principals=[iam.AccountRootPrincipal()],
+    resources=["*"]
+)
+
+construct_stack.encryption_key.add_to_resource_policy(policy_statement)
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`EventsRuleToSnsProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

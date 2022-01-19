@@ -26,8 +26,9 @@
 ## Overview
 This AWS Solutions Construct implements an AWS WAF web ACL connected to Amazon CloudFront.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
 import { CloudFrontToS3 } from '@aws-solutions-constructs/aws-cloudfront-s3';
 import { WafwebaclToCloudFront } from "@aws-solutions-constructs/aws-wafwebacl-cloudfront";
@@ -40,17 +41,18 @@ new WafwebaclToCloudFront(this, 'test-wafwebacl-cloudfront', {
 });
 ```
 
-## Initializer
+Python
+```python
+from aws_solutions_constructs.aws_cloudfront_s3 import CloudFrontToS3
+from aws_solutions_constructs.aws_wafwebacl_cloudfront import WafwebaclToCloudFront
 
-``` text
-new WafwebaclToCloudFront(scope: Construct, id: string, props: WafwebaclToCloudFrontProps);
+cloudfront_to_s3 = CloudFrontToS3(self, 'test_cloudfront_s3')
+
+# This construct can only be attached to a configured CloudFront.
+WafwebaclToCloudFront(self, 'test_wafwebacl_cloudfront',
+                      existing_cloud_front_web_distribution=cloudfront_to_s3.cloud_front_web_distribution
+                      )
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`WafwebaclToCloudFrontProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 
@@ -81,7 +83,7 @@ Out of the box implementation of the Construct without any override will set the
     * AWSManagedRulesAdminProtectionRuleSet
     * AWSManagedRulesSQLiRuleSet
 
-    *Note that the default rules can be replaced by specifying the rules property of CfnWebACLProps* 
+    *Note that the default rules can be replaced by specifying the rules property of CfnWebACLProps*
 * Send metrics to Amazon CloudWatch
 
 ### Amazon CloudFront

@@ -20,10 +20,12 @@
 
 This AWS Solutions Construct implements an Amazon SQS queue connected to an AWS Lambda function.
 
-Here is a minimal deployable pattern definition in Typescipr:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
 import { SqsToLambda, SqsToLambdaProps } from "@aws-solutions-constructs/aws-sqs-lambda";
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 new SqsToLambda(this, 'SqsToLambdaPattern', {
   lambdaFunctionProps: {
@@ -32,20 +34,22 @@ new SqsToLambda(this, 'SqsToLambdaPattern', {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   }
 });
-
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_sqs_lambda import SqsToLambda
+from aws_cdk import aws_lambda as _lambda
 
-``` text
-new SqsToLambda(scope: Construct, id: string, props: SqsToLambdaProps);
+
+SqsToLambda(self, 'SnsToSqsPattern',
+            lambda_function_props=_lambda.FunctionProps(
+                code=_lambda.Code.from_asset('{__dirname}/lambda'),
+                runtime=_lambda.Runtime.PYTHON_3_9,
+                handler='index.handler'
+            )
+            )
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`SqsToLambdaProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

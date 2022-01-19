@@ -20,8 +20,9 @@
 
 This AWS Solutions Construct implements an AWS CloudFront fronting an Amazon API Gateway Lambda backed REST API.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
 import { CloudFrontToApiGatewayToLambda } from '@aws-solutions-constructs/aws-cloudfront-apigateway-lambda';
 
@@ -34,17 +35,19 @@ new CloudFrontToApiGatewayToLambda(this, 'test-cloudfront-apigateway-lambda', {
 });
 ```
 
-## Initializer
+Python
+``` python
+import aws_solutions_constructs.aws_cloudfront_apigateway_lambda as cf_api_lambda
 
-``` text
-new CloudFrontToApiGatewayToLambda(scope: Construct, id: string, props: CloudFrontToApiGatewayToLambdaProps);
+cf_api_lambda.CloudFrontToApiGatewayToLambda(self, 'test-cloudfront-apigateway-lambda',
+    lambda_function_props=_lambda.FunctionProps(
+      code=_lambda.Code.fromAsset('lambda'),
+      runtime=_lambda.Runtime.PYTHON_3_9,
+      handler='index.handler'
+    )
+  )
 ```
 
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`CloudFrontToApiGatewayToLambdaProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

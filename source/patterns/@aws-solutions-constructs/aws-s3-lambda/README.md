@@ -20,8 +20,9 @@
 
 This AWS Solutions Construct implements an Amazon S3 bucket connected to an AWS Lambda function.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
 import { S3ToLambdaProps, S3ToLambda } from '@aws-solutions-constructs/aws-s3-lambda';
 
@@ -32,20 +33,21 @@ new S3ToLambda(this, 'test-s3-lambda', {
         handler: 'index.handler'
     },
 });
-
 ```
 
-## Initializer
+Python
+```python
+from aws_solutions_constructs.aws_s3_lambda import S3ToLambda
+from aws_cdk import aws_lambda as _lambda
 
-``` text
-new S3ToLambda(scope: Construct, id: string, props: S3ToLambdaProps);
+S3ToLambda(self, 'test_s3_lambda',
+           lambda_function_props=_lambda.FunctionProps(
+               code=_lambda.Code.from_asset('{__dirname}/lambda'),
+               runtime=_lambda.Runtime.PYTHON_3_9,
+               handler='index.handler'
+           )
+           )
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`S3ToLambdaProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

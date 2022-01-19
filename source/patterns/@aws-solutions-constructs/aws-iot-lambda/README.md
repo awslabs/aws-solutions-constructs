@@ -24,8 +24,9 @@
 
 This AWS Solutions Construct implements an AWS IoT MQTT topic rule and an AWS Lambda function pattern.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
 const { IotToLambdaProps, IotToLambda } from '@aws-solutions-constructs/aws-iot-lambda';
 
@@ -48,17 +49,32 @@ const props: IotToLambdaProps = {
 new IotToLambda(this, 'test-iot-lambda-integration', props);
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_iot_lambda import IotToLambdaProps, IotToLambda
+from aws_cdk import (
+    aws_iot as iot,
+    aws_lambda as _lambda
+)
+props = IotToLambdaProps(
+    lambda_function_props=_lambda.FunctionProps(
+        code=_lambda.Code.from_asset('lambda'),
+        runtime=_lambda.Runtime.PYTHON_3_9,
+        handler='index.handler'
+    ),
+    iot_topic_rule_props=iot.CfnTopicRuleProps(
+        topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
+            rule_disabled=False,
+            description="Sends data to kinesis data stream",
+            sql="SELECT * FROM 'solutions/construct'",
+            actions=[]
+        )
+    )
+)
 
-``` text
-new IotToLambda(scope: Construct, id: string, props: IotToLambdaProps);
+IotToLambda(self, 'test_iot_lambda', props)
 ```
 
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`IotToLambdaProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

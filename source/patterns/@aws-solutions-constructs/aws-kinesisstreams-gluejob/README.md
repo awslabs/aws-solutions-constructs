@@ -27,12 +27,13 @@
 
 This AWS Solutions Construct deploys a Kinesis Stream and configures a AWS Glue Job to perform custom ETL transformation with the appropriate resources/properties for interaction and security. It also creates an S3 bucket where the python script for the AWS Glue Job can be uploaded.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ```javascript
 import * as glue from '@aws-cdk/aws-glue';
 import * as s3assets from '@aws-cdk/aws-s3-assets';
-import {KinesisstreamsToGluejob} from '@aws-solutions-constructs/aws-kinesisstreams-gluejob';
+import { KinesisstreamsToGluejob } from '@aws-solutions-constructs/aws-kinesisstreams-gluejob';
 
 const fieldSchema: glue.CfnTable.ColumnProperty[] = [
     {
@@ -71,17 +72,52 @@ const customEtlJob = new KinesisstreamsToGluejob(this, 'CustomETL', {
 });
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_kinesisstreams_gluejob import KinesisstreamsToGluejob
+from aws_cdk import (
+    aws_glue as glue,
+    aws_s3_assets as s3assets
+)
 
-```text
-new KinesisstreamsToGluejob(scope: Construct, id: string, props: KinesisstreamsToGluejobProps);
+field_schema = [
+    glue.CfnTable.ColumnProperty(
+        name='id',
+        type='int',
+        comment='Identifier for the record',
+    ),
+    glue.CfnTable.ColumnProperty(
+        name='name',
+        type='string',
+        comment='Name for the record',
+    ),
+    glue.CfnTable.ColumnProperty(
+        name='address',
+        type='string',
+        comment='Address for the record',
+    ),
+    glue.CfnTable.ColumnProperty(
+        name='value',
+        type='int',
+        comment='Value for the record',
+    ),
+]
+
+customEtlJob = KinesisstreamsToGluejob(self, 'CustomETL',
+                                       glue_job_props=glue.CfnJobProps(
+                                           command=glue.CfnJob.JobCommandProperty(
+                                               name='gluestreaming',
+                                               python_version='3',
+                                               scriptLocation=s3assets.Asset(self, 'ScriptLocation',
+                                                                             path='{__dirname}/../etl/transform.py',
+                                                                             ).s3ObjectUrl
+                                           ),
+                                       ),
+                                       fieldSchema=fieldSchema,
+                                       )
+
 ```
 
-_Parameters_
-
--   scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
--   id `string`
--   props [`KinesisstreamsToGluejobProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

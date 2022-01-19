@@ -22,33 +22,39 @@
 
 This AWS Solutions Construct implements an Amazon CloudWatch Events rule to send data to an Amazon Kinesis Data Firehose delivery stream connected to an Amazon S3 bucket.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
-``` javascript
-import * as cdk from '@aws-cdk/core';
+Typescript
+``` typescript
 import { EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props } from '@aws-solutions-constructs/aws-events-rule-kinesisfirehose-s3';
+import * as events from 'aws-cdk-lib/aws-events';
+import { Duration } from 'aws-cdk-lib';
 
 const eventsRuleToKinesisFirehoseToS3Props: EventsRuleToKinesisFirehoseToS3Props = {
     eventRuleProps: {
-    schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+        schedule: events.Schedule.rate(Duration.minutes(5))
     }
 };
 
 new EventsRuleToKinesisFirehoseToS3(this, 'test-events-rule-firehose-s3', eventsRuleToKinesisFirehoseToS3Props);
-
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_events_rule_kinesisfirehose_s3 import EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props
+from aws_cdk import (
+    aws_events as events,
+    Duration
+)
 
-``` text
-new EventsRuleToKinesisFirehoseToS3(scope: Construct, id: string, props: EventsRuleToKinesisFirehoseToS3Props);
+props = EventsRuleToKinesisFirehoseToS3Props(
+    event_rule_props=events.RuleProps(
+        schedule=events.Schedule.rate(Duration.minutes(5))
+    )
+)
+
+EventsRuleToKinesisFirehoseToS3(self, 'test_events_rule_firehose_s3', props)
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`EventsRuleToKinesisFirehoseToS3Props`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

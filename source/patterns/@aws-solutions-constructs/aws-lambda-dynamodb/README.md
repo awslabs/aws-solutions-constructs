@@ -20,10 +20,12 @@
 
 This AWS Solutions Construct implements the AWS Lambda function and Amazon DynamoDB table with the least privileged permissions.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
-const { LambdaToDynamoDBProps,  LambdaToDynamoDB } from '@aws-solutions-constructs/aws-lambda-dynamodb';
+import { LambdaToDynamoDBProps, LambdaToDynamoDB } from '@aws-solutions-constructs/aws-lambda-dynamodb';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
@@ -34,20 +36,24 @@ const props: LambdaToDynamoDBProps = {
 };
 
 new LambdaToDynamoDB(this, 'test-lambda-dynamodb-stack', props);
-
 ```
 
-## Initializer
+Python
+```python
+from aws_solutions_constructs.aws_lambda_dynamodb import LambdaToDynamoDBProps, LambdaToDynamoDB
+from aws_cdk import aws_lambda as _lambda
 
-``` text
-new LambdaToDynamoDB(scope: Construct, id: string, props: LambdaToDynamoDBProps);
+props = LambdaToDynamoDBProps(
+    lambda_function_props=_lambda.FunctionProps(
+        code=_lambda.Code.from_asset('{__dirname}/lambda'),
+        runtime=_lambda.Runtime.PYTHON_3_9,
+        handler='index.handler'
+    )
+)
+
+LambdaToDynamoDB(self, 'test_lambda_dynamodb_stack', props)
+
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`LambdaToDynamoDBProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

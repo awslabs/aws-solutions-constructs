@@ -28,8 +28,9 @@
 
 This AWS Solutions Construct implements an AWS Lambda function connected to an Amazon Sagemaker Endpoint.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ```typescript
 import { Duration } from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
@@ -57,18 +58,34 @@ const constructProps: LambdaToSagemakerEndpointProps = {
 new LambdaToSagemakerEndpoint(this, 'LambdaToSagemakerEndpointPattern', constructProps);
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_lambda_sagemakerendpoint import LambdaToSagemakerEndpoint, LambdaToSagemakerEndpointProps
+from aws_cdk import (
+    aws_lambda as _lambda,
+    aws_sagemaker as sagemaker,
+    Duration
+)
 
-```text
-new LambdaToSagemakerEndpoint(scope: Construct, id: string, props: LambdaToSagemakerEndpointProps);
+construct_props = LambdaToSagemakerEndpointProps(
+    model_props=sagemaker.CfnModelProps(
+        primary_container=sagemaker.CfnModel.ContainerDefinitionProperty(
+            image='<AccountId>.dkr.ecr.<region>.amazonaws.com/linear_learner:latest',
+            model_data_url='s3://<bucket_name>/<prefix>/model.tar.gz'
+        ),
+    ),
+    lambda_function_props=_lambda.FunctionProps(
+        code=_lambda.Code.from_asset('{__dirname}/lambda'),
+        runtime=_lambda.Runtime.PYTHON_3_9,
+        handler='index.handler',
+        timeout=Duration.minutes(5),
+        memory_size=128
+    )
+)
+
+LambdaToSagemakerEndpoint(
+    self, 'LambdaToSagemakerEndpointPattern', constructProps)
 ```
-
-_Parameters_
-
-- scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-- id `string`
-- props [`LambdaToSagemakerEndpointProps`](#pattern-construct-props)
-
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

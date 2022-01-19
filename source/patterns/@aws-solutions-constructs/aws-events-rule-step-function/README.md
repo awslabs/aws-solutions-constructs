@@ -22,37 +22,51 @@
 
 This AWS Solutions Construct implements an AWS Events rule and an AWS Step function.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
-const { EventsRuleToStepFunction, EventsRuleToStepFunctionProps } from '@aws-solutions-constructs/aws-events-rule-step-function';
+import { EventRulesToStepFunction, EventRulesToStepFunctionProps } from '@aws-solutions-constructs/aws-event-rules-step-function';
+import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
+import * as events from 'aws-cdk-lib/aws-events';
+import { Duration } from 'aws-cdk-lib';
 
 const startState = new stepfunctions.Pass(this, 'StartState');
 
-const props: EventsRuleToStepFunctionProps = {
+const props: EventRulesToStepFunctionProps = {
     stateMachineProps: {
-      definition: startState
+        definition: startState
     },
     eventRuleProps: {
-      schedule: events.Schedule.rate(Duration.minutes(5))
+        schedule: events.Schedule.rate(Duration.minutes(5))
     }
 };
 
-new EventsRuleToStepFunction(stack, 'test-events-rule-step-function-stack', props);
+new EventRulesToStepFunction(this, 'test-event-rules-step-function-stack', props);
 ```
 
-## Initializer
+Python
+``` Python
+from aws_solutions_constructs.aws_event_rules_step_function import EventRulesToStepFunction, EventRulesToStepFunctionProps
+from aws_cdk import (
+    aws_stepfunctions as stepfunctions,
+    aws_events as events,
+    Duration
+)
 
-``` text
-new EventsRuleToStepFunction(scope: Construct, id: string, props: EventsRuleToStepFunctionProps);
+startState = stepfunctions.Pass(self, 'StartState')
+
+props = EventRulesToStepFunctionProps(
+    state_machine_props=stepfunctions.StateMachineProps(
+        definition=startState
+    ),
+    evnet_rule_props=events.RuleProps(
+        schedule=events.Schedule.rate(Duration.minutes(5))
+    )
+)
+
+EventRulesToStepFunction(self, 'test-eventbridge-stepfunctions-stack', props)
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`EventsRuleToStepFunctionProps`](#pattern-construct-props)
-
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

@@ -24,10 +24,12 @@
 
 This AWS Solutions Construct implements (1) an AWS Lambda function that is configured to send messages to a queue; (2) an Amazon SQS queue; and (3) an AWS Lambda function configured to consume messages from the queue.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
 import { LambdaToSqsToLambda, LambdaToSqsToLambdaProps } from "@aws-solutions-constructs/aws-lambda-sqs-lambda";
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 new LambdaToSqsToLambda(this, 'LambdaToSqsToLambdaPattern', {
   producerLambdaFunctionProps: {
@@ -41,20 +43,29 @@ new LambdaToSqsToLambda(this, 'LambdaToSqsToLambdaPattern', {
     code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`)
   }
 });
-
 ```
 
-## Initializer
+Python
+```python
+from aws_solutions_constructs.aws_lambda_sqs_lambda import LambdaToSqsToLambda
+from aws_cdk import (
+    aws_lambda as _lambda,
+)
 
-``` text
-new LambdaToSqsToLambda(scope: Construct, id: string, props: LambdaToSqsToLambdaProps);
+LambdaToSqsToLambda(
+    self, 'test-lambda-sqs-lambs-stack',
+    producer_lambda_function_props=_lambda.FunctionProps(
+        code=_lambda.Code.from_asset('{__dirname}/producer-lambda'),
+        runtime=_lambda.Runtime.PYTHON_3_9,
+        handler='index.handler'
+    ),
+    consumer_lambda_function_props=_lambda.FunctionProps(
+        code=_lambda.Code.from_asset('{__dirname}/consumer-lambda'),
+        runtime=_lambda.Runtime.PYTHON_3_9,
+        handler='index.handler'
+    )
+)
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`LambdaToSqsToLambdaProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

@@ -22,10 +22,12 @@
 
 This AWS Solutions Construct implements an Amazon API Gateway REST API connected to an AWS Lambda function pattern.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
 import { ApiGatewayToLambda } from '@aws-solutions-constructs/aws-apigateway-lambda';
+import * as lambda from 'aws-cdk-lib/aws-lamba';
 
 new ApiGatewayToLambda(this, 'ApiGatewayToLambdaPattern', {
     lambdaFunctionProps: {
@@ -34,20 +36,22 @@ new ApiGatewayToLambda(this, 'ApiGatewayToLambdaPattern', {
         code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }
 });
-
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_apigateway_lambda import ApiGatewayToLambda
+from aws_cdk import aws_lambda as _lambda
 
-``` text
-new ApiGatewayToLambda(scope: Construct, id: string, props: ApiGatewayToLambdaProps);
+ApiGatewayToLambda(self, 'ApiGatewayToLambdaPattern',
+                   lambdaFunctionProps=_lambda.FunctionProps(
+                       runtime=_lambda.Runtime.PYTHON_3_9,
+                       handler='index.handler',
+                       code=_lambda.Code.from_asset('lambda')
+                   )
+                   )
+
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`ApiGatewayToLambdaProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

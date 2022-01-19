@@ -24,11 +24,11 @@
 
 This AWS Solutions Construct implements an AWS IoT MQTT topic rule to send data to an Amazon Kinesis Data Stream.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-const { IotToKinesisStreamsProps,
-        IotToKinesisStreams } from '@aws-solutions-constructs/aws-iot-kinesisstreams';
+import { IotToKinesisStreamsProps, IotToKinesisStreams } from '@aws-solutions-constructs/aws-iot-kinesisstreams';
 
 const props: IotToKinesisStreamsProps = {
     iotTopicRuleProps: {
@@ -42,20 +42,28 @@ const props: IotToKinesisStreamsProps = {
 };
 
 new IotToKinesisStreams(this, 'test-iot-kinesisstream', props);
-
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_iot_kinesisstreams import IotToKinesisStreamsProps, IotToKinesisStreams
+from aws_cdk import (
+    aws_iot as iot
+)
+props = IotToKinesisStreamsProps(
+    iot_topic_rule_props=iot.CfnTopicRuleProps(
+        topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
+            rule_disabled=False,
+            description="Sends data to kinesis data stream",
+            sql="SELECT * FROM 'solutions/construct'",
+            actions=[]
+        )
+    )
+)
 
-``` text
-new IotToKinesisStreams(scope: Construct, id: string, props: IotToKinesisStreamsProps);
+IotToKinesisStreams(self, 'test_iot_firehose_s3', props)
+
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`IotToKinesisStreamsProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 
