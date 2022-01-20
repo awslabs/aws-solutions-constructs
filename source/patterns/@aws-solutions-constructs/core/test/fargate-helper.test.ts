@@ -19,8 +19,6 @@ import * as ecs from "@aws-cdk/aws-ecs";
 import * as ecr from "@aws-cdk/aws-ecr";
 import '@aws-cdk/assert/jest';
 
-export const fakeEcrRepoArn = 'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo';
-
 test('Test with all defaults', () => {
   const stack = new Stack();
 
@@ -29,7 +27,7 @@ test('Test with all defaults', () => {
     'test',
     testVpc,
     undefined,
-    fakeEcrRepoArn);
+    defaults.fakeEcrRepoArn);
 
   expect(stack).toHaveResource("AWS::ECS::Service", {
     Cluster: {
@@ -108,7 +106,7 @@ test('Test with all defaults in isolated VPC', () => {
     'test',
     testVpc,
     undefined,
-    fakeEcrRepoArn);
+    defaults.fakeEcrRepoArn);
 
   expect(stack).toHaveResource("AWS::ECS::Service", {
     Cluster: {
@@ -220,7 +218,7 @@ test('Test with custom container definition', () => {
     'test',
     testVpc,
     undefined,
-    fakeEcrRepoArn,
+    defaults.fakeEcrRepoArn,
     undefined,
     { cpu: 256, memoryLimitMiB: 512  }
   );
@@ -240,7 +238,7 @@ test('Test with custom cluster props', () => {
     'test',
     testVpc,
     { clusterName },
-    fakeEcrRepoArn,
+    defaults.fakeEcrRepoArn,
     undefined,
   );
 
@@ -258,7 +256,7 @@ test('Test with custom Fargate Service props', () => {
     'test',
     testVpc,
     undefined,
-    fakeEcrRepoArn,
+    defaults.fakeEcrRepoArn,
     undefined,
     undefined,
     undefined,
@@ -287,7 +285,7 @@ test('Test with custom security group', () => {
     'test',
     testVpc,
     undefined,
-    fakeEcrRepoArn,
+    defaults.fakeEcrRepoArn,
     undefined,
     undefined,
     undefined,

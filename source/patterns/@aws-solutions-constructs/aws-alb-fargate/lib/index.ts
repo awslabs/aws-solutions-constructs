@@ -175,7 +175,7 @@ export class AlbToFargate extends Construct {
       existingVpc: props.existingVpc,
       defaultVpcProps: props.publicApi ? defaults.DefaultPublicPrivateVpcProps() : defaults.DefaultIsolatedVpcProps(),
       userVpcProps: props.vpcProps,
-      constructVpcProps: props.publicApi ? {} : { enableDnsHostnames: true, enableDnsSupport: true }
+      constructVpcProps: { enableDnsHostnames: true, enableDnsSupport: true }
     });
 
     // Set up the ALB
