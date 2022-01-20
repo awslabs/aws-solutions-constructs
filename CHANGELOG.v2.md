@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.1.0...v2.2.0) (2022-01-20)
+
+
+### Features
+
+* **aws-fargate-sns:** New Construct ([#574](https://github.com/awslabs/aws-solutions-constructs/issues/574)) ([5c86f3a](https://github.com/awslabs/aws-solutions-constructs/commit/5c86f3a711c45c8991b66369b7b5054d5e9229e1))
+* **aws-route53-apigateway:** New Construct ([#511](https://github.com/awslabs/aws-solutions-constructs/issues/511)) ([81129dd](https://github.com/awslabs/aws-solutions-constructs/commit/81129ddfaebe198d10c2264feea95dae92205ab7))
+
 ## [2.1.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.0.0...v2.1.0) (2022-01-11)
 
 ### Features
