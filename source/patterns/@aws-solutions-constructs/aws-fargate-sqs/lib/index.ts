@@ -1,0 +1,212 @@
+/**
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
+ *  with the License. A copy of the License is located at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  or in the 'license' file accompanying this file. This file is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES
+ *  OR CONDITIONS OF ANY KIND, express or implied. See the License for the specific language governing permissions
+ *  and limitations under the License.
+ */
+
+import * as ec2 from "@aws-cdk/aws-ec2";
+import * as sqs from "@aws-cdk/aws-sqs";
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
+import { Construct } from "@aws-cdk/core";
+import * as defaults from "@aws-solutions-constructs/core";
+import * as ecs from "@aws-cdk/aws-ecs";
+
+export interface FargateToSqsProps {
+  /**
+   * Optional custom properties for a VPC the construct will create. This VPC will
+   * be used by the new Fargate service the construct creates (that's
+   * why targetGroupProps can't include a VPC). Providing
+   * both this and existingVpc is an error. An SQS Interface
+   * endpoint will be included in this VPC.
+   *
+   * @default - none
+   */
+  readonly vpcProps?: ec2.VpcProps;
+  /**
+   * An existing VPC in which to deploy the construct. Providing both this and
+   * vpcProps is an error. If the client provides an existing Fargate service,
+   * this value must be the VPC where the service is running. An SQS Interface
+   * endpoint will be added to this VPC.
+   *
+   * @default - none
+   */
+  readonly existingVpc?: ec2.IVpc;
+  /**
+   * Whether the construct is deploying a private or public API. This has implications for the VPC deployed
+   * by this construct.
+   *
+   * @default - none
+   */
+  readonly publicApi: boolean;
+  /**
+   * Optional properties to create a new ECS cluster
+   */
+  readonly clusterProps?: ecs.ClusterProps;
+  /**
+   * The arn of an ECR Repository containing the image to use
+   * to generate the containers
+   *
+   * format:
+   *   arn:aws:ecr:[region]:[account number]:repository/[Repository Name]
+   */
+  readonly ecrRepositoryArn?: string;
+  /**
+   * The version of the image to use from the repository
+   *
+   * @default - 'latest'
+   */
+  readonly ecrImageVersion?: string;
+  /*
+   * Optional props to define the container created for the Fargate Service
+   *
+   * defaults - fargate-defaults.ts
+   */
+  readonly containerDefinitionProps?: ecs.ContainerDefinitionProps | any;
+  /*
+   * Optional props to define the Fargate Task Definition for this construct
+   *
+   * defaults - fargate-defaults.ts
+   */
+  readonly fargateTaskDefinitionProps?: ecs.FargateTaskDefinitionProps | any;
+  /**
+   * Optional values to override default Fargate Task definition properties
+   * (fargate-defaults.ts). The construct will default to launching the service
+   * is the most isolated subnets available (precedence: Isolated, Private and
+   * Public). Override those and other defaults here.
+   *
+   * defaults - fargate-defaults.ts
+   */
+  readonly fargateServiceProps?: ecs.FargateServiceProps | any;
+  /**
+   * A Fargate Service already instantiated (probably by another Solutions Construct). If
+   * this is specified, then no props defining a new service can be provided, including:
+   * existingImageObject, ecrImageVersion, containerDefintionProps, fargateTaskDefinitionProps,
+   * ecrRepositoryArn, fargateServiceProps, clusterProps, existingClusterInterface. If this value
+   * is provided, then existingContainerDefinitionObject must be provided as well.
+   *
+   * @default - none
+   */
+  readonly existingFargateServiceObject?: ecs.FargateService;
+  /*
+   * A container definition already instantiated as part of a Fargate service. This must
+   * be the container in the existingFargateServiceObject.
+   *
+   * @default - None
+   */
+  readonly existingContainerDefinitionObject?: ecs.ContainerDefinition;
+  /**
+   * Existing instance of SQS queue object, Providing both this and queueProps will cause an error.
+   *
+   * @default - Default props are used
+   */
+  readonly existingQueueObj?: sqs.Queue;
+  /**
+   * Optional user-provided props to override the default props for the SQS queue.
+   *
+   * @default - Default props are used
+   */
+  readonly queueProps?: sqs.QueueProps;
+  /**
+   * Optional user provided properties for the dead letter queue
+   *
+   * @default - Default props are used
+   */
+  readonly deadLetterQueueProps?: sqs.QueueProps;
+  /**
+   * Whether to deploy a secondary queue to be used as a dead letter queue.
+   *
+   * @default - true.
+   */
+  readonly deployDeadLetterQueue?: boolean;
+  /**
+   * The number of times a message can be unsuccessfully dequeued before being moved to the dead-letter queue.
+   *
+   * @default - required field if deployDeadLetterQueue=true.
+   */
+  readonly maxReceiveCount?: number;
+  /**
+   * Optional Name for the SQS queue ARN environment variable to set for the container.
+   *
+   * @default - None
+   */
+   readonly queueArnEnvironmentVariableName?: string;
+  /**
+   * Optional Name for the SQS queue name environment variable to set for the container.
+   *
+   * @default - None
+   */
+  readonly queueEnvironmentVariableName?: string;
+}
+
+export class FargateToSqs extends Construct {
+  public readonly sqsQueue: sqs.Queue;
+  public readonly deadLetterQueue?: sqs.DeadLetterQueue;
+  public readonly service: ecs.FargateService;
+  public readonly vpc: ec2.IVpc;
+  public readonly container: ecs.ContainerDefinition;
+
+  constructor(scope: Construct, id: string, props: FargateToSqsProps) {
+    super(scope, id);
+    defaults.CheckProps(props);
+    defaults.CheckFargateProps(props);
+
+    this.vpc = defaults.buildVpc(scope, {
+      existingVpc: props.existingVpc,
+      defaultVpcProps: props.publicApi ? defaults.DefaultPublicPrivateVpcProps() : defaults.DefaultIsolatedVpcProps(),
+      userVpcProps: props.vpcProps,
+      constructVpcProps: { enableDnsHostnames: true, enableDnsSupport: true }
+    });
+
+    defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.SQS);
+
+    if (props.existingFargateServiceObject) {
+      this.service = props.existingFargateServiceObject;
+      // CheckFargateProps confirms that the container is provided
+      this.container = props.existingContainerDefinitionObject!;
+    } else {
+      [this.service, this.container] = defaults.CreateFargateService(
+        scope,
+        id,
+        this.vpc,
+        props.clusterProps,
+        props.ecrRepositoryArn,
+        props.ecrImageVersion,
+        props.fargateTaskDefinitionProps,
+        props.containerDefinitionProps,
+        props.fargateServiceProps
+      );
+    }
+
+    // Setup the dead letter queue, if applicable
+    this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
+      existingQueueObj: props.existingQueueObj,
+      deployDeadLetterQueue: props.deployDeadLetterQueue,
+      deadLetterQueueProps: props.deadLetterQueueProps,
+      maxReceiveCount: props.maxReceiveCount
+    });
+
+    // Setup the SQS topic
+    [this.sqsQueue] = defaults.buildQueue(this, `${id}-queue`, {
+      queueProps: props.queueProps,
+      deadLetterQueue: this.deadLetterQueue,
+      existingQueueObj: props.existingQueueObj,
+    });
+
+    // Enable message send and receive permissions for Fargate service by default
+    this.sqsQueue.grantSendMessages(this.service.taskDefinition.taskRole);
+    this.sqsQueue.grantConsumeMessages(this.service.taskDefinition.taskRole);
+
+    // Setting environment variables
+    const topicArnEnvironmentVariableName = props.queueArnEnvironmentVariableName || 'SQS_QUEUE_ARN';
+    this.container.addEnvironment(topicArnEnvironmentVariableName, this.sqsQueue.queueArn);
+    const topicNameEnvironmentVariableName = props.queueEnvironmentVariableName || 'SQS_QUEUE_URL';
+    this.container.addEnvironment(topicNameEnvironmentVariableName, this.sqsQueue.queueUrl);
+  }
+}
