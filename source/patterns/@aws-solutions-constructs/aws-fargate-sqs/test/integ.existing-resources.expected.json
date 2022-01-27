@@ -792,6 +792,7 @@
     "testqueueA58C838B": {
       "Type": "AWS::SQS::Queue",
       "Properties": {
+        "KmsMasterKeyId": "alias/aws/sqs",
         "QueueName": "existing-resource-queue"
       },
       "UpdateReplacePolicy": "Delete",

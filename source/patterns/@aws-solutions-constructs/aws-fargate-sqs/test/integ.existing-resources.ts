@@ -27,7 +27,8 @@ stack.templateOptions.description = 'Integration Test with new VPC, Service and 
 
 const existingVpc = getTestVpc(stack);
 const existingQueue = new sqs.Queue(stack, 'test-queue', {
-  queueName: 'existing-resource-queue'
+  queueName: 'existing-resource-queue',
+  encryption: sqs.QueueEncryption.KMS_MANAGED
 });
 
 const image = ecs.ContainerImage.fromRegistry('nginx');
