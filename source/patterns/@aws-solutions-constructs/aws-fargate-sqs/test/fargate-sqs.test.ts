@@ -212,7 +212,7 @@ test('Existing service/new queue, public API, existing VPC', () => {
     existingFargateServiceObject: testService,
     existingContainerDefinitionObject: testContainer,
     existingVpc,
-    queueEnvironmentVariableName: 'CUSTOM_NAME',
+    queueUrlEnvironmentVariableName: 'CUSTOM_NAME',
     queueArnEnvironmentVariableName: 'CUSTOM_ARN_NAME'
   });
 
