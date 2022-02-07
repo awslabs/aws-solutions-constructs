@@ -142,7 +142,7 @@ export interface FargateToSqsProps {
    *
    * @default - None
    */
-  readonly queueEnvironmentVariableName?: string;
+  readonly queueUrlEnvironmentVariableName?: string;
 }
 
 export class FargateToSqs extends Construct {
@@ -192,7 +192,7 @@ export class FargateToSqs extends Construct {
       maxReceiveCount: props.maxReceiveCount
     });
 
-    // Setup the SQS topic
+    // Setup the SQS Queue
     [this.sqsQueue] = defaults.buildQueue(this, `${id}-queue`, {
       queueProps: props.queueProps,
       deadLetterQueue: this.deadLetterQueue,
@@ -204,9 +204,9 @@ export class FargateToSqs extends Construct {
     this.sqsQueue.grantConsumeMessages(this.service.taskDefinition.taskRole);
 
     // Setting environment variables
-    const topicArnEnvironmentVariableName = props.queueArnEnvironmentVariableName || 'SQS_QUEUE_ARN';
-    this.container.addEnvironment(topicArnEnvironmentVariableName, this.sqsQueue.queueArn);
-    const topicNameEnvironmentVariableName = props.queueEnvironmentVariableName || 'SQS_QUEUE_URL';
-    this.container.addEnvironment(topicNameEnvironmentVariableName, this.sqsQueue.queueUrl);
+    const queueArnEnvironmentVariableName = props.queueArnEnvironmentVariableName || 'SQS_QUEUE_ARN';
+    this.container.addEnvironment(queueArnEnvironmentVariableName, this.sqsQueue.queueArn);
+    const queueUrlEnvironmentVariableName = props.queueUrlEnvironmentVariableName || 'SQS_QUEUE_URL';
+    this.container.addEnvironment(queueUrlEnvironmentVariableName, this.sqsQueue.queueUrl);
   }
 }

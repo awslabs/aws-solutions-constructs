@@ -65,7 +65,7 @@ new FargateToSqs(stack, 'test-construct', props);
 |deployDeadLetterQueue?|boolean|Whether to create a secondary queue to be used as a dead letter queue. Defaults to `true`.|
 |deadLetterQueueProps?|[sqs.QueueProps](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sqs.QueueProps.html)|Optional user-provided props to override the default props for the dead letter queue. Only used if the `deployDeadLetterQueue` property is set to true.|
 |maxReceiveCount?|integer|The number of times a message can be unsuccessfully dequeued before being moved to the dead letter queue. Defaults to `15`.|
-|queueEnvironmentVariableName?|string|Optional Name for the SQS queue name environment variable set for the container.|
+|queueUrlEnvironmentVariableName?|string|Optional Name for the SQS queue name environment variable set for the container.|
 
 ## Pattern Properties
 
