@@ -161,7 +161,7 @@ export class ApiGatewayToSqs extends Construct {
       createRequestTemplate = props.createRequestTemplate;
     }
 
-    if (props.allowCreateOperation && props.allowCreateOperation === true) {
+    if (props.allowCreateOperation === undefined || props.allowCreateOperation === true) {
       this.addActionToPolicy("sqs:SendMessage");
       defaults.addProxyMethodToApiResource({
         service: "sqs",
