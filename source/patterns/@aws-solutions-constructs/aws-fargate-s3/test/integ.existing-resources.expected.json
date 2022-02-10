@@ -762,7 +762,17 @@
     "testbucketE6E05ABE": {
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W35",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only."
+            }
+          ]
+        }
+      }
     },
     "existingresourcesECRAPIsecuritygroup78294485": {
       "Type": "AWS::EC2::SecurityGroup",

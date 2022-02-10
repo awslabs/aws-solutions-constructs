@@ -12,11 +12,12 @@
  */
 
 // Imports
-import { Aws, App, Stack } from "@aws-cdk/core";
+import { Aws, App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { FargateToS3, FargateToS3Props } from "../lib";
 import { generateIntegStackName, getTestVpc, CreateFargateService } from '@aws-solutions-constructs/core';
 import * as ecs from '@aws-cdk/aws-ecs';
 import * as s3 from '@aws-cdk/aws-s3';
+import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -26,7 +27,16 @@ const stack = new Stack(app, generateIntegStackName(__filename), {
 stack.templateOptions.description = 'Integration Test with new VPC, Service and Bucket';
 
 const existingVpc = getTestVpc(stack);
-const existingBucket = new s3.Bucket(stack, 'test-bucket', {});
+const existingBucket = new s3.Bucket(stack, 'test-bucket', {
+  removalPolicy: RemovalPolicy.RETAIN,
+});
+
+const s3Bucket = existingBucket as s3.Bucket;
+
+defaults.addCfnSuppressRules(s3Bucket, [
+  { id: 'W35',
+    reason: 'This S3 bucket is created for unit/ integration testing purposes only.' },
+]);
 
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
@@ -48,10 +58,14 @@ const testProps: FargateToS3Props = {
   existingFargateServiceObject: testService,
   bucketArnEnvironmentVariableName: 'CUSTOM_ARN',
   bucketEnvironmentVariableName: 'CUSTOM_NAME',
-  bucketPermissions: ['Delete', 'Put', 'ReadWrite']
+  bucketPermissions: ['Delete', 'Put', 'ReadWrite'],
+
 };
 
 new FargateToS3(stack, 'test-construct', testProps);
+
+
+
 
 // Synth
 app.synth();
