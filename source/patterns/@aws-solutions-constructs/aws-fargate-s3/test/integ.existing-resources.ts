@@ -64,8 +64,5 @@ const testProps: FargateToS3Props = {
 
 new FargateToS3(stack, 'test-construct', testProps);
 
-
-
-
 // Synth
 app.synth();
