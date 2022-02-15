@@ -30,13 +30,6 @@ Typescript
 ``` typescript
 import { FargateToSqs, FargateToSqsProps } from '@aws-solutions-constructs/aws-fargate-sqs';
 
-// Obtain a pre-existing certificate from your account
-const certificate = acm.Certificate.fromCertificateArn(
-    scope,
-    'existing-cert',
-    "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
-);
-
 const props: FargateToSqsProps = {
     publicApi: true,
     ecrRepositoryArn: "arn of a repo in ECR in your account",

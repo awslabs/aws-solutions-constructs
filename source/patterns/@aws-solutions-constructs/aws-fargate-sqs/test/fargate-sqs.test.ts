@@ -179,9 +179,13 @@ test('New service/existing fifo queue, private API, existing VPC', () => {
     QueueName: queueName,
     FifoQueue: true
   });
+
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
+
+  // Confirm we created an Isolated VPC
+  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
   expect(stack).toCountResources('AWS::EC2::VPC', 1);
   expect(stack).toCountResources('AWS::SQS::Queue', 1);
   expect(stack).toCountResources('AWS::ECS::Service', 1);
@@ -269,6 +273,9 @@ test('Existing service/new queue, public API, existing VPC', () => {
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
+
+  // Confirm we created a Public/Private VPC
+  expect(stack).toHaveResourceLike('AWS::EC2::InternetGateway', {});
   expect(stack).toCountResources('AWS::EC2::VPC', 1);
   expect(stack).toCountResources('AWS::SQS::Queue', 2);
   expect(stack).toCountResources('AWS::ECS::Service', 1);
@@ -363,6 +370,9 @@ test('Existing service/existing queue, private API, existing VPC', () => {
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
+
+  // Confirm we created an Isolated VPC
+  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
   expect(stack).toCountResources('AWS::EC2::VPC', 1);
   expect(stack).toCountResources('AWS::SQS::Queue', 1);
   expect(stack).toCountResources('AWS::ECS::Service', 1);
