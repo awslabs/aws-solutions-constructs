@@ -759,16 +759,38 @@
         "VpcEndpointType": "Gateway"
       }
     },
-    "testbucketE6E05ABE": {
+    "existingScriptLocation845F3C51": {
       "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
             {
+              "id": "W51",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
+            },
+            {
               "id": "W35",
-              "reason": "This S3 bucket is created for unit/ integration testing purposes only."
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
+            },
+            {
+              "id": "W41",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct"
             }
           ]
         }
@@ -924,7 +946,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "testbucketE6E05ABE",
+                        "existingScriptLocation845F3C51",
                         "Arn"
                       ]
                     },
@@ -945,7 +967,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "testbucketE6E05ABE",
+                        "existingScriptLocation845F3C51",
                         "Arn"
                       ]
                     },
@@ -967,7 +989,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "testbucketE6E05ABE",
+                    "existingScriptLocation845F3C51",
                     "Arn"
                   ]
                 },
@@ -977,7 +999,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "testbucketE6E05ABE",
+                          "existingScriptLocation845F3C51",
                           "Arn"
                         ]
                       },
@@ -1008,7 +1030,7 @@
                 "Name": "CUSTOM_ARN",
                 "Value": {
                   "Fn::GetAtt": [
-                    "testbucketE6E05ABE",
+                    "existingScriptLocation845F3C51",
                     "Arn"
                   ]
                 }
@@ -1016,7 +1038,7 @@
               {
                 "Name": "CUSTOM_NAME",
                 "Value": {
-                  "Ref": "testbucketE6E05ABE"
+                  "Ref": "existingScriptLocation845F3C51"
                 }
               }
             ],
