@@ -29,13 +29,6 @@ Here is a minimal deployable pattern definition in Typescript:
 ``` typescript
 import { FargateToS3, FargateToS3Props } from '@aws-solutions-constructs/aws-fargate-s3';
 
-// Obtain a pre-existing certificate from your account
-const certificate = acm.Certificate.fromCertificateArn(
-      scope,
-      'existing-cert',
-      "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
-    );
-
 const props: FargateToS3Props = {
   publicApi: true,
   ecrRepositoryArn: "arn of a repo in ECR in your account",

@@ -20,27 +20,32 @@ import * as ecs from '@aws-cdk/aws-ecs';
 
 test('New service/new bucket, public API, new VPC', () => {
   // An environment with region is required to enable logging on an ALB
-  const stack = new cdk.Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
+  const stack = new cdk.Stack();
   const publicApi = true;
   const clusterName = "custom-cluster-name";
   const containerName = "custom-container-name";
   const serviceName = "custom-service-name";
   const bucketName = "custom-bucket-name";
+  const familyName = "family-name";
 
-  new FargateToS3(stack, 'test-construct', {
+  const construct = new FargateToS3(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
     vpcProps: { cidr: '172.0.0.0/16' },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
-    fargateTaskDefinitionProps: { family: 'family-name' },
+    fargateTaskDefinitionProps: { family: familyName},
     fargateServiceProps: { serviceName },
     bucketProps: { bucketName },
     logS3AccessLogs: false,
     bucketPermissions: ['Delete', 'Put', 'Read', 'ReadWrite', 'Write']
   });
+
+  expect(construct.vpc !== null);
+  expect(construct.service !== null);
+  expect(construct.container !== null);
+  expect(construct.s3Bucket !== null);
+  expect(construct.s3BucketInterface !==  null);
 
   expect(stack).toHaveResourceLike("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
@@ -56,7 +61,7 @@ test('New service/new bucket, public API, new VPC', () => {
     ServiceName: serviceName
   });
   expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
-    Family: 'family-name'
+    Family: familyName
   });
 
   expect(stack).toHaveResourceLike("AWS::ECS::Cluster", {
@@ -108,15 +113,21 @@ test('New service/new bucket, public API, new VPC', () => {
 test('New service/new bucket, private API, new VPC', () => {
 
   // An environment with region is required to enable logging on an ALB
-  const stack = new cdk.Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
+  const stack = new cdk.Stack();
   const publicApi = false;
+  const bucketName = 'bucket-name';
+  const loggingBucketName = 'logging-bucket-name';
 
   new FargateToS3(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' }
+    vpcProps: { cidr: '172.0.0.0/16' },
+    bucketProps: {
+      bucketName
+    },
+    loggingBucketProps: {
+      bucketName: loggingBucketName
+    }
   });
 
   expect(stack).toHaveResourceLike("AWS::ECS::Service", {
@@ -130,6 +141,7 @@ test('New service/new bucket, private API, new VPC', () => {
   });
 
   expect(stack).toHaveResourceLike("AWS::S3::Bucket", {
+    BucketName: bucketName,
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [{
         ServerSideEncryptionByDefault: {
@@ -137,6 +149,10 @@ test('New service/new bucket, private API, new VPC', () => {
         }
       }]
     }
+  });
+
+  expect(stack).toHaveResourceLike("AWS::S3::Bucket", {
+    BucketName: loggingBucketName
   });
 
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
@@ -151,9 +167,7 @@ test('New service/new bucket, private API, new VPC', () => {
 
 test('New service/existing bucket, private API, existing VPC', () => {
   // An environment with region is required to enable logging on an ALB
-  const stack = new cdk.Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
+  const stack = new cdk.Stack();
   const publicApi = false;
   const bucketName = 'custom-bucket-name';
 
@@ -186,18 +200,22 @@ test('New service/existing bucket, private API, existing VPC', () => {
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
+  // Confirm we created an Isolated VPC
+  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
   expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::S3::Bucket', 1);
   expect(stack).toCountResources('AWS::ECS::Service', 1);
+  expect(stack).toCountResources('AWS::S3::Bucket', 1);
 });
 
 test('Existing service/new bucket, public API, existing VPC', () => {
   // An environment with region is required to enable logging on an ALB
-  const stack = new cdk.Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
+  const stack = new cdk.Stack();
   const publicApi = true;
   const serviceName = 'custom-name';
+  const customName = 'CUSTOM_NAME';
+  const customArn = 'CUSTOM_ARN';
+  const bucketName = 'bucket-name';
+  const loggingBucketName = 'logging-bucket-name';
 
   const existingVpc = defaults.getTestVpc(stack);
 
@@ -216,8 +234,14 @@ test('Existing service/new bucket, public API, existing VPC', () => {
     existingFargateServiceObject: testService,
     existingContainerDefinitionObject: testContainer,
     existingVpc,
-    bucketArnEnvironmentVariableName: 'CUSTOM_ARN',
-    bucketEnvironmentVariableName: 'CUSTOM_NAME',
+    bucketArnEnvironmentVariableName: customArn,
+    bucketEnvironmentVariableName: customName,
+    bucketProps: {
+      bucketName
+    },
+    loggingBucketProps: {
+      bucketName: loggingBucketName
+    }
   });
 
   expect(stack).toHaveResourceLike("AWS::ECS::Service", {
@@ -229,7 +253,7 @@ test('Existing service/new bucket, public API, existing VPC', () => {
       {
         Environment: [
           {
-            Name: 'CUSTOM_ARN',
+            Name: customArn,
             Value: {
               "Fn::GetAtt": [
                 "testconstructS3Bucket81E8552A",
@@ -238,7 +262,7 @@ test('Existing service/new bucket, public API, existing VPC', () => {
             }
           },
           {
-            Name: 'CUSTOM_NAME',
+            Name: customName,
             Value: {
               Ref: "testconstructS3Bucket81E8552A"
             }
@@ -268,22 +292,29 @@ test('Existing service/new bucket, public API, existing VPC', () => {
       }
     ]
   });
+
   expect(stack).toHaveResourceLike("AWS::S3::Bucket", {
+    BucketName: bucketName
   });
+
+  expect(stack).toHaveResourceLike("AWS::S3::Bucket", {
+    BucketName: loggingBucketName
+  });
+
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
+  // Confirm we created a Public/Private VPC
+  expect(stack).toHaveResourceLike('AWS::EC2::InternetGateway', {});
   expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::S3::Bucket', 2);
   expect(stack).toCountResources('AWS::ECS::Service', 1);
+  expect(stack).toCountResources('AWS::S3::Bucket', 2);
 });
 
 // Test existing service/existing bucket, private API, new VPC
 test('Existing service/existing bucket, private API, existing VPC', () => {
   // An environment with region is required to enable logging on an ALB
-  const stack = new cdk.Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
+  const stack = new cdk.Stack();
   const publicApi = false;
   const serviceName = 'custom-name';
   const bucketName = 'custom-bucket-name';
@@ -367,7 +398,9 @@ test('Existing service/existing bucket, private API, existing VPC', () => {
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
+  // Confirm we created an Isolated VPC
+  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
   expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::S3::Bucket', 1);
   expect(stack).toCountResources('AWS::ECS::Service', 1);
+  expect(stack).toCountResources('AWS::S3::Bucket', 1);
 });
