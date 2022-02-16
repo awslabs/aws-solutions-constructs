@@ -21,24 +21,27 @@ import * as ecs from '@aws-cdk/aws-ecs';
 test('New service/new queue, dlq, public API, new VPC', () => {
 
   // An environment with region is required to enable logging on an ALB
-  const stack = new cdk.Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
+  const stack = new cdk.Stack();
   const publicApi = true;
   const clusterName = "custom-cluster-name";
   const containerName = "custom-container-name";
   const serviceName = "custom-service-name";
   const queueName = "custom-queue-name";
+  const familyName = "family-name";
+  const deadLetterQueueName = "dlqQueue";
 
-  new FargateToSqs(stack, 'test-construct', {
+  const construct = new FargateToSqs(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
     vpcProps: { cidr: '172.0.0.0/16' },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
-    fargateTaskDefinitionProps: { family: 'family-name' },
+    fargateTaskDefinitionProps: { family: familyName},
     fargateServiceProps: { serviceName },
     queueProps: { queueName },
+    deadLetterQueueProps: {
+      queueName: deadLetterQueueName
+    }
   });
 
   expect(stack).toHaveResourceLike("AWS::ECS::Service", {
@@ -51,11 +54,17 @@ test('New service/new queue, dlq, public API, new VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
+  expect(construct.vpc !== null);
+  expect(construct.service !== null);
+  expect(construct.container !== null);
+  expect(construct.sqsQueue !== null);
+  expect(construct.deadLetterQueue !== null);
+
   expect(stack).toHaveResourceLike("AWS::ECS::Service", {
     ServiceName: serviceName
   });
   expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
-    Family: 'family-name'
+    Family: familyName
   });
 
   expect(stack).toHaveResourceLike("AWS::ECS::Cluster", {
@@ -64,6 +73,10 @@ test('New service/new queue, dlq, public API, new VPC', () => {
 
   expect(stack).toHaveResourceLike("AWS::SQS::Queue", {
     QueueName: queueName
+  });
+
+  expect(stack).toHaveResourceLike("AWS::SQS::Queue", {
+    QueueName: deadLetterQueueName
   });
 
   expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
@@ -107,9 +120,7 @@ test('New service/new queue, dlq, public API, new VPC', () => {
 test('New service/new queue, private API, new VPC', () => {
 
   // An environment with region is required to enable logging on an ALB
-  const stack = new cdk.Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
+  const stack = new cdk.Stack();
   const publicApi = false;
 
   new FargateToSqs(stack, 'test-construct', {
@@ -145,9 +156,7 @@ test('New service/new queue, private API, new VPC', () => {
 
 test('New service/existing fifo queue, private API, existing VPC', () => {
   // An environment with region is required to enable logging on an ALB
-  const stack = new cdk.Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
+  const stack = new cdk.Stack();
   const publicApi = false;
   const queueName = 'custom-queue-name.fifo';
 
@@ -193,11 +202,13 @@ test('New service/existing fifo queue, private API, existing VPC', () => {
 
 test('Existing service/new queue, public API, existing VPC', () => {
   // An environment with region is required to enable logging on an ALB
-  const stack = new cdk.Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
+  const stack = new cdk.Stack();
   const publicApi = true;
   const serviceName = 'custom-name';
+  const customVariableName = 'CUSTOM_NAME';
+  const customArnName = 'CUSTOM_ARN_NAME';
+  const queueName = 'testQueue';
+  const dlqName = 'dlqQueue';
 
   const existingVpc = defaults.getTestVpc(stack);
 
@@ -216,8 +227,14 @@ test('Existing service/new queue, public API, existing VPC', () => {
     existingFargateServiceObject: testService,
     existingContainerDefinitionObject: testContainer,
     existingVpc,
-    queueUrlEnvironmentVariableName: 'CUSTOM_NAME',
-    queueArnEnvironmentVariableName: 'CUSTOM_ARN_NAME'
+    queueUrlEnvironmentVariableName: customVariableName,
+    queueArnEnvironmentVariableName: customArnName,
+    queueProps: {
+      queueName
+    },
+    deadLetterQueueProps: {
+      queueName: dlqName
+    }
   });
 
   expect(stack).toHaveResourceLike("AWS::ECS::Service", {
@@ -229,7 +246,7 @@ test('Existing service/new queue, public API, existing VPC', () => {
       {
         Environment: [
           {
-            Name: "CUSTOM_ARN_NAME",
+            Name: customArnName,
             Value: {
               "Fn::GetAtt": [
                 "testconstructtestconstructqueue6D12C99B",
@@ -238,7 +255,7 @@ test('Existing service/new queue, public API, existing VPC', () => {
             }
           },
           {
-            Name: 'CUSTOM_NAME',
+            Name: customVariableName,
             Value: {
               Ref: "testconstructtestconstructqueue6D12C99B"
             }
@@ -269,7 +286,13 @@ test('Existing service/new queue, public API, existing VPC', () => {
     ]
   });
   expect(stack).toHaveResourceLike("AWS::SQS::Queue", {
+    QueueName: queueName
   });
+
+  expect(stack).toHaveResourceLike("AWS::SQS::Queue", {
+    QueueName: dlqName
+  });
+
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
@@ -284,9 +307,7 @@ test('Existing service/new queue, public API, existing VPC', () => {
 // Test existing service/existing queue, private API, new VPC
 test('Existing service/existing queue, private API, existing VPC', () => {
   // An environment with region is required to enable logging on an ALB
-  const stack = new cdk.Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
+  const stack = new cdk.Stack();
   const publicApi = false;
   const serviceName = 'custom-name';
   const queueName = 'custom-queue-name';
