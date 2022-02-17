@@ -50,6 +50,7 @@ const testProps: FargateToSqsProps = {
   existingContainerDefinitionObject: testContainer,
   existingFargateServiceObject: testService,
   queueUrlEnvironmentVariableName: 'CUSTOM_NAME',
+  queuePermissions: ['Write', 'Read']
 };
 
 new FargateToSqs(stack, 'test-construct', testProps);

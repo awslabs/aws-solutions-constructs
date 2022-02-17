@@ -1081,22 +1081,6 @@
                   "Arn"
                 ]
               }
-            },
-            {
-              "Action": [
-                "sqs:ReceiveMessage",
-                "sqs:ChangeMessageVisibility",
-                "sqs:GetQueueUrl",
-                "sqs:DeleteMessage",
-                "sqs:GetQueueAttributes"
-              ],
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "testconstructtestconstructqueue6D12C99B",
-                  "Arn"
-                ]
-              }
             }
           ],
           "Version": "2012-10-17"

@@ -34,7 +34,7 @@ const testProps: FargateToSqsProps = {
   queueProps: {
     fifo: true
   },
-  deployDeadLetterQueue: false
+  deployDeadLetterQueue: false,
 };
 
 new FargateToSqs(stack, 'test-construct', testProps);

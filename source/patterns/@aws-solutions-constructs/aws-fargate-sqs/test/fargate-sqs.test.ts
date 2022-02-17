@@ -36,12 +36,13 @@ test('New service/new queue, dlq, public API, new VPC', () => {
     vpcProps: { cidr: '172.0.0.0/16' },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
-    fargateTaskDefinitionProps: { family: familyName},
+    fargateTaskDefinitionProps: { family: familyName },
     fargateServiceProps: { serviceName },
     queueProps: { queueName },
     deadLetterQueueProps: {
       queueName: deadLetterQueueName
-    }
+    },
+    queuePermissions: ['Read', 'Write']
   });
 
   expect(stack).toHaveResourceLike("AWS::ECS::Service", {
@@ -110,6 +111,44 @@ test('New service/new queue, dlq, public API, new VPC', () => {
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
     CidrBlock: '172.0.0.0/16'
   });
+
+  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: [
+            "sqs:ReceiveMessage",
+            "sqs:ChangeMessageVisibility",
+            "sqs:GetQueueUrl",
+            "sqs:DeleteMessage",
+            "sqs:GetQueueAttributes"
+          ],
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              "testconstructtestconstructqueue6D12C99B",
+              "Arn"
+            ]
+          }
+        },
+        {
+          Action: [
+            "sqs:SendMessage",
+            "sqs:GetQueueAttributes",
+            "sqs:GetQueueUrl"
+          ],
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              "testconstructtestconstructqueue6D12C99B",
+              "Arn"
+            ]
+          }
+        },
+      ],
+    }
+  });
+
   // Confirm we created a Public/Private VPC
   expect(stack).toHaveResourceLike('AWS::EC2::InternetGateway', {});
   expect(stack).toCountResources('AWS::EC2::VPC', 1);
@@ -128,6 +167,7 @@ test('New service/new queue, private API, new VPC', () => {
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
     vpcProps: { cidr: '172.0.0.0/16' },
     deployDeadLetterQueue: false,
+    queuePermissions: ['Read']
   });
 
   expect(stack).toHaveResourceLike("AWS::ECS::Service", {
@@ -147,6 +187,30 @@ test('New service/new queue, private API, new VPC', () => {
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
     CidrBlock: '172.0.0.0/16'
   });
+
+  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: [
+            "sqs:ReceiveMessage",
+            "sqs:ChangeMessageVisibility",
+            "sqs:GetQueueUrl",
+            "sqs:DeleteMessage",
+            "sqs:GetQueueAttributes"
+          ],
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              "testconstructtestconstructqueue6D12C99B",
+              "Arn"
+            ]
+          }
+        }
+      ],
+    }
+  });
+
   // Confirm we created an Isolated VPC
   expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
   expect(stack).toCountResources('AWS::EC2::VPC', 1);
@@ -191,6 +255,27 @@ test('New service/existing fifo queue, private API, existing VPC', () => {
 
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
+  });
+
+  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: [
+            "sqs:SendMessage",
+            "sqs:GetQueueAttributes",
+            "sqs:GetQueueUrl"
+          ],
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              "MyQueueE6CA6235",
+              "Arn"
+            ]
+          }
+        },
+      ],
+    }
   });
 
   // Confirm we created an Isolated VPC

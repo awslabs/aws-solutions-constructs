@@ -136,13 +136,19 @@ export interface FargateToSqsProps {
    *
    * @default - None
    */
-   readonly queueArnEnvironmentVariableName?: string;
+  readonly queueArnEnvironmentVariableName?: string;
   /**
    * Optional Name for the SQS queue name environment variable to set for the container.
    *
    * @default - None
    */
   readonly queueUrlEnvironmentVariableName?: string;
+  /**
+   * Optional queue permissions to grant to the Fargate service. One or more of the following may be specified: `Read`,`Write`. Default is `Write`
+   *
+   * @default - Write
+   */
+  readonly queuePermissions?: string[];
 }
 
 export class FargateToSqs extends Construct {
@@ -200,8 +206,16 @@ export class FargateToSqs extends Construct {
     });
 
     // Enable message send and receive permissions for Fargate service by default
-    this.sqsQueue.grantSendMessages(this.service.taskDefinition.taskRole);
-    this.sqsQueue.grantConsumeMessages(this.service.taskDefinition.taskRole);
+    if (props.queuePermissions) {
+      if (props.queuePermissions.includes('Read')) {
+        this.sqsQueue.grantConsumeMessages(this.service.taskDefinition.taskRole);
+      }
+      if (props.queuePermissions.includes('Write')) {
+        this.sqsQueue.grantSendMessages(this.service.taskDefinition.taskRole);
+      }
+    } else {
+      this.sqsQueue.grantSendMessages(this.service.taskDefinition.taskRole);
+    }
 
     // Setting environment variables
     const queueArnEnvironmentVariableName = props.queueArnEnvironmentVariableName || 'SQS_QUEUE_ARN';
