@@ -120,10 +120,10 @@ export interface FargateToS3Props {
    */
   readonly logS3AccessLogs?: boolean;
   /**
-   * Optional bucket permissions to grant to the Lambda function.
+   * Optional bucket permissions to grant to the Fargate service.
    * One or more of the following may be specified: "Delete", "Put", "Read", "ReadWrite", "Write".
    *
-   * @default - Read/write access is given to the Lambda function if no value is specified.
+   * @default - Read/write access is given to the Fargate service if no value is specified.
    */
   readonly bucketPermissions?: string[];
   /**
@@ -208,14 +208,8 @@ export class FargateToS3 extends Construct {
       if (props.bucketPermissions.includes('Delete')) {
         bucket.grantDelete(this.service.taskDefinition.taskRole);
       }
-      if (props.bucketPermissions.includes('Put')) {
-        bucket.grantPut(this.service.taskDefinition.taskRole);
-      }
       if (props.bucketPermissions.includes('Read')) {
         bucket.grantRead(this.service.taskDefinition.taskRole);
-      }
-      if (props.bucketPermissions.includes('ReadWrite')) {
-        bucket.grantReadWrite(this.service.taskDefinition.taskRole);
       }
       if (props.bucketPermissions.includes('Write')) {
         bucket.grantWrite(this.service.taskDefinition.taskRole);

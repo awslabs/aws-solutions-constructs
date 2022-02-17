@@ -34,18 +34,18 @@ test('New service/new bucket, public API, new VPC', () => {
     vpcProps: { cidr: '172.0.0.0/16' },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
-    fargateTaskDefinitionProps: { family: familyName},
+    fargateTaskDefinitionProps: { family: familyName },
     fargateServiceProps: { serviceName },
     bucketProps: { bucketName },
     logS3AccessLogs: false,
-    bucketPermissions: ['Delete', 'Put', 'Read', 'ReadWrite', 'Write']
+    bucketPermissions: ['Delete', 'Read', 'Write']
   });
 
   expect(construct.vpc !== null);
   expect(construct.service !== null);
   expect(construct.container !== null);
   expect(construct.s3Bucket !== null);
-  expect(construct.s3BucketInterface !==  null);
+  expect(construct.s3BucketInterface !== null);
 
   expect(stack).toHaveResourceLike("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
@@ -70,6 +70,91 @@ test('New service/new bucket, public API, new VPC', () => {
 
   expect(stack).toHaveResourceLike("AWS::S3::Bucket", {
     BucketName: bucketName
+  });
+
+  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: "s3:DeleteObject*",
+          Effect: "Allow",
+          Resource: {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Fn::GetAtt": [
+                    "testconstructS3Bucket81E8552A",
+                    "Arn"
+                  ]
+                },
+                "/*"
+              ]
+            ]
+          }
+        },
+        {
+          Action: [
+            "s3:GetObject*",
+            "s3:GetBucket*",
+            "s3:List*"
+          ],
+          Effect: "Allow",
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                "testconstructS3Bucket81E8552A",
+                "Arn"
+              ]
+            },
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "testconstructS3Bucket81E8552A",
+                      "Arn"
+                    ]
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          Action: [
+            "s3:DeleteObject*",
+            "s3:PutObject*",
+            "s3:Abort*"
+          ],
+          Effect: "Allow",
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                "testconstructS3Bucket81E8552A",
+                "Arn"
+              ]
+            },
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "testconstructS3Bucket81E8552A",
+                      "Arn"
+                    ]
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    }
   });
 
   expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
@@ -103,6 +188,7 @@ test('New service/new bucket, public API, new VPC', () => {
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
     CidrBlock: '172.0.0.0/16'
   });
+
   // Confirm we created a Public/Private VPC
   expect(stack).toHaveResourceLike('AWS::EC2::InternetGateway', {});
   expect(stack).toCountResources('AWS::EC2::VPC', 1);
@@ -125,6 +211,7 @@ test('New service/new bucket, private API, new VPC', () => {
     bucketProps: {
       bucketName
     },
+    bucketPermissions: ['Write', 'Delete'],
     loggingBucketProps: {
       bucketName: loggingBucketName
     }
@@ -158,6 +245,62 @@ test('New service/new bucket, private API, new VPC', () => {
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
     CidrBlock: '172.0.0.0/16'
   });
+
+  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: "s3:DeleteObject*",
+          Effect: "Allow",
+          Resource: {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Fn::GetAtt": [
+                    "testconstructS3Bucket81E8552A",
+                    "Arn"
+                  ]
+                },
+                "/*"
+              ]
+            ]
+          }
+        },
+        {
+          Action: [
+            "s3:DeleteObject*",
+            "s3:PutObject*",
+            "s3:Abort*"
+          ],
+          Effect: "Allow",
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                "testconstructS3Bucket81E8552A",
+                "Arn"
+              ]
+            },
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "testconstructS3Bucket81E8552A",
+                      "Arn"
+                    ]
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  });
+
   // Confirm we created an Isolated VPC
   expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
   expect(stack).toCountResources('AWS::EC2::VPC', 1);
@@ -200,6 +343,47 @@ test('New service/existing bucket, private API, existing VPC', () => {
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
+
+  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: [
+            "s3:GetObject*",
+            "s3:GetBucket*",
+            "s3:List*",
+            "s3:DeleteObject*",
+            "s3:PutObject*",
+            "s3:Abort*"
+          ],
+          Effect: "Allow",
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                "MyBucketF68F3FF0",
+                "Arn"
+              ]
+            },
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "MyBucketF68F3FF0",
+                      "Arn"
+                    ]
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  });
+
   // Confirm we created an Isolated VPC
   expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
   expect(stack).toCountResources('AWS::EC2::VPC', 1);
@@ -304,6 +488,47 @@ test('Existing service/new bucket, public API, existing VPC', () => {
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
+
+  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: [
+            "s3:GetObject*",
+            "s3:GetBucket*",
+            "s3:List*",
+            "s3:DeleteObject*",
+            "s3:PutObject*",
+            "s3:Abort*"
+          ],
+          Effect: "Allow",
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                "testconstructS3Bucket81E8552A",
+                "Arn"
+              ]
+            },
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "testconstructS3Bucket81E8552A",
+                      "Arn"
+                    ]
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  });
+
   // Confirm we created a Public/Private VPC
   expect(stack).toHaveResourceLike('AWS::EC2::InternetGateway', {});
   expect(stack).toCountResources('AWS::EC2::VPC', 1);
@@ -340,7 +565,8 @@ test('Existing service/existing bucket, private API, existing VPC', () => {
     existingFargateServiceObject: testService,
     existingContainerDefinitionObject: testContainer,
     existingVpc,
-    existingBucketObj: existingBucket
+    existingBucketObj: existingBucket,
+    bucketPermissions: ['Write']
   });
 
   expect(stack).toHaveResourceLike("AWS::ECS::Service", {
@@ -398,6 +624,44 @@ test('Existing service/existing bucket, private API, existing VPC', () => {
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
+
+  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: [
+            "s3:DeleteObject*",
+            "s3:PutObject*",
+            "s3:Abort*"
+          ],
+          Effect: "Allow",
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                "MyBucketF68F3FF0",
+                "Arn"
+              ]
+            },
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "MyBucketF68F3FF0",
+                      "Arn"
+                    ]
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  });
+
   // Confirm we created an Isolated VPC
   expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
   expect(stack).toCountResources('AWS::EC2::VPC', 1);

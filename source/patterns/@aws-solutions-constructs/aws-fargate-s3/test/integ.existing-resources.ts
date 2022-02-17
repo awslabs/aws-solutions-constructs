@@ -47,7 +47,7 @@ const testProps: FargateToS3Props = {
   existingFargateServiceObject: testService,
   bucketArnEnvironmentVariableName: 'CUSTOM_ARN',
   bucketEnvironmentVariableName: 'CUSTOM_NAME',
-  bucketPermissions: ['Delete', 'Put', 'ReadWrite'],
+  bucketPermissions: ['Read', 'Write', 'Delete'],
 
 };
 
