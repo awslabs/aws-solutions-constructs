@@ -17,6 +17,7 @@ import * as s3 from "@aws-cdk/aws-s3";
 import { Construct } from "@aws-cdk/core";
 import * as defaults from "@aws-solutions-constructs/core";
 import * as ecs from "@aws-cdk/aws-ecs";
+import * as iam from "@aws-cdk/aws-iam";
 
 export interface FargateToS3Props {
   /**
@@ -211,11 +212,21 @@ export class FargateToS3 extends Construct {
       if (props.bucketPermissions.includes('Read')) {
         bucket.grantRead(this.service.taskDefinition.taskRole);
       }
+      // Sticking with legacy v1 permissions s3:PutObject* instead of CDK v2 s3:PutObject
+      // to prevent build failures for both versions
       if (props.bucketPermissions.includes('Write')) {
-        bucket.grantWrite(this.service.taskDefinition.taskRole);
+        this.service.taskDefinition.taskRole.addToPrincipalPolicy(new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          resources: [bucket.bucketArn, `${bucket.bucketArn}/*`],
+          actions: ['s3:DeleteObject*', 's3:PutObject*', 's3:Abort*']
+        }));
       }
     } else {
-      bucket.grantReadWrite(this.service.taskDefinition.taskRole);
+      this.service.taskDefinition.taskRole.addToPrincipalPolicy(new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        resources: [bucket.bucketArn, `${bucket.bucketArn}/*` ],
+        actions: ['s3:GetObject*', 's3:GetBucket*', 's3:List*', 's3:DeleteObject*', 's3:PutObject*', 's3:Abort*']
+      }));
     }
 
     // Add environment variables
