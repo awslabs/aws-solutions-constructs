@@ -27,7 +27,7 @@ import { SnsToLambda, SnsToLambdaProps } from "@aws-solutions-constructs/aws-sns
 
 new SnsToLambda(this, 'test-sns-lambda', {
     lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_12_X,
+        runtime: lambda.Runtime.NODEJS_14_X,
         handler: 'index.handler',
         code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }

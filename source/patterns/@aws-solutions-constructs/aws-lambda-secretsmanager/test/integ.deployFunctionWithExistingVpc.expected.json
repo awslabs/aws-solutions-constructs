@@ -611,7 +611,13 @@
     "VpcFlowLogLogGroup7B5C56B9": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "RetentionInDays": 731
+        "RetentionInDays": 731,
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "deployFunctionWithExistingVpc/Vpc"
+          }
+        ]
       },
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain",
@@ -857,7 +863,7 @@
           }
         },
         "Handler": "index.handler",
-        "Runtime": "nodejs10.x",
+        "Runtime": "nodejs14.x",
         "TracingConfig": {
           "Mode": "Active"
         },

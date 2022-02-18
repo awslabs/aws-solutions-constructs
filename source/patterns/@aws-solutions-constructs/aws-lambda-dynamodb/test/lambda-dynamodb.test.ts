@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -23,7 +23,7 @@ function deployNewFunc(stack: cdk.Stack) {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
   };
@@ -67,7 +67,7 @@ test('check lambda function properties for deploy: true', () => {
         "Arn"
       ]
     },
-    Runtime: "nodejs10.x",
+    Runtime: "nodejs14.x",
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
@@ -292,7 +292,7 @@ test('check for no prop', () => {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     }
   };
@@ -306,7 +306,7 @@ test('check for no prop', () => {
         "Arn"
       ]
     },
-    Runtime: "nodejs10.x",
+    Runtime: "nodejs14.x",
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
@@ -324,7 +324,7 @@ test('check lambda function policy ReadOnly table permissions', () => {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     tablePermissions: 'Read'
@@ -379,7 +379,7 @@ test('check lambda function policy WriteOnly table permissions', () => {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     tablePermissions: 'Write'
@@ -431,7 +431,7 @@ test('check lambda function policy ReadWrite table permissions', () => {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     tablePermissions: 'ReadWrite'
@@ -490,7 +490,7 @@ test('check lambda function policy All table permissions', () => {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     tablePermissions: 'All'
@@ -567,7 +567,7 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Helper declaration
   new LambdaToDynamoDB(stack, "lambda-to-dynamodb-stack", {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -617,7 +617,7 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Helper declaration
   new LambdaToDynamoDB(stack, "lambda-to-dynamodb-stack", {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -676,7 +676,7 @@ test("Test minimal deployment with an existing VPC", () => {
   // Helper declaration
   new LambdaToDynamoDB(stack, "lambda-to-dynamodb-stack", {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -720,7 +720,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   const stack = new cdk.Stack();
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lambda', {
-    runtime: lambda.Runtime.NODEJS_10_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -754,7 +754,7 @@ test("Test bad call with existingVpc and deployVpc", () => {
     // Helper declaration
     new LambdaToDynamoDB(stack, "lambda-to-dynamodb-stack", {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_10_X,
+        runtime: lambda.Runtime.NODEJS_14_X,
         handler: "index.handler",
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       },

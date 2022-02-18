@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -124,63 +124,15 @@ export class AlbToLambda extends Construct {
   constructor(scope: Construct, id: string, props: AlbToLambdaProps) {
     super(scope, id);
     defaults.CheckProps(props);
-
-    if (props.listenerProps?.certificateArns) {
-      throw new Error('certificateArns is deprecated. Please supply certificates using props.listenerProps.certificates');
-    }
-
-    if (
-      (props.existingLoadBalancerObj && (props.existingLoadBalancerObj.listeners.length === 0) || !props.existingLoadBalancerObj)
-      && !props.listenerProps
-    ) {
-      throw new Error(
-        "When adding the first listener and target to a load balancer, listenerProps must be specified and include at least a certificate or protocol: HTTP"
-      );
-    }
-
-    if (
-      ((props.existingLoadBalancerObj) && (props.existingLoadBalancerObj.listeners.length > 0)) &&
-      props.listenerProps
-    ) {
-      throw new Error(
-        "This load balancer already has a listener, listenerProps may not be specified"
-      );
-    }
-
-    if (((props.existingLoadBalancerObj) && (props.existingLoadBalancerObj.listeners.length > 0)) && !props.ruleProps) {
-      throw new Error(
-        "When adding a second target to an existing listener, there must be rules provided"
-      );
-    }
-
-    // Check construct specific invalid inputs
-    if (props.existingLoadBalancerObj && !props.existingVpc) {
-      throw new Error(
-        "An existing ALB already exists in a VPC, that VPC must be provided in props.existingVpc for the rest of the construct to use."
-      );
-    }
-
-    if ( props.existingLoadBalancerObj ) {
-      defaults.printWarning(
-        "The public/private property of an exisng ALB must match the props.publicApi setting provided."
-      );
-    }
+    defaults.CheckAlbProps(props);
 
     // Obtain VPC for construct (existing or created)
-    // Determine all the resources to use (existing or launch new)
-    if (props.existingVpc) {
-      this.vpc = props.existingVpc;
-    } else {
-      this.vpc = defaults.buildVpc(scope, {
-        defaultVpcProps: props.publicApi
-          ? defaults.DefaultPublicPrivateVpcProps()
-          : defaults.DefaultIsolatedVpcProps(),
-        userVpcProps: props.vpcProps,
-        constructVpcProps: props.publicApi
-          ? undefined
-          : { enableDnsHostnames: true, enableDnsSupport: true, },
-      });
-    }
+    this.vpc = defaults.buildVpc(scope, {
+      existingVpc: props.existingVpc,
+      defaultVpcProps: props.publicApi ? defaults.DefaultPublicPrivateVpcProps() : defaults.DefaultIsolatedVpcProps(),
+      userVpcProps: props.vpcProps,
+      constructVpcProps: props.publicApi ? {} : { enableDnsHostnames: true, enableDnsSupport: true }
+    });
 
     this.loadBalancer = defaults.ObtainAlb(
       this,
@@ -211,6 +163,7 @@ export class AlbToLambda extends Construct {
     if (newListener) {
       this.listener = defaults.AddListener(
         this,
+        id,
         this.loadBalancer,
         props.listenerProps
       );

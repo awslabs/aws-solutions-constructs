@@ -30,7 +30,7 @@ const startState = new stepfunctions.Pass(stack, 'StartState');
 
 new LambdaToStepfunctions(this, 'LambdaToStepfunctionsPattern', {
   lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   },

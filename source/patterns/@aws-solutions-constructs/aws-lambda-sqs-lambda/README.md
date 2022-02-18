@@ -31,12 +31,12 @@ import { LambdaToSqsToLambda, LambdaToSqsToLambdaProps } from "@aws-solutions-co
 
 new LambdaToSqsToLambda(this, 'LambdaToSqsToLambdaPattern', {
   producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`)
   },
   consumerLambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_12_X,
+    runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`)
   }

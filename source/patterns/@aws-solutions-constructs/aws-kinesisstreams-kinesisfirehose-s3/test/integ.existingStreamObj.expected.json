@@ -4,8 +4,8 @@
     "testkinesislambdaKinesisStream00F67958": {
       "Type": "AWS::Kinesis::Stream",
       "Properties": {
-        "ShardCount": 1,
         "RetentionPeriodHours": 24,
+        "ShardCount": 1,
         "StreamEncryption": {
           "EncryptionType": "KMS",
           "KeyId": "alias/aws/kinesis"
@@ -86,7 +86,9 @@
                 "kinesis:GetRecords",
                 "kinesis:GetShardIterator",
                 "kinesis:ListShards",
-                "kinesis:SubscribeToShard"
+                "kinesis:SubscribeToShard",
+                "kinesis:DescribeStream",
+                "kinesis:ListStreams"
               ],
               "Effect": "Allow",
               "Resource": {
@@ -381,7 +383,7 @@
         "PolicyDocument": {
           "Statement": [
             {
-              "Action": "*",
+              "Action": "s3:*",
               "Condition": {
                 "Bool": {
                   "aws:SecureTransport": "false"
@@ -392,6 +394,12 @@
                 "AWS": "*"
               },
               "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testexistingstreamfirehoses3stackKinesisFirehoseToS3S3BucketF4CE72AB",
+                    "Arn"
+                  ]
+                },
                 {
                   "Fn::Join": [
                     "",
@@ -405,15 +413,8 @@
                       "/*"
                     ]
                   ]
-                },
-                {
-                  "Fn::GetAtt": [
-                    "testexistingstreamfirehoses3stackKinesisFirehoseToS3S3BucketF4CE72AB",
-                    "Arn"
-                  ]
                 }
-              ],
-              "Sid": "HttpsOnly"
+              ]
             }
           ],
           "Version": "2012-10-17"

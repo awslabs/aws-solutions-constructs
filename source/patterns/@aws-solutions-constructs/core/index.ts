@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -16,6 +16,8 @@ export * from './lib/alb-helper';
 export * from './lib/apigateway-defaults';
 export * from './lib/apigateway-helper';
 export * from './lib/dynamodb-table-defaults';
+export * from './lib/fargate-defaults';
+export * from './lib/fargate-helper';
 export * from './lib/iot-topic-rule-defaults';
 export * from './lib/kinesis-analytics-defaults';
 export * from './lib/kinesis-analytics-helper';

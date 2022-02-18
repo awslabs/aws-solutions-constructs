@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -24,12 +24,17 @@ import { Construct } from '@aws-cdk/core';
  */
 export interface IotToSqsProps {
   /**
+   * User provided CfnTopicRuleProps to override the defaults
+   *
+   * @default - None
+   */
+  readonly iotTopicRuleProps: iot.CfnTopicRuleProps;
+  /**
    * Existing instance of SQS queue object, providing both this and queueProps will cause an error.
    *
    * @default - None
    */
   readonly existingQueueObj?: sqs.Queue;
-
   /**
    * User provided props to override the default props for the SQS queue.
    *
@@ -79,13 +84,6 @@ export interface IotToSqsProps {
    * @default - Default props are used.
    */
   readonly encryptionKeyProps?: kms.KeyProps;
-
-  /**
-   * User provided CfnTopicRuleProps to override the defaults
-   *
-   * @default - None
-   */
-  readonly iotTopicRuleProps: iot.CfnTopicRuleProps;
 }
 
 export class IotToSqs extends Construct {

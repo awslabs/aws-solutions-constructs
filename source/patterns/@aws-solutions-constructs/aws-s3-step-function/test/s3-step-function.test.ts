@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -30,23 +30,6 @@ function deployNewStateMachine(stack: cdk.Stack) {
   return new S3ToStepFunction(stack, 'test-s3-step-function', props);
 }
 
-test('check deployCloudTrail = false', () => {
-  const stack = new cdk.Stack();
-
-  const startState = new sfn.Pass(stack, 'StartState');
-
-  const props: S3ToStepFunctionProps = {
-    stateMachineProps: {
-      definition: startState
-    },
-    deployCloudTrail: false
-  };
-
-  const construct = new S3ToStepFunction(stack, 'test-s3-step-function', props);
-
-  expect(construct.cloudtrail === undefined);
-});
-
 test('override eventRuleProps', () => {
   const stack = new cdk.Stack();
 
@@ -61,18 +44,10 @@ test('override eventRuleProps', () => {
     eventRuleProps: {
       eventPattern: {
         source: ['aws.s3'],
-        detailType: ['AWS API Call via CloudTrail'],
+        detailType: ['Object Created'],
         detail: {
-          eventSource: [
-            "s3.amazonaws.com"
-          ],
-          eventName: [
-            "GetObject"
-          ],
-          requestParameters: {
-            bucketName: [
-              mybucket.bucketName
-            ]
+          bucket: {
+            name: [mybucket.bucketName]
           }
         }
       }
@@ -87,20 +62,13 @@ test('override eventRuleProps', () => {
         "aws.s3"
       ],
       "detail-type": [
-        "AWS API Call via CloudTrail"
+        "Object Created"
       ],
       "detail": {
-        eventSource: [
-          "s3.amazonaws.com"
-        ],
-        eventName: [
-          "GetObject"
-        ],
-        requestParameters: {
-          bucketName: [
-            {
-              Ref: "mybucket160F8132"
-            }
+        bucket: {
+          name: [{
+            Ref: "mybucket160F8132"
+          }
           ]
         }
       }
@@ -128,15 +96,11 @@ test('check properties', () => {
 
   const construct: S3ToStepFunction = deployNewStateMachine(stack);
 
-  expect(construct.cloudtrail !== null);
   expect(construct.stateMachine !== null);
   expect(construct.s3Bucket !== null);
   expect(construct.cloudwatchAlarms !== null);
   expect(construct.stateMachineLogGroup !== null);
   expect(construct.s3LoggingBucket !== null);
-  expect(construct.cloudtrail !== null);
-  expect(construct.cloudtrailBucket !== null);
-  expect(construct.cloudtrailLoggingBucket !== null);
 });
 
 // --------------------------------------------------------------

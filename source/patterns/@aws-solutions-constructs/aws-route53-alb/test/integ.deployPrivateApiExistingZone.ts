@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -25,14 +25,7 @@ const stack = new Stack(app, defaults.generateIntegStackName(__filename), {
 });
 stack.templateOptions.description = 'Integration Test for aws-route53-alb';
 
-const newVpc = defaults.buildVpc(stack, {
-  defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
-  constructVpcProps: {
-    enableDnsHostnames: true,
-    enableDnsSupport: true,
-    cidr: '172.168.0.0/16',
-  },
-});
+const newVpc = defaults.getTestVpc(stack);
 
 const newZone = new PrivateHostedZone(stack, 'new-zone', {
   zoneName: 'www.test-example.com',

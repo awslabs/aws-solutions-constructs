@@ -348,7 +348,13 @@
     "VpcFlowLogLogGroup7B5C56B9": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "RetentionInDays": 731
+        "RetentionInDays": 731,
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "deployWithoutLogging/Vpc"
+          }
+        ]
       },
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain",
