@@ -85,7 +85,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "testlambdaeventbridgeCustomEventBus5F110E81",
+                  "testlambdaeventbridgetest01C41A39",
                   "Arn"
                 ]
               }
@@ -160,12 +160,12 @@
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "EVENTBUS_NAME": {
-              "Ref": "testlambdaeventbridgeCustomEventBus5F110E81"
+              "Ref": "testlambdaeventbridgetest01C41A39"
             }
           }
         },
         "Handler": "index.handler",
-        "Runtime": "nodejs12.x",
+        "Runtime": "nodejs14.x",
         "TracingConfig": {
           "Mode": "Active"
         },
@@ -214,10 +214,10 @@
         }
       }
     },
-    "testlambdaeventbridgeCustomEventBus5F110E81": {
+    "testlambdaeventbridgetest01C41A39": {
       "Type": "AWS::Events::EventBus",
       "Properties": {
-        "Name": "deployFunctionWithNewEventBustestlambdaeventbridgeCustomEventBusF8520BFF"
+        "Name": "test"
       }
     },
     "Vpc8378EB38": {
@@ -451,7 +451,13 @@
     "VpcFlowLogLogGroup7B5C56B9": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "RetentionInDays": 731
+        "RetentionInDays": 731,
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "deployFunctionWithNewEventBus/Vpc"
+          }
+        ]
       },
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain",
@@ -596,7 +602,7 @@
     "BootstrapVersion": {
       "Type": "AWS::SSM::Parameter::Value<String>",
       "Default": "/cdk-bootstrap/hnb659fds/version",
-      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
     }
   },
   "Rules": {

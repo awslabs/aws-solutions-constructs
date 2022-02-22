@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -107,6 +107,8 @@ export class Route53ToAlb extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
 
+    // NOTE: We don't call CheckAlbProps() here, because this construct creates an ALB
+    // with no listener or target, so some of those checks don't apply
     if (props?.loadBalancerProps?.vpc) {
       throw new Error('Specify any existing VPC at the construct level, not within loadBalancerProps.');
     }

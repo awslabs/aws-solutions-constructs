@@ -155,17 +155,17 @@
         ]
       }
     },
-    "testtestWCustomEventBus372F1AD4": {
+    "testtestWtest35497CE7": {
       "Type": "AWS::Events::EventBus",
       "Properties": {
-        "Name": "newbustesttestWCustomEventBusB6F6BBD3"
+        "Name": "test"
       }
     },
     "testtestWEventsRuleDF9938A8": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "EventBusName": {
-          "Ref": "testtestWCustomEventBus372F1AD4"
+          "Ref": "testtestWtest35497CE7"
         },
         "EventPattern": {
           "source": [
@@ -193,7 +193,7 @@
     "BootstrapVersion": {
       "Type": "AWS::SSM::Parameter::Value<String>",
       "Default": "/cdk-bootstrap/hnb659fds/version",
-      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store."
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
     }
   },
   "Rules": {

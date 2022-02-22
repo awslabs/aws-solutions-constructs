@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -18,19 +18,6 @@ import * as r53 from '@aws-cdk/aws-route53';
 import * as elb from '@aws-cdk/aws-elasticloadbalancingv2';
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
-
-// Helper Functions
-
-function getTestVpc(stack: Stack) {
-  return defaults.buildVpc(stack, {
-    defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
-    constructVpcProps: {
-      enableDnsHostnames: true,
-      enableDnsSupport: true,
-      cidr: '172.168.0.0/16',
-    },
-  });
-}
 
 test('Test Public API, new VPC', () => {
   // Initial Setup
@@ -72,7 +59,7 @@ test('Test Private API, existing VPC', () => {
     env: { account: "123456789012", region: 'us-east-1' },
   });
 
-  const testExistingVpc = getTestVpc(stack);
+  const testExistingVpc = defaults.getTestVpc(stack);
 
   const newZone = new r53.PrivateHostedZone(stack, 'test-zone', {
     zoneName: 'www.example-test.com',
@@ -140,7 +127,7 @@ test('Check publicApi and zone props is an error', () => {
   // Initial Setup
   const stack = new Stack();
 
-  const testExistingVpc = getTestVpc(stack);
+  const testExistingVpc = defaults.getTestVpc(stack);
 
   const props: Route53ToAlbProps = {
     publicApi: true,
@@ -161,7 +148,7 @@ test('Check no Zone props and no existing zone interface is an error', () => {
   // Initial Setup
   const stack = new Stack();
 
-  const testExistingVpc = getTestVpc(stack);
+  const testExistingVpc = defaults.getTestVpc(stack);
 
   const props: Route53ToAlbProps = {
     publicApi: false,
@@ -179,7 +166,7 @@ test('Check Zone props with VPC is an error', () => {
   // Initial Setup
   const stack = new Stack();
 
-  const testExistingVpc = getTestVpc(stack);
+  const testExistingVpc = defaults.getTestVpc(stack);
 
   const props: Route53ToAlbProps = {
     publicApi: false,
@@ -204,7 +191,7 @@ test('Test with privateHostedZoneProps', () => {
     env: { account: "123456789012", region: 'us-east-1' },
   });
 
-  const testExistingVpc = getTestVpc(stack);
+  const testExistingVpc = defaults.getTestVpc(stack);
 
   const props: Route53ToAlbProps = {
     publicApi: false,
@@ -235,7 +222,7 @@ test('Test with privateHostedZoneProps', () => {
 test('Check that passing an existing hosted Zone without passing an existingVPC is an error', () => {
   const stack = new Stack();
 
-  const testExistingVpc = getTestVpc(stack);
+  const testExistingVpc = defaults.getTestVpc(stack);
 
   const newZone = new r53.PrivateHostedZone(stack, 'test-zone', {
     zoneName: 'www.example-test.com',
@@ -258,7 +245,7 @@ test('Check that passing an existing hosted Zone without passing an existingVPC 
 test('Check that passing an existing Load Balancer without passing an existingVPC is an error', () => {
   const stack = new Stack();
 
-  const testExistingVpc = getTestVpc(stack);
+  const testExistingVpc = defaults.getTestVpc(stack);
 
   const existingAlb = new elb.ApplicationLoadBalancer(stack, 'test-alb', {
     vpc: testExistingVpc
@@ -283,7 +270,7 @@ test('Check that passing an existing Load Balancer without passing an existingVP
 test('Check that passing an existing ALB without passing an existingVPC is an error', () => {
   const stack = new Stack();
 
-  const testExistingVpc = getTestVpc(stack);
+  const testExistingVpc = defaults.getTestVpc(stack);
 
   const newZone = new r53.PrivateHostedZone(stack, 'test-zone', {
     zoneName: 'www.example-test.com',
@@ -306,7 +293,7 @@ test('Check that passing an existing ALB without passing an existingVPC is an er
 test('Check that passing loadBalancerProps with a vpc is an error', () => {
   const stack = new Stack();
 
-  const testExistingVpc = getTestVpc(stack);
+  const testExistingVpc = defaults.getTestVpc(stack);
 
   const newZone = new r53.PrivateHostedZone(stack, 'test-zone', {
     zoneName: 'www.example-test.com',
@@ -336,7 +323,7 @@ test('Test providing loadBalancerProps', () => {
     env: { account: "123456789012", region: 'us-east-1' },
   });
 
-  const testExistingVpc = getTestVpc(stack);
+  const testExistingVpc = defaults.getTestVpc(stack);
 
   const newZone = new r53.PrivateHostedZone(stack, 'test-zone', {
     zoneName: 'www.example-test.com',
@@ -376,7 +363,7 @@ test('Test providing an existingLoadBalancer', () => {
   // Initial Setup
   const stack = new Stack();
 
-  const testExistingVpc = getTestVpc(stack);
+  const testExistingVpc = defaults.getTestVpc(stack);
 
   const newZone = new r53.PrivateHostedZone(stack, 'test-zone', {
     zoneName: 'www.example-test.com',
@@ -419,7 +406,7 @@ test('Check publicApi and without an existing hosted zone is an error', () => {
   // Initial Setup
   const stack = new Stack();
 
-  const testExistingVpc = getTestVpc(stack);
+  const testExistingVpc = defaults.getTestVpc(stack);
 
   const props: Route53ToAlbProps = {
     publicApi: true,

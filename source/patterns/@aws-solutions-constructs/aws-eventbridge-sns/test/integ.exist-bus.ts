@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -19,7 +19,7 @@ import { generateIntegStackName } from '@aws-solutions-constructs/core';
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 // Create existing custom EventBus
-const existingEventBus = new events.EventBus(stack, `existing-event-bus`, {});
+const existingEventBus = new events.EventBus(stack, `existing-event-bus`, {  eventBusName: 'test'  });
 const props: EventbridgeToSnsProps = {
   eventRuleProps: {
     eventPattern: {

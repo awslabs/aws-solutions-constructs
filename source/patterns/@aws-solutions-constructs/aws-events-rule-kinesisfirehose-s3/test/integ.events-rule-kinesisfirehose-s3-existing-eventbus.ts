@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -21,7 +21,7 @@ import * as s3 from "@aws-cdk/aws-s3";
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-eventsrule-kinesisfirehose-s3';
-const existingEventBus = new events.EventBus(stack, `test-existing-eventbus`, {});
+const existingEventBus = new events.EventBus(stack, `test-existing-eventbus`, {  eventBusName: 'test'  });
 const props: EventsRuleToKinesisFirehoseToS3Props = {
   eventRuleProps: {
     eventPattern: {

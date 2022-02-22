@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -16,7 +16,7 @@ import { CfnTable } from '@aws-cdk/aws-glue';
 import { App, Stack } from '@aws-cdk/core';
 import { KinesisstreamsToGluejob } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import { Asset } from '@aws-cdk/aws-s3-assets';
+// import { Asset } from '@aws-cdk/aws-s3-assets';
 
 // Setup
 const app = new App();
@@ -46,9 +46,12 @@ new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', {
     command: {
       name: 'gluestreaming',
       pythonVersion: '3',
-      scriptLocation: new Asset(stack, 'ScriptLocation', {
-        path: `${__dirname}/transform.py`
-      }).assetPath
+      scriptLocation: 's3://fakelocation/fakefile.py'
+      // Our version of cdk-integ crashes when misinterpreting the bucket name
+      // After we refresh cdk-integ we should try this code again
+      // scriptLocation: new Asset(stack, 'ScriptLocation', {
+      //   path: `${__dirname}/transform.py`
+      // }).assetPath
     }
   },
   fieldSchema

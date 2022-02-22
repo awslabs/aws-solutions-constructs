@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -13,7 +13,7 @@
 
 import * as api from '@aws-cdk/aws-apigateway';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import { FunctionEventType } from '@aws-cdk/aws-cloudfront';
+import { FunctionEventType, IOrigin } from '@aws-cdk/aws-cloudfront';
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
 import * as mediastore from '@aws-cdk/aws-mediastore';
 import * as s3 from '@aws-cdk/aws-s3';
@@ -42,11 +42,20 @@ export function DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint: 
 
 export function DefaultCloudFrontWebDistributionForS3Props(sourceBucket: s3.IBucket, loggingBucket: s3.Bucket | undefined,
   setHttpSecurityHeaders: boolean,
+  originPath?: string,
   cfFunction?: cloudfront.IFunction): cloudfront.DistributionProps {
+
+  let origin: IOrigin;
+
+  if (originPath) {
+    origin = new origins.S3Origin(sourceBucket, { originPath });
+  } else {
+    origin = new origins.S3Origin(sourceBucket);
+  }
 
   return {
     defaultBehavior: {
-      origin: new origins.S3Origin(sourceBucket),
+      origin,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       ...getFunctionAssociationsProp(setHttpSecurityHeaders, cfFunction)
     },

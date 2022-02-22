@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -23,20 +23,20 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
 const existingBucket = CreateScrapBucket(stack, {});
+const cfnBucket = existingBucket.node.defaultChild as s3.CfnBucket;
+cfnBucket.addPropertyOverride('NotificationConfiguration.EventBridgeConfiguration.EventBridgeEnabled', true);
 
-const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);
 const startState = new stepfunctions.Pass(stack, 'StartState');
 
 const props: S3ToStepfunctionsProps = {
-  existingBucketObj: mybucket,
+  existingBucketObj: existingBucket,
   stateMachineProps: {
     definition: startState
   },
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY
   },
-  logS3AccessLogs: false,
-  deployCloudTrail: false
+  logS3AccessLogs: false
 };
 
 new S3ToStepfunctions(stack, 'test-s3-stepfunctions-pre-existing-bucket-construct', props);

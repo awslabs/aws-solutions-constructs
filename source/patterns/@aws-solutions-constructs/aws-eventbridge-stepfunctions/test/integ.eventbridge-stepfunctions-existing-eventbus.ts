@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -26,7 +26,7 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
 const submitLambda = deployLambdaFunction(stack, {
-  runtime: lambda.Runtime.NODEJS_12_X,
+  runtime: lambda.Runtime.NODEJS_14_X,
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   handler: 'index.handler'
 });
@@ -37,7 +37,7 @@ const submitJob = new tasks.LambdaInvoke(stack, 'LambdaTask', {
 const startState = new stepfunctions.Pass(stack, 'StartState');
 startState.next(submitJob);
 
-const existingEventBus = new EventBus(stack, `existing-event-bus`, {});
+const existingEventBus = new EventBus(stack, `existing-event-bus`, { eventBusName: 'test'});
 const props: EventbridgeToStepfunctionsProps = {
   stateMachineProps: {
     definition: startState,

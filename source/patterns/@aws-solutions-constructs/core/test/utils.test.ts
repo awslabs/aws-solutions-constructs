@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -60,4 +60,86 @@ test('Test generateIntegStackName', () => {
 
   const result1 = defaults.generateIntegStackName('integ.override_auth_api_keys.ts');
   expect(result1).toContain('override-auth-api-keys');
+});
+
+test('Test consolidate props with all args', () => {
+  const arg1 = {
+    val1: 11,
+    val2: 12,
+    val3: 13,
+  };
+
+  const arg2 = {
+    val1: 21,
+    val2: 22,
+  };
+
+  const arg3 = {
+    val1: 31,
+  };
+
+  const result = defaults.consolidateProps(arg1, arg2, arg3);
+
+  expect(result).toEqual({
+    val1: 31,
+    val2: 22,
+    val3: 13,
+  });
+
+});
+
+test('Test consolidate props with first and third args', () => {
+  const arg1 = {
+    val1: 11,
+    val2: 12,
+    val3: 13,
+  };
+
+  const arg3 = {
+    val1: 31,
+  };
+
+  const result = defaults.consolidateProps(arg1, undefined, arg3);
+
+  expect(result).toEqual({
+    val1: 31,
+    val2: 12,
+    val3: 13,
+  });
+
+});
+
+test('Test consolidate props with first and second args', () => {
+  const arg1 = {
+    val1: 11,
+    val2: 12,
+    val3: 13,
+  };
+
+  const arg2 = {
+    val1: 21,
+    val2: 22,
+  };
+
+  const result = defaults.consolidateProps(arg1, arg2);
+
+  expect(result).toEqual({
+    val1: 21,
+    val2: 22,
+    val3: 13,
+  });
+
+});
+
+test('Test consolidate props with one arg', () => {
+  const arg1 = {
+    val1: 11,
+    val2: 12,
+    val3: 13,
+  };
+
+  const result = defaults.consolidateProps(arg1);
+
+  expect(result).toEqual(arg1);
+
 });

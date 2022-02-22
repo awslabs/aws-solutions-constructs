@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -13,9 +13,10 @@
 
 import { Stack } from '@aws-cdk/core';
 import * as elb from "@aws-cdk/aws-elasticloadbalancingv2";
-import * as acm from "@aws-cdk/aws-certificatemanager";
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as defaults from '../index';
+import * as ec2 from '@aws-cdk/aws-ec2';
+import * as ecs from '@aws-cdk/aws-ecs';
 import '@aws-cdk/assert/jest';
 
 test('Test ObtainAlb with existing ALB', () => {
@@ -72,293 +73,6 @@ test('Test ObtainAlb for new ALB with default props', () => {
   });
 });
 
-test('Test ObtainAlb for new ALB with default props', () => {
-  const stack = new Stack();
-
-  const testFunction = new lambda.Function(stack, 'test-function', {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
-    handler: "index.handler",
-  });
-
-  defaults.CreateLambdaTargetGroup(stack, 'test-target', testFunction);
-
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::TargetGroup', {
-    TargetType: "lambda"
-  });
-});
-
-test('Test ObtainAlb for new ALB with custom props', () => {
-  const stack = new Stack();
-
-  const testFunction = new lambda.Function(stack, 'test-function', {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
-    handler: "index.handler",
-  });
-
-  defaults.CreateLambdaTargetGroup(stack, 'test-target', testFunction, {
-    targetGroupName: 'test-target-group'
-  });
-
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::TargetGroup', {
-    TargetType: "lambda",
-    Name: 'test-target-group'
-  });
-});
-
-test('Test Add Target without ruleProps', () => {
-  const stack = new Stack();
-
-  const testFunction = new lambda.Function(stack, 'test-function', {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
-    handler: "index.handler",
-  });
-
-  const targetGroup = defaults.CreateLambdaTargetGroup(stack, 'test-target', testFunction, {
-    targetGroupName: 'test-target-group'
-  });
-
-  // Build VPC
-  const vpc = defaults.buildVpc(stack, {
-    defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
-  });
-
-  const existingLoadBalancer = new elb.ApplicationLoadBalancer(stack, 'load-balancer', {
-    vpc,
-    internetFacing: true,
-    loadBalancerName: 'unique-name'
-  });
-
-  const testListener = new elb.ApplicationListener(stack, 'test-listener', {
-    loadBalancer: existingLoadBalancer,
-    protocol: elb.ApplicationProtocol.HTTP
-  });
-
-  defaults.AddTarget(stack, targetGroup, testListener);
-
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
-    DefaultActions: [
-      {
-        TargetGroupArn: {
-          Ref: "testtargettgB2EE41CA"
-        },
-        Type: "forward"
-      }
-    ],
-  });
-});
-
-test('Test Add Target with ruleProps', () => {
-  const stack = new Stack();
-
-  const testFunction = new lambda.Function(stack, 'test-function', {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
-    handler: "index.handler",
-  });
-
-  const targetGroup = defaults.CreateLambdaTargetGroup(stack, 'test-target', testFunction, {
-    targetGroupName: 'test-target-group'
-  });
-
-  const secondTargetGroup = defaults.CreateLambdaTargetGroup(stack, 'second-target', testFunction, {
-    targetGroupName: 'second-target-group'
-  });
-
-  // Build VPC
-  const vpc = defaults.buildVpc(stack, {
-    defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
-  });
-
-  const existingLoadBalancer = new elb.ApplicationLoadBalancer(stack, 'load-balancer', {
-    vpc,
-    internetFacing: true,
-    loadBalancerName: 'unique-name'
-  });
-
-  const testListener = new elb.ApplicationListener(stack, 'test-listener', {
-    loadBalancer: existingLoadBalancer,
-    protocol: elb.ApplicationProtocol.HTTP
-  });
-
-  // The first target is default and can't have rules, so
-  // we need to add 2 targets
-  defaults.AddTarget(stack, targetGroup, testListener);
-  defaults.AddTarget(stack, secondTargetGroup, testListener, {
-    conditions: [elb.ListenerCondition.pathPatterns(["*admin*"])],
-    priority: 10
-  });
-
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::ListenerRule', {
-    Actions: [
-      {
-        TargetGroupArn: {
-          Ref: "secondtargettg0CE37E1F"
-        },
-        Type: "forward"
-      }
-    ],
-    Conditions: [
-      {
-        Field: "path-pattern",
-        PathPatternConfig: {
-          Values: [
-            "*admin*"
-          ]
-        }
-      }
-    ]
-  });
-});
-
-test('Test AddListener with defaults', () => {
-  const stack = new Stack();
-  const testFunction = new lambda.Function(stack, 'test-function', {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
-    handler: "index.handler",
-  });
-
-  const targetGroup = defaults.CreateLambdaTargetGroup(stack, 'test-target', testFunction, {
-    targetGroupName: 'test-target-group'
-  });
-
-  // Build VPC
-  const vpc = defaults.buildVpc(stack, {
-    defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
-  });
-
-  const existingLoadBalancer = new elb.ApplicationLoadBalancer(stack, 'load-balancer', {
-    vpc,
-    internetFacing: true,
-    loadBalancerName: 'unique-name'
-  });
-
-  const cert = acm.Certificate.fromCertificateArn(
-    stack,
-    'not-really-a-cert',
-    "arn:aws:acm:us-east-1:123456789012:certificate/85c52dc8-1b37-4afd-a7aa-f03aac2db0cc"
-  );
-
-  defaults.AddListener(stack, existingLoadBalancer, targetGroup, {
-    certificates: [ cert ],
-  });
-
-  // This should create 2 listeners, HTTPS plus redirect of HTTP
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
-    Protocol: 'HTTPS',
-  });
-
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
-    Protocol: 'HTTP',
-  });
-});
-
-test('Test AddListener with no cert for an HTTPS listener', () => {
-  const stack = new Stack();
-  const testFunction = new lambda.Function(stack, 'test-function', {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
-    handler: "index.handler",
-  });
-
-  const targetGroup = defaults.CreateLambdaTargetGroup(stack, 'test-target', testFunction, {
-    targetGroupName: 'test-target-group'
-  });
-
-  // Build VPC
-  const vpc = defaults.buildVpc(stack, {
-    defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
-  });
-
-  const existingLoadBalancer = new elb.ApplicationLoadBalancer(stack, 'load-balancer', {
-    vpc,
-    internetFacing: true,
-    loadBalancerName: 'unique-name'
-  });
-
-  const app = () => {
-    defaults.AddListener(stack, existingLoadBalancer, targetGroup, {});
-  };
-  expect(app).toThrowError();
-});
-
-test('Test AddListener error for HTTP with a cert', () => {
-  const stack = new Stack();
-  const testFunction = new lambda.Function(stack, 'test-function', {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
-    handler: "index.handler",
-  });
-
-  const targetGroup = defaults.CreateLambdaTargetGroup(stack, 'test-target', testFunction, {
-    targetGroupName: 'test-target-group'
-  });
-
-  // Build VPC
-  const vpc = defaults.buildVpc(stack, {
-    defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
-  });
-
-  const existingLoadBalancer = new elb.ApplicationLoadBalancer(stack, 'load-balancer', {
-    vpc,
-    internetFacing: true,
-    loadBalancerName: 'unique-name'
-  });
-
-  const cert = acm.Certificate.fromCertificateArn(
-    stack,
-    'not-really-a-cert',
-    "arn:aws:acm:us-east-1:123456789012:certificate/85c52dc8-1b37-4afd-a7aa-f03aac2db0cc"
-  );
-
-  const app = () => {
-    defaults.AddListener(stack, existingLoadBalancer, targetGroup, {
-      certificates: [ cert ],
-      protocol: elb.ApplicationProtocol.HTTP,
-    });
-  };
-  expect(app).toThrowError();
-
-});
-
-test('Test AddListener for HTTP Listener', () => {
-  const stack = new Stack();
-  const testFunction = new lambda.Function(stack, 'test-function', {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
-    handler: "index.handler",
-  });
-
-  const targetGroup = defaults.CreateLambdaTargetGroup(stack, 'test-target', testFunction, {
-    targetGroupName: 'test-target-group'
-  });
-
-  // Build VPC
-  const vpc = defaults.buildVpc(stack, {
-    defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
-  });
-
-  const existingLoadBalancer = new elb.ApplicationLoadBalancer(stack, 'load-balancer', {
-    vpc,
-    internetFacing: true,
-    loadBalancerName: 'unique-name'
-  });
-
-  defaults.AddListener(stack, existingLoadBalancer, targetGroup, {
-    protocol: elb.ApplicationProtocol.HTTP,
-  });
-
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
-    Protocol: 'HTTP',
-  });
-  expect(stack).not.toHaveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
-    Protocol: 'HTTPS',
-  });
-});
-
 test('Test with custom logging bucket props', () => {
   // Creating ALB logging requires a region and account (but
   // these can be fake in unit tests)
@@ -388,3 +102,459 @@ test('Test with no logging', () => {
   defaults.ObtainAlb(stack, 'test', vpc, false, undefined, undefined, false);
   expect(stack).not.toHaveResourceLike('AWS::S3::Bucket', {});
 });
+
+test('Test add single lambda target group with no customization', () => {
+  const stack = new Stack();
+
+  // Set up test framework independent of our code for unit testing
+  const testFunction = CreateTestFunction(stack, 'test-function');
+  const testVpc = defaults.getTestVpc(stack);
+  const testAlb = CreateTestLoadBalancer(stack, testVpc);
+  const testListener = CreateTestListener(stack, 'test-listener', testAlb);
+
+  // This is the code we're testing
+  defaults.AddLambdaTarget(
+    stack,
+    'test-lambda-target',
+    testListener,
+    testFunction,
+  );
+
+  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+    DefaultActions: [
+      {
+        TargetGroupArn: {
+          Ref: "testlambdatargettg7E5C32F4"
+        },
+        Type: "forward"
+      }
+    ],
+  });
+  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::TargetGroup', {
+    TargetType: "lambda",
+  });
+
+});
+
+test('Test add single lambda target group with target group props', () => {
+  const stack = new Stack();
+
+  // Set up test framework independent of our code for unit testing
+  const testFunction = CreateTestFunction(stack, 'test-function');
+  const testVpc = defaults.getTestVpc(stack);
+  const testAlb = CreateTestLoadBalancer(stack, testVpc);
+  const testListener = CreateTestListener(stack, 'test-listener', testAlb);
+  const targetGroupName = 'test-group';
+
+  // This is the code we're testing
+  defaults.AddLambdaTarget(
+    stack,
+    'test-lambda-target',
+    testListener,
+    testFunction,
+    undefined,
+    { targetGroupName },
+  );
+
+  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::TargetGroup', {
+    TargetType: "lambda",
+    Name: targetGroupName,
+  });
+
+});
+
+test('Test add rule props for second lambda target group', () => {
+  const stack = new Stack();
+
+  // Set up test framework independent of our code for unit testing
+  const testFunction = CreateTestFunction(stack, 'test-function');
+  const testVpc = defaults.getTestVpc(stack);
+  const testAlb = CreateTestLoadBalancer(stack, testVpc);
+  const testListener = CreateTestListener(stack, 'test-listener', testAlb);
+  const targetGroupName = 'test-group';
+  const pathPattern = '*admin*';
+
+  defaults.AddLambdaTarget(
+    stack,
+    'test-lambda-target',
+    testListener,
+    testFunction,
+    undefined,
+    { targetGroupName },
+  );
+
+  // This is the code we're testing
+  const ruleProps = {
+    conditions: [elb.ListenerCondition.pathPatterns([pathPattern])],
+    priority: 10
+  };
+  defaults.AddLambdaTarget(
+    stack,
+    'test-second-lambda-target',
+    testListener,
+    testFunction,
+    ruleProps,
+    { targetGroupName },
+  );
+
+  expect(stack).toCountResources('AWS::ElasticLoadBalancingV2::TargetGroup', 2);
+  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::ListenerRule', {
+    Conditions: [
+      {
+        Field: "path-pattern",
+        PathPatternConfig: {
+          Values: [
+            pathPattern
+          ]
+        }
+      }
+    ]
+  });
+
+});
+
+test('Test add single fargate target with no customization', () => {
+  const stack = new Stack();
+
+  // Set up test framework independent of our code for unit testing
+  const testVpc = defaults.getTestVpc(stack);
+  const testService = CreateTestFargateService(stack, 'test-service', testVpc);
+  const testAlb = CreateTestLoadBalancer(stack, testVpc);
+  const testListener = CreateTestListener(stack, 'test-listener', testAlb);
+
+  // This is the code we're testing
+  defaults.AddFargateTarget(
+    stack,
+    'test-fargate-target',
+    testListener,
+    testService,
+    undefined,
+    {
+      vpc: testVpc,
+      protocol: elb.ApplicationProtocol.HTTP
+    }
+  );
+
+  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+    DefaultActions: [
+      {
+        TargetGroupArn: {
+          Ref: "testfargatetargettg01FF5AA3"
+        },
+        Type: "forward"
+      }
+    ],
+  });
+  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::TargetGroup', {
+    TargetType: "ip",
+  });
+
+});
+
+test('Test add two fargate targets with rules', () => {
+  const stack = new Stack();
+
+  // Set up test framework independent of our code for unit testing
+  const testVpc = defaults.getTestVpc(stack);
+  const testService = CreateTestFargateService(stack, 'test-service', testVpc);
+  const testAlb = CreateTestLoadBalancer(stack, testVpc);
+  const testListener = CreateTestListener(stack, 'test-listener', testAlb);
+  const pathPattern = '*admin*';
+
+  defaults.AddFargateTarget(
+    stack,
+    'test-fargate-target',
+    testListener,
+    testService,
+    undefined,
+    {
+      vpc: testVpc,
+      protocol: elb.ApplicationProtocol.HTTP
+    }
+  );
+
+  // This is the code we're testing
+  const ruleProps = {
+    conditions: [elb.ListenerCondition.pathPatterns([pathPattern])],
+    priority: 10
+  };
+  defaults.AddFargateTarget(
+    stack,
+    'test-second-fargate-target',
+    testListener,
+    testService,
+    ruleProps,
+    {
+      vpc: testVpc,
+      protocol: elb.ApplicationProtocol.HTTP
+    }
+  );
+
+  expect(stack).toCountResources('AWS::ElasticLoadBalancingV2::TargetGroup', 2);
+  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::ListenerRule', {
+    Conditions: [
+      {
+        Field: "path-pattern",
+        PathPatternConfig: {
+          Values: [
+            pathPattern
+          ]
+        }
+      }
+    ]
+  });
+});
+
+test('Test adding a listener with defaults', () => {
+  const stack = new Stack();
+
+  // Set up test framework independent of our code for unit testing
+  const testVpc = defaults.getTestVpc(stack);
+  const testAlb = CreateTestLoadBalancer(stack, testVpc);
+  const testCert = defaults.getFakeCertificate(stack, 'not-really-a-cert');
+
+  const listener = defaults.AddListener(stack, 'test', testAlb, { certificates: [ testCert ] });
+
+  //  Need to add a target because a listener is not allowed to exist without a target or action
+  defaults.AddLambdaTarget(stack, 'dummy-target', listener, CreateTestFunction(stack, 'dummy-function'));
+
+  // This should create 2 listeners, HTTPS plus redirect of HTTP
+  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+    Protocol: 'HTTPS',
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+    Protocol: 'HTTP',
+  });
+});
+
+test('Test adding an HTTPS listener with no cert (error)', () => {
+  const stack = new Stack();
+
+  // Set up test framework independent of our code for unit testing
+  const testVpc = defaults.getTestVpc(stack);
+  const testAlb = CreateTestLoadBalancer(stack, testVpc);
+
+  const app = () => {
+    defaults.AddListener(stack, 'test', testAlb, { });
+  };
+
+  expect(app).toThrowError('A listener using HTTPS protocol requires a certificate');
+});
+
+test('Test adding an HTTP listener with a cert (error)', () => {
+  const stack = new Stack();
+
+  // Set up test framework independent of our code for unit testing
+  const testVpc = defaults.getTestVpc(stack);
+  const testAlb = CreateTestLoadBalancer(stack, testVpc);
+  const testCert = defaults.getFakeCertificate(stack, 'not-really-a-cert');
+
+  const app = () => {
+    defaults.AddListener(stack, 'test', testAlb, { protocol: 'HTTP', certificates: [ testCert ] });
+  };
+
+  expect(app).toThrowError('HTTP listeners cannot use a certificate');
+});
+
+test('Test adding a HTTP listener', () => {
+  const stack = new Stack();
+
+  // Set up test framework independent of our code for unit testing
+  const testVpc = defaults.getTestVpc(stack);
+  const testAlb = CreateTestLoadBalancer(stack, testVpc);
+
+  const listener = defaults.AddListener(stack, 'test', testAlb, { protocol: 'HTTP' });
+
+  //  Need to add a target because a listener is not allowed to exist without a target or action
+  defaults.AddLambdaTarget(stack, 'dummy-target', listener, CreateTestFunction(stack, 'dummy-function'));
+
+  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+    Protocol: 'HTTP',
+  });
+  expect(stack).toCountResources('AWS::ElasticLoadBalancingV2::Listener', 1);
+});
+
+test('Test sending custom logging bucket props', () => {
+  const stack = new Stack();
+
+  // Set up test framework independent of our code for unit testing
+  const testVpc = defaults.getTestVpc(stack);
+  const testAlb = CreateTestLoadBalancer(stack, testVpc);
+
+  const listener = defaults.AddListener(stack, 'test', testAlb, { protocol: 'HTTP' });
+
+  //  Need to add a target because a listener is not allowed to exist without a target or action
+  defaults.AddLambdaTarget(stack, 'dummy-target', listener, CreateTestFunction(stack, 'dummy-function'));
+
+});
+
+test('Test GetActiveListener with 0 listeners', () => {
+  const stack = new Stack();
+
+  // Set up test framework independent of our code for unit testing
+  const testVpc = defaults.getTestVpc(stack);
+  const testAlb = CreateTestLoadBalancer(stack, testVpc);
+
+  const app = () => {
+    defaults.GetActiveListener(testAlb.listeners);
+  };
+
+  expect(app).toThrowError('There are no listeners in the ALB');
+
+});
+
+test('Test GetActiveListener with 1 listener', () => {
+  const stack = new Stack();
+
+  // Set up test framework independent of our code for unit testing
+  const testVpc = defaults.getTestVpc(stack);
+  const testAlb = CreateTestLoadBalancer(stack, testVpc);
+
+  defaults.AddListener(stack, 'test', testAlb, { protocol: 'HTTP' });
+  const listener = defaults.GetActiveListener(testAlb.listeners);
+
+  expect((listener.node.defaultChild as elb.CfnListener).protocol).toBe('HTTP');
+
+});
+
+test('Test GetActiveListener with 2 listeners', () => {
+  const stack = new Stack();
+
+  // Set up test framework independent of our code for unit testing
+  const testVpc = defaults.getTestVpc(stack);
+  const testAlb = CreateTestLoadBalancer(stack, testVpc);
+  const testCert = defaults.getFakeCertificate(stack, 'not-really-a-cert');
+
+  defaults.AddListener(stack, 'test', testAlb, { certificates: [ testCert ] });
+  const listener = defaults.GetActiveListener(testAlb.listeners);
+
+  expect((listener.node.defaultChild as elb.CfnListener).protocol).toBe('HTTPS');
+
+});
+
+test('Test use of certificateArns error', () => {
+  const props = {
+    listenerProps: {
+      certificateArns: [ 'arn1'],
+    }
+  };
+
+  const app = () => {
+    defaults.CheckAlbProps(props);
+  };
+
+  expect(app).toThrowError("certificateArns is deprecated. Please supply certificates using props.listenerProps.certificates\n");
+});
+
+test('Test bad first listener error', () => {
+  const props = {
+    existingLoadBalancerObj: {
+      listeners: [],
+    }
+  };
+
+  const app = () => {
+    defaults.CheckAlbProps(props);
+  };
+
+  expect(app).toThrowError("When adding the first listener and target to a load balancer, listenerProps must be specified and include at least a certificate or protocol: HTTP\n");
+
+  const app2 = () => {
+    defaults.CheckAlbProps({});
+  };
+
+  expect(app2).toThrowError("When adding the first listener and target to a load balancer, listenerProps must be specified and include at least a certificate or protocol: HTTP\n");
+});
+
+test('Test second target with no rules error', () => {
+  const props = {
+    existingLoadBalancerObj: {
+      listeners: [ 'fake listener'],
+    },
+    existingVpc: { fake: 'vpc' }
+  };
+
+  const app = () => {
+    defaults.CheckAlbProps(props);
+  };
+
+  expect(app).toThrowError("When adding a second target to an existing listener, there must be rules provided\n");
+});
+
+test('Test existing Load Balancer with no VPC provided error', () => {
+  const props = {
+    existingLoadBalancerObj: {
+      name: 'placeholder',
+      listeners: [ ]
+    }
+  };
+
+  const app = () => {
+    defaults.CheckAlbProps(props);
+  };
+
+  expect(app).toThrowError("An existing ALB is already in a VPC, that VPC must be provided in props.existingVpc for the rest of the construct to use.\n");
+});
+
+test('Test sending listenerProps to existingListener error', () => {
+  const props = {
+    existingLoadBalancerObj: {
+      listeners: [ 'placeholder' ]
+    },
+    listenerProps: { val: 'placeholder' }
+  };
+
+  const app = () => {
+    defaults.CheckAlbProps(props);
+  };
+
+  expect(app).toThrowError("This load balancer already has a listener, listenerProps may not be specified\n");
+});
+
+test('Test sending VPC in loadBalancerProps error', () => {
+  const props = {
+    loadBalancerProps: {
+      vpc: { val: 'placeholder' }
+    }
+  };
+
+  const app = () => {
+    defaults.CheckAlbProps(props);
+  };
+
+  expect(app).toThrowError('Specify any existing VPC at the construct level, not within loadBalancerProps.\n');
+});
+
+function CreateTestLoadBalancer(stack: Stack, vpc: ec2.IVpc): elb.ApplicationLoadBalancer {
+  return new elb.ApplicationLoadBalancer(stack, 'load-balancer', {
+    vpc,
+    internetFacing: true,
+    loadBalancerName: 'unique-name'
+  });
+}
+
+function CreateTestFunction(stack: Stack, id: string): lambda.Function {
+  return new lambda.Function(stack, id, {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: "index.handler",
+  });
+}
+
+function CreateTestFargateService(stack: Stack, id: string, vpc: ec2.IVpc): ecs.FargateService {
+  const [svc] = defaults.CreateFargateService(stack,
+    `${id}-fg-svc`,
+    vpc,
+    undefined,
+    'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo',
+    'latest');
+  return svc;
+}
+
+function CreateTestListener(stack: Stack, id: string, alb: elb.ApplicationLoadBalancer) {
+  return new elb.ApplicationListener(stack, id, {
+    loadBalancer: alb,
+    protocol: elb.ApplicationProtocol.HTTP
+  });
+}

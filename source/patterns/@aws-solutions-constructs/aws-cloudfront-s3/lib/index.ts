@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -46,6 +46,13 @@ export interface CloudFrontToS3Props {
    * @default - true
    */
   readonly insertHttpSecurityHeaders?: boolean;
+  /**
+   * Optional user provided props to provide an originPath that CloudFront appends to the
+   * origin domain name when CloudFront requests content from the origin.
+   * The string should start with a `/`, for example `/production`.
+   * @dafault = '/'
+   */
+  readonly originPath?: string,
   /**
    * Optional user provided props to override the default props for the S3 Logging Bucket.
    *
@@ -104,6 +111,7 @@ export class CloudFrontToS3 extends Construct {
 
     [this.cloudFrontWebDistribution, this.cloudFrontFunction, this.cloudFrontLoggingBucket] =
       defaults.CloudFrontDistributionForS3(this, this.s3BucketInterface,
-        props.cloudFrontDistributionProps, props.insertHttpSecurityHeaders, props.cloudFrontLoggingBucketProps);
+        props.cloudFrontDistributionProps, props.insertHttpSecurityHeaders, props.originPath, props.cloudFrontLoggingBucketProps);
   }
+
 }

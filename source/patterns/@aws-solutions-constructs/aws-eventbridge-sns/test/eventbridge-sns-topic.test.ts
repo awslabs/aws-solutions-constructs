@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -33,7 +33,7 @@ function deployStackWithNewEventBus(stack: cdk.Stack) {
         source: ['solutionsconstructs']
       }
     },
-    eventBusProps: {}
+    eventBusProps: { eventBusName: 'test' }
   };
   return new EventbridgeToSns(stack, 'test-neweventbus', props);
 }
@@ -235,7 +235,7 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
       }
     },
     eventBusProps: {},
-    existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, {})
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-new-eventbus`, { eventBusName: 'test' })
   };
 
   const app = () => {

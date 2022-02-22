@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -21,7 +21,7 @@ function deployNewFunc(stack: cdk.Stack) {
   const props: EventbridgeToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     eventRuleProps: {
@@ -36,10 +36,10 @@ function deployNewEventBus(stack: cdk.Stack) {
   const props: EventbridgeToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
-    eventBusProps: {},
+    eventBusProps: { eventBusName: 'test' },
     eventRuleProps: {
       eventPattern: {
         source: ['solutionsconstructs']
@@ -62,7 +62,7 @@ test('check lambda function properties for deploy: true', () => {
         "Arn"
       ]
     },
-    Runtime: "nodejs12.x",
+    Runtime: "nodejs14.x",
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
@@ -218,7 +218,7 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
   const props: EventbridgeToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     eventRuleProps: {
@@ -226,8 +226,8 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
         source: ['solutionsconstructs']
       }
     },
-    eventBusProps: {},
-    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, {})
+    eventBusProps: { eventBusName: 'test' },
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, { eventBusName: 'test' })
   };
 
   const app = () => {
@@ -242,7 +242,7 @@ test('check custom event bus resource with props when deploy:true', () => {
   const props: EventbridgeToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler'
     },
     eventBusProps: {

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -13,9 +13,14 @@
 
 // Imports
 import { Bucket, BucketProps, BucketEncryption } from "@aws-cdk/aws-s3";
-import { Construct, RemovalPolicy } from "@aws-cdk/core";
+import { Construct, RemovalPolicy, Stack } from "@aws-cdk/core";
+import { buildVpc } from '../lib/vpc-helper';
+import { DefaultPublicPrivateVpcProps, DefaultIsolatedVpcProps } from '../lib/vpc-defaults';
 import { overrideProps, addCfnSuppressRules } from "../lib/utils";
 import * as path from 'path';
+import * as acm from '@aws-cdk/aws-certificatemanager';
+
+export const fakeEcrRepoArn = 'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo';
 
 // Creates a bucket used for testing - minimal properties, destroyed after test
 export function CreateScrapBucket(scope: Construct, props?: BucketProps | any) {
@@ -66,4 +71,26 @@ export function generateIntegStackName(filename: string): string {
   const file = path.basename(filename, path.extname(filename));
   const stackname = file.slice(file.lastIndexOf('.') + 1).replace(/_/g, '-');
   return stackname;
+}
+
+// Helper Functions
+export function getTestVpc(stack: Stack, publicFacing: boolean = true) {
+  return buildVpc(stack, {
+    defaultVpcProps: publicFacing ?
+      DefaultPublicPrivateVpcProps() :
+      DefaultIsolatedVpcProps(),
+    constructVpcProps: {
+      enableDnsHostnames: true,
+      enableDnsSupport: true,
+      cidr: '172.168.0.0/16',
+    },
+  });
+}
+
+export function getFakeCertificate(scope: Construct, id: string): acm.ICertificate {
+  return acm.Certificate.fromCertificateArn(
+    scope,
+    id,
+    "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
+  );
 }

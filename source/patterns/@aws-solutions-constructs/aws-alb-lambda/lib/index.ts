@@ -1,5 +1,5 @@
 /**
- *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -18,6 +18,7 @@ import * as lambda from "@aws-cdk/aws-lambda";
 import { Construct } from "@aws-cdk/core";
 import * as defaults from "@aws-solutions-constructs/core";
 import { CfnListener, CfnTargetGroup } from "@aws-cdk/aws-elasticloadbalancingv2";
+import { GetActiveListener } from "@aws-solutions-constructs/core";
 
 export interface AlbToLambdaProps {
   /**
@@ -123,63 +124,15 @@ export class AlbToLambda extends Construct {
   constructor(scope: Construct, id: string, props: AlbToLambdaProps) {
     super(scope, id);
     defaults.CheckProps(props);
-
-    if (props.listenerProps?.certificateArns) {
-      throw new Error('certificateArns is deprecated. Please supply certificates using props.listenerProps.certificates');
-    }
-
-    if (
-      (props.existingLoadBalancerObj && (props.existingLoadBalancerObj.listeners.length === 0) || !props.existingLoadBalancerObj)
-      && !props.listenerProps
-    ) {
-      throw new Error(
-        "When adding the first listener and target to a load balancer, listenerProps must be specified and include at least a certificate or protocol: HTTP"
-      );
-    }
-
-    if (
-      ((props.existingLoadBalancerObj) && (props.existingLoadBalancerObj.listeners.length > 0)) &&
-      props.listenerProps
-    ) {
-      throw new Error(
-        "This load balancer already has a listener, listenerProps may not be specified"
-      );
-    }
-
-    if (((props.existingLoadBalancerObj) && (props.existingLoadBalancerObj.listeners.length > 0)) && !props.ruleProps) {
-      throw new Error(
-        "When adding a second target to an existing listener, there must be rules provided"
-      );
-    }
-
-    // Check construct specific invalid inputs
-    if (props.existingLoadBalancerObj && !props.existingVpc) {
-      throw new Error(
-        "An existing ALB already exists in a VPC, that VPC must be provided in props.existingVpc for the rest of the construct to use."
-      );
-    }
-
-    if ( props.existingLoadBalancerObj ) {
-      defaults.printWarning(
-        "The public/private property of an exisng ALB must match the props.publicApi setting provided."
-      );
-    }
+    defaults.CheckAlbProps(props);
 
     // Obtain VPC for construct (existing or created)
-    // Determine all the resources to use (existing or launch new)
-    if (props.existingVpc) {
-      this.vpc = props.existingVpc;
-    } else {
-      this.vpc = defaults.buildVpc(scope, {
-        defaultVpcProps: props.publicApi
-          ? defaults.DefaultPublicPrivateVpcProps()
-          : defaults.DefaultIsolatedVpcProps(),
-        userVpcProps: props.vpcProps,
-        constructVpcProps: props.publicApi
-          ? undefined
-          : { enableDnsHostnames: true, enableDnsSupport: true, },
-      });
-    }
+    this.vpc = defaults.buildVpc(scope, {
+      existingVpc: props.existingVpc,
+      defaultVpcProps: props.publicApi ? defaults.DefaultPublicPrivateVpcProps() : defaults.DefaultIsolatedVpcProps(),
+      userVpcProps: props.vpcProps,
+      constructVpcProps: props.publicApi ? {} : { enableDnsHostnames: true, enableDnsSupport: true }
+    });
 
     this.loadBalancer = defaults.ObtainAlb(
       this,
@@ -199,56 +152,42 @@ export class AlbToLambda extends Construct {
       vpc: this.vpc,
     });
 
+    let newListener: boolean;
     if (this.loadBalancer.listeners.length === 0) {
-      // This is a new listener, we need to create it along with the default target
-      const newTargetGroup = defaults.CreateLambdaTargetGroup(this,
-        `tg${this.loadBalancer.listeners.length + 1}`,
-        this.lambdaFunction,
-        props.targetProps);
+      newListener = true;
+    } else {
+      newListener = false;
+    }
+
+    // If there's no listener, then we add one here
+    if (newListener) {
       this.listener = defaults.AddListener(
         this,
+        id,
         this.loadBalancer,
-        newTargetGroup,
         props.listenerProps
       );
-      // Testing occasionally caused a TargetGroup not found error, this
-      // code ensures the Group will be complete before the Listener tries
-      // to access it.
-      const newListener = this.listener.node.defaultChild as CfnListener;
-      const cfnTargetGroup = newTargetGroup.node.defaultChild as CfnTargetGroup;
-      newListener.addDependsOn(cfnTargetGroup);
     } else {
-      // We're adding a target to an existing listener. If this.loadBalancer.listeners.length
-      // is >0, then this.loadBalancer was set from existingLoadBalancer
       this.listener = GetActiveListener(this.loadBalancer.listeners);
-      defaults.AddTarget(
-        this,
-        defaults.CreateLambdaTargetGroup(
-          this,
-          `tg${this.loadBalancer.listeners.length + 1}`,
-          this.lambdaFunction,
-          props.targetProps
-        ),
-        this.listener,
-        props.ruleProps
-      );
     }
-  }
-}
 
-function GetActiveListener(listeners: elb.ApplicationListener[]): elb.ApplicationListener {
-  let listener: elb.ApplicationListener;
+    const newTargetGroup = defaults.AddLambdaTarget(
+      this,
+      `tg${this.loadBalancer.listeners.length + 1}`,
+      this.listener,
+      this.lambdaFunction,
+      props.ruleProps,
+      props.targetProps);
 
-  if (listeners.length === 1 ) {
-    listener = listeners[0];
-  } else {
-    const correctListener = listeners.find(i => (i.node.children[0] as elb.CfnListener).protocol === "HTTPS");
-    if (correctListener) {
-      listener = correctListener;
-    } else {
-      // This line should be unreachable
-      throw new Error(`Two listeners in the ALB, but neither are HTTPS`);
+    // this.listener needs to be set on the construct.
+    // could be above: else { defaults.GetActiveListener }
+    // do we then move that funcionality back into the construct (not the function). If so do
+    // we leave it in AddNewTarget or just do it here and pass the listener?
+    if (newListener && this.listener) {
+      const levelOneListener = this.listener.node.defaultChild as CfnListener;
+      const cfnTargetGroup = newTargetGroup.node.defaultChild as CfnTargetGroup;
+      levelOneListener.addDependsOn(cfnTargetGroup);
     }
+
   }
-  return listener;
 }
