@@ -305,7 +305,7 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | Name    | Type     | Notes    |
 | --- | --- | --- |
 | queueProps?	| sqs.QueueProps	||
-| existingQueueObj?	| sqs.Qeue	||
+| existingQueueObj?	| sqs.Queue	||
 | deployDeadLetterQueue?	| Boolean	||
 | deadLetterQueueProps?	| sqs.QueueProps	||
 | maxReceiveCount	| number	||
