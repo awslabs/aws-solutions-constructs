@@ -7,7 +7,10 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
+* Includes all functionality of V1.139.0
+* Built upon underlying CDK version V2.7.0
 * **aws-fargate-sqs:** Created new construct ([#588](https://github.com/awslabs/aws-solutions-constructs/issues/588)) ([f7ddf3f](https://github.com/awslabs/aws-solutions-constructs/commit/f7ddf3f66c84a8cec4514ac08e1cb3445593d8bb))
+* **aws-fargate-s3:** Created new construct ([#591](https://github.com/awslabs/aws-solutions-constructs/issues/591))
 
 ## [2.2.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.1.0...v2.2.0) (2022-01-20)
 
