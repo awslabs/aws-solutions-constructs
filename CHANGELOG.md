@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.139.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.138.2...v1.139.0) (2022-02-23)
+
+* Upgraded all patterns to CDK v1.139.0
+
+## [1.138.2](https://github.com/awslabs/aws-solutions-constructs/compare/v2.2.0...v1.138.2) (2022-02-23)
+
+* Upgraded all patterns to CDK v1.138.2
+
+### Features
+
+* **aws-fargate-sqs:** Created new construct ([#588](https://github.com/awslabs/aws-solutions-constructs/issues/588)) ([f7ddf3f](https://github.com/awslabs/aws-solutions-constructs/commit/f7ddf3f66c84a8cec4514ac08e1cb3445593d8bb))
+
+* **aws-fargate-s3:** Created new construct ([#591](https://github.com/awslabs/aws-solutions-constructs/issues/591))
+
 ## [1.138.1](https://github.com/awslabs/aws-solutions-constructs/compare/v1.138.0...v1.138.1) (2022-01-19)
 
 * Upgraded all patterns to CDK v1.138.1
