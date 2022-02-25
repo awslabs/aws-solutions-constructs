@@ -4,11 +4,14 @@
     "teststream04374A09": {
       "Type": "AWS::Kinesis::Stream",
       "Properties": {
-        "ShardCount": 2,
         "RetentionPeriodHours": 24,
+        "ShardCount": 2,
         "StreamEncryption": {
           "EncryptionType": "KMS",
           "KeyId": "alias/aws/kinesis"
+        },
+        "StreamModeDetails": {
+          "StreamMode": "PROVISIONED"
         }
       }
     },
