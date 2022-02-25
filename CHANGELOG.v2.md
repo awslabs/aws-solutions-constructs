@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.3.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.2.0...v2.3.0) (2022-02-24)
+
+
+### Features
+
+* Includes all functionality of V1.139.0
+* Built upon underlying CDK version V2.7.0
+* **aws-fargate-sqs:** Created new construct ([#588](https://github.com/awslabs/aws-solutions-constructs/issues/588)) ([f7ddf3f](https://github.com/awslabs/aws-solutions-constructs/commit/f7ddf3f66c84a8cec4514ac08e1cb3445593d8bb))
+* **aws-fargate-s3:** Created new construct ([#591](https://github.com/awslabs/aws-solutions-constructs/issues/591))
+
+## [2.2.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.1.0...v2.2.0) (2022-01-20)
+
+### Features
+
+* Includes all functionality of V1.138.0
+* Built upon underlying CDK version V2.4.0
+* **aws-fargate-sns:** New Construct ([#574](https://github.com/awslabs/aws-solutions-constructs/issues/574)) ([5c86f3a](https://github.com/awslabs/aws-solutions-constructs/commit/5c86f3a711c45c8991b66369b7b5054d5e9229e1))
+* **aws-route53-apigateway:** New Construct ([#511](https://github.com/awslabs/aws-solutions-constructs/issues/511)) ([81129dd](https://github.com/awslabs/aws-solutions-constructs/commit/81129ddfaebe198d10c2264feea95dae92205ab7))
+
 ## [2.1.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.0.0...v2.1.0) (2022-01-11)
 
 ### Features
