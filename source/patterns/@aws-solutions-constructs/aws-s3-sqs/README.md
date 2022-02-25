@@ -41,6 +41,14 @@ from aws_solutions_constructs.aws_s3_sqs import S3ToSqs
 S3ToSqs(self, 'S3ToSQSPattern')
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.s3sqs.*;
+
+new S3ToSqs(this, "S3ToSQSPattern", new S3ToSqsProps.Builder()
+        .build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

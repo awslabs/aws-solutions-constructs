@@ -36,7 +36,14 @@ Python
 from aws_solutions_constructs.aws_apigateway_kinesisstreams import ApiGatewayToKinesisStreams
 
 ApiGatewayToKinesisStreams(self, 'test-apigw-kinesis')
+```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.apigatewaykinesisstreams.*;
+
+new ApiGatewayToKinesisStreams(this, "test-apigw-kinesis", new ApiGatewayToKinesisStreamsProps.Builder()
+        .build());
 ```
 
 

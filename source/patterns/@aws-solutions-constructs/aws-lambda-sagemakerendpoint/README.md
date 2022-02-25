@@ -86,6 +86,29 @@ construct_props = LambdaToSagemakerEndpointProps(
 LambdaToSagemakerEndpoint(
     self, 'LambdaToSagemakerEndpointPattern', constructProps)
 ```
+
+Java
+``` java
+import software.amazon.awsconstructs.services.lambdasagemakerendpoint.*;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.sagemaker.*;
+import software.amazon.awscdk.Duration;
+
+new LambdaToSagemakerEndpoint(this, "LambdaToSagemakerEndpointPattern", new LambdaToSagemakerEndpoint.Builder()
+    .modelProps(new CfnModelProps.Builder()
+        .primaryContainer(new CfnModel.ContainerDefinitionProperty.Builder()
+            .image("<AccountId>.dkr.ecr.<region>.amazonaws.com/linear_learner:latest")
+            .modelDataUrl("s3://<bucket_name>/<prefix>/model.tar.gz")
+            .build())
+        .build())
+    .lambdaFunctionProps(new FunctionProps.Builder()
+        .runtime(Runtime.NODEJS_14_X)
+        .code(Code.fromAsset("lambda"))
+        .handler("index.handler")
+        .timeout(Duration.minutes(5))
+        .build())
+    .build());
+```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

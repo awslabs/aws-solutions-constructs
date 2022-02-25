@@ -54,6 +54,18 @@ WafwebaclToCloudFront(self, 'test_wafwebacl_cloudfront',
                       )
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.cloudfronts3.*;
+import software.amazon.awsconstructs.services.wafwebaclcloudfront.*;
+
+// This construct can only be attached to a configured CloudFront.
+new WafwebaclToCloudFront(this, "test-wafwebacl-cloudfront", {
+    existingCloudFrontWebDistribution(cloudfrontToS3.getCloudFrontWebDistribution())
+    .build())
+});
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

@@ -66,6 +66,26 @@ props = EventbridgeToStepfunctionsProps(
 EventbridgeToStepfunctions(self, 'test-eventbridge-stepfunctions-stack', props)
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.eventbridgestepfunctions.*;
+import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.services.events.*;
+import software.amazon.awscdk.services.stepfunctions.*;
+
+final Pass startState = Pass(this, "StartState");
+
+final EventbridgeToStepfunctions constructStack = EventbridgeToStepfunctions(this, "test-construct",
+    new EventbridgeToStepfunctionsProps.Builder()
+        .stateMachineProps(new StateMachineProps.Builder()
+            .definition(startState))
+            .build())
+        .eventRuleProps(new RuleProps.Builder()
+            .schedule(Schedule.rate(Duration.minutes(5)))
+            .build())
+        .build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

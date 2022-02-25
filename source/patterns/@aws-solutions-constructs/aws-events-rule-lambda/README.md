@@ -27,6 +27,9 @@ Here is a minimal deployable pattern definition:
 Typescript
 ``` javascript
 import { EventsRuleToLambdaProps, EventsRuleToLambda } from '@aws-solutions-constructs/aws-events-rule-lambda';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as events from 'aws-cdk-lib/aws-events';
+import { Duration } from 'aws-cdk-lib';
 
 const props: EventsRuleToLambdaProps = {
     lambdaFunctionProps: {
@@ -63,6 +66,26 @@ props = EventsRuleToLambdaProps(
 )
 
 EventsRuleToLambda(self, 'test_events_rule_lambda', props)
+```
+
+Java
+``` java
+import software.amazon.awsconstructs.services.eventbridgelambda.*;
+import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.services.events.*;
+import software.amazon.awscdk.services.lambda.*;
+
+EventsRuleToLambda(this, "test-events-rule-lambda",
+        new EventsRuleToLambdaProps.Builder()
+            .lambdaFunctionProps(new FunctionProps.Builder()
+                .runtime(Runtime.NODEJS_14_X)
+                .code(Code.fromAsset("lambda"))
+                .handler("index.handler")
+                .build())
+            .eventRuleProps(new RuleProps.Builder()
+                .schedule(Schedule.rate(Duration.minutes(5)))
+                .build())
+            .build());
 ```
 
 ## Pattern Construct Props

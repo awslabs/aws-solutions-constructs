@@ -55,6 +55,21 @@ CognitoToApiGatewayToLambda(self, 'test-cognito-apigateway-lambda',
 
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.cognitoapigatewaylambda.*;
+import software.amazon.awscdk.services.lambda.*;
+
+new CognitoToApiGatewayToLambda(this, "test-cognito-apigateway-lambda",
+        new CognitoToApiGatewayToLambdaProps.Builder()
+            .lambdaFunctionProps(new FunctionProps.Builder()
+                .runtime(Runtime.NODEJS_14_X)
+                .code(Code.fromAsset("lambda"))
+                .handler("index.handler")
+                .build())
+            .build());
+```
+
 If you are defining resources and methods on your API (e.g. proxy = false), then you must call addAuthorizers() after the API is fully defined to ensure every method is protected. Here is an example:
 
 Typescript
@@ -105,6 +120,30 @@ resource.add_method('POST')
 
 # Mandatory to call this method to Apply the Cognito Authorizers on all API methods
 construct.add_authorizers()
+```
+
+``` java
+import software.amazon.awsconstructs.services.cognitoapigatewaylambda.*;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.apigateway.*;
+
+final CognitoToApiGatewayToLambda construct = new CognitoToApiGatewayToLambda(this,
+        "test-cognito-apigateway-lambda",
+        new CognitoToApiGatewayToLambdaProps.Builder()
+                .lambdaFunctionProps(new FunctionProps.Builder()
+                        .runtime(Runtime.NODEJS_14_X)
+                        .code(Code.fromAsset("lambda"))
+                        .handler("index.handler")
+                        .build())
+                .apiGatewayProps(new LambdaRestApiProps.Builder()
+                        .proxy(false)
+                        .build())
+                .build());
+
+// Mandatory to call this method to Apply the Cognito Authorizers on all API
+// methods
+final IResource resource = construct.getApiGateway().getRoot().addResource("foobar");
+resource.addMethod("POST");
 ```
 
 ## Pattern Construct Props

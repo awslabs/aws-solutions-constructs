@@ -36,6 +36,14 @@ from aws_solutions_constructs.aws_cloudfront_s3 import CloudFrontToS3
 CloudFrontToS3(self, 'test-cloudfront-s3')
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.cloudfronts3.*;
+
+new CloudFrontToS3(this, "test-cloudfront-s3", new CloudFrontToS3Props.Builder()
+        .build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

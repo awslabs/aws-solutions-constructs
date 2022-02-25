@@ -73,8 +73,29 @@ props = IotToDynamoDBProps(
     )
 )
 
-IotToDynamoDB(self, 'test_iot_lambda', props)
+IotToDynamoDB(self, 'test-iot-lambda-dynamodb-stack', props)
+```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.iotdynamodb.*;
+import software.amazon.awscdk.services.iot.*;
+import software.amazon.awscdk.services.lambda.*;
+
+new IotToLambdaToDynamoDB(this, "test-iot-lambda-dynamodb-stack", new IotToLambdaToDynamoDBProps.Builder()
+    .lambdaFunctionProps(new FunctionProps.Builder()
+        .runtime(Runtime.NODEJS_14_X)
+        .code(Code.fromAsset("lambda"))
+        .handler("index.handler")
+        .build())
+    .iotTopicRuleProps(new CfnTopicRuleProps.Builder()
+        .topicRulePayload(new TopicRulePayloadProperty.Builder()
+            .ruleDisabled(false)
+            .description("Processing of DTC messages from the AWS Connected Vehicle Solution.")
+            .sql("SELECT * FROM 'connectedcar/dtc/#'")
+            .actions(List.of()))
+        .build())
+    .build());
 ```
 
 ## Pattern Construct Props

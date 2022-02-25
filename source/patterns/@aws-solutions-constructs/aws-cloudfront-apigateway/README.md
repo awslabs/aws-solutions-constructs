@@ -87,6 +87,30 @@ CloudFrontToApiGateway(self, 'test-cloudfront-apigateway',
 
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.cloudfrontapigateway.*;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.apigateway.*;
+
+final Function lambdaFunction = Function.Builder.create(this, "IndexHandler")
+        .runtime(Runtime.NODEJS_14_X)
+        .code(Code.fromAsset("lambda"))
+        .handler("index.handler")
+        .build();
+
+final LambdaRestApi apiGateway = new LambdaRestApi.Builder(this, "LambdaRestApi", new LambdaRestApiProps.Builder()
+        .handler(lambdaFunction)
+        .endpointConfiguration(new EndpointConfiguration.Builder()
+            .types(List.of(EndpointType.EDGE))
+            .build())
+        .build());
+
+new CloudFrontToApiGateway(this, "test-cloudfront-apigateway", new CloudFrontToApiGatewayProps.Builder()
+        .existingApiGatewayObj(apiGateway)
+        .build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

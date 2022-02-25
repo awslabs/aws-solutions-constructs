@@ -56,6 +56,20 @@ props = EventsRuleToKinesisFirehoseToS3Props(
 EventsRuleToKinesisFirehoseToS3(self, 'test_events_rule_firehose_s3', props)
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.eventsrulekinesisfirehoses3.*;
+import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.services.events.*;
+
+EventsRuleToKinesisFirehoseToS3(this, "test_events_rule_firehose_s3",
+        new EventsRuleToKinesisFirehoseToS3Props.Builder()
+            .eventRuleProps(new RuleProps.Builder()
+                .schedule(Schedule.rate(Duration.minutes(5)))
+                .build())
+            .build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

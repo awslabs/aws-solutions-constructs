@@ -46,7 +46,7 @@ snsToSqsStack.encryptionKey?.addToResourcePolicy(policyStatement);
 
 Python
 ``` python
-from aws_solutions_constructs.aws_sns_lambda import SnsToSqs
+from aws_solutions_constructs.aws_sns_sqs import SnsToSqs
 from aws_cdk import aws_iam as iam
 
 
@@ -60,6 +60,26 @@ policy_statement = iam.PolicyStatement(
 )
 
 construct_stack.encryption_key.add_to_resource_policy(policy_statement)
+```
+
+Java
+``` java
+import software.amazon.awsconstructs.services.snssqs.*;
+import software.amazon.awscdk.services.iam.*;
+
+final SnsToSqs constructStack = SnsToSqs(this, "SnsToSqsPattern",
+        new SnsToSqsProps.Builder()
+            .build());
+
+// Grant yourself permissions to use the Customer Managed KMS Key
+final PolicyStatement policyStatement = new PolicyStatement.Builder.create()
+    .actions(List.of("kms:Encrypt", "kms:Decrypt"))
+    .effect(Effect.ALLOW)
+    .principals(List.of(new AccountRootPrincipal()))
+    .resource(List.of("*"))
+    .build();
+
+policyStatement.getEncryptionKey().addToResourcePolicy(policyStatement);
 ```
 
 ## Pattern Construct Props

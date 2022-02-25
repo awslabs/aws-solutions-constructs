@@ -31,13 +31,6 @@ Typescript
 import { FargateToSns, FargateToSnsProps } from '@aws-solutions-constructs/aws-fargate-sns';
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 
-// Obtain a pre-existing certificate from your account
-const certificate = acm.Certificate.fromCertificateArn(
-    this,
-    'existing-cert',
-    "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
-);
-
 const props: FargateToSnsProps = {
     publicApi: true,
     ecrRepositoryArn: "arn of a repo in ECR in your account"
@@ -49,14 +42,6 @@ new FargateToSns(this, 'test-construct', props);
 Python
 ``` python
 from aws_solutions_constructs.aws_fargate_sns import FargateToSns, FargateToSnsProps
-from aws_cdk import aws_certificatemanager as acm
-
-# Obtain a pre_existing certificate from your account
-certificate = acm.Certificate.from_certificate_arn(
-    self,
-    'existing-cert',
-    "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
-)
 
 props = FargateToSnsProps(
     public_api=True,
@@ -64,7 +49,16 @@ props = FargateToSnsProps(
 )
 
 FargateToSns(self, 'test_construct', props)
+```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.fargatesns.*;
+
+new FargateToSns(this, "test_construct", new FargateToSnsProps.Builder()
+    .publicApi(true)
+    .ecrRepositoryArn("arn of a repo in ECR in your account")
+    .build());
 ```
 
 ## Pattern Construct Props

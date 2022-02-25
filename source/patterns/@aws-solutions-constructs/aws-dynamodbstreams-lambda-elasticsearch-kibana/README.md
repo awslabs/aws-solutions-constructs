@@ -66,6 +66,24 @@ DynamoDBStreamsToLambdaToElasticSearchAndKibana(
     self, 'test-dynamodbstreams-lambda-elasticsearch-kibana', props)
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.dynamodbstreamslambdaelasticsearchkibana.*;
+import software.amazon.awscdk.Aws;
+import software.amazon.awscdk.services.lambda.*;
+
+DynamoDBStreamsToLambdaToElasticSearchAndKibana(this, "test-dynamodb-stream-lambda-elasticsearch-kibana",
+        new DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps.Builder()
+            .lambdaFunctionProps(new FunctionProps.Builder()
+                .runtime(Runtime.NODEJS_14_X)
+                .code(Code.fromAsset("lambda"))
+                .handler("index.handler")
+                .build())
+            .domainName("test-domain")
+            .cognitoDomainName("globallyuniquedomain" + Aws.ACCOUNT_ID)
+            .build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

@@ -55,6 +55,19 @@ props = EventbridgeToKinesisStreamsProps(
 EventbridgeToKinesisStreams(self, 'test-eventbridge-kinesis-streams', props)
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.eventbridgekinesisstreams.*;
+import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.services.events.*;
+
+EventbridgeToKinesisStreams(this, "test-eventbridge-kinesis-streams",
+    new EventbridgeToKinesisStreamsProps.Builder()
+        .eventRuleProps(new RuleProps.Builder()
+            .schedule(Schedule.rate(Duration.minutes(5)))
+            .build())
+        .build());
+```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

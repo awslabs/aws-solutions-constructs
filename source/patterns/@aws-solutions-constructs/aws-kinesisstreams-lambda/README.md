@@ -63,6 +63,26 @@ KinesisStreamsToLambda(self, 'KinesisToLambdaPattern',
 
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.kinesisstreamslambda.*;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.eventsources.*;
+import software.amazon.awscdk.services.kinesis.*;
+
+new KinesisStreamsToLambda(this, "KinesisToLambdaPattern", new KinesisStreamsToLambda.Builder()
+    .kinesisEventSourceProps(new KinesisEventSourceProps.Builder()
+        .startingPosition(StartingPosition.TRIM_HORIZON)
+        .batchSize(1)
+        .build())
+    .lambdaFunctionProps(new FunctionProps.Builder()
+        .runtime(Runtime.NODEJS_14_X)
+        .code(Code.fromAsset("lambda"))
+        .handler("index.handler")
+        .build())
+    .build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

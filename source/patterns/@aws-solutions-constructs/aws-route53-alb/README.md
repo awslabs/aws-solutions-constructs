@@ -40,7 +40,6 @@ new Route53ToAlb(this, 'Route53ToAlbPattern', {
 
 Python
 ```python
-from typing_extensions import Self
 from aws_solutions_constructs.aws_route53_alb import Route53ToAlb
 from aws_cdk import aws_route53 as route53
 
@@ -50,6 +49,20 @@ Route53ToAlb(self, 'Route53ToAlbPattern',
              )
              public_api=False,
              )
+```
+
+Java
+``` java
+import software.amazon.awsconstructs.services.route53alb.*;
+import software.amazon.awscdk.services.route53.*;
+
+new Route53ToAlb(this, "Route53ToAlbPattern",
+    new Route53ToAlbProps.Builder()
+        .privateHostedZoneProps(new PrivateHostedZoneProps.Builder()
+          .zoneName("www.example.com")
+          .build())
+        .publicApi(false)
+        .build());
 ```
 
 ## Pattern Construct Props

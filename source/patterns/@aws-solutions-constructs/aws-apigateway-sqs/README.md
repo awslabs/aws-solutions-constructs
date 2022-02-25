@@ -38,6 +38,14 @@ from aws_solutions_constructs.aws_apigateway_sqs as ApiGatewayToSqs
 ApiGatewayToSqs(self, 'ApiGatewayToSqsPattern')
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.apigatewaysqs.*;
+
+new ApiGatewayToSqs(this, "ApiGatewayToSqsPattern", new ApiGatewayToSqsProps.Builder()
+    .build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

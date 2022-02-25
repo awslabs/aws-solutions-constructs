@@ -24,16 +24,26 @@ This AWS Solutions Construct implements an Amazon CloudFront distribution to an 
 
 Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
 import { CloudFrontToMediaStore } from '@aws-solutions-constructs/aws-cloudfront-mediastore';
 
 new CloudFrontToMediaStore(this, 'test-cloudfront-mediastore-default', {});
 ```
 
+Python
 ``` python
 from aws_solutions_constructs.aws_cloudfront_mediastore import CloudFrontToMediaStore
 
 CloudFrontToMediaStore(self, 'test-cloudfront-mediastore-default')
+```
+
+Java
+``` java
+import software.amazon.awsconstructs.services.cloudfrontmediastore.*;
+
+new CloudFrontToMediaStore(this, "test-cloudfront-mediastore-default", new CloudFrontToMediaStoreProps.Builder()
+        .build());
 ```
 
 ## Pattern Construct Props

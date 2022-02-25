@@ -78,6 +78,30 @@ policy_statement = iam.PolicyStatement(
 construct_stack.encryption_key.add_to_resource_policy(policy_statement)
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.eventrulessqs.*;
+import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.services.events.*;
+import software.amazon.awscdk.services.iam.*;
+
+final EventRulesToSqs constructStack = EventRulesToSqs(this, "test-construct",
+    new EventRulesToSqsProps.Builder()
+        .eventRuleProps(new RuleProps.Builder()
+            .schedule(Schedule.rate(Duration.minutes(5)))
+            .build())
+        .build());
+
+// Grant yourself permissions to use the Customer Managed KMS Key
+final PolicyStatement policyStatement = new PolicyStatement.Builder.create()
+    .actions(List.of("kms:Encrypt", "kms:Decrypt"))
+    .effect(Effect.ALLOW)
+    .principals(List.of(new AccountRootPrincipal()))
+    .resource(List.of("*"))
+    .build();
+
+constructStack.getEncryptionKey().addToResourcePolicy(policyStatement);
+```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

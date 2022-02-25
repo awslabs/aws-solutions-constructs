@@ -37,6 +37,14 @@ from aws_solutions_constructs.aws_kinesisfirehose_s3 import KinesisFirehoseToS3
 KinesisFirehoseToS3(self, 'test_firehose_s3')
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.kinesisfirehoses3.*;
+
+new KinesisFirehoseToS3(this, "test_firehose_s3", new KinesisFirehoseToS3Props.Builder()
+        .build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

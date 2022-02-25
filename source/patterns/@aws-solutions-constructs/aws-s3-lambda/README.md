@@ -49,6 +49,21 @@ S3ToLambda(self, 'test_s3_lambda',
            )
 ```
 
+
+Java
+``` java
+import software.amazon.awsconstructs.services.s3lambda.*;
+import software.amazon.awscdk.services.lambda.*;
+
+new S3ToLambda(this, "test_s3_lambda'", new S3ToLambda.Builder()
+    .lambdaFunctionProps(new FunctionProps.Builder()
+        .runtime(Runtime.NODEJS_14_X)
+        .code(Code.fromAsset("lambda"))
+        .handler("index.handler")
+        .build())
+    .build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

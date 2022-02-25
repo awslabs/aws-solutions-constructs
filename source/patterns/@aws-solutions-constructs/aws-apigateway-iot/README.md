@@ -49,7 +49,14 @@ ApiGatewayToIot(self, 'ApiGatewayToIotPattern',
     iot_endpoint='a1234567890123-ats'
 )
 ```
+Java
+``` java
+import software.amazon.awsconstructs.services.apigatewayiot.*;
 
+new ApiGatewayToIot(this, "ApiGatewayToIotPattern", new ApiGatewayToIotProps.Builder()
+                .iotEndpoint("a1234567890123-ats")
+                .build());
+```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

@@ -52,6 +52,21 @@ ddb_lambda.DynamoDBStreamsToLambda(self, 'test-dynamodbstreams-lambda',
 )
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.dynamodbstreamslambda.*;
+import software.amazon.awscdk.services.lambda.*;
+
+DynamoDBStreamsToLambda(this, "test-dynamodbstreams-lambda",
+        new DynamoDBStreamsToLambdaProps.Builder()
+            .lambdaFunctionProps(new FunctionProps.Builder()
+                .runtime(Runtime.NODEJS_14_X)
+                .code(Code.fromAsset("lambda"))
+                .handler("index.handler")
+                .build())
+            .build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

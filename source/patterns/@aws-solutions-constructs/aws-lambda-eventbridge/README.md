@@ -55,9 +55,21 @@ LambdaToEventbridge(self, 'LambdaToEventbridgePattern',
                         handler='index.handler'
                     )
                     )
-
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.lambdaeventbridge.*;
+import software.amazon.awscdk.services.lambda.*;
+
+new LambdaToEventbridge(this, "LambdaToEventbridgePattern", new LambdaToEventbridge.Builder()
+    .lambdaFunctionProps(new FunctionProps.Builder()
+        .runtime(Runtime.NODEJS_14_X)
+        .code(Code.fromAsset("lambda"))
+        .handler("index.handler")
+        .build())
+    .build());
+```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

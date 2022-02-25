@@ -53,7 +53,7 @@ from aws_cdk import (
 )
 
 LambdaToSqsToLambda(
-    self, 'test-lambda-sqs-lambs-stack',
+    self, 'LambdaToSqsToLambdaPattern',
     producer_lambda_function_props=_lambda.FunctionProps(
         code=_lambda.Code.from_asset('{__dirname}/producer-lambda'),
         runtime=_lambda.Runtime.PYTHON_3_9,
@@ -67,6 +67,24 @@ LambdaToSqsToLambda(
 )
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.lambdasqslambda.*;
+import software.amazon.awscdk.services.lambda.*;
+
+new LambdaToSqsToLambda(this, "LambdaToSqsToLambdaPattern", new LambdaToSqsToLambda.Builder()
+    .producerLambdaFunctionProps(new FunctionProps.Builder()
+        .runtime(Runtime.NODEJS_14_X)
+        .code(Code.fromAsset("producer-lambda"))
+        .handler("index.handler")
+        .build())
+    .consumerLambdaFunctionProps(new FunctionProps.Builder()
+        .runtime(Runtime.NODEJS_14_X)
+        .code(Code.fromAsset("consumer-lambda"))
+        .handler("index.handler")
+        .build())
+    .build());
+```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

@@ -77,6 +77,31 @@ props = AlbToFargateProps(
 AlbToFargate(self, 'new-construct', props)
 ```
 
+Java
+``` java
+import software.amazon.awscdk.services.certificatemanager.Certificate;
+import software.amazon.awscdk.services.ecs.patterns.ApplicationListenerProps;
+import software.amazon.awsconstructs.services.albfargate.AlbToFargate;
+import software.amazon.awsconstructs.services.albfargate.AlbToFargateProps;;
+
+// Obtain a pre-existing certificate from your account
+final ICertificate certificate = Certificate.fromCertificateArn(
+    this,
+    "existing-cert",
+    "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
+);
+
+new AlbToFargate(this, "AlbToFargatePattern", new AlbToFargateProps.Builder()
+.ecrRepositoryArn("arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo")
+.ecrImageVersion("latest")
+.listenerProps(new ApplicationListenerProps.Builder()
+    .certificate(certificate)
+    .name("test")
+    .build())
+.publicApi(true)
+.build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

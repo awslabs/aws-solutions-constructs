@@ -53,6 +53,20 @@ LambdaToSqs(
 )
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.lambdasqs.*;
+import software.amazon.awscdk.services.lambda.*;
+
+new LambdaToSqs(this, "test-lambda-sqs-stack", new LambdaToSqs.Builder()
+    .lambdaFunctionProps(new FunctionProps.Builder()
+        .runtime(Runtime.NODEJS_14_X)
+        .code(Code.fromAsset("lambda"))
+        .handler("index.handler")
+        .build())
+    .build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

@@ -61,6 +61,19 @@ LambdaToSecretsmanager(
 )
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.lambdasecretsmanager.*;
+import software.amazon.awscdk.services.lambda.*;
+
+new LambdaToSecretsmanager(this, "test-lambda-secretsmanager-stack", new LambdaToSecretsmanager.Builder()
+    .lambdaFunctionProps(new FunctionProps.Builder()
+        .runtime(Runtime.NODEJS_14_X)
+        .code(Code.fromAsset("lambda"))
+        .handler("index.handler")
+        .build())
+    .build());
+```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

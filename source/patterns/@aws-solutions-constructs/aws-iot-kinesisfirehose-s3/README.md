@@ -64,6 +64,21 @@ props = IotToKinesisFirehoseToS3Props(
 IotToKinesisFirehoseToS3(self, 'test_iot_firehose_s3', props)
 ```
 
+Java
+```java
+import software.amazon.awsconstructs.services.iotkinesisfirehoses3.*;
+import software.amazon.awscdk.services.iot.*;
+
+new IotToKinesisFirehoseToS3(this, "test-iot-firehose-s3", new IotToKinesisFirehoseToS3Props.Builder()
+        .iotTopicRuleProps(new CfnTopicRuleProps.Builder()
+            .topicRulePayload(new TopicRulePayloadProperty.Builder()
+                .ruleDisabled(false)
+                .description("Persistent storage of connected vehicle telematics data")
+                .sql("SELECT * FROM 'connectedcar/telemetry/#'")
+                .actions(List.of()))
+                .build())
+        .build());
+```
 
 ## Pattern Construct Props
 

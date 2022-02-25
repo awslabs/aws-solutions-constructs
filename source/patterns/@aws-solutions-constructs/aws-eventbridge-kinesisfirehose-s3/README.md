@@ -51,6 +51,19 @@ props = EventbridgeToKinesisFirehoseToS3Props(
 EventbridgeToKinesisFirehoseToS3(self, 'test-eventbridge-firehose-s3', props)
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.eventbridgekinesisfirehoses3.*;
+import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.services.events.*;
+
+EventbridgeToKinesisFirehoseToS3(this, "test-eventbridge-firehose-s3",
+        new EventbridgeToKinesisFirehoseToS3Props.Builder()
+            .eventRuleProps(new RuleProps.Builder()
+                .schedule(Schedule.rate(Duration.minutes(5)))
+                .build())
+            .build());
+```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

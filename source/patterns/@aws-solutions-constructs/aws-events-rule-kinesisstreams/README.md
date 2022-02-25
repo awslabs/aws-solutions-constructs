@@ -56,6 +56,20 @@ props = EventsRuleToKinesisStreamsProps(
 EventsRuleToKinesisStreams(self, 'test_events_rule_kinesis_streams', props)
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.eventsrulekinesisstreams.*;
+import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.services.events.*;
+
+EventsRuleToKinesisStreams(this, "test-events-rule-kinesis-streams",
+    new EventsRuleToKinesisStreamsProps.Builder()
+        .eventRuleProps(new RuleProps.Builder()
+            .schedule(Schedule.rate(Duration.minutes(5)))
+            .build())
+        .build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

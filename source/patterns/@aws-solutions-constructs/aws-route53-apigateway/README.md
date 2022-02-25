@@ -88,6 +88,38 @@ Route53ToApigateway(self, 'Route53ToApigatewayPattern',
                     )
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.route53apigateway.*;
+import software.amazon.awscdk.services.route53.*;
+import software.amazon.awscdk.services.acm.*;
+import software.amazon.awscdk.services.apigateway.DomainNameAttributes;
+
+// The construct requires an existing REST API, this can be created in raw CDK
+// or extracted from a previously instantiated construct that created an API
+// Gateway REST API
+final IRestApi existingRestApi = previouslyCreatedApigatewayToLambdaConstruct.apiGateway;
+
+final IHostedZone ourHostedZone = HostedZone.fromLookup(this, "HostedZone", new DomainNameAttributes.Builder()
+    .domainName("example.com")
+    .build());
+
+// Obtain a pre-existing certificate from your account
+final ICertificate certificate = Certificate.fromCertificateArn(
+    this,
+    "existing-cert",
+    "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012");
+
+// This construct can only be attached to a configured API Gateway.
+new Route53ToApigateway(this, "Route53ToApigatewayPattern",
+    new Route53ToApigatewayProps.Builder()
+        .existingApiGatewayObj(existingRestApi)
+        .existingHostedZoneInterface(ourHostedZone)
+        .publicApi(true)
+        .existingCertificateInterface(certificate)
+        .build());
+```
+
 ## Pattern Construct Props
 
 This construct cannot create a new Public Hosted Zone, if you are creating a public API you must supply an existing Public Hosted Zone that will be reconfigured with a new Alias record. Public Hosted Zones are configured with public domain names and are not well suited to be launched and torn down dynamically, so this construct will only reconfigure existing Public Hosted Zones.

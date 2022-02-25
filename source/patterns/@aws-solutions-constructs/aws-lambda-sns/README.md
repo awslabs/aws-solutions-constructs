@@ -53,6 +53,20 @@ LambdaToSns(
 )
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.lambdasns.*;
+import software.amazon.awscdk.services.lambda.*;
+
+new LambdaToSns(this, "test-lambda-sns-stack", new LambdaToSns.Builder()
+    .lambdaFunctionProps(new FunctionProps.Builder()
+        .runtime(Runtime.NODEJS_14_X)
+        .code(Code.fromAsset("lambda"))
+        .handler("index.handler")
+        .build())
+    .build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

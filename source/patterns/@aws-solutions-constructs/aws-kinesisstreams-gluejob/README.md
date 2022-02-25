@@ -118,6 +118,47 @@ customEtlJob = KinesisstreamsToGluejob(self, 'CustomETL',
 
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.kinesisstreamsgluejob.*;
+import software.amazon.awscdk.services.s3.assets.*;
+import software.amazon.awscdk.services.glue.*;
+
+final CfnTable.ColumnProperty[] fieldSchema = List.of(
+    new CfnTable.ColumnProperty.Builder()
+        .name("id")
+        .type("int")
+        .comment("Identifier for the record")
+        .build(),
+    new CfnTable.ColumnProperty.Builder()
+        .name("name")
+        .type("string")
+        .comment("Name for the record")
+        .build(),
+    new CfnTable.ColumnProperty.Builder()
+        .name("address")
+        .type("string")
+        .comment("Address for the record")
+        .build(),
+    new CfnTable.ColumnProperty.Builder()
+        .name("value")
+        .type("int")
+        .comment("Value for the record")
+        .build());
+
+new KinesisstreamsToGluejob(this, "CustomETL", new KinesisstreamsToGluejob.Builder()
+    .glueJobProps(new CfnJobProps.Builder()
+        .command(new JobCommandProperty.Builder()
+            .name("gluestreaming")
+            .pythonVersion("3")
+            .scriptLocation(new Asset.Builder()
+                .path("{__dirname}/../etl/transform.py")
+                .build())
+            .getS3ObjectUrl()
+            .build()))
+    .fieldSchema(fieldSchema)
+    .build());
+```
 
 ## Pattern Construct Props
 

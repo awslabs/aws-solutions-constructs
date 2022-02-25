@@ -64,6 +64,27 @@ LambdaToStepfunctions(
 )
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.lambdastepfunctions.*;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.stepfunctions.*;
+
+final Pass startState = Pass(this, "StartState");
+
+new LambdaToStepfunctions(this, "test-lambda-stepfunctions-stack",
+    new LambdaToStepfunctionsProps.Builder()
+        .lambdaFunctionProps(new FunctionProps.Builder()
+            .runtime(Runtime.NODEJS_14_X)
+            .code(Code.fromAsset("lambda"))
+            .handler("index.handler")
+            .build())
+        .stateMachineProps(new StateMachineProps.Builder()
+            .definition(startState))
+            .build())
+        .build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

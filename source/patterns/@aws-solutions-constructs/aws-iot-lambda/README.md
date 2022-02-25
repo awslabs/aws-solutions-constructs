@@ -75,7 +75,27 @@ props = IotToLambdaProps(
 IotToLambda(self, 'test_iot_lambda', props)
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.iotlambda.*;
+import software.amazon.awscdk.services.iot.*;
+import software.amazon.awscdk.services.lambda.*;
 
+new IotToLambda(this, "test-iot-lambda-integration", new IotToLambdaProps.Builder()
+    .lambdaFunctionProps(new FunctionProps.Builder()
+        .runtime(Runtime.NODEJS_14_X)
+        .code(Code.fromAsset("lambda"))
+        .handler("index.handler")
+        .build())
+    .iotTopicRuleProps(new CfnTopicRuleProps.Builder()
+        .topicRulePayload(new TopicRulePayloadProperty.Builder()
+            .ruleDisabled(false)
+            .description("Processing of DTC messages from the AWS Connected Vehicle Solution.")
+            .sql("SSELECT * FROM 'connectedcar/dtc/#'")
+            .actions(List.of()))
+        .build())
+    .build());
+```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

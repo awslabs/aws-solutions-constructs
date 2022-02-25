@@ -36,6 +36,14 @@ from aws_solutions_constructs.aws_kinesisstreams_kinesisfirehose_s3 import Kines
 KinesisStreamsToKinesisFirehoseToS3(self, 'test_stream_firehose_s3')
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.kinesisstreamskinesisfirehoses3.*;
+
+new KinesisStreamsToKinesisFirehoseToS3(this, "test_stream_firehose_s3", new KinesisStreamsToKinesisFirehoseToS3Props.Builder()
+        .build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

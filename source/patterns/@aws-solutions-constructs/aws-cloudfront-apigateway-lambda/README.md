@@ -48,6 +48,21 @@ cf_api_lambda.CloudFrontToApiGatewayToLambda(self, 'test-cloudfront-apigateway-l
   )
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.cloudfrontapigatewaylambda.*;
+import software.amazon.awscdk.services.lambda.*;
+
+new CloudFrontToApiGatewayLambda(this, "test-cloudfront-apigateway-lambda",
+        new CloudFrontToApiGatewayLambda.Builder()
+            .lambdaFunctionProps(new FunctionProps.Builder()
+                .runtime(Runtime.NODEJS_14_X)
+                .code(Code.fromAsset("lambda"))
+                .handler("index.handler")
+                .build())
+            .build());
+```
+
 
 ## Pattern Construct Props
 

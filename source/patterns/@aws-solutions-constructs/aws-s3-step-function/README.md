@@ -56,6 +56,21 @@ S3ToStepFunction(
 )
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.s3stepfunction.*;
+import software.amazon.awscdk.services.stepfunctions.*;
+
+final Pass startState = Pass(this, "StartState");
+
+new S3ToStepFunction(this, "test_s3_step_function_stack",
+    new S3ToStepFunctionProps.Builder()
+        .stateMachineProps(new StateMachineProps.Builder()
+            .definition(startState))
+            .build())
+        .build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

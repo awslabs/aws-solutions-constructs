@@ -42,6 +42,14 @@ from aws_solutions_constructs.aws_apigateway_dynamodb import ApiGatewayToDynamoD
 ApiGatewayToDynamoDB(self, 'test-api-gateway-dynamodb-default')
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.apigatewaydynamodb.*;
+
+new ApiGatewayToDynamoDB(this, "test-api-gateway-dynamodb-default", new ApiGatewayToDynamoDBProps.Builder()
+        .build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

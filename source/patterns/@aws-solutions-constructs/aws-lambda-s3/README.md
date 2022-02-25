@@ -53,6 +53,20 @@ LambdaToS3(self, 'LambdaToS3Pattern',
 
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.lambdas3.*;
+import software.amazon.awscdk.services.lambda.*;
+
+new LambdaToS3(this, "LambdaToS3Pattern", new LambdaToS3.Builder()
+    .lambdaFunctionProps(new FunctionProps.Builder()
+        .runtime(Runtime.NODEJS_14_X)
+        .code(Code.fromAsset("lambda"))
+        .handler("index.handler")
+        .build())
+    .build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

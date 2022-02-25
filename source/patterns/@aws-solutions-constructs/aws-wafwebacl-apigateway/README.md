@@ -73,6 +73,29 @@ WafwebaclToApiGateway(self, 'test_wafwebacl_apigateway',
                       )
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.apigatewaylambda.*;
+import software.amazon.awsconstructs.services.wafwebaclapigateway.*;
+import software.amazon.awscdk.services.apigateway.*;
+import software.amazon.awscdk.services.lambda.*;
+
+final ApiGatewayToLambda apiGatewayToLambda = new ApiGatewayToLambda(this, "ApiGatewayToLambdaPattern",
+    new ApiGatewayToLambdaProps.Builder()
+        .lambdaFunctionProps(new FunctionProps.Builder()
+            .runtime(Runtime.NODEJS_14_X)
+            .code(Code.fromAsset("lambda"))
+            .handler("index.handler")
+            .build())
+        .build());
+
+// This construct can only be attached to a configured Application Load
+// Balancer.
+new WafwebaclToApiGateway(this, "test-wafwebacl-apigateway", new WafwebaclToApiGatewayProps.Builder()
+    .existingApiGatewayInterface(apiGatewayToLambda.getApiGateway())
+    .build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

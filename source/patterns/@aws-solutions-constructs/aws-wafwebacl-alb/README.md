@@ -70,6 +70,29 @@ WafwebaclToAlb(self, 'test_wafwebacl_alb',
                existing_load_balancer_obj=r53ToAlb.load_balancer
                )
 ```
+
+Java
+``` java
+import software.amazon.awsconstructs.services.route53alb.*;
+import software.amazon.awsconstructs.services.wafwebaclalb.*;
+import software.amazon.awscdk.services.route53.*;
+
+// A constructed ALB is required to be attached to the WAF Web ACL.
+// In this case, we are using this construct to create one.
+final Route53ToAlb r53ToAlb = new Route53ToAlb(this, "Route53ToAlbPattern",
+    new Route53ToAlbProps.Builder()
+        .privateHostedZoneProps(new PrivateHostedZoneProps.Builder()
+          .zoneName("www.example.com")
+          .build())
+        .publicApi(false)
+        .logAccessLogs(false)
+        .build());
+
+// This construct can only be attached to a configured Application Load Balancer.
+new WafwebaclToAlb(this, "test-wafwebacl-alb", new WafwebaclToAlbProps.Builder()
+    .existingLoadBalancerObj(r53ToAlb.getLoadBalancer())
+    .build());
+```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

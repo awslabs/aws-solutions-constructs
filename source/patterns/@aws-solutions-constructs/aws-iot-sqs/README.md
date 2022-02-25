@@ -64,6 +64,21 @@ props = IotToSqsProps(
 IotToSqs(self, 'test_iot_sqs', props)
 ```
 
+Java
+``` java
+import software.amazon.awsconstructs.services.iotsqs.*;
+import software.amazon.awscdk.services.iot.*;
+
+new IotToSqs(this, "test_iot_sqs", new IotToSqsProps.Builder()
+    .iotTopicRuleProps(new CfnTopicRuleProps.Builder()
+        .topicRulePayload(new TopicRulePayloadProperty.Builder()
+            .ruleDisabled(false)
+            .description("Testing the IotToSqs Pattern")
+            .sql("SELECT * FROM 'iot/sqs/#'")
+            .actions(List.of()))
+        .build())
+    .build());
+```
 
 ## Pattern Construct Props
 
