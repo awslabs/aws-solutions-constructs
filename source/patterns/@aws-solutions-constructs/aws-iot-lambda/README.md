@@ -92,7 +92,8 @@ new IotToLambda(this, "test-iot-lambda-integration", new IotToLambdaProps.Builde
             .ruleDisabled(false)
             .description("Processing of DTC messages from the AWS Connected Vehicle Solution.")
             .sql("SSELECT * FROM 'connectedcar/dtc/#'")
-            .actions(List.of()))
+            .actions(List.of())
+            .build())
         .build())
     .build());
 ```

@@ -41,7 +41,7 @@ const props: IotToKinesisStreamsProps = {
     }
 };
 
-new IotToKinesisStreams(this, 'test-iot-kinesisstream', props);
+new IotToKinesisStreams(this, 'test-iot-kinesisstreams', props);
 ```
 
 Python
@@ -61,7 +61,7 @@ props = IotToKinesisStreamsProps(
     )
 )
 
-IotToKinesisStreams(self, 'test_iot_firehose_s3', props)
+IotToKinesisStreams(self, 'test-iot-kinesisstreams', props)
 ```
 
 Java
@@ -69,14 +69,15 @@ Java
 import software.amazon.awsconstructs.services.iotkinesisstreams.*;
 import software.amazon.awscdk.services.iot.*;
 
-new IotToKinesisStreams(this, "test-iot-kinesisstream", new IotToKinesisStreamsProps.Builder()
+new IotToKinesisStreams(this, "test-iot-kinesisstreams", new IotToKinesisStreamsProps.Builder()
         .iotTopicRuleProps(new CfnTopicRuleProps.Builder()
             .topicRulePayload(new TopicRulePayloadProperty.Builder()
                 .ruleDisabled(false)
-                .description("Persistent storage of connected vehicle telematics data")
-                .sql("SELECT * FROM 'connectedcar/telemetry/#'")
-                .actions(List.of()))
+                .description("Sends data to kinesis data stream")
+                .sql("SELECT * FROM 'solutions/construct'")
+                .actions(List.of())
                 .build())
+            .build())
         .build());
 ```
 

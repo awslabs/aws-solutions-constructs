@@ -93,7 +93,8 @@ new IotToLambdaToDynamoDB(this, "test-iot-lambda-dynamodb-stack", new IotToLambd
             .ruleDisabled(false)
             .description("Processing of DTC messages from the AWS Connected Vehicle Solution.")
             .sql("SELECT * FROM 'connectedcar/dtc/#'")
-            .actions(List.of()))
+            .actions(List.of())
+            .build())
         .build())
     .build());
 ```

@@ -72,7 +72,7 @@ Java
 import software.amazon.awsconstructs.services.lambdasqslambda.*;
 import software.amazon.awscdk.services.lambda.*;
 
-new LambdaToSqsToLambda(this, "LambdaToSqsToLambdaPattern", new LambdaToSqsToLambda.Builder()
+new LambdaToSqsToLambda(this, "LambdaToSqsToLambdaPattern", new LambdaToSqsToLambdaProps.Builder()
     .producerLambdaFunctionProps(new FunctionProps.Builder()
         .runtime(Runtime.NODEJS_14_X)
         .code(Code.fromAsset("producer-lambda"))

@@ -62,7 +62,7 @@ Java
 import software.amazon.awsconstructs.services.lambdaeventbridge.*;
 import software.amazon.awscdk.services.lambda.*;
 
-new LambdaToEventbridge(this, "LambdaToEventbridgePattern", new LambdaToEventbridge.Builder()
+new LambdaToEventbridge(this, "LambdaToEventbridgePattern", new LambdaToEventbridgeProps.Builder()
     .lambdaFunctionProps(new FunctionProps.Builder()
         .runtime(Runtime.NODEJS_14_X)
         .code(Code.fromAsset("lambda"))

@@ -58,7 +58,7 @@ Java
 import software.amazon.awsconstructs.services.lambdas3.*;
 import software.amazon.awscdk.services.lambda.*;
 
-new LambdaToS3(this, "LambdaToS3Pattern", new LambdaToS3.Builder()
+new LambdaToS3(this, "LambdaToS3Pattern", new LambdaToS3Props.Builder()
     .lambdaFunctionProps(new FunctionProps.Builder()
         .runtime(Runtime.NODEJS_14_X)
         .code(Code.fromAsset("lambda"))

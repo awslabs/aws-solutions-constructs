@@ -26,14 +26,14 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` javascript
-import { EventRulesToStepFunction, EventRulesToStepFunctionProps } from '@aws-solutions-constructs/aws-event-rules-step-function';
+import { EventsRuleToStepFunction, EventsRuleToStepFunctionProps } from '@aws-solutions-constructs/aws-events-rule-step-function';
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
 import * as events from '@aws-cdk/aws-events';
 import { Duration } from '@aws-cdk/core';
 
 const startState = new stepfunctions.Pass(this, 'StartState');
 
-const props: EventRulesToStepFunctionProps = {
+const props: EventsRuleToStepFunctionProps = {
     stateMachineProps: {
         definition: startState
     },
@@ -42,12 +42,12 @@ const props: EventRulesToStepFunctionProps = {
     }
 };
 
-new EventRulesToStepFunction(this, 'test-event-rules-step-function-stack', props);
+new EventsRuleToStepFunction(this, 'test-events-rules-step-function-stack', props);
 ```
 
 Python
 ``` Python
-from aws_solutions_constructs.aws_event_rules_step_function import EventRulesToStepFunction, EventRulesToStepFunctionProps
+from aws_solutions_constructs.aws_evenst_rule_step_function import EventsRuleToStepFunction, EventsRuleToStepFunctionProps
 from aws_cdk import (
     aws_stepfunctions as stepfunctions,
     aws_events as events,
@@ -56,7 +56,7 @@ from aws_cdk import (
 
 startState = stepfunctions.Pass(self, 'StartState')
 
-props = EventRulesToStepFunctionProps(
+props = EventsRuleToStepFunctionProps(
     state_machine_props=stepfunctions.StateMachineProps(
         definition=startState
     ),
@@ -65,20 +65,20 @@ props = EventRulesToStepFunctionProps(
     )
 )
 
-EventRulesToStepFunction(self, 'test-eventbridge-stepfunctions-stack', props)
+EventsRuleToStepFunction(self, 'test-eventbridge-stepfunctions-stack', props)
 ```
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.eventrulesstepfunction.*;
+import software.amazon.awsconstructs.services.eventsrulestepfunction.*;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.services.events.*;
 import software.amazon.awscdk.services.stepfunctions.*;
 
 final Pass startState = Pass(this, "StartState");
 
-final EventRulesToStepFunction constructStack = EventRulesToStepFunction(this, "test-construct",
-    new EventRulesToStepFunctionProps.Builder()
+final EventsRuleToStepFunction constructStack = EventsRuleToStepFunction(this, "test-construct",
+    new EventsRuleToStepFunctionProps.Builder()
         .stateMachineProps(new StateMachineProps.Builder()
             .definition(startState))
             .build())

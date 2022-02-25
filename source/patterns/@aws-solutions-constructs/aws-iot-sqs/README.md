@@ -75,7 +75,8 @@ new IotToSqs(this, "test_iot_sqs", new IotToSqsProps.Builder()
             .ruleDisabled(false)
             .description("Testing the IotToSqs Pattern")
             .sql("SELECT * FROM 'iot/sqs/#'")
-            .actions(List.of()))
+            .actions(List.of())
+            .build())
         .build())
     .build());
 ```

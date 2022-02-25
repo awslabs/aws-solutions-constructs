@@ -102,7 +102,7 @@ final Function lambdaFunction = Function.Builder.create(this, "IndexHandler")
 final LambdaRestApi apiGateway = new LambdaRestApi.Builder(this, "LambdaRestApi", new LambdaRestApiProps.Builder()
         .handler(lambdaFunction)
         .endpointConfiguration(new EndpointConfiguration.Builder()
-            .types(List.of(EndpointType.EDGE))
+            .types(List.of(EndpointType.REGIONAL))
             .build())
         .build());
 

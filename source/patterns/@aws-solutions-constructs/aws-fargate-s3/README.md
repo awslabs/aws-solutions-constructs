@@ -37,6 +37,27 @@ const props: FargateToS3Props = {
 new FargateToS3(stack, 'test-construct', props);
 ```
 
+Python
+``` python
+from aws_solutions_constructs.aws_fargate_s3 import FargateToS3, FargateToS3Props
+
+props = FargateToS3Props(
+    public_api=True,
+    ecr_repository_arn="arn of a repo in ECR in your account"
+)
+
+FargateToS3(self, 'test_construct', props)
+```
+
+Java
+``` java
+import software.amazon.awsconstructs.services.fargates3.*;
+
+new FargateToS3(this, "test_construct", new FargateToS3Props.Builder()
+    .publicApi(true)
+    .ecrRepositoryArn("arn of a repo in ECR in your account")
+    .build());
+```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

@@ -94,7 +94,7 @@ import software.amazon.awscdk.services.lambda.*;
 import software.amazon.awscdk.services.sagemaker.*;
 import software.amazon.awscdk.Duration;
 
-new LambdaToSagemakerEndpoint(this, "LambdaToSagemakerEndpointPattern", new LambdaToSagemakerEndpoint.Builder()
+new LambdaToSagemakerEndpoint(this, "LambdaToSagemakerEndpointPattern", new LambdaToSagemakerEndpointProps.Builder()
     .modelProps(new CfnModelProps.Builder()
         .primaryContainer(new CfnModel.ContainerDefinitionProperty.Builder()
             .image("<AccountId>.dkr.ecr.<region>.amazonaws.com/linear_learner:latest")

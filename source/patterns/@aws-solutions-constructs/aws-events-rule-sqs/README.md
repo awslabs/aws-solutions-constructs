@@ -29,15 +29,15 @@ Typescript
 import { Duration } from '@aws-cdk/core';
 import * as events from '@aws-cdk/aws-events';
 import * as iam from '@aws-cdk/aws-iam';
-import { EventRulesToSqsProps, EventRulesToSqs } from "@aws-solutions-constructs/aws-event-rules-sqs";
+import { EventsRuleToSqsProps, EventsRuleToSqs } from "@aws-solutions-constructs/aws-events-rule-sqs";
 
-const props: EventRulesToSqsProps = {
+const props: EventsRuleToSqsProps = {
     eventRuleProps: {
         schedule: events.Schedule.rate(Duration.minutes(5))
     }
 };
 
-const constructStack = new EventRulesToSqs(this, 'test-construct', props);
+const constructStack = new EventsRuleToSqs(this, 'test-construct', props);
 
 // Grant yourself permissions to use the Customer Managed KMS Key
 const policyStatement = new iam.PolicyStatement({
@@ -52,20 +52,20 @@ constructStack.encryptionKey?.addToResourcePolicy(policyStatement);
 
 Python
 ``` python
-from aws_solutions_constructs.aws_event_rules_sqs import EventRulesToSqsProps, EventRulesToSqs
+from aws_solutions_constructs.aws_events_rule_sqs import EventsRuleToSqsProps, EventsRuleToSqs
 from aws_cdk import (
     aws_events as events,
     aws_iam as iam,
     Duration
 )
 
-props = EventRulesToSqsProps(
+props = EventsRuleToSqsProps(
     event_rule_props=events.RuleProps(
         schedule=events.Schedule.rate(Duration.minutes(5))
     )
 )
 
-construct_stack = EventRulesToSqs(self, 'test-construct', props)
+construct_stack = EventsRuleToSqs(self, 'test-construct', props)
 
 # Grant yourself permissions to use the Customer Managed KMS Key
 policy_statement = iam.PolicyStatement(
@@ -80,12 +80,12 @@ construct_stack.encryption_key.add_to_resource_policy(policy_statement)
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.eventrulessqs.*;
+import software.amazon.awsconstructs.services.eventsrulesqs.*;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.services.events.*;
 import software.amazon.awscdk.services.iam.*;
 
-final EventRulesToSqs constructStack = EventRulesToSqs(this, "test-construct",
+final EventsRuleToSqs constructStack = EventsRuleToSqs(this, "test-construct",
     new EventRulesToSqsProps.Builder()
         .eventRuleProps(new RuleProps.Builder()
             .schedule(Schedule.rate(Duration.minutes(5)))

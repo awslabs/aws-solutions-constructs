@@ -28,15 +28,15 @@ Typescript
 import { Duration } from '@aws-cdk/core';
 import * as events from '@aws-cdk/aws-events';
 import * as iam from '@aws-cdk/aws-iam';
-import { EventRulesToSnsProps, EventRulesToSns } from "@aws-solutions-constructs/aws-events-rule-sns";
+import { EventsRuleToSnsProps, EventsRuleToSns } from "@aws-solutions-constructs/aws-events-rule-sns";
 
-const props: EventRulesToSnsProps = {
+const props: EventsRuleToSnsProps = {
     eventRuleProps: {
         schedule: events.Schedule.rate(Duration.minutes(5)),
     }
 };
 
-const constructStack = new EventRulesToSns(this, 'test-construct', props);
+const constructStack = new EventsRuleToSns(this, 'test-construct', props);
 
 // Grant yourself permissions to use the Customer Managed KMS Key
 const policyStatement = new iam.PolicyStatement({
@@ -51,20 +51,20 @@ constructStack.encryptionKey?.addToResourcePolicy(policyStatement);
 
 Python
 ``` python
-from aws_solutions_constructs.aws_event_rules_sns import EventRulesToSns, EventRulesToSnsProps
+from aws_solutions_constructs.aws_events_rule_sns import EventsRuleToSns, EventsRuleToSnsProps
 from aws_cdk import (
     aws_events as events,
     aws_iam as iam
 )
 
-props = EventRulesToSnsProps(
+props = EventsRuleToSnsProps(
     event_rule_props=events.RuleProps(
         schedule=events.Schedule.rate(Duration.minutes(5))
     )
 )
 
 
-construct_stack = EventRulesToSns(self, 'test-construct', props)
+construct_stack = EventsRuleToSns(self, 'test-construct', props)
 
 # Grant yourself permissions to use the Customer Managed KMS Key
 policy_statement = iam.PolicyStatement(
@@ -79,12 +79,12 @@ construct_stack.encryption_key.add_to_resource_policy(policy_statement)
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.eventrulessns.*;
+import software.amazon.awsconstructs.services.eventsrulesns.*;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.services.events.*;
 import software.amazon.awscdk.services.iam.*;
 
-final EventRulesToSns constructStack = EventRulesToSns(this, "test-construct",
+final EventsRuleToSns constructStack = EventsRuleToSns(this, "test-construct",
         new EventRulesToSnsProps.Builder()
             .eventRuleProps(new RuleProps.Builder()
                 .schedule(Schedule.rate(Duration.minutes(5)))

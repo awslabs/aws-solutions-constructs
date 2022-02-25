@@ -70,7 +70,7 @@ import software.amazon.awscdk.services.lambda.*;
 import software.amazon.awscdk.services.lambda.eventsources.*;
 import software.amazon.awscdk.services.kinesis.*;
 
-new KinesisStreamsToLambda(this, "KinesisToLambdaPattern", new KinesisStreamsToLambda.Builder()
+new KinesisStreamsToLambda(this, "KinesisToLambdaPattern", new KinesisStreamsToLambdaProps.Builder()
     .kinesisEventSourceProps(new KinesisEventSourceProps.Builder()
         .startingPosition(StartingPosition.TRIM_HORIZON)
         .batchSize(1)

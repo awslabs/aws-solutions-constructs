@@ -60,7 +60,7 @@ Java
 import software.amazon.awsconstructs.services.lambdadynamodb.*;
 import software.amazon.awscdk.services.lambda.*;
 
-new LambdaToDynamoDB(this, "test_lambda_dynamodb_stack", new LambdaToDynamoDB.Builder()
+new LambdaToDynamoDB(this, "test_lambda_dynamodb_stack", new LambdaToDynamoDBProps.Builder()
     .lambdaFunctionProps(new FunctionProps.Builder()
         .runtime(Runtime.NODEJS_14_X)
         .code(Code.fromAsset("lambda"))

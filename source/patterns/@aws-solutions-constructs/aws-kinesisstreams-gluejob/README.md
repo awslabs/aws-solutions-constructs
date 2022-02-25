@@ -146,7 +146,7 @@ final CfnTable.ColumnProperty[] fieldSchema = List.of(
         .comment("Value for the record")
         .build());
 
-new KinesisstreamsToGluejob(this, "CustomETL", new KinesisstreamsToGluejob.Builder()
+new KinesisstreamsToGluejob(this, "CustomETL", new KinesisstreamsToGluejobProps.Builder()
     .glueJobProps(new CfnJobProps.Builder()
         .command(new JobCommandProperty.Builder()
             .name("gluestreaming")

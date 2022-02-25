@@ -38,6 +38,28 @@ const props: FargateToSqsProps = {
 new FargateToSqs(stack, 'test-construct', props);
 ```
 
+Python
+``` python
+from aws_solutions_constructs.aws_fargate_sqs import FargateToSqs, FargateToSqsProps
+
+props = FargateToSqsProps(
+    public_api=True,
+    ecr_repository_arn="arn of a repo in ECR in your account"
+)
+
+FargateToSqs(self, 'test_construct', props)
+```
+
+Java
+``` java
+import software.amazon.awsconstructs.services.fargatesqs.*;
+
+new FargateToSqs(this, "test_construct", new FargateToSqsProps.Builder()
+    .publicApi(true)
+    .ecrRepositoryArn("arn of a repo in ECR in your account")
+    .build());
+```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

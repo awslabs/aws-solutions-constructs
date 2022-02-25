@@ -71,7 +71,7 @@ import software.amazon.awscdk.services.lambda.*;
 import software.amazon.awscdk.services.ssm.*;
 
 new LambdaToSsmstringparameter(this, "test-lambda-ssmstringparameter-stack",
-    new LambdaToSsmstringparameter.Builder()
+    new LambdaToSsmstringparameterProps.Builder()
         .lambdaFunctionProps(new FunctionProps.Builder()
             .runtime(Runtime.NODEJS_14_X)
             .code(Code.fromAsset("lambda"))

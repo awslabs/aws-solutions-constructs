@@ -76,7 +76,8 @@ new IotToS3(this, "test_iot_s3", new IotToS3Props.Builder()
             .ruleDisabled(false)
             .description("Testing the IotToS3 Pattern")
             .sql("SELECT * FROM 'solutions/constructs'")
-            .actions(List.of()))
+            .actions(List.of())
+            .build())
         .build())
     .build());
 ```

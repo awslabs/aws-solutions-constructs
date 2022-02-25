@@ -70,8 +70,7 @@ ApiGatewayToSageMakerEndpoint(self, 'test-apigw-sagemakerendpoint',
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.apigatewaysagemakerendpoint.ApiGatewayToSageMakerEndpoint;
-import software.amazon.awsconstructs.services.apigatewaysagemakerendpoint.ApiGatewayToSageMakerEndpointProps;
+import software.amazon.awsconstructs.services.apigatewaysagemakerendpoint.*;
 
 // Create an example VTL (Velocity Template Language) mapping template for mapping the Api GET request to the Sagemaker POST request
 

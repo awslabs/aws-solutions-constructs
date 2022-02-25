@@ -75,8 +75,9 @@ new IotToKinesisFirehoseToS3(this, "test-iot-firehose-s3", new IotToKinesisFireh
                 .ruleDisabled(false)
                 .description("Persistent storage of connected vehicle telematics data")
                 .sql("SELECT * FROM 'connectedcar/telemetry/#'")
-                .actions(List.of()))
+                .actions(List.of())
                 .build())
+            .build())
         .build());
 ```
 

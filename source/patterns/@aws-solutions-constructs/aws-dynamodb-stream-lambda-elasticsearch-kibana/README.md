@@ -82,6 +82,7 @@ DynamoDBStreamToLambdaToElasticSearchAndKibana(this, "test-dynamodb-stream-lambd
             .cognitoDomainName("globallyuniquedomain" + Aws.ACCOUNT_ID)
             .build());
 ```
+
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

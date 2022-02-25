@@ -66,7 +66,7 @@ Java
 import software.amazon.awsconstructs.services.lambdasecretsmanager.*;
 import software.amazon.awscdk.services.lambda.*;
 
-new LambdaToSecretsmanager(this, "test-lambda-secretsmanager-stack", new LambdaToSecretsmanager.Builder()
+new LambdaToSecretsmanager(this, "test-lambda-secretsmanager-stack", new LambdaToSecretsmanagerProps.Builder()
     .lambdaFunctionProps(new FunctionProps.Builder()
         .runtime(Runtime.NODEJS_14_X)
         .code(Code.fromAsset("lambda"))

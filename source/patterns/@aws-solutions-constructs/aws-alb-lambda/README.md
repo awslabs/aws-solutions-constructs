@@ -87,8 +87,7 @@ Java
 ``` java
 import software.amazon.awscdk.services.certificatemanager.Certificate;
 import software.amazon.awscdk.services.ecs.patterns.ApplicationListenerProps;
-import software.amazon.awsconstructs.services.albfargate.AlbToLambda;
-import software.amazon.awsconstructs.services.albfargate.AlbToLambdaProps;
+import software.amazon.awsconstructs.services.alblambda.*;
 import software.amazon.awscdk.services.lambda.*;
 
 // Obtain a pre-existing certificate from your account

@@ -75,7 +75,7 @@ import software.amazon.awscdk.services.stepfunctions.*;
 
 final Pass startState = Pass(this, "StartState");
 
-final EventbridgeToStepfunctions constructStack = EventbridgeToStepfunctions(this, "test-construct",
+final EventbridgeToStepfunctions constructStack = EventbridgeToStepfunctions(this, "test-eventbridge-stepfunctions-stack",
     new EventbridgeToStepfunctionsProps.Builder()
         .stateMachineProps(new StateMachineProps.Builder()
             .definition(startState))

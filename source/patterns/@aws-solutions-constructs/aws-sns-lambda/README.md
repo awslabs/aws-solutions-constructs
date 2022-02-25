@@ -55,7 +55,7 @@ Java
 import software.amazon.awsconstructs.services.snslambda.*;
 import software.amazon.awscdk.services.lambda.*;
 
-new SnsToLambda(this, "test-lambda-sqs-stack", new SnsToLambda.Builder()
+new SnsToLambda(this, "test-lambda-sqs-stack", new SnsToLambdaProps.Builder()
     .lambdaFunctionProps(new FunctionProps.Builder()
         .runtime(Runtime.NODEJS_14_X)
         .code(Code.fromAsset("lambda"))

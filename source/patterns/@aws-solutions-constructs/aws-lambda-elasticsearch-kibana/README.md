@@ -73,7 +73,7 @@ import software.amazon.awsconstructs.services.lambdadynamodb.*;
 import software.amazon.awscdk.services.lambda.*;
 import software.amazon.awscdk.Aws;
 
-new LambdaToElasticSearchAndKibana(this, "test_lambda_elasticsearch_kibana", new LambdaToElasticSearchAndKibana.Builder()
+new LambdaToElasticSearchAndKibana(this, "test_lambda_elasticsearch_kibana", new LambdaToElasticSearchAndKibanaProps.Builder()
     .lambdaFunctionProps(new FunctionProps.Builder()
         .runtime(Runtime.NODEJS_14_X)
         .code(Code.fromAsset("lambda"))
