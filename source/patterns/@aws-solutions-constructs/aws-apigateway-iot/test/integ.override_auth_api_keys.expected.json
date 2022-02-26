@@ -1229,22 +1229,6 @@
         }
       }
     },
-    "testapigatewayiotRestApiApiKey469A6F8F": {
-      "Type": "AWS::ApiGateway::ApiKey",
-      "Properties": {
-        "Enabled": true,
-        "StageKeys": [
-          {
-            "RestApiId": {
-              "Ref": "testapigatewayiotRestApi0EC16DD2"
-            },
-            "StageName": {
-              "Ref": "testapigatewayiotRestApiDeploymentStageprod25838482"
-            }
-          }
-        ]
-      }
-    },
     "testapigatewayiotRestApiUsagePlan1433EB76": {
       "Type": "AWS::ApiGateway::UsagePlan",
       "Properties": {
@@ -1271,6 +1255,22 @@
         "UsagePlanId": {
           "Ref": "testapigatewayiotRestApiUsagePlan1433EB76"
         }
+      }
+    },
+    "testapigatewayiotRestApiApiKey469A6F8F": {
+      "Type": "AWS::ApiGateway::ApiKey",
+      "Properties": {
+        "Enabled": true,
+        "StageKeys": [
+          {
+            "RestApiId": {
+              "Ref": "testapigatewayiotRestApi0EC16DD2"
+            },
+            "StageName": {
+              "Ref": "testapigatewayiotRestApiDeploymentStageprod25838482"
+            }
+          }
+        ]
       }
     },
     "testapigatewayiotLambdaRestApiCloudWatchRoleD58A5490": {
