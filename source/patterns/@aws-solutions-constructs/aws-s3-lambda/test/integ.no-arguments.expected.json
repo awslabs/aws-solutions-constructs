@@ -138,39 +138,6 @@
         }
       }
     },
-    "tests3lambdaS3BucketNotifications1943E9B3": {
-      "Type": "Custom::S3BucketNotifications",
-      "Properties": {
-        "ServiceToken": {
-          "Fn::GetAtt": [
-            "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691",
-            "Arn"
-          ]
-        },
-        "BucketName": {
-          "Ref": "tests3lambdaS3BucketBE7C1B8E"
-        },
-        "NotificationConfiguration": {
-          "LambdaFunctionConfigurations": [
-            {
-              "Events": [
-                "s3:ObjectCreated:*"
-              ],
-              "LambdaFunctionArn": {
-                "Fn::GetAtt": [
-                  "tests3lambdaLambdaFunctionB56B7023",
-                  "Arn"
-                ]
-              }
-            }
-          ]
-        },
-        "Managed": true
-      },
-      "DependsOn": [
-        "tests3lambdaS3BucketAllowBucketNotificationsTonoargumentstests3lambdaLambdaFunction865C51D19BEA6368"
-      ]
-    },
     "tests3lambdaS3BucketBE7C1B8E": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
@@ -265,6 +232,39 @@
           "Version": "2012-10-17"
         }
       }
+    },
+    "tests3lambdaS3BucketNotifications1943E9B3": {
+      "Type": "Custom::S3BucketNotifications",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691",
+            "Arn"
+          ]
+        },
+        "BucketName": {
+          "Ref": "tests3lambdaS3BucketBE7C1B8E"
+        },
+        "NotificationConfiguration": {
+          "LambdaFunctionConfigurations": [
+            {
+              "Events": [
+                "s3:ObjectCreated:*"
+              ],
+              "LambdaFunctionArn": {
+                "Fn::GetAtt": [
+                  "tests3lambdaLambdaFunctionB56B7023",
+                  "Arn"
+                ]
+              }
+            }
+          ]
+        },
+        "Managed": true
+      },
+      "DependsOn": [
+        "tests3lambdaS3BucketAllowBucketNotificationsTonoargumentstests3lambdaLambdaFunction865C51D19BEA6368"
+      ]
     },
     "tests3lambdaS3BucketAllowBucketNotificationsTonoargumentstests3lambdaLambdaFunction865C51D19BEA6368": {
       "Type": "AWS::Lambda::Permission",
