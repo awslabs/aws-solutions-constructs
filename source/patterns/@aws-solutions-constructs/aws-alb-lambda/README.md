@@ -98,17 +98,17 @@ final ICertificate certificate = Certificate.fromCertificateArn(
 );
 
 new AlbToLambda(this, "AlbToLambdaPattern", new AlbToLambdaProps.Builder()
-.lambdaFunctionProps(new FunctionProps.Builder()
-    .runtime(Runtime.NODEJS_14_X)
-    .code(Code.fromAsset("lambda"))
-    .handler("hitcounter.handler")
-    .build())
-.listenerProps(new ApplicationListenerProps.Builder()
-    .certificate(certificate)
-    .name("test")
-    .build())
-.publicApi(true)
-.build());
+  .lambdaFunctionProps(new FunctionProps.Builder()
+      .runtime(Runtime.NODEJS_14_X)
+      .code(Code.fromAsset("lambda"))
+      .handler("hitcounter.handler")
+      .build())
+  .listenerProps(new ApplicationListenerProps.Builder()
+      .certificate(certificate)
+      .name("test")
+      .build())
+  .publicApi(true)
+  .build());
 ```
 
 ## Pattern Construct Props
