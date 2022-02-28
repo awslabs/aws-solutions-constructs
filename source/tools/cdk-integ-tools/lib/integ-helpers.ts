@@ -1,13 +1,14 @@
 // Helper functions for integration tests
 import { spawnSync } from 'child_process';
 import * as path from 'path';
+import { AVAILABILITY_ZONE_FALLBACK_CONTEXT_KEY, FUTURE_FLAGS, TARGET_PARTITIONS } from '@aws-cdk/cx-api';
 import * as fs from 'fs-extra';
-import { AVAILABILITY_ZONE_FALLBACK_CONTEXT_KEY } from '@aws-cdk/cx-api';
 
 const CDK_OUTDIR = 'cdk-integ.out';
 
 const CDK_INTEG_STACK_PRAGMA = '/// !cdk-integ';
 const PRAGMA_PREFIX = 'pragma:';
+const SET_CONTEXT_PRAGMA_PREFIX = 'pragma:set-context:';
 
 export class IntegrationTests {
   constructor(private readonly directory: string) {
@@ -40,7 +41,7 @@ export class IntegrationTests {
   public async discover(): Promise<IntegrationTest[]> {
     const files = await this.readTree();
     const integs = files.filter(fileName => path.basename(fileName).startsWith('integ.') && path.basename(fileName).endsWith('.js'));
-    return await this.request(integs);
+    return this.request(integs);
   }
 
   public async request(files: string[]): Promise<IntegrationTest[]> {
@@ -95,9 +96,22 @@ export class IntegrationTest {
    * Return the "main" template or a concatenation of all listed templates in the pragma
    */
   public async cdkSynthFast(options: SynthOptions = {}): Promise<any> {
-    const context = {
+    const context: Record<string, string> = {
       ...options.context,
     };
+
+    // apply context from set-context pragma
+    // usage: pragma:set-context:key=value
+    const ctxPragmas = (await this.pragmas()).filter(p => p.startsWith(SET_CONTEXT_PRAGMA_PREFIX));
+    for (const p of ctxPragmas) {
+      const instruction = p.substring(SET_CONTEXT_PRAGMA_PREFIX.length);
+      const [key, value] = instruction.split('=');
+      if (key == null || value == null) {
+        throw new Error(`invalid "set-context" pragma syntax. example: "pragma:set-context:@aws-cdk/core:newStyleStackSynthesis=true" got: ${p}`);
+      }
+
+      context[key] = value;
+    }
 
     try {
       await exec(['node', `${this.name}`], {
@@ -337,7 +351,14 @@ export const DEFAULT_SYNTH_OPTIONS = {
         },
       ],
     },
-    '@aws-cdk/aws-ecr-assets:dockerIgnoreSupport': true,
+    // Enable feature flags for all integ tests
+    ...FUTURE_FLAGS,
+
+    // Restricting to these target partitions makes most service principals synthesize to
+    // `service.${URL_SUFFIX}`, which is technically *incorrect* (it's only `amazonaws.com`
+    // or `amazonaws.com.cn`, never UrlSuffix for any of the restricted regions) but it's what
+    // most existing integ tests contain, and we want to disturb as few as possible.
+    [TARGET_PARTITIONS]: ['aws', 'aws-cn'],
   },
   env: {
     CDK_INTEG_ACCOUNT: '12345678',
