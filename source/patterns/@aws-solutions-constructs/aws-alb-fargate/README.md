@@ -79,7 +79,7 @@ AlbToFargate(self, 'new-construct', props)
 
 Java
 ``` java
-import software.amazon.awscdk.services.certificatemanager.Certificate;
+import software.amazon.awscdk.services.certificatemanager.*;
 import software.amazon.awscdk.services.ecs.patterns.*;
 import software.amazon.awsconstructs.services.albfargate.*;
 

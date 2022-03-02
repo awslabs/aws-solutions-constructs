@@ -93,7 +93,7 @@ Java
 import software.amazon.awsconstructs.services.route53apigateway.*;
 import software.amazon.awscdk.services.route53.*;
 import software.amazon.awscdk.services.acm.*;
-import software.amazon.awscdk.services.apigateway.DomainNameAttributes;
+import software.amazon.awscdk.services.apigateway.*;
 
 // The construct requires an existing REST API, this can be created in raw CDK
 // or extracted from a previously instantiated construct that created an API
