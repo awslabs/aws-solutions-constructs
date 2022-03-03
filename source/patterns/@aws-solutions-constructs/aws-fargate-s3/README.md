@@ -40,13 +40,14 @@ new FargateToS3(stack, 'test-construct', props);
 Python
 ``` python
 from aws_solutions_constructs.aws_fargate_s3 import FargateToS3, FargateToS3Props
-
-props = FargateToS3Props(
-    public_api=True,
-    ecr_repository_arn="arn of a repo in ECR in your account"
+from aws_cdk import (
+    Stack
 )
+from constructs import Construct
 
-FargateToS3(self, 'test_construct', props)
+FargateToS3(self, 'test_construct',
+            public_api=True,
+            ecr_repository_arn="arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo")
 ```
 
 Java

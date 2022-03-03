@@ -49,13 +49,15 @@ Python
 from aws_solutions_constructs.aws_lambda_ssmstringparameter import LambdaToSsmstringparameter
 from aws_cdk import (
     aws_lambda as _lambda,
-    aws_ssm as ssm
+    aws_ssm as ssm,
+    Stack
 )
+from constructs import Construct
 
 LambdaToSsmstringparameter(
     self, 'test-lambda-ssmstringparameter-stack',
     lambda_function_props=_lambda.FunctionProps(
-        code=_lambda.Code.from_asset('{__dirname}/producer_lambda'),
+        code=_lambda.Code.from_asset('lambda'),
         runtime=_lambda.Runtime.PYTHON_3_9,
         handler='index.handler'
     ),

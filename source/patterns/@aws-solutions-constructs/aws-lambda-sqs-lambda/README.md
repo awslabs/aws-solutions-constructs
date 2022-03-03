@@ -50,7 +50,9 @@ Python
 from aws_solutions_constructs.aws_lambda_sqs_lambda import LambdaToSqsToLambda
 from aws_cdk import (
     aws_lambda as _lambda,
+    Stack
 )
+from constructs import Construct
 
 LambdaToSqsToLambda(
     self, 'LambdaToSqsToLambdaPattern',

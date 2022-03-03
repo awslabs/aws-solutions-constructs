@@ -40,7 +40,11 @@ new DynamoDBStreamToLambda(this, 'test-dynamodb-stream-lambda', {
 Python
 ``` python
 from aws_solutions_constructs.aws_dynamodb_stream_lambda import DynamoDBStreamToLambda
-from aws_cdk import aws_lambda as _lambda
+from aws_cdk import (
+    aws_lambda as _lambda,
+    Stack
+)
+from constructs import Construct
 
 DynamoDBStreamToLambda(self, 'test-dynamodb-stream-lambda',
                        lambda_function_props=_lambda.FunctionProps(

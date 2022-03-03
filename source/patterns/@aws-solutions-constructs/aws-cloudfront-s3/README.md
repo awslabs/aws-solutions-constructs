@@ -32,6 +32,8 @@ new CloudFrontToS3(this, 'test-cloudfront-s3', {});
 Python
 ``` python
 from aws_solutions_constructs.aws_cloudfront_s3 import CloudFrontToS3
+from aws_cdk import Stack
+from constructs import Construct
 
 CloudFrontToS3(self, 'test-cloudfront-s3')
 ```

@@ -56,6 +56,8 @@ new ApiGatewayToSageMakerEndpoint(this, 'test-apigw-sagemakerendpoint', {
 Python
 ``` python
 from aws_solutions_constructs.aws_apigateway_sagemakerendpoint import ApiGatewayToSageMakerEndpoint
+from aws_cdk import Stack
+from constructs import Construct
 
 # Create an example VTL (Velocity Template Language) mapping template for mapping the Api GET request to the Sagemaker POST request
 

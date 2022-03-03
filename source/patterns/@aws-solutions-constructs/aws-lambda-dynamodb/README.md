@@ -41,17 +41,19 @@ new LambdaToDynamoDB(this, 'test-lambda-dynamodb-stack', props);
 Python
 ```python
 from aws_solutions_constructs.aws_lambda_dynamodb import LambdaToDynamoDBProps, LambdaToDynamoDB
-from aws_cdk import aws_lambda as _lambda
-
-props = LambdaToDynamoDBProps(
-    lambda_function_props=_lambda.FunctionProps(
-        code=_lambda.Code.from_asset('{__dirname}/lambda'),
-        runtime=_lambda.Runtime.PYTHON_3_9,
-        handler='index.handler'
-    )
+from aws_cdk import (
+    aws_lambda as _lambda,
+    Stack
 )
+from constructs import Construct
 
-LambdaToDynamoDB(self, 'test_lambda_dynamodb_stack', props)
+LambdaToDynamoDB(self, 'test_lambda_dynamodb_stack',
+                    lambda_function_props=_lambda.FunctionProps(
+                        code=_lambda.Code.from_asset(
+                            'lambda'),
+                        runtime=_lambda.Runtime.PYTHON_3_9,
+                        handler='index.handler'
+                    ))
 
 ```
 

@@ -41,19 +41,17 @@ new EventsRuleToKinesisStreams(this, 'test-events-rule-kinesis-streams', props);
 
 Python
 ``` python
-from aws_solutions_constructs.aws_events_rule_kinesisstreams import EventsRuleToKinesisStreams, EventsRuleToKinesisStreamsProps
+from aws_solutions_constructs.aws_events_rule_kinesis_streams import EventsRuleToKinesisStreams, EventsRuleToKinesisStreamsProps
 from aws_cdk import (
     aws_events as events,
     Duration
 )
 
-props = EventsRuleToKinesisStreamsProps(
-    event_rule_props=events.RuleProps(
-        schedule=events.Schedule.rate(Duration.minutes(5)),
-    )
-)
-
-EventsRuleToKinesisStreams(self, 'test_events_rule_kinesis_streams', props)
+EventsRuleToKinesisStreams(self, 'test_events_rule_kinesis_streams',
+                           event_rule_props=events.RuleProps(
+                               schedule=events.Schedule.rate(
+                                   Duration.minutes(5)),
+                           ))
 ```
 
 Java

@@ -54,18 +54,16 @@ from aws_cdk import (
     Duration
 )
 
-props = EventsRuleToLambdaProps(
-    lambda_function_props=_lambda.FunctionProps(
-        code=_lambda.Code.from_asset('lambda'),
-        runtime=_lambda.Runtime.PYTHON_3_9,
-        handler='index.handler'
-    ),
-    event_rule_prop=events.RuleProps(
-        schedule=events.Schedule.rate(Duration.minutes(5))
-    )
-)
+EventsRuleToLambda(self, 'test_events_rule_lambda',
+                   lambda_function_props=_lambda.FunctionProps(
+                       code=_lambda.Code.from_asset('lambda'),
+                       runtime=_lambda.Runtime.PYTHON_3_9,
+                       handler='index.handler'
+                   ),
+                   event_rule_prop=events.RuleProps(
+                       schedule=events.Schedule.rate(Duration.minutes(5))
+                   ))
 
-EventsRuleToLambda(self, 'test_events_rule_lambda', props)
 ```
 
 Java

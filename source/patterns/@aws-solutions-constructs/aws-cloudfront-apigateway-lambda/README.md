@@ -37,15 +37,20 @@ new CloudFrontToApiGatewayToLambda(this, 'test-cloudfront-apigateway-lambda', {
 
 Python
 ``` python
-import aws_solutions_constructs.aws_cloudfront_apigateway_lambda as cf_api_lambda
+from aws_solutions_constructs.aws_cloudfront_apigateway_lambda import CloudFrontToApiGatewayToLambda
+from aws_cdk import (
+  aws_lambda as _lambda,
+  Stack
+)
+from constructs import Construct
 
-cf_api_lambda.CloudFrontToApiGatewayToLambda(self, 'test-cloudfront-apigateway-lambda',
-    lambda_function_props=_lambda.FunctionProps(
-      code=_lambda.Code.fromAsset('lambda'),
-      runtime=_lambda.Runtime.PYTHON_3_9,
-      handler='index.handler'
-    )
-  )
+CloudFrontToApiGatewayToLambda(self, 'test-cloudfront-apigateway-lambda',
+                            lambda_function_props=_lambda.FunctionProps(
+                                code=_lambda.Code.fromAsset('lambda'),
+                                runtime=_lambda.Runtime.PYTHON_3_9,
+                                handler='index.handler'
+                            )
+                            )
 ```
 
 Java

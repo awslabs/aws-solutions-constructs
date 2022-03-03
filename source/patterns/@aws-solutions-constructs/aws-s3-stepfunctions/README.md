@@ -47,7 +47,11 @@ new S3ToStepfunctions(this, 'test-s3-stepfunctions-stack', {
 Python
 ```python
 from aws_solutions_constructs.aws_s3_stepfunctions import S3ToStepfunctions
-from aws_cdk import aws_stepfunctions as stepfunctions
+from aws_cdk import (
+    aws_stepfunctions as stepfunctions,
+    Stack
+)
+from constructs import Construct
 
 start_state = stepfunctions.Pass(self, 'start_state')
 

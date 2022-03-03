@@ -43,16 +43,18 @@ new EventbridgeToKinesisStreams(this, 'test-eventbridge-kinesis-streams', props)
 
 Python
 ``` Python
-from aws_solutions_constructs.aws_eventbridge_kinesisstreams import EventbridgeToKinesisStreams, EventbridgeToKinesisStreamsProps
-from aws_cdk import aws_events as events, core as cdk
-
-props = EventbridgeToKinesisStreamsProps(
-    event_rule_props=events.RuleProps(
-        schedule=events.Schedule.rate(cdk.Duration.minutes(5)),
-    )
+from aws_solutions_constructs.aws_eventbridge_kinesis_streams import EventbridgeToKinesisStreams, EventbridgeToKinesisStreamsProps
+from aws_cdk import (
+    aws_events as events,
+    Duration,
+    Stack
 )
+from constructs import Construct
 
-EventbridgeToKinesisStreams(self, 'test-eventbridge-kinesis-streams', props)
+EventbridgeToKinesisStreams(self, 'test-eventbridge-kinesis-streams',
+    event_rule_props=events.RuleProps(
+        schedule=events.Schedule.rate(Duration.minutes(5)),
+    ))
 ```
 
 Java

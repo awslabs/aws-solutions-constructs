@@ -44,6 +44,8 @@ new ApiGatewayToIot(this, 'ApiGatewayToIotPattern', {
 Python
 ``` python
 from aws_solutions_constructs.aws_apigateway_iot import ApiGatewayToIot
+from aws_cdk import Stack
+from constructs import Construct
 
 ApiGatewayToIot(self, 'ApiGatewayToIotPattern',
     iot_endpoint='a1234567890123-ats'

@@ -46,11 +46,13 @@ new LambdaToStepFunction(this, 'LambdaToStepFunctionPattern', {
 
 Python
 ``` python
-from aws_solutions_constructs.aws_lambda_stepfunctions import LambdaToStepFunction
+from aws_solutions_constructs.aws_lambda_step_function import LambdaToStepFunction
 from aws_cdk import (
     aws_lambda as _lambda,
-    aws_stepfunctions as stepfunctions
+    aws_stepfunctions as stepfunctions,
+    Stack
 )
+from constructs import Construct
 
 start_state = stepfunctions.Pass(self, 'start_state')
 

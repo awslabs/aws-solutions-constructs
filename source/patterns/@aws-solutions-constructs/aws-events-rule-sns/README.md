@@ -54,17 +54,16 @@ Python
 from aws_solutions_constructs.aws_events_rule_sns import EventsRuleToSns, EventsRuleToSnsProps
 from aws_cdk import (
     aws_events as events,
-    aws_iam as iam
+    aws_iam as iam,
+    Stack
 )
+from constructs import Construct
 
-props = EventsRuleToSnsProps(
-    event_rule_props=events.RuleProps(
-        schedule=events.Schedule.rate(Duration.minutes(5))
-    )
-)
-
-
-construct_stack = EventsRuleToSns(self, 'test-construct', props)
+construct_stack = EventsRuleToSns(self, 'test-construct',
+                                  event_rule_props=events.RuleProps(
+                                      schedule=events.Schedule.rate(
+                                          Duration.minutes(5))
+                                  ))
 
 # Grant yourself permissions to use the Customer Managed KMS Key
 policy_statement = iam.PolicyStatement(

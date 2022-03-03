@@ -43,7 +43,11 @@ new CognitoToApiGatewayToLambda(this, 'test-cognito-apigateway-lambda', {
 Python
 ``` python
 from aws_solutions_constructs.aws_cognito_apigateway_lambda import CognitoToApiGatewayToLambda
-from aws_cdk import aws_lambda as _lambda
+from aws_cdk import (
+    aws_lambda as _lambda,
+    Stack
+)
+from constructs import Construct
 
 CognitoToApiGatewayToLambda(self, 'test-cognito-apigateway-lambda',
                             lambda_function_props=_lambda.FunctionProps(

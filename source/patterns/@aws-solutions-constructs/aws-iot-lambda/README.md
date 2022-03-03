@@ -54,25 +54,25 @@ Python
 from aws_solutions_constructs.aws_iot_lambda import IotToLambdaProps, IotToLambda
 from aws_cdk import (
     aws_iot as iot,
-    aws_lambda as _lambda
+    aws_lambda as _lambda,
+    Stack
 )
-props = IotToLambdaProps(
-    lambda_function_props=_lambda.FunctionProps(
-        code=_lambda.Code.from_asset('lambda'),
-        runtime=_lambda.Runtime.PYTHON_3_9,
-        handler='index.handler'
-    ),
-    iot_topic_rule_props=iot.CfnTopicRuleProps(
-        topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
-            rule_disabled=False,
-            description="Sends data to kinesis data stream",
-            sql="SELECT * FROM 'solutions/construct'",
-            actions=[]
-        )
-    )
-)
+from constructs import Construct
 
-IotToLambda(self, 'test_iot_lambda', props)
+IotToLambda(self, 'test_iot_lambda',
+            lambda_function_props=_lambda.FunctionProps(
+                code=_lambda.Code.from_asset('lambda'),
+                runtime=_lambda.Runtime.PYTHON_3_9,
+                handler='index.handler'
+            ),
+            iot_topic_rule_props=iot.CfnTopicRuleProps(
+                topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
+                    rule_disabled=False,
+                    description="Sends data to kinesis data stream",
+                    sql="SELECT * FROM 'solutions/construct'",
+                    actions=[]
+                )
+            ))
 ```
 
 Java

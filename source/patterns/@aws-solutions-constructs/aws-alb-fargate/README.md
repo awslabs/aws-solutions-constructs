@@ -55,8 +55,10 @@ Python
 from aws_solutions_constructs.aws_alb_fargate import AlbToFargate, AlbToFargateProps
 from aws_cdk import (
     aws_certificatemanager as acm,
-    aws_elasticloadbalancingv2 as alb
+    aws_elasticloadbalancingv2 as alb,
+    Stack
 )
+from constructs import Construct
 
 # Obtain a pre-existing certificate from your account
 certificate = acm.Certificate.from_certificate_arn(
@@ -65,16 +67,14 @@ certificate = acm.Certificate.from_certificate_arn(
       "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
     )
 
-props = AlbToFargateProps(
-  ecr_repository_arn="arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo",
-  ecr_image_version="latest",
-  listener_props=alb.ApplicationListenerProps(
-      certificates=[ certificate ]
-  ),
-  publicApi=True
-)
+AlbToFargate(self, 'new-construct',
+                ecr_repository_arn="arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo",
+                ecr_image_version="latest",
+                listener_props=alb.BaseApplicationListenerProps(
+                    certificates=[certificate],
+                ),
+                public_api=True)
 
-AlbToFargate(self, 'new-construct', props)
 ```
 
 Java

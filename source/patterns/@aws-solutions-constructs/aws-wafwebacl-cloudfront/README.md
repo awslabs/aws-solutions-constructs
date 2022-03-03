@@ -45,6 +45,8 @@ Python
 ```python
 from aws_solutions_constructs.aws_cloudfront_s3 import CloudFrontToS3
 from aws_solutions_constructs.aws_wafwebacl_cloudfront import WafwebaclToCloudFront
+from aws_cdk import Stack
+from constructs import Construct
 
 cloudfront_to_s3 = CloudFrontToS3(self, 'test_cloudfront_s3')
 

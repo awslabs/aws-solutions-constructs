@@ -58,8 +58,10 @@ from aws_solutions_constructs.aws_alb_lambda import AlbToLambda, AlbToLambdaProp
 from aws_cdk import (
     aws_certificatemanager as acm,
     aws_lambda as _lambda,
-    aws_elasticloadbalancingv2 as alb
+    aws_elasticloadbalancingv2 as alb,
+    Stack
 )
+from constructs import Construct
 
 # Obtain a pre-existing certificate from your account
 certificate = acm.Certificate.from_certificate_arn(
@@ -68,19 +70,16 @@ certificate = acm.Certificate.from_certificate_arn(
   "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
 )
 
-props = AlbToLambdaProps(
-  lambda_function_props=_lambda.FunctionProps(
-    runtime=_lambda.Runtime.PYTHON_3_7,
-    code=_lambda.Code.asset('lambda'),
-    handler='index.handler',
-  ),
-  listener_props=alb.ApplicationListenerProps(
-    certificates=[ certificate ]
-  ),
-  publicApi=True
-)
-
-AlbToLambda(self, 'new-construct', props)
+AlbToLambda(self, 'new-construct',
+            lambda_function_props=_lambda.FunctionProps(
+                runtime=_lambda.Runtime.PYTHON_3_7,
+                code=_lambda.Code.from_asset('lambda'),
+                handler='index.handler',
+            ),
+            listener_props=alb.BaseApplicationListenerProps(
+                certificates=[certificate]
+            ),
+            public_api=True)
 ```
 
 Java

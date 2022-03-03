@@ -74,11 +74,13 @@ const customEtlJob = new KinesisstreamsToGluejob(this, 'CustomETL', {
 
 Python
 ``` python
-from aws_solutions_constructs.aws_kinesisstreams_gluejob import KinesisstreamsToGluejob
+from aws_solutions_constructs.aws_kinesis_streams_gluejob import KinesisstreamsToGluejob
 from aws_cdk import (
     aws_glue as glue,
-    aws_s3_assets as s3assets
+    aws_s3_assets as s3assets,
+    Stack
 )
+from constructs import Construct
 
 field_schema = [
     glue.CfnTable.ColumnProperty(
@@ -104,17 +106,17 @@ field_schema = [
 ]
 
 customEtlJob = KinesisstreamsToGluejob(self, 'CustomETL',
-                                       glue_job_props=glue.CfnJobProps(
-                                           command=glue.CfnJob.JobCommandProperty(
-                                               name='gluestreaming',
-                                               python_version='3',
-                                               scriptLocation=s3assets.Asset(self, 'ScriptLocation',
-                                                                             path='{__dirname}/../etl/transform.py',
-                                                                             ).s3ObjectUrl
-                                           ),
-                                       ),
-                                       fieldSchema=fieldSchema,
-                                       )
+                                    glue_job_props=glue.CfnJobProps(
+                                        command=glue.CfnJob.JobCommandProperty(
+                                            name='gluestreaming',
+                                            python_version='3',
+                                            scriptLocation=s3assets.Asset(self, 'ScriptLocation',
+                                                                            path='{__dirname}/../etl/transform.py',
+                                                                            ).s3ObjectUrl
+                                        ),
+                                    ),
+                                    fieldSchema=field_schema,
+                                    )
 
 ```
 

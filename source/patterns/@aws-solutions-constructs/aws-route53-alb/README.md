@@ -41,14 +41,18 @@ new Route53ToAlb(this, 'Route53ToAlbPattern', {
 Python
 ```python
 from aws_solutions_constructs.aws_route53_alb import Route53ToAlb
-from aws_cdk import aws_route53 as route53
+from aws_cdk import (
+    aws_route53 as route53,
+    Stack
+)
+from constructs import Construct
 
 Route53ToAlb(self, 'Route53ToAlbPattern',
-             private_hosted_zone_props=route53.PrivateHostedZoneProps(
-                 zone_name='www.example.com',
-             )
-             public_api=False,
-             )
+                public_api=False,
+                private_hosted_zone_props=route53.HostedZoneProps(
+                    zone_name='www.example.com',
+                )
+                )
 ```
 
 Java

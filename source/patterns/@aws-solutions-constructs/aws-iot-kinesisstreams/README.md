@@ -48,20 +48,20 @@ Python
 ``` python
 from aws_solutions_constructs.aws_iot_kinesisstreams import IotToKinesisStreamsProps, IotToKinesisStreams
 from aws_cdk import (
-    aws_iot as iot
+    aws_iot as iot,
+    Stack
 )
-props = IotToKinesisStreamsProps(
-    iot_topic_rule_props=iot.CfnTopicRuleProps(
-        topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
-            rule_disabled=False,
-            description="Sends data to kinesis data stream",
-            sql="SELECT * FROM 'solutions/construct'",
-            actions=[]
-        )
-    )
-)
+from constructs import Construct
 
-IotToKinesisStreams(self, 'test-iot-kinesisstreams', props)
+IotToKinesisStreams(self, 'test-iot-kinesisstreams',
+                    iot_topic_rule_props=iot.CfnTopicRuleProps(
+                        topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
+                            rule_disabled=False,
+                            description="Sends data to kinesis data stream",
+                            sql="SELECT * FROM 'solutions/construct'",
+                            actions=[]
+                        )
+                    ))
 ```
 
 Java

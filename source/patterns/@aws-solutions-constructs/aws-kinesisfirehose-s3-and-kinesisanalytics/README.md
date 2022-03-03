@@ -64,8 +64,12 @@ import KinesisFirehoseToAnalyticsAndS3(this, 'FirehoseToS3AndAnalyticsPattern', 
 
 Python
 ```python
-from aws_solutions_constructs.aws_kinesisfirehose_s3_and_kinesisanalytics import KinesisFirehoseToAnalyticsAndS3
-from aws_cdk import aws_kinesisanalytics as kinesisanalytics
+from aws_solutions_constructs.aws_kinesis_firehose_s3_kinesis_analytics import KinesisFirehoseToAnalyticsAndS3
+from aws_cdk import (
+    aws_kinesisanalytics as kinesisanalytics,
+    Stack
+)
+from constructs import Construct
 
 KinesisFirehoseToAnalyticsAndS3(self, 'FirehoseToS3AndAnalyticsPattern',
                                 kinesis_analytics_props=kinesisanalytics.CfnApplicationProps(

@@ -47,15 +47,17 @@ Python
 from aws_solutions_constructs.aws_lambda_stepfunctions import LambdaToStepfunctions
 from aws_cdk import (
     aws_lambda as _lambda,
-    aws_stepfunctions as stepfunctions
+    aws_stepfunctions as stepfunctions,
+    Stack
 )
+from constructs import Construct
 
 start_state = stepfunctions.Pass(self, 'start_state')
 
 LambdaToStepfunctions(
     self, 'test-lambda-stepfunctions-stack',
     lambda_function_props=_lambda.FunctionProps(
-        code=_lambda.Code.from_asset('{__dirname}/producer_lambda'),
+        code=_lambda.Code.from_asset('lambda'),
         runtime=_lambda.Runtime.PYTHON_3_9,
         handler='index.handler'
     ),

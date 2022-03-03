@@ -64,15 +64,19 @@ from aws_solutions_constructs.aws_lambda_sagemakerendpoint import LambdaToSagema
 from aws_cdk import (
     aws_lambda as _lambda,
     aws_sagemaker as sagemaker,
-    Duration
+    Duration,
+    Stack
 )
+from constructs import Construct
 
-construct_props = LambdaToSagemakerEndpointProps(
+LambdaToSagemakerEndpoint(
+    self, 'LambdaToSagemakerEndpointPattern',
     model_props=sagemaker.CfnModelProps(
         primary_container=sagemaker.CfnModel.ContainerDefinitionProperty(
             image='<AccountId>.dkr.ecr.<region>.amazonaws.com/linear_learner:latest',
-            model_data_url='s3://<bucket_name>/<prefix>/model.tar.gz'
+            model_data_url='s3://<bucket_name>/<prefix>/model.tar.gz',
         ),
+        execution_role_arn="executionRoleArn"
     ),
     lambda_function_props=_lambda.FunctionProps(
         code=_lambda.Code.from_asset('{__dirname}/lambda'),
@@ -80,11 +84,7 @@ construct_props = LambdaToSagemakerEndpointProps(
         handler='index.handler',
         timeout=Duration.minutes(5),
         memory_size=128
-    )
-)
-
-LambdaToSagemakerEndpoint(
-    self, 'LambdaToSagemakerEndpointPattern', constructProps)
+    ))
 ```
 
 Java

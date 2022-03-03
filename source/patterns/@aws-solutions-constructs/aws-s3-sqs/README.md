@@ -37,6 +37,8 @@ new S3ToSqs(stack, 'S3ToSQSPattern', {});
 Python
 ```python
 from aws_solutions_constructs.aws_s3_sqs import S3ToSqs
+from aws_cdk import Stack
+from constructs import Construct
 
 S3ToSqs(self, 'S3ToSQSPattern')
 ```

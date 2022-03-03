@@ -46,11 +46,15 @@ new IotToSqs(this, 'test-iot-sqs-integration', props);
 
 Python
 ``` python
-from aws_solutions_constructs.aws_iot_sqs import IotToSqsProps, IotToSqs
+from aws_solutions_constructs.aws_iot_sqs import IotToSqs
 from aws_cdk import (
     aws_iot as iot,
+    Stack
 )
-props = IotToSqsProps(
+from constructs import Construct
+
+
+IotToSqs(self, 'test_iot_sqs',
     iot_topic_rule_props=iot.CfnTopicRuleProps(
         topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
             rule_disabled=False,
@@ -58,10 +62,7 @@ props = IotToSqsProps(
             sql="SELECT * FROM 'iot/sqs/#'",
             actions=[]
         )
-    )
-)
-
-IotToSqs(self, 'test_iot_sqs', props)
+    ))
 ```
 
 Java

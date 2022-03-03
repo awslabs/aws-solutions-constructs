@@ -42,24 +42,27 @@ new KinesisStreamsToLambda(this, 'KinesisToLambdaPattern', {
 
 Python
 ``` python
-from aws_solutions_constructs.aws_kinesisstreams_lambda import KinesisStreamsToLambda
+from aws_solutions_constructs.aws_kinesis_streams_lambda import KinesisStreamsToLambda
 from aws_cdk import (
     aws_lambda as _lambda,
     aws_lambda_event_sources as sources,
-    aws_kinesis as kinesis
+    aws_kinesis as kinesis,
+    Stack
 )
+from constructs import Construct
 
 KinesisStreamsToLambda(self, 'KinesisToLambdaPattern',
-                       kinesis_event_source_props=sources.KinesisEventSourceProps(
-                           starting_position=_lambda.StartingPosition.TRIM_HORIZON,
-                           batch_size=1
-                       ),
-                       lambda_function_props=_lambda.FunctionProps(
-                           runtime=_lambda.Runtime.PYTHON_3_9,
-                           handler='index.handler',
-                           code=_lambda.Code.from_asset('{__dirname}/lambda')
-                       )
-                       )
+                        kinesis_event_source_props=sources.KinesisEventSourceProps(
+                            starting_position=_lambda.StartingPosition.TRIM_HORIZON,
+                            batch_size=1
+                        ),
+                        lambda_function_props=_lambda.FunctionProps(
+                            runtime=_lambda.Runtime.PYTHON_3_9,
+                            handler='index.handler',
+                            code=_lambda.Code.from_asset(
+                                'lambda')
+                        )
+                        )
 
 ```
 

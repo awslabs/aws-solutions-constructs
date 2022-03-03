@@ -49,20 +49,20 @@ Python
 from aws_solutions_constructs.aws_iot_s3 import IotToS3Props, IotToS3
 from aws_cdk import (
     aws_iot as iot,
+    Stack
 )
-props = IotToS3Props(
-    iot_topic_rule_props=iot.CfnTopicRuleProps(
-        topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
-            rule_disabled=False,
-            description="Testing the IotToS3 Pattern",
-            sql="SELECT * FROM 'solutions/constructs'",
-            actions=[]
-        )
-    )
-)
+from constructs import Construct
 
-IotToS3(self, 'test_iot_s3', props)
 
+IotToS3(self, 'test_iot_s3',
+        iot_topic_rule_props=iot.CfnTopicRuleProps(
+            topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
+                rule_disabled=False,
+                description="Testing the IotToS3 Pattern",
+                sql="SELECT * FROM 'solutions/constructs'",
+                actions=[]
+            )
+        ))
 ```
 
 Java

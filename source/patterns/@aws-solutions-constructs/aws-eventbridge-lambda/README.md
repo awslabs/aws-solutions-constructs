@@ -49,21 +49,21 @@ from aws_solutions_constructs.aws_eventbridge_lambda import EventbridgeToLambda,
 from aws_cdk import (
     aws_lambda as _lambda,
     aws_events as events,
-    core as cdk
+    Duration,
+    Stack
 )
+from constructs import Construct
 
-props = EventbridgeToLambdaProps(
-    lambda_function_props=_lambda.FunctionProps(
-        code=_lambda.Code.from_asset('lambda'),
-        runtime=_lambda.Runtime.PYTHON_3_9,
-        handler='index.handler'
-    ),
-    event_rule_props=events.RuleProps(
-        schedule=events.Schedule.rate(cdk.Duration.minutes(5))
-    )
-)
-
-EventbridgeToLambda(self, 'test-eventbridge-lambda', props)
+EventbridgeToLambda(self, 'test-eventbridge-lambda',
+                    lambda_function_props=_lambda.FunctionProps(
+                        code=_lambda.Code.from_asset('lambda'),
+                        runtime=_lambda.Runtime.PYTHON_3_9,
+                        handler='index.handler'
+                    ),
+                    event_rule_props=events.RuleProps(
+                        schedule=events.Schedule.rate(
+                            Duration.minutes(5))
+                    ))
 ```
 
 Java

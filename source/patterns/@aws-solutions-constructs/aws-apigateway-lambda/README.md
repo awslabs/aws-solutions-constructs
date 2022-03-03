@@ -41,15 +41,19 @@ new ApiGatewayToLambda(this, 'ApiGatewayToLambdaPattern', {
 Python
 ``` python
 from aws_solutions_constructs.aws_apigateway_lambda import ApiGatewayToLambda
-from aws_cdk import aws_lambda as _lambda
+from aws_cdk import (
+    aws_lambda as _lambda,
+    Stack
+)
+from constructs import Construct
 
 ApiGatewayToLambda(self, 'ApiGatewayToLambdaPattern',
-                   lambdaFunctionProps=_lambda.FunctionProps(
-                       runtime=_lambda.Runtime.PYTHON_3_9,
-                       handler='index.handler',
-                       code=_lambda.Code.from_asset('lambda')
-                   )
-                   )
+            lambda_function_props=_lambda.FunctionProps(
+                runtime=_lambda.Runtime.PYTHON_3_9,
+                handler='index.handler',
+                code=_lambda.Code.from_asset('lambda')
+            )
+            )
 
 ```
 

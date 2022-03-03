@@ -34,6 +34,8 @@ new CloudFrontToMediaStore(this, 'test-cloudfront-mediastore-default', {});
 Python
 ``` python
 from aws_solutions_constructs.aws_cloudfront_mediastore import CloudFrontToMediaStore
+from aws_cdk import Stack
+from constructs import Construct
 
 CloudFrontToMediaStore(self, 'test-cloudfront-mediastore-default')
 ```

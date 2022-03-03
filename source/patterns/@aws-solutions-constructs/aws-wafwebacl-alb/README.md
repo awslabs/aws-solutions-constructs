@@ -53,7 +53,11 @@ Python
 ```python
 from aws_solutions_constructs.aws_route53_alb import Route53ToAlb
 from aws_solutions_constructs.aws_wafwebacl_alb import WafwebaclToAlbProps, WafwebaclToAlb
-from aws_cdk import aws_route53 as route53
+from aws_cdk import (
+    aws_route53 as route53,
+    Stack
+)
+from constructs import Construct
 
 # A constructed ALB is required to be attached to the WAF Web ACL.
 # In this case, we are using this construct to create one.

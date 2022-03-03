@@ -34,6 +34,8 @@ new ApiGatewayToKinesisStreams(this, 'test-apigw-kinesis', {});
 Python
 ``` python
 from aws_solutions_constructs.aws_apigateway_kinesisstreams import ApiGatewayToKinesisStreams
+from aws_cdk import Stack
+from constructs import Construct
 
 ApiGatewayToKinesisStreams(self, 'test-apigw-kinesis')
 ```

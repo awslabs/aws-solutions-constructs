@@ -62,15 +62,18 @@ Python
 from aws_solutions_constructs.aws_route53_apigateway import Route53ToApigateway
 from aws_cdk import (
     aws_route53 as route53,
-    aws_certificatemanager as acm
+    aws_certificatemanager as acm,
+    Stack
 )
+from constructs import Construct
+
 # The construct requires an existing REST API, this can be created in raw CDK or extracted
 # from a previously instantiated construct that created an API Gateway REST API
 existingRestApi = previouslyCreatedApigatewayToLambdaConstruct.apiGateway
 
 ourHostedZone = route53.HostedZone.from_lookup(self, 'HostedZone',
-                                               domain_name="example.com",
-                                               )
+                                                domain_name="example.com",
+                                                )
 
 # Obtain a pre-existing certificate from your account
 certificate = acm.Certificate.from_certificate_arn(
@@ -84,8 +87,9 @@ Route53ToApigateway(self, 'Route53ToApigatewayPattern',
                     existing_api_gateway_obj: existingRestApi,
                     existing_hosted_zone_interface: ourHostedZone,
                     public_api=True,
-                    existing_certificate_Interface=certificate
+                    existing_certificate_interface=certificate
                     )
+
 ```
 
 Java

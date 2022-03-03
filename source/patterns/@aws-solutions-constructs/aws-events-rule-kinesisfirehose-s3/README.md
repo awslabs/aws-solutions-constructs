@@ -26,7 +26,7 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
-import { EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props } from '@aws-solutions-constructs/aws-events-rule-kinesisfirehose-s3';
+import { EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props } from '@aws-solutions-constructs/aws-events-rule-kinesis_firehose-s3';
 import * as events from '@aws-cdk/aws-events';
 import { Duration } from '@aws-cdk/core';
 
@@ -41,19 +41,20 @@ new EventsRuleToKinesisFirehoseToS3(this, 'test-events-rule-firehose-s3', events
 
 Python
 ``` python
-from aws_solutions_constructs.aws_events_rule_kinesisfirehose_s3 import EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props
+from aws_solutions_constructs.aws_events_rule_kinesis_firehose_s3 import EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props
 from aws_cdk import (
     aws_events as events,
-    Duration
+    Duration,
+    Stack
 )
+from constructs import Construct
 
-props = EventsRuleToKinesisFirehoseToS3Props(
-    event_rule_props=events.RuleProps(
-        schedule=events.Schedule.rate(Duration.minutes(5))
-    )
-)
+EventsRuleToKinesisFirehoseToS3(self, 'test_events_rule_firehose_s3',
+                                event_rule_props=events.RuleProps(
+                                    schedule=events.Schedule.rate(
+                                        Duration.minutes(5))
+                                ))
 
-EventsRuleToKinesisFirehoseToS3(self, 'test_events_rule_firehose_s3', props)
 ```
 
 Java

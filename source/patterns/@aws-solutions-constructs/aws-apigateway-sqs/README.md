@@ -34,6 +34,8 @@ new ApiGatewayToSqs(this, 'ApiGatewayToSqsPattern', {});
 Python
 ``` python
 from aws_solutions_constructs.aws_apigateway_sqs as ApiGatewayToSqs
+from aws_cdk import Stack
+from constructs import Construct
 
 ApiGatewayToSqs(self, 'ApiGatewayToSqsPattern')
 ```

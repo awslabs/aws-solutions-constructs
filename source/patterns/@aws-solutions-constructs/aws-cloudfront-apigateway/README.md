@@ -58,33 +58,29 @@ Python
 from aws_solutions_constructs.aws_cloudfront_apigateway import CloudFrontToApiGateway
 from aws_cdk import (
     aws_lambda as _lambda,
-    aws_apigateway as api
+    aws_apigateway as api,
+    Stack
 )
+from constructs import Construct
 
-lambda_props = _lambda.FunctionProps(
-    code=_lambda.Code.from_asset('lambda'),
-    runtime=_lambda.Runtime.PYTHON_3_9,
-    handler='index.handler'
-)
+lambda_function = _lambda.Function(self, 'LambdaFunction',
+                                    code=_lambda.Code.from_asset(
+                                        'lambda'),
+                                    runtime=_lambda.Runtime.PYTHON_3_9,
+                                    handler='index.handler')
 
-lambda_function = _lambda.Function(self, 'LambdaFunction', lambda_props)
-
-api_gateway_props = api.LambdaRestApiProps(
-    handler=lambda_function,
-    endpoint_configuration=api.EndpointConfiguration(
-        types=[api.EndpointType.REGIONAL]
-    ),
-    default_method_options=api.MethodOptions(
-        authorizationType=api.AuthorizationType.NONE
-    )
-)
-
-api_gateway = api.LambdaRestApi(self, 'LambdaRestApi', api_gateway_props)
+api_gateway = api.LambdaRestApi(self, 'LambdaRestApi',
+                                handler=lambda_function,
+                                endpoint_configuration=api.EndpointConfiguration(
+                                    types=[api.EndpointType.REGIONAL]
+                                ),
+                                default_method_options=api.MethodOptions(
+                                    authorization_type=api.AuthorizationType.NONE
+                                ))
 
 CloudFrontToApiGateway(self, 'test-cloudfront-apigateway',
-                       existingApiGatewayObj=api_gateway
-                       )
-
+                        existing_api_gateway_obj=api_gateway
+                        )
 ```
 
 Java

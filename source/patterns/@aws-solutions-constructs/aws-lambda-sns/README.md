@@ -41,12 +41,14 @@ Python
 from aws_solutions_constructs.aws_lambda_sns import LambdaToSns
 from aws_cdk import (
     aws_lambda as _lambda,
+    Stack
 )
+from constructs import Construct
 
 LambdaToSns(
     self, 'test-lambda-sns-stack',
     lambda_function_props=_lambda.FunctionProps(
-        code=_lambda.Code.from_asset('{__dirname}/lambda'),
+        code=_lambda.Code.from_asset('lambda'),
         runtime=_lambda.Runtime.PYTHON_3_9,
         handler='index.handler'
     )

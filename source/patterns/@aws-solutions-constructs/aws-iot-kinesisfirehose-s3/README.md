@@ -48,20 +48,21 @@ Python
 ```python
 from aws_solutions_constructs.aws_iot_kinesisfirehose_s3 import IotToKinesisFirehoseToS3Props, IotToKinesisFirehoseToS3
 from aws_cdk import (
-    aws_iot as iot
+    aws_iot as iot,
+    Stack
 )
-props = IotToKinesisFirehoseToS3Props(
-    iot_topic_rule_props=iot.CfnTopicRuleProps(
-        topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
-            rule_disabled=False,
-            description="Persistent storage of connected vehicle telematics data",
-            sql="SELECT * FROM 'connectedcar/telemetry/#'",
-            actions=[]
-        )
-    )
-)
+from constructs import Construct
 
-IotToKinesisFirehoseToS3(self, 'test_iot_firehose_s3', props)
+IotToKinesisFirehoseToS3(self, 'test_iot_firehose_s3',
+                        iot_topic_rule_props=iot.CfnTopicRuleProps(
+                            topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
+                                rule_disabled=False,
+                                description="Persistent storage of connected vehicle telematics data",
+                                sql="SELECT * FROM 'connectedcar/telemetry/#'",
+                                actions=[]
+                            )
+                        ))
+
 ```
 
 Java

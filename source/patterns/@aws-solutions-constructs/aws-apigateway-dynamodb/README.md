@@ -38,6 +38,8 @@ new ApiGatewayToDynamoDB(this, 'test-api-gateway-dynamodb-default', {});
 Python
 ``` python
 from aws_solutions_constructs.aws_apigateway_dynamodb import ApiGatewayToDynamoDB
+from aws_cdk import Stack
+from constructs import Construct
 
 ApiGatewayToDynamoDB(self, 'test-api-gateway-dynamodb-default')
 ```

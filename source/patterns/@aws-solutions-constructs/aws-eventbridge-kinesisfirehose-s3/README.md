@@ -40,15 +40,17 @@ new EventbridgeToKinesisFirehoseToS3(this, 'test-eventbridge-firehose-s3', Event
 Python
 ``` python
 from aws_solutions_constructs.aws_eventbridge_kinesisfirehose_s3 import EventbridgeToKinesisFirehoseToS3, EventbridgeToKinesisFirehoseToS3Props
-from aws_cdk import aws_events as events, core as cdk
-
-props = EventbridgeToKinesisFirehoseToS3Props(
-    event_rule_props=events.RuleProps(
-        schedule=events.Schedule.rate(cdk.Duration.minutes(5))
-    )
+from aws_cdk import (
+    aws_events as events,
+    Duration,
+    Stack
 )
 
-EventbridgeToKinesisFirehoseToS3(self, 'test-eventbridge-firehose-s3', props)
+EventbridgeToKinesisFirehoseToS3(self, 'test-eventbridge-firehose-s3',
+                                event_rule_props=events.RuleProps(
+                                    schedule=events.Schedule.rate(
+                                        Duration.minutes(5))
+                                ))
 ```
 
 Java

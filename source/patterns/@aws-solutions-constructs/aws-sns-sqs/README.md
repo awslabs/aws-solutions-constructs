@@ -47,8 +47,11 @@ snsToSqsStack.encryptionKey?.addToResourcePolicy(policyStatement);
 Python
 ``` python
 from aws_solutions_constructs.aws_sns_sqs import SnsToSqs
-from aws_cdk import aws_iam as iam
-
+from aws_cdk import (
+    aws_iam as iam,
+    Stack
+)
+from constructs import Construct
 
 construct_stack = SnsToSqs(self, 'SnsToSqsPattern')
 

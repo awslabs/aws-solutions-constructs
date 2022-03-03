@@ -41,15 +41,20 @@ new DynamoDBStreamsToLambda(this, 'test-dynamodbstreams-lambda', {
 
 Python
 ``` python
-import aws_solutions_constructs.aws_dynamodbstreams_lambda as ddb_lambda
-
-ddb_lambda.DynamoDBStreamsToLambda(self, 'test-dynamodbstreams-lambda',
-  lambda_function_props=_lambda.FunctionProps(
-    code=_lambda.Code.from_asset('lambda'),
-    runtime=_lambda.Runtime.PYTHON_3_9,
-    handler='index.handler'
-  )
+from aws_solutions_constructs.aws_dynamodbstreams_lambda import DynamoDBStreamsToLambda
+from aws_cdk import
+  aws_lambda as _lambda,
+  Stack
 )
+from constructs import Construct
+
+DynamoDBStreamsToLambda(self, 'test-dynamodbstreams-lambda',
+                        lambda_function_props=_lambda.FunctionProps(
+                            code=_lambda.Code.from_asset('lambda'),
+                            runtime=_lambda.Runtime.PYTHON_3_9,
+                            handler='index.handler'
+                        )
+                        )
 ```
 
 Java

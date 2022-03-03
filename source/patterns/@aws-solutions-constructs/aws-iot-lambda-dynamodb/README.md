@@ -52,28 +52,28 @@ new IotToLambdaToDynamoDB(this, 'test-iot-lambda-dynamodb-stack', props);
 
 Python
 ``` python
-from aws_solutions_constructs.aws_iot_dynamodb import IotToDynamoDBProps, IotToDynamoDB
+from aws_solutions_constructs.aws_iot_lambda_dynamodb import IotToLambdaToDynamoDB
 from aws_cdk import (
     aws_iot as iot,
-    aws_lambda as _lambda
+    aws_lambda as _lambda,
+    Stack
 )
-props = IotToDynamoDBProps(
-    lambda_function_props=_lambda.FunctionProps(
-        code=_lambda.Code.from_asset('lambda'),
-        runtime=_lambda.Runtime.PYTHON_3_9,
-        handler='index.handler'
-    ),
-    iot_topic_rule_props=iot.CfnTopicRuleProps(
-        topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
-            rule_disabled=False,
-            description="Processing of DTC messages from the AWS Connected Vehicle Solution.",
-            sql="SELECT * FROM 'connectedcar/dtc/#'",
-            actions=[]
-        )
-    )
-)
+from constructs import Construct
 
-IotToDynamoDB(self, 'test-iot-lambda-dynamodb-stack', props)
+IotToLambdaToDynamoDB(self, 'test-iot-lambda-dynamodb-stack',
+            lambda_function_props=_lambda.FunctionProps(
+                code=_lambda.Code.from_asset('lambda'),
+                runtime=_lambda.Runtime.PYTHON_3_9,
+                handler='index.handler'
+            ),
+            iot_topic_rule_props=iot.CfnTopicRuleProps(
+                topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
+                    rule_disabled=False,
+                    description="Processing of DTC messages from the AWS Connected Vehicle Solution.",
+                    sql="SELECT * FROM 'connectedcar/dtc/#'",
+                    actions=[]
+                )
+            ))
 ```
 
 Java

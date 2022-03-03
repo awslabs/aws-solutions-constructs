@@ -55,8 +55,10 @@ from aws_solutions_constructs.aws_apigateway_lambda import ApiGatewayToLambda
 from aws_solutions_constructs.aws_wafwebacl_apigateway import WafwebaclToApiGatewayProps, WafwebaclToApiGateway
 from aws_cdk import (
     aws_apigateway as api,
-    aws_lambda as _lambda
+    aws_lambda as _lambda,
+    Stack
 )
+from constructs import Construct
 
 api_gateway_to_lambda = ApiGatewayToLambda(self, 'ApiGatewayToLambdaPattern',
                                            lambda_function_props=_lambda.FunctionProps(

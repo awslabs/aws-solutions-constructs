@@ -49,21 +49,21 @@ from aws_solutions_constructs.aws_eventbridge_stepfunctions import EventbridgeTo
 from aws_cdk import (
     aws_stepfunctions as stepfunctions,
     aws_events as events,
-    Duration
+    Duration,
+    Stack
 )
+from constructs import Construct
 
 startState = stepfunctions.Pass(self, 'StartState')
 
-props = EventbridgeToStepfunctionsProps(
-    state_machine_props=stepfunctions.StateMachineProps(
-        definition=startState
-    ),
-    evnet_rule_props=events.RuleProps(
-        schedule=events.Schedule.rate(Duration.minutes(5))
-    )
-)
-
-EventbridgeToStepfunctions(self, 'test-eventbridge-stepfunctions-stack', props)
+EventbridgeToStepfunctions(self, 'test-eventbridge-stepfunctions-stack',
+                            state_machine_props=stepfunctions.StateMachineProps(
+                                definition=startState
+                            ),
+                            event_rule_props=events.RuleProps(
+                                schedule=events.Schedule.rate(
+                                    Duration.minutes(5))
+                            ))
 ```
 
 Java
