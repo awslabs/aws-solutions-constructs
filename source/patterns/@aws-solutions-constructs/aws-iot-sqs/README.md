@@ -53,7 +53,6 @@ from aws_cdk import (
 )
 from constructs import Construct
 
-
 IotToSqs(self, 'test_iot_sqs',
     iot_topic_rule_props=iot.CfnTopicRuleProps(
         topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
@@ -67,19 +66,25 @@ IotToSqs(self, 'test_iot_sqs',
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.iotsqs.*;
+import software.constructs.Construct;
+import java.util.List;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.iot.*;
+import software.amazon.awscdk.services.iot.CfnTopicRule.TopicRulePayloadProperty;
+import software.amazon.awsconstructs.services.iotsqs.*;
 
 new IotToSqs(this, "test_iot_sqs", new IotToSqsProps.Builder()
-    .iotTopicRuleProps(new CfnTopicRuleProps.Builder()
-        .topicRulePayload(new TopicRulePayloadProperty.Builder()
-            .ruleDisabled(false)
-            .description("Testing the IotToSqs Pattern")
-            .sql("SELECT * FROM 'iot/sqs/#'")
-            .actions(List.of())
-            .build())
-        .build())
-    .build());
+        .iotTopicRuleProps(new CfnTopicRuleProps.Builder()
+                .topicRulePayload(new TopicRulePayloadProperty.Builder()
+                        .ruleDisabled(false)
+                        .description("Testing the IotToSqs Pattern")
+                        .sql("SELECT * FROM 'iot/sqs/#'")
+                        .actions(List.of())
+                        .build())
+                .build())
+        .build());
 ```
 
 ## Pattern Construct Props

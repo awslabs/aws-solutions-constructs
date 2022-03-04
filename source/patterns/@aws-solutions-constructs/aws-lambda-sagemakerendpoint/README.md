@@ -89,25 +89,32 @@ LambdaToSagemakerEndpoint(
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.lambdasagemakerendpoint.*;
-import software.amazon.awscdk.services.lambda.*;
-import software.amazon.awscdk.services.sagemaker.*;
-import software.amazon.awscdk.Duration;
+import software.constructs.Construct;
 
-new LambdaToSagemakerEndpoint(this, "LambdaToSagemakerEndpointPattern", new LambdaToSagemakerEndpointProps.Builder()
-    .modelProps(new CfnModelProps.Builder()
-        .primaryContainer(new CfnModel.ContainerDefinitionProperty.Builder()
-            .image("<AccountId>.dkr.ecr.<region>.amazonaws.com/linear_learner:latest")
-            .modelDataUrl("s3://<bucket_name>/<prefix>/model.tar.gz")
-            .build())
-        .build())
-    .lambdaFunctionProps(new FunctionProps.Builder()
-        .runtime(Runtime.NODEJS_14_X)
-        .code(Code.fromAsset("lambda"))
-        .handler("index.handler")
-        .timeout(Duration.minutes(5))
-        .build())
-    .build());
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awscdk.services.sagemaker.*;
+import software.amazon.awsconstructs.services.lambdasagemakerendpoint.*;
+
+new LambdaToSagemakerEndpoint(this, "LambdaToSagemakerEndpointPattern",
+        new LambdaToSagemakerEndpointProps.Builder()
+                .modelProps(new CfnModelProps.Builder()
+                        .primaryContainer(new CfnModel.ContainerDefinitionProperty.Builder()
+                                .image("<AccountId>.dkr.ecr.<region>.amazonaws.com/linear_learner:latest")
+                                .modelDataUrl("s3://<bucket_name>/<prefix>/model.tar.gz")
+                                .build())
+                        .executionRoleArn("executionRoleArn")
+                        .build())
+                .lambdaFunctionProps(new FunctionProps.Builder()
+                        .runtime(Runtime.NODEJS_14_X)
+                        .code(Code.fromAsset("lambda"))
+                        .handler("index.handler")
+                        .timeout(Duration.minutes(5))
+                        .build())
+                .build());
 ```
 ## Pattern Construct Props
 

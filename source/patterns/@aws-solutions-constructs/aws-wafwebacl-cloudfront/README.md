@@ -58,17 +58,21 @@ WafwebaclToCloudFront(self, 'test_wafwebacl_cloudfront',
 
 Java
 ``` java
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awsconstructs.services.cloudfronts3.*;
 import software.amazon.awsconstructs.services.wafwebaclcloudfront.*;
 
-final CloudFrontToS3 cloudfrontToS3 = CloudFrontToS3(this, 'test-cloudfront-s3', new CloudFrontToS3Props.Builder()
-    .build());
+final CloudFrontToS3 cloudfrontToS3 = new CloudFrontToS3(this, "test-cloudfront-s3",
+        new CloudFrontToS3Props.Builder()
+                .build());
 
 // This construct can only be attached to a configured CloudFront.
 new WafwebaclToCloudFront(this, "test-wafwebacl-cloudfront", new WafwebaclToCloudFrontProps.Builder()
-    .existingCloudFrontWebDistribution(cloudfrontToS3.getCloudFrontWebDistribution())
-    .build());
-});
+        .existingCloudFrontWebDistribution(cloudfrontToS3.getCloudFrontWebDistribution())
+        .build());
 ```
 
 ## Pattern Construct Props

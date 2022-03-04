@@ -59,17 +59,22 @@ DynamoDBStreamsToLambda(self, 'test-dynamodbstreams-lambda',
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.dynamodbstreamslambda.*;
-import software.amazon.awscdk.services.lambda.*;
+import software.constructs.Construct;
 
-DynamoDBStreamsToLambda(this, "test-dynamodbstreams-lambda",
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.dynamodbstreamslambda.*;
+
+new DynamoDBStreamsToLambda(this, "test-dynamodbstreams-lambda",
         new DynamoDBStreamsToLambdaProps.Builder()
-            .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_14_X)
-                .code(Code.fromAsset("lambda"))
-                .handler("index.handler")
-                .build())
-            .build());
+                .lambdaFunctionProps(new FunctionProps.Builder()
+                        .runtime(Runtime.NODEJS_14_X)
+                        .code(Code.fromAsset("lambda"))
+                        .handler("index.handler")
+                        .build())
+                .build());
 ```
 
 ## Pattern Construct Props

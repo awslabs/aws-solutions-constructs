@@ -40,6 +40,10 @@ KinesisStreamsToKinesisFirehoseToS3(self, 'test_stream_firehose_s3')
 
 Java
 ``` java
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awsconstructs.services.kinesisstreamskinesisfirehoses3.*;
 
 new KinesisStreamsToKinesisFirehoseToS3(this, "test_stream_firehose_s3", new KinesisStreamsToKinesisFirehoseToS3Props.Builder()

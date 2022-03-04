@@ -33,7 +33,7 @@ import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 
 const props: FargateToSnsProps = {
     publicApi: true,
-    ecrRepositoryArn: "arn of a repo in ECR in your account"
+    ecrRepositoryArn: "arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo"
 };
 
 new FargateToSns(this, 'test-construct', props);
@@ -54,12 +54,16 @@ FargateToSns(self, 'test_construct',
 
 Java
 ``` java
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awsconstructs.services.fargatesns.*;
 
 new FargateToSns(this, "test_construct", new FargateToSnsProps.Builder()
-    .publicApi(true)
-    .ecrRepositoryArn("arn of a repo in ECR in your account")
-    .build());
+        .publicApi(true)
+        .ecrRepositoryArn("arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo")
+        .build());
 ```
 
 ## Pattern Construct Props

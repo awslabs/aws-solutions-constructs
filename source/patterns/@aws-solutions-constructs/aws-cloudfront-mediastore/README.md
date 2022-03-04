@@ -42,6 +42,10 @@ CloudFrontToMediaStore(self, 'test-cloudfront-mediastore-default')
 
 Java
 ``` java
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awsconstructs.services.cloudfrontmediastore.*;
 
 new CloudFrontToMediaStore(this, "test-cloudfront-mediastore-default", new CloudFrontToMediaStoreProps.Builder()

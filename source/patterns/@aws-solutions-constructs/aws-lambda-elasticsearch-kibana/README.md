@@ -72,20 +72,26 @@ LambdaToElasticSearchAndKibana(self, 'test_lambda_elasticsearch_kibana',
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.lambdadynamodb.*;
-import software.amazon.awscdk.services.lambda.*;
-import software.amazon.awscdk.Aws;
+import software.constructs.Construct;
 
-new LambdaToElasticSearchAndKibana(this, "test_lambda_elasticsearch_kibana", new LambdaToElasticSearchAndKibanaProps.Builder()
-    .lambdaFunctionProps(new FunctionProps.Builder()
-        .runtime(Runtime.NODEJS_14_X)
-        .code(Code.fromAsset("lambda"))
-        .handler("index.handler")
-        .build())
-    .domainName("test-domain")
-    // TODO: Ensure the Cognito domain name is globally unique
-    .cognitoDomainName("globallyuniquedomain" + AWS.ACCOUNT_ID)
-    .build());
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.Aws;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.lambdaelasticsearchkibana.*;
+
+new LambdaToElasticSearchAndKibana(this, "test_lambda_elasticsearch_kibana",
+        new LambdaToElasticSearchAndKibanaProps.Builder()
+                .lambdaFunctionProps(new FunctionProps.Builder()
+                        .runtime(Runtime.NODEJS_14_X)
+                        .code(Code.fromAsset("lambda"))
+                        .handler("index.handler")
+                        .build())
+                .domainName("test-domain")
+                // TODO: Ensure the Cognito domain name is globally unique
+                .cognitoDomainName("globallyuniquedomain" + Aws.ACCOUNT_ID)
+                .build());
 ```
 ## Pattern Construct Props
 

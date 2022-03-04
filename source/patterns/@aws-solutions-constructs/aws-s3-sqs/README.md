@@ -45,6 +45,10 @@ S3ToSqs(self, 'S3ToSQSPattern')
 
 Java
 ``` java
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awsconstructs.services.s3sqs.*;
 
 new S3ToSqs(this, "S3ToSQSPattern", new S3ToSqsProps.Builder()

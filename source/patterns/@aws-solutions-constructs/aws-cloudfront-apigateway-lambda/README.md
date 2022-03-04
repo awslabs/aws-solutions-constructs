@@ -55,17 +55,22 @@ CloudFrontToApiGatewayToLambda(self, 'test-cloudfront-apigateway-lambda',
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.cloudfrontapigatewaylambda.*;
-import software.amazon.awscdk.services.lambda.*;
+import software.constructs.Construct;
 
-new CloudFrontToApiGatewayLambda(this, "test-cloudfront-apigateway-lambda",
-        new CloudFrontToApiGatewayLambda.Builder()
-            .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_14_X)
-                .code(Code.fromAsset("lambda"))
-                .handler("index.handler")
-                .build())
-            .build());
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.cloudfrontapigatewaylambda.*;
+
+new CloudFrontToApiGatewayToLambda(this, "test-cloudfront-apigateway-lambda",
+        new CloudFrontToApiGatewayToLambdaProps.Builder()
+                .lambdaFunctionProps(new FunctionProps.Builder()
+                        .runtime(Runtime.NODEJS_14_X)
+                        .code(Code.fromAsset("lambda"))
+                        .handler("index.handler")
+                        .build())
+                .build());
 ```
 
 

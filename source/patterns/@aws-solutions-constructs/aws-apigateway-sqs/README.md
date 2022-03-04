@@ -42,10 +42,14 @@ ApiGatewayToSqs(self, 'ApiGatewayToSqsPattern')
 
 Java
 ``` java
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awsconstructs.services.apigatewaysqs.*;
 
 new ApiGatewayToSqs(this, "ApiGatewayToSqsPattern", new ApiGatewayToSqsProps.Builder()
-    .build());
+        .build());
 ```
 
 ## Pattern Construct Props

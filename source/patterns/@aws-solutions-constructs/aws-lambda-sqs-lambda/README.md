@@ -71,21 +71,26 @@ LambdaToSqsToLambda(
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.lambdasqslambda.*;
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.lambdasqslambda.*;
 
 new LambdaToSqsToLambda(this, "LambdaToSqsToLambdaPattern", new LambdaToSqsToLambdaProps.Builder()
-    .producerLambdaFunctionProps(new FunctionProps.Builder()
-        .runtime(Runtime.NODEJS_14_X)
-        .code(Code.fromAsset("producer-lambda"))
-        .handler("index.handler")
-        .build())
-    .consumerLambdaFunctionProps(new FunctionProps.Builder()
-        .runtime(Runtime.NODEJS_14_X)
-        .code(Code.fromAsset("consumer-lambda"))
-        .handler("index.handler")
-        .build())
-    .build());
+        .producerLambdaFunctionProps(new FunctionProps.Builder()
+                .runtime(Runtime.NODEJS_14_X)
+                .code(Code.fromAsset("producer-lambda"))
+                .handler("index.handler")
+                .build())
+        .consumerLambdaFunctionProps(new FunctionProps.Builder()
+                .runtime(Runtime.NODEJS_14_X)
+                .code(Code.fromAsset("consumer-lambda"))
+                .handler("index.handler")
+                .build())
+        .build());
 ```
 ## Pattern Construct Props
 

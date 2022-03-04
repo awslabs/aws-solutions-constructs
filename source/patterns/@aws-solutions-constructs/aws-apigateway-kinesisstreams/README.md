@@ -42,6 +42,10 @@ ApiGatewayToKinesisStreams(self, 'test-apigw-kinesis')
 
 Java
 ``` java
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awsconstructs.services.apigatewaykinesisstreams.*;
 
 new ApiGatewayToKinesisStreams(this, "test-apigw-kinesis", new ApiGatewayToKinesisStreamsProps.Builder()

@@ -39,7 +39,7 @@ new EventbridgeToKinesisFirehoseToS3(this, 'test-eventbridge-firehose-s3', Event
 
 Python
 ``` python
-from aws_solutions_constructs.aws_eventbridge_kinesisfirehose_s3 import EventbridgeToKinesisFirehoseToS3, EventbridgeToKinesisFirehoseToS3Props
+from aws_solutions_constructs.aws_eventbridge_kinesis_firehose_s3 import EventbridgeToKinesisFirehoseToS3, EventbridgeToKinesisFirehoseToS3Props
 from aws_cdk import (
     aws_events as events,
     Duration,
@@ -55,16 +55,20 @@ EventbridgeToKinesisFirehoseToS3(self, 'test-eventbridge-firehose-s3',
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.eventbridgekinesisfirehoses3.*;
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.services.events.*;
+import software.amazon.awsconstructs.services.eventbridgekinesisfirehoses3.*;
 
-EventbridgeToKinesisFirehoseToS3(this, "test-eventbridge-firehose-s3",
+new EventbridgeToKinesisFirehoseToS3(this, "test-eventbridge-firehose-s3",
         new EventbridgeToKinesisFirehoseToS3Props.Builder()
-            .eventRuleProps(new RuleProps.Builder()
-                .schedule(Schedule.rate(Duration.minutes(5)))
-                .build())
-            .build());
+                .eventRuleProps(new RuleProps.Builder()
+                        .schedule(Schedule.rate(Duration.minutes(5)))
+                        .build())
+                .build());
 ```
 ## Pattern Construct Props
 

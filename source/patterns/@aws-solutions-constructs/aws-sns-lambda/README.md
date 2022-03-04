@@ -55,17 +55,21 @@ SnsToLambda(self, 'test_sns_lambda',
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.snslambda.*;
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.snslambda.*;
 
 new SnsToLambda(this, "test-lambda-sqs-stack", new SnsToLambdaProps.Builder()
-    .lambdaFunctionProps(new FunctionProps.Builder()
-        .runtime(Runtime.NODEJS_14_X)
-        .code(Code.fromAsset("lambda"))
-        .handler("index.handler")
-        .build())
-    .build());
-```
+        .lambdaFunctionProps(new FunctionProps.Builder()
+                .runtime(Runtime.NODEJS_14_X)
+                .code(Code.fromAsset("lambda"))
+                .handler("index.handler")
+                .build())
+        .build());
 
 ## Pattern Construct Props
 

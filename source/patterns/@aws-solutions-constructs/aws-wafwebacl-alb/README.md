@@ -40,7 +40,7 @@ const r53ToAlb = new Route53ToAlb(this, 'Route53ToAlbPattern', {
     zoneName: 'www.example.com',
   },
   publicApi: false,
-  logAccessLogs: false
+  logAlbAccessLogs: false
 });
 
 // This construct can only be attached to a configured Application Load Balancer.
@@ -66,7 +66,7 @@ r53ToAlb = Route53ToAlb(self, 'Route53ToAlbPattern',
                             zone_name='www.example.com',
                         ),
                         public_api=False,
-                        log_access_logs=False
+                        log_alb_access_logs=False
                         )
 
 # This construct can only be attached to a configured Application Load Balancer.
@@ -77,25 +77,30 @@ WafwebaclToAlb(self, 'test_wafwebacl_alb',
 
 Java
 ``` java
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.route53.*;
 import software.amazon.awsconstructs.services.route53alb.*;
 import software.amazon.awsconstructs.services.wafwebaclalb.*;
-import software.amazon.awscdk.services.route53.*;
 
 // A constructed ALB is required to be attached to the WAF Web ACL.
 // In this case, we are using this construct to create one.
 final Route53ToAlb r53ToAlb = new Route53ToAlb(this, "Route53ToAlbPattern",
-    new Route53ToAlbProps.Builder()
-        .privateHostedZoneProps(new PrivateHostedZoneProps.Builder()
-          .zoneName("www.example.com")
-          .build())
-        .publicApi(false)
-        .logAccessLogs(false)
-        .build());
+        new Route53ToAlbProps.Builder()
+                .privateHostedZoneProps(new PrivateHostedZoneProps.Builder()
+                        .zoneName("www.example.com")
+                        .build())
+                .publicApi(false)
+                .logAlbAccessLogs(false)
+                .build());
 
-// This construct can only be attached to a configured Application Load Balancer.
+// This construct can only be attached to a configured Application Load
+// Balancer.
 new WafwebaclToAlb(this, "test-wafwebacl-alb", new WafwebaclToAlbProps.Builder()
-    .existingLoadBalancerObj(r53ToAlb.getLoadBalancer())
-    .build());
+        .existingLoadBalancerObj(r53ToAlb.getLoadBalancer())
+        .build());
 ```
 ## Pattern Construct Props
 

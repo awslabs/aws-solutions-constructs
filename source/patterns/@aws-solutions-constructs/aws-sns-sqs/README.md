@@ -67,22 +67,27 @@ construct_stack.encryption_key.add_to_resource_policy(policy_statement)
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.snssqs.*;
-import software.amazon.awscdk.services.iam.*;
+import software.constructs.Construct;
+import java.util.List;
 
-final SnsToSqs constructStack = SnsToSqs(this, "SnsToSqsPattern",
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.iam.*;
+import software.amazon.awsconstructs.services.snssqs.*;
+
+final SnsToSqs constructStack = new SnsToSqs(this, "SnsToSqsPattern",
         new SnsToSqsProps.Builder()
-            .build());
+                .build());
 
 // Grant yourself permissions to use the Customer Managed KMS Key
-final PolicyStatement policyStatement = new PolicyStatement.Builder.create()
-    .actions(List.of("kms:Encrypt", "kms:Decrypt"))
-    .effect(Effect.ALLOW)
-    .principals(List.of(new AccountRootPrincipal()))
-    .resource(List.of("*"))
-    .build();
+final PolicyStatement policyStatement = PolicyStatement.Builder.create()
+        .actions(List.of("kms:Encrypt", "kms:Decrypt"))
+        .effect(Effect.ALLOW)
+        .principals(List.of(new AccountRootPrincipal()))
+        .resources(List.of("*"))
+        .build();
 
-policyStatement.getEncryptionKey().addToResourcePolicy(policyStatement);
+constructStack.getEncryptionKey().addToResourcePolicy(policyStatement);
 ```
 
 ## Pattern Construct Props

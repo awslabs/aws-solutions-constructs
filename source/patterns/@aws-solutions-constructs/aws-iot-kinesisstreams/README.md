@@ -66,18 +66,24 @@ IotToKinesisStreams(self, 'test-iot-kinesisstreams',
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.iotkinesisstreams.*;
+import software.constructs.Construct;
+import java.util.List;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.iot.*;
+import software.amazon.awscdk.services.iot.CfnTopicRule.TopicRulePayloadProperty;
+import software.amazon.awsconstructs.services.iotkinesisstreams.*;
 
 new IotToKinesisStreams(this, "test-iot-kinesisstreams", new IotToKinesisStreamsProps.Builder()
         .iotTopicRuleProps(new CfnTopicRuleProps.Builder()
-            .topicRulePayload(new TopicRulePayloadProperty.Builder()
-                .ruleDisabled(false)
-                .description("Sends data to kinesis data stream")
-                .sql("SELECT * FROM 'solutions/construct'")
-                .actions(List.of())
+                .topicRulePayload(new TopicRulePayloadProperty.Builder()
+                        .ruleDisabled(false)
+                        .description("Sends data to kinesis data stream")
+                        .sql("SELECT * FROM 'solutions/construct'")
+                        .actions(List.of())
+                        .build())
                 .build())
-            .build())
         .build());
 ```
 

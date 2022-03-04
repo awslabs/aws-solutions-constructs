@@ -78,25 +78,32 @@ IotToLambdaToDynamoDB(self, 'test-iot-lambda-dynamodb-stack',
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.iotdynamodb.*;
-import software.amazon.awscdk.services.iot.*;
+import software.constructs.Construct;
+import java.util.List;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awscdk.services.iot.*;
+import software.amazon.awscdk.services.iot.CfnTopicRule.TopicRulePayloadProperty;
+import software.amazon.awsconstructs.services.iotlambdadynamodb.*;
 
 new IotToLambdaToDynamoDB(this, "test-iot-lambda-dynamodb-stack", new IotToLambdaToDynamoDBProps.Builder()
-    .lambdaFunctionProps(new FunctionProps.Builder()
-        .runtime(Runtime.NODEJS_14_X)
-        .code(Code.fromAsset("lambda"))
-        .handler("index.handler")
-        .build())
-    .iotTopicRuleProps(new CfnTopicRuleProps.Builder()
-        .topicRulePayload(new TopicRulePayloadProperty.Builder()
-            .ruleDisabled(false)
-            .description("Processing of DTC messages from the AWS Connected Vehicle Solution.")
-            .sql("SELECT * FROM 'connectedcar/dtc/#'")
-            .actions(List.of())
-            .build())
-        .build())
-    .build());
+        .lambdaFunctionProps(new FunctionProps.Builder()
+                .runtime(Runtime.NODEJS_14_X)
+                .code(Code.fromAsset("lambda"))
+                .handler("index.handler")
+                .build())
+        .iotTopicRuleProps(new CfnTopicRuleProps.Builder()
+                .topicRulePayload(new TopicRulePayloadProperty.Builder()
+                        .ruleDisabled(false)
+                        .description("Processing of DTC messages from the AWS Connected Vehicle Solution.")
+                        .sql("SELECT * FROM 'connectedcar/dtc/#'")
+                        .actions(List.of())
+                        .build())
+                .build())
+        .build());
 ```
 
 ## Pattern Construct Props

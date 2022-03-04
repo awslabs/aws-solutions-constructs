@@ -67,19 +67,25 @@ IotToS3(self, 'test_iot_s3',
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.iots3.*;
+import software.constructs.Construct;
+import java.util.List;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.iot.*;
+import software.amazon.awscdk.services.iot.CfnTopicRule.TopicRulePayloadProperty;
+import software.amazon.awsconstructs.services.iots3.*;
 
 new IotToS3(this, "test_iot_s3", new IotToS3Props.Builder()
-    .iotTopicRuleProps(new CfnTopicRuleProps.Builder()
-        .topicRulePayload(new TopicRulePayloadProperty.Builder()
-            .ruleDisabled(false)
-            .description("Testing the IotToS3 Pattern")
-            .sql("SELECT * FROM 'solutions/constructs'")
-            .actions(List.of())
-            .build())
-        .build())
-    .build());
+        .iotTopicRuleProps(new CfnTopicRuleProps.Builder()
+                .topicRulePayload(new TopicRulePayloadProperty.Builder()
+                        .ruleDisabled(false)
+                        .description("Testing the IotToS3 Pattern")
+                        .sql("SELECT * FROM 'solutions/constructs'")
+                        .actions(List.of())
+                        .build())
+                .build())
+        .build());
 ```
 ## Pattern Construct Props
 

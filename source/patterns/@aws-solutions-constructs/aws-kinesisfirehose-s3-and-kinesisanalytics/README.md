@@ -105,43 +105,50 @@ KinesisFirehoseToAnalyticsAndS3(self, 'FirehoseToS3AndAnalyticsPattern',
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.kinesisfirehoses3andkinesisanalytics.*;
-import software.amazon.awscdk.services.kinesisanalytics.*;
+import software.constructs.Construct;
+import java.util.List;
 
-new KinesisFirehoseToAnalyticsAndS3(this, "FirehoseToS3AndAnalyticsPattern", new KinesisFirehoseToAnalyticsAndS3Props.Builder()
-    .kinesisAnalyticsProps(new CfnApplicationProps.Builder()
-        .inputs(List.of(new InputProperty.Builder()
-            .inputSchema(new InputSchemaProperty.Builder()
-                .recordColumns(List.of(
-                    new RecordColumnsProperty.Builder()
-                        .name("ticker_symbol")
-                        .sqlType("VARCHAR(4)")
-                        .mapping("$.ticker_symbol")
-                        .build(),
-                    new RecordColumnsProperty.Builder()
-                        .name("sector")
-                        .sqlType("VARCHAR(16)")
-                        .mapping("$.sector")
-                        .build(),
-                    new RecordColumnsProperty.Builder()
-                        .name("change")
-                        .sqlType("REAL")
-                        .mapping("$.change")
-                        .build(),
-                    new RecordColumnsProperty.Builder()
-                        .name("price")
-                        .sqlType("REAL")
-                        .mapping("$.price")
-                        .build()))
-                .recordFormat(new RecordFormat.Builder()
-                    .recordFormatType("JSON")
-                    .build())
-                .recordEncoding("UTF-9")
-                .build())
-            .namePrefix("SOURCE_SQL_STREAM")
-            .build()))
-        .build())
-    .build());
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.kinesisanalytics.*;
+import software.amazon.awscdk.services.kinesisanalytics.CfnApplication.*;
+import software.amazon.awsconstructs.services.kinesisfirehoses3kinesisanalytics.*;
+
+new KinesisFirehoseToAnalyticsAndS3(this, "FirehoseToS3AndAnalyticsPattern",
+        new KinesisFirehoseToAnalyticsAndS3Props.Builder()
+                .kinesisAnalyticsProps(new CfnApplicationProps.Builder()
+                        .inputs(List.of(new InputProperty.Builder()
+                                .inputSchema(new InputSchemaProperty.Builder()
+                                        .recordColumns(List.of(
+                                                new RecordColumnProperty.Builder()
+                                                        .name("ticker_symbol")
+                                                        .sqlType("VARCHAR(4)")
+                                                        .mapping("$.ticker_symbol")
+                                                        .build(),
+                                                new RecordColumnProperty.Builder()
+                                                        .name("sector")
+                                                        .sqlType("VARCHAR(16)")
+                                                        .mapping("$.sector")
+                                                        .build(),
+                                                new RecordColumnProperty.Builder()
+                                                        .name("change")
+                                                        .sqlType("REAL")
+                                                        .mapping("$.change")
+                                                        .build(),
+                                                new RecordColumnProperty.Builder()
+                                                        .name("price")
+                                                        .sqlType("REAL")
+                                                        .mapping("$.price")
+                                                        .build()))
+                                        .recordFormat(new RecordFormatProperty.Builder()
+                                                .recordFormatType("JSON")
+                                                .build())
+                                        .recordEncoding("UTF-9")
+                                        .build())
+                                .namePrefix("SOURCE_SQL_STREAM")
+                                .build()))
+                        .build())
+                .build());
 ```
 
 ## Pattern Construct Props

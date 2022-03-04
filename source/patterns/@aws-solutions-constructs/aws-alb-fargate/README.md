@@ -79,26 +79,29 @@ AlbToFargate(self, 'new-construct',
 
 Java
 ``` java
-import software.amazon.awscdk.services.certificatemanager.*;
-import software.amazon.awscdk.services.ecs.patterns.*;
+import software.constructs.Construct;
+import java.util.List;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.elasticloadbalancingv2.*;
 import software.amazon.awsconstructs.services.albfargate.*;
 
+// The code that defines your stack goes here
 // Obtain a pre-existing certificate from your account
-final ICertificate certificate = Certificate.fromCertificateArn(
-    scope,
-    "existing-cert",
-    "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
-);
+ListenerCertificate listenerCertificate = ListenerCertificate
+        .fromArn("arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012");
 
-new AlbToFargate(scope, "AlbToFargatePattern", new AlbToFargateProps.Builder()
-    .ecrRepositoryArn("arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo")
-    .ecrImageVersion("latest")
-    .listenerProps(new ApplicationListenerProps.Builder()
-        .certificate(certificate)
-        .name("test")
-        .build())
-    .publicApi(true)
-    .build());
+new AlbToFargate(this, "AlbToFargatePattern", new AlbToFargateProps.Builder()
+        .ecrRepositoryArn("arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo")
+        .ecrImageVersion("latest")
+        .listenerProps(new BaseApplicationListenerProps.Builder()
+                .certificates(List.of(listenerCertificate))
+                .build())
+        .publicApi(true)
+        .build());
+    }
+}
 ```
 
 ## Pattern Construct Props

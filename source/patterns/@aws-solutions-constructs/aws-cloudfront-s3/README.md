@@ -40,6 +40,10 @@ CloudFrontToS3(self, 'test-cloudfront-s3')
 
 Java
 ``` java
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awsconstructs.services.cloudfronts3.*;
 
 new CloudFrontToS3(this, "test-cloudfront-s3", new CloudFrontToS3Props.Builder()

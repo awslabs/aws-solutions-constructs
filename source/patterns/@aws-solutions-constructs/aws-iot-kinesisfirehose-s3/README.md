@@ -67,18 +67,24 @@ IotToKinesisFirehoseToS3(self, 'test_iot_firehose_s3',
 
 Java
 ```java
-import software.amazon.awsconstructs.services.iotkinesisfirehoses3.*;
+import software.constructs.Construct;
+import java.util.List;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.iot.*;
+import software.amazon.awscdk.services.iot.CfnTopicRule.TopicRulePayloadProperty;
+import software.amazon.awsconstructs.services.iotkinesisfirehoses3.*;
 
 new IotToKinesisFirehoseToS3(this, "test-iot-firehose-s3", new IotToKinesisFirehoseToS3Props.Builder()
         .iotTopicRuleProps(new CfnTopicRuleProps.Builder()
-            .topicRulePayload(new TopicRulePayloadProperty.Builder()
-                .ruleDisabled(false)
-                .description("Persistent storage of connected vehicle telematics data")
-                .sql("SELECT * FROM 'connectedcar/telemetry/#'")
-                .actions(List.of())
+                .topicRulePayload(new TopicRulePayloadProperty.Builder()
+                        .ruleDisabled(false)
+                        .description("Persistent storage of connected vehicle telematics data")
+                        .sql("SELECT * FROM 'connectedcar/telemetry/#'")
+                        .actions(List.of())
+                        .build())
                 .build())
-            .build())
         .build());
 ```
 

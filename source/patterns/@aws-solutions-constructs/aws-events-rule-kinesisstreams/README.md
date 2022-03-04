@@ -56,16 +56,20 @@ EventsRuleToKinesisStreams(self, 'test_events_rule_kinesis_streams',
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.eventsrulekinesisstreams.*;
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.services.events.*;
+import software.amazon.awsconstructs.services.eventsrulekinesisstreams.*;
 
-EventsRuleToKinesisStreams(this, "test-events-rule-kinesis-streams",
-    new EventsRuleToKinesisStreamsProps.Builder()
-        .eventRuleProps(new RuleProps.Builder()
-            .schedule(Schedule.rate(Duration.minutes(5)))
-            .build())
-        .build());
+new EventsRuleToKinesisStreams(this, "test-events-rule-kinesis-streams",
+        new EventsRuleToKinesisStreamsProps.Builder()
+                .eventRuleProps(new RuleProps.Builder()
+                        .schedule(Schedule.rate(Duration.minutes(5)))
+                        .build())
+                .build());
 ```
 
 ## Pattern Construct Props

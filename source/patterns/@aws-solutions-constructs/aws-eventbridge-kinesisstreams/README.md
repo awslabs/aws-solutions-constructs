@@ -59,16 +59,20 @@ EventbridgeToKinesisStreams(self, 'test-eventbridge-kinesis-streams',
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.eventbridgekinesisstreams.*;
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.services.events.*;
+import software.amazon.awsconstructs.services.eventbridgekinesisstreams.*;
 
-EventbridgeToKinesisStreams(this, "test-eventbridge-kinesis-streams",
-    new EventbridgeToKinesisStreamsProps.Builder()
-        .eventRuleProps(new RuleProps.Builder()
-            .schedule(Schedule.rate(Duration.minutes(5)))
-            .build())
-        .build());
+new EventbridgeToKinesisStreams(this, "test-eventbridge-kinesis-streams",
+        new EventbridgeToKinesisStreamsProps.Builder()
+                .eventRuleProps(new RuleProps.Builder()
+                        .schedule(Schedule.rate(Duration.minutes(5)))
+                        .build())
+                .build());
 ```
 ## Pattern Construct Props
 

@@ -46,6 +46,9 @@ ApiGatewayToDynamoDB(self, 'test-api-gateway-dynamodb-default')
 
 Java
 ``` java
+import software.constructs.Construct;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awsconstructs.services.apigatewaydynamodb.*;
 
 new ApiGatewayToDynamoDB(this, "test-api-gateway-dynamodb-default", new ApiGatewayToDynamoDBProps.Builder()

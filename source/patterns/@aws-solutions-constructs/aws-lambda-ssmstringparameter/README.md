@@ -68,21 +68,26 @@ LambdaToSsmstringparameter(
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.lambdassmstringparameter.*;
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
 import software.amazon.awscdk.services.ssm.*;
+import software.amazon.awsconstructs.services.lambdassmstringparameter.*;
 
 new LambdaToSsmstringparameter(this, "test-lambda-ssmstringparameter-stack",
-    new LambdaToSsmstringparameterProps.Builder()
-        .lambdaFunctionProps(new FunctionProps.Builder()
-            .runtime(Runtime.NODEJS_14_X)
-            .code(Code.fromAsset("lambda"))
-            .handler("index.handler")
-            .build())
-        .stringParameterProps(new StringParameterProps.Builder()
-            .stringValue("test-string-value")
-            .build())
-        .build());
+        new LambdaToSsmstringparameterProps.Builder()
+                .lambdaFunctionProps(new FunctionProps.Builder()
+                        .runtime(Runtime.NODEJS_14_X)
+                        .code(Code.fromAsset("lambda"))
+                        .handler("index.handler")
+                        .build())
+                .stringParameterProps(new StringParameterProps.Builder()
+                        .stringValue("test-string-value")
+                        .build())
+                .build());
 ```
 
 ## Pattern Construct Props

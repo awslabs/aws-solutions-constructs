@@ -31,7 +31,7 @@ import { FargateToS3, FargateToS3Props } from '@aws-solutions-constructs/aws-far
 
 const props: FargateToS3Props = {
   publicApi: true,
-  ecrRepositoryArn: "arn of a repo in ECR in your account",
+  ecrRepositoryArn: "arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo",
 });
 
 new FargateToS3(stack, 'test-construct', props);
@@ -52,12 +52,16 @@ FargateToS3(self, 'test_construct',
 
 Java
 ``` java
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awsconstructs.services.fargates3.*;
 
 new FargateToS3(this, "test_construct", new FargateToS3Props.Builder()
-    .publicApi(true)
-    .ecrRepositoryArn("arn of a repo in ECR in your account")
-    .build());
+        .publicApi(true)
+        .ecrRepositoryArn("arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo")
+        .build());
 ```
 ## Pattern Construct Props
 

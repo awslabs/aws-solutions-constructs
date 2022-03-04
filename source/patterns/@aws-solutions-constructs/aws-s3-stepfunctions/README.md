@@ -64,17 +64,21 @@ S3ToStepfunctions(
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.s3stepfunctions.*;
-import software.amazon.awscdk.services.stepfunctions.*;
+import software.constructs.Construct;
 
-final Pass startState = Pass(this, "StartState");
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.stepfunctions.*;
+import software.amazon.awsconstructs.services.s3stepfunctions.*;
+
+final Pass startState = new Pass(this, "StartState");
 
 new S3ToStepfunctions(this, "test_s3_stepfunctions_stack",
-    new S3ToStepfunctionsProps.Builder()
-        .stateMachineProps(new StateMachineProps.Builder()
-            .definition(startState))
-            .build())
-        .build());
+        new S3ToStepfunctionsProps.Builder()
+                .stateMachineProps(new StateMachineProps.Builder()
+                        .definition(startState)
+                        .build())
+                .build());
 ```
 
 ## Pattern Construct Props

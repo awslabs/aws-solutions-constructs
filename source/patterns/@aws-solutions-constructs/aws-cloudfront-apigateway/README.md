@@ -85,9 +85,15 @@ CloudFrontToApiGateway(self, 'test-cloudfront-apigateway',
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.cloudfrontapigateway.*;
+import software.constructs.Construct;
+import java.util.List;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
 import software.amazon.awscdk.services.apigateway.*;
+import software.amazon.awsconstructs.services.cloudfrontapigateway.*;
 
 final Function lambdaFunction = Function.Builder.create(this, "IndexHandler")
         .runtime(Runtime.NODEJS_14_X)
@@ -95,12 +101,12 @@ final Function lambdaFunction = Function.Builder.create(this, "IndexHandler")
         .handler("index.handler")
         .build();
 
-final LambdaRestApi apiGateway = new LambdaRestApi.Builder(this, "LambdaRestApi", new LambdaRestApiProps.Builder()
+final LambdaRestApi apiGateway = LambdaRestApi.Builder.create(this, "myapi")
         .handler(lambdaFunction)
         .endpointConfiguration(new EndpointConfiguration.Builder()
-            .types(List.of(EndpointType.REGIONAL))
-            .build())
-        .build());
+                .types(List.of(EndpointType.REGIONAL))
+                .build())
+        .build();
 
 new CloudFrontToApiGateway(this, "test-cloudfront-apigateway", new CloudFrontToApiGatewayProps.Builder()
         .existingApiGatewayObj(apiGateway)

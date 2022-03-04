@@ -68,9 +68,14 @@ DynamoDBStreamToLambdaToElasticSearchAndKibana(
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.dynamodbstreamlambdaelasticsearchkibana.*;
+import software.constructs.Construct;
+
 import software.amazon.awscdk.Aws;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.dynamodbstreamlambdaelasticsearchkibana.*;
 
 DynamoDBStreamToLambdaToElasticSearchAndKibana(this, "test-dynamodb-stream-lambda-elasticsearch-kibana",
         new DynamoDBStreamToLambdaToElasticSearchAndKibanaProps.Builder()

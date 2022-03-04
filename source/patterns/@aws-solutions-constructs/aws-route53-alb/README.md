@@ -57,16 +57,20 @@ Route53ToAlb(self, 'Route53ToAlbPattern',
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.route53alb.*;
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.route53.*;
+import software.amazon.awsconstructs.services.route53alb.*;
 
 new Route53ToAlb(this, "Route53ToAlbPattern",
-    new Route53ToAlbProps.Builder()
-        .privateHostedZoneProps(new PrivateHostedZoneProps.Builder()
-          .zoneName("www.example.com")
-          .build())
-        .publicApi(false)
-        .build());
+        new Route53ToAlbProps.Builder()
+                .privateHostedZoneProps(new HostedZoneProps.Builder()
+                        .zoneName("www.example.com")
+                        .build())
+                .publicApi(false)
+                .build());
 ```
 
 ## Pattern Construct Props
@@ -84,7 +88,7 @@ This construct can create Private Hosted Zones. If you want a Private Hosted Zon
 | vpcProps? | [ec2.VpcProps](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.VpcProps.html) | Optional custom properties for a VPC the construct will create. This VPC will be used by the new ALB and any Private Hosted Zone the construct creates (that's why loadBalancerProps and privateHostedZoneProps can't include a VPC). Providing both this and existingVpc is an error. |
 | existingVpc? | [ec2.IVpc](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.IVpc.html) | An existing VPC in which to deploy the construct. Providing both this and vpcProps is an error. If the client provides an existing load balancer and/or existing Private Hosted Zone, those constructs must exist in this VPC. |
 | logAlbAccessLogs? | boolean| Whether to turn on Access Logs for the Application Load Balancer. Uses an S3 bucket with associated storage costs.Enabling Access Logging is a best practice. default - true |
-| albLoggingBucketProps? | [s3.BucketProps](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html) | Optional properties to customize the bucket used to store the ALB Access Logs. Supplying this and setting logAccessLogs to false is an error. @default - none |
+| albLoggingBucketProps? | [s3.BucketProps](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html) | Optional properties to customize the bucket used to store the ALB Access Logs. Supplying this and setting logAlbAccessLogs to false is an error. @default - none |
 
 | publicApi | boolean | Whether the construct is deploying a private or public API. This has implications for the Hosted Zone, VPC and ALB. |
 

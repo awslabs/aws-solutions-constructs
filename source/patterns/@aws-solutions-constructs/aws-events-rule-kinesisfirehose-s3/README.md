@@ -59,16 +59,20 @@ EventsRuleToKinesisFirehoseToS3(self, 'test_events_rule_firehose_s3',
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.eventsrulekinesisfirehoses3.*;
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.services.events.*;
+import software.amazon.awsconstructs.services.eventsrulekinesisfirehoses3.*;
 
-EventsRuleToKinesisFirehoseToS3(this, "test_events_rule_firehose_s3",
+new EventsRuleToKinesisFirehoseToS3(this, "test-events-rule-firehose-s3",
         new EventsRuleToKinesisFirehoseToS3Props.Builder()
-            .eventRuleProps(new RuleProps.Builder()
-                .schedule(Schedule.rate(Duration.minutes(5)))
-                .build())
-            .build());
+                .eventRuleProps(new RuleProps.Builder()
+                        .schedule(Schedule.rate(Duration.minutes(5)))
+                        .build())
+                .build());
 ```
 
 ## Pattern Construct Props

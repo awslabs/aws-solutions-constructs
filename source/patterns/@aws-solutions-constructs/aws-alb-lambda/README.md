@@ -84,30 +84,31 @@ AlbToLambda(self, 'new-construct',
 
 Java
 ``` java
-import software.amazon.awscdk.services.certificatemanager.*;
-import software.amazon.awscdk.services.ecs.patterns.*;
-import software.amazon.awsconstructs.services.alblambda.*;
+import software.constructs.Construct;
+import java.util.List;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.elasticloadbalancingv2.*;
 import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.alblambda.*;
 
 // Obtain a pre-existing certificate from your account
-final ICertificate certificate = Certificate.fromCertificateArn(
-    this,
-    "existing-cert",
-    "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
-);
+ListenerCertificate listenerCertificate = ListenerCertificate
+        .fromArn("arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012");
 
 new AlbToLambda(this, "AlbToLambdaPattern", new AlbToLambdaProps.Builder()
-    .lambdaFunctionProps(new FunctionProps.Builder()
-        .runtime(Runtime.NODEJS_14_X)
-        .code(Code.fromAsset("lambda"))
-        .handler("hitcounter.handler")
-        .build())
-    .listenerProps(new ApplicationListenerProps.Builder()
-        .certificate(certificate)
-        .name("test")
-        .build())
-    .publicApi(true)
-    .build());
+        .lambdaFunctionProps(new FunctionProps.Builder()
+                .runtime(Runtime.NODEJS_14_X)
+                .code(Code.fromAsset("lambda"))
+                .handler("index.handler")
+                .build())
+        .listenerProps(new BaseApplicationListenerProps.Builder()
+                .certificates(List.of(listenerCertificate))
+                .build())
+        .publicApi(true)
+        .build());
 ```
 
 ## Pattern Construct Props

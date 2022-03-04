@@ -61,17 +61,22 @@ CognitoToApiGatewayToLambda(self, 'test-cognito-apigateway-lambda',
 
 Java
 ``` java
-import software.amazon.awsconstructs.services.cognitoapigatewaylambda.*;
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.cognitoapigatewaylambda.*;
 
 new CognitoToApiGatewayToLambda(this, "test-cognito-apigateway-lambda",
         new CognitoToApiGatewayToLambdaProps.Builder()
-            .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_14_X)
-                .code(Code.fromAsset("lambda"))
-                .handler("index.handler")
-                .build())
-            .build());
+                .lambdaFunctionProps(new FunctionProps.Builder()
+                        .runtime(Runtime.NODEJS_14_X)
+                        .code(Code.fromAsset("lambda"))
+                        .handler("index.handler")
+                        .build())
+                .build());
 ```
 
 If you are defining resources and methods on your API (e.g. proxy = false), then you must call addAuthorizers() after the API is fully defined to ensure every method is protected. Here is an example:

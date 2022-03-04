@@ -41,6 +41,10 @@ KinesisFirehoseToS3(self, 'test_firehose_s3')
 
 Java
 ``` java
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awsconstructs.services.kinesisfirehoses3.*;
 
 new KinesisFirehoseToS3(this, "test_firehose_s3", new KinesisFirehoseToS3Props.Builder()

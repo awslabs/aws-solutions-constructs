@@ -72,16 +72,22 @@ ApiGatewayToSageMakerEndpoint(self, 'test-apigw-sagemakerendpoint',
 
 Java
 ``` java
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awsconstructs.services.apigatewaysagemakerendpoint.*;
 
 // Create an example VTL (Velocity Template Language) mapping template for mapping the Api GET request to the Sagemaker POST request
 
 // Replace ""my-endpoint"" with your Sagemaker Inference Endpoint
-new ApiGatewayToSageMakerEndpoint(this, "ApiGatewayToSageMakerEndpointPattern", new ApiGatewayToSageMakerEndpointProps.Builder()
-    .endpointName("my-endpoint")
-    .resourcePath("{user_id}")
-    .requestMappingTemplate(requestTemplate)
-    .build());
+new ApiGatewayToSageMakerEndpoint(this, "ApiGatewayToSageMakerEndpointPattern",
+        new ApiGatewayToSageMakerEndpointProps.Builder()
+                .endpointName("my-endpoint")
+                .resourcePath("{user_id}")
+                .requestMappingTemplate(requestTemplate)
+                .build());
+    }
 ```
 
 ## Pattern Construct Props
