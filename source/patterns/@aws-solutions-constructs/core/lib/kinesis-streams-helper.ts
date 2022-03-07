@@ -15,7 +15,7 @@
 import * as kinesis from '@aws-cdk/aws-kinesis';
 import { DefaultStreamProps } from './kinesis-streams-defaults';
 import * as cdk from '@aws-cdk/core';
-import { overrideProps } from './utils';
+import { consolidateProps } from './utils';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
@@ -26,7 +26,7 @@ export interface BuildKinesisStreamProps {
    *
    * @default - None
    */
-    readonly existingStreamObj?: kinesis.Stream;
+  readonly existingStreamObj?: kinesis.Stream;
 
   /**
    * Optional user provided props to override the default props for the Kinesis stream.
@@ -44,13 +44,8 @@ export function buildKinesisStream(scope: Construct, props: BuildKinesisStreamPr
 
   // Setup the stream properties
   let kinesisStreamProps;
-  if (props.kinesisStreamProps) {
-    // If property overrides have been provided, incorporate them and deploy
-    kinesisStreamProps = overrideProps(DefaultStreamProps, props.kinesisStreamProps);
-  } else {
-    // If no property overrides, deploy using the default configuration
-    kinesisStreamProps = DefaultStreamProps;
-  }
+  // If property overrides have been provided, incorporate them and deploy
+  kinesisStreamProps = consolidateProps(DefaultStreamProps, props.kinesisStreamProps);
 
   // Create the stream and return
   return new kinesis.Stream(scope, 'KinesisStream', kinesisStreamProps);

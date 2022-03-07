@@ -15,7 +15,7 @@ import * as ec2 from "@aws-cdk/aws-ec2";
 import { CfnLogGroup } from "@aws-cdk/aws-logs";
 import { Construct } from "@aws-cdk/core";
 import { buildSecurityGroup } from "./security-group-helper";
-import { overrideProps, addCfnSuppressRules } from "./utils";
+import { consolidateProps, addCfnSuppressRules } from "./utils";
 
 export interface BuildVpcProps {
   /**
@@ -44,13 +44,8 @@ export function buildVpc(scope: Construct, props: BuildVpcProps): ec2.IVpc {
 
   let cumulativeProps: ec2.VpcProps = props?.defaultVpcProps;
 
-  if (props?.userVpcProps) {
-    cumulativeProps = overrideProps(cumulativeProps, props?.userVpcProps);
-  }
-
-  if (props?.constructVpcProps) {
-    cumulativeProps = overrideProps(cumulativeProps, props?.constructVpcProps);
-  }
+  cumulativeProps = consolidateProps(cumulativeProps, props?.userVpcProps);
+  cumulativeProps = consolidateProps(cumulativeProps, props?.constructVpcProps);
 
   const vpc = new ec2.Vpc(scope, "Vpc", cumulativeProps);
 
@@ -198,7 +193,7 @@ export function AddAwsServiceEndpoint(
 
       vpc.addInterfaceEndpoint(interfaceTag, {
         service: service.endpointInterfaceService as ec2.InterfaceVpcEndpointAwsService,
-        securityGroups: [ endpointDefaultSecurityGroup ],
+        securityGroups: [endpointDefaultSecurityGroup],
       });
     }
   }
