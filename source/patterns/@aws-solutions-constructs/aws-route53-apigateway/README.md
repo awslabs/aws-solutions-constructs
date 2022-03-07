@@ -50,7 +50,7 @@ const certificate = acm.Certificate.fromCertificateArn(
 
 // This construct can only be attached to a configured API Gateway.
 new Route53ToApigateway(this, 'Route53ToApigatewayPattern', {
-    existingApiGatewayObj: existingRestApi,
+    existingApiGatewayInterface: existingRestApi,
     existingHostedZoneInterface: ourHostedZone,
     publicApi: true,
     existingCertificateInterface: certificate
@@ -84,7 +84,7 @@ certificate = acm.Certificate.from_certificate_arn(
 
 # This construct can only be attached to a configured API Gateway.
 Route53ToApigateway(self, 'Route53ToApigatewayPattern',
-                    existing_api_gateway_obj: existingRestApi,
+                    existing_api_gateway_interface: existingRestApi,
                     existing_hosted_zone_interface: ourHostedZone,
                     public_api=True,
                     existing_certificate_interface=certificate
@@ -121,7 +121,7 @@ final ICertificate certificate = Certificate.fromCertificateArn(
 // This construct can only be attached to a configured API Gateway.
 new Route53ToApiGateway(this, "Route53ToApiGatewayPattern",
         new Route53ToApiGatewayProps.Builder()
-                .existingApiGatewayObj(existingRestApi)
+                .existingApiGatewayInterface(existingRestApi)
                 .existingHostedZoneInterface(ourHostedZone)
                 .publicApi(true)
                 .existingCertificateInterface(certificate)
