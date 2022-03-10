@@ -49,7 +49,7 @@ export function DynamoEventSourceProps(scope: Construct, _dynamoEventSourceProps
 
   const defaultDynamoEventSourceProps = Object.assign(baseProps, extraProps);
 
-  return consolidateProps(defaultDynamoEventSourceProps, _dynamoEventSourceProps?.eventSourceProps as DynamoEventSourceProps);
+  return consolidateProps(defaultDynamoEventSourceProps, _dynamoEventSourceProps?.eventSourceProps);
 }
 
 export function S3EventSourceProps(_s3EventSourceProps?: S3EventSourceProps) {
@@ -84,5 +84,5 @@ export function KinesisEventSourceProps(scope: Construct, _kinesisEventSourcePro
 
   const defaultKinesisEventSourceProps = Object.assign(baseProps, extraProps);
 
-  return consolidateProps(defaultKinesisEventSourceProps, _kinesisEventSourceProps?.eventSourceProps as KinesisEventSourceProps);
+  return consolidateProps(defaultKinesisEventSourceProps, _kinesisEventSourceProps?.eventSourceProps);
 }

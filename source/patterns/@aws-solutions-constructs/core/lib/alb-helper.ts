@@ -19,7 +19,7 @@ import * as ecs from "@aws-cdk/aws-ecs";
 import * as lambda from "@aws-cdk/aws-lambda";
 import { ApplicationProtocol, ListenerAction, } from "@aws-cdk/aws-elasticloadbalancingv2";
 import * as elbt from "@aws-cdk/aws-elasticloadbalancingv2-targets";
-import { overrideProps, printWarning, consolidateProps } from "./utils";
+import { printWarning, consolidateProps } from "./utils";
 import { DefaultListenerProps } from "./alb-defaults";
 import { createAlbLoggingBucket } from "./s3-bucket-helper";
 import { DefaultLoggingBucketProps } from "./s3-bucket-defaults";
@@ -157,14 +157,9 @@ export function AddFargateTarget(
 
   // The interface AddRuleProps includes conditions and priority, combine that
   // with targetGroups and we can assemble an AddApplicationTargetGroupProps object
-  if (ruleProps) {
-    const consolidatedTargetProps = overrideProps(ruleProps, { targetGroups: [newTargetGroup] });
-    currentListener.addTargetGroups(`${scope.node.id}-targets`, consolidatedTargetProps);
-  } else {
-    currentListener.addTargetGroups(`${id}-targets`, {
-      targetGroups: [newTargetGroup],
-    });
-  }
+  const consolidatedTargetProps = consolidateProps({ targetGroups: [newTargetGroup] }, ruleProps);
+
+  currentListener.addTargetGroups(`${scope.node.id}-targets`, consolidatedTargetProps);
   newTargetGroup.addTarget(fargateService);
 
   return newTargetGroup;

@@ -44,8 +44,7 @@ export function buildVpc(scope: Construct, props: BuildVpcProps): ec2.IVpc {
 
   let cumulativeProps: ec2.VpcProps = props?.defaultVpcProps;
 
-  cumulativeProps = consolidateProps(cumulativeProps, props?.userVpcProps);
-  cumulativeProps = consolidateProps(cumulativeProps, props?.constructVpcProps);
+  cumulativeProps = consolidateProps(cumulativeProps, props?.userVpcProps, props?.constructVpcProps);
 
   const vpc = new ec2.Vpc(scope, "Vpc", cumulativeProps);
 
