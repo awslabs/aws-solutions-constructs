@@ -15,17 +15,27 @@
 import { App, Stack } from "@aws-cdk/core";
 import { WafwebaclToCloudFront } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import { CloudFrontToS3 } from '@aws-solutions-constructs/aws-cloudfront-s3';
+import * as cloudfront from "@aws-cdk/aws-cloudfront";
+import * as origins from "@aws-cdk/aws-cloudfront-origins";
 
 const app = new App();
 
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const cloudfrontToS3 = new CloudFrontToS3(stack, 'cloudfront-s3', {});
+const newDistro = new cloudfront.Distribution(stack, "distro", {
+  defaultBehavior: {
+    origin: new origins.OriginGroup({
+      primaryOrigin: new origins.HttpOrigin("www.example.com"),
+      fallbackOrigin: new origins.HttpOrigin("admin.example.com"),
+      // optional, defaults to: 500, 502, 503 and 504
+      fallbackStatusCodes: [404],
+    }),
+  },
+});
 
 new WafwebaclToCloudFront(stack, 'test-wafwebacl-cloudfront-s3', {
-  existingCloudFrontWebDistribution: cloudfrontToS3.cloudFrontWebDistribution
+  existingCloudFrontWebDistribution: newDistro,
 });
 
 app.synth();

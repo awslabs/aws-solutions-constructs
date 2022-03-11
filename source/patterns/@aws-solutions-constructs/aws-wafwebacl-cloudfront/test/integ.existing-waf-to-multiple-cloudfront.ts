@@ -15,20 +15,39 @@
 import { App, Stack } from "@aws-cdk/core";
 import { WafwebaclToCloudFront } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import { CloudFrontToS3 } from '@aws-solutions-constructs/aws-cloudfront-s3';
+import * as cloudfront from "@aws-cdk/aws-cloudfront";
+import * as origins from "@aws-cdk/aws-cloudfront-origins";
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const cloudfrontToS3One = new CloudFrontToS3(stack, 'cloudfront-one', {});
-const cloudfrontToS3Two = new CloudFrontToS3(stack, 'cloudfront-two', {});
+const newDistroOne = new cloudfront.Distribution(stack, "distroOne", {
+  defaultBehavior: {
+    origin: new origins.OriginGroup({
+      primaryOrigin: new origins.HttpOrigin("www.example.com"),
+      fallbackOrigin: new origins.HttpOrigin("admin.example.com"),
+      // optional, defaults to: 500, 502, 503 and 504
+      fallbackStatusCodes: [404],
+    }),
+  },
+});
+const newDistroTWo = new cloudfront.Distribution(stack, "distroTwo", {
+  defaultBehavior: {
+    origin: new origins.OriginGroup({
+      primaryOrigin: new origins.HttpOrigin("www.example.com"),
+      fallbackOrigin: new origins.HttpOrigin("admin.example.com"),
+      // optional, defaults to: 500, 502, 503 and 504
+      fallbackStatusCodes: [404],
+    }),
+  },
+});
 
 const ownsWaf = new WafwebaclToCloudFront(stack, 'first-construct', {
-  existingCloudFrontWebDistribution: cloudfrontToS3One.cloudFrontWebDistribution,
+  existingCloudFrontWebDistribution: newDistroOne,
 });
 
 new WafwebaclToCloudFront(stack, 'second-construct', {
-  existingCloudFrontWebDistribution: cloudfrontToS3Two.cloudFrontWebDistribution,
+  existingCloudFrontWebDistribution: newDistroTWo,
   existingWebaclObj: ownsWaf.webacl
 });
 
