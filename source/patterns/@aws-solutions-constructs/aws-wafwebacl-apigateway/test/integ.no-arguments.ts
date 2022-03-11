@@ -22,7 +22,7 @@ const app = new App();
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-var lamdaFunction = new lambda.Function(stack, "testFunction", {
+const lamdaFunction = new lambda.Function(stack, "testFunction", {
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   runtime: lambda.Runtime.NODEJS_14_X,
   handler: ".handler",

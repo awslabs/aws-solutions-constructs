@@ -21,12 +21,12 @@ import * as api from "@aws-cdk/aws-apigateway";
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-var lamdaFunctionOne = new lambda.Function(stack, "testFunctionOne", {
+const lamdaFunctionOne = new lambda.Function(stack, "testFunctionOne", {
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   runtime: lambda.Runtime.NODEJS_14_X,
   handler: ".handler",
 });
-var lamdaFunctionTwo = new lambda.Function(stack, "testFunctionTwo", {
+const lamdaFunctionTwo = new lambda.Function(stack, "testFunctionTwo", {
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   runtime: lambda.Runtime.NODEJS_14_X,
   handler: ".handler",
@@ -37,7 +37,6 @@ const restApiOne = new api.LambdaRestApi(stack, "testApiOne", {
 const restApiTwo = new api.LambdaRestApi(stack, "testApiTwo", {
   handler: lamdaFunctionTwo,
 });
-
 
 const ownsWaf = new WafwebaclToApiGateway(stack, 'first-construct', {
   existingApiGatewayInterface: restApiOne,
