@@ -14,18 +14,18 @@
 import { Construct } from "@aws-cdk/core";
 import * as waf from "@aws-cdk/aws-wafv2";
 import { DefaultWafwebaclProps } from "./waf-defaults";
-import { overrideProps } from './utils';
+import { consolidateProps } from './utils';
 
 export interface BuildWebaclProps {
-     /**
-      * Existing instance of a WAF web ACL, if this is set then the all props are ignored
-      */
-     readonly existingWebaclObj?: waf.CfnWebACL;
-     /**
-      * User provided props to override the default ACL props for WAF web ACL.
-      */
-     readonly webaclProps?: waf.CfnWebACLProps;
- }
+  /**
+   * Existing instance of a WAF web ACL, if this is set then the all props are ignored
+   */
+  readonly existingWebaclObj?: waf.CfnWebACL;
+  /**
+   * User provided props to override the default ACL props for WAF web ACL.
+   */
+  readonly webaclProps?: waf.CfnWebACLProps;
+}
 
 export function buildWebacl(scope: Construct, webaclScope: string, props: BuildWebaclProps): waf.CfnWebACL {
   let webAcl;
@@ -35,11 +35,7 @@ export function buildWebacl(scope: Construct, webaclScope: string, props: BuildW
   } else { // Create a new WAF web ACL
     let finalWebaclProps: waf.CfnWebACLProps;
 
-    if (props.webaclProps) {
-      finalWebaclProps = overrideProps(DefaultWafwebaclProps(webaclScope), props.webaclProps);
-    } else {
-      finalWebaclProps = DefaultWafwebaclProps(webaclScope);
-    }
+    finalWebaclProps = consolidateProps(DefaultWafwebaclProps(webaclScope), props.webaclProps);
 
     webAcl = new waf.CfnWebACL(scope, `${scope.node.id}-WebACL`, finalWebaclProps);
   }

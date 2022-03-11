@@ -14,7 +14,7 @@
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as iam from '@aws-cdk/aws-iam';
 import * as cdk from '@aws-cdk/core';
-import { overrideProps, addCfnSuppressRules } from './utils';
+import { addCfnSuppressRules, consolidateProps } from './utils';
 import { DefaultUserPoolProps, DefaultUserPoolClientProps, DefaultIdentityPoolProps } from './cognito-defaults';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
@@ -28,11 +28,7 @@ export interface CognitoOptions {
 export function buildUserPool(scope: Construct, userPoolProps?: cognito.UserPoolProps): cognito.UserPool {
   let cognitoUserPoolProps: cognito.UserPoolProps;
 
-  if (userPoolProps) {
-    cognitoUserPoolProps = overrideProps(DefaultUserPoolProps, userPoolProps);
-  } else {
-    cognitoUserPoolProps = DefaultUserPoolProps;
-  }
+  cognitoUserPoolProps = consolidateProps(DefaultUserPoolProps, userPoolProps);
 
   const userPool = new cognito.UserPool(scope, 'CognitoUserPool', cognitoUserPoolProps);
 
@@ -63,11 +59,7 @@ export function buildUserPoolClient(scope: Construct, userPool: cognito.UserPool
 
   let userPoolClientProps: cognito.UserPoolClientProps;
 
-  if (cognitoUserPoolClientProps) {
-    userPoolClientProps = overrideProps(DefaultUserPoolClientProps(userPool), cognitoUserPoolClientProps);
-  } else {
-    userPoolClientProps = DefaultUserPoolClientProps(userPool);
-  }
+  userPoolClientProps = consolidateProps(DefaultUserPoolClientProps(userPool), cognitoUserPoolClientProps);
 
   return new cognito.UserPoolClient(scope, 'CognitoUserPoolClient', userPoolClientProps);
 }
@@ -78,9 +70,7 @@ export function buildIdentityPool(scope: Construct, userpool: cognito.UserPool, 
   let cognitoIdentityPoolProps: cognito.CfnIdentityPoolProps = DefaultIdentityPoolProps(userpoolclient.userPoolClientId,
     userpool.userPoolProviderName);
 
-  if (identityPoolProps) {
-    cognitoIdentityPoolProps = overrideProps(cognitoIdentityPoolProps, identityPoolProps);
-  }
+  cognitoIdentityPoolProps = consolidateProps(cognitoIdentityPoolProps, identityPoolProps);
 
   const idPool = new cognito.CfnIdentityPool(scope, 'CognitoIdentityPool', cognitoIdentityPoolProps);
 

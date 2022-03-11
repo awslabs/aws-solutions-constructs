@@ -19,7 +19,7 @@ import * as api from '@aws-cdk/aws-apigateway';
 import * as iam from '@aws-cdk/aws-iam';
 import * as apiDefaults from './apigateway-defaults';
 import { buildLogGroup } from './cloudwatch-log-group-helper';
-import { overrideProps, addCfnSuppressRules } from './utils';
+import { addCfnSuppressRules, consolidateProps } from './utils';
 import { IRole } from '@aws-cdk/aws-iam';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
@@ -50,7 +50,7 @@ function configureCloudwatchRoleForApi(scope: Construct, _api: api.RestApi): iam
       })
     }
   });
-    // Create and configure AWS::ApiGateway::Account with CloudWatch Role for ApiGateway
+  // Create and configure AWS::ApiGateway::Account with CloudWatch Role for ApiGateway
   const CfnApi = _api.node.findChild('Resource') as api.CfnRestApi;
   const cfnAccount: api.CfnAccount = new api.CfnAccount(scope, 'LambdaRestApiAccount', {
     cloudWatchRoleArn: restApiCloudwatchRole.roleArn
@@ -88,7 +88,7 @@ function configureLambdaRestApi(scope: Construct, defaultApiGatewayProps: api.La
   let _api: api.RestApi;
   if (apiGatewayProps) {
     // If property overrides have been provided, incorporate them and deploy
-    const _apiGatewayProps = overrideProps(defaultApiGatewayProps, { ...apiGatewayProps, cloudWatchRole: false });
+    const _apiGatewayProps = consolidateProps(defaultApiGatewayProps, apiGatewayProps, { cloudWatchRole: false });
     _api = new api.LambdaRestApi(scope, 'LambdaRestApi', _apiGatewayProps);
   } else {
     // If no property overrides, deploy using the default configuration
@@ -138,14 +138,9 @@ function configureRestApi(scope: Construct, defaultApiGatewayProps: api.RestApiP
 
   // Define the API
   let _api: api.RestApi;
-  if (apiGatewayProps) {
-    // If property overrides have been provided, incorporate them and deploy
-    const _apiGatewayProps = overrideProps(defaultApiGatewayProps, { ...apiGatewayProps, cloudWatchRole: false });
-    _api = new api.RestApi(scope, 'RestApi', _apiGatewayProps);
-  } else {
-    // If no property overrides, deploy using the default configuration
-    _api = new api.RestApi(scope, 'RestApi', defaultApiGatewayProps);
-  }
+
+  const _apiGatewayProps = consolidateProps(defaultApiGatewayProps, apiGatewayProps, { cloudWatchRole: false });
+  _api = new api.RestApi(scope, 'RestApi', _apiGatewayProps);
 
   let cwRole;
 
@@ -188,7 +183,7 @@ export function GlobalLambdaRestApi(scope: Construct, _existingLambdaObj: lambda
 
   const defaultProps = apiDefaults.DefaultGlobalLambdaRestApiProps(_existingLambdaObj, logGroup);
   const [restApi, apiCWRole] = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
-  return [restApi, apiCWRole, logGroup ];
+  return [restApi, apiCWRole, logGroup];
 }
 
 /**
@@ -204,7 +199,7 @@ export function RegionalLambdaRestApi(scope: Construct, _existingLambdaObj: lamb
 
   const defaultProps = apiDefaults.DefaultRegionalLambdaRestApiProps(_existingLambdaObj, logGroup);
   const [restApi, apiCWRole] = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
-  return [restApi, apiCWRole, logGroup ];
+  return [restApi, apiCWRole, logGroup];
 }
 
 /**
@@ -219,7 +214,7 @@ export function GlobalRestApi(scope: Construct, apiGatewayProps?: api.RestApiPro
 
   const defaultProps = apiDefaults.DefaultGlobalRestApiProps(logGroup);
   const [restApi, apiCWRole] = configureRestApi(scope, defaultProps, apiGatewayProps);
-  return [restApi, apiCWRole, logGroup ];
+  return [restApi, apiCWRole, logGroup];
 }
 
 /**
@@ -234,22 +229,22 @@ export function RegionalRestApi(scope: Construct, apiGatewayProps?: api.RestApiP
 
   const defaultProps = apiDefaults.DefaultRegionalRestApiProps(logGroup);
   const [restApi, apiCWRole] = configureRestApi(scope, defaultProps, apiGatewayProps);
-  return [restApi, apiCWRole, logGroup ];
+  return [restApi, apiCWRole, logGroup];
 }
 
 export interface AddProxyMethodToApiResourceInputParams {
-    readonly service: string,
-    readonly action?: string,
-    readonly path?: string,
-    readonly apiResource: api.IResource,
-    readonly apiMethod: string,
-    readonly apiGatewayRole: IRole,
-    readonly requestTemplate: string,
-    readonly contentType?: string,
-    readonly requestValidator?: api.IRequestValidator,
-    readonly requestModel?: { [contentType: string]: api.IModel; },
-    readonly awsIntegrationProps?: api.AwsIntegrationProps | any,
-    readonly methodOptions?: api.MethodOptions
+  readonly service: string,
+  readonly action?: string,
+  readonly path?: string,
+  readonly apiResource: api.IResource,
+  readonly apiMethod: string,
+  readonly apiGatewayRole: IRole,
+  readonly requestTemplate: string,
+  readonly contentType?: string,
+  readonly requestValidator?: api.IRequestValidator,
+  readonly requestModel?: { [contentType: string]: api.IModel; },
+  readonly awsIntegrationProps?: api.AwsIntegrationProps | any,
+  readonly methodOptions?: api.MethodOptions
 }
 
 export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceInputParams): api.Method {
@@ -296,13 +291,11 @@ export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceI
 
   // Setup the API Gateway AWS Integration
   baseProps = Object.assign(baseProps, extraProps);
+
   let apiGatewayIntegration;
-  if (params.awsIntegrationProps) {
-    const overridenProps = overrideProps(baseProps, params.awsIntegrationProps);
-    apiGatewayIntegration = new api.AwsIntegration(overridenProps);
-  } else {
-    apiGatewayIntegration = new api.AwsIntegration(baseProps);
-  }
+  const newProps = consolidateProps(baseProps, params.awsIntegrationProps);
+
+  apiGatewayIntegration = new api.AwsIntegration(newProps);
 
   const defaultMethodOptions = {
     methodResponses: [
@@ -324,12 +317,10 @@ export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceI
   };
 
   let apiMethod;
+
   // Setup the API Gateway method
-  if (params.methodOptions) {
-    const overridenProps =  overrideProps(defaultMethodOptions, params.methodOptions);
-    apiMethod = params.apiResource.addMethod(params.apiMethod, apiGatewayIntegration, overridenProps);
-  } else {
-    apiMethod = params.apiResource.addMethod(params.apiMethod, apiGatewayIntegration, defaultMethodOptions);
-  }
+  const overridenProps = consolidateProps(defaultMethodOptions, params.methodOptions);
+  apiMethod = params.apiResource.addMethod(params.apiMethod, apiGatewayIntegration, overridenProps);
+
   return apiMethod;
 }
