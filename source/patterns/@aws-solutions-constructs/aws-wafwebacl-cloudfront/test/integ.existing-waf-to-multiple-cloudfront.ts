@@ -15,39 +15,20 @@
 import { App, Stack } from "@aws-cdk/core";
 import { WafwebaclToCloudFront } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import * as cloudfront from "@aws-cdk/aws-cloudfront";
-import * as origins from "@aws-cdk/aws-cloudfront-origins";
+import { CreateTestDistro } from './test-helper';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const newDistroOne = new cloudfront.Distribution(stack, "distroOne", {
-  defaultBehavior: {
-    origin: new origins.OriginGroup({
-      primaryOrigin: new origins.HttpOrigin("www.example.com"),
-      fallbackOrigin: new origins.HttpOrigin("admin.example.com"),
-      // optional, defaults to: 500, 502, 503 and 504
-      fallbackStatusCodes: [404],
-    }),
-  },
-});
-const newDistroTWo = new cloudfront.Distribution(stack, "distroTwo", {
-  defaultBehavior: {
-    origin: new origins.OriginGroup({
-      primaryOrigin: new origins.HttpOrigin("www.example.com"),
-      fallbackOrigin: new origins.HttpOrigin("admin.example.com"),
-      // optional, defaults to: 500, 502, 503 and 504
-      fallbackStatusCodes: [404],
-    }),
-  },
-});
+const newDistroOne = CreateTestDistro(stack, "distroOne");
+const newDistroTwo = CreateTestDistro(stack, "distroTwo");
 
 const ownsWaf = new WafwebaclToCloudFront(stack, 'first-construct', {
   existingCloudFrontWebDistribution: newDistroOne,
 });
 
 new WafwebaclToCloudFront(stack, 'second-construct', {
-  existingCloudFrontWebDistribution: newDistroTWo,
+  existingCloudFrontWebDistribution: newDistroTwo,
   existingWebaclObj: ownsWaf.webacl
 });
 

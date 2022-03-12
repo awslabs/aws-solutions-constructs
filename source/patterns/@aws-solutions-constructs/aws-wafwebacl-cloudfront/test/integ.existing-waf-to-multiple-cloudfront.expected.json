@@ -69,6 +69,20 @@
             ]
           }
         }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W10",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W70",
+              "reason": "Test Resource"
+            }
+          ]
+        }
       }
     },
     "distroTwo0B353343": {
@@ -139,6 +153,20 @@
               "Arn"
             ]
           }
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W10",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W70",
+              "reason": "Test Resource"
+            }
+          ]
         }
       }
     },

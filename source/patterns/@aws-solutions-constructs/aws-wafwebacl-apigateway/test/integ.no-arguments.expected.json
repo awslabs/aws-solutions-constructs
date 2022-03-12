@@ -51,7 +51,25 @@
       },
       "DependsOn": [
         "testFunctionServiceRoleFEC29B6F"
-      ]
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W89",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W92",
+              "reason": "Test Resource"
+            }
+          ]
+        }
+      }
     },
     "testApiD6ECAB50": {
       "Type": "AWS::ApiGateway::RestApi",
@@ -116,7 +134,17 @@
         "testApiproxyANYC53F2608",
         "testApiproxyA0E5503A",
         "testApiANYDC600770"
-      ]
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W68",
+              "reason": "Test Resource"
+            }
+          ]
+        }
+      }
     },
     "testApiDeploymentStageprodCE051BE8": {
       "Type": "AWS::ApiGateway::Stage",
@@ -131,7 +159,21 @@
       },
       "DependsOn": [
         "testApiAccountA6723CBB"
-      ]
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W64",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W69",
+              "reason": "Test Resource"
+            }
+          ]
+        }
+      }
     },
     "testApiproxyA0E5503A": {
       "Type": "AWS::ApiGateway::Resource",
@@ -264,6 +306,16 @@
             ]
           }
         }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W59",
+              "reason": "Test Resource"
+            }
+          ]
+        }
       }
     },
     "testApiANYApiPermissionnoargumentstestApiE7931390ANYC253B3F4": {
@@ -384,6 +436,16 @@
               ]
             ]
           }
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W59",
+              "reason": "Test Resource"
+            }
+          ]
         }
       }
     },

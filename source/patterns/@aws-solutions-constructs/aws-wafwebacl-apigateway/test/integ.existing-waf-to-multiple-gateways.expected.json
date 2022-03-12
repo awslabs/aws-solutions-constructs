@@ -1,6 +1,6 @@
 {
   "Resources": {
-    "testFunctionOneServiceRoleE190A169": {
+    "testOneFunctionServiceRole3F9CD9E7": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -31,7 +31,7 @@
         ]
       }
     },
-    "testFunctionOne80DA316B": {
+    "testOneFunction5860F00A": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -42,7 +42,7 @@
         },
         "Role": {
           "Fn::GetAtt": [
-            "testFunctionOneServiceRoleE190A169",
+            "testOneFunctionServiceRole3F9CD9E7",
             "Arn"
           ]
         },
@@ -50,10 +50,406 @@
         "Runtime": "nodejs14.x"
       },
       "DependsOn": [
-        "testFunctionOneServiceRoleE190A169"
+        "testOneFunctionServiceRole3F9CD9E7"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W89",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W92",
+              "reason": "Test Resource"
+            }
+          ]
+        }
+      }
+    },
+    "testOneApi71064556": {
+      "Type": "AWS::ApiGateway::RestApi",
+      "Properties": {
+        "Name": "testOneApi"
+      }
+    },
+    "testOneApiCloudWatchRole94EB3244": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "apigateway.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    "testOneApiAccount05D566DC": {
+      "Type": "AWS::ApiGateway::Account",
+      "Properties": {
+        "CloudWatchRoleArn": {
+          "Fn::GetAtt": [
+            "testOneApiCloudWatchRole94EB3244",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "testOneApi71064556"
       ]
     },
-    "testFunctionTwoServiceRole7395BE30": {
+    "testOneApiDeploymentEF63BD86e15daf42da17689cb6d56b07d074b512": {
+      "Type": "AWS::ApiGateway::Deployment",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "testOneApi71064556"
+        },
+        "Description": "Automatically created by the RestApi construct"
+      },
+      "DependsOn": [
+        "testOneApiproxyANY7F46A6A5",
+        "testOneApiproxyC9BD4274",
+        "testOneApiANY899DD2DA"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W68",
+              "reason": "Test Resource"
+            }
+          ]
+        }
+      }
+    },
+    "testOneApiDeploymentStageprod5B67F2DF": {
+      "Type": "AWS::ApiGateway::Stage",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "testOneApi71064556"
+        },
+        "DeploymentId": {
+          "Ref": "testOneApiDeploymentEF63BD86e15daf42da17689cb6d56b07d074b512"
+        },
+        "StageName": "prod"
+      },
+      "DependsOn": [
+        "testOneApiAccount05D566DC"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W64",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W69",
+              "reason": "Test Resource"
+            }
+          ]
+        }
+      }
+    },
+    "testOneApiproxyC9BD4274": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "testOneApi71064556",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "{proxy+}",
+        "RestApiId": {
+          "Ref": "testOneApi71064556"
+        }
+      }
+    },
+    "testOneApiproxyANYApiPermissionexistingwaftomultiplegatewaystestOneApi22528807ANYproxy9ED2695E": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "testOneFunction5860F00A",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "testOneApi71064556"
+              },
+              "/",
+              {
+                "Ref": "testOneApiDeploymentStageprod5B67F2DF"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "testOneApiproxyANYApiPermissionTestexistingwaftomultiplegatewaystestOneApi22528807ANYproxy55EEE701": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "testOneFunction5860F00A",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "testOneApi71064556"
+              },
+              "/test-invoke-stage/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "testOneApiproxyANY7F46A6A5": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "ANY",
+        "ResourceId": {
+          "Ref": "testOneApiproxyC9BD4274"
+        },
+        "RestApiId": {
+          "Ref": "testOneApi71064556"
+        },
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "testOneFunction5860F00A",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W59",
+              "reason": "Test Resource"
+            }
+          ]
+        }
+      }
+    },
+    "testOneApiANYApiPermissionexistingwaftomultiplegatewaystestOneApi22528807ANY278A4AFF": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "testOneFunction5860F00A",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "testOneApi71064556"
+              },
+              "/",
+              {
+                "Ref": "testOneApiDeploymentStageprod5B67F2DF"
+              },
+              "/*/"
+            ]
+          ]
+        }
+      }
+    },
+    "testOneApiANYApiPermissionTestexistingwaftomultiplegatewaystestOneApi22528807ANYBB10DF1E": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "testOneFunction5860F00A",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "testOneApi71064556"
+              },
+              "/test-invoke-stage/*/"
+            ]
+          ]
+        }
+      }
+    },
+    "testOneApiANY899DD2DA": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "ANY",
+        "ResourceId": {
+          "Fn::GetAtt": [
+            "testOneApi71064556",
+            "RootResourceId"
+          ]
+        },
+        "RestApiId": {
+          "Ref": "testOneApi71064556"
+        },
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "testOneFunction5860F00A",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W59",
+              "reason": "Test Resource"
+            }
+          ]
+        }
+      }
+    },
+    "testTwoFunctionServiceRoleF678C905": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -84,7 +480,7 @@
         ]
       }
     },
-    "testFunctionTwo35605A05": {
+    "testTwoFunctionE0EEB0EF": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -95,7 +491,7 @@
         },
         "Role": {
           "Fn::GetAtt": [
-            "testFunctionTwoServiceRole7395BE30",
+            "testTwoFunctionServiceRoleF678C905",
             "Arn"
           ]
         },
@@ -103,16 +499,34 @@
         "Runtime": "nodejs14.x"
       },
       "DependsOn": [
-        "testFunctionTwoServiceRole7395BE30"
-      ]
-    },
-    "testApiOne09AD1B69": {
-      "Type": "AWS::ApiGateway::RestApi",
-      "Properties": {
-        "Name": "testApiOne"
+        "testTwoFunctionServiceRoleF678C905"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W89",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W92",
+              "reason": "Test Resource"
+            }
+          ]
+        }
       }
     },
-    "testApiOneCloudWatchRoleAEC9AC08": {
+    "testTwoApi17A08EF5": {
+      "Type": "AWS::ApiGateway::RestApi",
+      "Properties": {
+        "Name": "testTwoApi"
+      }
+    },
+    "testTwoApiCloudWatchRoleA59BC221": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -143,405 +557,95 @@
         ]
       }
     },
-    "testApiOneAccountD616FD79": {
+    "testTwoApiAccount7260D443": {
       "Type": "AWS::ApiGateway::Account",
       "Properties": {
         "CloudWatchRoleArn": {
           "Fn::GetAtt": [
-            "testApiOneCloudWatchRoleAEC9AC08",
+            "testTwoApiCloudWatchRoleA59BC221",
             "Arn"
           ]
         }
       },
       "DependsOn": [
-        "testApiOne09AD1B69"
+        "testTwoApi17A08EF5"
       ]
     },
-    "testApiOneDeploymentF3FCCB9De0caf90a937f257ee862eda8656ded62": {
+    "testTwoApiDeployment4EDBF4DF26b103f50979cda2b3c8314c6d694485": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
-          "Ref": "testApiOne09AD1B69"
+          "Ref": "testTwoApi17A08EF5"
         },
         "Description": "Automatically created by the RestApi construct"
       },
       "DependsOn": [
-        "testApiOneproxyANY7F10F7BC",
-        "testApiOneproxy82375012",
-        "testApiOneANYE201F749"
-      ]
-    },
-    "testApiOneDeploymentStageprodFF953625": {
-      "Type": "AWS::ApiGateway::Stage",
-      "Properties": {
-        "RestApiId": {
-          "Ref": "testApiOne09AD1B69"
-        },
-        "DeploymentId": {
-          "Ref": "testApiOneDeploymentF3FCCB9De0caf90a937f257ee862eda8656ded62"
-        },
-        "StageName": "prod"
-      },
-      "DependsOn": [
-        "testApiOneAccountD616FD79"
-      ]
-    },
-    "testApiOneproxy82375012": {
-      "Type": "AWS::ApiGateway::Resource",
-      "Properties": {
-        "ParentId": {
-          "Fn::GetAtt": [
-            "testApiOne09AD1B69",
-            "RootResourceId"
-          ]
-        },
-        "PathPart": "{proxy+}",
-        "RestApiId": {
-          "Ref": "testApiOne09AD1B69"
-        }
-      }
-    },
-    "testApiOneproxyANYApiPermissionexistingwaftomultiplegatewaystestApiOne2FFF7D44ANYproxy4B49C80B": {
-      "Type": "AWS::Lambda::Permission",
-      "Properties": {
-        "Action": "lambda:InvokeFunction",
-        "FunctionName": {
-          "Fn::GetAtt": [
-            "testFunctionOne80DA316B",
-            "Arn"
-          ]
-        },
-        "Principal": "apigateway.amazonaws.com",
-        "SourceArn": {
-          "Fn::Join": [
-            "",
-            [
-              "arn:",
-              {
-                "Ref": "AWS::Partition"
-              },
-              ":execute-api:",
-              {
-                "Ref": "AWS::Region"
-              },
-              ":",
-              {
-                "Ref": "AWS::AccountId"
-              },
-              ":",
-              {
-                "Ref": "testApiOne09AD1B69"
-              },
-              "/",
-              {
-                "Ref": "testApiOneDeploymentStageprodFF953625"
-              },
-              "/*/*"
-            ]
-          ]
-        }
-      }
-    },
-    "testApiOneproxyANYApiPermissionTestexistingwaftomultiplegatewaystestApiOne2FFF7D44ANYproxy40B69851": {
-      "Type": "AWS::Lambda::Permission",
-      "Properties": {
-        "Action": "lambda:InvokeFunction",
-        "FunctionName": {
-          "Fn::GetAtt": [
-            "testFunctionOne80DA316B",
-            "Arn"
-          ]
-        },
-        "Principal": "apigateway.amazonaws.com",
-        "SourceArn": {
-          "Fn::Join": [
-            "",
-            [
-              "arn:",
-              {
-                "Ref": "AWS::Partition"
-              },
-              ":execute-api:",
-              {
-                "Ref": "AWS::Region"
-              },
-              ":",
-              {
-                "Ref": "AWS::AccountId"
-              },
-              ":",
-              {
-                "Ref": "testApiOne09AD1B69"
-              },
-              "/test-invoke-stage/*/*"
-            ]
-          ]
-        }
-      }
-    },
-    "testApiOneproxyANY7F10F7BC": {
-      "Type": "AWS::ApiGateway::Method",
-      "Properties": {
-        "HttpMethod": "ANY",
-        "ResourceId": {
-          "Ref": "testApiOneproxy82375012"
-        },
-        "RestApiId": {
-          "Ref": "testApiOne09AD1B69"
-        },
-        "AuthorizationType": "NONE",
-        "Integration": {
-          "IntegrationHttpMethod": "POST",
-          "Type": "AWS_PROXY",
-          "Uri": {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":apigateway:",
-                {
-                  "Ref": "AWS::Region"
-                },
-                ":lambda:path/2015-03-31/functions/",
-                {
-                  "Fn::GetAtt": [
-                    "testFunctionOne80DA316B",
-                    "Arn"
-                  ]
-                },
-                "/invocations"
-              ]
-            ]
-          }
-        }
-      }
-    },
-    "testApiOneANYApiPermissionexistingwaftomultiplegatewaystestApiOne2FFF7D44ANY58F193AC": {
-      "Type": "AWS::Lambda::Permission",
-      "Properties": {
-        "Action": "lambda:InvokeFunction",
-        "FunctionName": {
-          "Fn::GetAtt": [
-            "testFunctionOne80DA316B",
-            "Arn"
-          ]
-        },
-        "Principal": "apigateway.amazonaws.com",
-        "SourceArn": {
-          "Fn::Join": [
-            "",
-            [
-              "arn:",
-              {
-                "Ref": "AWS::Partition"
-              },
-              ":execute-api:",
-              {
-                "Ref": "AWS::Region"
-              },
-              ":",
-              {
-                "Ref": "AWS::AccountId"
-              },
-              ":",
-              {
-                "Ref": "testApiOne09AD1B69"
-              },
-              "/",
-              {
-                "Ref": "testApiOneDeploymentStageprodFF953625"
-              },
-              "/*/"
-            ]
-          ]
-        }
-      }
-    },
-    "testApiOneANYApiPermissionTestexistingwaftomultiplegatewaystestApiOne2FFF7D44ANY58C1C7E2": {
-      "Type": "AWS::Lambda::Permission",
-      "Properties": {
-        "Action": "lambda:InvokeFunction",
-        "FunctionName": {
-          "Fn::GetAtt": [
-            "testFunctionOne80DA316B",
-            "Arn"
-          ]
-        },
-        "Principal": "apigateway.amazonaws.com",
-        "SourceArn": {
-          "Fn::Join": [
-            "",
-            [
-              "arn:",
-              {
-                "Ref": "AWS::Partition"
-              },
-              ":execute-api:",
-              {
-                "Ref": "AWS::Region"
-              },
-              ":",
-              {
-                "Ref": "AWS::AccountId"
-              },
-              ":",
-              {
-                "Ref": "testApiOne09AD1B69"
-              },
-              "/test-invoke-stage/*/"
-            ]
-          ]
-        }
-      }
-    },
-    "testApiOneANYE201F749": {
-      "Type": "AWS::ApiGateway::Method",
-      "Properties": {
-        "HttpMethod": "ANY",
-        "ResourceId": {
-          "Fn::GetAtt": [
-            "testApiOne09AD1B69",
-            "RootResourceId"
-          ]
-        },
-        "RestApiId": {
-          "Ref": "testApiOne09AD1B69"
-        },
-        "AuthorizationType": "NONE",
-        "Integration": {
-          "IntegrationHttpMethod": "POST",
-          "Type": "AWS_PROXY",
-          "Uri": {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":apigateway:",
-                {
-                  "Ref": "AWS::Region"
-                },
-                ":lambda:path/2015-03-31/functions/",
-                {
-                  "Fn::GetAtt": [
-                    "testFunctionOne80DA316B",
-                    "Arn"
-                  ]
-                },
-                "/invocations"
-              ]
-            ]
-          }
-        }
-      }
-    },
-    "testApiTwo37658B6C": {
-      "Type": "AWS::ApiGateway::RestApi",
-      "Properties": {
-        "Name": "testApiTwo"
-      }
-    },
-    "testApiTwoCloudWatchRole32288755": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
+        "testTwoApiproxyANY63FFF74A",
+        "testTwoApiproxy2575DCE3",
+        "testTwoApiANY91121C6F"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
             {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "apigateway.amazonaws.com"
-              }
+              "id": "W68",
+              "reason": "Test Resource"
             }
-          ],
-          "Version": "2012-10-17"
-        },
-        "ManagedPolicyArns": [
-          {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
-              ]
-            ]
-          }
-        ]
-      }
-    },
-    "testApiTwoAccount2B2E483B": {
-      "Type": "AWS::ApiGateway::Account",
-      "Properties": {
-        "CloudWatchRoleArn": {
-          "Fn::GetAtt": [
-            "testApiTwoCloudWatchRole32288755",
-            "Arn"
           ]
         }
-      },
-      "DependsOn": [
-        "testApiTwo37658B6C"
-      ]
+      }
     },
-    "testApiTwoDeploymentD74AB023143ce62f4b6756b57c9223e9283dc700": {
-      "Type": "AWS::ApiGateway::Deployment",
-      "Properties": {
-        "RestApiId": {
-          "Ref": "testApiTwo37658B6C"
-        },
-        "Description": "Automatically created by the RestApi construct"
-      },
-      "DependsOn": [
-        "testApiTwoproxyANY86964031",
-        "testApiTwoproxyCF4AF484",
-        "testApiTwoANY799D6D85"
-      ]
-    },
-    "testApiTwoDeploymentStageprodFB2E5D60": {
+    "testTwoApiDeploymentStageprod8DB1EDB4": {
       "Type": "AWS::ApiGateway::Stage",
       "Properties": {
         "RestApiId": {
-          "Ref": "testApiTwo37658B6C"
+          "Ref": "testTwoApi17A08EF5"
         },
         "DeploymentId": {
-          "Ref": "testApiTwoDeploymentD74AB023143ce62f4b6756b57c9223e9283dc700"
+          "Ref": "testTwoApiDeployment4EDBF4DF26b103f50979cda2b3c8314c6d694485"
         },
         "StageName": "prod"
       },
       "DependsOn": [
-        "testApiTwoAccount2B2E483B"
-      ]
+        "testTwoApiAccount7260D443"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W64",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W69",
+              "reason": "Test Resource"
+            }
+          ]
+        }
+      }
     },
-    "testApiTwoproxyCF4AF484": {
+    "testTwoApiproxy2575DCE3": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
           "Fn::GetAtt": [
-            "testApiTwo37658B6C",
+            "testTwoApi17A08EF5",
             "RootResourceId"
           ]
         },
         "PathPart": "{proxy+}",
         "RestApiId": {
-          "Ref": "testApiTwo37658B6C"
+          "Ref": "testTwoApi17A08EF5"
         }
       }
     },
-    "testApiTwoproxyANYApiPermissionexistingwaftomultiplegatewaystestApiTwo764F3CE2ANYproxyE41AB136": {
+    "testTwoApiproxyANYApiPermissionexistingwaftomultiplegatewaystestTwoApiB96C8AF0ANYproxy40A72786": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "testFunctionTwo35605A05",
+            "testTwoFunctionE0EEB0EF",
             "Arn"
           ]
         },
@@ -564,11 +668,11 @@
               },
               ":",
               {
-                "Ref": "testApiTwo37658B6C"
+                "Ref": "testTwoApi17A08EF5"
               },
               "/",
               {
-                "Ref": "testApiTwoDeploymentStageprodFB2E5D60"
+                "Ref": "testTwoApiDeploymentStageprod8DB1EDB4"
               },
               "/*/*"
             ]
@@ -576,13 +680,13 @@
         }
       }
     },
-    "testApiTwoproxyANYApiPermissionTestexistingwaftomultiplegatewaystestApiTwo764F3CE2ANYproxy195DA48F": {
+    "testTwoApiproxyANYApiPermissionTestexistingwaftomultiplegatewaystestTwoApiB96C8AF0ANYproxyC55E58D0": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "testFunctionTwo35605A05",
+            "testTwoFunctionE0EEB0EF",
             "Arn"
           ]
         },
@@ -605,7 +709,7 @@
               },
               ":",
               {
-                "Ref": "testApiTwo37658B6C"
+                "Ref": "testTwoApi17A08EF5"
               },
               "/test-invoke-stage/*/*"
             ]
@@ -613,15 +717,15 @@
         }
       }
     },
-    "testApiTwoproxyANY86964031": {
+    "testTwoApiproxyANY63FFF74A": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "ANY",
         "ResourceId": {
-          "Ref": "testApiTwoproxyCF4AF484"
+          "Ref": "testTwoApiproxy2575DCE3"
         },
         "RestApiId": {
-          "Ref": "testApiTwo37658B6C"
+          "Ref": "testTwoApi17A08EF5"
         },
         "AuthorizationType": "NONE",
         "Integration": {
@@ -642,7 +746,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "testFunctionTwo35605A05",
+                    "testTwoFunctionE0EEB0EF",
                     "Arn"
                   ]
                 },
@@ -651,15 +755,25 @@
             ]
           }
         }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W59",
+              "reason": "Test Resource"
+            }
+          ]
+        }
       }
     },
-    "testApiTwoANYApiPermissionexistingwaftomultiplegatewaystestApiTwo764F3CE2ANY1B3A4B40": {
+    "testTwoApiANYApiPermissionexistingwaftomultiplegatewaystestTwoApiB96C8AF0ANYD7D25755": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "testFunctionTwo35605A05",
+            "testTwoFunctionE0EEB0EF",
             "Arn"
           ]
         },
@@ -682,11 +796,11 @@
               },
               ":",
               {
-                "Ref": "testApiTwo37658B6C"
+                "Ref": "testTwoApi17A08EF5"
               },
               "/",
               {
-                "Ref": "testApiTwoDeploymentStageprodFB2E5D60"
+                "Ref": "testTwoApiDeploymentStageprod8DB1EDB4"
               },
               "/*/"
             ]
@@ -694,13 +808,13 @@
         }
       }
     },
-    "testApiTwoANYApiPermissionTestexistingwaftomultiplegatewaystestApiTwo764F3CE2ANYBA369691": {
+    "testTwoApiANYApiPermissionTestexistingwaftomultiplegatewaystestTwoApiB96C8AF0ANY2726789F": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "testFunctionTwo35605A05",
+            "testTwoFunctionE0EEB0EF",
             "Arn"
           ]
         },
@@ -723,7 +837,7 @@
               },
               ":",
               {
-                "Ref": "testApiTwo37658B6C"
+                "Ref": "testTwoApi17A08EF5"
               },
               "/test-invoke-stage/*/"
             ]
@@ -731,18 +845,18 @@
         }
       }
     },
-    "testApiTwoANY799D6D85": {
+    "testTwoApiANY91121C6F": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "ANY",
         "ResourceId": {
           "Fn::GetAtt": [
-            "testApiTwo37658B6C",
+            "testTwoApi17A08EF5",
             "RootResourceId"
           ]
         },
         "RestApiId": {
-          "Ref": "testApiTwo37658B6C"
+          "Ref": "testTwoApi17A08EF5"
         },
         "AuthorizationType": "NONE",
         "Integration": {
@@ -763,7 +877,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "testFunctionTwo35605A05",
+                    "testTwoFunctionE0EEB0EF",
                     "Arn"
                   ]
                 },
@@ -771,6 +885,16 @@
               ]
             ]
           }
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W59",
+              "reason": "Test Resource"
+            }
+          ]
         }
       }
     },
@@ -929,11 +1053,11 @@
               },
               "::/restapis/",
               {
-                "Ref": "testApiOne09AD1B69"
+                "Ref": "testOneApi71064556"
               },
               "/stages/",
               {
-                "Ref": "testApiOneDeploymentStageprodFF953625"
+                "Ref": "testOneApiDeploymentStageprod5B67F2DF"
               }
             ]
           ]
@@ -959,11 +1083,11 @@
               },
               "::/restapis/",
               {
-                "Ref": "testApiTwo37658B6C"
+                "Ref": "testTwoApi17A08EF5"
               },
               "/stages/",
               {
-                "Ref": "testApiTwoDeploymentStageprodFB2E5D60"
+                "Ref": "testTwoApiDeploymentStageprod8DB1EDB4"
               }
             ]
           ]
@@ -978,14 +1102,14 @@
     }
   },
   "Outputs": {
-    "testApiOneEndpointDE3ECE6D": {
+    "testOneApiEndpoint1C7554D8": {
       "Value": {
         "Fn::Join": [
           "",
           [
             "https://",
             {
-              "Ref": "testApiOne09AD1B69"
+              "Ref": "testOneApi71064556"
             },
             ".execute-api.",
             {
@@ -997,21 +1121,21 @@
             },
             "/",
             {
-              "Ref": "testApiOneDeploymentStageprodFF953625"
+              "Ref": "testOneApiDeploymentStageprod5B67F2DF"
             },
             "/"
           ]
         ]
       }
     },
-    "testApiTwoEndpoint1E4A5F3C": {
+    "testTwoApiEndpointFE406EE7": {
       "Value": {
         "Fn::Join": [
           "",
           [
             "https://",
             {
-              "Ref": "testApiTwo37658B6C"
+              "Ref": "testTwoApi17A08EF5"
             },
             ".execute-api.",
             {
@@ -1023,7 +1147,7 @@
             },
             "/",
             {
-              "Ref": "testApiTwoDeploymentStageprodFB2E5D60"
+              "Ref": "testTwoApiDeploymentStageprod8DB1EDB4"
             },
             "/"
           ]
