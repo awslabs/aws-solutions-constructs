@@ -14,30 +14,21 @@
 /// !cdk-integ *
 import { App, Stack } from "@aws-cdk/core";
 import { WafwebaclToApiGateway } from "../lib";
-import * as lambda from '@aws-cdk/aws-lambda';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import { ApiGatewayToLambda, ApiGatewayToLambdaProps } from '@aws-solutions-constructs/aws-apigateway-lambda';
+import { CreateTestApi } from './test-helper';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const props: ApiGatewayToLambdaProps = {
-  lambdaFunctionProps: {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
-    handler: 'index.handler'
-  },
-};
-
-const gatewayToLambdaOne = new ApiGatewayToLambda(stack, 'gateway-one', props);
-const gatewayToLambdaTwo = new ApiGatewayToLambda(stack, 'gateway-two', props);
+const restApiOne = CreateTestApi(stack, 'testOne');
+const restApiTwo = CreateTestApi(stack, 'testTwo');
 
 const ownsWaf = new WafwebaclToApiGateway(stack, 'first-construct', {
-  existingApiGatewayInterface: gatewayToLambdaOne.apiGateway,
+  existingApiGatewayInterface: restApiOne,
 });
 
 new WafwebaclToApiGateway(stack, 'second-construct', {
-  existingApiGatewayInterface: gatewayToLambdaTwo.apiGateway,
+  existingApiGatewayInterface: restApiTwo,
   existingWebaclObj: ownsWaf.webacl
 });
 
