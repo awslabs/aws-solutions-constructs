@@ -26,7 +26,11 @@ const stack = new Stack(app, generateIntegStackName(__filename), {
 stack.templateOptions.description = 'Integration Test with new VPC, Service and Bucket';
 
 const existingVpc = getTestVpc(stack);
-const existingBucket = defaults.CreateScrapBucket(stack, { removalPolicy: RemovalPolicy.DESTROY });
+const existingBucket = defaults.CreateScrapBucket(stack, { 
+  removalPolicy: RemovalPolicy.DESTROY,
+  autoDeleteObjects: true
+});
+
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
 const [testService, testContainer] = CreateFargateService(stack,
@@ -48,7 +52,6 @@ const testProps: FargateToS3Props = {
   bucketArnEnvironmentVariableName: 'CUSTOM_ARN',
   bucketEnvironmentVariableName: 'CUSTOM_NAME',
   bucketPermissions: ['Read', 'Write', 'Delete'],
-
 };
 
 new FargateToS3(stack, 'test-construct', testProps);

@@ -25,12 +25,18 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 new CloudFrontToS3(stack, 'test-cloudfront-s3', {
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
   },
   loggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
     bucketName: 'custom-logging-bucket',
     encryption: BucketEncryption.S3_MANAGED,
     versioned: true
+  },
+  cloudFrontLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
   }
 });
 app.synth();

@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack, Aws } from "@aws-cdk/core";
+import { App, Stack, Aws, RemovalPolicy } from "@aws-cdk/core";
 import * as defaults from '@aws-solutions-constructs/core';
 import { PublicHostedZone } from "@aws-cdk/aws-route53";
 import { Route53ToAlb, Route53ToAlbProps } from "../lib";
@@ -33,6 +33,10 @@ const newZone = new PublicHostedZone(stack, 'new-zone', {
 const props: Route53ToAlbProps = {
   publicApi: true,
   existingHostedZoneInterface: newZone,
+  albLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
+  }
 };
 
 const testConstruct = new Route53ToAlb(stack, 'new-alb-stack', props);

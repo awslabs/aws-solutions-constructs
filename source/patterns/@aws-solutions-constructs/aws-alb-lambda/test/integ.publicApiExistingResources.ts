@@ -12,11 +12,11 @@
  */
 
 // Imports
-import { Aws, App, Stack } from "@aws-cdk/core";
+import { Aws, App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { AlbToLambda, AlbToLambdaProps } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as defaults from '@aws-solutions-constructs/core';
+import { generateIntegStackName } from "@aws-solutions-constructs/core";
+import * as lambda from "@aws-cdk/aws-lambda";
+import * as defaults from "@aws-solutions-constructs/core";
 import { SecurityGroup, CfnSecurityGroup } from "@aws-cdk/aws-ec2";
 
 // Note: All integration tests for alb are for HTTP APIs, as certificates require
@@ -26,53 +26,74 @@ import { SecurityGroup, CfnSecurityGroup } from "@aws-cdk/aws-ec2";
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename), {
-  env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
+  env: { account: Aws.ACCOUNT_ID, region: "us-east-1" },
 });
-stack.templateOptions.description = 'Integration Test for public HTTP API with a existing function and ALB';
+stack.templateOptions.description =
+  "Integration Test for public HTTP API with a existing function and ALB";
 
 const myVpc = defaults.getTestVpc(stack);
 
-const testSg = new SecurityGroup(stack, 'lambda-sg', { vpc: myVpc, allowAllOutbound: false});
+const testSg = new SecurityGroup(stack, "lambda-sg", {
+  vpc: myVpc,
+  allowAllOutbound: false,
+});
 
 const lambdaFunction = defaults.buildLambdaFunction(stack, {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     runtime: lambda.Runtime.NODEJS_14_X,
-    handler: 'index.handler',
+    handler: "index.handler",
     vpc: myVpc,
-    securityGroups: [ testSg ]
-  }
+    securityGroups: [testSg],
+  },
 });
 
-const loadBalancer = defaults.ObtainAlb(stack, 'existing-alb', myVpc, false, undefined, {
-  internetFacing: false,
-  vpc: myVpc
-});
+const loadBalancer = defaults.ObtainAlb(
+  stack,
+  "existing-alb",
+  myVpc,
+  false,
+  undefined,
+  {
+    internetFacing: false,
+    vpc: myVpc,
+  },
+  true,
+  {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
+  }
+);
 
 const props: AlbToLambdaProps = {
   existingLambdaObj: lambdaFunction,
   existingLoadBalancerObj: loadBalancer,
   existingVpc: myVpc,
   listenerProps: {
-    protocol: 'HTTP'
+    protocol: "HTTP",
   },
-  publicApi: true
+  publicApi: true,
 };
-const albToLambda = new AlbToLambda(stack, 'test-one', props);
+const albToLambda = new AlbToLambda(stack, "test-one", props);
 
 defaults.addCfnSuppressRules(albToLambda.listener, [
-  { id: 'W56', reason: 'All integration tests must be HTTP because of certificate limitations.' },
+  {
+    id: "W56",
+    reason:
+      "All integration tests must be HTTP because of certificate limitations.",
+  },
 ]);
 
-const newSecurityGroup = albToLambda.loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
+const newSecurityGroup = albToLambda.loadBalancer.connections.securityGroups[0]
+  .node.defaultChild as CfnSecurityGroup;
 defaults.addCfnSuppressRules(newSecurityGroup, [
-  { id: 'W29', reason: 'CDK created rule that blocks all traffic.'},
-  { id: 'W2', reason: 'Rule does not apply for ELB.'},
-  { id: 'W9', reason: 'Rule does not apply for ELB.'}
+  { id: "W29", reason: "CDK created rule that blocks all traffic." },
+  { id: "W2", reason: "Rule does not apply for ELB." },
+  { id: "W9", reason: "Rule does not apply for ELB." },
 ]);
 
 defaults.addCfnSuppressRules(testSg, [
-  { id: 'W29', reason: 'CDK created rule that blocks all traffic.'},
+  { id: "W29", reason: "CDK created rule that blocks all traffic." },
 ]);
 
 // Synth

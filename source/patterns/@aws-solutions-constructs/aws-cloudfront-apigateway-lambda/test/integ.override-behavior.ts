@@ -12,7 +12,7 @@
  */
 
 /// !cdk-integ *
-import { App, Stack } from "@aws-cdk/core";
+import { App, RemovalPolicy, Stack } from "@aws-cdk/core";
 import { CloudFrontToApiGatewayToLambda } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
@@ -61,7 +61,11 @@ const construct = new CloudFrontToApiGatewayToLambda(stack, 'cf-api-lambda-overr
     defaultBehavior: {
       cachePolicy: someCachePolicy
     }
-  }
+  },
+  cloudFrontLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
 });
 
 const apiEndPoint = construct.apiGateway;

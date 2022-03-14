@@ -24,8 +24,13 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3';
 
 const construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {
+  cloudFrontLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
   },
   logS3AccessLogs: false
 });

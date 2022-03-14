@@ -25,6 +25,7 @@ stack.templateOptions.description = 'Integration Test for aws-cloudfront-mediast
 new CloudFrontToMediaStore(stack, 'cloudfront-mediastore', {
   cloudFrontLoggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
     encryption: BucketEncryption.S3_MANAGED,
     versioned: true
   }

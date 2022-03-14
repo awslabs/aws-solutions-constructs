@@ -12,7 +12,7 @@
  */
 
 /// !cdk-integ *
-import { App, Stack } from "@aws-cdk/core";
+import { App, RemovalPolicy, Stack } from "@aws-cdk/core";
 import { CloudFrontToApiGatewayToLambda } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
@@ -30,6 +30,10 @@ const lambdaProps: lambda.FunctionProps = {
 
 new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
   lambdaFunctionProps: lambdaProps,
+  cloudFrontLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
 });
 
 // Synth

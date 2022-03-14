@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Aws, Stack } from '@aws-cdk/core';
+import { App, Aws, RemovalPolicy, Stack } from '@aws-cdk/core';
 import * as mediastore from '@aws-cdk/aws-mediastore';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import { CloudFrontToMediaStore } from '../lib';
@@ -49,7 +49,11 @@ const cloudFrontDistributionProps = {
 // Instantiate construct
 new CloudFrontToMediaStore(stack, 'test-cloudfront-mediastore', {
   mediaStoreContainerProps,
-  cloudFrontDistributionProps
+  cloudFrontDistributionProps,
+  cloudFrontLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  }
 });
 
 // Synth

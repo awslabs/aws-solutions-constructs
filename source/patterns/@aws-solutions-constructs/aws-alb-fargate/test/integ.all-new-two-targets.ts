@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { Aws, App, Stack } from "@aws-cdk/core";
+import { Aws, App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { AlbToFargate, AlbToFargateProps } from "../lib";
 import * as elb from '@aws-cdk/aws-elasticloadbalancingv2';
 import * as ecs from '@aws-cdk/aws-ecs';
@@ -36,6 +36,10 @@ const testProps: AlbToFargateProps = {
   listenerProps: {
     protocol: 'HTTP'
   },
+  albLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  }
 };
 
 const firstConstruct = new AlbToFargate(stack, 'test-construct', testProps);

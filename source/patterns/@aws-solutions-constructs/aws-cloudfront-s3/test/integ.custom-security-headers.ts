@@ -37,6 +37,10 @@ const cloudfrontFunction = new cloudfront.Function(stack, "MyFunction", {
 });
 
 new CloudFrontToS3(stack, 'test-cloudfront-s3', {
+  cloudFrontLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
   cloudFrontDistributionProps: {
     defaultBehavior: {
       functionAssociations: [
@@ -49,6 +53,7 @@ new CloudFrontToS3(stack, 'test-cloudfront-s3', {
   },
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
   }
 });
 

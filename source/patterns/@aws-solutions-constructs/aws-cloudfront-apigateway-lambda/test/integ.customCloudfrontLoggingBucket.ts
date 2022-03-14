@@ -31,6 +31,7 @@ new CloudFrontToApiGatewayToLambda(stack, 'cf-apigw-lambda', {
   },
   cloudFrontLoggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
     encryption: BucketEncryption.S3_MANAGED,
     versioned: true
   }

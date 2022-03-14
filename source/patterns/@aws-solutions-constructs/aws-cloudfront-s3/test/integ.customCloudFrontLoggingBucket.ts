@@ -25,9 +25,11 @@ stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3 cust
 new CloudFrontToS3(stack, 'test-cloudfront-s3', {
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
   },
   cloudFrontLoggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
     encryption: BucketEncryption.S3_MANAGED,
     versioned: true
   }

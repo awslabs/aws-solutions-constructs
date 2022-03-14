@@ -55,6 +55,7 @@ new CloudFrontToApiGateway(stack, 'cf-apigw', {
   existingApiGatewayObj: _api,
   cloudFrontLoggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
     encryption: BucketEncryption.S3_MANAGED,
     versioned: true
   }

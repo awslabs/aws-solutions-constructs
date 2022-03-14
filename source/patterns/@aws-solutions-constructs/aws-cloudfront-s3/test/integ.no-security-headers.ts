@@ -23,10 +23,15 @@ stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3';
 
 // Definitions
 const props: CloudFrontToS3Props = {
+  cloudFrontLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
   insertHttpSecurityHeaders: false,
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-  }
+    autoDeleteObjects: true
+  },
 };
 
 new CloudFrontToS3(stack, 'test-cloudfront-s3-no-security-headers', props);
