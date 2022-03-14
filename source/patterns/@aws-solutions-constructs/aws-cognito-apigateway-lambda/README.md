@@ -88,7 +88,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 const construct = new CognitoToApiGatewayToLambda(this, 'test-cognito-apigateway-lambda', {
     lambdaFunctionProps: {
-        code: lambda.Code.from_asset(`${__dirname}/lambda`),
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
         runtime: lambda.Runtime.NODEJS_14_X,
         handler: 'index.handler'
     },
@@ -109,8 +109,14 @@ Python
 from aws_solutions_constructs.aws_cognito_apigateway_lambda import CognitoToApiGatewayToLambda
 from aws_cdk import (
     aws_lambda as _lambda,
-    aws_apigateway as api
+    aws_apigateway as api,
+    Stack
 )
+from constructs import Construct
+from typing import Any
+
+# Overriding LambdaRestApiProps with type Any
+gateway_props = dict[Any, Any]
 
 construct = CognitoToApiGatewayToLambda(self, 'test-cognito-apigateway-lambda',
                                         lambda_function_props=_lambda.FunctionProps(
@@ -119,7 +125,7 @@ construct = CognitoToApiGatewayToLambda(self, 'test-cognito-apigateway-lambda',
                                             runtime=_lambda.Runtime.PYTHON_3_9,
                                             handler='index.handler'
                                         ),
-                                        api_gateway_props=api.LambdaRestApiProps(
+                                        api_gateway_props=gateway_props(
                                             proxy=False
                                         )
                                         )
