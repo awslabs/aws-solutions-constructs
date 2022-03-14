@@ -59,15 +59,26 @@ from aws_solutions_constructs.aws_apigateway_sagemakerendpoint import ApiGateway
 from aws_cdk import Stack
 from constructs import Construct
 
-# Create an example VTL (Velocity Template Language) mapping template for mapping the Api GET request to the Sagemaker POST request
+# Below is an example VTL (Velocity Template Language) mapping template for mapping the Api GET request to the Sagemaker POST request
+request_template = """
+{
+    "instances": [
+        # set( $user_id = $input.params("user_id") )
+        # set( $items = $input.params("items") )
+        # foreach( $item in $items.split(",") )
+        # if( $foreach.hasNext ),#end
+        {"in0": [$user_id], "in1": [$item]}
+            $esc.newline
+        # end
+    ]
+}"""
 
 # Replace 'my-endpoint' with your Sagemaker Inference Endpoint
 ApiGatewayToSageMakerEndpoint(self, 'test-apigw-sagemakerendpoint',
-                              endpoint_name='my-endpoint',
-                              resource_path='{user_id}',
-                              request_mapping_template=request_template
-                              )
-
+                                endpoint_name='my-endpoint',
+                                resource_path='{user_id}',
+                                request_mapping_template=request_template
+                                )
 ```
 
 Java

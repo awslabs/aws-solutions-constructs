@@ -95,7 +95,7 @@ KinesisFirehoseToAnalyticsAndS3(self, 'FirehoseToS3AndAnalyticsPattern',
                                             record_format=kinesisanalytics.CfnApplication.RecordFormatProperty(
                                                 record_format_type='JSON'
                                             ),
-                                            record_encoding='UTF_8'
+                                            record_encoding='UTF-8'
                                         ),
                                         name_prefix='SOURCE_SQL_STREAM'
                                     )]

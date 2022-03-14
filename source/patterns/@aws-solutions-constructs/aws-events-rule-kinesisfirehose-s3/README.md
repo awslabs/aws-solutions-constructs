@@ -44,17 +44,14 @@ Python
 from aws_solutions_constructs.aws_events_rule_kinesis_firehose_s3 import EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props
 from aws_cdk import (
     aws_events as events,
-    Duration,
-    Stack
+    core
 )
-from constructs import Construct
 
 EventsRuleToKinesisFirehoseToS3(self, 'test_events_rule_firehose_s3',
                                 event_rule_props=events.RuleProps(
                                     schedule=events.Schedule.rate(
-                                        Duration.minutes(5))
+                                        core.Duration.minutes(5))
                                 ))
-
 ```
 
 Java

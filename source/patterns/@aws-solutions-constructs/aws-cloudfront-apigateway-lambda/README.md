@@ -46,7 +46,7 @@ from constructs import Construct
 
 CloudFrontToApiGatewayToLambda(self, 'test-cloudfront-apigateway-lambda',
                             lambda_function_props=_lambda.FunctionProps(
-                                code=_lambda.Code.fromAsset('lambda'),
+                                code=_lambda.Code.from_asset('lambda'),
                                 runtime=_lambda.Runtime.PYTHON_3_9,
                                 handler='index.handler'
                             )

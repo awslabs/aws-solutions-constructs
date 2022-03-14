@@ -61,18 +61,18 @@ from aws_cdk import (
 from constructs import Construct
 
 api_gateway_to_lambda = ApiGatewayToLambda(self, 'ApiGatewayToLambdaPattern',
-                                           lambda_function_props=_lambda.FunctionProps(
-                                               code=_lambda.Code.from_asset(
-                                                   '{__dirname}/lambda'),
-                                               runtime=_lambda.Runtime.PYTHON_3_9,
-                                               handler='index.handler'
-                                           )
-                                           )
+                                    lambda_function_props=_lambda.FunctionProps(
+                                        code=_lambda.Code.from_asset(
+                                            'lambda'),
+                                        runtime=_lambda.Runtime.PYTHON_3_9,
+                                        handler='index.handler'
+                                    )
+                                    )
 
 # This construct can only be attached to a configured API Gateway.
 WafwebaclToApiGateway(self, 'test_wafwebacl_apigateway',
-                      existing_api_gateway_interface=api_gateway_to_lambda.apiGateway
-                      )
+                    existing_api_gateway_interface=api_gateway_to_lambda.api_gateway
+                    )
 ```
 
 Java

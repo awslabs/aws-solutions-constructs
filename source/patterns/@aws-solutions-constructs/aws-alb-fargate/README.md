@@ -47,6 +47,7 @@ const props: AlbToFargateProps = {
     publicApi: true
 };
 
+// Required: Must specify environment (account, region)
 new AlbToFargate(this, 'new-construct', props);
 ```
 
@@ -67,6 +68,7 @@ certificate = acm.Certificate.from_certificate_arn(
       "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
     )
 
+# Required: Must specify environment (account, region)
 AlbToFargate(self, 'new-construct',
                 ecr_repository_arn="arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo",
                 ecr_image_version="latest",
@@ -92,6 +94,7 @@ import software.amazon.awsconstructs.services.albfargate.*;
 ListenerCertificate listenerCertificate = ListenerCertificate
         .fromArn("arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012");
 
+// Required: Must specify environment (account, region)
 new AlbToFargate(this, "AlbToFargatePattern", new AlbToFargateProps.Builder()
         .ecrRepositoryArn("arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo")
         .ecrImageVersion("latest")

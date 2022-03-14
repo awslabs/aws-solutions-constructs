@@ -40,7 +40,7 @@ const lambdaProps: lambda.FunctionProps = {
 
 new LambdaToElasticSearchAndKibana(this, 'test-lambda-elasticsearch-kibana', {
     lambdaFunctionProps: lambdaProps,
-    domainName: 'test-domain',
+    domainName: 'testdomain',
     // TODO: Ensure the Cognito domain name is globally unique
     cognitoDomainName: 'globallyuniquedomain' + Aws.ACCOUNT_ID
 });
@@ -64,7 +64,7 @@ lambda_props = _lambda.FunctionProps(
 
 LambdaToElasticSearchAndKibana(self, 'test_lambda_elasticsearch_kibana',
                             lambda_function_props=lambda_props,
-                            domain_name='test_domain',
+                            domain_name='testdomain',
                             # TODO: Ensure the Cognito domain name is globally unique
                             cognito_domain_name='globallyuniquedomain' + Aws.ACCOUNT_ID
                             )
@@ -88,7 +88,7 @@ new LambdaToElasticSearchAndKibana(this, "test_lambda_elasticsearch_kibana",
                         .code(Code.fromAsset("lambda"))
                         .handler("index.handler")
                         .build())
-                .domainName("test-domain")
+                .domainName("testdomain")
                 // TODO: Ensure the Cognito domain name is globally unique
                 .cognitoDomainName("globallyuniquedomain" + Aws.ACCOUNT_ID)
                 .build());

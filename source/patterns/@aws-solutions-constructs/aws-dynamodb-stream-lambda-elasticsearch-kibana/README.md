@@ -49,10 +49,8 @@ Python
 from aws_solutions_constructs.aws_dynamodb_stream_lambda_elasticsearch_kibana import DynamoDBStreamToLambdaToElasticSearchAndKibana, DynamoDBStreamToLambdaToElasticSearchAndKibanaProps
 from aws_cdk import (
     aws_lambda as _lambda,
-    Aws,
-    Stack
+    core
 )
-from constructs import Construct
 
 DynamoDBStreamToLambdaToElasticSearchAndKibana(
     self, 'test-dynamodb-stream-lambda-elasticsearch-kibana',
@@ -63,7 +61,7 @@ DynamoDBStreamToLambdaToElasticSearchAndKibana(
     ),
     domain_name='test-domain',
     # TODO: Ensure the Cognito domain name is globally unique
-    cognito_domain_name='globallyuniquedomain' + Aws.ACCOUNT_ID)
+    cognito_domain_name='globallyuniquedomain' + core.Aws.ACCOUNT_ID)
 ```
 
 Java

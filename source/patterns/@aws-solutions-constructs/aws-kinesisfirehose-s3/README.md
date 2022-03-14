@@ -32,7 +32,7 @@ new KinesisFirehoseToS3(this, 'test-firehose-s3', {});
 
 Python
 ```python
-from aws_solutions_constructs.aws_kinesisfirehose_s3 import KinesisFirehoseToS3
+from aws_solutions_constructs.aws_kinesis_firehose_s3 import KinesisFirehoseToS3
 from aws_cdk import Stack
 from constructs import Construct
 

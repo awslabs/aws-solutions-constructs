@@ -58,64 +58,7 @@ const constructProps: LambdaToSagemakerEndpointProps = {
 new LambdaToSagemakerEndpoint(this, 'LambdaToSagemakerEndpointPattern', constructProps);
 ```
 
-Python
-``` python
-from aws_solutions_constructs.aws_lambda_sagemakerendpoint import LambdaToSagemakerEndpoint, LambdaToSagemakerEndpointProps
-from aws_cdk import (
-    aws_lambda as _lambda,
-    aws_sagemaker as sagemaker,
-    Duration,
-    Stack
-)
-from constructs import Construct
 
-LambdaToSagemakerEndpoint(
-    self, 'LambdaToSagemakerEndpointPattern',
-    model_props=sagemaker.CfnModelProps(
-        primary_container=sagemaker.CfnModel.ContainerDefinitionProperty(
-            image='<AccountId>.dkr.ecr.<region>.amazonaws.com/linear_learner:latest',
-            model_data_url='s3://<bucket_name>/<prefix>/model.tar.gz',
-        ),
-        execution_role_arn="executionRoleArn"
-    ),
-    lambda_function_props=_lambda.FunctionProps(
-        code=_lambda.Code.from_asset('{__dirname}/lambda'),
-        runtime=_lambda.Runtime.PYTHON_3_9,
-        handler='index.handler',
-        timeout=Duration.minutes(5),
-        memory_size=128
-    ))
-```
-
-Java
-``` java
-import software.constructs.Construct;
-
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
-import software.amazon.awscdk.Duration;
-import software.amazon.awscdk.services.lambda.*;
-import software.amazon.awscdk.services.lambda.Runtime;
-import software.amazon.awscdk.services.sagemaker.*;
-import software.amazon.awsconstructs.services.lambdasagemakerendpoint.*;
-
-new LambdaToSagemakerEndpoint(this, "LambdaToSagemakerEndpointPattern",
-        new LambdaToSagemakerEndpointProps.Builder()
-                .modelProps(new CfnModelProps.Builder()
-                        .primaryContainer(new CfnModel.ContainerDefinitionProperty.Builder()
-                                .image("<AccountId>.dkr.ecr.<region>.amazonaws.com/linear_learner:latest")
-                                .modelDataUrl("s3://<bucket_name>/<prefix>/model.tar.gz")
-                                .build())
-                        .executionRoleArn("executionRoleArn")
-                        .build())
-                .lambdaFunctionProps(new FunctionProps.Builder()
-                        .runtime(Runtime.NODEJS_14_X)
-                        .code(Code.fromAsset("lambda"))
-                        .handler("index.handler")
-                        .timeout(Duration.minutes(5))
-                        .build())
-                .build());
-```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

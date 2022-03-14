@@ -51,19 +51,18 @@ from aws_solutions_constructs.aws_events_rule_lambda import EventsRuleToLambdaPr
 from aws_cdk import (
     aws_lambda as _lambda,
     aws_events as events,
-    Duration
+    core
 )
 
 EventsRuleToLambda(self, 'test_events_rule_lambda',
-                   lambda_function_props=_lambda.FunctionProps(
-                       code=_lambda.Code.from_asset('lambda'),
-                       runtime=_lambda.Runtime.PYTHON_3_9,
-                       handler='index.handler'
-                   ),
-                   event_rule_prop=events.RuleProps(
-                       schedule=events.Schedule.rate(Duration.minutes(5))
-                   ))
-
+                lambda_function_props=_lambda.FunctionProps(
+                    code=_lambda.Code.from_asset('lambda'),
+                    runtime=_lambda.Runtime.PYTHON_3_9,
+                    handler='index.handler'
+                ),
+                event_rule_props=events.RuleProps(
+                    schedule=events.Schedule.rate(core.Duration.minutes(5))
+                ))
 ```
 
 Java

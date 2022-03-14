@@ -47,25 +47,23 @@ new EventsRuleToStepFunction(this, 'test-events-rules-step-function-stack', prop
 
 Python
 ``` Python
-from aws_solutions_constructs.aws_evenst_rule_step_function import EventsRuleToStepFunction, EventsRuleToStepFunctionProps
+from aws_solutions_constructs.aws_events_rule_step_function import EventsRuleToStepFunction, EventsRuleToStepFunctionProps
 from aws_cdk import (
     aws_stepfunctions as stepfunctions,
     aws_events as events,
-    Duration,
-    Stack
+    core
 )
-from constructs import Construct
 
 startState = stepfunctions.Pass(self, 'StartState')
 
-EventsRuleToStepFunction(self, 'test-eventbridge-stepfunctions-stack',
-                         state_machine_props=stepfunctions.StateMachineProps(
-                             definition=startState
-                         ),
-                         event_rule_props=events.RuleProps(
-                             schedule=events.Schedule.rate(Duration.minutes(5))
-                         ))
-
+EventsRuleToStepFunction(self, 'test',
+                            state_machine_props=stepfunctions.StateMachineProps(
+                                definition=startState
+                            ),
+                            event_rule_props=events.RuleProps(
+                                schedule=events.Schedule.rate(
+                                    core.Duration.minutes(5))
+                            ))
 
 ```
 

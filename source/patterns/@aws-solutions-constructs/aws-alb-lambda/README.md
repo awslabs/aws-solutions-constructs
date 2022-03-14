@@ -49,6 +49,8 @@ const props: AlbToLambdaProps = {
     },
     publicApi: true
 };
+
+// Required: Must specify environment (account, region)
 new AlbToLambda(this, 'new-construct', props);
 ```
 
@@ -70,6 +72,7 @@ certificate = acm.Certificate.from_certificate_arn(
   "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
 )
 
+# Required: Must specify environment (account, region)
 AlbToLambda(self, 'new-construct',
             lambda_function_props=_lambda.FunctionProps(
                 runtime=_lambda.Runtime.PYTHON_3_7,
@@ -98,6 +101,7 @@ import software.amazon.awsconstructs.services.alblambda.*;
 ListenerCertificate listenerCertificate = ListenerCertificate
         .fromArn("arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012");
 
+// Required: Must specify environment (account, region)
 new AlbToLambda(this, "AlbToLambdaPattern", new AlbToLambdaProps.Builder()
         .lambdaFunctionProps(new FunctionProps.Builder()
                 .runtime(Runtime.NODEJS_14_X)

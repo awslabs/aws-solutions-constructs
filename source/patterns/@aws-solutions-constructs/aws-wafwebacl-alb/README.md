@@ -33,19 +33,13 @@ Typescript
 import { Route53ToAlb } from '@aws-solutions-constructs/aws-route53-alb';
 import { WafwebaclToAlbProps, WafwebaclToAlb } from "@aws-solutions-constructs/aws-wafwebacl-alb";
 
-// A constructed ALB is required to be attached to the WAF Web ACL.
-// In this case, we are using this construct to create one.
-const r53ToAlb = new Route53ToAlb(this, 'Route53ToAlbPattern', {
-  privateHostedZoneProps: {
-    zoneName: 'www.example.com',
-  },
-  publicApi: false,
-  logAlbAccessLogs: false
-});
+// Use an existing ALB, such as one created by Route53toAlb or AlbToLambda
+const existingLoadBalancer = previouslyCreatedLoadBalancer
 
 // This construct can only be attached to a configured Application Load Balancer.
+// Required: Must specify environment (account, region)
 new WafwebaclToAlb(this, 'test-wafwebacl-alb', {
-    existingLoadBalancerObj: r53ToAlb.loadBalancer
+    existingLoadBalancerObj: previouslyCreatedLoadBalancer
 });
 ```
 
@@ -59,20 +53,14 @@ from aws_cdk import (
 )
 from constructs import Construct
 
-# A constructed ALB is required to be attached to the WAF Web ACL.
-# In this case, we are using this construct to create one.
-r53ToAlb = Route53ToAlb(self, 'Route53ToAlbPattern',
-                        private_hosted_zone_props=route53.PrivateHostedZoneProps(
-                            zone_name='www.example.com',
-                        ),
-                        public_api=False,
-                        log_alb_access_logs=False
-                        )
+# Use an existing ALB, such as one created by Route53toAlb or AlbToLambda
+existingLoadBalancer = previouslyCreatedLoadBalancer
 
 # This construct can only be attached to a configured Application Load Balancer.
+# Required: Must specify environment (account, region)
 WafwebaclToAlb(self, 'test_wafwebacl_alb',
-               existing_load_balancer_obj=r53ToAlb.load_balancer
-               )
+                existing_load_balancer_obj=existingLoadBalancer
+                )
 ```
 
 Java
@@ -85,21 +73,13 @@ import software.amazon.awscdk.services.route53.*;
 import software.amazon.awsconstructs.services.route53alb.*;
 import software.amazon.awsconstructs.services.wafwebaclalb.*;
 
-// A constructed ALB is required to be attached to the WAF Web ACL.
-// In this case, we are using this construct to create one.
-final Route53ToAlb r53ToAlb = new Route53ToAlb(this, "Route53ToAlbPattern",
-        new Route53ToAlbProps.Builder()
-                .privateHostedZoneProps(new PrivateHostedZoneProps.Builder()
-                        .zoneName("www.example.com")
-                        .build())
-                .publicApi(false)
-                .logAlbAccessLogs(false)
-                .build());
+// Use an existing ALB, such as one created by Route53toAlb or AlbToLambda
+final existingLoadBalancer = previouslyCreatedLoadBalancer
 
-// This construct can only be attached to a configured Application Load
-// Balancer.
+// This construct can only be attached to a configured Application Load Balancer.
+// Required: Must specify environment (account, region)
 new WafwebaclToAlb(this, "test-wafwebacl-alb", new WafwebaclToAlbProps.Builder()
-        .existingLoadBalancerObj(r53ToAlb.getLoadBalancer())
+        .existingLoadBalancerObj(previouslyCreatedLoadBalancer)
         .build());
 ```
 ## Pattern Construct Props

@@ -30,6 +30,7 @@ Typescript
 ``` typescript
 import { Route53ToAlb } from '@aws-solutions-constructs/aws-route53-alb';
 
+// Required: Must specify environment (account, region)
 new Route53ToAlb(this, 'Route53ToAlbPattern', {
   privateHostedZoneProps: {
     zoneName: 'www.example.com',
@@ -47,6 +48,7 @@ from aws_cdk import (
 )
 from constructs import Construct
 
+# Required: Must specify environment (account, region)
 Route53ToAlb(self, 'Route53ToAlbPattern',
                 public_api=False,
                 private_hosted_zone_props=route53.HostedZoneProps(
@@ -64,6 +66,7 @@ import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.route53.*;
 import software.amazon.awsconstructs.services.route53alb.*;
 
+// Required: Must specify environment (account, region)
 new Route53ToAlb(this, "Route53ToAlbPattern",
         new Route53ToAlbProps.Builder()
                 .privateHostedZoneProps(new HostedZoneProps.Builder()

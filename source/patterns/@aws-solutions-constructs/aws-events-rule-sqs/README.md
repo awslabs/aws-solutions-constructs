@@ -56,16 +56,14 @@ from aws_solutions_constructs.aws_events_rule_sqs import EventsRuleToSqs
 from aws_cdk import (
     aws_events as events,
     aws_iam as iam,
-    Duration,
-    Stack
+    core
 )
-from constructs import Construct
 
-construct_stack = EventsRuleToSqs(self, 'test-construct',
-                                  event_rule_props=events.RuleProps(
-                                      schedule=events.Schedule.rate(
-                                          Duration.minutes(5))
-                                  ))
+construct_stack = EventsRuleToSqs(self, 'test',
+                            event_rule_props=events.RuleProps(
+                                schedule=events.Schedule.rate(
+                                    core.Duration.minutes(5))
+                            ))
 
 # Grant yourself permissions to use the Customer Managed KMS Key
 policy_statement = iam.PolicyStatement(
@@ -76,7 +74,6 @@ policy_statement = iam.PolicyStatement(
 )
 
 construct_stack.encryption_key.add_to_resource_policy(policy_statement)
-
 ```
 
 Java

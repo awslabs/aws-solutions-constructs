@@ -31,7 +31,7 @@ new KinesisStreamsToKinesisFirehoseToS3(this, 'test-stream-firehose-s3', {});
 
 Python
 ``` python
-from aws_solutions_constructs.aws_kinesisstreams_kinesisfirehose_s3 import KinesisStreamsToKinesisFirehoseToS3
+from aws_solutions_constructs.aws_kinesis_streams_kinesis_firehose_s3 import KinesisStreamsToKinesisFirehoseToS3
 from aws_cdk import Stack
 from constructs import Construct
 

@@ -46,7 +46,7 @@ from aws_cdk import (
 from constructs import Construct
 
 
-SqsToLambda(self, 'SnsToSqsPattern',
+SqsToLambda(self, 'SqsToLambdaPattern',
             lambda_function_props=_lambda.FunctionProps(
                 code=_lambda.Code.from_asset('lambda'),
                 runtime=_lambda.Runtime.PYTHON_3_9,

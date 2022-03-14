@@ -42,9 +42,8 @@ Python
 from aws_solutions_constructs.aws_dynamodb_stream_lambda import DynamoDBStreamToLambda
 from aws_cdk import (
     aws_lambda as _lambda,
-    Stack
+    core,
 )
-from constructs import Construct
 
 DynamoDBStreamToLambda(self, 'test-dynamodb-stream-lambda',
                        lambda_function_props=_lambda.FunctionProps(

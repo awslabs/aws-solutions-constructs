@@ -32,7 +32,7 @@ Typescript
 ``` typescript
 import * as route53 from "@aws-cdk/aws-route53";
 import * as acm from "aws-cdk-lib/aws-certificatemanager";
-import { Route53ToApigateway } from '@aws-solutions-constructs/aws-route53-apigateway';
+import { Route53ToApiGateway } from '@aws-solutions-constructs/aws-route53-apigateway';
 
 // The construct requires an existing REST API, this can be created in raw CDK or extracted
 // from a previously instantiated construct that created an API Gateway REST API
@@ -49,7 +49,7 @@ const certificate = acm.Certificate.fromCertificateArn(
 );
 
 // This construct can only be attached to a configured API Gateway.
-new Route53ToApigateway(this, 'Route53ToApigatewayPattern', {
+new Route53ToApiGateway(this, 'Route53ToApiGatewayPattern', {
     existingApiGatewayInterface: existingRestApi,
     existingHostedZoneInterface: ourHostedZone,
     publicApi: true,
@@ -59,7 +59,7 @@ new Route53ToApigateway(this, 'Route53ToApigatewayPattern', {
 
 Python
 ```python
-from aws_solutions_constructs.aws_route53_apigateway import Route53ToApigateway
+from aws_solutions_constructs.aws_route53_apigateway import Route53ToApiGateway
 from aws_cdk import (
     aws_route53 as route53,
     aws_certificatemanager as acm,
@@ -83,9 +83,9 @@ certificate = acm.Certificate.from_certificate_arn(
 )
 
 # This construct can only be attached to a configured API Gateway.
-Route53ToApigateway(self, 'Route53ToApigatewayPattern',
-                    existing_api_gateway_interface: existingRestApi,
-                    existing_hosted_zone_interface: ourHostedZone,
+Route53ToApiGateway(self, 'Route53ToApigatewayPattern',
+                    existing_api_gateway_interface=existingRestApi,
+                    existing_hosted_zone_interface=ourHostedZone,
                     public_api=True,
                     existing_certificate_interface=certificate
                     )

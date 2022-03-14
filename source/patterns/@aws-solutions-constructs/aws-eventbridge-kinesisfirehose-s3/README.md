@@ -45,6 +45,7 @@ from aws_cdk import (
     Duration,
     Stack
 )
+from constructs import Construct
 
 EventbridgeToKinesisFirehoseToS3(self, 'test-eventbridge-firehose-s3',
                                 event_rule_props=events.RuleProps(

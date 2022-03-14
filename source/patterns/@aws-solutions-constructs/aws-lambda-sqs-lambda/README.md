@@ -57,12 +57,12 @@ from constructs import Construct
 LambdaToSqsToLambda(
     self, 'LambdaToSqsToLambdaPattern',
     producer_lambda_function_props=_lambda.FunctionProps(
-        code=_lambda.Code.from_asset('{__dirname}/producer-lambda'),
+        code=_lambda.Code.from_asset('producer_lambda'),
         runtime=_lambda.Runtime.PYTHON_3_9,
         handler='index.handler'
     ),
     consumer_lambda_function_props=_lambda.FunctionProps(
-        code=_lambda.Code.from_asset('{__dirname}/consumer-lambda'),
+        code=_lambda.Code.from_asset('consumer_lambda'),
         runtime=_lambda.Runtime.PYTHON_3_9,
         handler='index.handler'
     )
