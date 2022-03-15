@@ -26,7 +26,7 @@ const stack = new Stack(app, generateIntegStackName(__filename), {
 stack.templateOptions.description = 'Integration Test with new VPC, Service and Bucket';
 
 const existingVpc = getTestVpc(stack);
-const existingBucket = defaults.CreateScrapBucket(stack, { 
+const existingBucket = defaults.CreateScrapBucket(stack, {
   removalPolicy: RemovalPolicy.DESTROY,
   autoDeleteObjects: true
 });
