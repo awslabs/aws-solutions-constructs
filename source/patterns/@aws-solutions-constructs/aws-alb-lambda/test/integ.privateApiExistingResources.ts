@@ -47,13 +47,12 @@ const lambdaFunction = defaults.buildLambdaFunction(stack, {
 const loadBalancer = defaults.ObtainAlb(stack, 'existing-alb', myVpc, false, undefined, {
   internetFacing: false,
   vpc: myVpc,
-  },
-  true,
-  {
-    removalPolicy: RemovalPolicy.DESTROY,
-    autoDeleteObjects: true
-  }
-);
+},
+true,
+{
+  removalPolicy: RemovalPolicy.DESTROY,
+  autoDeleteObjects: true
+});
 
 const props: AlbToLambdaProps = {
   existingLambdaObj: lambdaFunction,

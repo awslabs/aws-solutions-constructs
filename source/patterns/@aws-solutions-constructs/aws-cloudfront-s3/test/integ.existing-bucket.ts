@@ -27,10 +27,9 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 
 let mybucket: s3.Bucket;
 mybucket = defaults.CreateScrapBucket(stack,   {
-    removalPolicy: RemovalPolicy.DESTROY,
-    autoDeleteObjects: true
-  }
-);
+  removalPolicy: RemovalPolicy.DESTROY,
+  autoDeleteObjects: true
+});
 
 const _construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {
   existingBucketObj: mybucket,
