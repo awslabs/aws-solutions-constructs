@@ -36,7 +36,6 @@ new CloudFrontToApiGatewayToLambda(stack, 'cf-apigw-lambda', {
     versioned: true
   }
 });
-
 suppressAutoDeleteHandlerWarnings(stack);
 
 // Synth
