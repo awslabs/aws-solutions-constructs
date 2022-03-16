@@ -14,7 +14,7 @@
 // Imports
 import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { CloudFrontToS3 } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 import * as cloudfront from "@aws-cdk/aws-cloudfront";
 
 // Setup
@@ -57,5 +57,6 @@ new CloudFrontToS3(stack, 'test-cloudfront-s3', {
   }
 });
 
+suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();

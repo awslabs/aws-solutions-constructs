@@ -52,5 +52,6 @@ _construct.cloudFrontWebDistribution.addBehavior('/images/*.jpg', new origins.S3
   cachePolicy: myCachePolicy
 });
 
+defaults.suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();

@@ -58,5 +58,6 @@ defaults.addCfnSuppressRules(newSecurityGroup, [
   { id: 'W9', reason: 'Rule does not apply for ELB.'}
 ]);
 
+defaults.suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();

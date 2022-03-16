@@ -58,5 +58,6 @@ new CloudFrontToApiGateway(stack, 'test-cloudfront-apigateway', {
   },
 });
 
+defaults.suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();

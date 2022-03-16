@@ -20,7 +20,7 @@ import * as apigateway from '@aws-cdk/aws-apigateway';
 import * as cdk from '@aws-cdk/core';
 import { Duration } from "@aws-cdk/core";
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -100,5 +100,6 @@ function suppressWarnings(method: apigateway.Method) {
   };
 }
 
+suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();

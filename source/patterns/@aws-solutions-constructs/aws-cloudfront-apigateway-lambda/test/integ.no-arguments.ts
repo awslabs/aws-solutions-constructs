@@ -15,7 +15,7 @@
 import { App, RemovalPolicy, Stack } from "@aws-cdk/core";
 import { CloudFrontToApiGatewayToLambda } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -36,5 +36,6 @@ new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
   },
 });
 
+suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();

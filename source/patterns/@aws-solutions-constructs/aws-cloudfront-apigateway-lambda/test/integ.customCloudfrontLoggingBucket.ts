@@ -16,7 +16,7 @@ import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { CloudFrontToApiGatewayToLambda } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import { BucketEncryption } from "@aws-cdk/aws-s3";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -37,5 +37,8 @@ new CloudFrontToApiGatewayToLambda(stack, 'cf-apigw-lambda', {
   }
 });
 
+suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();
+
+

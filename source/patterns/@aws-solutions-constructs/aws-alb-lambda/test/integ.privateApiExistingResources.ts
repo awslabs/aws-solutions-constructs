@@ -81,5 +81,6 @@ defaults.addCfnSuppressRules(testSg, [
   { id: 'W29', reason: 'CDK created rule that blocks all traffic.'},
 ]);
 
+defaults.suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();

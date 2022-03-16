@@ -15,7 +15,7 @@
 import { App, RemovalPolicy, Stack } from '@aws-cdk/core';
 import * as mediastore from '@aws-cdk/aws-mediastore';
 import { CloudFrontToMediaStore } from '../lib';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -34,5 +34,6 @@ new CloudFrontToMediaStore(stack, 'test-cloudfront-mediastore', {
   }
 });
 
+suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();

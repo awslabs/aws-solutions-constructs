@@ -61,5 +61,6 @@ new CloudFrontToApiGateway(stack, 'cf-apigw', {
   }
 });
 
+defaults.suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();
