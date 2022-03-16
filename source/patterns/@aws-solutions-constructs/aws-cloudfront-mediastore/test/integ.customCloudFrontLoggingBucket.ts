@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-/// !cdk-integ *
 import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { CloudFrontToMediaStore } from "../lib";
 import { BucketEncryption } from "@aws-cdk/aws-s3";
