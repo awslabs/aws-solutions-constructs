@@ -79,7 +79,7 @@ final existingLoadBalancer = previouslyCreatedLoadBalancer
 // This construct can only be attached to a configured Application Load Balancer.
 // Required: Must specify environment (account, region)
 new WafwebaclToAlb(this, "test-wafwebacl-alb", new WafwebaclToAlbProps.Builder()
-        .existingLoadBalancerObj(previouslyCreatedLoadBalancer)
+        .existingLoadBalancerObj(existingLoadBalancer)
         .build());
 ```
 ## Pattern Construct Props

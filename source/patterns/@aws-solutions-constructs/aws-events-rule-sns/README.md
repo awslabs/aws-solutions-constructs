@@ -36,7 +36,7 @@ const props: EventsRuleToSnsProps = {
     }
 };
 
-const constructStack = new EventsRuleToSns(this, 'test-construct', props);
+const constructStack = new EventsRuleToSns(this, 'test', props);
 
 // Grant yourself permissions to use the Customer Managed KMS Key
 const policyStatement = new iam.PolicyStatement({
@@ -58,7 +58,7 @@ from aws_cdk import (
     core
 )
 
-construct_stack = EventsRuleToSns(self, 'test-construct',
+construct_stack = EventsRuleToSns(self, 'test',
                                 event_rule_props=events.RuleProps(
                                     schedule=events.Schedule.rate(
                                         core.Duration.minutes(5))
@@ -80,27 +80,25 @@ Java
 import software.constructs.Construct;
 import java.util.List;
 
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
-import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.events.*;
 import software.amazon.awscdk.services.iam.*;
 import software.amazon.awsconstructs.services.eventsrulesns.*;
 
-final EventsRuleToSns constructStack = new EventsRuleToSns(this, "test-construct",
-        new EventsRuleToSnsProps.Builder()
-                .eventRuleProps(new RuleProps.Builder()
-                        .schedule(Schedule.rate(Duration.minutes(5)))
-                        .build())
-                .build());
+final EventsRuleToSns constructStack = new EventsRuleToSns(this, "test",
+    new EventsRuleToSnsProps.Builder()
+        .eventRuleProps(new RuleProps.Builder()
+            .schedule(Schedule.rate(Duration.minutes(5)))
+            .build())
+        .build());
 
 // Grant yourself permissions to use the Customer Managed KMS Key
 final PolicyStatement policyStatement = PolicyStatement.Builder.create()
-        .actions(List.of("kms:Encrypt", "kms:Decrypt"))
-        .effect(Effect.ALLOW)
-        .principals(List.of(new AccountRootPrincipal()))
-        .resources(List.of("*"))
-        .build();
+    .actions(List.of("kms:Encrypt", "kms:Decrypt"))
+    .effect(Effect.ALLOW)
+    .principals(List.of(new AccountRootPrincipal()))
+    .resources(List.of("*"))
+    .build();
 
 constructStack.getEncryptionKey().addToResourcePolicy(policyStatement);
 ```

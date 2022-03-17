@@ -69,15 +69,13 @@ Java
 ``` java
 import software.constructs.Construct;
 
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
-import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.events.*;
 import software.amazon.awscdk.services.lambda.*;
 import software.amazon.awscdk.services.lambda.Runtime;
 import software.amazon.awsconstructs.services.eventsrulelambda.*;
 
-new EventsRuleToLambda(this, "test-eventbridge-lambda",
+new EventsRuleToLambda(this, "test-events-rule-lambda",
         new EventsRuleToLambdaProps.Builder()
                 .lambdaFunctionProps(new FunctionProps.Builder()
                         .runtime(Runtime.NODEJS_14_X)

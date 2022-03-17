@@ -143,7 +143,7 @@ new KinesisFirehoseToAnalyticsAndS3(this, "FirehoseToS3AndAnalyticsPattern",
                                         .recordFormat(new RecordFormatProperty.Builder()
                                                 .recordFormatType("JSON")
                                                 .build())
-                                        .recordEncoding("UTF-9")
+                                        .recordEncoding("UTF-8")
                                         .build())
                                 .namePrefix("SOURCE_SQL_STREAM")
                                 .build()))

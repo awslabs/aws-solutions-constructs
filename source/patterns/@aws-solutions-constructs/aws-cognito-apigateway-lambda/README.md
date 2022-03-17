@@ -138,9 +138,21 @@ construct.add_authorizers()
 ```
 
 ``` java
-import software.amazon.awsconstructs.services.cognitoapigatewaylambda.*;
+import software.constructs.Construct;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import software.amazon.awscdk.*;
 import software.amazon.awscdk.services.lambda.*;
-import software.amazon.awscdk.services.apigateway.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awscdk.services.apigateway.IResource;
+import software.amazon.awsconstructs.services.cognitoapigatewaylambda.*;
+
+// Overriding LambdaRestApiProps with type Any
+Map<String, Optional<?>> gatewayProps = new HashMap<String, Optional<?>>();
+gatewayProps.put("proxy", Optional.of(false));
 
 final CognitoToApiGatewayToLambda construct = new CognitoToApiGatewayToLambda(this,
         "test-cognito-apigateway-lambda",
@@ -150,15 +162,14 @@ final CognitoToApiGatewayToLambda construct = new CognitoToApiGatewayToLambda(th
                         .code(Code.fromAsset("lambda"))
                         .handler("index.handler")
                         .build())
-                .apiGatewayProps(new LambdaRestApiProps.Builder()
-                        .proxy(false)
-                        .build())
+                .apiGatewayProps(gatewayProps)
                 .build());
 
-// Mandatory to call this method to Apply the Cognito Authorizers on all API
-// methods
 final IResource resource = construct.getApiGateway().getRoot().addResource("foobar");
 resource.addMethod("POST");
+
+// Mandatory to call this method to Apply the Cognito Authorizers on all API methods
+construct.addAuthorizers();
 ```
 
 ## Pattern Construct Props

@@ -70,6 +70,7 @@ new SnsToLambda(this, "test-lambda-sqs-stack", new SnsToLambdaProps.Builder()
                 .handler("index.handler")
                 .build())
         .build());
+```
 
 ## Pattern Construct Props
 

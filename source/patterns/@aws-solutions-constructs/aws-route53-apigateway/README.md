@@ -106,11 +106,12 @@ import software.amazon.awsconstructs.services.route53apigateway.*;
 // The construct requires an existing REST API, this can be created in raw CDK
 // or extracted from a previously instantiated construct that created an API
 // Gateway REST API
-final IRestApi existingRestApi = previouslyCreatedApigatewayToLambdaConstruct.apiGateway;
+final IRestApi existingRestApi = previouslyCreatedApigatewayToLambdaConstruct.getApiGateway();
 
-final IHostedZone ourHostedZone = HostedZone.fromLookup(this, "HostedZone", new DomainNameAttributes.Builder()
-        .domainName("example.com")
-        .build());
+final IHostedZone ourHostedZone = HostedZone.fromLookup(this, "HostedZone",
+        new HostedZoneProviderProps.Builder()
+                .domainName("example.com")
+                .build());
 
 // Obtain a pre-existing certificate from your account
 final ICertificate certificate = Certificate.fromCertificateArn(

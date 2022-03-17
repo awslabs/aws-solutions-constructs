@@ -63,8 +63,7 @@ Java
 ``` java
 import software.constructs.Construct;
 
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.stepfunctions.*;
 import software.amazon.awsconstructs.services.s3stepfunction.*;
 

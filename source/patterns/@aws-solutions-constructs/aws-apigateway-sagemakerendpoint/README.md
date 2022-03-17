@@ -90,6 +90,17 @@ import software.amazon.awscdk.StackProps;
 import software.amazon.awsconstructs.services.apigatewaysagemakerendpoint.*;
 
 // Create an example VTL (Velocity Template Language) mapping template for mapping the Api GET request to the Sagemaker POST request
+final String requestTemplate = "{"
+        + "\"instances\": ["
+        + "# set( $user_id = $input.params(\"user_id\") )"
+        + "# set( $items = $input.params(\"items\") )"
+        + "# foreach( $item in $items.split(\",\") )"
+        + "# if( $foreach.hasNext ),#end"
+        + "{\"in0\": [$user_id], \"in1\": [$item]}"
+        + "    $esc.newline"
+        + "# end"
+        + "]"
+        + "}";
 
 // Replace ""my-endpoint"" with your Sagemaker Inference Endpoint
 new ApiGatewayToSageMakerEndpoint(this, "ApiGatewayToSageMakerEndpointPattern",
@@ -98,7 +109,6 @@ new ApiGatewayToSageMakerEndpoint(this, "ApiGatewayToSageMakerEndpointPattern",
                 .resourcePath("{user_id}")
                 .requestMappingTemplate(requestTemplate)
                 .build());
-    }
 ```
 
 ## Pattern Construct Props

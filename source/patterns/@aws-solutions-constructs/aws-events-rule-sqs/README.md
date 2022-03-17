@@ -81,9 +81,7 @@ Java
 import software.constructs.Construct;
 import java.util.List;
 
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
-import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.events.*;
 import software.amazon.awscdk.services.iam.*;
 import software.amazon.awsconstructs.services.eventsrulesqs.*;
