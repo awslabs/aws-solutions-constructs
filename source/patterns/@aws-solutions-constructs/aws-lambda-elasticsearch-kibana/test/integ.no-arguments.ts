@@ -27,10 +27,13 @@ const lambdaProps: lambda.FunctionProps = {
   handler: 'index.handler'
 };
 
+const esDomain = 'domain-args-9e54';
+const cognitoDomain = 'domain-args-cogn-9e5';
+
 new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
   lambdaFunctionProps: lambdaProps,
-  domainName: 'noargumentstest',
-  cognitoDomainName: 'testingwithnoargs'
+  domainName: esDomain,
+  cognitoDomainName: cognitoDomain
 });
 
 // Synth
