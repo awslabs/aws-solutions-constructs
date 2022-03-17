@@ -1,3 +1,5 @@
+import { LIST_OF_IGNORE_LAMBDA_PREFIX } from "./integ-helpers";
+
 /**
  * Reduce template to a normal form where asset references have been normalized
  *
@@ -37,6 +39,24 @@
       new RegExp(`${m[1]}`),
       `Asset${ix}Hash`,
     ]);
+  }
+
+  function checkIgnoreList(functionName: string): boolean {
+    for (const funcPrefix of LIST_OF_IGNORE_LAMBDA_PREFIX) {
+      if (functionName.startsWith(funcPrefix)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  for (const [resourceName, resourceValue] of Object.entries(template?.Resources || {})) {
+    if (checkIgnoreList(resourceName)) {
+      stringSubstitutions.push([
+        (resourceValue as any).Properties.Code.S3Key,
+        'SomeHash.zip'
+      ])
+    }
   }
 
   // Substitute them out
