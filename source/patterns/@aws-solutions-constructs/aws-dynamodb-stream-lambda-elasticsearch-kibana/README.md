@@ -68,23 +68,21 @@ Java
 ``` java
 import software.constructs.Construct;
 
-import software.amazon.awscdk.Aws;
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.lambda.*;
 import software.amazon.awscdk.services.lambda.Runtime;
 import software.amazon.awsconstructs.services.dynamodbstreamlambdaelasticsearchkibana.*;
 
-DynamoDBStreamToLambdaToElasticSearchAndKibana(this, "test-dynamodb-stream-lambda-elasticsearch-kibana",
-        new DynamoDBStreamToLambdaToElasticSearchAndKibanaProps.Builder()
-            .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_14_X)
-                .code(Code.fromAsset("lambda"))
-                .handler("index.handler")
-                .build())
-            .domainName("test-domain")
-            .cognitoDomainName("globallyuniquedomain" + Aws.ACCOUNT_ID)
-            .build());
+new DynamoDBStreamToLambdaToElasticSearchAndKibana(this, "test-dynamodb-stream-lambda-elasticsearch-kibana",
+    new DynamoDBStreamToLambdaToElasticSearchAndKibanaProps.Builder()
+        .lambdaFunctionProps(new FunctionProps.Builder()
+            .runtime(Runtime.NODEJS_14_X)
+            .code(Code.fromAsset("lambda"))
+            .handler("index.handler")
+            .build())
+        .domainName("test-domain")
+        .cognitoDomainName("globallyuniquedomain" + Aws.ACCOUNT_ID)
+        .build());
 ```
 
 ## Pattern Construct Props

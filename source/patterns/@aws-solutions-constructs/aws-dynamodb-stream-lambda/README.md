@@ -25,15 +25,16 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
-import { DynamoDBStreamToLambdaProps, DynamoDBStreamToLambda } from '@aws-solutions-constructs/aws-dynamodb-stream-lambda';
+import * as cdk from '@aws-cdk/core';
+import { DynamoDBStreamToLambda } from '@aws-solutions-constructs/aws-dynamodb-stream-lambda';
 import * as lambda from '@aws-cdk/aws-lambda';
 
 new DynamoDBStreamToLambda(this, 'test-dynamodb-stream-lambda', {
-    lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler'
-    },
+  lambdaFunctionProps: {
+    code: lambda.Code.fromAsset(`lambda`),
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler'
+  },
 });
 ```
 
