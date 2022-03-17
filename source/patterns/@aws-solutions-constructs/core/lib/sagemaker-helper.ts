@@ -21,7 +21,7 @@ import {
   DefaultSagemakerEndpointProps,
 } from './sagemaker-defaults';
 import * as cdk from '@aws-cdk/core';
-import { overrideProps, addCfnSuppressRules } from './utils';
+import { addCfnSuppressRules, consolidateProps } from './utils';
 import { buildVpc } from './vpc-helper';
 import * as iam from '@aws-cdk/aws-iam';
 import { Aws } from '@aws-cdk/core';
@@ -278,9 +278,7 @@ export function buildSagemakerNotebook(
       sagemakerNotebookProps = DefaultSagemakerNotebookProps(props.role.roleArn, kmsKeyId);
     }
 
-    if (props.sagemakerNotebookProps) {
-      sagemakerNotebookProps = overrideProps(sagemakerNotebookProps, props.sagemakerNotebookProps);
-    }
+    sagemakerNotebookProps = consolidateProps(sagemakerNotebookProps, props.sagemakerNotebookProps);
 
     // Create the notebook
     const sagemakerInstance: sagemaker.CfnNotebookInstance = new sagemaker.CfnNotebookInstance(
@@ -445,9 +443,7 @@ export function createSagemakerModel(
     // Get user provided Model's primary container
     primaryContainer = modelProps.primaryContainer as sagemaker.CfnModel.ContainerDefinitionProperty;
     // Get default Model props
-    finalModelProps = DefaultSagemakerModelProps(role.roleArn, primaryContainer, vpcConfig);
-    // Override default model properties
-    finalModelProps = overrideProps(finalModelProps, modelProps);
+    finalModelProps = consolidateProps(DefaultSagemakerModelProps(role.roleArn, primaryContainer, vpcConfig), modelProps);
 
     // Create the Sagemaker's Model
     model = new sagemaker.CfnModel(scope, 'SagemakerModel', finalModelProps);
@@ -475,12 +471,9 @@ export function createSagemakerEndpointConfig(
   } else {
     kmsKeyId = buildEncryptionKey(scope).keyId;
   }
-  // Get default EndpointConfig props
-  finalEndpointConfigProps = DefaultSagemakerEndpointConfigProps(modelName, kmsKeyId);
+
   // Overwrite default EndpointConfig properties
-  if (endpointConfigProps) {
-    finalEndpointConfigProps = overrideProps(finalEndpointConfigProps, endpointConfigProps);
-  }
+  finalEndpointConfigProps = consolidateProps(DefaultSagemakerEndpointConfigProps(modelName, kmsKeyId), endpointConfigProps);
 
   // Create the Sagemaker's EndpointConfig
   endpointConfig = new sagemaker.CfnEndpointConfig(scope, 'SagemakerEndpointConfig', finalEndpointConfigProps);
@@ -496,12 +489,8 @@ export function createSagemakerEndpoint(
   let finalEndpointProps: sagemaker.CfnEndpointProps;
   let endpoint: sagemaker.CfnEndpoint;
 
-  // Get default Endpoint props
-  finalEndpointProps = DefaultSagemakerEndpointProps(endpointConfigName);
   // Overwrite default Endpoint properties
-  if (endpointProps) {
-    finalEndpointProps = overrideProps(finalEndpointProps, endpointProps);
-  }
+  finalEndpointProps = consolidateProps(DefaultSagemakerEndpointProps(endpointConfigName), endpointProps);
 
   // Create the Sagemaker's Endpoint
   endpoint = new sagemaker.CfnEndpoint(scope, 'SagemakerEndpoint', finalEndpointProps);

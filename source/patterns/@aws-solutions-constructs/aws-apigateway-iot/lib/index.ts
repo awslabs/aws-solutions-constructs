@@ -101,9 +101,7 @@ export class ApiGatewayToIot extends Construct {
     };
 
     // If apiGatewayProps are specified override the extra Api Gateway properties
-    if (props.apiGatewayProps) {
-      extraApiGwProps = defaults.overrideProps(props.apiGatewayProps, extraApiGwProps);
-    }
+    extraApiGwProps = defaults.consolidateProps(extraApiGwProps, props.apiGatewayProps);
 
     // Check whether an API Gateway execution role is specified?
     if (props.apiGatewayExecutionRole) {
@@ -137,7 +135,7 @@ export class ApiGatewayToIot extends Construct {
       const iamRoleProps: iam.RoleProps = {
         assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
         path: '/',
-        inlinePolicies: {awsapigatewayiotpolicy: policyDocument}
+        inlinePolicies: { awsapigatewayiotpolicy: policyDocument }
       };
 
       // Create a policy that overrides the default policy that gets created with the construct
@@ -181,18 +179,20 @@ export class ApiGatewayToIot extends Construct {
 
     // Create resource '/shadow/{thingName}'
     const defaultShadowResource: api.IResource = shadowResource.addResource('{thingName}');
-    const shadowReqParams = {'integration.request.path.thingName': 'method.request.path.thingName'};
-    const methodShadowReqParams = {'method.request.path.thingName': true};
+    const shadowReqParams = { 'integration.request.path.thingName': 'method.request.path.thingName' };
+    const methodShadowReqParams = { 'method.request.path.thingName': true };
     this.addResourceMethod(defaultShadowResource, props, 'things/{thingName}/shadow',
       shadowReqParams, methodShadowReqParams);
 
     // Create resource '/shadow/{thingName}/{shadowName}'
     const namedShadowResource: api.IResource = defaultShadowResource.addResource('{shadowName}');
     const namedShadowReqParams = Object.assign({
-      'integration.request.path.shadowName': 'method.request.path.shadowName'},
+      'integration.request.path.shadowName': 'method.request.path.shadowName'
+    },
     shadowReqParams);
     const methodNamedShadowReqParams = Object.assign({
-      'method.request.path.shadowName': true}, methodShadowReqParams);
+      'method.request.path.shadowName': true
+    }, methodShadowReqParams);
     this.addResourceMethod(namedShadowResource, props, 'things/{thingName}/shadow?name={shadowName}',
       namedShadowReqParams, methodNamedShadowReqParams);
   }
@@ -205,26 +205,26 @@ export class ApiGatewayToIot extends Construct {
    * @param methodReqParams request parameters at Method level
    */
   private addResourceMethod(resource: api.IResource, props: ApiGatewayToIotProps, resourcePath: string,
-    integReqParams: {[key: string]: string},
-    methodReqParams: {[key: string]: boolean}) {
+    integReqParams: { [key: string]: string },
+    methodReqParams: { [key: string]: boolean }) {
     const integResp: api.IntegrationResponse[] = [
       {
         statusCode: "200",
         selectionPattern: "2\\d{2}",
-        responseTemplates : {
+        responseTemplates: {
           "application/json": "$input.json('$')"
         }
       },
       {
         statusCode: "500",
         selectionPattern: "5\\d{2}",
-        responseTemplates : {
+        responseTemplates: {
           "application/json": "$input.json('$')"
         }
       },
       {
         statusCode: "403",
-        responseTemplates : {
+        responseTemplates: {
           "application/json": "$input.json('$')"
         }
       }
