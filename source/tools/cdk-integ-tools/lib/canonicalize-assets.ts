@@ -45,27 +45,7 @@ import { LIST_OF_IGNORED_LAMBDA_PREFIXES } from "./integ-helpers";
     ]);
   }
 
-  hideIgnoredResources(Object.entries(template?.Resources || {}));
-
-  function checkIgnoreList(functionName: string): boolean {
-    for (const funcPrefix of LIST_OF_IGNORED_LAMBDA_PREFIXES) {
-      if (functionName.startsWith(funcPrefix)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  function hideIgnoredResources(resources: [string, any][]) {
-    for (const [resourceName, resourceValue] of resources) {
-      if (checkIgnoreList(resourceName)) {
-        stringSubstitutions.push([
-          resourceValue.Properties.Code.S3Key,
-          'SomeHash.zip'
-        ])
-      }
-    }
-  }
+  hideIgnoredResources(Object.entries(template?.Resources || {}), stringSubstitutions);
 
   // Substitute them out
   return substitute(template);
@@ -95,5 +75,25 @@ import { LIST_OF_IGNORED_LAMBDA_PREFIXES } from "./integ-helpers";
       x = x.replace(re, replacement);
     }
     return x;
+  }
+}
+
+function checkIgnoreList(functionName: string): boolean {
+  for (const funcPrefix of LIST_OF_IGNORED_LAMBDA_PREFIXES) {
+    if (functionName.startsWith(funcPrefix)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function hideIgnoredResources(resources: [string, any][], stringSubstitutions: Array<[RegExp, string]>) {
+  for (const [resourceName, resourceValue] of resources) {
+    if (checkIgnoreList(resourceName)) {
+      stringSubstitutions.push([
+        resourceValue.Properties.Code.S3Key,
+        'SomeHash.zip'
+      ])
+    }
   }
 }
