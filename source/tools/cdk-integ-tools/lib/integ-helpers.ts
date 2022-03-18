@@ -361,7 +361,7 @@ export const DEFAULT_SYNTH_OPTIONS = {
 // The Lambda functions starting with these prefixes will have their S3Key (ZIP filename) canonicalized
 // i.e. the hash value of zip file will be replaced with a constant value
 // so that it does not show up as a diff during the `cdk-integ-assert`
-export const LIST_OF_IGNORE_LAMBDA_PREFIX = [
+export const LIST_OF_IGNORED_LAMBDA_PREFIXES = [
   'CustomS3AutoDeleteObjectsCustomResourceProviderHandler'
 ];
 

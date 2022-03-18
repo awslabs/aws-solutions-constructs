@@ -1,4 +1,4 @@
-import { LIST_OF_IGNORE_LAMBDA_PREFIX } from "./integ-helpers";
+import { LIST_OF_IGNORED_LAMBDA_PREFIXES } from "./integ-helpers";
 
 /**
  * Reduce template to a normal form where asset references have been normalized
@@ -9,6 +9,10 @@ import { LIST_OF_IGNORE_LAMBDA_PREFIX } from "./integ-helpers";
  * Currently only handles parameterized assets, but can (and should)
  * be adapted to handle convention-mode assets as well when we start using
  * more of those.
+ *
+ * This function is customized to meet the needs of ignoring diffs in certain lambda
+ * function's S3Key values, please refer to solutions-constructs-modifications.md
+ * for more details
  */
  export function canonicalizeTemplate(template: any): any {
   // For the weird case where we have an array of templates...
@@ -41,8 +45,10 @@ import { LIST_OF_IGNORE_LAMBDA_PREFIX } from "./integ-helpers";
     ]);
   }
 
+  hideIgnoredResources(Object.entries(template?.Resources || {}));
+
   function checkIgnoreList(functionName: string): boolean {
-    for (const funcPrefix of LIST_OF_IGNORE_LAMBDA_PREFIX) {
+    for (const funcPrefix of LIST_OF_IGNORED_LAMBDA_PREFIXES) {
       if (functionName.startsWith(funcPrefix)) {
         return true;
       }
@@ -50,12 +56,14 @@ import { LIST_OF_IGNORE_LAMBDA_PREFIX } from "./integ-helpers";
     return false;
   }
 
-  for (const [resourceName, resourceValue] of Object.entries(template?.Resources || {})) {
-    if (checkIgnoreList(resourceName)) {
-      stringSubstitutions.push([
-        (resourceValue as any).Properties.Code.S3Key,
-        'SomeHash.zip'
-      ])
+  function hideIgnoredResources(resources: [string, any][]) {
+    for (const [resourceName, resourceValue] of resources) {
+      if (checkIgnoreList(resourceName)) {
+        stringSubstitutions.push([
+          resourceValue.Properties.Code.S3Key,
+          'SomeHash.zip'
+        ])
+      }
     }
   }
 
