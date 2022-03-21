@@ -1,3 +1,5 @@
+import { LIST_OF_IGNORED_LAMBDA_PREFIXES } from "./integ-helpers";
+
 /**
  * Reduce template to a normal form where asset references have been normalized
  *
@@ -7,6 +9,10 @@
  * Currently only handles parameterized assets, but can (and should)
  * be adapted to handle convention-mode assets as well when we start using
  * more of those.
+ *
+ * This function is customized to meet the needs of ignoring diffs in certain lambda
+ * function's S3Key values, please refer to solutions-constructs-modifications.md
+ * for more details
  */
  export function canonicalizeTemplate(template: any): any {
   // For the weird case where we have an array of templates...
@@ -39,6 +45,8 @@
     ]);
   }
 
+  hideIgnoredResources(Object.entries(template?.Resources || {}), stringSubstitutions);
+
   // Substitute them out
   return substitute(template);
 
@@ -67,5 +75,25 @@
       x = x.replace(re, replacement);
     }
     return x;
+  }
+}
+
+function checkIgnoreList(functionName: string): boolean {
+  for (const funcPrefix of LIST_OF_IGNORED_LAMBDA_PREFIXES) {
+    if (functionName.startsWith(funcPrefix)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function hideIgnoredResources(resources: [string, any][], stringSubstitutions: Array<[RegExp, string]>) {
+  for (const [resourceName, resourceValue] of resources) {
+    if (checkIgnoreList(resourceName)) {
+      stringSubstitutions.push([
+        resourceValue.Properties.Code.S3Key,
+        'SomeHash.zip'
+      ])
+    }
   }
 }
