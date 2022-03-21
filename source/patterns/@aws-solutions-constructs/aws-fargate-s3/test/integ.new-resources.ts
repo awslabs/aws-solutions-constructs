@@ -12,9 +12,9 @@
  */
 
 // Imports
-import { Aws, App, Stack } from "@aws-cdk/core";
+import { Aws, App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { FargateToS3, FargateToS3Props } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 import * as ecs from '@aws-cdk/aws-ecs';
 
 // Setup
@@ -31,9 +31,14 @@ const testProps: FargateToS3Props = {
   containerDefinitionProps: {
     image
   },
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
 };
 
 new FargateToS3(stack, 'test-construct', testProps);
 
+suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();

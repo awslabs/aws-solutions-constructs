@@ -12,10 +12,10 @@
  */
 
 // Imports
-import { App, Stack } from '@aws-cdk/core';
+import { App, RemovalPolicy, Stack } from '@aws-cdk/core';
 import * as mediastore from '@aws-cdk/aws-mediastore';
 import { CloudFrontToMediaStore } from '../lib';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -27,8 +27,13 @@ const mediaStoreContainerObject = new mediastore.CfnContainer(stack, 'MyMediaSto
 
 // Instantiate construct
 new CloudFrontToMediaStore(stack, 'test-cloudfront-mediastore', {
-  existingMediaStoreContainerObj: mediaStoreContainerObject
+  existingMediaStoreContainerObj: mediaStoreContainerObject,
+  cloudFrontLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  }
 });
 
+suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();

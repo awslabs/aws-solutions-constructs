@@ -66,7 +66,7 @@ export function AddListener(
 
   consolidatedListenerProps = consolidateProps(DefaultListenerProps(loadBalancer), listenerProps);
 
-  //   create the listener
+  //  create the listener
   const listener = new elb.ApplicationListener(
     scope,
     `${id}-listener`,

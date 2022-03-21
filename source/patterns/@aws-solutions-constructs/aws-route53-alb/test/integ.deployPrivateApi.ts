@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack, Aws } from "@aws-cdk/core";
+import { App, Stack, Aws, RemovalPolicy } from "@aws-cdk/core";
 import { Route53ToAlb, Route53ToAlbProps } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import * as defaults from '@aws-solutions-constructs/core';
@@ -30,6 +30,10 @@ const props: Route53ToAlbProps = {
   publicApi: false,
   privateHostedZoneProps: {
     zoneName: 'www.example.com'
+  },
+  albLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
   }
 };
 
@@ -38,5 +42,6 @@ const testConstruct = new Route53ToAlb(stack, 'private-api-stack', props);
 const newSecurityGroup = testConstruct.loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
 defaults.addCfnSuppressRules(newSecurityGroup, [{ id: 'W29', reason: 'CDK created rule that blocks all traffic.'}]);
 
+defaults.suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();
