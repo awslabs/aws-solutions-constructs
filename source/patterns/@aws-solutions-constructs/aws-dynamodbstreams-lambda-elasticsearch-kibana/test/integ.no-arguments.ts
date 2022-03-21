@@ -28,8 +28,8 @@ const props: DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps = {
     runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler'
   },
-  domainName: 'domaintest',
-  cognitoDomainName: 'pooldomaintest'
+  domainName: 'domaintest-7c94db',
+  cognitoDomainName: 'pooldomaintest-7c94db'
 };
 
 new DynamoDBStreamsToLambdaToElasticSearchAndKibana(stack, 'test-ddbstreams-lambda-esk', props);

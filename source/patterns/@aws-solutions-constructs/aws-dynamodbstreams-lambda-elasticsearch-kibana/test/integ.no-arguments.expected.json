@@ -397,7 +397,7 @@
     "testddbstreamslambdaeskLambdaToElasticSearchUserPoolDomainA6C84014": {
       "Type": "AWS::Cognito::UserPoolDomain",
       "Properties": {
-        "Domain": "pooldomaintest",
+        "Domain": "pooldomaintest-7c94db",
         "UserPoolId": {
           "Ref": "testddbstreamslambdaeskLambdaToElasticSearchCognitoUserPool97EA2952"
         }
@@ -454,7 +454,7 @@
                         {
                           "Ref": "AWS::AccountId"
                         },
-                        ":domain/pooldomaintest/*"
+                        ":domain/pooldomaintest-7c94db/*"
                       ]
                     ]
                   }
@@ -559,7 +559,7 @@
                       {
                         "Ref": "AWS::AccountId"
                       },
-                      ":domain/domaintest"
+                      ":domain/domaintest-7c94db"
                     ]
                   ]
                 }
@@ -627,7 +627,7 @@
                     {
                       "Ref": "AWS::AccountId"
                     },
-                    ":domain/domaintest/*"
+                    ":domain/domaintest-7c94db/*"
                   ]
                 ]
               }
@@ -650,7 +650,7 @@
             "Ref": "testddbstreamslambdaeskLambdaToElasticSearchCognitoUserPool97EA2952"
           }
         },
-        "DomainName": "domaintest",
+        "DomainName": "domaintest-7c94db",
         "EBSOptions": {
           "EBSEnabled": true,
           "VolumeSize": 10

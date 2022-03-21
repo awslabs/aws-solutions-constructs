@@ -17,7 +17,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
-import { getPartitionKeyNameFromTable, overrideProps } from '@aws-solutions-constructs/core';
+import { getPartitionKeyNameFromTable } from '@aws-solutions-constructs/core';
 import * as logs from '@aws-cdk/aws-logs';
 
 /**
@@ -123,17 +123,9 @@ export class ApiGatewayToDynamoDB extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
 
-    let partitionKeyName: string;
-    let dynamoTableProps: dynamodb.TableProps;
-
     // Set the default props for DynamoDB table
-    if (props.dynamoTableProps) {
-      dynamoTableProps = overrideProps(defaults.DefaultTableProps, props.dynamoTableProps);
-      partitionKeyName = dynamoTableProps.partitionKey.name;
-    } else {
-      partitionKeyName = defaults.DefaultTableProps.partitionKey.name;
-      dynamoTableProps = defaults.DefaultTableProps;
-    }
+    const dynamoTableProps: dynamodb.TableProps = defaults.consolidateProps(defaults.DefaultTableProps, props.dynamoTableProps);
+    let partitionKeyName = dynamoTableProps.partitionKey.name;
 
     if (props.existingTableObj) {
       partitionKeyName = getPartitionKeyNameFromTable(props.existingTableObj);

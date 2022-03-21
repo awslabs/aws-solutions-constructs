@@ -15,7 +15,7 @@ import { Secret, SecretProps } from '@aws-cdk/aws-secretsmanager';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 import { DefaultSecretProps } from './secretsmanager-defaults';
-import { overrideProps, addCfnSuppressRules } from './utils';
+import { consolidateProps, addCfnSuppressRules } from './utils';
 
 /**
  * Method to build the default AWS Secrets Manager Secret
@@ -27,11 +27,7 @@ import { overrideProps, addCfnSuppressRules } from './utils';
 export function buildSecretsManagerSecret(scope: Construct, id: string, secretProps?: SecretProps): Secret {
   let secret: Secret;
 
-  if (secretProps) {
-    secret = new Secret(scope, id, overrideProps(DefaultSecretProps, secretProps));
-  } else {
-    secret =  new Secret(scope, id, DefaultSecretProps);
-  }
+  secret = new Secret(scope, id, consolidateProps(DefaultSecretProps, secretProps));
 
   // suppress warning on build
   addCfnSuppressRules(secret, [
