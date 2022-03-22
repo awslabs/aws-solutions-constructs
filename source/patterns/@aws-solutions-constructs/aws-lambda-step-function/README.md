@@ -26,21 +26,22 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
-import { LambdaToStepFunction } from '@aws-solutions-constructs/aws-lambda-step-function';
+import * as cdk from '@aws-cdk/core';
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
 import * as lambda from '@aws-cdk/aws-lambda';
+import { LambdaToStepFunction } from '@aws-solutions-constructs/aws-lambda-step-function';
 
 const startState = new stepfunctions.Pass(this, 'StartState');
 
 new LambdaToStepFunction(this, 'LambdaToStepFunctionPattern', {
-    lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    },
-    stateMachineProps: {
-        definition: startState
-    }
+  lambdaFunctionProps: {
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`lambda`)
+  },
+  stateMachineProps: {
+    definition: startState
+  }
 });
 ```
 
@@ -58,7 +59,7 @@ start_state = stepfunctions.Pass(self, 'start_state')
 LambdaToStepFunction(
     self, 'test-lambda-stepfunctions-stack',
     lambda_function_props=_lambda.FunctionProps(
-        code=_lambda.Code.from_asset('producer_lambda'),
+        code=_lambda.Code.from_asset('lambda'),
         runtime=_lambda.Runtime.PYTHON_3_9,
         handler='index.handler'
     ),

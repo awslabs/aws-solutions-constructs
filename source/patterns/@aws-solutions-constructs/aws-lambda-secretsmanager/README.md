@@ -28,19 +28,20 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` javascript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { LambdaToSecretsmanagerProps, LambdaToSecretsmanager } from '@aws-solutions-constructs/aws-lambda-secretsmanager';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 
-const props: LambdaToSecretsmanagerProps = {
-    lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
-        // This assumes a handler function in lib/lambda/index.js
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        handler: 'index.handler'
-    },
+const constructProps: LambdaToSecretsmanagerProps = {
+  lambdaFunctionProps: {
+    runtime: lambda.Runtime.NODEJS_14_X,
+    code: lambda.Code.fromAsset(`lambda`),
+    handler: 'index.handler'
+  },
 };
 
-new LambdaToSecretsmanager(this, 'test-lambda-secretsmanager-stack', props);
+new LambdaToSecretsmanager(this, 'test-lambda-secretsmanager-stack', constructProps);
 ```
 
 Python

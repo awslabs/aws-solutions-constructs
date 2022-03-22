@@ -28,21 +28,22 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps, Aws } from 'aws-cdk-lib';
 import { LambdaToElasticSearchAndKibana } from '@aws-solutions-constructs/aws-lambda-elasticsearch-kibana';
-import { Aws } from "aws-cdk-lib";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 
 const lambdaProps: lambda.FunctionProps = {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
-    handler: 'index.handler'
+  code: lambda.Code.fromAsset(`lambda`),
+  runtime: lambda.Runtime.NODEJS_14_X,
+  handler: 'index.handler'
 };
 
-new LambdaToElasticSearchAndKibana(this, 'test-lambda-elasticsearch-kibana', {
-    lambdaFunctionProps: lambdaProps,
-    domainName: 'testdomain',
-    // TODO: Ensure the Cognito domain name is globally unique
-    cognitoDomainName: 'globallyuniquedomain' + Aws.ACCOUNT_ID
+new LambdaToElasticSearchAndKibana(this, 'sample', {
+  lambdaFunctionProps: lambdaProps,
+  domainName: 'testdomain',
+  // TODO: Ensure the Cognito domain name is globally unique
+  cognitoDomainName: 'globallyuniquedomain' + Aws.ACCOUNT_ID
 });
 ```
 
@@ -62,7 +63,7 @@ lambda_props = _lambda.FunctionProps(
     handler='index.handler'
 )
 
-LambdaToElasticSearchAndKibana(self, 'test_lambda_elasticsearch_kibana',
+LambdaToElasticSearchAndKibana(self, 'sample',
                             lambda_function_props=lambda_props,
                             domain_name='testdomain',
                             # TODO: Ensure the Cognito domain name is globally unique
@@ -81,7 +82,7 @@ import software.amazon.awscdk.services.lambda.*;
 import software.amazon.awscdk.services.lambda.Runtime;
 import software.amazon.awsconstructs.services.lambdaelasticsearchkibana.*;
 
-new LambdaToElasticSearchAndKibana(this, "test_lambda_elasticsearch_kibana",
+new LambdaToElasticSearchAndKibana(this, "sample",
         new LambdaToElasticSearchAndKibanaProps.Builder()
                 .lambdaFunctionProps(new FunctionProps.Builder()
                         .runtime(Runtime.NODEJS_14_X)

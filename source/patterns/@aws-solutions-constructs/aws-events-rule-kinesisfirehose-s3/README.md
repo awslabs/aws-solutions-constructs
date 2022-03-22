@@ -26,14 +26,14 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
-import { EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props } from '@aws-solutions-constructs/aws-events-rule-kinesis_firehose-s3';
+import * as cdk from '@aws-cdk/core';
 import * as events from '@aws-cdk/aws-events';
-import { Duration } from '@aws-cdk/core';
+import { EventsRuleToKinesisFirehoseToS3Props, EventsRuleToKinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-events-rule-kinesisfirehose-s3';
 
 const eventsRuleToKinesisFirehoseToS3Props: EventsRuleToKinesisFirehoseToS3Props = {
-    eventRuleProps: {
-        schedule: events.Schedule.rate(Duration.minutes(5))
-    }
+  eventRuleProps: {
+    schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+  }
 };
 
 new EventsRuleToKinesisFirehoseToS3(this, 'test-events-rule-firehose-s3', eventsRuleToKinesisFirehoseToS3Props);

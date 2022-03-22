@@ -26,17 +26,17 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
-import { EventsRuleToKinesisStreams, EventsRuleToKinesisStreamsProps } from "@aws-solutions-constructs/aws-events-rule-kinesisstreams";
+import * as cdk from '@aws-cdk/core';
 import * as events from '@aws-cdk/aws-events';
-import { Duration } from '@aws-cdk/core';
+import { EventsRuleToKinesisStreams, EventsRuleToKinesisStreamsProps } from "@aws-solutions-constructs/aws-events-rule-kinesisstreams";
 
-const props: EventsRuleToKinesisStreamsProps = {
-    eventRuleProps: {
-        schedule: events.Schedule.rate(Duration.minutes(5)),
-    }
+const constructProps: EventsRuleToKinesisStreamsProps = {
+  eventRuleProps: {
+    schedule: events.Schedule.rate(cdk.Duration.minutes(5)),
+  }
 };
 
-new EventsRuleToKinesisStreams(this, 'test-events-rule-kinesis-streams', props);
+new EventsRuleToKinesisStreams(this, 'test-events-rule-kinesis-streams', constructProps);
 ```
 
 Python

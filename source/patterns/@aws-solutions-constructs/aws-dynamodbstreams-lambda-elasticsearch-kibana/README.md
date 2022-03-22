@@ -28,22 +28,23 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps, Aws } from 'aws-cdk-lib';
 import { DynamoDBStreamsToLambdaToElasticSearchAndKibana, DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps } from '@aws-solutions-constructs/aws-dynamodbstreams-lambda-elasticsearch-kibana';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { Aws } from "@aws-cdk/core";
 
-const props: DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps = {
-    lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler'
-    },
-    domainName: 'test-domain',
-    // TODO: Ensure the Cognito domain name is globally unique
-    cognitoDomainName: 'globallyuniquedomain' + Aws.ACCOUNT_ID
+const constructProps: DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps = {
+  lambdaFunctionProps: {
+    code: lambda.Code.fromAsset(`lambda`),
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler'
+  },
+  domainName: 'test-domain',
+  // TODO: Ensure the Cognito domain name is globally unique
+  cognitoDomainName: 'globallyuniquedomain' + Aws.ACCOUNT_ID
 };
 
-new DynamoDBStreamsToLambdaToElasticSearchAndKibana(this, 'test-dynamodbstreams-lambda-elasticsearch-kibana', props);
+new DynamoDBStreamsToLambdaToElasticSearchAndKibana(this, 'test-dynamodbstreams-lambda-elasticsearch-kibana', constructProps);
 ```
 
 Python

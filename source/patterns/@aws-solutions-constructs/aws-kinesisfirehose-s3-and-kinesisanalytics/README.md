@@ -30,35 +30,35 @@ Typescript
 ``` javascript
 const { KinesisFirehoseToAnalyticsAndS3 } from '@aws-solutions-constructs/aws-kinesisfirehose-s3-and-kinesisanalytics';
 
-import KinesisFirehoseToAnalyticsAndS3(this, 'FirehoseToS3AndAnalyticsPattern', {
-    kinesisAnalyticsProps: {
-        inputs: [{
-            inputSchema: {
-                recordColumns: [{
-                    name: 'ticker_symbol',
-                    sqlType: 'VARCHAR(4)',
-                    mapping: '$.ticker_symbol'
-                }, {
-                    name: 'sector',
-                    sqlType: 'VARCHAR(16)',
-                    mapping: '$.sector'
-                }, {
-                    name: 'change',
-                    sqlType: 'REAL',
-                    mapping: '$.change'
-                }, {
-                    name: 'price',
-                    sqlType: 'REAL',
-                    mapping: '$.price'
-                }],
-                recordFormat: {
-                    recordFormatType: 'JSON'
-                },
-                recordEncoding: 'UTF-8'
-            },
-            namePrefix: 'SOURCE_SQL_STREAM'
-        }]
-    }
+new KinesisFirehoseToAnalyticsAndS3(this, 'FirehoseToS3AndAnalyticsPattern', {
+  kinesisAnalyticsProps: {
+    inputs: [{
+      inputSchema: {
+        recordColumns: [{
+          name: 'ticker_symbol',
+          sqlType: 'VARCHAR(4)',
+          mapping: '$.ticker_symbol'
+        }, {
+          name: 'sector',
+          sqlType: 'VARCHAR(16)',
+          mapping: '$.sector'
+        }, {
+          name: 'change',
+          sqlType: 'REAL',
+          mapping: '$.change'
+        }, {
+          name: 'price',
+          sqlType: 'REAL',
+          mapping: '$.price'
+        }],
+        recordFormat: {
+          recordFormatType: 'JSON'
+        },
+        recordEncoding: 'UTF-8'
+      },
+      namePrefix: 'SOURCE_SQL_STREAM'
+    }]
+  }
 });
 ```
 

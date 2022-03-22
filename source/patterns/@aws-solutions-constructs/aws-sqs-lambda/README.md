@@ -24,14 +24,16 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { SqsToLambda, SqsToLambdaProps } from "@aws-solutions-constructs/aws-sqs-lambda";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 new SqsToLambda(this, 'SqsToLambdaPattern', {
   lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`lambda`)
   }
 });
 ```

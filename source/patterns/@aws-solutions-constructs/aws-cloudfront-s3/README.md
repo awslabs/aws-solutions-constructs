@@ -24,6 +24,8 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { CloudFrontToS3 } from '@aws-solutions-constructs/aws-cloudfront-s3';
 
 new CloudFrontToS3(this, 'test-cloudfront-s3', {});

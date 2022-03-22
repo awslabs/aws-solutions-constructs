@@ -24,14 +24,15 @@ Here is a minimal deployable pattern definition :
 
 Typescript
 ``` javascript
+import { Construct } from 'constructs';
+import { Stack, StackProps, Duration } from 'aws-cdk-lib';
 import { EventbridgeToKinesisFirehoseToS3, EventbridgeToKinesisFirehoseToS3Props } from '@aws-solutions-constructs/aws-eventbridge-kinesisfirehose-s3';
 import * as events from 'aws-cdk-lib/aws-events';
-import { Duration } from 'aws-cdk-lib';
 
 const EventbridgeToKinesisFirehoseToS3Props: EventbridgeToKinesisFirehoseToS3Props = {
-    eventRuleProps: {
-        schedule: events.Schedule.rate(Duration.minutes(5))
-    }
+  eventRuleProps: {
+    schedule: events.Schedule.rate(Duration.minutes(5))
+  }
 };
 
 new EventbridgeToKinesisFirehoseToS3(this, 'test-eventbridge-firehose-s3', EventbridgeToKinesisFirehoseToS3Props);

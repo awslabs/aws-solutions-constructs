@@ -26,22 +26,22 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
-import { DynamoDBStreamToLambdaToElasticSearchAndKibana, DynamoDBStreamToLambdaToElasticSearchAndKibanaProps } from '@aws-solutions-constructs/aws-dynamodb-stream-lambda-elasticsearch-kibana';
+import * as cdk from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
-import { Aws } from "@aws-cdk/core";
+import { DynamoDBStreamToLambdaToElasticSearchAndKibana, DynamoDBStreamToLambdaToElasticSearchAndKibanaProps } from '@aws-solutions-constructs/aws-dynamodb-stream-lambda-elasticsearch-kibana';
 
-const props: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps = {
-    lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler'
-    },
-    domainName: 'test-domain',
-    // TODO: Ensure the Cognito domain name is globally unique
-    cognitoDomainName: 'globallyuniquedomain' + Aws.ACCOUNT_ID
+const constructProps: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps = {
+  lambdaFunctionProps: {
+    code: lambda.Code.fromAsset(`lambda`),
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler'
+  },
+  domainName: 'test-domain',
+  // TODO: Ensure the Cognito domain name is globally unique
+  cognitoDomainName: 'globallyuniquedomain' + cdk.Aws.ACCOUNT_ID
 };
 
-new DynamoDBStreamToLambdaToElasticSearchAndKibana(this, 'test-dynamodb-stream-lambda-elasticsearch-kibana', props);
+new DynamoDBStreamToLambdaToElasticSearchAndKibana(this, 'test', constructProps);
 ```
 
 Python
@@ -53,7 +53,7 @@ from aws_cdk import (
 )
 
 DynamoDBStreamToLambdaToElasticSearchAndKibana(
-    self, 'test-dynamodb-stream-lambda-elasticsearch-kibana',
+    self, 'test',
     lambda_function_props=_lambda.FunctionProps(
         code=_lambda.Code.from_asset('lambda'),
         runtime=_lambda.Runtime.PYTHON_3_9,
@@ -73,7 +73,7 @@ import software.amazon.awscdk.services.lambda.*;
 import software.amazon.awscdk.services.lambda.Runtime;
 import software.amazon.awsconstructs.services.dynamodbstreamlambdaelasticsearchkibana.*;
 
-new DynamoDBStreamToLambdaToElasticSearchAndKibana(this, "test-dynamodb-stream-lambda-elasticsearch-kibana",
+new DynamoDBStreamToLambdaToElasticSearchAndKibana(this, "test",
     new DynamoDBStreamToLambdaToElasticSearchAndKibanaProps.Builder()
         .lambdaFunctionProps(new FunctionProps.Builder()
             .runtime(Runtime.NODEJS_14_X)

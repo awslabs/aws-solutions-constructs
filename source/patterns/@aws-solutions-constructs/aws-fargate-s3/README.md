@@ -27,14 +27,16 @@ This AWS Solutions Construct implements an AWS Fargate service that can write/re
 Here is a minimal deployable pattern definition in Typescript:
 
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { FargateToS3, FargateToS3Props } from '@aws-solutions-constructs/aws-fargate-s3';
 
-const props: FargateToS3Props = {
+const constructProps: FargateToS3Props = {
   publicApi: true,
   ecrRepositoryArn: "arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo",
-});
+};
 
-new FargateToS3(stack, 'test-construct', props);
+new FargateToS3(stack, 'test-construct', constructProps);
 ```
 
 Python

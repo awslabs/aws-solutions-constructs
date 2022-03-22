@@ -26,23 +26,23 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` javascript
+import * as cdk from '@aws-cdk/core';
+import * as lambda from '@aws-cdk/aws-lambda';
+import * as events from '@aws-cdk/aws-events';
 import { EventsRuleToLambdaProps, EventsRuleToLambda } from '@aws-solutions-constructs/aws-events-rule-lambda';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
-import * as events from 'aws-cdk-lib/aws-events';
-import { Duration } from 'aws-cdk-lib';
 
-const props: EventsRuleToLambdaProps = {
-    lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler'
-    },
-    eventRuleProps: {
-      schedule: events.Schedule.rate(Duration.minutes(5))
-    }
+const constructProps: EventsRuleToLambdaProps = {
+  lambdaFunctionProps: {
+    code: lambda.Code.fromAsset(`lambda`),
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler'
+  },
+  eventRuleProps: {
+    schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+  }
 };
 
-new EventsRuleToLambda(this, 'test-events-rule-lambda', props);
+new EventsRuleToLambda(this, 'test-events-rule-lambda', constructProps);
 ```
 
 Python

@@ -28,20 +28,22 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { IotToSqsProps, IotToSqs } from '@aws-solutions-constructs/aws-iot-sqs';
 
-const props: IotToSqsProps = {
-    iotTopicRuleProps: {
-        topicRulePayload: {
-            ruleDisabled: false,
-            description: "Testing the IotToSqs Pattern",
-            sql: "SELECT * FROM 'iot/sqs/#'",
-            actions: []
-        }
+const constructProps: IotToSqsProps = {
+  iotTopicRuleProps: {
+    topicRulePayload: {
+      ruleDisabled: false,
+      description: "Testing the IotToSqs Pattern",
+      sql: "SELECT * FROM 'iot/sqs/#'",
+      actions: []
     }
+  }
 };
 
-new IotToSqs(this, 'test-iot-sqs-integration', props);
+new IotToSqs(this, 'test-iot-sqs-integration', constructProps);
 ```
 
 Python

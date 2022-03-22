@@ -30,15 +30,16 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+import * as cdk from '@aws-cdk/core';
 import { S3ToStepFunction, S3ToStepFunctionProps } from '@aws-solutions-constructs/aws-s3-step-function';
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
 
 const startState = new stepfunctions.Pass(this, 'StartState');
 
 new S3ToStepFunction(this, 'test-s3-step-function-stack', {
-    stateMachineProps: {
-      definition: startState
-    }
+  stateMachineProps: {
+    definition: startState
+  }
 });
 ```
 

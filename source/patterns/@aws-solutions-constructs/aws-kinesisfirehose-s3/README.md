@@ -24,10 +24,11 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` javascript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { KinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-kinesisfirehose-s3';
 
 new KinesisFirehoseToS3(this, 'test-firehose-s3', {});
-
 ```
 
 Python

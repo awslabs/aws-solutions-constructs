@@ -26,6 +26,8 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { CloudFrontToMediaStore } from '@aws-solutions-constructs/aws-cloudfront-mediastore';
 
 new CloudFrontToMediaStore(this, 'test-cloudfront-mediastore-default', {});

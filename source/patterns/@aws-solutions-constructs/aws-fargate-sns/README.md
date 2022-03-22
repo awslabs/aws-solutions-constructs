@@ -28,15 +28,17 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { FargateToSns, FargateToSnsProps } from '@aws-solutions-constructs/aws-fargate-sns';
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 
-const props: FargateToSnsProps = {
+const constructProps: FargateToSnsProps = {
     publicApi: true,
     ecrRepositoryArn: "arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo"
 };
 
-new FargateToSns(this, 'test-construct', props);
+new FargateToSns(this, 'test-construct', constructProps);
 ```
 
 Python

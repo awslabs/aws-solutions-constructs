@@ -24,25 +24,26 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
-import { Duration } from '@aws-cdk/core';
-import * as events from '@aws-cdk/aws-events';
-import * as iam from '@aws-cdk/aws-iam';
+import { Construct } from 'constructs';
+import { Stack, StackProps, Duration } from 'aws-cdk-lib';
+import * as events from 'aws-cdk-lib/aws-events';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import { EventbridgeToSnsProps, EventbridgeToSns } from "@aws-solutions-constructs/aws-eventbridge-sns";
 
-const props: EventbridgeToSnsProps = {
-    eventRuleProps: {
-        schedule: events.Schedule.rate(Duration.minutes(5)),
-    }
+const constructProps: EventbridgeToSnsProps = {
+  eventRuleProps: {
+    schedule: events.Schedule.rate(Duration.minutes(5))
+  }
 };
 
-const constructStack = new EventbridgeToSns(this, 'test-construct', props);
+const constructStack = new EventbridgeToSns(this, 'test-construct', constructProps);
 
 // Grant yourself permissions to use the Customer Managed KMS Key
 const policyStatement = new iam.PolicyStatement({
-    actions: ["kms:Encrypt", "kms:Decrypt"],
-    effect: iam.Effect.ALLOW,
-    principals: [new iam.AccountRootPrincipal()],
-    resources: ["*"]
+  actions: ["kms:Encrypt", "kms:Decrypt"],
+  effect: iam.Effect.ALLOW,
+  principals: [new iam.AccountRootPrincipal()],
+  resources: ["*"]
 });
 
 constructStack.encryptionKey?.addToResourcePolicy(policyStatement);

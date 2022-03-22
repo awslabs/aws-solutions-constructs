@@ -30,16 +30,22 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
-import { Route53ToAlb } from '@aws-solutions-constructs/aws-route53-alb';
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { WafwebaclToAlbProps, WafwebaclToAlb } from "@aws-solutions-constructs/aws-wafwebacl-alb";
 
 // Use an existing ALB, such as one created by Route53toAlb or AlbToLambda
 const existingLoadBalancer = previouslyCreatedLoadBalancer
 
+
+// Note - all alb constructs turn on ELB logging by default, so require that an environment including account
+// and region be provided when creating the stack
+//
+// new MyStack(app, 'id', {env: {account: '123456789012', region: 'us-east-1' }});
+//
 // This construct can only be attached to a configured Application Load Balancer.
-// Required: Must specify environment (account, region)
 new WafwebaclToAlb(this, 'test-wafwebacl-alb', {
-    existingLoadBalancerObj: previouslyCreatedLoadBalancer
+    existingLoadBalancerObj: existingLoadBalancer
 });
 ```
 
@@ -56,8 +62,12 @@ from constructs import Construct
 # Use an existing ALB, such as one created by Route53toAlb or AlbToLambda
 existingLoadBalancer = previouslyCreatedLoadBalancer
 
+# Note - all alb constructs turn on ELB logging by default, so require that an environment including account
+# and region be provided when creating the stack
+#
+# MyStack(app, 'id', env=cdk.Environment(account='679431688440', region='us-east-1'))
+#
 # This construct can only be attached to a configured Application Load Balancer.
-# Required: Must specify environment (account, region)
 WafwebaclToAlb(self, 'test_wafwebacl_alb',
                 existing_load_balancer_obj=existingLoadBalancer
                 )
@@ -70,14 +80,21 @@ import software.constructs.Construct;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.route53.*;
-import software.amazon.awsconstructs.services.route53alb.*;
 import software.amazon.awsconstructs.services.wafwebaclalb.*;
 
 // Use an existing ALB, such as one created by Route53toAlb or AlbToLambda
 final existingLoadBalancer = previouslyCreatedLoadBalancer
 
+// Note - all alb constructs turn on ELB logging by default, so require that an environment including account
+// and region be provided when creating the stack
+//
+// new MyStack(app, "id", StackProps.builder()
+//         .env(Environment.builder()
+//                 .account("123456789012")
+//                 .region("us-east-1")
+//                 .build());
+//
 // This construct can only be attached to a configured Application Load Balancer.
-// Required: Must specify environment (account, region)
 new WafwebaclToAlb(this, "test-wafwebacl-alb", new WafwebaclToAlbProps.Builder()
         .existingLoadBalancerObj(existingLoadBalancer)
         .build());

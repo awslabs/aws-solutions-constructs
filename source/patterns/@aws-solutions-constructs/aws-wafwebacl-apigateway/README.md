@@ -30,22 +30,23 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
-import * as api from 'aws-cdk-lib/aws-apigateway';
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import { ApiGatewayToLambda } from '@aws-solutions-constructs/aws-apigateway-lambda';
 import { WafwebaclToApiGatewayProps, WafwebaclToApiGateway } from "@aws-solutions-constructs/aws-wafwebacl-apigateway";
 
 const apiGatewayToLambda = new ApiGatewayToLambda(this, 'ApiGatewayToLambdaPattern', {
-    lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`lambda`)
-    }
+  lambdaFunctionProps: {
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`lambda`)
+  }
 });
 
 // This construct can only be attached to a configured API Gateway.
 new WafwebaclToApiGateway(this, 'test-wafwebacl-apigateway', {
-    existingApiGatewayInterface: apiGatewayToLambda.apiGateway
+  existingApiGatewayInterface: apiGatewayToLambda.apiGateway
 });
 ```
 

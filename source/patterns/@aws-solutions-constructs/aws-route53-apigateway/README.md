@@ -30,7 +30,9 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
-import * as route53 from "@aws-cdk/aws-route53";
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import * as route53 from "aws-cdk-lib/aws-route53";
 import * as acm from "aws-cdk-lib/aws-certificatemanager";
 import { Route53ToApiGateway } from '@aws-solutions-constructs/aws-route53-apigateway';
 
@@ -38,6 +40,7 @@ import { Route53ToApiGateway } from '@aws-solutions-constructs/aws-route53-apiga
 // from a previously instantiated construct that created an API Gateway REST API
 const existingRestApi = previouslyCreatedApigatewayToLambdaConstruct.apiGateway;
 
+// domainName must match existing hosted zone in your account and the existing certificate
 const ourHostedZone = route53.HostedZone.fromLookup(this, 'HostedZone', {
     domainName: "example.com",
 });
@@ -71,6 +74,7 @@ from constructs import Construct
 # from a previously instantiated construct that created an API Gateway REST API
 existingRestApi = previouslyCreatedApigatewayToLambdaConstruct.apiGateway
 
+# domain_name must match existing hosted zone in your account and the existing certificate
 ourHostedZone = route53.HostedZone.from_lookup(self, 'HostedZone',
                                                 domain_name="example.com",
                                                 )
@@ -108,6 +112,7 @@ import software.amazon.awsconstructs.services.route53apigateway.*;
 // Gateway REST API
 final IRestApi existingRestApi = previouslyCreatedApigatewayToLambdaConstruct.getApiGateway();
 
+// domainName must match existing hosted zone in your account and the existing certificate
 final IHostedZone ourHostedZone = HostedZone.fromLookup(this, "HostedZone",
         new HostedZoneProviderProps.Builder()
                 .domainName("example.com")

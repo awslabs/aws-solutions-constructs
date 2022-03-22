@@ -34,6 +34,8 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { ApiGatewayToIot } from '@aws-solutions-constructs/aws-apigateway-iot';
 
 new ApiGatewayToIot(this, 'ApiGatewayToIotPattern', {

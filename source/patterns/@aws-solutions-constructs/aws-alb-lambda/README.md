@@ -28,8 +28,10 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { AlbToLambda, AlbToLambdaProps } from '@aws-solutions-constructs/aws-alb-lambda';
-import * as acm from 'aws-cdk-lib/aws-certificatemager';
+import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 // Obtain a pre-existing certificate from your account
@@ -38,20 +40,24 @@ const certificate = acm.Certificate.fromCertificateArn(
     'existing-cert',
     "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
 );
-const props: AlbToLambdaProps = {
-    lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler'
-    },
-    listenerProps: {
-        certificates: [certificate]
-    },
-    publicApi: true
+
+const constructProps: AlbToLambdaProps = {
+  lambdaFunctionProps: {
+    code: lambda.Code.fromAsset(`lambda`),
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler'
+  },
+  listenerProps: {
+    certificates: [certificate]
+  },
+  publicApi: true
 };
 
-// Required: Must specify environment (account, region)
-new AlbToLambda(this, 'new-construct', props);
+// Note - all alb constructs turn on ELB logging by default, so require that an environment including account
+// and region be provided when creating the stack
+//
+// new MyStack(app, 'id', {env: {account: '123456789012', region: 'us-east-1' }});
+new AlbToLambda(this, 'new-construct', constructProps);
 ```
 
 Python
@@ -72,7 +78,10 @@ certificate = acm.Certificate.from_certificate_arn(
   "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
 )
 
-# Required: Must specify environment (account, region)
+# Note - all alb constructs turn on ELB logging by default, so require that an environment including account
+# and region be provided when creating the stack
+#
+# MyStack(app, 'id', env=cdk.Environment(account='679431688440', region='us-east-1'))
 AlbToLambda(self, 'new-construct',
             lambda_function_props=_lambda.FunctionProps(
                 runtime=_lambda.Runtime.PYTHON_3_7,
@@ -101,7 +110,14 @@ import software.amazon.awsconstructs.services.alblambda.*;
 ListenerCertificate listenerCertificate = ListenerCertificate
         .fromArn("arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012");
 
-// Required: Must specify environment (account, region)
+// Note - all alb constructs turn on ELB logging by default, so require that an environment including account
+// and region be provided when creating the stack
+//
+// new MyStack(app, "id", StackProps.builder()
+//         .env(Environment.builder()
+//                 .account("123456789012")
+//                 .region("us-east-1")
+//                 .build());
 new AlbToLambda(this, "AlbToLambdaPattern", new AlbToLambdaProps.Builder()
         .lambdaFunctionProps(new FunctionProps.Builder()
                 .runtime(Runtime.NODEJS_14_X)

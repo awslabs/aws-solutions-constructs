@@ -30,26 +30,29 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { ApiGatewayToSageMakerEndpoint, ApiGatewayToSageMakerEndpointProps } from '@aws-solutions-constructs/aws-apigateway-sagemakerendpoint';
 
 // Below is an example VTL (Velocity Template Language) mapping template for mapping the Api GET request to the Sagemaker POST request
-const requestTemplate =
-    `{
+const requestTemplate = `
+{
     "instances": [
-#set( $user_id = $input.params("user_id") )
-#set( $items = $input.params("items") )
-#foreach( $item in $items.split(",") )
-    {"in0": [$user_id], "in1": [$item]}#if( $foreach.hasNext ),#end
-    $esc.newline
-#end
+        # set( $user_id = $input.params("user_id") )
+        # set( $items = $input.params("items") )
+        # foreach( $item in $items.split(",") )
+        # if( $foreach.hasNext ),#end
+        {"in0": [$user_id], "in1": [$item]}
+            $esc.newline
+        # end
     ]
-}`;
+}`
 
 // Replace 'my-endpoint' with your Sagemaker Inference Endpoint
 new ApiGatewayToSageMakerEndpoint(this, 'test-apigw-sagemakerendpoint', {
-    endpointName: 'my-endpoint',
-    resourcePath: '{user_id}',
-    requestMappingTemplate: requestTemplate
+  endpointName: 'my-endpoint',
+  resourcePath: '{user_id}',
+  requestMappingTemplate: requestTemplate
 });
 ```
 

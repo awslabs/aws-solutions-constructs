@@ -24,23 +24,24 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` javascript
+import { Construct } from 'constructs';
+import { Stack, StackProps, Duration } from 'aws-cdk-lib';
 import { EventbridgeToStepfunctions, EventbridgeToStepfunctionsProps } from '@aws-solutions-constructs/aws-eventbridge-stepfunctions';
 import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import * as events from 'aws-cdk-lib/aws-events';
-import { Duration } from 'aws-cdk-lib';
 
 const startState = new stepfunctions.Pass(this, 'StartState');
 
-const props: EventbridgeToStepfunctionsProps = {
-    stateMachineProps: {
-        definition: startState
-    },
-    eventRuleProps: {
-        schedule: events.Schedule.rate(Duration.minutes(5))
-    }
+const constructProps: EventbridgeToStepfunctionsProps = {
+  stateMachineProps: {
+    definition: startState
+  },
+  eventRuleProps: {
+    schedule: events.Schedule.rate(Duration.minutes(5))
+  }
 };
 
-new EventbridgeToStepfunctions(this, 'test-eventbridge-stepfunctions-stack', props);
+new EventbridgeToStepfunctions(this, 'test-eventbridge-stepfunctions-stack', constructProps);
 ```
 
 Python

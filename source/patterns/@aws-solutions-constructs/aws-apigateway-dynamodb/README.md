@@ -30,6 +30,8 @@ Here is a minimal deployable pattern definition in
 
 Typescript:
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { ApiGatewayToDynamoDBProps, ApiGatewayToDynamoDB } from "@aws-solutions-constructs/aws-apigateway-dynamodb";
 
 new ApiGatewayToDynamoDB(this, 'test-api-gateway-dynamodb-default', {});

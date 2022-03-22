@@ -24,32 +24,34 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { CloudFrontToApiGateway } from '@aws-solutions-constructs/aws-cloudfront-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as api from 'aws-cdk-lib/aws-apigateway';
 
 const lambdaProps: lambda.FunctionProps = {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
-    handler: 'index.handler'
+  code: lambda.Code.fromAsset(`lambda`),
+  runtime: lambda.Runtime.NODEJS_14_X,
+  handler: 'index.handler'
 };
 
 const lambdafunction = new lambda.Function(this, 'LambdaFunction', lambdaProps);
 
 const apiGatewayProps: api.LambdaRestApiProps = {
-    handler: lambdafunction,
-    endpointConfiguration: {
-        types: [api.EndpointType.REGIONAL]
-    },
-    defaultMethodOptions: {
-        authorizationType: api.AuthorizationType.NONE
-    }
+  handler: lambdafunction,
+  endpointConfiguration: {
+    types: [api.EndpointType.REGIONAL]
+  },
+  defaultMethodOptions: {
+    authorizationType: api.AuthorizationType.NONE
+  }
 };
 
 const apiGateway = new api.LambdaRestApi(this, 'LambdaRestApi', apiGatewayProps);
 
 new CloudFrontToApiGateway(this, 'test-cloudfront-apigateway', {
-    existingApiGatewayObj: apiGateway
+  existingApiGatewayObj: apiGateway
 });
 ```
 

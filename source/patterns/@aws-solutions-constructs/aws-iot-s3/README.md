@@ -28,20 +28,22 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { IotToS3Props, IotToS3 } from '@aws-solutions-constructs/aws-iot-s3';
 
-const props: IotToS3Props = {
-    iotTopicRuleProps: {
-        topicRulePayload: {
-            ruleDisabled: false,
-            description: "Testing the IotToS3 Pattern",
-            sql: "SELECT * FROM 'solutions/constructs'",
-            actions: []
-        }
+const constructProps: IotToS3Props = {
+  iotTopicRuleProps: {
+    topicRulePayload: {
+      ruleDisabled: false,
+      description: "Testing the IotToS3 Pattern",
+      sql: "SELECT * FROM 'solutions/constructs'",
+      actions: []
     }
+  }
 };
 
-new IotToS3(this, 'test-iot-s3-integration', props);
+new IotToS3(this, 'test-iot-s3-integration', constructProps);
 ```
 
 Python

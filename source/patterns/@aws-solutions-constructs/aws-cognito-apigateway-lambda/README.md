@@ -28,15 +28,17 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { CognitoToApiGatewayToLambda } from '@aws-solutions-constructs/aws-cognito-apigateway-lambda';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 new CognitoToApiGatewayToLambda(this, 'test-cognito-apigateway-lambda', {
-    lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler'
-    }
+  lambdaFunctionProps: {
+    code: lambda.Code.fromAsset(`lambda`),
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler'
+  }
 });
 ```
 
@@ -83,12 +85,14 @@ If you are defining resources and methods on your API (e.g. proxy = false), then
 
 Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { CognitoToApiGatewayToLambda } from '@aws-solutions-constructs/aws-cognito-apigateway-lambda';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 const construct = new CognitoToApiGatewayToLambda(this, 'test-cognito-apigateway-lambda', {
     lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+        code: lambda.Code.fromAsset(`lambda`),
         runtime: lambda.Runtime.NODEJS_14_X,
         handler: 'index.handler'
     },

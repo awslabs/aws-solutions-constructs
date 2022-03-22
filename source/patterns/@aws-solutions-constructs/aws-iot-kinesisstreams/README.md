@@ -28,20 +28,22 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { IotToKinesisStreamsProps, IotToKinesisStreams } from '@aws-solutions-constructs/aws-iot-kinesisstreams';
 
-const props: IotToKinesisStreamsProps = {
-    iotTopicRuleProps: {
-        topicRulePayload: {
-            ruleDisabled: false,
-            description: "Sends data to kinesis data stream",
-            sql: "SELECT * FROM 'solutions/construct'",
-            actions: []
-        }
+const constructProps: IotToKinesisStreamsProps = {
+  iotTopicRuleProps: {
+    topicRulePayload: {
+      ruleDisabled: false,
+      description: "Sends data to kinesis data stream",
+      sql: "SELECT * FROM 'solutions/construct'",
+      actions: []
     }
+  }
 };
 
-new IotToKinesisStreams(this, 'test-iot-kinesisstreams', props);
+new IotToKinesisStreams(this, 'test-iot-kinesisstreams', constructProps);
 ```
 
 Python

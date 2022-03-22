@@ -28,13 +28,18 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { Route53ToAlb } from '@aws-solutions-constructs/aws-route53-alb';
 
-// Required: Must specify environment (account, region)
+// Note - all alb constructs turn on ELB logging by default, so require that an environment including account
+// and region be provided when creating the stack
+//
+// new MyStack(app, 'id', {env: {account: '123456789012', region: 'us-east-1' }});
 new Route53ToAlb(this, 'Route53ToAlbPattern', {
   privateHostedZoneProps: {
     zoneName: 'www.example.com',
-  }
+  },
   publicApi: false,
 });
 ```
@@ -48,7 +53,10 @@ from aws_cdk import (
 )
 from constructs import Construct
 
-# Required: Must specify environment (account, region)
+# Note - all alb constructs turn on ELB logging by default, so require that an environment including account
+# and region be provided when creating the stack
+#
+# MyStack(app, 'id', env=cdk.Environment(account='679431688440', region='us-east-1'))
 Route53ToAlb(self, 'Route53ToAlbPattern',
                 public_api=False,
                 private_hosted_zone_props=route53.HostedZoneProps(
@@ -66,7 +74,14 @@ import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.route53.*;
 import software.amazon.awsconstructs.services.route53alb.*;
 
-// Required: Must specify environment (account, region)
+// Note - all alb constructs turn on ELB logging by default, so require that an environment including account
+// and region be provided when creating the stack
+//
+// new MyStack(app, "id", StackProps.builder()
+//         .env(Environment.builder()
+//                 .account("123456789012")
+//                 .region("us-east-1")
+//                 .build());
 new Route53ToAlb(this, "Route53ToAlbPattern",
         new Route53ToAlbProps.Builder()
                 .privateHostedZoneProps(new HostedZoneProps.Builder()

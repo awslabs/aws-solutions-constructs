@@ -24,6 +24,8 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` javascript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { KinesisStreamsToKinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-kinesisstreams-kinesisfirehose-s3';
 
 new KinesisStreamsToKinesisFirehoseToS3(this, 'test-stream-firehose-s3', {});

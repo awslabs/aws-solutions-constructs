@@ -60,8 +60,7 @@ Java
 ``` java
 import software.constructs.Construct;
 
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.lambda.*;
 import software.amazon.awscdk.services.lambda.Runtime;
 import software.amazon.awsconstructs.services.dynamodbstreamlambda.*;

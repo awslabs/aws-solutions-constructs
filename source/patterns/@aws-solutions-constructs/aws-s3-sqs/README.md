@@ -29,9 +29,11 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
-import {S3ToSqs} from "@aws-solutions-constructs/aws-s3-sqs";
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { S3ToSqs } from "@aws-solutions-constructs/aws-s3-sqs";
 
-new S3ToSqs(stack, 'S3ToSQSPattern', {});
+new S3ToSqs(this, 'S3ToSQSPattern', {});
 ```
 
 Python

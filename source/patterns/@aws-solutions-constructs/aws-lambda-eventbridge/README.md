@@ -28,15 +28,17 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps, Aws } from 'aws-cdk-lib';
 import { LambdaToEventbridge, LambdaToEventbridgeProps } from "@aws-solutions-constructs/aws-lambda-eventbridge";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 new LambdaToEventbridge(this, 'LambdaToEventbridgePattern', {
-    lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    }
+  lambdaFunctionProps: {
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`lambda`)
+  }
 });
 ```
 

@@ -28,8 +28,10 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { SnsToSqs, SnsToSqsProps } from "@aws-solutions-constructs/aws-sns-sqs";
-import * as iam from '@aws-cdk/aws-iam';
+import * as iam from 'aws-cdk-lib/aws-iam';
 
 const snsToSqsStack = new SnsToSqs(this, 'SnsToSqsPattern', {});
 

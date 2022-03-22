@@ -28,9 +28,11 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` javascript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { IotToKinesisFirehoseToS3Props, IotToKinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-iot-kinesisfirehose-s3';
 
-const props: IotToKinesisFirehoseToS3Props = {
+const constructProps: IotToKinesisFirehoseToS3Props = {
     iotTopicRuleProps: {
         topicRulePayload: {
             ruleDisabled: false,
@@ -41,7 +43,7 @@ const props: IotToKinesisFirehoseToS3Props = {
     }
 };
 
-new IotToKinesisFirehoseToS3(this, 'test-iot-firehose-s3', props);
+new IotToKinesisFirehoseToS3(this, 'test-iot-firehose-s3', constructProps);
 ```
 
 Python
