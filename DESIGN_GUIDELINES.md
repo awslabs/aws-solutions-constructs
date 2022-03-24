@@ -1,4 +1,4 @@
-# DesignGuidelines
+# Design Guidelines
 
 # Solutions Constructs Design Guidelines
 
@@ -83,284 +83,328 @@ Existing Inconsistencies would not be published, that’s for our internal use �
 ## API Gateway
 **Required Attributes on Props**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| apiGatewayProps	| api.RestApiProps	| aws-cloudfront-apigateway is an exception (covered below) ||
-| allow*Name*Operation/*name*OperationTemplate	|	| Required in pairs for integration with DDB and SQS |
-| logGroupProps? | logs.LogGroupProps |  |
+| Name| Type | Description | Notes |
+| --- | --- | --- | --- |
+| apiGatewayProps| [`api.RestApiProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.RestApiProps.html)|Optional user-provided props to override the default props for the API Gateway.|aws-cloudfront-apigateway is an exception (Covered below). ||
+| allow*Name*Operation/*Name*OperationTemplate| `boolean`| Whether to deploy API Gateway Method for *Name* operation on *Target*.|Required in pairs for integration with DDB and SQS. |
+| logGroupProps? | [`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-logs.LogGroupProps.html)|User provided props to override the default props for for the CloudWatchLogs LogGroup.| |
 
 **Required Construct Properties**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| apiGateway	| api.RestApi	| |
-|apiGatewayCloudwatchRole	| iam.Role	||
-| apiGatewayLogGroup	| logs.LogGroup	||
-| apiGatewayRole	| iam.Role	||
+| Name    | Type   | Description | Notes    |
+| --- | --- | --- | ---|
+| apiGateway	| [`api.RestApi`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.RestApi.html)|Returns an instance of the api.RestApi created by the construct.| |
+|apiGatewayCloudwatchRole	|[`iam.Role`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)|Returns an instance of the iam.Role created by the construct for API Gateway for CloudWatch access.| |
+| apiGatewayLogGroup	|[`logs.LogGroup`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-logs.LogGroup.html)|Returns an instance of the LogGroup created by the construct for API Gateway access logging to CloudWatch.|
+| apiGatewayRole| [`iam.Role`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)|Returns an instance of the iam.Role created by the construct for API Gateway.| |
 
 ## Application Load Balancer
 **Required Attributes on Props**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| loadBalancerProps?| elasticloadbalancingv2.ApplicationLoadBalancerProps	| Optional custom properties for a new loadBalancer. Providing both this and existingLoadBalancer is an error. This cannot specify a VPC, it will use the VPC in existingVpc or the VPC created by the construct. |
-| existingLoadBalancerObj? | elasticloadbalancingv2.ApplicationLoadBalancer | Existing Application Load Balancer to incorporate into the construct architecture. Providing both this and loadBalancerProps is an error. The VPC containing this loadBalancer must match the VPC provided in existingVpc. |
-| listenerProps? | ApplicationListenerProps | Props to define the listener. Must be provided when adding the listener to an ALB (eg - when creating the alb), may not be provided when adding a second target to an already established listener. When provided, must include either a certificate or protocol: HTTP |
-| targetProps? | ApplicationTargetGroupProps | Optional custom properties for a new target group. While this is a standard attribute of props for ALB constructs, there are few pertinent properties for a Lambda target. |
-| ruleProps? | AddRuleProps | Rules for directing traffic to the target being created. May not be specified for the first listener added to an ALB, and must be specified for the second target added to a listener. Add a second target by instantiating this construct a second time and providing the existingAlb from the first instantiation. |
-| logAlbAccessLogs? | boolean | Whether to turn on Access Logs for the Application Load Balancer. Uses an S3 bucket with associated storage costs.Enabling Access Logging is a best practice. default - true |
-| albLoggingBucketProps? | s3.BucketProps | Optional properties to customize the bucket used to store the ALB Access Logs. Supplying this and setting logAccessLogs to false is an error. @default - none |
-| publicApi | boolean | Whether the construct is deploying a private or public API. This has implications for the VPC and ALB. |
+| Name    | Type  | Description | Notes    |
+| --- | --- | --- | --- |
+| loadBalancerProps?| [`elasticloadbalancingv2.ApplicationLoadBalancer`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-elasticloadbalancingv2.ApplicationLoadBalancer.html)	| Optional custom properties for a new loadBalancer. Providing both this and existingLoadBalancer is an error. This cannot specify a VPC, it will use the VPC in existingVpc or the VPC created by the construct. |
+| existingLoadBalancerObj? | [`elasticloadbalancingv2.ApplicationLoadBalancer`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-elasticloadbalancingv2.ApplicationLoadBalancer.html)  | Existing Application Load Balancer to incorporate into the construct architecture. Providing both this and loadBalancerProps is an error. The VPC containing this loadBalancer must match the VPC provided in existingVpc. |
+| listenerProps? | [`elasticloadbalancingv2.ApplicationListenerProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-elasticloadbalancingv2.ApplicationListenerProps.html)  | Props to define the listener. Must be provided when adding the listener to an ALB (eg - when creating the alb), may not be provided when adding a second target to an already established listener. When provided, must include either a certificate or protocol: HTTP. |
+| targetProps? | [`elasticloadbalancingv2.ApplicationTargetGroupProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-elasticloadbalancingv2.ApplicationTargetGroupProps.html) | Optional custom properties for a new target group. While this is a standard attribute of props for ALB constructs, there are few pertinent properties for a Lambda target. |
+| ruleProps? | [`elasticloadbalancingv2.AddRuleProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-elasticloadbalancingv2.AddRuleProps.html) | Rules for directing traffic to the target being created. May not be specified for the first listener added to an ALB, and must be specified for the second target added to a listener. Add a second target by instantiating this construct a second time and providing the existingAlb from the first instantiation. |
+| logAlbAccessLogs? | `boolean` | Whether to turn on Access Logs for the Application Load Balancer. Uses an S3 bucket with associated storage costs.Enabling Access Logging is a best practice. Defaults to `true`. |
+| albLoggingBucketProps? | [`s3.BucketProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html) | Optional properties to customize the bucket used to store the ALB Access Logs. Supplying this and setting logAccessLogs to false is an error. Default to none. |
+| publicApi | `boolean` | Whether the construct is deploying a private or public API. This has implications for the VPC and ALB. |
 
 **Required Construct Properties**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| loadBalancer | ec2.IVpc | The VPC used by the construct (whether created by the construct or providedb by the client) |
-| Listener? | elb.ApplicationListener | The listener used by this pattern, if the pattern requires a listener (eg - this is not set by aws-route53-alb). |
+| Name    | Type     | Description | Notes    |
+| --- | --- | --- | --- |
+| loadBalancer | [elasticloadbalancingv2.ApplicationLoadBalancer](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-elasticloadbalancingv2.ApplicationLoadBalancer.html) | The Load Balancer used by the construct (whether created by the construct or provided by the client). |
+|vpc | [ec2.IVpc](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.IVpc.html)| The VPC used by the construct (whether created by the construct or provided by the client). |
+| listener? | [elasticloadbalancingv2.ApplicationListener](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-elasticloadbalancingv2.ApplicationListener.html)|  The listener used by this pattern. | Required only if the pattern requires a listener (eg - This is not set by aws-route53-alb). |
 
 ## CloudFront
 **Required Attributes on Props**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| cloudFrontDistributionProps?	| cloudfront.CloudFront.WebDistributionProps	||
-| insertHttpSecurityHeaders?	| boolean	||
+| Name    | Type   | Description | Notes    |
+| --- | --- | --- | --- |
+| cloudFrontDistributionProps?	| [`cloudfront.DistributionProps \| any`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudfront.DistributionProps.html)|Optional user provided props to override the default props for CloudFront Distribution.| |
 | insertHttpSecurityHeaders?|`boolean`|Optional user provided props to turn on/off the automatic injection of best practice HTTP security headers in all responses from CloudFront|
 | cloudFrontLoggingBucketProps?|[`s3.BucketProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html)|Optional user provided props to override the default props for the CloudFront Logging Bucket.|
 
 **Required Construct Properties**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| cloudFrontLoggingBucket?	s3.Bucket	||
-| cloudFrontWebDistribution	cloudfront.CloudrontWebDistribution	||
-| cloudFrontFunction?|[`cloudfront.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudfront.Function.html)|Returns an instance of the Cloudfront function created by the pattern.|
+| Name    | Type | Description | Notes |
+| --- | --- | --- | --- |
+| cloudFrontLoggingBucket?|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-s3-readme.html)|Returns an instance of the logging bucket for CloudFront WebDistribution.|
+| cloudFrontWebDistribution|[`cloudfront.CloudFrontWebDistribution`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudfront.CloudFrontWebDistribution.html)|Returns an instance of cloudfront.CloudFrontWebDistribution created by the construct.| |
+| cloudFrontFunction?|[`cloudfront.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudfront.Function.html)|Returns an instance of the Cloudfront function created by the pattern.| |
 
 ## DynamoDB
 **Required Attributes on Props**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| dynamoTableProps?	| dynamodb.TableProps	||
-| existingTableObj?	| dynamodb.Table	||
-| tablePermissions?	| string	| Only where DynamoDB is a data store being accessed by the construct|
-| dynamoEventSourceProps?		| aws-lambda-event-sources.DynamoEventSourceProps	| Only where DynamoDB is invoking other services (dynamodb streams) |
+| Name    | Type  | Description | Notes    |
+| --- | --- | --- | --- |
+| dynamoTableProps?	| [`dynamodb.TableProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-dynamodb.TableProps.html)|Optional user provided props to override the default props for DynamoDB Table.|
+|existingTableInterface?|[`dynamodb.ITable`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-dynamodb.ITable.html)|Existing instance of DynamoDB table object or interface, providing both this and `dynamoTableProps` will cause an error.| Use this instead of `existingTableObj` to support a table object or interface.|
+| existingTableObj?	| [`dynamodb.Table`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-dynamodb.Table.html)|Existing instance of DynamoDB table object, providing both this and `dynamoTableProps` will cause an error.| This attribute is deprecated, please use `existingTableInterface`.|
+| tablePermissions?	|`string`|Optional table permissions to grant to the Lambda function. One of the following may be specified: `All`, `Read`, `ReadWrite`, `Write`.| Required only where DynamoDB is a data store being accessed by the construct.|
+| dynamoEventSourceProps?| [`aws-lambda-event-sources.DynamoEventSourceProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda-event-sources.DynamoEventSourceProps.html)| Optional user provided props to override the default props for DynamoDB Event Source. | Required only where DynamoDB is invoking other services (DynamoDB Streams). |
 
 **Required Construct Properties**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| dynamoTable	| dynamodb.Table	||
+| Name    | Type | Description | Notes    |
+| --- | --- | --- | --- |
+|dynamoTableInterface|[`dynamodb.ITable`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-dynamodb.ITable.html)|Returns an instance of `dynamodb.ITable` created by the construct.|
+|dynamoTable?|[`dynamodb.Table`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-dynamodb.Table.html)|Returns an instance of `dynamodb.Table` created by the construct. IMPORTANT: If existingTableInterface was provided in Pattern Construct Props, this property will be `undefined`.|
 
 ## ElasticSearch
 **Required Attributes on Props**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| esDomainProps?	| elasticsearch.CfnDomainProps	||
-| domainName	| string	||
+| Name    | Type | Description | Notes    |
+| --- | --- | --- | --- |
+| esDomainProps?| [`elasticsearch.CfnDomainProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-elasticsearch.CfnDomainProps.html)|Optional user provided props to override the default props for the Elasticsearch Service.|
+| domainName | `string`	| Domain name for the Cognito and the Elasticsearch Service. |
 
 
 **Required Construct Properties**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| elasticsearchDomain | elasticsearch.CfnDomain ||
-| elasticsearchDomainRole | iam.Role ||
+| Name    | Type | Description | Notes    |
+| --- | --- | --- | --- |
+| elasticsearchDomain |[`elasticsearch.CfnDomain`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-elasticsearch.CfnDomain.html)|Returns an instance of `elasticsearch.CfnDomain` created by the construct.|
+| elasticsearchDomainRole |[`iam.Role`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)|Returns an instance of `iam.Role` created by the construct for `elasticsearch.CfnDomain`.|
 
-## Eventbridge
+## EventBridge
 **Required Attributes on Props**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| eventRuleProps	| events.RuleProps	||
-| existingEVentBusInterface?	| events.IEventBus	||
-| eventBusProps?	| events.EventBusProps	||
+| Name    | Type | Description | Notes    |
+| --- | --- | --- | --- |
+| eventRuleProps | [`events.RuleProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-events.RuleProps.html)|User provided eventRuleProps to override the defaults. |
+| existingEventBusInterface? | [`events.IEventBus`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-events.IEventBus.html)| Optional user-provided custom EventBus for construct to use. Providing both this and `eventBusProps` results an error.|
+| eventBusProps?	| [`events.EventBusProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-events.EventBusProps.html)|Optional user-provided properties to override the default properties when creating a custom EventBus. Setting this value to `{}` will create a custom EventBus using all default properties. If neither this nor `existingEventBusInterface` is provided the construct will use the `default` EventBus. Providing both this and `existingEventBusInterface` results an error.|
 
 **Required Construct Properties**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| eventsRule	| events.Rule	||
-| eventBus?	| events.IEventBus	| Only populated for non-default Event Buses.|
+| Name    | Type | Description | Notes    |
+| --- | --- | --- | --- |
+| eventsRule | [`events.Rule`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-events.Rule.html)|Returns an instance of `events.Rule` created by the construct. |
+| eventBus?	| [`events.IEventBus`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-events.IEventBus.html)|Returns the instance of `events.IEventBus` used by the construct| Required only for non-default Event Buses.|
+
+## Fargate
+**Required Attributes on Props**
+| **Name**                           | **Type**                                                                                                                              |                                                                                                                                                                  **Description**                                                                                                                                                                  | **Notes** |
+| :--------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| clusterProps?                      | [ecs.ClusterProps](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.ClusterProps.html)                                    | Optional properties to create a new ECS cluster. To provide an existing cluster, use the cluster attribute of fargateServiceProps.                                                                                                                                                                                                                |           |
+| ecrRepositoryArn?                  | string                                                                                                                                | The arn of an ECR Repository containing the image to use to generate the containers. Either this or the image property of containerDefinitionProps must be provided. format: arn:aws:ecr:*region*:*account number*:repository/*Repository Name*                                                                                                   |           |
+| ecrImageVersion?                   | string                                                                                                                                | The version of the image to use from the repository. Defaults to 'Latest'                                                                                                                                                                                                                                                                         |           |
+| containerDefinitionProps?          | [ecs.ContainerDefinitionProps \| any](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.ContainerDefinitionProps.html)     | Optional props to define the container created for the Fargate Service (defaults found in fargate-defaults.ts)                                                                                                                                                                                                                                    |           |
+| fargateTaskDefinitionProps?        | [ecs.FargateTaskDefinitionProps \| any](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.FargateTaskDefinitionProps.html) | Optional props to define the Fargate Task Definition for this construct  (defaults found in fargate-defaults.ts)                                                                                                                                                                                                                                  |           |
+| fargateServiceProps?               | [ecs.FargateServiceProps \| any](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.FargateServiceProps.html)               | Optional values to override default Fargate Task definition properties (fargate-defaults.ts). The construct will default to launching the service is the most isolated subnets available (precedence: Isolated, Private and Public). Override those and other defaults here.                                                                      |           |
+| existingFargateServiceObject?      | [ecs.FargateService](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.FargateService.html)                                | A Fargate Service already instantiated (probably by another Solutions Construct). If this is specified, then no props defining a new service can be provided, including: existingImageObject, ecrImageVersion, containerDefintionProps, fargateTaskDefinitionProps, ecrRepositoryArn, fargateServiceProps, clusterProps, existingClusterInterface |           |
+| existingContainerDefinitionObject? | [ecs.ContainerDefinition](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.ContainerDefinition.html)                      | A container definition already instantiated as part of a Fargate service. This must be the container in the existingFargateServiceObject                                                                                                                                                                                                          |           |
+
+**Required Construct Properties**
+| **Name**  | **Type**                                                                                                         |                                                         **Description**                                                          | **Notes** |
+| :-------- | :--------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| service   | [ecs.FargateService](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.FargateService.html)           | The AWS Fargate service used by this construct (whether created by this construct or passed to this construct at initialization) |           |
+| container | [ecs.ContainerDefinition](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.ContainerDefinition.html) | The container associated with the AWS Fargate service in the service property.                                                   |           |
 
 ## Firehose
 **Required Attributes on Props**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| kinesisFirehoseProps?	| aws-kinesisfirehose.CfnDeliveryStreamProps	||
+| Name    | Type | Description | Notes    |
+| --- | --- | --- | --- |
+| kinesisFirehoseProps?	| [`kinesis.StreamProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kinesis.StreamProps.html)|Optional user-provided props to override the default props for the Kinesis stream. ||
 
 **Required Construct Properties**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| kinesisFirehose	| kinesisfirehose.CfnDeliveryStream	||
-| kinesisFirehoseRole	| iam.Role	||
-| kinesisFirehoseLogGroup	| logs.LogGroup	||
+| Name    | Type | Description | Notes    |
+| --- | --- | --- | --- |
+| kinesisFirehose|[`kinesisfirehose.CfnDeliveryStream`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kinesisfirehose.CfnDeliveryStream.html)|Returns an instance of `kinesisfirehose.CfnDeliveryStream` created by the construct.|
+| kinesisFirehoseRole| [`iam.Role`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)|Returns an instance of the `iam.Role` created by the construct for Kinesis Data Firehose delivery stream.|
+| kinesisFirehoseLogGroup| [`logs.LogGroup`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-logs.LogGroup.html)|Returns an instance of the `logs.LogGroup` created by the construct for Kinesis Data Firehose delivery stream.|
 
 ## IoT
 **Required Attributes on Props**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| iotEndpoint	| string	| When IoT is *downstream* (e.g. – aws-apigateway-iot) |
-| iotTopicRuleProps	| iot.CfnTopicRuleProps	| When iot is *upstream* (eg – aws-iot-lambda) |
+| Name    | Type     | Description | Notes    |
+| --- | --- | --- | --- |
+| iotEndpoint	| `string`|The AWS IoT endpoint subdomain to integrate the API Gateway with (e.g a1234567890123-ats).	| Required only when IoT is *downstream* (e.g. – aws-apigateway-iot). |
+| iotTopicRuleProps	| [`iot.CfnTopicRuleProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iot.CfnTopicRuleProps.html)|User provided CfnTopicRuleProps to override the defaults.| Required only when iot is *upstream* (eg – aws-iot-lambda). |
 
 **Required Construct Properties**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| iotActionsRole	| iam.Role	| For upstream IoT|
-| iotTopicRule | iot.CfnTopicRule | When iot is upstream |
+| Name    | Type | Description | Notes    |
+| --- | --- | --- | --- |
+| iotActionsRole | [`iam.Role`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)|Returns an instance of the `iam.Role` created by the construct for IoT Rule.| Required when IoT is upstream. |
+| iotTopicRule | [`iot.CfnTopicRule`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iot.CfnTopicRule.html)|Returns an instance of `iot.CfnTopicRule` created by the construct. | Required when IoT is upstream.|
 
 ## Kinesis Streams
 **Required Attributes on Props**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| existingStreamObj?	| kinesis.Stream	| |
-| kinesisStreamProps?	| kinesis.StreamProps	||
-|createCloudWatchAlarms|`boolean`| |
+| Name    | Type  | Description | Notes    |
+| --- | --- | --- | --- |
+| existingStreamObj?|[`kinesis.Stream`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kinesis.Stream.html)|Existing instance of Kinesis Stream, providing both this and `kinesisStreamProps` will cause an error.|
+| kinesisStreamProps?| [`kinesis.StreamProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kinesis.StreamProps.html)|Optional user-provided props to override the default props for the Kinesis stream.||
+|createCloudWatchAlarms|`boolean`|Whether to create recommended CloudWatch alarms for Kinesis Data Stream. Defaults to `true`. |
 
 **Required Construct Properties**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| kinesisStream	| kinesis.Stream	||
-| kinesisStreamRole	| iam.Role	| Only when Kinesis is upstream (because then the role is important to the construct) |
+| Name    | Type | Description | Notes    |
+| --- | --- | --- | --- |
+| kinesisStream	| [`kinesis.Stream`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kinesis.Stream.html)|Returns an instance of the Kinesis stream created or used by the pattern.|
+| kinesisStreamRole	| [`iam.Role`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)|Returns an instance of the iam.Role created by the construct for Kinesis stream	| Required only when Kinesis is upstream (because then the role is important to the construct). |
 
 ## Lambda
 **Required Attributes on Props**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| existingLambdaObj?	| lambda.Function	||
-| lambdaFunctionProps?	| lambda.FunctionProps	||
+| Name    | Type     | Description | Notes    |
+| --- | --- | --- | --- |
+| existingLambdaObj?	|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)|Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.||
+| lambdaFunctionProps?	|[`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.FunctionProps.html)|Optional user provided props to override the default props for the Lambda function.||
 
 **Required Construct Properties**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| lambdaFunction	| lambda.Function	||
+| Name    | Type     |  Description | Notes    |
+| --- | --- | --- | --- |
+| lambdaFunction	|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)|Returns an instance of the Lambda function used in the pattern.|
 
 ## Route53
 **Required Attributes on Props**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| privateHostedZoneProps? | [route53.PrivateHostedZoneProps](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-route53.PrivateHostedZoneProps.html) | Optional custom properties for a new Private Hosted Zone. Cannot be specified for a public API. Cannot specify a VPC, it will use the VPC in existingVpc or the VPC created by the construct. Providing both this and existingHostedZoneInterfaceis an error. |
+| Name    | Type     |   Description | Notes    |
+| --- | --- | --- | --- |
+| privateHostedZoneProps? | [route53.PrivateHostedZoneProps](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-route53.PrivateHostedZoneProps.html) | Optional custom properties for a new Private Hosted Zone. Cannot be specified for a public API. Cannot specify a VPC, it will use the VPC in existingVpc or the VPC created by the construct. Providing both this and existingHostedZoneInterface is an error. |
 | existingHostedZoneInterface? | [route53.IHostedZone](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-route53.IHostedZone.html) | Existing Public or Private Hosted Zone (type must match publicApi setting). Specifying both this and privateHostedZoneProps is an error. If this is a Private Hosted Zone, the associated VPC must be provided as the existingVpc property |
-| publicApi | boolean | Whether the construct is deploying a private or public API. This has implications for the Hosted Zone, VPC and ALB. |
+| publicApi | `boolean` | Whether the construct is deploying a private or public API. This has implications for the Hosted Zone, VPC and ALB. |
 
 **Required Construct Properties**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| hostedZone | [route53.IHostedZone](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-route53.IHostedZone.html) | The hosted zone used by the construct (whether created by the construct or providedb by the client) |
+| Name    | Type     |  Description | Notes    |
+| --- | --- | --- | --- |
+| hostedZone | [route53.IHostedZone](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-route53.IHostedZone.html) | The hosted zone used by the construct (whether created by the construct or provided by the client). |
 
 ## S3
 **Required Attributes on Props**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| existingBucketObj? | s3.Bucket | Either this, existingBucketInterface or bucketProps must be provided |
-| existingBucketInterface? | s3.IBucket | Either this, existingBucketObject or bucketProps must be provided |
-| bucketProps? | s3.BucketProps	| |
-| s3EventTypes?	| s3.EventType	| Only required when construct responds to S3 events |
-| s3EventFilters?	| s3.NotificationKeyFilter |Only required when construct responds to S3 events |
+| Name    | Type     | Description | Notes    |
+| --- | --- | --- | --- |
+| existingBucketInterface? | [`s3.IBucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.IBucket.html)|Existing S3 Bucket interface. Providing this property and `bucketProps` results in an error. | Use this instead of `existingBucketObj` to support a table object or interface.|
+| existingBucketObj? | [`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html)|Existing instance of S3 Bucket object. If this is provided, then also providing bucketProps is an error. | Deprecated, please use `existingBucketInterface`.|
+| bucketProps? | [`s3.BucketProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html)|Optional user provided props to override the default props for the S3 Bucket. |
+| s3EventTypes?	| [`s3.EventType[]`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.EventType.html)|The S3 event types that will trigger the notification. Defaults to `s3.EventType.OBJECT_CREATED`	| Required only when construct responds to S3 events. |
+| s3EventFilters?	| [`s3.NotificationKeyFilter[]`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.NotificationKeyFilter.html)|S3 object key filter rules to determine which objects trigger this event. If not specified, no filter rules will be applied.|Required only when construct responds to S3 events. |
 |loggingBucketProps?|[`s3.BucketProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html)|Optional user provided props to override the default props for the S3 Logging Bucket.|
-| logS3AccessLogs? | boolean| Whether to turn on Access Logs for the S3 bucket with the associated storage costs. Enabling Access Logging is a best practice.|
+| logS3AccessLogs? | `boolean`| Whether to turn on Access Logs for the S3 bucket with the associated storage costs. Enabling Access Logging is a best practice.|
 
 **Required Construct Properties**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| s3Bucket?	| s3.Bucket	| If the construct created a new bucket. If an existing bucket interface was submitted, this is undefined. |
-| s3BucketInterface |[`s3.IBucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.IBucket.html)|Returns an instance of s3.IBucket created by the construct|
-| s3LoggingBucket	| s3.Bucket	||
+| Name    | Type     |  Description | Notes    |
+| --- | --- | --- | --- |
+| s3Bucket?	|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html)	| If the construct created a new bucket. If an existing bucket interface was submitted, this is `undefined`. |
+| s3BucketInterface |[`s3.IBucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.IBucket.html)|Returns an instance of `s3.IBucket` created by the construct.|
+| s3LoggingBucket	|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html)	| Returns an instance of `s3.Bucket` created by the construct as the logging bucket for the primary bucket.|
 
 ## SNS
 **Required Attributes on Props**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| existingTopicObj?	| sns.Topic	||
-| topicProps?	| sns.TopicProps	||
-| enableEncryptionWithCustomerManagedKey?	| boolean	| Sending messages from an AWS service to an encrypted Topic [requires a Customer Master key](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-key-management.html#compatibility-with-aws-services). Those constructs require these properties.  |
-| encryptionKey?		| kms.Key	|
-| encryptionKeyProps?		| kms.KeyProps	|
+| Name    | Type     |  Description | Notes    |
+| --- | --- | --- |--- |
+| existingTopicObj?	| [`sns.Topic`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sns.Topic.html)|An optional, existing SNS topic to be used instead of the default topic. Providing both this and `topicProps` will cause an error|
+| topicProps?	| [`sns.TopicProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sns.TopicProps.html)|Optional user provided properties to override the default properties for the SNS topic.
+| enableEncryptionWithCustomerManagedKey?	| `boolean`|Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in the encryptionKey property for this construct.| Sending messages from an AWS service to an encrypted Topic [requires a Customer Master key](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-key-management.html#compatibility-with-aws-services). Those constructs require these properties.  |
+| encryptionKey?		| [`kms.Key`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kms.Key.html)|An optional, imported encryption key to encrypt the SQS queue, and SNS Topic.|
+| encryptionKeyProps?		| [`kms.KeyProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kms.KeyProps.html)|An optional, user provided properties to override the default properties for the KMS encryption key	|
 
 **Required Construct Properties**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| snsTopic	| sns.Topic	 | |
-| encryptionKey	| kms.Key	| Only required when AWS service is writing to the SNS topic (similar to SQS) |
+| Name    | Type     | Description | Notes    |
+| --- | --- | --- |--- |
+| snsTopic	| [`sns.Topic`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sns.Topic.html)|Returns an instance of the SNS topic created by the pattern. |
+| encryptionKey	| [`kms.Key`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kms.Key.html)|Returns an instance of `kms.Key` used for the SQS queue, and SNS Topic.| Only required when AWS service is writing to the SNS topic (similar to SQS). |
 
 ## SQS
 **Required Attributes on Props**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| queueProps?	| sqs.QueueProps	||
-| existingQueueObj?	| sqs.Queue	||
-| deployDeadLetterQueue?	| Boolean	||
-| deadLetterQueueProps?	| sqs.QueueProps	||
-| maxReceiveCount	| number	||
-| enableQueuePurging	| boolean	| This is only on 2 constructs, docs talk about a Lambda function role|
-| encryptionKey?	| kms.Key	| Sending messages from an AWS service to an encrypted queue [requires a Customer Master key](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-key-management.html#compatibility-with-aws-services). Those constructs require these properties. |
+| Name    | Type     | Description | Notes    |
+| --- | --- | --- |--- |
+| queueProps?	| [`sqs.QueueProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sqs.QueueProps.html)|Optional user provided props to override the default props for the SQS queue.|
+| existingQueueObj?|[`sqs.Queue`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sqs.Queue.html)|Existing SQS queue to be used instead of the default queue. Providing both this and `queueProps` will cause an error. If the SQS queue is encrypted, the KMS key utilized for encryption must be a customer managed CMK.|
+| deployDeadLetterQueue?	| `boolean`	|Whether to create a secondary queue to be used as a dead letter queue. Defaults to `true`.|
+| deadLetterQueueProps?	| [`sqs.QueueProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sqs.QueueProps.html)|Optional user provided props to override the default props for the SQS queue.|
+| maxReceiveCount	| `int`	| The number of times a message can be unsuccessfully dequeued before being moved to the dead letter queue. Defaults to `15`. |
+| enableQueuePurging	| `boolean`	| Whether to grant additional permissions to the Lambda function enabling it to purge the SQS queue. Defaults to `false`. | This is only on 2 constructs, docs talk about a Lambda function role.|
+| encryptionKey?	| [`kms.Key`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kms.Key.html)|Optional imported encryption key to encrypt the SQS queue.	| Sending messages from an AWS service to an encrypted queue [requires a Customer Master key](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-key-management.html#compatibility-with-aws-services). Those constructs require these properties. |
 
 **Required Construct Properties**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| sqsQueue	| sqs.Queue	||
-| deadLetterQueue?	| sqs.Queue	||
-| encryptionKey	| kms.Key	| Only for service to SQS constructs that require a non-default CMK. |
+| Name    | Type     | Description | Notes    |
+| --- | --- | --- |--- |
+| sqsQueue	|[`sqs.Queue`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sqs.Queue.html)|Returns an instance of the SQS queue created by the pattern.|
+| deadLetterQueue?	|[`sqs.Queue`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sqs.Queue.html)|Returns an instance of the SQS queue created by the pattern.|
+| encryptionKey	| [`kms.IKey`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kms.IKey.html)| Returns an instance of `kms.Key` used for the SQS queue.| Only for service to SQS constructs that require a non-default CMK. |
 
 ## Step Functions
 **Required Attributes on Props**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| stateMachineProps	| sfn.StateMachineProps	||
-| createCloudWatchAlarms | boolean | |
+| Name    | Type     | Description | Notes    |
+| --- | --- | --- |--- |
+| stateMachineProps	|[`sfn.StateMachineProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-stepfunctions.StateMachineProps.html)|Optional user provided props to override the default props for `sfn.StateMachine`|
+| createCloudWatchAlarms | `boolean`|Whether to create recommended CloudWatch alarms.|
 
 **Required Construct Properties**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| stateMachine		| sfn.StateMachine	||
-| stateMachineLoggingGroup	| logs.LogGroup	||
-| cloudwatchAlarms? | cloudwatch.Alarm[] ||
+| Name    | Type     | Description | Notes    |
+| --- | --- | --- |--- |
+| stateMachine| [`sfn.StateMachine`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-stepfunctions.StateMachine.html)|Returns an instance of `sfn.StateMachine` created by the construct.|
+| stateMachineLoggingGroup|[`logs.ILogGroup`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-logs.ILogGroup.html)|Returns an instance of the `logs.ILogGroup` created by the construct for StateMachine.|
+| cloudwatchAlarms? | [`cloudwatch.Alarm[]`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudwatch.Alarm.html)|Returns a list of `cloudwatch.Alarm` created by the construct.|
 
 ## VPC
 **Required Attributes on Props**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| existingVpc? | ec2.IVpc |  |
-| deployVpc? | boolean| |
-| vpcProps? | ec2.VpcProps| |
+| Name    | Type     | Description | Notes    |
+| --- | --- | --- |--- |
+| existingVpc? | [`ec2.IVpc`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.IVpc.html)|An existing VPC in which to deploy the construct. Providing both this and vpcProps is an error.|
+| deployVpc? |`boolean`|Whether to create a new VPC based on `vpcProps` into which to deploy this pattern. Setting this to true will deploy the minimal, most private VPC to run the pattern:<ul><li> One isolated subnet in each Availability Zone used by the CDK program</li><li>`enableDnsHostnames` and `enableDnsSupport` will both be set to true</li></ul>If this property is `true` then `existingVpc` cannot be specified. Defaults to `false`.|
+| vpcProps? |[`ec2.VpcProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.VpcProps.html)|Optional user-provided properties to override the default properties for the new VPC. `enableDnsHostnames`, `enableDnsSupport`, `natGateways` and `subnetConfiguration` are set by the Construct, so any values for those properties supplied here will be overrriden. If `deployVpc?` is not `true` then this property will be ignored. |
 
 **Required Construct Properties**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| vpc? | ec2.IVpc |  |
+| Name    | Type     | Description | Notes    |
+| --- | --- | --- |--- |
+| vpc? |[`ec2.IVpc`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.IVpc.html)| Returns an instance of the VPC created by the pattern, if `deployVpc?` is `true`, or `existingVpc?` is provided.                 |
 
 ## WAF WebACL
 **Required Attributes on Props**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| existingWebaclObj? | wafv2.CfnWebACL	||
-| webaclProps?	| wafv2.CfnWebACLProps	||
+| Name    | Type     | Description | Notes    |
+| --- | --- | --- |--- |
+| existingWebaclObj? | [`waf.CfnWebACL`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-wafv2.CfnWebACL.html)|Existing instance of a WAF web ACL, an error will occur if this and props is set.|
+| webaclProps?	| [`waf.CfnWebACLProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-wafv2.CfnWebACLProps.html)|Optional user-provided props to override the default props for the AWS WAF web ACL. To use a different collection of managed rule sets, specify a new rules property. Use our [`wrapManagedRuleSet(managedGroupName: string, vendorName: string, priority: number)`](../core/lib/waf-defaults.ts) function from core to create an array entry from each desired managed rule set.|
 
 **Required Construct Properties**
 
-| Name    | Type     | Notes    |
-| --- | --- | --- |
-| webacl	| wafv2.CfnWebACL	||
+| Name    | Type     | Description | Notes    |
+| --- | --- | --- |--- |
+| webacl| [`waf.CfnWebACL`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-wafv2.CfnWebACL.html)|Returns an instance of the `waf.CfnWebACL` created by the construct.|
+
+
+## Fargate
+**Required Attributes on Props**
+
+| Name    | Type     | Description | Notes    |
+| --- | --- | --- |--- |
+| publicApi | `boolean` | Whether the construct is deploying a private or public API. This has implications for the VPC and ALB. |
+| clusterProps? | [ecs.ClusterProps](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.ClusterProps.html) | Optional properties to create a new ECS cluster. To provide an existing cluster, use the cluster attribute of fargateServiceProps. |
+| ecrRepositoryArn? | `string` | The arn of an ECR Repository containing the image to use to generate the containers. Either this or the image property of containerDefinitionProps must be provided. format: arn:aws:ecr:*region*:*account number*:repository/*Repository Name* |
+| ecrImageVersion? | `string` | The version of the image to use from the repository. Defaults to `"Latest"` |
+| containerDefinitionProps? | [ecs.ContainerDefinitionProps \| any](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.ContainerDefinitionProps.html) | Optional props to define the container created for the Fargate Service (defaults found in fargate-defaults.ts) |
+| fargateTaskDefinitionProps? | [ecs.FargateTaskDefinitionProps \| any](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.FargateTaskDefinitionProps.html) | Optional props to define the Fargate Task Definition for this construct  (defaults found in fargate-defaults.ts). |
+| fargateServiceProps? | [ecs.FargateServiceProps \| any](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.FargateServiceProps.html) | Optional values to override default Fargate Task definition properties (fargate-defaults.ts). The construct will default to launching the service is the most isolated subnets available (precedence: Isolated, Private and Public). Override those and other defaults here. |
+| existingFargateServiceObject? | [ecs.FargateService](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.FargateService.html) | A Fargate Service already instantiated (probably by another Solutions Construct). If this is specified, then no props defining a new service can be provided, including: `existingImageObject, ecrImageVersion, containerDefintionProps, fargateTaskDefinitionProps, ecrRepositoryArn, fargateServiceProps, clusterProps, existingClusterInterface`. |
+| existingContainerDefinitionObject? | [ecs.ContainerDefinition](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.ContainerDefinition.html) | A container definition already instantiated as part of a Fargate service. This must be the container in the `existingFargateServiceObject`. |
+
+**Required Construct Properties**
+
+| Name    | Type     | Description | Notes    |
+| --- | --- | --- |--- |
+| service | [ecs.FargateService](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.FargateService.html) | The AWS Fargate service used by this construct (whether created by this construct or passed to this construct at initialization). |
+| container | [ecs.ContainerDefinition](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.ContainerDefinition.html) | The container associated with the AWS Fargate service in the service property. |

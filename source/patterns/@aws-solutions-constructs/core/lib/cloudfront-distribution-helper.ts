@@ -21,7 +21,7 @@ import {
   DefaultCloudFrontWebDistributionForApiGatewayProps,
   DefaultCloudFrontDisributionForMediaStoreProps
 } from './cloudfront-distribution-defaults';
-import { overrideProps, addCfnSuppressRules } from './utils';
+import { overrideProps, addCfnSuppressRules, consolidateProps } from './utils';
 import { createLoggingBucket } from './s3-bucket-helper';
 import { DefaultS3Props } from './s3-bucket-defaults';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
@@ -75,7 +75,7 @@ export function CloudFrontDistributionForApiGateway(scope: Construct,
 
   const defaultprops = DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint, loggingBucket, httpSecurityHeaders, cloudfrontFunction);
 
-  const cfprops = cloudFrontDistributionProps ? overrideProps(defaultprops, cloudFrontDistributionProps, false) : defaultprops;
+  const cfprops = consolidateProps(defaultprops, cloudFrontDistributionProps);
   // Create the Cloudfront Distribution
   const cfDistribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
   updateSecurityPolicy(cfDistribution);
@@ -97,7 +97,7 @@ export function CloudFrontDistributionForS3(scope: Construct,
 
   const defaultprops = DefaultCloudFrontWebDistributionForS3Props(sourceBucket, loggingBucket, httpSecurityHeaders, originPath, cloudfrontFunction);
 
-  const cfprops = cloudFrontDistributionProps ? overrideProps(defaultprops, cloudFrontDistributionProps, false) : defaultprops;
+  const cfprops = consolidateProps(defaultprops, cloudFrontDistributionProps);
   // Create the Cloudfront Distribution
   const cfDistribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
   updateSecurityPolicy(cfDistribution);
@@ -168,11 +168,7 @@ export function CloudFrontDistributionForMediaStore(scope: Construct,
 
   let cfprops: cloudfront.DistributionProps;
 
-  if (cloudFrontDistributionProps) {
-    cfprops = overrideProps(defaultprops, cloudFrontDistributionProps, false);
-  } else {
-    cfprops = defaultprops;
-  }
+  cfprops = consolidateProps(defaultprops, cloudFrontDistributionProps);
 
   // Create the CloudFront Distribution
   const cfDistribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);

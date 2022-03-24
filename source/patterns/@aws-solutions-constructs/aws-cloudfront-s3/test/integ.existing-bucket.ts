@@ -26,10 +26,17 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
 let mybucket: s3.Bucket;
-mybucket = defaults.CreateScrapBucket(stack, { removalPolicy: RemovalPolicy.DESTROY });
+mybucket = defaults.CreateScrapBucket(stack,   {
+  removalPolicy: RemovalPolicy.DESTROY,
+  autoDeleteObjects: true
+});
 
 const _construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {
   existingBucketObj: mybucket,
+  cloudFrontLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
 });
 
 // Add Cache Policy
@@ -45,5 +52,6 @@ _construct.cloudFrontWebDistribution.addBehavior('/images/*.jpg', new origins.S3
   cachePolicy: myCachePolicy
 });
 
+defaults.suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();

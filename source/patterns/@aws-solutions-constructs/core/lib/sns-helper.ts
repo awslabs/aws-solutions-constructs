@@ -16,7 +16,7 @@ import * as sns from '@aws-cdk/aws-sns';
 import * as kms from '@aws-cdk/aws-kms';
 import { DefaultSnsTopicProps } from './sns-defaults';
 import { buildEncryptionKey } from './kms-helper';
-import { overrideProps } from './utils';
+import { consolidateProps } from './utils';
 import { PolicyStatement, AnyPrincipal, Effect, AccountPrincipal } from '@aws-cdk/aws-iam';
 import { Stack } from '@aws-cdk/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
@@ -120,14 +120,8 @@ function applySecureTopicPolicy(topic: sns.Topic): void {
 export function buildTopic(scope: Construct, props: BuildTopicProps): [sns.Topic, kms.Key?] {
   if (!props.existingTopicObj) {
     // Setup the topic properties
-    let snsTopicProps;
-    if (props.topicProps) {
-      // If property overrides have been provided, incorporate them and deploy
-      snsTopicProps = overrideProps(DefaultSnsTopicProps, props.topicProps);
-    } else {
-      // If no property overrides, deploy using the default configuration
-      snsTopicProps = DefaultSnsTopicProps;
-    }
+    const snsTopicProps = consolidateProps(DefaultSnsTopicProps, props.topicProps);
+
     // Set encryption properties
     if (props.enableEncryptionWithCustomerManagedKey === undefined || props.enableEncryptionWithCustomerManagedKey === false) {
       // Retrieve SNS managed key to encrypt the SNS Topic

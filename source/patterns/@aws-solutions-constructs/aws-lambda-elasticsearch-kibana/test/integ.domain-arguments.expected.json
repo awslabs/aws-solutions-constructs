@@ -227,7 +227,7 @@
     "testlambdaelasticsearchkibana2UserPoolDomainF6BF7A6F": {
       "Type": "AWS::Cognito::UserPoolDomain",
       "Properties": {
-        "Domain": "mydomainfortesting",
+        "Domain": "domain-args-cogn-7c94",
         "UserPoolId": {
           "Ref": "testlambdaelasticsearchkibana2CognitoUserPool9D73D9DA"
         }
@@ -284,7 +284,7 @@
                         {
                           "Ref": "AWS::AccountId"
                         },
-                        ":domain/mydomainfortesting/*"
+                        ":domain/domain-args-cogn-7c94/*"
                       ]
                     ]
                   }
@@ -389,10 +389,7 @@
                       {
                         "Ref": "AWS::AccountId"
                       },
-                      ":domain/domain-",
-                      {
-                        "Ref": "AWS::AccountId"
-                      }
+                      ":domain/domain-args-7c94"
                     ]
                   ]
                 }
@@ -460,11 +457,7 @@
                     {
                       "Ref": "AWS::AccountId"
                     },
-                    ":domain/domain-",
-                    {
-                      "Ref": "AWS::AccountId"
-                    },
-                    "/*"
+                    ":domain/domain-args-7c94/*"
                   ]
                 ]
               }
@@ -487,17 +480,7 @@
             "Ref": "testlambdaelasticsearchkibana2CognitoUserPool9D73D9DA"
           }
         },
-        "DomainName": {
-          "Fn::Join": [
-            "",
-            [
-              "domain-",
-              {
-                "Ref": "AWS::AccountId"
-              }
-            ]
-          ]
-        },
+        "DomainName": "domain-args-7c94",
         "EBSOptions": {
           "EBSEnabled": true,
           "VolumeSize": 10

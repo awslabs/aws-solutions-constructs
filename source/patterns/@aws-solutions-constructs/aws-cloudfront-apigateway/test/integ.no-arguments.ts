@@ -12,7 +12,7 @@
  */
 
 /// !cdk-integ *
-import { App, Stack } from "@aws-cdk/core";
+import { App, RemovalPolicy, Stack } from "@aws-cdk/core";
 import { CloudFrontToApiGateway } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
@@ -51,8 +51,13 @@ _api.methods.forEach((apiMethod) => {
 });
 
 new CloudFrontToApiGateway(stack, 'test-cloudfront-apigateway', {
-  existingApiGatewayObj: _api
+  existingApiGatewayObj: _api,
+  cloudFrontLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
 });
 
+defaults.suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();

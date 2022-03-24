@@ -718,6 +718,7 @@
         "Type": "application"
       },
       "DependsOn": [
+        "existingzonestackAutoDeleteObjectsCustomResource5A21F306",
         "existingzonestackPolicyFEC9C88E",
         "existingzonestackEFB9F5B3"
       ]
@@ -740,6 +741,7 @@
         }
       },
       "DependsOn": [
+        "existingzonestackAutoDeleteObjectsCustomResource5A21F306",
         "existingzonestackPolicyFEC9C88E",
         "existingzonestackEFB9F5B3"
       ],
@@ -772,12 +774,18 @@
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
         },
+        "Tags": [
+          {
+            "Key": "aws-cdk:auto-delete-objects",
+            "Value": "true"
+          }
+        ],
         "VersioningConfiguration": {
           "Status": "Enabled"
         }
       },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
@@ -833,7 +841,49 @@
             },
             {
               "Action": [
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::GetAtt": [
+                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                    "Arn"
+                  ]
+                }
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "existingzonestackEFB9F5B3",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "existingzonestackEFB9F5B3",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
                 "s3:PutObject",
+                "s3:PutObjectLegalHold",
+                "s3:PutObjectRetention",
+                "s3:PutObjectTagging",
+                "s3:PutObjectVersionTagging",
                 "s3:Abort*"
               ],
               "Effect": "Allow",
@@ -869,11 +919,73 @@
                   ]
                 ]
               }
+            },
+            {
+              "Action": "s3:PutObject",
+              "Condition": {
+                "StringEquals": {
+                  "s3:x-amz-acl": "bucket-owner-full-control"
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "delivery.logs.amazonaws.com"
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "existingzonestackEFB9F5B3",
+                        "Arn"
+                      ]
+                    },
+                    "/AWSLogs/",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": "s3:GetBucketAcl",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "delivery.logs.amazonaws.com"
+              },
+              "Resource": {
+                "Fn::GetAtt": [
+                  "existingzonestackEFB9F5B3",
+                  "Arn"
+                ]
+              }
             }
           ],
           "Version": "2012-10-17"
         }
       }
+    },
+    "existingzonestackAutoDeleteObjectsCustomResource5A21F306": {
+      "Type": "Custom::S3AutoDeleteObjects",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+            "Arn"
+          ]
+        },
+        "BucketName": {
+          "Ref": "existingzonestackEFB9F5B3"
+        }
+      },
+      "DependsOn": [
+        "existingzonestackPolicyFEC9C88E"
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "existingzonestackexistingzonestackalias77D2E65D": {
       "Type": "AWS::Route53::RecordSet",
@@ -904,6 +1016,82 @@
         },
         "HostedZoneId": {
           "Ref": "newzone1D011936"
+        }
+      }
+    },
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+          }
+        ]
+      }
+    },
+    "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1"
+          },
+          "S3Key": "15684a15d07860e99d2a8079150ad33dd2cb743677fcd7016dd07345e1b69538.zip"
+        },
+        "Timeout": 900,
+        "MemorySize": 128,
+        "Handler": "__entrypoint__.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs12.x",
+        "Description": {
+          "Fn::Join": [
+            "",
+            [
+              "Lambda function for auto-deleting objects in ",
+              {
+                "Ref": "existingzonestackEFB9F5B3"
+              },
+              " S3 bucket."
+            ]
+          ]
+        }
+      },
+      "DependsOn": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W89",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W92",
+              "reason": "CDK generated custom resource"
+            }
+          ]
         }
       }
     }

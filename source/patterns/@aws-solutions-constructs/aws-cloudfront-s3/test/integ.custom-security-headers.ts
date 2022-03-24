@@ -14,7 +14,7 @@
 // Imports
 import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { CloudFrontToS3 } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 import * as cloudfront from "@aws-cdk/aws-cloudfront";
 
 // Setup
@@ -37,6 +37,10 @@ const cloudfrontFunction = new cloudfront.Function(stack, "MyFunction", {
 });
 
 new CloudFrontToS3(stack, 'test-cloudfront-s3', {
+  cloudFrontLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
   cloudFrontDistributionProps: {
     defaultBehavior: {
       functionAssociations: [
@@ -49,8 +53,10 @@ new CloudFrontToS3(stack, 'test-cloudfront-s3', {
   },
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
   }
 });
 
+suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();
