@@ -11,6 +11,8 @@
  *  and limitations under the License.
  */
 
+import * as path from "path";
+import * as s3assets from "@aws-cdk/aws-s3-assets";
 import { ResourcePart } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import { CfnDatabase, CfnJob } from '@aws-cdk/aws-glue';
@@ -673,4 +675,185 @@ test('When database and table are not provided & cloudwatch alarms set to false'
 
   // Since alarms is set to false, cloudwatch alarms property should be undefined
   expect(construct.cloudwatchAlarms).toBeUndefined();
+});
+
+test('When Asset for local file is defined', () => {
+  const stack = new Stack();
+  const etlAsset = new s3assets.Asset(stack, 'ETL', {
+    path: path.join(__dirname, 'fakefile.py')
+  });
+
+  const props: KinesisstreamsToGluejobProps = {
+    etlCodeAsset: etlAsset,
+    glueJobProps: {
+      command: {
+        name: 'glueetl',
+        pythonVersion: '3'
+      }
+    },
+    fieldSchema: [{
+      name: "id",
+      type: "int",
+      comment: "Identifier for the record"
+    }, {
+      name: "name",
+      type: "string",
+      comment: "The name of the record"
+    }, {
+      name: "type",
+      type: "string",
+      comment: "The type of the record"
+    }, {
+      name: "numericvalue",
+      type: "int",
+      comment: "Some value associated with the record"
+    }],
+  };
+
+  const id = 'test-kinesisstreams-lambda';
+  const construct = new KinesisstreamsToGluejob(stack, id, props);
+
+  // Check for properties
+  expect(construct.database).toBeDefined();
+  expect(construct.glueJob).toBeDefined();
+  expect(construct.table).toBeDefined();
+  expect(construct.kinesisStream).toBeDefined();
+  expect(construct.glueJobRole).toBeDefined();
+  expect(construct.cloudwatchAlarms).toBeDefined();
+
+  expect(stack).toHaveResourceLike('AWS::IAM::Policy', {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: [
+            "s3:GetObject*",
+            "s3:GetBucket*",
+            "s3:List*",
+            "s3:DeleteObject*",
+            "s3:PutObject*",
+            "s3:Abort*"
+          ],
+          Effect: "Allow",
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                "testkinesisstreamslambdaS3Bucket54759F5C",
+                "Arn"
+              ]
+            },
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "testkinesisstreamslambdaS3Bucket54759F5C",
+                      "Arn"
+                    ]
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          Action: [
+            "s3:GetObject*",
+            "s3:GetBucket*",
+            "s3:List*"
+          ],
+          Effect: "Allow",
+          Resource: [
+            {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    Ref: "AWS::Partition"
+                  },
+                  ":s3:::",
+                  {
+                    Ref: "AssetParametersfbf0b12f00bc09401fb04a361c549193f18f6fa7df4d304c5bfab7ace478b340S3BucketA50F2ADC"
+                  }
+                ]
+              ]
+            },
+            {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    Ref: "AWS::Partition"
+                  },
+                  ":s3:::",
+                  {
+                    Ref: "AssetParametersfbf0b12f00bc09401fb04a361c549193f18f6fa7df4d304c5bfab7ace478b340S3BucketA50F2ADC"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      Version: "2012-10-17"
+    },
+    PolicyName: "testkinesisstreamslambdaJobRoleDefaultPolicy943FFA49",
+    Roles: [
+      {
+        Ref: "testkinesisstreamslambdaJobRole42199B9C"
+      }
+    ]
+  }, ResourcePart.Properties);
+
+  expect(stack).toHaveResourceLike('AWS::Glue::Job', {
+    Type: 'AWS::Glue::Job',
+    Properties: {
+      Command: {
+        Name: "glueetl",
+        PythonVersion: "3",
+        ScriptLocation: {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                Ref: "AssetParametersfbf0b12f00bc09401fb04a361c549193f18f6fa7df4d304c5bfab7ace478b340S3BucketA50F2ADC"
+              },
+              "/",
+              {
+                "Fn::Select": [
+                  0,
+                  {
+                    "Fn::Split": [
+                      "||",
+                      {
+                        Ref: "AssetParametersfbf0b12f00bc09401fb04a361c549193f18f6fa7df4d304c5bfab7ace478b340S3VersionKey9A832466"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Fn::Select": [
+                  1,
+                  {
+                    "Fn::Split": [
+                      "||",
+                      {
+                        Ref: "AssetParametersfbf0b12f00bc09401fb04a361c549193f18f6fa7df4d304c5bfab7ace478b340S3VersionKey9A832466"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          ]
+        }
+      }
+    }
+  }, ResourcePart.CompleteDefinition);
 });
