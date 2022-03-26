@@ -11,13 +11,14 @@
  *  and limitations under the License.
  */
 
-import * as glue from '@aws-cdk/aws-glue';
-import { Effect, IRole, Policy, PolicyStatement } from '@aws-cdk/aws-iam';
-import { Stream, StreamProps } from '@aws-cdk/aws-kinesis';
-import { Bucket } from '@aws-cdk/aws-s3';
-import { Aws, Construct } from '@aws-cdk/core';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
-import * as defaults from '@aws-solutions-constructs/core';
+import * as glue from "@aws-cdk/aws-glue";
+import * as s3assets from "@aws-cdk/aws-s3-assets";
+import { Effect, IRole, Policy, PolicyStatement } from "@aws-cdk/aws-iam";
+import { Stream, StreamProps } from "@aws-cdk/aws-kinesis";
+import { Bucket } from "@aws-cdk/aws-s3";
+import { Aws, Construct } from "@aws-cdk/core";
+import * as cloudwatch from "@aws-cdk/aws-cloudwatch";
+import * as defaults from "@aws-solutions-constructs/core";
 
 export interface KinesisstreamsToGluejobProps {
   /**
@@ -45,7 +46,19 @@ export interface KinesisstreamsToGluejobProps {
    */
   readonly glueJobProps?: glue.CfnJobProps | any;
   /**
-   * Existing GlueJob configuration. If this property is provided, any properties provided through @glueJobProps is ignored
+   * Existing GlueJob configuration. If this property is provided, any properties provided through @glueJobProps is ignored.
+   * The ETL script can be provided either under glue.CfnJob.JobCommandProperty or set as an Asset instance under
+   * @KinesisstreamsToGluejobProps.etlCodeAsset.
+   *
+   * If an S3 location is know and exists, provide the S3 url in the `scriptLocation` attribute in glue.CfnJob.JobCommandProperty as an
+   * S3 format URL (example: `s3://bucketname/keyprefix.py`)
+   *
+   * If the ETL script exists as a local files or directories, create an instance of the Asset (aws-cdk-lib » aws_s3_assets) class
+   * set the @KinesisstreamsToGluejobProps.etlCodeAsset.
+   *
+   * In case both (JobCommandProperty.scriptLocation and @KinesisstreamsToGluejobProps.etlCodeAsset) are set,
+   * @KinesisstreamsToGluejobProps.etlCodeAsset will take higher precedence and override the JobCommandProperty.scriptLocation
+   *
    */
   readonly existingGlueJob?: glue.CfnJob;
   /**
@@ -71,7 +84,7 @@ export interface KinesisstreamsToGluejobProps {
    *
    * @default - None
    */
-  readonly fieldSchema?: glue.CfnTable.ColumnProperty [];
+  readonly fieldSchema?: glue.CfnTable.ColumnProperty[];
   /**
    * Glue Table for this construct, If not provided the construct will create a new Table in the
    * database. This table should define the schema for the records in the Kinesis Data Streams.
@@ -107,6 +120,14 @@ export interface KinesisstreamsToGluejobProps {
    * @default - Alarms are created
    */
   readonly createCloudWatchAlarms?: boolean;
+  /**
+   * Provide Asset instance corresponding to the code in the local filesystem, responsible for
+   * performing the Glue Job transformation. This property will override any S3 locations provided
+   * under glue.CfnJob.JobCommandProperty
+   *
+   * @default - None
+   */
+  readonly etlCodeAsset?: s3assets.Asset;
 }
 
 /**
@@ -141,7 +162,11 @@ export class KinesisstreamsToGluejob extends Construct {
    * @param id
    * @param props
    */
-  constructor(scope: Construct, id: string, props: KinesisstreamsToGluejobProps) {
+  constructor(
+    scope: Construct,
+    id: string,
+    props: KinesisstreamsToGluejobProps
+  ) {
     super(scope, id);
     defaults.CheckProps(props);
 
@@ -150,31 +175,61 @@ export class KinesisstreamsToGluejob extends Construct {
       kinesisStreamProps: props.kinesisStreamProps,
     });
 
-    this.database = props.existingDatabase !== undefined ? props.existingDatabase : defaults.createGlueDatabase(scope, props.databaseProps);
+    this.database =
+      props.existingDatabase !== undefined
+        ? props.existingDatabase
+        : defaults.createGlueDatabase(scope, props.databaseProps);
 
-    if (props.fieldSchema === undefined && props.existingTable === undefined && props.tableProps === undefined) {
-      throw Error('Either fieldSchema or table property has to be set, both cannot be optional');
+    if (
+      props.fieldSchema === undefined &&
+      props.existingTable === undefined &&
+      props.tableProps === undefined
+    ) {
+      throw Error(
+        "Either fieldSchema or table property has to be set, both cannot be optional"
+      );
     }
 
     if (props.existingTable !== undefined) {
       this.table = props.existingTable;
     } else {
-      this.table = defaults.createGlueTable(scope, this.database, props.tableProps, props.fieldSchema, 'kinesis', {
-        STREAM_NAME: this.kinesisStream.streamName
-      });
+      this.table = defaults.createGlueTable(
+        scope,
+        this.database,
+        props.tableProps,
+        props.fieldSchema,
+        "kinesis",
+        {
+          STREAM_NAME: this.kinesisStream.streamName,
+        }
+      );
     }
 
-    [ this.glueJob, this.glueJobRole, this.outputBucket ] = defaults.buildGlueJob(this, {
-      existingCfnJob: props.existingGlueJob,
-      glueJobProps: props.glueJobProps,
-      table: this.table!,
-      database: this.database!,
-      outputDataStore: props.outputDataStore!
-    });
+    [this.glueJob, this.glueJobRole, this.outputBucket] = defaults.buildGlueJob(
+      this,
+      {
+        existingCfnJob: props.existingGlueJob,
+        glueJobProps: props.glueJobProps,
+        table: this.table!,
+        database: this.database!,
+        outputDataStore: props.outputDataStore!,
+        etlCodeAsset: props.etlCodeAsset
+      }
+    );
 
-    this.glueJobRole = this.buildRolePolicy(scope, id, this.database, this.table, this.glueJob, this.glueJobRole);
+    this.glueJobRole = this.buildRolePolicy(
+      scope,
+      id,
+      this.database,
+      this.table,
+      this.glueJob,
+      this.glueJobRole
+    );
 
-    if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
+    if (
+      props.createCloudWatchAlarms === undefined ||
+      props.createCloudWatchAlarms
+    ) {
       // Deploy best practices CW Alarms for Kinesis Stream
       this.cloudwatchAlarms = defaults.buildKinesisStreamCWAlarms(this);
     }
@@ -189,48 +244,70 @@ export class KinesisstreamsToGluejob extends Construct {
    * @param glueJob
    * @param role
    */
-  private buildRolePolicy(scope: Construct, id: string, glueDatabase: glue.CfnDatabase, glueTable: glue.CfnTable,
-    glueJob: glue.CfnJob, role: IRole): IRole {
+  private buildRolePolicy(
+    scope: Construct,
+    id: string,
+    glueDatabase: glue.CfnDatabase,
+    glueTable: glue.CfnTable,
+    glueJob: glue.CfnJob,
+    role: IRole
+  ): IRole {
     const _glueJobPolicy = new Policy(scope, `${id}GlueJobPolicy`, {
-      statements: [ new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: [ 'glue:GetJob' ],
-        resources: [ `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:job/${glueJob.ref}` ]
-      }), new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: [ 'glue:GetSecurityConfiguration' ],
-        resources: [ '*' ] // Security Configurations have no resource ARNs
-      }), new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: [ 'glue:GetTable' ],
-        resources: [ `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:table/${glueDatabase.ref}/${glueTable.ref}`,
-          `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:database/${glueDatabase.ref}`,
-          `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:catalog`
-        ]
-      }), new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: [ 'cloudwatch:PutMetricData' ],
-        resources: [ '*' ], // Metrics do not have resource ARN and hence added conditions
-        conditions: {
-          StringEquals: {
-            "cloudwatch:namespace": "Glue"
+      statements: [
+        new PolicyStatement({
+          effect: Effect.ALLOW,
+          actions: ["glue:GetJob"],
+          resources: [
+            `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:job/${glueJob.ref}`,
+          ],
+        }),
+        new PolicyStatement({
+          effect: Effect.ALLOW,
+          actions: ["glue:GetSecurityConfiguration"],
+          resources: ["*"], // Security Configurations have no resource ARNs
+        }),
+        new PolicyStatement({
+          effect: Effect.ALLOW,
+          actions: ["glue:GetTable"],
+          resources: [
+            `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:table/${glueDatabase.ref}/${glueTable.ref}`,
+            `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:database/${glueDatabase.ref}`,
+            `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:catalog`,
+          ],
+        }),
+        new PolicyStatement({
+          effect: Effect.ALLOW,
+          actions: ["cloudwatch:PutMetricData"],
+          resources: ["*"], // Metrics do not have resource ARN and hence added conditions
+          conditions: {
+            StringEquals: {
+              "cloudwatch:namespace": "Glue",
+            },
+            Bool: {
+              "aws:SecureTransport": "true",
+            },
           },
-          Bool: {
-            "aws:SecureTransport": "true"
-          }
-        }
-      }), new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: [ 'kinesis:DescribeStream', 'kinesis:DescribeStreamSummary', 'kinesis:GetRecords',
-          'kinesis:GetShardIterator', 'kinesis:ListShards', 'kinesis:SubscribeToShard' ],
-        resources: [ this.kinesisStream.streamArn ]
-      })]
+        }),
+        new PolicyStatement({
+          effect: Effect.ALLOW,
+          actions: [
+            "kinesis:DescribeStream",
+            "kinesis:DescribeStreamSummary",
+            "kinesis:GetRecords",
+            "kinesis:GetShardIterator",
+            "kinesis:ListShards",
+            "kinesis:SubscribeToShard",
+          ],
+          resources: [this.kinesisStream.streamArn],
+        }),
+      ],
     });
 
     defaults.addCfnSuppressRules(_glueJobPolicy, [
       {
-        id: 'W12',
-        reason: "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.            CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to            publish metrics only for AWS Glue"
+        id: "W12",
+        reason:
+          "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.            CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to            publish metrics only for AWS Glue",
       },
     ]);
 
