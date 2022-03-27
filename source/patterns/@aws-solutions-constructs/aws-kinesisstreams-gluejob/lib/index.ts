@@ -180,11 +180,7 @@ export class KinesisstreamsToGluejob extends Construct {
         ? props.existingDatabase
         : defaults.createGlueDatabase(scope, props.databaseProps);
 
-    if (
-      props.fieldSchema === undefined &&
-      props.existingTable === undefined &&
-      props.tableProps === undefined
-    ) {
+    if (props.fieldSchema === undefined && props.existingTable === undefined && props.tableProps === undefined) {
       throw Error(
         "Either fieldSchema or table property has to be set, both cannot be optional"
       );
@@ -193,12 +189,7 @@ export class KinesisstreamsToGluejob extends Construct {
     if (props.existingTable !== undefined) {
       this.table = props.existingTable;
     } else {
-      this.table = defaults.createGlueTable(
-        scope,
-        this.database,
-        props.tableProps,
-        props.fieldSchema,
-        "kinesis",
+      this.table = defaults.createGlueTable(scope, this.database, props.tableProps, props.fieldSchema, "kinesis",
         {
           STREAM_NAME: this.kinesisStream.streamName,
         }
@@ -217,18 +208,10 @@ export class KinesisstreamsToGluejob extends Construct {
       }
     );
 
-    this.glueJobRole = this.buildRolePolicy(
-      scope,
-      id,
-      this.database,
-      this.table,
-      this.glueJob,
-      this.glueJobRole
-    );
+    this.glueJobRole = this.buildRolePolicy(scope, id, this.database, this.table, this.glueJob, this.glueJobRole);
 
     if (
-      props.createCloudWatchAlarms === undefined ||
-      props.createCloudWatchAlarms
+      props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms
     ) {
       // Deploy best practices CW Alarms for Kinesis Stream
       this.cloudwatchAlarms = defaults.buildKinesisStreamCWAlarms(this);
@@ -244,14 +227,8 @@ export class KinesisstreamsToGluejob extends Construct {
    * @param glueJob
    * @param role
    */
-  private buildRolePolicy(
-    scope: Construct,
-    id: string,
-    glueDatabase: glue.CfnDatabase,
-    glueTable: glue.CfnTable,
-    glueJob: glue.CfnJob,
-    role: IRole
-  ): IRole {
+  private buildRolePolicy(scope: Construct, id: string, glueDatabase: glue.CfnDatabase, glueTable: glue.CfnTable,
+    glueJob: glue.CfnJob, role: IRole): IRole {
     const _glueJobPolicy = new Policy(scope, `${id}GlueJobPolicy`, {
       statements: [
         new PolicyStatement({

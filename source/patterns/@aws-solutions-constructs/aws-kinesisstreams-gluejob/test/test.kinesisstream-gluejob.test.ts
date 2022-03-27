@@ -725,14 +725,7 @@ test('When Asset for local file is defined', () => {
     PolicyDocument: {
       Statement: [
         {
-          Action: [
-            "s3:GetObject*",
-            "s3:GetBucket*",
-            "s3:List*",
-            "s3:DeleteObject*",
-            "s3:PutObject*",
-            "s3:Abort*"
-          ],
+          Action: [],
           Effect: "Allow",
           Resource: [
             {
@@ -773,10 +766,7 @@ test('When Asset for local file is defined', () => {
                   {
                     Ref: "AWS::Partition"
                   },
-                  ":s3:::",
-                  {
-                    Ref: "AssetParametersfbf0b12f00bc09401fb04a361c549193f18f6fa7df4d304c5bfab7ace478b340S3BucketA50F2ADC"
-                  }
+                  ":s3:::", {}
                 ]
               ]
             },
@@ -788,10 +778,7 @@ test('When Asset for local file is defined', () => {
                   {
                     Ref: "AWS::Partition"
                   },
-                  ":s3:::",
-                  {
-                    Ref: "AssetParametersfbf0b12f00bc09401fb04a361c549193f18f6fa7df4d304c5bfab7ace478b340S3BucketA50F2ADC"
-                  },
+                  ":s3:::", {},
                   "/*"
                 ]
               ]
