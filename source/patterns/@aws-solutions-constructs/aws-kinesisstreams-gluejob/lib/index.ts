@@ -250,7 +250,7 @@ export class KinesisstreamsToGluejob extends Construct {
       }),
       new PolicyStatement({
         effect: Effect.ALLOW,
-        actions: [ "kinesis:DescribeStream", "kinesis:DescribeStreamSummary", "kinesis:GetRecords", 
+        actions: [ "kinesis:DescribeStream", "kinesis:DescribeStreamSummary", "kinesis:GetRecords",
           "kinesis:GetShardIterator", "kinesis:ListShards", "kinesis:SubscribeToShard" ],
         resources: [this.kinesisStream.streamArn],
       })],
