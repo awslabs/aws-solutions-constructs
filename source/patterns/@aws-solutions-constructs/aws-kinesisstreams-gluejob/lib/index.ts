@@ -162,11 +162,7 @@ export class KinesisstreamsToGluejob extends Construct {
    * @param id
    * @param props
    */
-  constructor(
-    scope: Construct,
-    id: string,
-    props: KinesisstreamsToGluejobProps
-  ) {
+  constructor(scope: Construct, id: string, props: KinesisstreamsToGluejobProps) {
     super(scope, id);
     defaults.CheckProps(props);
 
@@ -175,44 +171,33 @@ export class KinesisstreamsToGluejob extends Construct {
       kinesisStreamProps: props.kinesisStreamProps,
     });
 
-    this.database =
-      props.existingDatabase !== undefined
-        ? props.existingDatabase
-        : defaults.createGlueDatabase(scope, props.databaseProps);
+    this.database = props.existingDatabase !== undefined ? props.existingDatabase : defaults.createGlueDatabase(scope, props.databaseProps);
 
     if (props.fieldSchema === undefined && props.existingTable === undefined && props.tableProps === undefined) {
-      throw Error(
-        "Either fieldSchema or table property has to be set, both cannot be optional"
-      );
+      throw Error("Either fieldSchema or table property has to be set, both cannot be optional");
     }
 
     if (props.existingTable !== undefined) {
       this.table = props.existingTable;
     } else {
-      this.table = defaults.createGlueTable(scope, this.database, props.tableProps, props.fieldSchema, "kinesis",
-        {
+      this.table = defaults.createGlueTable(scope, this.database, props.tableProps, props.fieldSchema, "kinesis", {
           STREAM_NAME: this.kinesisStream.streamName,
         }
       );
     }
 
-    [this.glueJob, this.glueJobRole, this.outputBucket] = defaults.buildGlueJob(
-      this,
-      {
-        existingCfnJob: props.existingGlueJob,
-        glueJobProps: props.glueJobProps,
-        table: this.table!,
-        database: this.database!,
-        outputDataStore: props.outputDataStore!,
-        etlCodeAsset: props.etlCodeAsset
-      }
-    );
+    [this.glueJob, this.glueJobRole, this.outputBucket] = defaults.buildGlueJob(this, {
+      existingCfnJob: props.existingGlueJob,
+      glueJobProps: props.glueJobProps,
+      table: this.table!,
+      database: this.database!,
+      outputDataStore: props.outputDataStore!,
+      etlCodeAsset: props.etlCodeAsset
+    });
 
     this.glueJobRole = this.buildRolePolicy(scope, id, this.database, this.table, this.glueJob, this.glueJobRole);
 
-    if (
-      props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms
-    ) {
+    if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
       // Deploy best practices CW Alarms for Kinesis Stream
       this.cloudwatchAlarms = defaults.buildKinesisStreamCWAlarms(this);
     }
@@ -230,61 +215,52 @@ export class KinesisstreamsToGluejob extends Construct {
   private buildRolePolicy(scope: Construct, id: string, glueDatabase: glue.CfnDatabase, glueTable: glue.CfnTable,
     glueJob: glue.CfnJob, role: IRole): IRole {
     const _glueJobPolicy = new Policy(scope, `${id}GlueJobPolicy`, {
-      statements: [
-        new PolicyStatement({
-          effect: Effect.ALLOW,
-          actions: ["glue:GetJob"],
-          resources: [
-            `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:job/${glueJob.ref}`,
-          ],
-        }),
-        new PolicyStatement({
-          effect: Effect.ALLOW,
-          actions: ["glue:GetSecurityConfiguration"],
-          resources: ["*"], // Security Configurations have no resource ARNs
-        }),
-        new PolicyStatement({
-          effect: Effect.ALLOW,
-          actions: ["glue:GetTable"],
-          resources: [
-            `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:table/${glueDatabase.ref}/${glueTable.ref}`,
-            `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:database/${glueDatabase.ref}`,
-            `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:catalog`,
-          ],
-        }),
-        new PolicyStatement({
-          effect: Effect.ALLOW,
-          actions: ["cloudwatch:PutMetricData"],
-          resources: ["*"], // Metrics do not have resource ARN and hence added conditions
-          conditions: {
-            StringEquals: {
-              "cloudwatch:namespace": "Glue",
-            },
-            Bool: {
-              "aws:SecureTransport": "true",
-            },
+      statements: [ new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ["glue:GetJob"],
+        resources: [
+          `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:job/${glueJob.ref}`,
+        ],
+      }),
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ["glue:GetSecurityConfiguration"],
+        resources: ["*"], // Security Configurations have no resource ARNs
+      }),
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ["glue:GetTable"],
+        resources: [
+          `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:table/${glueDatabase.ref}/${glueTable.ref}`,
+          `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:database/${glueDatabase.ref}`,
+          `arn:${Aws.PARTITION}:glue:${Aws.REGION}:${Aws.ACCOUNT_ID}:catalog`,
+        ],
+      }),
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ["cloudwatch:PutMetricData"],
+        resources: ["*"], // Metrics do not have resource ARN and hence added conditions
+        conditions: {
+          StringEquals: {
+            "cloudwatch:namespace": "Glue",
           },
-        }),
-        new PolicyStatement({
-          effect: Effect.ALLOW,
-          actions: [
-            "kinesis:DescribeStream",
-            "kinesis:DescribeStreamSummary",
-            "kinesis:GetRecords",
-            "kinesis:GetShardIterator",
-            "kinesis:ListShards",
-            "kinesis:SubscribeToShard",
-          ],
-          resources: [this.kinesisStream.streamArn],
-        }),
-      ],
+          Bool: {
+            "aws:SecureTransport": "true",
+          },
+        },
+      }),
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: [ "kinesis:DescribeStream", "kinesis:DescribeStreamSummary", "kinesis:GetRecords", 
+          "kinesis:GetShardIterator", "kinesis:ListShards", "kinesis:SubscribeToShard" ],
+        resources: [this.kinesisStream.streamArn],
+      })],
     });
 
     defaults.addCfnSuppressRules(_glueJobPolicy, [
       {
         id: "W12",
-        reason:
-          "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.            CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to            publish metrics only for AWS Glue",
+        reason: "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.            CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to            publish metrics only for AWS Glue",
       },
     ]);
 
