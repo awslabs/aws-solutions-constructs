@@ -807,7 +807,7 @@ test('When Asset for local file is defined', () => {
       Role: {},
       DefaultArguments: {},
       GlueVersion: "2.0",
-      NumberOfWorkers: "2",
+      NumberOfWorkers: 2,
       SecurityConfiguration: "ETLJobSecurityConfig",
       WorkerType: "G.1X"
     }
