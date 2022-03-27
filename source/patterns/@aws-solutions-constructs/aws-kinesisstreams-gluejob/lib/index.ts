@@ -181,9 +181,8 @@ export class KinesisstreamsToGluejob extends Construct {
       this.table = props.existingTable;
     } else {
       this.table = defaults.createGlueTable(scope, this.database, props.tableProps, props.fieldSchema, "kinesis", {
-          STREAM_NAME: this.kinesisStream.streamName,
-        }
-      );
+        STREAM_NAME: this.kinesisStream.streamName,
+      });
     }
 
     [this.glueJob, this.glueJobRole, this.outputBucket] = defaults.buildGlueJob(this, {
