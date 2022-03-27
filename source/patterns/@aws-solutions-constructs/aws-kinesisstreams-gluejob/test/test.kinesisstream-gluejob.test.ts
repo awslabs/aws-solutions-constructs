@@ -802,45 +802,14 @@ test('When Asset for local file is defined', () => {
       Command: {
         Name: "glueetl",
         PythonVersion: "3",
-        ScriptLocation: {
-          "Fn::Join": [
-            "",
-            [
-              "s3://",
-              {
-                Ref: "AssetParametersfbf0b12f00bc09401fb04a361c549193f18f6fa7df4d304c5bfab7ace478b340S3BucketA50F2ADC"
-              },
-              "/",
-              {
-                "Fn::Select": [
-                  0,
-                  {
-                    "Fn::Split": [
-                      "||",
-                      {
-                        Ref: "AssetParametersfbf0b12f00bc09401fb04a361c549193f18f6fa7df4d304c5bfab7ace478b340S3VersionKey9A832466"
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "Fn::Select": [
-                  1,
-                  {
-                    "Fn::Split": [
-                      "||",
-                      {
-                        Ref: "AssetParametersfbf0b12f00bc09401fb04a361c549193f18f6fa7df4d304c5bfab7ace478b340S3VersionKey9A832466"
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          ]
-        }
-      }
+        ScriptLocation: {}
+      },
+      Role: {},
+      DefaultArguments: {},
+      GlueVersion: "2.0",
+      NumberOfWorkers: "2",
+      SecurityConfiguration: "ETLJobSecurityConfig",
+      WorkerType: "G.1X"
     }
   }, ResourcePart.CompleteDefinition);
 });
