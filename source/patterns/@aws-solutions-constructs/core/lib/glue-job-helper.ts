@@ -98,13 +98,6 @@ export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): [glue.
         'it is recommended to use "WorkerType" or  "NumberOfWorkers"');
       }
 
-      if (!props.glueJobProps.command.scriptLocation && !props.etlCodeAsset) {
-        throw Error('Either one of CfnJob.JobCommandProperty.scriptLocation or KinesisstreamsToGluejobProps.etlCodeAsset has ' +
-        'to be provided. If the ETL Job code file exists in a local filesystem, please set ' +
-        'KinesisstreamsToGluejobProps.etlCodeAsset. If the ETL Job is available in an S3 bucket, set the ' +
-        'CfnJob.JobCommandProperty.scriptLocation property');
-      }
-
       return deployGlueJob(scope, props.glueJobProps, props.database!, props.table!, props.outputDataStore!, props.etlCodeAsset);
     } else {
       throw Error('Either glueJobProps or existingCfnJob is required');
@@ -186,17 +179,16 @@ export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, 
   if (etlCodeAsset) {
     etlCodeAsset.grantRead(_jobRole);
   } else {
-    let _scriptLocation: string;
+    // create CDK Bucket instance from S3 url and grant read access to Glue Job's service principal
     if (isJobCommandProperty(_newGlueJobProps.command)) {
-      if (_newGlueJobProps.command.scriptLocation) {
-        _scriptLocation = _newGlueJobProps.command.scriptLocation;
-      } else {
+      if (!_newGlueJobProps.command.scriptLocation) {
         throw Error('Script location has to be provided as an s3 Url location. Script location cannot be empty');
       }
-    }
+      const _scriptLocation = _newGlueJobProps.command.scriptLocation;
 
-    const _scriptBucketLocation: IBucket = Bucket.fromBucketArn(scope, 'ScriptLocaiton', getS3ArnfromS3Url(_scriptLocation!));
-    _scriptBucketLocation.grantRead(_jobRole);
+      const _scriptBucketLocation: IBucket = Bucket.fromBucketArn(scope, 'ScriptLocaiton', getS3ArnfromS3Url(_scriptLocation!));
+      _scriptBucketLocation.grantRead(_jobRole);
+    }
   }
 
   const _glueJob: glue.CfnJob = new glue.CfnJob(scope, 'KinesisETLJob', _newGlueJobProps);
@@ -244,7 +236,7 @@ export function createGlueDatabase(scope: Construct,  databaseProps?: glue.CfnDa
  * @param s3Url
  */
 function getS3ArnfromS3Url(s3Url: string): string {
-  if (s3Url.startsWith('s3://')) {
+  if (!s3Url && s3Url.startsWith('s3://')) {
     const splitString: string = s3Url.slice('s3://'.length);
     return `arn:${Aws.PARTITION}:s3:::${splitString}`;
   } else {
@@ -253,13 +245,14 @@ function getS3ArnfromS3Url(s3Url: string): string {
 }
 
 /**
- * A utility method to type check CfnJob.JobCommandProperty type.
+ * A utility method to type check CfnJob.JobCommandProperty type. For the construct to work for streaming ETL from Kinesis Data
+ * Streams, all three attributes of the JobCommandProperty are required, even though they may be optional for other use cases.
  *
  * @param command
  */
 function isJobCommandProperty(command: glue.CfnJob.JobCommandProperty | IResolvable): command is glue.CfnJob.JobCommandProperty {
-  if ((command as glue.CfnJob.JobCommandProperty).name ||
-    (command as glue.CfnJob.JobCommandProperty).pythonVersion ||
+  if ((command as glue.CfnJob.JobCommandProperty).name &&
+    (command as glue.CfnJob.JobCommandProperty).pythonVersion &&
     (command as glue.CfnJob.JobCommandProperty).scriptLocation) {
     return true;
   } else {
