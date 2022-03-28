@@ -124,8 +124,8 @@ export interface KinesisstreamsToGluejobProps {
    * Provide Asset instance corresponding to the code in the local filesystem, responsible for
    * performing the Glue Job transformation. This property will override any S3 locations provided
    * under glue.CfnJob.JobCommandProperty
-   * 
-   * As of CDK V2, all ETL scripts sourced from local code should explicitly create an asset and provide 
+   *
+   * As of CDK V2, all ETL scripts sourced from local code should explicitly create an asset and provide
    * that asset through this attribute.
    *
    * @default - None
@@ -174,8 +174,8 @@ export class KinesisstreamsToGluejob extends Construct {
       throw Error("Either existingGlueJob instance or glueJobProps should be set, but found both");
     }
 
-    if (!props.existingGlueJob){
-      if(!props.glueJobProps.command.scriptLocation && !props.etlCodeAsset) {
+    if (!props.existingGlueJob) {
+      if (!props.glueJobProps.command.scriptLocation && !props.etlCodeAsset) {
         throw Error('Either one of CfnJob.JobCommandProperty.scriptLocation or KinesisstreamsToGluejobProps.etlCodeAsset has ' +
         'to be provided. If the ETL Job code file exists in a local filesystem, please set ' +
         'KinesisstreamsToGluejobProps.etlCodeAsset. If the ETL Job is available in an S3 bucket, set the ' +
@@ -183,7 +183,7 @@ export class KinesisstreamsToGluejob extends Construct {
       }
 
       if (!props.etlCodeAsset) {
-        const s3Url:string = props.glueJobProps.command.scriptLocation;
+        const s3Url: string = props.glueJobProps.command.scriptLocation;
         if (!(s3Url.match("^s3:\/\/[a-z0-9]+[a-z0-9-.]*/\S+")?.length === s3Url.length)) {
           throw Error("Invalid S3 URL provided");
         }
