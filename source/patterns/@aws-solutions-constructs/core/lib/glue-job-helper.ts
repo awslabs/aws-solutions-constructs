@@ -236,11 +236,11 @@ export function createGlueDatabase(scope: Construct,  databaseProps?: glue.CfnDa
  * @param s3Url
  */
 function getS3ArnfromS3Url(s3Url: string): string {
-  if (!s3Url && s3Url.startsWith('s3://')) {
+  if (s3Url && s3Url.startsWith('s3://')) {
     const splitString: string = s3Url.slice('s3://'.length);
     return `arn:${Aws.PARTITION}:s3:::${splitString}`;
   } else {
-    throw Error('The S3 url string does not begin with s3://. This is not a standard S3 url');
+    throw Error(`Received S3URL as ${s3Url}. The S3 url string does not begin with s3://. This is not a standard S3 url`);
   }
 }
 
