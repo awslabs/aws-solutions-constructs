@@ -184,7 +184,8 @@ export class KinesisstreamsToGluejob extends Construct {
 
       if (!props.etlCodeAsset) {
         const s3Url: string = props.glueJobProps.command.scriptLocation;
-        if (!(s3Url.match("^s3://S+/S+")?.length === s3Url.length)) {
+        const found = s3Url.match(/^s3:\/\/\S+\/\S+/g);
+        if (!(found && found.length > 0 && found[0].length === s3Url.length)) {
           throw Error("Invalid S3 URL provided");
         }
       }
