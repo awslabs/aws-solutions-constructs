@@ -12,9 +12,9 @@
  */
 
 // Imports
-import { App, Stack } from '@aws-cdk/core';
+import { App, RemovalPolicy, Stack } from '@aws-cdk/core';
 import { CloudFrontToMediaStore } from '../lib';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -23,8 +23,13 @@ stack.templateOptions.description = 'Integration test for aws-cloudfront-mediast
 
 // Instantiate construct
 new CloudFrontToMediaStore(stack, 'test-cloudfront-mediastore', {
-  insertHttpSecurityHeaders: false
+  insertHttpSecurityHeaders: false,
+  cloudFrontLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  }
 });
 
+suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();

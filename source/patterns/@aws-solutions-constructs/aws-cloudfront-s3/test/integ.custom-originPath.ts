@@ -12,9 +12,9 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import { App, RemovalPolicy, Stack } from "@aws-cdk/core";
 import { CloudFrontToS3 } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -22,8 +22,17 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for originPath with aws-cloudfront-s3';
 
 new CloudFrontToS3(stack, 'test-cloudfront-s3', {
-  originPath: '/testPath'
+  cloudFrontLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
+  originPath: '/testPath',
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  }
 });
 
+suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();

@@ -12,7 +12,7 @@
  */
 
 /// !cdk-integ *
-import { App, Stack } from "@aws-cdk/core";
+import { App, RemovalPolicy, Stack } from "@aws-cdk/core";
 import { CloudFrontToApiGatewayToLambda } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
@@ -20,7 +20,7 @@ import * as apigateway from '@aws-cdk/aws-apigateway';
 import * as cdk from '@aws-cdk/core';
 import { Duration } from "@aws-cdk/core";
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -61,7 +61,11 @@ const construct = new CloudFrontToApiGatewayToLambda(stack, 'cf-api-lambda-overr
     defaultBehavior: {
       cachePolicy: someCachePolicy
     }
-  }
+  },
+  cloudFrontLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
 });
 
 const apiEndPoint = construct.apiGateway;
@@ -96,5 +100,6 @@ function suppressWarnings(method: apigateway.Method) {
   };
 }
 
+suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();

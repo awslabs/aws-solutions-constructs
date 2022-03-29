@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { Aws, App, Stack } from "@aws-cdk/core";
+import { Aws, App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { AlbToLambda, AlbToLambdaProps } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import * as lambda from '@aws-cdk/aws-lambda';
@@ -39,7 +39,11 @@ const props: AlbToLambdaProps = {
   listenerProps: {
     protocol: 'HTTP'
   },
-  publicApi: false
+  publicApi: false,
+  albLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  }
 };
 const albToLambda = new AlbToLambda(stack, 'test-one', props);
 
@@ -54,5 +58,6 @@ defaults.addCfnSuppressRules(newSecurityGroup, [
   { id: 'W9', reason: 'Rule does not apply for ELB.'}
 ]);
 
+defaults.suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();

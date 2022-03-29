@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { Aws, App, Stack } from "@aws-cdk/core";
+import { Aws, App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { AlbToLambda, AlbToLambdaProps } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import * as lambda from '@aws-cdk/aws-lambda';
@@ -46,7 +46,12 @@ const lambdaFunction = defaults.buildLambdaFunction(stack, {
 
 const loadBalancer = defaults.ObtainAlb(stack, 'existing-alb', myVpc, false, undefined, {
   internetFacing: false,
-  vpc: myVpc
+  vpc: myVpc,
+},
+true,
+{
+  removalPolicy: RemovalPolicy.DESTROY,
+  autoDeleteObjects: true
 });
 
 const props: AlbToLambdaProps = {
@@ -76,5 +81,6 @@ defaults.addCfnSuppressRules(testSg, [
   { id: 'W29', reason: 'CDK created rule that blocks all traffic.'},
 ]);
 
+defaults.suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();

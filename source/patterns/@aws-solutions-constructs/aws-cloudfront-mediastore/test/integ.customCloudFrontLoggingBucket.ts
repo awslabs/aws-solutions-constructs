@@ -11,11 +11,10 @@
  *  and limitations under the License.
  */
 
-/// !cdk-integ *
 import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { CloudFrontToMediaStore } from "../lib";
 import { BucketEncryption } from "@aws-cdk/aws-s3";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -25,10 +24,12 @@ stack.templateOptions.description = 'Integration Test for aws-cloudfront-mediast
 new CloudFrontToMediaStore(stack, 'cloudfront-mediastore', {
   cloudFrontLoggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
     encryption: BucketEncryption.S3_MANAGED,
     versioned: true
   }
 });
 
+suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();
