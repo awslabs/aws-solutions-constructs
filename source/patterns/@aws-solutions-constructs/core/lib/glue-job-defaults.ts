@@ -13,14 +13,19 @@
 
 import { CfnJobProps } from '@aws-cdk/aws-glue';
 import { IRole } from '@aws-cdk/aws-iam';
+import * as s3assets from "@aws-cdk/aws-s3-assets";
 
-export function DefaultGlueJobProps(jobRole: IRole, userProvidedGlueJobProps: CfnJobProps,
-  glueSecurityConfigName: string, defaultArguments: {}): CfnJobProps {
+export function DefaultGlueJobProps(jobRole: IRole, userProvidedGlueJobProps: CfnJobProps | any,
+  glueSecurityConfigName: string, defaultArguments: {}, etlCodeAsset?: s3assets.Asset): CfnJobProps {
   const glueVersion: string | undefined = userProvidedGlueJobProps.glueVersion;
 
   // setting default to 2 to reduce cost
   const maxCapacity = glueVersion === "1.0" && !(userProvidedGlueJobProps.workerType
     || userProvidedGlueJobProps.numberOfWorkers) ? 2 : undefined;
+
+  if (etlCodeAsset) {
+    userProvidedGlueJobProps.command.scriptLocation = etlCodeAsset.s3ObjectUrl;
+  }
 
   const defaultGlueJobProps: CfnJobProps = {
     command: userProvidedGlueJobProps.command!,

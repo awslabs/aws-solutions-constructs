@@ -11,6 +11,7 @@
  *  and limitations under the License.
  */
 
+// Imports
 import * as glue from '@aws-cdk/aws-glue';
 import * as s3assets from '@aws-cdk/aws-s3-assets';
 import * as cdk from '@aws-cdk/core';
@@ -61,13 +62,13 @@ export class AwsCustomGlueEtlStack extends cdk.Stack {
       glueJobProps: {
         command: {
           name: 'gluestreaming',
-          pythonVersion: '3',
-          scriptLocation: new s3assets.Asset(this, 'ScriptLocation', {
-            path: `${__dirname}/../etl/transform.py`
-          }).s3ObjectUrl
+          pythonVersion: '3'
         }
       },
-      fieldSchema: fieldSchema
+      fieldSchema: fieldSchema,
+      etlCodeAsset: new s3assets.Asset(this, 'ScriptLocation', {
+        path: `${__dirname}/../etl/transform.py`
+      })
     });
 
     new CfnOutput(this, 'KinesisStreamName', {
