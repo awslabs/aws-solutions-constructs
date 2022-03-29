@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.3.0...v2.4.0) (2022-03-29)
+
+
+### Bug Fixes
+
+* **cdk-integ-tools:** Ignore the diff for S3AutoDeleteObjects lambda function from cdk-integ-assert ([#628](https://github.com/awslabs/aws-solutions-constructs/issues/628)) ([df9d252](https://github.com/awslabs/aws-solutions-constructs/commit/df9d2523fc46d10bfc06f70b549ab2d69b5e170f))
+
 ## [2.3.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.2.0...v2.3.0) (2022-02-24)
 
 
