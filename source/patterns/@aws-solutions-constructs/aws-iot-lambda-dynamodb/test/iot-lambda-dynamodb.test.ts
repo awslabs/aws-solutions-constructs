@@ -223,7 +223,8 @@ test('check lambda function policy ', () => {
             "dynamodb:BatchWriteItem",
             "dynamodb:PutItem",
             "dynamodb:UpdateItem",
-            "dynamodb:DeleteItem"
+            "dynamodb:DeleteItem",
+            "dynamodb:DescribeTable"
           ],
           Effect: "Allow",
           Resource: [
