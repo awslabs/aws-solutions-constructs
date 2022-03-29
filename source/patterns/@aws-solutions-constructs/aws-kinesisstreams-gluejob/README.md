@@ -31,44 +31,44 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ```javascript
-import * as glue from '@aws-cdk/aws-glue';
-import * as s3assets from '@aws-cdk/aws-s3-assets';
-import { KinesisstreamsToGluejob } from '@aws-solutions-constructs/aws-kinesisstreams-gluejob';
+import * as glue from "@aws-cdk/aws-glue";
+import * as s3assets from "@aws-cdk/aws-s3-assets";
+import { KinesisstreamsToGluejob } from "@aws-solutions-constructs/aws-kinesisstreams-gluejob";
 
 const fieldSchema: glue.CfnTable.ColumnProperty[] = [
-    {
-        name: 'id',
-        type: 'int',
-        comment: 'Identifier for the record',
-    },
-    {
-        name: 'name',
-        type: 'string',
-        comment: 'Name for the record',
-    },
-    {
-        name: 'address',
-        type: 'string',
-        comment: 'Address for the record',
-    },
-    {
-        name: 'value',
-        type: 'int',
-        comment: 'Value for the record',
-    },
+  {
+    name: "id",
+    type: "int",
+    comment: "Identifier for the record",
+  },
+  {
+    name: "name",
+    type: "string",
+    comment: "Name for the record",
+  },
+  {
+    name: "address",
+    type: "string",
+    comment: "Address for the record",
+  },
+  {
+    name: "value",
+    type: "int",
+    comment: "Value for the record",
+  },
 ];
 
-const customEtlJob = new KinesisstreamsToGluejob(this, 'CustomETL', {
-    glueJobProps: {
-        command: {
-            name: 'gluestreaming',
-            pythonVersion: '3',
-            scriptLocation: new s3assets.Asset(this, 'ScriptLocation', {
-                path: `${__dirname}/../etl/transform.py`,
-            }).s3ObjectUrl,
-        },
+const customEtlJob = new KinesisstreamsToGluejob(this, "CustomETL", {
+  glueJobProps: {
+    command: {
+      name: "gluestreaming",
+      pythonVersion: "3",
     },
-    fieldSchema: fieldSchema,
+  },
+  fieldSchema: fieldSchema,
+  etlCodeAsset: new s3assets.Asset(this, "ScriptLocation", {
+    path: `${__dirname}/../etl/transform.py`,
+  }),
 });
 ```
 
@@ -76,10 +76,10 @@ const customEtlJob = new KinesisstreamsToGluejob(this, 'CustomETL', {
 
 | **Name**            | **Type**                                                                                                                      | **Description**                                                                                                  |
 | :------------------ | :---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| existingStreamObj?  | [`kinesis.Stream`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kinesis.Stream.html)                          | Existing instance of Kinesis Stream, providing both this and `kinesisStreamProps` will cause an error.                          |
+| existingStreamObj?  | [`kinesis.Stream`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kinesis.Stream.html)                          | Existing instance of Kinesis Stream, providing both this and `kinesisStreamProps` will cause an error.           |
 | kinesisStreamProps? | [`kinesis.StreamProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-kinesis.StreamProps.html)                | Optional user-provided props to override the default props for the Kinesis stream.                               |
 | glueJobProps?       | [`cfnJob.CfnJobProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnJobProps.html)                    | User provided props to override the default props for the AWS Glue Job.                                          |
-| existingGlueJob?    | [`cfnJob.CfnJob`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnJob.html)                              | Existing instance of AWS Glue Job, providing both this and `glueJobProps` will cause an error.                         |
+| existingGlueJob?    | [`cfnJob.CfnJob`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnJob.html)                              | Existing instance of AWS Glue Job, providing both this and `glueJobProps` will cause an error.                   |
 | fieldSchema?        | [`CfnTable.ColumnProperty[]`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnTable.ColumnProperty.html) | User provided schema structure to create an AWS Glue Table.                                                      |
 | existingTable?      | [`CfnTable`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnTable.html)                                 | Existing instance of AWS Glue Table. If this is set, tableProps and fieldSchema are ignored.                     |
 | tableProps?         | [`CfnTableProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.TableProps.html)                          | User provided AWS Glue Table props to override default props used to create a Glue Table.                        |
@@ -87,6 +87,7 @@ const customEtlJob = new KinesisstreamsToGluejob(this, 'CustomETL', {
 | databaseProps?      | [`CfnDatabaseProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-glue.CfnDatabaseProps.html)                 | User provided Glue Database Props to override the default props used to create the Glue Database.                |
 | outputDataStore?    | [`SinkDataStoreProps`](#sinkdatastoreprops)                                                                                   | User provided properties for S3 bucket that stores Glue Job output. Current datastore types suported is only S3. |
 |createCloudWatchAlarms?|`boolean`|Whether to create recommended CloudWatch alarms for Kinesis Data Stream. Default value is set to `true`.|
+| etlCodeAsset?       | [s3assets.Asset](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-s3-assets.Asset.html)                               | User provided instance of the Asset class that represents the ETL code on the local filesytem                    |
 
 ### SinkDataStoreProps
 
