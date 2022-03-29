@@ -15,6 +15,7 @@ import * as glue from '@aws-cdk/aws-glue';
 import { Effect, IRole, Policy, PolicyStatement, Role, ServicePrincipal } from '@aws-cdk/aws-iam';
 import { Bucket, BucketProps, IBucket } from '@aws-cdk/aws-s3';
 import { Aws, Construct, IResolvable } from '@aws-cdk/core';
+import * as s3assets from "@aws-cdk/aws-s3-assets";
 import * as defaults from '../';
 import { overrideProps } from './utils';
 
@@ -76,6 +77,12 @@ export interface BuildGlueJobProps {
    * Output storage options
    */
   readonly outputDataStore?: SinkDataStoreProps
+  /**
+   * Asset instance for the ETL code that performs Glue Job transformation
+   *
+   * @default - None
+   */
+   readonly etlCodeAsset?: s3assets.Asset;
 }
 
 export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): [glue.CfnJob, IRole, [Bucket, (Bucket | undefined)?]?] {
@@ -91,7 +98,7 @@ export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): [glue.
         'it is recommended to use "WorkerType" or  "NumberOfWorkers"');
       }
 
-      return deployGlueJob(scope, props.glueJobProps, props.database!, props.table!, props.outputDataStore!);
+      return deployGlueJob(scope, props.glueJobProps, props.database!, props.table!, props.outputDataStore!, props.etlCodeAsset);
     } else {
       throw Error('Either glueJobProps or existingCfnJob is required');
     }
@@ -101,7 +108,7 @@ export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): [glue.
 }
 
 export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, database: glue.CfnDatabase, table: glue.CfnTable,
-  outputDataStore: SinkDataStoreProps): [glue.CfnJob, IRole, [Bucket, (Bucket | undefined)?]] {
+  outputDataStore: SinkDataStoreProps, etlCodeAsset?: s3assets.Asset): [glue.CfnJob, IRole, [Bucket, (Bucket | undefined)?]] {
 
   let _glueSecurityConfigName: string;
 
@@ -168,19 +175,21 @@ export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, 
   };
 
   const _newGlueJobProps: glue.CfnJobProps = overrideProps(defaults.DefaultGlueJobProps(_jobRole!, glueJobProps,
-    _glueSecurityConfigName, _jobArgumentsList), glueJobProps);
+    _glueSecurityConfigName, _jobArgumentsList, etlCodeAsset), glueJobProps);
+  if (etlCodeAsset) {
+    etlCodeAsset.grantRead(_jobRole);
+  } else {
+    // create CDK Bucket instance from S3 url and grant read access to Glue Job's service principal
+    if (isJobCommandProperty(_newGlueJobProps.command)) {
+      if (!_newGlueJobProps.command.scriptLocation) {
+        throw Error('Script location has to be provided as an s3 Url location. Script location cannot be empty');
+      }
+      const _scriptLocation = _newGlueJobProps.command.scriptLocation;
 
-  let _scriptLocation: string;
-  if (isJobCommandProperty(_newGlueJobProps.command)) {
-    if (_newGlueJobProps.command.scriptLocation) {
-      _scriptLocation = _newGlueJobProps.command.scriptLocation;
-    } else {
-      throw Error('Script location has to be provided as an s3 Url location. Script location cannot be empty');
+      const _scriptBucketLocation: IBucket = Bucket.fromBucketArn(scope, 'ScriptLocaiton', getS3ArnfromS3Url(_scriptLocation!));
+      _scriptBucketLocation.grantRead(_jobRole);
     }
   }
-
-  const _scriptBucketLocation: IBucket = Bucket.fromBucketArn(scope, 'ScriptLocaiton', getS3ArnfromS3Url(_scriptLocation!));
-  _scriptBucketLocation.grantRead(_jobRole);
 
   const _glueJob: glue.CfnJob = new glue.CfnJob(scope, 'KinesisETLJob', _newGlueJobProps);
   return [_glueJob, _jobRole, _outputLocation];
@@ -227,18 +236,23 @@ export function createGlueDatabase(scope: Construct,  databaseProps?: glue.CfnDa
  * @param s3Url
  */
 function getS3ArnfromS3Url(s3Url: string): string {
-  const splitString: string = s3Url.slice('s3://'.length);
-  return `arn:${Aws.PARTITION}:s3:::${splitString}`;
+  if (s3Url && s3Url.startsWith('s3://')) {
+    const splitString: string = s3Url.slice('s3://'.length);
+    return `arn:${Aws.PARTITION}:s3:::${splitString}`;
+  } else {
+    throw Error(`Received S3URL as ${s3Url}. The S3 url string does not begin with s3://. This is not a standard S3 url`);
+  }
 }
 
 /**
- * A utility method to type check CfnJob.JobCommandProperty type.
+ * A utility method to type check CfnJob.JobCommandProperty type. For the construct to work for streaming ETL from Kinesis Data
+ * Streams, all three attributes of the JobCommandProperty are required, even though they may be optional for other use cases.
  *
  * @param command
  */
 function isJobCommandProperty(command: glue.CfnJob.JobCommandProperty | IResolvable): command is glue.CfnJob.JobCommandProperty {
-  if ((command as glue.CfnJob.JobCommandProperty).name ||
-    (command as glue.CfnJob.JobCommandProperty).pythonVersion ||
+  if ((command as glue.CfnJob.JobCommandProperty).name &&
+    (command as glue.CfnJob.JobCommandProperty).pythonVersion &&
     (command as glue.CfnJob.JobCommandProperty).scriptLocation) {
     return true;
   } else {
