@@ -13,7 +13,7 @@
 
 import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
 import { CfnDomainOptions, DefaultCfnDomainProps } from './elasticsearch-defaults';
-import { overrideProps, addCfnSuppressRules } from './utils';
+import { consolidateProps, addCfnSuppressRules } from './utils';
 import * as iam from '@aws-cdk/aws-iam';
 import * as cdk from '@aws-cdk/core';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
@@ -56,7 +56,7 @@ export function buildElasticSearch(scope: Construct, domainName: string,
           "iam:PassRole"
         ],
         conditions: {
-          StringLike: {'iam:PassedToService': 'cognito-identity.amazonaws.com'}
+          StringLike: { 'iam:PassedToService': 'cognito-identity.amazonaws.com' }
         },
         resources: [
           cognitoKibanaConfigureRole.roleArn
@@ -68,9 +68,7 @@ export function buildElasticSearch(scope: Construct, domainName: string,
 
   let _cfnDomainProps = DefaultCfnDomainProps(domainName, cognitoKibanaConfigureRole, options);
 
-  if (cfnDomainProps) {
-    _cfnDomainProps = overrideProps(_cfnDomainProps, cfnDomainProps);
-  }
+  _cfnDomainProps = consolidateProps(_cfnDomainProps, cfnDomainProps);
 
   const esDomain = new elasticsearch.CfnDomain(scope, "ElasticsearchDomain", _cfnDomainProps);
   addCfnSuppressRules(esDomain, [

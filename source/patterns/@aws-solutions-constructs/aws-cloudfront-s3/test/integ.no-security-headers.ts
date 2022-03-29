@@ -14,7 +14,7 @@
 // Imports
 import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -23,13 +23,19 @@ stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3';
 
 // Definitions
 const props: CloudFrontToS3Props = {
+  cloudFrontLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
   insertHttpSecurityHeaders: false,
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-  }
+    autoDeleteObjects: true
+  },
 };
 
 new CloudFrontToS3(stack, 'test-cloudfront-s3-no-security-headers', props);
 
+suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();

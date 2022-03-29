@@ -13,7 +13,7 @@
 
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import { DefaultTableProps, DefaultTableWithStreamProps } from './dynamodb-table-defaults';
-import { overrideProps } from './utils';
+import { consolidateProps } from './utils';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
@@ -53,12 +53,8 @@ export function buildDynamoDBTable(scope: Construct, props: BuildDynamoDBTablePr
   // Conditional DynamoDB Table creation
   if (!props.existingTableObj) {
     // Set the default props for DynamoDB table
-    if (props.dynamoTableProps) {
-      const dynamoTableProps = overrideProps(DefaultTableProps, props.dynamoTableProps);
-      return new dynamodb.Table(scope, 'DynamoTable', dynamoTableProps);
-    } else {
-      return new dynamodb.Table(scope, 'DynamoTable', DefaultTableProps);
-    }
+    const dynamoTableProps = consolidateProps(DefaultTableProps, props.dynamoTableProps);
+    return new dynamodb.Table(scope, 'DynamoTable', dynamoTableProps);
   } else {
     return props.existingTableObj;
   }
@@ -68,14 +64,9 @@ export function buildDynamoDBTableWithStream(scope: Construct, props: BuildDynam
   // Conditional DynamoDB Table creation
   if (!props.existingTableInterface) {
     // Set the default props for DynamoDB table
-    if (props.dynamoTableProps) {
-      const dynamoTableProps = overrideProps(DefaultTableWithStreamProps, props.dynamoTableProps);
-      const dynamoTable: dynamodb.Table = new dynamodb.Table(scope, 'DynamoTable', dynamoTableProps);
-      return [dynamoTable as dynamodb.ITable, dynamoTable];
-    } else {
-      const dynamoTable: dynamodb.Table = new dynamodb.Table(scope, 'DynamoTable', DefaultTableWithStreamProps);
-      return [dynamoTable as dynamodb.ITable, dynamoTable];
-    }
+    const dynamoTableProps = consolidateProps(DefaultTableWithStreamProps, props.dynamoTableProps);
+    const dynamoTable: dynamodb.Table = new dynamodb.Table(scope, 'DynamoTable', dynamoTableProps);
+    return [dynamoTable as dynamodb.ITable, dynamoTable];
   } else {
     return [props.existingTableInterface, undefined];
   }
@@ -84,7 +75,7 @@ export function buildDynamoDBTableWithStream(scope: Construct, props: BuildDynam
 export function getPartitionKeyNameFromTable(table: dynamodb.Table): string {
   const cfnTable = table.node.findChild('Resource') as dynamodb.CfnTable;
   const keySchema = cfnTable.keySchema as dynamodb.CfnTable.KeySchemaProperty[];
-  const partitionKey = keySchema.find( (keyPart: any) => keyPart.keyType === 'HASH');
+  const partitionKey = keySchema.find((keyPart: any) => keyPart.keyType === 'HASH');
   if (!partitionKey) {
     throw new Error('Partition key for table not defined');
   }

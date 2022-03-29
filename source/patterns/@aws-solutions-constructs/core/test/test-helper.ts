@@ -19,6 +19,7 @@ import { DefaultPublicPrivateVpcProps, DefaultIsolatedVpcProps } from '../lib/vp
 import { overrideProps, addCfnSuppressRules } from "../lib/utils";
 import * as path from 'path';
 import * as acm from '@aws-cdk/aws-certificatemanager';
+import { CfnFunction } from "@aws-cdk/aws-lambda";
 
 export const fakeEcrRepoArn = 'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo';
 
@@ -93,4 +94,16 @@ export function getFakeCertificate(scope: Construct, id: string): acm.ICertifica
     id,
     "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
   );
+}
+
+export function suppressAutoDeleteHandlerWarnings(stack: Stack) {
+  Stack.of(stack).node.children.forEach(child => {
+    if (child.node.id === 'Custom::S3AutoDeleteObjectsCustomResourceProvider') {
+      const handlerFunction = child.node.findChild('Handler') as CfnFunction;
+      addCfnSuppressRules(handlerFunction, [{ id: "W58", reason: "CDK generated custom resource"}]);
+      addCfnSuppressRules(handlerFunction, [{ id: "W89", reason: "CDK generated custom resource"}]);
+      addCfnSuppressRules(handlerFunction, [{ id: "W92", reason: "CDK generated custom resource"}]);
+    }
+  });
+
 }
