@@ -26,6 +26,8 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+// aws-dynamodb-stream-lambda-elasticsearch-kibana has been deprecated for CDK V2 in favor of aws-dynamodbstreams-lambda-elasticsearch-kibana.
+// This sample uses the CDK V1 syntax
 import * as cdk from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
 import { DynamoDBStreamToLambdaToElasticSearchAndKibana, DynamoDBStreamToLambdaToElasticSearchAndKibanaProps } from '@aws-solutions-constructs/aws-dynamodb-stream-lambda-elasticsearch-kibana';
@@ -46,6 +48,8 @@ new DynamoDBStreamToLambdaToElasticSearchAndKibana(this, 'test', constructProps)
 
 Python
 ``` python
+# aws-dynamodb-stream-lambda-elasticsearch-kibana has been deprecated for CDK V2 in favor of aws-dynamodbstreams-lambda-elasticsearch-kibana.
+# This sample uses the CDK V1 syntax
 from aws_solutions_constructs.aws_dynamodb_stream_lambda_elasticsearch_kibana import DynamoDBStreamToLambdaToElasticSearchAndKibana, DynamoDBStreamToLambdaToElasticSearchAndKibanaProps
 from aws_cdk import (
     aws_lambda as _lambda,
@@ -66,6 +70,8 @@ DynamoDBStreamToLambdaToElasticSearchAndKibana(
 
 Java
 ``` java
+// aws-dynamodb-stream-lambda-elasticsearch-kibana has been deprecated for CDK V2 in favor of aws-dynamodbstreams-lambda-elasticsearch-kibana.
+// This sample uses the CDK V1 syntax
 import software.constructs.Construct;
 
 import software.amazon.awscdk.core.*;

@@ -26,6 +26,8 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` javascript
+// aws-events-rule-lambda has been deprecated for CDK V2 in favor of aws-eventbridge-lambda.
+// This sample uses the CDK V1 syntax
 import * as cdk from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as events from '@aws-cdk/aws-events';
@@ -47,6 +49,8 @@ new EventsRuleToLambda(this, 'test-events-rule-lambda', constructProps);
 
 Python
 ``` python
+# aws-events-rule-lambda has been deprecated for CDK V2 in favor of aws-eventbridge-lambda.
+# This sample uses the CDK V1 syntax
 from aws_solutions_constructs.aws_events_rule_lambda import EventsRuleToLambdaProps, EventsRuleToLambda
 from aws_cdk import (
     aws_lambda as _lambda,
@@ -67,6 +71,8 @@ EventsRuleToLambda(self, 'test_events_rule_lambda',
 
 Java
 ``` java
+// aws-events-rule-lambda has been deprecated for CDK V2 in favor of aws-eventbridge-lambda.
+// This sample uses the CDK V1 syntax
 import software.constructs.Construct;
 
 import software.amazon.awscdk.core.*;

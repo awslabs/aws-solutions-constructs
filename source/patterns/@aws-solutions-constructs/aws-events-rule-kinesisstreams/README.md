@@ -26,6 +26,8 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+// aws-events-rule-kinesisstreams has been deprecated for CDK V2 in favor of aws-eventbridge-kinesisstreams.
+// This sample uses the CDK V1 syntax
 import * as cdk from '@aws-cdk/core';
 import * as events from '@aws-cdk/aws-events';
 import { EventsRuleToKinesisStreams, EventsRuleToKinesisStreamsProps } from "@aws-solutions-constructs/aws-events-rule-kinesisstreams";
@@ -41,6 +43,8 @@ new EventsRuleToKinesisStreams(this, 'test-events-rule-kinesis-streams', constru
 
 Python
 ``` python
+# aws-events-rule-kinesisstreams has been deprecated for CDK V2 in favor of aws-eventbridge-kinesisstreams.
+# This sample uses the CDK V1 syntax
 from aws_solutions_constructs.aws_events_rule_kinesis_streams import EventsRuleToKinesisStreams, EventsRuleToKinesisStreamsProps
 from aws_cdk import (
     aws_events as events,
@@ -56,6 +60,8 @@ EventsRuleToKinesisStreams(self, 'test_events_rule_kinesis_streams',
 
 Java
 ``` java
+// aws-events-rule-kinesisstreams has been deprecated for CDK V2 in favor of aws-eventbridge-kinesisstreams.
+// This sample uses the CDK V1 syntax
 import software.constructs.Construct;
 
 import software.amazon.awscdk.core.*;

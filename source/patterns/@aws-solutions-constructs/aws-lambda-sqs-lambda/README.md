@@ -37,12 +37,12 @@ new LambdaToSqsToLambda(this, 'LambdaToSqsToLambdaPattern', {
   producerLambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
-      code: lambda.Code.fromAsset(`lambda/producer-function`)
+      code: lambda.Code.fromAsset(`producer-function`)
   },
   consumerLambdaFunctionProps: {
     runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler',
-    code: lambda.Code.fromAsset(`lambda/consumer-function`)
+    code: lambda.Code.fromAsset(`consumer-function`)
   }
 });
 ```

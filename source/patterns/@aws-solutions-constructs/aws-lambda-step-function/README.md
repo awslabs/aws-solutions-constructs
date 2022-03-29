@@ -26,6 +26,8 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+// aws-lambda-step-function has been deprecated for CDK V2 in favor of aws-lambda-stepfunctions.
+// This sample uses the CDK V1 syntax
 import * as cdk from '@aws-cdk/core';
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
 import * as lambda from '@aws-cdk/aws-lambda';
@@ -47,6 +49,8 @@ new LambdaToStepFunction(this, 'LambdaToStepFunctionPattern', {
 
 Python
 ``` python
+# aws-lambda-step-function has been deprecated for CDK V2 in favor of aws-lambda-stepfunctions.
+# This sample uses the CDK V1 syntax
 from aws_solutions_constructs.aws_lambda_step_function import LambdaToStepFunction
 from aws_cdk import (
     aws_lambda as _lambda,
@@ -70,6 +74,8 @@ LambdaToStepFunction(
 
 Java
 ``` java
+// aws-lambda-step-function has been deprecated for CDK V2 in favor of aws-lambda-stepfunctions.
+// This sample uses the CDK V1 syntax
 import software.constructs.Construct;
 
 import software.amazon.awscdk.core.*;

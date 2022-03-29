@@ -31,7 +31,6 @@ Typescript
 import { Construct } from 'constructs';
 import { Stack, StackProps } from 'aws-cdk-lib';
 import { FargateToSns, FargateToSnsProps } from '@aws-solutions-constructs/aws-fargate-sns';
-import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 
 const constructProps: FargateToSnsProps = {
     publicApi: true,

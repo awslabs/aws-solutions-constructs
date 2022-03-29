@@ -24,8 +24,9 @@
 
 This AWS Solutions Construct implements an AWS Fargate service that can write/read to an Amazon S3 Bucket
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
 import { Construct } from 'constructs';
 import { Stack, StackProps } from 'aws-cdk-lib';
@@ -36,7 +37,7 @@ const constructProps: FargateToS3Props = {
   ecrRepositoryArn: "arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo",
 };
 
-new FargateToS3(stack, 'test-construct', constructProps);
+new FargateToS3(this, 'test-construct', constructProps);
 ```
 
 Python

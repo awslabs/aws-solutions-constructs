@@ -30,6 +30,8 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+// aws-s3-step-function has been deprecated for CDK V2 in favor of aws-s3-stepfunctions.
+// This sample uses the CDK V1 syntax
 import * as cdk from '@aws-cdk/core';
 import { S3ToStepFunction, S3ToStepFunctionProps } from '@aws-solutions-constructs/aws-s3-step-function';
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
@@ -45,6 +47,8 @@ new S3ToStepFunction(this, 'test-s3-step-function-stack', {
 
 Python
 ``` python
+# aws-s3-step-function has been deprecated for CDK V2 in favor of aws-s3-stepfunctions.
+# This sample uses the CDK V1 syntax
 from aws_solutions_constructs.aws_s3_step_function import S3ToStepFunction
 from aws_cdk import (
     aws_stepfunctions as stepfunctions,
@@ -62,6 +66,8 @@ S3ToStepFunction(
 
 Java
 ``` java
+// aws-s3-step-function has been deprecated for CDK V2 in favor of aws-s3-stepfunctions.
+// This sample uses the CDK V1 syntax
 import software.constructs.Construct;
 
 import software.amazon.awscdk.core.*;

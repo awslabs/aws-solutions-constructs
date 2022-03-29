@@ -37,7 +37,7 @@ import { Stack, StackProps } from 'aws-cdk-lib';
 import { S3ToStepfunctions, S3ToStepfunctionsProps } from '@aws-solutions-constructs/aws-s3-stepfunctions';
 import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 
-const startState = new stepfunctions.Pass(stack, 'StartState');
+const startState = new stepfunctions.Pass(this, 'StartState');
 
 new S3ToStepfunctions(this, 'test-s3-stepfunctions-stack', {
     stateMachineProps: {

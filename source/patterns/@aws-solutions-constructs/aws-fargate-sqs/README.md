@@ -34,10 +34,10 @@ import { FargateToSqs, FargateToSqsProps } from '@aws-solutions-constructs/aws-f
 
 const constructProps: FargateToSqsProps = {
     publicApi: true,
-    ecrRepositoryArn: "arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo",
-});
+    ecrRepositoryArn: "arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo"
+};
 
-new FargateToSqs(stack, 'test-construct', constructProps);
+new FargateToSqs(this, 'test-construct', constructProps);
 ```
 
 Python

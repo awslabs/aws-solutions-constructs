@@ -25,6 +25,8 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+// aws-dynamodb-stream-lambda has been deprecated for CDK V2 in favor of aws-dynamodbstreams-lambda.
+// This sample uses the CDK V1 syntax
 import * as cdk from '@aws-cdk/core';
 import { DynamoDBStreamToLambda } from '@aws-solutions-constructs/aws-dynamodb-stream-lambda';
 import * as lambda from '@aws-cdk/aws-lambda';
@@ -40,6 +42,8 @@ new DynamoDBStreamToLambda(this, 'test-dynamodb-stream-lambda', {
 
 Python
 ``` python
+# aws-dynamodb-stream-lambda has been deprecated for CDK V2 in favor of aws-dynamodbstreams-lambda.
+# This sample uses the CDK V1 syntax
 from aws_solutions_constructs.aws_dynamodb_stream_lambda import DynamoDBStreamToLambda
 from aws_cdk import (
     aws_lambda as _lambda,
@@ -58,6 +62,8 @@ DynamoDBStreamToLambda(self, 'test-dynamodb-stream-lambda',
 
 Java
 ``` java
+// aws-dynamodb-stream-lambda has been deprecated for CDK V2 in favor of aws-dynamodbstreams-lambda.
+// This sample uses the CDK V1 syntax
 import software.constructs.Construct;
 
 import software.amazon.awscdk.core.*;

@@ -26,6 +26,8 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` javascript
+// aws-events-rule-step-function has been deprecated for CDK V2 in favor of aws-eventbridge-stepfunctions.
+// This sample uses the CDK V1 syntax
 import * as cdk from '@aws-cdk/core';
 import * as events from '@aws-cdk/aws-events';
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
@@ -47,6 +49,8 @@ new EventsRuleToStepFunction(this, 'test-events-rules-step-function-stack', cons
 
 Python
 ``` Python
+# aws-events-rule-step-function has been deprecated for CDK V2 in favor of aws-eventbridge-stepfunctions.
+# This sample uses the CDK V1 syntax
 from aws_solutions_constructs.aws_events_rule_step_function import EventsRuleToStepFunction, EventsRuleToStepFunctionProps
 from aws_cdk import (
     aws_stepfunctions as stepfunctions,
@@ -69,6 +73,8 @@ EventsRuleToStepFunction(self, 'test',
 
 Java
 ``` java
+// aws-events-rule-step-function has been deprecated for CDK V2 in favor of aws-eventbridge-stepfunctions.
+// This sample uses the CDK V1 syntax
 import software.constructs.Construct;
 
 import software.amazon.awscdk.core.*;

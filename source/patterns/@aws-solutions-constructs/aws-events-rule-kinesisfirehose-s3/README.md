@@ -26,6 +26,8 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+// aws-events-rule-kinesisfirehose-s3 has been deprecated for CDK V2 in favor of aws-eventbridge-kinesisfirehose-s3.
+// This sample uses the CDK V1 syntax
 import * as cdk from '@aws-cdk/core';
 import * as events from '@aws-cdk/aws-events';
 import { EventsRuleToKinesisFirehoseToS3Props, EventsRuleToKinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-events-rule-kinesisfirehose-s3';
@@ -41,6 +43,8 @@ new EventsRuleToKinesisFirehoseToS3(this, 'test-events-rule-firehose-s3', events
 
 Python
 ``` python
+# aws-events-rule-kinesisfirehose-s3 has been deprecated for CDK V2 in favor of aws-eventbridge-kinesisfirehose-s3.
+# This sample uses the CDK V1 syntax
 from aws_solutions_constructs.aws_events_rule_kinesis_firehose_s3 import EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props
 from aws_cdk import (
     aws_events as events,
@@ -56,6 +60,8 @@ EventsRuleToKinesisFirehoseToS3(self, 'test_events_rule_firehose_s3',
 
 Java
 ``` java
+// aws-events-rule-kinesisfirehose-s3 has been deprecated for CDK V2 in favor of aws-eventbridge-kinesisfirehose-s3.
+// This sample uses the CDK V1 syntax
 import software.constructs.Construct;
 import software.amazon.awscdk.core.*;
 

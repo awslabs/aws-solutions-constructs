@@ -25,6 +25,8 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+// aws-events-rule-sns has been deprecated for CDK V2 in favor of aws-eventbridge-sns.
+// This sample uses the CDK V1 syntax
 import * as cdk from '@aws-cdk/core';
 import * as events from '@aws-cdk/aws-events';
 import * as iam from '@aws-cdk/aws-iam';
@@ -51,6 +53,8 @@ constructStack.encryptionKey?.addToResourcePolicy(policyStatement);
 
 Python
 ``` python
+# aws-events-rule-sns has been deprecated for CDK V2 in favor of aws-eventbridge-sns.
+# This sample uses the CDK V1 syntax
 from aws_solutions_constructs.aws_events_rule_sns import EventsRuleToSns, EventsRuleToSnsProps
 from aws_cdk import (
     aws_events as events,
@@ -77,6 +81,8 @@ construct_stack.encryption_key.add_to_resource_policy(policy_statement)
 
 Java
 ``` java
+// aws-events-rule-sns has been deprecated for CDK V2 in favor of aws-eventbridge-sns.
+// This sample uses the CDK V1 syntax
 import software.constructs.Construct;
 import java.util.List;
 

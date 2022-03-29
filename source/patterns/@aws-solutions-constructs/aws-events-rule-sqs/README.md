@@ -26,16 +26,12 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+// aws-events-rule-sqs has been deprecated for CDK V2 in favor of aws-eventbridge-sqs.
+// This sample uses the CDK V1 syntax
 import * as cdk from '@aws-cdk/core';
 import * as events from '@aws-cdk/aws-events';
 import * as iam from '@aws-cdk/aws-iam';
 import { EventsRuleToSqsProps, EventsRuleToSqs } from "@aws-solutions-constructs/aws-events-rule-sqs";
-
-const props: EventsRuleToSqsProps = {
-    eventRuleProps: {
-        schedule: events.Schedule.rate(Duration.minutes(5))
-    }
-};
 
 const constructProps: EventsRuleToSqsProps = {
   eventRuleProps: {
@@ -58,6 +54,8 @@ constructStack.encryptionKey?.addToResourcePolicy(policyStatement);
 
 Python
 ``` python
+# aws-events-rule-sqs has been deprecated for CDK V2 in favor of aws-eventbridge-sqs.
+# This sample uses the CDK V1 syntax
 from aws_solutions_constructs.aws_events_rule_sqs import EventsRuleToSqs
 from aws_cdk import (
     aws_events as events,
@@ -84,6 +82,8 @@ construct_stack.encryption_key.add_to_resource_policy(policy_statement)
 
 Java
 ``` java
+// aws-events-rule-sqs has been deprecated for CDK V2 in favor of aws-eventbridge-sqs.
+// This sample uses the CDK V1 syntax
 import software.constructs.Construct;
 import java.util.List;
 
