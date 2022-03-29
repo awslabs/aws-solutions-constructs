@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 // Verify that all integration tests still match their expected output
-import { canonicalizeTemplate } from '@aws-cdk/assert';
+import { canonicalizeTemplate } from '../lib/canonicalize-assets';
 import { diffTemplate, formatDifferences } from '@aws-cdk/cloudformation-diff';
 import { DEFAULT_SYNTH_OPTIONS, IntegrationTests } from '../lib/integ-helpers';
 import * as deepmerge from 'deepmerge';
 
 /* eslint-disable no-console */
 
-const IGNORE_ASSETS_PRAGMA = 'pragma:ignore-assets';
+const VERIFY_ASSET_HASHES = 'pragma:include-assets-hashes';
 
 async function main() {
   const tests = await new IntegrationTests('test').fromCliArgs(); // always assert all tests
@@ -40,7 +40,8 @@ async function main() {
       }
     }));
 
-    if ((await test.pragmas()).includes(IGNORE_ASSETS_PRAGMA)) {
+    // We will always ignore asset hashes, unless specifically requested not to
+    if (!(await test.pragmas()).includes(VERIFY_ASSET_HASHES)) {
       expected = canonicalizeTemplate(expected);
       actual = canonicalizeTemplate(actual);
     }

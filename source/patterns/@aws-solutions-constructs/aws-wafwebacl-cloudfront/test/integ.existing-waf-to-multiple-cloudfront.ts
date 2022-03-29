@@ -15,20 +15,20 @@
 import { App, Stack } from "@aws-cdk/core";
 import { WafwebaclToCloudFront } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import { CloudFrontToS3 } from '@aws-solutions-constructs/aws-cloudfront-s3';
+import { CreateTestDistro } from './test-helper';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const cloudfrontToS3One = new CloudFrontToS3(stack, 'cloudfront-one', {});
-const cloudfrontToS3Two = new CloudFrontToS3(stack, 'cloudfront-two', {});
+const newDistroOne = CreateTestDistro(stack, "distroOne");
+const newDistroTwo = CreateTestDistro(stack, "distroTwo");
 
 const ownsWaf = new WafwebaclToCloudFront(stack, 'first-construct', {
-  existingCloudFrontWebDistribution: cloudfrontToS3One.cloudFrontWebDistribution,
+  existingCloudFrontWebDistribution: newDistroOne,
 });
 
 new WafwebaclToCloudFront(stack, 'second-construct', {
-  existingCloudFrontWebDistribution: cloudfrontToS3Two.cloudFrontWebDistribution,
+  existingCloudFrontWebDistribution: newDistroTwo,
   existingWebaclObj: ownsWaf.webacl
 });
 

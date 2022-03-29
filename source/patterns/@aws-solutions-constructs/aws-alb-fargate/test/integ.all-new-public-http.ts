@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { Aws, App, Stack } from "@aws-cdk/core";
+import { Aws, App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { AlbToFargate, AlbToFargateProps } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import * as ecs from '@aws-cdk/aws-ecs';
@@ -36,6 +36,10 @@ const testProps: AlbToFargateProps = {
   listenerProps: {
     protocol: 'HTTP'
   },
+  albLoggingBucketProps:   {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  }
 };
 
 const albToFargate = new AlbToFargate(stack, 'test-construct', testProps);
@@ -50,6 +54,8 @@ defaults.addCfnSuppressRules(newSecurityGroup, [
   { id: 'W2', reason: 'Rule does not apply for ELB.'},
   { id: 'W9', reason: 'Rule does not apply for ELB.'}
 ]);
+
+defaults.suppressAutoDeleteHandlerWarnings(stack);
 
 // Synth
 app.synth();

@@ -15,7 +15,7 @@
 import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { BucketEncryption } from "@aws-cdk/aws-s3";
 import { CloudFrontToS3 } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -25,13 +25,16 @@ stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3 cust
 new CloudFrontToS3(stack, 'test-cloudfront-s3', {
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
   },
   cloudFrontLoggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
     encryption: BucketEncryption.S3_MANAGED,
     versioned: true
   }
 });
 
+suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();

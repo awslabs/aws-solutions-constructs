@@ -10,7 +10,7 @@ const findVersion = process.argv[2];
 const replaceVersion = process.argv[3];
 
 // these versions need to be sourced from a config file
-const awsCdkLibVersion = '2.7.0';
+const awsCdkLibVersion = '2.10.0';
 const constructsVersion = '10.0.0';
 const MODULE_EXEMPTIONS = new Set([
   '@aws-cdk/cloudformation-diff',
@@ -33,7 +33,6 @@ for (const file of process.argv.splice(4)) {
   pkg.devDependencies = processDevDependencies(pkg.devDependencies || { }, file);
   if (pkg.scripts) {
     pkg.scripts["integ-assert"] = "cdk-integ-assert-v2";
-    pkg.scripts["jsii-pacmak"] = "jsii-pacmak --targets js java python";
   }
 
   console.error(`${file} => ${replaceVersion}`);
