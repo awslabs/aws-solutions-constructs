@@ -49,6 +49,22 @@ export interface BuildDynamoDBTableWithStreamProps {
   readonly existingTableInterface?: dynamodb.ITable
 }
 
+export interface BuildDynamoDBTableInterfaceProps {
+  /**
+   * Optional user provided props to override the default props
+   *
+   * @default - Default props are used
+   */
+  readonly dynamoTableProps?: dynamodb.TableProps,
+  /**
+   * Existing instance of dynamodb table object.
+   * Providing both this and `dynamoTableProps` will cause an error.
+   *
+   * @default - None
+   */
+  readonly existingTableInterface?: dynamodb.ITable
+}
+
 export function buildDynamoDBTable(scope: Construct, props: BuildDynamoDBTableProps): dynamodb.Table {
   // Conditional DynamoDB Table creation
   if (!props.existingTableObj) {
@@ -57,6 +73,18 @@ export function buildDynamoDBTable(scope: Construct, props: BuildDynamoDBTablePr
     return new dynamodb.Table(scope, 'DynamoTable', dynamoTableProps);
   } else {
     return props.existingTableObj;
+  }
+}
+
+export function buildDynamoDBTableInterface(scope: Construct, props: BuildDynamoDBTableInterfaceProps): [dynamodb.ITable, dynamodb.Table?] {
+  // Conditional DynamoDB Table creation
+  if (!props.existingTableInterface) {
+    // Set the default props for DynamoDB table
+    const dynamoTableProps = consolidateProps(DefaultTableProps, props.dynamoTableProps);
+    const userCreatedTable = new dynamodb.Table(scope, 'DynamoTable', dynamoTableProps);
+    return [userCreatedTable as dynamodb.ITable, userCreatedTable];
+  } else {
+    return [props.existingTableInterface];
   }
 }
 
