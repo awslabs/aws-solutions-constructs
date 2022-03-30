@@ -409,7 +409,9 @@ test('Test deployment with role creation', () => {
     });
   } catch (error) {
     expect(error).toBeInstanceOf(Error);
-    expect(error.message).toEqual('Script location has to be provided as an s3 Url location. Script location cannot be empty');
+    expect(error.message).toEqual('Either one of CfnJob.JobCommandProperty.scriptLocation or KinesisstreamsToGluejobProps.etlCodeAsset ' +
+    'has to be provided. If the ETL Job code file exists in a local filesystem, please set KinesisstreamsToGluejobProps.etlCodeAsset. ' +
+    'If the ETL Job is available in an S3 bucket, set the CfnJob.JobCommandProperty.scriptLocation property');
   }
 });
 

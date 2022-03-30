@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.148.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.147.0...v1.148.0) (2022-03-30)
+
+* Upgraded all patterns to CDK v1.148.0
+
+## [1.147.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.4.0...v1.147.0) (2022-03-29)
+
+* Upgraded all patterns to CDK v1.147.0
+
 ## [1.146.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.145.0...v1.146.0) (2022-03-02)
 
 * Upgraded all patterns to CDK v1.146.0
