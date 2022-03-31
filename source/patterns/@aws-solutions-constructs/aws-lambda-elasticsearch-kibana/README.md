@@ -24,39 +24,76 @@
 
 This AWS Solutions Construct implements the AWS Lambda function and Amazon Elasticsearch Service with the least privileged permissions.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps, Aws } from 'aws-cdk-lib';
 import { LambdaToElasticSearchAndKibana } from '@aws-solutions-constructs/aws-lambda-elasticsearch-kibana';
-import { Aws } from "@aws-cdk/core";
+import * as lambda from "aws-cdk-lib/aws-lambda";
 
 const lambdaProps: lambda.FunctionProps = {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
-    handler: 'index.handler'
+  code: lambda.Code.fromAsset(`lambda`),
+  runtime: lambda.Runtime.NODEJS_14_X,
+  handler: 'index.handler'
 };
 
-new LambdaToElasticSearchAndKibana(this, 'test-lambda-elasticsearch-kibana', {
-    lambdaFunctionProps: lambdaProps,
-    domainName: 'test-domain',
-    // TODO: Ensure the Cognito domain name is globally unique
-    cognitoDomainName: 'globallyuniquedomain' + Aws.ACCOUNT_ID;
+new LambdaToElasticSearchAndKibana(this, 'sample', {
+  lambdaFunctionProps: lambdaProps,
+  domainName: 'testdomain',
+  // TODO: Ensure the Cognito domain name is globally unique
+  cognitoDomainName: 'globallyuniquedomain' + Aws.ACCOUNT_ID
 });
-
 ```
 
-## Initializer
+Python
+```python
+from aws_solutions_constructs.aws_lambda_elasticsearch_kibana import LambdaToElasticSearchAndKibana
+from aws_cdk import (
+    aws_lambda as _lambda,
+    Aws,
+    Stack
+)
+from constructs import Construct
 
-``` text
-new LambdaToElasticSearchAndKibana(scope: Construct, id: string, props: LambdaToElasticSearchAndKibanaProps);
+lambda_props = _lambda.FunctionProps(
+    code=_lambda.Code.from_asset('lambda'),
+    runtime=_lambda.Runtime.PYTHON_3_9,
+    handler='index.handler'
+)
+
+LambdaToElasticSearchAndKibana(self, 'sample',
+                            lambda_function_props=lambda_props,
+                            domain_name='testdomain',
+                            # TODO: Ensure the Cognito domain name is globally unique
+                            cognito_domain_name='globallyuniquedomain' + Aws.ACCOUNT_ID
+                            )
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`LambdaToElasticSearchAndKibanaProps`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.Aws;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.lambdaelasticsearchkibana.*;
 
+new LambdaToElasticSearchAndKibana(this, "sample",
+        new LambdaToElasticSearchAndKibanaProps.Builder()
+                .lambdaFunctionProps(new FunctionProps.Builder()
+                        .runtime(Runtime.NODEJS_14_X)
+                        .code(Code.fromAsset("lambda"))
+                        .handler("index.handler")
+                        .build())
+                .domainName("testdomain")
+                // TODO: Ensure the Cognito domain name is globally unique
+                .cognitoDomainName("globallyuniquedomain" + Aws.ACCOUNT_ID)
+                .build());
+```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

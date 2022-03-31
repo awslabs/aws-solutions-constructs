@@ -20,36 +20,77 @@
 
 This AWS Solutions Construct implements an AWS EventBridge rule and an AWS Lambda function.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
-const { EventbridgeToLambdaProps, EventbridgeToLambda } from '@aws-solutions-constructs/aws-eventbridge-lambda';
+import { Construct } from 'constructs';
+import { Stack, StackProps, Duration } from 'aws-cdk-lib';
+import { EventbridgeToLambdaProps, EventbridgeToLambda } from '@aws-solutions-constructs/aws-eventbridge-lambda';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as events from 'aws-cdk-lib/aws-events';
 
-const props: EventbridgeToLambdaProps = {
-    lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler'
-    },
-    eventRuleProps: {
-      schedule: events.Schedule.rate(Duration.minutes(5))
-    }
+const constructProps: EventbridgeToLambdaProps = {
+  lambdaFunctionProps: {
+    code: lambda.Code.fromAsset(`lambda`),
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler'
+  },
+  eventRuleProps: {
+    schedule: events.Schedule.rate(Duration.minutes(5))
+  }
 };
 
-new EventbridgeToLambda(this, 'test-eventbridge-lambda', props);
+new EventbridgeToLambda(this, 'test-eventbridge-lambda', constructProps);
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_eventbridge_lambda import EventbridgeToLambda, EventbridgeToLambdaProps
+from aws_cdk import (
+    aws_lambda as _lambda,
+    aws_events as events,
+    Duration,
+    Stack
+)
+from constructs import Construct
 
-``` text
-new EventbridgeToLambda(scope: Construct, id: string, props: EventbridgeToLambdaProps);
+EventbridgeToLambda(self, 'test-eventbridge-lambda',
+                    lambda_function_props=_lambda.FunctionProps(
+                        code=_lambda.Code.from_asset('lambda'),
+                        runtime=_lambda.Runtime.PYTHON_3_9,
+                        handler='index.handler'
+                    ),
+                    event_rule_props=events.RuleProps(
+                        schedule=events.Schedule.rate(
+                            Duration.minutes(5))
+                    ))
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`EventbridgeToLambdaProps`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.services.events.*;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.eventbridgelambda.*;
+
+new EventbridgeToLambda(this, "test-eventbridge-lambda",
+        new EventbridgeToLambdaProps.Builder()
+                .lambdaFunctionProps(new FunctionProps.Builder()
+                        .runtime(Runtime.NODEJS_14_X)
+                        .code(Code.fromAsset("lambda"))
+                        .handler("index.handler")
+                        .build())
+                .eventRuleProps(new RuleProps.Builder()
+                        .schedule(Schedule.rate(Duration.minutes(5)))
+                        .build())
+                .build());
+```
 
 ## Pattern Construct Props
 

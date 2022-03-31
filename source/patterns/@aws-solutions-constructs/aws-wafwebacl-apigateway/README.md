@@ -26,39 +26,83 @@
 ## Overview
 This AWS Solutions Construct implements an AWS WAF web ACL connected to Amazon API Gateway REST API.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-import * as api from '@aws-cdk/aws-apigateway';
-import * as lambda from "@aws-cdk/aws-lambda";
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import * as lambda from "aws-cdk-lib/aws-lambda";
 import { ApiGatewayToLambda } from '@aws-solutions-constructs/aws-apigateway-lambda';
 import { WafwebaclToApiGatewayProps, WafwebaclToApiGateway } from "@aws-solutions-constructs/aws-wafwebacl-apigateway";
 
 const apiGatewayToLambda = new ApiGatewayToLambda(this, 'ApiGatewayToLambdaPattern', {
-    lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`lambda`)
-    }
+  lambdaFunctionProps: {
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`lambda`)
+  }
 });
 
 // This construct can only be attached to a configured API Gateway.
 new WafwebaclToApiGateway(this, 'test-wafwebacl-apigateway', {
-    existingApiGatewayInterface: apiGatewayToLambda.apiGateway
+  existingApiGatewayInterface: apiGatewayToLambda.apiGateway
 });
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_apigateway_lambda import ApiGatewayToLambda
+from aws_solutions_constructs.aws_wafwebacl_apigateway import WafwebaclToApiGatewayProps, WafwebaclToApiGateway
+from aws_cdk import (
+    aws_apigateway as api,
+    aws_lambda as _lambda,
+    Stack
+)
+from constructs import Construct
 
-``` text
-new WafwebaclToApiGateway(scope: Construct, id: string, props: WafwebaclToApiGatewayProps);
+api_gateway_to_lambda = ApiGatewayToLambda(self, 'ApiGatewayToLambdaPattern',
+                                    lambda_function_props=_lambda.FunctionProps(
+                                        code=_lambda.Code.from_asset(
+                                            'lambda'),
+                                        runtime=_lambda.Runtime.PYTHON_3_9,
+                                        handler='index.handler'
+                                    )
+                                    )
+
+# This construct can only be attached to a configured API Gateway.
+WafwebaclToApiGateway(self, 'test_wafwebacl_apigateway',
+                    existing_api_gateway_interface=api_gateway_to_lambda.api_gateway
+                    )
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`WafwebaclToApiGatewayProps`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.apigateway.*;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.apigatewaylambda.*;
+import software.amazon.awsconstructs.services.wafwebaclapigateway.*;
+
+final ApiGatewayToLambda apiGatewayToLambda = new ApiGatewayToLambda(this, "ApiGatewayToLambdaPattern",
+        new ApiGatewayToLambdaProps.Builder()
+                .lambdaFunctionProps(new FunctionProps.Builder()
+                        .runtime(Runtime.NODEJS_14_X)
+                        .code(Code.fromAsset("lambda"))
+                        .handler("index.handler")
+                        .build())
+                .build());
+
+// This construct can only be attached to a configured Application Load
+// Balancer.
+new WafwebaclToApiGateway(this, "test-wafwebacl-apigateway", new WafwebaclToApiGatewayProps.Builder()
+        .existingApiGatewayInterface(apiGatewayToLambda.getApiGateway())
+        .build());
+```
 
 ## Pattern Construct Props
 

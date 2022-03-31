@@ -26,40 +26,79 @@
 ## Overview
 This AWS Solutions Construct implements an AWS WAF web ACL connected to an Application Load Balancer.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-import { Route53ToAlb } from '@aws-solutions-constructs/aws-route53-alb';
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { WafwebaclToAlbProps, WafwebaclToAlb } from "@aws-solutions-constructs/aws-wafwebacl-alb";
 
-// A constructed ALB is required to be attached to the WAF Web ACL.
-// In this case, we are using this construct to create one.
-const r53ToAlb = new Route53ToAlb(this, 'Route53ToAlbPattern', {
-  privateHostedZoneProps: {
-    zoneName: 'www.example.com',
-  },
-  publicApi: false,
-  logAccessLogs: false
-});
+// Use an existing ALB, such as one created by Route53toAlb or AlbToLambda
+const existingLoadBalancer = previouslyCreatedLoadBalancer
 
+
+// Note - all alb constructs turn on ELB logging by default, so require that an environment including account
+// and region be provided when creating the stack
+//
+// new MyStack(app, 'id', {env: {account: '123456789012', region: 'us-east-1' }});
+//
 // This construct can only be attached to a configured Application Load Balancer.
 new WafwebaclToAlb(this, 'test-wafwebacl-alb', {
-    existingLoadBalancerObj: r53ToAlb.loadBalancer
+    existingLoadBalancerObj: existingLoadBalancer
 });
 ```
 
-## Initializer
+Python
+```python
+from aws_solutions_constructs.aws_route53_alb import Route53ToAlb
+from aws_solutions_constructs.aws_wafwebacl_alb import WafwebaclToAlbProps, WafwebaclToAlb
+from aws_cdk import (
+    aws_route53 as route53,
+    Stack
+)
+from constructs import Construct
 
-``` text
-new WafwebaclToAlb(scope: Construct, id: string, props: WafwebaclToAlbProps);
+# Use an existing ALB, such as one created by Route53toAlb or AlbToLambda
+existingLoadBalancer = previouslyCreatedLoadBalancer
+
+# Note - all alb constructs turn on ELB logging by default, so require that an environment including account
+# and region be provided when creating the stack
+#
+# MyStack(app, 'id', env=cdk.Environment(account='679431688440', region='us-east-1'))
+#
+# This construct can only be attached to a configured Application Load Balancer.
+WafwebaclToAlb(self, 'test_wafwebacl_alb',
+                existing_load_balancer_obj=existingLoadBalancer
+                )
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`WafwebaclToAlbProps`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.route53.*;
+import software.amazon.awsconstructs.services.wafwebaclalb.*;
 
+// Use an existing ALB, such as one created by Route53toAlb or AlbToLambda
+final existingLoadBalancer = previouslyCreatedLoadBalancer
+
+// Note - all alb constructs turn on ELB logging by default, so require that an environment including account
+// and region be provided when creating the stack
+//
+// new MyStack(app, "id", StackProps.builder()
+//         .env(Environment.builder()
+//                 .account("123456789012")
+//                 .region("us-east-1")
+//                 .build());
+//
+// This construct can only be attached to a configured Application Load Balancer.
+new WafwebaclToAlb(this, "test-wafwebacl-alb", new WafwebaclToAlbProps.Builder()
+        .existingLoadBalancerObj(existingLoadBalancer)
+        .build());
+```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

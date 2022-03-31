@@ -24,19 +24,48 @@
 
 This AWS Solutions Construct implements an AWS Fargate service that can write/read to an Amazon S3 Bucket
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { FargateToS3, FargateToS3Props } from '@aws-solutions-constructs/aws-fargate-s3';
 
-const props: FargateToS3Props = {
+const constructProps: FargateToS3Props = {
   publicApi: true,
-  ecrRepositoryArn: "arn of a repo in ECR in your account",
-});
+  ecrRepositoryArn: "arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo",
+};
 
-new FargateToS3(stack, 'test-construct', props);
+new FargateToS3(this, 'test-construct', constructProps);
 ```
 
+Python
+``` python
+from aws_solutions_constructs.aws_fargate_s3 import FargateToS3, FargateToS3Props
+from aws_cdk import (
+    Stack
+)
+from constructs import Construct
+
+FargateToS3(self, 'test_construct',
+            public_api=True,
+            ecr_repository_arn="arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo")
+```
+
+Java
+``` java
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awsconstructs.services.fargates3.*;
+
+new FargateToS3(this, "test_construct", new FargateToS3Props.Builder()
+        .publicApi(true)
+        .ecrRepositoryArn("arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo")
+        .build());
+```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

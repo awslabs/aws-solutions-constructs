@@ -26,49 +26,113 @@
 
 This AWS Solutions Construct implements an Amazon Route 53 connected to a configured Amazon API Gateway REST API.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-import * as api from '@aws-cdk/aws-apigateway';
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as route53 from "@aws-cdk/aws-route53";
-import { Route53ToApigateway } from '@aws-solutions-constructs/aws-route53-apigateway';
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import * as route53 from "aws-cdk-lib/aws-route53";
+import * as acm from "aws-cdk-lib/aws-certificatemanager";
+import { Route53ToApiGateway } from '@aws-solutions-constructs/aws-route53-apigateway';
 
 // The construct requires an existing REST API, this can be created in raw CDK or extracted
 // from a previously instantiated construct that created an API Gateway REST API
 const existingRestApi = previouslyCreatedApigatewayToLambdaConstruct.apiGateway;
 
+// domainName must match existing hosted zone in your account and the existing certificate
 const ourHostedZone = route53.HostedZone.fromLookup(this, 'HostedZone', {
     domainName: "example.com",
-  });
+});
 
 const certificate = acm.Certificate.fromCertificateArn(
-    stack,
+    this,
     "fake-cert",
     "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
-  );
+);
 
 // This construct can only be attached to a configured API Gateway.
-new Route53ToApigateway(this, 'Route53ToApigatewayPattern', {
-    existingApiGatewayObj: existingRestApi,
+new Route53ToApiGateway(this, 'Route53ToApiGatewayPattern', {
+    existingApiGatewayInterface: existingRestApi,
     existingHostedZoneInterface: ourHostedZone,
     publicApi: true,
     existingCertificateInterface: certificate
 });
+```
+
+Python
+```python
+from aws_solutions_constructs.aws_route53_apigateway import Route53ToApiGateway
+from aws_cdk import (
+    aws_route53 as route53,
+    aws_certificatemanager as acm,
+    Stack
+)
+from constructs import Construct
+
+# The construct requires an existing REST API, this can be created in raw CDK or extracted
+# from a previously instantiated construct that created an API Gateway REST API
+existingRestApi = previouslyCreatedApigatewayToLambdaConstruct.apiGateway
+
+# domain_name must match existing hosted zone in your account and the existing certificate
+ourHostedZone = route53.HostedZone.from_lookup(self, 'HostedZone',
+                                                domain_name="example.com",
+                                                )
+
+# Obtain a pre-existing certificate from your account
+certificate = acm.Certificate.from_certificate_arn(
+    self,
+    'existing-cert',
+    "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
+)
+
+# This construct can only be attached to a configured API Gateway.
+Route53ToApiGateway(self, 'Route53ToApigatewayPattern',
+                    existing_api_gateway_interface=existingRestApi,
+                    existing_hosted_zone_interface=ourHostedZone,
+                    public_api=True,
+                    existing_certificate_interface=certificate
+                    )
 
 ```
 
-## Initializer
+Java
+``` java
+import software.constructs.Construct;
 
-``` text
-new Route53ToApigateway(scope: Construct, id: string, props: Route53ToApigatewayProps);
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.route53.*;
+import software.amazon.awscdk.services.apigateway.*;
+import software.amazon.awscdk.services.certificatemanager.*;
+import software.amazon.awsconstructs.services.route53apigateway.*;
+
+// The construct requires an existing REST API, this can be created in raw CDK
+// or extracted from a previously instantiated construct that created an API
+// Gateway REST API
+final IRestApi existingRestApi = previouslyCreatedApigatewayToLambdaConstruct.getApiGateway();
+
+// domainName must match existing hosted zone in your account and the existing certificate
+final IHostedZone ourHostedZone = HostedZone.fromLookup(this, "HostedZone",
+        new HostedZoneProviderProps.Builder()
+                .domainName("example.com")
+                .build());
+
+// Obtain a pre-existing certificate from your account
+final ICertificate certificate = Certificate.fromCertificateArn(
+        this,
+        "existing-cert",
+        "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012");
+
+// This construct can only be attached to a configured API Gateway.
+new Route53ToApiGateway(this, "Route53ToApiGatewayPattern",
+        new Route53ToApiGatewayProps.Builder()
+                .existingApiGatewayInterface(existingRestApi)
+                .existingHostedZoneInterface(ourHostedZone)
+                .publicApi(true)
+                .existingCertificateInterface(certificate)
+                .build());
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`Route53ToApigatewayProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

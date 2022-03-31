@@ -24,33 +24,80 @@
 
 This AWS Solutions Construct implements an Amazon Cognito securing an Amazon API Gateway Lambda backed REST APIs pattern.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { CognitoToApiGatewayToLambda } from '@aws-solutions-constructs/aws-cognito-apigateway-lambda';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 new CognitoToApiGatewayToLambda(this, 'test-cognito-apigateway-lambda', {
-    lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler'
-    }
+  lambdaFunctionProps: {
+    code: lambda.Code.fromAsset(`lambda`),
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler'
+  }
 });
 ```
 
-If you are defining resources and methods on your API (e.g. proxy = false), then you must call addAuthorizers() after the API is fully defined to ensure every method is protected. Here is an example in Typescript:
+Python
+``` python
+from aws_solutions_constructs.aws_cognito_apigateway_lambda import CognitoToApiGatewayToLambda
+from aws_cdk import (
+    aws_lambda as _lambda,
+    Stack
+)
+from constructs import Construct
 
+CognitoToApiGatewayToLambda(self, 'test-cognito-apigateway-lambda',
+                            lambda_function_props=_lambda.FunctionProps(
+                                code=_lambda.Code.from_asset('lambda'),
+                                runtime=_lambda.Runtime.PYTHON_3_9,
+                                handler='index.handler'
+                            )
+                            )
+
+```
+
+Java
+``` java
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.cognitoapigatewaylambda.*;
+
+new CognitoToApiGatewayToLambda(this, "test-cognito-apigateway-lambda",
+        new CognitoToApiGatewayToLambdaProps.Builder()
+                .lambdaFunctionProps(new FunctionProps.Builder()
+                        .runtime(Runtime.NODEJS_14_X)
+                        .code(Code.fromAsset("lambda"))
+                        .handler("index.handler")
+                        .build())
+                .build());
+```
+
+If you are defining resources and methods on your API (e.g. proxy = false), then you must call addAuthorizers() after the API is fully defined to ensure every method is protected. Here is an example:
+
+Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { CognitoToApiGatewayToLambda } from '@aws-solutions-constructs/aws-cognito-apigateway-lambda';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 const construct = new CognitoToApiGatewayToLambda(this, 'test-cognito-apigateway-lambda', {
     lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+        code: lambda.Code.fromAsset(`lambda`),
         runtime: lambda.Runtime.NODEJS_14_X,
         handler: 'index.handler'
     },
     apiGatewayProps: {
-      proxy: false
+        proxy: false
     }
 });
 
@@ -61,17 +108,73 @@ resource.addMethod('POST');
 construct.addAuthorizers();
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_cognito_apigateway_lambda import CognitoToApiGatewayToLambda
+from aws_cdk import (
+    aws_lambda as _lambda,
+    aws_apigateway as api,
+    Stack
+)
+from constructs import Construct
+from typing import Any
 
-``` text
-new CognitoToApiGatewayToLambda(scope: Construct, id: string, props: CognitoToApiGatewayToLambdaProps);
+# Overriding LambdaRestApiProps with type Any
+gateway_props = dict[Any, Any]
+
+construct = CognitoToApiGatewayToLambda(self, 'test-cognito-apigateway-lambda',
+                                        lambda_function_props=_lambda.FunctionProps(
+                                            code=_lambda.Code.from_asset(
+                                                'lambda'),
+                                            runtime=_lambda.Runtime.PYTHON_3_9,
+                                            handler='index.handler'
+                                        ),
+                                        api_gateway_props=gateway_props(
+                                            proxy=False
+                                        )
+                                        )
+
+resource = construct.api_gateway.root.add_resource('foobar')
+resource.add_method('POST')
+
+# Mandatory to call this method to Apply the Cognito Authorizers on all API methods
+construct.add_authorizers()
 ```
 
-_Parameters_
+``` java
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`CognitoToApiGatewayToLambdaProps`](#pattern-construct-props)
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import software.amazon.awscdk.*;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awscdk.services.apigateway.IResource;
+import software.amazon.awsconstructs.services.cognitoapigatewaylambda.*;
+
+// Overriding LambdaRestApiProps with type Any
+Map<String, Optional<?>> gatewayProps = new HashMap<String, Optional<?>>();
+gatewayProps.put("proxy", Optional.of(false));
+
+final CognitoToApiGatewayToLambda construct = new CognitoToApiGatewayToLambda(this,
+        "test-cognito-apigateway-lambda",
+        new CognitoToApiGatewayToLambdaProps.Builder()
+                .lambdaFunctionProps(new FunctionProps.Builder()
+                        .runtime(Runtime.NODEJS_14_X)
+                        .code(Code.fromAsset("lambda"))
+                        .handler("index.handler")
+                        .build())
+                .apiGatewayProps(gatewayProps)
+                .build());
+
+final IResource resource = construct.getApiGateway().getRoot().addResource("foobar");
+resource.addMethod("POST");
+
+// Mandatory to call this method to Apply the Cognito Authorizers on all API methods
+construct.addAuthorizers();
+```
 
 ## Pattern Construct Props
 

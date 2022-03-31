@@ -24,33 +24,57 @@
 
 This AWS Solutions Construct implements an Amazon EventBridge rule to send data to an Amazon Kinesis Data Stream
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-import * as cdk from '@aws-cdk/core';
-import {EventbridgeToKinesisStreams, EventbridgeToKinesisStreamsProps} from "@aws-solutions-constructs/aws-eventbridge-kinesisstreams";
+import { Construct } from 'constructs';
+import { Stack, StackProps, Duration } from 'aws-cdk-lib';
+import { EventbridgeToKinesisStreams, EventbridgeToKinesisStreamsProps } from "@aws-solutions-constructs/aws-eventbridge-kinesisstreams";
+import * as events from 'aws-cdk-lib/aws-events';
 
-const props: EventbridgeToKinesisStreamsProps = {
-    eventRuleProps: {
-      schedule: events.Schedule.rate(Duration.minutes(5)),
-    }
+const constructProps: EventbridgeToKinesisStreamsProps = {
+  eventRuleProps: {
+    schedule: events.Schedule.rate(Duration.minutes(5)),
+  }
 };
 
-new EventbridgeToKinesisStreams(this, 'test-eventbridge-kinesis-streams', props);
+new EventbridgeToKinesisStreams(this, 'test-eventbridge-kinesis-streams', constructProps);
 ```
 
-## Initializer
+Python
+``` Python
+from aws_solutions_constructs.aws_eventbridge_kinesis_streams import EventbridgeToKinesisStreams, EventbridgeToKinesisStreamsProps
+from aws_cdk import (
+    aws_events as events,
+    Duration,
+    Stack
+)
+from constructs import Construct
 
-``` text
-new EventbridgeToKinesisStreams(scope: Construct, id: string, props: EventbridgeToKinesisStreamsProps);
+EventbridgeToKinesisStreams(self, 'test-eventbridge-kinesis-streams',
+    event_rule_props=events.RuleProps(
+        schedule=events.Schedule.rate(Duration.minutes(5)),
+    ))
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`EventbridgeToKinesisStreamsProps`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.services.events.*;
+import software.amazon.awsconstructs.services.eventbridgekinesisstreams.*;
 
+new EventbridgeToKinesisStreams(this, "test-eventbridge-kinesis-streams",
+        new EventbridgeToKinesisStreamsProps.Builder()
+                .eventRuleProps(new RuleProps.Builder()
+                        .schedule(Schedule.rate(Duration.minutes(5)))
+                        .build())
+                .build());
+```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |
