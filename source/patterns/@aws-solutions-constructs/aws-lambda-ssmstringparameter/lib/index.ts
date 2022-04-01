@@ -96,6 +96,11 @@ export class LambdaToSsmstringparameter extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
 
+    // This should have been an array, we will make it an array for validation
+    if (props.stringParameterPermissions) {
+      defaults.CheckListValues(['Read', 'ReadWrite'], [props.stringParameterPermissions], 'String Parameter permission');
+    }
+
     if (props.deployVpc || props.existingVpc) {
       this.vpc = defaults.buildVpc(scope, {
         defaultVpcProps: defaults.DefaultIsolatedVpcProps(),

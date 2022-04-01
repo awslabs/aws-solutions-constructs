@@ -85,7 +85,7 @@ new FargateToS3(this, "test_construct", new FargateToS3Props.Builder()
 |bucketProps?|[`s3.BucketProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html)|Optional user provided props to override the default props for the S3 Bucket.|
 |loggingBucketProps?|[`s3.BucketProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html)|Optional user provided props to override the default props for the S3 Logging Bucket.|
 |logS3AccessLogs?| boolean|Whether to turn on Access Logging for the S3 bucket. Creates an S3 bucket with associated storage costs for the logs. Enabling Access Logging is a best practice. default - true|
-|bucketPermissions?|`string[]`|Optional bucket permissions to grant to the Fargate service. One or more of the following may be specified: `Delete`, `Read`, and `Write`. Default is `ReadWrite` which includes `[s3:GetObject*, s3:GetBucket*, s3:List*, s3:DeleteObject*, s3:PutObject*, s3:Abort*]`.|
+|bucketPermissions?|`string[]`|Optional bucket permissions to grant to the Fargate service. One or more of the following may be specified: `Delete`, `Read`, and `Write`. Default is ["Read", "Write"] which includes `[s3:GetObject*, s3:GetBucket*, s3:List*, s3:DeleteObject*, s3:PutObject*, s3:Abort*]`.|
 |bucketArnEnvironmentVariableName?|string|Optional Name for the S3 bucket arn environment variable set for the container.|
 |bucketEnvironmentVariableName?|string|Optional Name for the S3 bucket name environment variable set for the container.|
 
