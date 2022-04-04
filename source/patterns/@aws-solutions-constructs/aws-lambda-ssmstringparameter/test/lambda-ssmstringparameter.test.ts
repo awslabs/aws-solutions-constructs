@@ -368,3 +368,24 @@ test("Test bad call with existingVpc and deployVpc", () => {
   // Assertion
   expect(app).toThrowError();
 });
+
+test("Test bad call with invalid string parameter permission", () => {
+  // Stack
+  const stack = new Stack();
+
+  const app = () => {
+    // Helper declaration
+    new LambdaToSsmstringparameter(stack, "lambda-to-ssm-stack", {
+      lambdaFunctionProps: {
+        runtime: lambda.Runtime.NODEJS_14_X,
+        handler: "index.handler",
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      },
+      stringParameterProps: { stringValue: "test-string-value" },
+      deployVpc: true,
+      stringParameterPermissions: 'Reed',
+    });
+  };
+  // Assertion
+  expect(app).toThrowError('Invalid String Parameter permission submitted - Reed');
+});

@@ -24,42 +24,89 @@
 
 This AWS Solutions Construct implements an AWS IoT MQTT topic rule and an AWS Lambda function pattern.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
-const { IotToLambdaProps, IotToLambda } from '@aws-solutions-constructs/aws-iot-lambda';
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { IotToLambdaProps, IotToLambda } from '@aws-solutions-constructs/aws-iot-lambda';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
-const props: IotToLambdaProps = {
-    lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler'
-    },
-    iotTopicRuleProps: {
-        topicRulePayload: {
-            ruleDisabled: false,
-            description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
-            sql: "SELECT * FROM 'connectedcar/dtc/#'",
-            actions: []
-        }
+const constructProps: IotToLambdaProps = {
+  lambdaFunctionProps: {
+    code: lambda.Code.fromAsset(`lambda`),
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler'
+  },
+  iotTopicRuleProps: {
+    topicRulePayload: {
+      ruleDisabled: false,
+      description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+      sql: "SELECT * FROM 'connectedcar/dtc/#'",
+      actions: []
     }
+  }
 };
 
-new IotToLambda(this, 'test-iot-lambda-integration', props);
+new IotToLambda(this, 'test-iot-lambda-integration', constructProps);
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_iot_lambda import IotToLambdaProps, IotToLambda
+from aws_cdk import (
+    aws_iot as iot,
+    aws_lambda as _lambda,
+    Stack
+)
+from constructs import Construct
 
-``` text
-new IotToLambda(scope: Construct, id: string, props: IotToLambdaProps);
+IotToLambda(self, 'test_iot_lambda',
+            lambda_function_props=_lambda.FunctionProps(
+                code=_lambda.Code.from_asset('lambda'),
+                runtime=_lambda.Runtime.PYTHON_3_9,
+                handler='index.handler'
+            ),
+            iot_topic_rule_props=iot.CfnTopicRuleProps(
+                topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
+                    rule_disabled=False,
+                    description="Sends data to kinesis data stream",
+                    sql="SELECT * FROM 'solutions/construct'",
+                    actions=[]
+                )
+            ))
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
+import java.util.List;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`IotToLambdaProps`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awscdk.services.iot.*;
+import software.amazon.awscdk.services.iot.CfnTopicRule.TopicRulePayloadProperty;
+import software.amazon.awsconstructs.services.iotlambda.*;
 
+new IotToLambda(this, "test-iot-lambda-integration", new IotToLambdaProps.Builder()
+        .lambdaFunctionProps(new FunctionProps.Builder()
+                .runtime(Runtime.NODEJS_14_X)
+                .code(Code.fromAsset("lambda"))
+                .handler("index.handler")
+                .build())
+        .iotTopicRuleProps(new CfnTopicRuleProps.Builder()
+                .topicRulePayload(new TopicRulePayloadProperty.Builder()
+                        .ruleDisabled(false)
+                        .description("Processing of DTC messages from the AWS Connected Vehicle Solution.")
+                        .sql("SELECT * FROM 'connectedcar/dtc/#'")
+                        .actions(List.of())
+                        .build())
+                .build())
+        .build());
+```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

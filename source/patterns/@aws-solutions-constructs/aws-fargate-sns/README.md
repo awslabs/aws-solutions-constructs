@@ -24,37 +24,48 @@
 
 This AWS Solutions Construct implements an AWS Fargate service that can write to an Amazon SNS topic
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-  import { FargateToSns, FargateToSnsProps } from '@aws-solutions-constructs/aws-fargate-sns';
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { FargateToSns, FargateToSnsProps } from '@aws-solutions-constructs/aws-fargate-sns';
 
-  // Obtain a pre-existing certificate from your account
-  const certificate = acm.Certificate.fromCertificateArn(
-        scope,
-        'existing-cert',
-        "arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012"
-      );
-
-  const props: FargateToSnsProps = {
+const constructProps: FargateToSnsProps = {
     publicApi: true,
-    ecrRepositoryArn: "arn of a repo in ECR in your account",
-  });
+    ecrRepositoryArn: "arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo"
+};
 
-  new FargateToSns(stack, 'test-construct', props);
+new FargateToSns(this, 'test-construct', constructProps);
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_fargate_sns import FargateToSns, FargateToSnsProps
+from aws_cdk import (
+    Stack
+)
+from constructs import Construct
 
-``` text
-new FargateToSns(scope: Construct, id: string, props: FargateToSnsProps);
+FargateToSns(self, 'test_construct',
+            public_api=True,
+            ecr_repository_arn="arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo")
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`FargateToSnsProps`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awsconstructs.services.fargatesns.*;
+
+new FargateToSns(this, "test_construct", new FargateToSnsProps.Builder()
+        .publicApi(true)
+        .ecrRepositoryArn("arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo")
+        .build());
+```
 
 ## Pattern Construct Props
 

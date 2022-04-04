@@ -26,26 +26,37 @@
 ## Overview
 This AWS Solutions Construct implements an Amazon API Gateway REST API connected to Amazon DynamoDB table.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition in
 
+Typescript:
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { ApiGatewayToDynamoDBProps, ApiGatewayToDynamoDB } from "@aws-solutions-constructs/aws-apigateway-dynamodb";
 
 new ApiGatewayToDynamoDB(this, 'test-api-gateway-dynamodb-default', {});
-
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_apigateway_dynamodb import ApiGatewayToDynamoDB
+from aws_cdk import Stack
+from constructs import Construct
 
-``` text
-new ApiGatewayToDynamoDB(scope: Construct, id: string, props: ApiGatewayToDynamoDBProps);
+ApiGatewayToDynamoDB(self, 'test-api-gateway-dynamodb-default')
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`ApiGatewayToDynamoDBProps`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awsconstructs.services.apigatewaydynamodb.*;
+
+new ApiGatewayToDynamoDB(this, "test-api-gateway-dynamodb-default", new ApiGatewayToDynamoDBProps.Builder()
+        .build());
+```
 
 ## Pattern Construct Props
 

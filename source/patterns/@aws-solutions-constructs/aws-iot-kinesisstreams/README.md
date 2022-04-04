@@ -24,38 +24,70 @@
 
 This AWS Solutions Construct implements an AWS IoT MQTT topic rule to send data to an Amazon Kinesis Data Stream.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-const { IotToKinesisStreamsProps,
-        IotToKinesisStreams } from '@aws-solutions-constructs/aws-iot-kinesisstreams';
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { IotToKinesisStreamsProps, IotToKinesisStreams } from '@aws-solutions-constructs/aws-iot-kinesisstreams';
 
-const props: IotToKinesisStreamsProps = {
-    iotTopicRuleProps: {
-        topicRulePayload: {
-            ruleDisabled: false,
-            description: "Sends data to kinesis data stream",
-            sql: "SELECT * FROM 'solutions/construct'",
-            actions: []
-        }
+const constructProps: IotToKinesisStreamsProps = {
+  iotTopicRuleProps: {
+    topicRulePayload: {
+      ruleDisabled: false,
+      description: "Sends data to kinesis data stream",
+      sql: "SELECT * FROM 'solutions/construct'",
+      actions: []
     }
+  }
 };
 
-new IotToKinesisStreams(this, 'test-iot-kinesisstream', props);
-
+new IotToKinesisStreams(this, 'test-iot-kinesisstreams', constructProps);
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_iot_kinesisstreams import IotToKinesisStreamsProps, IotToKinesisStreams
+from aws_cdk import (
+    aws_iot as iot,
+    Stack
+)
+from constructs import Construct
 
-``` text
-new IotToKinesisStreams(scope: Construct, id: string, props: IotToKinesisStreamsProps);
+IotToKinesisStreams(self, 'test-iot-kinesisstreams',
+                    iot_topic_rule_props=iot.CfnTopicRuleProps(
+                        topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
+                            rule_disabled=False,
+                            description="Sends data to kinesis data stream",
+                            sql="SELECT * FROM 'solutions/construct'",
+                            actions=[]
+                        )
+                    ))
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
+import java.util.List;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`IotToKinesisStreamsProps`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.iot.*;
+import software.amazon.awscdk.services.iot.CfnTopicRule.TopicRulePayloadProperty;
+import software.amazon.awsconstructs.services.iotkinesisstreams.*;
+
+new IotToKinesisStreams(this, "test-iot-kinesisstreams", new IotToKinesisStreamsProps.Builder()
+        .iotTopicRuleProps(new CfnTopicRuleProps.Builder()
+                .topicRulePayload(new TopicRulePayloadProperty.Builder()
+                        .ruleDisabled(false)
+                        .description("Sends data to kinesis data stream")
+                        .sql("SELECT * FROM 'solutions/construct'")
+                        .actions(List.of())
+                        .build())
+                .build())
+        .build());
+```
 
 ## Pattern Construct Props
 

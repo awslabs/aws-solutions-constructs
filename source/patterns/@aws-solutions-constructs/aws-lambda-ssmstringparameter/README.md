@@ -24,36 +24,72 @@
 
 This AWS Solutions Construct implements the AWS Lambda function and AWS Systems Manager Parameter Store String parameter with the least privileged permissions.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
-const { LambdaToSsmstringparameterProps,  LambdaToSsmstringparameter } from '@aws-solutions-constructs/aws-lambda-ssmstringparameter';
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { LambdaToSsmstringparameterProps,  LambdaToSsmstringparameter } from '@aws-solutions-constructs/aws-lambda-ssmstringparameter';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
-const props: LambdaToSsmstringparameterProps = {
-    lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
-      // This assumes a handler function in lib/lambda/index.js
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      handler: 'index.handler'
-    }, 
-    stringParameterProps: { stringValue: "test-string-value" }
+const constructProps: LambdaToSsmstringparameterProps = {
+  lambdaFunctionProps: {
+    runtime: lambda.Runtime.NODEJS_14_X,
+    code: lambda.Code.fromAsset(`lambda`),
+    handler: 'index.handler'
+  },
+  stringParameterProps: { stringValue: "test-string-value" }
 };
 
-new LambdaToSsmstringparameter(this, 'test-lambda-ssmstringparameter-stack', props);
-
+new LambdaToSsmstringparameter(this, 'test-lambda-ssmstringparameter-stack', constructProps);
 ```
 
-## Initializer
+Python
+```python
+from aws_solutions_constructs.aws_lambda_ssmstringparameter import LambdaToSsmstringparameter
+from aws_cdk import (
+    aws_lambda as _lambda,
+    aws_ssm as ssm,
+    Stack
+)
+from constructs import Construct
 
-``` text
-new LambdaToSsmstringparameter(scope: Construct, id: string, props: LambdaToSsmstringparameterProps);
+LambdaToSsmstringparameter(
+    self, 'test-lambda-ssmstringparameter-stack',
+    lambda_function_props=_lambda.FunctionProps(
+        code=_lambda.Code.from_asset('lambda'),
+        runtime=_lambda.Runtime.PYTHON_3_9,
+        handler='index.handler'
+    ),
+    string_parameter_props=ssm.StringParameterProps(
+        string_value="test-string-value")
+)
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`LambdaToSsmstringparameterProps`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awscdk.services.ssm.*;
+import software.amazon.awsconstructs.services.lambdassmstringparameter.*;
+
+new LambdaToSsmstringparameter(this, "test-lambda-ssmstringparameter-stack",
+        new LambdaToSsmstringparameterProps.Builder()
+                .lambdaFunctionProps(new FunctionProps.Builder()
+                        .runtime(Runtime.NODEJS_14_X)
+                        .code(Code.fromAsset("lambda"))
+                        .handler("index.handler")
+                        .build())
+                .stringParameterProps(new StringParameterProps.Builder()
+                        .stringValue("test-string-value")
+                        .build())
+                .build());
+```
 
 ## Pattern Construct Props
 

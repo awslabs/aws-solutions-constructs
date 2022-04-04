@@ -483,3 +483,24 @@ test('Existing service/existing queue, private API, existing VPC', () => {
   expect(stack).toCountResources('AWS::SQS::Queue', 1);
   expect(stack).toCountResources('AWS::ECS::Service', 1);
 });
+
+test('Test bad queuePermissions', () => {
+
+  // An environment with region is required to enable logging on an ALB
+  const stack = new cdk.Stack();
+  const publicApi = false;
+
+  const props = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    vpcProps: { cidr: '172.0.0.0/16' },
+    deployDeadLetterQueue: false,
+    queuePermissions: ['Reed'],
+  };
+
+  const app = () => {
+    new FargateToSqs(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError('Invalid queue permission submitted - Reed');
+});
