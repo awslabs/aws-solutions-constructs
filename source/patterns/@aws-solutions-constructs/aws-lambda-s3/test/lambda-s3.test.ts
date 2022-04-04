@@ -424,3 +424,26 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
 
   expect(stack).toCountResources("AWS::S3::Bucket", 1);
 });
+
+test('Test bad bucket permission', () => {
+  const stack = new Stack();
+
+  const props = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler'
+    },
+    bucketProps: {
+      removalPolicy: RemovalPolicy.DESTROY,
+    },
+    logS3AccessLogs: false,
+    bucketPermissions: ['Reed']
+  };
+
+  const alb = () => {
+    new LambdaToS3(stack, 'lambda-s3', props);
+  };
+
+  expect(alb).toThrowError('Invalid bucket permission submitted - Reed');
+});

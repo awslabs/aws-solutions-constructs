@@ -122,9 +122,9 @@ export interface FargateToS3Props {
   readonly logS3AccessLogs?: boolean;
   /**
    * Optional bucket permissions to grant to the Fargate service.
-   * One or more of the following may be specified: "Delete", "Put", "Read", "ReadWrite", "Write".
+   * One or more of the following may be specified: "Delete", "Read", "Write".
    *
-   * @default - Read/write access is given to the Fargate service if no value is specified.
+   * @default - [ "Read", "Write" ]
    */
   readonly bucketPermissions?: string[];
   /**
@@ -160,6 +160,10 @@ export class FargateToS3 extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
+
+    if (props.bucketPermissions) {
+      defaults.CheckListValues(['Delete', 'Read', 'Write'], props.bucketPermissions, 'bucket permission');
+    }
 
     this.vpc = defaults.buildVpc(scope, {
       existingVpc: props.existingVpc,
