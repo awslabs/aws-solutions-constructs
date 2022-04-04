@@ -63,8 +63,8 @@ export function buildDynamoDBTable(scope: Construct, props: BuildDynamoDBTablePr
   } else if (props.existingTableInterface) {
     return [props.existingTableInterface, undefined];
   } else if (!props.existingTableInterface && !props.existingTableObj) {
-    const dynamoTableProps = consolidateProps(DefaultTableProps, props.dynamoTableProps);
-    const newTable = new dynamodb.Table(scope, 'DynamoTable', dynamoTableProps);
+    const consolidatedTableProps = consolidateProps(DefaultTableProps, props.dynamoTableProps);
+    const newTable = new dynamodb.Table(scope, 'DynamoTable', consolidatedTableProps);
     return [newTable, newTable];
   }
 
