@@ -26,7 +26,7 @@ const stack = new Stack(app, generateIntegStackName(__filename), {
 stack.templateOptions.description = 'Integration Test with new VPC, Service and Table';
 
 const existingVpc = getTestVpc(stack);
-const existingTable = defaults.buildDynamoDBTable(stack, {});
+const [ existingTable ] = defaults.buildDynamoDBTable(stack, {});
 
 const image = ecs.ContainerImage.fromRegistry('nginx');
 

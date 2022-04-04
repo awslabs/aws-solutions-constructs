@@ -119,7 +119,7 @@ export class LambdaToDynamoDB extends Construct {
     this.dynamoTable = defaults.buildDynamoDBTable(this, {
       dynamoTableProps: props.dynamoTableProps,
       existingTableObj: props.existingTableObj
-    });
+    })[1] as dynamodb.Table;
 
     // Configure environment variables
     const tableEnvironmentVariableName = props.tableEnvironmentVariableName || 'DDB_TABLE_NAME';

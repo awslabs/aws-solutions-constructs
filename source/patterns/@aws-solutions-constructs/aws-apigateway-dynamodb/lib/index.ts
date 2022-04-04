@@ -133,8 +133,8 @@ export class ApiGatewayToDynamoDB extends Construct {
 
     this.dynamoTable = defaults.buildDynamoDBTable(this, {
       existingTableObj: props.existingTableObj,
-      dynamoTableProps,
-    });
+      dynamoTableProps: props.dynamoTableProps
+    })[1] as dynamodb.Table;
 
     // Setup the API Gateway
     [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] = defaults.GlobalRestApi(this,
