@@ -357,3 +357,49 @@ test('test getPartitionKeyNameFromTable()', () => {
 
   expect(testKeyName).toEqual(partitionKeyName);
 });
+
+test('test error providing both existingTableInterface and existingTableObj', () => {
+  const stack = new Stack();
+
+  const tableProps: dynamodb.TableProps = {
+    partitionKey: {
+      name: 'table_id',
+      type: dynamodb.AttributeType.STRING
+    },
+    stream: dynamodb.StreamViewType.NEW_IMAGE
+  };
+
+  const existingTableInterface = new dynamodb.Table(stack, 'DynamoTable', tableProps);
+
+  const app = () => {
+    defaults.buildDynamoDBTable(stack, {
+      existingTableInterface,
+      existingTableObj: existingTableInterface
+    });
+  };
+
+  expect(app).toThrowError('Must provide either existingTableInterface or existingTableObj');
+});
+
+test('test error invalid table supplied', () => {
+  const stack = new Stack();
+
+  const tableProps: dynamodb.TableProps = {
+    partitionKey: {
+      name: 'table_id',
+      type: dynamodb.AttributeType.STRING
+    },
+    stream: dynamodb.StreamViewType.NEW_IMAGE
+  };
+
+  const existingTableInterface = new dynamodb.Table(stack, 'DynamoTable', tableProps);
+
+  const app = () => {
+    defaults.buildDynamoDBTable(stack, {
+      existingTableInterface,
+      dynamoTableProps: tableProps
+    });
+  };
+
+  expect(app).toThrowError('Invalid table information supplied');
+});

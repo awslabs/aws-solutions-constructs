@@ -116,6 +116,12 @@ export class LambdaToDynamoDB extends Construct {
       vpc: this.vpc
     });
 
+    // The helper function has been revised to return a table interface
+    // AND an optional table object instead of just a table object
+    // to match our new design guidelines. We have edited the legacy code
+    // to always return the optional table object by throwing an error if
+    // either existingTableObj or dynamoTableProps is not provided.
+    // This will ensure that new and existing constructs work consistently.
     this.dynamoTable = defaults.buildDynamoDBTable(this, {
       dynamoTableProps: props.dynamoTableProps,
       existingTableObj: props.existingTableObj

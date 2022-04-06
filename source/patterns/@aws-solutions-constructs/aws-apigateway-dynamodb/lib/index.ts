@@ -131,6 +131,12 @@ export class ApiGatewayToDynamoDB extends Construct {
       partitionKeyName = getPartitionKeyNameFromTable(props.existingTableObj);
     }
 
+    // The helper function has been revised to return a table interface
+    // AND an optional table object instead of just a table object
+    // to match our new design guidelines. We have edited the legacy code
+    // to always return the optional table object by throwing an error if
+    // either existingTableObj or dynamoTableProps is not provided.
+    // This will ensure that new and existing constructs work consistently.
     this.dynamoTable = defaults.buildDynamoDBTable(this, {
       existingTableObj: props.existingTableObj,
       dynamoTableProps: props.dynamoTableProps

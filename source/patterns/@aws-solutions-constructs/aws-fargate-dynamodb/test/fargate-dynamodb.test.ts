@@ -52,6 +52,7 @@ test('New service/new table, public API, new VPC', () => {
   expect(construct.dynamoTableInterface !== null);
 
   expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+    ServiceName: serviceName,
     LaunchType: 'FARGATE',
     DesiredCount: 2,
     DeploymentConfiguration: {
@@ -59,13 +60,6 @@ test('New service/new table, public API, new VPC', () => {
       MinimumHealthyPercent: 75
     },
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
-  });
-
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
-    ServiceName: serviceName
-  });
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
-    Family: familyName
   });
 
   expect(stack).toHaveResourceLike("AWS::ECS::Cluster", {
@@ -112,6 +106,7 @@ test('New service/new table, public API, new VPC', () => {
   });
 
   expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+    Family: familyName,
     ContainerDefinitions: [
       {
         Essential: true,
@@ -141,6 +136,21 @@ test('New service/new table, public API, new VPC', () => {
 
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
     CidrBlock: '172.0.0.0/16'
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+    ServiceName: {
+      "Fn::Join": [
+        "",
+        [
+          "com.amazonaws.",
+          {
+            Ref: "AWS::Region"
+          },
+          ".dynamodb"
+        ]
+      ]
+    },
   });
 
   // Confirm we created a Public/Private VPC
@@ -218,6 +228,21 @@ test('New service/new table, private API, new VPC', () => {
     }
   });
 
+  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+    ServiceName: {
+      "Fn::Join": [
+        "",
+        [
+          "com.amazonaws.",
+          {
+            Ref: "AWS::Region"
+          },
+          ".dynamodb"
+        ]
+      ]
+    },
+  });
+
   // Confirm we created an Isolated VPC
   expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
   expect(stack).toCountResources('AWS::EC2::VPC', 1);
@@ -285,6 +310,21 @@ test('New service/existing table, private API, existing VPC', () => {
         }
       ]
     }
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+    ServiceName: {
+      "Fn::Join": [
+        "",
+        [
+          "com.amazonaws.",
+          {
+            Ref: "AWS::Region"
+          },
+          ".dynamodb"
+        ]
+      ]
+    },
   });
 
   expect(construct.dynamoTable == null);
@@ -424,6 +464,21 @@ test('Existing service/new table, public API, existing VPC', () => {
     }
   });
 
+  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+    ServiceName: {
+      "Fn::Join": [
+        "",
+        [
+          "com.amazonaws.",
+          {
+            Ref: "AWS::Region"
+          },
+          ".dynamodb"
+        ]
+      ]
+    },
+  });
+
   expect(construct.dynamoTable == null);
 
   // Confirm we created a Public/Private VPC
@@ -550,6 +605,21 @@ test('Existing service/existing table, private API, existing VPC', () => {
         }
       ]
     }
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+    ServiceName: {
+      "Fn::Join": [
+        "",
+        [
+          "com.amazonaws.",
+          {
+            Ref: "AWS::Region"
+          },
+          ".dynamodb"
+        ]
+      ]
+    },
   });
 
   expect(construct.dynamoTable == null);
