@@ -630,3 +630,43 @@ test('Existing service/existing table, private API, existing VPC', () => {
   expect(stack).toCountResources('AWS::ECS::Service', 1);
   expect(stack).toCountResources('AWS::DynamoDB::Table', 1);
 });
+
+test('test error invalid table permission', () => {
+  const stack = new cdk.Stack();
+  const publicApi = false;
+  const serviceName = 'custom-name';
+  const tableName = 'custom-table-name';
+
+  const existingVpc = defaults.getTestVpc(stack, publicApi);
+
+  const [testService, testContainer] = defaults.CreateFargateService(stack,
+    'test',
+    existingVpc,
+    undefined,
+    defaults.fakeEcrRepoArn,
+    undefined,
+    undefined,
+    undefined,
+    { serviceName });
+
+  const existingTable = new dynamodb.Table(stack, 'MyTablet', {
+    tableName,
+    partitionKey: {
+      name: 'id',
+      type: dynamodb.AttributeType.STRING
+    }
+  });
+
+  const app = () => {
+    new FargateToDynamoDB(stack, 'test-construct', {
+      publicApi,
+      existingFargateServiceObject: testService,
+      existingContainerDefinitionObject: testContainer,
+      existingVpc,
+      tablePermissions: 'reed',
+      existingTableInterface: existingTable
+    });
+  };
+
+  expect(app).toThrowError('Invalid string submitted - REED');
+});

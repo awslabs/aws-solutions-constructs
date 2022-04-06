@@ -179,14 +179,17 @@ export class FargateToDynamoDB extends Construct {
 
     // Add the requested or default table permissions
     if (props.tablePermissions) {
-      const _permissions = props.tablePermissions.toUpperCase();
-      if (_permissions === 'ALL') {
+      const allowedPermissions = ['ALL', 'READ', 'READWRITE', 'WRITE'];
+      const permission = props.tablePermissions.toUpperCase();
+      defaults.CheckListValues(allowedPermissions, [permission], 'string');
+
+      if (permission === 'ALL') {
         this.dynamoTableInterface.grantFullAccess(this.service.taskDefinition.taskRole);
-      } else if (_permissions === 'READ') {
+      } else if (permission === 'READ') {
         this.dynamoTableInterface.grantReadData(this.service.taskDefinition.taskRole);
-      } else if (_permissions === 'READWRITE') {
+      } else if (permission === 'READWRITE') {
         this.dynamoTableInterface.grantReadWriteData(this.service.taskDefinition.taskRole);
-      } else if (_permissions === 'WRITE') {
+      } else if (permission === 'WRITE') {
         this.dynamoTableInterface.grantWriteData(this.service.taskDefinition.taskRole);
       }
     } else {
