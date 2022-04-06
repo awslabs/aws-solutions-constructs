@@ -308,6 +308,36 @@ test('New service/new bucket, private API, new VPC', () => {
   expect(stack).toCountResources('AWS::ECS::Service', 1);
 });
 
+test('Specify bad bucket permission', () => {
+
+  // An environment with region is required to enable logging on an ALB
+  const stack = new cdk.Stack();
+  const publicApi = false;
+  const bucketName = 'bucket-name';
+  const loggingBucketName = 'logging-bucket-name';
+
+  const props = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    vpcProps: { cidr: '172.0.0.0/16' },
+    bucketProps: {
+      bucketName
+    },
+    bucketPermissions: ['Write', 'Delete', 'Reed'],
+    loggingBucketProps: {
+      bucketName: loggingBucketName
+    }
+  };
+
+  const app = () => {
+    new FargateToS3(stack, 'test-one', props);
+  };
+  // Assertion
+  expect(app).toThrowError(
+    /Invalid bucket permission submitted - Reed/);
+
+});
+
 test('New service/existing bucket, private API, existing VPC', () => {
   // An environment with region is required to enable logging on an ALB
   const stack = new cdk.Stack();

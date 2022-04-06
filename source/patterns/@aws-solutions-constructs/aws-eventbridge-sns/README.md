@@ -20,44 +20,92 @@
 
 This AWS Solutions Construct implements an AWS Events rule and an AWS SNS Topic.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-import { Duration } from '@aws-cdk/core';
-import * as events from '@aws-cdk/aws-events';
-import * as iam from '@aws-cdk/aws-iam';
+import { Construct } from 'constructs';
+import { Stack, StackProps, Duration } from 'aws-cdk-lib';
+import * as events from 'aws-cdk-lib/aws-events';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import { EventbridgeToSnsProps, EventbridgeToSns } from "@aws-solutions-constructs/aws-eventbridge-sns";
 
-const props: EventbridgeToSnsProps = {
-    eventRuleProps: {
-      schedule: events.Schedule.rate(Duration.minutes(5)),
-    }
+const constructProps: EventbridgeToSnsProps = {
+  eventRuleProps: {
+    schedule: events.Schedule.rate(Duration.minutes(5))
+  }
 };
 
-const constructStack = new EventbridgeToSns(this, 'test-construct', props);
+const constructStack = new EventbridgeToSns(this, 'test-construct', constructProps);
 
 // Grant yourself permissions to use the Customer Managed KMS Key
 const policyStatement = new iam.PolicyStatement({
-    actions: ["kms:Encrypt", "kms:Decrypt"],
-    effect: iam.Effect.ALLOW,
-    principals: [ new iam.AccountRootPrincipal() ],
-    resources: [ "*" ]
+  actions: ["kms:Encrypt", "kms:Decrypt"],
+  effect: iam.Effect.ALLOW,
+  principals: [new iam.AccountRootPrincipal()],
+  resources: ["*"]
 });
 
 constructStack.encryptionKey?.addToResourcePolicy(policyStatement);
 ```
 
-## Initializer
+Python
+``` Python
+from aws_solutions_constructs.aws_eventbridge_sns import EventbridgeToSns, EventbridgeToSnsProps
+from aws_cdk import (
+    aws_events as events,
+    aws_iam as iam,
+    Duration,
+    Stack
+)
+from constructs import Construct
 
-``` text
-new EventbridgeToSns(scope: Construct, id: string, props: EventbridgeToSnsProps);
+construct_stack = EventbridgeToSns(self, 'test-construct',
+                                    event_rule_props=events.RuleProps(
+                                        schedule=events.Schedule.rate(
+                                            Duration.minutes(5))
+                                    ))
+
+# Grant yourself permissions to use the Customer Managed KMS Key
+policy_statement = iam.PolicyStatement(
+    actions=["kms:Encrypt", "kms:Decrypt"],
+    effect=iam.Effect.ALLOW,
+    principals=[iam.AccountRootPrincipal()],
+    resources=["*"]
+)
+
+construct_stack.encryption_key.add_to_resource_policy(policy_statement)
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
+import java.util.List;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`EventbridgeToSnsProps`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.services.events.*;
+import software.amazon.awscdk.services.iam.*;
+import software.amazon.awsconstructs.services.eventbridgesns.*;
+
+final EventbridgeToSns constructStack = new EventbridgeToSns(this, "test-construct",
+        new EventbridgeToSnsProps.Builder()
+                .eventRuleProps(new RuleProps.Builder()
+                        .schedule(Schedule.rate(Duration.minutes(5)))
+                        .build())
+                .build());
+
+// Grant yourself permissions to use the Customer Managed KMS Key
+final PolicyStatement policyStatement = PolicyStatement.Builder.create()
+        .actions(List.of("kms:Encrypt", "kms:Decrypt"))
+        .effect(Effect.ALLOW)
+        .principals(List.of(new AccountRootPrincipal()))
+        .resources(List.of("*"))
+        .build();
+
+constructStack.getEncryptionKey().addToResourcePolicy(policyStatement);
+```
 
 ## Pattern Construct Props
 

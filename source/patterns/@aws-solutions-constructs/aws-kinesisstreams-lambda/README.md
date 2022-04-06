@@ -20,36 +20,77 @@
 
 This AWS Solutions Construct deploys a Kinesis Stream and Lambda function with the appropriate resources/properties for interaction and security.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
-const { KinesisStreamsToLambda } from '@aws-solutions-constructs/aws-kinesisstreams-lambda';
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { KinesisStreamsToLambda } from '@aws-solutions-constructs/aws-kinesisstreams-lambda';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 new KinesisStreamsToLambda(this, 'KinesisToLambdaPattern', {
-    kinesisEventSourceProps: {
-        startingPosition: lambda.StartingPosition.TRIM_HORIZON,
-        batchSize: 1
-    },
-    lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    }
+  kinesisEventSourceProps: {
+    startingPosition: lambda.StartingPosition.TRIM_HORIZON,
+    batchSize: 1
+  },
+  lambdaFunctionProps: {
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`lambda`)
+  }
 });
+```
+
+Python
+``` python
+from aws_solutions_constructs.aws_kinesis_streams_lambda import KinesisStreamsToLambda
+from aws_cdk import (
+    aws_lambda as _lambda,
+    aws_lambda_event_sources as sources,
+    aws_kinesis as kinesis,
+    Stack
+)
+from constructs import Construct
+
+KinesisStreamsToLambda(self, 'KinesisToLambdaPattern',
+                        kinesis_event_source_props=sources.KinesisEventSourceProps(
+                            starting_position=_lambda.StartingPosition.TRIM_HORIZON,
+                            batch_size=1
+                        ),
+                        lambda_function_props=_lambda.FunctionProps(
+                            runtime=_lambda.Runtime.PYTHON_3_9,
+                            handler='index.handler',
+                            code=_lambda.Code.from_asset(
+                                'lambda')
+                        )
+                        )
 
 ```
 
-## Initializer
+Java
+``` java
+import software.constructs.Construct;
 
-``` text
-new KinesisStreamsToLambda(scope: Construct, id: string, props: KinesisStreamsToLambdaProps);
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.eventsources.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.kinesisstreamslambda.*;
+
+new KinesisStreamsToLambda(this, "KinesisToLambdaPattern", new KinesisStreamsToLambdaProps.Builder()
+        .kinesisEventSourceProps(new KinesisEventSourceProps.Builder()
+                .startingPosition(StartingPosition.TRIM_HORIZON)
+                .batchSize(1)
+                .build())
+        .lambdaFunctionProps(new FunctionProps.Builder()
+                .runtime(Runtime.NODEJS_14_X)
+                .code(Code.fromAsset("lambda"))
+                .handler("index.handler")
+                .build())
+        .build());
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`KinesisStreamsToLambdaProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

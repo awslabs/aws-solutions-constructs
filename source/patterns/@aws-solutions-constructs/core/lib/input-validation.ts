@@ -206,3 +206,11 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     throw new Error(errorMessages);
   }
 }
+
+export function CheckListValues(allowedPermissions: string[], submittedValues: string[], valueType: string) {
+  submittedValues.forEach((submittedValue) => {
+    if (!allowedPermissions.includes(submittedValue)) {
+      throw Error(`Invalid ${valueType} submitted - ${submittedValue}` );
+    }
+  });
+}

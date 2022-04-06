@@ -24,42 +24,89 @@
 
 This AWS Solutions Construct implements an AWS IoT topic rule, an AWS Lambda function and Amazon DynamoDB table with the least privileged permissions.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
-const { IotToLambdaToDynamoDBProps,  IotToLambdaToDynamoDB } from '@aws-solutions-constructs/aws-iot-lambda-dynamodb';
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { IotToLambdaToDynamoDBProps, IotToLambdaToDynamoDB } from '@aws-solutions-constructs/aws-iot-lambda-dynamodb';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
-const props: IotToLambdaToDynamoDBProps = {
-    lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler'
-    },
-    iotTopicRuleProps: {
-        topicRulePayload: {
-            ruleDisabled: false,
-            description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
-            sql: "SELECT * FROM 'connectedcar/dtc/#'",
-            actions: []
-        }
-    }
+const constructProps: IotToLambdaToDynamoDBProps = {
+  lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`lambda`),
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler'
+  },
+  iotTopicRuleProps: {
+      topicRulePayload: {
+          ruleDisabled: false,
+          description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+          sql: "SELECT * FROM 'connectedcar/dtc/#'",
+          actions: []
+      }
+  }
 };
 
-new IotToLambdaToDynamoDB(this, 'test-iot-lambda-dynamodb-stack', props);
-
+new IotToLambdaToDynamoDB(this, 'test-iot-lambda-dynamodb-stack', constructProps);
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_iot_lambda_dynamodb import IotToLambdaToDynamoDB
+from aws_cdk import (
+    aws_iot as iot,
+    aws_lambda as _lambda,
+    Stack
+)
+from constructs import Construct
 
-``` text
-new IotToLambdaToDynamoDB(scope: Construct, id: string, props: IotToLambdaToDynamoDBProps);
+IotToLambdaToDynamoDB(self, 'test-iot-lambda-dynamodb-stack',
+            lambda_function_props=_lambda.FunctionProps(
+                code=_lambda.Code.from_asset('lambda'),
+                runtime=_lambda.Runtime.PYTHON_3_9,
+                handler='index.handler'
+            ),
+            iot_topic_rule_props=iot.CfnTopicRuleProps(
+                topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
+                    rule_disabled=False,
+                    description="Processing of DTC messages from the AWS Connected Vehicle Solution.",
+                    sql="SELECT * FROM 'connectedcar/dtc/#'",
+                    actions=[]
+                )
+            ))
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
+import java.util.List;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`IotToLambdaToDynamoDBProps`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awscdk.services.iot.*;
+import software.amazon.awscdk.services.iot.CfnTopicRule.TopicRulePayloadProperty;
+import software.amazon.awsconstructs.services.iotlambdadynamodb.*;
+
+new IotToLambdaToDynamoDB(this, "test-iot-lambda-dynamodb-stack", new IotToLambdaToDynamoDBProps.Builder()
+        .lambdaFunctionProps(new FunctionProps.Builder()
+                .runtime(Runtime.NODEJS_14_X)
+                .code(Code.fromAsset("lambda"))
+                .handler("index.handler")
+                .build())
+        .iotTopicRuleProps(new CfnTopicRuleProps.Builder()
+                .topicRulePayload(new TopicRulePayloadProperty.Builder()
+                        .ruleDisabled(false)
+                        .description("Processing of DTC messages from the AWS Connected Vehicle Solution.")
+                        .sql("SELECT * FROM 'connectedcar/dtc/#'")
+                        .actions(List.of())
+                        .build())
+                .build())
+        .build());
+```
 
 ## Pattern Construct Props
 

@@ -20,32 +20,60 @@
 
 This AWS Solutions Construct implements an AWS Lambda function connected to an Amazon S3 bucket.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition :
 
+Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { LambdaToS3 } from '@aws-solutions-constructs/aws-lambda-s3';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 new LambdaToS3(this, 'LambdaToS3Pattern', {
     lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_14_X,
         handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+        code: lambda.Code.fromAsset(`lambda`)
     }
 });
-
 ```
 
-## Initializer
+Python
+```python
+from aws_solutions_constructs.aws_lambda_s3 import LambdaToS3
+from aws_cdk import (
+    aws_lambda as _lambda,
+    Stack
+)
+from constructs import Construct
 
-``` text
-new LambdaToS3(scope: Construct, id: string, props: LambdaToS3Props);
+LambdaToS3(self, 'LambdaToS3Pattern',
+        lambda_function_props=_lambda.FunctionProps(
+            code=_lambda.Code.from_asset('lambda'),
+            runtime=_lambda.Runtime.PYTHON_3_9,
+            handler='index.handler'
+        )
+        )
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`LambdaToS3Props`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.lambdas3.*;
+
+new LambdaToS3(this, "LambdaToS3Pattern", new LambdaToS3Props.Builder()
+        .lambdaFunctionProps(new FunctionProps.Builder()
+                .runtime(Runtime.NODEJS_14_X)
+                .code(Code.fromAsset("lambda"))
+                .handler("index.handler")
+                .build())
+        .build());
+```
 
 ## Pattern Construct Props
 

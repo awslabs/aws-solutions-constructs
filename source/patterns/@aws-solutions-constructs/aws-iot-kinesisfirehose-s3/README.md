@@ -24,12 +24,15 @@
 
 This AWS Solutions Construct implements an AWS IoT MQTT topic rule to send data to an Amazon Kinesis Data Firehose delivery stream connected to an Amazon S3 bucket.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
-const { IotToKinesisFirehoseToS3Props, IotToKinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-iot-kinesisfirehose-s3';
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { IotToKinesisFirehoseToS3Props, IotToKinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-iot-kinesisfirehose-s3';
 
-const props: IotToKinesisFirehoseToS3Props = {
+const constructProps: IotToKinesisFirehoseToS3Props = {
     iotTopicRuleProps: {
         topicRulePayload: {
             ruleDisabled: false,
@@ -40,21 +43,52 @@ const props: IotToKinesisFirehoseToS3Props = {
     }
 };
 
-new IotToKinesisFirehoseToS3(this, 'test-iot-firehose-s3', props);
+new IotToKinesisFirehoseToS3(this, 'test-iot-firehose-s3', constructProps);
+```
+
+Python
+```python
+from aws_solutions_constructs.aws_iot_kinesisfirehose_s3 import IotToKinesisFirehoseToS3Props, IotToKinesisFirehoseToS3
+from aws_cdk import (
+    aws_iot as iot,
+    Stack
+)
+from constructs import Construct
+
+IotToKinesisFirehoseToS3(self, 'test_iot_firehose_s3',
+                        iot_topic_rule_props=iot.CfnTopicRuleProps(
+                            topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
+                                rule_disabled=False,
+                                description="Persistent storage of connected vehicle telematics data",
+                                sql="SELECT * FROM 'connectedcar/telemetry/#'",
+                                actions=[]
+                            )
+                        ))
 
 ```
 
-## Initializer
+Java
+```java
+import software.constructs.Construct;
+import java.util.List;
 
-``` text
-new IotToKinesisFirehoseToS3(scope: Construct, id: string, props: IotToKinesisFirehoseToS3Props);
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.iot.*;
+import software.amazon.awscdk.services.iot.CfnTopicRule.TopicRulePayloadProperty;
+import software.amazon.awsconstructs.services.iotkinesisfirehoses3.*;
+
+new IotToKinesisFirehoseToS3(this, "test-iot-firehose-s3", new IotToKinesisFirehoseToS3Props.Builder()
+        .iotTopicRuleProps(new CfnTopicRuleProps.Builder()
+                .topicRulePayload(new TopicRulePayloadProperty.Builder()
+                        .ruleDisabled(false)
+                        .description("Persistent storage of connected vehicle telematics data")
+                        .sql("SELECT * FROM 'connectedcar/telemetry/#'")
+                        .actions(List.of())
+                        .build())
+                .build())
+        .build());
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`IotToKinesisFirehoseToS3Props`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

@@ -22,38 +22,82 @@
 
 This AWS Solutions Construct implements an AWS Lambda function connected to an AWS Step Function.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-import { LambdaToStepFunction } from '@aws-solutions-constructs/aws-lambda-step-function';
+// aws-lambda-step-function has been deprecated for CDK V2 in favor of aws-lambda-stepfunctions.
+// This sample uses the CDK V1 syntax
+import * as cdk from '@aws-cdk/core';
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
+import * as lambda from '@aws-cdk/aws-lambda';
+import { LambdaToStepFunction } from '@aws-solutions-constructs/aws-lambda-step-function';
 
-const startState = new stepfunctions.Pass(stack, 'StartState');
+const startState = new stepfunctions.Pass(this, 'StartState');
 
 new LambdaToStepFunction(this, 'LambdaToStepFunctionPattern', {
   lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`lambda`)
   },
   stateMachineProps: {
     definition: startState
   }
 });
-
 ```
 
-## Initializer
+Python
+``` python
+# aws-lambda-step-function has been deprecated for CDK V2 in favor of aws-lambda-stepfunctions.
+# This sample uses the CDK V1 syntax
+from aws_solutions_constructs.aws_lambda_step_function import LambdaToStepFunction
+from aws_cdk import (
+    aws_lambda as _lambda,
+    aws_stepfunctions as stepfunctions,
+    core
+)
 
-``` text
-new LambdaToStepFunction(scope: Construct, id: string, props: LambdaToStepFunctionProps);
+start_state = stepfunctions.Pass(self, 'start_state')
+
+LambdaToStepFunction(
+    self, 'test-lambda-stepfunctions-stack',
+    lambda_function_props=_lambda.FunctionProps(
+        code=_lambda.Code.from_asset('lambda'),
+        runtime=_lambda.Runtime.PYTHON_3_9,
+        handler='index.handler'
+    ),
+    state_machine_props=stepfunctions.StateMachineProps(
+        definition=start_state)
+)
 ```
 
-_Parameters_
+Java
+``` java
+// aws-lambda-step-function has been deprecated for CDK V2 in favor of aws-lambda-stepfunctions.
+// This sample uses the CDK V1 syntax
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`LambdaToStepFunctionProps`](#pattern-construct-props)
+import software.amazon.awscdk.core.*;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awscdk.services.stepfunctions.*;
+import software.amazon.awsconstructs.services.lambdastepfunction.*;
+
+final Pass startState = new Pass(this, "StartState");
+
+new LambdaToStepFunction(this, "test-lambda-stepfunctions-stack",
+        new LambdaToStepFunctionProps.Builder()
+                .lambdaFunctionProps(new FunctionProps.Builder()
+                        .runtime(Runtime.NODEJS_14_X)
+                        .code(Code.fromAsset("lambda"))
+                        .handler("index.handler")
+                        .build())
+                .stateMachineProps(new StateMachineProps.Builder()
+                        .definition(startState)
+                        .build())
+                .build());
+```
 
 ## Pattern Construct Props
 

@@ -20,36 +20,77 @@
 
 This AWS Solutions Construct implements an AWS Events rule and an AWS Step Functions State Machine
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
-const { EventbridgeToStepfunctions, EventbridgeToStepfunctionsProps } from '@aws-solutions-constructs/aws-eventbridge-stepfunctions';
+import { Construct } from 'constructs';
+import { Stack, StackProps, Duration } from 'aws-cdk-lib';
+import { EventbridgeToStepfunctions, EventbridgeToStepfunctionsProps } from '@aws-solutions-constructs/aws-eventbridge-stepfunctions';
+import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
+import * as events from 'aws-cdk-lib/aws-events';
 
 const startState = new stepfunctions.Pass(this, 'StartState');
 
-const props: EventbridgeToStepfunctionsProps = {
-    stateMachineProps: {
-      definition: startState
-    },
-    eventRuleProps: {
-      schedule: events.Schedule.rate(Duration.minutes(5))
-    }
+const constructProps: EventbridgeToStepfunctionsProps = {
+  stateMachineProps: {
+    definition: startState
+  },
+  eventRuleProps: {
+    schedule: events.Schedule.rate(Duration.minutes(5))
+  }
 };
 
-new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions-stack', props);
+new EventbridgeToStepfunctions(this, 'test-eventbridge-stepfunctions-stack', constructProps);
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_eventbridge_stepfunctions import EventbridgeToStepfunctions, EventbridgeToStepfunctionsProps
+from aws_cdk import (
+    aws_stepfunctions as stepfunctions,
+    aws_events as events,
+    Duration,
+    Stack
+)
+from constructs import Construct
 
-``` text
-new EventbridgeToStepfunctions(scope: Construct, id: string, props: EventbridgeToStepfunctionsProps);
+startState = stepfunctions.Pass(self, 'StartState')
+
+EventbridgeToStepfunctions(self, 'test-eventbridge-stepfunctions-stack',
+                            state_machine_props=stepfunctions.StateMachineProps(
+                                definition=startState
+                            ),
+                            event_rule_props=events.RuleProps(
+                                schedule=events.Schedule.rate(
+                                    Duration.minutes(5))
+                            ))
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`EventbridgeToStepfunctionsProps`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.services.events.*;
+import software.amazon.awscdk.services.stepfunctions.*;
+import software.amazon.awsconstructs.services.eventbridgestepfunctions.*;
+
+final Pass startState = new Pass(this, "StartState");
+
+new EventbridgeToStepfunctions(this,
+        "test-eventbridge-stepfunctions-stack",
+        new EventbridgeToStepfunctionsProps.Builder()
+                .stateMachineProps(new StateMachineProps.Builder()
+                        .definition(startState)
+                        .build())
+                .eventRuleProps(new RuleProps.Builder()
+                        .schedule(Schedule.rate(Duration.minutes(5)))
+                        .build())
+                .build());
+```
 
 ## Pattern Construct Props
 

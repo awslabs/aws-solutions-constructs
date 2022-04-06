@@ -111,6 +111,10 @@ export class LambdaToS3 extends Construct {
       super(scope, id);
       defaults.CheckProps(props);
 
+      if (props.bucketPermissions) {
+        defaults.CheckListValues(['Delete', 'Put', 'Read', 'ReadWrite', 'Write'], props.bucketPermissions, 'bucket permission');
+      }
+
       let bucket: s3.IBucket;
 
       if (props.deployVpc || props.existingVpc) {

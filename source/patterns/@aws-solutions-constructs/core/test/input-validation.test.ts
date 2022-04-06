@@ -480,18 +480,22 @@ test('Test fail existingBucketObj and loggingBucketProps check', () => {
   expect(app).toThrowError('Error - If existingBucketObj is provided, supplying loggingBucketProps or logS3AccessLogs is an error.\n');
 });
 
-test('Test fail false logAlbAccessLogs and albLoggingBucketProps check', () => {
-  const props: defaults.VerifiedProps = {
-    logAlbAccessLogs: false,
-    albLoggingBucketProps: {
-      autoDeleteObjects: true
-    }
-  };
+test('Test successful CheckListValues', () => {
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckListValues(['one', 'two', 'four'], ['four', 'one'], 'test value');
   };
 
   // Assertion
-  expect(app).toThrowError('Error - If logAlbAccessLogs is false, supplying albLoggingBucketProps is invalid.\n');
+  expect(app).not.toThrowError();
+});
+
+test('Test unsuccessful CheckListValues', () => {
+
+  const app = () => {
+    defaults.CheckListValues(['one', 'two', 'four'], ['four', 'three'], 'test value');
+  };
+
+  // Assertion
+  expect(app).toThrowError('Invalid test value submitted - three');
 });

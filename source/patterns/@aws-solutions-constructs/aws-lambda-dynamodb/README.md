@@ -20,34 +20,62 @@
 
 This AWS Solutions Construct implements the AWS Lambda function and Amazon DynamoDB table with the least privileged permissions.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
-const { LambdaToDynamoDBProps,  LambdaToDynamoDB } from '@aws-solutions-constructs/aws-lambda-dynamodb';
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { LambdaToDynamoDBProps, LambdaToDynamoDB } from '@aws-solutions-constructs/aws-lambda-dynamodb';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
-const props: LambdaToDynamoDBProps = {
-    lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler'
-    },
+const constructProps: LambdaToDynamoDBProps = {
+  lambdaFunctionProps: {
+    code: lambda.Code.fromAsset(`lambda`),
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler'
+  },
 };
 
-new LambdaToDynamoDB(this, 'test-lambda-dynamodb-stack', props);
-
+new LambdaToDynamoDB(this, 'test-lambda-dynamodb-stack', constructProps);
 ```
 
-## Initializer
+Python
+```python
+from aws_solutions_constructs.aws_lambda_dynamodb import LambdaToDynamoDBProps, LambdaToDynamoDB
+from aws_cdk import (
+    aws_lambda as _lambda,
+    Stack
+)
+from constructs import Construct
 
-``` text
-new LambdaToDynamoDB(scope: Construct, id: string, props: LambdaToDynamoDBProps);
+LambdaToDynamoDB(self, 'test_lambda_dynamodb_stack',
+                    lambda_function_props=_lambda.FunctionProps(
+                        code=_lambda.Code.from_asset(
+                            'lambda'),
+                        runtime=_lambda.Runtime.PYTHON_3_9,
+                        handler='index.handler'
+                    ))
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`LambdaToDynamoDBProps`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.lambdadynamodb.*;
+
+new LambdaToDynamoDB(this, "test_lambda_dynamodb_stack", new LambdaToDynamoDBProps.Builder()
+        .lambdaFunctionProps(new FunctionProps.Builder()
+                .runtime(Runtime.NODEJS_14_X)
+                .code(Code.fromAsset("lambda"))
+                .handler("index.handler")
+                .build())
+        .build());
+```
 
 ## Pattern Construct Props
 
