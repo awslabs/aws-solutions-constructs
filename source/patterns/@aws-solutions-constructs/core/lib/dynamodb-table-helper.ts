@@ -58,19 +58,15 @@ export interface BuildDynamoDBTableWithStreamProps {
 
 export function buildDynamoDBTable(scope: Construct, props: BuildDynamoDBTableProps): [dynamodb.ITable, dynamodb.Table?] {
   // Conditional DynamoDB Table creation
-  if (props.existingTableInterface && props.existingTableObj) {
-    throw new Error("Must provide either existingTableInterface or existingTableObj");
-  } else if (props.existingTableObj && !props.dynamoTableProps) {
+  if (props.existingTableObj) {
     return [props.existingTableObj, props.existingTableObj];
-  } else if (props.existingTableInterface && !props.dynamoTableProps) {
+  } else if (props.existingTableInterface) {
     return [props.existingTableInterface, undefined];
-  } else if (!props.existingTableInterface && !props.existingTableObj) {
+  } else {
     const consolidatedTableProps = consolidateProps(DefaultTableProps, props.dynamoTableProps);
     const newTable = new dynamodb.Table(scope, 'DynamoTable', consolidatedTableProps);
     return [newTable, newTable];
   }
-
-  throw Error('Invalid table information supplied');
 }
 
 export function buildDynamoDBTableWithStream(scope: Construct, props: BuildDynamoDBTableWithStreamProps): [dynamodb.ITable, dynamodb.Table?] {

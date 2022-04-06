@@ -131,12 +131,9 @@ export class ApiGatewayToDynamoDB extends Construct {
       partitionKeyName = getPartitionKeyNameFromTable(props.existingTableObj);
     }
 
-    // The helper function has been revised to return a table interface
-    // AND an optional table object instead of just a table object
-    // to match our new design guidelines. We have edited the legacy code
-    // to always return the optional table object by throwing an error if
-    // either existingTableObj or dynamoTableProps is not provided.
-    // This will ensure that new and existing constructs work consistently.
+    // Since we are only invoking this function with an existing Table or tableProps,
+    // (not a table interface), we know that the implementation will always return
+    // a Table object and we can safely cast away the optional aspect of the type.
     this.dynamoTable = defaults.buildDynamoDBTable(this, {
       existingTableObj: props.existingTableObj,
       dynamoTableProps: props.dynamoTableProps
@@ -176,7 +173,7 @@ export class ApiGatewayToDynamoDB extends Construct {
         readRequestTemplate = props.readRequestTemplate;
       } else {
         readRequestTemplate =
-        `{ \
+          `{ \
           "TableName": "${this.dynamoTable.tableName}", \
           "KeyConditionExpression": "${partitionKeyName} = :v1", \
           "ExpressionAttributeValues": { \
@@ -218,7 +215,7 @@ export class ApiGatewayToDynamoDB extends Construct {
         deleteRequestTemplate = props.deleteRequestTemplate;
       } else {
         deleteRequestTemplate =
-        `{ \
+          `{ \
           "TableName": "${this.dynamoTable.tableName}", \
           "Key": { \
             "${partitionKeyName}": { \
@@ -246,7 +243,7 @@ export class ApiGatewayToDynamoDB extends Construct {
       resources: [
         this.dynamoTable.tableArn
       ],
-      actions: [ `${action}` ]
+      actions: [`${action}`]
     }));
   }
 }

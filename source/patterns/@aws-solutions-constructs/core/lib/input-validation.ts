@@ -97,6 +97,11 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
+  if (propsObject.existingTableObj && propsObject.existingTableInterface) {
+    errorMessages += 'Error - Either provide existingTableInterface or existingTableObj, but not both.\n';
+    errorFound = true;
+  }
+
   if (propsObject.existingStreamObj  && propsObject.kinesisStreamProps) {
     errorMessages += 'Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n';
     errorFound = true;

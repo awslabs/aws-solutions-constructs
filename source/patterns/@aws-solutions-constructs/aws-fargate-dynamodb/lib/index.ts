@@ -145,6 +145,13 @@ export class FargateToDynamoDB extends Construct {
     defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
 
+    // Other permissions for constructs are accepted as arrays, turning tablePermissions into
+    // an array to use the same validation function.
+    if (props.tablePermissions) {
+      const allowedPermissions = ['ALL', 'READ', 'READWRITE', 'WRITE'];
+      defaults.CheckListValues(allowedPermissions, [props.tablePermissions.toUpperCase()], 'tablePermission');
+    }
+
     this.vpc = defaults.buildVpc(scope, {
       existingVpc: props.existingVpc,
       defaultVpcProps: props.publicApi ? defaults.DefaultPublicPrivateVpcProps() : defaults.DefaultIsolatedVpcProps(),
@@ -179,9 +186,7 @@ export class FargateToDynamoDB extends Construct {
 
     // Add the requested or default table permissions
     if (props.tablePermissions) {
-      const allowedPermissions = ['ALL', 'READ', 'READWRITE', 'WRITE'];
       const permission = props.tablePermissions.toUpperCase();
-      defaults.CheckListValues(allowedPermissions, [permission], 'string');
 
       if (permission === 'ALL') {
         this.dynamoTableInterface.grantFullAccess(this.service.taskDefinition.taskRole);

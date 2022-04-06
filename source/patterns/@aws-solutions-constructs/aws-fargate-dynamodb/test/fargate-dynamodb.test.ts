@@ -668,5 +668,5 @@ test('test error invalid table permission', () => {
     });
   };
 
-  expect(app).toThrowError('Invalid string submitted - REED');
+  expect(app).toThrowError('Invalid tablePermission submitted - REED');
 });
