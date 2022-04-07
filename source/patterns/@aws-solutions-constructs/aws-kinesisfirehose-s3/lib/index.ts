@@ -170,7 +170,6 @@ export class KinesisFirehoseToS3 extends Construct {
       awsManagedKey
     );
 
-    printWarning(`kinesisFirehoseProps: ${JSON.stringify(props.kinesisFirehoseProps, null, 2)}`);
     // if the client didn't explicity say it was a Kinesis client, then turn on encryption
     if (!props.kinesisFirehoseProps ||
       !props.kinesisFirehoseProps.deliveryStreamType ||
