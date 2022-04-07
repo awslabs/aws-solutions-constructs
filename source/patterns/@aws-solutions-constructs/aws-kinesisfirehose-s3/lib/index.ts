@@ -16,7 +16,7 @@ import { Construct } from "@aws-cdk/core";
 import * as s3 from "@aws-cdk/aws-s3";
 import * as defaults from "@aws-solutions-constructs/core";
 import * as iam from "@aws-cdk/aws-iam";
-import { overrideProps, printWarning, consolidateProps } from "@aws-solutions-constructs/core";
+import { overrideProps, consolidateProps } from "@aws-solutions-constructs/core";
 import * as logs from "@aws-cdk/aws-logs";
 import * as cdk from "@aws-cdk/core";
 import * as kms from "@aws-cdk/aws-kms";
