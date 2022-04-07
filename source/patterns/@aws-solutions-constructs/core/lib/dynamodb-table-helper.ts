@@ -57,10 +57,10 @@ export interface BuildDynamoDBTableWithStreamProps {
 }
 
 export function buildDynamoDBTable(scope: Construct, props: BuildDynamoDBTableProps): [dynamodb.ITable, dynamodb.Table?] {
+  checkTableProps(props);
+
   // Conditional DynamoDB Table creation
-  if (props.existingTableObj && props.existingTableInterface) {
-    throw new Error('Error - Either provide existingTableInterface or existingTableObj, but not both.');
-  } else if (props.existingTableObj) {
+  if (props.existingTableObj) {
     return [props.existingTableObj, props.existingTableObj];
   } else if (props.existingTableInterface) {
     return [props.existingTableInterface, undefined];
@@ -68,6 +68,30 @@ export function buildDynamoDBTable(scope: Construct, props: BuildDynamoDBTablePr
     const consolidatedTableProps = consolidateProps(DefaultTableProps, props.dynamoTableProps);
     const newTable = new dynamodb.Table(scope, 'DynamoTable', consolidatedTableProps);
     return [newTable, newTable];
+  }
+}
+
+export function checkTableProps(props: BuildDynamoDBTableProps) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (props.dynamoTableProps && props.existingTableObj) {
+    errorMessages += 'Error - Either provide existingTableObj or dynamoTableProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (props.dynamoTableProps && props.existingTableInterface) {
+    errorMessages += 'Error - Either provide existingTableInterface or dynamoTableProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (props.existingTableObj && props.existingTableInterface) {
+    errorMessages += 'Error - Either provide existingTableInterface or existingTableObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
   }
 }
 
