@@ -390,3 +390,27 @@ test('test getPartitionKeyNameFromTable()', () => {
 
   expect(testKeyName).toEqual(partitionKeyName);
 });
+
+test('Test providing both existingTableInterface and existingTableObj', () => {
+  const stack = new Stack();
+
+  const tableProps: dynamodb.TableProps = {
+    partitionKey: {
+      name: 'table_id',
+      type: dynamodb.AttributeType.STRING
+    },
+    stream: dynamodb.StreamViewType.NEW_IMAGE
+  };
+
+  const existingTableInterface = new dynamodb.Table(stack, 'DynamoTable', tableProps)
+  ;
+  const newProps = {
+    existingTableInterface,
+    existingTableObj: existingTableInterface
+  };
+  const app = () => {
+    defaults.buildDynamoDBTable(stack, newProps);
+  };
+
+  expect(app).toThrowError('Error - Either provide existingTableInterface or existingTableObj, but not both.');
+});

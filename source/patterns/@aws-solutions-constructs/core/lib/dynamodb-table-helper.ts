@@ -58,7 +58,9 @@ export interface BuildDynamoDBTableWithStreamProps {
 
 export function buildDynamoDBTable(scope: Construct, props: BuildDynamoDBTableProps): [dynamodb.ITable, dynamodb.Table?] {
   // Conditional DynamoDB Table creation
-  if (props.existingTableObj) {
+  if (props.existingTableObj && props.existingTableInterface) {
+    throw new Error('Error - Either provide existingTableInterface or existingTableObj, but not both.');
+  } else if (props.existingTableObj) {
     return [props.existingTableObj, props.existingTableObj];
   } else if (props.existingTableInterface) {
     return [props.existingTableInterface, undefined];
