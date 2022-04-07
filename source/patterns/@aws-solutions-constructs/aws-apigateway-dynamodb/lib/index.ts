@@ -131,10 +131,13 @@ export class ApiGatewayToDynamoDB extends Construct {
       partitionKeyName = getPartitionKeyNameFromTable(props.existingTableObj);
     }
 
+    // Since we are only invoking this function with an existing Table or tableProps,
+    // (not a table interface), we know that the implementation will always return
+    // a Table object and we can safely cast away the optional aspect of the type.
     this.dynamoTable = defaults.buildDynamoDBTable(this, {
       existingTableObj: props.existingTableObj,
-      dynamoTableProps,
-    });
+      dynamoTableProps: props.dynamoTableProps
+    })[1] as dynamodb.Table;
 
     // Setup the API Gateway
     [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] = defaults.GlobalRestApi(this,
@@ -170,7 +173,7 @@ export class ApiGatewayToDynamoDB extends Construct {
         readRequestTemplate = props.readRequestTemplate;
       } else {
         readRequestTemplate =
-        `{ \
+          `{ \
           "TableName": "${this.dynamoTable.tableName}", \
           "KeyConditionExpression": "${partitionKeyName} = :v1", \
           "ExpressionAttributeValues": { \
@@ -212,7 +215,7 @@ export class ApiGatewayToDynamoDB extends Construct {
         deleteRequestTemplate = props.deleteRequestTemplate;
       } else {
         deleteRequestTemplate =
-        `{ \
+          `{ \
           "TableName": "${this.dynamoTable.tableName}", \
           "Key": { \
             "${partitionKeyName}": { \
@@ -240,7 +243,7 @@ export class ApiGatewayToDynamoDB extends Construct {
       resources: [
         this.dynamoTable.tableArn
       ],
-      actions: [ `${action}` ]
+      actions: [`${action}`]
     }));
   }
 }
