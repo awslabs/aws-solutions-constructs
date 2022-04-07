@@ -24,37 +24,71 @@
 
 This AWS Solutions Construct implements an AWS IoT MQTT topic rule and an Amazon S3 Bucket pattern.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-const { IotToS3Props, IotToS3 } from '@aws-solutions-constructs/aws-iot-s3';
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { IotToS3Props, IotToS3 } from '@aws-solutions-constructs/aws-iot-s3';
 
-const props: IotToS3Props = {
-    iotTopicRuleProps: {
-        topicRulePayload: {
-            ruleDisabled: false,
-            description: "Testing the IotToS3 Pattern",
-            sql: "SELECT * FROM 'solutions/constructs'",
-            actions: []
-        }
+const constructProps: IotToS3Props = {
+  iotTopicRuleProps: {
+    topicRulePayload: {
+      ruleDisabled: false,
+      description: "Testing the IotToS3 Pattern",
+      sql: "SELECT * FROM 'solutions/constructs'",
+      actions: []
     }
+  }
 };
 
-new IotToS3(this, 'test-iot-s3-integration', props);
+new IotToS3(this, 'test-iot-s3-integration', constructProps);
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_iot_s3 import IotToS3Props, IotToS3
+from aws_cdk import (
+    aws_iot as iot,
+    Stack
+)
+from constructs import Construct
 
-``` text
-new IotToS3(scope: Construct, id: string, props: IotToS3Props);
+
+IotToS3(self, 'test_iot_s3',
+        iot_topic_rule_props=iot.CfnTopicRuleProps(
+            topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
+                rule_disabled=False,
+                description="Testing the IotToS3 Pattern",
+                sql="SELECT * FROM 'solutions/constructs'",
+                actions=[]
+            )
+        ))
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
+import java.util.List;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`IotToS3Props`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.iot.*;
+import software.amazon.awscdk.services.iot.CfnTopicRule.TopicRulePayloadProperty;
+import software.amazon.awsconstructs.services.iots3.*;
 
+new IotToS3(this, "test_iot_s3", new IotToS3Props.Builder()
+        .iotTopicRuleProps(new CfnTopicRuleProps.Builder()
+                .topicRulePayload(new TopicRulePayloadProperty.Builder()
+                        .ruleDisabled(false)
+                        .description("Testing the IotToS3 Pattern")
+                        .sql("SELECT * FROM 'solutions/constructs'")
+                        .actions(List.of())
+                        .build())
+                .build())
+        .build());
+```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

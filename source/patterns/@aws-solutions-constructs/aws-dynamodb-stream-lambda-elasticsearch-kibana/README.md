@@ -22,37 +22,74 @@
 
 This AWS Solutions Construct implements Amazon DynamoDB table with stream, AWS Lambda function and Amazon Elasticsearch Service with the least privileged permissions.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
+// aws-dynamodb-stream-lambda-elasticsearch-kibana has been deprecated for CDK V2 in favor of aws-dynamodbstreams-lambda-elasticsearch-kibana.
+// This sample uses the CDK V1 syntax
+import * as cdk from '@aws-cdk/core';
+import * as lambda from '@aws-cdk/aws-lambda';
 import { DynamoDBStreamToLambdaToElasticSearchAndKibana, DynamoDBStreamToLambdaToElasticSearchAndKibanaProps } from '@aws-solutions-constructs/aws-dynamodb-stream-lambda-elasticsearch-kibana';
-import { Aws } from "@aws-cdk/core";
 
-const props: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps = {
+const constructProps: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps = {
   lambdaFunctionProps: {
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
-      handler: 'index.handler'
+    code: lambda.Code.fromAsset(`lambda`),
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler'
   },
   domainName: 'test-domain',
   // TODO: Ensure the Cognito domain name is globally unique
-  cognitoDomainName: 'globallyuniquedomain' + Aws.ACCOUNT_ID;
+  cognitoDomainName: 'globallyuniquedomain' + cdk.Aws.ACCOUNT_ID
 };
 
-new DynamoDBStreamToLambdaToElasticSearchAndKibana(this, 'test-dynamodb-stream-lambda-elasticsearch-kibana', props);
+new DynamoDBStreamToLambdaToElasticSearchAndKibana(this, 'test', constructProps);
 ```
 
-## Initializer
+Python
+``` python
+# aws-dynamodb-stream-lambda-elasticsearch-kibana has been deprecated for CDK V2 in favor of aws-dynamodbstreams-lambda-elasticsearch-kibana.
+# This sample uses the CDK V1 syntax
+from aws_solutions_constructs.aws_dynamodb_stream_lambda_elasticsearch_kibana import DynamoDBStreamToLambdaToElasticSearchAndKibana, DynamoDBStreamToLambdaToElasticSearchAndKibanaProps
+from aws_cdk import (
+    aws_lambda as _lambda,
+    core
+)
 
-``` text
-new DynamoDBStreamToLambdaToElasticSearchAndKibana(scope: Construct, id: string, props: DynamoDBStreamToLambdaToElasticSearchAndKibanaProps);
+DynamoDBStreamToLambdaToElasticSearchAndKibana(
+    self, 'test',
+    lambda_function_props=_lambda.FunctionProps(
+        code=_lambda.Code.from_asset('lambda'),
+        runtime=_lambda.Runtime.PYTHON_3_9,
+        handler='index.handler'
+    ),
+    domain_name='test-domain',
+    # TODO: Ensure the Cognito domain name is globally unique
+    cognito_domain_name='globallyuniquedomain' + core.Aws.ACCOUNT_ID)
 ```
 
-_Parameters_
+Java
+``` java
+// aws-dynamodb-stream-lambda-elasticsearch-kibana has been deprecated for CDK V2 in favor of aws-dynamodbstreams-lambda-elasticsearch-kibana.
+// This sample uses the CDK V1 syntax
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`DynamoDBStreamToLambdaToElasticSearchAndKibanaProps`](#pattern-construct-props)
+import software.amazon.awscdk.core.*;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.dynamodbstreamlambdaelasticsearchkibana.*;
+
+new DynamoDBStreamToLambdaToElasticSearchAndKibana(this, "test",
+    new DynamoDBStreamToLambdaToElasticSearchAndKibanaProps.Builder()
+        .lambdaFunctionProps(new FunctionProps.Builder()
+            .runtime(Runtime.NODEJS_14_X)
+            .code(Code.fromAsset("lambda"))
+            .handler("index.handler")
+            .build())
+        .domainName("test-domain")
+        .cognitoDomainName("globallyuniquedomain" + Aws.ACCOUNT_ID)
+        .build());
+```
 
 ## Pattern Construct Props
 

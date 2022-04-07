@@ -30,29 +30,41 @@ This construct creates a scalable HTTPS proxy between API Gateway and AWS IoT. T
 
 This implementation enables write-only messages to be published on given MQTT topics, and also supports shadow updates of HTTPS devices to allowed things in the device registry. It does not involve Lambda functions for proxying messages, and instead relies on direct API Gateway to AWS IoT integration which supports both JSON messages as well as binary messages.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { ApiGatewayToIot } from '@aws-solutions-constructs/aws-apigateway-iot';
 
 new ApiGatewayToIot(this, 'ApiGatewayToIotPattern', {
     iotEndpoint: 'a1234567890123-ats'
 });
-
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_apigateway_iot import ApiGatewayToIot
+from aws_cdk import Stack
+from constructs import Construct
 
-``` text
-new ApiGatewayToIot(scope: Construct, id: string, props: ApiGatewayToIotProps);
+ApiGatewayToIot(self, 'ApiGatewayToIotPattern',
+    iot_endpoint='a1234567890123-ats'
+)
 ```
+Java
+``` java
+import software.constructs.Construct;
 
-_Parameters_
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awsconstructs.services.apigatewayiot.*;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`ApiGatewayToIotProps`](#pattern-construct-props)
-
+new ApiGatewayToIot(this, "ApiGatewayToIotPattern", new ApiGatewayToIotProps.Builder()
+        .iotEndpoint("a1234567890123-ats")
+        .build());
+```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

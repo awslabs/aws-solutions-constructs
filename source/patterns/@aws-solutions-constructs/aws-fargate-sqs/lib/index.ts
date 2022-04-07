@@ -163,6 +163,10 @@ export class FargateToSqs extends Construct {
     defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
 
+    if (props.queuePermissions) {
+      defaults.CheckListValues(['Read', 'Write'], props.queuePermissions, 'queue permission');
+    }
+
     this.vpc = defaults.buildVpc(scope, {
       existingVpc: props.existingVpc,
       defaultVpcProps: props.publicApi ? defaults.DefaultPublicPrivateVpcProps() : defaults.DefaultIsolatedVpcProps(),

@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.149.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.5.0...v1.149.0) (2022-04-07)
+
+* Upgraded all patterns to CDK v1.149.0
+
+### Features
+
+* **README.md:** add python and java minimal deployment ([#582](https://github.com/awslabs/aws-solutions-constructs/issues/582)) ([2ecd9dd](https://github.com/awslabs/aws-solutions-constructs/commit/2ecd9dd935b731d2e4705ed9c146efcad0961fd8))
+
+
+### Bug Fixes
+
+* **Remove debug statement:** Remove extra debug statement in kinesisfirehose-s3 ([#649](https://github.com/awslabs/aws-solutions-constructs/issues/649)) ([26e9ec0](https://github.com/awslabs/aws-solutions-constructs/commit/26e9ec08257a90034b76a91ea4a3d703d13eb0a2))
+* **Sonarqube configuration:** Replace comma between constructs ([#646](https://github.com/awslabs/aws-solutions-constructs/issues/646)) ([79e1b09](https://github.com/awslabs/aws-solutions-constructs/commit/79e1b09544c2d029fb73a2b500dde5e35edbf63a))
+
 ## [1.148.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.147.0...v1.148.0) (2022-03-30)
 
 * Upgraded all patterns to CDK v1.148.0

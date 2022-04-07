@@ -25,25 +25,37 @@
 This AWS Solutions Construct implements an Amazon S3 Bucket that is configured to send notifications to an Amazon SQS queue.
 
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-import {S3ToSqs} from "@aws-solutions-constructs/aws-s3-sqs";
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { S3ToSqs } from "@aws-solutions-constructs/aws-s3-sqs";
 
-new S3ToSqs(stack, 'S3ToSQSPattern', {});
+new S3ToSqs(this, 'S3ToSQSPattern', {});
 ```
 
-## Initializer
+Python
+```python
+from aws_solutions_constructs.aws_s3_sqs import S3ToSqs
+from aws_cdk import Stack
+from constructs import Construct
 
-``` text
-new S3ToSqs(scope: Construct, id: string, props: S3ToSqsProps);
+S3ToSqs(self, 'S3ToSQSPattern')
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`S3ToSqsProps`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awsconstructs.services.s3sqs.*;
+
+new S3ToSqs(this, "S3ToSQSPattern", new S3ToSqsProps.Builder()
+        .build());
+```
 
 ## Pattern Construct Props
 

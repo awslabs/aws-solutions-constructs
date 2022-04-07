@@ -22,33 +22,60 @@
 
 This AWS Solutions Construct implements an Amazon CloudWatch Events rule to send data to an Amazon Kinesis Data Firehose delivery stream connected to an Amazon S3 bucket.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
-``` javascript
+Typescript
+``` typescript
+// aws-events-rule-kinesisfirehose-s3 has been deprecated for CDK V2 in favor of aws-eventbridge-kinesisfirehose-s3.
+// This sample uses the CDK V1 syntax
 import * as cdk from '@aws-cdk/core';
-import { EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props } from '@aws-solutions-constructs/aws-events-rule-kinesisfirehose-s3';
+import * as events from '@aws-cdk/aws-events';
+import { EventsRuleToKinesisFirehoseToS3Props, EventsRuleToKinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-events-rule-kinesisfirehose-s3';
 
 const eventsRuleToKinesisFirehoseToS3Props: EventsRuleToKinesisFirehoseToS3Props = {
-    eventRuleProps: {
+  eventRuleProps: {
     schedule: events.Schedule.rate(cdk.Duration.minutes(5))
-    }
+  }
 };
 
 new EventsRuleToKinesisFirehoseToS3(this, 'test-events-rule-firehose-s3', eventsRuleToKinesisFirehoseToS3Props);
-
 ```
 
-## Initializer
+Python
+``` python
+# aws-events-rule-kinesisfirehose-s3 has been deprecated for CDK V2 in favor of aws-eventbridge-kinesisfirehose-s3.
+# This sample uses the CDK V1 syntax
+from aws_solutions_constructs.aws_events_rule_kinesis_firehose_s3 import EventsRuleToKinesisFirehoseToS3, EventsRuleToKinesisFirehoseToS3Props
+from aws_cdk import (
+    aws_events as events,
+    core
+)
 
-``` text
-new EventsRuleToKinesisFirehoseToS3(scope: Construct, id: string, props: EventsRuleToKinesisFirehoseToS3Props);
+EventsRuleToKinesisFirehoseToS3(self, 'test_events_rule_firehose_s3',
+                                event_rule_props=events.RuleProps(
+                                    schedule=events.Schedule.rate(
+                                        core.Duration.minutes(5))
+                                ))
 ```
 
-_Parameters_
+Java
+``` java
+// aws-events-rule-kinesisfirehose-s3 has been deprecated for CDK V2 in favor of aws-eventbridge-kinesisfirehose-s3.
+// This sample uses the CDK V1 syntax
+import software.constructs.Construct;
+import software.amazon.awscdk.core.*;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`EventsRuleToKinesisFirehoseToS3Props`](#pattern-construct-props)
+import software.amazon.awscdk.services.events.*;
+import software.amazon.awsconstructs.services.eventsrulekinesisfirehoses3.*;
+
+
+new EventsRuleToKinesisFirehoseToS3(this, "test-events-rule-firehose-s3",
+    new EventsRuleToKinesisFirehoseToS3Props.Builder()
+        .eventRuleProps(new RuleProps.Builder()
+            .schedule(Schedule.rate(Duration.minutes(5)))
+            .build())
+        .build());
+```
 
 ## Pattern Construct Props
 

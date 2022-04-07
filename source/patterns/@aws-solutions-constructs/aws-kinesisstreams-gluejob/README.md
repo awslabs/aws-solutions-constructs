@@ -27,8 +27,9 @@
 
 This AWS Solutions Construct deploys a Kinesis Stream and configures a AWS Glue Job to perform custom ETL transformation with the appropriate resources/properties for interaction and security. It also creates an S3 bucket where the python script for the AWS Glue Job can be uploaded.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ```javascript
 import * as glue from "@aws-cdk/aws-glue";
 import * as s3assets from "@aws-cdk/aws-s3-assets";
@@ -70,18 +71,6 @@ const customEtlJob = new KinesisstreamsToGluejob(this, "CustomETL", {
   }),
 });
 ```
-
-## Initializer
-
-```text
-new KinesisstreamsToGluejob(scope: Construct, id: string, props: KinesisstreamsToGluejobProps);
-```
-
-_Parameters_
-
--   scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
--   id `string`
--   props [`KinesisstreamsToGluejobProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

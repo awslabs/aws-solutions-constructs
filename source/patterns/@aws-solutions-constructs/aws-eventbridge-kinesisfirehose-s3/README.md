@@ -20,34 +20,58 @@
 
 This AWS Solutions Construct implements an Amazon EventBridge Rule to send data to an Amazon Kinesis Data Firehose delivery stream connected to an Amazon S3 bucket.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition :
 
+Typescript
 ``` javascript
-import * as cdk from '@aws-cdk/core';
+import { Construct } from 'constructs';
+import { Stack, StackProps, Duration } from 'aws-cdk-lib';
 import { EventbridgeToKinesisFirehoseToS3, EventbridgeToKinesisFirehoseToS3Props } from '@aws-solutions-constructs/aws-eventbridge-kinesisfirehose-s3';
+import * as events from 'aws-cdk-lib/aws-events';
 
 const EventbridgeToKinesisFirehoseToS3Props: EventbridgeToKinesisFirehoseToS3Props = {
   eventRuleProps: {
-  schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    schedule: events.Schedule.rate(Duration.minutes(5))
   }
 };
 
 new EventbridgeToKinesisFirehoseToS3(this, 'test-eventbridge-firehose-s3', EventbridgeToKinesisFirehoseToS3Props);
-
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_eventbridge_kinesis_firehose_s3 import EventbridgeToKinesisFirehoseToS3, EventbridgeToKinesisFirehoseToS3Props
+from aws_cdk import (
+    aws_events as events,
+    Duration,
+    Stack
+)
+from constructs import Construct
 
-``` text
-new EventbridgeToKinesisFirehoseToS3(scope: Construct, id: string, props: EventbridgeToKinesisFirehoseToS3Props);
+EventbridgeToKinesisFirehoseToS3(self, 'test-eventbridge-firehose-s3',
+                                event_rule_props=events.RuleProps(
+                                    schedule=events.Schedule.rate(
+                                        Duration.minutes(5))
+                                ))
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`EventbridgeToKinesisFirehoseToS3Props`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.services.events.*;
+import software.amazon.awsconstructs.services.eventbridgekinesisfirehoses3.*;
 
+new EventbridgeToKinesisFirehoseToS3(this, "test-eventbridge-firehose-s3",
+        new EventbridgeToKinesisFirehoseToS3Props.Builder()
+                .eventRuleProps(new RuleProps.Builder()
+                        .schedule(Schedule.rate(Duration.minutes(5)))
+                        .build())
+                .build());
+```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

@@ -26,43 +26,93 @@
 
 This AWS Solutions Construct implements an Amazon API Gateway connected to an Amazon SageMaker endpoint pattern.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
-``` javascript
+Typescript
+``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { ApiGatewayToSageMakerEndpoint, ApiGatewayToSageMakerEndpointProps } from '@aws-solutions-constructs/aws-apigateway-sagemakerendpoint';
 
 // Below is an example VTL (Velocity Template Language) mapping template for mapping the Api GET request to the Sagemaker POST request
-const requestTemplate =
-`{
+const requestTemplate = `
+{
     "instances": [
-#set( $user_id = $input.params("user_id") )
-#set( $items = $input.params("items") )
-#foreach( $item in $items.split(",") )
-    {"in0": [$user_id], "in1": [$item]}#if( $foreach.hasNext ),#end
-    $esc.newline
-#end
+        # set( $user_id = $input.params("user_id") )
+        # set( $items = $input.params("items") )
+        # foreach( $item in $items.split(",") )
+        # if( $foreach.hasNext ),#end
+        {"in0": [$user_id], "in1": [$item]}
+            $esc.newline
+        # end
     ]
-}`;
+}`
 
 // Replace 'my-endpoint' with your Sagemaker Inference Endpoint
 new ApiGatewayToSageMakerEndpoint(this, 'test-apigw-sagemakerendpoint', {
-    endpointName: 'my-endpoint',
-    resourcePath: '{user_id}',
-    requestMappingTemplate: requestTemplate
+  endpointName: 'my-endpoint',
+  resourcePath: '{user_id}',
+  requestMappingTemplate: requestTemplate
 });
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_apigateway_sagemakerendpoint import ApiGatewayToSageMakerEndpoint
+from aws_cdk import Stack
+from constructs import Construct
 
-``` text
-new ApiGatewayToSageMakerEndpoint(scope: Construct, id: string, props: ApiGatewayToSageMakerEndpointProps);
+# Below is an example VTL (Velocity Template Language) mapping template for mapping the Api GET request to the Sagemaker POST request
+request_template = """
+{
+    "instances": [
+        # set( $user_id = $input.params("user_id") )
+        # set( $items = $input.params("items") )
+        # foreach( $item in $items.split(",") )
+        # if( $foreach.hasNext ),#end
+        {"in0": [$user_id], "in1": [$item]}
+            $esc.newline
+        # end
+    ]
+}"""
+
+# Replace 'my-endpoint' with your Sagemaker Inference Endpoint
+ApiGatewayToSageMakerEndpoint(self, 'test-apigw-sagemakerendpoint',
+                                endpoint_name='my-endpoint',
+                                resource_path='{user_id}',
+                                request_mapping_template=request_template
+                                )
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`ApiGatewayToSageMakerEndpointProps`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awsconstructs.services.apigatewaysagemakerendpoint.*;
+
+// Create an example VTL (Velocity Template Language) mapping template for mapping the Api GET request to the Sagemaker POST request
+final String requestTemplate = "{"
+        + "\"instances\": ["
+        + "# set( $user_id = $input.params(\"user_id\") )"
+        + "# set( $items = $input.params(\"items\") )"
+        + "# foreach( $item in $items.split(\",\") )"
+        + "# if( $foreach.hasNext ),#end"
+        + "{\"in0\": [$user_id], \"in1\": [$item]}"
+        + "    $esc.newline"
+        + "# end"
+        + "]"
+        + "}";
+
+// Replace ""my-endpoint"" with your Sagemaker Inference Endpoint
+new ApiGatewayToSageMakerEndpoint(this, "ApiGatewayToSageMakerEndpointPattern",
+        new ApiGatewayToSageMakerEndpointProps.Builder()
+                .endpointName("my-endpoint")
+                .resourcePath("{user_id}")
+                .requestMappingTemplate(requestTemplate)
+                .build());
+```
 
 ## Pattern Construct Props
 

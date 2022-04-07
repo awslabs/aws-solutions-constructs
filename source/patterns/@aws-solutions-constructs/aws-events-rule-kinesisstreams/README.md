@@ -22,32 +22,59 @@
 
 This AWS Solutions Construct implements an Amazon CloudWatch Events rule to send data to an Amazon Kinesis data stream.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
+// aws-events-rule-kinesisstreams has been deprecated for CDK V2 in favor of aws-eventbridge-kinesisstreams.
+// This sample uses the CDK V1 syntax
 import * as cdk from '@aws-cdk/core';
-import {EventsRuleToKinesisStreams, EventsRuleToKinesisStreamsProps} from "@aws-solutions-constructs/aws-events-rule-kinesisstreams";
+import * as events from '@aws-cdk/aws-events';
+import { EventsRuleToKinesisStreams, EventsRuleToKinesisStreamsProps } from "@aws-solutions-constructs/aws-events-rule-kinesisstreams";
 
-const props: EventsRuleToKinesisStreamsProps = {
-    eventRuleProps: {
-      schedule: events.Schedule.rate(Duration.minutes(5)),
-    }
+const constructProps: EventsRuleToKinesisStreamsProps = {
+  eventRuleProps: {
+    schedule: events.Schedule.rate(cdk.Duration.minutes(5)),
+  }
 };
 
-new EventsRuleToKinesisStreams(this, 'test-events-rule-kinesis-streams', props);
+new EventsRuleToKinesisStreams(this, 'test-events-rule-kinesis-streams', constructProps);
 ```
 
-## Initializer
+Python
+``` python
+# aws-events-rule-kinesisstreams has been deprecated for CDK V2 in favor of aws-eventbridge-kinesisstreams.
+# This sample uses the CDK V1 syntax
+from aws_solutions_constructs.aws_events_rule_kinesis_streams import EventsRuleToKinesisStreams, EventsRuleToKinesisStreamsProps
+from aws_cdk import (
+    aws_events as events,
+    core
+)
 
-``` text
-new EventsRuleToKinesisStreams(scope: Construct, id: string, props: EventsRuleToKinesisStreamsProps);
+EventsRuleToKinesisStreams(self, 'test_events_rule_kinesis_streams',
+                        event_rule_props=events.RuleProps(
+                            schedule=events.Schedule.rate(
+                                core.Duration.minutes(5)),
+                        ))
 ```
 
-_Parameters_
+Java
+``` java
+// aws-events-rule-kinesisstreams has been deprecated for CDK V2 in favor of aws-eventbridge-kinesisstreams.
+// This sample uses the CDK V1 syntax
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`EventsRuleToKinesisStreamsProps`](#pattern-construct-props)
+import software.amazon.awscdk.core.*;
+import software.amazon.awscdk.services.events.*;
+import software.amazon.awsconstructs.services.eventsrulekinesisstreams.*;
+
+new EventsRuleToKinesisStreams(this, "test-events-rule-kinesis-streams",
+        new EventsRuleToKinesisStreamsProps.Builder()
+                .eventRuleProps(new RuleProps.Builder()
+                        .schedule(Schedule.rate(Duration.minutes(5)))
+                        .build())
+                .build());
+```
 
 ## Pattern Construct Props
 

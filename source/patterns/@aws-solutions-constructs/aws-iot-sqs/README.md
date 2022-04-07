@@ -24,36 +24,70 @@
 
 This AWS Solutions Construct implements an AWS IoT MQTT topic rule and an AWS SQS Queue pattern.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-const { IotToSqsProps, IotToSqs } from '@aws-solutions-constructs/aws-iot-sqs';
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { IotToSqsProps, IotToSqs } from '@aws-solutions-constructs/aws-iot-sqs';
 
-const props: IotToSqsProps = {
-    iotTopicRuleProps: {
-        topicRulePayload: {
-            ruleDisabled: false,
-            description: "Testing the IotToSqs Pattern",
-            sql: "SELECT * FROM 'iot/sqs/#'",
-            actions: []
-        }
+const constructProps: IotToSqsProps = {
+  iotTopicRuleProps: {
+    topicRulePayload: {
+      ruleDisabled: false,
+      description: "Testing the IotToSqs Pattern",
+      sql: "SELECT * FROM 'iot/sqs/#'",
+      actions: []
     }
+  }
 };
 
-new IotToSqs(this, 'test-iot-sqs-integration', props);
+new IotToSqs(this, 'test-iot-sqs-integration', constructProps);
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_iot_sqs import IotToSqs
+from aws_cdk import (
+    aws_iot as iot,
+    Stack
+)
+from constructs import Construct
 
-``` text
-new IotToSqs(scope: Construct, id: string, props: IotToSqsProps);
+IotToSqs(self, 'test_iot_sqs',
+    iot_topic_rule_props=iot.CfnTopicRuleProps(
+        topic_rule_payload=iot.CfnTopicRule.TopicRulePayloadProperty(
+            rule_disabled=False,
+            description="Testing the IotToSqs Pattern",
+            sql="SELECT * FROM 'iot/sqs/#'",
+            actions=[]
+        )
+    ))
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
+import java.util.List;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`IotToSqsProps`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.iot.*;
+import software.amazon.awscdk.services.iot.CfnTopicRule.TopicRulePayloadProperty;
+import software.amazon.awsconstructs.services.iotsqs.*;
+
+new IotToSqs(this, "test_iot_sqs", new IotToSqsProps.Builder()
+        .iotTopicRuleProps(new CfnTopicRuleProps.Builder()
+                .topicRulePayload(new TopicRulePayloadProperty.Builder()
+                        .ruleDisabled(false)
+                        .description("Testing the IotToSqs Pattern")
+                        .sql("SELECT * FROM 'iot/sqs/#'")
+                        .actions(List.of())
+                        .build())
+                .build())
+        .build());
+```
 
 ## Pattern Construct Props
 

@@ -20,26 +20,37 @@
 
 This AWS Solutions Construct implements an Amazon Kinesis Data Firehose delivery stream connected to an Amazon S3 bucket.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
-const { KinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-kinesisfirehose-s3';
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { KinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-kinesisfirehose-s3';
 
 new KinesisFirehoseToS3(this, 'test-firehose-s3', {});
-
 ```
 
-## Initializer
+Python
+```python
+from aws_solutions_constructs.aws_kinesis_firehose_s3 import KinesisFirehoseToS3
+from aws_cdk import Stack
+from constructs import Construct
 
-``` text
-new KinesisFirehoseToS3(scope: Construct, id: string, props: KinesisFirehoseToS3Props);
+KinesisFirehoseToS3(self, 'test_firehose_s3')
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`KinesisFirehoseToS3Props`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awsconstructs.services.kinesisfirehoses3.*;
+
+new KinesisFirehoseToS3(this, "test_firehose_s3", new KinesisFirehoseToS3Props.Builder()
+        .build());
+```
 
 ## Pattern Construct Props
 

@@ -22,36 +22,79 @@
 
 This AWS Solutions Construct implements an AWS Events rule and an AWS Step function.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
-const { EventsRuleToStepFunction, EventsRuleToStepFunctionProps } from '@aws-solutions-constructs/aws-events-rule-step-function';
+// aws-events-rule-step-function has been deprecated for CDK V2 in favor of aws-eventbridge-stepfunctions.
+// This sample uses the CDK V1 syntax
+import * as cdk from '@aws-cdk/core';
+import * as events from '@aws-cdk/aws-events';
+import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
+import { EventsRuleToStepFunction, EventsRuleToStepFunctionProps } from '@aws-solutions-constructs/aws-events-rule-step-function';
 
 const startState = new stepfunctions.Pass(this, 'StartState');
 
-const props: EventsRuleToStepFunctionProps = {
-    stateMachineProps: {
-      definition: startState
-    },
-    eventRuleProps: {
-      schedule: events.Schedule.rate(Duration.minutes(5))
-    }
+const constructProps: EventsRuleToStepFunctionProps = {
+  stateMachineProps: {
+    definition: startState
+  },
+  eventRuleProps: {
+    schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+  }
 };
 
-new EventsRuleToStepFunction(stack, 'test-events-rule-step-function-stack', props);
+new EventsRuleToStepFunction(this, 'test-events-rules-step-function-stack', constructProps);
 ```
 
-## Initializer
+Python
+``` Python
+# aws-events-rule-step-function has been deprecated for CDK V2 in favor of aws-eventbridge-stepfunctions.
+# This sample uses the CDK V1 syntax
+from aws_solutions_constructs.aws_events_rule_step_function import EventsRuleToStepFunction, EventsRuleToStepFunctionProps
+from aws_cdk import (
+    aws_stepfunctions as stepfunctions,
+    aws_events as events,
+    core
+)
 
-``` text
-new EventsRuleToStepFunction(scope: Construct, id: string, props: EventsRuleToStepFunctionProps);
+startState = stepfunctions.Pass(self, 'StartState')
+
+EventsRuleToStepFunction(self, 'test',
+                            state_machine_props=stepfunctions.StateMachineProps(
+                                definition=startState
+                            ),
+                            event_rule_props=events.RuleProps(
+                                schedule=events.Schedule.rate(
+                                    core.Duration.minutes(5))
+                            ))
+
 ```
 
-_Parameters_
+Java
+``` java
+// aws-events-rule-step-function has been deprecated for CDK V2 in favor of aws-eventbridge-stepfunctions.
+// This sample uses the CDK V1 syntax
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`EventsRuleToStepFunctionProps`](#pattern-construct-props)
+import software.amazon.awscdk.core.*;
+import software.amazon.awscdk.services.events.*;
+import software.amazon.awscdk.services.stepfunctions.*;
+import software.amazon.awsconstructs.services.eventsrulestepfunction.*;
+
+final Pass startState = new Pass(this, "StartState");
+
+new EventsRuleToStepFunction(this,
+        "test-eventbridge-stepfunctions-stack",
+        new EventsRuleToStepFunctionProps.Builder()
+                .stateMachineProps(new StateMachineProps.Builder()
+                        .definition(startState)
+                        .build())
+                .eventRuleProps(new RuleProps.Builder()
+                        .schedule(Schedule.rate(Duration.minutes(5)))
+                        .build())
+                .build());
+```
 
 ## Pattern Construct Props
 

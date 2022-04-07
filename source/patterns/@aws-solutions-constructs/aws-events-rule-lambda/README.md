@@ -22,36 +22,77 @@
 
 This AWS Solutions Construct implements an AWS Events rule and an AWS Lambda function.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
+// aws-events-rule-lambda has been deprecated for CDK V2 in favor of aws-eventbridge-lambda.
+// This sample uses the CDK V1 syntax
+import * as cdk from '@aws-cdk/core';
+import * as lambda from '@aws-cdk/aws-lambda';
+import * as events from '@aws-cdk/aws-events';
 import { EventsRuleToLambdaProps, EventsRuleToLambda } from '@aws-solutions-constructs/aws-events-rule-lambda';
 
-const props: EventsRuleToLambdaProps = {
-    lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler'
-    },
-    eventRuleProps: {
-      schedule: events.Schedule.rate(Duration.minutes(5))
-    }
+const constructProps: EventsRuleToLambdaProps = {
+  lambdaFunctionProps: {
+    code: lambda.Code.fromAsset(`lambda`),
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler'
+  },
+  eventRuleProps: {
+    schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+  }
 };
 
-new EventsRuleToLambda(this, 'test-events-rule-lambda', props);
+new EventsRuleToLambda(this, 'test-events-rule-lambda', constructProps);
 ```
 
-## Initializer
+Python
+``` python
+# aws-events-rule-lambda has been deprecated for CDK V2 in favor of aws-eventbridge-lambda.
+# This sample uses the CDK V1 syntax
+from aws_solutions_constructs.aws_events_rule_lambda import EventsRuleToLambdaProps, EventsRuleToLambda
+from aws_cdk import (
+    aws_lambda as _lambda,
+    aws_events as events,
+    core
+)
 
-``` text
-new EventsRuleToLambda(scope: Construct, id: string, props: EventsRuleToLambdaProps);
+EventsRuleToLambda(self, 'test_events_rule_lambda',
+                lambda_function_props=_lambda.FunctionProps(
+                    code=_lambda.Code.from_asset('lambda'),
+                    runtime=_lambda.Runtime.PYTHON_3_9,
+                    handler='index.handler'
+                ),
+                event_rule_props=events.RuleProps(
+                    schedule=events.Schedule.rate(core.Duration.minutes(5))
+                ))
 ```
 
-_Parameters_
+Java
+``` java
+// aws-events-rule-lambda has been deprecated for CDK V2 in favor of aws-eventbridge-lambda.
+// This sample uses the CDK V1 syntax
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`EventsRuleToLambdaProps`](#pattern-construct-props)
+import software.amazon.awscdk.core.*;
+import software.amazon.awscdk.services.events.*;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.eventsrulelambda.*;
+
+new EventsRuleToLambda(this, "test-events-rule-lambda",
+        new EventsRuleToLambdaProps.Builder()
+                .lambdaFunctionProps(new FunctionProps.Builder()
+                        .runtime(Runtime.NODEJS_14_X)
+                        .code(Code.fromAsset("lambda"))
+                        .handler("index.handler")
+                        .build())
+                .eventRuleProps(new RuleProps.Builder()
+                        .schedule(Schedule.rate(Duration.minutes(5)))
+                        .build())
+                .build());
+```
 
 ## Pattern Construct Props
 

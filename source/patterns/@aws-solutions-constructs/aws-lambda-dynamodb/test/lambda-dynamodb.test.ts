@@ -769,3 +769,23 @@ test("Test bad call with existingVpc and deployVpc", () => {
   // Assertion
   expect(app).toThrowError();
 });
+
+test('Test bad table permission', () => {
+  const stack = new cdk.Stack();
+
+  const props: LambdaToDynamoDBProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler'
+    },
+    tablePermissions: 'Reed',
+  };
+
+  const app = () => {
+    new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', props);
+  };
+
+  // Assertion
+  expect(app).toThrowError(/Invalid table permission submitted - Reed/);
+});

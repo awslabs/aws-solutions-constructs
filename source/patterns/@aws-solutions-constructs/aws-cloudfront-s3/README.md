@@ -20,26 +20,37 @@
 
 This AWS Solutions Construct implements an AWS CloudFront fronting an AWS S3 Bucket.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { CloudFrontToS3 } from '@aws-solutions-constructs/aws-cloudfront-s3';
 
 new CloudFrontToS3(this, 'test-cloudfront-s3', {});
-
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_cloudfront_s3 import CloudFrontToS3
+from aws_cdk import Stack
+from constructs import Construct
 
-``` text
-new CloudFrontToS3(scope: Construct, id: string, props: CloudFrontToS3Props);
+CloudFrontToS3(self, 'test-cloudfront-s3')
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`CloudFrontToS3Props`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awsconstructs.services.cloudfronts3.*;
+
+new CloudFrontToS3(this, "test-cloudfront-s3", new CloudFrontToS3Props.Builder()
+        .build());
+```
 
 ## Pattern Construct Props
 

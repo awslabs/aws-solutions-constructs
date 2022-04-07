@@ -24,55 +24,134 @@
 
 This AWS Solutions Construct implements an Amazon Kinesis Firehose delivery stream connected to an Amazon S3 bucket, and an Amazon Kinesis Analytics application.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
-const { KinesisFirehoseToAnalyticsAndS3 } from '@aws-solutions-constructs/aws-kinesisfirehose-s3-and-kinesisanalytics';
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { KinesisFirehoseToAnalyticsAndS3 } from '@aws-solutions-constructs/aws-kinesisfirehose-s3-and-kinesisanalytics';
 
 new KinesisFirehoseToAnalyticsAndS3(this, 'FirehoseToS3AndAnalyticsPattern', {
-    kinesisAnalyticsProps: {
-        inputs: [{
-            inputSchema: {
-                recordColumns: [{
-                    name: 'ticker_symbol',
-                    sqlType: 'VARCHAR(4)',
-                    mapping: '$.ticker_symbol'
-                }, {
-                    name: 'sector',
-                    sqlType: 'VARCHAR(16)',
-                    mapping: '$.sector'
-                }, {
-                    name: 'change',
-                    sqlType: 'REAL',
-                    mapping: '$.change'
-                }, {
-                    name: 'price',
-                    sqlType: 'REAL',
-                    mapping: '$.price'
-                }],
-                recordFormat: {
-                    recordFormatType: 'JSON'
-                },
-                recordEncoding: 'UTF-8'
-            },
-            namePrefix: 'SOURCE_SQL_STREAM'
-        }]
-    }
+  kinesisAnalyticsProps: {
+    inputs: [{
+      inputSchema: {
+        recordColumns: [{
+          name: 'ticker_symbol',
+          sqlType: 'VARCHAR(4)',
+          mapping: '$.ticker_symbol'
+        }, {
+          name: 'sector',
+          sqlType: 'VARCHAR(16)',
+          mapping: '$.sector'
+        }, {
+          name: 'change',
+          sqlType: 'REAL',
+          mapping: '$.change'
+        }, {
+          name: 'price',
+          sqlType: 'REAL',
+          mapping: '$.price'
+        }],
+        recordFormat: {
+          recordFormatType: 'JSON'
+        },
+        recordEncoding: 'UTF-8'
+      },
+      namePrefix: 'SOURCE_SQL_STREAM'
+    }]
+  }
 });
-
 ```
 
-## Initializer
+Python
+```python
+from aws_solutions_constructs.aws_kinesis_firehose_s3_kinesis_analytics import KinesisFirehoseToAnalyticsAndS3
+from aws_cdk import (
+    aws_kinesisanalytics as kinesisanalytics,
+    Stack
+)
+from constructs import Construct
 
-``` text
-new KinesisFirehoseToAnalyticsAndS3(scope: Construct, id: string, props: KinesisFirehoseToAnalyticsAndS3Props);
+KinesisFirehoseToAnalyticsAndS3(self, 'FirehoseToS3AndAnalyticsPattern',
+                                kinesis_analytics_props=kinesisanalytics.CfnApplicationProps(
+                                    inputs=[kinesisanalytics.CfnApplication.InputProperty(
+                                        input_schema=kinesisanalytics.CfnApplication.InputSchemaProperty(
+                                            record_columns=[kinesisanalytics.CfnApplication.RecordColumnProperty(
+                                                name='ticker_symbol',
+                                                sql_type='VARCHAR(4)',
+                                                mapping='$.ticker_symbol'
+                                            ), kinesisanalytics.CfnApplication.RecordColumnProperty(
+                                                name='sector',
+                                                sql_type='VARCHAR(16)',
+                                                mapping='$.sector'
+                                            ), kinesisanalytics.CfnApplication.RecordColumnProperty(
+                                                name='change',
+                                                sql_type='REAL',
+                                                mapping='$.change'
+                                            ), kinesisanalytics.CfnApplication.RecordColumnProperty(
+                                                name='price',
+                                                sql_type='REAL',
+                                                mapping='$.price'
+                                            )],
+                                            record_format=kinesisanalytics.CfnApplication.RecordFormatProperty(
+                                                record_format_type='JSON'
+                                            ),
+                                            record_encoding='UTF-8'
+                                        ),
+                                        name_prefix='SOURCE_SQL_STREAM'
+                                    )]
+                                )
+                                )
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
+import java.util.List;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`KinesisFirehoseToAnalyticsAndS3Props`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.kinesisanalytics.*;
+import software.amazon.awscdk.services.kinesisanalytics.CfnApplication.*;
+import software.amazon.awsconstructs.services.kinesisfirehoses3kinesisanalytics.*;
+
+new KinesisFirehoseToAnalyticsAndS3(this, "FirehoseToS3AndAnalyticsPattern",
+        new KinesisFirehoseToAnalyticsAndS3Props.Builder()
+                .kinesisAnalyticsProps(new CfnApplicationProps.Builder()
+                        .inputs(List.of(new InputProperty.Builder()
+                                .inputSchema(new InputSchemaProperty.Builder()
+                                        .recordColumns(List.of(
+                                                new RecordColumnProperty.Builder()
+                                                        .name("ticker_symbol")
+                                                        .sqlType("VARCHAR(4)")
+                                                        .mapping("$.ticker_symbol")
+                                                        .build(),
+                                                new RecordColumnProperty.Builder()
+                                                        .name("sector")
+                                                        .sqlType("VARCHAR(16)")
+                                                        .mapping("$.sector")
+                                                        .build(),
+                                                new RecordColumnProperty.Builder()
+                                                        .name("change")
+                                                        .sqlType("REAL")
+                                                        .mapping("$.change")
+                                                        .build(),
+                                                new RecordColumnProperty.Builder()
+                                                        .name("price")
+                                                        .sqlType("REAL")
+                                                        .mapping("$.price")
+                                                        .build()))
+                                        .recordFormat(new RecordFormatProperty.Builder()
+                                                .recordFormatType("JSON")
+                                                .build())
+                                        .recordEncoding("UTF-8")
+                                        .build())
+                                .namePrefix("SOURCE_SQL_STREAM")
+                                .build()))
+                        .build())
+                .build());
+```
 
 ## Pattern Construct Props
 
