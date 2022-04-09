@@ -122,10 +122,13 @@ export class LambdaToDynamoDB extends Construct {
       vpc: this.vpc
     });
 
+    // Since we are only invoking this function with an existing Table or tableProps,
+    // (not a table interface), we know that the implementation will always return
+    // a Table object and we can safely cast away the optional aspect of the type.
     this.dynamoTable = defaults.buildDynamoDBTable(this, {
       dynamoTableProps: props.dynamoTableProps,
       existingTableObj: props.existingTableObj
-    });
+    })[1] as dynamodb.Table;
 
     // Configure environment variables
     const tableEnvironmentVariableName = props.tableEnvironmentVariableName || 'DDB_TABLE_NAME';
