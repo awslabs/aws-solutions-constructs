@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.151.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.149.0...v1.151.0) (2022-04-09)
+
+
+### Features
+
+* **aws-fargate-dynamodb:** create new construct ([#633](https://github.com/awslabs/aws-solutions-constructs/issues/633)) ([0b35418](https://github.com/awslabs/aws-solutions-constructs/commit/0b35418b41e24b32b6064a649d77a70f1c6d7bd8))
+
 ## [1.150.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.149.0...v1.150.0) (2022-04-08)
 
 * Upgraded all patterns to CDK v1.150.0
