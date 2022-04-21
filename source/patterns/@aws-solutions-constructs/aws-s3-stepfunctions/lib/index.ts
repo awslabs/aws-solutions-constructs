@@ -110,14 +110,11 @@ export class S3ToStepfunctions extends Construct {
 
     if (!props.existingBucketObj) {
       [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
-        bucketProps: props.bucketProps,
+        bucketProps: defaults.consolidateProps({ eventBridgeEnabled: true }, props.bucketProps ),
         loggingBucketProps: props.loggingBucketProps,
         logS3AccessLogs: props.logS3AccessLogs
       });
       bucket = this.s3Bucket;
-
-      const cfnBucket = bucket.node.defaultChild as s3.CfnBucket;
-      cfnBucket.addPropertyOverride('NotificationConfiguration.EventBridgeConfiguration.EventBridgeEnabled', true);
 
     } else {
       bucket = props.existingBucketObj;

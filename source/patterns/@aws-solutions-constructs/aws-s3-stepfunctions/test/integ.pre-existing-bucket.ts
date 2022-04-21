@@ -15,16 +15,15 @@
 import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { S3ToStepfunctions, S3ToStepfunctionsProps } from "../lib";
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
-import * as s3 from '@aws-cdk/aws-s3';
 import { CreateScrapBucket } from '@aws-solutions-constructs/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const existingBucket = CreateScrapBucket(stack, {});
-const cfnBucket = existingBucket.node.defaultChild as s3.CfnBucket;
-cfnBucket.addPropertyOverride('NotificationConfiguration.EventBridgeConfiguration.EventBridgeEnabled', true);
+const existingBucket = CreateScrapBucket(stack, {
+  eventBridgeEnabled: true
+});
 
 const startState = new stepfunctions.Pass(stack, 'StartState');
 
