@@ -45,7 +45,8 @@ Python
 ``` python
 from aws_solutions_constructs.aws_fargate_ssmstringparameter import FargateToSsmstringparameter, FargateToSsmstringparameterProps
 from aws_cdk import (
-    Stack
+    Stack,
+    aws_ssm as ssm
 )
 from constructs import Construct
 
@@ -62,6 +63,7 @@ import software.constructs.Construct;
 
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.ssm.*;
 import software.amazon.awsconstructs.services.fargatessmstringparameter.*;
 
 new FargateToSsmstringparameter(this, "test-construct", new FargateToSsmstringparameterProps.Builder()
