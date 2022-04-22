@@ -15,8 +15,7 @@
 import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
 import { S3ToStepFunction, S3ToStepFunctionProps } from "../lib";
 import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
-import { CreateScrapBucket } from '@aws-solutions-constructs/core';
-import { generateIntegStackName, addCfnNagS3BucketNotificationRulesToSuppress } from '@aws-solutions-constructs/core';
+import { CreateScrapBucket, generateIntegStackName, addCfnNagS3BucketNotificationRulesToSuppress } from '@aws-solutions-constructs/core';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));

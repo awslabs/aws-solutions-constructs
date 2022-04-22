@@ -27,6 +27,7 @@ import * as logs from '@aws-cdk/aws-logs';
 export interface S3ToStepfunctionsProps {
   /**
    * Existing instance of S3 Bucket object, providing both this and `bucketProps` will cause an error.
+   * The Amazon EventBridge property must be enabled in the existing bucket for the construct to work.
    *
    * @default - None
    */
@@ -34,7 +35,7 @@ export interface S3ToStepfunctionsProps {
   /**
    * Optional user provided props to override the default props for the S3 Bucket.
    *
-   * @default - Default props are usedÎ
+   * @default - Default props are used
    */
   readonly bucketProps?: s3.BucketProps,
   /**
@@ -110,7 +111,7 @@ export class S3ToStepfunctions extends Construct {
 
     if (!props.existingBucketObj) {
       [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
-        bucketProps: defaults.consolidateProps({ eventBridgeEnabled: true }, props.bucketProps),
+        bucketProps: defaults.consolidateProps({}, props.bucketProps, { eventBridgeEnabled: true }),
         loggingBucketProps: props.loggingBucketProps,
         logS3AccessLogs: props.logS3AccessLogs
       });
