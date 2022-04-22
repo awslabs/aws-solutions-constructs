@@ -152,9 +152,7 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
 
   new S3ToStepfunctions(stack, 'test-s3-stepfunctions', testProps);
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
-    AccessControl: "LogDeliveryWrite"
-  });
+  expect(stack).toHaveResource("Custom::S3BucketNotifications", {});
 
   expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
@@ -186,5 +184,6 @@ test('s3 bucket with no logging bucket', () => {
     logS3AccessLogs: false
   });
 
+  expect(stack).toHaveResource("Custom::S3BucketNotifications", {});
   expect(construct.s3LoggingBucket).toEqual(undefined);
 });

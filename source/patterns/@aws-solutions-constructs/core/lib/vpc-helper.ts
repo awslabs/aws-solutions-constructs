@@ -51,25 +51,8 @@ export function buildVpc(scope: Construct, props: BuildVpcProps): ec2.IVpc {
   // Add VPC FlowLogs with the default setting of trafficType:ALL and destination: CloudWatch Logs
   const flowLog: ec2.FlowLog = vpc.addFlowLog("FlowLog");
 
-  // Add Cfn Nag suppression for PUBLIC subnets to suppress WARN W33: EC2 Subnet should not have MapPublicIpOnLaunch set to true
-  vpc.publicSubnets.forEach((subnet) => {
-    const cfnSubnet = subnet.node.defaultChild as ec2.CfnSubnet;
-    addCfnSuppressRules(cfnSubnet, [
-      {
-        id: 'W33',
-        reason: 'Allow Public Subnets to have MapPublicIpOnLaunch set to true'
-      }
-    ]);
-  });
-
-  // Add Cfn Nag suppression for CloudWatchLogs LogGroups data is encrypted
-  const cfnLogGroup: CfnLogGroup = flowLog.logGroup?.node.defaultChild as CfnLogGroup;
-  addCfnSuppressRules(cfnLogGroup, [
-    {
-      id: 'W84',
-      reason: 'By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)'
-    }
-  ]);
+  SuppressMapPublicIpWarnings(vpc);
+  SuppressEncryptedLogWarnings(flowLog);
 
   return vpc;
 }
@@ -163,39 +146,76 @@ export function AddAwsServiceEndpoint(
   vpc: ec2.IVpc,
   interfaceTag: ServiceEndpointTypes
 ) {
-  if (!vpc.node.children.some((child) => child.node.id === interfaceTag)) {
-    const service = endpointSettings.find(
-      (endpoint) => endpoint.endpointName === interfaceTag
-    );
+  if (CheckIfEndpointAlreadyExists(vpc, interfaceTag)) {
+    return;
+  }
 
-    if (!service) {
-      throw new Error("Unsupported Service sent to AddServiceEndpoint");
-    }
+  const service = endpointSettings.find(
+    (endpoint) => endpoint.endpointName === interfaceTag
+  );
 
-    if (service.endpointType === EndpointTypes.GATEWAY) {
-      vpc.addGatewayEndpoint(interfaceTag, {
-        service: service.endpointGatewayService as ec2.GatewayVpcEndpointAwsService,
-      });
-    }
-    if (service.endpointType === EndpointTypes.INTERFACE) {
+  if (!service) {
+    throw new Error("Unsupported Service sent to AddServiceEndpoint");
+  }
 
-      const endpointDefaultSecurityGroup = buildSecurityGroup(
-        scope,
-        `${scope.node.id}-${service.endpointName}`,
-        {
-          vpc,
-          allowAllOutbound: true,
-        },
-        [{ peer: ec2.Peer.ipv4(vpc.vpcCidrBlock), connection: ec2.Port.tcp(443) }],
-        []
-      );
-
-      vpc.addInterfaceEndpoint(interfaceTag, {
-        service: service.endpointInterfaceService as ec2.InterfaceVpcEndpointAwsService,
-        securityGroups: [endpointDefaultSecurityGroup],
-      });
-    }
+  if (service.endpointType === EndpointTypes.GATEWAY) {
+    AddGatewayEndpoint(vpc, service, interfaceTag);
+  }
+  if (service.endpointType === EndpointTypes.INTERFACE) {
+    AddInterfaceEndpoint(scope, vpc, service, interfaceTag);
   }
 
   return;
+}
+
+function CheckIfEndpointAlreadyExists(vpc: ec2.IVpc, interfaceTag: ServiceEndpointTypes): boolean {
+  return vpc.node.children.some((child) => child.node.id === interfaceTag);
+}
+
+function SuppressMapPublicIpWarnings(vpc: ec2.Vpc) {
+  // Add Cfn Nag suppression for PUBLIC subnets to suppress WARN W33: EC2 Subnet should not have MapPublicIpOnLaunch set to true
+  vpc.publicSubnets.forEach((subnet) => {
+    const cfnSubnet = subnet.node.defaultChild as ec2.CfnSubnet;
+    addCfnSuppressRules(cfnSubnet, [
+      {
+        id: 'W33',
+        reason: 'Allow Public Subnets to have MapPublicIpOnLaunch set to true'
+      }
+    ]);
+  });
+}
+
+function SuppressEncryptedLogWarnings(flowLog: ec2.FlowLog) {
+  // Add Cfn Nag suppression for CloudWatchLogs LogGroups data is encrypted
+  const cfnLogGroup: CfnLogGroup = flowLog.logGroup?.node.defaultChild as CfnLogGroup;
+  addCfnSuppressRules(cfnLogGroup, [
+    {
+      id: 'W84',
+      reason: 'By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)'
+    }
+  ]);
+}
+
+function AddInterfaceEndpoint(scope: Construct, vpc: ec2.IVpc, service: EndpointDefinition, interfaceTag: ServiceEndpointTypes) {
+  const endpointDefaultSecurityGroup = buildSecurityGroup(
+    scope,
+    `${scope.node.id}-${service.endpointName}`,
+    {
+      vpc,
+      allowAllOutbound: true,
+    },
+    [{ peer: ec2.Peer.ipv4(vpc.vpcCidrBlock), connection: ec2.Port.tcp(443) }],
+    []
+  );
+
+  vpc.addInterfaceEndpoint(interfaceTag, {
+    service: service.endpointInterfaceService as ec2.InterfaceVpcEndpointAwsService,
+    securityGroups: [endpointDefaultSecurityGroup],
+  });
+}
+
+function AddGatewayEndpoint(vpc: ec2.IVpc, service: EndpointDefinition, interfaceTag: ServiceEndpointTypes) {
+  vpc.addGatewayEndpoint(interfaceTag, {
+    service: service.endpointGatewayService as ec2.GatewayVpcEndpointAwsService,
+  });
 }
