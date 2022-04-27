@@ -18,6 +18,11 @@ import { FargateToSsmstringparameter } from "../lib";
 import * as ssm from '@aws-cdk/aws-ssm';
 import * as ecs from '@aws-cdk/aws-ecs';
 
+const allowedPattern = '.*';
+const description ='The value Foo';
+const parameterName = 'FooParameter';
+const stringValue = 'Foo';
+
 test('New service/new parameter store, public API, new VPC', () => {
   const stack = new cdk.Stack();
   const publicApi = true;
@@ -188,6 +193,42 @@ test('New service/new parameter store, private API, new VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
+  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+    ContainerDefinitions: [
+      {
+        Environment: [
+          {
+            Name: "SSM_STRING_PARAMETER_NAME",
+            Value: {
+              Ref: "testconstructstringParameter4A9E7765"
+            }
+          },
+        ],
+        Essential: true,
+        Image: {
+          "Fn::Join": [
+            "",
+            [
+              "123456789012.dkr.ecr.us-east-1.",
+              {
+                Ref: "AWS::URLSuffix"
+              },
+              "/fake-repo:latest"
+            ]
+          ]
+        },
+        MemoryReservation: 512,
+        Name: "test-construct-container",
+        PortMappings: [
+          {
+            ContainerPort: 8080,
+            Protocol: "tcp"
+          }
+        ]
+      }
+    ]
+  });
+
   expect(stack).toHaveResourceLike("AWS::SSM::Parameter", {
     Name: parameterName,
     Value: stringValue
@@ -309,6 +350,42 @@ test('New service/existing parameter store, private API, existing VPC', () => {
       MinimumHealthyPercent: 75
     },
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
+  });
+
+  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+    ContainerDefinitions: [
+      {
+        Environment: [
+          {
+            Name: "SSM_STRING_PARAMETER_NAME",
+            Value: {
+              Ref: "Parameter9E1B4FBA"
+            }
+          },
+        ],
+        Essential: true,
+        Image: {
+          "Fn::Join": [
+            "",
+            [
+              "123456789012.dkr.ecr.us-east-1.",
+              {
+                Ref: "AWS::URLSuffix"
+              },
+              "/fake-repo:latest"
+            ]
+          ]
+        },
+        MemoryReservation: 512,
+        Name: "test-construct-container",
+        PortMappings: [
+          {
+            ContainerPort: 8080,
+            Protocol: "tcp"
+          }
+        ]
+      }
+    ]
   });
 
   expect(stack).toHaveResourceLike("AWS::SSM::Parameter", {
@@ -686,7 +763,7 @@ test('Existing service/existing parameter store, private API, existing VPC', () 
   expect(stack).toCountResources('AWS::SSM::Parameter', 1);
 });
 
-test('Test error invalid parameter store permission', () => {
+test('Test error invalid string parameter permission', () => {
   const stack = new cdk.Stack();
   const publicApi = false;
   const serviceName = 'custom-name';
@@ -719,7 +796,7 @@ test('Test error invalid parameter store permission', () => {
   expect(app).toThrowError('Invalid stringParameterPermissions submitted - REED');
 });
 
-test('Test error invalid parameter store permission', () => {
+test('Test error no existing object or prop provided', () => {
   const stack = new cdk.Stack();
   const publicApi = false;
   const serviceName = 'custom-name';
@@ -750,9 +827,9 @@ test('Test error invalid parameter store permission', () => {
 
 function createSsmParameterStore(stack: cdk.Stack) {
   return new ssm.StringParameter(stack, 'Parameter', {
-    allowedPattern: '.*',
-    description: 'The value Foo',
-    parameterName: 'FooParameter',
-    stringValue: 'Foo',
+    allowedPattern,
+    description,
+    parameterName,
+    stringValue,
   });
 }

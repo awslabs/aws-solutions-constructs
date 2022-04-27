@@ -116,7 +116,7 @@ export interface FargateToSsmstringparameterProps {
   /**
    * Optional SSM String parameter permissions to grant to the Fargate service. One of the following may be specified: "Read", "ReadWrite".
    *
-   * @default - 'ReadWrite'
+   * @default - 'Read'
    */
   readonly stringParameterPermissions?: string
   /**
@@ -182,11 +182,12 @@ export class FargateToSsmstringparameter extends Construct {
       this.stringParameter = defaults.buildSsmStringParameter(this, 'stringParameter', props.stringParameterProps);
     }
 
-    // Add the requested or default string parameter permissions
     this.stringParameter.grantRead(this.service.taskDefinition.taskRole);
+
     if (props.stringParameterPermissions) {
       const _permissions = props.stringParameterPermissions.toUpperCase();
 
+      // Add the requested string parameter permission
       if (_permissions === 'READWRITE') {
         this.stringParameter.grantWrite(this.service.taskDefinition.taskRole);
       }
