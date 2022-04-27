@@ -19,19 +19,18 @@ import * as ssm from '@aws-cdk/aws-ssm';
 import * as ecs from '@aws-cdk/aws-ecs';
 
 const allowedPattern = '.*';
-const description ='The value Foo';
+const description = 'The value Foo';
 const parameterName = 'FooParameter';
 const stringValue = 'Foo';
+const clusterName = "custom-cluster-name";
+const containerName = "custom-container-name";
+const serviceName = "custom-service-name";
+const familyName = "family-name";
+const customName = 'custom-name';
 
 test('New service/new parameter store, public API, new VPC', () => {
   const stack = new cdk.Stack();
   const publicApi = true;
-  const clusterName = "custom-cluster-name";
-  const containerName = "custom-container-name";
-  const serviceName = "custom-service-name";
-  const parameterName = "custom-param-name";
-  const stringValue = "Foo";
-  const familyName = "family-name";
 
   const construct = new FargateToSsmstringparameter(stack, 'test-construct', {
     publicApi,
@@ -169,8 +168,6 @@ test('New service/new parameter store, public API, new VPC', () => {
 test('New service/new parameter store, private API, new VPC', () => {
   const stack = new cdk.Stack();
   const publicApi = false;
-  const parameterName = 'param-name';
-  const stringValue = 'Foo';
 
   new FargateToSsmstringparameter(stack, 'test-construct', {
     publicApi,
@@ -389,8 +386,8 @@ test('New service/existing parameter store, private API, existing VPC', () => {
   });
 
   expect(stack).toHaveResourceLike("AWS::SSM::Parameter", {
-    Name: 'FooParameter',
-    Value: "Foo"
+    Name: parameterName,
+    Value: stringValue
   });
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
@@ -460,9 +457,6 @@ test('New service/existing parameter store, private API, existing VPC', () => {
 test('Existing service/new parameter store, public API, existing VPC', () => {
   const stack = new cdk.Stack();
   const publicApi = true;
-  const serviceName = 'custom-name';
-  const customName = 'CUSTOM_NAME';
-  const parameterName = 'param-name';
 
   const existingVpc = defaults.getTestVpc(stack);
 
@@ -484,7 +478,7 @@ test('Existing service/new parameter store, public API, existing VPC', () => {
     stringParameterEnvironmentVariableName: customName,
     stringParameterProps: {
       parameterName,
-      stringValue: 'Foo'
+      stringValue
     },
     stringParameterPermissions: 'readwrite'
   });
@@ -531,7 +525,7 @@ test('Existing service/new parameter store, public API, existing VPC', () => {
 
   expect(stack).toHaveResourceLike("AWS::SSM::Parameter", {
     Name: parameterName,
-    Value: "Foo"
+    Value: stringValue
   });
 
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
@@ -630,7 +624,6 @@ test('Existing service/new parameter store, public API, existing VPC', () => {
 test('Existing service/existing parameter store, private API, existing VPC', () => {
   const stack = new cdk.Stack();
   const publicApi = false;
-  const serviceName = 'custom-name';
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
@@ -695,8 +688,8 @@ test('Existing service/existing parameter store, private API, existing VPC', () 
   });
 
   expect(stack).toHaveResourceLike("AWS::SSM::Parameter", {
-    Name: "FooParameter",
-    Value: "Foo"
+    Name: parameterName,
+    Value: stringValue
   });
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
@@ -766,7 +759,6 @@ test('Existing service/existing parameter store, private API, existing VPC', () 
 test('Test error invalid string parameter permission', () => {
   const stack = new cdk.Stack();
   const publicApi = false;
-  const serviceName = 'custom-name';
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
@@ -799,7 +791,6 @@ test('Test error invalid string parameter permission', () => {
 test('Test error no existing object or prop provided', () => {
   const stack = new cdk.Stack();
   const publicApi = false;
-  const serviceName = 'custom-name';
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
