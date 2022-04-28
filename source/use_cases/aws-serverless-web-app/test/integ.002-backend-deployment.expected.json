@@ -30,7 +30,11 @@
                     "Fn::Join": [
                       "",
                       [
-                        "arn:aws:logs:",
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
                         {
                           "Ref": "AWS::Region"
                         },
@@ -58,6 +62,14 @@
           "Statement": [
             {
               "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
                 "dynamodb:BatchGetItem",
                 "dynamodb:GetRecords",
                 "dynamodb:GetShardIterator",
@@ -68,7 +80,8 @@
                 "dynamodb:BatchWriteItem",
                 "dynamodb:PutItem",
                 "dynamodb:UpdateItem",
-                "dynamodb:DeleteItem"
+                "dynamodb:DeleteItem",
+                "dynamodb:DescribeTable"
               ],
               "Effect": "Allow",
               "Resource": [
@@ -92,6 +105,16 @@
             "Ref": "CognitoToApiGatewayToLambdaLambdaFunctionServiceRole921AB2D6"
           }
         ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+            }
+          ]
+        }
       }
     },
     "CognitoToApiGatewayToLambdaLambdaFunction555D0B9C": {
@@ -99,50 +122,16 @@
       "Properties": {
         "Code": {
           "S3Bucket": {
-            "Ref": "AssetParameters9a9c398189879e9ca9700ba0658086063d8ee7ccd068043c722c28478c6c4360S3Bucket20EEB389"
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": {
-            "Fn::Join": [
-              "",
-              [
-                {
-                  "Fn::Select": [
-                    0,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters9a9c398189879e9ca9700ba0658086063d8ee7ccd068043c722c28478c6c4360S3VersionKeyC46EC577"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "Fn::Select": [
-                    1,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters9a9c398189879e9ca9700ba0658086063d8ee7ccd068043c722c28478c6c4360S3VersionKeyC46EC577"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            ]
-          }
+          "S3Key": "9a9c398189879e9ca9700ba0658086063d8ee7ccd068043c722c28478c6c4360.zip"
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "CognitoToApiGatewayToLambdaLambdaFunctionServiceRole921AB2D6",
             "Arn"
           ]
         },
-        "Runtime": "nodejs14.x",
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
@@ -150,6 +139,11 @@
               "Ref": "LambdaToDynamoDBDynamoTable53C1442D"
             }
           }
+        },
+        "Handler": "index.handler",
+        "Runtime": "nodejs14.x",
+        "TracingConfig": {
+          "Mode": "Active"
         }
       },
       "DependsOn": [
@@ -166,6 +160,10 @@
             {
               "id": "W89",
               "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            },
+            {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients"
             }
           ]
         }
@@ -174,7 +172,21 @@
     "CognitoToApiGatewayToLambdaApiAccessLogGroup43A4A269": {
       "Type": "AWS::Logs::LogGroup",
       "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
+            },
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+            }
+          ]
+        }
+      }
     },
     "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0": {
       "Type": "AWS::ApiGateway::RestApi",
@@ -187,7 +199,7 @@
         "Name": "LambdaRestApi"
       }
     },
-    "CognitoToApiGatewayToLambdaLambdaRestApiDeployment1E6D5E6682fe19d2bcf96aadbe65fec49213c15c": {
+    "CognitoToApiGatewayToLambdaLambdaRestApiDeployment1E6D5E66be3a2e657ed1037e23e62faacc9671b0": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -229,17 +241,18 @@
           "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "CognitoToApiGatewayToLambdaLambdaRestApiDeployment1E6D5E6682fe19d2bcf96aadbe65fec49213c15c"
+          "Ref": "CognitoToApiGatewayToLambdaLambdaRestApiDeployment1E6D5E66be3a2e657ed1037e23e62faacc9671b0"
         },
         "MethodSettings": [
           {
-            "DataTraceEnabled": true,
+            "DataTraceEnabled": false,
             "HttpMethod": "*",
             "LoggingLevel": "INFO",
             "ResourcePath": "/*"
           }
         ],
-        "StageName": "prod"
+        "StageName": "prod",
+        "TracingEnabled": true
       }
     },
     "CognitoToApiGatewayToLambdaLambdaRestApiOPTIONS84242119": {
@@ -373,7 +386,7 @@
               {
                 "Ref": "CognitoToApiGatewayToLambdaLambdaRestApiDeploymentStageprod743A20E1"
               },
-              "/*/{proxy+}"
+              "/*/*"
             ]
           ]
         }
@@ -410,7 +423,7 @@
               {
                 "Ref": "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0"
               },
-              "/test-invoke-stage/*/{proxy+}"
+              "/test-invoke-stage/*/*"
             ]
           ]
         }
@@ -633,7 +646,11 @@
                     "Fn::Join": [
                       "",
                       [
-                        "arn:aws:logs:",
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
                         {
                           "Ref": "AWS::Region"
                         },
@@ -668,70 +685,29 @@
         "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0"
       ]
     },
-    "CognitoToApiGatewayToLambdaCognitoUserPoolsmsRole62C22F60": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Condition": {
-                "StringEquals": {
-                  "sts:ExternalId": "ServerlessBackendStackCognitoToApiGatewayToLambdaCognitoUserPool0C465C62"
-                }
-              },
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "cognito-idp.amazonaws.com"
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "Policies": [
-          {
-            "PolicyDocument": {
-              "Statement": [
-                {
-                  "Action": "sns:Publish",
-                  "Effect": "Allow",
-                  "Resource": "*"
-                }
-              ],
-              "Version": "2012-10-17"
-            },
-            "PolicyName": "sns-publish"
-          }
-        ]
-      },
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W11",
-              "reason": "Allowing * resource on permissions policy since its used by Cognito to send SMS messages via sns:Publish"
-            }
-          ]
-        }
-      }
-    },
     "CognitoToApiGatewayToLambdaCognitoUserPool6EE989F1": {
       "Type": "AWS::Cognito::UserPool",
       "Properties": {
-        "AdminCreateUserConfig": {
-          "AllowAdminCreateUserOnly": true
+        "AccountRecoverySetting": {
+          "RecoveryMechanisms": [
+            {
+              "Name": "verified_phone_number",
+              "Priority": 1
+            },
+            {
+              "Name": "verified_email",
+              "Priority": 2
+            }
+          ]
         },
+        "AdminCreateUserConfig": {
+          "AllowAdminCreateUserOnly": false
+        },
+        "AutoVerifiedAttributes": [
+          "email"
+        ],
         "EmailVerificationMessage": "The verification code to your new account is {####}",
         "EmailVerificationSubject": "Verify your new account",
-        "SmsConfiguration": {
-          "ExternalId": "ServerlessBackendStackCognitoToApiGatewayToLambdaCognitoUserPool0C465C62",
-          "SnsCallerArn": {
-            "Fn::GetAtt": [
-              "CognitoToApiGatewayToLambdaCognitoUserPoolsmsRole62C22F60",
-              "Arn"
-            ]
-          }
-        },
         "SmsVerificationMessage": "The verification code to your new account is {####}",
         "UserPoolAddOns": {
           "AdvancedSecurityMode": "ENFORCED"
@@ -743,25 +719,45 @@
           "EmailSubject": "Verify your new account",
           "SmsMessage": "The verification code to your new account is {####}"
         }
-      }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
     },
     "CognitoToApiGatewayToLambdaCognitoUserPoolClientC6919938": {
       "Type": "AWS::Cognito::UserPoolClient",
       "Properties": {
         "UserPoolId": {
           "Ref": "CognitoToApiGatewayToLambdaCognitoUserPool6EE989F1"
-        }
+        },
+        "AllowedOAuthFlows": [
+          "implicit",
+          "code"
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": [
+          "profile",
+          "phone",
+          "email",
+          "openid",
+          "aws.cognito.signin.user.admin"
+        ],
+        "CallbackURLs": [
+          "https://example.com"
+        ],
+        "SupportedIdentityProviders": [
+          "COGNITO"
+        ]
       }
     },
     "CognitoToApiGatewayToLambdaCognitoAuthorizerAF023B99": {
       "Type": "AWS::ApiGateway::Authorizer",
       "Properties": {
+        "Name": "authorizer",
         "RestApiId": {
           "Ref": "CognitoToApiGatewayToLambdaLambdaRestApi31103AF0"
         },
         "Type": "COGNITO_USER_POOLS",
         "IdentitySource": "method.request.header.Authorization",
-        "Name": "authorizer",
         "ProviderARNs": [
           {
             "Fn::GetAtt": [
@@ -819,7 +815,11 @@
                 "Fn::Join": [
                   "",
                   [
-                    "arn:aws:s3:::",
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":s3:::",
                     {
                       "Fn::ImportValue": "websiteBucket"
                     },
@@ -844,49 +844,17 @@
       "Properties": {
         "Code": {
           "S3Bucket": {
-            "Ref": "AssetParameters3aa519f176d0d52023f4992f8ada07849f844467dcb0d4dfb94bb3b350a1d791S3Bucket928903EC"
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": {
-            "Fn::Join": [
-              "",
-              [
-                {
-                  "Fn::Select": [
-                    0,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters3aa519f176d0d52023f4992f8ada07849f844467dcb0d4dfb94bb3b350a1d791S3VersionKey3C7BB3DD"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "Fn::Select": [
-                    1,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters3aa519f176d0d52023f4992f8ada07849f844467dcb0d4dfb94bb3b350a1d791S3VersionKey3C7BB3DD"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            ]
-          }
+          "S3Key": "3aa519f176d0d52023f4992f8ada07849f844467dcb0d4dfb94bb3b350a1d791.zip"
         },
-        "Handler": "update_s3_object.on_event",
         "Role": {
           "Fn::GetAtt": [
             "updateConfigHandlerServiceRole3B176B96",
             "Arn"
           ]
         },
+        "Handler": "update_s3_object.on_event",
         "Runtime": "python3.8",
         "Timeout": 300
       },
@@ -934,12 +902,28 @@
             {
               "Action": "lambda:InvokeFunction",
               "Effect": "Allow",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "updateConfigHandler59840941",
-                  "Arn"
-                ]
-              }
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "updateConfigHandler59840941",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "updateConfigHandler59840941",
+                          "Arn"
+                        ]
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
             }
           ],
           "Version": "2012-10-17"
@@ -957,50 +941,17 @@
       "Properties": {
         "Code": {
           "S3Bucket": {
-            "Ref": "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061S3Bucket0A1029B1"
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": {
-            "Fn::Join": [
-              "",
-              [
-                {
-                  "Fn::Select": [
-                    0,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061S3VersionKeyFB75FDAC"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "Fn::Select": [
-                    1,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061S3VersionKeyFB75FDAC"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            ]
-          }
+          "S3Key": "543c7a94b144a6259669eaf884305607b7a9abe85c43e4bfe62f9190ace37916.zip"
         },
-        "Handler": "framework.onEvent",
         "Role": {
           "Fn::GetAtt": [
             "CustomResourceProviderframeworkonEventServiceRole7EBC5835",
             "Arn"
           ]
         },
-        "Runtime": "nodejs14.x",
+        "Description": "AWS CDK resource provider framework - onEvent (ServerlessBackendStack/CustomResourceProvider)",
         "Environment": {
           "Variables": {
             "USER_ON_EVENT_FUNCTION_ARN": {
@@ -1011,6 +962,8 @@
             }
           }
         },
+        "Handler": "framework.onEvent",
+        "Runtime": "nodejs12.x",
         "Timeout": 900
       },
       "DependsOn": [
@@ -1083,6 +1036,9 @@
           }
         ],
         "BillingMode": "PAY_PER_REQUEST",
+        "PointInTimeRecoverySpecification": {
+          "PointInTimeRecoveryEnabled": true
+        },
         "SSESpecification": {
           "SSEEnabled": true
         },
@@ -1121,41 +1077,37 @@
     }
   },
   "Parameters": {
-    "AssetParameters9a9c398189879e9ca9700ba0658086063d8ee7ccd068043c722c28478c6c4360S3Bucket20EEB389": {
-      "Type": "String",
-      "Description": "S3 bucket for asset \"9a9c398189879e9ca9700ba0658086063d8ee7ccd068043c722c28478c6c4360\""
-    },
-    "AssetParameters9a9c398189879e9ca9700ba0658086063d8ee7ccd068043c722c28478c6c4360S3VersionKeyC46EC577": {
-      "Type": "String",
-      "Description": "S3 key for asset version \"9a9c398189879e9ca9700ba0658086063d8ee7ccd068043c722c28478c6c4360\""
-    },
-    "AssetParameters9a9c398189879e9ca9700ba0658086063d8ee7ccd068043c722c28478c6c4360ArtifactHash5ED5576F": {
-      "Type": "String",
-      "Description": "Artifact hash for asset \"9a9c398189879e9ca9700ba0658086063d8ee7ccd068043c722c28478c6c4360\""
-    },
-    "AssetParameters3aa519f176d0d52023f4992f8ada07849f844467dcb0d4dfb94bb3b350a1d791S3Bucket928903EC": {
-      "Type": "String",
-      "Description": "S3 bucket for asset \"3aa519f176d0d52023f4992f8ada07849f844467dcb0d4dfb94bb3b350a1d791\""
-    },
-    "AssetParameters3aa519f176d0d52023f4992f8ada07849f844467dcb0d4dfb94bb3b350a1d791S3VersionKey3C7BB3DD": {
-      "Type": "String",
-      "Description": "S3 key for asset version \"3aa519f176d0d52023f4992f8ada07849f844467dcb0d4dfb94bb3b350a1d791\""
-    },
-    "AssetParameters3aa519f176d0d52023f4992f8ada07849f844467dcb0d4dfb94bb3b350a1d791ArtifactHashF30FBC00": {
-      "Type": "String",
-      "Description": "Artifact hash for asset \"3aa519f176d0d52023f4992f8ada07849f844467dcb0d4dfb94bb3b350a1d791\""
-    },
-    "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061S3Bucket0A1029B1": {
-      "Type": "String",
-      "Description": "S3 bucket for asset \"4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061\""
-    },
-    "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061S3VersionKeyFB75FDAC": {
-      "Type": "String",
-      "Description": "S3 key for asset version \"4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061\""
-    },
-    "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061ArtifactHash40CCFA64": {
-      "Type": "String",
-      "Description": "Artifact hash for asset \"4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061\""
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
     }
   }
 }

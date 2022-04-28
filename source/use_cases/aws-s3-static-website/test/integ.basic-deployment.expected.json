@@ -31,12 +31,55 @@
             {
               "id": "W35",
               "reason": "This S3 bucket is used as the access logging bucket for another bucket"
-            },
-            {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy"
             }
           ]
+        }
+      }
+    },
+    "CloudFrontToS3S3LoggingBucketPolicy360F3875": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "CloudFrontToS3S3LoggingBucketEF5CD8B2"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "CloudFrontToS3S3LoggingBucketEF5CD8B2",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "CloudFrontToS3S3LoggingBucketEF5CD8B2",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
         }
       }
     },
@@ -49,6 +92,19 @@
               "ServerSideEncryptionByDefault": {
                 "SSEAlgorithm": "AES256"
               }
+            }
+          ]
+        },
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "NoncurrentVersionTransitions": [
+                {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90
+                }
+              ],
+              "Status": "Enabled"
             }
           ]
         },
@@ -79,28 +135,15 @@
         "PolicyDocument": {
           "Statement": [
             {
-              "Action": [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*"
-              ],
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":iam::cloudfront:user/CloudFront Origin Access Identity ",
-                      {
-                        "Ref": "CloudFrontToS3CloudFrontOriginAccessIdentity34CC1F91"
-                      }
-                    ]
-                  ]
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
                 }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
               },
               "Resource": [
                 {
@@ -131,7 +174,7 @@
               "Principal": {
                 "CanonicalUser": {
                   "Fn::GetAtt": [
-                    "CloudFrontToS3CloudFrontOriginAccessIdentity34CC1F91",
+                    "CloudFrontToS3CloudFrontDistributionOrigin1S3OriginB0637B8F",
                     "S3CanonicalUserId"
                   ]
                 }
@@ -166,110 +209,15 @@
         }
       }
     },
-    "CloudFrontToS3CloudFrontOriginAccessIdentity34CC1F91": {
-      "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
-      "Properties": {
-        "CloudFrontOriginAccessIdentityConfig": {
-          "Comment": "Access S3 bucket content only through CloudFront"
-        }
-      }
-    },
-    "CloudFrontToS3SetHttpSecurityHeadersServiceRole6BABDE10": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "lambda.amazonaws.com"
-              }
-            },
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "edgelambda.amazonaws.com"
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "Policies": [
-          {
-            "PolicyDocument": {
-              "Statement": [
-                {
-                  "Action": [
-                    "logs:CreateLogGroup",
-                    "logs:CreateLogStream",
-                    "logs:PutLogEvents"
-                  ],
-                  "Effect": "Allow",
-                  "Resource": {
-                    "Fn::Join": [
-                      "",
-                      [
-                        "arn:aws:logs:",
-                        {
-                          "Ref": "AWS::Region"
-                        },
-                        ":",
-                        {
-                          "Ref": "AWS::AccountId"
-                        },
-                        ":log-group:/aws/lambda/*"
-                      ]
-                    ]
-                  }
-                }
-              ],
-              "Version": "2012-10-17"
-            },
-            "PolicyName": "LambdaFunctionServiceRolePolicy"
-          }
-        ]
-      }
-    },
     "CloudFrontToS3SetHttpSecurityHeaders9E6088E2": {
-      "Type": "AWS::Lambda::Function",
+      "Type": "AWS::CloudFront::Function",
       "Properties": {
-        "Code": {
-          "ZipFile": "exports.handler = (event, context, callback) => {           const response = event.Records[0].cf.response;           const headers = response.headers;           headers['x-xss-protection'] = [             {               key: 'X-XSS-Protection',               value: '1; mode=block'             }           ];           headers['x-frame-options'] = [             {               key: 'X-Frame-Options',               value: 'DENY'             }           ];           headers['x-content-type-options'] = [             {               key: 'X-Content-Type-Options',               value: 'nosniff'             }           ];           headers['strict-transport-security'] = [             {               key: 'Strict-Transport-Security',               value: 'max-age=63072000; includeSubdomains; preload'             }           ];           headers['referrer-policy'] = [             {               key: 'Referrer-Policy',               value: 'same-origin'             }           ];           headers['content-security-policy'] = [             {               key: 'Content-Security-Policy',               value: \"default-src 'none'; base-uri 'self'; img-src 'self'; script-src 'self'; style-src 'self' https:; object-src 'none'; frame-ancestors 'none'; font-src 'self' https:; form-action 'self'; manifest-src 'self'; connect-src 'self'\"              }           ];           callback(null, response);         };"
-        },
-        "Handler": "index.handler",
-        "Role": {
-          "Fn::GetAtt": [
-            "CloudFrontToS3SetHttpSecurityHeadersServiceRole6BABDE10",
-            "Arn"
-          ]
-        },
-        "Runtime": "nodejs14.x"
-      },
-      "DependsOn": [
-        "CloudFrontToS3SetHttpSecurityHeadersServiceRole6BABDE10"
-      ],
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W58",
-              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
-            },
-            {
-              "id": "W89",
-              "reason": "This is not a rule for the general case, just for specific use cases/industries"
-            }
-          ]
-        }
-      }
-    },
-    "CloudFrontToS3SetHttpSecurityHeadersVersion699208AE": {
-      "Type": "AWS::Lambda::Version",
-      "Properties": {
-        "FunctionName": {
-          "Ref": "CloudFrontToS3SetHttpSecurityHeaders9E6088E2"
+        "Name": "SetHttpSecurityHeadersc89bf7cb13bc7f7194252ea024cb8eeb4e31b4fd0e",
+        "AutoPublish": true,
+        "FunctionCode": "function handler(event) { var response = event.response;       var headers = response.headers;       headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'};       headers['content-security-policy'] = { value: \"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\"};       headers['x-content-type-options'] = { value: 'nosniff'};       headers['x-frame-options'] = {value: 'DENY'};       headers['x-xss-protection'] = {value: '1; mode=block'};       return response;     }",
+        "FunctionConfig": {
+          "Comment": "SetHttpSecurityHeadersc89bf7cb13bc7f7194252ea024cb8eeb4e31b4fd0e",
+          "Runtime": "cloudfront-js-1.0"
         }
       }
     },
@@ -304,44 +252,85 @@
             {
               "id": "W35",
               "reason": "This S3 bucket is used as the access logging bucket for CloudFront Distribution"
-            },
-            {
-              "id": "W51",
-              "reason": "This S3 bucket is used as the access logging bucket for CloudFront Distribution"
             }
           ]
         }
       }
     },
-    "CloudFrontToS3CloudFrontDistributionCFDistribution7EEEEF4E": {
+    "CloudFrontToS3CloudfrontLoggingBucketPolicy416B82D9": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "CloudFrontToS3CloudfrontLoggingBucket8350BE9B"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "CloudFrontToS3CloudfrontLoggingBucket8350BE9B",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "CloudFrontToS3CloudfrontLoggingBucket8350BE9B",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "CloudFrontToS3CloudFrontDistributionOrigin1S3OriginB0637B8F": {
+      "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+      "Properties": {
+        "CloudFrontOriginAccessIdentityConfig": {
+          "Comment": "Identity for StaticWebsiteStackCloudFrontToS3CloudFrontDistributionOrigin1EFE54F66"
+        }
+      }
+    },
+    "CloudFrontToS3CloudFrontDistribution241D9866": {
       "Type": "AWS::CloudFront::Distribution",
       "Properties": {
         "DistributionConfig": {
           "DefaultCacheBehavior": {
-            "AllowedMethods": [
-              "GET",
-              "HEAD"
-            ],
-            "CachedMethods": [
-              "GET",
-              "HEAD"
-            ],
+            "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
             "Compress": true,
-            "ForwardedValues": {
-              "Cookies": {
-                "Forward": "none"
-              },
-              "QueryString": false
-            },
-            "LambdaFunctionAssociations": [
+            "FunctionAssociations": [
               {
-                "EventType": "origin-response",
-                "LambdaFunctionARN": {
-                  "Ref": "CloudFrontToS3SetHttpSecurityHeadersVersion699208AE"
+                "EventType": "viewer-response",
+                "FunctionARN": {
+                  "Fn::GetAtt": [
+                    "CloudFrontToS3SetHttpSecurityHeaders9E6088E2",
+                    "FunctionARN"
+                  ]
                 }
               }
             ],
-            "TargetOriginId": "origin1",
+            "TargetOriginId": "StaticWebsiteStackCloudFrontToS3CloudFrontDistributionOrigin1EFE54F66",
             "ViewerProtocolPolicy": "redirect-to-https"
           },
           "DefaultRootObject": "index.html",
@@ -354,8 +343,7 @@
                 "CloudFrontToS3CloudfrontLoggingBucket8350BE9B",
                 "RegionalDomainName"
               ]
-            },
-            "IncludeCookies": false
+            }
           },
           "Origins": [
             {
@@ -365,7 +353,7 @@
                   "RegionalDomainName"
                 ]
               },
-              "Id": "origin1",
+              "Id": "StaticWebsiteStackCloudFrontToS3CloudFrontDistributionOrigin1EFE54F66",
               "S3OriginConfig": {
                 "OriginAccessIdentity": {
                   "Fn::Join": [
@@ -373,18 +361,14 @@
                     [
                       "origin-access-identity/cloudfront/",
                       {
-                        "Ref": "CloudFrontToS3CloudFrontOriginAccessIdentity34CC1F91"
+                        "Ref": "CloudFrontToS3CloudFrontDistributionOrigin1S3OriginB0637B8F"
                       }
                     ]
                   ]
                 }
               }
             }
-          ],
-          "PriceClass": "PriceClass_100",
-          "ViewerCertificate": {
-            "CloudFrontDefaultCertificate": true
-          }
+          ]
         }
       },
       "Metadata": {
@@ -441,7 +425,18 @@
               ],
               "Effect": "Allow",
               "Resource": [
-                "arn:aws:s3:::wildrydes-us-east-1",
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::wildrydes-us-east-1"
+                    ]
+                  ]
+                },
                 "arn:aws:s3:::wildrydes-us-east-1/WebApplication/1_StaticWebHosting/website/*"
               ]
             },
@@ -462,7 +457,11 @@
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:s3:::",
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
                       {
                         "Ref": "CloudFrontToS3S3Bucket9CE6AB04"
                       }
@@ -499,49 +498,17 @@
       "Properties": {
         "Code": {
           "S3Bucket": {
-            "Ref": "AssetParameters2a96a41ef8e6db639865e8dc7826848e60ba75ebdb553c6c9bf2f961ef503debS3BucketC3836BD9"
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": {
-            "Fn::Join": [
-              "",
-              [
-                {
-                  "Fn::Select": [
-                    0,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters2a96a41ef8e6db639865e8dc7826848e60ba75ebdb553c6c9bf2f961ef503debS3VersionKeyEDA18BF9"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "Fn::Select": [
-                    1,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters2a96a41ef8e6db639865e8dc7826848e60ba75ebdb553c6c9bf2f961ef503debS3VersionKeyEDA18BF9"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            ]
-          }
+          "S3Key": "2a96a41ef8e6db639865e8dc7826848e60ba75ebdb553c6c9bf2f961ef503deb.zip"
         },
-        "Handler": "copy_s3_objects.on_event",
         "Role": {
           "Fn::GetAtt": [
             "copyObjHandlerServiceRoleA0ECE649",
             "Arn"
           ]
         },
+        "Handler": "copy_s3_objects.on_event",
         "Runtime": "python3.8",
         "Timeout": 300
       },
@@ -589,12 +556,28 @@
             {
               "Action": "lambda:InvokeFunction",
               "Effect": "Allow",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "copyObjHandlerDA1C4669",
-                  "Arn"
-                ]
-              }
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "copyObjHandlerDA1C4669",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "copyObjHandlerDA1C4669",
+                          "Arn"
+                        ]
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
             }
           ],
           "Version": "2012-10-17"
@@ -612,50 +595,17 @@
       "Properties": {
         "Code": {
           "S3Bucket": {
-            "Ref": "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061S3Bucket0A1029B1"
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": {
-            "Fn::Join": [
-              "",
-              [
-                {
-                  "Fn::Select": [
-                    0,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061S3VersionKeyFB75FDAC"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "Fn::Select": [
-                    1,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061S3VersionKeyFB75FDAC"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            ]
-          }
+          "S3Key": "543c7a94b144a6259669eaf884305607b7a9abe85c43e4bfe62f9190ace37916.zip"
         },
-        "Handler": "framework.onEvent",
         "Role": {
           "Fn::GetAtt": [
             "CustomResourceProviderframeworkonEventServiceRole7EBC5835",
             "Arn"
           ]
         },
-        "Runtime": "nodejs14.x",
+        "Description": "AWS CDK resource provider framework - onEvent (StaticWebsiteStack/CustomResourceProvider)",
         "Environment": {
           "Variables": {
             "USER_ON_EVENT_FUNCTION_ARN": {
@@ -666,6 +616,8 @@
             }
           }
         },
+        "Handler": "framework.onEvent",
+        "Runtime": "nodejs12.x",
         "Timeout": 900
       },
       "DependsOn": [
@@ -692,32 +644,6 @@
       "DeletionPolicy": "Delete"
     }
   },
-  "Parameters": {
-    "AssetParameters2a96a41ef8e6db639865e8dc7826848e60ba75ebdb553c6c9bf2f961ef503debS3BucketC3836BD9": {
-      "Type": "String",
-      "Description": "S3 bucket for asset \"2a96a41ef8e6db639865e8dc7826848e60ba75ebdb553c6c9bf2f961ef503deb\""
-    },
-    "AssetParameters2a96a41ef8e6db639865e8dc7826848e60ba75ebdb553c6c9bf2f961ef503debS3VersionKeyEDA18BF9": {
-      "Type": "String",
-      "Description": "S3 key for asset version \"2a96a41ef8e6db639865e8dc7826848e60ba75ebdb553c6c9bf2f961ef503deb\""
-    },
-    "AssetParameters2a96a41ef8e6db639865e8dc7826848e60ba75ebdb553c6c9bf2f961ef503debArtifactHashA2BE913F": {
-      "Type": "String",
-      "Description": "Artifact hash for asset \"2a96a41ef8e6db639865e8dc7826848e60ba75ebdb553c6c9bf2f961ef503deb\""
-    },
-    "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061S3Bucket0A1029B1": {
-      "Type": "String",
-      "Description": "S3 bucket for asset \"4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061\""
-    },
-    "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061S3VersionKeyFB75FDAC": {
-      "Type": "String",
-      "Description": "S3 key for asset version \"4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061\""
-    },
-    "AssetParameters4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061ArtifactHash40CCFA64": {
-      "Type": "String",
-      "Description": "Artifact hash for asset \"4c2988a57571fd4c34de12bae67441541aeea1a59e085f95e5b708922ff45061\""
-    }
-  },
   "Outputs": {
     "websiteURL": {
       "Value": {
@@ -727,13 +653,47 @@
             "https://",
             {
               "Fn::GetAtt": [
-                "CloudFrontToS3CloudFrontDistributionCFDistribution7EEEEF4E",
-                "RegionalDomainName"
+                "CloudFrontToS3CloudFrontDistribution241D9866",
+                "DomainName"
               ]
             }
           ]
         ]
       }
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
     }
   }
 }

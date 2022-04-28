@@ -54,60 +54,74 @@ test('check s3 bucket public access setting', () => {
 test('check CR lambda function permissions', () => {
   const app = new cdk.App();
   const stack = new S3StaticWebsiteStack(app, 'S3StaticWebsiteStack');
-  expect(stack).toHaveResource("AWS::IAM::Policy", {
-    PolicyDocument: {
-      Statement: [
-        {
-          Action: [
-            "s3:GetObject",
-            "s3:ListBucket"
-          ],
-          Effect: "Allow",
-          Resource: [
-            "arn:aws:s3:::wildrydes-us-east-1",
-            "arn:aws:s3:::wildrydes-us-east-1/WebApplication/1_StaticWebHosting/website/*"
-          ]
-        },
-        {
-          Action: [
-            "s3:ListBucket",
-            "s3:GetObject",
-            "s3:PutObject",
-            "s3:PutObjectAcl",
-            "s3:PutObjectVersionAcl",
-            "s3:DeleteObject",
-            "s3:DeleteObjectVersion",
-            "s3:CopyObject"
-          ],
-          Effect: "Allow",
-          Resource: [
-            {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:aws:s3:::",
-                  {
-                    Ref: "CloudFrontToS3S3Bucket9CE6AB04"
-                  }
+  expect(stack).toHaveResourceLike("AWS::IAM::Policy",{
+    "PolicyDocument": {
+        "Statement": [
+          {
+            "Action": [
+              "s3:GetObject",
+              "s3:ListBucket"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+              {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":s3:::wildrydes-us-east-1"
+                  ]
                 ]
-              ]
-            },
-            {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:aws:s3:::",
-                  {
-                    Ref: "CloudFrontToS3S3Bucket9CE6AB04"
-                  },
-                  "/*"
+              },
+              "arn:aws:s3:::wildrydes-us-east-1/WebApplication/1_StaticWebHosting/website/*"
+            ]
+          },
+          {
+            "Action": [
+              "s3:ListBucket",
+              "s3:GetObject",
+              "s3:PutObject",
+              "s3:PutObjectAcl",
+              "s3:PutObjectVersionAcl",
+              "s3:DeleteObject",
+              "s3:DeleteObjectVersion",
+              "s3:CopyObject"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+              {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":s3:::",
+                    {
+                      "Ref": "CloudFrontToS3S3Bucket9CE6AB04"
+                    }
+                  ]
                 ]
-              ]
-            }
-          ]
-        }
-      ],
-      Version: "2012-10-17"
+              },
+              {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:s3:::",
+                    {
+                      "Ref": "CloudFrontToS3S3Bucket9CE6AB04"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            ]
+          }
+]
     },
     PolicyName: "copyObjHandlerServiceRoleDefaultPolicyFCA51C18",
     Roles: [
@@ -117,3 +131,4 @@ test('check CR lambda function permissions', () => {
     ]
   });
 });
+

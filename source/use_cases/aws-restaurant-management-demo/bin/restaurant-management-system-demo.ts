@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 /**
  *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
