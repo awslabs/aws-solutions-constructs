@@ -70,5 +70,5 @@ test('Custom deployment unit testing', () => {
     // Assertion 4
     expect(sih.cloudFrontDistribution()).toBeDefined();
     // Assertion 5
-    expect(sih.lambdaFunction()).toHaveProperty('environment.TEST_KEY', 'TEST_VALUE');
+    expect(sih.lambdaFunction()).toHaveProperty('environment.TEST_KEY', {"value": "TEST_VALUE"});
 });

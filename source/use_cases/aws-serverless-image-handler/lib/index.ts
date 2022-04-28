@@ -74,7 +74,7 @@ export interface ServerlessImageHandlerCustomProps {
      *
      * @default - false.
      */
-    readonly cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
+    readonly cloudFrontDistributionProps?: cloudFront.DistributionProps | any,
     /**
      * Optional user provided props to override the default props for the API Gateway REST API.
      *
@@ -195,18 +195,18 @@ export class ServerlessImageHandler extends Construct {
 
         // Add the SOURCE_BUCKETS environment variable to the Lambda function
         const bucketsArr = (props.sourceBuckets !== "") ? props.sourceBuckets.split(',') : [];
-        bucketsArr.push(this.lambdaS3.s3Bucket.bucketName);
+        bucketsArr.push(this.safeGetBucketProperty().bucketName);
         const bucketsStr = bucketsArr.toString().replace(/\s+/g, '');
         this.cloudFrontApiGatewayLambda.lambdaFunction.addEnvironment("SOURCE_BUCKETS", bucketsStr);
     }
 
     /**
      * @summary Returns an instance of cloudFront.CloudFrontWebDistribution created by the construct.
-     * @returns { cloudFront.CloudFrontWebDistribution } Instance of CloudFrontWebDistribution created by the construct.
+     * @returns { cloudFront.Distribution } Instance of CloudFrontWebDistribution created by the construct.
      * @since 0.8.0
      * @access public
      */
-    public cloudFrontDistribution(): cloudFront.CloudFrontWebDistribution {
+    public cloudFrontDistribution(): cloudFront.Distribution {
         return this.cloudFrontApiGatewayLambda.cloudFrontWebDistribution;
     }
 
@@ -237,6 +237,17 @@ export class ServerlessImageHandler extends Construct {
      * @access public
      */
     public s3Bucket(): s3.Bucket {
-        return this.lambdaS3.s3Bucket;
+        return this.safeGetBucketProperty();
+    }
+
+    private safeGetBucketProperty(): s3.Bucket {
+      // When LambdaToS3 was altered to accept IBucket, the
+      // s3Bucket property became optional. This app always 
+      // has LambdaToS3 create a new bucket, so if the S3Bucket property
+      // is undefined, then an invalid situation has arisen.
+      if (!this.lambdaS3.s3Bucket) {
+        throw Error('s3Bucket is not set - this should never occur');
+      }
+      return this.lambdaS3.s3Bucket;
     }
 }
