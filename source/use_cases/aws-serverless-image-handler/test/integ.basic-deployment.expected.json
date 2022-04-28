@@ -31,7 +31,11 @@
                     "Fn::Join": [
                       "",
                       [
-                        "arn:aws:logs:",
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
                         {
                           "Ref": "AWS::Region"
                         },
@@ -59,11 +63,23 @@
           "Statement": [
             {
               "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
                 "s3:GetObject*",
                 "s3:GetBucket*",
                 "s3:List*",
                 "s3:DeleteObject*",
-                "s3:PutObject*",
+                "s3:PutObject",
+                "s3:PutObjectLegalHold",
+                "s3:PutObjectRetention",
+                "s3:PutObjectTagging",
+                "s3:PutObjectVersionTagging",
                 "s3:Abort*"
               ],
               "Effect": "Allow",
@@ -99,6 +115,16 @@
             "Ref": "testserverlessimagehandlerCloudFrontApiGatewayLambdaLambdaFunctionServiceRole110B3FC6"
           }
         ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+            }
+          ]
+        }
       }
     },
     "testserverlessimagehandlerCloudFrontApiGatewayLambdaLambdaFunctionF12AF5FC": {
@@ -106,56 +132,22 @@
       "Properties": {
         "Code": {
           "S3Bucket": {
-            "Ref": "AssetParameters5f752add658f79e0005d882c0bc5a08dc38a14dc55135d974ea1d2226cb28b96S3Bucket65CDB50E"
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": {
-            "Fn::Join": [
-              "",
-              [
-                {
-                  "Fn::Select": [
-                    0,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters5f752add658f79e0005d882c0bc5a08dc38a14dc55135d974ea1d2226cb28b96S3VersionKeyCF89D2F1"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "Fn::Select": [
-                    1,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParameters5f752add658f79e0005d882c0bc5a08dc38a14dc55135d974ea1d2226cb28b96S3VersionKeyCF89D2F1"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            ]
-          }
+          "S3Key": "cd62adae72264cea63bda88de1b14cf6c4cec29557ae44e526714470d2e2f1f1.zip"
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "testserverlessimagehandlerCloudFrontApiGatewayLambdaLambdaFunctionServiceRole110B3FC6",
             "Arn"
           ]
         },
-        "Runtime": "nodejs14.x",
         "Environment": {
           "Variables": {
-            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "AUTO_WEBP": "No",
             "CORS_ENABLED": "Yes",
             "CORS_ORIGIN": "*",
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "S3_BUCKET_NAME": {
               "Ref": "testserverlessimagehandlerExistingLambdaS3S3Bucket9203E662"
             },
@@ -171,6 +163,11 @@
               ]
             }
           }
+        },
+        "Handler": "index.handler",
+        "Runtime": "nodejs14.x",
+        "TracingConfig": {
+          "Mode": "Active"
         }
       },
       "DependsOn": [
@@ -187,6 +184,10 @@
             {
               "id": "W89",
               "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            },
+            {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients"
             }
           ]
         }
@@ -195,7 +196,21 @@
     "testserverlessimagehandlerCloudFrontApiGatewayLambdaApiAccessLogGroup75A8AB40": {
       "Type": "AWS::Logs::LogGroup",
       "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
+            },
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+            }
+          ]
+        }
+      }
     },
     "testserverlessimagehandlerCloudFrontApiGatewayLambdaLambdaRestApi7B1E91FA": {
       "Type": "AWS::ApiGateway::RestApi",
@@ -255,13 +270,14 @@
         },
         "MethodSettings": [
           {
-            "DataTraceEnabled": true,
+            "DataTraceEnabled": false,
             "HttpMethod": "*",
             "LoggingLevel": "INFO",
             "ResourcePath": "/*"
           }
         ],
-        "StageName": "prod"
+        "StageName": "prod",
+        "TracingEnabled": true
       }
     },
     "testserverlessimagehandlerCloudFrontApiGatewayLambdaLambdaRestApiproxy4612A938": {
@@ -314,7 +330,7 @@
               {
                 "Ref": "testserverlessimagehandlerCloudFrontApiGatewayLambdaLambdaRestApiDeploymentStageprodBD57762D"
               },
-              "/*/{proxy+}"
+              "/*/*"
             ]
           ]
         }
@@ -351,7 +367,7 @@
               {
                 "Ref": "testserverlessimagehandlerCloudFrontApiGatewayLambdaLambdaRestApi7B1E91FA"
               },
-              "/test-invoke-stage/*/{proxy+}"
+              "/test-invoke-stage/*/*"
             ]
           ]
         }
@@ -367,7 +383,7 @@
         "RestApiId": {
           "Ref": "testserverlessimagehandlerCloudFrontApiGatewayLambdaLambdaRestApi7B1E91FA"
         },
-        "AuthorizationType": "AWS_IAM",
+        "AuthorizationType": "NONE",
         "Integration": {
           "IntegrationHttpMethod": "POST",
           "Type": "AWS_PROXY",
@@ -394,6 +410,16 @@
               ]
             ]
           }
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W59",
+              "reason": "AWS::ApiGateway::Method AuthorizationType is set to 'NONE' because API Gateway behind CloudFront does not support AWS_IAM authentication"
+            }
+          ]
         }
       }
     },
@@ -488,7 +514,7 @@
         "RestApiId": {
           "Ref": "testserverlessimagehandlerCloudFrontApiGatewayLambdaLambdaRestApi7B1E91FA"
         },
-        "AuthorizationType": "AWS_IAM",
+        "AuthorizationType": "NONE",
         "Integration": {
           "IntegrationHttpMethod": "POST",
           "Type": "AWS_PROXY",
@@ -515,6 +541,16 @@
               ]
             ]
           }
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W59",
+              "reason": "AWS::ApiGateway::Method AuthorizationType is set to 'NONE' because API Gateway behind CloudFront does not support AWS_IAM authentication"
+            }
+          ]
         }
       }
     },
@@ -568,7 +604,11 @@
                     "Fn::Join": [
                       "",
                       [
-                        "arn:aws:logs:",
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
                         {
                           "Ref": "AWS::Region"
                         },
@@ -603,102 +643,15 @@
         "testserverlessimagehandlerCloudFrontApiGatewayLambdaLambdaRestApi7B1E91FA"
       ]
     },
-    "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRole6A96B325": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "lambda.amazonaws.com"
-              }
-            },
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "edgelambda.amazonaws.com"
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "Policies": [
-          {
-            "PolicyDocument": {
-              "Statement": [
-                {
-                  "Action": [
-                    "logs:CreateLogGroup",
-                    "logs:CreateLogStream",
-                    "logs:PutLogEvents"
-                  ],
-                  "Effect": "Allow",
-                  "Resource": {
-                    "Fn::Join": [
-                      "",
-                      [
-                        "arn:aws:logs:",
-                        {
-                          "Ref": "AWS::Region"
-                        },
-                        ":",
-                        {
-                          "Ref": "AWS::AccountId"
-                        },
-                        ":log-group:/aws/lambda/*"
-                      ]
-                    ]
-                  }
-                }
-              ],
-              "Version": "2012-10-17"
-            },
-            "PolicyName": "LambdaFunctionServiceRolePolicy"
-          }
-        ]
-      }
-    },
     "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewaySetHttpSecurityHeadersC49E7B59": {
-      "Type": "AWS::Lambda::Function",
+      "Type": "AWS::CloudFront::Function",
       "Properties": {
-        "Code": {
-          "ZipFile": "exports.handler = (event, context, callback) => {           const response = event.Records[0].cf.response;           const headers = response.headers;           headers['x-xss-protection'] = [             {               key: 'X-XSS-Protection',               value: '1; mode=block'             }           ];           headers['x-frame-options'] = [             {               key: 'X-Frame-Options',               value: 'DENY'             }           ];           headers['x-content-type-options'] = [             {               key: 'X-Content-Type-Options',               value: 'nosniff'             }           ];           headers['strict-transport-security'] = [             {               key: 'Strict-Transport-Security',               value: 'max-age=63072000; includeSubdomains; preload'             }           ];           headers['referrer-policy'] = [             {               key: 'Referrer-Policy',               value: 'same-origin'             }           ];           headers['content-security-policy'] = [             {               key: 'Content-Security-Policy',               value: \"default-src 'none'; base-uri 'self'; img-src 'self'; script-src 'self'; style-src 'self' https:; object-src 'none'; frame-ancestors 'none'; font-src 'self' https:; form-action 'self'; manifest-src 'self'; connect-src 'self'\"              }           ];           callback(null, response);         };"
-        },
-        "Handler": "index.handler",
-        "Role": {
-          "Fn::GetAtt": [
-            "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRole6A96B325",
-            "Arn"
-          ]
-        },
-        "Runtime": "nodejs14.x"
-      },
-      "DependsOn": [
-        "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRole6A96B325"
-      ],
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W58",
-              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
-            },
-            {
-              "id": "W89",
-              "reason": "This is not a rule for the general case, just for specific use cases/industries"
-            }
-          ]
-        }
-      }
-    },
-    "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewaySetHttpSecurityHeadersVersion5920FF7F": {
-      "Type": "AWS::Lambda::Version",
-      "Properties": {
-        "FunctionName": {
-          "Ref": "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewaySetHttpSecurityHeadersC49E7B59"
+        "Name": "SetHttpSecurityHeadersc837763a6a3a9a67e25b11f161390c447daaa927a0",
+        "AutoPublish": true,
+        "FunctionCode": "function handler(event) { var response = event.response;       var headers = response.headers;       headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'};       headers['content-security-policy'] = { value: \"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\"};       headers['x-content-type-options'] = { value: 'nosniff'};       headers['x-frame-options'] = {value: 'DENY'};       headers['x-xss-protection'] = {value: '1; mode=block'};       return response;     }",
+        "FunctionConfig": {
+          "Comment": "SetHttpSecurityHeadersc837763a6a3a9a67e25b11f161390c447daaa927a0",
+          "Runtime": "cloudfront-js-1.0"
         }
       }
     },
@@ -733,47 +686,79 @@
             {
               "id": "W35",
               "reason": "This S3 bucket is used as the access logging bucket for CloudFront Distribution"
-            },
-            {
-              "id": "W51",
-              "reason": "This S3 bucket is used as the access logging bucket for CloudFront Distribution"
             }
           ]
         }
       }
     },
-    "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewayCloudFrontDistributionCFDistribution5DCC756A": {
+    "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewayCloudfrontLoggingBucketPolicy966FBA77": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewayCloudfrontLoggingBucket58AA7378"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewayCloudfrontLoggingBucket58AA7378",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewayCloudfrontLoggingBucket58AA7378",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewayCloudFrontDistribution73757325": {
       "Type": "AWS::CloudFront::Distribution",
       "Properties": {
         "DistributionConfig": {
           "DefaultCacheBehavior": {
-            "AllowedMethods": [
-              "GET",
-              "HEAD"
-            ],
-            "CachedMethods": [
-              "GET",
-              "HEAD"
-            ],
+            "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
             "Compress": true,
-            "ForwardedValues": {
-              "Cookies": {
-                "Forward": "none"
-              },
-              "QueryString": false
-            },
-            "LambdaFunctionAssociations": [
+            "FunctionAssociations": [
               {
-                "EventType": "origin-response",
-                "LambdaFunctionARN": {
-                  "Ref": "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewaySetHttpSecurityHeadersVersion5920FF7F"
+                "EventType": "viewer-response",
+                "FunctionARN": {
+                  "Fn::GetAtt": [
+                    "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewaySetHttpSecurityHeadersC49E7B59",
+                    "FunctionARN"
+                  ]
                 }
               }
             ],
-            "TargetOriginId": "origin1",
+            "TargetOriginId": "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewayCloudFrontDistributionOrigin1C13C667A",
             "ViewerProtocolPolicy": "redirect-to-https"
           },
-          "DefaultRootObject": "index.html",
           "Enabled": true,
           "HttpVersion": "http2",
           "IPV6Enabled": true,
@@ -783,17 +768,12 @@
                 "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewayCloudfrontLoggingBucket58AA7378",
                 "RegionalDomainName"
               ]
-            },
-            "IncludeCookies": false
+            }
           },
           "Origins": [
             {
               "CustomOriginConfig": {
-                "HTTPPort": 80,
-                "HTTPSPort": 443,
-                "OriginKeepaliveTimeout": 5,
                 "OriginProtocolPolicy": "https-only",
-                "OriginReadTimeout": 30,
                 "OriginSSLProtocols": [
                   "TLSv1.2"
                 ]
@@ -842,13 +822,20 @@
                   }
                 ]
               },
-              "Id": "origin1"
+              "Id": "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewayCloudFrontDistributionOrigin1C13C667A",
+              "OriginPath": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "/",
+                    {
+                      "Ref": "testserverlessimagehandlerCloudFrontApiGatewayLambdaLambdaRestApiDeploymentStageprodBD57762D"
+                    }
+                  ]
+                ]
+              }
             }
-          ],
-          "PriceClass": "PriceClass_100",
-          "ViewerCertificate": {
-            "CloudFrontDefaultCertificate": true
-          }
+          ]
         }
       },
       "Metadata": {
@@ -893,12 +880,55 @@
             {
               "id": "W35",
               "reason": "This S3 bucket is used as the access logging bucket for another bucket"
-            },
-            {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy"
             }
           ]
+        }
+      }
+    },
+    "testserverlessimagehandlerExistingLambdaS3S3LoggingBucketPolicy1D599FE4": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "testserverlessimagehandlerExistingLambdaS3S3LoggingBucket406E2181"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testserverlessimagehandlerExistingLambdaS3S3LoggingBucket406E2181",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testserverlessimagehandlerExistingLambdaS3S3LoggingBucket406E2181",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
         }
       }
     },
@@ -911,6 +941,19 @@
               "ServerSideEncryptionByDefault": {
                 "SSEAlgorithm": "AES256"
               }
+            }
+          ]
+        },
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "NoncurrentVersionTransitions": [
+                {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90
+                }
+              ],
+              "Status": "Enabled"
             }
           ]
         },
@@ -930,15 +973,52 @@
         }
       },
       "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
+      "DeletionPolicy": "Retain"
+    },
+    "testserverlessimagehandlerExistingLambdaS3S3BucketPolicy4313A384": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "testserverlessimagehandlerExistingLambdaS3S3Bucket9203E662"
+        },
+        "PolicyDocument": {
+          "Statement": [
             {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy"
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testserverlessimagehandlerExistingLambdaS3S3Bucket9203E662",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testserverlessimagehandlerExistingLambdaS3S3Bucket9203E662",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
             }
-          ]
+          ],
+          "Version": "2012-10-17"
         }
       }
     },
@@ -1012,17 +1092,37 @@
     }
   },
   "Parameters": {
-    "AssetParameters5f752add658f79e0005d882c0bc5a08dc38a14dc55135d974ea1d2226cb28b96S3Bucket65CDB50E": {
-      "Type": "String",
-      "Description": "S3 bucket for asset \"5f752add658f79e0005d882c0bc5a08dc38a14dc55135d974ea1d2226cb28b96\""
-    },
-    "AssetParameters5f752add658f79e0005d882c0bc5a08dc38a14dc55135d974ea1d2226cb28b96S3VersionKeyCF89D2F1": {
-      "Type": "String",
-      "Description": "S3 key for asset version \"5f752add658f79e0005d882c0bc5a08dc38a14dc55135d974ea1d2226cb28b96\""
-    },
-    "AssetParameters5f752add658f79e0005d882c0bc5a08dc38a14dc55135d974ea1d2226cb28b96ArtifactHash7AE27721": {
-      "Type": "String",
-      "Description": "Artifact hash for asset \"5f752add658f79e0005d882c0bc5a08dc38a14dc55135d974ea1d2226cb28b96\""
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
     }
   }
 }

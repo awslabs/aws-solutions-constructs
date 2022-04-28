@@ -31,26 +31,40 @@ Object {
     },
   },
   "Parameters": Object {
-    "AssetParameters5f752add658f79e0005d882c0bc5a08dc38a14dc55135d974ea1d2226cb28b96ArtifactHash7AE27721": Object {
-      "Description": "Artifact hash for asset \\"5f752add658f79e0005d882c0bc5a08dc38a14dc55135d974ea1d2226cb28b96\\"",
+    "AssetParameterscd62adae72264cea63bda88de1b14cf6c4cec29557ae44e526714470d2e2f1f1ArtifactHash1C81AD0D": Object {
+      "Description": "Artifact hash for asset \\"cd62adae72264cea63bda88de1b14cf6c4cec29557ae44e526714470d2e2f1f1\\"",
       "Type": "String",
     },
-    "AssetParameters5f752add658f79e0005d882c0bc5a08dc38a14dc55135d974ea1d2226cb28b96S3Bucket65CDB50E": Object {
-      "Description": "S3 bucket for asset \\"5f752add658f79e0005d882c0bc5a08dc38a14dc55135d974ea1d2226cb28b96\\"",
+    "AssetParameterscd62adae72264cea63bda88de1b14cf6c4cec29557ae44e526714470d2e2f1f1S3Bucket55C0D3E0": Object {
+      "Description": "S3 bucket for asset \\"cd62adae72264cea63bda88de1b14cf6c4cec29557ae44e526714470d2e2f1f1\\"",
       "Type": "String",
     },
-    "AssetParameters5f752add658f79e0005d882c0bc5a08dc38a14dc55135d974ea1d2226cb28b96S3VersionKeyCF89D2F1": Object {
-      "Description": "S3 key for asset version \\"5f752add658f79e0005d882c0bc5a08dc38a14dc55135d974ea1d2226cb28b96\\"",
+    "AssetParameterscd62adae72264cea63bda88de1b14cf6c4cec29557ae44e526714470d2e2f1f1S3VersionKeyE00C37AD": Object {
+      "Description": "S3 key for asset version \\"cd62adae72264cea63bda88de1b14cf6c4cec29557ae44e526714470d2e2f1f1\\"",
       "Type": "String",
     },
   },
   "Resources": Object {
     "testserverlessimagehandlerCloudFrontApiGatewayLambdaApiAccessLogGroup75A8AB40": Object {
       "DeletionPolicy": "Retain",
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely",
+            },
+            Object {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)",
+            },
+          ],
+        },
+      },
       "Type": "AWS::Logs::LogGroup",
       "UpdateReplacePolicy": "Retain",
     },
-    "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewayCloudFrontDistributionCFDistribution5DCC756A": Object {
+    "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewayCloudFrontDistribution73757325": Object {
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
@@ -64,33 +78,22 @@ Object {
       "Properties": Object {
         "DistributionConfig": Object {
           "DefaultCacheBehavior": Object {
-            "AllowedMethods": Array [
-              "GET",
-              "HEAD",
-            ],
-            "CachedMethods": Array [
-              "GET",
-              "HEAD",
-            ],
+            "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
             "Compress": true,
-            "ForwardedValues": Object {
-              "Cookies": Object {
-                "Forward": "none",
-              },
-              "QueryString": false,
-            },
-            "LambdaFunctionAssociations": Array [
+            "FunctionAssociations": Array [
               Object {
-                "EventType": "origin-response",
-                "LambdaFunctionARN": Object {
-                  "Ref": "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewaySetHttpSecurityHeadersVersion5920FF7F",
+                "EventType": "viewer-response",
+                "FunctionARN": Object {
+                  "Fn::GetAtt": Array [
+                    "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewaySetHttpSecurityHeadersC49E7B59",
+                    "FunctionARN",
+                  ],
                 },
               },
             ],
-            "TargetOriginId": "origin1",
+            "TargetOriginId": "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewayCloudFrontDistributionOrigin161738C6A",
             "ViewerProtocolPolicy": "redirect-to-https",
           },
-          "DefaultRootObject": "index.html",
           "Enabled": true,
           "HttpVersion": "http2",
           "IPV6Enabled": true,
@@ -101,16 +104,11 @@ Object {
                 "RegionalDomainName",
               ],
             },
-            "IncludeCookies": false,
           },
           "Origins": Array [
             Object {
               "CustomOriginConfig": Object {
-                "HTTPPort": 80,
-                "HTTPSPort": 443,
-                "OriginKeepaliveTimeout": 5,
                 "OriginProtocolPolicy": "https-only",
-                "OriginReadTimeout": 30,
                 "OriginSSLProtocols": Array [
                   "TLSv1.2",
                 ],
@@ -159,13 +157,20 @@ Object {
                   },
                 ],
               },
-              "Id": "origin1",
+              "Id": "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewayCloudFrontDistributionOrigin161738C6A",
+              "OriginPath": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "/",
+                    Object {
+                      "Ref": "testserverlessimagehandlerCloudFrontApiGatewayLambdaLambdaRestApiDeploymentStageprodBD57762D",
+                    },
+                  ],
+                ],
+              },
             },
           ],
-          "PriceClass": "PriceClass_100",
-          "ViewerCertificate": Object {
-            "CloudFrontDefaultCertificate": true,
-          },
         },
       },
       "Type": "AWS::CloudFront::Distribution",
@@ -177,10 +182,6 @@ Object {
           "rules_to_suppress": Array [
             Object {
               "id": "W35",
-              "reason": "This S3 bucket is used as the access logging bucket for CloudFront Distribution",
-            },
-            Object {
-              "id": "W51",
               "reason": "This S3 bucket is used as the access logging bucket for CloudFront Distribution",
             },
           ],
@@ -210,104 +211,64 @@ Object {
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
     },
-    "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewaySetHttpSecurityHeadersC49E7B59": Object {
-      "DependsOn": Array [
-        "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRole6A96B325",
-      ],
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W58",
-              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.",
-            },
-            Object {
-              "id": "W89",
-              "reason": "This is not a rule for the general case, just for specific use cases/industries",
-            },
-          ],
-        },
-      },
+    "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewayCloudfrontLoggingBucketPolicy966FBA77": Object {
       "Properties": Object {
-        "Code": Object {
-          "ZipFile": "exports.handler = (event, context, callback) => {           const response = event.Records[0].cf.response;           const headers = response.headers;           headers['x-xss-protection'] = [             {               key: 'X-XSS-Protection',               value: '1; mode=block'             }           ];           headers['x-frame-options'] = [             {               key: 'X-Frame-Options',               value: 'DENY'             }           ];           headers['x-content-type-options'] = [             {               key: 'X-Content-Type-Options',               value: 'nosniff'             }           ];           headers['strict-transport-security'] = [             {               key: 'Strict-Transport-Security',               value: 'max-age=63072000; includeSubdomains; preload'             }           ];           headers['referrer-policy'] = [             {               key: 'Referrer-Policy',               value: 'same-origin'             }           ];           headers['content-security-policy'] = [             {               key: 'Content-Security-Policy',               value: \\"default-src 'none'; base-uri 'self'; img-src 'self'; script-src 'self'; style-src 'self' https:; object-src 'none'; frame-ancestors 'none'; font-src 'self' https:; form-action 'self'; manifest-src 'self'; connect-src 'self'\\"              }           ];           callback(null, response);         };",
+        "Bucket": Object {
+          "Ref": "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewayCloudfrontLoggingBucket58AA7378",
         },
-        "Handler": "index.handler",
-        "Role": Object {
-          "Fn::GetAtt": Array [
-            "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRole6A96B325",
-            "Arn",
-          ],
-        },
-        "Runtime": "nodejs14.x",
-      },
-      "Type": "AWS::Lambda::Function",
-    },
-    "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewaySetHttpSecurityHeadersServiceRole6A96B325": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
+        "PolicyDocument": Object {
           "Statement": Array [
             Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "lambda.amazonaws.com",
+              "Action": "s3:*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
               },
-            },
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
+              "Effect": "Deny",
               "Principal": Object {
-                "Service": "edgelambda.amazonaws.com",
+                "AWS": "*",
               },
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewayCloudfrontLoggingBucket58AA7378",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewayCloudfrontLoggingBucket58AA7378",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
             },
           ],
           "Version": "2012-10-17",
         },
-        "Policies": Array [
-          Object {
-            "PolicyDocument": Object {
-              "Statement": Array [
-                Object {
-                  "Action": Array [
-                    "logs:CreateLogGroup",
-                    "logs:CreateLogStream",
-                    "logs:PutLogEvents",
-                  ],
-                  "Effect": "Allow",
-                  "Resource": Object {
-                    "Fn::Join": Array [
-                      "",
-                      Array [
-                        "arn:aws:logs:",
-                        Object {
-                          "Ref": "AWS::Region",
-                        },
-                        ":",
-                        Object {
-                          "Ref": "AWS::AccountId",
-                        },
-                        ":log-group:/aws/lambda/*",
-                      ],
-                    ],
-                  },
-                },
-              ],
-              "Version": "2012-10-17",
-            },
-            "PolicyName": "LambdaFunctionServiceRolePolicy",
-          },
-        ],
       },
-      "Type": "AWS::IAM::Role",
+      "Type": "AWS::S3::BucketPolicy",
     },
-    "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewaySetHttpSecurityHeadersVersion5920FF7F": Object {
+    "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewaySetHttpSecurityHeadersC49E7B59": Object {
       "Properties": Object {
-        "FunctionName": Object {
-          "Ref": "testserverlessimagehandlerCloudFrontApiGatewayLambdaCloudFrontToApiGatewaySetHttpSecurityHeadersC49E7B59",
+        "AutoPublish": true,
+        "FunctionCode": "function handler(event) { var response = event.response;       var headers = response.headers;       headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'};       headers['content-security-policy'] = { value: \\"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\\"};       headers['x-content-type-options'] = { value: 'nosniff'};       headers['x-frame-options'] = {value: 'DENY'};       headers['x-xss-protection'] = {value: '1; mode=block'};       return response;     }",
+        "FunctionConfig": Object {
+          "Comment": "SetHttpSecurityHeadersc892743f1cbff1695f678386f5b532b064c85bbbbd",
+          "Runtime": "cloudfront-js-1.0",
         },
+        "Name": "SetHttpSecurityHeadersc892743f1cbff1695f678386f5b532b064c85bbbbd",
       },
-      "Type": "AWS::Lambda::Version",
+      "Type": "AWS::CloudFront::Function",
     },
     "testserverlessimagehandlerCloudFrontApiGatewayLambdaLambdaFunctionF12AF5FC": Object {
       "DependsOn": Array [
@@ -325,13 +286,17 @@ Object {
               "id": "W89",
               "reason": "This is not a rule for the general case, just for specific use cases/industries",
             },
+            Object {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients",
+            },
           ],
         },
       },
       "Properties": Object {
         "Code": Object {
           "S3Bucket": Object {
-            "Ref": "AssetParameters5f752add658f79e0005d882c0bc5a08dc38a14dc55135d974ea1d2226cb28b96S3Bucket65CDB50E",
+            "Ref": "AssetParameterscd62adae72264cea63bda88de1b14cf6c4cec29557ae44e526714470d2e2f1f1S3Bucket55C0D3E0",
           },
           "S3Key": Object {
             "Fn::Join": Array [
@@ -344,7 +309,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParameters5f752add658f79e0005d882c0bc5a08dc38a14dc55135d974ea1d2226cb28b96S3VersionKeyCF89D2F1",
+                          "Ref": "AssetParameterscd62adae72264cea63bda88de1b14cf6c4cec29557ae44e526714470d2e2f1f1S3VersionKeyE00C37AD",
                         },
                       ],
                     },
@@ -357,7 +322,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParameters5f752add658f79e0005d882c0bc5a08dc38a14dc55135d974ea1d2226cb28b96S3VersionKeyCF89D2F1",
+                          "Ref": "AssetParameterscd62adae72264cea63bda88de1b14cf6c4cec29557ae44e526714470d2e2f1f1S3VersionKeyE00C37AD",
                         },
                       ],
                     },
@@ -397,6 +362,9 @@ Object {
           ],
         },
         "Runtime": "nodejs14.x",
+        "TracingConfig": Object {
+          "Mode": "Active",
+        },
       },
       "Type": "AWS::Lambda::Function",
     },
@@ -429,7 +397,11 @@ Object {
                     "Fn::Join": Array [
                       "",
                       Array [
-                        "arn:aws:logs:",
+                        "arn:",
+                        Object {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":logs:",
                         Object {
                           "Ref": "AWS::Region",
                         },
@@ -452,9 +424,27 @@ Object {
       "Type": "AWS::IAM::Role",
     },
     "testserverlessimagehandlerCloudFrontApiGatewayLambdaLambdaFunctionServiceRoleDefaultPolicy9E8AAE29": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.",
+            },
+          ],
+        },
+      },
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
             Object {
               "Action": Array [
                 "s3:GetObject*",
@@ -593,8 +583,18 @@ Object {
       "Type": "AWS::Lambda::Permission",
     },
     "testserverlessimagehandlerCloudFrontApiGatewayLambdaLambdaRestApiANYBB77827B": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W59",
+              "reason": "AWS::ApiGateway::Method AuthorizationType is set to 'NONE' because API Gateway behind CloudFront does not support AWS_IAM authentication",
+            },
+          ],
+        },
+      },
       "Properties": Object {
-        "AuthorizationType": "AWS_IAM",
+        "AuthorizationType": "NONE",
         "HttpMethod": "ANY",
         "Integration": Object {
           "IntegrationHttpMethod": "POST",
@@ -682,7 +682,11 @@ Object {
                     "Fn::Join": Array [
                       "",
                       Array [
-                        "arn:aws:logs:",
+                        "arn:",
+                        Object {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":logs:",
                         Object {
                           "Ref": "AWS::Region",
                         },
@@ -744,7 +748,7 @@ Object {
         },
         "MethodSettings": Array [
           Object {
-            "DataTraceEnabled": true,
+            "DataTraceEnabled": false,
             "HttpMethod": "*",
             "LoggingLevel": "INFO",
             "ResourcePath": "/*",
@@ -754,6 +758,7 @@ Object {
           "Ref": "testserverlessimagehandlerCloudFrontApiGatewayLambdaLambdaRestApi7B1E91FA",
         },
         "StageName": "prod",
+        "TracingEnabled": true,
       },
       "Type": "AWS::ApiGateway::Stage",
     },
@@ -818,7 +823,7 @@ Object {
               Object {
                 "Ref": "testserverlessimagehandlerCloudFrontApiGatewayLambdaLambdaRestApi7B1E91FA",
               },
-              "/test-invoke-stage/*/{proxy+}",
+              "/test-invoke-stage/*/*",
             ],
           ],
         },
@@ -859,7 +864,7 @@ Object {
               Object {
                 "Ref": "testserverlessimagehandlerCloudFrontApiGatewayLambdaLambdaRestApiDeploymentStageprodBD57762D",
               },
-              "/*/{proxy+}",
+              "/*/*",
             ],
           ],
         },
@@ -867,8 +872,18 @@ Object {
       "Type": "AWS::Lambda::Permission",
     },
     "testserverlessimagehandlerCloudFrontApiGatewayLambdaLambdaRestApiproxyANYF4D41A65": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W59",
+              "reason": "AWS::ApiGateway::Method AuthorizationType is set to 'NONE' because API Gateway behind CloudFront does not support AWS_IAM authentication",
+            },
+          ],
+        },
+      },
       "Properties": Object {
-        "AuthorizationType": "AWS_IAM",
+        "AuthorizationType": "NONE",
         "HttpMethod": "ANY",
         "Integration": Object {
           "IntegrationHttpMethod": "POST",
@@ -908,16 +923,6 @@ Object {
     },
     "testserverlessimagehandlerExistingLambdaS3S3Bucket9203E662": Object {
       "DeletionPolicy": "Retain",
-      "Metadata": Object {
-        "cfn_nag": Object {
-          "rules_to_suppress": Array [
-            Object {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy",
-            },
-          ],
-        },
-      },
       "Properties": Object {
         "BucketEncryption": Object {
           "ServerSideEncryptionConfiguration": Array [
@@ -925,6 +930,19 @@ Object {
               "ServerSideEncryptionByDefault": Object {
                 "SSEAlgorithm": "AES256",
               },
+            },
+          ],
+        },
+        "LifecycleConfiguration": Object {
+          "Rules": Array [
+            Object {
+              "NoncurrentVersionTransitions": Array [
+                Object {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90,
+                },
+              ],
+              "Status": "Enabled",
             },
           ],
         },
@@ -946,6 +964,53 @@ Object {
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
     },
+    "testserverlessimagehandlerExistingLambdaS3S3BucketPolicy4313A384": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "testserverlessimagehandlerExistingLambdaS3S3Bucket9203E662",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "s3:*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testserverlessimagehandlerExistingLambdaS3S3Bucket9203E662",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testserverlessimagehandlerExistingLambdaS3S3Bucket9203E662",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
     "testserverlessimagehandlerExistingLambdaS3S3LoggingBucket406E2181": Object {
       "DeletionPolicy": "Retain",
       "Metadata": Object {
@@ -954,10 +1019,6 @@ Object {
             Object {
               "id": "W35",
               "reason": "This S3 bucket is used as the access logging bucket for another bucket",
-            },
-            Object {
-              "id": "W51",
-              "reason": "This S3 bucket Bucket does not need a bucket policy",
             },
           ],
         },
@@ -985,6 +1046,53 @@ Object {
       },
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
+    },
+    "testserverlessimagehandlerExistingLambdaS3S3LoggingBucketPolicy1D599FE4": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "testserverlessimagehandlerExistingLambdaS3S3LoggingBucket406E2181",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "s3:*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testserverlessimagehandlerExistingLambdaS3S3LoggingBucket406E2181",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "testserverlessimagehandlerExistingLambdaS3S3LoggingBucket406E2181",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
     },
     "testserverlessimagehandlerLambdaS3AccessPolicyD6DC56B2": Object {
       "Metadata": Object {

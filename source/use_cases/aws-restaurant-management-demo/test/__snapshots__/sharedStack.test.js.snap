@@ -1,0 +1,171 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test-shared-stack 1`] = `
+Object {
+  "Parameters": Object {
+    "AssetParameters2cde1830f2ad369a1330b9dd603fe0b939ec6d81fbe00f66ffb45945750d9da9ArtifactHash1A6D75D8": Object {
+      "Description": "Artifact hash for asset \\"2cde1830f2ad369a1330b9dd603fe0b939ec6d81fbe00f66ffb45945750d9da9\\"",
+      "Type": "String",
+    },
+    "AssetParameters2cde1830f2ad369a1330b9dd603fe0b939ec6d81fbe00f66ffb45945750d9da9S3Bucket7C16E5DF": Object {
+      "Description": "S3 bucket for asset \\"2cde1830f2ad369a1330b9dd603fe0b939ec6d81fbe00f66ffb45945750d9da9\\"",
+      "Type": "String",
+    },
+    "AssetParameters2cde1830f2ad369a1330b9dd603fe0b939ec6d81fbe00f66ffb45945750d9da9S3VersionKeyEA7A0324": Object {
+      "Description": "S3 key for asset version \\"2cde1830f2ad369a1330b9dd603fe0b939ec6d81fbe00f66ffb45945750d9da9\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "ordertable80C56090": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "AttributeDefinitions": Array [
+          Object {
+            "AttributeName": "id",
+            "AttributeType": "S",
+          },
+          Object {
+            "AttributeName": "gsi1pk",
+            "AttributeType": "S",
+          },
+          Object {
+            "AttributeName": "gsi1sk",
+            "AttributeType": "S",
+          },
+        ],
+        "GlobalSecondaryIndexes": Array [
+          Object {
+            "IndexName": "gsi1pk-gsi1sk-index",
+            "KeySchema": Array [
+              Object {
+                "AttributeName": "gsi1pk",
+                "KeyType": "HASH",
+              },
+              Object {
+                "AttributeName": "gsi1sk",
+                "KeyType": "RANGE",
+              },
+            ],
+            "Projection": Object {
+              "ProjectionType": "ALL",
+            },
+            "ProvisionedThroughput": Object {
+              "ReadCapacityUnits": 5,
+              "WriteCapacityUnits": 5,
+            },
+          },
+        ],
+        "KeySchema": Array [
+          Object {
+            "AttributeName": "id",
+            "KeyType": "HASH",
+          },
+        ],
+        "ProvisionedThroughput": Object {
+          "ReadCapacityUnits": 5,
+          "WriteCapacityUnits": 5,
+        },
+      },
+      "Type": "AWS::DynamoDB::Table",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "ordertableReadScalingTarget145F706F": Object {
+      "Properties": Object {
+        "MaxCapacity": 50,
+        "MinCapacity": 1,
+        "ResourceId": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "table/",
+              Object {
+                "Ref": "ordertable80C56090",
+              },
+            ],
+          ],
+        },
+        "RoleARN": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":iam::ACCOUNT_NUMBER_HERE:role/aws-service-role/dynamodb.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_DynamoDBTable",
+            ],
+          ],
+        },
+        "ScalableDimension": "dynamodb:table:ReadCapacityUnits",
+        "ServiceNamespace": "dynamodb",
+      },
+      "Type": "AWS::ApplicationAutoScaling::ScalableTarget",
+    },
+    "ordertableReadScalingTargetTracking6E5FE6D6": Object {
+      "Properties": Object {
+        "PolicyName": "SharedStackordertableReadScalingTargetTracking5EEE9186",
+        "PolicyType": "TargetTrackingScaling",
+        "ScalingTargetId": Object {
+          "Ref": "ordertableReadScalingTarget145F706F",
+        },
+        "TargetTrackingScalingPolicyConfiguration": Object {
+          "PredefinedMetricSpecification": Object {
+            "PredefinedMetricType": "DynamoDBReadCapacityUtilization",
+          },
+          "TargetValue": 50,
+        },
+      },
+      "Type": "AWS::ApplicationAutoScaling::ScalingPolicy",
+    },
+    "shareddbfunctionslayerA9CFEC5A": Object {
+      "Properties": Object {
+        "CompatibleRuntimes": Array [
+          "nodejs14.x",
+        ],
+        "Content": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParameters2cde1830f2ad369a1330b9dd603fe0b939ec6d81fbe00f66ffb45945750d9da9S3Bucket7C16E5DF",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters2cde1830f2ad369a1330b9dd603fe0b939ec6d81fbe00f66ffb45945750d9da9S3VersionKeyEA7A0324",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters2cde1830f2ad369a1330b9dd603fe0b939ec6d81fbe00f66ffb45945750d9da9S3VersionKeyEA7A0324",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Description": "Layer for common database access functions",
+        "LicenseInfo": "Apache-2.0",
+      },
+      "Type": "AWS::Lambda::LayerVersion",
+    },
+  },
+}
+`;
