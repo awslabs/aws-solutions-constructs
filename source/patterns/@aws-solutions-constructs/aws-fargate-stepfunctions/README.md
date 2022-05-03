@@ -22,7 +22,7 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-fargate-stepfunctions`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.fargatestepfunctions`|
 
-This AWS Solutions Construct implements an AWS Fargate service that can write/read to an AWS Step Function
+This AWS Solutions Construct implements an AWS Fargate service that can execute an AWS Step Functions state machine
 
 Here is a minimal deployable pattern definition:
 
@@ -102,8 +102,7 @@ new FargateToStepfunctions(this, "test-construct", new FargateToStepfunctionsPro
 |stateMachineProps|[`sfn.StateMachineProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-stepfunctions.StateMachineProps.html)|User provided props to override the default props for sfn.StateMachine.|
 | createCloudWatchAlarms | `boolean`|Whether to create recommended CloudWatch alarms.|
 |logGroupProps?|[`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-logs.LogGroupProps.html)|Optional user provided props to override the default props for for the CloudWatchLogs LogGroup.|
-|stateMachineEnvironmentVariableName?|`string`|Optional name for the Step Function environment variable set for the container.|
-|stateMachineArnEnvironmentVariableName?|`string`|Optional name for the Step Function ARN environment variable set for the container.|
+|stateMachineEnvironmentVariableName?|`string`|Optional name for the container environment variable containing the state machine ARN.|
 
 ## Pattern Properties
 
@@ -125,15 +124,15 @@ Out of the box implementation of the Construct without any override will set the
   * Uses the existing service if provided
   * Creates a new service if none provided.
     * Service will run in isolated subnets if available, then private subnets if available and finally public subnets
-* Adds environment variables to the container with the ARN and Name of the State Machine
-* Add permissions to the container IAM role allowing it to read/write to the State Machine
+* Adds an environment variable to the container containing the ARN of the state machine
+  * Default name is `STATE_MACHINE_ARN`
+* Add permissions to the container IAM role allowing it to start the execution of a state machine
 
 ### AWS Step Functions
-* Sets up an AWS Step Function
-  * Uses an existing step function if one is provided, otherwise creates a new one
+* Sets up an AWS Step Functions state machine
+  * Uses an existing state machine if one is provided, otherwise creates a new one
 * Adds an Interface Endpoint to the VPC for Step Functions (the service by default runs in Isolated or Private subnets)
 * Enables CloudWatch logging
-* Deploys best practices of CloudWatch Alarms
 
 ## Architecture
 ![Architecture Diagram](architecture.png)
