@@ -24,6 +24,7 @@ const serviceName = "custom-service-name";
 const familyName = "family-name";
 const secretName = 'custom-name';
 const envName = 'CUSTOM_SECRET_ARN';
+const cidr = '172.0.0.0/16';
 
 test('New service/new secret, public API, new VPC', () => {
   const stack = new cdk.Stack();
@@ -32,7 +33,7 @@ test('New service/new secret, public API, new VPC', () => {
   const construct = new FargateToSecretsmanager(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { cidr },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -113,7 +114,7 @@ test('New service/new secret, public API, new VPC', () => {
   });
 
   expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
-    CidrBlock: '172.0.0.0/16'
+    CidrBlock: cidr
   });
 
   expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
@@ -145,7 +146,7 @@ test('New service/new secret, private API, new VPC', () => {
   new FargateToSecretsmanager(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { cidr },
     secretProps: {
       secretName
     },

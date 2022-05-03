@@ -111,7 +111,10 @@ Out of the box implementation of the Construct without any override will set the
 ### Amazon Secrets Manager Secret
 * Sets up an Amazon Secrets Manager secret
   * Uses an existing secret if one is provided, otherwise creates a new one
+    * (default) random name
+    * (default) random value
 * Adds an Interface Endpoint to the VPC for Secrets Manager (the service by default runs in Isolated or Private subnets)
+* Retain the Secret when deleting the CloudFormation stack
 
 ## Architecture
 ![Architecture Diagram](architecture.png)

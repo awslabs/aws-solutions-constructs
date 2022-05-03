@@ -30,7 +30,7 @@ export interface FargateToSecretsmanagerProps {
    * Optional custom properties for a VPC the construct will create. This VPC will
    * be used by the new Fargate service the construct creates (that's
    * why targetGroupProps can't include a VPC). Providing
-   * both this and existingVpc is an error. An Secrets Manager Interface
+   * both this and existingVpc is an error. A Secrets Manager Interface
    * endpoint will be included in this VPC.
    *
    * @default - none
@@ -39,7 +39,7 @@ export interface FargateToSecretsmanagerProps {
   /**
    * An existing VPC in which to deploy the construct. Providing both this and
    * vpcProps is an error. If the client provides an existing Fargate service,
-   * this value must be the VPC where the service is running. An Secrets Manager Interface
+   * this value must be the VPC where the service is running. A Secrets Manager Interface
    * endpoint will be added to this VPC.
    *
    * @default - none
