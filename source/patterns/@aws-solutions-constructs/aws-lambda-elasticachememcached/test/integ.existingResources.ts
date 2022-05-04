@@ -15,7 +15,9 @@
 import { App, Stack } from "@aws-cdk/core";
 import { LambdaToElasticachememcached, LambdaToElasticachememcachedProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
-import { generateIntegStackName, getTestVpc, CreateTestCache } from '@aws-solutions-constructs/core';
+import * as ec2 from '@aws-cdk/aws-ec2';
+import { generateIntegStackName, getTestVpc, CreateTestCache, addCfnSuppressRules } from '@aws-solutions-constructs/core';
+import { CfnEC2Fleet } from "@aws-cdk/aws-ec2";
 
 // Setup
 const app = new App();
@@ -23,12 +25,21 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test with new resourcesfor aws-lambda-elasticachememcached';
 
 const testVpc = getTestVpc(stack, false);
+
+const testSG = new ec2.SecurityGroup(stack, 'test-sg', {
+  vpc: testVpc,
+});
+
 const testFunction = new lambda.Function(stack, 'test-function', {
   runtime: lambda.Runtime.NODEJS_14_X,
   handler: 'index.handler',
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   vpc: testVpc,
+  securityGroups: [testSG],
 });
+addCfnSuppressRules(testFunction, [{ id: "W58", reason: "Test Resource" }]);
+addCfnSuppressRules(testFunction, [{ id: "W92", reason: "Test Resource" }]);
+
 const testCache = CreateTestCache(stack, 'test-cache', testVpc);
 
 // Definitions
