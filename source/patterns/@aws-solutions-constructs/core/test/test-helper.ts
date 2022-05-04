@@ -17,9 +17,13 @@ import { Construct, RemovalPolicy, Stack } from "@aws-cdk/core";
 import { buildVpc } from '../lib/vpc-helper';
 import { DefaultPublicPrivateVpcProps, DefaultIsolatedVpcProps } from '../lib/vpc-defaults';
 import { overrideProps, addCfnSuppressRules } from "../lib/utils";
+import { CreateCacheSubnetGroup  } from "../lib/elasticache-helper";
 import * as path from 'path';
+import * as cache from '@aws-cdk/aws-elasticache';
+import * as ec2 from '@aws-cdk/aws-ec2';
 import * as acm from '@aws-cdk/aws-certificatemanager';
 import { CfnFunction } from "@aws-cdk/aws-lambda";
+import { GetDefaultCachePort } from "../lib/elasticache-defaults";
 
 export const fakeEcrRepoArn = 'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo';
 
@@ -106,4 +110,34 @@ export function suppressAutoDeleteHandlerWarnings(stack: Stack) {
     }
   });
 
+}
+
+export function CreateTestCache(scope: Construct, id: string, vpc: ec2.IVpc, port?: number) {
+  const cachePort = port ?? GetDefaultCachePort();
+
+  // Create the subnet group from all the isolated subnets in the VPC
+  const subnetGroup = CreateCacheSubnetGroup(scope, vpc, id);
+  const emptySG = new ec2.SecurityGroup(scope, `${id}-cachesg`, {
+    vpc,
+    allowAllOutbound: true,
+  });
+
+  const cacheProps = {
+    clusterName: `${id}-cdk-cluster`,
+    cacheNodeType: "cache.t3.medium",
+    engine: "memcached",
+    numCacheNodes: 2,
+    port: cachePort,
+    azMode: "cross-az",
+    vpcSecurityGroupIds: [emptySG.securityGroupId],
+    cacheSubnetGroupName: subnetGroup.cacheSubnetGroupName,
+  };
+
+  const newCache = new cache.CfnCacheCluster(
+    scope,
+    `${id}-cluster`,
+    cacheProps
+  );
+  newCache.addDependsOn(subnetGroup);
+  return newCache;
 }

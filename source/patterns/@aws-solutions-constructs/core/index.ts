@@ -16,6 +16,8 @@ export * from './lib/alb-helper';
 export * from './lib/apigateway-defaults';
 export * from './lib/apigateway-helper';
 export * from './lib/dynamodb-table-defaults';
+export * from './lib/elasticache-defaults';
+export * from './lib/elasticache-helper';
 export * from './lib/fargate-defaults';
 export * from './lib/fargate-helper';
 export * from './lib/iot-topic-rule-defaults';
