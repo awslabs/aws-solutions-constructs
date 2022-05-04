@@ -31,7 +31,6 @@ const testFunction = new lambda.Function(stack, 'test-function', {
 });
 const testCache = CreateTestCache(stack, 'test-cache', testVpc);
 
-
 // Definitions
 const props: LambdaToElasticachememcachedProps = {
   existingVpc: testVpc,
