@@ -43,7 +43,7 @@ const constructProps: FargateToStepfunctionsProps = {
     }
 };
 
-new FargateToStepfunctions(stack, 'test-construct', constructProps);
+new FargateToStepfunctions(this, 'test-construct', constructProps);
 ```
 
 Python
