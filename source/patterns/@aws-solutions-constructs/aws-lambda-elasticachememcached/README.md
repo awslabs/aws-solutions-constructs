@@ -40,12 +40,39 @@ new LambdaToElasticachememcached(this, 'LambdaToElasticachememcachedPattern', {
 
 Python
 ```python
+from aws_solutions_constructs.aws_lambda_elasticachememcached import LambdaToElasticachememcached
+from aws_cdk import (
+    aws_lambda as _lambda,
+    Stack
+)
+from constructs import Construct
 
+LambdaToElasticachememcached(self, 'LambdaToCachePattern',
+        lambda_function_props=_lambda.FunctionProps(
+            code=_lambda.Code.from_asset('lambda'),
+            runtime=_lambda.Runtime.PYTHON_3_9,
+            handler='index.handler'
+        )
+        )
 ```
 
 Java
 ``` java
+import software.constructs.Construct;
 
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.lambdaelasticachememcached.*;
+
+new LambdaToElasticachememcached(this, "LambdaToCachePattern", new LambdaToElasticachememcachedProps.Builder()
+        .lambdaFunctionProps(new FunctionProps.Builder()
+                .runtime(Runtime.NODEJS_14_X)
+                .code(Code.fromAsset("lambda"))
+                .handler("index.handler")
+                .build())
+        .build());
 ```
 
 ## Pattern Construct Props
