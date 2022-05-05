@@ -155,6 +155,7 @@ function CreateSelfReferencingSecurityGroup(scope: Construct, id: string, vpc: e
       ipProtocol: "TCP",
       fromPort: cachePort,
       toPort: cachePort,
+      description: 'Self referencing rule to control access to Elasticache memcached cluster',
     }
   );
   selfReferenceRule.node.addDependency(newCacheSG);

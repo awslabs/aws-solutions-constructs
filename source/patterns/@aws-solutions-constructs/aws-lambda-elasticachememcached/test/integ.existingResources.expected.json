@@ -279,6 +279,40 @@
         ]
       }
     },
+    "testsg872EB48A": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "existingResources/test-sg",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W40",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W5",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W36",
+              "reason": "Test Resource"
+            }
+          ]
+        }
+      }
+    },
     "testfunctionServiceRoleFB85AD63": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -320,22 +354,6 @@
             ]
           }
         ]
-      }
-    },
-    "testfunctionSecurityGroupCF8CDBF5": {
-      "Type": "AWS::EC2::SecurityGroup",
-      "Properties": {
-        "GroupDescription": "Automatic security group for Lambda Function existingResourcestestfunctionD9F94533",
-        "SecurityGroupEgress": [
-          {
-            "CidrIp": "0.0.0.0/0",
-            "Description": "Allow all outbound traffic by default",
-            "IpProtocol": "-1"
-          }
-        ],
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        }
       }
     },
     "testfunction5B23D3B0": {
@@ -383,7 +401,7 @@
           "SecurityGroupIds": [
             {
               "Fn::GetAtt": [
-                "testfunctionSecurityGroupCF8CDBF5",
+                "testsg872EB48A",
                 "GroupId"
               ]
             },
@@ -409,7 +427,21 @@
       },
       "DependsOn": [
         "testfunctionServiceRoleFB85AD63"
-      ]
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W92",
+              "reason": "Test Resource"
+            }
+          ]
+        }
+      }
     },
     "ecsubnetgrouptestcache": {
       "Type": "AWS::ElastiCache::SubnetGroup",
@@ -442,6 +474,24 @@
         ],
         "VpcId": {
           "Ref": "Vpc8378EB38"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W40",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W5",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W36",
+              "reason": "Test Resource"
+            }
+          ]
         }
       }
     },
@@ -508,6 +558,7 @@
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "IpProtocol": "TCP",
+        "Description": "Self referencing rule to control access to Elasticache memcached cluster",
         "FromPort": {
           "Fn::GetAtt": [
             "testcachecluster",

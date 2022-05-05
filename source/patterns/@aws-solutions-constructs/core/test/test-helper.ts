@@ -121,6 +121,9 @@ export function CreateTestCache(scope: Construct, id: string, vpc: ec2.IVpc, por
     vpc,
     allowAllOutbound: true,
   });
+  addCfnSuppressRules(emptySG, [{ id: "W40", reason: "Test Resource" }]);
+  addCfnSuppressRules(emptySG, [{ id: "W5", reason: "Test Resource" }]);
+  addCfnSuppressRules(emptySG, [{ id: "W36", reason: "Test Resource" }]);
 
   const cacheProps = {
     clusterName: `${id}-cdk-cluster`,

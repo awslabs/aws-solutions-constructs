@@ -35,6 +35,7 @@
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "IpProtocol": "TCP",
+        "Description": "Self referencing rule to control access to Elasticache memcached cluster",
         "FromPort": 11222,
         "GroupId": {
           "Fn::GetAtt": [

@@ -17,7 +17,6 @@ import { LambdaToElasticachememcached, LambdaToElasticachememcachedProps } from 
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import { generateIntegStackName, getTestVpc, CreateTestCache, addCfnSuppressRules } from '@aws-solutions-constructs/core';
-import { CfnEC2Fleet } from "@aws-cdk/aws-ec2";
 
 // Setup
 const app = new App();
@@ -29,6 +28,9 @@ const testVpc = getTestVpc(stack, false);
 const testSG = new ec2.SecurityGroup(stack, 'test-sg', {
   vpc: testVpc,
 });
+addCfnSuppressRules(testSG, [{ id: "W40", reason: "Test Resource" }]);
+addCfnSuppressRules(testSG, [{ id: "W5", reason: "Test Resource" }]);
+addCfnSuppressRules(testSG, [{ id: "W36", reason: "Test Resource" }]);
 
 const testFunction = new lambda.Function(stack, 'test-function', {
   runtime: lambda.Runtime.NODEJS_14_X,
