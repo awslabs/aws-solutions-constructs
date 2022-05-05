@@ -85,7 +85,7 @@ new LambdaToElasticachememcached(this, "LambdaToCachePattern", new LambdaToElast
 |vpcProps?|[`ec2.VpcProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.VpcProps.html)|Optional user provided properties to override the default properties for the new VPC. `subnetConfiguration` is set by the pattern, so any values for those properties supplied here will be overrriden. |
 | cacheEndpointEnvironmentVariableName?| string | Lambda function environment variable name for the cache Endpoint. Defaults to CACHE_ENDPOINT |
 | cacheProps? | [`cache.CfnCacheClusterProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_elasticache.CfnCacheClusterProps.html) | Optional user provided props to override the default props for the Elasticache Cluster. Providing both this and `existingCache` will cause an error. |
-| existingCache? | [`cache.CfnCacheCluster`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_elasticache.CfnCacheCluster.html#attrconfigurationendpointport) | Existing instance of Elasticache Cluster object, providing both this and `cacheProps` will cause an error. |
+| existingCache? | [`cache.CfnCacheCluster`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_elasticache.CfnCacheCluster.html#attrconfigurationendpointport) | Existing instance of Elasticache Cluster object, providing both this and `cacheProps` will cause an error. If you provide this, you must provide the associated VPC in existingVpc. |
 
 ## Pattern Properties
 

@@ -17,7 +17,7 @@ import * as ec2 from "@aws-cdk/aws-ec2";
 import * as cache from "@aws-cdk/aws-elasticache";
 import * as defaults from "../../core";
 import { Construct } from "@aws-cdk/core";
-import { obtainMemcachedCluster, GetCachePort } from "../../core";
+import { obtainMemcachedCluster, GetCachePort, CreateSelfReferencingSecurityGroup } from "../../core";
 
 const defaultEnvironmentVariableName = "CACHE_ENDPOINT";
 
@@ -32,7 +32,7 @@ export interface LambdaToElasticachememcachedProps {
    */
   readonly existingLambdaObj?: lambda.Function;
   /**
-   * User provided props to override the default props for the Lambda function.
+   * Optional user provided props to override the default props for the Lambda function.
    *
    * @default - Default properties are used.
    */
@@ -51,9 +51,17 @@ export interface LambdaToElasticachememcachedProps {
    * @default - None
    */
   readonly cacheEndpointEnvironmentVariableName?: string;
-
+  /**
+   * Optional user provided props to override the default props for the Elasticache cache.
+   * Providing both this and `existingCache` will cause an error.  If you provide this,
+   * you must provide the associated VPC in existingVpc.
+   *
+   * @default - Default properties are used (core/lib/elasticacahe-defaults.ts)
+   */
   readonly cacheProps?: cache.CfnCacheClusterProps | any;
-
+  /**
+   * Existing instance of Elasticache Cluster object, providing both this and `cacheProps` will cause an error.
+   */
   readonly existingCache?: cache.CfnCacheCluster;
 }
 
@@ -66,7 +74,7 @@ export class LambdaToElasticachememcached extends Construct {
   public readonly cache: cache.CfnCacheCluster;
 
   /**
-   * @summary Constructs a new instance of the LambdaToSns class.
+   * @summary Constructs a new instance of the LambdaToElasticachememcached class.
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {LambdaToElasticachememcachedProps} props - user provided props for the construct.
@@ -113,6 +121,7 @@ export class LambdaToElasticachememcached extends Construct {
       cachePort,
     });
 
+    // Add the self-referencing security group to the Lambda function props
     const lambdaFunctionProps: lambda.FunctionProps = defaults.consolidateProps(
       {},
       props.lambdaFunctionProps,
@@ -139,37 +148,4 @@ export class LambdaToElasticachememcached extends Construct {
 function AddLambdaEnvironmentVariable(targetFunction: lambda.Function, value: string, defaultName: string, clientName?: string) {
   const variableName = clientName || defaultName;
   targetFunction.addEnvironment(variableName, value);
-}
-
-function CreateSelfReferencingSecurityGroup(scope: Construct, id: string, vpc: ec2.IVpc, cachePort: any) {
-  const newCacheSG = new ec2.SecurityGroup(scope, `${id}-cachesg`, {
-    vpc,
-    allowAllOutbound: true,
-  });
-  const selfReferenceRule = new ec2.CfnSecurityGroupIngress(
-    scope,
-    `${id}-ingress`,
-    {
-      groupId: newCacheSG.securityGroupId,
-      sourceSecurityGroupId: newCacheSG.securityGroupId,
-      ipProtocol: "TCP",
-      fromPort: cachePort,
-      toPort: cachePort,
-      description: 'Self referencing rule to control access to Elasticache memcached cluster',
-    }
-  );
-  selfReferenceRule.node.addDependency(newCacheSG);
-
-  defaults.addCfnSuppressRules(newCacheSG, [
-    {
-      id: "W5",
-      reason: "Egress of 0.0.0.0/0 is default and generally considered OK",
-    },
-    {
-      id: "W40",
-      reason:
-        "Egress IPProtocol of -1 is default and generally considered OK",
-    },
-  ]);
-  return newCacheSG;
 }

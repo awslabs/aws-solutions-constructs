@@ -364,35 +364,3 @@ test("Test error from trying to launch Redis", () => {
 
   expect(app).toThrowError("This construct can only launch memcached clusters");
 });
-
-// ******* Helper Functions ******
-
-// function CreateTestCache(scope: cdk.Construct, id: string, vpc: ec2.IVpc) {
-//   const cachePort = testPort;
-
-//   // Create the subnet group from all the isolated subnets in the VPC
-//   const subnetGroup = defaults.CreateCacheSubnetGroup(scope, vpc, id);
-//   const emptySG = new ec2.SecurityGroup(scope, `${id}-cachesg`, {
-//     vpc,
-//     allowAllOutbound: true,
-//   });
-
-//   const cacheProps = {
-//     clusterName: `${id}-cdk-cluster`,
-//     cacheNodeType: "cache.t3.medium",
-//     engine: "memcached",
-//     numCacheNodes: 2,
-//     port: cachePort,
-//     azMode: "cross-az",
-//     vpcSecurityGroupIds: [emptySG.securityGroupId],
-//     cacheSubnetGroupName: subnetGroup.cacheSubnetGroupName,
-//   };
-
-//   const newCache = new cache.CfnCacheCluster(
-//     scope,
-//     `${id}-cluster`,
-//     cacheProps
-//   );
-//   newCache.addDependsOn(subnetGroup);
-//   return newCache;
-// }

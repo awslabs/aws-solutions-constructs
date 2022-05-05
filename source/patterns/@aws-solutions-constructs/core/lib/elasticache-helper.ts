@@ -74,10 +74,9 @@ export function CreateCacheSubnetGroup(
   // Memcached has no auth, all access control is
   // network based, so, at least initially, we will
   // only launch it in isolated subnets.
-  // TODO: consider whether we should also allow private subnets?
   const subnetIds: string[] = [];
-  vpc.isolatedSubnets.forEach((sn) => {
-    subnetIds.push(sn.subnetId);
+  vpc.isolatedSubnets.forEach((subnet) => {
+    subnetIds.push(subnet.subnetId);
   });
 
   return new cache.CfnSubnetGroup(construct, `ec-subnetgroup-${id}`, {
