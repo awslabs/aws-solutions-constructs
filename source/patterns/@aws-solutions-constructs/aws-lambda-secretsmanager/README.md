@@ -118,7 +118,6 @@ Out of the box implementation of the Construct without any override will set the
 
 ### Amazon SecretsManager Secret
 * Enable read-only access for the associated AWS Lambda Function
-* Enable server-side encryption using a default KMS key for the account and region
 * Creates a new Secret
   * (default) random name
   * (default) random value
