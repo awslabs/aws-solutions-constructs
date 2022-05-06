@@ -40,7 +40,7 @@ export function obtainMemcachedCluster(
     }
 
     // Create the subnet group from all the isolated subnets in the VPC
-    const subnetGroup = CreateCacheSubnetGroup(scope, props.vpc!, id);
+    const subnetGroup = createCacheSubnetGroup(scope, props.vpc!, id);
 
     const defaultProps = GetMemcachedDefaults(id, props.cachePort);
     const requiredConstructProps = {
@@ -65,7 +65,7 @@ export function obtainMemcachedCluster(
 
 }
 
-export function CreateCacheSubnetGroup(
+export function createCacheSubnetGroup(
   construct: Construct,
   vpc: ec2.IVpc,
   id: string
@@ -86,7 +86,7 @@ export function CreateCacheSubnetGroup(
   });
 }
 
-export function GetCachePort(
+export function getCachePort(
   clientCacheProps?: cache.CfnCacheClusterProps | any,
   existingCache?: cache.CfnCacheCluster
 ): any {

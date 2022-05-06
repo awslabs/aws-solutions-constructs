@@ -28,4 +28,8 @@ test("Test GetMemcachedDefaults()", () => {
 
   expect(props.port).toEqual(testPort);
   expect(props.clusterName).toEqual(`${testId}-cdk-cluster`);
+  expect(props.engine).toEqual("memcached");
+  expect(props.cacheNodeType).toEqual("cache.t3.medium");
+  expect(props.numCacheNodes).toEqual(2);
+  expect(props.azMode).toEqual('cross-az');
 });

@@ -279,10 +279,10 @@
         ]
       }
     },
-    "testsg872EB48A": {
+    "testsgsecuritygroup89DCF621": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "existingResources/test-sg",
+        "GroupDescription": "existingResources/test-sg-security-group",
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",
@@ -298,16 +298,12 @@
         "cfn_nag": {
           "rules_to_suppress": [
             {
-              "id": "W40",
-              "reason": "Test Resource"
-            },
-            {
               "id": "W5",
-              "reason": "Test Resource"
+              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK"
             },
             {
-              "id": "W36",
-              "reason": "Test Resource"
+              "id": "W40",
+              "reason": "Egress IPProtocol of -1 is default and generally considered OK"
             }
           ]
         }
@@ -401,7 +397,7 @@
           "SecurityGroupIds": [
             {
               "Fn::GetAtt": [
-                "testsg872EB48A",
+                "testsgsecuritygroup89DCF621",
                 "GroupId"
               ]
             },

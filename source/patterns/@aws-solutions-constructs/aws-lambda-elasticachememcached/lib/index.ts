@@ -17,7 +17,7 @@ import * as ec2 from "@aws-cdk/aws-ec2";
 import * as cache from "@aws-cdk/aws-elasticache";
 import * as defaults from "../../core";
 import { Construct } from "@aws-cdk/core";
-import { obtainMemcachedCluster, GetCachePort, CreateSelfReferencingSecurityGroup } from "../../core";
+import { obtainMemcachedCluster, getCachePort, CreateSelfReferencingSecurityGroup } from "../../core";
 
 const defaultEnvironmentVariableName = "CACHE_ENDPOINT";
 
@@ -39,16 +39,20 @@ export interface LambdaToElasticachememcachedProps {
   readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
    * An existing VPC for the construct to use (construct will NOT create a new VPC in this case)
+   *
+   * @default - none
    */
   readonly existingVpc?: ec2.IVpc;
   /**
    * Properties to override default properties if deployVpc is true
+   *
+   * @default - DefaultIsolatedVpcProps() in vpc-defaults.ts
    */
   readonly vpcProps?: ec2.VpcProps;
   /**
    * Optional Name for the Elasticache Endpoint environment variable
    *
-   * @default - None
+   * @default - CACHE_ENDPOINT
    */
   readonly cacheEndpointEnvironmentVariableName?: string;
   /**
@@ -61,6 +65,8 @@ export interface LambdaToElasticachememcachedProps {
   readonly cacheProps?: cache.CfnCacheClusterProps | any;
   /**
    * Existing instance of Elasticache Cluster object, providing both this and `cacheProps` will cause an error.
+   *
+   * @default - none
    */
   readonly existingCache?: cache.CfnCacheCluster;
 }
@@ -103,7 +109,7 @@ export class LambdaToElasticachememcached extends Construct {
       throw Error("Cannot specify existingCache and cacheProps");
     }
 
-    const cachePort = GetCachePort(props.cacheProps, props.existingCache);
+    const cachePort = getCachePort(props.cacheProps, props.existingCache);
 
     this.vpc = defaults.buildVpc(scope, {
       defaultVpcProps: defaults.DefaultIsolatedVpcProps(),

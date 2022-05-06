@@ -15,7 +15,7 @@ import "@aws-cdk/assert/jest";
 import { CreateTestCache, getTestVpc } from "./test-helper";
 import * as cdk from '@aws-cdk/core';
 import * as ec2 from '@aws-cdk/aws-ec2';
-import { GetCachePort, obtainMemcachedCluster } from "../lib/elasticache-helper";
+import { getCachePort, obtainMemcachedCluster } from "../lib/elasticache-helper";
 import { GetDefaultCachePort } from "../lib/elasticache-defaults";
 
 test("Test returning existing Cache", () => {
@@ -89,7 +89,7 @@ test("Test GetCachePort() with existing cache", () => {
   const testVpc = getTestVpc(stack, false);
   const existingCache = CreateTestCache(stack, 'test', testVpc, 32123);
 
-  const port = GetCachePort(undefined, existingCache);
+  const port = getCachePort(undefined, existingCache);
 
   // Since the port from the existing cache is a token,
   // we can't check it directly, but we can ensure
@@ -100,11 +100,11 @@ test("Test GetCachePort() with existing cache", () => {
 test("Test GetCachePort() with clientCacheProps", () => {
   const clientPort = 32123;
 
-  const port = GetCachePort({ port: clientPort });
+  const port = getCachePort({ port: clientPort });
   expect(port).toEqual(clientPort);
 });
 test("Test GetCachePort() with default port", () => {
 
-  const port = GetCachePort();
+  const port = getCachePort();
   expect(port).toEqual(GetDefaultCachePort());
 });

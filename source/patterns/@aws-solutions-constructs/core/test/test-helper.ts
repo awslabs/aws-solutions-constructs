@@ -17,7 +17,7 @@ import { Construct, RemovalPolicy, Stack } from "@aws-cdk/core";
 import { buildVpc } from '../lib/vpc-helper';
 import { DefaultPublicPrivateVpcProps, DefaultIsolatedVpcProps } from '../lib/vpc-defaults';
 import { overrideProps, addCfnSuppressRules } from "../lib/utils";
-import { CreateCacheSubnetGroup  } from "../lib/elasticache-helper";
+import { createCacheSubnetGroup  } from "../lib/elasticache-helper";
 import * as path from 'path';
 import * as cache from '@aws-cdk/aws-elasticache';
 import * as ec2 from '@aws-cdk/aws-ec2';
@@ -116,7 +116,7 @@ export function CreateTestCache(scope: Construct, id: string, vpc: ec2.IVpc, por
   const cachePort = port ?? GetDefaultCachePort();
 
   // Create the subnet group from all the isolated subnets in the VPC
-  const subnetGroup = CreateCacheSubnetGroup(scope, vpc, id);
+  const subnetGroup = createCacheSubnetGroup(scope, vpc, id);
   const emptySG = new ec2.SecurityGroup(scope, `${id}-cachesg`, {
     vpc,
     allowAllOutbound: true,
