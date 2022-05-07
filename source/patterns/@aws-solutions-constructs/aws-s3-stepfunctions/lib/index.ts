@@ -16,7 +16,7 @@ import * as s3 from '@aws-cdk/aws-s3';
 import * as defaults from '@aws-solutions-constructs/core';
 import { EventbridgeToStepfunctions } from '@aws-solutions-constructs/aws-eventbridge-stepfunctions';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct, Stack } from '@aws-cdk/core';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import * as events from '@aws-cdk/aws-events';
 import * as logs from '@aws-cdk/aws-logs';
@@ -27,6 +27,7 @@ import * as logs from '@aws-cdk/aws-logs';
 export interface S3ToStepfunctionsProps {
   /**
    * Existing instance of S3 Bucket object, providing both this and `bucketProps` will cause an error.
+   * The Amazon EventBridge property must be enabled in the existing bucket for the construct to work.
    *
    * @default - None
    */
@@ -110,15 +111,14 @@ export class S3ToStepfunctions extends Construct {
 
     if (!props.existingBucketObj) {
       [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
-        bucketProps: props.bucketProps,
+        bucketProps: defaults.consolidateProps({}, props.bucketProps, { eventBridgeEnabled: true }),
         loggingBucketProps: props.loggingBucketProps,
         logS3AccessLogs: props.logS3AccessLogs
       });
       bucket = this.s3Bucket;
 
-      const cfnBucket = bucket.node.defaultChild as s3.CfnBucket;
-      cfnBucket.addPropertyOverride('NotificationConfiguration.EventBridgeConfiguration.EventBridgeEnabled', true);
-
+      // Suppress cfn-nag rules that generate warns for S3 bucket notification CDK resources
+      defaults.addCfnNagS3BucketNotificationRulesToSuppress(Stack.of(this), 'BucketNotificationsHandler050a0587b7544547bf325f094a3db834');
     } else {
       bucket = props.existingBucketObj;
     }

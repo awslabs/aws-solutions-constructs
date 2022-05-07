@@ -28,14 +28,43 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { FargateToSqs, FargateToSqsProps } from '@aws-solutions-constructs/aws-fargate-sqs';
 
-const props: FargateToSqsProps = {
+const constructProps: FargateToSqsProps = {
     publicApi: true,
-    ecrRepositoryArn: "arn of a repo in ECR in your account",
-});
+    ecrRepositoryArn: "arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo"
+};
 
-new FargateToSqs(stack, 'test-construct', props);
+new FargateToSqs(this, 'test-construct', constructProps);
+```
+
+Python
+``` python
+from aws_solutions_constructs.aws_fargate_sqs import FargateToSqs, FargateToSqsProps
+from aws_cdk import (
+    Stack
+)
+from constructs import Construct
+
+FargateToSqs(self, 'test_construct',
+            public_api=True,
+            ecr_repository_arn="arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo")
+```
+
+Java
+``` java
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awsconstructs.services.fargatesqs.*;
+
+new FargateToSqs(this, "test_construct", new FargateToSqsProps.Builder()
+        .publicApi(true)
+        .ecrRepositoryArn("arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo")
+        .build());
 ```
 
 ## Pattern Construct Props

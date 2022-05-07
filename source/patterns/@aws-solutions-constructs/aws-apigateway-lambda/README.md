@@ -22,32 +22,61 @@
 
 This AWS Solutions Construct implements an Amazon API Gateway REST API connected to an AWS Lambda function pattern.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { ApiGatewayToLambda } from '@aws-solutions-constructs/aws-apigateway-lambda';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 new ApiGatewayToLambda(this, 'ApiGatewayToLambdaPattern', {
-    lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`)
-    }
+  lambdaFunctionProps: {
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`lambda`)
+  }
 });
+```
+
+Python
+``` python
+from aws_solutions_constructs.aws_apigateway_lambda import ApiGatewayToLambda
+from aws_cdk import (
+    aws_lambda as _lambda,
+    Stack
+)
+from constructs import Construct
+
+ApiGatewayToLambda(self, 'ApiGatewayToLambdaPattern',
+            lambda_function_props=_lambda.FunctionProps(
+                runtime=_lambda.Runtime.PYTHON_3_9,
+                handler='index.handler',
+                code=_lambda.Code.from_asset('lambda')
+            )
+            )
 
 ```
 
-## Initializer
+Java
+``` java
+import software.constructs.Construct;
 
-``` text
-new ApiGatewayToLambda(scope: Construct, id: string, props: ApiGatewayToLambdaProps);
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.apigatewaylambda.*;
+
+new ApiGatewayToLambda(this, "ApiGatewayToLambdaPattern", new ApiGatewayToLambdaProps.Builder()
+        .lambdaFunctionProps(new FunctionProps.Builder()
+                .runtime(Runtime.NODEJS_14_X)
+                .code(Code.fromAsset("lambda"))
+                .handler("index.handler")
+                .build())
+        .build());
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`ApiGatewayToLambdaProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

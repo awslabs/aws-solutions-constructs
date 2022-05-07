@@ -20,38 +20,79 @@
 
 This AWS Solutions Construct implements an AWS Lambda function connected to an AWS Step Functions.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { LambdaToStepfunctions } from '@aws-solutions-constructs/aws-lambda-stepfunctions';
-import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
+import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
-const startState = new stepfunctions.Pass(stack, 'StartState');
+const startState = new stepfunctions.Pass(this, 'StartState');
 
 new LambdaToStepfunctions(this, 'LambdaToStepfunctionsPattern', {
   lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`lambda`)
   },
   stateMachineProps: {
     definition: startState
   }
 });
-
 ```
 
-## Initializer
+Python
+```python
+from aws_solutions_constructs.aws_lambda_stepfunctions import LambdaToStepfunctions
+from aws_cdk import (
+    aws_lambda as _lambda,
+    aws_stepfunctions as stepfunctions,
+    Stack
+)
+from constructs import Construct
 
-``` text
-new LambdaToStepfunctions(scope: Construct, id: string, props: LambdaToStepfunctionsProps);
+start_state = stepfunctions.Pass(self, 'start_state')
+
+LambdaToStepfunctions(
+    self, 'test-lambda-stepfunctions-stack',
+    lambda_function_props=_lambda.FunctionProps(
+        code=_lambda.Code.from_asset('lambda'),
+        runtime=_lambda.Runtime.PYTHON_3_9,
+        handler='index.handler'
+    ),
+    state_machine_props=stepfunctions.StateMachineProps(
+        definition=start_state)
+)
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`LambdaToStepfunctionsProps`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awscdk.services.stepfunctions.*;
+import software.amazon.awsconstructs.services.lambdastepfunctions.*;
+
+final Pass startState = new Pass(this, "StartState");
+
+new LambdaToStepfunctions(this, "test-lambda-stepfunctions-stack",
+        new LambdaToStepfunctionsProps.Builder()
+                .lambdaFunctionProps(new FunctionProps.Builder()
+                        .runtime(Runtime.NODEJS_14_X)
+                        .code(Code.fromAsset("lambda"))
+                        .handler("index.handler")
+                        .build())
+                .stateMachineProps(new StateMachineProps.Builder()
+                        .definition(startState)
+                        .build())
+                .build());
+```
 
 ## Pattern Construct Props
 

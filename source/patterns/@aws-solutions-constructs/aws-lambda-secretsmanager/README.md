@@ -24,36 +24,64 @@
 
 This AWS Solutions Construct implements the AWS Lambda function and AWS Secrets Manager secret with the least privileged permissions.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` javascript
-const { LambdaToSecretsmanagerProps,  LambdaToSecretsmanager } from '@aws-solutions-constructs/aws-lambda-secretsmanager';
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { LambdaToSecretsmanagerProps, LambdaToSecretsmanager } from '@aws-solutions-constructs/aws-lambda-secretsmanager';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
-const props: LambdaToSecretsmanagerProps = {
-    lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
-      // This assumes a handler function in lib/lambda/index.js
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      handler: 'index.handler'
-    },
+const constructProps: LambdaToSecretsmanagerProps = {
+  lambdaFunctionProps: {
+    runtime: lambda.Runtime.NODEJS_14_X,
+    code: lambda.Code.fromAsset(`lambda`),
+    handler: 'index.handler'
+  },
 };
 
-new LambdaToSecretsmanager(this, 'test-lambda-secretsmanager-stack', props);
-
+new LambdaToSecretsmanager(this, 'test-lambda-secretsmanager-stack', constructProps);
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_lambda_secretsmanager import LambdaToSecretsmanagerProps, LambdaToSecretsmanager
+from aws_cdk import (
+    aws_lambda as _lambda,
+    Stack
+)
+from constructs import Construct
 
-``` text
-new LambdaToSecretsmanager(scope: Construct, id: string, props: LambdaToSecretsmanagerProps);
+
+LambdaToSecretsmanager(
+    self, 'test-lambda-secretsmanager-stack',
+    lambda_function_props=_lambda.FunctionProps(
+        code=_lambda.Code.from_asset('lambda'),
+        runtime=_lambda.Runtime.PYTHON_3_9,
+        handler='index.handler'
+    )
+)
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`LambdaToSecretsmanagerProps`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.lambdasecretsmanager.*;
 
+new LambdaToSecretsmanager(this, "test-lambda-secretsmanager-stack", new LambdaToSecretsmanagerProps.Builder()
+        .lambdaFunctionProps(new FunctionProps.Builder()
+                .runtime(Runtime.NODEJS_14_X)
+                .code(Code.fromAsset("lambda"))
+                .handler("index.handler")
+                .build())
+        .build());
+```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |
@@ -62,8 +90,8 @@ _Parameters_
 |lambdaFunctionProps?|[`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.FunctionProps.html)|User provided props to override the default props for the Lambda function.|
 |secretProps?|[`secretsmanager.SecretProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-secretsmanager.SecretProps.html)|Optional user provided props to override the default props for Secrets Manager|
 |existingSecretObj?|[`secretsmanager.Secret`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-secretsmanager.Secret.html)|Existing instance of Secrets Manager Secret object, If this is set then the secretProps is ignored|
-|grantWriteAccess?|`boolean`|Optional write access to the Secret for the Lambda function (Read-Only by default)
-|secretEnvironmentVariableName?|`string`|Optional Name for the Secrets Manager secret environment variable set for the Lambda function.|
+|grantWriteAccess?|`string`|Optional Access granted to the Lambda function for the secret. 'Read' or 'ReadWrite". Default is "Read"
+|secretEnvironmentVariableName?|`string`|Optional Name for Lambda function environment variable containing the ARN of the secret. Default is SECRET_ARN. |
 |existingVpc?|[`ec2.IVpc`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.IVpc.html)|An optional, existing VPC into which this pattern should be deployed. When deployed in a VPC, the Lambda function will use ENIs in the VPC to access network resources and an Interface Endpoint will be created in the VPC for AWS Secrets Manager. If an existing VPC is provided, the `deployVpc` property cannot be `true`. This uses `ec2.IVpc` to allow clients to supply VPCs that exist outside the stack using the [`ec2.Vpc.fromLookup()`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.Vpc.html#static-fromwbrlookupscope-id-options) method.|
 |vpcProps?|[`ec2.VpcProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.VpcProps.html)|Optional user-provided properties to override the default properties for the new VPC. `enableDnsHostnames`, `enableDnsSupport`, `natGateways` and `subnetConfiguration` are set by the pattern, so any values for those properties supplied here will be overrriden. If `deployVpc` is not `true` then this property will be ignored.|
 |deployVpc?|`boolean`|Whether to create a new VPC based on `vpcProps` into which to deploy this pattern. Setting this to true will deploy the minimal, most private VPC to run the pattern:<ul><li> One isolated subnet in each Availability Zone used by the CDK program</li><li>`enableDnsHostnames` and `enableDnsSupport` will both be set to true</li></ul>If this property is `true` then `existingVpc` cannot be specified. Defaults to `false`.|
@@ -90,7 +118,6 @@ Out of the box implementation of the Construct without any override will set the
 
 ### Amazon SecretsManager Secret
 * Enable read-only access for the associated AWS Lambda Function
-* Enable server-side encryption using a default KMS key for the account and region
 * Creates a new Secret
   * (default) random name
   * (default) random value

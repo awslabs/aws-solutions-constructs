@@ -61,9 +61,9 @@ export interface LambdaToSecretsmanagerProps {
    */
   readonly deployVpc?: boolean;
   /**
-   * Optional Name for the Secret environment variable set for the Lambda function.
+   * Optional Name for Lambda function environment variable containing the ARN of the secret.
    *
-   * @default - SECRET_NAME
+   * @default - SECRET_ARN
    */
   readonly secretEnvironmentVariableName?: string;
   /**

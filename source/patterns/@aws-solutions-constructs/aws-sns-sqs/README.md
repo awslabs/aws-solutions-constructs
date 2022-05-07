@@ -24,11 +24,14 @@
 
 This AWS Solutions Construct implements an Amazon SNS topic connected to an Amazon SQS queue.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { SnsToSqs, SnsToSqsProps } from "@aws-solutions-constructs/aws-sns-sqs";
-import * as iam from '@aws-cdk/aws-iam';
+import * as iam from 'aws-cdk-lib/aws-iam';
 
 const snsToSqsStack = new SnsToSqs(this, 'SnsToSqsPattern', {});
 
@@ -41,20 +44,53 @@ const policyStatement = new iam.PolicyStatement({
 });
 
 snsToSqsStack.encryptionKey?.addToResourcePolicy(policyStatement);
-
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_sns_sqs import SnsToSqs
+from aws_cdk import (
+    aws_iam as iam,
+    Stack
+)
+from constructs import Construct
 
-``` text
-new SnsToSqs(scope: Construct, id: string, props: SnsToSqsProps);
+construct_stack = SnsToSqs(self, 'SnsToSqsPattern')
+
+policy_statement = iam.PolicyStatement(
+    actions=["kms:Encrypt", "kms:Decrypt"],
+    effect=iam.Effect.ALLOW,
+    principals=[iam.AccountRootPrincipal()],
+    resources=["*"]
+)
+
+construct_stack.encryption_key.add_to_resource_policy(policy_statement)
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
+import java.util.List;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`SnsToSqsProps`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.iam.*;
+import software.amazon.awsconstructs.services.snssqs.*;
+
+final SnsToSqs constructStack = new SnsToSqs(this, "SnsToSqsPattern",
+        new SnsToSqsProps.Builder()
+                .build());
+
+// Grant yourself permissions to use the Customer Managed KMS Key
+final PolicyStatement policyStatement = PolicyStatement.Builder.create()
+        .actions(List.of("kms:Encrypt", "kms:Decrypt"))
+        .effect(Effect.ALLOW)
+        .principals(List.of(new AccountRootPrincipal()))
+        .resources(List.of("*"))
+        .build();
+
+constructStack.getEncryptionKey().addToResourcePolicy(policyStatement);
+```
 
 ## Pattern Construct Props
 

@@ -74,6 +74,12 @@ export class IotToLambdaToDynamoDB extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
 
+    // Other permissions for constructs are accepted as arrays, turning tablePermissions into
+    // an array to use the same validation function.
+    if (props.tablePermissions) {
+      defaults.CheckListValues(['All', 'Read', 'ReadWrite', 'Write'], [props.tablePermissions], 'table permission');
+    }
+
     // Setup the IotToLambda
     const iotToLambda = new IotToLambda(this, 'IotToLambda', props);
     this.iotTopicRule = iotToLambda.iotTopicRule;

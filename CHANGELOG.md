@@ -2,6 +2,56 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.153.1](https://github.com/awslabs/aws-solutions-constructs/compare/v1.153.0...v1.153.1) (2022-05-07)
+
+* Upgraded all patterns to CDK v1.153.1
+
+## [1.153.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.152.0...v1.153.0) (2022-05-07)
+
+* Upgraded all patterns to CDK v1.153.0
+
+### Features
+
+* **aws-fargate-secretsmanager:** Create new construct ([#670](https://github.com/awslabs/aws-solutions-constructs/issues/670)) ([cd218b6](https://github.com/awslabs/aws-solutions-constructs/commit/cd218b6900a174afa09c86f28fb0650ecfe37942))
+* **aws-fargate-ssmstringparameter:** New Construct ([#653](https://github.com/awslabs/aws-solutions-constructs/issues/653)) ([bcb7c63](https://github.com/awslabs/aws-solutions-constructs/commit/bcb7c6351ffa9b8ef5f5e7790522c5b1fe87dd9a))
+* **aws-lambda-elasticachmemcached:** New Construct ([#675](https://github.com/awslabs/aws-solutions-constructs/issues/675)) ([14c50ae](https://github.com/awslabs/aws-solutions-constructs/commit/14c50ae86e84b05d1395293a001c4baa5d5f9fce))
+* **aws-s3-stepfunctions:** Changed escape hatch to eventBridgeEnabled prop ([#666](https://github.com/awslabs/aws-solutions-constructs/issues/666)) ([bc2f733](https://github.com/awslabs/aws-solutions-constructs/commit/bc2f733879a5363407729e1f236302c9361ff652))
+
+### Bug Fixes
+
+* **aws-lambda-secretsmanager:** Update docs  ([#673](https://github.com/awslabs/aws-solutions-constructs/issues/673)) ([1b843bf](https://github.com/awslabs/aws-solutions-constructs/commit/1b843bff718dd05376f4f72ff9075db123e05288))
+* All Kinesis Streams constructs - update CloudWatch alarm threshold to the documented 12 hours  ([#673](https://github.com/awslabs/aws-solutions-constructs/issues/663))
+
+## [1.152.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.151.0...v1.152.0) (2022-04-10)
+
+* Upgraded all patterns to CDK v1.152.0
+
+## [1.151.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.149.0...v1.151.0) (2022-04-09)
+
+* Upgraded all patterns to CDK v1.151.0
+
+## [1.150.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.149.0...v1.150.0) (2022-04-08)
+
+* Upgraded all patterns to CDK v1.150.0
+
+### Features
+
+* **aws-fargate-dynamodb:** create new construct ([#633](https://github.com/awslabs/aws-solutions-constructs/issues/633)) ([0b35418](https://github.com/awslabs/aws-solutions-constructs/commit/0b35418b41e24b32b6064a649d77a70f1c6d7bd8))
+
+## [1.149.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.5.0...v1.149.0) (2022-04-07)
+
+* Upgraded all patterns to CDK v1.149.0
+
+### Features
+
+* **README.md:** add python and java minimal deployment ([#582](https://github.com/awslabs/aws-solutions-constructs/issues/582)) ([2ecd9dd](https://github.com/awslabs/aws-solutions-constructs/commit/2ecd9dd935b731d2e4705ed9c146efcad0961fd8))
+
+
+### Bug Fixes
+
+* **Remove debug statement:** Remove extra debug statement in kinesisfirehose-s3 ([#649](https://github.com/awslabs/aws-solutions-constructs/issues/649)) ([26e9ec0](https://github.com/awslabs/aws-solutions-constructs/commit/26e9ec08257a90034b76a91ea4a3d703d13eb0a2))
+* **Sonarqube configuration:** Replace comma between constructs ([#646](https://github.com/awslabs/aws-solutions-constructs/issues/646)) ([79e1b09](https://github.com/awslabs/aws-solutions-constructs/commit/79e1b09544c2d029fb73a2b500dde5e35edbf63a))
+
 ## [1.148.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.147.0...v1.148.0) (2022-03-30)
 
 * Upgraded all patterns to CDK v1.148.0

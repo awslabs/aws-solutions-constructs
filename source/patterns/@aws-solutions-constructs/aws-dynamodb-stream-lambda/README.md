@@ -21,32 +21,65 @@
 
 This AWS Solutions Construct implements a pattern Amazon DynamoDB table with stream to invoke the AWS Lambda function  with the least privileged permissions.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-import { DynamoDBStreamToLambdaProps,  DynamoDBStreamToLambda} from '@aws-solutions-constructs/aws-dynamodb-stream-lambda';
+// aws-dynamodb-stream-lambda has been deprecated for CDK V2 in favor of aws-dynamodbstreams-lambda.
+// This sample uses the CDK V1 syntax
+import * as cdk from '@aws-cdk/core';
+import { DynamoDBStreamToLambda } from '@aws-solutions-constructs/aws-dynamodb-stream-lambda';
+import * as lambda from '@aws-cdk/aws-lambda';
 
 new DynamoDBStreamToLambda(this, 'test-dynamodb-stream-lambda', {
-    lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler'
-    },
+  lambdaFunctionProps: {
+    code: lambda.Code.fromAsset(`lambda`),
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler'
+  },
 });
+```
+
+Python
+``` python
+# aws-dynamodb-stream-lambda has been deprecated for CDK V2 in favor of aws-dynamodbstreams-lambda.
+# This sample uses the CDK V1 syntax
+from aws_solutions_constructs.aws_dynamodb_stream_lambda import DynamoDBStreamToLambda
+from aws_cdk import (
+    aws_lambda as _lambda,
+    core,
+)
+
+DynamoDBStreamToLambda(self, 'test-dynamodb-stream-lambda',
+                       lambda_function_props=_lambda.FunctionProps(
+                           code=_lambda.Code.from_asset('lambda'),
+                           runtime=_lambda.Runtime.PYTHON_3_9,
+                           handler='index.handler'
+                       )
+                       )
 
 ```
 
-## Initializer
+Java
+``` java
+// aws-dynamodb-stream-lambda has been deprecated for CDK V2 in favor of aws-dynamodbstreams-lambda.
+// This sample uses the CDK V1 syntax
+import software.constructs.Construct;
 
-``` text
-new DynamoDBStreamToLambda(scope: Construct, id: string, props: DynamoDBStreamToLambdaProps);
+import software.amazon.awscdk.core.*;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.dynamodbstreamlambda.*;
+
+new DynamoDBStreamToLambda(this, "test-dynamodbstreams-lambda",
+        new DynamoDBStreamToLambdaProps.Builder()
+                .lambdaFunctionProps(new FunctionProps.Builder()
+                        .runtime(Runtime.NODEJS_14_X)
+                        .code(Code.fromAsset("lambda"))
+                        .handler("index.handler")
+                        .build())
+                .build());
 ```
-
-_Parameters_
-
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`DynamoDBStreamToLambdaProps`](#pattern-construct-props)
 
 ## Pattern Construct Props
 

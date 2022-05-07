@@ -31,6 +31,13 @@ export interface BuildDynamoDBTableProps {
    * @default - None
    */
   readonly existingTableObj?: dynamodb.Table
+  /**
+   * Existing instance of dynamodb interface.
+   * Providing both this and `dynamoTableProps` will cause an error.
+   *
+   * @default - None
+   */
+  readonly existingTableInterface?: dynamodb.ITable
 }
 
 export interface BuildDynamoDBTableWithStreamProps {
@@ -49,14 +56,42 @@ export interface BuildDynamoDBTableWithStreamProps {
   readonly existingTableInterface?: dynamodb.ITable
 }
 
-export function buildDynamoDBTable(scope: Construct, props: BuildDynamoDBTableProps): dynamodb.Table {
+export function buildDynamoDBTable(scope: Construct, props: BuildDynamoDBTableProps): [dynamodb.ITable, dynamodb.Table?] {
+  checkTableProps(props);
+
   // Conditional DynamoDB Table creation
-  if (!props.existingTableObj) {
-    // Set the default props for DynamoDB table
-    const dynamoTableProps = consolidateProps(DefaultTableProps, props.dynamoTableProps);
-    return new dynamodb.Table(scope, 'DynamoTable', dynamoTableProps);
+  if (props.existingTableObj) {
+    return [props.existingTableObj, props.existingTableObj];
+  } else if (props.existingTableInterface) {
+    return [props.existingTableInterface, undefined];
   } else {
-    return props.existingTableObj;
+    const consolidatedTableProps = consolidateProps(DefaultTableProps, props.dynamoTableProps);
+    const newTable = new dynamodb.Table(scope, 'DynamoTable', consolidatedTableProps);
+    return [newTable, newTable];
+  }
+}
+
+export function checkTableProps(props: BuildDynamoDBTableProps) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (props.dynamoTableProps && props.existingTableObj) {
+    errorMessages += 'Error - Either provide existingTableObj or dynamoTableProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (props.dynamoTableProps && props.existingTableInterface) {
+    errorMessages += 'Error - Either provide existingTableInterface or dynamoTableProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (props.existingTableObj && props.existingTableInterface) {
+    errorMessages += 'Error - Either provide existingTableInterface or existingTableObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
   }
 }
 

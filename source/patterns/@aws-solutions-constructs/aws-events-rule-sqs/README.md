@@ -22,45 +22,93 @@
 
 This AWS Solutions Construct implements an AWS Events rule and an AWS SQS Queue.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
-import { Duration } from '@aws-cdk/core';
+// aws-events-rule-sqs has been deprecated for CDK V2 in favor of aws-eventbridge-sqs.
+// This sample uses the CDK V1 syntax
+import * as cdk from '@aws-cdk/core';
 import * as events from '@aws-cdk/aws-events';
 import * as iam from '@aws-cdk/aws-iam';
 import { EventsRuleToSqsProps, EventsRuleToSqs } from "@aws-solutions-constructs/aws-events-rule-sqs";
 
-const props: EventsRuleToSqsProps = {
-    eventRuleProps: {
-      schedule: events.Schedule.rate(Duration.minutes(5))
-    }
+const constructProps: EventsRuleToSqsProps = {
+  eventRuleProps: {
+    schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+  }
 };
 
-const constructStack = new EventsRuleToSqs(this, 'test-construct', props);
+const constructStack = new EventsRuleToSqs(this, 'test', constructProps);
 
 // Grant yourself permissions to use the Customer Managed KMS Key
 const policyStatement = new iam.PolicyStatement({
-    actions: ["kms:Encrypt", "kms:Decrypt"],
-    effect: iam.Effect.ALLOW,
-    principals: [ new iam.AccountRootPrincipal() ],
-    resources: [ "*" ]
+  actions: ["kms:Encrypt", "kms:Decrypt"],
+  effect: iam.Effect.ALLOW,
+  principals: [new iam.AccountRootPrincipal()],
+  resources: ["*"]
 });
 
 constructStack.encryptionKey?.addToResourcePolicy(policyStatement);
 ```
 
-## Initializer
+Python
+``` python
+# aws-events-rule-sqs has been deprecated for CDK V2 in favor of aws-eventbridge-sqs.
+# This sample uses the CDK V1 syntax
+from aws_solutions_constructs.aws_events_rule_sqs import EventsRuleToSqs
+from aws_cdk import (
+    aws_events as events,
+    aws_iam as iam,
+    core
+)
 
-``` text
-new EventsRuleToSqs(scope: Construct, id: string, props: EventsRuleToSqsProps);
+construct_stack = EventsRuleToSqs(self, 'test',
+                            event_rule_props=events.RuleProps(
+                                schedule=events.Schedule.rate(
+                                    core.Duration.minutes(5))
+                            ))
+
+# Grant yourself permissions to use the Customer Managed KMS Key
+policy_statement = iam.PolicyStatement(
+    actions=["kms:Encrypt", "kms:Decrypt"],
+    effect=iam.Effect.ALLOW,
+    principals=[iam.AccountRootPrincipal()],
+    resources=["*"]
+)
+
+construct_stack.encryption_key.add_to_resource_policy(policy_statement)
 ```
 
-_Parameters_
+Java
+``` java
+// aws-events-rule-sqs has been deprecated for CDK V2 in favor of aws-eventbridge-sqs.
+// This sample uses the CDK V1 syntax
+import software.constructs.Construct;
+import java.util.List;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`EventsRuleToSqsProps`](#pattern-construct-props)
+import software.amazon.awscdk.core.*;
+import software.amazon.awscdk.services.events.*;
+import software.amazon.awscdk.services.iam.*;
+import software.amazon.awsconstructs.services.eventsrulesqs.*;
 
+final EventsRuleToSqs constructStack = new EventsRuleToSqs(this, "test-construct",
+        new EventsRuleToSqsProps.Builder()
+                .eventRuleProps(new RuleProps.Builder()
+                        .schedule(Schedule.rate(Duration.minutes(5)))
+                        .build())
+                .build());
+
+// Grant yourself permissions to use the Customer Managed KMS Key
+final PolicyStatement policyStatement = PolicyStatement.Builder.create()
+        .actions(List.of("kms:Encrypt", "kms:Decrypt"))
+        .effect(Effect.ALLOW)
+        .principals(List.of(new AccountRootPrincipal()))
+        .resources(List.of("*"))
+        .build();
+
+constructStack.getEncryptionKey().addToResourcePolicy(policyStatement);
+```
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |

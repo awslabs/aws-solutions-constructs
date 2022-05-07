@@ -276,3 +276,31 @@ test('check exception for Missing existingObj from props for deploy = false', ()
     expect(e).toBeInstanceOf(Error);
   }
 });
+
+test('Check incorrect table permission', () => {
+  const stack = new cdk.Stack();
+
+  const props: IotToLambdaToDynamoDBProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler'
+    },
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+        sql: "SELECT * FROM 'connectedcar/dtc/#'",
+        actions: []
+      }
+    },
+    tablePermissions: 'Reed'
+  };
+
+  const app = () => {
+    new IotToLambdaToDynamoDB(stack, 'test-iot-lambda-dynamodb-stack', props);
+  };
+
+  // Assertion
+  expect(app).toThrowError(/Invalid table permission submitted - Reed/);
+});

@@ -20,31 +20,62 @@
 
 This AWS Solutions Construct implements an AWS CloudFront fronting an Amazon API Gateway Lambda backed REST API.
 
-Here is a minimal deployable pattern definition in Typescript:
+Here is a minimal deployable pattern definition:
 
+Typescript
 ``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { CloudFrontToApiGatewayToLambda } from '@aws-solutions-constructs/aws-cloudfront-apigateway-lambda';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 new CloudFrontToApiGatewayToLambda(this, 'test-cloudfront-apigateway-lambda', {
-    lambdaFunctionProps: {
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler'
-    }
+  lambdaFunctionProps: {
+    code: lambda.Code.fromAsset(`lambda`),
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler'
+  }
 });
 ```
 
-## Initializer
+Python
+``` python
+from aws_solutions_constructs.aws_cloudfront_apigateway_lambda import CloudFrontToApiGatewayToLambda
+from aws_cdk import (
+  aws_lambda as _lambda,
+  Stack
+)
+from constructs import Construct
 
-``` text
-new CloudFrontToApiGatewayToLambda(scope: Construct, id: string, props: CloudFrontToApiGatewayToLambdaProps);
+CloudFrontToApiGatewayToLambda(self, 'test-cloudfront-apigateway-lambda',
+                            lambda_function_props=_lambda.FunctionProps(
+                                code=_lambda.Code.from_asset('lambda'),
+                                runtime=_lambda.Runtime.PYTHON_3_9,
+                                handler='index.handler'
+                            )
+                            )
 ```
 
-_Parameters_
+Java
+``` java
+import software.constructs.Construct;
 
-* scope [`Construct`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)
-* id `string`
-* props [`CloudFrontToApiGatewayToLambdaProps`](#pattern-construct-props)
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.cloudfrontapigatewaylambda.*;
+
+new CloudFrontToApiGatewayToLambda(this, "test-cloudfront-apigateway-lambda",
+        new CloudFrontToApiGatewayToLambdaProps.Builder()
+                .lambdaFunctionProps(new FunctionProps.Builder()
+                        .runtime(Runtime.NODEJS_14_X)
+                        .code(Code.fromAsset("lambda"))
+                        .handler("index.handler")
+                        .build())
+                .build());
+```
+
 
 ## Pattern Construct Props
 
