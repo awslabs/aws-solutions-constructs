@@ -1,28 +1,17 @@
 {
   "Description": "Integration Test for sample application that uses aws-kineisstream-glue-job construct",
-  "Parameters": {
-    "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3Bucket96760533": {
-      "Type": "String",
-      "Description": "S3 bucket for asset \"d4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4\""
-    },
-    "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3VersionKey856519B9": {
-      "Type": "String",
-      "Description": "S3 key for asset version \"d4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4\""
-    },
-    "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4ArtifactHashC026BAAB": {
-      "Type": "String",
-      "Description": "Artifact hash for asset \"d4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4\""
-    }
-  },
   "Resources": {
     "CustomETLKinesisStreamB4F1869F": {
       "Type": "AWS::Kinesis::Stream",
       "Properties": {
-        "ShardCount": 1,
         "RetentionPeriodHours": 24,
+        "ShardCount": 1,
         "StreamEncryption": {
           "EncryptionType": "KMS",
           "KeyId": "alias/aws/kinesis"
+        },
+        "StreamModeDetails": {
+          "StreamMode": "PROVISIONED"
         }
       }
     },
@@ -135,7 +124,11 @@
                 "s3:GetBucket*",
                 "s3:List*",
                 "s3:DeleteObject*",
-                "s3:PutObject*",
+                "s3:PutObject",
+                "s3:PutObjectLegalHold",
+                "s3:PutObjectRetention",
+                "s3:PutObjectTagging",
+                "s3:PutObjectVersionTagging",
                 "s3:Abort*"
               ],
               "Effect": "Allow",
@@ -180,34 +173,7 @@
                       },
                       ":s3:::",
                       {
-                        "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3Bucket96760533"
-                      },
-                      "/",
-                      {
-                        "Fn::Select": [
-                          0,
-                          {
-                            "Fn::Split": [
-                              "||",
-                              {
-                                "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3VersionKey856519B9"
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "Fn::Select": [
-                          1,
-                          {
-                            "Fn::Split": [
-                              "||",
-                              {
-                                "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3VersionKey856519B9"
-                              }
-                            ]
-                          }
-                        ]
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
                       }
                     ]
                   ]
@@ -222,34 +188,7 @@
                       },
                       ":s3:::",
                       {
-                        "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3Bucket96760533"
-                      },
-                      "/",
-                      {
-                        "Fn::Select": [
-                          0,
-                          {
-                            "Fn::Split": [
-                              "||",
-                              {
-                                "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3VersionKey856519B9"
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "Fn::Select": [
-                          1,
-                          {
-                            "Fn::Split": [
-                              "||",
-                              {
-                                "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3VersionKey856519B9"
-                              }
-                            ]
-                          }
-                        ]
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
                       },
                       "/*"
                     ]
@@ -286,6 +225,9 @@
           "BlockPublicPolicy": true,
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
         }
       },
       "UpdateReplacePolicy": "Retain",
@@ -310,7 +252,7 @@
         "PolicyDocument": {
           "Statement": [
             {
-              "Action": "*",
+              "Action": "s3:*",
               "Condition": {
                 "Bool": {
                   "aws:SecureTransport": "false"
@@ -320,21 +262,28 @@
               "Principal": {
                 "AWS": "*"
               },
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "CustomETLS3LoggingBucketBBDD45CB",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "CustomETLS3LoggingBucketBBDD45CB",
+                    "Arn"
                   ]
-                ]
-              },
-              "Sid": "HttpsOnly"
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "CustomETLS3LoggingBucketBBDD45CB",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
             }
           ],
           "Version": "2012-10-17"
@@ -393,7 +342,7 @@
         "PolicyDocument": {
           "Statement": [
             {
-              "Action": "*",
+              "Action": "s3:*",
               "Condition": {
                 "Bool": {
                   "aws:SecureTransport": "false"
@@ -403,21 +352,28 @@
               "Principal": {
                 "AWS": "*"
               },
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "CustomETLS3Bucket3EE58725",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "CustomETLS3Bucket3EE58725",
+                    "Arn"
                   ]
-                ]
-              },
-              "Sid": "HttpsOnly"
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "CustomETLS3Bucket3EE58725",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
             }
           ],
           "Version": "2012-10-17"
@@ -431,42 +387,7 @@
           "Name": "gluestreaming",
           "PythonVersion": "3",
           "ScriptLocation": {
-            "Fn::Join": [
-              "",
-              [
-                "s3://",
-                {
-                  "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3Bucket96760533"
-                },
-                "/",
-                {
-                  "Fn::Select": [
-                    0,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3VersionKey856519B9"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "Fn::Select": [
-                    1,
-                    {
-                      "Fn::Split": [
-                        "||",
-                        {
-                          "Ref": "AssetParametersd4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4S3VersionKey856519B9"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            ]
+            "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d4dd6643ee852c9578ae2d36cf2dc8a48630fd2219a15e74502c7ea75bff70c4.py"
           }
         },
         "Role": {
@@ -488,7 +409,7 @@
             "Fn::Join": [
               "",
               [
-                "s3://",
+                "s3a://",
                 {
                   "Ref": "CustomETLS3Bucket3EE58725"
                 },
@@ -498,7 +419,35 @@
           }
         },
         "GlueVersion": "2.0",
-        "SecurityConfiguration": "ETLJobSecurityConfig"
+        "NumberOfWorkers": 2,
+        "SecurityConfiguration": "ETLJobSecurityConfig",
+        "WorkerType": "G.1X"
+      }
+    },
+    "CustomETLKinesisStreamGetRecordsIteratorAgeAlarmCD7F4E34": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
+        "MetricName": "GetRecords.IteratorAgeMilliseconds",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 43200
+      }
+    },
+    "CustomETLKinesisStreamReadProvisionedThroughputExceededAlarm6AB32664": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
+        "MetricName": "ReadProvisionedThroughputExceeded",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Average",
+        "Threshold": 0
       }
     },
     "GlueDatabase": {
@@ -523,7 +472,7 @@
         },
         "TableInput": {
           "Parameters": {
-            "classication": "json"
+            "classification": "json"
           },
           "StorageDescriptor": {
             "Columns": [
@@ -599,7 +548,7 @@
         }
       }
     },
-    "GlueJobPolicyAEA4B94E": {
+    "CustomETLGlueJobPolicy0AE5B5CB": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -745,7 +694,7 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "GlueJobPolicyAEA4B94E",
+        "PolicyName": "CustomETLGlueJobPolicy0AE5B5CB",
         "Roles": [
           {
             "Ref": "CustomETLJobRole53A1671F"
@@ -782,6 +731,40 @@
           "Arn"
         ]
       }
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
     }
   }
 }

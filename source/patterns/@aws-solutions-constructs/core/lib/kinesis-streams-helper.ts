@@ -63,7 +63,7 @@ export function buildKinesisStreamCWAlarms(scope: Construct): cloudwatch.Alarm[]
       statistic: 'Maximum',
       period: cdk.Duration.minutes(5),
     }),
-    threshold: 2592000, // 12 Hours (50% of 24 hours - default record retention period)
+    threshold: 43200, // 12 Hours (50% of 24 hours - default record retention period)
     evaluationPeriods: 1,
     comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
     alarmDescription: 'Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.'

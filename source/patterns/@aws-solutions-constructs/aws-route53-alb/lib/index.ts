@@ -121,18 +121,15 @@ export class Route53ToAlb extends Construct {
       throw new Error('An existing Private Hosted Zone already exists in a VPC, so that VPC must be passed to the construct in props.existingVpc');
     }
 
-    if (props.existingVpc) {
-      this.vpc = props.existingVpc;
-    } else {
-      this.vpc = defaults.buildVpc(scope, {
-        defaultVpcProps: props.publicApi ?
-          defaults.DefaultPublicPrivateVpcProps() :
-          // If this is an internal app, we're going to turn on DNS
-          // by default to allow gateway and interface service endpoints
-          defaults.overrideProps(defaults.DefaultIsolatedVpcProps(), { enableDnsHostnames: true, enableDnsSupport: true, }),
-        userVpcProps: props.vpcProps,
-      });
-    }
+    this.vpc = defaults.buildVpc(scope, {
+      existingVpc: props.existingVpc,
+      defaultVpcProps: props.publicApi ?
+        defaults.DefaultPublicPrivateVpcProps() :
+        // If this is an internal app, we're going to turn on DNS
+        // by default to allow gateway and interface service endpoints
+        defaults.overrideProps(defaults.DefaultIsolatedVpcProps(), { enableDnsHostnames: true, enableDnsSupport: true, }),
+      userVpcProps: props.vpcProps,
+    });
 
     if (props.existingHostedZoneInterface) {
       this.hostedZone = props.existingHostedZoneInterface;

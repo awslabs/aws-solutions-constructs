@@ -42,4 +42,5 @@ new S3ToStepfunctions(stack, 'test-s3-stepfunctions', {
     removalPolicy: RemovalPolicy.DESTROY
   }
 });
+
 app.synth();

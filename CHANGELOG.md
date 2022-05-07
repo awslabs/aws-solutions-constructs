@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.153.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.152.0...v1.153.0) (2022-05-07)
+
+* Upgraded all patterns to CDK v1.153.0
+
+### Features
+
+* **aws-fargate-secretsmanager:** Create new construct ([#670](https://github.com/awslabs/aws-solutions-constructs/issues/670)) ([cd218b6](https://github.com/awslabs/aws-solutions-constructs/commit/cd218b6900a174afa09c86f28fb0650ecfe37942))
+* **aws-fargate-ssmstringparameter:** New Construct ([#653](https://github.com/awslabs/aws-solutions-constructs/issues/653)) ([bcb7c63](https://github.com/awslabs/aws-solutions-constructs/commit/bcb7c6351ffa9b8ef5f5e7790522c5b1fe87dd9a))
+* **aws-lambda-elasticachmemcached:** New Construct ([#675](https://github.com/awslabs/aws-solutions-constructs/issues/675)) ([14c50ae](https://github.com/awslabs/aws-solutions-constructs/commit/14c50ae86e84b05d1395293a001c4baa5d5f9fce))
+* **aws-s3-stepfunctions:** Changed escape hatch to eventBridgeEnabled prop ([#666](https://github.com/awslabs/aws-solutions-constructs/issues/666)) ([bc2f733](https://github.com/awslabs/aws-solutions-constructs/commit/bc2f733879a5363407729e1f236302c9361ff652))
+
+### Bug Fixes
+
+* **aws-lambda-secretsmanager:** Update docs  ([#673](https://github.com/awslabs/aws-solutions-constructs/issues/673)) ([1b843bf](https://github.com/awslabs/aws-solutions-constructs/commit/1b843bff718dd05376f4f72ff9075db123e05288))
+* All Kinesis Streams constructs - update CloudWatch alarm threshold to the documented 12 hours  ([#673](https://github.com/awslabs/aws-solutions-constructs/issues/663))
+
 ## [1.152.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.151.0...v1.152.0) (2022-04-10)
 
 * Upgraded all patterns to CDK v1.152.0

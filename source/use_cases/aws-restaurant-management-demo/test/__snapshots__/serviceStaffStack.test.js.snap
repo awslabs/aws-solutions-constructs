@@ -1,0 +1,1028 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test-service-staff-stack 1`] = `
+Object {
+  "Outputs": Object {
+    "servicestaffapiLambdaRestApiEndpointF8896A96": Object {
+      "Value": Object {
+        "Fn::Join": Array [
+          "",
+          Array [
+            "https://",
+            Object {
+              "Ref": "servicestaffapiLambdaRestApi81C353A0",
+            },
+            ".execute-api.",
+            Object {
+              "Ref": "AWS::Region",
+            },
+            ".",
+            Object {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            Object {
+              "Ref": "servicestaffapiLambdaRestApiDeploymentStageprod2DCA6394",
+            },
+            "/",
+          ],
+        ],
+      },
+    },
+  },
+  "Parameters": Object {
+    "AssetParameters8a8cc7536577c2b18b202c3f2d96d2e6ef38d6cd26b3cbcc4547ba11759adff8ArtifactHash025BE40D": Object {
+      "Description": "Artifact hash for asset \\"8a8cc7536577c2b18b202c3f2d96d2e6ef38d6cd26b3cbcc4547ba11759adff8\\"",
+      "Type": "String",
+    },
+    "AssetParameters8a8cc7536577c2b18b202c3f2d96d2e6ef38d6cd26b3cbcc4547ba11759adff8S3BucketC4EDB090": Object {
+      "Description": "S3 bucket for asset \\"8a8cc7536577c2b18b202c3f2d96d2e6ef38d6cd26b3cbcc4547ba11759adff8\\"",
+      "Type": "String",
+    },
+    "AssetParameters8a8cc7536577c2b18b202c3f2d96d2e6ef38d6cd26b3cbcc4547ba11759adff8S3VersionKey5D4A7E1B": Object {
+      "Description": "S3 key for asset version \\"8a8cc7536577c2b18b202c3f2d96d2e6ef38d6cd26b3cbcc4547ba11759adff8\\"",
+      "Type": "String",
+    },
+    "AssetParametersf340dbb5bff487818e0bfbfcd1dcdb62fb8068b86b63fd5e15c68b4d9686a080ArtifactHash28E831DC": Object {
+      "Description": "Artifact hash for asset \\"f340dbb5bff487818e0bfbfcd1dcdb62fb8068b86b63fd5e15c68b4d9686a080\\"",
+      "Type": "String",
+    },
+    "AssetParametersf340dbb5bff487818e0bfbfcd1dcdb62fb8068b86b63fd5e15c68b4d9686a080S3Bucket40BD61E4": Object {
+      "Description": "S3 bucket for asset \\"f340dbb5bff487818e0bfbfcd1dcdb62fb8068b86b63fd5e15c68b4d9686a080\\"",
+      "Type": "String",
+    },
+    "AssetParametersf340dbb5bff487818e0bfbfcd1dcdb62fb8068b86b63fd5e15c68b4d9686a080S3VersionKey661F3160": Object {
+      "Description": "S3 key for asset version \\"f340dbb5bff487818e0bfbfcd1dcdb62fb8068b86b63fd5e15c68b4d9686a080\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "createorderLambdaFunction24B8D5B1": Object {
+      "DependsOn": Array [
+        "createorderLambdaFunctionServiceRoleDefaultPolicyA4FD773D",
+        "createorderLambdaFunctionServiceRole407C1F58",
+      ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.",
+            },
+            Object {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries",
+            },
+            Object {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParameters8a8cc7536577c2b18b202c3f2d96d2e6ef38d6cd26b3cbcc4547ba11759adff8S3BucketC4EDB090",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters8a8cc7536577c2b18b202c3f2d96d2e6ef38d6cd26b3cbcc4547ba11759adff8S3VersionKey5D4A7E1B",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters8a8cc7536577c2b18b202c3f2d96d2e6ef38d6cd26b3cbcc4547ba11759adff8S3VersionKey5D4A7E1B",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "DDB_TABLE_NAME": Object {
+              "Fn::ImportValue": "SharedStack:ExportsOutputRefordertable80C5609084F626AD",
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "createorderLambdaFunctionServiceRole407C1F58",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "Timeout": 15,
+        "TracingConfig": Object {
+          "Mode": "Active",
+        },
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "createorderLambdaFunctionServiceRole407C1F58": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": Array [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        "arn:",
+                        Object {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":logs:",
+                        Object {
+                          "Ref": "AWS::Region",
+                        },
+                        ":",
+                        Object {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":log-group:/aws/lambda/*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "createorderLambdaFunctionServiceRoleDefaultPolicyA4FD773D": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "dynamodb:BatchGetItem",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:DescribeTable",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::ImportValue": "SharedStack:ExportsOutputFnGetAttordertable80C56090ArnFF5A50B5",
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::ImportValue": "SharedStack:ExportsOutputFnGetAttordertable80C56090ArnFF5A50B5",
+                      },
+                      "/index/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "createorderLambdaFunctionServiceRoleDefaultPolicyA4FD773D",
+        "Roles": Array [
+          Object {
+            "Ref": "createorderLambdaFunctionServiceRole407C1F58",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "processpaymentLambdaFunction2BB176F5": Object {
+      "DependsOn": Array [
+        "processpaymentLambdaFunctionServiceRoleDefaultPolicy3675D629",
+        "processpaymentLambdaFunctionServiceRole04F88DC8",
+      ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.",
+            },
+            Object {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries",
+            },
+            Object {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParametersf340dbb5bff487818e0bfbfcd1dcdb62fb8068b86b63fd5e15c68b4d9686a080S3Bucket40BD61E4",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersf340dbb5bff487818e0bfbfcd1dcdb62fb8068b86b63fd5e15c68b4d9686a080S3VersionKey661F3160",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersf340dbb5bff487818e0bfbfcd1dcdb62fb8068b86b63fd5e15c68b4d9686a080S3VersionKey661F3160",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "DDB_TABLE_NAME": Object {
+              "Fn::ImportValue": "SharedStack:ExportsOutputRefordertable80C5609084F626AD",
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "processpaymentLambdaFunctionServiceRole04F88DC8",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "Timeout": 15,
+        "TracingConfig": Object {
+          "Mode": "Active",
+        },
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "processpaymentLambdaFunctionServiceRole04F88DC8": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": Array [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        "arn:",
+                        Object {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":logs:",
+                        Object {
+                          "Ref": "AWS::Region",
+                        },
+                        ":",
+                        Object {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":log-group:/aws/lambda/*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "processpaymentLambdaFunctionServiceRoleDefaultPolicy3675D629": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "dynamodb:BatchGetItem",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:DescribeTable",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::ImportValue": "SharedStack:ExportsOutputFnGetAttordertable80C56090ArnFF5A50B5",
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::ImportValue": "SharedStack:ExportsOutputFnGetAttordertable80C56090ArnFF5A50B5",
+                      },
+                      "/index/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "processpaymentLambdaFunctionServiceRoleDefaultPolicy3675D629",
+        "Roles": Array [
+          Object {
+            "Ref": "processpaymentLambdaFunctionServiceRole04F88DC8",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "servicestaffapiApiAccessLogGroupF2EF9693": Object {
+      "DeletionPolicy": "Retain",
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely",
+            },
+            Object {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)",
+            },
+          ],
+        },
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "servicestaffapiCognitoAuthorizerAD8B40CD": Object {
+      "Properties": Object {
+        "IdentitySource": "method.request.header.Authorization",
+        "Name": "authorizer",
+        "ProviderARNs": Array [
+          Object {
+            "Fn::GetAtt": Array [
+              "servicestaffapiCognitoUserPool3DD3B0E0",
+              "Arn",
+            ],
+          },
+        ],
+        "RestApiId": Object {
+          "Ref": "servicestaffapiLambdaRestApi81C353A0",
+        },
+        "Type": "COGNITO_USER_POOLS",
+      },
+      "Type": "AWS::ApiGateway::Authorizer",
+    },
+    "servicestaffapiCognitoUserPool3DD3B0E0": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "AccountRecoverySetting": Object {
+          "RecoveryMechanisms": Array [
+            Object {
+              "Name": "verified_phone_number",
+              "Priority": 1,
+            },
+            Object {
+              "Name": "verified_email",
+              "Priority": 2,
+            },
+          ],
+        },
+        "AdminCreateUserConfig": Object {
+          "AllowAdminCreateUserOnly": true,
+        },
+        "EmailVerificationMessage": "The verification code to your new account is {####}",
+        "EmailVerificationSubject": "Verify your new account",
+        "SmsVerificationMessage": "The verification code to your new account is {####}",
+        "UserPoolAddOns": Object {
+          "AdvancedSecurityMode": "ENFORCED",
+        },
+        "VerificationMessageTemplate": Object {
+          "DefaultEmailOption": "CONFIRM_WITH_CODE",
+          "EmailMessage": "The verification code to your new account is {####}",
+          "EmailSubject": "Verify your new account",
+          "SmsMessage": "The verification code to your new account is {####}",
+        },
+      },
+      "Type": "AWS::Cognito::UserPool",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "servicestaffapiCognitoUserPoolClientB6DED78F": Object {
+      "Properties": Object {
+        "AllowedOAuthFlows": Array [
+          "implicit",
+          "code",
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": Array [
+          "profile",
+          "phone",
+          "email",
+          "openid",
+          "aws.cognito.signin.user.admin",
+        ],
+        "CallbackURLs": Array [
+          "https://example.com",
+        ],
+        "SupportedIdentityProviders": Array [
+          "COGNITO",
+        ],
+        "UserPoolId": Object {
+          "Ref": "servicestaffapiCognitoUserPool3DD3B0E0",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolClient",
+    },
+    "servicestaffapiLambdaRestApi81C353A0": Object {
+      "Properties": Object {
+        "Description": "Demo: Service staff API",
+        "EndpointConfiguration": Object {
+          "Types": Array [
+            "EDGE",
+          ],
+        },
+        "Name": "LambdaRestApi",
+      },
+      "Type": "AWS::ApiGateway::RestApi",
+    },
+    "servicestaffapiLambdaRestApiAccount03DEB06F": Object {
+      "DependsOn": Array [
+        "servicestaffapiLambdaRestApi81C353A0",
+      ],
+      "Properties": Object {
+        "CloudWatchRoleArn": Object {
+          "Fn::GetAtt": Array [
+            "servicestaffapiLambdaRestApiCloudWatchRoleCE0F0BA2",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::ApiGateway::Account",
+    },
+    "servicestaffapiLambdaRestApiCloudWatchRoleCE0F0BA2": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "apigateway.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": Array [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:DescribeLogGroups",
+                    "logs:DescribeLogStreams",
+                    "logs:PutLogEvents",
+                    "logs:GetLogEvents",
+                    "logs:FilterLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        "arn:",
+                        Object {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":logs:",
+                        Object {
+                          "Ref": "AWS::Region",
+                        },
+                        ":",
+                        Object {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "LambdaRestApiCloudWatchRolePolicy",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "servicestaffapiLambdaRestApiDeployment344E0BF0f02c858dd7350b71af50ff6d8f77f6c2": Object {
+      "DependsOn": Array [
+        "servicestaffapiLambdaRestApicreateorderproxyANY3B15F9EA",
+        "servicestaffapiLambdaRestApicreateorderproxy0E60FED5",
+        "servicestaffapiLambdaRestApicreateorder06D2A86B",
+        "servicestaffapiLambdaRestApiprocesspaymentproxyANYE502AA7B",
+        "servicestaffapiLambdaRestApiprocesspaymentproxy8CA5C2E5",
+        "servicestaffapiLambdaRestApiprocesspayment6A5A2B17",
+      ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W45",
+              "reason": "ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checkes for it in AWS::ApiGateway::Deployment resource",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "Description": "Automatically created by the RestApi construct",
+        "RestApiId": Object {
+          "Ref": "servicestaffapiLambdaRestApi81C353A0",
+        },
+      },
+      "Type": "AWS::ApiGateway::Deployment",
+    },
+    "servicestaffapiLambdaRestApiDeploymentStageprod2DCA6394": Object {
+      "Properties": Object {
+        "AccessLogSetting": Object {
+          "DestinationArn": Object {
+            "Fn::GetAtt": Array [
+              "servicestaffapiApiAccessLogGroupF2EF9693",
+              "Arn",
+            ],
+          },
+          "Format": "{\\"requestId\\":\\"$context.requestId\\",\\"ip\\":\\"$context.identity.sourceIp\\",\\"user\\":\\"$context.identity.user\\",\\"caller\\":\\"$context.identity.caller\\",\\"requestTime\\":\\"$context.requestTime\\",\\"httpMethod\\":\\"$context.httpMethod\\",\\"resourcePath\\":\\"$context.resourcePath\\",\\"status\\":\\"$context.status\\",\\"protocol\\":\\"$context.protocol\\",\\"responseLength\\":\\"$context.responseLength\\"}",
+        },
+        "DeploymentId": Object {
+          "Ref": "servicestaffapiLambdaRestApiDeployment344E0BF0f02c858dd7350b71af50ff6d8f77f6c2",
+        },
+        "MethodSettings": Array [
+          Object {
+            "DataTraceEnabled": false,
+            "HttpMethod": "*",
+            "LoggingLevel": "INFO",
+            "ResourcePath": "/*",
+          },
+        ],
+        "RestApiId": Object {
+          "Ref": "servicestaffapiLambdaRestApi81C353A0",
+        },
+        "StageName": "prod",
+        "TracingEnabled": true,
+      },
+      "Type": "AWS::ApiGateway::Stage",
+    },
+    "servicestaffapiLambdaRestApiUsagePlanCCBD3C60": Object {
+      "Properties": Object {
+        "ApiStages": Array [
+          Object {
+            "ApiId": Object {
+              "Ref": "servicestaffapiLambdaRestApi81C353A0",
+            },
+            "Stage": Object {
+              "Ref": "servicestaffapiLambdaRestApiDeploymentStageprod2DCA6394",
+            },
+            "Throttle": Object {},
+          },
+        ],
+      },
+      "Type": "AWS::ApiGateway::UsagePlan",
+    },
+    "servicestaffapiLambdaRestApicreateorder06D2A86B": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Fn::GetAtt": Array [
+            "servicestaffapiLambdaRestApi81C353A0",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "create-order",
+        "RestApiId": Object {
+          "Ref": "servicestaffapiLambdaRestApi81C353A0",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "servicestaffapiLambdaRestApicreateorderproxy0E60FED5": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Ref": "servicestaffapiLambdaRestApicreateorder06D2A86B",
+        },
+        "PathPart": "{proxy+}",
+        "RestApiId": Object {
+          "Ref": "servicestaffapiLambdaRestApi81C353A0",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "servicestaffapiLambdaRestApicreateorderproxyANY3B15F9EA": Object {
+      "Properties": Object {
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": Object {
+          "Ref": "servicestaffapiCognitoAuthorizerAD8B40CD",
+        },
+        "HttpMethod": "ANY",
+        "Integration": Object {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                Object {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                Object {
+                  "Fn::GetAtt": Array [
+                    "createorderLambdaFunction24B8D5B1",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": Object {
+          "Ref": "servicestaffapiLambdaRestApicreateorderproxy0E60FED5",
+        },
+        "RestApiId": Object {
+          "Ref": "servicestaffapiLambdaRestApi81C353A0",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "servicestaffapiLambdaRestApicreateorderproxyANYApiPermissionServiceStaffStackservicestaffapiLambdaRestApiA743D41DANYcreateorderproxyB767FAB2": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "createorderLambdaFunction24B8D5B1",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "servicestaffapiLambdaRestApi81C353A0",
+              },
+              "/",
+              Object {
+                "Ref": "servicestaffapiLambdaRestApiDeploymentStageprod2DCA6394",
+              },
+              "/*/create-order/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "servicestaffapiLambdaRestApicreateorderproxyANYApiPermissionTestServiceStaffStackservicestaffapiLambdaRestApiA743D41DANYcreateorderproxy5FF339BE": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "createorderLambdaFunction24B8D5B1",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "servicestaffapiLambdaRestApi81C353A0",
+              },
+              "/test-invoke-stage/*/create-order/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "servicestaffapiLambdaRestApiprocesspayment6A5A2B17": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Fn::GetAtt": Array [
+            "servicestaffapiLambdaRestApi81C353A0",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "process-payment",
+        "RestApiId": Object {
+          "Ref": "servicestaffapiLambdaRestApi81C353A0",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "servicestaffapiLambdaRestApiprocesspaymentproxy8CA5C2E5": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Ref": "servicestaffapiLambdaRestApiprocesspayment6A5A2B17",
+        },
+        "PathPart": "{proxy+}",
+        "RestApiId": Object {
+          "Ref": "servicestaffapiLambdaRestApi81C353A0",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "servicestaffapiLambdaRestApiprocesspaymentproxyANYApiPermissionServiceStaffStackservicestaffapiLambdaRestApiA743D41DANYprocesspaymentproxyD72A3BE0": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "processpaymentLambdaFunction2BB176F5",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "servicestaffapiLambdaRestApi81C353A0",
+              },
+              "/",
+              Object {
+                "Ref": "servicestaffapiLambdaRestApiDeploymentStageprod2DCA6394",
+              },
+              "/*/process-payment/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "servicestaffapiLambdaRestApiprocesspaymentproxyANYApiPermissionTestServiceStaffStackservicestaffapiLambdaRestApiA743D41DANYprocesspaymentproxyFC2482DA": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "processpaymentLambdaFunction2BB176F5",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "servicestaffapiLambdaRestApi81C353A0",
+              },
+              "/test-invoke-stage/*/process-payment/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "servicestaffapiLambdaRestApiprocesspaymentproxyANYE502AA7B": Object {
+      "Properties": Object {
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": Object {
+          "Ref": "servicestaffapiCognitoAuthorizerAD8B40CD",
+        },
+        "HttpMethod": "ANY",
+        "Integration": Object {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                Object {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                Object {
+                  "Fn::GetAtt": Array [
+                    "processpaymentLambdaFunction2BB176F5",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": Object {
+          "Ref": "servicestaffapiLambdaRestApiprocesspaymentproxy8CA5C2E5",
+        },
+        "RestApiId": Object {
+          "Ref": "servicestaffapiLambdaRestApi81C353A0",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+  },
+}
+`;
