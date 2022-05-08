@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [1.154.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.6.0...v1.154.0) (2022-05-08)
 
+* Upgraded all patterns to CDK v1.154.0
+
+### Bug Fixes
+
+* **Incorrect Java Artifact ID:** Change lambdas3 lambdaelasticachememcached
+
 ## [1.153.1](https://github.com/awslabs/aws-solutions-constructs/compare/v1.153.0...v1.153.1) (2022-05-07)
 
 * Upgraded all patterns to CDK v1.153.1
