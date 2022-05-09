@@ -35,7 +35,8 @@ export interface FargateToStepfunctionsProps {
    * both this and existingVpc is an error. A Step Functions Interface
    * endpoint will be included in this VPC.
    *
-   * @default - none
+   * @default - A set of defaults from vpc-defaults.ts: DefaultPublicPrivateVpcProps() for public APIs
+   * and DefaultIsolatedVpcProps() for private APIs.
    */
   readonly vpcProps?: ec2.VpcProps;
   /**
