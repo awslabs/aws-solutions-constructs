@@ -55,3 +55,36 @@ export function buildSecurityGroup(
 
   return newSecurityGroup;
 }
+
+export function CreateSelfReferencingSecurityGroup(scope: Construct, id: string, vpc: ec2.IVpc, cachePort: any) {
+  const newCacheSG = new ec2.SecurityGroup(scope, `${id}-cachesg`, {
+    vpc,
+    allowAllOutbound: true,
+  });
+  const selfReferenceRule = new ec2.CfnSecurityGroupIngress(
+    scope,
+    `${id}-ingress`,
+    {
+      groupId: newCacheSG.securityGroupId,
+      sourceSecurityGroupId: newCacheSG.securityGroupId,
+      ipProtocol: "TCP",
+      fromPort: cachePort,
+      toPort: cachePort,
+      description: 'Self referencing rule to control access to Elasticache memcached cluster',
+    }
+  );
+  selfReferenceRule.node.addDependency(newCacheSG);
+
+  addCfnSuppressRules(newCacheSG, [
+    {
+      id: "W5",
+      reason: "Egress of 0.0.0.0/0 is default and generally considered OK",
+    },
+    {
+      id: "W40",
+      reason:
+        "Egress IPProtocol of -1 is default and generally considered OK",
+    },
+  ]);
+  return newCacheSG;
+}

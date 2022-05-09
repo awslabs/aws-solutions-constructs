@@ -53,6 +53,14 @@ export function buildLambdaFunction(scope: Construct, props: BuildLambdaFunction
     }
   } else {
     if (props.vpc) {
+      const levelOneFunction: lambda.CfnFunction = props.existingLambdaObj.node.defaultChild as lambda.CfnFunction;
+      if (props.lambdaFunctionProps?.securityGroups) {
+        let ctr = 20;
+        props.lambdaFunctionProps?.securityGroups.forEach(sg => {
+          // TODO: Discuss with someone why I can't get R/O access to VpcConfigSecurityGroupIds
+          levelOneFunction.addOverride(`Properties.VpcConfig.SecurityGroupIds.${ctr++}`, sg.securityGroupId);
+        });
+      }
       if (!props.existingLambdaObj.isBoundToVpc) {
         throw Error('A Lambda function must be bound to a VPC upon creation, it cannot be added to a VPC in a subsequent construct');
       }
@@ -128,7 +136,7 @@ export function deployLambdaFunction(scope: Construct,
     finalLambdaFunctionProps = overrideProps(finalLambdaFunctionProps, {
       securityGroups: [ lambdaSecurityGroup ],
       vpc,
-    });
+    }, true);
   }
 
   const lambdafunction = new lambda.Function(scope, _functionId, finalLambdaFunctionProps);

@@ -119,3 +119,38 @@ test("Test deployment with egress rule", () => {
     ],
   });
 });
+
+test("Test self referencing security group", () => {
+  const testPort = 33333;
+  // Stack
+  const stack = new Stack();
+
+  const vpc = new ec2.Vpc(stack, "test-vpc", {});
+
+  // Helper declaration
+  defaults.CreateSelfReferencingSecurityGroup(
+    stack,
+    "testsg",
+    vpc,
+    testPort,
+  );
+
+  expect(stack).toHaveResourceLike("AWS::EC2::SecurityGroupIngress", {
+    IpProtocol: "TCP",
+    FromPort: testPort,
+    ToPort: testPort,
+    GroupId: {
+      "Fn::GetAtt": [
+        "testsgcachesg72A723EA",
+        "GroupId"
+      ]
+    },
+    SourceSecurityGroupId: {
+      "Fn::GetAtt": [
+        "testsgcachesg72A723EA",
+        "GroupId"
+      ]
+    },
+  });
+
+});

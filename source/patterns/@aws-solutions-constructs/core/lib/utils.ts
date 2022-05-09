@@ -164,15 +164,15 @@ export function addCfnSuppressRules(resource: cdk.Resource | cdk.CfnResource, ru
  *  2) clientProps value
  *  3) defaultProps value
  */
-export function consolidateProps(defaultProps: object, clientProps?: object, constructProps?: object): any {
+export function consolidateProps(defaultProps: object, clientProps?: object, constructProps?: object, concatArray: boolean = false): any {
   let result: object = defaultProps;
 
   if (clientProps) {
-    result = overrideProps(result, clientProps);
+    result = overrideProps(result, clientProps, concatArray);
   }
 
   if (constructProps) {
-    result = overrideProps(result, constructProps);
+    result = overrideProps(result, constructProps, concatArray);
   }
 
   return result;
