@@ -85,8 +85,8 @@ new FargateToDynamoDB(this, "test-construct", new FargateToDynamoDBProps.Builder
 | dynamoTableProps?	| [`dynamodb.TableProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-dynamodb.TableProps.html)|Optional user provided props to override the default props for DynamoDB Table.|
 |existingTableInterface?|[`dynamodb.ITable`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-dynamodb.ITable.html)|Existing instance of DynamoDB table object or interface, providing both this and `dynamoTableProps` will cause an error.|
 | tablePermissions?	|`string`|Optional table permissions to grant to the Fargate service. One of the following may be specified: `All`, `Read`, `ReadWrite`, `Write`.|
-|tableArnEnvironmentVariableName?|`string`|Optional Name for the DynamoDB table arn environment variable set for the container.|
-|tableEnvironmentVariableName?|`string`|Optional Name for the DynamoDB table name environment variable set for the container.|
+|tableArnEnvironmentVariableName?|`string`|Optional name for the container environment variable containing the ARN for the DynamoDB table.|
+|tableEnvironmentVariableName?|`string`|Optional name for the container environment variable containing the DynamoDB table name|
 
 ## Pattern Properties
 
