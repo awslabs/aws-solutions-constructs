@@ -85,7 +85,7 @@ new FargateToSecretsmanager(this, "test-construct", new FargateToSecretsmanagerP
 |secretProps?|[`secretsmanager.SecretProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-secretsmanager.SecretProps.html)|Optional user provided props to override the default props for Secrets Manager|
 |existingSecretObj?|[`secretsmanager.Secret`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-secretsmanager.Secret.html)|Existing instance of Secrets Manager Secret object, If this is set then the secretProps is ignored|
 |grantWriteAccess?|`boolean`|Optional write access to the Secret for the Fargate service (Read-Only by default)
-|secretEnvironmentVariableName?|`string`|Optional Name for the Secrets Manager secret environment variable set for the Fargate service.|
+|secretEnvironmentVariableName?|`string`|Optional name for the container environment variable containing the secret name.|
 
 ## Pattern Properties
 
