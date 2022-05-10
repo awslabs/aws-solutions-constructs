@@ -13,8 +13,10 @@
 
 // Imports
 import { Stack } from "@aws-cdk/core";
+import * as sqs from '@aws-cdk/aws-sqs';
 import * as defaults from '../';
 import '@aws-cdk/assert/jest';
+import { buildDeadLetterQueue } from "../lib/sqs-helper";
 
 // --------------------------------------------------------------
 // Test deployment w/ imported encryption key
@@ -56,4 +58,94 @@ test('Test deployment without imported encryption key', () => {
     QueueName: "existing-queue",
     KmsMasterKeyId: "alias/aws/sqs"
   });
+});
+
+// --------------------------------------------------------------
+// Test deployment w/ construct created encryption key
+// --------------------------------------------------------------
+test('Test deployment w/ construct created encryption key', () => {
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  const [queue, key] = defaults.buildQueue(stack, 'existing-queue', {
+    queueProps: {
+      queueName: 'existing-queue'
+    },
+    enableEncryptionWithCustomerManagedKey: true,
+  });
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    QueueName: "existing-queue"
+  });
+  expect(stack).toHaveResource("AWS::KMS::Key", {
+    EnableKeyRotation: true
+  });
+  expect(queue).toBeDefined();
+  expect(key).toBeDefined();
+});
+
+test('Test DLQ when existing Queue Provided', () => {
+  const stack = new Stack();
+
+  const existingQueue = new sqs.Queue(stack, 'test-queue');
+  const buildDlqProps: defaults.BuildDeadLetterQueueProps = {
+    existingQueueObj: existingQueue,
+  };
+
+  const returnedQueueu = defaults.buildDeadLetterQueue(stack, buildDlqProps);
+
+  expect(returnedQueueu).toBeUndefined();
+  expect(stack).toCountResources("AWS::SQS::Queue", 1);
+});
+
+test('Test DLQ with all defaults', () => {
+  const stack = new Stack();
+
+  buildDeadLetterQueue(stack, {});
+  expect(stack).toHaveResourceLike("AWS::SQS::Queue", {
+    KmsMasterKeyId: "alias/aws/sqs"
+  });
+});
+
+test("Test DLQ with a provided properties", () => {
+  const stack = new Stack();
+  const testQueueName = "test-unique252";
+
+  const returnedQueue = buildDeadLetterQueue(stack, {
+    deadLetterQueueProps: {
+      queueName: testQueueName,
+    },
+  });
+  expect(stack).toHaveResourceLike("AWS::SQS::Queue", {
+    QueueName: testQueueName,
+  });
+  expect(returnedQueue).toBeDefined();
+});
+
+test('Test DLQ with a provided maxReceiveCount', () => {
+  const stack = new Stack();
+  const testMaxReceiveCount = 31;
+
+  const dlqInterface = buildDeadLetterQueue(stack, {
+    maxReceiveCount: testMaxReceiveCount
+  });
+  expect(dlqInterface?.maxReceiveCount).toEqual(testMaxReceiveCount);
+});
+
+test('Test returning an existing Queue', () => {
+  const stack = new Stack();
+  const testQueueName = 'existing-queue';
+
+  const existingQueue = new sqs.Queue(stack, 'test-queue', {
+    queueName: testQueueName
+  });
+
+  const [returnedQueue] = defaults.buildQueue(stack, 'newQueue', {
+    existingQueueObj: existingQueue
+  });
+
+  expect(stack).toHaveResourceLike("AWS::SQS::Queue", {
+    QueueName: testQueueName,
+  });
+  expect(existingQueue.queueName).toEqual(returnedQueue.queueName);
 });
