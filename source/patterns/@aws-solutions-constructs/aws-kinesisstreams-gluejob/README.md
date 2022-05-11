@@ -161,4 +161,4 @@ Out of the box implementation of the Construct without any override will set the
 
 A sample use case which uses this pattern is available under [`use_cases/aws-custom-glue-etl`](https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-custom-glue-etl).
 
-&copy; Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+&copy; Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.

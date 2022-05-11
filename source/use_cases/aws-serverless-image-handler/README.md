@@ -54,4 +54,4 @@ new ServerlessImageHandler(this, 'ServerlessImageHandlerPattern', {
 ![Architecture Diagram](architecture.png)
 
 ***
-&copy; Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+&copy; Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
