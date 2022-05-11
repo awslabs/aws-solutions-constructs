@@ -93,7 +93,7 @@ new FargateToSsmstringparameter(this, "test-construct", new FargateToSsmstringpa
 |existingStringParameterObj?|[`ssm.StringParameter`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ssm.StringParameter.html)|Existing instance of SSM String parameter object, providing both this and `stringParameterProps` will cause an error|
 |stringParameterProps?|[`ssm.StringParameterProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ssm.StringParameterProps.html)|Optional user provided props to override the default props for SSM String parameter. If existingStringParameterObj is not set stringParameterProps is required. The only supported [`ssm.StringParameterProps.type`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ssm.StringParameterProps.html#type) is [`STRING`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ssm.ParameterType.html#string) if a different value is provided it will be overridden.|
 |stringParameterPermissions?|`string`|Optional SSM String parameter permissions to grant to the Fargate service. One of the following may be specified: "Read", "ReadWrite".
-|stringParameterEnvironmentVariableName?|`string`|Optional Name for the SSM parameter name environment variable set for the container.|
+|stringParameterEnvironmentVariableName?|`string`|Optional Name for the container environment variable set to the SSM parameter name. Default: SSM_STRING_PARAMETER_NAME |
 
 ## Pattern Properties
 
