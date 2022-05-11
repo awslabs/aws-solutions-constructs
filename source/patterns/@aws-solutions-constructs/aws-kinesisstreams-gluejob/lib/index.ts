@@ -50,7 +50,7 @@ export interface KinesisstreamsToGluejobProps {
    * The ETL script can be provided either under glue.CfnJob.JobCommandProperty or set as an Asset instance under
    * @KinesisstreamsToGluejobProps.etlCodeAsset.
    *
-   * If an S3 location is know and exists, provide the S3 URLin the `scriptLocation` attribute in glue.CfnJob.JobCommandProperty as an
+   * If an S3 location is know and exists, provide the S3 URL in the `scriptLocation` attribute in glue.CfnJob.JobCommandProperty as an
    * S3 format URL (example: `s3://bucketname/keyprefix.py`)
    *
    * If the ETL script exists as a local files or directories, create an instance of the Asset (aws-cdk-lib » aws_s3_assets) class
