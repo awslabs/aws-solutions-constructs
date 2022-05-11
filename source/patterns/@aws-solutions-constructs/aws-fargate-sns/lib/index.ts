@@ -107,13 +107,13 @@ export interface FargateToSnsProps {
    */
   readonly topicProps?: sns.TopicProps;
   /**
-   * Optional name for the container environment variable containing the ARN of the topic.
+   * Optional Name for the container environment variable set to the ARN of the topic.
    *
    * @default - SNS_TOPIC_ARN
    */
   readonly topicArnEnvironmentVariableName?: string;
   /**
-   * Optional name for the container environment variable containing the name of the topic.
+   * Optional Name for the container environment variable set to the name of the topic.
    *
    * @default - SNS_TOPIC_NAME
    */

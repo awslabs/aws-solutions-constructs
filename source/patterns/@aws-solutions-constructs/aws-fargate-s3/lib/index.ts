@@ -128,13 +128,13 @@ export interface FargateToS3Props {
    */
   readonly bucketPermissions?: string[];
   /**
-   * Optional name for the container environment variable containing the bucket ARN.
+   * Optional Name for the container environment variable set to the bucket ARN.
    *
    * @default - S3_BUCKET_ARN
    */
   readonly bucketArnEnvironmentVariableName?: string;
   /**
-   * Optional name for the container environment variable containing the bucket name.
+   * Optional Name for the container environment variable set to the bucket name.
    *
    * @default - S3_BUCKET_NAME
    */

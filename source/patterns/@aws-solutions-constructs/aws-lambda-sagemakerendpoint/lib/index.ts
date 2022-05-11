@@ -36,25 +36,25 @@ export interface LambdaToSagemakerEndpointProps {
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
-   * Existing Sagemaker Enpoint object, providing both this and endpointProps will cause an error.
+   * Existing SageMaker Enpoint object, providing both this and endpointProps will cause an error.
    *
    * @default - None
    */
   readonly existingSagemakerEndpointObj?: sagemaker.CfnEndpoint;
   /**
-   * User provided props to create Sagemaker Model
+   * User provided props to create SageMaker Model
    *
    * @default - None
    */
   readonly modelProps?: sagemaker.CfnModelProps | any;
   /**
-   * User provided props to create Sagemaker Endpoint Configuration
+   * User provided props to create SageMaker Endpoint Configuration
    *
    * @default - Default props are used
    */
   readonly endpointConfigProps?: sagemaker.CfnEndpointConfigProps;
   /**
-   * User provided props to create Sagemaker Endpoint
+   * User provided props to create SageMaker Endpoint
    *
    * @default - Default props are used
    */
@@ -78,7 +78,7 @@ export interface LambdaToSagemakerEndpointProps {
    */
   readonly deployVpc?: boolean;
   /**
-   * Optional name for the Lambda function environment variable containing the name of the Sagemaker endpoint.
+   * Optional Name for the Lambda function environment variable set to the name of the SageMaker endpoint.
    *
    * @default - SAGEMAKER_ENDPOINT_NAME
    */
@@ -123,13 +123,13 @@ export class LambdaToSagemakerEndpoint extends Construct {
         },
       });
 
-      // Add S3 VPC Gateway Endpoint, required by Sagemaker to access Models artifacts via AWS private network
+      // Add S3 VPC Gateway Endpoint, required by SageMaker to access Models artifacts via AWS private network
       defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.S3);
-      // Add SAGEMAKER_RUNTIME VPC Interface Endpoint, required by the lambda function to invoke the Sagemaker endpoint
+      // Add SAGEMAKER_RUNTIME VPC Interface Endpoint, required by the lambda function to invoke the SageMaker endpoint
       defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.SAGEMAKER_RUNTIME);
     }
 
-    // Build Sagemaker Endpoint (inclduing Sagemaker's Endpoint Configuration and Model)
+    // Build SageMaker Endpoint (inclduing SageMaker's Endpoint Configuration and Model)
     [this.sagemakerEndpoint, this.sagemakerEndpointConfig, this.sagemakerModel] = defaults.BuildSagemakerEndpoint(
       this,
       {

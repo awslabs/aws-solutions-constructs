@@ -120,13 +120,13 @@ export interface FargateToDynamoDBProps {
    */
   readonly tablePermissions?: string
   /**
-   * Optional name for the container environment variable containing the ARN for the DynamoDB table.
+   * Optional Name for the container environment variable set to the ARN for the DynamoDB table.
    *
    * @default - DYNAMODB_TABLE_ARN
    */
   readonly tableArnEnvironmentVariableName?: string;
   /**
-   * Optional name for the container environment variable containing the name of the DynamoDB table.
+   * Optional Name for the container environment variable set to the name of the DynamoDB table.
    *
    * @default - DYNAMODB_TABLE_NAME
    */

@@ -87,8 +87,8 @@ new FargateToSqs(this, "test_construct", new FargateToSqsProps.Builder()
 |deployDeadLetterQueue?|boolean|Whether to create a secondary queue to be used as a dead letter queue. Defaults to `true`.|
 |deadLetterQueueProps?|[sqs.QueueProps](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sqs.QueueProps.html)|Optional user-provided props to override the default props for the dead letter queue. Only used if the `deployDeadLetterQueue` property is set to true.|
 |maxReceiveCount?|integer|The number of times a message can be unsuccessfully dequeued before being moved to the dead letter queue. Defaults to `15`.|
-|queueUrlEnvironmentVariableName?|string|Optional name for the container environment variable containing the url of the queue. Default: SQS_QUEUE_ARN |
-|queueArnEnvironmentVariableName?|string|Optional name for the container environment variable containing the arn of the queue. Default: SQS_QUEUE_NAME |
+|queueUrlEnvironmentVariableName?|string|Optional Name for the container environment variable set to theURLof the queue. Default: SQS_QUEUE_URL |
+|queueArnEnvironmentVariableName?|string|Optional Name for the container environment variable set to the arn of the queue. Default: SQS_QUEUE_ARN |
 |queuePermissions?|`string[]`|Optional queue permissions to grant to the Fargate service. One or more of the following may be specified: `Read`,`Write`. Default is `Write`|
 
 

@@ -122,23 +122,23 @@ new LambdaToSagemakerEndpoint(this, "LambdaToSagemakerEndpointPattern",
 |:-------------|:----------------|-----------------|
 |existingLambdaObj?|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)|An optional, existing Lambda function to be used instead of the default function. Providing both this and `lambdaFunctionProps` will cause an error.|
 |lambdaFunctionProps?|[`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.FunctionProps.html)|Optional user-provided properties to override the default properties for the Lambda function.|
-|existingSagemakerEndpointObj?|[`sagemaker.CfnEndpoint`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sagemaker.CfnEndpoint.html)|An optional, existing Sagemaker Enpoint to be used. Providing both this and `endpointProps?` will cause an error.|
-|modelProps?|[`sagemaker.CfnModelProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sagemaker.CfnModelProps.html) \| `any`|User-provided properties to override the default properties for the Sagemaker Model. At least `modelProps?.primaryContainer` must be provided to create a model. By default, the pattern will create a role with the minimum required permissions, but the client can provide a custom role with additional capabilities using `modelProps?.executionRoleArn`.|
-|endpointConfigProps?|[`sagemaker.CfnEndpointConfigProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sagemaker.CfnEndpointConfigProps.html)|Optional user-provided properties to override the default properties for the Sagemaker Endpoint Config. |
-|endpointProps?|[`sagemaker.CfnEndpointProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sagemaker.CfnEndpointProps.html)| Optional user-provided properties to override the default properties for the Sagemaker Endpoint Config. |
-|existingVpc?|[`ec2.IVpc`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.IVpc.html)|An optional, existing VPC into which this construct should be deployed. When deployed in a VPC, the Lambda function and Sagemaker Endpoint will use ENIs in the VPC to access network resources. An Interface Endpoint will be created in the VPC for Amazon Sagemaker Runtime, and Amazon S3 VPC Endpoint. If an existing VPC is provided, the `deployVpc?` property cannot be `true`.|
+|existingSagemakerEndpointObj?|[`sagemaker.CfnEndpoint`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sagemaker.CfnEndpoint.html)|An optional, existing SageMaker Enpoint to be used. Providing both this and `endpointProps?` will cause an error.|
+|modelProps?|[`sagemaker.CfnModelProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sagemaker.CfnModelProps.html) \| `any`|User-provided properties to override the default properties for the SageMaker Model. At least `modelProps?.primaryContainer` must be provided to create a model. By default, the pattern will create a role with the minimum required permissions, but the client can provide a custom role with additional capabilities using `modelProps?.executionRoleArn`.|
+|endpointConfigProps?|[`sagemaker.CfnEndpointConfigProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sagemaker.CfnEndpointConfigProps.html)|Optional user-provided properties to override the default properties for the SageMaker Endpoint Config. |
+|endpointProps?|[`sagemaker.CfnEndpointProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sagemaker.CfnEndpointProps.html)| Optional user-provided properties to override the default properties for the SageMaker Endpoint Config. |
+|existingVpc?|[`ec2.IVpc`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.IVpc.html)|An optional, existing VPC into which this construct should be deployed. When deployed in a VPC, the Lambda function and Sagemaker Endpoint will use ENIs in the VPC to access network resources. An Interface Endpoint will be created in the VPC for Amazon SageMaker Runtime, and Amazon S3 VPC Endpoint. If an existing VPC is provided, the `deployVpc?` property cannot be `true`.|
 |vpcProps?|[`ec2.VpcProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.VpcProps.html)|Optional user-provided properties to override the default properties for the new VPC. `enableDnsHostnames`, `enableDnsSupport`, `natGateways` and `subnetConfiguration` are set by the Construct, so any values for those properties supplied here will be overrriden. If `deployVpc?` is not `true` then this property will be ignored.|
 |deployVpc?|`boolean`|Whether to create a new VPC based on `vpcProps` into which to deploy this pattern. Setting this to true will deploy the minimal, most private VPC to run the pattern:<ul><li> One isolated subnet in each Availability Zone used by the CDK program</li><li>`enableDnsHostnames` and `enableDnsSupport` will both be set to true</li></ul>If this property is `true` then `existingVpc` cannot be specified. Defaults to `false`.|
-|sagemakerEnvironmentVariableName?|`string`|Optional name for the Lambda function environment variable containing the name of the Sagemaker endpoint. Default: SAGEMAKER_ENDPOINT_NAME |
+|sagemakerEnvironmentVariableName?|`string`|Optional Name for the Lambda function environment variable set to the name of the SageMaker endpoint. Default: SAGEMAKER_ENDPOINT_NAME |
 
 ## Pattern Properties
 
 | **Name**                 | **Type**                                                                                                                       | **Description**                                                                                                                 |
 | :----------------------- | :----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
 | lambdaFunction           | [`lambda.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)                         | Returns an instance of the Lambda function created by the pattern.                                                              |
-| sagemakerEndpoint        | [`sagemaker.CfnEndpoint`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sagemaker.CfnEndpoint.html)             | Returns an instance of the Sagemaker Endpoint created by the pattern.                                                           |
+| sagemakerEndpoint        | [`sagemaker.CfnEndpoint`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sagemaker.CfnEndpoint.html)             | Returns an instance of the SageMaker Endpoint created by the pattern.                                                           |
 | sagemakerEndpointConfig? | [`sagemaker.CfnEndpointConfig`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sagemaker.CfnEndpointConfig.html) | Returns an instance of the SageMaker EndpointConfig created by the pattern, if `existingSagemakerEndpointObj?` is not provided. |
-| sagemakerModel?          | [`sagemaker.CfnModel`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sagemaker.CfnModel.html)                   | Returns an instance of the Sagemaker Model created by the pattern, if `existingSagemakerEndpointObj?` is not provided.          |
+| sagemakerModel?          | [`sagemaker.CfnModel`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sagemaker.CfnModel.html)                   | Returns an instance of the SageMaker Model created by the pattern, if `existingSagemakerEndpointObj?` is not provided.          |
 | vpc?                     | `ec2.IVpc`                                                                                                                     | Returns an instance of the VPC created by the pattern, if `deployVpc?` is `true`, or `existingVpc?` is provided.                |
 
 ## Default settings
@@ -149,19 +149,19 @@ Out of the box implementation of the Construct without any override will set the
 
 - Configure limited privilege access IAM role for Lambda function
 - Enable reusing connections with Keep-Alive for NodeJs Lambda function
-- Allow the function to invoke the Sagemaker endpoint for Inferences
-- Configure the function to access resources in the VPC, where the Sagemaker endpoint is deployed
+- Allow the function to invoke the SageMaker endpoint for Inferences
+- Configure the function to access resources in the VPC, where the SageMaker endpoint is deployed
 - Enable X-Ray Tracing
 - Set environment variables:
   - (default) SAGEMAKER_ENDPOINT_NAME
   - AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x and higher functions).
 
-### Amazon Sagemaker Endpoint
+### Amazon SageMaker Endpoint
 
-- Configure limited privilege to create Sagemaker resources
-- Deploy Sagemaker model, endpointConfig, and endpoint
-- Configure the Sagemaker endpoint to be deployed in a VPC
-- Deploy S3 VPC Endpoint and Sagemaker Runtime VPC Interface
+- Configure limited privilege to create SageMaker resources
+- Deploy SageMaker model, endpointConfig, and endpoint
+- Configure the SageMaker endpoint to be deployed in a VPC
+- Deploy S3 VPC Endpoint and SageMaker Runtime VPC Interface
 
 ## Architecture
 

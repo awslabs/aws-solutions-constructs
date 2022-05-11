@@ -123,7 +123,7 @@ export interface FargateToStepfunctionsProps {
    */
   readonly logGroupProps?: logs.LogGroupProps;
   /**
-   * Optional name for the container environment variable containing the ARN of the state machine.
+   * Optional Name for the container environment variable set to the ARN of the state machine.
    *
    * @default - STATE_MACHINE_ARN
    */

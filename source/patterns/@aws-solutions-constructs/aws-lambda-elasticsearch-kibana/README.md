@@ -104,7 +104,7 @@ new LambdaToElasticSearchAndKibana(this, "sample",
 |domainName|`string`|Domain name for the Cognito and the Elasticsearch Service|
 |cognitoDomainName?|`string`|Optional Cognito Domain Name, if provided it will be used for Cognito Domain, and domainName will be used for the Elasticsearch Domain|
 |createCloudWatchAlarms|`boolean`|Whether to create recommended CloudWatch alarms|
-|domainEndpointEnvironmentVariableName?|`string`|Optional name for the Lambda function environment variable containing the domain endpoint. Default: DOMAIN_ENDPOINT |
+|domainEndpointEnvironmentVariableName?|`string`|Optional Name for the Lambda function environment variable set to the domain endpoint. Default: DOMAIN_ENDPOINT |
 
 ## Pattern Properties
 

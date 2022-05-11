@@ -61,7 +61,7 @@ export interface LambdaToEventbridgeProps {
    */
   readonly deployVpc?: boolean;
   /**
-   * Optional name for the Lambda function environment variable containing the name of the Event bus.
+   * Optional Name for the Lambda function environment variable set to the name of the Event bus.
    *
    * @default - EVENTBUS_NAME
    */
