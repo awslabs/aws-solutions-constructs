@@ -78,9 +78,9 @@ export interface LambdaToSagemakerEndpointProps {
    */
   readonly deployVpc?: boolean;
   /**
-   * Optional Name for the SageMaker endpoint environment variable set for the Lambda function.
+   * Optional name for the Lambda function environment variable containing the name of the Sagemaker endpoint.
    *
-   * @default - None
+   * @default - SAGEMAKER_ENDPOINT_NAME
    */
   readonly sagemakerEnvironmentVariableName?: string;
 }

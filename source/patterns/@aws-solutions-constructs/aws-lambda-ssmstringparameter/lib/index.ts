@@ -62,7 +62,7 @@ export interface LambdaToSsmstringparameterProps {
    */
   readonly deployVpc?: boolean;
   /**
-   * Optional Name for the SSM String parameter environment variable set for the Lambda function.
+   * Optional name for the Lambda function environment variable containing the name of the parameter.
    *
    * @default - SSM_STRING_PARAMETER_NAME
    */

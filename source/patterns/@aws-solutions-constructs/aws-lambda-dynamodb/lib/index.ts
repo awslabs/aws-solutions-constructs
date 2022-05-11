@@ -54,9 +54,9 @@ export interface LambdaToDynamoDBProps {
    */
   readonly tablePermissions?: string;
   /**
-   * Optional Name for the DynamoDB table environment variable set for the Lambda function.
+   * Optional name for the Lambda function environment variable containing the name of the DynamoDB table.
    *
-   * @default - None
+   * @default - DDB_TABLE_NAME
    */
   readonly tableEnvironmentVariableName?: string;
   /**

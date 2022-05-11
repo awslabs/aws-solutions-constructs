@@ -120,9 +120,9 @@ export interface FargateToSsmstringparameterProps {
    */
   readonly stringParameterPermissions?: string
   /**
-   * Optional Name for the SSM parameter name environment variable set for the container.
+   * Optional name for the container environment variable containing the SSM parameter name.
    *
-   * @default - None
+   * @default - SSM_STRING_PARAMETER_NAME
    */
   readonly stringParameterEnvironmentVariableName?: string;
 }

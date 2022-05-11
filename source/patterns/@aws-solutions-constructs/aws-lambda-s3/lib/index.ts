@@ -69,9 +69,9 @@ export interface LambdaToS3Props {
    */
   readonly deployVpc?: boolean;
   /**
-   * Optional name for the S3 bucket environment variable set for the Lambda function.
+   * Optional name for the Lambda function environment variable containing the name of the bucket.
    *
-   * @default - None
+   * @default - S3_BUCKET_NAME
    */
   readonly bucketEnvironmentVariableName?: string;
   /**

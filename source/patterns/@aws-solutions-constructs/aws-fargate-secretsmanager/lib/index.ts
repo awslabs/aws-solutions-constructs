@@ -121,7 +121,7 @@ export interface FargateToSecretsmanagerProps {
    */
   readonly grantWriteAccess?: string
   /**
-   * Optional Name for container environment variable containing the ARN of the secret.
+   * Optional name for the container environment variable containing the ARN of the secret.
    *
    * @default - SECRET_ARN
    */

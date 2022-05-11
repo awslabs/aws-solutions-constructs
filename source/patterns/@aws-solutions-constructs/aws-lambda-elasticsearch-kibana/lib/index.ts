@@ -62,9 +62,9 @@ export interface LambdaToElasticSearchAndKibanaProps {
    */
   readonly createCloudWatchAlarms?: boolean;
   /**
-   * Optional Name for the ElasticSearch domain endpoint environment variable set for the Lambda function.
+   * Optional name for the Lambda function environment variable containing the domain endpoint.
    *
-   * @default - None
+   * @default - DOMAIN_ENDPOINT
    */
   readonly domainEndpointEnvironmentVariableName?: string;
 }

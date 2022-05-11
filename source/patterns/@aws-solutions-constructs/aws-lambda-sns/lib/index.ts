@@ -62,15 +62,15 @@ export interface LambdaToSnsProps {
    */
   readonly deployVpc?: boolean;
   /**
-   * Optional Name for the SNS topic arn environment variable set for the Lambda function.
+   * Optional name for the Lambda function environment variable containing the arn of the Topic.
    *
-   * @default - None
+   * @default - SNS_TOPIC_ARN
    */
   readonly topicArnEnvironmentVariableName?: string;
   /**
-   * Optional Name for the SNS topic name environment variable set for the Lambda function.
+   * Optional name for the Lambda function environment variable containing the name of the Topic.
    *
-   * @default - None
+   * @default - SNS_TOPIC_NAME
    */
   readonly topicNameEnvironmentVariableName?: string;
 }

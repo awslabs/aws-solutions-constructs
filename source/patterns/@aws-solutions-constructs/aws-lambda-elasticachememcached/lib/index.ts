@@ -50,7 +50,7 @@ export interface LambdaToElasticachememcachedProps {
    */
   readonly vpcProps?: ec2.VpcProps;
   /**
-   * Optional Name for the Elasticache Endpoint environment variable
+   * Optional name for the Lambda function environment variable containing the cache endpoint.
    *
    * @default - CACHE_ENDPOINT
    */

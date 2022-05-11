@@ -85,9 +85,9 @@ export interface LambdaToSqsToLambdaProps {
    */
   readonly consumerLambdaFunctionProps?: lambda.FunctionProps;
   /**
-   * Optional Name for the SQS queue URL environment variable set for the producer Lambda function.
+   * Optional name for the Lambda function environment variable containing the URL of the queue.
    *
-   * @default - None
+   * @default - SQS_QUEUE_URL
    */
   readonly queueEnvironmentVariableName?: string;
   /**

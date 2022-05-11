@@ -102,7 +102,7 @@ new FargateToStepfunctions(this, "test-construct", new FargateToStepfunctionsPro
 |stateMachineProps|[`sfn.StateMachineProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-stepfunctions.StateMachineProps.html)|User provided props to override the default props for sfn.StateMachine.|
 | createCloudWatchAlarms? | `boolean`|Whether to create recommended CloudWatch alarms. Default is true.|
 |logGroupProps?|[`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-logs.LogGroupProps.html)|Optional user provided props to override the default props for for the CloudWatchLogs LogGroup.|
-|stateMachineEnvironmentVariableName?|`string`|Optional name for the container environment variable containing the ARN of the state machine.|
+|stateMachineEnvironmentVariableName?|`string`|Optional name for the container environment variable containing the ARN of the state machine. Default: STATE_MACHINE_ARN |
 
 ## Pattern Properties
 
