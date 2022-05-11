@@ -16,7 +16,7 @@ import { Stack } from "@aws-cdk/core";
 import * as sqs from '@aws-cdk/aws-sqs';
 import * as defaults from '../';
 import '@aws-cdk/assert/jest';
-import { buildDeadLetterQueue } from "../lib/sqs-helper";
+import { buildDeadLetterQueue, buildQueue } from "../lib/sqs-helper";
 
 // --------------------------------------------------------------
 // Test deployment w/ imported encryption key
@@ -148,4 +148,33 @@ test('Test returning an existing Queue', () => {
     QueueName: testQueueName,
   });
   expect(existingQueue.queueName).toEqual(returnedQueue.queueName);
+});
+
+test('Test creating a queue with a DLQ', () => {
+  const stack = new Stack();
+
+  const dlqInterface = buildDeadLetterQueue(stack, {});
+
+  const [newQueue] = buildQueue(stack, 'new-queue', {
+    deadLetterQueue: dlqInterface
+  });
+
+  expect(stack).toCountResources("AWS::SQS::Queue", 2);
+  expect(newQueue).toBeDefined();
+  expect(newQueue.deadLetterQueue).toBeDefined();
+});
+
+test('Test creating a FIFO queue', () => {
+  const stack = new Stack();
+
+  const [newFifoQueue] = buildQueue(stack, 'new-queue', {
+    queueProps: {
+      fifo: true
+    }
+  });
+
+  expect(stack).toHaveResourceLike("AWS::SQS::Queue", {
+    FifoQueue: true
+  });
+  expect(newFifoQueue.fifo).toBe(true);
 });
