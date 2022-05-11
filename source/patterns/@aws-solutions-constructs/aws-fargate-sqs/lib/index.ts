@@ -138,7 +138,7 @@ export interface FargateToSqsProps {
    */
   readonly queueArnEnvironmentVariableName?: string;
   /**
-   * Optional Name for the container environment variable set to the URLof the queue.
+   * Optional Name for the container environment variable set to the URL of the queue.
    *
    * @default - SQS_QUEUE_URL
    */
