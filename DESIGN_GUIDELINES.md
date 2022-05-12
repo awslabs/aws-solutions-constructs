@@ -184,7 +184,7 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 
 | Name    | Type | Description | Notes    |
 | --- | --- | --- | --- |
-| eventsRule | [`events.Rule`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-events.Rule.html)|Returns an instance of `events.Rule` created by the construct. |
+| eventsRule | [`events.Rule`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-events.Rule.html)|Returns an instance of `events.Rule` created by the construct. Only exposed when EventBridge is the soure of events, not exposed when other services (Lambda, Fargate) are triggering events. |
 | eventBus?	| [`events.IEventBus`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-events.IEventBus.html)|Returns the instance of `events.IEventBus` used by the construct| Required only for non-default Event Buses.|
 
 ## Fargate
