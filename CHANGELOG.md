@@ -4,11 +4,11 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [1.155.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.7.0...v1.155.0) (2022-05-13)
 
+* Upgraded all patterns to CDK v1.155.0
 
 ### Features
 
 * **aws-fargate-stepfunctions:** new construct ([#677](https://github.com/awslabs/aws-solutions-constructs/issues/677)) ([f4829ba](https://github.com/awslabs/aws-solutions-constructs/commit/f4829ba1af3643a8b42bb74af9dfa8207d383da3))
-
 
 ### Bug Fixes
 
