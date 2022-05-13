@@ -132,15 +132,15 @@ export interface FargateToSqsProps {
    */
   readonly maxReceiveCount?: number;
   /**
-   * Optional Name for the SQS queue ARN environment variable to set for the container.
+   * Optional Name for the container environment variable set to the arn of the queue.
    *
-   * @default - None
+   * @default - SQS_QUEUE_ARN
    */
   readonly queueArnEnvironmentVariableName?: string;
   /**
-   * Optional Name for the SQS queue name environment variable to set for the container.
+   * Optional Name for the container environment variable set to the URL of the queue.
    *
-   * @default - None
+   * @default - SQS_QUEUE_URL
    */
   readonly queueUrlEnvironmentVariableName?: string;
   /**

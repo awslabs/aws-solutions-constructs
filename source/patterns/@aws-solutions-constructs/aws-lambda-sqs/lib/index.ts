@@ -85,9 +85,9 @@ export interface LambdaToSqsProps {
    */
   readonly deployVpc?: boolean;
   /**
-   * Optional Name for the SQS queue URL environment variable set for the Lambda function.
+   * Optional Name for the Lambda function environment variable set to the URL of the queue.
    *
-   * @default - None
+   * @default - SQS_QUEUE_URL
    */
   readonly queueEnvironmentVariableName?: string;
 }

@@ -104,7 +104,7 @@ new LambdaToElasticSearchAndKibana(this, "sample",
 |domainName|`string`|Domain name for the Cognito and the Elasticsearch Service|
 |cognitoDomainName?|`string`|Optional Cognito Domain Name, if provided it will be used for Cognito Domain, and domainName will be used for the Elasticsearch Domain|
 |createCloudWatchAlarms|`boolean`|Whether to create recommended CloudWatch alarms|
-|domainEndpointEnvironmentVariableName?|`string`|Optional Name for the ElasticSearch domain endpoint environment variable set for the Lambda function.|
+|domainEndpointEnvironmentVariableName?|`string`|Optional Name for the Lambda function environment variable set to the domain endpoint. Default: DOMAIN_ENDPOINT |
 
 ## Pattern Properties
 
@@ -149,4 +149,4 @@ Out of the box implementation of the Construct without any override will set the
 ![Architecture Diagram](architecture.png)
 
 ***
-&copy; Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+&copy; Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.

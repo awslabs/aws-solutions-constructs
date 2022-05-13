@@ -184,7 +184,7 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 
 | Name    | Type | Description | Notes    |
 | --- | --- | --- | --- |
-| eventsRule | [`events.Rule`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-events.Rule.html)|Returns an instance of `events.Rule` created by the construct. |
+| eventsRule | [`events.Rule`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-events.Rule.html)|Returns an instance of `events.Rule` created by the construct. Only exposed when EventBridge is the soure of events, not exposed when other services (Lambda, Fargate) are triggering events. |
 | eventBus?	| [`events.IEventBus`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-events.IEventBus.html)|Returns the instance of `events.IEventBus` used by the construct| Required only for non-default Event Buses.|
 
 ## Fargate
@@ -347,14 +347,14 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | Name    | Type     | Description | Notes    |
 | --- | --- | --- |--- |
 | stateMachineProps	|[`sfn.StateMachineProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-stepfunctions.StateMachineProps.html)|Optional user provided props to override the default props for `sfn.StateMachine`|
-| createCloudWatchAlarms | `boolean`|Whether to create recommended CloudWatch alarms.|
+| createCloudWatchAlarms? | `boolean`|Whether to create recommended CloudWatch alarms.|
 
 **Required Construct Properties**
 
 | Name    | Type     | Description | Notes    |
 | --- | --- | --- |--- |
 | stateMachine| [`sfn.StateMachine`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-stepfunctions.StateMachine.html)|Returns an instance of `sfn.StateMachine` created by the construct.|
-| stateMachineLoggingGroup|[`logs.ILogGroup`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-logs.ILogGroup.html)|Returns an instance of the `logs.ILogGroup` created by the construct for StateMachine.|
+| stateMachineLogGroup|[`logs.ILogGroup`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-logs.ILogGroup.html)|Returns an instance of the `logs.ILogGroup` created by the construct for StateMachine.|
 | cloudwatchAlarms? | [`cloudwatch.Alarm[]`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudwatch.Alarm.html)|Returns a list of `cloudwatch.Alarm` created by the construct.|
 
 ## VPC
