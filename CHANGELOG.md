@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.156.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.7.0...v1.156.0) (2022-05-13)
+
+
+### Features
+
+* **aws-fargate-stepfunctions:** new construct ([#677](https://github.com/awslabs/aws-solutions-constructs/issues/677)) ([f4829ba](https://github.com/awslabs/aws-solutions-constructs/commit/f4829ba1af3643a8b42bb74af9dfa8207d383da3))
+
+
+### Bug Fixes
+
+* **Test Coverage:** Improve test coverage of 2 core files ([#691](https://github.com/awslabs/aws-solutions-constructs/issues/691)) ([0ea1743](https://github.com/awslabs/aws-solutions-constructs/commit/0ea1743ca1de577ab02ecd3ad0ef67fa56e51a90))
+
 ## [1.155.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.7.0...v1.155.0) (2022-05-13)
 
 * Upgraded all patterns to CDK v1.155.0
