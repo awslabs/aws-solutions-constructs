@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file. See [standa
 ### Bug Fixes
 
 * **Test Coverage:** Improve test coverage of 2 core files ([#691](https://github.com/awslabs/aws-solutions-constructs/issues/691)) ([0ea1743](https://github.com/awslabs/aws-solutions-constructs/commit/0ea1743ca1de577ab02ecd3ad0ef67fa56e51a90))
+* **@types/prettier** Pin library to version 2.6.0 of @types/prettier
 
 ## [1.154.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.6.0...v1.154.0) (2022-05-08)
 
