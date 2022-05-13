@@ -17,13 +17,19 @@ import { SnsToSqs, SnsToSqsProps } from "../lib";
 import * as iam from '@aws-cdk/aws-iam';
 import * as sns from '@aws-cdk/aws-sns';
 import * as sqs from '@aws-cdk/aws-sqs';
+import * as kms from '@aws-cdk/aws-kms';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-sns-sqs';
-const dlq = new sqs.Queue(stack, 'existing-dlq-obj', {});
+const sqsEncryptionKey = new kms.Key(stack, 'ImportedSQSEncryptionKey', {
+  enableKeyRotation: true
+});
+const dlq = new sqs.Queue(stack, 'existing-dlq-obj', {
+  encryptionMasterKey: sqsEncryptionKey
+});
 
 // Definitions
 const props: SnsToSqsProps = {
@@ -53,8 +59,8 @@ const snsToSqsStack = new SnsToSqs(stack, 'test-sns-sqs-stack', props);
 const policyStatement = new iam.PolicyStatement({
   actions: ["kms:Encrypt", "kms:Decrypt"],
   effect: iam.Effect.ALLOW,
-  principals: [ new iam.AccountRootPrincipal() ],
-  resources: [ "*" ]
+  principals: [new iam.AccountRootPrincipal()],
+  resources: ["*"]
 });
 
 snsToSqsStack.encryptionKey?.addToResourcePolicy(policyStatement);
