@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.156.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.7.0...v1.156.0) (2022-05-13)
+
+### Features
+
+* Upgraded all patterns to CDK v1.156.0
+* Pinned @types/prettier to 2.6.0 in core
+
 ## [1.155.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.7.0...v1.155.0) (2022-05-13)
 
 * Upgraded all patterns to CDK v1.155.0
