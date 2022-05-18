@@ -22,6 +22,7 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-fargate-s3`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.fargates3`|
 
+## Overview
 This AWS Solutions Construct implements an AWS Fargate service that can write/read to an Amazon S3 Bucket
 
 Here is a minimal deployable pattern definition:

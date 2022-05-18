@@ -22,12 +22,13 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-iot-lambda`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.iotlambda`|
 
+## Overview
 This AWS Solutions Construct implements an AWS IoT MQTT topic rule and an AWS Lambda function pattern.
 
 Here is a minimal deployable pattern definition:
 
 Typescript
-``` javascript
+``` typescript
 import { Construct } from 'constructs';
 import { Stack, StackProps } from 'aws-cdk-lib';
 import { IotToLambdaProps, IotToLambda } from '@aws-solutions-constructs/aws-iot-lambda';
