@@ -84,8 +84,8 @@ new FargateToSns(this, "test_construct", new FargateToSnsProps.Builder()
 | existingContainerDefinitionObject? | [ecs.ContainerDefinition](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs.ContainerDefinition.html) | A container definition already instantiated as part of a Fargate service. This must be the container in the existingFargateServiceObject |
 |existingTopicObj?|[sns.Topic](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-sns.Topic.html)|Existing instance of SNS Topic object, providing both this and `topicProps` will cause an error.|
 |topicProps?|[sns.TopicProps](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sns.TopicProps.html)|Optional user provided properties to override the default properties for the SNS topic.|
-|topicArnEnvironmentVariableName?|string|Optional Name for the SNS topic arn environment variable set for the container.|
-|topicNameEnvironmentVariableName?|string|Optional Name for the SNS topic name environment variable set for the container.|
+|topicArnEnvironmentVariableName?|string|Optional Name for the container environment variable set to the ARN of the topic. Default: SNS_TOPIC_ARN |
+|topicNameEnvironmentVariableName?|string|Optional Name for the container environment variable set to the name of the topic. Default: SNS_TOPIC_NAME |
 
 ## Pattern Properties
 
