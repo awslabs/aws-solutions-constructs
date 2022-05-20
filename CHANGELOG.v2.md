@@ -4,20 +4,12 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.8.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.7.0...v2.8.0) (2022-05-20)
 
-
-### Features
-
-* **aws-fargate-stepfunctions:** new construct ([#677](https://github.com/awslabs/aws-solutions-constructs/issues/677)) ([f4829ba](https://github.com/awslabs/aws-solutions-constructs/commit/f4829ba1af3643a8b42bb74af9dfa8207d383da3))
-
-
-### Bug Fixes
-
-* **Test Coverage:** Improve test coverage of 2 core files ([#691](https://github.com/awslabs/aws-solutions-constructs/issues/691)) ([0ea1743](https://github.com/awslabs/aws-solutions-constructs/commit/0ea1743ca1de577ab02ecd3ad0ef67fa56e51a90))
-
+* Includes all functionality of V1.156.1
+* Built upon underlying CDK version V2.23.0
 ## [2.7.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.6.0...v2.7.0) (2022-05-09)
 
 * Includes all functionality of V1.154.0
-* Built upon underlying CDK version V2.15.0
+* Built upon underlying CDK version V2.23.0
 
 ## [2.6.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.5.0...v2.6.0) (2022-05-07)
 
