@@ -159,4 +159,4 @@ curl -XPOST https://<stage-id>.execute-api.<region>.amazonaws.com/prod/message/d
 
 
 ***
-&copy; Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+&copy; Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
