@@ -18,6 +18,7 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-cloudfront-s3`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.cloudfronts3`|
 
+## Overview
 This AWS Solutions Construct implements an AWS CloudFront fronting an AWS S3 Bucket.
 
 Here is a minimal deployable pattern definition:

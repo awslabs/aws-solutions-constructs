@@ -22,6 +22,7 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-iot-sqs`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.iotsqs`|
 
+## Overview
 This AWS Solutions Construct implements an AWS IoT MQTT topic rule and an AWS SQS Queue pattern.
 
 Here is a minimal deployable pattern definition:

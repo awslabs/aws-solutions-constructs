@@ -26,9 +26,9 @@
 ## Overview
 This AWS Solutions Construct implements an Amazon API Gateway REST API connected to Amazon DynamoDB table.
 
-Here is a minimal deployable pattern definition in
+Here is a minimal deployable pattern definition in:
 
-Typescript:
+Typescript
 ``` typescript
 import { Construct } from 'constructs';
 import { Stack, StackProps } from 'aws-cdk-lib';
