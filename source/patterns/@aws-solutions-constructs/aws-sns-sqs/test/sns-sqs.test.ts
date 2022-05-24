@@ -167,7 +167,7 @@ test('Test deployment with imported encryption key', () => {
   const kmsKey = new kms.Key(stack, 'imported-key', {
     enableKeyRotation: false
   });
-    // Helper declaration
+  // Helper declaration
   new SnsToSqs(stack, 'sns-to-sqs-stack', {
     enableEncryptionWithCustomerManagedKey: true,
     encryptionKey: kmsKey
@@ -319,6 +319,84 @@ test('Pattern deployment w/ existing topic and Standard queue', () => {
         ]
       },
       maxReceiveCount: 15
+    }
+  });
+});
+
+test('Check raw message delivery is true', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const props: SnsToSqsProps = {
+    sqsSubscriptionProps: {
+      rawMessageDelivery: true
+    }
+  };
+  new SnsToSqs(stack, 'test-sns-sqs', props);
+
+  expect(stack).toHaveResource("AWS::SNS::Subscription", {
+    Protocol: "sqs",
+    TopicArn: {
+      Ref: "testsnssqsSnsTopic2CD0065B"
+    },
+    Endpoint: {
+      "Fn::GetAtt": [
+        "testsnssqsqueueB02504BF",
+        "Arn"
+      ]
+    },
+    RawMessageDelivery: true
+  });
+});
+
+test('Check for filter policy', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const props: SnsToSqsProps = {
+    sqsSubscriptionProps: {
+      filterPolicy: {
+        color: sns.SubscriptionFilter.stringFilter({
+          allowlist: ['red', 'orange'],
+          matchPrefixes: ['bl'],
+        })
+      }
+    }
+  };
+
+  new SnsToSqs(stack, 'test-sns-sqs', props);
+
+  expect(stack).toHaveResource("AWS::SNS::Subscription", {
+    FilterPolicy: {
+      color: [
+        "red",
+        "orange",
+        {
+          prefix: "bl"
+        }
+      ]
+    }
+  });
+});
+
+test('Check SNS dead letter queue', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const dlq = new sqs.Queue(stack, 'existing-dlq-obj', {});
+  const props: SnsToSqsProps = {
+    sqsSubscriptionProps: {
+      deadLetterQueue: dlq
+    }
+  };
+
+  new SnsToSqs(stack, 'test-sns-sqs', props);
+
+  expect(stack).toHaveResource("AWS::SNS::Subscription", {
+    RedrivePolicy: {
+      deadLetterTargetArn: {
+        "Fn::GetAtt": [
+          "existingdlqobj784C5542",
+          "Arn"
+        ]
+      }
     }
   });
 });
