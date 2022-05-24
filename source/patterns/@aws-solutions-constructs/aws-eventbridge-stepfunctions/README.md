@@ -18,12 +18,13 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-eventbridge-stepfunctions`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.eventbridgestepfunctions`|
 
+## Overview
 This AWS Solutions Construct implements an AWS Events rule and an AWS Step Functions State Machine
 
 Here is a minimal deployable pattern definition:
 
 Typescript
-``` javascript
+``` typescript
 import { Construct } from 'constructs';
 import { Stack, StackProps, Duration } from 'aws-cdk-lib';
 import { EventbridgeToStepfunctions, EventbridgeToStepfunctionsProps } from '@aws-solutions-constructs/aws-eventbridge-stepfunctions';

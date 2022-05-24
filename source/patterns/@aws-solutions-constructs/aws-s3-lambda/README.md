@@ -18,6 +18,7 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-s3-lambda`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.s3lambda`|
 
+## Overview
 This AWS Solutions Construct implements an Amazon S3 bucket connected to an AWS Lambda function.
 
 Here is a minimal deployable pattern definition:

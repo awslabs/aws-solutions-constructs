@@ -18,6 +18,7 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-eventbridge-sns`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.eventbridgesns`|
 
+## Overview
 This AWS Solutions Construct implements an AWS Events rule and an AWS SNS Topic.
 
 Here is a minimal deployable pattern definition:
