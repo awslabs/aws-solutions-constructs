@@ -12,8 +12,7 @@
  */
 
  import { SynthUtils } from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
-import { App, Stack } from '@aws-cdk/core';
+import { App, Stack } from 'aws-cdk-lib';
 import { AwsCustomGlueEtlStack } from '../lib/aws-custom-glue-etl-stack';
 
 test('should match snapshot', () => {
