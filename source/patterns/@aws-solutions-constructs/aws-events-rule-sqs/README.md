@@ -20,6 +20,7 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-events-rule-sqs`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.eventsrulesqs`|
 
+## Overview
 This AWS Solutions Construct implements an AWS Events rule and an AWS SQS Queue.
 
 Here is a minimal deployable pattern definition:

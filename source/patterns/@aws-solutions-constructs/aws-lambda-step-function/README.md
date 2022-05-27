@@ -20,6 +20,7 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-lambda-step-function`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.lambdastepfunction`|
 
+## Overview
 This AWS Solutions Construct implements an AWS Lambda function connected to an AWS Step Function.
 
 Here is a minimal deployable pattern definition:
