@@ -12,10 +12,11 @@
  */
 
 // Imports
-import * as cdk from '@aws-cdk/core';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as ddb from '@aws-cdk/aws-dynamodb';
-import * as apigateway from '@aws-cdk/aws-apigateway';
+import { Stack, Duration } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as ddb from 'aws-cdk-lib/aws-dynamodb';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import {
   CognitoToApiGatewayToLambda
 } from '@aws-solutions-constructs/aws-cognito-apigateway-lambda';
@@ -30,10 +31,10 @@ export interface ServiceStaffStackProps {
 }
 
 // Stack
-export class ServiceStaffStack extends cdk.Stack {
-  
+export class ServiceStaffStack extends Stack {
+
   // Constructor
-  constructor(scope: cdk.Construct, id: string, props: ServiceStaffStackProps) {
+  constructor(scope: Construct, id: string, props: ServiceStaffStackProps) {
     super(scope, id);
 
     // Create a Lambda function that adds a new order to the database
@@ -42,7 +43,7 @@ export class ServiceStaffStack extends cdk.Stack {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/service-staff/create-order`),
         handler: 'index.handler',
-        timeout: cdk.Duration.seconds(15)
+        timeout: Duration.seconds(15)
       },
       existingTableObj: props.db
     });
@@ -53,7 +54,7 @@ export class ServiceStaffStack extends cdk.Stack {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/service-staff/process-payment`),
         handler: 'index.handler',
-        timeout: cdk.Duration.seconds(15)
+        timeout: Duration.seconds(15)
       },
       existingTableObj: props.db
     });
@@ -66,21 +67,21 @@ export class ServiceStaffStack extends cdk.Stack {
         description: 'Demo: Service staff API'
 	    }
     });
-    
+
     // Add a resource to the API for creating a new order
     const createOrderResource = serviceStaffApi.apiGateway.root.addResource('create-order');
     createOrderResource.addProxy({
     	defaultIntegration: new apigateway.LambdaIntegration(serviceStaffApi.lambdaFunction),
     	anyMethod: true
     });
-    
+
     // Add a resource to the API for handling payments and marking orders as paid
     const processPaymentResource = serviceStaffApi.apiGateway.root.addResource('process-payment');
     processPaymentResource.addProxy({
     	defaultIntegration: new apigateway.LambdaIntegration(processPayment.lambdaFunction),
     	anyMethod: true
     });
-    
+
     // Add the authorizers to the API
     serviceStaffApi.addAuthorizers();
   }

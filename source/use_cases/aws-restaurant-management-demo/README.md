@@ -2,13 +2,11 @@
 
 This use case is designed to be built and deployed into your account from your local environment using the AWS CDK Toolkit (or CLI). For information on the toolkit and how to install and configure it, please see the [guide](https://docs.aws.amazon.com/cdk/latest/guide/cli.html).
 
-> **IMPORTANT:** To ensure proper functionality, the AWS Solutions Constructs packages and AWS CDK packages in your project must be the same version. If you are experiencing odd behavior, check in your `package.json` file that all references to CDK modules and AWS Solutions Constructs modules have the same version number, and that none include the preceding caret `^`. Once the versions are aligned, delete `package-lock.json` and the `node_modules` folder and run `npm install` to sync the modules.
-
 ## Overview
 
-This example demonstrates how to build a complex, real-world system using AWS Solutions Constructs. It is designed to 
-accompany the webinar titled "Beyond Prototypes: Real-World Applications with AWS Solutions Constructs", which 
-can be found [here](#) (coming soon!). On its own, this use case will provision a demo restaurant management system for three user types 
+This example demonstrates how to build a complex, real-world system using AWS Solutions Constructs. It is designed to
+accompany the webinar titled "Beyond Prototypes: Real-World Applications with AWS Solutions Constructs", which
+can be found [here](#) (coming soon!). On its own, this use case will provision a demo restaurant management system for three user types
 with the various capabilities:
 
 #### Service staff
@@ -37,15 +35,23 @@ This CDK project will deploy a total of five (5) stacks into your AWS account us
 - `ManagerStack` - provisions resources that are used by one or more managers to access the system. Provides functions that allow users to view all orders (regardless of status), close-out the service for a day, and retrieve a specific report saved from a previous day's close-out.
 
 ## Setting up
-After cloning this project into your local environment, we recommend performing the following steps to deploy it into 
+After cloning this project into your local environment, we recommend performing the following steps to deploy it into
 your account:
-- Run `../../../deployment/align-version.sh` from the root level of the use case, to set the proper version numbers in the package.json file.
-- Run `npm install` to install all dependencies.
-- Run `npm run build` to build the project.
-- Run `cdk deploy --all` to initiate the deployment.
+```
+# Set the proper version numbers in the package.json file
+../../../deployment/v2/align-version.sh
 
+# Install all dependencies
+npm install
+
+# Build the project
+npm run build
+
+# Initiate deployment of all stacks
+cdk deploy --all
+```
 Note: If you are working on a clean instance or development environment, you will need to perform initial configuration
-steps for the CDK in order to deploy the project. Click [here](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html) for 
+steps for the CDK in order to deploy the project. Click [here](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html) for
 more information on getting started with the CDK.
 
 ## Business logic
@@ -75,30 +81,30 @@ refer to the `SAMPLE_REQUESTS.md` file. Mappings are provided as follows:
 
 ### Managers
 - `/get-all-orders` - GET - lists all orders, regardless of status.
-- `/close-out-service` - ANY - triggers the close-out process, invoking a Step Functions workflow that generates a 
+- `/close-out-service` - ANY - triggers the close-out process, invoking a Step Functions workflow that generates a
   sales report, calculates tips for all servers, and archives orders from DynamoDB to Redshift.
-- `/get-report` - POST - get a specific sales report from the static assets bucket.  
+- `/get-report` - POST - get a specific sales report from the static assets bucket.
   - `filename` - the filename of the report.
 
 ## Using the API
-This demo provisions an architecture that is ready to be hooked up to a front-end application of your choice/design. 
+This demo provisions an architecture that is ready to be hooked up to a front-end application of your choice/design.
 Since the three API endpoints provisioned by this architecture are secured by Cognito, it is recommended to review the
-steps listed [here](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-invoke-api-integrated-with-cognito-user-pool.html) 
+steps listed [here](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-invoke-api-integrated-with-cognito-user-pool.html)
 to call a REST API that has been integrated with a Cognito user pool.
 
-You can also find more information on how to integrate these APIs with an application powered by AWS Amplify using 
+You can also find more information on how to integrate these APIs with an application powered by AWS Amplify using
 multiple languages [here](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-integrate-apps.html).
 
 ## Testing the API
 Testing the API and working directly with the database for development purposes can be done using the API Gateway
-Management Console. Although each API is deployed with a unique resource name, they can be distinguished using the 
+Management Console. Although each API is deployed with a unique resource name, they can be distinguished using the
 descriptions that are auto-provided by this use case. Simply open the API of your choice, select Resources from the left-hand sidebar,
-open the ANY method of the resource of your choice, and click the TEST button in the Client box. Here, you can provide 
+open the ANY method of the resource of your choice, and click the TEST button in the Client box. Here, you can provide
 structured requests using API model above to interact with the system.
 
 ## Database
-This demo will implement a main database from which all functions read/write to/from. This database will be used for 
-managing orders for a specific service. When the restaurant opens, the database should be empty. Throughout the service 
+This demo will implement a main database from which all functions read/write to/from. This database will be used for
+managing orders for a specific service. When the restaurant opens, the database should be empty. Throughout the service
 period, the database will become populated with both open and closed orders. At the end of service, orders will be closed
 out and archived to the data warehouse.
 
@@ -107,7 +113,7 @@ out and archived to the data warehouse.
  - `tableNumber` - the table number for the order to be delivered to.
  - `items` - an array of items that comprise the order.
  - `orderStatus` - the status of the order, can be either 'OPEN', 'FILLED', or 'CLOSED'
- - `orderTotal` - the order total in USD.  
+ - `orderTotal` - the order total in USD.
  - `tipAmount` - the amount tipped to the server.
  - `timeOpened` - the date/time in UTC milliseconds that the order was created.
  - `timeClosed` - the date/time in UTC milliseconds that the order was closed.

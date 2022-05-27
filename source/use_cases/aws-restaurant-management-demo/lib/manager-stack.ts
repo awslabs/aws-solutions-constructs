@@ -12,14 +12,15 @@
  */
 
 // Imports
-import * as cdk from '@aws-cdk/core';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as ddb from '@aws-cdk/aws-dynamodb';
-import * as apigateway from '@aws-cdk/aws-apigateway';
-import * as events from '@aws-cdk/aws-events';
-import * as sfn from '@aws-cdk/aws-stepfunctions';
-import * as sftasks from '@aws-cdk/aws-stepfunctions-tasks';
-import * as s3 from '@aws-cdk/aws-s3';
+import { Stack, Duration } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as ddb from 'aws-cdk-lib/aws-dynamodb';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import * as events from 'aws-cdk-lib/aws-events';
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
+import * as tasks from 'aws-cdk-lib/aws-stepfunctions-tasks';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import { CognitoToApiGatewayToLambda } from '@aws-solutions-constructs/aws-cognito-apigateway-lambda';
 import { LambdaToDynamoDB } from '@aws-solutions-constructs/aws-lambda-dynamodb';
 import { LambdaToS3 } from '@aws-solutions-constructs/aws-lambda-s3';
@@ -38,10 +39,10 @@ export interface ManagerStackProps {
 }
 
 // Stack
-export class ManagerStack extends cdk.Stack {
+export class ManagerStack extends Stack {
 
   // Constructor
-  constructor(scope: cdk.Construct, id: string, props: ManagerStackProps) {
+  constructor(scope: Construct, id: string, props: ManagerStackProps) {
     super(scope, id);
 
     // Create a Lambda function that lists all orders from the database
@@ -50,7 +51,7 @@ export class ManagerStack extends cdk.Stack {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/get-all-orders`),
         handler: 'index.handler',
-        timeout: cdk.Duration.seconds(15),
+        timeout: Duration.seconds(15),
         layers: [ props.layer ]
       },
       existingTableObj: props.db
@@ -63,7 +64,7 @@ export class ManagerStack extends cdk.Stack {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/create-report`),
         handler: 'index.handler',
-        timeout: cdk.Duration.seconds(15),
+        timeout: Duration.seconds(15),
         layers: [ props.layer ]
       },
       existingTableObj: props.db
@@ -73,7 +74,7 @@ export class ManagerStack extends cdk.Stack {
     const reports = new LambdaToS3(this, 'reports-bucket', {
     	existingLambdaObj: createReport.lambdaFunction,
     });
-    
+
     // Create a Lambda function that will calculate tips based on orders in the database
     // Runs as part of the close-out process
     const calculateTips = new LambdaToDynamoDB(this, 'calculate-tips', {
@@ -81,10 +82,10 @@ export class ManagerStack extends cdk.Stack {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/calculate-tips`),
         handler: 'index.handler',
-        timeout: cdk.Duration.seconds(15),
+        timeout: Duration.seconds(15),
         layers: [ props.layer ]
       },
-      existingTableObj: props.db 
+      existingTableObj: props.db
     });
     // Create a topic for tip reports to be sent to -> sends an email to service staff workers
     new LambdaToSns(this, 'calculate-tips-topic', {
@@ -98,7 +99,7 @@ export class ManagerStack extends cdk.Stack {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/archive-orders`),
         handler: 'index.handler',
-        timeout: cdk.Duration.seconds(15),
+        timeout: Duration.seconds(15),
         layers: [ props.layer ]
       },
       existingTableObj: props.db
@@ -111,17 +112,20 @@ export class ManagerStack extends cdk.Stack {
 
     // Setup the chain of events for the close-out process (via Step Function)
     // 1. Add a task for invoking the create-report function
-    const createReportTask = new sfn.Task(this, 'create-reports-task', {
-    	task: new sftasks.InvokeFunction(createReport.lambdaFunction)
-    });
+    const createReportTask = new tasks.LambdaInvoke(this, 'create-reports-task', {
+      lambdaFunction: createReport.lambdaFunction
+    })
+
     // 2. Add a task for invoking the calculate-tips function
-    const calculateTipsTask = new sfn.Task(this, 'calculate-tips-task', {
-    	task: new sftasks.InvokeFunction(calculateTips.lambdaFunction)
-    });
+    const calculateTipsTask = new tasks.LambdaInvoke(this, 'calculate-tips-task', {
+      lambdaFunction: calculateTips.lambdaFunction
+    })
+
     // 3. Add a task for invoking the archive-orders function
-    const archiveOrdersTask = new sfn.Task(this, 'archive-orders-task', {
-    	task: new sftasks.InvokeFunction(archiveOrders.lambdaFunction)
-    });
+    const archiveOrdersTask = new tasks.LambdaInvoke(this, 'archive-orders-task', {
+      lambdaFunction: archiveOrders.lambdaFunction
+    })
+
     // 4. Setup the chain
     const chain = sfn.Chain.start(createReportTask)
     	.next(calculateTipsTask)
@@ -132,7 +136,7 @@ export class ManagerStack extends cdk.Stack {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/close-out-service`),
         handler: 'index.handler',
-        timeout: cdk.Duration.seconds(15)
+        timeout: Duration.seconds(15)
       },
       stateMachineProps: {
     	  definition: chain
@@ -145,11 +149,11 @@ export class ManagerStack extends cdk.Stack {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/get-report`),
         handler: 'index.handler',
-        timeout: cdk.Duration.seconds(15)
+        timeout: Duration.seconds(15)
       },
       existingBucketObj: reports.s3Bucket
     });
-    
+
     // Setup the manager API with Cognito user pool
     const managerApi = new CognitoToApiGatewayToLambda(this, 'manager-api', {
     	existingLambdaObj: getAllOrders.lambdaFunction,
@@ -158,31 +162,31 @@ export class ManagerStack extends cdk.Stack {
         description: 'Demo: Manager API'
 	    }
     });
-    
+
     // Add a resource to the API for listing all orders
     const listOrdersResource = managerApi.apiGateway.root.addResource('get-all-orders');
     listOrdersResource.addProxy({
     	defaultIntegration: new apigateway.LambdaIntegration(managerApi.lambdaFunction),
     	anyMethod: true
     });
-    
+
     // Add a resource to the API for triggering the close-out process
     const closeOutServiceResource = managerApi.apiGateway.root.addResource('close-out-service');
     closeOutServiceResource.addProxy({
     	defaultIntegration: new apigateway.LambdaIntegration(closeOutService.lambdaFunction),
     	anyMethod: true
     });
-    
+
     // Add a resource to the API for viewing reports
     const getReportResource = managerApi.apiGateway.root.addResource('get-report');
     getReportResource.addProxy({
     	defaultIntegration: new apigateway.LambdaIntegration(getReport.lambdaFunction),
     	anyMethod: true
     });
-    
+
     // Add the authorizers to the API
     managerApi.addAuthorizers();
-    
+
     // Create a Lambda function for identifying orders that have been open for too long
     const checkLateOrders = new LambdaToDynamoDB(this, 'check-late-orders', {
       lambdaFunctionProps: {
@@ -192,19 +196,19 @@ export class ManagerStack extends cdk.Stack {
         environment: {
           LATE_ORDER_THRESHOLD: '30'
         },
-        timeout: cdk.Duration.seconds(15)
+        timeout: Duration.seconds(15)
       },
       existingTableObj: props.db
     });
-    
+
     // Create a CloudWatch Events rule to check for late orders every minute
     new EventsRuleToLambda(this, 'check-late-orders-scheduler', {
     	existingLambdaObj: checkLateOrders.lambdaFunction,
     	eventRuleProps: {
-	      schedule: events.Schedule.rate(cdk.Duration.minutes(1))
+	      schedule: events.Schedule.rate(Duration.minutes(1))
 	    }
     });
-    
+
     // Create an SNS topic to send notifications to the manager when one or more orders are late
     new LambdaToSns(this, 'check-late-orders-notifier', {
     	existingLambdaObj: checkLateOrders.lambdaFunction
