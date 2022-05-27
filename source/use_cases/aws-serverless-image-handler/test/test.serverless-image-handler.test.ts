@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
+import { Stack } from "aws-cdk-lib";
 import { ServerlessImageHandler, ServerlessImageHandlerProps } from "../lib";
 import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';

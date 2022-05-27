@@ -14,12 +14,12 @@
 // Imports
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import * as cloudFront from '@aws-cdk/aws-cloudfront';
-import * as apiGateway from '@aws-cdk/aws-apigateway';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as iam from '@aws-cdk/aws-iam';
-import * as s3 from '@aws-cdk/aws-s3';
+import { Construct } from 'constructs';
+import * as cloudFront from 'aws-cdk-lib/aws-cloudfront';
+import * as apiGateway from 'aws-cdk-lib/aws-apigateway';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import { CloudFrontToApiGatewayToLambda } from '@aws-solutions-constructs/aws-cloudfront-apigateway-lambda';
 import { LambdaToS3 } from '@aws-solutions-constructs/aws-lambda-s3';
 
@@ -28,7 +28,7 @@ import { LambdaToS3 } from '@aws-solutions-constructs/aws-lambda-s3';
  */
 export interface ServerlessImageHandlerProps {
     /**
-     * Whether or not to emable Cross-Origin Resource Sharing (CORS) for the image handler API.
+     * Whether or not to enable Cross-Origin Resource Sharing (CORS) for the image handler API.
      *
      * @default - false.
      */
@@ -242,7 +242,7 @@ export class ServerlessImageHandler extends Construct {
 
     private safeGetBucketProperty(): s3.Bucket {
       // When LambdaToS3 was altered to accept IBucket, the
-      // s3Bucket property became optional. This app always 
+      // s3Bucket property became optional. This app always
       // has LambdaToS3 create a new bucket, so if the S3Bucket property
       // is undefined, then an invalid situation has arisen.
       if (!this.lambdaS3.s3Bucket) {
