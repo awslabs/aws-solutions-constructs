@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import { Construct, Stack, StackProps, Duration, CfnOutput, Aws } from '@aws-cdk/core';
+import { Construct } from 'constructs';
+import { Stack, StackProps, Duration, CfnOutput, Aws, CustomResource } from 'aws-cdk-lib';
 import { CloudFrontToS3 } from '@aws-solutions-constructs/aws-cloudfront-s3';
-import * as lambda from '@aws-cdk/aws-lambda';
-import { Provider } from '@aws-cdk/custom-resources';
-import { CustomResource } from '@aws-cdk/aws-cloudformation';
-import { PolicyStatement } from '@aws-cdk/aws-iam';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { Provider } from 'aws-cdk-lib/custom-resources';
+import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 
 export class S3StaticWebsiteStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -62,7 +62,7 @@ export class S3StaticWebsiteStack extends Stack {
     });
 
     new CustomResource(this, 'CustomResource', {
-      provider: customResourceProvider,
+      serviceToken: customResourceProvider.serviceToken,
       properties: {
         SourceBucket: sourceBucket,
         SourcePrefix: sourcePrefix,

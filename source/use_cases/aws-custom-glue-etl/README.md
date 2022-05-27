@@ -39,8 +39,10 @@ cd stream-producer
 
 # Install the projects base dependencies.
 pip install -r requirements.txt
+```
 
-# In the `generate_data.py` file, please update the AWS credential portion of the code and then run the following command from the CLI
+In the `generate_data.py` file, please update the AWS credential portion of the code and then run the following command from the CLI
+```
 python3 generate_data.py --region <region-name> --streamname <name-of-the-stream-obtained-from-the-CloudFormation-Output>
 ```
 

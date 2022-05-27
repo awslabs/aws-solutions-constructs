@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import * as cdk from '@aws-cdk/core';
+import { App } from 'aws-cdk-lib';
 import { S3StaticWebsiteStack } from '../lib/s3-static-site-stack';
 
-const app = new cdk.App();
+const app = new App();
 new S3StaticWebsiteStack(app, 'S3StaticWebsiteStack');

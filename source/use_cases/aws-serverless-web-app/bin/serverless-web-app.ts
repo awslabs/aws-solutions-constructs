@@ -14,11 +14,11 @@
  */
 
 import 'source-map-support/register';
-import * as cdk from '@aws-cdk/core';
+import { App } from 'aws-cdk-lib';
 import { S3StaticWebsiteStack } from '../lib/s3-static-site-stack';
 import { ServerlessBackendStack } from '../lib/serverless-backend-stack';
 
-const app = new cdk.App();
+const app = new App();
 const stack1 = new S3StaticWebsiteStack(app, 'S3StaticWebsiteStack');
 const stack2 = new ServerlessBackendStack(app, 'ServerlessBackendStack');
 stack2.addDependency(stack1);

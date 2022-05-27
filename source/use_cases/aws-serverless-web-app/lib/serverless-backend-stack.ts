@@ -13,13 +13,13 @@
 
 import { CognitoToApiGatewayToLambda } from '@aws-solutions-constructs/aws-cognito-apigateway-lambda';
 import { LambdaToDynamoDB } from '@aws-solutions-constructs/aws-lambda-dynamodb';
-import { Construct, Stack, StackProps, Duration, Fn, Aws } from '@aws-cdk/core';
-import * as lambda from '@aws-cdk/aws-lambda';
-import { Provider } from '@aws-cdk/custom-resources';
-import { CustomResource } from '@aws-cdk/aws-cloudformation';
-import { PolicyStatement } from '@aws-cdk/aws-iam';
-import { Cors } from '@aws-cdk/aws-apigateway';
-import { AttributeType } from '@aws-cdk/aws-dynamodb';
+import { Construct } from 'constructs';
+import { Stack, StackProps, Duration, Fn, Aws, CustomResource } from 'aws-cdk-lib';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { Provider } from 'aws-cdk-lib/custom-resources';
+import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { Cors } from 'aws-cdk-lib/aws-apigateway';
+import { AttributeType } from 'aws-cdk-lib/aws-dynamodb';
 
 export class ServerlessBackendStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -69,7 +69,7 @@ export class ServerlessBackendStack extends Stack {
     });
 
     new CustomResource(this, 'CustomResource', {
-      provider: customResourceProvider,
+      serviceToken: customResourceProvider.serviceToken,
       properties: {
         UserPool: construct.userPool.userPoolId,
         Client: construct.userPoolClient.userPoolClientId,

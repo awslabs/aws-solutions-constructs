@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import * as cdk from '@aws-cdk/core';
+import { App } from 'aws-cdk-lib';
 import { ServerlessBackendStack } from '../lib/serverless-backend-stack';
 
-const app = new cdk.App();
+const app = new App();
 new ServerlessBackendStack(app, 'ServerlessBackendStack');
