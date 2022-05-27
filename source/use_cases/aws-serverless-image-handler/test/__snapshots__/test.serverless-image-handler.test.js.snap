@@ -30,20 +30,6 @@ Object {
       },
     },
   },
-  "Parameters": Object {
-    "AssetParameterscd62adae72264cea63bda88de1b14cf6c4cec29557ae44e526714470d2e2f1f1ArtifactHash1C81AD0D": Object {
-      "Description": "Artifact hash for asset \\"cd62adae72264cea63bda88de1b14cf6c4cec29557ae44e526714470d2e2f1f1\\"",
-      "Type": "String",
-    },
-    "AssetParameterscd62adae72264cea63bda88de1b14cf6c4cec29557ae44e526714470d2e2f1f1S3Bucket55C0D3E0": Object {
-      "Description": "S3 bucket for asset \\"cd62adae72264cea63bda88de1b14cf6c4cec29557ae44e526714470d2e2f1f1\\"",
-      "Type": "String",
-    },
-    "AssetParameterscd62adae72264cea63bda88de1b14cf6c4cec29557ae44e526714470d2e2f1f1S3VersionKeyE00C37AD": Object {
-      "Description": "S3 key for asset version \\"cd62adae72264cea63bda88de1b14cf6c4cec29557ae44e526714470d2e2f1f1\\"",
-      "Type": "String",
-    },
-  },
   "Resources": Object {
     "testserverlessimagehandlerCloudFrontApiGatewayLambdaApiAccessLogGroup75A8AB40": Object {
       "DeletionPolicy": "Retain",
@@ -296,41 +282,9 @@ Object {
       "Properties": Object {
         "Code": Object {
           "S3Bucket": Object {
-            "Ref": "AssetParameterscd62adae72264cea63bda88de1b14cf6c4cec29557ae44e526714470d2e2f1f1S3Bucket55C0D3E0",
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": Object {
-            "Fn::Join": Array [
-              "",
-              Array [
-                Object {
-                  "Fn::Select": Array [
-                    0,
-                    Object {
-                      "Fn::Split": Array [
-                        "||",
-                        Object {
-                          "Ref": "AssetParameterscd62adae72264cea63bda88de1b14cf6c4cec29557ae44e526714470d2e2f1f1S3VersionKeyE00C37AD",
-                        },
-                      ],
-                    },
-                  ],
-                },
-                Object {
-                  "Fn::Select": Array [
-                    1,
-                    Object {
-                      "Fn::Split": Array [
-                        "||",
-                        Object {
-                          "Ref": "AssetParameterscd62adae72264cea63bda88de1b14cf6c4cec29557ae44e526714470d2e2f1f1S3VersionKeyE00C37AD",
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            ],
-          },
+          "S3Key": "f07196bbff0ec4f9e8779dfbf1966a4b8771d1af5f274d7b860b68e9c182be4d.zip",
         },
         "Environment": Object {
           "Variables": Object {
@@ -451,7 +405,11 @@ Object {
                 "s3:GetBucket*",
                 "s3:List*",
                 "s3:DeleteObject*",
-                "s3:PutObject*",
+                "s3:PutObject",
+                "s3:PutObjectLegalHold",
+                "s3:PutObjectRetention",
+                "s3:PutObjectTagging",
+                "s3:PutObjectVersionTagging",
                 "s3:Abort*",
               ],
               "Effect": "Allow",
