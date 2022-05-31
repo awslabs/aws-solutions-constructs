@@ -15,8 +15,7 @@
  import { ExistingResources } from '../lib/existing-resources';
  import { SharedStack } from '../lib/shared-stack';
  import { ManagerStack } from '../lib/manager-stack';
- import { SynthUtils } from '@aws-cdk/assert';
- import '@aws-cdk/assert/jest';
+ import { Template } from 'aws-cdk-lib/assertions';
 
  test('test-manager-stack', () => {
   const app = new App();
@@ -29,5 +28,7 @@
     archiveBucket: existingResources.archiveBucket,
     layer: sharedStack.layer
   });
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
+  const template = Template.fromStack(stack);
+  expect(template).toMatchSnapshot();
  });

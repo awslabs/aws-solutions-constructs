@@ -13,19 +13,22 @@
 
 import { App } from 'aws-cdk-lib';
 import { ServerlessBackendStack } from '../lib/serverless-backend-stack';
-import { SynthUtils } from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 test('default stack', () => {
   const app = new App();
   const stack = new ServerlessBackendStack(app, 'ServerlessBackendStack');
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  const template = Template.fromStack(stack);
+
+  expect(template).toMatchSnapshot();
 });
 
 test('check Api Method CORS setting for HTTP OPTIONS method', () => {
   const app = new App();
   const stack = new ServerlessBackendStack(app, 'ServerlessBackendStack');
-  expect(stack).toHaveResource("AWS::ApiGateway::Method", {
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     HttpMethod: "OPTIONS",
     AuthorizationType: "NONE",
     MethodResponses: [
@@ -44,7 +47,9 @@ test('check Api Method CORS setting for HTTP OPTIONS method', () => {
 test('check lambda permissions', () => {
   const app = new App();
   const stack = new ServerlessBackendStack(app, 'ServerlessBackendStack');
-  expect(stack).toHaveResource("AWS::Lambda::Permission", {
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties("AWS::Lambda::Permission", {
     Action: "lambda:InvokeFunction",
     Principal: "apigateway.amazonaws.com",
     SourceArn: {

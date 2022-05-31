@@ -13,11 +13,12 @@
 
 import { App } from 'aws-cdk-lib';
 import { ExistingResources } from '../lib/existing-resources';
-import { SynthUtils } from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 test('ExistingResourcesStack', () => {
   const app = new App();
   const stack = new ExistingResources(app, `ExistingResourcesStack`);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  const template = Template.fromStack(stack);
+
+  expect(template).toMatchSnapshot();
 });

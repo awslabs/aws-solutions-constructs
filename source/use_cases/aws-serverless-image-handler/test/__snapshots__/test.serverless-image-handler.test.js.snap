@@ -30,6 +30,13 @@ Object {
       },
     },
   },
+  "Parameters": Object {
+    "BootstrapVersion": Object {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
   "Resources": Object {
     "testserverlessimagehandlerCloudFrontApiGatewayLambdaApiAccessLogGroup75A8AB40": Object {
       "DeletionPolicy": "Retain",
@@ -284,7 +291,7 @@ Object {
           "S3Bucket": Object {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "f07196bbff0ec4f9e8779dfbf1966a4b8771d1af5f274d7b860b68e9c182be4d.zip",
+          "S3Key": "ac1d538cdd9dd41b6de903d77e0e12e088f23609278ba419126f3de20e1fbb9b.zip",
         },
         "Environment": Object {
           "Variables": Object {
@@ -1091,6 +1098,33 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+  },
+  "Rules": Object {
+    "CheckBootstrapVersion": Object {
+      "Assertions": Array [
+        Object {
+          "Assert": Object {
+            "Fn::Not": Array [
+              Object {
+                "Fn::Contains": Array [
+                  Array [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  Object {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
     },
   },
 }

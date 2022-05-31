@@ -11,16 +11,17 @@
  *  and limitations under the License.
  */
 
- import { SynthUtils } from '@aws-cdk/assert';
 import { App, Stack } from 'aws-cdk-lib';
 import { AwsCustomGlueEtlStack } from '../lib/aws-custom-glue-etl-stack';
+import { Template } from 'aws-cdk-lib/assertions';
 
 test('should match snapshot', () => {
   const app = new App();
   const stack = new Stack(app);
 
   new AwsCustomGlueEtlStack(stack, 'testStack');
+  const template = Template.fromStack(stack);
 
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(template).toMatchSnapshot();
 });
 

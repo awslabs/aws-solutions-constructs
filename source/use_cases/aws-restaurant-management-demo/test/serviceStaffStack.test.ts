@@ -14,8 +14,7 @@
  import { App } from 'aws-cdk-lib';
  import { SharedStack } from '../lib/shared-stack';
  import { ServiceStaffStack } from '../lib/service-staff-stack';
- import { SynthUtils } from '@aws-cdk/assert';
- import '@aws-cdk/assert/jest';
+ import { Template } from 'aws-cdk-lib/assertions';
 
  test('test-service-staff-stack', () => {
   const app = new App();
@@ -25,5 +24,7 @@
   const stack = new ServiceStaffStack(app, `ServiceStaffStack`, {
     db: sharedStack.database
   });
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
+  const template = Template.fromStack(stack);
+  expect(template).toMatchSnapshot();
  });

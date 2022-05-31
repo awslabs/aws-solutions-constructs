@@ -14,8 +14,7 @@
 // Imports
 import { Stack } from "aws-cdk-lib";
 import { ServerlessImageHandler, ServerlessImageHandlerProps } from "../lib";
-import { SynthUtils } from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 // --------------------------------------------------------------
 // Minimal deployment snapshot test
@@ -31,7 +30,8 @@ test('Minimal deployment snapshot test', () => {
     };
     new ServerlessImageHandler(stack, 'test-serverless-image-handler', props);
     // Assertion 1
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+   const template = Template.fromStack(stack);
+   expect(template).toMatchSnapshot();
 });
 
 // --------------------------------------------------------------
