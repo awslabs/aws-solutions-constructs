@@ -25,7 +25,7 @@ import { CognitoToApiGatewayToLambda } from '@aws-solutions-constructs/aws-cogni
 import { LambdaToDynamoDB } from '@aws-solutions-constructs/aws-lambda-dynamodb';
 import { LambdaToS3 } from '@aws-solutions-constructs/aws-lambda-s3';
 import { LambdaToSns } from '@aws-solutions-constructs/aws-lambda-sns';
-import { EventsRuleToLambda } from '@aws-solutions-constructs/aws-events-rule-lambda';
+import { EventbridgeToLambda } from '@aws-solutions-constructs/aws-eventbridge-lambda';
 import { LambdaToStepfunctions } from '@aws-solutions-constructs/aws-lambda-stepfunctions';
 
 // Properties for the manager-stack
@@ -202,7 +202,7 @@ export class ManagerStack extends Stack {
     });
 
     // Create a CloudWatch Events rule to check for late orders every minute
-    new EventsRuleToLambda(this, 'check-late-orders-scheduler', {
+    new EventbridgeToLambda(this, 'check-late-orders-scheduler', {
     	existingLambdaObj: checkLateOrders.lambdaFunction,
     	eventRuleProps: {
 	      schedule: events.Schedule.rate(Duration.minutes(1))
