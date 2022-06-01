@@ -43,7 +43,7 @@ new ServerlessImageHandler(this, 'ServerlessImageHandlerPattern', {
 |:-------------|:----------------|-----------------|
 |existingLambdaObj?|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)|Existing instance of Lambda Function object, providing both this and lambdaFunctionProps will cause an error.|
 |lambdaFunctionProps?|[`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.FunctionProps.html)|User provided props to override the default props for the Lambda function.|
-|apiGatewayProps?|`api.LambdaRestApiProps`|Optional user-provided props to override the default props for the API.|
+|apiGatewayProps?|[`api.LambdaRestApiProps`](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-apigateway.LambdaRestApiProps.html)|Optional user-provided props to override the default props for the API.|
 
 ## Architecture
 ![Architecture Diagram](architecture.png)
