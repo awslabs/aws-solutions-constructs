@@ -117,6 +117,8 @@ test('Check for an existing service', () => {
       ]
     }
   });
+
+  expect(stack).toCountResources("AWS::ECS::Service", 1);
 });
 
 test('Check for IAM put events policy for created bus', () => {
