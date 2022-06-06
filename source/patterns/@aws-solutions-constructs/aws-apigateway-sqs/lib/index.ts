@@ -138,6 +138,7 @@ export class ApiGatewayToSqs extends Construct {
 
     // Setup the queue
     [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
+      existingQueueObj: props.existingQueueObj,
       queueProps: props.queueProps,
       deadLetterQueue: this.deadLetterQueue
     });
