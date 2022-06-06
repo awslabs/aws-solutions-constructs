@@ -59,7 +59,7 @@ AWS Management Console
 4. Click `Run` on the upper-right corner to start the Glue Job
 ![Run GlueJob](run.png)
 
-Once triggered the ETL transform in AWS Glue writes the data into an S3 bucket. This bucket ARN is published in the CloudFormation output. The job also publishes logs into Amazon CloudWatch Logs. You can also view the job metrics like below in AWS Glue Studio.
+Once triggered the ETL transform in AWS Glue writes the data into an S3 bucket (ARN is published in CloudFormation stack resources) and publishes logs in Amazon CloudWatch. You can also view the job metrics like below in AWS Glue Studio.
 
 ![Glue CloudWatch Metrics](metrics.png)
 
