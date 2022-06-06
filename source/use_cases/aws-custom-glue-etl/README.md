@@ -7,7 +7,7 @@ This use case is designed to be built and deployed into your account from your l
 ## Architecture
 
 The application architecture uses a custom ETL job defined in AWS Glue that takes in data from Amazon Kinesis Data Streams to
-process and store it in the target datastore as defined by the ETL script (for this example an S3 bucket location)
+process and store it in the target datastore as defined by the ETL script (for this example an S3 bucket location).
 
 ![Architecture Diagram](architecture.png)
 
