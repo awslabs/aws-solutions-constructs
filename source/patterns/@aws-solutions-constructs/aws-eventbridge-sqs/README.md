@@ -18,6 +18,7 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-eventbridge-sqs`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.eventbridgesqs`|
 
+## Overview
 This AWS Solutions Construct implements an Amazon EventBridge rule and an AWS SQS Queue.
 
 Here is a minimal deployable pattern definition:

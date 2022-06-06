@@ -22,6 +22,7 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-cognito-apigateway-lambda`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.cognitoapigatewaylambda`|
 
+## Overview
 This AWS Solutions Construct implements an Amazon Cognito securing an Amazon API Gateway Lambda backed REST APIs pattern.
 
 Here is a minimal deployable pattern definition:
@@ -140,7 +141,7 @@ resource.add_method('POST')
 # Mandatory to call this method to Apply the Cognito Authorizers on all API methods
 construct.add_authorizers()
 ```
-
+Java
 ``` java
 import software.constructs.Construct;
 

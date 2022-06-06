@@ -1,7 +1,7 @@
 # aws-iot-s3 module
 <!--BEGIN STABILITY BANNER-->
 
----
+
 
 ![Stability: Experimental](https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge)
 
@@ -9,7 +9,7 @@
 > future version. These are not subject to the [Semantic Versioning](https://semver.org/) model.
 > This means that while you may use them, you may need to update your source code when upgrading to a newer version of this package.
 
----
+
 <!--END STABILITY BANNER-->
 
 | **Reference Documentation**:| <span style="font-weight: normal">https://docs.aws.amazon.com/solutions/latest/constructs/</span>|
@@ -22,6 +22,7 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-iot-s3`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.iots3`|
 
+## Overview
 This AWS Solutions Construct implements an AWS IoT MQTT topic rule and an Amazon S3 Bucket pattern.
 
 Here is a minimal deployable pattern definition:
