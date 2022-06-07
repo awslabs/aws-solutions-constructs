@@ -6,7 +6,7 @@ This use case is designed to be built and deployed into your account from your l
 
 This example demonstrates how to build a complex, real-world system using AWS Solutions Constructs. It is designed to
 accompany the webinar titled "Beyond Prototypes: Real-World Applications with AWS Solutions Constructs", which
-can be found [here](#) (coming soon!). On its own, this use case will provision a demo restaurant management system for three user types
+can be found [here](https://www.youtube.com/watch?v=9YW1sL0dFV8&ab_channel=AWSEvents). On its own, this use case will provision a demo restaurant management system for three user types
 with the various capabilities:
 
 #### Service staff
