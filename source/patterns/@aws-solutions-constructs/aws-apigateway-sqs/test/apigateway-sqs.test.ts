@@ -16,14 +16,11 @@ import { Stack } from "@aws-cdk/core";
 import { ApiGatewayToSqs } from '../lib';
 import '@aws-cdk/assert/jest';
 import * as api from "@aws-cdk/aws-apigateway";
+import * as sqs from "@aws-cdk/aws-sqs";
 
-// --------------------------------------------------------------
-// Test deployment w/o DLQ
-// --------------------------------------------------------------
 test('Test deployment w/o DLQ', () => {
-  // Stack
   const stack = new Stack();
-  // Helper declaration
+
   new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
     deployDeadLetterQueue: false
   });
@@ -34,13 +31,9 @@ test('Test deployment w/o DLQ', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/o allowReadOperation
-// --------------------------------------------------------------
 test('Test deployment w/o allowReadOperation', () => {
-  // Stack
   const stack = new Stack();
-  // Helper declaration
+
   new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
     allowCreateOperation: true,
     allowReadOperation: false,
@@ -52,13 +45,9 @@ test('Test deployment w/o allowReadOperation', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ allowReadOperation
-// --------------------------------------------------------------
 test('Test deployment w/ allowReadOperation', () => {
-  // Stack
   const stack = new Stack();
-  // Helper declaration
+
   new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
     allowReadOperation: true,
   });
@@ -69,13 +58,9 @@ test('Test deployment w/ allowReadOperation', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test the getter methods
-// --------------------------------------------------------------
 test('Test properties', () => {
-  // Stack
   const stack = new Stack();
-  // Helper declaration
+
   const pattern = new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
     deployDeadLetterQueue: true,
     maxReceiveCount: 3
@@ -91,13 +76,9 @@ test('Test properties', () => {
   expect(pattern.deadLetterQueue !== null);
 });
 
-// -----------------------------------------------------------------
-// Test deployment for override ApiGateway AuthorizationType to NONE
-// -----------------------------------------------------------------
 test('Test deployment ApiGateway AuthorizationType override', () => {
-  // Stack
   const stack = new Stack();
-  // Helper declaration
+
   new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
     apiGatewayProps: {
       defaultMethodOptions: {
@@ -123,13 +104,9 @@ test('Test deployment ApiGateway AuthorizationType override', () => {
   });
 });
 
-// -----------------------------------------------------------------
-// Test deployment for override ApiGateway createRequestTemplate
-// -----------------------------------------------------------------
 test('Test deployment for override ApiGateway createRequestTemplate', () => {
-  // Stack
   const stack = new Stack();
-  // Helper declaration
+
   new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
     createRequestTemplate:  "Action=SendMessage&MessageBody=$util.urlEncode(\"HelloWorld\")",
     allowCreateOperation: true
@@ -144,13 +121,9 @@ test('Test deployment for override ApiGateway createRequestTemplate', () => {
   });
 });
 
-// -----------------------------------------------------------------
-// Test deployment for override ApiGateway getRequestTemplate
-// -----------------------------------------------------------------
 test('Test deployment for override ApiGateway getRequestTemplate', () => {
-  // Stack
   const stack = new Stack();
-  // Helper declaration
+
   new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
     readRequestTemplate:  "Action=HelloWorld",
     allowReadOperation: true
@@ -165,13 +138,9 @@ test('Test deployment for override ApiGateway getRequestTemplate', () => {
   });
 });
 
-// -----------------------------------------------------------------
-// Test deployment for override ApiGateway deleteRequestTemplate
-// -----------------------------------------------------------------
 test('Test deployment for override ApiGateway deleteRequestTemplate', () => {
-  // Stack
   const stack = new Stack();
-  // Helper declaration
+
   new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
     deleteRequestTemplate:  "Action=HelloWorld",
     allowDeleteOperation: true
@@ -184,4 +153,22 @@ test('Test deployment for override ApiGateway deleteRequestTemplate', () => {
       }
     }
   });
+});
+
+test('Test deployment with existing queue object', () => {
+  const stack = new Stack();
+
+  const existingQueueObj = new sqs.Queue(stack, 'existing-queue', {
+    fifo: true
+  });
+
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    existingQueueObj
+  });
+
+  expect(stack).toHaveResourceLike("AWS::SQS::Queue", {
+    FifoQueue: true
+  });
+
+  expect(stack).toCountResources("AWS::SQS::Queue", 1);
 });
