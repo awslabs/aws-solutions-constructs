@@ -17,11 +17,13 @@ import { consolidateProps, addCfnSuppressRules } from './utils';
 import * as iam from '@aws-cdk/aws-iam';
 import * as cdk from '@aws-cdk/core';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+import * as ec2 from '@aws-cdk/aws-ec2';
+import * as lambda from '@aws-cdk/aws-lambda';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
 export function buildElasticSearch(scope: Construct, domainName: string,
-  options: CfnDomainOptions, cfnDomainProps?: elasticsearch.CfnDomainProps): [elasticsearch.CfnDomain, iam.Role] {
+  options: CfnDomainOptions, cfnDomainProps?: elasticsearch.CfnDomainProps, vpc?: ec2.IVpc): [elasticsearch.CfnDomain, iam.Role] {
 
   // Setup the IAM Role & policy for ES to configure Cognito User pool and Identity pool
   const cognitoKibanaConfigureRole = new iam.Role(scope, 'CognitoKibanaConfigureRole', {
@@ -43,7 +45,7 @@ export function buildElasticSearch(scope: Construct, domainName: string,
           "cognito-identity:UpdateIdentityPool",
           "cognito-identity:SetIdentityPoolRoles",
           "cognito-identity:GetIdentityPoolRoles",
-          "es:UpdateElasticsearchDomainConfig"
+          "es:UpdateElasticsearchDomainConfig",
         ],
         resources: [
           options.userpool.userPoolArn,
@@ -64,7 +66,27 @@ export function buildElasticSearch(scope: Construct, domainName: string,
       })
     ]
   });
+
   cognitoKibanaConfigureRolePolicy.attachToRole(cognitoKibanaConfigureRole);
+
+  if (vpc) {
+    cognitoKibanaConfigureRole.addToPolicy(
+      new iam.PolicyStatement({
+        resources: ['*'],
+        actions: [
+          'ec2:CreateNetworkInterface',
+          'ec2:DeleteNetworkInterface',
+          'ec2:DescribeNetworkInterfaces',
+          'ec2:ModifyNetworkInterfaceAttribute',
+          'ec2:DescribeSecurityGroups',
+          'ec2:DescribeSubnets',
+          'ec2:DescribeVpcs',
+          'elasticloadbalancing:AddListenerCertificates',
+          'elasticloadbalancing:RemoveListenerCertificates'
+        ],
+      })
+    );
+  }
 
   let _cfnDomainProps = DefaultCfnDomainProps(domainName, cognitoKibanaConfigureRole, options);
 
@@ -216,4 +238,46 @@ export function buildElasticSearchCWAlarms(scope: Construct): cloudwatch.Alarm[]
   }));
 
   return alarms;
+}
+
+export function checkMultiAvailabilityZoneSupport(lambdaFunction: lambda.Function, vpc?: ec2.IVpc, props?: elasticsearch.CfnDomainProps):
+  elasticsearch.CfnDomainProps {
+  if (vpc) {
+    // Environment specified stacks: A ES cluster deploys in 3 AZs with 3 subnets maximum(each subnet in a different AZ).
+    // Environment-agnostic stacks: A ES cluster deploys in 2 AZs with 2 subnets maximum(each subnet in a different AZ).
+    // To successfully deploy a ES cluster, construct will need to specify exactly same subnets number as cluster AZs number
+    // To summarize: 1. Subnets number must equals to AZs number.   2. Each subnet belongs to different AZ.
+    let subnetIds: string[] = vpc.selectSubnets({ onePerAz: true }).subnetIds;
+
+    if (props?.elasticsearchClusterConfig) {
+      const disabledZoneAwareness = 'zoneAwarenessEnabled' in props.elasticsearchClusterConfig &&
+        !props.elasticsearchClusterConfig.zoneAwarenessEnabled;
+      const twoAvailabilityZoneConfig = 'zoneAwarenessConfig' in props.elasticsearchClusterConfig &&
+        props.elasticsearchClusterConfig.zoneAwarenessConfig &&
+        'availabilityZoneCount' in props.elasticsearchClusterConfig.zoneAwarenessConfig &&
+        props.elasticsearchClusterConfig.zoneAwarenessConfig.availabilityZoneCount === 2;
+
+      if (disabledZoneAwareness) { // If zoneAwarenessEnabled set to false, ES cluster deploy in 1 AZ with 1 subnet
+        subnetIds = subnetIds.slice(0, 1);
+      } else if (twoAvailabilityZoneConfig) { // If zoneAwarenessConfig.availabilityZoneCount set to 2, ES cluster deploy in 2 AZ with 2 subnets.
+        subnetIds = subnetIds.slice(0, 2);
+      } else {
+        subnetIds = subnetIds.slice(0, 3);
+      }
+    } else {
+      subnetIds = subnetIds.slice(0, 3);
+    }
+
+    const securityGroupIds: string[] = [];
+    lambdaFunction.connections.securityGroups.forEach(element => securityGroupIds.push(element.securityGroupId));
+
+    return {
+      vpcOptions: {
+        subnetIds,
+        securityGroupIds,
+      },
+    };
+  }
+
+  return {};
 }
