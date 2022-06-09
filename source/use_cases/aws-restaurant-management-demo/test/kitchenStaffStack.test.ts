@@ -11,19 +11,20 @@
  *  and limitations under the License.
  */
 
- import * as cdk from '@aws-cdk/core';
+ import { App } from 'aws-cdk-lib';
  import { SharedStack } from '../lib/shared-stack';
  import { KitchenStaffStack } from '../lib/kitchen-staff-stack';
- import { SynthUtils } from '@aws-cdk/assert';
- import '@aws-cdk/assert/jest';
- 
+import { Template } from 'aws-cdk-lib/assertions';
+
  test('test-kitchen-staff-stack', () => {
-  const app = new cdk.App();
+  const app = new App();
   // Dependent stacks
   const sharedStack = new SharedStack(app, `SharedStack`);
   // ----
   const stack = new KitchenStaffStack(app, `KitchenStaffStack`, {
     db: sharedStack.database
   });
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
+  const template = Template.fromStack(stack);
+  expect(template).toMatchSnapshot();
  });

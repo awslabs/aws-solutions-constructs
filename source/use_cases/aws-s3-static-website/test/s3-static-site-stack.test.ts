@@ -11,21 +11,24 @@
  *  and limitations under the License.
  */
 
-import * as cdk from '@aws-cdk/core';
+import { App } from 'aws-cdk-lib';
 import { S3StaticWebsiteStack } from '../lib/s3-static-site-stack';
-import { SynthUtils } from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 test('default stack', () => {
-  const app = new cdk.App();
+  const app = new App();
   const stack = new S3StaticWebsiteStack(app, 'S3StaticWebsiteStack');
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  const template = Template.fromStack(stack);
+
+  expect(template).toMatchSnapshot();
 });
 
 test('check s3 bucket encryption setting', () => {
-  const app = new cdk.App();
+  const app = new App();
   const stack = new S3StaticWebsiteStack(app, 'S3StaticWebsiteStack');
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties("AWS::S3::Bucket", {
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [
         {
@@ -39,9 +42,11 @@ test('check s3 bucket encryption setting', () => {
 });
 
 test('check s3 bucket public access setting', () => {
-  const app = new cdk.App();
+  const app = new App();
   const stack = new S3StaticWebsiteStack(app, 'S3StaticWebsiteStack');
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties("AWS::S3::Bucket", {
     PublicAccessBlockConfiguration: {
       BlockPublicAcls: true,
       BlockPublicPolicy: true,
@@ -52,9 +57,11 @@ test('check s3 bucket public access setting', () => {
 });
 
 test('check CR lambda function permissions', () => {
-  const app = new cdk.App();
+  const app = new App();
   const stack = new S3StaticWebsiteStack(app, 'S3StaticWebsiteStack');
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy",{
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties("AWS::IAM::Policy",{
     "PolicyDocument": {
         "Statement": [
           {

@@ -11,15 +11,14 @@
  *  and limitations under the License.
  */
 
- import * as cdk from '@aws-cdk/core';
+ import { App } from 'aws-cdk-lib';
  import { ExistingResources } from '../lib/existing-resources';
  import { SharedStack } from '../lib/shared-stack';
  import { ManagerStack } from '../lib/manager-stack';
- import { SynthUtils } from '@aws-cdk/assert';
- import '@aws-cdk/assert/jest';
- 
+ import { Template } from 'aws-cdk-lib/assertions';
+
  test('test-manager-stack', () => {
-  const app = new cdk.App();
+  const app = new App();
   // Dependent stacks
   const existingResources = new ExistingResources(app, `ExistingResourcesStack`);
   const sharedStack = new SharedStack(app, `SharedStack`);
@@ -29,5 +28,7 @@
     archiveBucket: existingResources.archiveBucket,
     layer: sharedStack.layer
   });
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+
+  const template = Template.fromStack(stack);
+  expect(template).toMatchSnapshot();
  });

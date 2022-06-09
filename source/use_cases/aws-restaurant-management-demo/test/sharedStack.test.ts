@@ -11,21 +11,22 @@
  *  and limitations under the License.
  */
 
- import * as cdk from '@aws-cdk/core';
+ import { App, Aws } from 'aws-cdk-lib';
  import { SharedStack } from '../lib/shared-stack';
- import { SynthUtils } from '@aws-cdk/assert';
- import '@aws-cdk/assert/jest';
- 
+ import { Template } from 'aws-cdk-lib/assertions';
+
  // Environment configuration
- const config = { 
+ const config = {
    env: {
-     account: 'ACCOUNT_NUMBER_HERE', 
+     account: Aws.ACCOUNT_ID,
      region: 'us-east-1' // default region selection
    }
  };
- 
+
  test('test-shared-stack', () => {
-   const app = new cdk.App();
+   const app = new App();
    const stack = new SharedStack(app, `SharedStack`, config);
-   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+   const template = Template.fromStack(stack);
+
+   expect(template).toMatchSnapshot();
  });

@@ -12,8 +12,9 @@
  */
 
 // Imports
-import * as cdk from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 
 // Stack
 // -
@@ -25,13 +26,13 @@ import * as s3 from '@aws-cdk/aws-s3';
 // bucket from your environment in this stack. More info:
 // https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html#static-fromwbrbucketwbrnamescope-id-bucketname
 // -
-export class ExistingResources extends cdk.Stack {
+export class ExistingResources extends Stack {
 
   // Public variables
   public readonly archiveBucket: s3.Bucket;
 
   // Constructor
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
     // An "existing" Amazon S3 bucket that holds archived orders
