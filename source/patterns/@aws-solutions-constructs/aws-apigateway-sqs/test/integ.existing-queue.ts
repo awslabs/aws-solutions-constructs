@@ -11,8 +11,21 @@
  *  and limitations under the License.
  */
 
-import * as cdk from '@aws-cdk/core';
-import { ServerlessBackendStack } from '../lib/serverless-backend-stack';
+// Imports
+import { App, Stack } from "@aws-cdk/core";
+import { ApiGatewayToSqs } from "../lib";
+import { generateIntegStackName, buildQueue } from '@aws-solutions-constructs/core';
 
-const app = new cdk.App();
-new ServerlessBackendStack(app, 'ServerlessBackendStack');
+// Setup
+const app = new App();
+const stack = new Stack(app, generateIntegStackName(__filename));
+stack.templateOptions.description = 'Integration Test for aws-apigateway-sqs';
+
+const [existingQueueObj] = buildQueue(stack, 'existing-queue', {});
+
+new ApiGatewayToSqs(stack, 'test-api-gateway-sqs-existing-queue', {
+  existingQueueObj
+});
+
+// Synth
+app.synth();

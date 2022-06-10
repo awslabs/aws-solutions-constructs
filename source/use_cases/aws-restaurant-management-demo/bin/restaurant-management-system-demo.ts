@@ -15,7 +15,7 @@
 
 // Imports
 import 'source-map-support/register';
-import * as cdk from '@aws-cdk/core';
+import { App } from 'aws-cdk-lib';
 import { ExistingResources } from '../lib/existing-resources';
 import { SharedStack } from '../lib/shared-stack';
 import { ServiceStaffStack } from '../lib/service-staff-stack';
@@ -23,7 +23,7 @@ import { KitchenStaffStack } from '../lib/kitchen-staff-stack';
 import { ManagerStack } from '../lib/manager-stack';
 
 // App
-const app = new cdk.App();
+const app = new App();
 
 // For more info on deploying multiple stacks in an app, go to:
 // https://docs.aws.amazon.com/cdk/latest/guide/stack_how_to_create_multiple_stacks.html
