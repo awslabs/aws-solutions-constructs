@@ -391,37 +391,6 @@
         }
       }
     },
-    "testlambdaelasticsearchkibana5CognitoKibanaConfigureRoleDefaultPolicyEFFD5BC5": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "ec2:CreateNetworkInterface",
-                "ec2:DeleteNetworkInterface",
-                "ec2:DescribeNetworkInterfaces",
-                "ec2:ModifyNetworkInterfaceAttribute",
-                "ec2:DescribeSecurityGroups",
-                "ec2:DescribeSubnets",
-                "ec2:DescribeVpcs",
-                "elasticloadbalancing:AddListenerCertificates",
-                "elasticloadbalancing:RemoveListenerCertificates"
-              ],
-              "Effect": "Allow",
-              "Resource": "*"
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "testlambdaelasticsearchkibana5CognitoKibanaConfigureRoleDefaultPolicyEFFD5BC5",
-        "Roles": [
-          {
-            "Ref": "testlambdaelasticsearchkibana5CognitoKibanaConfigureRoleD2E8341A"
-          }
-        ]
-      }
-    },
     "testlambdaelasticsearchkibana5CognitoKibanaConfigureRolePolicy11560205": {
       "Type": "AWS::IAM::Policy",
       "Properties": {

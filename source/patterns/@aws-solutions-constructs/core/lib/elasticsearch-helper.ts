@@ -23,7 +23,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import { Construct } from '@aws-cdk/core';
 
 export function buildElasticSearch(scope: Construct, domainName: string,
-  options: CfnDomainOptions, cfnDomainProps?: elasticsearch.CfnDomainProps, vpc?: ec2.IVpc): [elasticsearch.CfnDomain, iam.Role] {
+  options: CfnDomainOptions, cfnDomainProps?: elasticsearch.CfnDomainProps): [elasticsearch.CfnDomain, iam.Role] {
 
   // Setup the IAM Role & policy for ES to configure Cognito User pool and Identity pool
   const cognitoKibanaConfigureRole = new iam.Role(scope, 'CognitoKibanaConfigureRole', {
@@ -68,25 +68,6 @@ export function buildElasticSearch(scope: Construct, domainName: string,
   });
 
   cognitoKibanaConfigureRolePolicy.attachToRole(cognitoKibanaConfigureRole);
-
-  if (vpc) {
-    cognitoKibanaConfigureRole.addToPolicy(
-      new iam.PolicyStatement({
-        resources: ['*'],
-        actions: [
-          'ec2:CreateNetworkInterface',
-          'ec2:DeleteNetworkInterface',
-          'ec2:DescribeNetworkInterfaces',
-          'ec2:ModifyNetworkInterfaceAttribute',
-          'ec2:DescribeSecurityGroups',
-          'ec2:DescribeSubnets',
-          'ec2:DescribeVpcs',
-          'elasticloadbalancing:AddListenerCertificates',
-          'elasticloadbalancing:RemoveListenerCertificates'
-        ],
-      })
-    );
-  }
 
   let _cfnDomainProps = DefaultCfnDomainProps(domainName, cognitoKibanaConfigureRole, options);
 

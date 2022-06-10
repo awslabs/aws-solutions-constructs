@@ -167,7 +167,7 @@ export class LambdaToElasticSearchAndKibana extends Construct {
       identitypool: this.identityPool,
       cognitoAuthorizedRoleARN: cognitoAuthorizedRole.roleArn,
       serviceRoleARN: lambdaFunctionRoleARN
-    }, consolidatedProps, this.vpc);
+    }, consolidatedProps);
 
     // Add ES Domain to lambda environment variable
     const domainEndpointEnvironmentVariableName = props.domainEndpointEnvironmentVariableName || 'DOMAIN_ENDPOINT';
