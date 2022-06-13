@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.9.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.8.0...v2.9.0) (2022-06-13)
+
+
+### Features
+
+* **aws-fargate-eventbridge:** new construct ([#696](https://github.com/awslabs/aws-solutions-constructs/issues/696)) ([6461b35](https://github.com/awslabs/aws-solutions-constructs/commit/6461b352fe920054d2d98f0223e88fd6168365ec))
+* **aws-sns-sqs:** added sqsSubscriptionProps ([#700](https://github.com/awslabs/aws-solutions-constructs/issues/700)) ([bcc1216](https://github.com/awslabs/aws-solutions-constructs/commit/bcc1216be187d1c137b71fe391edc8129c65bf75))
+
 ## [2.8.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.7.0...v2.8.0) (2022-05-20)
 
 * Includes all functionality of V1.156.1
