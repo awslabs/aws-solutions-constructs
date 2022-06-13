@@ -19,7 +19,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 
 function deployNewFunc(stack: cdk.Stack) {
   const props: LambdaToElasticSearchAndKibanaProps = {
-    lambdaFunctionProps: getDefaultLambdaProps(),
+    lambdaFunctionProps: getDefaultTestLambdaProps(),
     domainName: 'test-domain'
   };
 
@@ -75,7 +75,7 @@ test('check properties with no CW Alarms ', () => {
   const stack = new cdk.Stack();
 
   const props: LambdaToElasticSearchAndKibanaProps = {
-    lambdaFunctionProps: getDefaultLambdaProps(),
+    lambdaFunctionProps: getDefaultTestLambdaProps(),
     domainName: 'test-domain',
     createCloudWatchAlarms: false
   };
@@ -94,7 +94,7 @@ test('check properties with no CW Alarms ', () => {
 test('check lambda function custom environment variable', () => {
   const stack = new cdk.Stack();
   const props: LambdaToElasticSearchAndKibanaProps = {
-    lambdaFunctionProps: getDefaultLambdaProps(),
+    lambdaFunctionProps: getDefaultTestLambdaProps(),
     domainName: 'test-domain',
     domainEndpointEnvironmentVariableName: 'CUSTOM_DOMAIN_ENDPOINT'
   };
@@ -121,7 +121,7 @@ test('check lambda function custom environment variable', () => {
 test('check override cognito domain name with provided cognito domain name', () => {
   const stack = new cdk.Stack();
   const props: LambdaToElasticSearchAndKibanaProps = {
-    lambdaFunctionProps: getDefaultLambdaProps(),
+    lambdaFunctionProps: getDefaultTestLambdaProps(),
     domainName: 'test-domain',
     cognitoDomainName: 'test-cognito-domain'
   };
@@ -138,16 +138,28 @@ test('Check for 3 subnets for environment specified stack', () => {
     env: { account: "123456789012", region: 'us-east-1' },
   });
 
-  const lambdaProps: lambda.FunctionProps = {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_12_X,
-    handler: 'index.handler',
-  };
+  const lambdaProps: lambda.FunctionProps = getDefaultTestLambdaProps();
 
   new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
     lambdaFunctionProps: lambdaProps,
     domainName: "test",
     deployVpc: true,
+  });
+
+  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
+    VPCOptions: {
+      SubnetIds: [
+        {
+          Ref: "VpcisolatedSubnet1SubnetE62B1B9B"
+        },
+        {
+          Ref: "VpcisolatedSubnet2Subnet39217055"
+        },
+        {
+          Ref: "VpcisolatedSubnet3Subnet44F2537D"
+        }
+      ]
+    }
   });
 
   expect(stack).toCountResources("AWS::EC2::VPC", 1);
@@ -157,16 +169,25 @@ test('Check for 3 subnets for environment specified stack', () => {
 test('Check for 2 subnets for environment-agnostic stack', () => {
   const stack = new cdk.Stack();
 
-  const lambdaProps: lambda.FunctionProps = {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_12_X,
-    handler: 'index.handler',
-  };
+  const lambdaProps: lambda.FunctionProps = getDefaultTestLambdaProps();
 
   new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
     lambdaFunctionProps: lambdaProps,
     domainName: "test",
     deployVpc: true,
+  });
+
+  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
+    VPCOptions: {
+      SubnetIds: [
+        {
+          Ref: "VpcisolatedSubnet1SubnetE62B1B9B"
+        },
+        {
+          Ref: "VpcisolatedSubnet2Subnet39217055"
+        }
+      ]
+    }
   });
 
   expect(stack).toCountResources("AWS::EC2::VPC", 1);
@@ -179,7 +200,7 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   });
 
   new LambdaToElasticSearchAndKibana(stack, "lambda-elasticsearch-kibana-stack", {
-    lambdaFunctionProps: getDefaultLambdaProps(),
+    lambdaFunctionProps: getDefaultTestLambdaProps(),
     domainName: 'test-domain',
     deployVpc: true,
   });
@@ -208,6 +229,22 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     },
   });
 
+  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
+    VPCOptions: {
+      SubnetIds: [
+        {
+          Ref: "VpcisolatedSubnet1SubnetE62B1B9B"
+        },
+        {
+          Ref: "VpcisolatedSubnet2Subnet39217055"
+        },
+        {
+          Ref: "VpcisolatedSubnet3Subnet44F2537D"
+        }
+      ]
+    }
+  });
+
   expect(stack).toHaveResource("AWS::EC2::VPC", {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
@@ -226,7 +263,7 @@ test("Test ES cluster deploy to 1 AZ when user set zoneAwarenessEnabled to false
   };
 
   new LambdaToElasticSearchAndKibana(stack, "lambda-elasticsearch-kibana-stack", {
-    lambdaFunctionProps: getDefaultLambdaProps(),
+    lambdaFunctionProps: getDefaultTestLambdaProps(),
     domainName: 'test-domain',
     esDomainProps,
     deployVpc: true,
@@ -259,7 +296,7 @@ test("Test ES cluster deploy to 2 AZ when user set availabilityZoneCount to 2", 
   };
 
   new LambdaToElasticSearchAndKibana(stack, "lambda-elasticsearch-kibana-stack", {
-    lambdaFunctionProps: getDefaultLambdaProps(),
+    lambdaFunctionProps: getDefaultTestLambdaProps(),
     domainName: 'test-domain',
     esDomainProps,
     deployVpc: true,
@@ -284,7 +321,7 @@ test("Test ES cluster deploy to 3 AZs when user using default values for Elastic
   });
 
   new LambdaToElasticSearchAndKibana(stack, "lambda-elasticsearch-kibana-stack", {
-    lambdaFunctionProps: getDefaultLambdaProps(),
+    lambdaFunctionProps: getDefaultTestLambdaProps(),
     domainName: 'test-domain',
     deployVpc: true,
   });
@@ -302,7 +339,7 @@ test("Test ES cluster deploy to 3 AZs when user using default values for Elastic
   });
 });
 
-test('check for an existing VPC in construct', () => {
+test('Test minimal deployment with an existing VPC', () => {
   const stack = new cdk.Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });
@@ -319,7 +356,7 @@ test('check for an existing VPC in construct', () => {
   });
 
   const construct = new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
-    lambdaFunctionProps: getDefaultLambdaProps(),
+    lambdaFunctionProps: getDefaultTestLambdaProps(),
     domainName: "test",
     existingVpc: vpc
   });
@@ -353,17 +390,17 @@ test('check for an existing VPC in construct', () => {
   expect(construct.vpc).toBeDefined();
 });
 
-test('Check for VPC construct props', () => {
+test('Test minimal deployment with VPC construct props', () => {
   const stack = new cdk.Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });
 
   const construct = new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
-    lambdaFunctionProps: getDefaultLambdaProps(),
+    lambdaFunctionProps: getDefaultTestLambdaProps(),
     domainName: "test",
     deployVpc: true,
     vpcProps: {
-      vpcName: "existing-vpc-test"
+      vpcName: "vpc-props-test"
     }
   });
 
@@ -371,7 +408,7 @@ test('Check for VPC construct props', () => {
     Tags: [
       {
         Key: "Name",
-        Value: "existing-vpc-test"
+        Value: "vpc-props-test"
       }
     ]
   });
@@ -401,7 +438,7 @@ test('Test error for vpcProps and undefined deployVpc prop', () => {
 
   const app = () => {
     new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
-      lambdaFunctionProps: getDefaultLambdaProps(),
+      lambdaFunctionProps: getDefaultTestLambdaProps(),
       domainName: "test",
       vpcProps: {
         vpcName: "existing-vpc-test"
@@ -425,7 +462,7 @@ test('Test error for Lambda function VPC props', () => {
 
   const app = () => {
     new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
-      lambdaFunctionProps: defaults.consolidateProps(getDefaultLambdaProps(), { vpc }),
+      lambdaFunctionProps: defaults.consolidateProps(getDefaultTestLambdaProps(), { vpc }),
       domainName: "test",
       deployVpc: true,
     });
@@ -439,7 +476,7 @@ test('test error for Elasticsearch domain VPC props', () => {
 
   const app = () => {
     new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
-      lambdaFunctionProps: getDefaultLambdaProps(),
+      lambdaFunctionProps: getDefaultTestLambdaProps(),
       esDomainProps: {
         vpcOptions: {
           subnetIds: ['fake-ids'],
@@ -454,7 +491,7 @@ test('test error for Elasticsearch domain VPC props', () => {
   expect(app).toThrowError("Error - Define VPC using construct parameters not Elasticsearch props");
 });
 
-function getDefaultLambdaProps(): lambda.FunctionProps {
+function getDefaultTestLambdaProps(): lambda.FunctionProps {
   return {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     runtime: lambda.Runtime.NODEJS_14_X,

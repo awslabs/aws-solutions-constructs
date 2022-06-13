@@ -25,9 +25,9 @@
 ## Overview
 This AWS Solutions Construct implements the AWS Lambda function and Amazon Elasticsearch Service with the least privileged permissions.
 
-**Some cluster configurations (e.g VPC access) require the existence of the `AWSServiceRoleForAmazonElasticsearchService` Service-Linked Role.**
+**Some cluster configurations (e.g VPC access) require the existence of the `AWSServiceRoleForAmazonElasticsearchService` Service-Linked Role in your account.**
 
-**You will need to create the service-linked role using the AWS CLI:**
+**You will need to create the service-linked role using the AWS CLI once in any account using this construct (it may have already been run to support other stacks):**
 ```
 aws iam create-service-linked-role --aws-service-name es.amazonaws.com
 ```

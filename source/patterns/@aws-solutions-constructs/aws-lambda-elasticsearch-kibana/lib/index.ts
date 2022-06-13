@@ -143,9 +143,6 @@ export class LambdaToElasticSearchAndKibana extends Construct {
     // Find the lambda service Role ARN
     const lambdaFunctionRoleARN = this.lambdaFunction.role?.roleArn;
 
-    const zoneProps: elasticsearch.CfnDomainProps = defaults.checkMultiAvailabilityZoneSupport(this.lambdaFunction, this.vpc, props.esDomainProps);
-    const consolidatedProps = defaults.consolidateProps({}, props.esDomainProps, zoneProps);
-
     this.userPool = defaults.buildUserPool(this);
     this.userPoolClient = defaults.buildUserPoolClient(this, this.userPool);
     this.identityPool = defaults.buildIdentityPool(this, this.userPool, this.userPoolClient);
@@ -162,12 +159,16 @@ export class LambdaToElasticSearchAndKibana extends Construct {
       userpoolclient: this.userPoolClient
     });
 
-    [this.elasticsearchDomain, this.elasticsearchRole] = defaults.buildElasticSearch(this, props.domainName, {
+    const cfnDomainOptions: defaults.BuildElasticSearchProps = {
       userpool: this.userPool,
       identitypool: this.identityPool,
       cognitoAuthorizedRoleARN: cognitoAuthorizedRole.roleArn,
-      serviceRoleARN: lambdaFunctionRoleARN
-    }, consolidatedProps);
+      lambdaFunction: this.lambdaFunction,
+      serviceRoleARN: lambdaFunctionRoleARN,
+      vpc: this.vpc
+    };
+
+    [this.elasticsearchDomain, this.elasticsearchRole] = defaults.buildElasticSearch(this, props.domainName, cfnDomainOptions, props.esDomainProps);
 
     // Add ES Domain to lambda environment variable
     const domainEndpointEnvironmentVariableName = props.domainEndpointEnvironmentVariableName || 'DOMAIN_ENDPOINT';

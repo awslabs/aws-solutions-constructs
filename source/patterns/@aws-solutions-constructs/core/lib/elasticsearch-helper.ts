@@ -12,7 +12,7 @@
  */
 
 import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
-import { CfnDomainOptions, DefaultCfnDomainProps } from './elasticsearch-defaults';
+import { BuildElasticSearchProps, DefaultCfnDomainProps } from './elasticsearch-defaults';
 import { consolidateProps, addCfnSuppressRules } from './utils';
 import * as iam from '@aws-cdk/aws-iam';
 import * as cdk from '@aws-cdk/core';
@@ -23,7 +23,15 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import { Construct } from '@aws-cdk/core';
 
 export function buildElasticSearch(scope: Construct, domainName: string,
-  options: CfnDomainOptions, cfnDomainProps?: elasticsearch.CfnDomainProps): [elasticsearch.CfnDomain, iam.Role] {
+  options: BuildElasticSearchProps, cfnDomainProps?: elasticsearch.CfnDomainProps): [elasticsearch.CfnDomain, iam.Role] {
+
+  let zoneProps: elasticsearch.CfnDomainProps = {};
+
+  if (options.lambdaFunction) {
+    zoneProps = GetSubnetsAndSecurityGroups(options.lambdaFunction, options.vpc, cfnDomainProps);
+  }
+
+  const consolidatedProps = consolidateProps({}, cfnDomainProps, zoneProps);
 
   // Setup the IAM Role & policy for ES to configure Cognito User pool and Identity pool
   const cognitoKibanaConfigureRole = new iam.Role(scope, 'CognitoKibanaConfigureRole', {
@@ -69,11 +77,10 @@ export function buildElasticSearch(scope: Construct, domainName: string,
 
   cognitoKibanaConfigureRolePolicy.attachToRole(cognitoKibanaConfigureRole);
 
-  let _cfnDomainProps = DefaultCfnDomainProps(domainName, cognitoKibanaConfigureRole, options);
+  const defaultCfnDomainProps = DefaultCfnDomainProps(domainName, cognitoKibanaConfigureRole, options);
+  const finalCfnDomainProps = consolidateProps(defaultCfnDomainProps, consolidatedProps);
 
-  _cfnDomainProps = consolidateProps(_cfnDomainProps, cfnDomainProps);
-
-  const esDomain = new elasticsearch.CfnDomain(scope, "ElasticsearchDomain", _cfnDomainProps);
+  const esDomain = new elasticsearch.CfnDomain(scope, "ElasticsearchDomain", finalCfnDomainProps);
   addCfnSuppressRules(esDomain, [
     {
       id: "W28",
@@ -221,7 +228,7 @@ export function buildElasticSearchCWAlarms(scope: Construct): cloudwatch.Alarm[]
   return alarms;
 }
 
-export function checkMultiAvailabilityZoneSupport(lambdaFunction: lambda.Function, vpc?: ec2.IVpc, props?: elasticsearch.CfnDomainProps):
+export function GetSubnetsAndSecurityGroups(lambdaFunction: lambda.Function, vpc?: ec2.IVpc, props?: elasticsearch.CfnDomainProps):
   elasticsearch.CfnDomainProps {
   if (vpc) {
     // Environment specified stacks: A ES cluster deploys in 3 AZs with 3 subnets maximum(each subnet in a different AZ).
