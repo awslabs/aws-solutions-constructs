@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { App } from "@aws-cdk/core";
+import { App } from "aws-cdk-lib";
 import { AwsCustomGlueEtlStack } from "../lib/aws-custom-glue-etl-stack";
 
 const app = new App();

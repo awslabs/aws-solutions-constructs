@@ -87,6 +87,12 @@ export interface SnsToSqsProps {
      * @default - Default props are used.
      */
     readonly encryptionKeyProps?: kms.KeyProps
+    /**
+     * Optional user-provided props to override the default props for sqsSubscriptionProps.
+     *
+     * @default - Default props are used.
+     */
+     readonly sqsSubscriptionProps?: subscriptions.SqsSubscriptionProps
 }
 
 /**
@@ -152,7 +158,7 @@ export class SnsToSqs extends Construct {
       });
 
       // Setup the SQS queue subscription to the SNS topic
-      this.snsTopic.addSubscription(new subscriptions.SqsSubscription(this.sqsQueue));
+      this.snsTopic.addSubscription(new subscriptions.SqsSubscription(this.sqsQueue, props.sqsSubscriptionProps));
 
       // Grant SNS service access to the SQS queue encryption key
       if (this.sqsQueue.encryptionMasterKey) {

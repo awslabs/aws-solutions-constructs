@@ -22,6 +22,7 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-lambda-eventbridge`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.lambdaeventbridge`|
 
+## Overview
 This AWS Solutions Construct implements an AWS Lambda function connected to an Amazon EventBridge.
 
 Here is a minimal deployable pattern definition:

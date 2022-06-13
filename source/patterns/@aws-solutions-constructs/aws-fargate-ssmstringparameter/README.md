@@ -22,6 +22,7 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-fargate-ssmstringparameter`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.fargatessmstringparameter`|
 
+## Overview
 This AWS Solutions Construct implements an AWS Fargate service that can read/write to an AWS Systems Manager String Parameter
 
 Here is a minimal deployable pattern definition:
