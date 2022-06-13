@@ -22,6 +22,7 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-eventbridge-kinesisstreams`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.eventbridgekinesisstreams`|
 
+## Overview
 This AWS Solutions Construct implements an Amazon EventBridge rule to send data to an Amazon Kinesis Data Stream
 
 Here is a minimal deployable pattern definition:

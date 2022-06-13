@@ -20,12 +20,13 @@
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-events-rule-lambda`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.eventsrulelambda`|
 
+## Overview
 This AWS Solutions Construct implements an AWS Events rule and an AWS Lambda function.
 
 Here is a minimal deployable pattern definition:
 
 Typescript
-``` javascript
+``` typescript
 // aws-events-rule-lambda has been deprecated for CDK V2 in favor of aws-eventbridge-lambda.
 // This sample uses the CDK V1 syntax
 import * as cdk from '@aws-cdk/core';

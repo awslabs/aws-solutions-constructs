@@ -12,7 +12,7 @@
  */
 
 // Imports
-import * as cdk from '@aws-cdk/core';
+import { App } from 'aws-cdk-lib';
 import { ExistingResources } from '../lib/existing-resources';
 import { SharedStack } from '../lib/shared-stack';
 import { ServiceStaffStack } from '../lib/service-staff-stack';
@@ -20,7 +20,7 @@ import { KitchenStaffStack } from '../lib/kitchen-staff-stack';
 import { ManagerStack } from '../lib/manager-stack';
 
 // App
-const app = new cdk.App();
+const app = new App();
 
 // Stack containing shared resources across all functions
 const existingResources = new ExistingResources(app, `ExistingResourcesStack`);
