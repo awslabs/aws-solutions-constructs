@@ -12,10 +12,11 @@
  */
 
 // Imports
-import * as cdk from '@aws-cdk/core';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as ddb from '@aws-cdk/aws-dynamodb';
-import * as apigateway from '@aws-cdk/aws-apigateway';
+import { Stack, Duration } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as ddb from 'aws-cdk-lib/aws-dynamodb';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import {
   CognitoToApiGatewayToLambda
 } from '@aws-solutions-constructs/aws-cognito-apigateway-lambda';
@@ -30,10 +31,10 @@ export interface KitchenStaffStackProps {
 }
 
 // Stack
-export class KitchenStaffStack extends cdk.Stack {
+export class KitchenStaffStack extends Stack {
 
   // Constructor
-  constructor(scope: cdk.Construct, id: string, props: KitchenStaffStackProps) {
+  constructor(scope: Construct, id: string, props: KitchenStaffStackProps) {
     super(scope, id);
 
     // Create a Lambda function that lists all open orders in the database
@@ -42,7 +43,7 @@ export class KitchenStaffStack extends cdk.Stack {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/kitchen-staff/get-open-orders`),
         handler: 'index.handler',
-        timeout: cdk.Duration.seconds(15)
+        timeout: Duration.seconds(15)
       },
       existingTableObj: props.db
     });
@@ -53,7 +54,7 @@ export class KitchenStaffStack extends cdk.Stack {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/kitchen-staff/complete-order`),
         handler: 'index.handler',
-        timeout: cdk.Duration.seconds(15)
+        timeout: Duration.seconds(15)
       },
       existingTableObj: props.db
     });

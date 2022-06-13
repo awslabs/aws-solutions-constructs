@@ -81,7 +81,7 @@ def main():
 
     # print (args)
     # Make sure to set credentials here or use profile_name. Also make sure that the user role for which credentials
-    # are set has write premissions to the Kinesis Data Streams
+    # are set has write permissions to the Kinesis Data Streams
     # session = boto3.Session(
     #     aws_access_key_id="FAKE_ID_UPDATE_ACCESS_KEY_ID",
     #     aws_secret_access_key="FAKE_KEY_UPDATE_ACCESS_KEY",
@@ -93,7 +93,7 @@ def main():
     session = boto3.Session(profile_name="default")
 
     try:
-        # Intialize Faker library
+        # Initialize Faker library
         fake = Faker()
 
         # Kinesis settings
