@@ -27,13 +27,13 @@ export interface BuildElasticSearchProps {
   readonly vpc?: ec2.IVpc
 }
 
-export function DefaultCfnDomainProps(domainName: string, cognitoKibanaConfigureRole: iam.Role, options: BuildElasticSearchProps) {
+export function DefaultCfnDomainProps(domainName: string, cognitoKibanaConfigureRole: iam.Role, props: BuildElasticSearchProps) {
   const roleARNs: iam.IPrincipal[] = [];
 
-  roleARNs.push(new iam.ArnPrincipal(options.cognitoAuthorizedRoleARN));
+  roleARNs.push(new iam.ArnPrincipal(props.cognitoAuthorizedRoleARN));
 
-  if (options.serviceRoleARN) {
-    roleARNs.push(new iam.ArnPrincipal(options.serviceRoleARN));
+  if (props.serviceRoleARN) {
+    roleARNs.push(new iam.ArnPrincipal(props.serviceRoleARN));
   }
 
   return {
@@ -63,8 +63,8 @@ export function DefaultCfnDomainProps(domainName: string, cognitoKibanaConfigure
     },
     cognitoOptions: {
       enabled: true,
-      identityPoolId: options.identitypool.ref,
-      userPoolId: options.userpool.userPoolId,
+      identityPoolId: props.identitypool.ref,
+      userPoolId: props.userpool.userPoolId,
       roleArn: cognitoKibanaConfigureRole.roleArn
     },
     accessPolicies: new iam.PolicyDocument({

@@ -23,12 +23,12 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import { Construct } from '@aws-cdk/core';
 
 export function buildElasticSearch(scope: Construct, domainName: string,
-  options: BuildElasticSearchProps, cfnDomainProps?: elasticsearch.CfnDomainProps): [elasticsearch.CfnDomain, iam.Role] {
+  props: BuildElasticSearchProps, cfnDomainProps?: elasticsearch.CfnDomainProps): [elasticsearch.CfnDomain, iam.Role] {
 
   let zoneProps: elasticsearch.CfnDomainProps = {};
 
-  if (options.lambdaFunction) {
-    zoneProps = GetSubnetsAndSecurityGroups(options.lambdaFunction, options.vpc, cfnDomainProps);
+  if (props.vpc) {
+    zoneProps = GetSubnetsAndSecurityGroups(props.vpc, cfnDomainProps, props.lambdaFunction);
   }
 
   const consolidatedProps = consolidateProps({}, cfnDomainProps, zoneProps);
@@ -56,8 +56,8 @@ export function buildElasticSearch(scope: Construct, domainName: string,
           "es:UpdateElasticsearchDomainConfig",
         ],
         resources: [
-          options.userpool.userPoolArn,
-          `arn:aws:cognito-identity:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:identitypool/${options.identitypool.ref}`,
+          props.userpool.userPoolArn,
+          `arn:aws:cognito-identity:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:identitypool/${props.identitypool.ref}`,
           `arn:aws:es:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:domain/${domainName}`
         ]
       }),
@@ -77,7 +77,7 @@ export function buildElasticSearch(scope: Construct, domainName: string,
 
   cognitoKibanaConfigureRolePolicy.attachToRole(cognitoKibanaConfigureRole);
 
-  const defaultCfnDomainProps = DefaultCfnDomainProps(domainName, cognitoKibanaConfigureRole, options);
+  const defaultCfnDomainProps = DefaultCfnDomainProps(domainName, cognitoKibanaConfigureRole, props);
   const finalCfnDomainProps = consolidateProps(defaultCfnDomainProps, consolidatedProps);
 
   const esDomain = new elasticsearch.CfnDomain(scope, "ElasticsearchDomain", finalCfnDomainProps);
@@ -228,7 +228,7 @@ export function buildElasticSearchCWAlarms(scope: Construct): cloudwatch.Alarm[]
   return alarms;
 }
 
-export function GetSubnetsAndSecurityGroups(lambdaFunction: lambda.Function, vpc?: ec2.IVpc, props?: elasticsearch.CfnDomainProps):
+function GetSubnetsAndSecurityGroups(vpc?: ec2.IVpc, props?: elasticsearch.CfnDomainProps, lambdaFunction?: lambda.Function):
   elasticsearch.CfnDomainProps {
   if (vpc) {
     // Environment specified stacks: A ES cluster deploys in 3 AZs with 3 subnets maximum(each subnet in a different AZ).
@@ -257,7 +257,11 @@ export function GetSubnetsAndSecurityGroups(lambdaFunction: lambda.Function, vpc
     }
 
     const securityGroupIds: string[] = [];
-    lambdaFunction.connections.securityGroups.forEach(element => securityGroupIds.push(element.securityGroupId));
+
+    // Get the associated security group ids otherwise use the default security group ids
+    if (lambdaFunction) {
+      lambdaFunction.connections.securityGroups.forEach(element => securityGroupIds.push(element.securityGroupId));
+    }
 
     return {
       vpcOptions: {
