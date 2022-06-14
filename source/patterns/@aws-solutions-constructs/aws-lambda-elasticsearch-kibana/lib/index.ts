@@ -163,6 +163,7 @@ export class LambdaToElasticSearchAndKibana extends Construct {
       userpool: this.userPool,
       identitypool: this.identityPool,
       cognitoAuthorizedRoleARN: cognitoAuthorizedRole.roleArn,
+      lambdaFunction: this.lambdaFunction,
       serviceRoleARN: lambdaFunctionRoleARN,
       vpc: this.vpc
     };
