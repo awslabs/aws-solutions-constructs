@@ -231,7 +231,7 @@ function getSubnetIds(vpc?: ec2.IVpc, props?: elasticsearch.CfnDomainProps):
   elasticsearch.CfnDomainProps {
   if (vpc) {
     // Environment specified stacks: A ES cluster deploys in 3 AZs with 3 subnets maximum(each subnet in a different AZ).
-    // Environment-agnostic stacks: A ES cluster deploys in 2 AZs with 2 subnets maximum(each subnet in a different AZ).
+    // Environment agnostic stacks: A ES cluster deploys in 2 AZs with 2 subnets maximum(each subnet in a different AZ).
     // To successfully deploy a ES cluster, construct will need to specify exactly same subnets number as cluster AZs number
     // To summarize: 1. Subnets number must equals to AZs number.   2. Each subnet belongs to different AZ.
     let subnetIds: string[] = vpc.selectSubnets({ onePerAz: true }).subnetIds;
@@ -240,9 +240,9 @@ function getSubnetIds(vpc?: ec2.IVpc, props?: elasticsearch.CfnDomainProps):
       const disabledZoneAwareness = checkDisabledZoneAwareness(props);
       const twoAvailabilityZoneConfig = checkTwoAvailabilityZoneConfig(props);
 
-      if (disabledZoneAwareness) { // If disabledZoneAwareness is set to true, ES cluster deploy in 1 AZ with 1 subnet
+      if (disabledZoneAwareness) { // If zone awareness is disabled, ES cluster deploy in 1 AZ with 1 subnet
         subnetIds = extractSubnetIdsByLength(subnetIds, 1);
-      } else if (twoAvailabilityZoneConfig) { // If zoneAwarenessConfig.availabilityZoneCount set to 2, ES cluster deploy in 2 AZ with 2 subnets.
+      } else if (twoAvailabilityZoneConfig) { // If the availabilityZoneCount is set to 2, ES cluster deploy in 2 AZ with 2 subnets(1 subnet per AZ).
         subnetIds = extractSubnetIdsByLength(subnetIds, 2);
       } else {
         subnetIds = extractSubnetIdsByLength(subnetIds, 3);

@@ -215,9 +215,7 @@ function GetNextId(children: IConstruct[], coreName: string): string {
 export function getLambdaVpcSecurityGroupIds(lambdaFunction: lambda.Function): string[] {
   const securityGroupIds: string[] = [];
 
-  if (lambdaFunction) {
-    lambdaFunction.connections.securityGroups.forEach(element => securityGroupIds.push(element.securityGroupId));
-  }
+  lambdaFunction.connections.securityGroups.forEach(element => securityGroupIds.push(element.securityGroupId));
 
   return securityGroupIds;
 }
