@@ -18,7 +18,6 @@ import * as iam from '@aws-cdk/aws-iam';
 import * as cdk from '@aws-cdk/core';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
 import * as ec2 from '@aws-cdk/aws-ec2';
-import * as lambda from '@aws-cdk/aws-lambda';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from '@aws-cdk/core';
 
@@ -28,7 +27,7 @@ export function buildElasticSearch(scope: Construct, domainName: string,
   let zoneProps: elasticsearch.CfnDomainProps = {};
 
   if (props.vpc) {
-    zoneProps = GetSubnetsAndSecurityGroups(props.vpc, cfnDomainProps, props.lambdaFunction);
+    zoneProps = getSubnetIds(props.vpc, cfnDomainProps);
   }
 
   const consolidatedProps = consolidateProps({}, cfnDomainProps, zoneProps);
@@ -228,7 +227,7 @@ export function buildElasticSearchCWAlarms(scope: Construct): cloudwatch.Alarm[]
   return alarms;
 }
 
-function GetSubnetsAndSecurityGroups(vpc?: ec2.IVpc, props?: elasticsearch.CfnDomainProps, lambdaFunction?: lambda.Function):
+function getSubnetIds(vpc?: ec2.IVpc, props?: elasticsearch.CfnDomainProps):
   elasticsearch.CfnDomainProps {
   if (vpc) {
     // Environment specified stacks: A ES cluster deploys in 3 AZs with 3 subnets maximum(each subnet in a different AZ).
@@ -238,38 +237,53 @@ function GetSubnetsAndSecurityGroups(vpc?: ec2.IVpc, props?: elasticsearch.CfnDo
     let subnetIds: string[] = vpc.selectSubnets({ onePerAz: true }).subnetIds;
 
     if (props?.elasticsearchClusterConfig) {
-      const disabledZoneAwareness = 'zoneAwarenessEnabled' in props.elasticsearchClusterConfig &&
-        !props.elasticsearchClusterConfig.zoneAwarenessEnabled;
-      const twoAvailabilityZoneConfig = 'zoneAwarenessConfig' in props.elasticsearchClusterConfig &&
-        props.elasticsearchClusterConfig.zoneAwarenessConfig &&
-        'availabilityZoneCount' in props.elasticsearchClusterConfig.zoneAwarenessConfig &&
-        props.elasticsearchClusterConfig.zoneAwarenessConfig.availabilityZoneCount === 2;
+      const disabledZoneAwareness = checkDisabledZoneAwareness(props);
+      const twoAvailabilityZoneConfig = checkTwoAvailabilityZoneConfig(props);
 
-      if (disabledZoneAwareness) { // If zoneAwarenessEnabled set to false, ES cluster deploy in 1 AZ with 1 subnet
-        subnetIds = subnetIds.slice(0, 1);
+      if (disabledZoneAwareness) { // If disabledZoneAwareness is set to true, ES cluster deploy in 1 AZ with 1 subnet
+        subnetIds = extractSubnetIdsByLength(subnetIds, 1);
       } else if (twoAvailabilityZoneConfig) { // If zoneAwarenessConfig.availabilityZoneCount set to 2, ES cluster deploy in 2 AZ with 2 subnets.
-        subnetIds = subnetIds.slice(0, 2);
+        subnetIds = extractSubnetIdsByLength(subnetIds, 2);
       } else {
-        subnetIds = subnetIds.slice(0, 3);
+        subnetIds = extractSubnetIdsByLength(subnetIds, 3);
       }
     } else {
-      subnetIds = subnetIds.slice(0, 3);
-    }
-
-    const securityGroupIds: string[] = [];
-
-    // Get the associated security group ids otherwise use the default security group ids
-    if (lambdaFunction) {
-      lambdaFunction.connections.securityGroups.forEach(element => securityGroupIds.push(element.securityGroupId));
+      subnetIds = extractSubnetIdsByLength(subnetIds, 3);
     }
 
     return {
       vpcOptions: {
         subnetIds,
-        securityGroupIds,
       },
     };
   }
 
   return {};
+}
+
+function checkDisabledZoneAwareness(props: elasticsearch.CfnDomainProps): boolean {
+  let disabledZoneAwareness: boolean = false;
+
+  if (props.elasticsearchClusterConfig) {
+    disabledZoneAwareness = 'zoneAwarenessEnabled' in props.elasticsearchClusterConfig && !props.elasticsearchClusterConfig.zoneAwarenessEnabled;
+  }
+
+  return disabledZoneAwareness;
+}
+
+function checkTwoAvailabilityZoneConfig(props: elasticsearch.CfnDomainProps): boolean | undefined {
+  let twoAvailabilityZoneConfig: boolean | undefined = false;
+
+  if (props.elasticsearchClusterConfig) {
+    twoAvailabilityZoneConfig = 'zoneAwarenessConfig' in props.elasticsearchClusterConfig &&
+        props.elasticsearchClusterConfig.zoneAwarenessConfig &&
+        'availabilityZoneCount' in props.elasticsearchClusterConfig.zoneAwarenessConfig &&
+        props.elasticsearchClusterConfig.zoneAwarenessConfig.availabilityZoneCount === 2;
+  }
+
+  return twoAvailabilityZoneConfig;
+}
+
+function extractSubnetIdsByLength(subnetIds: string[], length: number): string[] {
+  return subnetIds.slice(0, length);
 }

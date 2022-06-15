@@ -163,12 +163,20 @@ export class LambdaToElasticSearchAndKibana extends Construct {
       userpool: this.userPool,
       identitypool: this.identityPool,
       cognitoAuthorizedRoleARN: cognitoAuthorizedRole.roleArn,
-      lambdaFunction: this.lambdaFunction,
       serviceRoleARN: lambdaFunctionRoleARN,
       vpc: this.vpc
     };
 
-    [this.elasticsearchDomain, this.elasticsearchRole] = defaults.buildElasticSearch(this, props.domainName, cfnDomainOptions, props.esDomainProps);
+    let securityGroupConfig: elasticsearch.CfnDomainProps = {};
+
+    if (this.vpc) {
+      const securityGroupIds = defaults.getLambdaVpcSecurityGroupIds(this.lambdaFunction);
+      securityGroupConfig = { vpcOptions: {securityGroupIds} };
+    }
+
+    const consolidatedProps = defaults.consolidateProps({}, props.esDomainProps, securityGroupConfig);
+
+    [this.elasticsearchDomain, this.elasticsearchRole] = defaults.buildElasticSearch(this, props.domainName, cfnDomainOptions, consolidatedProps);
 
     // Add ES Domain to lambda environment variable
     const domainEndpointEnvironmentVariableName = props.domainEndpointEnvironmentVariableName || 'DOMAIN_ENDPOINT';

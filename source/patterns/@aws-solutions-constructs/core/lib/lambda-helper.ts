@@ -134,7 +134,7 @@ export function deployLambdaFunction(scope: Construct,
     );
 
     finalLambdaFunctionProps = overrideProps(finalLambdaFunctionProps, {
-      securityGroups: [ lambdaSecurityGroup ],
+      securityGroups: [lambdaSecurityGroup],
       vpc,
     }, true);
   }
@@ -210,4 +210,14 @@ function GetNextId(children: IConstruct[], coreName: string): string {
   });
 
   return `${coreName}-${lastSuffix + 1}`;
+}
+
+export function getLambdaVpcSecurityGroupIds(lambdaFunction: lambda.Function): string[] {
+  const securityGroupIds: string[] = [];
+
+  if (lambdaFunction) {
+    lambdaFunction.connections.securityGroups.forEach(element => securityGroupIds.push(element.securityGroupId));
+  }
+
+  return securityGroupIds;
 }

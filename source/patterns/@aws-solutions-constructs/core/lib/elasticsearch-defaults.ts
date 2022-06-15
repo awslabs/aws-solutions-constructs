@@ -14,7 +14,6 @@
 import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as iam from '@aws-cdk/aws-iam';
-import * as lambda from '@aws-cdk/aws-lambda';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as cdk from '@aws-cdk/core';
 
@@ -22,7 +21,6 @@ export interface BuildElasticSearchProps {
   readonly identitypool: cognito.CfnIdentityPool,
   readonly userpool: cognito.UserPool,
   readonly cognitoAuthorizedRoleARN: string,
-  readonly lambdaFunction?: lambda.Function,
   readonly serviceRoleARN?: string,
   readonly vpc?: ec2.IVpc
 }
