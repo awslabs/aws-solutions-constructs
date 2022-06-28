@@ -42,12 +42,17 @@ export function DefaultIsolatedVpcProps(): ec2.VpcProps {
  */
 export function DefaultPrivateVpcProps(): ec2.VpcProps {
   return {
-    natGateways: 0,
+    natGateways: 1,
     subnetConfiguration: [
       {
         cidrMask: 18,
         name: "private",
         subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
+      },
+      {
+        cidrMask: 24,
+        name: "public",
+        subnetType: ec2.SubnetType.PUBLIC,
       }
     ]
   } as ec2.VpcProps;

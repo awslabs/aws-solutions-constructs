@@ -133,48 +133,34 @@ test('check override cognito domain name with provided cognito domain name', () 
   });
 });
 
-test('Check for 3 subnets for environment specified stack', () => {
-  const stack = new cdk.Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
+test("Test minimal deployment that deploys a VPC in 2 AZ without vpcProps", () => {
+  const stack = new cdk.Stack(undefined, undefined, {});
 
-  const lambdaProps: lambda.FunctionProps = getDefaultTestLambdaProps();
-
-  new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
-    lambdaFunctionProps: lambdaProps,
-    domainName: "test",
+  new LambdaToElasticSearchAndKibana(stack, "lambda-elasticsearch-kibana-stack", {
+    lambdaFunctionProps: getDefaultTestLambdaProps(),
+    domainName: 'test-domain',
     deployVpc: true,
   });
 
-  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
-    VPCOptions: {
+  expect(stack).toHaveResource("AWS::Lambda::Function", {
+    VpcConfig: {
+      SecurityGroupIds: [
+        {
+          "Fn::GetAtt": [
+            "lambdaelasticsearchkibanastackReplaceDefaultSecurityGroupsecuritygroup4C50002B",
+            "GroupId",
+          ],
+        },
+      ],
       SubnetIds: [
         {
-          Ref: "VpcisolatedSubnet1SubnetE62B1B9B"
+          Ref: "VpcisolatedSubnet1SubnetE62B1B9B",
         },
         {
-          Ref: "VpcisolatedSubnet2Subnet39217055"
-        },
-        {
-          Ref: "VpcisolatedSubnet3Subnet44F2537D"
+          Ref: "VpcisolatedSubnet2Subnet39217055",
         }
-      ]
-    }
-  });
-
-  expect(stack).toCountResources("AWS::EC2::VPC", 1);
-  expect(stack).toCountResources("AWS::EC2::Subnet", 3);
-});
-
-test('Check for 2 subnets for environment-agnostic stack', () => {
-  const stack = new cdk.Stack();
-
-  const lambdaProps: lambda.FunctionProps = getDefaultTestLambdaProps();
-
-  new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
-    lambdaFunctionProps: lambdaProps,
-    domainName: "test",
-    deployVpc: true,
+      ],
+    },
   });
 
   expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
@@ -190,11 +176,13 @@ test('Check for 2 subnets for environment-agnostic stack', () => {
     }
   });
 
-  expect(stack).toCountResources("AWS::EC2::VPC", 1);
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
+  expect(stack).toHaveResource("AWS::EC2::VPC", {
+    EnableDnsHostnames: true,
+    EnableDnsSupport: true,
+  });
 });
 
-test("Test minimal deployment that deploys a VPC without vpcProps", () => {
+test("Test minimal deployment that deploys a VPC in 3 AZ without vpcProps", () => {
   const stack = new cdk.Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });
@@ -339,13 +327,13 @@ test("Test ES cluster deploy to 3 AZs when user using default values for Elastic
   });
 });
 
-test('Test minimal deployment with an existing VPC', () => {
+test('Test minimal deployment with an existing isolated VPC', () => {
   const stack = new cdk.Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });
 
   const vpc = defaults.buildVpc(stack, {
-    defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
+    defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
     constructVpcProps: {
       enableDnsHostnames: true,
       enableDnsSupport: true,
@@ -374,13 +362,64 @@ test('Test minimal deployment with an existing VPC', () => {
     VPCOptions: {
       SubnetIds: [
         {
-          Ref: "VpcPrivateSubnet1Subnet536B997A"
+          Ref: "VpcisolatedSubnet1SubnetE62B1B9B"
         },
         {
-          Ref: "VpcPrivateSubnet2Subnet3788AAA1"
+          Ref: "VpcisolatedSubnet2Subnet39217055"
         },
         {
-          Ref: "VpcPrivateSubnet3SubnetF258B56E"
+          Ref: "VpcisolatedSubnet3Subnet44F2537D"
+        }
+      ]
+    }
+  });
+
+  expect(stack).toCountResources("AWS::EC2::VPC", 1);
+  expect(construct.vpc).toBeDefined();
+});
+
+test('Test minimal deployment with an existing private VPC', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  const vpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultPrivateVpcProps(),
+    constructVpcProps: {
+      enableDnsHostnames: true,
+      enableDnsSupport: true,
+    },
+    userVpcProps: {
+      vpcName: "existing-vpc-test"
+    }
+  });
+
+  const construct = new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
+    lambdaFunctionProps: getDefaultTestLambdaProps(),
+    domainName: "test",
+    existingVpc: vpc
+  });
+
+  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+    Tags: [
+      {
+        Key: "Name",
+        Value: "existing-vpc-test"
+      }
+    ]
+  });
+
+  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
+    VPCOptions: {
+      SubnetIds: [
+        {
+          Ref: "VpcprivateSubnet1SubnetCEAD3716"
+        },
+        {
+          Ref: "VpcprivateSubnet2Subnet2DE7549C"
+        },
+        {
+          Ref: "VpcprivateSubnet3SubnetA5AC68D9"
         }
       ]
     }

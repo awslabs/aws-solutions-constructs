@@ -12,18 +12,9 @@
  */
 
 import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
-import * as cognito from '@aws-cdk/aws-cognito';
 import * as iam from '@aws-cdk/aws-iam';
-import * as ec2 from '@aws-cdk/aws-ec2';
 import * as cdk from '@aws-cdk/core';
-
-export interface BuildElasticSearchProps {
-  readonly identitypool: cognito.CfnIdentityPool,
-  readonly userpool: cognito.UserPool,
-  readonly cognitoAuthorizedRoleARN: string,
-  readonly serviceRoleARN?: string,
-  readonly vpc?: ec2.IVpc
-}
+import { BuildElasticSearchProps } from './elasticsearch-helper';
 
 export function DefaultCfnDomainProps(domainName: string, cognitoKibanaConfigureRole: iam.Role, props: BuildElasticSearchProps) {
   const roleARNs: iam.IPrincipal[] = [];
@@ -46,11 +37,7 @@ export function DefaultCfnDomainProps(domainName: string, cognitoKibanaConfigure
     elasticsearchClusterConfig: {
       dedicatedMasterEnabled: true,
       dedicatedMasterCount: 3,
-      instanceCount: 3,
-      zoneAwarenessEnabled: true,
-      zoneAwarenessConfig: {
-        availabilityZoneCount: 3
-      }
+      zoneAwarenessEnabled: true
     },
     snapshotOptions: {
       automatedSnapshotStartHour: 1
