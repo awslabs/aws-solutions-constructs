@@ -243,7 +243,7 @@ test('Test error thrown with default 1 AZ deployment with no domain props', () =
   expect(app).toThrowError('Error - ElasticSearch Domains can only be deployed in Isolated or Private subnets');
 });
 
-test('Test VPC with 3 AZ with 2 max AZ cluster config', () => {
+test('Test VPC with 3 AZ and 2 max AZ cluster config', () => {
   const stack = new Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });
@@ -271,7 +271,7 @@ test('Test VPC with 3 AZ with 2 max AZ cluster config', () => {
   });
 });
 
-test('Test VPC with 3 AZ with 3 max AZ cluster config', () => {
+test('Test VPC with 3 AZ and 3 max AZ cluster config', () => {
   const stack = new Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });
