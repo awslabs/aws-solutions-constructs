@@ -13,7 +13,7 @@
 
 import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
 import { DefaultCfnDomainProps } from './elasticsearch-defaults';
-import { consolidateProps, addCfnSuppressRules, overrideProps } from './utils';
+import { consolidateProps, addCfnSuppressRules } from './utils';
 import * as iam from '@aws-cdk/aws-iam';
 import * as cdk from '@aws-cdk/core';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
@@ -41,8 +41,7 @@ export function buildElasticSearch(scope: Construct, domainName: string,
   }
 
   const clusterConfig = buildDefaultZoneAwarenessConfig(subnetIdsLength);
-  zoneProps = overrideProps(zoneProps, clusterConfig);
-  const consolidatedProps = consolidateProps(zoneProps, cfnDomainProps);
+  const consolidatedProps = consolidateProps(zoneProps, clusterConfig, cfnDomainProps);
 
   // Setup the IAM Role & policy for ES to configure Cognito User pool and Identity pool
   const cognitoKibanaConfigureRole = new iam.Role(scope, 'CognitoKibanaConfigureRole', {
