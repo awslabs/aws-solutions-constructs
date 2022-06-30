@@ -268,6 +268,16 @@ test("Test ES cluster deploy to 1 AZ when user set zoneAwarenessEnabled to false
       ZoneAwarenessEnabled: false,
     }
   });
+
+  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
+    VPCOptions: {
+      SubnetIds: [
+        {
+          Ref: "VpcisolatedSubnet1SubnetE62B1B9B"
+        }
+      ]
+    }
+  });
 });
 
 test("Test ES cluster deploy to 2 AZ when user set availabilityZoneCount to 2", () => {
@@ -277,6 +287,7 @@ test("Test ES cluster deploy to 2 AZ when user set availabilityZoneCount to 2", 
 
   const esDomainProps = {
     elasticsearchClusterConfig: {
+      zoneAwarenessEnabled: true,
       zoneAwarenessConfig: {
         availabilityZoneCount: 2
       }
@@ -294,11 +305,24 @@ test("Test ES cluster deploy to 2 AZ when user set availabilityZoneCount to 2", 
     ElasticsearchClusterConfig: {
       DedicatedMasterCount: 3,
       DedicatedMasterEnabled: true,
-      InstanceCount: 3,
+      InstanceCount: 2,
       ZoneAwarenessConfig: {
         AvailabilityZoneCount: 2,
       },
       ZoneAwarenessEnabled: true,
+    }
+  });
+
+  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
+    VPCOptions: {
+      SubnetIds: [
+        {
+          Ref: "VpcisolatedSubnet1SubnetE62B1B9B"
+        },
+        {
+          Ref: "VpcisolatedSubnet2Subnet39217055"
+        }
+      ]
     }
   });
 });
@@ -325,6 +349,22 @@ test("Test ES cluster deploy to 3 AZs when user using default values for Elastic
       ZoneAwarenessEnabled: true,
     }
   });
+
+  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
+    VPCOptions: {
+      SubnetIds: [
+        {
+          Ref: "VpcisolatedSubnet1SubnetE62B1B9B"
+        },
+        {
+          Ref: "VpcisolatedSubnet2Subnet39217055"
+        },
+        {
+          Ref: "VpcisolatedSubnet3Subnet44F2537D"
+        }
+      ]
+    }
+  });
 });
 
 test('Test minimal deployment with an existing isolated VPC', () => {
@@ -339,7 +379,7 @@ test('Test minimal deployment with an existing isolated VPC', () => {
       enableDnsSupport: true,
     },
     userVpcProps: {
-      vpcName: "existing-vpc-test"
+      vpcName: "existing-isolated-vpc-test"
     }
   });
 
@@ -353,7 +393,7 @@ test('Test minimal deployment with an existing isolated VPC', () => {
     Tags: [
       {
         Key: "Name",
-        Value: "existing-vpc-test"
+        Value: "existing-isolated-vpc-test"
       }
     ]
   });
@@ -390,7 +430,7 @@ test('Test minimal deployment with an existing private VPC', () => {
       enableDnsSupport: true,
     },
     userVpcProps: {
-      vpcName: "existing-vpc-test"
+      vpcName: "existing-private-vpc-test"
     }
   });
 
@@ -404,7 +444,7 @@ test('Test minimal deployment with an existing private VPC', () => {
     Tags: [
       {
         Key: "Name",
-        Value: "existing-vpc-test"
+        Value: "existing-private-vpc-test"
       }
     ]
   });
@@ -510,7 +550,7 @@ test('Test error for Lambda function VPC props', () => {
   expect(app).toThrowError("Error - Define VPC using construct parameters not Lambda function props");
 });
 
-test('test error for Elasticsearch domain VPC props', () => {
+test('Test error for Elasticsearch domain VPC props', () => {
   const stack = new cdk.Stack();
 
   const app = () => {
@@ -537,3 +577,68 @@ function getDefaultTestLambdaProps(): lambda.FunctionProps {
     handler: 'index.handler',
   };
 }
+
+test("Test error with zoneAwarenessConfig but no zoneAwarenessEnabled", () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  const esDomainProps = {
+    elasticsearchClusterConfig: {
+      zoneAwarenessConfig: {
+        availabilityZoneCount: 2
+      }
+    }
+  };
+  const app = () => {
+    new LambdaToElasticSearchAndKibana(stack, "lambda-elasticsearch-kibana-stack", {
+      lambdaFunctionProps: getDefaultTestLambdaProps(),
+      domainName: 'test-domain',
+      esDomainProps,
+      deployVpc: true,
+    });
+  };
+
+  expect(app).toThrowError('Error - zoneAwarenessEnabled must be true to use zoneAwarenessConfig');
+});
+
+test('Test 3 AZ Multi AZ ES deployment with VPC that has 6 AZ', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
+    lambdaFunctionProps: getDefaultTestLambdaProps(),
+    vpcProps: {
+      maxAzs: 6,
+      vpcName: "vpc-test"
+    },
+    domainName: "test",
+    deployVpc: true,
+  });
+
+  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+    Tags: [
+      {
+        Key: "Name",
+        Value: "vpc-test"
+      }
+    ]
+  });
+
+  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
+    VPCOptions: {
+      SubnetIds: [
+        {
+          Ref: "VpcisolatedSubnet1SubnetE62B1B9B"
+        },
+        {
+          Ref: "VpcisolatedSubnet2Subnet39217055"
+        },
+        {
+          Ref: "VpcisolatedSubnet3Subnet44F2537D"
+        }
+      ]
+    }
+  });
+});

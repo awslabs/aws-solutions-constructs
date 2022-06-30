@@ -265,7 +265,11 @@ function getSubnetIds(vpc?: ec2.IVpc, domainProps?: elasticsearch.CfnDomainProps
     } else {
       endPosition = subnetIds.length;
 
-      if (endPosition === 1) {
+      if (endPosition > 3) {
+        endPosition = 3;
+      }
+
+      if (endPosition !== 2 && endPosition !== 3) {
         throw new Error('Error - Availability Zone Count should be set to 2 or 3');
       }
 
@@ -286,9 +290,15 @@ function getSubnetIds(vpc?: ec2.IVpc, domainProps?: elasticsearch.CfnDomainProps
 function checkZoneAwareness(props: elasticsearch.CfnDomainProps): boolean | undefined {
   let zoneAwareness: boolean | undefined = false;
 
+  if (props.elasticsearchClusterConfig && 'zoneAwarenessEnabled' in props.elasticsearchClusterConfig === false &&
+    'zoneAwarenessConfig' in props.elasticsearchClusterConfig) {
+
+    throw Error('Error - zoneAwarenessEnabled must be true to use zoneAwarenessConfig');
+  }
+
   if (props.elasticsearchClusterConfig) {
     zoneAwareness = 'zoneAwarenessEnabled' in props.elasticsearchClusterConfig &&
-      props.elasticsearchClusterConfig.zoneAwarenessEnabled === true || undefined;
+      props.elasticsearchClusterConfig.zoneAwarenessEnabled === true;
   }
 
   return zoneAwareness;
