@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.10.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.9.0...v2.10.0) (2022-07-01)
+
 ## [2.9.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.8.0...v2.9.0) (2022-06-13)
 
 
