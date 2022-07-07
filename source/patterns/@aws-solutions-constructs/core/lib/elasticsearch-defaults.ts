@@ -16,7 +16,8 @@ import * as iam from '@aws-cdk/aws-iam';
 import * as cdk from '@aws-cdk/core';
 import { BuildElasticSearchProps } from './elasticsearch-helper';
 
-export function DefaultCfnDomainProps(domainName: string, cognitoKibanaConfigureRole: iam.Role, props: BuildElasticSearchProps) {
+export function DefaultCfnDomainProps(domainName: string, cognitoKibanaConfigureRole: iam.Role, props: BuildElasticSearchProps):
+  elasticsearch.CfnDomainProps {
   const roleARNs: iam.IPrincipal[] = [];
 
   roleARNs.push(new iam.ArnPrincipal(props.cognitoAuthorizedRoleARN));

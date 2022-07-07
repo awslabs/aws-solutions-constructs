@@ -33,64 +33,25 @@ export interface BuildElasticSearchProps {
 export function buildElasticSearch(scope: Construct, domainName: string,
   props: BuildElasticSearchProps, cfnDomainProps?: elasticsearch.CfnDomainProps): [elasticsearch.CfnDomain, iam.Role] {
 
-  let zoneProps: elasticsearch.CfnDomainProps = {};
-  let subnetIdsLength: number | undefined;
+  let subnetIds: string[] = [];
+  let clusterConfig: object = {};
 
   if (props.vpc) {
-    [zoneProps, subnetIdsLength] = getSubnetIds(props.vpc, cfnDomainProps);
+    subnetIds = getSubnetIds(props.vpc, cfnDomainProps);
+    clusterConfig = { vpcOptions: { subnetIds } };
   }
 
-  const clusterConfig = buildDefaultZoneAwarenessConfig(subnetIdsLength);
-  const consolidatedProps = consolidateProps(zoneProps, clusterConfig, cfnDomainProps);
-
-  // Setup the IAM Role & policy for ES to configure Cognito User pool and Identity pool
-  const cognitoKibanaConfigureRole = new iam.Role(scope, 'CognitoKibanaConfigureRole', {
-    assumedBy: new iam.ServicePrincipal('es.amazonaws.com')
-  });
-
-  const cognitoKibanaConfigureRolePolicy = new iam.Policy(scope, 'CognitoKibanaConfigureRolePolicy', {
-    statements: [
-      new iam.PolicyStatement({
-        actions: [
-          "cognito-idp:DescribeUserPool",
-          "cognito-idp:CreateUserPoolClient",
-          "cognito-idp:DeleteUserPoolClient",
-          "cognito-idp:DescribeUserPoolClient",
-          "cognito-idp:AdminInitiateAuth",
-          "cognito-idp:AdminUserGlobalSignOut",
-          "cognito-idp:ListUserPoolClients",
-          "cognito-identity:DescribeIdentityPool",
-          "cognito-identity:UpdateIdentityPool",
-          "cognito-identity:SetIdentityPoolRoles",
-          "cognito-identity:GetIdentityPoolRoles",
-          "es:UpdateElasticsearchDomainConfig",
-        ],
-        resources: [
-          props.userpool.userPoolArn,
-          `arn:aws:cognito-identity:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:identitypool/${props.identitypool.ref}`,
-          `arn:aws:es:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:domain/${domainName}`
-        ]
-      }),
-      new iam.PolicyStatement({
-        actions: [
-          "iam:PassRole"
-        ],
-        conditions: {
-          StringLike: { 'iam:PassedToService': 'cognito-identity.amazonaws.com' }
-        },
-        resources: [
-          cognitoKibanaConfigureRole.roleArn
-        ]
-      })
-    ]
-  });
-
+  const cognitoKibanaConfigureRole = buildCognitoKibanaConfigureRole(scope);
+  const cognitoKibanaConfigureRolePolicy = buildCognitoKibanaConfigureRolePolicy(scope, domainName, props, cognitoKibanaConfigureRole);
   cognitoKibanaConfigureRolePolicy.attachToRole(cognitoKibanaConfigureRole);
 
   const defaultCfnDomainProps = DefaultCfnDomainProps(domainName, cognitoKibanaConfigureRole, props);
+  const zoneAwarenessConfig = buildZoneAwarenessConfig(subnetIds.length);
+  const consolidatedProps = consolidateProps(clusterConfig, zoneAwarenessConfig, cfnDomainProps);
   const finalCfnDomainProps = consolidateProps(defaultCfnDomainProps, consolidatedProps);
 
   const esDomain = new elasticsearch.CfnDomain(scope, "ElasticsearchDomain", finalCfnDomainProps);
+
   addCfnSuppressRules(esDomain, [
     {
       id: "W28",
@@ -238,16 +199,13 @@ export function buildElasticSearchCWAlarms(scope: Construct): cloudwatch.Alarm[]
   return alarms;
 }
 
-function getSubnetIds(vpc?: ec2.IVpc, domainProps?: elasticsearch.CfnDomainProps):
-  [elasticsearch.CfnDomainProps, number?] {
+function getSubnetIds(vpc?: ec2.IVpc, domainProps?: elasticsearch.CfnDomainProps): string[] {
   if (vpc) {
-    // Environment-specified stacks: A ES cluster deploys in 3 AZs with 3 subnets maximum(each subnet in a different AZ).
-    // Environment-agnostic stacks: A ES cluster deploys in 2 AZs with 2 subnets maximum(each subnet in a different AZ).
     // To successfully deploy a ES cluster, construct will need to specify exactly same subnets number as cluster AZs number
     // To summarize: 1. Subnets number must equals to AZs number.   2. Each subnet belongs to different AZ.
-    let subnetIds = retrievePrivateSubnetIds(vpc);
     const startPosition: number = 0;
     let endPosition: number;
+    let subnetIds = retrievePrivateSubnetIds(vpc);
 
     if (domainProps?.elasticsearchClusterConfig) {
       const zoneAwareness = checkZoneAwareness(domainProps);
@@ -265,30 +223,27 @@ function getSubnetIds(vpc?: ec2.IVpc, domainProps?: elasticsearch.CfnDomainProps
     } else {
       endPosition = subnetIds.length;
 
+      // If there are more than 3 AZ, only retrieve 3 subnets
       if (endPosition > 3) {
         endPosition = 3;
       }
 
-      if (endPosition !== 2 && endPosition !== 3) {
-        throw new Error('Error - Availability Zone Count should be set to 2 or 3');
+      if (endPosition === 1) {
+        throw new Error('Error - Availability Zone Count should have a minimum of 2');
       }
 
       subnetIds = selectSubnetIds(subnetIds, startPosition, endPosition);
     }
 
-    return [{
-      vpcOptions: {
-        subnetIds,
-      },
-    }, subnetIds.length];
+    return subnetIds;
 
   }
 
-  return [{}];
+  return [];
 }
 
-function checkZoneAwareness(props: elasticsearch.CfnDomainProps): boolean | undefined {
-  let zoneAwareness: boolean | undefined = false;
+function checkZoneAwareness(props: elasticsearch.CfnDomainProps): boolean {
+  let zoneAwareness: boolean = false;
 
   if (props.elasticsearchClusterConfig && 'zoneAwarenessEnabled' in props.elasticsearchClusterConfig === false &&
     'zoneAwarenessConfig' in props.elasticsearchClusterConfig) {
@@ -304,12 +259,12 @@ function checkZoneAwareness(props: elasticsearch.CfnDomainProps): boolean | unde
   return zoneAwareness;
 }
 
-function checkTwoAvailabilityZoneConfig(props: elasticsearch.CfnDomainProps): boolean | undefined {
-  let twoAvailabilityZoneConfig: boolean | undefined = false;
+function checkTwoAvailabilityZoneConfig(props: elasticsearch.CfnDomainProps): boolean {
+  let twoAvailabilityZoneConfig: boolean = false;
 
   if (props.elasticsearchClusterConfig) {
     twoAvailabilityZoneConfig = 'zoneAwarenessConfig' in props.elasticsearchClusterConfig &&
-      props.elasticsearchClusterConfig.zoneAwarenessConfig &&
+      props.elasticsearchClusterConfig.zoneAwarenessConfig !== undefined &&
       'availabilityZoneCount' in props.elasticsearchClusterConfig.zoneAwarenessConfig &&
       props.elasticsearchClusterConfig.zoneAwarenessConfig.availabilityZoneCount === 2;
   }
@@ -340,19 +295,79 @@ function retrievePrivateSubnetIds(vpc: ec2.IVpc) {
   return vpc.selectSubnets(subnetSelector).subnetIds;
 }
 
-function buildDefaultZoneAwarenessConfig(subnetIdsLength?: number): elasticsearch.CfnDomainProps {
-  let availabilityZoneCount: number = 3;
-
-  if (subnetIdsLength === 2) {
-    availabilityZoneCount = 2;
+function buildZoneAwarenessConfig(subnetIdsLength?: number): elasticsearch.CfnDomainProps {
+  let clusterConfig = {};
+  if (subnetIdsLength === 0) { // Public, Zone Awareness is Enabled
+    clusterConfig = {
+      elasticsearchClusterConfig: {
+        zoneAwarenessConfig: {
+          availabilityZoneCount: 3
+        },
+        instanceCount: 3,
+      },
+    };
+  } else if (subnetIdsLength === 1) { // VPC, Zone Awareness is Disabled
+    clusterConfig = {
+      elasticsearchClusterConfig: {
+        instanceCount: 3,
+      },
+    };
+  } else { // VPC, Zone Awareness is Enabled
+    clusterConfig = {
+      elasticsearchClusterConfig: {
+        zoneAwarenessConfig: {
+          availabilityZoneCount: subnetIdsLength
+        },
+        instanceCount: subnetIdsLength,
+      },
+    };
   }
 
-  return {
-    elasticsearchClusterConfig: {
-      zoneAwarenessConfig: {
-        availabilityZoneCount
-      },
-      instanceCount: availabilityZoneCount,
-    },
-  };
+  return clusterConfig;
+}
+
+function buildCognitoKibanaConfigureRolePolicy(scope: Construct, domainName: string,
+  props: BuildElasticSearchProps, cognitoKibanaConfigureRole: iam.Role) {
+  return new iam.Policy(scope, 'CognitoKibanaConfigureRolePolicy', {
+    statements: [
+      new iam.PolicyStatement({
+        actions: [
+          "cognito-idp:DescribeUserPool",
+          "cognito-idp:CreateUserPoolClient",
+          "cognito-idp:DeleteUserPoolClient",
+          "cognito-idp:DescribeUserPoolClient",
+          "cognito-idp:AdminInitiateAuth",
+          "cognito-idp:AdminUserGlobalSignOut",
+          "cognito-idp:ListUserPoolClients",
+          "cognito-identity:DescribeIdentityPool",
+          "cognito-identity:UpdateIdentityPool",
+          "cognito-identity:SetIdentityPoolRoles",
+          "cognito-identity:GetIdentityPoolRoles",
+          "es:UpdateElasticsearchDomainConfig",
+        ],
+        resources: [
+          props.userpool.userPoolArn,
+          `arn:aws:cognito-identity:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:identitypool/${props.identitypool.ref}`,
+          `arn:aws:es:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:domain/${domainName}`
+        ]
+      }),
+      new iam.PolicyStatement({
+        actions: [
+          "iam:PassRole"
+        ],
+        conditions: {
+          StringLike: { 'iam:PassedToService': 'cognito-identity.amazonaws.com' }
+        },
+        resources: [
+          cognitoKibanaConfigureRole.roleArn
+        ]
+      })
+    ]
+  });
+}
+
+function buildCognitoKibanaConfigureRole(scope: Construct) {
+  return new iam.Role(scope, 'CognitoKibanaConfigureRole', {
+    assumedBy: new iam.ServicePrincipal('es.amazonaws.com')
+  });
 }

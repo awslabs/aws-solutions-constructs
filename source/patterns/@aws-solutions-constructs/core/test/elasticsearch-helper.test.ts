@@ -216,7 +216,7 @@ test('Test error thrown with default 1 AZ deployment with no domain props', () =
     deployES(stack, 'test-domain', {}, undefined, vpc);
   };
 
-  expect(app).toThrowError('Error - Availability Zone Count should be set to 2 or 3');
+  expect(app).toThrowError('Error - Availability Zone Count should have a minimum of 2');
 });
 
 test('Test error thrown with default 1 AZ deployment with no domain props', () => {

@@ -27,9 +27,16 @@ const lambdaProps: lambda.FunctionProps = {
   handler: 'index.handler',
 };
 
+const esDomainProps = {
+  elasticsearchClusterConfig: {
+    zoneAwarenessEnabled: false,
+  }
+};
+
 new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
   lambdaFunctionProps: lambdaProps,
-  domainName: "twozonesandnoprops",
+  domainName: "disabledzoneawareness",
+  esDomainProps,
   deployVpc: true,
 });
 

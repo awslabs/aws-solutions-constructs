@@ -262,9 +262,6 @@ test("Test ES cluster deploy to 1 AZ when user set zoneAwarenessEnabled to false
       DedicatedMasterCount: 3,
       DedicatedMasterEnabled: true,
       InstanceCount: 3,
-      ZoneAwarenessConfig: {
-        AvailabilityZoneCount: 3,
-      },
       ZoneAwarenessEnabled: false,
     }
   });

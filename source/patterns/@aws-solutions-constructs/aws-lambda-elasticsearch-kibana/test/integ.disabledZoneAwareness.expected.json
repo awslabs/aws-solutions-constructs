@@ -103,7 +103,7 @@
     "testlambdaelasticsearchkibanaReplaceDefaultSecurityGroupsecuritygroup9C517245": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "twoZonesNoProps/test-lambda-elasticsearch-kibana/ReplaceDefaultSecurityGroup-security-group",
+        "GroupDescription": "disabledZoneAwareness/test-lambda-elasticsearch-kibana/ReplaceDefaultSecurityGroup-security-group",
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",
@@ -288,7 +288,7 @@
     "testlambdaelasticsearchkibanaUserPoolDomainB9BDF063": {
       "Type": "AWS::Cognito::UserPoolDomain",
       "Properties": {
-        "Domain": "twozonesandnoprops",
+        "Domain": "disabledzoneawareness",
         "UserPoolId": {
           "Ref": "testlambdaelasticsearchkibanaCognitoUserPool9537802B"
         }
@@ -345,7 +345,7 @@
                         {
                           "Ref": "AWS::AccountId"
                         },
-                        ":domain/twozonesandnoprops/*"
+                        ":domain/disabledzoneawareness/*"
                       ]
                     ]
                   }
@@ -450,7 +450,7 @@
                       {
                         "Ref": "AWS::AccountId"
                       },
-                      ":domain/twozonesandnoprops"
+                      ":domain/disabledzoneawareness"
                     ]
                   ]
                 }
@@ -518,7 +518,7 @@
                     {
                       "Ref": "AWS::AccountId"
                     },
-                    ":domain/twozonesandnoprops/*"
+                    ":domain/disabledzoneawareness/*"
                   ]
                 ]
               }
@@ -541,7 +541,7 @@
             "Ref": "testlambdaelasticsearchkibanaCognitoUserPool9537802B"
           }
         },
-        "DomainName": "twozonesandnoprops",
+        "DomainName": "disabledzoneawareness",
         "EBSOptions": {
           "EBSEnabled": true,
           "VolumeSize": 10
@@ -550,10 +550,7 @@
           "DedicatedMasterCount": 3,
           "DedicatedMasterEnabled": true,
           "InstanceCount": 3,
-          "ZoneAwarenessConfig": {
-            "AvailabilityZoneCount": 3
-          },
-          "ZoneAwarenessEnabled": true
+          "ZoneAwarenessEnabled": false
         },
         "ElasticsearchVersion": "6.3",
         "EncryptionAtRestOptions": {
@@ -577,12 +574,6 @@
           "SubnetIds": [
             {
               "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
-            },
-            {
-              "Ref": "VpcisolatedSubnet2Subnet39217055"
-            },
-            {
-              "Ref": "VpcisolatedSubnet3Subnet44F2537D"
             }
           ]
         }
@@ -729,7 +720,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "twoZonesNoProps/Vpc"
+            "Value": "disabledZoneAwareness/Vpc"
           }
         ]
       }
@@ -754,7 +745,7 @@
           },
           {
             "Key": "Name",
-            "Value": "twoZonesNoProps/Vpc/isolatedSubnet1"
+            "Value": "disabledZoneAwareness/Vpc/isolatedSubnet1"
           }
         ]
       }
@@ -768,7 +759,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "twoZonesNoProps/Vpc/isolatedSubnet1"
+            "Value": "disabledZoneAwareness/Vpc/isolatedSubnet1"
           }
         ]
       }
@@ -804,7 +795,7 @@
           },
           {
             "Key": "Name",
-            "Value": "twoZonesNoProps/Vpc/isolatedSubnet2"
+            "Value": "disabledZoneAwareness/Vpc/isolatedSubnet2"
           }
         ]
       }
@@ -818,7 +809,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "twoZonesNoProps/Vpc/isolatedSubnet2"
+            "Value": "disabledZoneAwareness/Vpc/isolatedSubnet2"
           }
         ]
       }
@@ -854,7 +845,7 @@
           },
           {
             "Key": "Name",
-            "Value": "twoZonesNoProps/Vpc/isolatedSubnet3"
+            "Value": "disabledZoneAwareness/Vpc/isolatedSubnet3"
           }
         ]
       }
@@ -868,7 +859,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "twoZonesNoProps/Vpc/isolatedSubnet3"
+            "Value": "disabledZoneAwareness/Vpc/isolatedSubnet3"
           }
         ]
       }
@@ -902,7 +893,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "twoZonesNoProps/Vpc"
+            "Value": "disabledZoneAwareness/Vpc"
           }
         ]
       }
@@ -954,7 +945,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "twoZonesNoProps/Vpc"
+            "Value": "disabledZoneAwareness/Vpc"
           }
         ]
       },
@@ -992,7 +983,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "twoZonesNoProps/Vpc"
+            "Value": "disabledZoneAwareness/Vpc"
           }
         ]
       }
