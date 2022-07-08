@@ -128,7 +128,7 @@ Out of the box implementation of the Construct without any override will set the
 * Adds an ALIAS record to the new or provided Hosted Zone that routes to the construct's ALB
 
 ### Application Load Balancer
-* Creates an Application Load Balancer with no Listener or target. The consruct can incorporate an existing, fully configured ALB if provided.
+* Creates an Application Load Balancer with no Listener or target. The construct can incorporate an existing, fully configured ALB if provided.
 
 ## Architecture
 ![Architecture Diagram](architecture.png)
