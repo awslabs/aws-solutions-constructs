@@ -172,12 +172,6 @@
           "SubnetIds": [
             {
               "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
-            },
-            {
-              "Ref": "VpcisolatedSubnet2Subnet39217055"
-            },
-            {
-              "Ref": "VpcisolatedSubnet3Subnet44F2537D"
             }
           ]
         }
@@ -772,106 +766,6 @@
         },
         "SubnetId": {
           "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
-        }
-      }
-    },
-    "VpcisolatedSubnet2Subnet39217055": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "AvailabilityZone": "test-region-1b",
-        "CidrBlock": "10.0.64.0/18",
-        "MapPublicIpOnLaunch": false,
-        "Tags": [
-          {
-            "Key": "aws-cdk:subnet-name",
-            "Value": "isolated"
-          },
-          {
-            "Key": "aws-cdk:subnet-type",
-            "Value": "Isolated"
-          },
-          {
-            "Key": "Name",
-            "Value": "disabledZoneAwareness/Vpc/isolatedSubnet2"
-          }
-        ]
-      }
-    },
-    "VpcisolatedSubnet2RouteTable334F9764": {
-      "Type": "AWS::EC2::RouteTable",
-      "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "disabledZoneAwareness/Vpc/isolatedSubnet2"
-          }
-        ]
-      }
-    },
-    "VpcisolatedSubnet2RouteTableAssociation25A4716F": {
-      "Type": "AWS::EC2::SubnetRouteTableAssociation",
-      "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcisolatedSubnet2RouteTable334F9764"
-        },
-        "SubnetId": {
-          "Ref": "VpcisolatedSubnet2Subnet39217055"
-        }
-      }
-    },
-    "VpcisolatedSubnet3Subnet44F2537D": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "AvailabilityZone": "test-region-1c",
-        "CidrBlock": "10.0.128.0/18",
-        "MapPublicIpOnLaunch": false,
-        "Tags": [
-          {
-            "Key": "aws-cdk:subnet-name",
-            "Value": "isolated"
-          },
-          {
-            "Key": "aws-cdk:subnet-type",
-            "Value": "Isolated"
-          },
-          {
-            "Key": "Name",
-            "Value": "disabledZoneAwareness/Vpc/isolatedSubnet3"
-          }
-        ]
-      }
-    },
-    "VpcisolatedSubnet3RouteTableA2F6BBC0": {
-      "Type": "AWS::EC2::RouteTable",
-      "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "disabledZoneAwareness/Vpc/isolatedSubnet3"
-          }
-        ]
-      }
-    },
-    "VpcisolatedSubnet3RouteTableAssociationDC010BEB": {
-      "Type": "AWS::EC2::SubnetRouteTableAssociation",
-      "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcisolatedSubnet3RouteTableA2F6BBC0"
-        },
-        "SubnetId": {
-          "Ref": "VpcisolatedSubnet3Subnet44F2537D"
         }
       }
     },

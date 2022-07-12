@@ -27,25 +27,12 @@ const lambdaProps: lambda.FunctionProps = {
   handler: 'index.handler',
 };
 
-const esDomainProps = {
-  elasticsearchClusterConfig: {
-    dedicatedMasterEnabled: true,
-    dedicatedMasterCount: 3,
-    instanceCount: 2,
-    zoneAwarenessEnabled: true,
-    zoneAwarenessConfig: {
-      availabilityZoneCount: 2
-    }
-  }
-};
-
-new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana5', {
+new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
   lambdaFunctionProps: lambdaProps,
-  domainName: "deploytestwithclusterconfig",
-  esDomainProps,
+  domainName: "deploytestfivezones",
   deployVpc: true,
   vpcProps: {
-    maxAzs: 2
+    maxAzs: 5
   }
 });
 

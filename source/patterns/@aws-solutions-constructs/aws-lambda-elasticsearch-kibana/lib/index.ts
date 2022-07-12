@@ -143,40 +143,27 @@ export class LambdaToElasticSearchAndKibana extends Construct {
     // Find the lambda service Role ARN
     const lambdaFunctionRoleARN = this.lambdaFunction.role?.roleArn;
 
-    this.userPool = defaults.buildUserPool(this);
-    this.userPoolClient = defaults.buildUserPoolClient(this, this.userPool);
-    this.identityPool = defaults.buildIdentityPool(this, this.userPool, this.userPoolClient);
+    let cognitoAuthorizedRole: iam.Role;
 
-    let cognitoDomainName = props.domainName;
+    [this.userPool, this.userPoolClient, this.identityPool, cognitoAuthorizedRole] =
+      this.setupCognito(this, props.cognitoDomainName ?? props.domainName);
 
-    if (props.cognitoDomainName) {
-      cognitoDomainName = props.cognitoDomainName;
-    }
-
-    const cognitoAuthorizedRole: Role = defaults.setupCognitoForElasticSearch(this, cognitoDomainName, {
-      userpool: this.userPool,
-      identitypool: this.identityPool,
-      userpoolclient: this.userPoolClient
-    });
-
-    const cfnDomainOptions: defaults.BuildElasticSearchProps = {
+    const buildElasticSearchProps: any = {
       userpool: this.userPool,
       identitypool: this.identityPool,
       cognitoAuthorizedRoleARN: cognitoAuthorizedRole.roleArn,
       serviceRoleARN: lambdaFunctionRoleARN,
-      vpc: this.vpc
+      vpc: this.vpc,
+      domainName: props.domainName,
+      clientDomainProps: props.esDomainProps
     };
-
-    let securityGroupConfig: elasticsearch.CfnDomainProps = {};
 
     if (this.vpc) {
       const securityGroupIds = defaults.getLambdaVpcSecurityGroupIds(this.lambdaFunction);
-      securityGroupConfig = { vpcOptions: {securityGroupIds} };
+      buildElasticSearchProps.securityGroupIds = securityGroupIds;
     }
 
-    const consolidatedProps = defaults.consolidateProps({}, props.esDomainProps, securityGroupConfig);
-
-    [this.elasticsearchDomain, this.elasticsearchRole] = defaults.buildElasticSearch(this, props.domainName, cfnDomainOptions, consolidatedProps);
+    [this.elasticsearchDomain, this.elasticsearchRole] = defaults.buildElasticSearch(this, buildElasticSearchProps);
 
     // Add ES Domain to lambda environment variable
     const domainEndpointEnvironmentVariableName = props.domainEndpointEnvironmentVariableName || 'DOMAIN_ENDPOINT';
@@ -186,5 +173,19 @@ export class LambdaToElasticSearchAndKibana extends Construct {
       // Deploy best practices CW Alarms for ES
       this.cloudwatchAlarms = defaults.buildElasticSearchCWAlarms(this);
     }
+  }
+
+  setupCognito(scope: Construct, domainName: string): [cognito.UserPool, cognito.UserPoolClient, cognito.CfnIdentityPool, iam.Role] {
+    const userPool = defaults.buildUserPool(scope);
+    const userPoolClient = defaults.buildUserPoolClient(scope, userPool);
+    const identityPool = defaults.buildIdentityPool(scope, userPool, userPoolClient);
+
+    const cognitoAuthorizedRole: Role = defaults.setupCognitoForElasticSearch(scope, domainName, {
+      userpool: userPool,
+      identitypool: identityPool,
+      userpoolclient: userPoolClient
+    });
+
+    return [userPool, userPoolClient, identityPool, cognitoAuthorizedRole];
   }
 }

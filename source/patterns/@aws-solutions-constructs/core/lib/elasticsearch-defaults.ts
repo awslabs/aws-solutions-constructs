@@ -35,11 +35,6 @@ export function DefaultCfnDomainProps(domainName: string, cognitoKibanaConfigure
     nodeToNodeEncryptionOptions: {
       enabled: true
     },
-    elasticsearchClusterConfig: {
-      dedicatedMasterEnabled: true,
-      dedicatedMasterCount: 3,
-      zoneAwarenessEnabled: true
-    },
     snapshotOptions: {
       automatedSnapshotStartHour: 1
     },

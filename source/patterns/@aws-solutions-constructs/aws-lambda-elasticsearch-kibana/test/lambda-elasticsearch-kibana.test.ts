@@ -246,7 +246,10 @@ test("Test ES cluster deploy to 1 AZ when user set zoneAwarenessEnabled to false
 
   const esDomainProps = {
     elasticsearchClusterConfig: {
-      zoneAwarenessEnabled: false
+      dedicatedMasterCount: 3,
+      dedicatedMasterEnabled: true,
+      zoneAwarenessEnabled: false,
+      instanceCount: 3
     }
   };
 
@@ -255,6 +258,9 @@ test("Test ES cluster deploy to 1 AZ when user set zoneAwarenessEnabled to false
     domainName: 'test-domain',
     esDomainProps,
     deployVpc: true,
+    vpcProps: {
+      maxAzs: 1
+    }
   });
 
   expect(stack).toHaveResource("AWS::Elasticsearch::Domain", {
@@ -284,6 +290,9 @@ test("Test ES cluster deploy to 2 AZ when user set availabilityZoneCount to 2", 
 
   const esDomainProps = {
     elasticsearchClusterConfig: {
+      dedicatedMasterCount: 3,
+      dedicatedMasterEnabled: true,
+      instanceCount: 2,
       zoneAwarenessEnabled: true,
       zoneAwarenessConfig: {
         availabilityZoneCount: 2
@@ -296,6 +305,9 @@ test("Test ES cluster deploy to 2 AZ when user set availabilityZoneCount to 2", 
     domainName: 'test-domain',
     esDomainProps,
     deployVpc: true,
+    vpcProps: {
+      maxAzs: 2
+    }
   });
 
   expect(stack).toHaveResource("AWS::Elasticsearch::Domain", {
@@ -574,30 +586,6 @@ function getDefaultTestLambdaProps(): lambda.FunctionProps {
     handler: 'index.handler',
   };
 }
-
-test("Test error with zoneAwarenessConfig but no zoneAwarenessEnabled", () => {
-  const stack = new cdk.Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
-
-  const esDomainProps = {
-    elasticsearchClusterConfig: {
-      zoneAwarenessConfig: {
-        availabilityZoneCount: 2
-      }
-    }
-  };
-  const app = () => {
-    new LambdaToElasticSearchAndKibana(stack, "lambda-elasticsearch-kibana-stack", {
-      lambdaFunctionProps: getDefaultTestLambdaProps(),
-      domainName: 'test-domain',
-      esDomainProps,
-      deployVpc: true,
-    });
-  };
-
-  expect(app).toThrowError('Error - zoneAwarenessEnabled must be true to use zoneAwarenessConfig');
-});
 
 test('Test 3 AZ Multi AZ ES deployment with VPC that has 6 AZ', () => {
   const stack = new cdk.Stack(undefined, undefined, {

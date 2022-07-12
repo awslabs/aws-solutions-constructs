@@ -29,6 +29,9 @@ const lambdaProps: lambda.FunctionProps = {
 
 const esDomainProps = {
   elasticsearchClusterConfig: {
+    dedicatedMasterCount: 3,
+    dedicatedMasterEnabled: true,
+    instanceCount: 3,
     zoneAwarenessEnabled: false,
   }
 };
@@ -38,6 +41,9 @@ new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
   domainName: "disabledzoneawareness",
   esDomainProps,
   deployVpc: true,
+  vpcProps: {
+    maxAzs: 1
+  }
 });
 
 // Synth
