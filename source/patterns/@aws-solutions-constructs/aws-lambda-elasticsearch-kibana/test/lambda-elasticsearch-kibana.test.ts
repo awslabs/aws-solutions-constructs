@@ -13,6 +13,7 @@
 
 import { LambdaToElasticSearchAndKibana, LambdaToElasticSearchAndKibanaProps } from "../lib";
 import * as lambda from '@aws-cdk/aws-lambda';
+import * as ec2 from '@aws-cdk/aws-ec2';
 import * as cdk from "@aws-cdk/core";
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
@@ -336,46 +337,6 @@ test("Test ES cluster deploy to 2 AZ when user set availabilityZoneCount to 2", 
   });
 });
 
-test("Test ES cluster deploy to 3 AZs when user using default values for ElasticsearchClusterConfig", () => {
-  const stack = new cdk.Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
-
-  new LambdaToElasticSearchAndKibana(stack, "lambda-elasticsearch-kibana-stack", {
-    lambdaFunctionProps: getDefaultTestLambdaProps(),
-    domainName: 'test-domain',
-    deployVpc: true,
-  });
-
-  expect(stack).toHaveResource("AWS::Elasticsearch::Domain", {
-    ElasticsearchClusterConfig: {
-      DedicatedMasterCount: 3,
-      DedicatedMasterEnabled: true,
-      InstanceCount: 3,
-      ZoneAwarenessConfig: {
-        AvailabilityZoneCount: 3,
-      },
-      ZoneAwarenessEnabled: true,
-    }
-  });
-
-  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
-    VPCOptions: {
-      SubnetIds: [
-        {
-          Ref: "VpcisolatedSubnet1SubnetE62B1B9B"
-        },
-        {
-          Ref: "VpcisolatedSubnet2Subnet39217055"
-        },
-        {
-          Ref: "VpcisolatedSubnet3Subnet44F2537D"
-        }
-      ]
-    }
-  });
-});
-
 test('Test minimal deployment with an existing isolated VPC', () => {
   const stack = new cdk.Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
@@ -432,15 +393,20 @@ test('Test minimal deployment with an existing private VPC', () => {
     env: { account: "123456789012", region: 'us-east-1' },
   });
 
-  const vpc = defaults.buildVpc(stack, {
-    defaultVpcProps: defaults.DefaultPrivateVpcProps(),
-    constructVpcProps: {
-      enableDnsHostnames: true,
-      enableDnsSupport: true,
-    },
-    userVpcProps: {
-      vpcName: "existing-private-vpc-test"
-    }
+  const vpc = new ec2.Vpc(stack, 'existing-private-vpc-test', {
+    natGateways: 1,
+    subnetConfiguration: [
+      {
+        cidrMask: 24,
+        name: 'application',
+        subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
+      },
+      {
+        cidrMask: 24,
+        name: "public",
+        subnetType: ec2.SubnetType.PUBLIC,
+      }
+    ]
   });
 
   const construct = new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
@@ -453,7 +419,7 @@ test('Test minimal deployment with an existing private VPC', () => {
     Tags: [
       {
         Key: "Name",
-        Value: "existing-private-vpc-test"
+        Value: "Default/existing-private-vpc-test"
       }
     ]
   });
@@ -462,13 +428,13 @@ test('Test minimal deployment with an existing private VPC', () => {
     VPCOptions: {
       SubnetIds: [
         {
-          Ref: "VpcprivateSubnet1SubnetCEAD3716"
+          Ref: "existingprivatevpctestapplicationSubnet1Subnet1F7744F0"
         },
         {
-          Ref: "VpcprivateSubnet2Subnet2DE7549C"
+          Ref: "existingprivatevpctestapplicationSubnet2SubnetF7B713AD"
         },
         {
-          Ref: "VpcprivateSubnet3SubnetA5AC68D9"
+          Ref: "existingprivatevpctestapplicationSubnet3SubnetA519E038"
         }
       ]
     }
@@ -579,14 +545,6 @@ test('Test error for Elasticsearch domain VPC props', () => {
   expect(app).toThrowError("Error - Define VPC using construct parameters not Elasticsearch props");
 });
 
-function getDefaultTestLambdaProps(): lambda.FunctionProps {
-  return {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
-    handler: 'index.handler',
-  };
-}
-
 test('Test 3 AZ Multi AZ ES deployment with VPC that has 6 AZ', () => {
   const stack = new cdk.Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
@@ -627,3 +585,11 @@ test('Test 3 AZ Multi AZ ES deployment with VPC that has 6 AZ', () => {
     }
   });
 });
+
+function getDefaultTestLambdaProps(): lambda.FunctionProps {
+  return {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler',
+  };
+}

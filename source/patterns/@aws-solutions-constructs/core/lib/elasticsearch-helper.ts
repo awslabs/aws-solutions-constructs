@@ -59,7 +59,7 @@ export function buildElasticSearch(scope: Construct, props: BuildElasticSearchPr
     if (!props.clientDomainProps?.elasticsearchClusterConfig) {
       constructDrivenProps.elasticsearchClusterConfig = createClusterConfiguration(subnetIds.length);
     }
-  } else {
+  } else { // No VPC
     // If the client did not submit a ClusterConfig, then we will create one based on the Region
     if (!props.clientDomainProps?.elasticsearchClusterConfig) {
       constructDrivenProps.elasticsearchClusterConfig = createClusterConfiguration(cdk.Stack.of(scope).availabilityZones.length);
@@ -237,39 +237,16 @@ function retrievePrivateSubnetIds(vpc: ec2.IVpc) {
   return vpc.selectSubnets(subnetSelector).subnetIds;
 }
 
-function createClusterConfiguration(zoneLength?: number): elasticsearch.CfnDomainProps {
-  let clusterConfig = {};
-
-  if (zoneLength === 0) { // Public, Zone Awareness is Enabled
-    clusterConfig = {
-      dedicatedMasterEnabled: true,
-      dedicatedMasterCount: 3,
-      zoneAwarenessEnabled: true,
-      zoneAwarenessConfig: {
-        availabilityZoneCount: 3
-      },
-      instanceCount: 3,
-    };
-  } else if (zoneLength === 1) { // VPC, Zone Awareness is Disabled
-    clusterConfig = {
-      dedicatedMasterEnabled: true,
-      dedicatedMasterCount: 3,
-      zoneAwarenessEnabled: false,
-      instanceCount: 3,
-    };
-  } else { // VPC, Zone Awareness is Enabled
-    clusterConfig = {
-      dedicatedMasterEnabled: true,
-      dedicatedMasterCount: 3,
-      zoneAwarenessEnabled: true,
-      zoneAwarenessConfig: {
-        availabilityZoneCount: zoneLength
-      },
-      instanceCount: zoneLength,
-    };
-  }
-
-  return clusterConfig;
+function createClusterConfiguration(numberOfAzs?: number): elasticsearch.CfnDomain.ElasticsearchClusterConfigProperty {
+  return {
+    dedicatedMasterEnabled: true,
+    dedicatedMasterCount: 3,
+    zoneAwarenessEnabled: true,
+    zoneAwarenessConfig: {
+      availabilityZoneCount: numberOfAzs
+    },
+    instanceCount: numberOfAzs,
+  };
 }
 
 function createKibanaCognitoRole(

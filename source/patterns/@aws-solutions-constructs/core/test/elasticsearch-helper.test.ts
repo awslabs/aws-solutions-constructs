@@ -55,9 +55,10 @@ function deployES(stack: Stack, domainName: string, clientDomainProps?: elastics
   }
 }
 
-function deployVpc(stack: Stack) {
+function deployVpc(stack: Stack, props?: ec2.VpcProps) {
   return defaults.buildVpc(stack, {
-    defaultVpcProps: defaults.DefaultIsolatedVpcProps()
+    defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
+    userVpcProps: props
   });
 }
 
@@ -211,6 +212,62 @@ test('Test VPC with 3 AZ, Zone Awareness Enabled', () => {
   });
 });
 
+test('Test VPC with 6 AZ, Zone Awareness Enable', () => {
+  const stack = new Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  const vpc = deployVpc(stack, {
+    maxAzs: 6
+  });
+
+  deployES(stack, 'test-domain', {}, undefined, vpc);
+
+  expect(stack).toHaveResourceLike('AWS::Elasticsearch::Domain', {
+    DomainName: "test-domain",
+    ElasticsearchClusterConfig: {
+      DedicatedMasterCount: 3,
+      DedicatedMasterEnabled: true,
+      InstanceCount: 3,
+      ZoneAwarenessEnabled: true
+    }
+  });
+});
+
+test('Test deployment with an existing private VPC', () => {
+  const stack = new Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  const vpc = new ec2.Vpc(stack, 'existing-private-vpc-test', {
+    natGateways: 1,
+    subnetConfiguration: [
+      {
+        cidrMask: 24,
+        name: 'application',
+        subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
+      },
+      {
+        cidrMask: 24,
+        name: "public",
+        subnetType: ec2.SubnetType.PUBLIC,
+      }
+    ]
+  });
+
+  deployES(stack, 'test-domain', {}, undefined, vpc);
+
+  expect(stack).toHaveResourceLike('AWS::Elasticsearch::Domain', {
+    DomainName: "test-domain",
+    ElasticsearchClusterConfig: {
+      DedicatedMasterCount: 3,
+      DedicatedMasterEnabled: true,
+      InstanceCount: 3,
+      ZoneAwarenessEnabled: true
+    }
+  });
+});
+
 test('Test error thrown with default 1 AZ deployment with no domain props', () => {
   const stack = new Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
@@ -233,63 +290,6 @@ test('Test error thrown with default 1 AZ deployment with no domain props', () =
   };
 
   expect(app).toThrowError('Error - ElasticSearch Domains can only be deployed in Isolated or Private subnets');
-});
-
-test('Test VPC with 3 AZ and 2 max AZ cluster config', () => {
-  const stack = new Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
-
-  const vpc: ec2.IVpc = deployVpc(stack);
-
-  deployES(stack, 'test-domain', {
-    elasticsearchClusterConfig: {
-      zoneAwarenessEnabled: true,
-      dedicatedMasterEnabled: true,
-      dedicatedMasterCount: 3,
-      zoneAwarenessConfig: {
-        availabilityZoneCount: 2
-      },
-      instanceCount: 2
-    }
-  }, undefined, vpc);
-
-  expect(stack).toHaveResourceLike('AWS::Elasticsearch::Domain', {
-    DomainName: "test-domain",
-    ElasticsearchClusterConfig: {
-      DedicatedMasterCount: 3,
-      DedicatedMasterEnabled: true,
-      InstanceCount: 2,
-      ZoneAwarenessEnabled: true
-    }
-  });
-});
-
-test('Test VPC with 3 AZ and 3 max AZ cluster config', () => {
-  const stack = new Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
-
-  const vpc: ec2.IVpc = deployVpc(stack);
-
-  deployES(stack, 'test-domain', {
-    elasticsearchClusterConfig: {
-      zoneAwarenessEnabled: true,
-      dedicatedMasterEnabled: true,
-      dedicatedMasterCount: 3,
-      instanceCount: 3
-    }
-  }, undefined, vpc);
-
-  expect(stack).toHaveResourceLike('AWS::Elasticsearch::Domain', {
-    DomainName: "test-domain",
-    ElasticsearchClusterConfig: {
-      DedicatedMasterCount: 3,
-      DedicatedMasterEnabled: true,
-      InstanceCount: 3,
-      ZoneAwarenessEnabled: true
-    }
-  });
 });
 
 test('Test override ES version for buildElasticSearch', () => {
