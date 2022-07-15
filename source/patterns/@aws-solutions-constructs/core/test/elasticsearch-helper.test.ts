@@ -143,7 +143,9 @@ test('Test override SnapshotOptions for buildElasticSearch', () => {
 });
 
 test('Test VPC with 1 AZ, Zone Awareness Disabled', () => {
-  const stack = new Stack();
+  const stack = new Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
 
   const vpc = defaults.getTestVpc(stack, false);
 
@@ -168,6 +170,8 @@ test('Test VPC with 1 AZ, Zone Awareness Disabled', () => {
 });
 
 test('Test VPC with 2 AZ, Zone Awareness Enabled', () => {
+  // Providing a fake account number and region enables us to
+  // get expected behavior of VPC default properties
   const stack = new Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });
