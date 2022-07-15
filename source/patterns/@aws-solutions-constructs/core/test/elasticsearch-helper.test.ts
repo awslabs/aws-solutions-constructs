@@ -170,7 +170,7 @@ test('Test VPC with 1 AZ, Zone Awareness Disabled', () => {
 });
 
 test('Test VPC with 2 AZ, Zone Awareness Enabled', () => {
-  // If no environment is specified, a VPC will use 2 AZs by default
+  // If no environment is specified, a VPC will use 2 AZs by default.
   // If an environment is specified, a VPC will use 3 AZs by default.
   const stack = new Stack(undefined, undefined, {});
 
@@ -190,7 +190,7 @@ test('Test VPC with 2 AZ, Zone Awareness Enabled', () => {
 });
 
 test('Test VPC with 3 AZ, Zone Awareness Enabled', () => {
-  // If no environment is specified, a VPC will use 2 AZs by default
+  // If no environment is specified, a VPC will use 2 AZs by default.
   // If an environment is specified, a VPC will use 3 AZs by default.
   const stack = new Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
