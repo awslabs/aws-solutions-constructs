@@ -79,7 +79,7 @@ export function generateIntegStackName(filename: string): string {
 }
 
 // Helper Functions
-export function getTestVpc(stack: Stack, publicFacing: boolean = true) {
+export function getTestVpc(stack: Stack, publicFacing: boolean = true, userVpcProps?: ec2.VpcProps) {
   return buildVpc(stack, {
     defaultVpcProps: publicFacing ?
       DefaultPublicPrivateVpcProps() :
@@ -89,6 +89,7 @@ export function getTestVpc(stack: Stack, publicFacing: boolean = true) {
       enableDnsSupport: true,
       cidr: '172.168.0.0/16',
     },
+    userVpcProps
   });
 }
 

@@ -20,6 +20,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from '@aws-cdk/core';
 import { Role } from '@aws-cdk/aws-iam';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+import * as ec2 from '@aws-cdk/aws-ec2';
 
 /**
  * @summary The properties for the CognitoToApiGatewayToLambda Construct
@@ -67,6 +68,24 @@ export interface LambdaToElasticSearchAndKibanaProps {
    * @default - DOMAIN_ENDPOINT
    */
   readonly domainEndpointEnvironmentVariableName?: string;
+  /**
+   * An existing VPC for the construct to use (construct will NOT create a new VPC in this case)
+   *
+   * @default - None
+   */
+  readonly existingVpc?: ec2.IVpc;
+  /**
+   * Properties to override default properties if deployVpc is true
+   *
+   * @default - DefaultIsolatedVpcProps() in vpc-defaults.ts
+   */
+  readonly vpcProps?: ec2.VpcProps;
+  /**
+   * Whether to deploy a new VPC
+   *
+   * @default - false
+   */
+  readonly deployVpc?: boolean;
 }
 
 export class LambdaToElasticSearchAndKibana extends Construct {
@@ -77,6 +96,7 @@ export class LambdaToElasticSearchAndKibana extends Construct {
   public readonly elasticsearchRole: iam.Role;
   public readonly lambdaFunction: lambda.Function;
   public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
+  public readonly vpc?: ec2.IVpc;
 
   /**
    * @summary Constructs a new instance of the CognitoToApiGatewayToLambda class.
@@ -90,37 +110,62 @@ export class LambdaToElasticSearchAndKibana extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
 
+    if (props.vpcProps && !props.deployVpc) {
+      throw new Error("Error - deployVpc must be true when defining vpcProps");
+    }
+
+    if (props.lambdaFunctionProps?.vpc || props.lambdaFunctionProps?.vpcSubnets) {
+      throw new Error("Error - Define VPC using construct parameters not Lambda function props");
+    }
+
+    if (props.esDomainProps?.vpcOptions) {
+      throw new Error("Error - Define VPC using construct parameters not Elasticsearch props");
+    }
+
+    if (props.deployVpc || props.existingVpc) {
+      this.vpc = defaults.buildVpc(scope, {
+        defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
+        existingVpc: props.existingVpc,
+        userVpcProps: props.vpcProps,
+        constructVpcProps: {
+          enableDnsHostnames: true,
+          enableDnsSupport: true,
+        },
+      });
+    }
+
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,
-      lambdaFunctionProps: props.lambdaFunctionProps
+      lambdaFunctionProps: props.lambdaFunctionProps,
+      vpc: this.vpc
     });
 
     // Find the lambda service Role ARN
     const lambdaFunctionRoleARN = this.lambdaFunction.role?.roleArn;
 
-    this.userPool = defaults.buildUserPool(this);
-    this.userPoolClient = defaults.buildUserPoolClient(this, this.userPool);
-    this.identityPool = defaults.buildIdentityPool(this, this.userPool, this.userPoolClient);
+    let cognitoAuthorizedRole: iam.Role;
 
-    let cognitoDomainName = props.domainName;
+    [this.userPool, this.userPoolClient, this.identityPool, cognitoAuthorizedRole] =
+      this.setupCognito(this, props.cognitoDomainName ?? props.domainName);
 
-    if (props.cognitoDomainName) {
-      cognitoDomainName = props.cognitoDomainName;
-    }
-
-    const cognitoAuthorizedRole: Role = defaults.setupCognitoForElasticSearch(this, cognitoDomainName, {
-      userpool: this.userPool,
-      identitypool: this.identityPool,
-      userpoolclient: this.userPoolClient
-    });
-
-    [this.elasticsearchDomain, this.elasticsearchRole] = defaults.buildElasticSearch(this, props.domainName, {
+    const buildElasticSearchProps: any = {
       userpool: this.userPool,
       identitypool: this.identityPool,
       cognitoAuthorizedRoleARN: cognitoAuthorizedRole.roleArn,
-      serviceRoleARN: lambdaFunctionRoleARN}, props.esDomainProps);
+      serviceRoleARN: lambdaFunctionRoleARN,
+      vpc: this.vpc,
+      domainName: props.domainName,
+      clientDomainProps: props.esDomainProps
+    };
 
-    // Add ES Domain to lambda envrionment variable
+    if (this.vpc) {
+      const securityGroupIds = defaults.getLambdaVpcSecurityGroupIds(this.lambdaFunction);
+      buildElasticSearchProps.securityGroupIds = securityGroupIds;
+    }
+
+    [this.elasticsearchDomain, this.elasticsearchRole] = defaults.buildElasticSearch(this, buildElasticSearchProps);
+
+    // Add ES Domain to lambda environment variable
     const domainEndpointEnvironmentVariableName = props.domainEndpointEnvironmentVariableName || 'DOMAIN_ENDPOINT';
     this.lambdaFunction.addEnvironment(domainEndpointEnvironmentVariableName, this.elasticsearchDomain.attrDomainEndpoint);
 
@@ -128,5 +173,19 @@ export class LambdaToElasticSearchAndKibana extends Construct {
       // Deploy best practices CW Alarms for ES
       this.cloudwatchAlarms = defaults.buildElasticSearchCWAlarms(this);
     }
+  }
+
+  setupCognito(scope: Construct, domainName: string): [cognito.UserPool, cognito.UserPoolClient, cognito.CfnIdentityPool, iam.Role] {
+    const userPool = defaults.buildUserPool(scope);
+    const userPoolClient = defaults.buildUserPoolClient(scope, userPool);
+    const identityPool = defaults.buildIdentityPool(scope, userPool, userPoolClient);
+
+    const cognitoAuthorizedRole: Role = defaults.setupCognitoForElasticSearch(scope, domainName, {
+      userpool: userPool,
+      identitypool: identityPool,
+      userpoolclient: userPoolClient
+    });
+
+    return [userPool, userPoolClient, identityPool, cognitoAuthorizedRole];
   }
 }
