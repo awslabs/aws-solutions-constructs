@@ -170,8 +170,6 @@ test('Test VPC with 1 AZ, Zone Awareness Disabled', () => {
 });
 
 test('Test VPC with 2 AZ, Zone Awareness Enabled', () => {
-  // Providing a fake account number and region enables us to
-  // get expected behavior of VPC default properties
   const stack = new Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });
@@ -194,7 +192,8 @@ test('Test VPC with 2 AZ, Zone Awareness Enabled', () => {
 });
 
 test('Test VPC with 3 AZ, Zone Awareness Enabled', () => {
-  // Account deploys to 3 AZ by default in this region (high availability)
+  // If no environment is specified, a VPC will use 2 AZs by default
+  // If an environment is specified, a VPC will use 3 AZs by default.
   const stack = new Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });
