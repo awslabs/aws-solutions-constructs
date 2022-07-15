@@ -170,13 +170,11 @@ test('Test VPC with 1 AZ, Zone Awareness Disabled', () => {
 });
 
 test('Test VPC with 2 AZ, Zone Awareness Enabled', () => {
-  const stack = new Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
+  // If no environment is specified, a VPC will use 2 AZs by default
+  // If an environment is specified, a VPC will use 3 AZs by default.
+  const stack = new Stack(undefined, undefined, {});
 
-  const vpc: ec2.IVpc = defaults.getTestVpc(stack, false, {
-    maxAzs: 2
-  });
+  const vpc: ec2.IVpc = defaults.getTestVpc(stack, false);
 
   deployES(stack, 'test-domain', {}, undefined, vpc);
 
