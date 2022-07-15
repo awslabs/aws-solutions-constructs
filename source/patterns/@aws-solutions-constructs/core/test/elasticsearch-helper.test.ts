@@ -55,13 +55,6 @@ function deployES(stack: Stack, domainName: string, clientDomainProps?: elastics
   }
 }
 
-function deployVpc(stack: Stack, props?: ec2.VpcProps) {
-  return defaults.buildVpc(stack, {
-    defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
-    userVpcProps: props
-  });
-}
-
 test('Test override SnapshotOptions for buildElasticSearch', () => {
   const stack = new Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
@@ -152,7 +145,7 @@ test('Test override SnapshotOptions for buildElasticSearch', () => {
 test('Test VPC with 1 AZ, Zone Awareness Disabled', () => {
   const stack = new Stack();
 
-  const vpc = deployVpc(stack);
+  const vpc = defaults.getTestVpc(stack, false);
 
   deployES(stack, 'test-domain', {
     elasticsearchClusterConfig: {
@@ -175,9 +168,13 @@ test('Test VPC with 1 AZ, Zone Awareness Disabled', () => {
 });
 
 test('Test VPC with 2 AZ, Zone Awareness Enabled', () => {
-  const stack = new Stack();
+  const stack = new Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
 
-  const vpc: ec2.IVpc = deployVpc(stack);
+  const vpc: ec2.IVpc = defaults.getTestVpc(stack, false, {
+    maxAzs: 2
+  });
 
   deployES(stack, 'test-domain', {}, undefined, vpc);
 
@@ -193,33 +190,12 @@ test('Test VPC with 2 AZ, Zone Awareness Enabled', () => {
 });
 
 test('Test VPC with 3 AZ, Zone Awareness Enabled', () => {
+  // Account deploys to 3 AZ by default in this region (high availability)
   const stack = new Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });
 
-  const vpc: ec2.IVpc = deployVpc(stack);
-
-  deployES(stack, 'test-domain', {}, undefined, vpc);
-
-  expect(stack).toHaveResourceLike('AWS::Elasticsearch::Domain', {
-    DomainName: "test-domain",
-    ElasticsearchClusterConfig: {
-      DedicatedMasterCount: 3,
-      DedicatedMasterEnabled: true,
-      InstanceCount: 3,
-      ZoneAwarenessEnabled: true
-    }
-  });
-});
-
-test('Test VPC with 6 AZ, Zone Awareness Enable', () => {
-  const stack = new Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
-
-  const vpc = deployVpc(stack, {
-    maxAzs: 6
-  });
+  const vpc: ec2.IVpc = defaults.getTestVpc(stack);
 
   deployES(stack, 'test-domain', {}, undefined, vpc);
 
@@ -268,7 +244,7 @@ test('Test deployment with an existing private VPC', () => {
   });
 });
 
-test('Test error thrown with default 1 AZ deployment with no domain props', () => {
+test('Test error thrown with no private subnet configurations', () => {
   const stack = new Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });

@@ -342,15 +342,8 @@ test('Test minimal deployment with an existing isolated VPC', () => {
     env: { account: "123456789012", region: 'us-east-1' },
   });
 
-  const vpc = defaults.buildVpc(stack, {
-    defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
-    constructVpcProps: {
-      enableDnsHostnames: true,
-      enableDnsSupport: true,
-    },
-    userVpcProps: {
-      vpcName: "existing-isolated-vpc-test"
-    }
+  const vpc = defaults.getTestVpc(stack, false, {
+    vpcName: "existing-isolated-vpc-test"
   });
 
   const construct = new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
@@ -506,13 +499,7 @@ test('Test error for vpcProps and undefined deployVpc prop', () => {
 test('Test error for Lambda function VPC props', () => {
   const stack = new cdk.Stack();
 
-  const vpc = defaults.buildVpc(stack, {
-    defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
-    constructVpcProps: {
-      enableDnsHostnames: true,
-      enableDnsSupport: true,
-    },
-  });
+  const vpc = defaults.getTestVpc(stack);
 
   const app = () => {
     new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
@@ -543,47 +530,6 @@ test('Test error for Elasticsearch domain VPC props', () => {
   };
 
   expect(app).toThrowError("Error - Define VPC using construct parameters not Elasticsearch props");
-});
-
-test('Test 3 AZ Multi AZ ES deployment with VPC that has 6 AZ', () => {
-  const stack = new cdk.Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
-
-  new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
-    lambdaFunctionProps: getDefaultTestLambdaProps(),
-    vpcProps: {
-      maxAzs: 6,
-      vpcName: "vpc-test"
-    },
-    domainName: "test",
-    deployVpc: true,
-  });
-
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
-    Tags: [
-      {
-        Key: "Name",
-        Value: "vpc-test"
-      }
-    ]
-  });
-
-  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
-    VPCOptions: {
-      SubnetIds: [
-        {
-          Ref: "VpcisolatedSubnet1SubnetE62B1B9B"
-        },
-        {
-          Ref: "VpcisolatedSubnet2Subnet39217055"
-        },
-        {
-          Ref: "VpcisolatedSubnet3Subnet44F2537D"
-        }
-      ]
-    }
-  });
 });
 
 function getDefaultTestLambdaProps(): lambda.FunctionProps {

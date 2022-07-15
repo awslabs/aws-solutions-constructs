@@ -36,7 +36,7 @@ new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana3', {
   domainName: "deploytestwithvpcprops",
   deployVpc: true,
   vpcProps: {
-    maxAzs: 3
+    cidr: '172.168.0.0/16',
   }
 });
 

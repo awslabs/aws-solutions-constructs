@@ -26,13 +26,7 @@ const stack = new Stack(app, defaults.generateIntegStackName(__filename), {
 });
 
 // Create VPC
-const vpc = defaults.buildVpc(stack, {
-  defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
-  constructVpcProps: {
-    enableDnsHostnames: true,
-    enableDnsSupport: true,
-  },
-});
+const vpc = defaults.getTestVpc(stack);
 
 const lambdaProps: lambda.FunctionProps = {
   code: lambda.Code.fromAsset(`lambda`),

@@ -720,7 +720,7 @@
     "Vpc8378EB38": {
       "Type": "AWS::EC2::VPC",
       "Properties": {
-        "CidrBlock": "10.0.0.0/16",
+        "CidrBlock": "172.168.0.0/16",
         "EnableDnsHostnames": true,
         "EnableDnsSupport": true,
         "InstanceTenancy": "default",
@@ -739,7 +739,7 @@
           "Ref": "Vpc8378EB38"
         },
         "AvailabilityZone": "test-region-1a",
-        "CidrBlock": "10.0.0.0/18",
+        "CidrBlock": "172.168.0.0/18",
         "MapPublicIpOnLaunch": false,
         "Tags": [
           {
@@ -789,7 +789,7 @@
           "Ref": "Vpc8378EB38"
         },
         "AvailabilityZone": "test-region-1b",
-        "CidrBlock": "10.0.64.0/18",
+        "CidrBlock": "172.168.64.0/18",
         "MapPublicIpOnLaunch": false,
         "Tags": [
           {
@@ -839,7 +839,7 @@
           "Ref": "Vpc8378EB38"
         },
         "AvailabilityZone": "test-region-1c",
-        "CidrBlock": "10.0.128.0/18",
+        "CidrBlock": "172.168.128.0/18",
         "MapPublicIpOnLaunch": false,
         "Tags": [
           {
