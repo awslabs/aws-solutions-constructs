@@ -255,7 +255,7 @@ test("Test for error if VPC in arguments AND in Lambda Function properties", () 
     vpc: fakeVpc,
   };
 
-  const app = () =>  {
+  const app = () => {
     defaults.deployLambdaFunction(stack, lambdaFunctionProps, undefined, fakeVpc);
   };
 
@@ -426,4 +426,25 @@ test('Test minimum deployment with an existing VPC as a vpc parameter in deployL
       ]
     }
   });
+});
+
+test("Test retrieving lambda vpc security group ids", () => {
+  const stack = new Stack();
+
+  const vpc = defaults.getTestVpc(stack);
+  const securityGroup1 = new ec2.SecurityGroup(stack, 'SecurityGroup1', { vpc });
+  const securityGroup2 = new ec2.SecurityGroup(stack, 'SecurityGroup2', { vpc });
+
+  const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: "index.handler",
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    securityGroups: [securityGroup1, securityGroup2],
+    vpc
+  });
+
+  const securityGroups = defaults.getLambdaVpcSecurityGroupIds(testLambdaFunction);
+
+  expect(securityGroups).toContain(securityGroup1.securityGroupId);
+  expect(securityGroups).toContain(securityGroup2.securityGroupId);
 });
