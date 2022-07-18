@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.11.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.10.0...v2.11.0) (2022-07-18)
+
+
+### Features
+
+* **aws-lambda-elasticsearch-kibana:** added VPC support ([#718](https://github.com/awslabs/aws-solutions-constructs/issues/718)) ([33e8f17](https://github.com/awslabs/aws-solutions-constructs/commit/33e8f17a1d1df5be78882a8a59b54d689fea1e82))
+
 ## [2.10.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.9.0...v2.10.0) (2022-07-01)
 
 * Includes all functionality of V1.157.0
