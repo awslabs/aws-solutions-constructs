@@ -12,24 +12,18 @@
  */
 
 import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
-import * as cognito from '@aws-cdk/aws-cognito';
 import * as iam from '@aws-cdk/aws-iam';
 import * as cdk from '@aws-cdk/core';
+import { BuildElasticSearchProps } from './elasticsearch-helper';
 
-export interface CfnDomainOptions {
-  readonly identitypool: cognito.CfnIdentityPool,
-  readonly userpool: cognito.UserPool,
-  readonly cognitoAuthorizedRoleARN: string,
-  readonly serviceRoleARN?: string
-}
-
-export function DefaultCfnDomainProps(domainName: string, cognitoKibanaConfigureRole: iam.Role, options: CfnDomainOptions) {
+export function DefaultCfnDomainProps(domainName: string, cognitoKibanaConfigureRole: iam.Role, props: BuildElasticSearchProps):
+  elasticsearch.CfnDomainProps {
   const roleARNs: iam.IPrincipal[] = [];
 
-  roleARNs.push(new iam.ArnPrincipal(options.cognitoAuthorizedRoleARN));
+  roleARNs.push(new iam.ArnPrincipal(props.cognitoAuthorizedRoleARN));
 
-  if (options.serviceRoleARN) {
-    roleARNs.push(new iam.ArnPrincipal(options.serviceRoleARN));
+  if (props.serviceRoleARN) {
+    roleARNs.push(new iam.ArnPrincipal(props.serviceRoleARN));
   }
 
   return {
@@ -41,15 +35,6 @@ export function DefaultCfnDomainProps(domainName: string, cognitoKibanaConfigure
     nodeToNodeEncryptionOptions: {
       enabled: true
     },
-    elasticsearchClusterConfig: {
-      dedicatedMasterEnabled: true,
-      dedicatedMasterCount: 3,
-      instanceCount: 3,
-      zoneAwarenessEnabled: true,
-      zoneAwarenessConfig: {
-        availabilityZoneCount: 3
-      }
-    },
     snapshotOptions: {
       automatedSnapshotStartHour: 1
     },
@@ -59,8 +44,8 @@ export function DefaultCfnDomainProps(domainName: string, cognitoKibanaConfigure
     },
     cognitoOptions: {
       enabled: true,
-      identityPoolId: options.identitypool.ref,
-      userPoolId: options.userpool.userPoolId,
+      identityPoolId: props.identitypool.ref,
+      userPoolId: props.userpool.userPoolId,
       roleArn: cognitoKibanaConfigureRole.roleArn
     },
     accessPolicies: new iam.PolicyDocument({
