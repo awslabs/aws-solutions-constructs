@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+NOTE - V1 of the CDK is deprecated. All functionality of V1 AWS Solutions Constructs is frozen as of 1.159.0. AWS Solutions Constructs will only release new V1 versions to keep in sync with AWS CDK V1 versions. Customers should migrate to CDK V2 to enjoy all new functionality of the AWS CDK and AWS Solutions Constructs.
+## 1.160.0 (2022-08-04)
+
+* Upgraded all patterns to CDK v1.160.0
+
 ## [1.159.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.12.0...v1.159.0) (2022-08-01)
 
 * Upgraded all patterns to CDK v1.159.0
