@@ -83,7 +83,7 @@ Out of the box implementation of the Construct without any override will set the
 * Configure access logging for CloudFront Web Distribution
 * Enable CloudFront Origin Request Policy for AWS Elemental MediaStore Container
 * Set `User-Agent` custom header with CloudFront Origin Access Identity
-* Enable automatic injection of best practice HTTP security headers in all responses from CloudFront WebDistribution
+* Enable automatic injection of best practice HTTP security headers in all responses from CloudFront Distribution
 
 ### AWS Elemental MediaStore
 * Set the deletion policy to retain the resource

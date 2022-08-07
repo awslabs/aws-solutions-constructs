@@ -72,7 +72,7 @@ new CloudFrontToS3(this, "test-cloudfront-s3", new CloudFrontToS3Props.Builder()
 |:-------------|:----------------|-----------------|
 |cloudFrontWebDistribution|[`cloudfront.Distribution`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudfront.Distribution.html)|Returns an instance of cloudfront.Distribution created by the construct|
 |cloudFrontFunction?|[`cloudfront.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudfront.Function.html)|Returns an instance of the Cloudfront function created by the pattern.|
-|cloudFrontLoggingBucket|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-s3-readme.html)|Returns an instance of the logging bucket for CloudFront WebDistribution.|
+|cloudFrontLoggingBucket|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-s3-readme.html)|Returns an instance of the logging bucket for CloudFront Distribution.|
 |s3BucketInterface|[`s3.IBucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.IBucket.html)|Returns an instance of s3.IBucket created by the construct|
 |s3Bucket?|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html)|Returns an instance of s3.Bucket created by the construct. IMPORTANT: If existingBucketObj was provided in Pattern Construct Props, this property will be `undefined`|
 |s3LoggingBucket?|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html)|Returns an instance of s3.Bucket created by the construct as the logging bucket for the primary bucket.|
@@ -82,8 +82,8 @@ new CloudFrontToS3(this, "test-cloudfront-s3", new CloudFrontToS3Props.Builder()
 Out of the box implementation of the Construct without any override will set the following defaults:
 
 ### Amazon CloudFront
-* Configure Access logging for CloudFront WebDistribution
-* Enable automatic injection of best practice HTTP security headers in all responses from CloudFront WebDistribution
+* Configure Access logging for CloudFront Distribution
+* Enable automatic injection of best practice HTTP security headers in all responses from CloudFront Distribution
 * CloudFront originPath set to `'/'`
 
 ### Amazon S3 Bucket
