@@ -11,11 +11,11 @@
  *  and limitations under the License.
  */
 
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as events from '@aws-cdk/aws-events';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as events from 'aws-cdk-lib/aws-events';
 import { EventsRuleToLambdaProps, EventsRuleToLambda } from '../lib/index';
 import '@aws-cdk/assert/jest';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
 
 function deployNewFunc(stack: cdk.Stack) {
   const props: EventsRuleToLambdaProps = {

@@ -13,10 +13,10 @@
 
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as cdk from "@aws-cdk/core";
+import * as cdk from "aws-cdk-lib";
 import { FargateToDynamoDB } from "../lib";
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
-import * as ecs from '@aws-cdk/aws-ecs';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
 
 test('New service/new table, public API, new VPC', () => {
   const stack = new cdk.Stack();

@@ -12,11 +12,11 @@
  */
 
 // Imports
-import * as cdk from "@aws-cdk/core";
+import * as cdk from "aws-cdk-lib";
 import { Route53ToApiGateway, Route53ToApiGatewayProps } from "../lib";
-import * as route53 from "@aws-cdk/aws-route53";
+import * as route53 from "aws-cdk-lib/aws-route53";
 import * as defaults from "@aws-solutions-constructs/core";
-import * as acm from "@aws-cdk/aws-certificatemanager";
+import * as acm from "aws-cdk-lib/aws-certificatemanager";
 import "@aws-cdk/assert/jest";
 
 // Deploying Public/Private Existing Hosted Zones

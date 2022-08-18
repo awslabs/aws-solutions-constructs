@@ -11,18 +11,18 @@
  *  and limitations under the License.
  */
 
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
-import * as iam from '@aws-cdk/aws-iam';
-import { DynamoEventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as elasticsearch from 'aws-cdk-lib/aws-elasticsearch';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import { DynamoEventSourceProps } from 'aws-cdk-lib/aws-lambda-event-sources';
 import { DynamoDBStreamsToLambdaProps, DynamoDBStreamsToLambda } from '@aws-solutions-constructs/aws-dynamodbstreams-lambda';
 import { LambdaToElasticSearchAndKibanaProps, LambdaToElasticSearchAndKibana } from '@aws-solutions-constructs/aws-lambda-elasticsearch-kibana';
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
-import * as cognito from '@aws-cdk/aws-cognito';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
+import * as cognito from 'aws-cdk-lib/aws-cognito';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import * as sqs from '@aws-cdk/aws-sqs';
+import { Construct } from 'constructs';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as defaults from '@aws-solutions-constructs/core';
 
 /**

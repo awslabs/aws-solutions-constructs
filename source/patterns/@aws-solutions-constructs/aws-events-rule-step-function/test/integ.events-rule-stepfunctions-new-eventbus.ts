@@ -12,13 +12,13 @@
  */
 
 /// !cdk-integ *
-import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { EventsRuleToStepFunction, EventsRuleToStepFunctionProps } from "../lib";
-import { Duration } from '@aws-cdk/core';
-import * as tasks from '@aws-cdk/aws-stepfunctions-tasks';
-import * as lambda from '@aws-cdk/aws-lambda';
+import { Duration } from 'aws-cdk-lib';
+import * as tasks from 'aws-cdk-lib/aws-stepfunctions-tasks';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { deployLambdaFunction } from '@aws-solutions-constructs/core';
-import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
+import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();

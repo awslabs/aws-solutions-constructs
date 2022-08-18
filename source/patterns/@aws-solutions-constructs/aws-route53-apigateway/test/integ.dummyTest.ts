@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack } from "aws-cdk-lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import * as defaults from '@aws-solutions-constructs/core';
 

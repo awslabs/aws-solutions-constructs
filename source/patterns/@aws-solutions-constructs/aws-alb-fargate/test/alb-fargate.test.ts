@@ -13,8 +13,8 @@
 
 import { AlbToFargate, AlbToFargateProps } from "../lib";
 // import * as ecs from '@aws-cdk/aws-ecs';
-import * as elb from '@aws-cdk/aws-elasticloadbalancingv2';
-import * as cdk from "@aws-cdk/core";
+import * as elb from 'aws-cdk-lib/aws-elasticloadbalancingv2';
+import * as cdk from "aws-cdk-lib";
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
 

@@ -11,16 +11,16 @@
  *  and limitations under the License.
  */
 
-import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as iam from '@aws-cdk/aws-iam';
-import * as cognito from '@aws-cdk/aws-cognito';
+import * as elasticsearch from 'aws-cdk-lib/aws-elasticsearch';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as cognito from 'aws-cdk-lib/aws-cognito';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import { Role } from '@aws-cdk/aws-iam';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
-import * as ec2 from '@aws-cdk/aws-ec2';
+import { Construct } from 'constructs';
+import { Role } from 'aws-cdk-lib/aws-iam';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 /**
  * @summary The properties for the CognitoToApiGatewayToLambda Construct

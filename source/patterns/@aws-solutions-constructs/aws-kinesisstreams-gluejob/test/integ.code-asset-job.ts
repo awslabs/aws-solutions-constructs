@@ -13,11 +13,11 @@
 
 // Imports
 import * as path from "path";
-import { CfnTable } from '@aws-cdk/aws-glue';
-import { App, Stack } from '@aws-cdk/core';
+import { CfnTable } from 'aws-cdk-lib/aws-glue';
+import { App, Stack } from 'aws-cdk-lib';
 import { KinesisstreamsToGluejob } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import { Asset } from '@aws-cdk/aws-s3-assets';
+import { Asset } from 'aws-cdk-lib/aws-s3-assets';
 
 // Setup
 const app = new App();

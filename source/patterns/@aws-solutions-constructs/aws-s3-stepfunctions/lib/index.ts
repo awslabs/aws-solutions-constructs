@@ -11,15 +11,16 @@
  *  and limitations under the License.
  */
 
-import * as sfn from '@aws-cdk/aws-stepfunctions';
-import * as s3 from '@aws-cdk/aws-s3';
+import { Construct } from 'constructs';
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as defaults from '@aws-solutions-constructs/core';
 import { EventbridgeToStepfunctions } from '@aws-solutions-constructs/aws-eventbridge-stepfunctions';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct, Stack } from '@aws-cdk/core';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
-import * as events from '@aws-cdk/aws-events';
-import * as logs from '@aws-cdk/aws-logs';
+import { Stack } from 'aws-cdk-lib';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
+import * as events from 'aws-cdk-lib/aws-events';
+import * as logs from 'aws-cdk-lib/aws-logs';
 
 /**
  * @summary The properties for the S3ToStepfunctions Construct

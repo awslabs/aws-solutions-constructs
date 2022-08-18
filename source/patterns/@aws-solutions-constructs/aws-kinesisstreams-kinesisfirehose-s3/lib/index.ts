@@ -11,17 +11,17 @@
  *  and limitations under the License.
  */
 
-import * as kinesisfirehose from '@aws-cdk/aws-kinesisfirehose';
+import * as kinesisfirehose from 'aws-cdk-lib/aws-kinesisfirehose';
 import * as kdfToS3 from '@aws-solutions-constructs/aws-kinesisfirehose-s3';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
+import { Construct } from 'constructs';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as iam from '@aws-cdk/aws-iam';
-import * as kinesis from '@aws-cdk/aws-kinesis';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 import { overrideProps } from '@aws-solutions-constructs/core';
-import * as logs from '@aws-cdk/aws-logs';
+import * as logs from 'aws-cdk-lib/aws-logs';
 
 /**
  * The properties for the KinesisStreamsToKinesisFirehoseToS3 class.

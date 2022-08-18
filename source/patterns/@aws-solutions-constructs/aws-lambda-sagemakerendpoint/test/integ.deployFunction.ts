@@ -12,9 +12,9 @@
  */
 
 // Imports
-import { Stack, Duration, App } from '@aws-cdk/core';
+import { Stack, Duration, App } from 'aws-cdk-lib';
 import { LambdaToSagemakerEndpoint, LambdaToSagemakerEndpointProps } from '../lib';
-import * as lambda from '@aws-cdk/aws-lambda';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { getSagemakerModel } from './test-helper';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 

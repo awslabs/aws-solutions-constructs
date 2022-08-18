@@ -11,15 +11,15 @@
  *  and limitations under the License.
  */
 
-import * as sfn from '@aws-cdk/aws-stepfunctions';
-import * as events from '@aws-cdk/aws-events';
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
+import * as events from 'aws-cdk-lib/aws-events';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as iam from '@aws-cdk/aws-iam';
+import * as iam from 'aws-cdk-lib/aws-iam';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 import { overrideProps } from '@aws-solutions-constructs/core';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
-import * as logs from '@aws-cdk/aws-logs';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
+import * as logs from 'aws-cdk-lib/aws-logs';
 
 /**
  * @summary The properties for the EventbridgeToStepfunctions Construct

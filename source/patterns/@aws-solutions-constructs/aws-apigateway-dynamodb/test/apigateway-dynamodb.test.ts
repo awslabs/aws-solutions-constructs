@@ -12,11 +12,11 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
+import { Stack } from "aws-cdk-lib";
 import { ApiGatewayToDynamoDB, ApiGatewayToDynamoDBProps } from "../lib";
 import "@aws-cdk/assert/jest";
-import * as ddb from "@aws-cdk/aws-dynamodb";
-import * as api from "@aws-cdk/aws-apigateway";
+import * as ddb from "aws-cdk-lib/aws-dynamodb";
+import * as api from "aws-cdk-lib/aws-apigateway";
 
 test("check properties", () => {
   const stack = new Stack();

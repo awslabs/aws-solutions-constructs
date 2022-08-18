@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import * as sqs from '@aws-cdk/aws-sqs';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 export function DefaultQueueProps() {
   const _DefaultQueueProps: sqs.QueueProps = {

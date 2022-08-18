@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import * as cdk from '@aws-cdk/core';
-import * as mediastore from '@aws-cdk/aws-mediastore';
+import * as cdk from 'aws-cdk-lib';
+import * as mediastore from 'aws-cdk-lib/aws-mediastore';
 
 export function MediaStoreContainerProps(): mediastore.CfnContainerProps {
   return {

@@ -12,14 +12,14 @@
  */
 
 // Imports
-import * as lambda from '@aws-cdk/aws-lambda';
-import { KinesisEventSourceProps, KinesisEventSource } from '@aws-cdk/aws-lambda-event-sources';
-import * as kinesis from '@aws-cdk/aws-kinesis';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { KinesisEventSourceProps, KinesisEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import * as sqs from '@aws-cdk/aws-sqs';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+import { Construct } from 'constructs';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 
 /**
  * The properties for the KinesisStreamsToLambda class.

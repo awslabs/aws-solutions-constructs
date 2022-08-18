@@ -11,10 +11,10 @@
  *  and limitations under the License.
  */
 
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as s3 from '@aws-cdk/aws-s3';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 import * as defaults from '@aws-solutions-constructs/core';
 
 /**

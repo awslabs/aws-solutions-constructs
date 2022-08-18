@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import * as s3a from '@aws-cdk/aws-s3-assets';
-import { Stack, CfnMapping } from '@aws-cdk/core';
+import * as s3a from 'aws-cdk-lib/aws-s3-assets';
+import { Stack, CfnMapping } from 'aws-cdk-lib';
 
 // linear learner ECR images can be found here:
 // https://github.com/awsdocs/amazon-sagemaker-developer-guide/blob/master/doc_source/sagemaker-algo-docker-registry-paths.md

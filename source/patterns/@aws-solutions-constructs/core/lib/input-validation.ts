@@ -11,19 +11,19 @@
  *  and limitations under the License.
  */
 
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
-import * as kinesis from '@aws-cdk/aws-kinesis';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as sqs from '@aws-cdk/aws-sqs';
-import * as mediastore from '@aws-cdk/aws-mediastore';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as elb from '@aws-cdk/aws-elasticloadbalancingv2';
-import * as sns from '@aws-cdk/aws-sns';
-import * as glue from '@aws-cdk/aws-glue';
-import * as sagemaker from '@aws-cdk/aws-sagemaker';
-import * as secretsmanager from "@aws-cdk/aws-secretsmanager";
-import * as kms from "@aws-cdk/aws-kms";
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as mediastore from 'aws-cdk-lib/aws-mediastore';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as elb from 'aws-cdk-lib/aws-elasticloadbalancingv2';
+import * as sns from 'aws-cdk-lib/aws-sns';
+import * as glue from 'aws-cdk-lib/aws-glue';
+import * as sagemaker from 'aws-cdk-lib/aws-sagemaker';
+import * as secretsmanager from "aws-cdk-lib/aws-secretsmanager";
+import * as kms from "aws-cdk-lib/aws-kms";
 
 export interface VerifiedProps {
   readonly dynamoTableProps?: dynamodb.TableProps,

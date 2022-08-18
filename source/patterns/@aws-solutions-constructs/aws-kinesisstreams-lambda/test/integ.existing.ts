@@ -13,10 +13,10 @@
 
 // Imports
 import { KinesisStreamsToLambda, KinesisStreamsToLambdaProps } from '../lib';
-import { Stack, App, Aws } from '@aws-cdk/core';
-import * as kinesis from '@aws-cdk/aws-kinesis';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as iam from '@aws-cdk/aws-iam';
+import { Stack, App, Aws } from 'aws-cdk-lib';
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup

@@ -12,14 +12,14 @@
  */
 
 // Imports
-import * as api from '@aws-cdk/aws-apigateway';
-import * as sqs from '@aws-cdk/aws-sqs';
-import * as iam from '@aws-cdk/aws-iam';
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import * as cdk from '@aws-cdk/core';
-import * as logs from '@aws-cdk/aws-logs';
+import { Construct } from 'constructs';
+import * as cdk from 'aws-cdk-lib';
+import * as logs from 'aws-cdk-lib/aws-logs';
 
 /**
  * @summary The properties for the ApiGatewayToSqs class.

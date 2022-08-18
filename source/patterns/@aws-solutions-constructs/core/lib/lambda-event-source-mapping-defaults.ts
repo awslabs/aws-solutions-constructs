@@ -11,12 +11,13 @@
  *  and limitations under the License.
  */
 
-import * as lambda from '@aws-cdk/aws-lambda';
+import { Construct } from 'constructs';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { consolidateProps } from './utils';
-import { DynamoEventSourceProps, S3EventSourceProps, KinesisEventSourceProps, StreamEventSourceProps, SqsDlq } from '@aws-cdk/aws-lambda-event-sources';
-import * as s3 from '@aws-cdk/aws-s3';
-import { Construct, Duration } from '@aws-cdk/core';
-import * as sqs from '@aws-cdk/aws-sqs';
+import { DynamoEventSourceProps, S3EventSourceProps, KinesisEventSourceProps, StreamEventSourceProps, SqsDlq } from 'aws-cdk-lib/aws-lambda-event-sources';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import { Duration } from 'aws-cdk-lib';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
 import { buildQueue } from './sqs-helper';
 
 export interface EventSourceProps {

@@ -12,11 +12,11 @@
  */
 
 import * as defaults from "..";
-import { Stack } from '@aws-cdk/core';
+import { Stack } from 'aws-cdk-lib';
 import { CreateFargateService } from "..";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as ecs from "@aws-cdk/aws-ecs";
-import * as ecr from "@aws-cdk/aws-ecr";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as ecs from "aws-cdk-lib/aws-ecs";
+import * as ecr from "aws-cdk-lib/aws-ecr";
 import '@aws-cdk/assert/jest';
 
 test('Test with all defaults', () => {

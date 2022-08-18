@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import * as sagemaker from '@aws-cdk/aws-sagemaker';
-import * as ec2 from '@aws-cdk/aws-ec2';
+import * as sagemaker from 'aws-cdk-lib/aws-sagemaker';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import { buildEncryptionKey } from './kms-helper';
 import {
   DefaultSagemakerNotebookProps,
@@ -20,15 +20,15 @@ import {
   DefaultSagemakerEndpointConfigProps,
   DefaultSagemakerEndpointProps,
 } from './sagemaker-defaults';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
 import { addCfnSuppressRules, consolidateProps } from './utils';
 import { buildVpc } from './vpc-helper';
-import * as iam from '@aws-cdk/aws-iam';
-import { Aws } from '@aws-cdk/core';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import { Aws } from 'aws-cdk-lib';
 import { DefaultPublicPrivateVpcProps } from './vpc-defaults';
 import { buildSecurityGroup } from './security-group-helper';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 export interface BuildSagemakerNotebookProps {
   /**

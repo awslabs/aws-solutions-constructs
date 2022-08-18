@@ -12,10 +12,10 @@
  */
 
 // Imports
-import { RemovalPolicy, Stack } from "@aws-cdk/core";
-import * as lambda from "@aws-cdk/aws-lambda";
-import { Secret } from '@aws-cdk/aws-secretsmanager';
-import * as ec2 from "@aws-cdk/aws-ec2";
+import { RemovalPolicy, Stack } from "aws-cdk-lib";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
+import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { LambdaToSecretsmanager } from '../lib';
 import '@aws-cdk/assert/jest';
 import * as defaults from "@aws-solutions-constructs/core";

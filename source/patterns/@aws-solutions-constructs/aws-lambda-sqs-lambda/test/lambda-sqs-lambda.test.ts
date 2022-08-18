@@ -12,9 +12,9 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as ec2 from "@aws-cdk/aws-ec2";
+import { Stack } from "aws-cdk-lib";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as defaults from '@aws-solutions-constructs/core';
 import { LambdaToSqsToLambda, LambdaToSqsToLambdaProps } from '../lib';
 import { haveResourceLike } from '@aws-cdk/assert';

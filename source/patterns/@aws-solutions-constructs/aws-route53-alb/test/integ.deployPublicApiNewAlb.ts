@@ -12,11 +12,11 @@
  */
 
 // Imports
-import { App, Stack, Aws, RemovalPolicy } from "@aws-cdk/core";
+import { App, Stack, Aws, RemovalPolicy } from "aws-cdk-lib";
 import * as defaults from '@aws-solutions-constructs/core';
-import { PublicHostedZone } from "@aws-cdk/aws-route53";
+import { PublicHostedZone } from "aws-cdk-lib/aws-route53";
 import { Route53ToAlb, Route53ToAlbProps } from "../lib";
-import { CfnSecurityGroup } from "@aws-cdk/aws-ec2";
+import { CfnSecurityGroup } from "aws-cdk-lib/aws-ec2";
 
 // Setup
 const app = new App();

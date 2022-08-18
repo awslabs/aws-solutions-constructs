@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as sns from '@aws-cdk/aws-sns';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as sns from 'aws-cdk-lib/aws-sns';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import { SnsEventSource } from '@aws-cdk/aws-lambda-event-sources';
+import { Construct } from 'constructs';
+import { SnsEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 
 /**
  * @summary The properties for the SnsToLambda class.

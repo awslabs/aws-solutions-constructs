@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import { Stack } from '@aws-cdk/core';
-import * as elb from "@aws-cdk/aws-elasticloadbalancingv2";
-import * as lambda from "@aws-cdk/aws-lambda";
+import { Stack } from 'aws-cdk-lib';
+import * as elb from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as defaults from '../index';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as ecs from '@aws-cdk/aws-ecs';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
 import '@aws-cdk/assert/jest';
 
 test('Test ObtainAlb with existing ALB', () => {

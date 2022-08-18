@@ -12,10 +12,10 @@
  */
 
 // Imports
-import { Stack, RemovalPolicy } from "@aws-cdk/core";
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as s3 from "@aws-cdk/aws-s3";
+import { Stack, RemovalPolicy } from "aws-cdk-lib";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as s3 from "aws-cdk-lib/aws-s3";
 import { LambdaToS3 } from '../lib';
 import { CreateScrapBucket } from '@aws-solutions-constructs/core';
 import '@aws-cdk/assert/jest';

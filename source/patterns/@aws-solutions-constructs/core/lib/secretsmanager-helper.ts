@@ -11,9 +11,9 @@
  *  and limitations under the License.
  */
 
-import { Secret, SecretProps } from '@aws-cdk/aws-secretsmanager';
+import { Secret, SecretProps } from 'aws-cdk-lib/aws-secretsmanager';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 import { DefaultSecretProps } from './secretsmanager-defaults';
 import { consolidateProps, addCfnSuppressRules } from './utils';
 

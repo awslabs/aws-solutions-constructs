@@ -12,11 +12,11 @@
  */
 
 import { ResourcePart } from '@aws-cdk/assert';
-import { Stack } from '@aws-cdk/core';
+import { Stack } from 'aws-cdk-lib';
 import '@aws-cdk/assert/jest';
-import * as logs from '@aws-cdk/aws-logs';
+import * as logs from 'aws-cdk-lib/aws-logs';
 import { buildLogGroup } from '../lib/cloudwatch-log-group-helper';
-import * as kms from '@aws-cdk/aws-kms';
+import * as kms from 'aws-cdk-lib/aws-kms';
 
 test('override cw log group props with encryptionKey only', () => {
   const stack = new Stack();

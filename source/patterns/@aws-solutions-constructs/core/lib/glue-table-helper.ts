@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import { CfnTable, CfnTableProps } from "@aws-cdk/aws-glue";
-import { Construct } from "@aws-cdk/core";
+import { CfnTable, CfnTableProps } from "aws-cdk-lib/aws-glue";
+import { Construct } from "constructs";
 
 /**
  * Method to build the default table props

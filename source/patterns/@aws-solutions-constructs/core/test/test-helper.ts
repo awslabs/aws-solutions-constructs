@@ -12,17 +12,18 @@
  */
 
 // Imports
-import { Bucket, BucketProps, BucketEncryption } from "@aws-cdk/aws-s3";
-import { Construct, RemovalPolicy, Stack } from "@aws-cdk/core";
+import { Construct } from 'constructs';
+import { Bucket, BucketProps, BucketEncryption } from "aws-cdk-lib/aws-s3";
+import { RemovalPolicy, Stack } from "aws-cdk-lib";
 import { buildVpc } from '../lib/vpc-helper';
 import { DefaultPublicPrivateVpcProps, DefaultIsolatedVpcProps } from '../lib/vpc-defaults';
 import { overrideProps, addCfnSuppressRules } from "../lib/utils";
 import { createCacheSubnetGroup  } from "../lib/elasticache-helper";
 import * as path from 'path';
-import * as cache from '@aws-cdk/aws-elasticache';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as acm from '@aws-cdk/aws-certificatemanager';
-import { CfnFunction } from "@aws-cdk/aws-lambda";
+import * as cache from 'aws-cdk-lib/aws-elasticache';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as acm from 'aws-cdk-lib/aws-certificatemanager';
+import { CfnFunction } from "aws-cdk-lib/aws-lambda";
 import { GetDefaultCachePort } from "../lib/elasticache-defaults";
 
 export const fakeEcrRepoArn = 'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo';

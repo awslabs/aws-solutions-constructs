@@ -11,10 +11,10 @@
  *  and limitations under the License.
  */
 
-import { Construct } from "@aws-cdk/core";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as ecs from "@aws-cdk/aws-ecs";
-import * as ecr from "@aws-cdk/aws-ecr";
+import { Construct } from "constructs";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as ecs from "aws-cdk-lib/aws-ecs";
+import * as ecr from "aws-cdk-lib/aws-ecr";
 import * as defaults from "..";
 import { overrideProps } from "..";
 

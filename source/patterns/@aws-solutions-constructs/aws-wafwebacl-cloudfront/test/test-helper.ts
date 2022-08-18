@@ -11,10 +11,10 @@
  *  and limitations under the License.
  */
 
-import { Stack } from "@aws-cdk/core";
+import { Stack } from "aws-cdk-lib";
 import { addCfnSuppressRules } from "@aws-solutions-constructs/core";
-import * as cloudfront from "@aws-cdk/aws-cloudfront";
-import * as origins from "@aws-cdk/aws-cloudfront-origins";
+import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
+import * as origins from "aws-cdk-lib/aws-cloudfront-origins";
 
 export function CreateTestDistro(
   stack: Stack,

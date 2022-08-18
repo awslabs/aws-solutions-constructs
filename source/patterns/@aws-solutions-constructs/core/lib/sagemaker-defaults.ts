@@ -17,7 +17,7 @@ import {
   CfnModel,
   CfnEndpointConfigProps,
   CfnEndpointProps,
-} from '@aws-cdk/aws-sagemaker';
+} from 'aws-cdk-lib/aws-sagemaker';
 
 export function DefaultSagemakerNotebookProps(
   roleArn: string,

@@ -11,11 +11,12 @@
  *  and limitations under the License.
  */
 
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as mediastore from '@aws-cdk/aws-mediastore';
-import * as s3 from '@aws-cdk/aws-s3';
+import { Construct } from 'constructs';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as mediastore from 'aws-cdk-lib/aws-mediastore';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as defaults from '@aws-solutions-constructs/core';
-import { Construct, Aws } from '@aws-cdk/core';
+import { Aws } from 'aws-cdk-lib';
 
 /**
  * @summary The properties for the CloudFrontToMediaStore Construct

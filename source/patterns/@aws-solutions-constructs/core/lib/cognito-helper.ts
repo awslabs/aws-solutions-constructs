@@ -11,13 +11,13 @@
  *  and limitations under the License.
  */
 
-import * as cognito from '@aws-cdk/aws-cognito';
-import * as iam from '@aws-cdk/aws-iam';
-import * as cdk from '@aws-cdk/core';
+import * as cognito from 'aws-cdk-lib/aws-cognito';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as cdk from 'aws-cdk-lib';
 import { addCfnSuppressRules, consolidateProps } from './utils';
 import { DefaultUserPoolProps, DefaultUserPoolClientProps, DefaultIdentityPoolProps } from './cognito-defaults';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 export interface CognitoOptions {
   readonly identitypool: cognito.CfnIdentityPool,

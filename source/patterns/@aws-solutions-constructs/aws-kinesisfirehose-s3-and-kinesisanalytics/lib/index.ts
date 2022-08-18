@@ -12,15 +12,15 @@
  */
 
 // Imports
-import * as kinesisFirehose from '@aws-cdk/aws-kinesisfirehose';
-import * as kinesisAnalytics from '@aws-cdk/aws-kinesisanalytics';
+import * as kinesisFirehose from 'aws-cdk-lib/aws-kinesisfirehose';
+import * as kinesisAnalytics from 'aws-cdk-lib/aws-kinesisanalytics';
 import { KinesisFirehoseToS3, KinesisFirehoseToS3Props } from '@aws-solutions-constructs/aws-kinesisfirehose-s3';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as logs from '@aws-cdk/aws-logs';
-import * as iam from '@aws-cdk/aws-iam';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as logs from 'aws-cdk-lib/aws-logs';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 /**
  * The properties for the KinesisFirehoseToAnalyticsAndS3 class.

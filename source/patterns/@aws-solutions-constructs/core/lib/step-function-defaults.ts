@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import * as sfn from '@aws-cdk/aws-stepfunctions';
-import { ILogGroup } from '@aws-cdk/aws-logs';
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
+import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 
 export function DefaultStateMachineProps(_logGroup: ILogGroup): sfn.StateMachineProps | any {
 

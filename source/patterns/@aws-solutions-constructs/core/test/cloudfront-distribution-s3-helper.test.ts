@@ -12,16 +12,16 @@
  */
 
 import { ResourcePart } from '@aws-cdk/assert';
-import { Stack } from '@aws-cdk/core';
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as lambda from '@aws-cdk/aws-lambda';
+import { Stack } from 'aws-cdk-lib';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { CloudFrontDistributionForS3 } from '../lib/cloudfront-distribution-helper';
 import { buildS3Bucket } from '../lib/s3-bucket-helper';
 import '@aws-cdk/assert/jest';
-import { Bucket } from '@aws-cdk/aws-s3';
-import * as origins from '@aws-cdk/aws-cloudfront-origins';
-import { LambdaEdgeEventType } from '@aws-cdk/aws-cloudfront';
-import * as acm from '@aws-cdk/aws-certificatemanager';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
+import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
+import { LambdaEdgeEventType } from 'aws-cdk-lib/aws-cloudfront';
+import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 
 test('check bucket policy metadata', () => {
   const stack = new Stack();

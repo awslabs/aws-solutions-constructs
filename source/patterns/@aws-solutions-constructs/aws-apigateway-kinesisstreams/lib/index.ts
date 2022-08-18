@@ -12,14 +12,14 @@
  */
 
 // Imports
-import * as api from '@aws-cdk/aws-apigateway';
-import * as kinesis from '@aws-cdk/aws-kinesis';
-import * as iam from '@aws-cdk/aws-iam';
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import * as logs from '@aws-cdk/aws-logs';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+import { Construct } from 'constructs';
+import * as logs from 'aws-cdk-lib/aws-logs';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 
 /**
  * @summary The properties for the ApiGatewayToKinesisStreamsProps class.

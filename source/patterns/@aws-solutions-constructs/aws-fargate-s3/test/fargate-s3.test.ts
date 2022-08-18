@@ -13,10 +13,10 @@
 
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as cdk from "@aws-cdk/core";
+import * as cdk from "aws-cdk-lib";
 import { FargateToS3 } from "../lib";
-import * as s3 from '@aws-cdk/aws-s3';
-import * as ecs from '@aws-cdk/aws-ecs';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
 
 test('New service/new bucket, public API, new VPC', () => {
   // An environment with region is required to enable logging on an ALB

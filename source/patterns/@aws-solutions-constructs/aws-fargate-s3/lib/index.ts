@@ -11,13 +11,13 @@
  *  and limitations under the License.
  */
 
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as s3 from "@aws-cdk/aws-s3";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as s3 from "aws-cdk-lib/aws-s3";
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from "@aws-cdk/core";
+import { Construct } from "constructs";
 import * as defaults from "@aws-solutions-constructs/core";
-import * as ecs from "@aws-cdk/aws-ecs";
-import * as iam from "@aws-cdk/aws-iam";
+import * as ecs from "aws-cdk-lib/aws-ecs";
+import * as iam from "aws-cdk-lib/aws-iam";
 
 export interface FargateToS3Props {
   /**

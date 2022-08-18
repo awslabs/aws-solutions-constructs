@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { KinesisStreamsToKinesisFirehoseToS3 } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 

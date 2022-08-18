@@ -11,9 +11,9 @@
  *  and limitations under the License.
  */
 
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
 import { EventbridgeToSqs, EventbridgeToSqsProps } from '../lib';
-import * as events from "@aws-cdk/aws-events";
+import * as events from "aws-cdk-lib/aws-events";
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
 

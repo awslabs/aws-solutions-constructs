@@ -11,9 +11,9 @@
  *  and limitations under the License.
  */
 
-import { Stack } from "@aws-cdk/core";
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as api from "@aws-cdk/aws-apigateway";
+import { Stack } from "aws-cdk-lib";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as api from "aws-cdk-lib/aws-apigateway";
 import { addCfnSuppressRules } from "@aws-solutions-constructs/core";
 
 export function CreateTestApi(stack: Stack, id: string): api.LambdaRestApi {

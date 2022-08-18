@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as ec2 from "@aws-cdk/aws-ec2";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 /**
  * @summary The properties for the LambdaToDynamoDB Construct

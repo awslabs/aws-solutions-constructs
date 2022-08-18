@@ -12,9 +12,9 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack } from "aws-cdk-lib";
 import { LambdaToElasticachememcached, LambdaToElasticachememcachedProps } from "../lib";
-import * as lambda from '@aws-cdk/aws-lambda';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 // import * as ec2 from '@aws-cdk/aws-ec2';
 import { generateIntegStackName, getTestVpc, CreateTestCache, addCfnSuppressRules, buildSecurityGroup } from '@aws-solutions-constructs/core';
 

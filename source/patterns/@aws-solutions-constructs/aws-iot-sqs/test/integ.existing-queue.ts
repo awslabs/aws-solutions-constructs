@@ -12,12 +12,12 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack } from "aws-cdk-lib";
 import { IotToSqs, IotToSqsProps } from "../lib";
-import * as iam from '@aws-cdk/aws-iam';
-import * as sqs from '@aws-cdk/aws-sqs';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import { QueueEncryption } from "@aws-cdk/aws-sqs";
+import { QueueEncryption } from "aws-cdk-lib/aws-sqs";
 
 // Setup
 const app = new App();

@@ -12,15 +12,15 @@
  */
 
 // Imports
-import * as sqs from '@aws-cdk/aws-sqs';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as defaults from './sqs-defaults';
-import * as kms from '@aws-cdk/aws-kms';
+import * as kms from 'aws-cdk-lib/aws-kms';
 import { overrideProps } from './utils';
-import { AccountPrincipal, Effect, PolicyStatement, AnyPrincipal } from '@aws-cdk/aws-iam';
-import { Stack } from '@aws-cdk/core';
+import { AccountPrincipal, Effect, PolicyStatement, AnyPrincipal } from 'aws-cdk-lib/aws-iam';
+import { Stack } from 'aws-cdk-lib';
 import {buildEncryptionKey} from "./kms-helper";
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 export interface BuildQueueProps {
     /**

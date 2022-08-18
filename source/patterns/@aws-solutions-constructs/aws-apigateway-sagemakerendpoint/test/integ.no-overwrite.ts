@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack } from '@aws-cdk/core';
+import { App, Stack } from 'aws-cdk-lib';
 import { ApiGatewayToSageMakerEndpoint, ApiGatewayToSageMakerEndpointProps } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 

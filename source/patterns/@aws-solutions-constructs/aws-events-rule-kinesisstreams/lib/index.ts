@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import * as events from '@aws-cdk/aws-events';
-import * as kinesis from '@aws-cdk/aws-kinesis';
-import * as iam from '@aws-cdk/aws-iam';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+import * as events from 'aws-cdk-lib/aws-events';
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 import { EventbridgeToKinesisStreams } from '@aws-solutions-constructs/aws-eventbridge-kinesisstreams';
 
 /**

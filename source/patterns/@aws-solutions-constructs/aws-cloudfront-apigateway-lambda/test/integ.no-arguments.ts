@@ -12,9 +12,9 @@
  */
 
 /// !cdk-integ *
-import { App, RemovalPolicy, Stack } from "@aws-cdk/core";
+import { App, RemovalPolicy, Stack } from "aws-cdk-lib";
 import { CloudFrontToApiGatewayToLambda } from "../lib";
-import * as lambda from '@aws-cdk/aws-lambda';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 // Setup

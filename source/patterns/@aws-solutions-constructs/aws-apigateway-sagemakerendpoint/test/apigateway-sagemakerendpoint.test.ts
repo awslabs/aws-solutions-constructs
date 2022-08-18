@@ -12,9 +12,9 @@
  */
 
 // Imports
-import { Stack, Aws } from '@aws-cdk/core';
+import { Stack, Aws } from 'aws-cdk-lib';
 import { ApiGatewayToSageMakerEndpoint } from '../lib';
-import * as iam from '@aws-cdk/aws-iam';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------

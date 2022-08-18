@@ -12,12 +12,12 @@
  */
 
 // Imports
-import { Aws, App, Stack, RemovalPolicy } from "@aws-cdk/core";
+import { Aws, App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { AlbToLambda, AlbToLambdaProps } from "../lib";
 import { generateIntegStackName } from "@aws-solutions-constructs/core";
-import * as lambda from "@aws-cdk/aws-lambda";
+import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as defaults from "@aws-solutions-constructs/core";
-import { SecurityGroup, CfnSecurityGroup } from "@aws-cdk/aws-ec2";
+import { SecurityGroup, CfnSecurityGroup } from "aws-cdk-lib/aws-ec2";
 
 // Note: All integration tests for alb are for HTTP APIs, as certificates require
 // validation through DNS and email. This validation is impossible during our integration

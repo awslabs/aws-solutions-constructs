@@ -12,10 +12,10 @@
  */
 
 import { CloudFrontToApiGatewayToLambda, CloudFrontToApiGatewayToLambdaProps } from "../lib";
-import * as cdk from "@aws-cdk/core";
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as api from '@aws-cdk/aws-apigateway';
-import * as s3 from "@aws-cdk/aws-s3";
+import * as cdk from "aws-cdk-lib";
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as s3 from "aws-cdk-lib/aws-s3";
 import '@aws-cdk/assert/jest';
 
 function deployNewFunc(stack: cdk.Stack) {

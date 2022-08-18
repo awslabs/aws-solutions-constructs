@@ -12,14 +12,14 @@
  */
 
 // Imports
-import * as api from '@aws-cdk/aws-apigateway';
-import * as route53 from "@aws-cdk/aws-route53";
-import * as targets from '@aws-cdk/aws-route53-targets';
-import * as ec2 from '@aws-cdk/aws-ec2';
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as route53 from "aws-cdk-lib/aws-route53";
+import * as targets from 'aws-cdk-lib/aws-route53-targets';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as certificatemanager from '@aws-cdk/aws-certificatemanager';
+import * as certificatemanager from 'aws-cdk-lib/aws-certificatemanager';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 /**
  * The properties for the Route53ToApiGateway class.

@@ -13,10 +13,10 @@
 
 import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
 import { LambdaToDynamoDB, LambdaToDynamoDBProps } from "../lib";
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
-import * as cdk from "@aws-cdk/core";
-import * as ec2 from "@aws-cdk/aws-ec2";
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
+import * as cdk from "aws-cdk-lib";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
 import '@aws-cdk/assert/jest';
 
 function deployNewFunc(stack: cdk.Stack) {

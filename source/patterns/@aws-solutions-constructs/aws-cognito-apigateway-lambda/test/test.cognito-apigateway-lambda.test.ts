@@ -12,10 +12,10 @@
  */
 
 import { CognitoToApiGatewayToLambda, CognitoToApiGatewayToLambdaProps } from "../lib";
-import * as cdk from "@aws-cdk/core";
-import * as cognito from '@aws-cdk/aws-cognito';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as api from '@aws-cdk/aws-apigateway';
+import * as cdk from "aws-cdk-lib";
+import * as cognito from 'aws-cdk-lib/aws-cognito';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as api from 'aws-cdk-lib/aws-apigateway';
 import '@aws-cdk/assert/jest';
 
 function deployNewFunc(stack: cdk.Stack) {
