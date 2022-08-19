@@ -11,13 +11,13 @@
  *  and limitations under the License.
  */
 
-import * as elb from "@aws-cdk/aws-elasticloadbalancingv2";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as s3 from "@aws-cdk/aws-s3";
-import * as lambda from "@aws-cdk/aws-lambda";
-import { Construct } from "@aws-cdk/core";
+import * as elb from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as s3 from "aws-cdk-lib/aws-s3";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import { Construct } from "constructs";
 import * as defaults from "@aws-solutions-constructs/core";
-import { CfnListener, CfnTargetGroup } from "@aws-cdk/aws-elasticloadbalancingv2";
+import { CfnListener, CfnTargetGroup } from "aws-cdk-lib/aws-elasticloadbalancingv2";
 import { GetActiveListener } from "@aws-solutions-constructs/core";
 
 export interface AlbToLambdaProps {

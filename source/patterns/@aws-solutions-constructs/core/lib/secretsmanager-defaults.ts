@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import { SecretProps } from '@aws-cdk/aws-secretsmanager';
-import { RemovalPolicy } from '@aws-cdk/core';
+import { SecretProps } from 'aws-cdk-lib/aws-secretsmanager';
+import { RemovalPolicy } from 'aws-cdk-lib';
 
 const DefaultSecretProps: SecretProps = {
   removalPolicy: RemovalPolicy.RETAIN

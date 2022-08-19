@@ -11,16 +11,16 @@
  *  and limitations under the License.
  */
 
-import * as iam from '@aws-cdk/aws-iam';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as cdk from '@aws-cdk/core';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as cdk from 'aws-cdk-lib';
 import { DefaultS3Props } from './s3-bucket-defaults';
 import { overrideProps, addCfnSuppressRules } from './utils';
-import { StorageClass } from '@aws-cdk/aws-s3';
-import { Duration } from '@aws-cdk/core';
+import { StorageClass } from 'aws-cdk-lib/aws-s3';
+import { Duration } from 'aws-cdk-lib';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 export interface BuildS3BucketProps {
   /**

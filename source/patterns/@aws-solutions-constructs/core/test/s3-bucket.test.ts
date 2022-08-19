@@ -11,9 +11,9 @@
  *  and limitations under the License.
  */
 
-import { Duration, Stack } from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as kms from '@aws-cdk/aws-kms';
+import { Duration, Stack } from 'aws-cdk-lib';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as kms from 'aws-cdk-lib/aws-kms';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
 import '@aws-cdk/assert/jest';

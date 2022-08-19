@@ -11,14 +11,14 @@
  *  and limitations under the License.
  */
 
-import * as sns from '@aws-cdk/aws-sns';
-import * as events from '@aws-cdk/aws-events';
-import * as kms from '@aws-cdk/aws-kms';
+import * as sns from 'aws-cdk-lib/aws-sns';
+import * as events from 'aws-cdk-lib/aws-events';
+import * as kms from 'aws-cdk-lib/aws-kms';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 import { overrideProps } from '@aws-solutions-constructs/core';
-import { ServicePrincipal } from '@aws-cdk/aws-iam';
+import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 
 export interface EventbridgeToSnsProps {
     /**

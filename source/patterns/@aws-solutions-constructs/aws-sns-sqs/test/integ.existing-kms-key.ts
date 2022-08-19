@@ -12,10 +12,10 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack } from "aws-cdk-lib";
 import { SnsToSqs, SnsToSqsProps } from "../lib";
-import { KeyProps } from '@aws-cdk/aws-kms';
-import * as kms from '@aws-cdk/aws-kms';
+import { KeyProps } from 'aws-cdk-lib/aws-kms';
+import * as kms from 'aws-cdk-lib/aws-kms';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup

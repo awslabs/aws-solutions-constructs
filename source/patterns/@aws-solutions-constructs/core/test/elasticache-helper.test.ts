@@ -13,8 +13,8 @@
 
 import "@aws-cdk/assert/jest";
 import { CreateTestCache, getTestVpc } from "./test-helper";
-import * as cdk from '@aws-cdk/core';
-import * as ec2 from '@aws-cdk/aws-ec2';
+import * as cdk from 'aws-cdk-lib';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import { getCachePort, obtainMemcachedCluster } from "../lib/elasticache-helper";
 import { GetDefaultCachePort } from "../lib/elasticache-defaults";
 

@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import * as waf from "@aws-cdk/aws-wafv2";
+import * as waf from "aws-cdk-lib/aws-wafv2";
 
 export function DefaultWafRules(): waf.CfnRuleGroup.RuleProperty[] {
   return [

@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import * as cognito from '@aws-cdk/aws-cognito';
+import * as cognito from 'aws-cdk-lib/aws-cognito';
 
 const DefaultUserPoolProps: cognito.UserPoolProps = {
 };

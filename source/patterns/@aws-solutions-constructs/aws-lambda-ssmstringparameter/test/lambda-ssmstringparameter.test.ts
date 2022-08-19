@@ -12,12 +12,12 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as ec2 from "@aws-cdk/aws-ec2";
+import { Stack } from "aws-cdk-lib";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { LambdaToSsmstringparameter } from '../lib';
 import '@aws-cdk/assert/jest';
-import { StringParameter } from "@aws-cdk/aws-ssm";
+import { StringParameter } from "aws-cdk-lib/aws-ssm";
 import * as defaults from "@aws-solutions-constructs/core";
 
 // --------------------------------------------------------------

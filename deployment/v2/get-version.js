@@ -10,7 +10,7 @@
  *    node -p require('./get-version')
  * 
  */
-const versionFile = 'source/lerna.v2.json';
+const versionFile = 'source/lerna.json';
 if (!versionFile) {
   throw new Error(`unable to determine version filename from .versionrc.json at the root of the repo`);
 }

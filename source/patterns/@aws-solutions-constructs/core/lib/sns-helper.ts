@@ -12,15 +12,15 @@
  */
 
 // Imports
-import * as sns from '@aws-cdk/aws-sns';
-import * as kms from '@aws-cdk/aws-kms';
+import * as sns from 'aws-cdk-lib/aws-sns';
+import * as kms from 'aws-cdk-lib/aws-kms';
 import { DefaultSnsTopicProps } from './sns-defaults';
 import { buildEncryptionKey } from './kms-helper';
 import { consolidateProps } from './utils';
-import { PolicyStatement, AnyPrincipal, Effect, AccountPrincipal } from '@aws-cdk/aws-iam';
-import { Stack } from '@aws-cdk/core';
+import { PolicyStatement, AnyPrincipal, Effect, AccountPrincipal } from 'aws-cdk-lib/aws-iam';
+import { Stack } from 'aws-cdk-lib';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 export interface BuildTopicProps {
     /**

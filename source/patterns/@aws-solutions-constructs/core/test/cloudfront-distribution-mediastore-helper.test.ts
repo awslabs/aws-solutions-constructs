@@ -12,11 +12,11 @@
  */
 
 import '@aws-cdk/assert/jest';
-import { Stack } from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as mediastore from '@aws-cdk/aws-mediastore';
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as origins from '@aws-cdk/aws-cloudfront-origins';
+import { Stack } from 'aws-cdk-lib';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as mediastore from 'aws-cdk-lib/aws-mediastore';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import { CloudFrontDistributionForMediaStore, CloudFrontOriginAccessIdentity } from '../lib/cloudfront-distribution-helper';
 
 test('CloudFront distribution for MediaStore with user provided log bucket', () => {

@@ -12,10 +12,10 @@
  */
 
 import { S3ToStepFunction, S3ToStepFunctionProps } from '../lib/index';
-import * as sfn from '@aws-cdk/aws-stepfunctions';
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import '@aws-cdk/assert/jest';
-import * as cdk from '@aws-cdk/core';
-import { Bucket } from '@aws-cdk/aws-s3';
+import * as cdk from 'aws-cdk-lib';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 
 function deployNewStateMachine(stack: cdk.Stack) {
 

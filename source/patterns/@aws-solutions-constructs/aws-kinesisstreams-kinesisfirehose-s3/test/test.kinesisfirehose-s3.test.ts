@@ -12,11 +12,11 @@
  */
 
 import { KinesisStreamsToKinesisFirehoseToS3, KinesisStreamsToKinesisFirehoseToS3Props } from '../lib';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
-import { Role, ServicePrincipal } from '@aws-cdk/aws-iam';
-import * as s3 from '@aws-cdk/aws-s3';
+import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 
 function deploy(stack: cdk.Stack, props: KinesisStreamsToKinesisFirehoseToS3Props = {}) {
   return new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-stream-firehose-s3', props);

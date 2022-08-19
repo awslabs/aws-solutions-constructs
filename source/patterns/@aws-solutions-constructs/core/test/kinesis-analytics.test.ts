@@ -11,13 +11,13 @@
  *  and limitations under the License.
  */
 
-import { Stack, RemovalPolicy } from "@aws-cdk/core";
-import * as cdk from "@aws-cdk/core";
-import * as kinesisanalytics from "@aws-cdk/aws-kinesisanalytics";
-import * as kinesisFirehose from "@aws-cdk/aws-kinesisfirehose";
-import * as iam from "@aws-cdk/aws-iam";
-import * as kms from "@aws-cdk/aws-kms";
-import * as logs from "@aws-cdk/aws-logs";
+import { Stack, RemovalPolicy } from "aws-cdk-lib";
+import * as cdk from "aws-cdk-lib";
+import * as kinesisanalytics from "aws-cdk-lib/aws-kinesisanalytics";
+import * as kinesisFirehose from "aws-cdk-lib/aws-kinesisfirehose";
+import * as iam from "aws-cdk-lib/aws-iam";
+import * as kms from "aws-cdk-lib/aws-kms";
+import * as logs from "aws-cdk-lib/aws-logs";
 import * as defaults from "../index";
 import { overrideProps } from "../lib/utils";
 import "@aws-cdk/assert/jest";

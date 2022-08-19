@@ -12,11 +12,11 @@
  */
 
 // Imports
-import { Stack, RemovalPolicy } from "@aws-cdk/core";
+import { Stack, RemovalPolicy } from "aws-cdk-lib";
 import { S3ToSqs, S3ToSqsProps } from "../lib";
-import * as sqs from '@aws-cdk/aws-sqs';
-import * as kms from '@aws-cdk/aws-kms';
-import * as s3 from '@aws-cdk/aws-s3';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as kms from 'aws-cdk-lib/aws-kms';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
 

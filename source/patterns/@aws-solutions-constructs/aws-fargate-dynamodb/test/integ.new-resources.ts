@@ -12,10 +12,10 @@
  */
 
 // Imports
-import { Aws, App, Stack } from "@aws-cdk/core";
+import { Aws, App, Stack } from "aws-cdk-lib";
 import { FargateToDynamoDB, FargateToDynamoDBProps } from "../lib";
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
-import * as ecs from '@aws-cdk/aws-ecs';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
 
 // Setup
 const app = new App();

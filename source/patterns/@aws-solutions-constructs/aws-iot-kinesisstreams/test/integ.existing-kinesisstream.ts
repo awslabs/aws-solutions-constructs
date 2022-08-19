@@ -12,11 +12,11 @@
  */
 
 // Imports
-import { App, Stack, Duration } from "@aws-cdk/core";
-import * as kinesis from "@aws-cdk/aws-kinesis";
+import { App, Stack, Duration } from "aws-cdk-lib";
+import * as kinesis from "aws-cdk-lib/aws-kinesis";
 import { IotToKinesisStreams, IotToKinesisStreamsProps } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import { StreamEncryption } from "@aws-cdk/aws-kinesis";
+import { StreamEncryption } from "aws-cdk-lib/aws-kinesis";
 
 // Setup
 const app = new App();

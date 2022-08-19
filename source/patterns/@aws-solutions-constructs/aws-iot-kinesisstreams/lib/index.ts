@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import * as kinesis from '@aws-cdk/aws-kinesis';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
-import * as iot from '@aws-cdk/aws-iot';
-import * as iam from '@aws-cdk/aws-iam';
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
+import * as iot from 'aws-cdk-lib/aws-iot';
+import * as iam from 'aws-cdk-lib/aws-iam';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 import * as defaults from '@aws-solutions-constructs/core';
 
 /**

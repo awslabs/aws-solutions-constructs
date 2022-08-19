@@ -12,9 +12,9 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack } from "aws-cdk-lib";
 import { IotToSqs, IotToSqsProps } from "../lib";
-import * as iam from '@aws-cdk/aws-iam';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup

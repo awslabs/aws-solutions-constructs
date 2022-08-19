@@ -12,10 +12,10 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack } from "aws-cdk-lib";
 import { ApiGatewayToDynamoDBProps, ApiGatewayToDynamoDB } from "../lib";
-import * as dynamodb from "@aws-cdk/aws-dynamodb";
-import { BillingMode } from "@aws-cdk/aws-dynamodb";
+import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
+import { BillingMode } from "aws-cdk-lib/aws-dynamodb";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup

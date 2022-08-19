@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { KeyProps } from '@aws-cdk/aws-kms';
+import { KeyProps } from 'aws-cdk-lib/aws-kms';
 
 const DefaultEncryptionProps: KeyProps = {
   enableKeyRotation: true

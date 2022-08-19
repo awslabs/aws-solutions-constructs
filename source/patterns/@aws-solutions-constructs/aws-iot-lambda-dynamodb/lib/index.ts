@@ -11,13 +11,13 @@
  *  and limitations under the License.
  */
 
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as iot from '@aws-cdk/aws-iot';
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as iot from 'aws-cdk-lib/aws-iot';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import { IotToLambda } from '@aws-solutions-constructs/aws-iot-lambda';
 import { LambdaToDynamoDB } from '@aws-solutions-constructs/aws-lambda-dynamodb';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 import * as defaults from '@aws-solutions-constructs/core';
 
 /**

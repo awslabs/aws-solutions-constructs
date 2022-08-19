@@ -11,11 +11,11 @@
  *  and limitations under the License.
  */
 
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import { DefaultTableProps, DefaultTableWithStreamProps } from './dynamodb-table-defaults';
 import { consolidateProps } from './utils';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 export interface BuildDynamoDBTableProps {
   /**

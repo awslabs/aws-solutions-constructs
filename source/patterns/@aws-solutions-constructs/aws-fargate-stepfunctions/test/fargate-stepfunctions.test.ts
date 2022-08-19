@@ -13,10 +13,10 @@
 
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as cdk from "@aws-cdk/core";
+import * as cdk from "aws-cdk-lib";
 import { FargateToStepfunctions } from "../lib";
-import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
-import * as ecs from '@aws-cdk/aws-ecs';
+import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
 
 const clusterName = "custom-cluster-name";
 const containerName = "custom-container-name";

@@ -11,9 +11,9 @@
  *  and limitations under the License.
  */
 
-import { CfnJobProps } from '@aws-cdk/aws-glue';
-import { IRole } from '@aws-cdk/aws-iam';
-import * as s3assets from "@aws-cdk/aws-s3-assets";
+import { CfnJobProps } from 'aws-cdk-lib/aws-glue';
+import { IRole } from 'aws-cdk-lib/aws-iam';
+import * as s3assets from "aws-cdk-lib/aws-s3-assets";
 
 export function DefaultGlueJobProps(jobRole: IRole, userProvidedGlueJobProps: CfnJobProps | any,
   glueSecurityConfigName: string, defaultArguments: {}, etlCodeAsset?: s3assets.Asset): CfnJobProps {

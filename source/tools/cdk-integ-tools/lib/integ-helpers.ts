@@ -1,7 +1,7 @@
 // Helper functions for integration tests
 import { spawnSync } from 'child_process';
 import * as path from 'path';
-import { AVAILABILITY_ZONE_FALLBACK_CONTEXT_KEY } from '@aws-cdk/cx-api';
+import { AVAILABILITY_ZONE_FALLBACK_CONTEXT_KEY } from 'aws-cdk-lib/cx-api';
 import * as fs from 'fs-extra';
 
 const CDK_OUTDIR = 'cdk-integ.out';

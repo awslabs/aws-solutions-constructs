@@ -13,10 +13,10 @@
 
 // Imports
 import * as defaults from "@aws-solutions-constructs/core";
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as events from "@aws-cdk/aws-events";
-import { Construct } from "@aws-cdk/core";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as events from "aws-cdk-lib/aws-events";
+import { Construct } from "constructs";
 
 /**
  * @summary The properties for the LambdaToEventbridge class.

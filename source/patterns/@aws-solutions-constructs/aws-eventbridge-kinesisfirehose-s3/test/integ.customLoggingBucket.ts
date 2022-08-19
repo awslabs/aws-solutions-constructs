@@ -12,11 +12,11 @@
  */
 
 /// !cdk-integ *
-import { App, Stack, RemovalPolicy, Duration } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy, Duration } from "aws-cdk-lib";
 import { EventbridgeToKinesisFirehoseToS3 } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import * as s3 from "@aws-cdk/aws-s3";
-import * as events from '@aws-cdk/aws-events';
+import * as s3 from "aws-cdk-lib/aws-s3";
+import * as events from 'aws-cdk-lib/aws-events';
 
 const app = new App();
 

@@ -12,11 +12,11 @@
  */
 
 /// !cdk-integ *
-import { App, RemovalPolicy, Stack } from "@aws-cdk/core";
+import { App, RemovalPolicy, Stack } from "aws-cdk-lib";
 import { IotToS3, IotToS3Props } from "../lib";
 import * as defaults from '@aws-solutions-constructs/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import { BucketEncryption } from "@aws-cdk/aws-s3";
+import { BucketEncryption } from "aws-cdk-lib/aws-s3";
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));

@@ -12,11 +12,11 @@
  */
 
 import * as defaults from '../index';
-import { DynamoEventSourceProps, KinesisEventSourceProps, SqsDlq } from '@aws-cdk/aws-lambda-event-sources';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as s3 from '@aws-cdk/aws-s3';
+import { DynamoEventSourceProps, KinesisEventSourceProps, SqsDlq } from 'aws-cdk-lib/aws-lambda-event-sources';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import '@aws-cdk/assert/jest';
-import { Duration, Stack } from '@aws-cdk/core';
+import { Duration, Stack } from 'aws-cdk-lib';
 
 test('test DynamoEventSourceProps with defaults', () => {
   const stack = new Stack();

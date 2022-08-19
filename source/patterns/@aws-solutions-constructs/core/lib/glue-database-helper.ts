@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import { CfnDatabase, CfnDatabaseProps } from "@aws-cdk/aws-glue";
-import { Construct } from "@aws-cdk/core";
+import { CfnDatabase, CfnDatabaseProps } from "aws-cdk-lib/aws-glue";
+import { Construct } from "constructs";
 
 /**
  * Create an AWS Glue database with the properties provided

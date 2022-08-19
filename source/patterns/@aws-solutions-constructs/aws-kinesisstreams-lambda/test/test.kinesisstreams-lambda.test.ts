@@ -12,10 +12,10 @@
  */
 
 // Imports
-import { Stack, Duration } from "@aws-cdk/core";
+import { Stack, Duration } from "aws-cdk-lib";
 import { KinesisStreamsToLambda, KinesisStreamsToLambdaProps } from "../lib";
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as kinesis from '@aws-cdk/aws-kinesis';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------

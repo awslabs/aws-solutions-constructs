@@ -13,7 +13,7 @@
 
 import { ResourcePart } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
-import { Aws, Stack } from '@aws-cdk/core';
+import { Aws, Stack } from 'aws-cdk-lib';
 import * as defaults from '..';
 
 const _fieldSchema = [{

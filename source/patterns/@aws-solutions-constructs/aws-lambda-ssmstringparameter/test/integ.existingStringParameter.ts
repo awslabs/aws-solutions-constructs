@@ -12,10 +12,10 @@
  */
 
 // Imports
-import {App, Stack} from "@aws-cdk/core";
+import {App, Stack} from "aws-cdk-lib";
 import {LambdaToSsmstringparameter, LambdaToSsmstringparameterProps} from '../lib';
-import * as lambda from '@aws-cdk/aws-lambda';
-import { StringParameter } from "@aws-cdk/aws-ssm";
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { StringParameter } from "aws-cdk-lib/aws-ssm";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup

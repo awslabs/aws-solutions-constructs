@@ -12,11 +12,11 @@
  */
 
 // Imports
-import { Aws, App, Stack } from "@aws-cdk/core";
+import { Aws, App, Stack } from "aws-cdk-lib";
 import { FargateToSns, FargateToSnsProps } from "../lib";
 import { generateIntegStackName, getTestVpc, CreateFargateService, addCfnSuppressRules } from '@aws-solutions-constructs/core';
-import * as ecs from '@aws-cdk/aws-ecs';
-import * as sns from '@aws-cdk/aws-sns';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as sns from 'aws-cdk-lib/aws-sns';
 
 // Setup
 const app = new App();
