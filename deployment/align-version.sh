@@ -1,4 +1,12 @@
 #!/bin/bash
+echo    !!!!!!!!!!!!!!!!!!!!
+echo
+echo Building V1 from the main branch is deprecated.
+echo
+echo Run source ./deployment/v2/align-version.sh to prepare the development environment for V2
+echo
+exit 1
+
 set -euo pipefail
 
 deployment_dir=$(cd $(dirname $0) && pwd)

@@ -1,11 +1,4 @@
 #!/bin/bash
-echo    !!!!!!!!!!!!!!!!!!!!
-echo
-echo Building V1 from the main branch is deprecated.
-echo
-echo Run source ./deployment/v2/allow-partial-build.sh to prepare the development environment for V2
-echo
-exit 1
 
 result=${PWD##*/}          # to assign to a variable
 
@@ -17,7 +10,7 @@ then
   echo
   echo 'Error - You must run this script with the source directive:'
   echo 
-  echo '       source ./deployment/allow-partial-builds.sh'
+  echo '       source ./deployment/v2/allow-partial-builds.sh'
   echo
 elif [ $result != 'aws-solutions-constructs' ]
 then
@@ -26,7 +19,7 @@ then
   echo 'Error - You must run this script from the aws-solutions-constructs folder.'
   echo
 else
-  ./deployment/align-version.sh
+  ./deployment/v2/align-version.sh
   cd source
   export PATH=$(npm bin):$PATH
   cd  patterns/@aws-solutions-constructs

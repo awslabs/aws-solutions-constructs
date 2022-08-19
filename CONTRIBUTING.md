@@ -226,17 +226,16 @@ docker$ ./deployment/build-patterns.sh
 
 ### Partial Build
 
-First run a clean Full Build before doing the partial build.
+First run a clean Full Build before doing the partial build (the full build installs all the tools required 
+to build the library). Once you've initialized the Docker container by running a full build, you can
+build and test individual constructs by following the steps below.
 
 ```console
 $ cd <root-of-aws-solutions-constructs-repo>
 $ docker run -u root --rm --net=host -it -v $PWD:$PWD -w $PWD jsii/superchain:1-buster-slim-node14
-docker$ ./deployment/align-version.sh
-docker$ cd source
-docker$ export PATH=$(npm bin):$PATH
-docker$ cd patterns/@aws-solutions-constructs/my-module
+docker$ source ./deployment/v2/allow-partial-builds.sh
+docker$ cd my-module
 docker$ npm run build+lint+test
-docker$ ../../../../deployment/align-version.sh revert
 ```
 
 ## Code of Conduct
