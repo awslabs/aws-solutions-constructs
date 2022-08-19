@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.18.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.17.0...v2.18.0) (2022-08-19)
 
+(no changes in this release)
+
 ## [2.17.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.16.0...v2.17.0) (2022-08-17)
 
 This is one of a number of identical releases we have created as we overhaul our release process for CDK V2 and the deprecation of V1
