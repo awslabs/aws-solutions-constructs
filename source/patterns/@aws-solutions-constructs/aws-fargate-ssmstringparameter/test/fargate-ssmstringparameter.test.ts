@@ -13,10 +13,10 @@
 
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as cdk from "@aws-cdk/core";
+import * as cdk from "aws-cdk-lib";
 import { FargateToSsmstringparameter } from "../lib";
-import * as ssm from '@aws-cdk/aws-ssm';
-import * as ecs from '@aws-cdk/aws-ecs';
+import * as ssm from 'aws-cdk-lib/aws-ssm';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
 
 const allowedPattern = '.*';
 const description = 'The value Foo';

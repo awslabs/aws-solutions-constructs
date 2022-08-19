@@ -12,10 +12,10 @@
  */
 
 import { IotToS3, IotToS3Props } from "../lib";
-import * as cdk from "@aws-cdk/core";
+import * as cdk from "aws-cdk-lib";
 import '@aws-cdk/assert/jest';
-import * as s3 from "@aws-cdk/aws-s3";
-import { RemovalPolicy } from "@aws-cdk/core";
+import * as s3 from "aws-cdk-lib/aws-s3";
+import { RemovalPolicy } from "aws-cdk-lib";
 
 test('check for default props', () => {
   const stack = new cdk.Stack();

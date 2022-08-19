@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import { Stack } from '@aws-cdk/core';
-import * as iot from '@aws-cdk/aws-iot';
+import { Stack } from 'aws-cdk-lib';
+import * as iot from 'aws-cdk-lib/aws-iot';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
 import '@aws-cdk/assert/jest';

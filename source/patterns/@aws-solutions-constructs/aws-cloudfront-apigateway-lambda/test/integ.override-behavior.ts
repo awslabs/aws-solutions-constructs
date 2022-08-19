@@ -12,14 +12,14 @@
  */
 
 /// !cdk-integ *
-import { App, RemovalPolicy, Stack } from "@aws-cdk/core";
+import { App, RemovalPolicy, Stack } from "aws-cdk-lib";
 import { CloudFrontToApiGatewayToLambda } from "../lib";
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as apigateway from '@aws-cdk/aws-apigateway';
-import * as cdk from '@aws-cdk/core';
-import { Duration } from "@aws-cdk/core";
-import * as origins from '@aws-cdk/aws-cloudfront-origins';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import * as cdk from 'aws-cdk-lib';
+import { Duration } from "aws-cdk-lib";
+import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 // Setup

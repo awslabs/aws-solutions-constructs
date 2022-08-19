@@ -11,13 +11,13 @@
  *  and limitations under the License.
  */
 
-import { Stack } from "@aws-cdk/core";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as lambda from "@aws-cdk/aws-lambda";
+import { Stack } from "aws-cdk-lib";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as defaults from "../index";
 import "@aws-cdk/assert/jest";
-import { Duration } from "@aws-cdk/core";
-import * as iam from '@aws-cdk/aws-iam';
+import { Duration } from "aws-cdk-lib";
+import * as iam from 'aws-cdk-lib/aws-iam';
 
 test("test FunctionProps override code and runtime", () => {
   const stack = new Stack();

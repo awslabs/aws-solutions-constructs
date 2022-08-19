@@ -12,11 +12,11 @@
  */
 
 /// !cdk-integ *
-import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { S3ToSqs, S3ToSqsProps } from "../lib";
 import * as defaults from '@aws-solutions-constructs/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import * as s3 from "@aws-cdk/aws-s3";
+import * as s3 from "aws-cdk-lib/aws-s3";
 
 const app = new App();
 

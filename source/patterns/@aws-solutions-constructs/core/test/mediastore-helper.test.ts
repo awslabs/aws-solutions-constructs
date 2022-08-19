@@ -12,8 +12,8 @@
  */
 
 import '@aws-cdk/assert/jest';
-import { Stack } from '@aws-cdk/core';
-import * as mediastore from '@aws-cdk/aws-mediastore';
+import { Stack } from 'aws-cdk-lib';
+import * as mediastore from 'aws-cdk-lib/aws-mediastore';
 import { MediaStoreContainer } from '../lib/mediastore-helper';
 
 test('MediaStore container override params', () => {

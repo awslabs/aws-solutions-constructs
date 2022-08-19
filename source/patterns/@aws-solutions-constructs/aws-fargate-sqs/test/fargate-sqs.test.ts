@@ -13,10 +13,10 @@
 
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as cdk from "@aws-cdk/core";
+import * as cdk from "aws-cdk-lib";
 import { FargateToSqs } from "../lib";
-import * as sqs from '@aws-cdk/aws-sqs';
-import * as ecs from '@aws-cdk/aws-ecs';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
 
 test('New service/new queue, dlq, public API, new VPC', () => {
 

@@ -12,13 +12,13 @@
  */
 
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from "@aws-cdk/core";
+import { Construct } from "constructs";
 import * as defaults from "@aws-solutions-constructs/core";
-import * as ecs from "@aws-cdk/aws-ecs";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as sfn from '@aws-cdk/aws-stepfunctions';
-import * as logs from '@aws-cdk/aws-logs';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+import * as ecs from "aws-cdk-lib/aws-ecs";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
+import * as logs from 'aws-cdk-lib/aws-logs';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 
 export interface FargateToStepfunctionsProps {
   /**

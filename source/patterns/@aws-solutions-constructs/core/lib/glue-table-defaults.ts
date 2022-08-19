@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import * as glue from "@aws-cdk/aws-glue";
-import { Aws } from "@aws-cdk/core";
+import * as glue from "aws-cdk-lib/aws-glue";
+import { Aws } from "aws-cdk-lib";
 
 export function DefaultGlueTableProps(database: glue.CfnDatabase, fieldSchema: glue.CfnTable.ColumnProperty[],
   sourceType?: string, parameters?: any): glue.CfnTableProps | any {

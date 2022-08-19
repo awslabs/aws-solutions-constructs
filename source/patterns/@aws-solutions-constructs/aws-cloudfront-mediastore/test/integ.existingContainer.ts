@@ -12,8 +12,8 @@
  */
 
 // Imports
-import { App, RemovalPolicy, Stack } from '@aws-cdk/core';
-import * as mediastore from '@aws-cdk/aws-mediastore';
+import { App, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import * as mediastore from 'aws-cdk-lib/aws-mediastore';
 import { CloudFrontToMediaStore } from '../lib';
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 

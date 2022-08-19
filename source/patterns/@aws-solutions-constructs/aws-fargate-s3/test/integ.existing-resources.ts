@@ -12,10 +12,10 @@
  */
 
 // Imports
-import { Aws, App, Stack, RemovalPolicy } from "@aws-cdk/core";
+import { Aws, App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { FargateToS3, FargateToS3Props } from "../lib";
 import { generateIntegStackName, getTestVpc, CreateFargateService } from '@aws-solutions-constructs/core';
-import * as ecs from '@aws-cdk/aws-ecs';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup

@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import * as iot from '@aws-cdk/aws-iot';
+import * as iot from 'aws-cdk-lib/aws-iot';
 
 export function DefaultCfnTopicRuleProps(_actions: iot.CfnTopicRule.ActionProperty[], _sql: string = '') {
   const _topicRulePayload: iot.CfnTopicRule.TopicRulePayloadProperty = {

@@ -11,16 +11,16 @@
  *  and limitations under the License.
  */
 
-import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
+import * as elasticsearch from 'aws-cdk-lib/aws-elasticsearch';
 import { DefaultCfnDomainProps } from './elasticsearch-defaults';
 import { consolidateProps, addCfnSuppressRules } from './utils';
-import * as iam from '@aws-cdk/aws-iam';
-import * as cdk from '@aws-cdk/core';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
-import * as cognito from '@aws-cdk/aws-cognito';
-import * as ec2 from '@aws-cdk/aws-ec2';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as cdk from 'aws-cdk-lib';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
+import * as cognito from 'aws-cdk-lib/aws-cognito';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 const MaximumAzsInElasticsearchDomain = 3;
 

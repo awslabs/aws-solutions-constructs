@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import { Construct } from "@aws-cdk/core";
-import * as waf from "@aws-cdk/aws-wafv2";
+import { Construct } from "constructs";
+import * as waf from "aws-cdk-lib/aws-wafv2";
 import { DefaultWafwebaclProps } from "./waf-defaults";
 import { consolidateProps } from './utils';
 

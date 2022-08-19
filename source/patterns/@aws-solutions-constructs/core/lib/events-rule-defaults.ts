@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import * as events from '@aws-cdk/aws-events';
+import * as events from 'aws-cdk-lib/aws-events';
 
 export function DefaultEventsRuleProps(_targets: events.IRuleTarget[], _eventBus?: events.IEventBus) {
   const defaultEventsRuleProps: events.RuleProps = {

@@ -12,8 +12,8 @@
  */
 
 /// !cdk-integ *
-import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
-import { BucketEncryption } from "@aws-cdk/aws-s3";
+import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
+import { BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { CloudFrontToS3 } from "../lib";
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 

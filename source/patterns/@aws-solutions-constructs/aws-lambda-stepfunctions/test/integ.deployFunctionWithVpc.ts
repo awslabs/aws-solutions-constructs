@@ -12,10 +12,10 @@
  */
 
 // Imports
-import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { LambdaToStepfunctions, LambdaToStepfunctionsProps } from "../lib";
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup

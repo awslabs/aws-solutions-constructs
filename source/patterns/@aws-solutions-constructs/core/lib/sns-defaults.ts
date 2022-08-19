@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import * as sns from '@aws-cdk/aws-sns';
+import * as sns from 'aws-cdk-lib/aws-sns';
 
 const DefaultSnsTopicProps: sns.TopicProps = {};
 

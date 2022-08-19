@@ -12,12 +12,12 @@
  */
 
 import * as path from "path";
-import * as s3assets from "@aws-cdk/aws-s3-assets";
+import * as s3assets from "aws-cdk-lib/aws-s3-assets";
 import { ResourcePart } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
-import { CfnDatabase, CfnJob } from '@aws-cdk/aws-glue';
-import { Stream, StreamEncryption } from '@aws-cdk/aws-kinesis';
-import { Duration, Stack } from "@aws-cdk/core";
+import { CfnDatabase, CfnJob } from 'aws-cdk-lib/aws-glue';
+import { Stream, StreamEncryption } from 'aws-cdk-lib/aws-kinesis';
+import { Duration, Stack } from "aws-cdk-lib";
 import * as defaults from '@aws-solutions-constructs/core';
 import { SinkStoreType } from '@aws-solutions-constructs/core';
 import { KinesisstreamsToGluejob, KinesisstreamsToGluejobProps } from '../lib';

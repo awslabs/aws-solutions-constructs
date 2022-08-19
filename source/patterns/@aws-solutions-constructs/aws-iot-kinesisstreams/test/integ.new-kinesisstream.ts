@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack, Duration } from "@aws-cdk/core";
+import { App, Stack, Duration } from "aws-cdk-lib";
 import { IotToKinesisStreams, IotToKinesisStreamsProps } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 

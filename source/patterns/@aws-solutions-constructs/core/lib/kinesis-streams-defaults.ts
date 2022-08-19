@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import * as kinesis from '@aws-cdk/aws-kinesis';
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 
 const DefaultStreamProps: kinesis.StreamProps = {
   encryption: kinesis.StreamEncryption.MANAGED

@@ -11,11 +11,11 @@
  *  and limitations under the License.
  */
 
-import * as kms from '@aws-cdk/aws-kms';
+import * as kms from 'aws-cdk-lib/aws-kms';
 import { DefaultEncryptionProps } from './kms-defaults';
 import { consolidateProps } from './utils';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 export function buildEncryptionKey(scope: Construct, keyProps?: kms.KeyProps): kms.Key {
   // Setup the key properties

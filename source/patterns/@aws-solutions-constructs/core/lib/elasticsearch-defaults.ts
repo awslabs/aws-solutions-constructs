@@ -11,9 +11,9 @@
  *  and limitations under the License.
  */
 
-import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
-import * as iam from '@aws-cdk/aws-iam';
-import * as cdk from '@aws-cdk/core';
+import * as elasticsearch from 'aws-cdk-lib/aws-elasticsearch';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as cdk from 'aws-cdk-lib';
 import { BuildElasticSearchProps } from './elasticsearch-helper';
 
 export function DefaultCfnDomainProps(domainName: string, cognitoKibanaConfigureRole: iam.Role, props: BuildElasticSearchProps):

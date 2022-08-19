@@ -11,9 +11,9 @@
  *  and limitations under the License.
  */
 
-import * as s3 from '@aws-cdk/aws-s3';
-import { RemovalPolicy } from '@aws-cdk/core';
-import { Bucket, BucketProps } from '@aws-cdk/aws-s3';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import { RemovalPolicy } from 'aws-cdk-lib';
+import { Bucket, BucketProps } from 'aws-cdk-lib/aws-s3';
 
 export function DefaultS3Props(loggingBucket?: Bucket, lifecycleRules?: s3.LifecycleRule[]): s3.BucketProps {
   return {

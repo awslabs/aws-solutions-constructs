@@ -12,10 +12,10 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
+import { Stack } from "aws-cdk-lib";
 import * as defaults from '../';
 import '@aws-cdk/assert/jest';
-import * as sfn from '@aws-cdk/aws-stepfunctions';
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import { buildLogGroup } from '../lib/cloudwatch-log-group-helper';
 
 // --------------------------------------------------------------

@@ -11,11 +11,12 @@
  *  and limitations under the License.
  */
 
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as s3 from '@aws-cdk/aws-s3';
-import { Construct, Stack } from '@aws-cdk/core';
+import { Construct } from 'constructs';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import { Stack } from 'aws-cdk-lib';
 import * as defaults from '@aws-solutions-constructs/core';
-import { S3EventSourceProps, S3EventSource } from '@aws-cdk/aws-lambda-event-sources';
+import { S3EventSourceProps, S3EventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 import {addCfnNagS3BucketNotificationRulesToSuppress} from "@aws-solutions-constructs/core";
 
 /**

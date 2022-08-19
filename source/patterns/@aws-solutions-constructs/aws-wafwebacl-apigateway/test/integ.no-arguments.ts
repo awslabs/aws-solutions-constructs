@@ -12,7 +12,7 @@
  */
 
 /// !cdk-integ *
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack } from "aws-cdk-lib";
 import { WafwebaclToApiGateway } from "../lib";
 import { generateIntegStackName } from "@aws-solutions-constructs/core";
 import { CreateTestApi } from './test-helper';

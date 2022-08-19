@@ -12,10 +12,10 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
+import { Stack } from "aws-cdk-lib";
 import { Route53ToAlb, Route53ToAlbProps } from '../lib';
-import * as r53 from '@aws-cdk/aws-route53';
-import * as elb from '@aws-cdk/aws-elasticloadbalancingv2';
+import * as r53 from 'aws-cdk-lib/aws-route53';
+import * as elb from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
 

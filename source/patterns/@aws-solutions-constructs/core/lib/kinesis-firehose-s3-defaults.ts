@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import { CfnDeliveryStreamProps } from '@aws-cdk/aws-kinesisfirehose';
-import { IKey } from '@aws-cdk/aws-kms';
+import { CfnDeliveryStreamProps } from 'aws-cdk-lib/aws-kinesisfirehose';
+import { IKey } from 'aws-cdk-lib/aws-kms';
 
 export function DefaultCfnDeliveryStreamProps(_bucketArn: string, _roleArn: string,
   _logGroupName: string, _logStreamName: string, _kms: IKey): CfnDeliveryStreamProps {

@@ -12,12 +12,13 @@
  */
 
 // Imports
-import * as kms from '@aws-cdk/aws-kms';
-import * as sqs from '@aws-cdk/aws-sqs';
-import * as s3 from '@aws-cdk/aws-s3';
+import { Construct } from 'constructs';
+import * as kms from 'aws-cdk-lib/aws-kms';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as s3n from '@aws-cdk/aws-s3-notifications';
-import { Construct, Stack } from '@aws-cdk/core';
+import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
+import { Stack } from 'aws-cdk-lib';
 import {addCfnNagS3BucketNotificationRulesToSuppress} from "@aws-solutions-constructs/core";
 
 /**

@@ -12,8 +12,8 @@
  */
 
 import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
-import { Stack } from '@aws-cdk/core';
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
+import { Stack } from 'aws-cdk-lib';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
 import '@aws-cdk/assert/jest';

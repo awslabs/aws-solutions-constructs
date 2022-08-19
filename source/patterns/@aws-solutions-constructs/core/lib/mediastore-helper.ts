@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import * as cdk from '@aws-cdk/core';
-import * as mediastore from '@aws-cdk/aws-mediastore';
+import * as cdk from 'aws-cdk-lib';
+import * as mediastore from 'aws-cdk-lib/aws-mediastore';
 import { MediaStoreContainerProps } from './mediastore-defaults';
 import { consolidateProps } from './utils';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 export function MediaStoreContainer(scope: Construct, mediaStoreContainerProps?: mediastore.CfnContainerProps): mediastore.CfnContainer {
   const defaultprops: mediastore.CfnContainerProps = MediaStoreContainerProps();

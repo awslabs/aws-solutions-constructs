@@ -13,9 +13,9 @@
 
 import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
 import { SnsToLambda, SnsToLambdaProps } from "../lib";
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as sns from '@aws-cdk/aws-sns';
-import * as cdk from "@aws-cdk/core";
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as sns from 'aws-cdk-lib/aws-sns';
+import * as cdk from "aws-cdk-lib";
 import '@aws-cdk/assert/jest';
 
 function deployNewFunc(stack: cdk.Stack) {

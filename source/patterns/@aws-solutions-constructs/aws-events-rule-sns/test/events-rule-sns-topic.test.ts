@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import * as cdk from "@aws-cdk/core";
-import * as events from "@aws-cdk/aws-events";
+import * as cdk from "aws-cdk-lib";
+import * as events from "aws-cdk-lib/aws-events";
 import * as defaults from '@aws-solutions-constructs/core';
 import '@aws-cdk/assert/jest';
 import { EventsRuleToSns, EventsRuleToSnsProps } from "../lib";

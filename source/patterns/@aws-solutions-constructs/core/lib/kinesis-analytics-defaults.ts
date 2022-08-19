@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import * as kinesisanalytics from '@aws-cdk/aws-kinesisanalytics';
+import * as kinesisanalytics from 'aws-cdk-lib/aws-kinesisanalytics';
 
 const DefaultCfnApplicationProps: kinesisanalytics.CfnApplicationProps = {
   inputs: []

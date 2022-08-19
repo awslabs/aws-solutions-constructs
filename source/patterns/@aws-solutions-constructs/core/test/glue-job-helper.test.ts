@@ -14,10 +14,10 @@
 // Imports
 import { ResourcePart } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
-import { CfnJob, CfnJobProps } from '@aws-cdk/aws-glue';
-import { Role, ServicePrincipal } from '@aws-cdk/aws-iam';
-import { Bucket, BucketEncryption } from '@aws-cdk/aws-s3';
-import { RemovalPolicy, Stack } from "@aws-cdk/core";
+import { CfnJob, CfnJobProps } from 'aws-cdk-lib/aws-glue';
+import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
+import { RemovalPolicy, Stack } from "aws-cdk-lib";
 import * as defaults from '..';
 
 // --------------------------------------------------------------

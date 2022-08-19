@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import * as logs from '@aws-cdk/aws-logs';
+import * as logs from 'aws-cdk-lib/aws-logs';
 
 export function DefaultLogGroupProps(): logs.LogGroupProps {
 

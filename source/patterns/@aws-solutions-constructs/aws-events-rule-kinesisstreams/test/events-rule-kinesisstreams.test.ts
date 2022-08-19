@@ -11,9 +11,9 @@
  *  and limitations under the License.
  */
 
-import * as cdk from "@aws-cdk/core";
-import * as events from "@aws-cdk/aws-events";
-import * as kinesis from '@aws-cdk/aws-kinesis';
+import * as cdk from "aws-cdk-lib";
+import * as events from "aws-cdk-lib/aws-events";
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import '@aws-cdk/assert/jest';
 import {EventsRuleToKinesisStreams, EventsRuleToKinesisStreamsProps} from '../lib';
 

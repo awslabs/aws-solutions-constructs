@@ -11,11 +11,11 @@
  *  and limitations under the License.
  */
 
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as cdk from '@aws-cdk/core';
-import * as api from '@aws-cdk/aws-apigateway';
-import * as mediastore from '@aws-cdk/aws-mediastore';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as cdk from 'aws-cdk-lib';
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as mediastore from 'aws-cdk-lib/aws-mediastore';
 import {
   DefaultCloudFrontWebDistributionForS3Props,
   DefaultCloudFrontWebDistributionForApiGatewayProps,
@@ -25,7 +25,7 @@ import { overrideProps, addCfnSuppressRules, consolidateProps } from './utils';
 import { createLoggingBucket } from './s3-bucket-helper';
 import { DefaultS3Props } from './s3-bucket-defaults';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 // Override Cfn_Nag rule: Cloudfront TLS-1.2 rule (https://github.com/stelligent/cfn_nag/issues/384)
 function updateSecurityPolicy(cfDistribution: cloudfront.Distribution) {

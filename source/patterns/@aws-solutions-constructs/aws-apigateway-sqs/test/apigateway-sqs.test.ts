@@ -12,11 +12,11 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
+import { Stack } from "aws-cdk-lib";
 import { ApiGatewayToSqs } from '../lib';
 import '@aws-cdk/assert/jest';
-import * as api from "@aws-cdk/aws-apigateway";
-import * as sqs from "@aws-cdk/aws-sqs";
+import * as api from "aws-cdk-lib/aws-apigateway";
+import * as sqs from "aws-cdk-lib/aws-sqs";
 
 test('Test deployment w/o DLQ', () => {
   const stack = new Stack();

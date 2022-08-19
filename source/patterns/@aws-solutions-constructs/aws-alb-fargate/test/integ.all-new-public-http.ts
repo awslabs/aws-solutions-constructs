@@ -12,12 +12,12 @@
  */
 
 // Imports
-import { Aws, App, Stack, RemovalPolicy } from "@aws-cdk/core";
+import { Aws, App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { AlbToFargate, AlbToFargateProps } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import * as ecs from '@aws-cdk/aws-ecs';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as defaults from '@aws-solutions-constructs/core';
-import { CfnSecurityGroup } from "@aws-cdk/aws-ec2";
+import { CfnSecurityGroup } from "aws-cdk-lib/aws-ec2";
 
 // Setup
 const app = new App();

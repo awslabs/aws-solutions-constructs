@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import { Stack } from '@aws-cdk/core';
-import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
+import { Stack } from 'aws-cdk-lib';
+import * as elasticsearch from 'aws-cdk-lib/aws-elasticsearch';
 import * as defaults from '../index';
 import '@aws-cdk/assert/jest';
-import * as iam from '@aws-cdk/aws-iam';
-import * as ec2 from '@aws-cdk/aws-ec2';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 function deployES(stack: Stack, domainName: string, clientDomainProps?: elasticsearch.CfnDomainProps,
   lambdaRoleARN?: string, vpc?: ec2.IVpc): [elasticsearch.CfnDomain, iam.Role] {

@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import {ParameterType, StringParameter, StringParameterProps} from '@aws-cdk/aws-ssm';
-import {Construct} from '@aws-cdk/core';
+import {ParameterType, StringParameter, StringParameterProps} from 'aws-cdk-lib/aws-ssm';
+import {Construct} from 'constructs';
 import {printWarning} from "./utils";
 
 /**

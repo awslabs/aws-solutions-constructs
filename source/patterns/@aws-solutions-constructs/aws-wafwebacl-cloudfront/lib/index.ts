@@ -12,11 +12,11 @@
  */
 
 // Imports
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as waf from '@aws-cdk/aws-wafv2';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as waf from 'aws-cdk-lib/aws-wafv2';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 /**
  * @summary The properties for the WafwebaclToCloudFront class.

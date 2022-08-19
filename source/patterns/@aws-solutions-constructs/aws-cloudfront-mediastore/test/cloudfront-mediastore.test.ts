@@ -13,10 +13,10 @@
 
 // Imports
 import '@aws-cdk/assert/jest';
-import { Stack, RemovalPolicy } from '@aws-cdk/core';
-import * as mediastore from '@aws-cdk/aws-mediastore';
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as s3 from '@aws-cdk/aws-s3';
+import { Stack, RemovalPolicy } from 'aws-cdk-lib';
+import * as mediastore from 'aws-cdk-lib/aws-mediastore';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import { CloudFrontToMediaStore } from '../lib';
 
 // --------------------------------------------------------------

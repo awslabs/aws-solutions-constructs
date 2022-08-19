@@ -12,11 +12,11 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
-import * as lambda from "@aws-cdk/aws-lambda";
+import { Stack } from "aws-cdk-lib";
+import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as defaults from '@aws-solutions-constructs/core';
-import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
-import * as ec2 from "@aws-cdk/aws-ec2";
+import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
+import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { LambdaToStepfunctions } from '../lib';
 import '@aws-cdk/assert/jest';
 

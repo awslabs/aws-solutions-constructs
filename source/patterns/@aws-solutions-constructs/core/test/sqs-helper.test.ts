@@ -12,8 +12,8 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
-import * as sqs from '@aws-cdk/aws-sqs';
+import { Stack } from "aws-cdk-lib";
+import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as defaults from '../';
 import '@aws-cdk/assert/jest';
 import { buildDeadLetterQueue, buildQueue } from "../lib/sqs-helper";

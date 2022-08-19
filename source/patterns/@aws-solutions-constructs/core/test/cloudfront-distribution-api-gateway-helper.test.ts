@@ -11,16 +11,16 @@
  *  and limitations under the License.
  */
 
-import { Stack } from '@aws-cdk/core';
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as api from '@aws-cdk/aws-apigateway';
-import * as lambda from '@aws-cdk/aws-lambda';
+import { Stack } from 'aws-cdk-lib';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '../index';
-import * as s3 from '@aws-cdk/aws-s3';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import { CloudFrontDistributionForApiGateway } from '../lib/cloudfront-distribution-helper';
 import '@aws-cdk/assert/jest';
-import * as origins from '@aws-cdk/aws-cloudfront-origins';
-import { LambdaEdgeEventType } from '@aws-cdk/aws-cloudfront';
+import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
+import { LambdaEdgeEventType } from 'aws-cdk-lib/aws-cloudfront';
 
 test('test cloudfront for Api Gateway with user provided logging bucket', () => {
   const stack = new Stack();

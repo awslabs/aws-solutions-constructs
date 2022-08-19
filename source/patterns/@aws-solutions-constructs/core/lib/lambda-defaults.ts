@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as iam from '@aws-cdk/aws-iam';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as iam from 'aws-cdk-lib/aws-iam';
 
 export function DefaultLambdaFunctionProps(lambdaServiceRole: iam.Role): lambda.FunctionProps | any {
 

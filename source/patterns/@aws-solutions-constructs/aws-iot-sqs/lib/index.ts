@@ -11,13 +11,13 @@
  *  and limitations under the License.
  */
 
-import * as sqs from '@aws-cdk/aws-sqs';
-import * as iot from '@aws-cdk/aws-iot';
-import * as kms from '@aws-cdk/aws-kms';
-import * as iam from '@aws-cdk/aws-iam';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as iot from 'aws-cdk-lib/aws-iot';
+import * as kms from 'aws-cdk-lib/aws-kms';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 /**
  * @summary The properties for the IotToSqs class.

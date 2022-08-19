@@ -11,14 +11,14 @@
  *  and limitations under the License.
  */
 
-import * as elb from "@aws-cdk/aws-elasticloadbalancingv2";
-import { Construct } from "@aws-cdk/core";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as s3 from "@aws-cdk/aws-s3";
-import * as ecs from "@aws-cdk/aws-ecs";
-import * as lambda from "@aws-cdk/aws-lambda";
-import { ApplicationProtocol, ListenerAction, } from "@aws-cdk/aws-elasticloadbalancingv2";
-import * as elbt from "@aws-cdk/aws-elasticloadbalancingv2-targets";
+import * as elb from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import { Construct } from "constructs";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as s3 from "aws-cdk-lib/aws-s3";
+import * as ecs from "aws-cdk-lib/aws-ecs";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import { ApplicationProtocol, ListenerAction, } from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import * as elbt from "aws-cdk-lib/aws-elasticloadbalancingv2-targets";
 import { printWarning, consolidateProps } from "./utils";
 import { DefaultListenerProps } from "./alb-defaults";
 import { createAlbLoggingBucket } from "./s3-bucket-helper";

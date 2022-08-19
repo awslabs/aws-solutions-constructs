@@ -12,10 +12,10 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
+import { Stack } from "aws-cdk-lib";
 import { ApiGatewayToLambda, ApiGatewayToLambdaProps } from "../lib";
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as api from '@aws-cdk/aws-apigateway';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as api from 'aws-cdk-lib/aws-apigateway';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------

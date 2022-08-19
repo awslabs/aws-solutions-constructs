@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import {RemovalPolicy, Stack} from '@aws-cdk/core';
+import {RemovalPolicy, Stack} from 'aws-cdk-lib';
 import * as defaults from '../';
 import {ResourcePart} from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';

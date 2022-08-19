@@ -18,8 +18,8 @@
 // import * as cdk from "@aws-cdk/core";
 import "@aws-cdk/assert/jest";
 import * as defaults from "@aws-solutions-constructs/core";
-import * as cdk from "@aws-cdk/core";
-import * as lambda from "@aws-cdk/aws-lambda";
+import * as cdk from "aws-cdk-lib";
+import * as lambda from "aws-cdk-lib/aws-lambda";
 import { LambdaToElasticachememcached } from "../lib";
 
 const testPort = 12321;

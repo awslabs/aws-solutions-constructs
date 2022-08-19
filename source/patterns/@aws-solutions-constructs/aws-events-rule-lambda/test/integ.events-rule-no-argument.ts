@@ -12,11 +12,11 @@
  */
 
 /// !cdk-integ *
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack } from "aws-cdk-lib";
 import { EventsRuleToLambda, EventsRuleToLambdaProps } from "../lib";
-import { Duration } from '@aws-cdk/core';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as events from '@aws-cdk/aws-events';
+import { Duration } from 'aws-cdk-lib';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as events from 'aws-cdk-lib/aws-events';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();

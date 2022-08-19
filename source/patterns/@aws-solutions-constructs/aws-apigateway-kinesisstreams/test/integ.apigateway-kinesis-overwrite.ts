@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack, Duration } from '@aws-cdk/core';
+import { App, Stack, Duration } from 'aws-cdk-lib';
 import { ApiGatewayToKinesisStreams, ApiGatewayToKinesisStreamsProps } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 

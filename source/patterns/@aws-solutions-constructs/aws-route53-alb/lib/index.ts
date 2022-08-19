@@ -13,13 +13,13 @@
 
 // Imports
 import * as defaults from "@aws-solutions-constructs/core";
-import * as elb from "@aws-cdk/aws-elasticloadbalancingv2";
-import * as s3 from "@aws-cdk/aws-s3";
-import * as r53 from "@aws-cdk/aws-route53";
-import * as r53t from '@aws-cdk/aws-route53-targets';
+import * as elb from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import * as s3 from "aws-cdk-lib/aws-s3";
+import * as r53 from "aws-cdk-lib/aws-route53";
+import * as r53t from 'aws-cdk-lib/aws-route53-targets';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import * as ec2 from '@aws-cdk/aws-ec2';
+import { Construct } from 'constructs';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 export interface Route53ToAlbProps {
   /**

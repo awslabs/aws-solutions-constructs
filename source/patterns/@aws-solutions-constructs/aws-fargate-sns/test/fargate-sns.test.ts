@@ -13,10 +13,10 @@
 
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as cdk from "@aws-cdk/core";
+import * as cdk from "aws-cdk-lib";
 import { FargateToSns } from "../lib";
-import * as sns from '@aws-cdk/aws-sns';
-import * as ecs from '@aws-cdk/aws-ecs';
+import * as sns from 'aws-cdk-lib/aws-sns';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
 
 test('New service/new topic, public API, new VPC', () => {
 

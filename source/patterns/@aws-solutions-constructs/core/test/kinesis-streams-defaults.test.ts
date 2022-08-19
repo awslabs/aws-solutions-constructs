@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import { Stack, Duration } from '@aws-cdk/core';
-import * as kinesis from '@aws-cdk/aws-kinesis';
+import { Stack, Duration } from 'aws-cdk-lib';
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
 import '@aws-cdk/assert/jest';

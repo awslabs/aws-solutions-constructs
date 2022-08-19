@@ -11,10 +11,10 @@
  *  and limitations under the License.
  */
 
-import {Stack} from '@aws-cdk/core';
+import {Stack} from 'aws-cdk-lib';
 import * as defaults from '../';
 import '@aws-cdk/assert/jest';
-import {ParameterType} from '@aws-cdk/aws-ssm';
+import {ParameterType} from 'aws-cdk-lib/aws-ssm';
 
 // --------------------------------------------------------------
 // Test minimal deployment with no properties

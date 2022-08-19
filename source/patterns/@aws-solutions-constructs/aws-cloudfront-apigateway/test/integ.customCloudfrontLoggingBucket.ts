@@ -12,12 +12,12 @@
  */
 
 /// !cdk-integ *
-import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { CloudFrontToApiGateway } from "../lib";
-import { BucketEncryption } from "@aws-cdk/aws-s3";
-import * as lambda from '@aws-cdk/aws-lambda';
+import { BucketEncryption } from "aws-cdk-lib/aws-s3";
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as api from '@aws-cdk/aws-apigateway';
+import * as api from 'aws-cdk-lib/aws-apigateway';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup

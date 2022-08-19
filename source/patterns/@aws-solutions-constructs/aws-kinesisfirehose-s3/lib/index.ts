@@ -11,15 +11,15 @@
  *  and limitations under the License.
  */
 
-import * as kinesisfirehose from "@aws-cdk/aws-kinesisfirehose";
-import { Construct } from "@aws-cdk/core";
-import * as s3 from "@aws-cdk/aws-s3";
+import * as kinesisfirehose from "aws-cdk-lib/aws-kinesisfirehose";
+import { Construct } from "constructs";
+import * as s3 from "aws-cdk-lib/aws-s3";
 import * as defaults from "@aws-solutions-constructs/core";
-import * as iam from "@aws-cdk/aws-iam";
+import * as iam from "aws-cdk-lib/aws-iam";
 import { overrideProps, consolidateProps } from "@aws-solutions-constructs/core";
-import * as logs from "@aws-cdk/aws-logs";
-import * as cdk from "@aws-cdk/core";
-import * as kms from "@aws-cdk/aws-kms";
+import * as logs from "aws-cdk-lib/aws-logs";
+import * as cdk from "aws-cdk-lib";
+import * as kms from "aws-cdk-lib/aws-kms";
 
 /**
  * The properties for the KinesisFirehoseToS3 class.

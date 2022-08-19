@@ -19,9 +19,9 @@ echo "==========================================================================
 echo "installing..."
 yarn install --frozen-lockfile
 
-echo "============================================================================================="
-echo "updating Import statements for CDK v2..."
-/bin/bash $deployment_dir/rewrite-imports.sh
+# echo "============================================================================================="
+# echo "updating Import statements for CDK v2..."
+# /bin/bash $deployment_dir/rewrite-imports.sh
 
 echo "============================================================================================="
 echo "building cdk-integ-tools..."
@@ -43,6 +43,6 @@ echo "==========================================================================
 echo "reverting back versions and updates to package.json for CDK v2..."
 /bin/bash $deployment_dir/align-version.sh revert
 
-echo "============================================================================================="
-echo "reverting back Import statements for CDK v2..."
-/bin/bash $deployment_dir/rewrite-imports.sh revert
+# echo "============================================================================================="
+# echo "reverting back Import statements for CDK v2..."
+# /bin/bash $deployment_dir/rewrite-imports.sh revert

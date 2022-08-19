@@ -12,10 +12,10 @@
  */
 
 import { ResourcePart } from '@aws-cdk/assert';
-import { Stack } from '@aws-cdk/core';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as api from '@aws-cdk/aws-apigateway';
-import * as iam from '@aws-cdk/aws-iam';
+import { Stack } from 'aws-cdk-lib';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import * as defaults from '../index';
 import '@aws-cdk/assert/jest';
 
