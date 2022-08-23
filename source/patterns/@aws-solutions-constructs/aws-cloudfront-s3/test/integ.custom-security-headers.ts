@@ -12,10 +12,10 @@
  */
 
 // Imports
-import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { CloudFrontToS3 } from "../lib";
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
-import * as cloudfront from "@aws-cdk/aws-cloudfront";
+import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 
 // Setup
 const app = new App();

@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import * as events from '@aws-cdk/aws-events';
-import { App, Stack, Duration, RemovalPolicy } from '@aws-cdk/core';
+import * as events from 'aws-cdk-lib/aws-events';
+import { App, Stack, Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { EventbridgeToKinesisFirehoseToS3, EventbridgeToKinesisFirehoseToS3Props } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 

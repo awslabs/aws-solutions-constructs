@@ -12,12 +12,12 @@
  */
 
 // Imports
-import * as sqs from '@aws-cdk/aws-sqs';
-import * as lambda from '@aws-cdk/aws-lambda';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import { SqsEventSource, SqsEventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
+import { Construct } from 'constructs';
+import { SqsEventSource, SqsEventSourceProps } from 'aws-cdk-lib/aws-lambda-event-sources';
 
 /**
  * @summary The properties for the SqsToLambda class.

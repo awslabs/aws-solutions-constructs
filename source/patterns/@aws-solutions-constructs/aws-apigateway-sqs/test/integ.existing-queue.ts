@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack } from "aws-cdk-lib";
 import { ApiGatewayToSqs } from "../lib";
 import { generateIntegStackName, buildQueue } from '@aws-solutions-constructs/core';
 

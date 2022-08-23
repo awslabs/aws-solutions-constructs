@@ -12,11 +12,11 @@
  */
 
 // Imports
-import { Aws, App, Stack } from "@aws-cdk/core";
+import { Aws, App, Stack } from "aws-cdk-lib";
 import { FargateToEventbridge, FargateToEventbridgeProps } from "../lib";
 import { generateIntegStackName, getTestVpc, CreateFargateService } from '@aws-solutions-constructs/core';
-import * as ecs from '@aws-cdk/aws-ecs';
-import * as events from '@aws-cdk/aws-events';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as events from 'aws-cdk-lib/aws-events';
 
 // Setup
 const app = new App();

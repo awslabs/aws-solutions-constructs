@@ -12,12 +12,12 @@
  */
 
 // Imports
-import * as cdk from "@aws-cdk/core";
+import * as cdk from "aws-cdk-lib";
 import { WafwebaclToCloudFront } from "../lib";
-import * as cloudfront from "@aws-cdk/aws-cloudfront";
-import * as origins from '@aws-cdk/aws-cloudfront-origins';
-import * as s3 from "@aws-cdk/aws-s3";
-import * as waf from "@aws-cdk/aws-wafv2";
+import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
+import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
+import * as s3 from "aws-cdk-lib/aws-s3";
+import * as waf from "aws-cdk-lib/aws-wafv2";
 import * as defaults from '@aws-solutions-constructs/core';
 import '@aws-cdk/assert/jest';
 

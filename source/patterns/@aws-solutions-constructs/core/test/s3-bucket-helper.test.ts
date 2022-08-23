@@ -12,13 +12,13 @@
  */
 
 import { expect as expectCDK, haveResource, ResourcePart } from '@aws-cdk/assert';
-import { Duration, Stack, RemovalPolicy } from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as s3n from '@aws-cdk/aws-s3-notifications';
-import * as sqs from '@aws-cdk/aws-sqs';
+import { Duration, Stack, RemovalPolicy } from 'aws-cdk-lib';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as defaults from '../index';
 import '@aws-cdk/assert/jest';
-import { Bucket, StorageClass } from '@aws-cdk/aws-s3';
+import { Bucket, StorageClass } from 'aws-cdk-lib/aws-s3';
 
 test('check exception for Missing existingBucketObj from props for deploy = false', () => {
   const stack = new Stack();

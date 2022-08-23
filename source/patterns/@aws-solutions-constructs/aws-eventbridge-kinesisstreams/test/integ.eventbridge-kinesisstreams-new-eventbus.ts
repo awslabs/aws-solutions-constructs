@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { App, Stack } from '@aws-cdk/core';
+import { App, Stack } from 'aws-cdk-lib';
 import { EventbridgeToKinesisStreams, EventbridgeToKinesisStreamsProps } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 

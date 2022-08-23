@@ -11,14 +11,14 @@
  *  and limitations under the License.
  */
 
-import * as events from '@aws-cdk/aws-events';
-import * as kinesisfirehose from '@aws-cdk/aws-kinesisfirehose';
+import * as events from 'aws-cdk-lib/aws-events';
+import * as kinesisfirehose from 'aws-cdk-lib/aws-kinesisfirehose';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as iam from '@aws-cdk/aws-iam';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as logs from '@aws-cdk/aws-logs';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as logs from 'aws-cdk-lib/aws-logs';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 import { overrideProps } from '@aws-solutions-constructs/core';
 import { KinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-kinesisfirehose-s3';
 

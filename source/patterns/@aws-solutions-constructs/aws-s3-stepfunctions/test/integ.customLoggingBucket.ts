@@ -12,10 +12,10 @@
  */
 
 /// !cdk-integ *
-import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
-import { BucketEncryption } from "@aws-cdk/aws-s3";
+import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
+import { BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { S3ToStepfunctions } from "../lib";
-import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
+import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();

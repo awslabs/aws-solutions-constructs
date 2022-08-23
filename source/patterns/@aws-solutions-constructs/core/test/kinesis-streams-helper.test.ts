@@ -12,9 +12,9 @@
  */
 
 // Imports
-import { Stack, Duration } from "@aws-cdk/core";
+import { Stack, Duration } from "aws-cdk-lib";
 import * as defaults from '../';
-import * as kinesis from '@aws-cdk/aws-kinesis';
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import { ResourcePart } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 

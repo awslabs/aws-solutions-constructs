@@ -12,10 +12,10 @@
  */
 
 // Imports
-import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { CloudFrontToS3 } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import * as s3 from "@aws-cdk/aws-s3";
+import * as s3 from "aws-cdk-lib/aws-s3";
 import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup

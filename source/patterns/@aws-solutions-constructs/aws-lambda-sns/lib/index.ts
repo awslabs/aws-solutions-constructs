@@ -12,12 +12,12 @@
  */
 
 // Imports
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as sns from '@aws-cdk/aws-sns';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as sns from 'aws-cdk-lib/aws-sns';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import * as ec2 from "@aws-cdk/aws-ec2";
+import { Construct } from 'constructs';
+import * as ec2 from "aws-cdk-lib/aws-ec2";
 
 /**
  * @summary The properties for the LambdaToSns class.

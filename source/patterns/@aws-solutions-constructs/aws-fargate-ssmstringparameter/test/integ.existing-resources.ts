@@ -12,11 +12,11 @@
  */
 
 // Imports
-import { Aws, App, Stack } from "@aws-cdk/core";
+import { Aws, App, Stack } from "aws-cdk-lib";
 import { FargateToSsmstringparameter, FargateToSsmstringparameterProps } from "../lib";
 import { generateIntegStackName, getTestVpc, CreateFargateService } from '@aws-solutions-constructs/core';
-import * as ecs from '@aws-cdk/aws-ecs';
-import * as ssm from '@aws-cdk/aws-ssm';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ssm from 'aws-cdk-lib/aws-ssm';
 
 // Setup
 const app = new App();

@@ -12,9 +12,9 @@
  */
 
 /// !cdk-integ *
-import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { S3ToStepFunction, S3ToStepFunctionProps } from "../lib";
-import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
+import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import { CreateScrapBucket, generateIntegStackName, addCfnNagS3BucketNotificationRulesToSuppress } from '@aws-solutions-constructs/core';
 
 const app = new App();

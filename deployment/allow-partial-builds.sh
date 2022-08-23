@@ -1,4 +1,11 @@
 #!/bin/bash
+echo    !!!!!!!!!!!!!!!!!!!!
+echo
+echo Building V1 from the main branch is deprecated.
+echo
+echo Run source ./deployment/v2/allow-partial-build.sh to prepare the development environment for V2
+echo
+exit 1
 
 result=${PWD##*/}          # to assign to a variable
 

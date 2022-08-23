@@ -12,10 +12,10 @@
  */
 
 import { EventbridgeToSqsProps, EventbridgeToSqs } from '../lib';
-import * as events from '@aws-cdk/aws-events';
-import { App, Stack } from '@aws-cdk/core';
-import * as sqs from '@aws-cdk/aws-sqs';
-import * as kms from '@aws-cdk/aws-kms';
+import * as events from 'aws-cdk-lib/aws-events';
+import { App, Stack } from 'aws-cdk-lib';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as kms from 'aws-cdk-lib/aws-kms';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();

@@ -12,11 +12,11 @@
  */
 
 // Imports
-import { Aws, App, Stack, RemovalPolicy } from "@aws-cdk/core";
+import { Aws, App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { FargateToStepfunctions, FargateToStepfunctionsProps } from "../lib";
-import * as ecs from '@aws-cdk/aws-ecs';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
+import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 
 // Setup
 const app = new App();

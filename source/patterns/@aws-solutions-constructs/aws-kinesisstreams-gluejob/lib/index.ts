@@ -11,13 +11,14 @@
  *  and limitations under the License.
  */
 
-import * as glue from "@aws-cdk/aws-glue";
-import * as s3assets from "@aws-cdk/aws-s3-assets";
-import { Effect, IRole, Policy, PolicyStatement } from "@aws-cdk/aws-iam";
-import { Stream, StreamProps } from "@aws-cdk/aws-kinesis";
-import { Bucket } from "@aws-cdk/aws-s3";
-import { Aws, Construct } from "@aws-cdk/core";
-import * as cloudwatch from "@aws-cdk/aws-cloudwatch";
+import { Construct } from 'constructs';
+import * as glue from "aws-cdk-lib/aws-glue";
+import * as s3assets from "aws-cdk-lib/aws-s3-assets";
+import { Effect, IRole, Policy, PolicyStatement } from "aws-cdk-lib/aws-iam";
+import { Stream, StreamProps } from "aws-cdk-lib/aws-kinesis";
+import { Bucket } from "aws-cdk-lib/aws-s3";
+import { Aws } from "aws-cdk-lib";
+import * as cloudwatch from "aws-cdk-lib/aws-cloudwatch";
 import * as defaults from "@aws-solutions-constructs/core";
 
 export interface KinesisstreamsToGluejobProps {

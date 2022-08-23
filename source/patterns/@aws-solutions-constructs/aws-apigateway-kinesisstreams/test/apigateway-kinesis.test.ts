@@ -12,10 +12,10 @@
  */
 
 // Imports
-import { Stack, Duration } from '@aws-cdk/core';
+import { Stack, Duration } from 'aws-cdk-lib';
 import { ApiGatewayToKinesisStreams } from '../lib';
 import '@aws-cdk/assert/jest';
-import * as kinesis from '@aws-cdk/aws-kinesis';
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 
 // --------------------------------------------------------------
 // Test construct properties

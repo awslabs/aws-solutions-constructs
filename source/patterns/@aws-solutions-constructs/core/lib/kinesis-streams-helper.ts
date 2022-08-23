@@ -12,13 +12,13 @@
  */
 
 // Imports
-import * as kinesis from '@aws-cdk/aws-kinesis';
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import { DefaultStreamProps } from './kinesis-streams-defaults';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
 import { consolidateProps } from './utils';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 export interface BuildKinesisStreamProps {
   /**

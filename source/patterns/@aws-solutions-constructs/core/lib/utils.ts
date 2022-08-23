@@ -15,7 +15,7 @@ import * as deepmerge from 'deepmerge';
 import { flagOverriddenDefaults } from './override-warning-service';
 import * as log from 'npmlog';
 import * as crypto from 'crypto';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
 
 function isObject(val: object) {
   return val != null && typeof val === 'object'

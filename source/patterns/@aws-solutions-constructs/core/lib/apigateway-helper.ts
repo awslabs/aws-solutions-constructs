@@ -12,17 +12,17 @@
  */
 
 // Imports
-import * as logs from '@aws-cdk/aws-logs';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as cdk from '@aws-cdk/core';
-import * as api from '@aws-cdk/aws-apigateway';
-import * as iam from '@aws-cdk/aws-iam';
+import * as logs from 'aws-cdk-lib/aws-logs';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as cdk from 'aws-cdk-lib';
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import * as apiDefaults from './apigateway-defaults';
 import { buildLogGroup } from './cloudwatch-log-group-helper';
 import { addCfnSuppressRules, consolidateProps } from './utils';
-import { IRole } from '@aws-cdk/aws-iam';
+import { IRole } from 'aws-cdk-lib/aws-iam';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 /**
  * Create and configures access logging for API Gateway resources.

@@ -12,10 +12,10 @@
  */
 
 import { IotToKinesisStreams, IotToKinesisStreamsProps } from "../lib";
-import * as cdk from "@aws-cdk/core";
-import * as kinesis from '@aws-cdk/aws-kinesis';
-import * as iot from '@aws-cdk/aws-iot';
-import * as iam from '@aws-cdk/aws-iam';
+import * as cdk from "aws-cdk-lib";
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
+import * as iot from 'aws-cdk-lib/aws-iot';
+import * as iam from 'aws-cdk-lib/aws-iam';
 // import * as defaults from '@aws-solutions-constructs/core';
 import '@aws-cdk/assert/jest';
 

@@ -12,10 +12,10 @@
  */
 
 // Imports
-import * as cdk from "@aws-cdk/core";
+import * as cdk from "aws-cdk-lib";
 import { ApiGatewayToIot, ApiGatewayToIotProps } from "../lib";
-import * as api from '@aws-cdk/aws-apigateway';
-import * as iam from '@aws-cdk/aws-iam';
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import { ResourcePart } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 

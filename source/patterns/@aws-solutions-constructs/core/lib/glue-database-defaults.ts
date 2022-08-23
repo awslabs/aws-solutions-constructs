@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import { CfnDatabaseProps } from "@aws-cdk/aws-glue";
-import { Aws } from "@aws-cdk/core";
+import { CfnDatabaseProps } from "aws-cdk-lib/aws-glue";
+import { Aws } from "aws-cdk-lib";
 
 /**
  * Default database props

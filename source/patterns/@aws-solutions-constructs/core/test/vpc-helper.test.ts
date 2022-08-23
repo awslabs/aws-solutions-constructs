@@ -11,9 +11,9 @@
  *  and limitations under the License.
  */
 
-import { Stack } from '@aws-cdk/core';
+import { Stack } from 'aws-cdk-lib';
 import * as defaults from '../';
-import * as ec2 from '@aws-cdk/aws-ec2';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import { AddAwsServiceEndpoint, ServiceEndpointTypes } from '../lib/vpc-helper';

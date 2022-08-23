@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import { Stack } from '@aws-cdk/core';
-import * as events from '@aws-cdk/aws-events';
+import { Stack } from 'aws-cdk-lib';
+import * as events from 'aws-cdk-lib/aws-events';
 import * as defaults from '../index';
 import '@aws-cdk/assert/jest';
-import { Schedule } from '@aws-cdk/aws-events';
-import { Duration } from '@aws-cdk/core';
+import { Schedule } from 'aws-cdk-lib/aws-events';
+import { Duration } from 'aws-cdk-lib';
 import { overrideProps } from '../lib/utils';
 
 test('test EventsRuleProps override ruleName and description', () => {

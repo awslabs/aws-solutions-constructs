@@ -13,10 +13,10 @@
 
 import { ResourcePart } from '@aws-cdk/assert';
 import { CloudFrontToApiGateway } from "../lib";
-import * as cdk from "@aws-cdk/core";
-import * as s3 from "@aws-cdk/aws-s3";
+import * as cdk from "aws-cdk-lib";
+import * as s3 from "aws-cdk-lib/aws-s3";
 import * as defaults from '@aws-solutions-constructs/core';
-import * as lambda from '@aws-cdk/aws-lambda';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import '@aws-cdk/assert/jest';
 
 function deploy(stack: cdk.Stack) {

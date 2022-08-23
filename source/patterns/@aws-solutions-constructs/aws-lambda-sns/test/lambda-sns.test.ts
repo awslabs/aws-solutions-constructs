@@ -12,10 +12,10 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as sns from "@aws-cdk/aws-sns";
-import * as ec2 from "@aws-cdk/aws-ec2";
+import { Stack } from "aws-cdk-lib";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as sns from "aws-cdk-lib/aws-sns";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { LambdaToSns, LambdaToSnsProps } from '../lib';
 import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';

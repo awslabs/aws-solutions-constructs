@@ -12,11 +12,12 @@
  */
 
 // Imports
-import * as api from '@aws-cdk/aws-apigateway';
-import * as iam from '@aws-cdk/aws-iam';
+import { Construct } from 'constructs';
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
-import { Aws, Construct } from '@aws-cdk/core';
-import * as logs from '@aws-cdk/aws-logs';
+import { Aws } from 'aws-cdk-lib';
+import * as logs from 'aws-cdk-lib/aws-logs';
 
 /**
  * @summary The properties for the ApiGatewayToSageMakerEndpointProps class.

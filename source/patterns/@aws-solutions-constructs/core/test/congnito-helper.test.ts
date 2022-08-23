@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import { Stack } from '@aws-cdk/core';
-import * as cognito from '@aws-cdk/aws-cognito';
+import { Stack } from 'aws-cdk-lib';
+import * as cognito from 'aws-cdk-lib/aws-cognito';
 import * as defaults from '../index';
 import '@aws-cdk/assert/jest';
 

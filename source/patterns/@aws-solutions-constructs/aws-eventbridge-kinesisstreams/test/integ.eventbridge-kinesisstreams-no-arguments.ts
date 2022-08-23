@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import * as events from '@aws-cdk/aws-events';
-import { App, Stack, Duration } from '@aws-cdk/core';
+import * as events from 'aws-cdk-lib/aws-events';
+import { App, Stack, Duration } from 'aws-cdk-lib';
 import { EventbridgeToKinesisStreams, EventbridgeToKinesisStreamsProps } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 

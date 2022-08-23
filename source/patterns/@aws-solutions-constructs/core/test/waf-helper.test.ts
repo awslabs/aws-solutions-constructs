@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import { Stack } from '@aws-cdk/core';
-import * as waf from "@aws-cdk/aws-wafv2";
+import { Stack } from 'aws-cdk-lib';
+import * as waf from "aws-cdk-lib/aws-wafv2";
 import * as defaults from '..';
 import { SynthUtils } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';

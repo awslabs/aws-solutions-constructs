@@ -12,16 +12,16 @@
  */
 
 // Imports
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
-import * as glue from '@aws-cdk/aws-glue';
-import * as iam from '@aws-cdk/aws-iam';
-import * as kinesis from '@aws-cdk/aws-kinesis';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as mediastore from '@aws-cdk/aws-mediastore';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as sns from '@aws-cdk/aws-sns';
-import * as sqs from '@aws-cdk/aws-sqs';
-import { Stack } from '@aws-cdk/core';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
+import * as glue from 'aws-cdk-lib/aws-glue';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as mediastore from 'aws-cdk-lib/aws-mediastore';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as sns from 'aws-cdk-lib/aws-sns';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import { Stack } from 'aws-cdk-lib';
 import * as defaults from '../';
 import { MediaStoreContainerProps } from '../lib/mediastore-defaults';
 import { BuildSagemakerEndpoint } from '../lib/sagemaker-helper';

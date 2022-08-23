@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 
 const DefaultTableProps: dynamodb.TableProps = {
   billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,

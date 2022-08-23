@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import * as events from '@aws-cdk/aws-events';
+import * as events from 'aws-cdk-lib/aws-events';
 import { EventbridgeToStepfunctions, EventbridgeToStepfunctionsProps } from '../lib/index';
-import { Duration } from '@aws-cdk/core';
-import * as sfn from '@aws-cdk/aws-stepfunctions';
+import { Duration } from 'aws-cdk-lib';
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import '@aws-cdk/assert/jest';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
 
 function deployNewStateMachine(stack: cdk.Stack) {
 

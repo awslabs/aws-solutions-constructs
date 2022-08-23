@@ -11,16 +11,16 @@
  *  and limitations under the License.
  */
 
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as iam from '@aws-cdk/aws-iam';
-import * as ec2 from "@aws-cdk/aws-ec2";
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { DefaultLambdaFunctionProps } from './lambda-defaults';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
 import { overrideProps, addCfnSuppressRules } from './utils';
 import { buildSecurityGroup } from "./security-group-helper";
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import { IConstruct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
+import { IConstruct } from 'constructs';
 
 export interface BuildLambdaFunctionProps {
   /**

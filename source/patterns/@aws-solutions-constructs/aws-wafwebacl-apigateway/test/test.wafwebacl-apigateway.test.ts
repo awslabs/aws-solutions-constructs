@@ -12,10 +12,10 @@
  */
 
 // Imports
-import * as cdk from "@aws-cdk/core";
+import * as cdk from "aws-cdk-lib";
 import { WafwebaclToApiGateway } from "../lib";
-import * as api from '@aws-cdk/aws-apigateway';
-import * as waf from "@aws-cdk/aws-wafv2";
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as waf from "aws-cdk-lib/aws-wafv2";
 import * as defaults from '@aws-solutions-constructs/core';
 import '@aws-cdk/assert/jest';
 

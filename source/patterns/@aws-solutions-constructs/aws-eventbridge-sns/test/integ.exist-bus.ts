@@ -12,8 +12,8 @@
  */
 
 import { EventbridgeToSns, EventbridgeToSnsProps } from '../lib';
-import * as events from '@aws-cdk/aws-events';
-import { App, Stack } from '@aws-cdk/core';
+import * as events from 'aws-cdk-lib/aws-events';
+import { App, Stack } from 'aws-cdk-lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();

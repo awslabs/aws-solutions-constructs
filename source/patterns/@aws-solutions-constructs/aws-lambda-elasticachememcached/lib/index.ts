@@ -12,11 +12,11 @@
  */
 
 // Imports
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as cache from "@aws-cdk/aws-elasticache";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as cache from "aws-cdk-lib/aws-elasticache";
 import * as defaults from "../../core";
-import { Construct } from "@aws-cdk/core";
+import { Construct } from "constructs";
 import { obtainMemcachedCluster, getCachePort, CreateSelfReferencingSecurityGroup } from "../../core";
 
 const defaultEnvironmentVariableName = "CACHE_ENDPOINT";

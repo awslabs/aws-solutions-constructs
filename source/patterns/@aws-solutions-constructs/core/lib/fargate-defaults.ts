@@ -11,9 +11,9 @@
  *  and limitations under the License.
  */
 
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as ecs from "@aws-cdk/aws-ecs";
-import * as elb from "@aws-cdk/aws-elasticloadbalancingv2";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as ecs from "aws-cdk-lib/aws-ecs";
+import * as elb from "aws-cdk-lib/aws-elasticloadbalancingv2";
 
 export function DefaultClusterProps() {
   return {

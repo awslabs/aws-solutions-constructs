@@ -12,16 +12,16 @@
  */
 
 // Imports
-import * as logs from '@aws-cdk/aws-logs';
-import * as cdk from '@aws-cdk/core';
+import * as logs from 'aws-cdk-lib/aws-logs';
+import * as cdk from 'aws-cdk-lib';
 import * as smDefaults from './step-function-defaults';
-import * as sfn from '@aws-cdk/aws-stepfunctions';
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import { overrideProps, generateResourceName, addCfnSuppressRules } from './utils';
-import * as iam from '@aws-cdk/aws-iam';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 import { buildLogGroup } from './cloudwatch-log-group-helper';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 /**
  * Builds and returns a StateMachine.

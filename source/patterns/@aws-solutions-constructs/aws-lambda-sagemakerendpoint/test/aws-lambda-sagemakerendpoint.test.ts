@@ -12,11 +12,11 @@
  */
 
 // Imports
-import { Stack, Duration } from '@aws-cdk/core';
+import { Stack, Duration } from 'aws-cdk-lib';
 import { LambdaToSagemakerEndpoint, LambdaToSagemakerEndpointProps } from '../lib';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as iam from '@aws-cdk/aws-iam';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import '@aws-cdk/assert/jest';
 
 // -----------------------------------------------------------------------------------------

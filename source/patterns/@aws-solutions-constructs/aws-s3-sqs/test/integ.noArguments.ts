@@ -12,7 +12,7 @@
  */
 
 /// !cdk-integ *
-import {App, Stack, RemovalPolicy} from "@aws-cdk/core";
+import {App, Stack, RemovalPolicy} from "aws-cdk-lib";
 import {S3ToSqs} from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 

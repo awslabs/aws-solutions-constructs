@@ -13,9 +13,9 @@
 
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as cdk from "@aws-cdk/core";
+import * as cdk from "aws-cdk-lib";
 import { FargateToSecretsmanager } from "../lib";
-import * as ecs from '@aws-cdk/aws-ecs';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
 import { buildSecretsManagerSecret } from '@aws-solutions-constructs/core';
 
 const clusterName = "custom-cluster-name";

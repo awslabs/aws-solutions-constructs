@@ -11,9 +11,9 @@
  *  and limitations under the License.
  */
 
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as cache from "@aws-cdk/aws-elasticache";
-import { Construct } from "@aws-cdk/core";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as cache from "aws-cdk-lib/aws-elasticache";
+import { Construct } from "constructs";
 import { GetDefaultCachePort, GetMemcachedDefaults } from './elasticache-defaults';
 import { consolidateProps } from './utils';
 

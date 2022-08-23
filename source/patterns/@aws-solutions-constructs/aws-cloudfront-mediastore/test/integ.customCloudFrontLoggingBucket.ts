@@ -11,9 +11,9 @@
  *  and limitations under the License.
  */
 
-import { App, Stack, RemovalPolicy } from "@aws-cdk/core";
+import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { CloudFrontToMediaStore } from "../lib";
-import { BucketEncryption } from "@aws-cdk/aws-s3";
+import { BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 // Setup

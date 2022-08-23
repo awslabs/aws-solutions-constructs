@@ -12,10 +12,10 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack } from "aws-cdk-lib";
 import { KinesisFirehoseToS3 } from "../lib";
 import { CreateScrapBucket } from '@aws-solutions-constructs/core';
-import * as s3 from "@aws-cdk/aws-s3";
+import * as s3 from "aws-cdk-lib/aws-s3";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup

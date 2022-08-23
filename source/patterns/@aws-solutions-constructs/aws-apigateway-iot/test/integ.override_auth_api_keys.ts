@@ -12,9 +12,9 @@
  */
 
 // Imports
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack } from "aws-cdk-lib";
 import { ApiGatewayToIot, ApiGatewayToIotProps } from "../lib";
-import { AuthorizationType } from "@aws-cdk/aws-apigateway";
+import { AuthorizationType } from "aws-cdk-lib/aws-apigateway";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup

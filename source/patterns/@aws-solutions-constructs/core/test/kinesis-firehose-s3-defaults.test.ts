@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import { Stack } from '@aws-cdk/core';
-import * as kinesisfirehose from '@aws-cdk/aws-kinesisfirehose';
+import { Stack } from 'aws-cdk-lib';
+import * as kinesisfirehose from 'aws-cdk-lib/aws-kinesisfirehose';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
 import '@aws-cdk/assert/jest';
-import * as kms from '@aws-cdk/aws-kms';
+import * as kms from 'aws-cdk-lib/aws-kms';
 
 test('test kinesisanalytics override buffer conditions', () => {
   const stack = new Stack();

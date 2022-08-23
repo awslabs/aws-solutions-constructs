@@ -12,11 +12,11 @@
  */
 
 // Imports
-import * as cdk from "@aws-cdk/core";
+import * as cdk from "aws-cdk-lib";
 import { WafwebaclToAlb } from "../lib";
-import * as waf from "@aws-cdk/aws-wafv2";
+import * as waf from "aws-cdk-lib/aws-wafv2";
 import * as defaults from '@aws-solutions-constructs/core';
-import * as elb from "@aws-cdk/aws-elasticloadbalancingv2";
+import * as elb from "aws-cdk-lib/aws-elasticloadbalancingv2";
 import '@aws-cdk/assert/jest';
 
 function deployLoadBalancer(stack: cdk.Stack) {

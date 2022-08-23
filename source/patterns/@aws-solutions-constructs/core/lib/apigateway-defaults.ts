@@ -11,9 +11,9 @@
  *  and limitations under the License.
  */
 
-import * as api from '@aws-cdk/aws-apigateway';
-import * as lambda from '@aws-cdk/aws-lambda';
-import { LogGroup } from '@aws-cdk/aws-logs';
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { LogGroup } from 'aws-cdk-lib/aws-logs';
 
 /**
  * Private function to configure an api.RestApiProps

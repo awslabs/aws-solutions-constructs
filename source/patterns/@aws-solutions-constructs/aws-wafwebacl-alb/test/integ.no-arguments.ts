@@ -12,12 +12,12 @@
  */
 
 /// !cdk-integ *
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack } from "aws-cdk-lib";
 import { WafwebaclToAlb } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import { CfnSecurityGroup } from "@aws-cdk/aws-ec2";
+import { CfnSecurityGroup } from "aws-cdk-lib/aws-ec2";
 import * as defaults from '@aws-solutions-constructs/core';
-import * as elb from "@aws-cdk/aws-elasticloadbalancingv2";
+import * as elb from "aws-cdk-lib/aws-elasticloadbalancingv2";
 
 const app = new App();
 

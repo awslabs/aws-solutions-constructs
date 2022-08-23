@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import * as elb from "@aws-cdk/aws-elasticloadbalancingv2";
+import * as elb from "aws-cdk-lib/aws-elasticloadbalancingv2";
 
 export function DefaultListenerProps(loadBalancer: elb.ApplicationLoadBalancer): elb.ApplicationListenerProps {
   return {

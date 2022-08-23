@@ -12,8 +12,8 @@
  */
 
 // import { countResources } from "@aws-cdk/assert";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import { Construct } from "@aws-cdk/core";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import { Construct } from "constructs";
 import { addCfnSuppressRules } from './utils';
 
 export interface SecurityGroupRuleDefinition {

@@ -12,7 +12,7 @@
  */
 
 import { EventsRuleToSqsProps, EventsRuleToSqs } from '../lib';
-import { App, Stack } from '@aws-cdk/core';
+import { App, Stack } from 'aws-cdk-lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();

@@ -12,11 +12,11 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
+import { Stack } from "aws-cdk-lib";
 import { IotToSqs, IotToSqsProps } from "../lib";
 import '@aws-cdk/assert/jest';
-import * as sqs from '@aws-cdk/aws-sqs';
-import * as kms from '@aws-cdk/aws-kms';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as kms from 'aws-cdk-lib/aws-kms';
 
 // --------------------------------------------------------------
 // Pattern deployment with default props
