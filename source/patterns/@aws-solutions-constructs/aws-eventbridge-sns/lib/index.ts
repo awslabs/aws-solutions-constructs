@@ -130,10 +130,10 @@ export class EventbridgeToSns extends Construct {
 
       // Grant EventBridge service access to the SNS Topic encryption key
       this.encryptionKey?.grant(new ServicePrincipal('events.amazonaws.com'),
-          "kms:Decrypt",
-          "kms:Encrypt",
-          "kms:ReEncrypt*",
-          "kms:GenerateDataKey*"
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
       );
     }
 }
