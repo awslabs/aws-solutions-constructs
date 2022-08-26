@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.21.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.20.0...v2.21.0) (2022-08-26)
 
+* **Upgrade to Typescript 4.7.4:** ([#783](https://github.com/awslabs/aws-solutions-constructs/pull/783))
+* **Update contributing.md:** ensure all instructions reflect that v2 is now the only cdk version ([#785](https://github.com/awslabs/aws-solutions-constructs/pull/785))
+
 ## [2.20.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.19.0...v2.20.0) (2022-08-25)
 
 (no changes in this release)
