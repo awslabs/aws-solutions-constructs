@@ -26,12 +26,11 @@
     "jsii": "^1.49.0",
     "jsii-pacmak": "^1.49.0",
     "tslint": "^5.20.1",
-    "typescript": "~3.9.10",
+    "typescript": "4.7.4",
     "aws-cdk-migration": "^1.135.0"
   },
   "devDependencies": {
-    "lerna": "^3.22.1",
-    "@types/prettier": "2.6.0"
+    "lerna": "^3.22.1"
   },
   "workspaces": {
     "packages": [
@@ -49,5 +48,9 @@
       "**/@types/deep-diff",
       "**/@types/deep-diff/**"
     ]
+  },
+  "resolutions": {
+    "**/@typescript-eslint/eslint-plugin": "^4.1.1",
+    "**/@typescript-eslint/parser": "^4.1.1"
   }
 }
