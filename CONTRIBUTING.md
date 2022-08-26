@@ -45,19 +45,6 @@ instead of duplicating the efforts.
 
 ### Step 2: Design
 
-In some cases, it is useful to seek for feedback by iterating on a design document. This is useful
-when you plan a big change or feature, or you want advice on what would be the best path forward.
-
-Sometimes, the GitHub issue is sufficient for such discussions, and can be sufficient to get
-clarity on what you plan to do. Sometimes, a design document would work better, so people can provide
-iterative feedback.
-
-In such cases, use the GitHub issue description to collect **requirements** and
-**use cases** for your feature.
-
-Then, create a design document in markdown format under the `design/` directory
-and request feedback through a pull request. 
-
 If you are proposing a new Solutions Construct, the
 best way to do this is create the full README.md document for the Construct in advance (defining all interfaces, 
 the minimal deployment scenario, the architecture diagram, etc.). This will give us all the information we
@@ -101,13 +88,14 @@ Now it's time to work your magic. Here are some guidelines:
 
 #### Integration Tests
 
-Integration tests perform a few functions in the CDK code base -
-1. Acts as a regression detector. It does this by running `cdk synth` on the integration test and comparing it against
+Integration Tests compare the CDK synth output of a full stack using a construct to a previously generated expected template. In so doing, they-
+
+1. Act as a regression detector. It does this by running `cdk synth` on the integration test and comparing it against
    the `*.expected.json` file. This highlights how a change affects the synthesized stacks.
-2. Allows for a way to verify if the stacks are still valid CloudFormation templates, as part of an intrusive change.
+2. Allow for a way to verify if the stacks are still valid CloudFormation templates, as part of an intrusive change.
    This is done by running `yarn integ` which will run `cdk deploy` across all of the integration tests in that package.
    Remember to set up AWS credentials before doing this.
-3. Provides a method to validates that constructs deploy successfully. While a successful CloudFormation deployment does not
+3. Provide a method to validates that constructs deploy successfully. While a successful CloudFormation deployment does not
    mean that the construct functions correctly, it does protect against problems introduced by drift in the CDK or
    services themselves.
 
@@ -135,7 +123,7 @@ Examples:
 
 Each integration test generates a .expected.json file by actually deploying the construct and extracting the template from the CFN stack. Once you’ve written your integration test, follow these steps to generate these files:
 
-1. In the Docker build container, go to the folder for the construct you are working on (the folder with the package.json file).
+1. In the Docker build container, go to the folder for the construct you are working on (the folder with the package.json file). The Docker build container must be initialized and allow-partial-builds.sh run.
 2. Configure the CLI within the Docker container using `aws configure`. You will need an access key with enough privileges to launch everything in
    your stack and call CloudFormation – admin access is probably the surest way to get this.
 3. Run the commands `npm run build && npm run integ`. The code will be compiled and each integration test stack will
@@ -143,7 +131,7 @@ Each integration test generates a .expected.json file by actually deploying the 
 
 The standard `npm run build+lint+test` command will compare the cdk synth output against the .expected.json file. The Solutions Constructs team will run `npm run integ` in each construct periodically to guard against drift and ensure each construct still deploys.
 
-NOTE: Running `npm run integ` will launch a stack including the construct for each integration test. It will also delete the stack after collecting the CloudFormation template. While the stack will only be around for a few seconds, during this time you account will be billed for the resoruces. Some tests may leave behind an S3 bucket - you should check after running this step.
+NOTE: Running `npm run integ` will launch a stack including the construct for each integration test. It will also delete the stack after collecting the CloudFormation template. While the stack will only be around for a few seconds, during this time you account will be billed for the resoruces. Some tests may leave behind an S3 bucket - you should check after running this step. Ideally, 
 
 ### Step 4: Commit
 
@@ -208,9 +196,9 @@ All `package.json` files in this repo use a stable marker version of `0.0.0`. Th
 
 Additional scripts that take part in the versioning mechanism:
 
-- `deployment/get-version.js` can be used to obtain the actual version of the repo. You can use either from JavaScript code by `require('./deployment/get-version')` or from a shell script `node -p "require('./deployment/get-version')"`.
-- `deployment/get-version-marker.js` returns `0.0.0` and used to DRY the version marker.
-- `deployment/align-version.sh` and `deployment/align-version.js` are used to align all package.json files in the repo to the official version. This script is invoked in from `build-patterns.sh`, first time before the build process to replace the versions from marker version (`0.0.0`) to the release version e.g. `1.71.0` and then the second time at the end of the build process to revert the versions back from release version e.g. `1.71.0` to marker version (`0.0.0`).
+- `deployment/v2/get-version.js` can be used to obtain the actual version of the repo. You can use either from JavaScript code by `require('./deployment/v2/get-version')` or from a shell script `node -p "require('./deployment/v2/get-version')"`.
+- `deployment/v2/get-version-marker.js` returns `0.0.0` and used to DRY the version marker.
+- `deployment/v2/align-version.sh` and `deployment/v2/align-version.js` are used to align all package.json files in the repo to the official version. This script is invoked in from `build-patterns.sh`, first time before the build process to replace the versions from marker version (`0.0.0`) to the release version e.g. `2.13.0` and then the second time at the end of the build process to revert the versions back from release version e.g. `2.13.0` to marker version (`0.0.0`).
 
 ### Full Build
 
@@ -219,7 +207,7 @@ $ cd <root-of-aws-solutions-constructs-repo>
 $ docker run -u root --rm --net=host -it -v $PWD:$PWD -w $PWD jsii/superchain:1-buster-slim-node14
 # The build-patterns.sh command can take along time, be sure to allocate enough resources in the Docker dashboard
 # (6 CPUs is good)
-docker$ ./deployment/build-patterns.sh
+docker$ ./deployment/v2/build-patterns.sh
 # At this point the container is configured and ready to work on. 
 # To work on a specific construct, execute the Partial Build steps below
 ```
