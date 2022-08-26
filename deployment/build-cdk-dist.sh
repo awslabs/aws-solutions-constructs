@@ -1,4 +1,11 @@
 #!/bin/bash
+echo    !!!!!!!!!!!!!!!!!!!!
+echo
+echo Building V1 from the main branch is deprecated.
+echo
+echo Run ./deployment/v2/build-patterns.sh to do a V2 build
+echo
+exit 1
 set -euo pipefail
 
 deployment_dir=$(cd $(dirname $0) && pwd)
