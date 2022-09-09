@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.22.0](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/compare/v2.14.0...v2.22.0) (2022-09-09)
 
+(no changes in this release)
+
 ## [2.21.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.20.0...v2.21.0) (2022-08-26)
 
 * **Upgrade to Typescript 4.7.4:** ([#783](https://github.com/awslabs/aws-solutions-constructs/pull/783))
