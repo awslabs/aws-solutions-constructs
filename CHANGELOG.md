@@ -2,14 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.24.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.23.0...v2.24.0) (2022-09-13)
+
+(no changes in this release)
+Note - 2.24.0 is not available in Maven
+
 ## [2.23.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.22.0...v2.23.0) (2022-09-12)
 
 (no changes in this release)
-
+Note - 2.23.0 is not available in Maven
 ## [2.22.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.21.0...v2.22.0) (2022-09-11)
 
 (no changes in this release)
-Note - 2.22.0 was not released to Maven
+Note - 2.22.0 is not available in Maven
 
 ## [2.21.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.20.0...v2.21.0) (2022-08-26)
 
