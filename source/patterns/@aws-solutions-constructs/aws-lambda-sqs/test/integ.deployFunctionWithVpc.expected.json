@@ -197,7 +197,10 @@
       },
       "DependsOn": [
         "testlambdasqsLambdaFunctionServiceRoleDefaultPolicyE3CAD09D",
-        "testlambdasqsLambdaFunctionServiceRoleC0430CA8"
+        "testlambdasqsLambdaFunctionServiceRoleC0430CA8",
+        "VpcisolatedSubnet1RouteTableAssociationD259E31A",
+        "VpcisolatedSubnet2RouteTableAssociation25A4716F",
+        "VpcisolatedSubnet3RouteTableAssociationDC010BEB"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -403,11 +406,11 @@
     "VpcisolatedSubnet1SubnetE62B1B9B": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "CidrBlock": "10.0.0.0/18",
         "VpcId": {
           "Ref": "Vpc8378EB38"
         },
         "AvailabilityZone": "test-region-1a",
+        "CidrBlock": "10.0.0.0/18",
         "MapPublicIpOnLaunch": false,
         "Tags": [
           {
@@ -453,11 +456,11 @@
     "VpcisolatedSubnet2Subnet39217055": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "CidrBlock": "10.0.64.0/18",
         "VpcId": {
           "Ref": "Vpc8378EB38"
         },
         "AvailabilityZone": "test-region-1b",
+        "CidrBlock": "10.0.64.0/18",
         "MapPublicIpOnLaunch": false,
         "Tags": [
           {
@@ -503,11 +506,11 @@
     "VpcisolatedSubnet3Subnet44F2537D": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "CidrBlock": "10.0.128.0/18",
         "VpcId": {
           "Ref": "Vpc8378EB38"
         },
         "AvailabilityZone": "test-region-1c",
+        "CidrBlock": "10.0.128.0/18",
         "MapPublicIpOnLaunch": false,
         "Tags": [
           {
