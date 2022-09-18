@@ -120,7 +120,11 @@
             "Value": "deployFunctionWithExistingVpc/Vpc/PublicSubnet1"
           }
         ]
-      }
+      },
+      "DependsOn": [
+        "VpcPublicSubnet1DefaultRoute3DA9E72A",
+        "VpcPublicSubnet1RouteTableAssociation97140677"
+      ]
     },
     "VpcPublicSubnet2Subnet691E08A3": {
       "Type": "AWS::EC2::Subnet",
@@ -227,7 +231,11 @@
             "Value": "deployFunctionWithExistingVpc/Vpc/PublicSubnet2"
           }
         ]
-      }
+      },
+      "DependsOn": [
+        "VpcPublicSubnet2DefaultRoute97F91067",
+        "VpcPublicSubnet2RouteTableAssociationDD5762D8"
+      ]
     },
     "VpcPublicSubnet3SubnetBE12F0B6": {
       "Type": "AWS::EC2::Subnet",
@@ -334,7 +342,11 @@
             "Value": "deployFunctionWithExistingVpc/Vpc/PublicSubnet3"
           }
         ]
-      }
+      },
+      "DependsOn": [
+        "VpcPublicSubnet3DefaultRoute4697774F",
+        "VpcPublicSubnet3RouteTableAssociation1F1EDF02"
+      ]
     },
     "VpcPrivateSubnet1Subnet536B997A": {
       "Type": "AWS::EC2::Subnet",
@@ -802,13 +814,13 @@
         },
         "Environment": {
           "Variables": {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "DOMAIN_ENDPOINT": {
               "Fn::GetAtt": [
                 "testlambdaelasticsearchkibana4ElasticsearchDomainC32C1BE6",
                 "DomainEndpoint"
               ]
-            },
-            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+            }
           }
         },
         "Handler": "index.handler",
@@ -840,7 +852,13 @@
       },
       "DependsOn": [
         "testlambdaelasticsearchkibana4LambdaFunctionServiceRoleDefaultPolicyA5AD88E5",
-        "testlambdaelasticsearchkibana4LambdaFunctionServiceRoleA52BB7F9"
+        "testlambdaelasticsearchkibana4LambdaFunctionServiceRoleA52BB7F9",
+        "VpcPrivateSubnet1DefaultRouteBE02A9ED",
+        "VpcPrivateSubnet1RouteTableAssociation70C59FA6",
+        "VpcPrivateSubnet2DefaultRoute060D2087",
+        "VpcPrivateSubnet2RouteTableAssociationA89CAD56",
+        "VpcPrivateSubnet3DefaultRoute94B74F0D",
+        "VpcPrivateSubnet3RouteTableAssociation16BDDC43"
       ],
       "Metadata": {
         "cfn_nag": {
