@@ -106,7 +106,9 @@
             ]
           }
         ]
-      }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
     },
     "testOneApiAccount05D566DC": {
       "Type": "AWS::ApiGateway::Account",
@@ -120,7 +122,9 @@
       },
       "DependsOn": [
         "testOneApi71064556"
-      ]
+      ],
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
     },
     "testOneApiDeploymentEF63BD86e15daf42da17689cb6d56b07d074b512": {
       "Type": "AWS::ApiGateway::Deployment",
@@ -555,7 +559,9 @@
             ]
           }
         ]
-      }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
     },
     "testTwoApiAccount7260D443": {
       "Type": "AWS::ApiGateway::Account",
@@ -569,7 +575,9 @@
       },
       "DependsOn": [
         "testTwoApi17A08EF5"
-      ]
+      ],
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
     },
     "testTwoApiDeployment4EDBF4DF26b103f50979cda2b3c8314c6d694485": {
       "Type": "AWS::ApiGateway::Deployment",

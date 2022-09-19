@@ -147,13 +147,13 @@
         },
         "Environment": {
           "Variables": {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "DOMAIN_ENDPOINT": {
               "Fn::GetAtt": [
                 "testlambdaelasticsearchkibanaElasticsearchDomain50D5F86E",
                 "DomainEndpoint"
               ]
-            },
-            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+            }
           }
         },
         "Handler": "index.handler",
@@ -179,7 +179,8 @@
       },
       "DependsOn": [
         "testlambdaelasticsearchkibanaLambdaFunctionServiceRoleDefaultPolicy199413EB",
-        "testlambdaelasticsearchkibanaLambdaFunctionServiceRole3AFFEAA2"
+        "testlambdaelasticsearchkibanaLambdaFunctionServiceRole3AFFEAA2",
+        "VpcisolatedSubnet1RouteTableAssociationD259E31A"
       ],
       "Metadata": {
         "cfn_nag": {

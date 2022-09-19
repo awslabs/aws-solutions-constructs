@@ -106,7 +106,9 @@
             ]
           }
         ]
-      }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
     },
     "testApiAccountA6723CBB": {
       "Type": "AWS::ApiGateway::Account",
@@ -120,7 +122,9 @@
       },
       "DependsOn": [
         "testApiD6ECAB50"
-      ]
+      ],
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
     },
     "testApiDeployment3727A0B98616f677c89f00f84016798f65d107c0": {
       "Type": "AWS::ApiGateway::Deployment",
