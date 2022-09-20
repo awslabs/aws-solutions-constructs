@@ -65,13 +65,13 @@ new AppSyncToDynamoDB(this, "test-appsync-dynamodb-default", new AppSyncToDynamo
 |dynamoTableProps?|[`dynamodb.TableProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-dynamodb.TableProps.html)|Optional user provided props to override the default props for DynamoDB Table.|
 |existingTableObj?|[`dynamodb.Table`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-dynamodb.Table.html)|Existing instance of DynamoDB table object, providing both this and `dynamoTableProps` will cause an error.|
 |appSyncProps?|[`api.GraphqlApiProps `](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-appsync-alpha.GraphqlApiProps.html)|Optional user-provided props to override the default props for AppSync.|
-|allowCreateOperation?|`boolean`|Whether to deploy API Gateway Method for Create operation on DynamoDB table.|
+|allowCreateOperation?|`boolean`|Whether to deploy AppSync operation for Create operation on DynamoDB table.|
 |createRequestTemplate?|`string`|Optional AppSync resolver mapping template for Create method, required if `allowCreateOperation` set to true.|
-|allowReadOperation?|`boolean`|Whether to deploy API Gateway Method for Read operation on DynamoDB table.|
+|allowReadOperation?|`boolean`|Whether to deploy AppSync operation for Read operation on DynamoDB table.|
 |readRequestTemplate?|`string`|Optional AppSync resolver mapping template for Read method, it will use the default template if `allowReadOperation` is true and `readRequestTemplate` is not provided. The default template only supports a partition key and not partition + sort keys.|
-|allowUpdateOperation?|`boolean`|Whether to deploy API Gateway Method for Update operation on DynamoDB table.|
+|allowUpdateOperation?|`boolean`|Whether to deploy AppSync operation for Update operation on DynamoDB table.|
 |updateRequestTemplate?|`string`|Optional AppSync resolver mapping template for Update method, required if `allowUpdateOperation` set to true.|
-|allowDeleteOperation?|`boolean`|Whether to deploy API Gateway Method for Delete operation on DynamoDB table.|
+|allowDeleteOperation?|`boolean`|Whether to deploy AppSync operation for Delete operation on DynamoDB table.|
 |deleteRequestTemplate?|`string`|Optional AppSync resolver mapping template for Delete method, it will use the default template if `allowDeleteOperation` is true and `deleteRequestTemplate` is not provided. The default template only supports a partition key and not partition + sort keys.|
 |logGroupProps?|[`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-logs.LogGroupProps.html)|User provided props to override the default props for for the CloudWatchLogs LogGroup.|
 
