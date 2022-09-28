@@ -146,7 +146,7 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 |existingTableInterface?|[`dynamodb.ITable`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_dynamodb.ITable.html)|Existing instance of DynamoDB table object or interface, providing both this and `dynamoTableProps` will cause an error.| Use this instead of `existingTableObj` to support a table object or interface.|
 | existingTableObj?	| [`dynamodb.Table`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_dynamodb.Table.html)|Existing instance of DynamoDB table object, providing both this and `dynamoTableProps` will cause an error.| This attribute is deprecated, please use `existingTableInterface`.|
 | tablePermissions?	|`string`|Optional table permissions to grant to the Lambda function. One of the following may be specified: `All`, `Read`, `ReadWrite`, `Write`.| Required only where DynamoDB is a data store being accessed by the construct.|
-| dynamoEventSourceProps?| [`aws-lambda-event-sources.DynamoEventSourceProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda-event-sources.DynamoEventSourceProps.html)| Optional user provided props to override the default props for DynamoDB Event Source. | Required only where DynamoDB is invoking other services (DynamoDB Streams). |
+| dynamoEventSourceProps?| [`aws-lambda-event-sources.DynamoEventSourceProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda_event_sources.DynamoEventSourceProps.html)| Optional user provided props to override the default props for DynamoDB Event Source. | Required only where DynamoDB is invoking other services (DynamoDB Streams). |
 
 **Required Construct Properties**
 
