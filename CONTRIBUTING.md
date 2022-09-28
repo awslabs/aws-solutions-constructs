@@ -83,7 +83,7 @@ Now it's time to work your magic. Here are some guidelines:
   * Import statement for `Construct` is standalone, for example, `import { Construct } from '@aws-cdk/core';` instead of `import { Construct, App, Aws } from '@aws-cdk/core';`
   * Check to make sure the usage of `Construct` in the code is also standalone, for example, `export class IotToSqs extends Construct` insted of `export class IotToSqs extends cdk.Construct`
   * Core classes are imported from `@aws-cdk/core` only, for example, `import { Duration } from "@aws-cdk/core;` instead of `import { Duration } from "@aws-cdk/core/lib/duration";`
-  * DO NOT USE deprecated APIs, it will not build in CDKv2, for example, using `statistic?` attribute of [@aws-cdk/aws-cloudwatch.Alarm](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudwatch.Alarm.html) Construct Props will fail to build in CDKv2 
+  * DO NOT USE deprecated APIs, it will not build in CDKv2, for example, using `statistic?` attribute of [@aws-cdk/aws-cloudwatch.Alarm](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch.Alarm.html) Construct Props will fail to build in CDKv2 
   * DO NOT USE experimental modules, it will not build in CDKv2, for example, avoid using L2 constructs for [HTTP or Websocket API](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-apigatewayv2-readme.html) will fail to build in CDKv2 
 
 #### Integration Tests
