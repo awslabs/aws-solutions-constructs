@@ -24,7 +24,7 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 // -
 // In your environment, use the static method fromBucketName() to include an actual existing
 // bucket from your environment in this stack. More info:
-// https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html#static-fromwbrbucketwbrnamescope-id-bucketname
+// https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html#static-fromwbrbucketwbrnamescope-id-bucketname
 // -
 export class ExistingResources extends Stack {
 
