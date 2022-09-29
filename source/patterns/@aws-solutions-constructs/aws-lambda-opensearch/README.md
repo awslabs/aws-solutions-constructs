@@ -23,7 +23,7 @@
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.lambdaopensearch`|
 
 ## Overview
-This AWS Solutions Construct implements the AWS Lambda function and Amazon OpenSearch Service with the least privileged permissions.
+This AWS Solutions Construct implements an AWS Lambda function and Amazon OpenSearch Service with the least privileged permissions.
 
 **Some cluster configurations (e.g VPC access) require the existence of the `AWSServiceRoleForAmazonOpenSearchService` Service-Linked Role in your account.**
 
@@ -49,7 +49,7 @@ const lambdaProps: lambda.FunctionProps = {
 
 new LambdaToOpenSearch(this, 'sample', {
   lambdaFunctionProps: lambdaProps,
-  domainName: 'testdomain',
+  openSearchDomainName: 'testdomain',
   // TODO: Ensure the Cognito domain name is globally unique
   cognitoDomainName: 'globallyuniquedomain' + Aws.ACCOUNT_ID
 });
@@ -73,7 +73,7 @@ lambda_props = _lambda.FunctionProps(
 
 LambdaToOpenSearch(self, 'sample',
                             lambda_function_props=lambda_props,
-                            domain_name='testdomain',
+                            open_search_domain_name='testdomain',
                             # TODO: Ensure the Cognito domain name is globally unique
                             cognito_domain_name='globallyuniquedomain' + Aws.ACCOUNT_ID
                             )
@@ -97,7 +97,7 @@ new LambdaToOpenSearch(this, "sample",
                         .code(Code.fromAsset("lambda"))
                         .handler("index.handler")
                         .build())
-                .domainName("testdomain")
+                .openSearchDomainName("testdomain")
                 // TODO: Ensure the Cognito domain name is globally unique
                 .cognitoDomainName("globallyuniquedomain" + Aws.ACCOUNT_ID)
                 .build());
@@ -108,9 +108,9 @@ new LambdaToOpenSearch(this, "sample",
 |:-------------|:----------------|-----------------|
 |existingLambdaObj?|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html)|Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.|
 |lambdaFunctionProps?|[`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html)|User provided props to override the default props for the Lambda function.|
-|domainProps?|[`opensearchservice.CfnDomainProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_opensearchservice.CfnDomainProps.html)|Optional user provided props to override the default props for the OpenSearch Service.|
-|domainName|`string`|Domain name for the Cognito and the OpenSearch Service.|
-|cognitoDomainName?|`string`|Optional Cognito domain name, if provided it will be used for Cognito domain, and `domainName` will be used for the OpenSearch domain.|
+|openSearchDomainProps?|[`opensearchservice.CfnDomainProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_opensearchservice.CfnDomainProps.html)|Optional user provided props to override the default props for the OpenSearch Service.|
+|openSearchDomainName|`string`|Domain name for the Cognito and the OpenSearch Service.|
+|cognitoDomainName?|`string`|Optional Cognito domain name, if provided it will be used for Cognito domain, and `openSearchDomainName` will be used for the OpenSearch Service domain.|
 |createCloudWatchAlarms?|`boolean`|Whether to create the recommended CloudWatch alarms.|
 |domainEndpointEnvironmentVariableName?|`string`|Optional name for the OpenSearch domain endpoint environment variable set for the Lambda function.|
 |existingVpc?|[`ec2.IVpc`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html)|An optional, existing VPC into which this pattern should be deployed. When deployed in a VPC, the Lambda function will use ENIs in the VPC to access network resources. If an existing VPC is provided, the `deployVpc` property cannot be `true`. This uses `ec2.IVpc` to allow clients to supply VPCs that exist outside the stack using the [`ec2.Vpc.fromLookup()`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.Vpc.html#static-fromwbrlookupscope-id-options) method.|
@@ -126,7 +126,7 @@ new LambdaToOpenSearch(this, "sample",
 |userPoolClient|[`cognito.UserPoolClient`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cognito.UserPoolClient.html)|Returns an instance of `cognito.UserPoolClient` created by the construct|
 |identityPool|[`cognito.CfnIdentityPool`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cognito.CfnIdentityPool.html)|Returns an instance of `cognito.CfnIdentityPool` created by the construct|
 |opensearchDomain|[`opensearchservice.CfnDomain`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_opensearchservice.CfnDomain.html)|Returns an instance of `opensearch.CfnDomain` created by the construct|
-|opensearchRole|[`iam.Role`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html)|Returns an instance of `iam.Role` created by the construct for opensearch.CfnDomain|
+|opensearchRole|[`iam.Role`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html)|Returns an instance of `iam.Role` created by the construct for `opensearch.CfnDomain`|
 |cloudwatchAlarms?|[`cloudwatch.Alarm[]`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch.Alarm.html)|Returns a list of `cloudwatch.Alarm` created by the construct|
 |vpc?|[`ec2.IVpc`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html)|Returns an interface on the VPC used by the pattern (if any). This may be a VPC created by the pattern or the VPC supplied to the pattern constructor.|
 
@@ -136,7 +136,7 @@ This pattern requires a lambda function that can post data into the OpenSearch. 
 
 ## Default settings
 
-Out of the box implementation of the Construct without any override will set the following defaults:
+Out of the box implementation of the Construct without any overrides will set the following defaults:
 
 ### AWS Lambda Function
 * Configure limited privilege access IAM role for Lambda function
@@ -144,18 +144,18 @@ Out of the box implementation of the Construct without any override will set the
 * Enable X-Ray Tracing
 * Set Environment Variables
   * (default) DOMAIN_ENDPOINT
-  * AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x and higher functions)
+  * AWS_NODEJS_CONNECTION_REUSE_ENABLED
 
 ### Amazon Cognito
 * Set password policy for User Pools
 * Enforce the advanced security mode for User Pools
 
 ### Amazon OpenSearch Service
-* Deploy best practices CloudWatch Alarms for the OpenSearch Domain
+* Deploy best practices CloudWatch Alarms for the OpenSearch Service domain
 * Secure the Kibana dashboard access with Cognito User Pools
-* Enable server-side encryption for OpenSearch Domain using AWS managed KMS Key
-* Enable node-to-node encryption for OpenSearch Domain
-* Configure the cluster for the Amazon OpenSearch domain
+* Enable server-side encryption for OpenSearch Service domain using AWS managed KMS Key
+* Enable node-to-node encryption for the OpenSearch Service domain
+* Configure the cluster for the OpenSearch Service domain
 
 ## Architecture
 ![Architecture Diagram](architecture.png)
