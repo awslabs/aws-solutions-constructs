@@ -109,7 +109,7 @@ new LambdaToOpenSearch(this, "sample",
 |existingLambdaObj?|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html)|Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.|
 |lambdaFunctionProps?|[`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html)|User provided props to override the default props for the Lambda function.|
 |openSearchDomainProps?|[`opensearchservice.CfnDomainProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_opensearchservice.CfnDomainProps.html)|Optional user provided props to override the default props for the OpenSearch Service.|
-|openSearchDomainName|`string`|Domain name for the Cognito and the OpenSearch Service.|
+|openSearchDomainName|`string`|Domain name for the OpenSearch Service.|
 |cognitoDomainName?|`string`|Optional Cognito domain name, if provided it will be used for Cognito domain, and `openSearchDomainName` will be used for the OpenSearch Service domain.|
 |createCloudWatchAlarms?|`boolean`|Whether to create the recommended CloudWatch alarms.|
 |domainEndpointEnvironmentVariableName?|`string`|Optional name for the OpenSearch domain endpoint environment variable set for the Lambda function.|
