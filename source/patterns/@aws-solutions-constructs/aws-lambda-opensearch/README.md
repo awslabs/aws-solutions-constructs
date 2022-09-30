@@ -25,13 +25,6 @@
 ## Overview
 This AWS Solutions Construct implements an AWS Lambda function and Amazon OpenSearch Service with the least privileged permissions.
 
-**Some cluster configurations (e.g VPC access) require the existence of the `AWSServiceRoleForAmazonOpenSearchService` Service-Linked Role in your account.**
-
-**You will need to create the service-linked role using the AWS CLI once in any account using this construct (it may have already been executed to support other stacks):**
-```
-aws iam create-service-linked-role --aws-service-name es.amazonaws.com
-```
-
 Here is a minimal deployable pattern definition:
 
 Typescript
@@ -110,7 +103,7 @@ new LambdaToOpenSearch(this, "sample",
 |lambdaFunctionProps?|[`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html)|User provided props to override the default props for the Lambda function.|
 |openSearchDomainProps?|[`opensearchservice.CfnDomainProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_opensearchservice.CfnDomainProps.html)|Optional user provided props to override the default props for the OpenSearch Service.|
 |openSearchDomainName|`string`|Domain name for the OpenSearch Service.|
-|cognitoDomainName?|`string`|Optional Cognito domain name, if provided it will be used for Cognito domain, and `openSearchDomainName` will be used for the OpenSearch Service domain.|
+|cognitoDomainName?|`string`|Optional Amazon Cognito domain name. If omitted the Amazon Cognito domain will default to the OpenSearch Service domain name.|
 |createCloudWatchAlarms?|`boolean`|Whether to create the recommended CloudWatch alarms.|
 |domainEndpointEnvironmentVariableName?|`string`|Optional name for the OpenSearch domain endpoint environment variable set for the Lambda function.|
 |existingVpc?|[`ec2.IVpc`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html)|An optional, existing VPC into which this pattern should be deployed. When deployed in a VPC, the Lambda function will use ENIs in the VPC to access network resources. If an existing VPC is provided, the `deployVpc` property cannot be `true`. This uses `ec2.IVpc` to allow clients to supply VPCs that exist outside the stack using the [`ec2.Vpc.fromLookup()`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.Vpc.html#static-fromwbrlookupscope-id-options) method.|
