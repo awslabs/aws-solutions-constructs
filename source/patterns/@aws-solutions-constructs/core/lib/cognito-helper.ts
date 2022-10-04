@@ -120,3 +120,18 @@ export function setupCognitoForElasticSearch(scope: Construct, domainName: strin
 
   return cognitoAuthorizedRole;
 }
+
+export function setupOpenSearchCognito(scope: Construct, domainName: string):
+  [cognito.UserPool, cognito.UserPoolClient, cognito.CfnIdentityPool, iam.Role] {
+  const userPool = buildUserPool(scope);
+  const userPoolClient = buildUserPoolClient(scope, userPool);
+  const identityPool = buildIdentityPool(scope, userPool, userPoolClient);
+
+  const cognitoAuthorizedRole: iam.Role = setupCognitoForElasticSearch(scope, domainName, {
+    userpool: userPool,
+    identitypool: identityPool,
+    userpoolclient: userPoolClient
+  });
+
+  return [userPool, userPoolClient, identityPool, cognitoAuthorizedRole];
+}
