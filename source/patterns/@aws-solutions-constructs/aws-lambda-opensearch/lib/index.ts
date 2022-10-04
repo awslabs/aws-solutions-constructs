@@ -22,7 +22,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 import { Construct } from 'constructs';
 
 /**
- * @summary The properties for the CognitoToApiGatewayToLambda Construct
+ * @summary The properties for the LambdaToOpenSearch Construct
  */
 export interface LambdaToOpenSearchProps {
   /**
@@ -52,7 +52,7 @@ export interface LambdaToOpenSearchProps {
   /**
    * Optional Amazon Cognito domain name. If omitted the Amazon Cognito domain will default to the OpenSearch Service domain name.
    *
-   * @default - None
+   * @default - the OpenSearch Service domain name
    */
   readonly cognitoDomainName?: string;
   /**
