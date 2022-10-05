@@ -137,7 +137,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "466cbfc6653782bd2707dec5bc5c58005c75a8bff3660a58eefa57d667120240.zip"
+          "S3Key": "abbc4eca9e7ddabc31da3ce83159e6eee8e72e2c358ab8af0711044514c41290.zip"
         },
         "Role": {
           "Fn::GetAtt": [
@@ -370,7 +370,7 @@
         }
       }
     },
-    "testlambdaopensearchCognitoKibanaConfigureRole9623271F": {
+    "testlambdaopensearchCognitoDashboardConfigureRole1F2B7B7A": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -387,7 +387,7 @@
         }
       }
     },
-    "testlambdaopensearchCognitoKibanaConfigureRolePolicyE9D9C211": {
+    "testlambdaopensearchCognitoDashboardConfigureRolePolicyC9C6A6A2": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -462,7 +462,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "testlambdaopensearchCognitoKibanaConfigureRole9623271F",
+                  "testlambdaopensearchCognitoDashboardConfigureRole1F2B7B7A",
                   "Arn"
                 ]
               }
@@ -470,10 +470,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testlambdaopensearchCognitoKibanaConfigureRolePolicyE9D9C211",
+        "PolicyName": "testlambdaopensearchCognitoDashboardConfigureRolePolicyC9C6A6A2",
         "Roles": [
           {
-            "Ref": "testlambdaopensearchCognitoKibanaConfigureRole9623271F"
+            "Ref": "testlambdaopensearchCognitoDashboardConfigureRole1F2B7B7A"
           }
         ]
       }
@@ -535,7 +535,7 @@
           },
           "RoleArn": {
             "Fn::GetAtt": [
-              "testlambdaopensearchCognitoKibanaConfigureRole9623271F",
+              "testlambdaopensearchCognitoDashboardConfigureRole1F2B7B7A",
               "Arn"
             ]
           },

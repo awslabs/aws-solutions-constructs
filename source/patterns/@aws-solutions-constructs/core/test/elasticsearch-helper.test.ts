@@ -27,7 +27,7 @@ function deployES(stack: Stack, domainName: string, clientDomainProps?: elastics
   });
   const identitypool = defaults.buildIdentityPool(stack, userpool, userpoolclient);
 
-  const cognitoAuthorizedRole = defaults.setupCognitoForElasticSearch(stack, 'test-domain', {
+  const cognitoAuthorizedRole = defaults.setupCognitoForSearchService(stack, 'test-domain', {
     userpool,
     userpoolclient,
     identitypool
@@ -266,7 +266,7 @@ test('Test error thrown with no private subnet configurations', () => {
     deployES(stack, 'test-domain', {}, undefined, vpc);
   };
 
-  expect(app).toThrowError('Error - ElasticSearch Domains can only be deployed in Isolated or Private subnets');
+  expect(app).toThrowError('Error - Subnet IDs must be Isolated or Private subnets');
 });
 
 test('Test override ES version for buildElasticSearch', () => {

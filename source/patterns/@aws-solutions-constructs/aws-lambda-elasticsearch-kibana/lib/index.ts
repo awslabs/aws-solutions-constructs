@@ -18,12 +18,11 @@ import * as cognito from 'aws-cdk-lib/aws-cognito';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
-import { Role } from 'aws-cdk-lib/aws-iam';
 import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 /**
- * @summary The properties for the CognitoToApiGatewayToLambda Construct
+ * @summary The properties for the LambdaToElasticSearchAndKibana Construct
  */
 export interface LambdaToElasticSearchAndKibanaProps {
   /**
@@ -99,10 +98,10 @@ export class LambdaToElasticSearchAndKibana extends Construct {
   public readonly vpc?: ec2.IVpc;
 
   /**
-   * @summary Constructs a new instance of the CognitoToApiGatewayToLambda class.
-   * @param {cdk.App} scope - represents the scope for all the resources.
+   * @summary Constructs a new instance of the LambdaToElasticSearchAndKibana class.
+   * @param {Constructs} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
-   * @param {CognitoToApiGatewayToLambdaProps} props - user provided props for the construct
+   * @param {LambdaToElasticSearchAndKibanaProps} props - user provided props for the construct
    * @since 0.8.0
    * @access public
    */
@@ -146,7 +145,7 @@ export class LambdaToElasticSearchAndKibana extends Construct {
     let cognitoAuthorizedRole: iam.Role;
 
     [this.userPool, this.userPoolClient, this.identityPool, cognitoAuthorizedRole] =
-      this.setupCognito(this, props.cognitoDomainName ?? props.domainName);
+      defaults.buildCognitoForSearchService(this, props.cognitoDomainName ?? props.domainName);
 
     const buildElasticSearchProps: any = {
       userpool: this.userPool,
@@ -173,19 +172,5 @@ export class LambdaToElasticSearchAndKibana extends Construct {
       // Deploy best practices CW Alarms for ES
       this.cloudwatchAlarms = defaults.buildElasticSearchCWAlarms(this);
     }
-  }
-
-  setupCognito(scope: Construct, domainName: string): [cognito.UserPool, cognito.UserPoolClient, cognito.CfnIdentityPool, iam.Role] {
-    const userPool = defaults.buildUserPool(scope);
-    const userPoolClient = defaults.buildUserPoolClient(scope, userPool);
-    const identityPool = defaults.buildIdentityPool(scope, userPool, userPoolClient);
-
-    const cognitoAuthorizedRole: Role = defaults.setupCognitoForElasticSearch(scope, domainName, {
-      userpool: userPool,
-      identitypool: identityPool,
-      userpoolclient: userPoolClient
-    });
-
-    return [userPool, userPoolClient, identityPool, cognitoAuthorizedRole];
   }
 }

@@ -27,7 +27,7 @@ function deployOpenSearch(stack: Stack, openSearchDomainName: string, clientDoma
   });
 
   const identitypool = defaults.buildIdentityPool(stack, userpool, userpoolclient);
-  const cognitoAuthorizedRole = defaults.setupCognitoForElasticSearch(stack, 'test-domain', {
+  const cognitoAuthorizedRole = defaults.setupCognitoForSearchService(stack, 'test-domain', {
     userpool,
     userpoolclient,
     identitypool
@@ -100,7 +100,7 @@ test('Test override SnapshotOptions for buildOpenSearch', () => {
       },
       RoleArn: {
         "Fn::GetAtt": [
-          "CognitoKibanaConfigureRole62CCE76A",
+          "CognitoDashboardConfigureRoleEC5F4809",
           "Arn"
         ]
       },
@@ -251,7 +251,7 @@ test('Test error thrown with no private subnet configurations', () => {
     deployOpenSearch(stack, 'test-domain', {}, undefined, vpc);
   };
 
-  expect(app).toThrowError('Error - the OpenSearch Service domain can only be deployed in Isolated or Private subnets');
+  expect(app).toThrowError('Error - Subnet IDs must be Isolated or Private subnets');
 });
 
 test('Test engine version override for buildOpenSearch', () => {
@@ -302,7 +302,7 @@ test('Test engine version override for buildOpenSearch', () => {
       },
       RoleArn: {
         "Fn::GetAtt": [
-          "CognitoKibanaConfigureRole62CCE76A",
+          "CognitoDashboardConfigureRoleEC5F4809",
           "Arn"
         ]
       },
@@ -387,7 +387,7 @@ test('Test deployment with lambdaRoleARN', () => {
       },
       RoleArn: {
         "Fn::GetAtt": [
-          "CognitoKibanaConfigureRole62CCE76A",
+          "CognitoDashboardConfigureRoleEC5F4809",
           "Arn"
         ]
       },

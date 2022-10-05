@@ -99,7 +99,7 @@ export class LambdaToOpenSearch extends Construct {
 
   /**
    * @summary Constructs a new instance of the LambdaToOpenSearch class.
-   * @param {cdk.App} scope - represents the scope for all the resources.
+   * @param {Construct} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {LambdaToOpenSearchProps} props - user provided props for the construct
    * @since 0.8.0
@@ -145,7 +145,7 @@ export class LambdaToOpenSearch extends Construct {
     let cognitoAuthorizedRole: iam.Role;
 
     [this.userPool, this.userPoolClient, this.identityPool, cognitoAuthorizedRole] =
-      defaults.setupOpenSearchCognito(this, props.cognitoDomainName ?? props.openSearchDomainName);
+      defaults.buildCognitoForSearchService(this, props.cognitoDomainName ?? props.openSearchDomainName);
 
     const buildOpenSearchProps: any = {
       userpool: this.userPool,

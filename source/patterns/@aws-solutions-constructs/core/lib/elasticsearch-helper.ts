@@ -13,6 +13,7 @@
 
 import * as elasticsearch from 'aws-cdk-lib/aws-elasticsearch';
 import { DefaultCfnDomainProps } from './elasticsearch-defaults';
+import { retrievePrivateSubnetIds } from './vpc-helper';
 import { consolidateProps, addCfnSuppressRules } from './utils';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as cdk from 'aws-cdk-lib';
@@ -216,25 +217,6 @@ export function buildElasticSearchCWAlarms(scope: Construct): cloudwatch.Alarm[]
   }));
 
   return alarms;
-}
-
-function retrievePrivateSubnetIds(vpc: ec2.IVpc) {
-  let targetSubnetType;
-
-  if (vpc.isolatedSubnets.length) {
-    targetSubnetType = ec2.SubnetType.PRIVATE_ISOLATED;
-  } else if (vpc.privateSubnets.length) {
-    targetSubnetType = ec2.SubnetType.PRIVATE_WITH_NAT;
-  } else {
-    throw new Error('Error - ElasticSearch Domains can only be deployed in Isolated or Private subnets');
-  }
-
-  const subnetSelector = {
-    onePerAz: true,
-    subnetType: targetSubnetType
-  };
-
-  return vpc.selectSubnets(subnetSelector).subnetIds;
 }
 
 function createClusterConfiguration(numberOfAzs?: number): elasticsearch.CfnDomain.ElasticsearchClusterConfigProperty {

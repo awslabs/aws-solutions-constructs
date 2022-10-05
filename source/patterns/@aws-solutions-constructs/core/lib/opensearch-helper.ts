@@ -13,6 +13,7 @@
 
 import * as opensearch from 'aws-cdk-lib/aws-opensearchservice';
 import { DefaultOpenSearchCfnDomainProps } from './opensearch-defaults';
+import { retrievePrivateSubnetIds } from './vpc-helper';
 import { consolidateProps, addCfnSuppressRules } from './utils';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as cdk from 'aws-cdk-lib';
@@ -40,7 +41,7 @@ export function buildOpenSearch(scope: Construct, props: BuildOpenSearchProps): 
   const constructDrivenProps: any = {};
 
   // Setup the IAM Role & policy for the OpenSearch Service to configure Cognito User pool and Identity pool
-  const cognitoKibanaConfigureRole = createKibanaCognitoRole(scope, props.userpool, props.identitypool, props.openSearchDomainName);
+  const cognitoDashboardConfigureRole = createDashboardCognitoRole(scope, props.userpool, props.identitypool, props.openSearchDomainName);
 
   if (props.vpc) {
     subnetIds = retrievePrivateSubnetIds(props.vpc);
@@ -65,7 +66,7 @@ export function buildOpenSearch(scope: Construct, props: BuildOpenSearchProps): 
     }
   }
 
-  const defaultCfnDomainProps = DefaultOpenSearchCfnDomainProps(props.openSearchDomainName, cognitoKibanaConfigureRole, props);
+  const defaultCfnDomainProps = DefaultOpenSearchCfnDomainProps(props.openSearchDomainName, cognitoDashboardConfigureRole, props);
   const finalCfnDomainProps = consolidateProps(defaultCfnDomainProps, props.clientDomainProps, constructDrivenProps);
 
   const opensearchDomain = new opensearch.CfnDomain(scope, `OpenSearchDomain`, finalCfnDomainProps);
@@ -81,7 +82,7 @@ export function buildOpenSearch(scope: Construct, props: BuildOpenSearchProps): 
     },
   ]);
 
-  return [opensearchDomain, cognitoKibanaConfigureRole];
+  return [opensearchDomain, cognitoDashboardConfigureRole];
 }
 
 export function buildOpenSearchCWAlarms(scope: Construct): cloudwatch.Alarm[] {
@@ -216,25 +217,6 @@ export function buildOpenSearchCWAlarms(scope: Construct): cloudwatch.Alarm[] {
   return alarms;
 }
 
-function retrievePrivateSubnetIds(vpc: ec2.IVpc) {
-  let targetSubnetType;
-
-  if (vpc.isolatedSubnets.length) {
-    targetSubnetType = ec2.SubnetType.PRIVATE_ISOLATED;
-  } else if (vpc.privateSubnets.length) {
-    targetSubnetType = ec2.SubnetType.PRIVATE_WITH_EGRESS;
-  } else {
-    throw new Error('Error - the OpenSearch Service domain can only be deployed in Isolated or Private subnets');
-  }
-
-  const subnetSelector = {
-    onePerAz: true,
-    subnetType: targetSubnetType
-  };
-
-  return vpc.selectSubnets(subnetSelector).subnetIds;
-}
-
 function createClusterConfiguration(numberOfAzs?: number): opensearch.CfnDomain.ClusterConfigProperty {
   return {
     dedicatedMasterEnabled: true,
@@ -247,24 +229,24 @@ function createClusterConfiguration(numberOfAzs?: number): opensearch.CfnDomain.
   };
 }
 
-function createKibanaCognitoRole(
+function createDashboardCognitoRole(
   scope: Construct,
   userPool: cognito.UserPool,
   identitypool: cognito.CfnIdentityPool,
   domainName: string
 ): iam.Role {
   // Setup the IAM Role & policy for the OpenSearch Service to configure Cognito User pool and Identity pool
-  const cognitoKibanaConfigureRole = new iam.Role(
+  const cognitoDashboardConfigureRole = new iam.Role(
     scope,
-    "CognitoKibanaConfigureRole",
+    "CognitoDashboardConfigureRole",
     {
       assumedBy: new iam.ServicePrincipal("es.amazonaws.com"),
     }
   );
 
-  const cognitoKibanaConfigureRolePolicy = new iam.Policy(
+  const cognitoDashboardConfigureRolePolicy = new iam.Policy(
     scope,
-    "CognitoKibanaConfigureRolePolicy",
+    "CognitoDashboardConfigureRolePolicy",
     {
       statements: [
         new iam.PolicyStatement({
@@ -295,12 +277,12 @@ function createKibanaCognitoRole(
               "iam:PassedToService": "cognito-identity.amazonaws.com",
             },
           },
-          resources: [cognitoKibanaConfigureRole.roleArn],
+          resources: [cognitoDashboardConfigureRole.roleArn],
         }),
       ],
     }
   );
 
-  cognitoKibanaConfigureRolePolicy.attachToRole(cognitoKibanaConfigureRole);
-  return cognitoKibanaConfigureRole;
+  cognitoDashboardConfigureRolePolicy.attachToRole(cognitoDashboardConfigureRole);
+  return cognitoDashboardConfigureRole;
 }

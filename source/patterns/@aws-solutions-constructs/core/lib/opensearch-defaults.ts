@@ -26,6 +26,9 @@ export function DefaultOpenSearchCfnDomainProps(domainName: string, cognitoConfi
     roleARNs.push(new iam.ArnPrincipal(props.serviceRoleARN));
   }
 
+  // Features supported by engine version:
+  // https://docs.aws.amazon.com/opensearch-service/latest/developerguide/features-by-version.html
+  // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_opensearchservice.CfnDomainProps.html
   return {
     domainName,
     engineVersion: 'OpenSearch_1.3',

@@ -48,13 +48,13 @@ function postDocumentToOpenSearch(doc, context) {
 
 exports.handler = (event, context) => {
     console.log('Received event:', JSON.stringify(event, null, 2));
-    postDocumentToOpenSearch("{ \"title\": \"Spirited Away\" }", context);
-    postDocumentToOpenSearch("{ \"title\": \"Fast and Furious\" }", context);
-    postDocumentToOpenSearch("{ \"title\": \"Jurassic Park\" }", context);
+    postDocumentToOpenSearch("{ \"title\": \"Moby Dick\" }", context);
+    postDocumentToOpenSearch("{ \"title\": \"A Tale of Two Cities\" }", context);
+    postDocumentToOpenSearch("{ \"title\": \"The Phantom of the Opera\" }", context);
 
     return {
         statusCode: 200,
         headers: { 'Content-Type': 'text/plain' },
-        body: `Hello from AWS Solutions Constructs You've hit ${event.path}\n`
+        body: `Hello from AWS Solutions Constructs!\n`
     };
 };

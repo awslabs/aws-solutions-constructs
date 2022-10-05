@@ -804,7 +804,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": "cdk-hnb659fds-assets-12345678-test-region",
-          "S3Key": "466cbfc6653782bd2707dec5bc5c58005c75a8bff3660a58eefa57d667120240.zip"
+          "S3Key": "abbc4eca9e7ddabc31da3ce83159e6eee8e72e2c358ab8af0711044514c41290.zip"
         },
         "Role": {
           "Fn::GetAtt": [
@@ -1048,7 +1048,7 @@
         }
       }
     },
-    "testlambdaelasticsearchkibana4CognitoKibanaConfigureRole6A058B80": {
+    "testlambdaelasticsearchkibana4CognitoDashboardConfigureRoleB36C775C": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -1065,7 +1065,7 @@
         }
       }
     },
-    "testlambdaelasticsearchkibana4CognitoKibanaConfigureRolePolicy1615E937": {
+    "testlambdaelasticsearchkibana4CognitoDashboardConfigureRolePolicy1D82A101": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -1140,7 +1140,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "testlambdaelasticsearchkibana4CognitoKibanaConfigureRole6A058B80",
+                  "testlambdaelasticsearchkibana4CognitoDashboardConfigureRoleB36C775C",
                   "Arn"
                 ]
               }
@@ -1148,10 +1148,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testlambdaelasticsearchkibana4CognitoKibanaConfigureRolePolicy1615E937",
+        "PolicyName": "testlambdaelasticsearchkibana4CognitoDashboardConfigureRolePolicy1D82A101",
         "Roles": [
           {
-            "Ref": "testlambdaelasticsearchkibana4CognitoKibanaConfigureRole6A058B80"
+            "Ref": "testlambdaelasticsearchkibana4CognitoDashboardConfigureRoleB36C775C"
           }
         ]
       }
@@ -1216,7 +1216,7 @@
           },
           "RoleArn": {
             "Fn::GetAtt": [
-              "testlambdaelasticsearchkibana4CognitoKibanaConfigureRole6A058B80",
+              "testlambdaelasticsearchkibana4CognitoDashboardConfigureRoleB36C775C",
               "Arn"
             ]
           },

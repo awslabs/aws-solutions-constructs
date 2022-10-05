@@ -34,7 +34,7 @@ function postDocumentToES(doc, context) {
         var body = '';
         httpResp.on('data', function (chunk) {
             body += chunk;
-        });        
+        });
         httpResp.on('end', function (chunk) {
             console.log('All movie records added to ES.');
             context.succeed();
@@ -47,10 +47,13 @@ function postDocumentToES(doc, context) {
 
 exports.handler = (event, context) => {
     console.log('Received event:', JSON.stringify(event, null, 2));
-    postDocumentToES("{ \"title\": \"Spirited Away\" }", context);
-    return {
-      statusCode: 200,
-      headers: { 'Content-Type': 'text/plain' },
-      body: `Hello from Project Vesper! You've hit ${event.path}\n`
-    };
+    postDocumentToOpenSearch("{ \"title\": \"Moby Dick\" }", context);
+    postDocumentToOpenSearch("{ \"title\": \"A Tale of Two Cities\" }", context);
+    postDocumentToOpenSearch("{ \"title\": \"The Phantom of the Opera\" }", context);
+
+    return {
+        statusCode: 200,
+        headers: { 'Content-Type': 'text/plain' },
+        body: `Hello from AWS Solutions Constructs!\n`
+    };
 };
