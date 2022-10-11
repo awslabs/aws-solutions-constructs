@@ -11,8 +11,8 @@
  *  and limitations under the License.
  */
 
-import * as elasticsearch from 'aws-cdk-lib/aws-elasticsearch';
-import { DefaultCfnDomainProps } from './elasticsearch-defaults';
+import * as opensearch from 'aws-cdk-lib/aws-opensearchservice';
+import { DefaultOpenSearchCfnDomainProps } from './opensearch-defaults';
 import { retrievePrivateSubnetIds } from './vpc-helper';
 import { consolidateProps, addCfnSuppressRules } from './utils';
 import * as iam from 'aws-cdk-lib/aws-iam';
@@ -23,32 +23,31 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 
-const MaximumAzsInElasticsearchDomain = 3;
+const MAXIMUM_AZS_IN_OPENSEARCH_DOMAIN = 3;
 
-export interface BuildElasticSearchProps {
+export interface BuildOpenSearchProps {
   readonly identitypool: cognito.CfnIdentityPool;
   readonly userpool: cognito.UserPool;
   readonly cognitoAuthorizedRoleARN: string;
   readonly serviceRoleARN?: string;
   readonly vpc?: ec2.IVpc;
-  readonly domainName: string;
-  readonly clientDomainProps?: elasticsearch.CfnDomainProps,
+  readonly openSearchDomainName: string;
+  readonly clientDomainProps?: opensearch.CfnDomainProps,
   readonly securityGroupIds?: string[]
 }
 
-export function buildElasticSearch(scope: Construct, props: BuildElasticSearchProps): [elasticsearch.CfnDomain, iam.Role] {
-
+export function buildOpenSearch(scope: Construct, props: BuildOpenSearchProps): [opensearch.CfnDomain, iam.Role] {
   let subnetIds: string[] = [];
   const constructDrivenProps: any = {};
 
-  // Setup the IAM Role & policy for ES to configure Cognito User pool and Identity pool
-  const cognitoKibanaConfigureRole = createKibanaCognitoRole(scope, props.userpool, props.identitypool, props.domainName);
+  // Setup the IAM Role & policy for the OpenSearch Service to configure Cognito User pool and Identity pool
+  const cognitoDashboardConfigureRole = createDashboardCognitoRole(scope, props.userpool, props.identitypool, props.openSearchDomainName);
 
   if (props.vpc) {
     subnetIds = retrievePrivateSubnetIds(props.vpc);
 
-    if (subnetIds.length > MaximumAzsInElasticsearchDomain) {
-      subnetIds = subnetIds.slice(0, MaximumAzsInElasticsearchDomain);
+    if (subnetIds.length > MAXIMUM_AZS_IN_OPENSEARCH_DOMAIN) {
+      subnetIds = subnetIds.slice(0, MAXIMUM_AZS_IN_OPENSEARCH_DOMAIN);
     }
 
     constructDrivenProps.vpcOptions = {
@@ -57,25 +56,25 @@ export function buildElasticSearch(scope: Construct, props: BuildElasticSearchPr
     };
 
     // If the client did not submit a ClusterConfig, then we will create one
-    if (!props.clientDomainProps?.elasticsearchClusterConfig) {
-      constructDrivenProps.elasticsearchClusterConfig = createClusterConfiguration(subnetIds.length);
+    if (!props.clientDomainProps?.clusterConfig) {
+      constructDrivenProps.clusterConfig = createClusterConfiguration(subnetIds.length);
     }
   } else { // No VPC
     // If the client did not submit a ClusterConfig, then we will create one based on the Region
-    if (!props.clientDomainProps?.elasticsearchClusterConfig) {
-      constructDrivenProps.elasticsearchClusterConfig = createClusterConfiguration(cdk.Stack.of(scope).availabilityZones.length);
+    if (!props.clientDomainProps?.clusterConfig) {
+      constructDrivenProps.clusterConfig = createClusterConfiguration(cdk.Stack.of(scope).availabilityZones.length);
     }
   }
 
-  const defaultCfnDomainProps = DefaultCfnDomainProps(props.domainName, cognitoKibanaConfigureRole, props);
+  const defaultCfnDomainProps = DefaultOpenSearchCfnDomainProps(props.openSearchDomainName, cognitoDashboardConfigureRole, props);
   const finalCfnDomainProps = consolidateProps(defaultCfnDomainProps, props.clientDomainProps, constructDrivenProps);
 
-  const esDomain = new elasticsearch.CfnDomain(scope, `ElasticsearchDomain`, finalCfnDomainProps);
+  const opensearchDomain = new opensearch.CfnDomain(scope, `OpenSearchDomain`, finalCfnDomainProps);
 
-  addCfnSuppressRules(esDomain, [
+  addCfnSuppressRules(opensearchDomain, [
     {
       id: "W28",
-      reason: `The ES Domain is passed dynamically as as parameter and explicitly specified to ensure that IAM policies are configured to lockdown access to this specific ES instance only`,
+      reason: `The OpenSearch Service domain is passed dynamically as as parameter and explicitly specified to ensure that IAM policies are configured to lockdown access to this specific OpenSearch Service instance only`,
     },
     {
       id: "W90",
@@ -83,11 +82,10 @@ export function buildElasticSearch(scope: Construct, props: BuildElasticSearchPr
     },
   ]);
 
-  return [esDomain, cognitoKibanaConfigureRole];
+  return [opensearchDomain, cognitoDashboardConfigureRole];
 }
 
-export function buildElasticSearchCWAlarms(scope: Construct): cloudwatch.Alarm[] {
-  // Setup CW Alarms for ES
+export function buildOpenSearchCWAlarms(scope: Construct): cloudwatch.Alarm[] {
   const alarms: cloudwatch.Alarm[] = new Array();
 
   // ClusterStatus.red maximum is >= 1 for 1 minute, 1 consecutive time
@@ -219,7 +217,7 @@ export function buildElasticSearchCWAlarms(scope: Construct): cloudwatch.Alarm[]
   return alarms;
 }
 
-function createClusterConfiguration(numberOfAzs?: number): elasticsearch.CfnDomain.ElasticsearchClusterConfigProperty {
+function createClusterConfiguration(numberOfAzs?: number): opensearch.CfnDomain.ClusterConfigProperty {
   return {
     dedicatedMasterEnabled: true,
     dedicatedMasterCount: 3,
@@ -231,24 +229,24 @@ function createClusterConfiguration(numberOfAzs?: number): elasticsearch.CfnDoma
   };
 }
 
-function createKibanaCognitoRole(
+function createDashboardCognitoRole(
   scope: Construct,
   userPool: cognito.UserPool,
   identitypool: cognito.CfnIdentityPool,
   domainName: string
 ): iam.Role {
-  // Setup the IAM Role & policy for ES to configure Cognito User pool and Identity pool
-  const cognitoKibanaConfigureRole = new iam.Role(
+  // Setup the IAM Role & policy for the OpenSearch Service to configure Cognito User pool and Identity pool
+  const cognitoDashboardConfigureRole = new iam.Role(
     scope,
-    "CognitoKibanaConfigureRole",
+    "CognitoDashboardConfigureRole",
     {
       assumedBy: new iam.ServicePrincipal("es.amazonaws.com"),
     }
   );
 
-  const cognitoKibanaConfigureRolePolicy = new iam.Policy(
+  const cognitoDashboardConfigureRolePolicy = new iam.Policy(
     scope,
-    "CognitoKibanaConfigureRolePolicy",
+    "CognitoDashboardConfigureRolePolicy",
     {
       statements: [
         new iam.PolicyStatement({
@@ -264,7 +262,7 @@ function createKibanaCognitoRole(
             "cognito-identity:UpdateIdentityPool",
             "cognito-identity:SetIdentityPoolRoles",
             "cognito-identity:GetIdentityPoolRoles",
-            "es:UpdateElasticsearchDomainConfig",
+            "es:UpdateDomainConfig",
           ],
           resources: [
             userPool.userPoolArn,
@@ -279,12 +277,12 @@ function createKibanaCognitoRole(
               "iam:PassedToService": "cognito-identity.amazonaws.com",
             },
           },
-          resources: [cognitoKibanaConfigureRole.roleArn],
+          resources: [cognitoDashboardConfigureRole.roleArn],
         }),
       ],
     }
   );
 
-  cognitoKibanaConfigureRolePolicy.attachToRole(cognitoKibanaConfigureRole);
-  return cognitoKibanaConfigureRole;
+  cognitoDashboardConfigureRolePolicy.attachToRole(cognitoDashboardConfigureRole);
+  return cognitoDashboardConfigureRole;
 }

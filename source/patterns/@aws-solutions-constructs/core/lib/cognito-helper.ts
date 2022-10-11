@@ -77,7 +77,7 @@ export function buildIdentityPool(scope: Construct, userpool: cognito.UserPool, 
   return idPool;
 }
 
-export function setupCognitoForElasticSearch(scope: Construct, domainName: string, options: CognitoOptions): iam.Role {
+export function setupCognitoForSearchService(scope: Construct, domainName: string, options: CognitoOptions): iam.Role {
 
   // Create the domain for Cognito UserPool
   const userpooldomain = new cognito.CfnUserPoolDomain(scope, 'UserPoolDomain', {
@@ -119,4 +119,19 @@ export function setupCognitoForElasticSearch(scope: Construct, domainName: strin
   });
 
   return cognitoAuthorizedRole;
+}
+
+export function buildCognitoForSearchService(scope: Construct, domainName: string):
+  [cognito.UserPool, cognito.UserPoolClient, cognito.CfnIdentityPool, iam.Role] {
+  const userPool = buildUserPool(scope);
+  const userPoolClient = buildUserPoolClient(scope, userPool);
+  const identityPool = buildIdentityPool(scope, userPool, userPoolClient);
+
+  const cognitoAuthorizedRole: iam.Role = setupCognitoForSearchService(scope, domainName, {
+    userpool: userPool,
+    identitypool: identityPool,
+    userpoolclient: userPoolClient
+  });
+
+  return [userPool, userPoolClient, identityPool, cognitoAuthorizedRole];
 }

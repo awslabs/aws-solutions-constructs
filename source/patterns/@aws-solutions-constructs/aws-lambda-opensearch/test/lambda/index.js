@@ -3,7 +3,7 @@ var path = require('path');
 
 console.log('Loading function');
 
-var esDomain = {
+var openSearchDomain = {
     endpoint: process.env.DOMAIN_ENDPOINT,
     region: process.env.AWS_REGION,
     index: 'records',
@@ -11,35 +11,36 @@ var esDomain = {
 };
 
 var creds = new AWS.EnvironmentCredentials('AWS');
-var endpoint =  new AWS.Endpoint(esDomain.endpoint);
+var endpoint = new AWS.Endpoint(openSearchDomain.endpoint);
 
-function postDocumentToES(doc, context) {
+function postDocumentToOpenSearch(doc, context) {
     var req = new AWS.HttpRequest(endpoint);
 
     req.method = 'POST';
-    req.path = path.join('/', esDomain.index, esDomain.doctype);
-    req.region = esDomain.region;
+    req.path = path.join('/', openSearchDomain.index, openSearchDomain.doctype);
+    req.region = openSearchDomain.region;
     req.body = doc;
     req.headers['presigned-expires'] = false;
-    req.headers['Host'] = esDomain.endpoint;
+    req.headers['Host'] = openSearchDomain.endpoint;
     req.headers['Content-Type'] = 'application/json';
 
     // Sign the request (Sigv4)
     var signer = new AWS.Signers.V4(req, 'es');
     signer.addAuthorization(creds, new Date());
 
-    // Post document to ES
+    // Post document to the OpenSearch Service
     var send = new AWS.NodeHttpClient();
-    send.handleRequest(req, null, function(httpResp) {
+
+    send.handleRequest(req, null, (httpResp) => {
         var body = '';
-        httpResp.on('data', function (chunk) {
+        httpResp.on('data', (chunk) => {
             body += chunk;
         });
-        httpResp.on('end', function (chunk) {
-            console.log('All movie records added to ES.');
+        httpResp.on('end', (chunk) => {
+            console.log('All movie records added to the OpenSearch Service.');
             context.succeed();
         });
-    }, function(err) {
+    }, (err) => {
         console.log('Error: ' + err);
         context.fail();
     });

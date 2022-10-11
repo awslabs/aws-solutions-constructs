@@ -219,3 +219,22 @@ function AddGatewayEndpoint(vpc: ec2.IVpc, service: EndpointDefinition, interfac
     service: service.endpointGatewayService as ec2.GatewayVpcEndpointAwsService,
   });
 }
+
+export function retrievePrivateSubnetIds(vpc: ec2.IVpc) {
+  let targetSubnetType;
+
+  if (vpc.isolatedSubnets.length) {
+    targetSubnetType = ec2.SubnetType.PRIVATE_ISOLATED;
+  } else if (vpc.privateSubnets.length) {
+    targetSubnetType = ec2.SubnetType.PRIVATE_WITH_EGRESS;
+  } else {
+    throw new Error('Error - No isolated or private subnets available in VPC');
+  }
+
+  const subnetSelector = {
+    onePerAz: true,
+    subnetType: targetSubnetType
+  };
+
+  return vpc.selectSubnets(subnetSelector).subnetIds;
+}

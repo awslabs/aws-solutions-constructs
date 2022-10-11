@@ -12,61 +12,54 @@
  */
 
 import { Stack } from 'aws-cdk-lib';
-import * as elasticsearch from 'aws-cdk-lib/aws-elasticsearch';
+import * as opensearch from 'aws-cdk-lib/aws-opensearchservice';
 import * as defaults from '../index';
 import '@aws-cdk/assert/jest';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
-function deployES(stack: Stack, domainName: string, clientDomainProps?: elasticsearch.CfnDomainProps,
-  lambdaRoleARN?: string, vpc?: ec2.IVpc): [elasticsearch.CfnDomain, iam.Role] {
+function deployOpenSearch(stack: Stack, openSearchDomainName: string, clientDomainProps?: opensearch.CfnDomainProps,
+  lambdaRoleARN?: string, vpc?: ec2.IVpc): [opensearch.CfnDomain, iam.Role] {
   const userpool = defaults.buildUserPool(stack);
   const userpoolclient = defaults.buildUserPoolClient(stack, userpool, {
     userPoolClientName: 'test',
     userPool: userpool
   });
-  const identitypool = defaults.buildIdentityPool(stack, userpool, userpoolclient);
 
+  const identitypool = defaults.buildIdentityPool(stack, userpool, userpoolclient);
   const cognitoAuthorizedRole = defaults.setupCognitoForSearchService(stack, 'test-domain', {
     userpool,
     userpoolclient,
     identitypool
   });
 
-  if (lambdaRoleARN) {
-    return defaults.buildElasticSearch(stack, {
-      userpool,
-      identitypool,
-      cognitoAuthorizedRoleARN: cognitoAuthorizedRole.roleArn,
-      serviceRoleARN: lambdaRoleARN,
-      vpc,
-      domainName,
-      clientDomainProps
-    });
-  } else {
-    return defaults.buildElasticSearch(stack, {
-      userpool,
-      identitypool,
-      cognitoAuthorizedRoleARN: cognitoAuthorizedRole.roleArn,
-      vpc,
-      domainName,
-      clientDomainProps
-    });
-  }
+  return defaults.buildOpenSearch(stack, {
+    userpool,
+    identitypool,
+    cognitoAuthorizedRoleARN: cognitoAuthorizedRole.roleArn,
+    serviceRoleARN: lambdaRoleARN ? lambdaRoleARN : undefined,
+    vpc,
+    openSearchDomainName,
+    clientDomainProps
+  });
 }
 
-test('Test override SnapshotOptions for buildElasticSearch', () => {
-  const stack = new Stack(undefined, undefined, {
+function deployStack() {
+  return new Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });
+}
 
-  deployES(stack, 'test-domain', {
+test('Test override SnapshotOptions for buildOpenSearch', () => {
+  const stack = deployStack();
+
+  deployOpenSearch(stack, 'test-domain', {
     snapshotOptions: {
       automatedSnapshotStartHour: 5
     }
   });
 
-  expect(stack).toHaveResource('AWS::Elasticsearch::Domain', {
+  expect(stack).toHaveResource('AWS::OpenSearchService::Domain', {
     AccessPolicies: {
       Statement: [
         {
@@ -107,7 +100,7 @@ test('Test override SnapshotOptions for buildElasticSearch', () => {
       },
       RoleArn: {
         "Fn::GetAtt": [
-          "CognitoKibanaConfigureRole62CCE76A",
+          "CognitoDashboardConfigureRoleEC5F4809",
           "Arn"
         ]
       },
@@ -120,7 +113,7 @@ test('Test override SnapshotOptions for buildElasticSearch', () => {
       EBSEnabled: true,
       VolumeSize: 10
     },
-    ElasticsearchClusterConfig: {
+    ClusterConfig: {
       DedicatedMasterCount: 3,
       DedicatedMasterEnabled: true,
       InstanceCount: 3,
@@ -129,7 +122,7 @@ test('Test override SnapshotOptions for buildElasticSearch', () => {
       },
       ZoneAwarenessEnabled: true
     },
-    ElasticsearchVersion: "6.3",
+    EngineVersion: "OpenSearch_1.3",
     EncryptionAtRestOptions: {
       Enabled: true
     },
@@ -143,14 +136,12 @@ test('Test override SnapshotOptions for buildElasticSearch', () => {
 });
 
 test('Test VPC with 1 AZ, Zone Awareness Disabled', () => {
-  const stack = new Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
+  const stack = deployStack();
 
   const vpc = defaults.getTestVpc(stack, false);
 
-  deployES(stack, 'test-domain', {
-    elasticsearchClusterConfig: {
+  deployOpenSearch(stack, 'test-domain', {
+    clusterConfig: {
       dedicatedMasterEnabled: true,
       dedicatedMasterCount: 3,
       instanceCount: 3,
@@ -158,9 +149,9 @@ test('Test VPC with 1 AZ, Zone Awareness Disabled', () => {
     }
   }, undefined, vpc);
 
-  expect(stack).toHaveResourceLike('AWS::Elasticsearch::Domain', {
+  expect(stack).toHaveResourceLike('AWS::OpenSearchService::Domain', {
     DomainName: "test-domain",
-    ElasticsearchClusterConfig: {
+    ClusterConfig: {
       DedicatedMasterCount: 3,
       DedicatedMasterEnabled: true,
       InstanceCount: 3,
@@ -176,11 +167,11 @@ test('Test VPC with 2 AZ, Zone Awareness Enabled', () => {
 
   const vpc: ec2.IVpc = defaults.getTestVpc(stack, false);
 
-  deployES(stack, 'test-domain', {}, undefined, vpc);
+  deployOpenSearch(stack, 'test-domain', {}, undefined, vpc);
 
-  expect(stack).toHaveResourceLike('AWS::Elasticsearch::Domain', {
+  expect(stack).toHaveResourceLike('AWS::OpenSearchService::Domain', {
     DomainName: "test-domain",
-    ElasticsearchClusterConfig: {
+    ClusterConfig: {
       DedicatedMasterCount: 3,
       DedicatedMasterEnabled: true,
       InstanceCount: 2,
@@ -192,17 +183,15 @@ test('Test VPC with 2 AZ, Zone Awareness Enabled', () => {
 test('Test VPC with 3 AZ, Zone Awareness Enabled', () => {
   // If no environment is specified, a VPC will use 2 AZs by default.
   // If an environment is specified, a VPC will use 3 AZs by default.
-  const stack = new Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
+  const stack = deployStack();
 
   const vpc: ec2.IVpc = defaults.getTestVpc(stack);
 
-  deployES(stack, 'test-domain', {}, undefined, vpc);
+  deployOpenSearch(stack, 'test-domain', {}, undefined, vpc);
 
-  expect(stack).toHaveResourceLike('AWS::Elasticsearch::Domain', {
+  expect(stack).toHaveResourceLike('AWS::OpenSearchService::Domain', {
     DomainName: "test-domain",
-    ElasticsearchClusterConfig: {
+    ClusterConfig: {
       DedicatedMasterCount: 3,
       DedicatedMasterEnabled: true,
       InstanceCount: 3,
@@ -212,9 +201,7 @@ test('Test VPC with 3 AZ, Zone Awareness Enabled', () => {
 });
 
 test('Test deployment with an existing private VPC', () => {
-  const stack = new Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
+  const stack = deployStack();
 
   const vpc = new ec2.Vpc(stack, 'existing-private-vpc-test', {
     natGateways: 1,
@@ -222,7 +209,7 @@ test('Test deployment with an existing private VPC', () => {
       {
         cidrMask: 24,
         name: 'application',
-        subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
       },
       {
         cidrMask: 24,
@@ -232,11 +219,11 @@ test('Test deployment with an existing private VPC', () => {
     ]
   });
 
-  deployES(stack, 'test-domain', {}, undefined, vpc);
+  deployOpenSearch(stack, 'test-domain', {}, undefined, vpc);
 
-  expect(stack).toHaveResourceLike('AWS::Elasticsearch::Domain', {
+  expect(stack).toHaveResourceLike('AWS::OpenSearchService::Domain', {
     DomainName: "test-domain",
-    ElasticsearchClusterConfig: {
+    ClusterConfig: {
       DedicatedMasterCount: 3,
       DedicatedMasterEnabled: true,
       InstanceCount: 3,
@@ -246,9 +233,7 @@ test('Test deployment with an existing private VPC', () => {
 });
 
 test('Test error thrown with no private subnet configurations', () => {
-  const stack = new Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
+  const stack = deployStack();
 
   const vpc = defaults.buildVpc(stack, {
     defaultVpcProps: {
@@ -263,22 +248,20 @@ test('Test error thrown with no private subnet configurations', () => {
   });
 
   const app = () => {
-    deployES(stack, 'test-domain', {}, undefined, vpc);
+    deployOpenSearch(stack, 'test-domain', {}, undefined, vpc);
   };
 
   expect(app).toThrowError('Error - No isolated or private subnets available in VPC');
 });
 
-test('Test override ES version for buildElasticSearch', () => {
-  const stack = new Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
+test('Test engine version override for buildOpenSearch', () => {
+  const stack = deployStack();
+
+  deployOpenSearch(stack, 'test-domain', {
+    engineVersion: 'OpenSearch_1.0'
   });
 
-  deployES(stack, 'test-domain', {
-    elasticsearchVersion: '7.0'
-  });
-
-  expect(stack).toHaveResource('AWS::Elasticsearch::Domain', {
+  expect(stack).toHaveResource('AWS::OpenSearchService::Domain', {
     AccessPolicies: {
       Statement: [
         {
@@ -319,7 +302,7 @@ test('Test override ES version for buildElasticSearch', () => {
       },
       RoleArn: {
         "Fn::GetAtt": [
-          "CognitoKibanaConfigureRole62CCE76A",
+          "CognitoDashboardConfigureRoleEC5F4809",
           "Arn"
         ]
       },
@@ -332,7 +315,7 @@ test('Test override ES version for buildElasticSearch', () => {
       EBSEnabled: true,
       VolumeSize: 10
     },
-    ElasticsearchClusterConfig: {
+    ClusterConfig: {
       DedicatedMasterCount: 3,
       DedicatedMasterEnabled: true,
       InstanceCount: 3,
@@ -341,7 +324,7 @@ test('Test override ES version for buildElasticSearch', () => {
       },
       ZoneAwarenessEnabled: true
     },
-    ElasticsearchVersion: "7.0",
+    EngineVersion: "OpenSearch_1.0",
     EncryptionAtRestOptions: {
       Enabled: true
     },
@@ -355,14 +338,12 @@ test('Test override ES version for buildElasticSearch', () => {
 
 });
 
-test('Test ES with lambdaRoleARN', () => {
-  const stack = new Stack(undefined, undefined, {
-    env: { account: "123456789012", region: 'us-east-1' },
-  });
+test('Test deployment with lambdaRoleARN', () => {
+  const stack = deployStack();
 
-  deployES(stack, 'test-domain', {}, 'arn:aws:us-east-1:mylambdaRoleARN');
+  deployOpenSearch(stack, 'test-domain', {}, 'arn:aws:us-east-1:mylambdaRoleARN');
 
-  expect(stack).toHaveResource('AWS::Elasticsearch::Domain', {
+  expect(stack).toHaveResource('AWS::OpenSearchService::Domain', {
     AccessPolicies: {
       Statement: [
         {
@@ -406,7 +387,7 @@ test('Test ES with lambdaRoleARN', () => {
       },
       RoleArn: {
         "Fn::GetAtt": [
-          "CognitoKibanaConfigureRole62CCE76A",
+          "CognitoDashboardConfigureRoleEC5F4809",
           "Arn"
         ]
       },
@@ -419,7 +400,7 @@ test('Test ES with lambdaRoleARN', () => {
       EBSEnabled: true,
       VolumeSize: 10
     },
-    ElasticsearchClusterConfig: {
+    ClusterConfig: {
       DedicatedMasterCount: 3,
       DedicatedMasterEnabled: true,
       InstanceCount: 3,
@@ -428,7 +409,7 @@ test('Test ES with lambdaRoleARN', () => {
       },
       ZoneAwarenessEnabled: true
     },
-    ElasticsearchVersion: "6.3",
+    EngineVersion: "OpenSearch_1.3",
     EncryptionAtRestOptions: {
       Enabled: true
     },
@@ -442,10 +423,10 @@ test('Test ES with lambdaRoleARN', () => {
 
 });
 
-test('Count ES CW Alarms', () => {
+test('Count OpenSearch CloudWatch alarms', () => {
   const stack = new Stack();
-  deployES(stack, 'test-domain');
-  const cwList = defaults.buildElasticSearchCWAlarms(stack);
+  deployOpenSearch(stack, 'test-domain');
+  const cwList = defaults.buildOpenSearchCWAlarms(stack);
 
   expect(cwList.length).toEqual(9);
 });
