@@ -147,20 +147,22 @@ export class LambdaToOpenSearch extends Construct {
     [this.userPool, this.userPoolClient, this.identityPool, cognitoAuthorizedRole] =
       defaults.buildCognitoForSearchService(this, props.cognitoDomainName ?? props.openSearchDomainName);
 
-    const buildOpenSearchProps: any = {
+    let securityGroupIds;
+
+    if (this.vpc) {
+      securityGroupIds = defaults.getLambdaVpcSecurityGroupIds(this.lambdaFunction);
+    }
+
+    const buildOpenSearchProps: defaults.BuildOpenSearchProps = {
       userpool: this.userPool,
       identitypool: this.identityPool,
       cognitoAuthorizedRoleARN: cognitoAuthorizedRole.roleArn,
       serviceRoleARN: lambdaFunctionRoleARN,
       vpc: this.vpc,
       openSearchDomainName: props.openSearchDomainName,
-      clientDomainProps: props.openSearchDomainProps
+      clientDomainProps: props.openSearchDomainProps,
+      securityGroupIds
     };
-
-    if (this.vpc) {
-      const securityGroupIds = defaults.getLambdaVpcSecurityGroupIds(this.lambdaFunction);
-      buildOpenSearchProps.securityGroupIds = securityGroupIds;
-    }
 
     [this.openSearchDomain, this.openSearchRole] = defaults.buildOpenSearch(this, buildOpenSearchProps);
 

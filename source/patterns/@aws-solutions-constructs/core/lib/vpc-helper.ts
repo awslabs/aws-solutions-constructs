@@ -228,7 +228,7 @@ export function retrievePrivateSubnetIds(vpc: ec2.IVpc) {
   } else if (vpc.privateSubnets.length) {
     targetSubnetType = ec2.SubnetType.PRIVATE_WITH_EGRESS;
   } else {
-    throw new Error('Error - Subnet IDs must be Isolated or Private subnets');
+    throw new Error('Error - No isolated or private subnets available in VPC');
   }
 
   const subnetSelector = {

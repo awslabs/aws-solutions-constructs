@@ -13,10 +13,10 @@
 
 import { LambdaToOpenSearch, LambdaToOpenSearchProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as cdk from "aws-cdk-lib";
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
+import { getTestVpc } from "@aws-solutions-constructs/core";
 
 function deployLambdaToOpenSearch(stack: cdk.Stack) {
   const props: LambdaToOpenSearchProps = {
@@ -422,20 +422,8 @@ test('Test minimal deployment with an existing private VPC', () => {
     env: { account: "123456789012", region: 'us-east-1' },
   });
 
-  const vpc = new ec2.Vpc(stack, 'existing-private-vpc-test', {
-    natGateways: 1,
-    subnetConfiguration: [
-      {
-        cidrMask: 24,
-        name: 'application',
-        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
-      },
-      {
-        cidrMask: 24,
-        name: "public",
-        subnetType: ec2.SubnetType.PUBLIC,
-      }
-    ]
+  const vpc = getTestVpc(stack, true, {
+    vpcName: "existing-private-vpc-test"
   });
 
   const construct = new LambdaToOpenSearch(stack, 'test-lambda-opensearch', {
@@ -448,7 +436,7 @@ test('Test minimal deployment with an existing private VPC', () => {
     Tags: [
       {
         Key: "Name",
-        Value: "Default/existing-private-vpc-test"
+        Value: "existing-private-vpc-test"
       }
     ]
   });
@@ -457,13 +445,13 @@ test('Test minimal deployment with an existing private VPC', () => {
     VPCOptions: {
       SubnetIds: [
         {
-          Ref: "existingprivatevpctestapplicationSubnet1Subnet1F7744F0"
+          Ref: "VpcPrivateSubnet1Subnet536B997A"
         },
         {
-          Ref: "existingprivatevpctestapplicationSubnet2SubnetF7B713AD"
+          Ref: "VpcPrivateSubnet2Subnet3788AAA1"
         },
         {
-          Ref: "existingprivatevpctestapplicationSubnet3SubnetA519E038"
+          Ref: "VpcPrivateSubnet3SubnetF258B56E"
         }
       ]
     }
