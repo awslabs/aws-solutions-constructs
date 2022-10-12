@@ -135,7 +135,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": "cdk-hnb659fds-assets-12345678-test-region",
-          "S3Key": "67a9971e29baab2bde3043bb70ce5b53318b95429a1ce9b189cf65223e8682db.zip"
+          "S3Key": "35bbbc7b04b21f225891f139adf234188f348ebad5f4bbc2c06edf8aa3784c97.zip"
         },
         "Role": {
           "Fn::GetAtt": [
@@ -145,13 +145,13 @@
         },
         "Environment": {
           "Variables": {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "DOMAIN_ENDPOINT": {
               "Fn::GetAtt": [
                 "testlambdaelasticsearchkibana3ElasticsearchDomain268DE741",
                 "DomainEndpoint"
               ]
-            },
-            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+            }
           }
         },
         "Handler": "index.handler",
@@ -183,7 +183,10 @@
       },
       "DependsOn": [
         "testlambdaelasticsearchkibana3LambdaFunctionServiceRoleDefaultPolicyA148ED7D",
-        "testlambdaelasticsearchkibana3LambdaFunctionServiceRoleA3C1E07E"
+        "testlambdaelasticsearchkibana3LambdaFunctionServiceRoleA3C1E07E",
+        "VpcisolatedSubnet1RouteTableAssociationD259E31A",
+        "VpcisolatedSubnet2RouteTableAssociation25A4716F",
+        "VpcisolatedSubnet3RouteTableAssociationDC010BEB"
       ],
       "Metadata": {
         "cfn_nag": {

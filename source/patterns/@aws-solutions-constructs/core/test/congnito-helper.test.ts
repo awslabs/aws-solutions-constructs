@@ -89,7 +89,7 @@ test('Test override for buildIdentityPool', () => {
   });
 });
 
-test('Test setupCognitoForElasticSearch', () => {
+test('Test setupCognitoForSearchService', () => {
   const stack = new Stack();
 
   const userpool = defaults.buildUserPool(stack);
@@ -99,7 +99,7 @@ test('Test setupCognitoForElasticSearch', () => {
   });
   const identitypool = defaults.buildIdentityPool(stack, userpool, userpoolclient);
 
-  defaults.setupCognitoForElasticSearch(stack, 'test-domain', {
+  defaults.setupCognitoForSearchService(stack, 'test-domain', {
     userpool,
     userpoolclient,
     identitypool

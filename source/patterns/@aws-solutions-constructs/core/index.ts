@@ -70,3 +70,5 @@ export * from './lib/ssm-string-parameter-helper';
 export * from './lib/eventbridge-helper';
 export * from './lib/waf-defaults';
 export * from './lib/waf-helper';
+export * from './lib/opensearch-defaults';
+export * from './lib/opensearch-helper';

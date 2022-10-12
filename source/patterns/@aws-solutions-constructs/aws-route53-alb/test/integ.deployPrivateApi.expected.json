@@ -380,11 +380,11 @@
     "VpcisolatedSubnet1SubnetE62B1B9B": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "CidrBlock": "10.0.0.0/18",
         "VpcId": {
           "Ref": "Vpc8378EB38"
         },
         "AvailabilityZone": "test-region-1a",
+        "CidrBlock": "10.0.0.0/18",
         "MapPublicIpOnLaunch": false,
         "Tags": [
           {
@@ -430,11 +430,11 @@
     "VpcisolatedSubnet2Subnet39217055": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "CidrBlock": "10.0.64.0/18",
         "VpcId": {
           "Ref": "Vpc8378EB38"
         },
         "AvailabilityZone": "test-region-1b",
+        "CidrBlock": "10.0.64.0/18",
         "MapPublicIpOnLaunch": false,
         "Tags": [
           {
@@ -480,11 +480,11 @@
     "VpcisolatedSubnet3Subnet44F2537D": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "CidrBlock": "10.0.128.0/18",
         "VpcId": {
           "Ref": "Vpc8378EB38"
         },
         "AvailabilityZone": "test-region-1c",
+        "CidrBlock": "10.0.128.0/18",
         "MapPublicIpOnLaunch": false,
         "Tags": [
           {
@@ -669,7 +669,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1"
           },
-          "S3Key": "15684a15d07860e99d2a8079150ad33dd2cb743677fcd7016dd07345e1b69538.zip"
+          "S3Key": "e57c1acaa363d7d2b81736776007a7091bc73dff4aeb8135627c4511a51e7dca.zip"
         },
         "Timeout": 900,
         "MemorySize": 128,

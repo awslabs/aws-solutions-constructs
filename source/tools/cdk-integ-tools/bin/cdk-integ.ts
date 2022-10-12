@@ -1,24 +1,44 @@
 #!/usr/bin/env node
 // Exercise all integ stacks and if they deploy, update the expected synth files
-import * as yargs from 'yargs';
-import { DEFAULT_SYNTH_OPTIONS, IntegrationTests } from '../lib/integ-helpers';
-import * as deepmerge from 'deepmerge';
+import * as yargs from "yargs";
+import { DEFAULT_SYNTH_OPTIONS, IntegrationTests } from "../lib/integ-helpers";
+import * as deepmerge from "deepmerge";
 
 /* eslint-disable no-console */
 
 async function main() {
   const argv = yargs
-    .usage('Usage: cdk-integ [TEST...]')
-    .option('list', { type: 'boolean', default: false, desc: 'List tests instead of running them' })
-    .option('clean', { type: 'boolean', default: true, desc: 'Skips stack clean up after test is completed (use --no-clean to negate)' })
-    .option('verbose', { type: 'boolean', default: false, alias: 'v', desc: 'Verbose logs' })
-    .option('dry-run', { type: 'boolean', default: false, desc: 'do not actually deploy the stack. just update the snapshot (not recommended!)' })
-    .argv;
+    .usage("Usage: cdk-integ [TEST...]")
+    .option("list", {
+      type: "boolean",
+      default: false,
+      desc: "List tests instead of running them",
+    })
+    .option("clean", {
+      type: "boolean",
+      default: true,
+      desc:
+        "Skips stack clean up after test is completed (use --no-clean to negate)",
+    })
+    .option("verbose", {
+      type: "boolean",
+      default: false,
+      alias: "v",
+      desc: "Verbose logs",
+    })
+    .option("dry-run", {
+      type: "boolean",
+      default: false,
+      desc:
+        "do not actually deploy the stack. just update the snapshot (not recommended!)",
+    }).argv;
 
-  const tests = await new IntegrationTests('test').fromCliArgs(<string[]>argv._);
+  const tests = await new IntegrationTests("test").fromCliArgs(
+    <string[]>argv._
+  );
 
   if (argv.list) {
-    process.stdout.write(tests.map(t => t.name).join(' ') + '\n');
+    process.stdout.write(tests.map((t) => t.name).join(" ") + "\n");
     return;
   }
 
@@ -32,61 +52,54 @@ async function main() {
 
     // inject "--verbose" to the command line of "cdk" if we are in verbose mode
     if (argv.verbose) {
-      args.push('--verbose');
+      args.push("--verbose");
     }
 
-    const dryRun = argv['dry-run'] ?? false;
+    const dryRun = argv["dry-run"] ?? false;
 
     try {
-
       if (dryRun) {
-        console.error('Skipping deployment (--dry-run), updating snapshot.');
+        console.error("Skipping deployment (--dry-run), updating snapshot.");
       } else {
         console.error(`Deploying ${test.name}...`);
-        await test.invokeCli([...args, 'deploy', '--require-approval', 'never', ...stackToDeploy], {
-          verbose: argv.verbose,
-          // Note: no "context" and "env", so use default user settings!
-        });
-        console.error('Deployment succeeded, updating snapshot.');
+        await test.invokeCli(
+          [...args, "deploy", "--require-approval", "never", ...stackToDeploy],
+          {
+            verbose: argv.verbose,
+            // Note: no "context" and "env", so use default user settings!
+          }
+        );
+        console.error("Deployment succeeded, updating snapshot.");
       }
 
       // If this all worked, write the new expectation file
       // Enable Default KMS policy to match with CDK v2 expected KMS policy
-      const actual = await test.cdkSynthFast(deepmerge(DEFAULT_SYNTH_OPTIONS, {
-        context: {
-          '@aws-cdk/aws-kms:defaultKeyPolicies': true,
-          '@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId': true,
-          '@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021': true,
-          '@aws-cdk/aws-s3:grantWriteWithoutAcl': true,
-          '@aws-cdk/aws-efs:defaultEncryptionAtRest': true,
-          '@aws-cdk/aws-rds:lowercaseDbIdentifier': true,
-          '@aws-cdk/aws-secretsmanager:parseOwnedSecretName': true,
-          '@aws-cdk/aws-lambda:recognizeVersionProps': true,
-          '@aws-cdk/core:newStyleStackSynthesis': true,
-          '@aws-cdk/core:stackRelativeExports': true,
-          '@aws-cdk/aws-ecr-assets:dockerIgnoreSupport': true,
-          '@aws-cdk/core:enableStackNameDuplicates': true,
-          '@aws-cdk/aws-ecs-patterns:removeDefaultDesiredCount': true
-        }
-      }));
+      const actual = await test.cdkSynthFast(
+        deepmerge(DEFAULT_SYNTH_OPTIONS, {
+          context: {
+            "@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId": true,
+            "@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021": true,
+            "@aws-cdk/aws-rds:lowercaseDbIdentifier": true,
+            "@aws-cdk/core:stackRelativeExports": true,
+          },
+        })
+      );
 
       await test.writeExpected(actual);
     } finally {
-
       if (!dryRun) {
         if (argv.clean) {
-          console.error('Cleaning up.');
-          await test.invokeCli(['destroy', '--force', ...stackToDeploy]);
+          console.error("Cleaning up.");
+          await test.invokeCli(["destroy", "--force", ...stackToDeploy]);
         } else {
-          console.error('Skipping clean up (--no-clean).');
+          console.error("Skipping clean up (--no-clean).");
         }
       }
-
     }
   }
 }
 
-main().catch(e => {
+main().catch((e) => {
   console.error(e);
   process.exit(1);
 });
