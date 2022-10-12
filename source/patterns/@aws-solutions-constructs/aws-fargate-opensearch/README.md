@@ -95,7 +95,7 @@ new FargateToOpenSearch(this, "test_construct", new FargateToOpenSearchProps.Bui
 |openSearchDomainName|`string`|Domain name for the OpenSearch Service.|
 |cognitoDomainName?|`string`|Optional Amazon Cognito domain name. If omitted the Amazon Cognito domain will default to the OpenSearch Service domain name.|
 |createCloudWatchAlarms?|`boolean`|Whether to create the recommended CloudWatch alarms.|
-|domainEndpointEnvironmentVariableName?|`string`|Optional name for the OpenSearch Service domain endpoint environment variable set for the Lambda function. Defaults is `DOMAIN_ENDPOINT`.|
+|domainEndpointEnvironmentVariableName?|`string`|Optional name for the OpenSearch Service domain endpoint environment variable set for the Lambda function. Default is `DOMAIN_ENDPOINT`.|
 
 ## Pattern Properties
 
