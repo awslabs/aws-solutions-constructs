@@ -432,7 +432,10 @@
             ]
           }
         }
-      }
+      },
+      "DependsOn": [
+        "testsnssqsstackqueuePolicyFD3F4725"
+      ]
     },
     "EncryptionKey1B843E66": {
       "Type": "AWS::KMS::Key",
