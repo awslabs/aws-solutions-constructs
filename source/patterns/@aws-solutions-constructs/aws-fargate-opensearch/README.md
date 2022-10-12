@@ -121,7 +121,7 @@ Out of the box implementation of the Construct without any override will set the
   * Creates a new service if none provided
     * Service will run in isolated subnets if available, then private subnets if available and finally public subnets
   * Adds environment variables to the container with the OpenSearch Service domain endpoint
-  * Add permissions to the container IAM role allowing it to write/read to OpenSearch Service domain endpoint
+  * Add permissions to the container IAM role allowing it to write/read to the OpenSearch Service domain endpoint
 
 ### Amazon Cognito
 * Set password policy for User Pools
