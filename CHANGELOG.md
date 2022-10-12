@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.26.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.25.0...v2.26.0) (2022-10-12)
+
+
+### Features
+
+* **aws-dynamodbstreams-lambda-elasticsearch-kibana:** Added VPC support ([#816](https://github.com/awslabs/aws-solutions-constructs/issues/816)) ([30a5160](https://github.com/awslabs/aws-solutions-constructs/commit/30a5160ce3165fa838e571fabb0d31c13961bb8f))
+* **aws-lambda-opensearch:** created new construct ([#818](https://github.com/awslabs/aws-solutions-constructs/issues/818)) ([f31f59d](https://github.com/awslabs/aws-solutions-constructs/commit/f31f59d1ce4d945508f999d58905b1775f26a891))
+
+
+### Bug Fixes
+
+* **readme.md files:** update all documentation links to v2 ([#815](https://github.com/awslabs/aws-solutions-constructs/issues/815)) ([ad1f9d7](https://github.com/awslabs/aws-solutions-constructs/commit/ad1f9d77ad956f6a139adceec1891132996611ee))
+
 ## [2.25.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.24.0...v2.25.0) (2022-09-13)
 
 (no changes in this release)
