@@ -30,7 +30,7 @@ This construct creates a scalable HTTPS proxy between API Gateway and AWS IoT. T
 
 This implementation enables write-only messages to be published on given MQTT topics, and also supports shadow updates of HTTPS devices to allowed things in the device registry. It does not involve Lambda functions for proxying messages, and instead relies on direct API Gateway to AWS IoT integration which supports both JSON messages as well as binary messages.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition, note that the ATS endpoint for IoT must be used to avoid SSL certificate issues:
 
 Typescript
 ``` typescript
@@ -69,7 +69,7 @@ new ApiGatewayToIot(this, "ApiGatewayToIotPattern", new ApiGatewayToIotProps.Bui
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
-|iotEndpoint|`string`|The AWS IoT endpoint subdomain to integrate the API Gateway with (e.g a1234567890123-ats).|
+|iotEndpoint|`string`|The AWS IoT endpoint subdomain to integrate the API Gateway with (e.g a1234567890123-ats). Note that this must point to the ATS endpoint to avoid SSL certificate trust issues. The endpoint can be retrieved by running `aws iot describe-endpoint --endpoint-type iot:Data-ATS`.|
 |apiGatewayCreateApiKey?|`boolean`|If set to `true`, an API Key is created and associated to a UsagePlan. User should specify `x-api-key` header while accessing RestApi. Default value set to `false`|
 |apiGatewayExecutionRole?|[`iam.Role`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html)|IAM Role used by the API Gateway to access AWS IoT. If not specified, a default role is created with wildcard ('*') access to all topics and things.|
 |apiGatewayProps?|[`api.restApiProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.RestApiProps.html)|Optional user-provided props to override the default props for the API Gateway.|
