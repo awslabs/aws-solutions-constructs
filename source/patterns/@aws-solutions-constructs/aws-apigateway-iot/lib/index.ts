@@ -26,6 +26,7 @@ import { Construct } from 'constructs';
 export interface ApiGatewayToIotProps {
   /**
    * The AWS IoT endpoint subdomain to integrate the API Gateway with (e.g ab123cdefghij4l-ats). Added as AWS Subdomain to the Integration Request.
+   * Note that this must reference the ATS endpoint to avoid SSL certificate trust issues.
    *
    * @default - None.
    */
