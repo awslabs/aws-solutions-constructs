@@ -123,7 +123,9 @@ export function buildTopic(scope: Construct, props: BuildTopicProps): [sns.Topic
     const snsTopicProps = consolidateProps(DefaultSnsTopicProps, props.topicProps);
 
     // Set encryption properties
-    if (props.enableEncryptionWithCustomerManagedKey === undefined || props.enableEncryptionWithCustomerManagedKey === false) {
+    if (props.topicProps?.masterKey !== undefined) {
+      // if the masterKey is already defined on the topicProps, there is nothing else to do
+    } else if (props.enableEncryptionWithCustomerManagedKey === undefined || props.enableEncryptionWithCustomerManagedKey === false) {
       // Retrieve SNS managed key to encrypt the SNS Topic
       const awsManagedKey = kms.Alias.fromAliasName(scope, 'aws-managed-key', 'alias/aws/sns');
       snsTopicProps.masterKey = awsManagedKey;

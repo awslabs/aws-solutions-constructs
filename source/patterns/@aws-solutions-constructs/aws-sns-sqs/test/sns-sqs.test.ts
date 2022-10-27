@@ -238,6 +238,43 @@ test('Test deployment with SNS managed KMS key', () => {
 });
 
 // --------------------------------------------------------------
+// Test deployment with CMK encrypted SNS Topic
+// --------------------------------------------------------------
+test('Test deployment with CMK encrypted SNS Topic', () => {
+  // Stack
+  const stack = new Stack();
+  const cmk = new kms.Key(stack, 'topic-cmk');
+  // Helper declaration
+  new SnsToSqs(stack, 'sns-to-sqs-stack', {
+    topicProps: {
+      masterKey: cmk
+    },
+    queueProps: {
+      encryption: sqs.QueueEncryption.KMS
+    },
+    enableEncryptionWithCustomerManagedKey: false
+  });
+  // Assertion 1
+  expect(stack).toHaveResource("AWS::SNS::Topic", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "topiccmk3608AC5B",
+        "Arn"
+      ]
+    }
+  });
+  // Assertion 2
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "snstosqsstackqueueKey743636E7",
+        "Arn"
+      ]
+    }
+  });
+});
+
+// --------------------------------------------------------------
 // Pattern deployment with existing Topic and FIFO queues
 // --------------------------------------------------------------
 test('Pattern deployment w/ existing topic and FIFO queue', () => {
