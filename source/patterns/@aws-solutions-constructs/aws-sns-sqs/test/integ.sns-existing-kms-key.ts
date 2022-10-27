@@ -26,7 +26,10 @@ stack.templateOptions.description = 'Integration Test for aws-sns-sqs with custo
 // Definitions
 
 // Create a customer managed KMS CMK to encrypt the SNS Topic
-const snsEncryptionKey = new kms.Key(stack, 'ImportedSNSEncryptionKey');
+const snsEncryptionKeyProps: KeyProps = {
+  enableKeyRotation: true
+};
+const snsEncryptionKey = new kms.Key(stack, 'ImportedSNSEncryptionKey', snsEncryptionKeyProps);
 
 // Create customer managed KMS CMK to encrypt the SQS Queue
 const sqsEncryptionKeyProps: KeyProps = {
