@@ -13,6 +13,7 @@
 
 // Imports
 import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as kms from 'aws-cdk-lib/aws-kms';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
@@ -103,6 +104,25 @@ export interface ApiGatewayToSqsProps {
    * @default - Default props are used
    */
   readonly logGroupProps?: logs.LogGroupProps
+  /**
+   * If no key is provided, this flag determines whether the queue is encrypted with a new CMK or an AWS managed key.
+   * This flag is ignored if any of the following are defined: queueProps.encryptionMasterKey, encryptionKey or encryptionKeyProps.
+   *
+   * @default - False if queueProps.encryptionMasterKey, encryptionKey, and encryptionKeyProps are all undefined.
+   */
+  readonly enableEncryptionWithCustomerManagedKey?: boolean
+  /**
+   * An optional, imported encryption key to encrypt the SQS Queue with.
+   *
+   * @default - None
+   */
+  readonly encryptionKey?: kms.Key
+  /**
+   * Optional user provided properties to override the default properties for the KMS encryption key used to encrypt the SQS queue with.
+   *
+   * @default - None
+   */
+  readonly encryptionKeyProps?: kms.KeyProps
 }
 
 /**
@@ -140,7 +160,10 @@ export class ApiGatewayToSqs extends Construct {
     [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
       existingQueueObj: props.existingQueueObj,
       queueProps: props.queueProps,
-      deadLetterQueue: this.deadLetterQueue
+      deadLetterQueue: this.deadLetterQueue,
+      enableEncryptionWithCustomerManagedKey: props.enableEncryptionWithCustomerManagedKey,
+      encryptionKey: props.encryptionKey,
+      encryptionKeyProps: props.encryptionKeyProps
     });
 
     // Setup the API Gateway

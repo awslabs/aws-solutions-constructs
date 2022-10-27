@@ -324,3 +324,81 @@ test('check custom event bus resource with props when deploy:true', () => {
     Name: 'testcustomeventbus'
   });
 });
+
+test('Queue is encrypted when key is provided on queueProps.encryptionMasterKey prop', () => {
+  const stack = new cdk.Stack();
+  const key = defaults.buildEncryptionKey(stack, {
+    description: 'my-key'
+  });
+
+  const props: EventbridgeToSqsProps = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    queueProps: {
+      encryptionMasterKey: key
+    }
+  };
+
+  new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+
+  expect(stack).toHaveResource('AWS::SQS::Queue', {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "EncryptionKey1B843E66",
+        "Arn"
+      ]
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::KMS::Key', {
+    Description: "my-key",
+    EnableKeyRotation: true
+  });
+});
+
+test('Queue is encrypted when key keyProps are provided', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToSqsProps = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    encryptionKeyProps: {
+      description: 'my-key'
+    }
+  };
+
+  new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+
+  expect(stack).toHaveResource('AWS::SQS::Queue', {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "testeventbridgesqsEncryptionKey811BDC23",
+        "Arn"
+      ]
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::KMS::Key', {
+    Description: "my-key",
+    EnableKeyRotation: true
+  });
+});
+
+test('Queue is encrypted with SQS-managed KMS key when enableEncryptionWithCustomerManagedKey property is false', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToSqsProps = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    enableEncryptionWithCustomerManagedKey: false
+  };
+
+  new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+
+  expect(stack).toHaveResource('AWS::SQS::Queue', {
+    KmsMasterKeyId: "alias/aws/sqs"
+  });
+});

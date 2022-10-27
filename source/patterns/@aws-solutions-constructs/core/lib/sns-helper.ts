@@ -16,7 +16,7 @@ import * as sns from 'aws-cdk-lib/aws-sns';
 import * as kms from 'aws-cdk-lib/aws-kms';
 import { DefaultSnsTopicProps } from './sns-defaults';
 import { buildEncryptionKey } from './kms-helper';
-import { consolidateProps } from './utils';
+import { consolidateProps, printWarning } from './utils';
 import { PolicyStatement, AnyPrincipal, Effect, AccountPrincipal } from 'aws-cdk-lib/aws-iam';
 import { Stack } from 'aws-cdk-lib';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
@@ -36,22 +36,22 @@ export interface BuildTopicProps {
      */
     readonly topicProps?: sns.TopicProps
     /**
-     * Use a Customer Managed KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
-     * the encryptionKey property for this construct.
+     * If no key is provided, this flag determines whether the topic is encrypted with a new CMK or an AWS managed key.
+     * This flag is ignored if any of the following are defined: topicProps.masterKey, encryptionKey or encryptionKeyProps.
      *
-     * @default - false (encryption enabled with AWS Managed KMS Key).
+     * @default - False if topicProps.masterKey, encryptionKey, and encryptionKeyProps are all undefined.
      */
     readonly enableEncryptionWithCustomerManagedKey?: boolean
     /**
      * An optional, imported encryption key to encrypt the SNS topic with.
      *
-     * @default - not specified.
+     * @default - None
      */
-    readonly encryptionKey?: kms.Key,
+    readonly encryptionKey?: kms.Key
     /**
-     * Optional user-provided props to override the default props for the encryption key.
+     * Optional user provided properties to override the default properties for the KMS encryption key used to encrypt the SNS topic with.
      *
-     * @default - Ignored if encryptionKey is provided
+     * @default - None
      */
     readonly encryptionKeyProps?: kms.KeyProps
 }
@@ -122,20 +122,21 @@ export function buildTopic(scope: Construct, props: BuildTopicProps): [sns.Topic
     // Setup the topic properties
     const snsTopicProps = consolidateProps(DefaultSnsTopicProps, props.topicProps);
 
-    // Set encryption properties
-    if (props.enableEncryptionWithCustomerManagedKey === undefined || props.enableEncryptionWithCustomerManagedKey === false) {
-      // Retrieve SNS managed key to encrypt the SNS Topic
-      const awsManagedKey = kms.Alias.fromAliasName(scope, 'aws-managed-key', 'alias/aws/sns');
-      snsTopicProps.masterKey = awsManagedKey;
-    } else {
-      // Use the imported Customer Managed KMS key
-      if (props.encryptionKey) {
-        snsTopicProps.masterKey = props.encryptionKey;
-      } else {
-        // Create a new Customer Managed KMS key
-        snsTopicProps.masterKey = buildEncryptionKey(scope, props.encryptionKeyProps);
-      }
+    if ((props.topicProps?.masterKey || props.encryptionKey || props.encryptionKeyProps) && props.enableEncryptionWithCustomerManagedKey === true) {
+      printWarning("Ignoring enableEncryptionWithCustomerManagedKey because one of topicProps.masterKey, encryptionKey, or encryptionKeyProps was already specified");
     }
+
+    // Set encryption properties
+    if (props.topicProps?.masterKey) {
+      snsTopicProps.masterKey = props.topicProps?.masterKey;
+    } else if (props.encryptionKey) {
+      snsTopicProps.masterKey = props.encryptionKey;
+    } else if (props.encryptionKeyProps || props.enableEncryptionWithCustomerManagedKey === true) {
+      snsTopicProps.masterKey = buildEncryptionKey(scope, props.encryptionKeyProps);
+    } else {
+      snsTopicProps.masterKey = kms.Alias.fromAliasName(scope, 'aws-managed-key', 'alias/aws/sns');
+    }
+
     // Create the SNS Topic
     const topic: sns.Topic = new sns.Topic(scope, 'SnsTopic', snsTopicProps);
 

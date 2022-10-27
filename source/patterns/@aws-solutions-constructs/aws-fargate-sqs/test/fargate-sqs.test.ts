@@ -15,6 +15,7 @@ import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
 import { FargateToSqs } from "../lib";
+import * as kms from 'aws-cdk-lib/aws-kms';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 
@@ -503,4 +504,114 @@ test('Test bad queuePermissions', () => {
   };
 
   expect(app).toThrowError('Invalid queue permission submitted - Reed');
+});
+
+test('Queue is encrypted with imported CMK when set on encryptionKey prop', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  const cmk = new kms.Key(stack, 'cmk');
+  new FargateToSqs(stack, 'test-construct', {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    encryptionKey: cmk
+  });
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Queue is encrypted with imported CMK when set on queueProps.encryptionMasterKey prop', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  const cmk = new kms.Key(stack, 'cmk');
+  new FargateToSqs(stack, 'test-construct', {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    queueProps: {
+      encryptionMasterKey: cmk
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Queue is encrypted with provided encrytionKeyProps', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  new FargateToSqs(stack, 'test-construct', {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    encryptionKeyProps: {
+      alias: 'new-key-alias-from-props'
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: "alias/aws/sqs"
+  });
+
+  expect(stack).toHaveResource('AWS::KMS::Alias', {
+    AliasName: 'alias/new-key-alias-from-props',
+    TargetKeyId: {
+      'Fn::GetAtt': [
+        'testconstructEncryptionKey6153B053',
+        'Arn'
+      ]
+    }
+  });
+});
+
+test('Queue is encrypted with SQS-managed KMS key when no other encryption propreties are set', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  new FargateToSqs(stack, 'test-construct', {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+  });
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: "alias/aws/sqs"
+  });
+});
+
+test('Queue is encrypted with customer managed KMS Key when enable encryption flag is true', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  new FargateToSqs(stack, 'test-construct', {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    enableEncryptionWithCustomerManagedKey: true
+  });
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "testconstructEncryptionKey6153B053",
+        "Arn"
+      ]
+    }
+  });
 });

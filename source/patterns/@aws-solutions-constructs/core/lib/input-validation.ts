@@ -115,6 +115,16 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
+  if (propsObject.queueProps?.encryptionMasterKey && propsObject.encryptionKey) {
+    errorMessages += 'Error - Either provide queueProps.encryptionMasterKey or encryptionKey, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.queueProps?.encryptionMasterKey && propsObject.encryptionKeyProps) {
+    errorMessages += 'Error - Either provide queueProps.encryptionMasterKey or encryptionKeyProps, but not both.\n';
+    errorFound = true;
+  }
+
   if ((propsObject?.deployDeadLetterQueue === false) && propsObject.deadLetterQueueProps) {
     errorMessages += 'Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n';
     errorFound = true;
@@ -145,8 +155,18 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
-  if ((propsObject.topicProps) && propsObject.existingTopicObj) {
+  if (propsObject.topicProps && propsObject.existingTopicObj) {
     errorMessages += 'Error - Either provide topicProps or existingTopicObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.topicProps?.masterKey && propsObject.encryptionKey) {
+    errorMessages += 'Error - Either provide topicProps.masterKey or encryptionKey, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.topicProps?.masterKey && propsObject.encryptionKeyProps) {
+    errorMessages += 'Error - Either provide topicProps.masterKey or encryptionKeyProps, but not both.\n';
     errorFound = true;
   }
 
