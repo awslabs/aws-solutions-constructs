@@ -117,10 +117,6 @@ export class LambdaToOpenSearch extends Construct {
       throw new Error("Error - Define VPC using construct parameters not Lambda function props");
     }
 
-    if (props.openSearchDomainProps?.vpcOptions) {
-      throw new Error("Error - Define VPC using construct parameters not the OpenSearch Service props");
-    }
-
     if (props.deployVpc || props.existingVpc) {
       this.vpc = defaults.buildVpc(scope, {
         defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
