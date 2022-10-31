@@ -203,8 +203,8 @@ export class FargateToOpenSearch extends Construct {
     }
 
     // Add environment variables
-    const bucketArnEnvironmentVariableName = props.domainEndpointEnvironmentVariableName || 'DOMAIN_ENDPOINT';
-    this.container.addEnvironment(bucketArnEnvironmentVariableName, this.openSearchDomain.attrDomainEndpoint);
+    const domainEndpointEnvironmentVariableName = props.domainEndpointEnvironmentVariableName || 'DOMAIN_ENDPOINT';
+    this.container.addEnvironment(domainEndpointEnvironmentVariableName, this.openSearchDomain.attrDomainEndpoint);
 
   }
 }

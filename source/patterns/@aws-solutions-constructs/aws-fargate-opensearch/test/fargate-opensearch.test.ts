@@ -63,7 +63,7 @@ test('Test domain and cognito domain name', () => {
   });
 });
 
-test('Check construct property', () => {
+test('Check construct properties', () => {
   const stack = new cdk.Stack();
   const publicApi = true;
 
