@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.27.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.26.0...v2.27.0) (2022-11-02)
+
+
+### Features
+
+* **aws-wafwebacl-appsync:** created new construct ([#833](https://github.com/awslabs/aws-solutions-constructs/issues/833)) ([1c708b9](https://github.com/awslabs/aws-solutions-constructs/commit/1c708b9bb2527ba2cbec974eab3a0e272ad26ad4))
+
 ## [2.26.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.25.0...v2.26.0) (2022-10-12)
 
 ### Features
