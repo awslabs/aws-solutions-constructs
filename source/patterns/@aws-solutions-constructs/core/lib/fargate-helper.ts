@@ -262,3 +262,11 @@ export function CheckFargateProps(props: any) {
     throw new Error(errorMessages);
   }
 }
+
+export function getServiceVpcSecurityGroupIds(service: ecs.FargateService): string[] {
+  const securityGroupIds: string[] = [];
+
+  service.connections.securityGroups.forEach(element => securityGroupIds.push(element.securityGroupId));
+
+  return securityGroupIds;
+}

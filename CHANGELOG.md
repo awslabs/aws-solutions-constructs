@@ -2,17 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.27.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.26.0...v2.27.0) (2022-11-02)
+
+Built on CDK 2.50.0
+
+### Features
+
+* **aws-wafwebacl-appsync:** created new construct ([#833](https://github.com/awslabs/aws-solutions-constructs/issues/833)) ([1c708b9](https://github.com/awslabs/aws-solutions-constructs/commit/1c708b9bb2527ba2cbec974eab3a0e272ad26ad4))
+
+* **aws-fargate-opensearch:** created new construct ([#823](https://github.com/awslabs/aws-solutions-constructs/issues/823))
+
+
 ## [2.26.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.25.0...v2.26.0) (2022-10-12)
 
 ### Features
 
 * **aws-dynamodbstreams-lambda-elasticsearch-kibana:** Added VPC support ([#816](https://github.com/awslabs/aws-solutions-constructs/issues/816)) ([30a5160](https://github.com/awslabs/aws-solutions-constructs/commit/30a5160ce3165fa838e571fabb0d31c13961bb8f))
+
 * **aws-lambda-opensearch:** created new construct ([#818](https://github.com/awslabs/aws-solutions-constructs/issues/818)) ([f31f59d](https://github.com/awslabs/aws-solutions-constructs/commit/f31f59d1ce4d945508f999d58905b1775f26a891))
 
 ## [2.25.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.24.0...v2.25.0) (2022-09-13)
 
 (no functional changes in this release)
-Built on CDK 2.37.1
+Built on CDK 2.45.0
 
 ## [2.24.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.23.0...v2.24.0) (2022-09-13)
 

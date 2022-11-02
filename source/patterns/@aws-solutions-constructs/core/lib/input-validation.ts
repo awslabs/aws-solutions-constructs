@@ -24,6 +24,7 @@ import * as glue from 'aws-cdk-lib/aws-glue';
 import * as sagemaker from 'aws-cdk-lib/aws-sagemaker';
 import * as secretsmanager from "aws-cdk-lib/aws-secretsmanager";
 import * as kms from "aws-cdk-lib/aws-kms";
+import * as opensearch from "aws-cdk-lib/aws-opensearchservice";
 
 export interface VerifiedProps {
   readonly dynamoTableProps?: dynamodb.TableProps,
@@ -76,6 +77,8 @@ export interface VerifiedProps {
   readonly existingLoggingBucketObj?: s3.IBucket;
   readonly loggingBucketProps?: s3.BucketProps;
   readonly logS3AccessLogs?: boolean;
+
+  readonly openSearchDomainProps?: opensearch.CfnDomainProps;
 }
 
 export function CheckProps(propsObject: VerifiedProps | any) {
@@ -200,6 +203,10 @@ export function CheckProps(propsObject: VerifiedProps | any) {
   if (propsObject.existingBucketObj && (propsObject.loggingBucketProps || propsObject.logS3AccessLogs)) {
     errorMessages += 'Error - If existingBucketObj is provided, supplying loggingBucketProps or logS3AccessLogs is an error.\n';
     errorFound = true;
+  }
+
+  if (propsObject.openSearchDomainProps?.vpcOptions) {
+    throw new Error("Error - Define VPC using construct parameters not the OpenSearch Service props");
   }
 
   if (errorFound) {
