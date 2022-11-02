@@ -142,8 +142,13 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
-  if ((propsObject.topicProps) && propsObject.existingTopicObj) {
+  if (propsObject.topicProps && propsObject.existingTopicObj) {
     errorMessages += 'Error - Either provide topicProps or existingTopicObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.topicProps?.masterKey && propsObject.encryptionKey) {
+    errorMessages += 'Error - Either provide topicProps.masterKey or encryptionKey, but not both.\n';
     errorFound = true;
   }
 

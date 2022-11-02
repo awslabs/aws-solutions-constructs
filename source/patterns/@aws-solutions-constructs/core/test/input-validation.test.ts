@@ -16,6 +16,7 @@ import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as glue from 'aws-cdk-lib/aws-glue';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
+import * as kms from 'aws-cdk-lib/aws-kms';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as mediastore from 'aws-cdk-lib/aws-mediastore';
 import * as s3 from 'aws-cdk-lib/aws-s3';
@@ -273,6 +274,24 @@ test('Test fail SNS topic check with bad topic attribute name', () => {
 
   // Assertion
   expect(app).toThrowError('Error - Either provide topicProps or existingTopicObj, but not both.\n');
+});
+
+test('Test fail SNS topic check conflicting encryption instructions', () => {
+  const stack = new Stack();
+
+  const props: defaults.VerifiedProps = {
+    encryptionKey: new kms.Key(stack, 'key'),
+    topicProps: {
+      masterKey: new kms.Key(stack, 'otherkey')
+    }
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide topicProps.masterKey or encryptionKey, but not both.\n');
 });
 
 test('Test fail Glue job check', () => {
