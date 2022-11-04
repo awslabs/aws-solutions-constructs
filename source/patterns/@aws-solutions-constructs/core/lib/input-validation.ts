@@ -155,6 +155,11 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
+  if (propsObject.topicProps?.masterKey && propsObject.encryptionKeyProps) {
+    errorMessages += 'Error - Either provide topicProps.masterKey or encryptionKeyProps, but not both.\n';
+    errorFound = true;
+  }
+
   if (propsObject.glueJobProps && propsObject.existingGlueJob) {
     errorMessages += 'Error - Either provide glueJobProps or existingGlueJob, but not both.\n';
     errorFound = true;

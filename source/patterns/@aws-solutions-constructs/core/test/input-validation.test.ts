@@ -276,7 +276,43 @@ test('Test fail SNS topic check with bad topic attribute name', () => {
   expect(app).toThrowError('Error - Either provide topicProps or existingTopicObj, but not both.\n');
 });
 
-test('Test fail SNS topic check conflicting encryption instructions', () => {
+test('Test fail SNS topic check when both encryptionKey and encryptionKeyProps are specified', () => {
+  const stack = new Stack();
+
+  const props: defaults.VerifiedProps = {
+    encryptionKey: new kms.Key(stack, 'key'),
+    encryptionKeyProps: {
+      description: 'a description'
+    }
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  expect(app).toThrowError('Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n');
+});
+
+test('Test fail SNS topic check when both topicProps.masterKey and encryptionKeyProps are specified', () => {
+  const stack = new Stack();
+
+  const props: defaults.VerifiedProps = {
+    topicProps: {
+      masterKey: new kms.Key(stack, 'key')
+    },
+    encryptionKeyProps: {
+      description: 'a description'
+    }
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  expect(app).toThrowError('Error - Either provide topicProps.masterKey or encryptionKeyProps, but not both.\n');
+});
+
+test('Test fail SNS topic check when both encryptionKey and topicProps.masterKey are specified', () => {
   const stack = new Stack();
 
   const props: defaults.VerifiedProps = {
