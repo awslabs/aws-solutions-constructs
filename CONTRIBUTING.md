@@ -86,6 +86,10 @@ Now it's time to work your magic. Here are some guidelines:
   * DO NOT USE deprecated APIs, it will not build in CDKv2, for example, using `statistic?` attribute of [@aws-cdk/aws-cloudwatch.Alarm](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch.Alarm.html) Construct Props will fail to build in CDKv2 
   * DO NOT USE experimental modules, it will not build in CDKv2, for example, avoid using L2 constructs for [HTTP or Websocket API](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-apigatewayv2-readme.html) will fail to build in CDKv2 
 
+#### Code coverage reports
+
+If you are introducing a new feature such as a new pattern make sure to include your coverage report directory path into the `sonar-project.properties` file.
+
 #### Integration Tests
 
 Integration Tests compare the CDK synth output of a full stack using a construct to a previously generated expected template. In so doing, they-
