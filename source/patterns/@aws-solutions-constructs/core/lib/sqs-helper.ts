@@ -42,24 +42,24 @@ export interface BuildQueueProps {
      */
     readonly deadLetterQueue?: sqs.DeadLetterQueue
     /**
-     * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
-     * the encryptionKey property for this construct.
+     * If no key is provided, this flag determines whether the topic is encrypted with a new CMK or an AWS managed key.
+     * This flag is ignored if any of the following are defined: topicProps.masterKey, encryptionKey or encryptionKeyProps.c
      *
-     * @default - false (encryption enabled with AWS Managed KMS Key).
+     * @default - False if topicProps.masterKey, encryptionKey, and encryptionKeyProps are all undefined.
      */
     readonly enableEncryptionWithCustomerManagedKey?: boolean
     /**
-     * An optional, imported encryption key to encrypt the SQS queue with.
+     * An optional, imported encryption key to encrypt the SNS topic with.
      *
-     * @default - not specified.
+     * @default - None.
      */
     readonly encryptionKey?: kms.Key,
     /**
-     * Optional user-provided props to override the default props for the encryption key.
+     * Optional user provided properties to override the default properties for the KMS encryption key used to encrypt the SNS topic with.
      *
-     * @default - Ignored if encryptionKey is provided
+     * @default - None
      */
-    readonly encryptionKeyProps?: kms.KeyProps
+     readonly encryptionKeyProps?: kms.KeyProps
 }
 
 export function buildQueue(scope: Construct, id: string, props: BuildQueueProps): [sqs.Queue, kms.IKey?] {
@@ -82,14 +82,16 @@ export function buildQueue(scope: Construct, id: string, props: BuildQueueProps)
     }
 
     // Set encryption properties
-    if (props.enableEncryptionWithCustomerManagedKey) {
-      // Use the imported Customer Managed KMS key
-      if (props.encryptionKey) {
-        queueProps.encryptionMasterKey = props.encryptionKey;
-      } else {
-        queueProps.encryptionMasterKey = buildEncryptionKey(scope, props.encryptionKeyProps);
-      }
+    if (props.queueProps?.encryptionMasterKey) {
+      queueProps.encryptionMasterKey = props.queueProps?.encryptionMasterKey;
+    } else if (props.encryptionKey) {
+      queueProps.encryptionMasterKey = props.encryptionKey;
+    } else if (props.encryptionKeyProps || props.enableEncryptionWithCustomerManagedKey === true) {
+      queueProps.encryptionMasterKey = buildEncryptionKey(scope, props.encryptionKeyProps);
+    } else {
+      queueProps.encryptionMasterKey = kms.Alias.fromAliasName(scope, `${id}-aws-managed-key`, 'alias/aws/sqs');
     }
+
     const queue = new sqs.Queue(scope, id, queueProps);
 
     applySecureQueuePolicy(queue);
