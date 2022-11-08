@@ -56,26 +56,7 @@ test('Test deployment without imported encryption key', () => {
 
   expect(stack).toHaveResource("AWS::SQS::Queue", {
     QueueName: "existing-queue",
-    KmsMasterKeyId: {
-      "Fn::Join": [
-        "",
-        [
-          "arn:",
-          {
-            Ref: "AWS::Partition"
-          },
-          ":kms:",
-          {
-            Ref: "AWS::Region"
-          },
-          ":",
-          {
-            Ref: "AWS::AccountId"
-          },
-          ":alias/aws/sqs"
-        ]
-      ]
-    }
+    KmsMasterKeyId: "alias/aws/sqs"
   });
 });
 
@@ -122,26 +103,7 @@ test('Test DLQ with all defaults', () => {
 
   buildDeadLetterQueue(stack, {});
   expect(stack).toHaveResourceLike("AWS::SQS::Queue", {
-    KmsMasterKeyId: {
-      "Fn::Join": [
-        "",
-        [
-          "arn:",
-          {
-            Ref: "AWS::Partition"
-          },
-          ":kms:",
-          {
-            Ref: "AWS::Region"
-          },
-          ":",
-          {
-            Ref: "AWS::AccountId"
-          },
-          ":alias/aws/sqs"
-        ]
-      ]
-    }
+    KmsMasterKeyId: "alias/aws/sqs"
   });
 });
 

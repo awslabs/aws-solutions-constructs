@@ -81,15 +81,14 @@ export function buildQueue(scope: Construct, id: string, props: BuildQueueProps)
       queueProps.deadLetterQueue = props.deadLetterQueue;
     }
 
-    // Set encryption properties
+    // Set encryption properties.
+    // Note that defaults.DefaultQueueProps sets encryption to Server-side KMS encryption with a KMS key managed by SQS.
     if (props.queueProps?.encryptionMasterKey) {
       queueProps.encryptionMasterKey = props.queueProps?.encryptionMasterKey;
     } else if (props.encryptionKey) {
       queueProps.encryptionMasterKey = props.encryptionKey;
     } else if (props.encryptionKeyProps || props.enableEncryptionWithCustomerManagedKey === true) {
       queueProps.encryptionMasterKey = buildEncryptionKey(scope, props.encryptionKeyProps);
-    } else {
-      queueProps.encryptionMasterKey = kms.Alias.fromAliasName(scope, `${id}-aws-managed-key`, 'alias/aws/sqs');
     }
 
     const queue = new sqs.Queue(scope, id, queueProps);
