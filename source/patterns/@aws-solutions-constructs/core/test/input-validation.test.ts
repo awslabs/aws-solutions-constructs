@@ -93,6 +93,43 @@ test("Test fail SQS Queue check", () => {
   expect(app).toThrowError('Error - Either provide queueProps or existingQueueObj, but not both.\n');
 });
 
+test('Test fail SQS queue check when queueProps.encryptionMasterKey and encryptionKey are both specified', () => {
+  const stack = new Stack();
+
+  const props: defaults.VerifiedProps = {
+    queueProps: {
+      encryptionMasterKey: new kms.Key(stack, 'key')
+    },
+    encryptionKey: new kms.Key(stack, 'otherkey')
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  expect(app).toThrowError('Error - Either provide queueProps.encryptionMasterKey or encryptionKey, but not both.\n');
+});
+
+test('Test fail SQS queue check when queueProps.encryptionMasterKey and encryptionKeyProps are both specified', () => {
+  const stack = new Stack();
+
+  const props: defaults.VerifiedProps = {
+    encryptionKeyProps: {
+      description: 'key description'
+    },
+    queueProps: {
+      encryptionMasterKey: new kms.Key(stack, 'key')
+    }
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide queueProps.encryptionMasterKey or encryptionKeyProps, but not both.\n');
+});
+
 test('Test fail Dead Letter Queue check', () => {
 
   const props: defaults.VerifiedProps = {
