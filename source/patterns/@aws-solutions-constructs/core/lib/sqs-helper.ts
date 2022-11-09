@@ -15,7 +15,7 @@
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as defaults from './sqs-defaults';
 import * as kms from 'aws-cdk-lib/aws-kms';
-import { overrideProps } from './utils';
+import { overrideProps, printWarning } from './utils';
 import { AccountPrincipal, Effect, PolicyStatement, AnyPrincipal } from 'aws-cdk-lib/aws-iam';
 import { Stack } from 'aws-cdk-lib';
 import {buildEncryptionKey} from "./kms-helper";
@@ -63,6 +63,13 @@ export interface BuildQueueProps {
 }
 
 export function buildQueue(scope: Construct, id: string, props: BuildQueueProps): [sqs.Queue, kms.IKey?] {
+
+  if ((props.queueProps?.encryptionMasterKey || props.encryptionKey || props.encryptionKeyProps)
+  && props.enableEncryptionWithCustomerManagedKey === true) {
+    printWarning(`Ignoring enableEncryptionWithCustomerManagedKey because one of queueProps.encryptionMasterKey, encryptionKey,
+    or encryptionKeyProps was already specified`);
+  }
+
   // If an existingQueueObj is not specified
   if (!props.existingQueueObj) {
     // Setup the queue

@@ -37,7 +37,7 @@ export interface BuildTopicProps {
     readonly topicProps?: sns.TopicProps
     /**
      * If no key is provided, this flag determines whether the topic is encrypted with a new CMK or an AWS managed key.
-     * This flag is ignored if any of the following are defined: topicProps.masterKey, encryptionKey or encryptionKeyProps.c
+     * This flag is ignored if any of the following are defined: topicProps.masterKey, encryptionKey or encryptionKeyProps.
      *
      * @default - False if topicProps.masterKey, encryptionKey, and encryptionKeyProps are all undefined.
      */
@@ -123,7 +123,7 @@ export function buildTopic(scope: Construct, props: BuildTopicProps): [sns.Topic
     const snsTopicProps = consolidateProps(DefaultSnsTopicProps, props.topicProps);
 
     if ((props.topicProps?.masterKey || props.encryptionKey || props.encryptionKeyProps) && props.enableEncryptionWithCustomerManagedKey === true) {
-      printWarning("Ignoring enableEncryptionWithCustomerManagedKey because either topicProps.masterKey, encryptionKey, encryptionKeyProps was already specified");
+      printWarning("Ignoring enableEncryptionWithCustomerManagedKey because one of topicProps.masterKey, encryptionKey, or encryptionKeyProps was already specified");
     }
 
     // Set encryption properties
