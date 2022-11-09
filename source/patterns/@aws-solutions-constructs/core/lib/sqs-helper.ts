@@ -43,7 +43,7 @@ export interface BuildQueueProps {
     readonly deadLetterQueue?: sqs.DeadLetterQueue
     /**
      * If no key is provided, this flag determines whether the topic is encrypted with a new CMK or an AWS managed key.
-     * This flag is ignored if any of the following are defined: topicProps.masterKey, encryptionKey or encryptionKeyProps.c
+     * This flag is ignored if any of the following are defined: queeuProps.encryptionMasterKey, encryptionKey or encryptionKeyProps.
      *
      * @default - False if topicProps.masterKey, encryptionKey, and encryptionKeyProps are all undefined.
      */
