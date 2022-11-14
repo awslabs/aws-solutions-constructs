@@ -16,6 +16,7 @@ import { Stack } from "aws-cdk-lib";
 import { SqsToLambda, SqsToLambdaProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import '@aws-cdk/assert/jest';
+import * as kms from 'aws-cdk-lib/aws-kms';
 
 // --------------------------------------------------------------
 // Pattern deployment w/ new Lambda function and
@@ -25,7 +26,7 @@ test('Pattern deployment w/ new Lambda function and overridden props', () => {
   // Initial Setup
   const stack = new Stack();
   const props: SqsToLambdaProps = {
-    lambdaFunctionProps: {
+  lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
@@ -133,5 +134,140 @@ test('Pattern deployment w/ batch size', () => {
 
   expect(stack).toHaveResource('AWS::Lambda::EventSourceMapping', {
     BatchSize: 5
+  });
+});
+
+test('Queue is encrypted with imported CMK when set on encryptionKey prop', () => {
+  const stack = new Stack();
+
+  const cmk = new kms.Key(stack, 'cmk');
+  new SqsToLambda(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    },
+    encryptionKey: cmk
+  });
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Queue is encrypted with imported CMK when set on queueProps.encryptionMasterKey prop', () => {
+  const stack = new Stack();
+
+  const cmk = new kms.Key(stack, 'cmk');
+  new SqsToLambda(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    },
+    queueProps: {
+      encryptionMasterKey: cmk
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Queue is encrypted with provided encrytionKeyProps', () => {
+  const stack = new Stack();
+
+  new SqsToLambda(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    },
+    encryptionKeyProps: {
+      alias: 'new-key-alias-from-props'
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::SQS::Queue', {
+    KmsMasterKeyId: {
+      'Fn::GetAtt': [
+        'testconstructEncryptionKey6153B053',
+        'Arn'
+      ]
+    },
+  });
+
+  expect(stack).toHaveResource('AWS::KMS::Alias', {
+    AliasName: 'alias/new-key-alias-from-props',
+    TargetKeyId: {
+      'Fn::GetAtt': [
+        'testconstructEncryptionKey6153B053',
+        'Arn'
+      ]
+    }
+  });
+});
+
+test('Queue is encrypted by default with SQS-managed KMS key when no other encryption properties are set', () => {
+  const stack = new Stack();
+
+  new SqsToLambda(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    },
+  });
+
+  expect(stack).toHaveResource('AWS::SQS::Queue', {
+    KmsMasterKeyId: "alias/aws/sqs"
+  });
+});
+
+test('Queue is encrypted with customer managed KMS Key when enable encryption flag is true', () => {
+  const stack = new Stack();
+
+  new SqsToLambda(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    },
+    enableEncryptionWithCustomerManagedKey: true
+  });
+
+  expect(stack).toHaveResource('AWS::SQS::Queue', {
+    KmsMasterKeyId: {
+      'Fn::GetAtt': [
+        'testconstructEncryptionKey6153B053',
+        'Arn'
+      ]
+    },
   });
 });

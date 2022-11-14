@@ -359,5 +359,4 @@ test('Topic is encrypted with AWS-managed KMS key when enableEncryptionWithCusto
       ]
     }
   });
-
 });

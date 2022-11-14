@@ -11,6 +11,7 @@
  *  and limitations under the License.
  */
 
+import * as kms from 'aws-cdk-lib/aws-kms';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import * as defaults from '@aws-solutions-constructs/core';
@@ -46,6 +47,25 @@ export interface SnsToLambdaProps {
    * @default - Default properties are used.
    */
   readonly topicProps?: sns.TopicProps
+  /**
+   * If no key is provided, this flag determines whether the topic is encrypted with a new CMK or an AWS managed key.
+   * This flag is ignored if any of the following are defined: topicProps.masterKey, encryptionKey or encryptionKeyProps.
+   *
+   * @default - False if topicProps.masterKey, encryptionKey, and encryptionKeyProps are all undefined.
+   */
+  readonly enableEncryptionWithCustomerManagedKey?: boolean
+  /**
+   * An optional, imported encryption key to encrypt the SNS topic with.
+   *
+   * @default - None.
+   */
+  readonly encryptionKey?: kms.Key,
+  /**
+   * Optional user provided properties to override the default properties for the KMS encryption key used to  encrypt the SNS topic with.
+   *
+   * @default - None
+   */
+  readonly encryptionKeyProps?: kms.KeyProps
 }
 
 /**
@@ -76,7 +96,10 @@ export class SnsToLambda extends Construct {
     // Setup the SNS topic
     [this.snsTopic] = defaults.buildTopic(this, {
       existingTopicObj: props.existingTopicObj,
-      topicProps: props.topicProps
+      topicProps: props.topicProps,
+      enableEncryptionWithCustomerManagedKey: props.enableEncryptionWithCustomerManagedKey,
+      encryptionKey: props.encryptionKey,
+      encryptionKeyProps: props.encryptionKeyProps
     });
 
     this.lambdaFunction.addEventSource(new SnsEventSource(this.snsTopic));
