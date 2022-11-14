@@ -45,9 +45,9 @@ export interface BuildTopicProps {
     /**
      * An optional, imported encryption key to encrypt the SNS topic with.
      *
-     * @default - None.
+     * @default - None
      */
-    readonly encryptionKey?: kms.Key,
+    readonly encryptionKey?: kms.Key
     /**
      * Optional user provided properties to override the default properties for the KMS encryption key used to encrypt the SNS topic with.
      *

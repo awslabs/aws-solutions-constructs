@@ -77,15 +77,15 @@ export interface SnsToSqsProps {
      */
     readonly enableEncryptionWithCustomerManagedKey?: boolean
     /**
-     * An optional, imported encryption key to encrypt the SQS queue, and SNS Topic.
+     * An optional, imported encryption key to encrypt the SQS Queue and SNS Topic with.
      *
-     * @default - not specified.
+     * @default - None
      */
     readonly encryptionKey?: kms.Key
     /**
      * Optional user-provided props to override the default props for the encryption key.
      *
-     * @default - Default props are used.
+     * @default - None
      */
     readonly encryptionKeyProps?: kms.KeyProps
     /**

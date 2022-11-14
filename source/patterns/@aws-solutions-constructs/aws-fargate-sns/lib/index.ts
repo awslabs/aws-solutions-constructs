@@ -127,20 +127,20 @@ export interface FargateToSnsProps {
    */
   readonly existingContainerDefinitionObject?: ecs.ContainerDefinition;
   /**
-   * If no key is provided, this flag determines whether the topic is encrypted with a new CMK or an AWS managed key.
+   * If no key is provided, this flag determines whether the SNS Topic is encrypted with a new CMK or an AWS managed key.
    * This flag is ignored if any of the following are defined: topicProps.masterKey, encryptionKey or encryptionKeyProps.
    *
    * @default - False if topicProps.masterKey, encryptionKey, and encryptionKeyProps are all undefined.
    */
   readonly enableEncryptionWithCustomerManagedKey?: boolean
   /**
-   * An optional, imported encryption key to encrypt the SNS topic with.
+   * An optional, imported encryption key to encrypt the SNS Topic with.
    *
-   * @default - None.
+   * @default - None
    */
-  readonly encryptionKey?: kms.Key,
+  readonly encryptionKey?: kms.Key
   /**
-   * Optional user provided properties to override the default properties for the KMS encryption key used to  encrypt the SNS topic with.
+   * Optional user provided properties to override the default properties for the KMS encryption key used to  encrypt the SNS Topic with.
    *
    * @default - None
    */
