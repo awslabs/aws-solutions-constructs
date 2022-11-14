@@ -263,3 +263,101 @@ test('check custom event bus resource with props when deploy:true', () => {
     Name: 'testcustomeventbus'
   });
 });
+
+test('Topic is encrypted when key is provided on topicProps.masterKey prop', () => {
+  const stack = new cdk.Stack();
+  const key = defaults.buildEncryptionKey(stack, {
+    description: 'my-key'
+  });
+
+  const props: EventbridgeToSnsProps = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    topicProps: {
+      masterKey: key
+    }
+  };
+
+  new EventbridgeToSns(stack, 'test-events-rule-sqs', props);
+
+  expect(stack).toHaveResource('AWS::SNS::Topic', {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "EncryptionKey1B843E66",
+        "Arn"
+      ]
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::KMS::Key', {
+    Description: "my-key",
+    EnableKeyRotation: true
+  });
+});
+
+test('Topic is encrypted when keyProps are provided', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToSnsProps = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    encryptionKeyProps: {
+      description: 'my-key'
+    }
+  };
+
+  new EventbridgeToSns(stack, 'test-events-rule-sqs', props);
+
+  expect(stack).toHaveResource('AWS::SNS::Topic', {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "testeventsrulesqsEncryptionKey19AB0C02",
+        "Arn"
+      ]
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::KMS::Key', {
+    Description: "my-key",
+    EnableKeyRotation: true
+  });
+});
+
+test('Topic is encrypted with AWS-managed KMS key when enableEncryptionWithCustomerManagedKey property is false', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToSnsProps = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    enableEncryptionWithCustomerManagedKey: false
+  };
+
+  new EventbridgeToSns(stack, 'test-events-rule-sqs', props);
+
+  expect(stack).toHaveResource('AWS::SNS::Topic', {
+    KmsMasterKeyId: {
+      "Fn::Join": [
+        "",
+        [
+          "arn:",
+          {
+            Ref: "AWS::Partition"
+          },
+          ":kms:",
+          {
+            Ref: "AWS::Region"
+          },
+          ":",
+          {
+            Ref: "AWS::AccountId"
+          },
+          ":alias/aws/sns"
+        ]
+      ]
+    }
+  });
+
+});

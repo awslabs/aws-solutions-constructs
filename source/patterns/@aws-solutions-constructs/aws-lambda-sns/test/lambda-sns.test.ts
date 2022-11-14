@@ -13,6 +13,7 @@
 
 // Imports
 import { Stack } from "aws-cdk-lib";
+import * as kms from 'aws-cdk-lib/aws-kms';
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as sns from "aws-cdk-lib/aws-sns";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
@@ -397,5 +398,159 @@ test('Test lambda function custom environment variable', () => {
         }
       }
     }
+  });
+});
+
+test('Topic is encrypted with imported CMK when set on encryptionKey prop', () => {
+  const stack = new Stack();
+
+  const cmk = new kms.Key(stack, 'cmk');
+  new LambdaToSns(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    },
+    encryptionKey: cmk
+  });
+
+  expect(stack).toHaveResource("AWS::SNS::Topic", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Topic is encrypted with imported CMK when set on topicProps.masterKey prop', () => {
+  const stack = new Stack();
+
+  const cmk = new kms.Key(stack, 'cmk');
+  new LambdaToSns(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    },
+    topicProps: {
+      masterKey: cmk
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::SNS::Topic", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Topic is encrypted with provided encrytionKeyProps', () => {
+  const stack = new Stack();
+
+  new LambdaToSns(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    },
+    encryptionKeyProps: {
+      alias: 'new-key-alias-from-props'
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::SNS::Topic', {
+    KmsMasterKeyId: {
+      'Fn::GetAtt': [
+        'testconstructEncryptionKey6153B053',
+        'Arn'
+      ]
+    },
+  });
+
+  expect(stack).toHaveResource('AWS::KMS::Alias', {
+    AliasName: 'alias/new-key-alias-from-props',
+    TargetKeyId: {
+      'Fn::GetAtt': [
+        'testconstructEncryptionKey6153B053',
+        'Arn'
+      ]
+    }
+  });
+});
+
+test('Topic is encrypted by default with AWS-managed KMS key when no other encryption properties are set', () => {
+  const stack = new Stack();
+
+  new LambdaToSns(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    },
+  });
+
+  expect(stack).toHaveResource('AWS::SNS::Topic', {
+    KmsMasterKeyId: {
+      "Fn::Join": [
+        "",
+        [
+          "arn:",
+          {
+            Ref: "AWS::Partition"
+          },
+          ":kms:",
+          {
+            Ref: "AWS::Region"
+          },
+          ":",
+          {
+            Ref: "AWS::AccountId"
+          },
+          ":alias/aws/sns"
+        ]
+      ]
+    }
+  });
+});
+
+test('Topic is encrypted with customer managed KMS Key when enable encryption flag is true', () => {
+  const stack = new Stack();
+
+  new LambdaToSns(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    },
+    enableEncryptionWithCustomerManagedKey: true
+  });
+
+  expect(stack).toHaveResource('AWS::SNS::Topic', {
+    KmsMasterKeyId: {
+      'Fn::GetAtt': [
+        'testconstructEncryptionKey6153B053',
+        'Arn'
+      ]
+    },
   });
 });
