@@ -470,3 +470,24 @@ test('Topic is encrypted by default with AWS-managed KMS key when no other encry
     },
   });
 });
+
+test('Topic is encrypted with customer managed KMS Key when enable encryption flag is true', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  new FargateToSns(stack, 'test-construct', {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    enableEncryptionWithCustomerManagedKey: true
+  });
+
+  expect(stack).toHaveResource('AWS::SNS::Topic', {
+    KmsMasterKeyId: {
+      'Fn::GetAtt': [
+        'testconstructEncryptionKey6153B053',
+        'Arn'
+      ]
+    },
+  });
+});
