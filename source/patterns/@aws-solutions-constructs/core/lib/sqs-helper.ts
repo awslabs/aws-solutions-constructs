@@ -66,8 +66,8 @@ export function buildQueue(scope: Construct, id: string, props: BuildQueueProps)
 
   if ((props.queueProps?.encryptionMasterKey || props.encryptionKey || props.encryptionKeyProps)
   && props.enableEncryptionWithCustomerManagedKey === true) {
-    printWarning(`Ignoring enableEncryptionWithCustomerManagedKey because one of 
-    queueProps.encryptionMasterKey, encryptionKey, or encryptionKeyProps was already specified`);
+    printWarning(`Ignoring enableEncryptionWithCustomerManagedKey because one of
+     queueProps.encryptionMasterKey, encryptionKey, or encryptionKeyProps was already specified`);
   }
 
   // If an existingQueueObj is not specified
