@@ -76,7 +76,7 @@ certificate = acm.Certificate.from_certificate_arn(
 # Note - all alb constructs turn on ELB logging by default, so require that an environment including account
 # and region be provided when creating the stack
 #
-# MyStack(app, 'id', env=cdk.Environment(account='679431688440', region='us-east-1'))
+# MyStack(app, 'id', env=cdk.Environment(account='123456789012', region='us-east-1'))
 AlbToFargate(self, 'new-construct',
                 ecr_repository_arn="arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo",
                 ecr_image_version="latest",

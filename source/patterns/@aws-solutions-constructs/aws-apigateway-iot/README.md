@@ -111,52 +111,6 @@ Below is a description of the different resources and methods exposed by the API
 
 ![Architecture Diagram](architecture.png)
 
-## Examples
-
- The following examples only work with `API_KEY` authentication types, since IAM authorization requires a SIGv4 token to be specified as well, make sure the **apiGatewayCreateApiKey** property of your Construct props is set to **true** while deploying the stack, otherwise the below examples won't work.
-
-### Publishing a message
-
-You can use `curl` to publish a message on different MQTT topics using the HTTPS API. The below example will post a message on the `device/foo` topic.
-
-```bash
-curl -XPOST https://<stage-id>.execute-api.<region>.amazonaws.com/prod/message/device/foo -H "x-api-key: <api-key>" -H "Content-Type: application/json" -d '{"Hello": "World"}'
-```
-
-> Replace the `stage-id`, `region` and `api-key` parameters with your deployment values.
-
-You can chain topic names in the URL and the API accepts up to 7 sub-topics that you can publish on. For instance, the below example publishes a message on the topic `device/foo/bar/abc/xyz`.
-
-```bash
-curl -XPOST https://<stage-id>.execute-api.<region>.amazonaws.com/prod/message/device/foo/bar/abc/xyz -H "x-api-key: <api-key>" -H "Content-Type: application/json" -d '{"Hello": "World"}'
-```
-
-### Updating device shadows
-
-To update the shadow document associated with a given thing, you can issue a shadow state request using a thing name. See the following example on how to update a thing shadow.
-
-```bash
-curl -XPOST https://<stage-id>.execute-api.<region>.amazonaws.com/prod/shadow/device1 -H "x-api-key: <api-key>" -H "Content-Type: application/json" -d '{"state": {"desired": { "Hello": "World" }}}'
-```
-
-### Updating named shadows
-
-To update the shadow document associated with a given thing's named shadow, you can issue a shadow state request using a thing name and shadow name. See the following example on how to update a named shadow.
-
-```bash
-curl -XPOST https://<stage-id>.execute-api.<region>.amazonaws.com/prod/shadow/device1/shadow1 -H "x-api-key: <api-key>" -H "Content-Type: application/json" -d '{"state": {"desired": { "Hello": "World" }}}'
-```
-
-### Sending binary payloads
-
-It is possible to send a binary payload to the proxy API, down to the AWS IoT service. In the following example, we send the content of the `README.md` file associated with this module (treated as a binary data) to `device/foo` topic using the `application/octet-stream` content type.
-
-```bash
-curl -XPOST https://<stage-id>.execute-api.<region>.amazonaws.com/prod/message/device/foo/bar/baz/qux -H "x-api-key: <api-key>" -H "Content-Type: application/octet-stream" --data-binary @README.md
-```
-
-> Execute this command while in the directory of this project. You can then test sending other type of binary files from your file-system.
-
 
 ***
 &copy; Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
