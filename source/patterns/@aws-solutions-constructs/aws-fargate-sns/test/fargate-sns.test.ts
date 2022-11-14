@@ -15,6 +15,7 @@ import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
 import { FargateToSns } from "../lib";
+import * as kms from 'aws-cdk-lib/aws-kms';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 
@@ -363,4 +364,109 @@ test('Existing service/existing topic, private API, existing VPC', () => {
   expect(stack).toCountResources('AWS::EC2::VPC', 1);
   expect(stack).toCountResources('AWS::SNS::Topic', 1);
   expect(stack).toCountResources('AWS::ECS::Service', 1);
+});
+
+test('Topic is encrypted with imported CMK when set on encryptionKey prop', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  const cmk = new kms.Key(stack, 'cmk');
+  new FargateToSns(stack, 'test-construct', {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    encryptionKey: cmk
+  });
+
+  expect(stack).toHaveResource("AWS::SNS::Topic", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Topic is encrypted with imported CMK when set on topicProps.masterKey prop', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  const cmk = new kms.Key(stack, 'cmk');
+  new FargateToSns(stack, 'test-construct', {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    topicProps: {
+      masterKey: cmk
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::SNS::Topic", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Topic is encrypted with provided encrytionKeyProps', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  new FargateToSns(stack, 'test-construct', {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    encryptionKeyProps: {
+      alias: 'new-key-alias-from-props'
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::SNS::Topic', {
+    KmsMasterKeyId: {
+      'Fn::GetAtt': [
+        'testconstructEncryptionKey6153B053',
+        'Arn'
+      ]
+    },
+  });
+
+  expect(stack).toHaveResource('AWS::KMS::Alias', {
+    AliasName: 'alias/new-key-alias-from-props',
+    TargetKeyId: {
+      'Fn::GetAtt': [
+        'testconstructEncryptionKey6153B053',
+        'Arn'
+      ]
+    }
+  });
+});
+
+test('Topic is encrypted by default with AWS-managed KMS key when no other encryption properties are set', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  new FargateToSns(stack, 'test-construct', {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+  });
+
+  expect(stack).toHaveResource('AWS::SNS::Topic', {
+    KmsMasterKeyId: {
+      'Fn::Join': [
+        "",
+        [
+          "arn:",
+          {
+            Ref: "AWS::Partition"
+          },
+          ":kms:us-east-1:123456789012:alias/aws/sns"
+        ]
+      ]
+    },
+  });
 });

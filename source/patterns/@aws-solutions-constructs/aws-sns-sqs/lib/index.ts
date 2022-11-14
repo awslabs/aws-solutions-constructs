@@ -69,10 +69,11 @@ export interface SnsToSqsProps {
      */
     readonly maxReceiveCount?: number
     /**
-     * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
-     * the encryptionKey property for this construct.
+     * If no keys are provided, this flag determines whether both the topic and queue are encrypted with a new CMK or an AWS managed key.
+     * This flag is ignored if any of the following are defined:
+     * topicProps.masterKey, queueProps.encryptionMasterKey, encryptionKey or encryptionKeyProps.
      *
-     * @default - true (encryption enabled, managed by this CDK app).
+     * @default - True if topicProps.masterKey, queueProps.encryptionMasterKey, encryptionKey, and encryptionKeyProps are all undefined.
      */
     readonly enableEncryptionWithCustomerManagedKey?: boolean
     /**
@@ -92,7 +93,7 @@ export interface SnsToSqsProps {
      *
      * @default - Default props are used.
      */
-     readonly sqsSubscriptionProps?: subscriptions.SqsSubscriptionProps
+    readonly sqsSubscriptionProps?: subscriptions.SqsSubscriptionProps
 }
 
 /**

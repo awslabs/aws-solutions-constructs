@@ -42,20 +42,20 @@ export interface BuildQueueProps {
      */
     readonly deadLetterQueue?: sqs.DeadLetterQueue
     /**
-     * If no key is provided, this flag determines whether the topic is encrypted with a new CMK or an AWS managed key.
-     * This flag is ignored if any of the following are defined: queeuProps.encryptionMasterKey, encryptionKey or encryptionKeyProps.
+     * If no key is provided, this flag determines whether the queue is encrypted with a new CMK or an AWS managed key.
+     * This flag is ignored if any of the following are defined: queueProps.encryptionMasterKey, encryptionKey or encryptionKeyProps.
      *
-     * @default - False if topicProps.masterKey, encryptionKey, and encryptionKeyProps are all undefined.
+     * @default - False if queueProps.encryptionMasterKey, encryptionKey, and encryptionKeyProps are all undefined.
      */
     readonly enableEncryptionWithCustomerManagedKey?: boolean
     /**
-     * An optional, imported encryption key to encrypt the SNS topic with.
+     * An optional, imported encryption key to encrypt the SQS Queue with.
      *
      * @default - None.
      */
     readonly encryptionKey?: kms.Key,
     /**
-     * Optional user provided properties to override the default properties for the KMS encryption key used to encrypt the SNS topic with.
+     * Optional user provided properties to override the default properties for the KMS encryption key used to encrypt the SQS Queue with.
      *
      * @default - None
      */
@@ -66,8 +66,8 @@ export function buildQueue(scope: Construct, id: string, props: BuildQueueProps)
 
   if ((props.queueProps?.encryptionMasterKey || props.encryptionKey || props.encryptionKeyProps)
   && props.enableEncryptionWithCustomerManagedKey === true) {
-    printWarning(`Ignoring enableEncryptionWithCustomerManagedKey because one of queueProps.encryptionMasterKey, encryptionKey,
-    or encryptionKeyProps was already specified`);
+    printWarning(`Ignoring enableEncryptionWithCustomerManagedKey because one of 
+    queueProps.encryptionMasterKey, encryptionKey, or encryptionKeyProps was already specified`);
   }
 
   // If an existingQueueObj is not specified
@@ -181,7 +181,7 @@ function applySecureQueuePolicy(queue: sqs.Queue): void {
     })
   );
 
-  // Apply Topic policy to enforce encryption of data in transit
+  // Apply queue policy to enforce encryption of data in transit
   queue.addToResourcePolicy(
     new PolicyStatement({
       sid: 'HttpsOnly',
