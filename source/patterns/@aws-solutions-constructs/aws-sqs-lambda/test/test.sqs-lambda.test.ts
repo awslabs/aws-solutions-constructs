@@ -26,7 +26,7 @@ test('Pattern deployment w/ new Lambda function and overridden props', () => {
   // Initial Setup
   const stack = new Stack();
   const props: SqsToLambdaProps = {
-  lambdaFunctionProps: {
+    lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
