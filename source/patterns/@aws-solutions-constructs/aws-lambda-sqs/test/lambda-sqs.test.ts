@@ -375,7 +375,7 @@ test('Queue is encrypted with provided encrytionKeyProps', () => {
   });
 });
 
-test('Queue is encrypted by default with AWS-managed KMS key when no other encryption properties are set', () => {
+test('Queue is encrypted by default with SQS-managed KMS key when no other encryption properties are set', () => {
   const stack = new Stack();
 
   new LambdaToSqs(stack, 'test-construct', {
