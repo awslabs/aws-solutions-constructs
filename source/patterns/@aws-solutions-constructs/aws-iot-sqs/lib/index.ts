@@ -69,21 +69,21 @@ export interface IotToSqsProps {
    *
    * @default - True if queueProps.encryptionMasterKey, encryptionKey, and encryptionKeyProps are all undefined.
    */
-  readonly enableEncryptionWithCustomerManagedKey?: boolean
+  readonly enableEncryptionWithCustomerManagedKey?: boolean;
 
   /**
    * An optional, imported encryption key to encrypt the SQS Queue with.
    *
    * @default - None
    */
-  readonly encryptionKey?: kms.Key,
+  readonly encryptionKey?: kms.Key;
 
   /**
    * Optional user provided properties to override the default properties for the KMS encryption key used to encrypt the SQS Queue with.
    *
    * @default - None
    */
-   readonly encryptionKeyProps?: kms.KeyProps
+   readonly encryptionKeyProps?: kms.KeyProps;
  }
 
 export class IotToSqs extends Construct {

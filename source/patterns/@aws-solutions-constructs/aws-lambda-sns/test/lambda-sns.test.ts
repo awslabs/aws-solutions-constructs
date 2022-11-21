@@ -554,3 +554,16 @@ test('Topic is encrypted with customer managed KMS Key when enable encryption fl
     },
   });
 });
+
+test('Error is thrown when conflicting VPC information is provided', () => {
+  const stack = new Stack();
+
+  const app = () => {
+    new LambdaToSns(stack, 'test-construct', {
+      existingVpc: new ec2.Vpc(stack, "test-vpc", {}),
+      deployVpc: true
+    });
+  };
+
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.');
+});

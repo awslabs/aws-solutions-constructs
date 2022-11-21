@@ -28,44 +28,44 @@ export interface SnsToLambdaProps {
    *
    * @default - None
    */
-  readonly existingLambdaObj?: lambda.Function,
+  readonly existingLambdaObj?: lambda.Function;
   /**
    * User provided props to override the default props for the Lambda function.
    *
    * @default - Default properties are used.
    */
-  readonly lambdaFunctionProps?: lambda.FunctionProps,
+  readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
    * Existing instance of SNS Topic object, providing both this and topicProps will cause an error..
    *
    * @default - Default props are used
    */
-  readonly existingTopicObj?: sns.Topic,
+  readonly existingTopicObj?: sns.Topic;
   /**
    * Optional user provided properties to override the default properties for the SNS topic.
    *
    * @default - Default properties are used.
    */
-  readonly topicProps?: sns.TopicProps
+  readonly topicProps?: sns.TopicProps;
   /**
    * If no key is provided, this flag determines whether the SNS Topic is encrypted with a new CMK or an AWS managed key.
    * This flag is ignored if any of the following are defined: topicProps.masterKey, encryptionKey or encryptionKeyProps.
    *
    * @default - False if topicProps.masterKey, encryptionKey, and encryptionKeyProps are all undefined.
    */
-  readonly enableEncryptionWithCustomerManagedKey?: boolean
+  readonly enableEncryptionWithCustomerManagedKey?: boolean;
   /**
    * An optional, imported encryption key to encrypt the SNS Topic with.
    *
    * @default - None
    */
-  readonly encryptionKey?: kms.Key
+  readonly encryptionKey?: kms.Key;
   /**
    * Optional user provided properties to override the default properties for the KMS encryption key used to  encrypt the SNS Topic with.
    *
    * @default - None
    */
-  readonly encryptionKeyProps?: kms.KeyProps
+  readonly encryptionKeyProps?: kms.KeyProps;
 }
 
 /**

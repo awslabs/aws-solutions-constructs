@@ -28,38 +28,38 @@ export interface BuildQueueProps {
      *
      * @default - None.
      */
-    readonly existingQueueObj?: sqs.Queue,
+    readonly existingQueueObj?: sqs.Queue;
     /**
      * Optional user provided props to override the default props for the primary queue.
      *
      * @default - Default props are used.
      */
-    readonly queueProps?: sqs.QueueProps
+    readonly queueProps?: sqs.QueueProps;
     /**
      * Optional dead letter queue to pass bad requests to after the max receive count is reached.
      *
      * @default - Default props are used.
      */
-    readonly deadLetterQueue?: sqs.DeadLetterQueue
+    readonly deadLetterQueue?: sqs.DeadLetterQueue;
     /**
      * If no key is provided, this flag determines whether the queue is encrypted with a new CMK or an AWS managed key.
      * This flag is ignored if any of the following are defined: queueProps.encryptionMasterKey, encryptionKey or encryptionKeyProps.
      *
      * @default - False if queueProps.encryptionMasterKey, encryptionKey, and encryptionKeyProps are all undefined.
      */
-    readonly enableEncryptionWithCustomerManagedKey?: boolean
+    readonly enableEncryptionWithCustomerManagedKey?: boolean;
     /**
      * An optional, imported encryption key to encrypt the SQS Queue with.
      *
      * @default - None
      */
-    readonly encryptionKey?: kms.Key
+    readonly encryptionKey?: kms.Key;
     /**
      * Optional user provided properties to override the default properties for the KMS encryption key used to encrypt the SQS Queue with.
      *
      * @default - None
      */
-     readonly encryptionKeyProps?: kms.KeyProps
+     readonly encryptionKeyProps?: kms.KeyProps;
 }
 
 export function buildQueue(scope: Construct, id: string, props: BuildQueueProps): [sqs.Queue, kms.IKey?] {

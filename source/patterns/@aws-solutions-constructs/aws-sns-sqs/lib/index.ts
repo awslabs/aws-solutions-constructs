@@ -31,43 +31,43 @@ export interface SnsToSqsProps {
      *
      * @default - Default props are used
      */
-    readonly existingTopicObj?: sns.Topic,
+    readonly existingTopicObj?: sns.Topic;
     /**
      * Optional user provided properties to override the default properties for the SNS topic.
      *
      * @default - Default properties are used.
      */
-    readonly topicProps?: sns.TopicProps,
+    readonly topicProps?: sns.TopicProps;
     /**
      * Existing instance of SQS queue object, Providing both this and queueProps will cause an error.
      *
      * @default - Default props are used
      */
-    readonly existingQueueObj?: sqs.Queue,
+    readonly existingQueueObj?: sqs.Queue;
     /**
      * Optional user provided properties
      *
      * @default - Default props are used
      */
-    readonly queueProps?: sqs.QueueProps,
+    readonly queueProps?: sqs.QueueProps;
     /**
      * Optional user provided properties for the dead letter queue
      *
      * @default - Default props are used
      */
-    readonly deadLetterQueueProps?: sqs.QueueProps,
+    readonly deadLetterQueueProps?: sqs.QueueProps;
     /**
      * Whether to deploy a secondary queue to be used as a dead letter queue.
      *
      * @default - true.
      */
-    readonly deployDeadLetterQueue?: boolean,
+    readonly deployDeadLetterQueue?: boolean;
     /**
      * The number of times a message can be unsuccessfully dequeued before being moved to the dead-letter queue.
      *
      * @default - required field if deployDeadLetterQueue=true.
      */
-    readonly maxReceiveCount?: number
+    readonly maxReceiveCount?: number;
     /**
      * If no keys are provided, this flag determines whether both the topic and queue are encrypted with a new CMK or an AWS managed key.
      * This flag is ignored if any of the following are defined:
@@ -75,25 +75,25 @@ export interface SnsToSqsProps {
      *
      * @default - True if topicProps.masterKey, queueProps.encryptionMasterKey, encryptionKey, and encryptionKeyProps are all undefined.
      */
-    readonly enableEncryptionWithCustomerManagedKey?: boolean
+    readonly enableEncryptionWithCustomerManagedKey?: boolean;
     /**
      * An optional, imported encryption key to encrypt the SQS Queue and SNS Topic with.
      *
      * @default - None
      */
-    readonly encryptionKey?: kms.Key
+    readonly encryptionKey?: kms.Key;
     /**
      * Optional user-provided props to override the default props for the encryption key.
      *
      * @default - None
      */
-    readonly encryptionKeyProps?: kms.KeyProps
+    readonly encryptionKeyProps?: kms.KeyProps;
     /**
      * Optional user-provided props to override the default props for sqsSubscriptionProps.
      *
      * @default - Default props are used.
      */
-    readonly sqsSubscriptionProps?: subscriptions.SqsSubscriptionProps
+    readonly sqsSubscriptionProps?: subscriptions.SqsSubscriptionProps;
 }
 
 /**

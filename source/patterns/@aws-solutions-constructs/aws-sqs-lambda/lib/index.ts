@@ -29,68 +29,68 @@ export interface SqsToLambdaProps {
      *
      * @default - None
      */
-    readonly existingLambdaObj?: lambda.Function,
+    readonly existingLambdaObj?: lambda.Function;
     /**
      * User provided props to override the default props for the Lambda function.
      *
      * @default - Default properties are used.
      */
-    readonly lambdaFunctionProps?: lambda.FunctionProps,
+    readonly lambdaFunctionProps?: lambda.FunctionProps;
     /**
      * Existing instance of SQS queue object, Providing both this and queueProps will cause an error.
      *
      * @default - Default props are used
      */
-    readonly existingQueueObj?: sqs.Queue,
+    readonly existingQueueObj?: sqs.Queue;
     /**
      * Optional user provided properties
      *
      * @default - Default props are used
      */
-    readonly queueProps?: sqs.QueueProps,
+    readonly queueProps?: sqs.QueueProps;
     /**
      * Optional user provided properties for the dead letter queue.
      *
      * @default - Default props are used
      */
-    readonly deadLetterQueueProps?: sqs.QueueProps,
+    readonly deadLetterQueueProps?: sqs.QueueProps;
     /**
      * Whether to deploy a secondary queue to be used as a dead letter queue.
      *
      * @default - true.
      */
-    readonly deployDeadLetterQueue?: boolean,
+    readonly deployDeadLetterQueue?: boolean;
     /**
      * The number of times a message can be unsuccessfully dequeued before being moved to the dead-letter queue.
      *
      * @default - required field if deployDeadLetterQueue=true.
      */
-    readonly maxReceiveCount?: number,
+    readonly maxReceiveCount?: number;
     /**
      * Optional user provided properties for the queue event source.
      *
      * @default - Default props are used
      */
-    readonly sqsEventSourceProps?: SqsEventSourceProps
+    readonly sqsEventSourceProps?: SqsEventSourceProps;
     /**
      * If no key is provided, this flag determines whether the queue is encrypted with a new CMK or an AWS managed key.
      * This flag is ignored if any of the following are defined: queueProps.encryptionMasterKey, encryptionKey or encryptionKeyProps.
      *
      * @default - False if queueProps.encryptionMasterKey, encryptionKey, and encryptionKeyProps are all undefined.
      */
-    readonly enableEncryptionWithCustomerManagedKey?: boolean
+    readonly enableEncryptionWithCustomerManagedKey?: boolean;
     /**
      * An optional, imported encryption key to encrypt the SQS queue with.
      *
      * @default - None
      */
-    readonly encryptionKey?: kms.Key
+    readonly encryptionKey?: kms.Key;
     /**
      * Optional user provided properties to override the default properties for the KMS encryption key used to  encrypt the SQS queue with.
      *
      * @default - None
      */
-    readonly encryptionKeyProps?: kms.KeyProps
+    readonly encryptionKeyProps?: kms.KeyProps;
 }
 
 /**

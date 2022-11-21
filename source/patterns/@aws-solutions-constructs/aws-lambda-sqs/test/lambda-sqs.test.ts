@@ -418,3 +418,99 @@ test('Queue is encrypted with customer managed KMS Key when enable encryption fl
     },
   });
 });
+
+test('Error is thrown when conflicting VPC information is provided', () => {
+  const stack = new Stack();
+
+  const app = () => {
+    new LambdaToSqs(stack, 'test-construct', {
+      existingVpc: new ec2.Vpc(stack, "test-vpc", {}),
+      deployVpc: true
+    });
+  };
+
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.');
+});
+
+test('Queue purging flag grants correct permissions', () => {
+  const stack = new Stack();
+
+  new LambdaToSqs(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    enableQueuePurging: true,
+    deployDeadLetterQueue: false
+  });
+
+  expect(stack).toHaveResource('AWS::SQS::QueuePolicy', {
+    PolicyDocument:  {
+      Statement: [
+        {
+          Action: [
+            "sqs:DeleteMessage",
+            "sqs:ReceiveMessage",
+            "sqs:SendMessage",
+            "sqs:GetQueueAttributes",
+            "sqs:RemovePermission",
+            "sqs:AddPermission",
+            "sqs:SetQueueAttributes",
+          ],
+          Effect: "Allow",
+          Principal:  {
+            AWS:  {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    Ref: "AWS::Partition",
+                  },
+                  ":iam::",
+                  {
+                    Ref: "AWS::AccountId",
+                  },
+                  ":root"
+                ],
+              ],
+            },
+          },
+          Resource:  {
+            "Fn::GetAtt": [
+              "testconstructqueue56588B31",
+              "Arn",
+            ],
+          },
+          Sid: "QueueOwnerOnlyAccess",
+        },
+        {
+          Action: "SQS:*",
+          Condition:  {
+            Bool:  {
+              "aws:SecureTransport": "false",
+            },
+          },
+          Effect: "Deny",
+          Principal: {
+            AWS: "*"
+          },
+          Resource:  {
+            "Fn::GetAtt": [
+              "testconstructqueue56588B31",
+              "Arn",
+            ],
+          },
+          Sid: "HttpsOnly",
+        }
+      ],
+      Version: "2012-10-17"
+    },
+    Queues: [
+      {
+        Ref: "testconstructqueue56588B31",
+      }
+    ]
+  });
+});
