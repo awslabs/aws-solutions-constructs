@@ -101,6 +101,80 @@ test('Test deployment w/ imported encryption key', () => {
   });
 });
 
+test('enableEncryptionWithCustomerManagedKey flag is ignored when encryptionKey is set', () => {
+  const stack = new Stack();
+  defaults.buildTopic(stack, {
+    enableEncryptionWithCustomerManagedKey: false,
+    encryptionKey: defaults.buildEncryptionKey(stack)
+  });
+
+  expect(stack).toHaveResource("AWS::SNS::Topic", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "EncryptionKey1B843E66",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('enableEncryptionWithCustomerManagedKey flag is ignored when topicProps.masterKey is set', () => {
+  const stack = new Stack();
+  defaults.buildTopic(stack, {
+    enableEncryptionWithCustomerManagedKey: false,
+    topicProps: {
+      masterKey: defaults.buildEncryptionKey(stack)
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::SNS::Topic", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "EncryptionKey1B843E66",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('enableEncryptionWithCustomerManagedKey flag is ignored when encryptionKeyProps is set', () => {
+  const stack = new Stack();
+  const description = "custom description";
+  defaults.buildTopic(stack, {
+    enableEncryptionWithCustomerManagedKey: false,
+    encryptionKeyProps: {
+      description
+    },
+  });
+
+  expect(stack).toHaveResource("AWS::SNS::Topic", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "EncryptionKey1B843E66",
+        "Arn"
+      ]
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::KMS::Key", {
+    Description: description
+  });
+});
+
+test('encryptionProps are set correctly on the SNS Topic', () => {
+  const stack = new Stack();
+  const description = "custom description";
+  defaults.buildTopic(stack, {
+    encryptionKeyProps: {
+      description
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::KMS::Key", {
+    Description: description
+  });
+});
+
 test('Check SNS Topic policy', () => {
   const stack = new Stack();
   defaults.buildTopic(stack, {});
