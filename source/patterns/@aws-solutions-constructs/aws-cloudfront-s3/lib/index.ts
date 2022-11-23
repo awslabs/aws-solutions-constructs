@@ -41,11 +41,25 @@ export interface CloudFrontToS3Props {
   readonly cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
   /**
    * Optional user provided props to turn on/off the automatic injection of best practice HTTP
-   * security headers in all responses from cloudfront
+   * security headers in all responses from cloudfront.
+   * Turning this on will inject default headers and is mutually exclusive with passing custom security headers
+   * via the responseHeadersPolicyProps parameter.
    *
    * @default - true
    */
   readonly insertHttpSecurityHeaders?: boolean;
+  /**
+   * Optional user provided configuration that cloudfront applies to all http responses.
+   * Can be used to pass a custom ResponseSecurityHeadersBehavior, ResponseCustomHeadersBehavior or
+   * ResponseHeadersCorsBehavior to the cloudfront distribution.
+   *
+   * Passing a custom ResponseSecurityHeadersBehavior is mutually exclusive with turning on the default security headers
+   * via `insertHttpSecurityHeaders` prop. Will throw an error if both `insertHttpSecurityHeaders` is set to `true`
+   * and ResponseSecurityHeadersBehavior is passed.
+   *
+   * @default - undefined
+   */
+  readonly responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
   /**
    * Optional user provided props to provide an originPath that CloudFront appends to the
    * origin domain name when CloudFront requests content from the origin.
@@ -84,7 +98,7 @@ export class CloudFrontToS3 extends Construct {
 
   /**
    * @summary Constructs a new instance of the CloudFrontToS3 class.
-   * @param {cdk.App} scope - represents the scope for all the resources.
+   * @param {Construct} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {CloudFrontToS3Props} props - user provided props for the construct
    * @since 0.8.0
@@ -110,8 +124,12 @@ export class CloudFrontToS3 extends Construct {
     this.s3BucketInterface = bucket;
 
     [this.cloudFrontWebDistribution, this.cloudFrontFunction, this.cloudFrontLoggingBucket] =
-      defaults.CloudFrontDistributionForS3(this, this.s3BucketInterface,
-        props.cloudFrontDistributionProps, props.insertHttpSecurityHeaders, props.originPath, props.cloudFrontLoggingBucketProps);
+      defaults.CloudFrontDistributionForS3(this,
+        this.s3BucketInterface,
+        props.cloudFrontDistributionProps,
+        props.insertHttpSecurityHeaders,
+        props.originPath,
+        props.cloudFrontLoggingBucketProps);
   }
 
 }
