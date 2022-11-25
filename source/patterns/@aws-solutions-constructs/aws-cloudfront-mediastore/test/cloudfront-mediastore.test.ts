@@ -172,7 +172,7 @@ test("throw exception if insertHttpSecurityHeaders and responseHeadersPolicyProp
   const stack = new cdk.Stack();
 
   expect(() => {
-    new CloudFrontToMediaStore(stack, "cloudfront-mediastore", {
+    new CloudFrontToMediaStore(stack, "test-cloudfront-mediastore", {
       insertHttpSecurityHeaders: true,
       responseHeadersPolicyProps: {
         securityHeadersBehavior: {

@@ -375,7 +375,7 @@ test('CloudFront origin path should not be present if not provided', () => {
 test('Test the deployment with securityHeadersBehavior instead of HTTP security headers', () => {
   // Initial setup
   const stack = new Stack();
-  const cloudFrontToS3 = new CloudFrontToS3(stack, 'test-cloudfront-mediastore', {
+  const cloudFrontToS3 = new CloudFrontToS3(stack, 'test-cloudfront-s3', {
     insertHttpSecurityHeaders: false,
     responseHeadersPolicyProps: {
       securityHeadersBehavior: {
@@ -417,7 +417,7 @@ test("throw exception if insertHttpSecurityHeaders and responseHeadersPolicyProp
   const stack = new cdk.Stack();
 
   expect(() => {
-    new CloudFrontToS3(stack, "cloudfront-s3", {
+    new CloudFrontToS3(stack, "test-cloudfront-s3", {
       insertHttpSecurityHeaders: true,
       responseHeadersPolicyProps: {
         securityHeadersBehavior: {

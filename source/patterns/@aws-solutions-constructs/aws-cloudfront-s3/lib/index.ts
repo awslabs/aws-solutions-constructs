@@ -124,12 +124,15 @@ export class CloudFrontToS3 extends Construct {
     this.s3BucketInterface = bucket;
 
     [this.cloudFrontWebDistribution, this.cloudFrontFunction, this.cloudFrontLoggingBucket] =
-      defaults.CloudFrontDistributionForS3(this,
+      defaults.CloudFrontDistributionForS3(
+        this,
         this.s3BucketInterface,
         props.cloudFrontDistributionProps,
         props.insertHttpSecurityHeaders,
         props.originPath,
-        props.cloudFrontLoggingBucketProps);
+        props.cloudFrontLoggingBucketProps,
+        props.responseHeadersPolicyProps
+      );
   }
 
 }

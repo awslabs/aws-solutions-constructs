@@ -144,7 +144,8 @@ export class CloudFrontToMediaStore extends Construct {
 
     [this.cloudFrontWebDistribution, this.cloudFrontLoggingBucket, this.cloudFrontOriginRequestPolicy, this.cloudFrontFunction]
       = defaults.CloudFrontDistributionForMediaStore(
-        this, this.mediaStoreContainer,
+        this,
+        this.mediaStoreContainer,
         cloudFrontDistributionProps,
         props.insertHttpSecurityHeaders,
         props.cloudFrontLoggingBucketProps,
