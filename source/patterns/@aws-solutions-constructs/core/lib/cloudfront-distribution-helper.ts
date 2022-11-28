@@ -26,7 +26,6 @@ import { createLoggingBucket } from './s3-bucket-helper';
 import { DefaultS3Props } from './s3-bucket-defaults';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
-import {ResponseHeadersPolicyProps} from "aws-cdk-lib/aws-cloudfront";
 
 // Override Cfn_Nag rule: Cloudfront TLS-1.2 rule (https://github.com/stelligent/cfn_nag/issues/384)
 function updateSecurityPolicy(cfDistribution: cloudfront.Distribution) {
@@ -70,7 +69,6 @@ export function CloudFrontDistributionForApiGateway(scope: Construct,
   cloudFrontLoggingBucketProps?: s3.BucketProps,
   responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
 ): [cloudfront.Distribution, cloudfront.Function?, s3.Bucket?] {
-  validateSecurityHeadersBehavior(httpSecurityHeaders, responseHeadersPolicyProps);
 
   const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
@@ -80,7 +78,7 @@ export function CloudFrontDistributionForApiGateway(scope: Construct,
     loggingBucket,
     httpSecurityHeaders,
     cloudfrontFunction,
-    responseHeadersPolicyProps && new cloudfront.ResponseHeadersPolicy(scope, 'ResponseHeadersPolicy', responseHeadersPolicyProps)
+    responseHeadersPolicyProps ? undefined : new cloudfront.ResponseHeadersPolicy(scope, 'ResponseHeadersPolicy', responseHeadersPolicyProps)
   );
 
   const cfprops = consolidateProps(defaultprops, cloudFrontDistributionProps);
@@ -100,8 +98,6 @@ export function CloudFrontDistributionForS3(
   cloudFrontLoggingBucketProps?: s3.BucketProps,
   responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
 ): [cloudfront.Distribution, cloudfront.Function?, s3.Bucket?] {
-  validateSecurityHeadersBehavior(httpSecurityHeaders, responseHeadersPolicyProps);
-
   const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
   const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope, cloudFrontLoggingBucketProps);
@@ -141,7 +137,6 @@ export function CloudFrontDistributionForMediaStore(scope: Construct,
   responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
 ): [cloudfront.Distribution,
     s3.Bucket | undefined, cloudfront.OriginRequestPolicy, cloudfront.Function?] {
-  validateSecurityHeadersBehavior(httpSecurityHeaders, responseHeadersPolicyProps);
 
   let originRequestPolicy: cloudfront.OriginRequestPolicy;
 
@@ -202,17 +197,6 @@ export function CloudFrontOriginAccessIdentity(scope: Construct, comment?: strin
   return new cloudfront.OriginAccessIdentity(scope, 'CloudFrontOriginAccessIdentity', {
     comment: comment ? comment : `access-identity-${cdk.Aws.REGION}-${cdk.Aws.STACK_NAME}`
   });
-}
-
-function validateSecurityHeadersBehavior(
-  httpSecurityHeaders: boolean,
-  responseHeadersPolicyProps?: ResponseHeadersPolicyProps
-) {
-  if (httpSecurityHeaders && responseHeadersPolicyProps?.securityHeadersBehavior) {
-    throw new Error(
-      'responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.'
-    );
-  }
 }
 
 function getLoggingBucket(

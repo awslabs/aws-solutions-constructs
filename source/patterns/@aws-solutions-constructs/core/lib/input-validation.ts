@@ -24,7 +24,7 @@ import * as glue from 'aws-cdk-lib/aws-glue';
 import * as sagemaker from 'aws-cdk-lib/aws-sagemaker';
 import * as secretsmanager from "aws-cdk-lib/aws-secretsmanager";
 import * as kms from "aws-cdk-lib/aws-kms";
-import * as opensearch from "aws-cdk-lib/aws-opensearchservice";
+import {ResponseHeadersPolicyProps} from "aws-cdk-lib/aws-cloudfront";
 
 export interface VerifiedProps {
   readonly dynamoTableProps?: dynamodb.TableProps,
@@ -78,7 +78,8 @@ export interface VerifiedProps {
   readonly loggingBucketProps?: s3.BucketProps;
   readonly logS3AccessLogs?: boolean;
 
-  readonly openSearchDomainProps?: opensearch.CfnDomainProps;
+  readonly httpSecurityHeaders?: boolean;
+  readonly responseHeadersPolicyProps?: ResponseHeadersPolicyProps;
 }
 
 export function CheckProps(propsObject: VerifiedProps | any) {
@@ -225,8 +226,9 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
-  if (propsObject.openSearchDomainProps?.vpcOptions) {
-    throw new Error("Error - Define VPC using construct parameters not the OpenSearch Service props");
+  if (propsObject.httpSecurityHeaders !== false && propsObject.responseHeadersPolicyProps?.securityHeadersBehavior) {
+    errorMessages += 'responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.';
+    errorFound = true;
   }
 
   if (errorFound) {
