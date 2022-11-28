@@ -29,10 +29,10 @@ function deploy(stack: cdk.Stack) {
 
   const func = defaults.deployLambdaFunction(stack, inProps);
 
-  const [_api] = defaults.RegionalLambdaRestApi(stack, func);
+  const [api] = defaults.RegionalLambdaRestApi(stack, func);
 
   return new CloudFrontToApiGateway(stack, 'test-cloudfront-apigateway', {
-    existingApiGatewayObj: _api
+    existingApiGatewayObj: api
   });
 }
 
@@ -172,18 +172,18 @@ function createApi() {
 
   const func = defaults.deployLambdaFunction(stack, inProps);
 
-  const [_api] = defaults.RegionalLambdaRestApi(stack, func);
-  return {stack, _api};
+  const [api] = defaults.RegionalLambdaRestApi(stack, func);
+  return {stack, api};
 }
 
 // --------------------------------------------------------------
 // Cloudfront logging bucket with destroy removal policy and auto delete objects
 // --------------------------------------------------------------
 test('Cloudfront logging bucket with destroy removal policy and auto delete objects', () => {
-  const {stack, _api} = createApi();
+  const {stack, api} = createApi();
 
   new CloudFrontToApiGateway(stack, 'cloudfront-apigateway', {
-    existingApiGatewayObj: _api,
+    existingApiGatewayObj: api,
     cloudFrontLoggingBucketProps: {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true
@@ -211,12 +211,12 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
 // Cloudfront logging bucket error providing existing log bucket and logBucketProps
 // --------------------------------------------------------------
 test('Cloudfront logging bucket error when providing existing log bucket and logBucketProps', () => {
-  const {stack, _api} = createApi();
+  const {stack, api} = createApi();
 
   const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});
 
   const app = () => { new CloudFrontToApiGateway(stack, 'cloudfront-apigateway', {
-    existingApiGatewayObj: _api,
+    existingApiGatewayObj: api,
     cloudFrontDistributionProps: {
       logBucket
     },
@@ -232,9 +232,9 @@ test('Cloudfront logging bucket error when providing existing log bucket and log
 
 test('Test the deployment with securityHeadersBehavior instead of HTTP security headers', () => {
   // Initial setup
-  const {stack, _api} = createApi();
+  const {stack, api} = createApi();
   const cloudFrontToS3 = new CloudFrontToApiGateway(stack, 'test-cloudfront-apigateway', {
-    existingApiGatewayObj: _api,
+    existingApiGatewayObj: api,
     insertHttpSecurityHeaders: false,
     responseHeadersPolicyProps: {
       securityHeadersBehavior: {
@@ -273,11 +273,11 @@ test('Test the deployment with securityHeadersBehavior instead of HTTP security 
 });
 
 test("throw exception if insertHttpSecurityHeaders and responseHeadersPolicyProps are provided", () => {
-  const {stack, _api} = createApi();
+  const {stack, api} = createApi();
 
   expect(() => {
     new CloudFrontToApiGateway(stack, "test-cloudfront-apigateway", {
-      existingApiGatewayObj: _api,
+      existingApiGatewayObj: api,
       insertHttpSecurityHeaders: true,
       responseHeadersPolicyProps: {
         securityHeadersBehavior: {
