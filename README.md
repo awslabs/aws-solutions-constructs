@@ -48,3 +48,4 @@ containing a central DynamoDB table for managing orders, as well as a Lambda lay
 
 ***
 &copy; Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
