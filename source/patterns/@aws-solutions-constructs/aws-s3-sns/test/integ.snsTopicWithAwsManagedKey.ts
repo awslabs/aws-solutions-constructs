@@ -15,7 +15,6 @@
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { S3ToSns } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import * as s3 from 'aws-cdk-lib/aws-s3';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
@@ -24,15 +23,7 @@ new S3ToSns(stack, 'test-s3-sns', {
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
   },
-  s3EventTypes: [
-    s3.EventType.OBJECT_REMOVED
-  ],
-  s3EventFilters: [
-    {
-      prefix: 'the/place',
-      suffix: '.png'
-    }
-  ],
+  enableEncryptionWithCustomerManagedKey: false
 });
 
 app.synth();

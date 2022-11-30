@@ -12,22 +12,15 @@
  */
 
 /// !cdk-integ *
-import {App, Stack, RemovalPolicy} from "aws-cdk-lib";
-import {S3ToSns} from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import * as defaults from '@aws-solutions-constructs/core';
+import { App, Stack } from "aws-cdk-lib";
+import { S3ToSns } from "../lib";
+import { CreateScrapBucket, generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const [ existingBucketObj ] = defaults.buildS3Bucket(stack, {
-  bucketProps: {
-    removalPolicy: RemovalPolicy.DESTROY
-  }
-});
-
 new S3ToSns(stack, 'test-s3-sns', {
-  existingBucketObj
+  existingBucketObj: CreateScrapBucket(stack)
 });
 
 app.synth();

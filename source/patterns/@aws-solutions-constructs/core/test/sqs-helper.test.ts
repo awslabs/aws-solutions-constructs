@@ -17,6 +17,35 @@ import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as defaults from '../';
 import '@aws-cdk/assert/jest';
 import { buildDeadLetterQueue, buildQueue } from "../lib/sqs-helper";
+import * as kms from 'aws-cdk-lib/aws-kms';
+import { getResourceLogicalIdFromDescription } from "../";
+
+// --------------------------------------------------------------
+// Test deployment w/ imported encryption key
+// --------------------------------------------------------------
+test('Test deployment w/ encryptionMasterKey set on queueProps', () => {
+  const stack = new Stack();
+
+  const cmk = new kms.Key(stack, 'EncryptionKey', {
+    description: 'kms-key-description'
+  });
+
+  defaults.buildQueue(stack, 'queue', {
+    queueProps: {
+      encryptionMasterKey: cmk
+    }
+  });
+  const kmsKeyLogicalId = getResourceLogicalIdFromDescription(stack, 'AWS::KMS::Key', 'kms-key-description');
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        kmsKeyLogicalId,
+        "Arn"
+      ]
+    }
+  });
+});
 
 // --------------------------------------------------------------
 // Test deployment w/ imported encryption key

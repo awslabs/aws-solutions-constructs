@@ -64,16 +64,15 @@ export interface S3ToSnsProps {
      */
     readonly logS3AccessLogs?: boolean;
     /**
-     * Existing SNS topic to be used instead of the default topic. Providing both this and `topicProps` will cause an error.
-     * If the SNS Topic is encrypted, the KMS key utilized for encryption must be a customer managed KMS key and it must be
-     * specified in the `existingTopicEncryptionKey` property.
+     * An optional, existing SNS topic to be used instead of the default topic. Providing both this and `topicProps` will cause an error.
+     * If the SNS Topic is encrypted with a Customer-Managed KMS Key, the key must be specified in the `existingTopicEncryptionKey` property.
      *
      * @default - Default props are used
      */
     readonly existingTopicObj?: sns.Topic;
     /**
-     * If an existing topic is provided in the `existingTopicObj` property, and that topic is encrypted with a customer managed KMS key,
-     * this property also needs to be set with same CMK.
+     * If an existing topic is provided in the `existingTopicObj` property, and that topic is encrypted with a Customer-Managed KMS key,
+     * this property also needs to be set with same key.
      *
      * @default - None
      */
@@ -127,13 +126,8 @@ export class S3ToSns extends Construct {
       super(scope, id);
       defaults.CheckProps(props);
 
-      let bucket: s3.Bucket;
-      let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
-
-      if (props.enableEncryptionWithCustomerManagedKey === undefined ||
-          props.enableEncryptionWithCustomerManagedKey === true) {
-        enableEncryptionParam = true;
-      }
+      // If the enableEncryptionWithCustomerManagedKey is undefined, default it to true
+      const enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey === false ? false : true;
 
       // Setup the S3 bucket
       if (!props.existingBucketObj) {
@@ -142,42 +136,38 @@ export class S3ToSns extends Construct {
           loggingBucketProps: props.loggingBucketProps,
           logS3AccessLogs: props.logS3AccessLogs
         });
-        bucket = this.s3Bucket;
+        this.s3BucketInterface = this.s3Bucket;
       } else {
-        bucket = props.existingBucketObj;
+        this.s3BucketInterface = props.existingBucketObj;
       }
-
-      this.s3BucketInterface = bucket;
 
       // Setup the topic
       [this.snsTopic, this.encryptionKey] = defaults.buildTopic(this, {
         existingTopicObj: props.existingTopicObj,
+        existingTopicEncryptionKey: props.existingTopicEncryptionKey,
         topicProps: props.topicProps,
         enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
         encryptionKey: props.encryptionKey,
         encryptionKeyProps: props.encryptionKeyProps
       });
 
-      if (props.existingTopicEncryptionKey) {
-        this.encryptionKey = props.existingTopicEncryptionKey;
-      }
-
       // Setup the S3 bucket event types
-      const s3EventTypes = props.s3EventTypes ? props.s3EventTypes : defaults.defaultS3NotificationEventTypes;
+      const s3EventTypes = props.s3EventTypes ?? defaults.defaultS3NotificationEventTypes;
 
       // Setup the S3 bucket event filters
-      const s3Eventfilters = props.s3EventFilters ? props.s3EventFilters : [];
+      const s3Eventfilters = props.s3EventFilters ?? [];
 
       // Setup the S3 bucket event notifications
-      s3EventTypes.forEach(type => bucket.addEventNotification(type, new s3n.SnsDestination(this.snsTopic), ...s3Eventfilters));
+      s3EventTypes.forEach((type) => {
+        const destination = new s3n.SnsDestination(this.snsTopic);
+        this.s3BucketInterface.addEventNotification(type, destination, ...s3Eventfilters);
+      });
 
       // Grant S3 permission to use the topic's encryption key so it can publish messages to it
-      if (this.encryptionKey) {
-        this.encryptionKey.grant(new iam.ServicePrincipal("s3.amazonaws.com"),
-          'kms:Decrypt',
-          'kms:GenerateDataKey*',
-        );
-      }
+      this.encryptionKey?.grant(new iam.ServicePrincipal("s3.amazonaws.com"),
+        'kms:Decrypt',
+        'kms:GenerateDataKey*',
+      );
 
       addCfnNagS3BucketNotificationRulesToSuppress(Stack.of(this), 'BucketNotificationsHandler050a0587b7544547bf325f094a3db834');
     }

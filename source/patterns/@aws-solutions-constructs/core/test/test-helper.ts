@@ -25,6 +25,7 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import { CfnFunction } from "aws-cdk-lib/aws-lambda";
 import { GetDefaultCachePort } from "../lib/elasticache-defaults";
+import { Match, Template } from 'aws-cdk-lib/assertions';
 
 export const fakeEcrRepoArn = 'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo';
 
@@ -145,4 +146,24 @@ export function CreateTestCache(scope: Construct, id: string, vpc: ec2.IVpc, por
   );
   newCache.addDependsOn(subnetGroup);
   return newCache;
+}
+
+/**
+ * Returns the Logical ID for the resource with a matching description.
+ *
+ * @param stack The CloudFormation Stack that contains the resource to get.
+ * @param resourceType The type of CloudFormation Resource, e.g., `AWS::KMS::Key`, `AWS::SNS::Topic`
+ * @param description The value of the Description property on the CloudFormation Resource
+ * @returns The Logical ID of the found resource
+ */
+export function getResourceLogicalIdFromDescription(stack: Stack, resourceType: string, description: string): string {
+  const template = Template.fromStack(stack);
+  const resource = template.findResources(resourceType, {
+    Properties: {
+      Description: Match.exact(description)
+    }
+  });
+
+  const [ logicalId ] = Object.keys(resource);
+  return logicalId;
 }

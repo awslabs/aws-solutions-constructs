@@ -16,6 +16,9 @@ import { Stack } from "aws-cdk-lib";
 import * as defaults from '../';
 import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
+import * as kms from 'aws-cdk-lib/aws-kms';
+import * as sns from 'aws-cdk-lib/aws-sns';
+import { getResourceLogicalIdFromDescription } from "../";
 
 // --------------------------------------------------------------
 // Test deployment with no properties using AWS Managed KMS Key
@@ -255,4 +258,36 @@ test('Check SNS Topic policy', () => {
       Version: "2012-10-17"
     },
   }));
+});
+
+test('existing topic encrypted with CMK is not overridden by defaults', () => {
+  const stack = new Stack();
+
+  const cmk = new kms.Key(stack, 'Key', {
+    description: 'new-key-description'
+  });
+
+  const topic = new sns.Topic(stack, 'Topic', {
+    masterKey: cmk
+  });
+
+  defaults.buildTopic(stack, {
+    existingTopicObj: topic,
+    existingTopicEncryptionKey: cmk
+  });
+
+  const kmsKeyLogicalId = getResourceLogicalIdFromDescription(stack, 'AWS::KMS::Key', 'new-key-description');
+
+  expect(stack).toHaveResource("AWS::SNS::Topic", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        kmsKeyLogicalId,
+        "Arn"
+      ]
+    }
+  });
+
+  // Make sure the construct did not create any other topics or keys created
+  expect(stack).toCountResources('AWS::KMS::Key', 1);
+  expect(stack).toCountResources('AWS::SNS::Topic', 1);
 });

@@ -12,8 +12,8 @@
  */
 
 /// !cdk-integ *
-import {App, Stack, RemovalPolicy} from "aws-cdk-lib";
-import {S3ToSns} from "../lib";
+import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
+import { S3ToSns } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import * as defaults from '@aws-solutions-constructs/core';
 

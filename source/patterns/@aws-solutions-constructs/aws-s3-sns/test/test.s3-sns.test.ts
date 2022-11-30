@@ -15,8 +15,8 @@ import { Stack } from "aws-cdk-lib";
 import { S3ToSns } from "../lib";
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as kms from 'aws-cdk-lib/aws-kms';
 import * as s3 from 'aws-cdk-lib/aws-s3';
+import { getResourceLogicalIdFromDescription } from "@aws-solutions-constructs/core";
 
 test('All get methods return non-null objects', () => {
   const stack = new Stack();
@@ -30,12 +30,9 @@ test('All get methods return non-null objects', () => {
   expect(app.s3BucketInterface !== null);
 });
 
-test('deployment works with existing bucket', () => {
+test('construct creates default event notification', () => {
   const stack = new Stack();
-  const [ existingBucketObj ] = defaults.buildS3Bucket(stack, {});
-  new S3ToSns(stack, 'test-s3-sns', {
-    existingBucketObj
-  });
+  new S3ToSns(stack, 'test-s3-sns', {});
 
   expect(stack).toHaveResource("Custom::S3BucketNotifications", {
     NotificationConfiguration: {
@@ -51,41 +48,53 @@ test('deployment works with existing bucket', () => {
   });
 });
 
-test('deployment works with existing topic and key', () => {
+test('construct uses existingBucketObj property', () => {
   const stack = new Stack();
-  const cmk = defaults.buildEncryptionKey(stack);
-  const [ existingTopicObj ] = defaults.buildTopic(stack, {
-    encryptionKey: cmk
+  const [ existingBucketObj ] = defaults.buildS3Bucket(stack, {
+    bucketProps: {
+      bucketName: 'existing-bucket-name'
+    }
   });
+  new S3ToSns(stack, 'test-s3-sns', {
+    existingBucketObj
+  });
+
+  expect(stack).toHaveResourceLike("AWS::S3::Bucket", {
+    BucketName: 'existing-bucket-name'
+  });
+});
+
+test('construct uses existing topic and key', () => {
+  const stack = new Stack();
+  const cmk = defaults.buildEncryptionKey(stack, {
+    description: 'existing-key-description'
+  });
+  const [ existingTopicObj ] = defaults.buildTopic(stack, {
+    encryptionKey: cmk,
+    topicProps: {
+      topicName: 'existing-topic-name'
+    }
+  });
+
   new S3ToSns(stack, 'test-s3-sns', {
     existingTopicObj,
     existingTopicEncryptionKey: cmk
   });
 
-  expect(stack).toHaveResource("Custom::S3BucketNotifications", {
-    NotificationConfiguration: {
-      TopicConfigurations: [
-        {
-          Events: ['s3:ObjectCreated:*'],
-          TopicArn: {
-            Ref: "SnsTopic2C1570A4"
-          }
-        }
-      ]
-    }
+  expect(stack).toHaveResourceLike("AWS::SNS::Topic", {
+    TopicName: 'existing-topic-name'
   });
 
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
-    KmsMasterKeyId: {
-      "Fn::GetAtt": [
-        "EncryptionKey1B843E66",
-        "Arn"
-      ]
-    }
+  expect(stack).toHaveResourceLike("AWS::KMS::Key", {
+    Description: 'existing-key-description'
   });
+
+  // Make sure the construct did not create any other topics or keys created
+  expect(stack).toCountResources('AWS::KMS::Key', 1);
+  expect(stack).toCountResources('AWS::SNS::Topic', 1);
 });
 
-test('deployment works with specific evnet types and filters', () => {
+test('construct uses specific event types and filters', () => {
   const stack = new Stack();
   new S3ToSns(stack, 'test-s3-sns', {
     s3EventTypes: [ s3.EventType.OBJECT_REMOVED ],
@@ -129,14 +138,19 @@ test('deployment works with specific evnet types and filters', () => {
 
 test('Topic is encrypted with imported CMK when set on encryptionKey prop', () => {
   const stack = new Stack();
-  new S3ToSns(stack, 'test-s3-sns', {
-    encryptionKey: new kms.Key(stack, 'cmk')
+  const cmk = defaults.buildEncryptionKey(stack, {
+    description: 'existing-key-description'
   });
+  new S3ToSns(stack, 'test-s3-sns', {
+    encryptionKey: cmk
+  });
+
+  const kmsKeyLogicalId = getResourceLogicalIdFromDescription(stack, 'AWS::KMS::Key', 'existing-key-description');
 
   expect(stack).toHaveResource("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "cmk01DE03DA",
+        kmsKeyLogicalId,
         "Arn"
       ]
     }
@@ -147,24 +161,16 @@ test('Topic is encrypted with provided encryptionKeyProps', () => {
   const stack = new Stack();
   new S3ToSns(stack, 'test-s3-sns', {
     encryptionKeyProps: {
-      alias: 'new-key-alias-from-props'
+      description: 'existing-key-description'
     }
   });
+
+  const kmsKeyLogicalId = getResourceLogicalIdFromDescription(stack, 'AWS::KMS::Key', 'existing-key-description');
 
   expect(stack).toHaveResource("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "tests3snsEncryptionKey6C553584",
-        "Arn"
-      ]
-    }
-  });
-
-  expect(stack).toHaveResource('AWS::KMS::Alias', {
-    AliasName: 'alias/new-key-alias-from-props',
-    TargetKeyId: {
-      "Fn::GetAtt": [
-        "tests3snsEncryptionKey6C553584",
+        kmsKeyLogicalId,
         "Arn"
       ]
     }
@@ -173,16 +179,21 @@ test('Topic is encrypted with provided encryptionKeyProps', () => {
 
 test('Topic is encrypted with imported CMK when set on topicProps.masterKey prop', () => {
   const stack = new Stack();
+  const cmk = defaults.buildEncryptionKey(stack, {
+    description: 'existing-key-description'
+  });
   new S3ToSns(stack, 'test-s3-sns', {
     topicProps: {
-      masterKey: new kms.Key(stack, 'cmk')
+      masterKey: cmk
     }
   });
+
+  const kmsKeyLogicalId = getResourceLogicalIdFromDescription(stack, 'AWS::KMS::Key', 'existing-key-description');
 
   expect(stack).toHaveResource("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "cmk01DE03DA",
+        kmsKeyLogicalId,
         "Arn"
       ]
     }
@@ -202,6 +213,9 @@ test('Topic is encrypted by default with Customer-managed KMS key when no other 
       ]
     }
   });
+
+  expect(stack).toCountResources('AWS::KMS::Key', 1);
+  expect(stack).toCountResources('AWS::SNS::Topic', 1);
 });
 
 test('Topic is encrypted with SQS-managed KMS Key when enable encryption flag is false', () => {
@@ -232,4 +246,7 @@ test('Topic is encrypted with SQS-managed KMS Key when enable encryption flag is
       ]
     }
   });
+
+  expect(stack).toCountResources('AWS::KMS::Key', 0);
+  expect(stack).toCountResources('AWS::SNS::Topic', 1);
 });
