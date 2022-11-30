@@ -238,6 +238,30 @@ test('Test deployment with SNS managed KMS key', () => {
 });
 
 // --------------------------------------------------------------
+// Test deployment with CMK encrypted SNS Topic
+// --------------------------------------------------------------
+test('Test deployment with CMK encrypted SNS Topic', () => {
+  // Stack
+  const stack = new Stack();
+  const cmk = new kms.Key(stack, 'cmk');
+  // Helper declaration
+  new SnsToSqs(stack, 'sns-to-sqs-stack', {
+    topicProps: {
+      masterKey: cmk
+    }
+  });
+  // Assertion 1
+  expect(stack).toHaveResource("AWS::SNS::Topic", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+// --------------------------------------------------------------
 // Pattern deployment with existing Topic and FIFO queues
 // --------------------------------------------------------------
 test('Pattern deployment w/ existing topic and FIFO queue', () => {
@@ -397,6 +421,50 @@ test('Check SNS dead letter queue', () => {
           "Arn"
         ]
       }
+    }
+  });
+});
+
+test('Construct uses topicProps.masterKey when specified', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const cmk = new kms.Key(stack, 'cmkfortopic');
+  const props: SnsToSqsProps = {
+    topicProps: {
+      masterKey: cmk
+    }
+  };
+
+  new SnsToSqs(stack, 'test-sns-sqs', props);
+
+  expect(stack).toHaveResource("AWS::SNS::Topic", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmkfortopic0904647B",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Construct uses queueProps.encryptionMasterKey when specified', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const cmk = new kms.Key(stack, 'cmkforqueue');
+  const props: SnsToSqsProps = {
+    queueProps: {
+      encryptionMasterKey: cmk
+    }
+  };
+
+  new SnsToSqs(stack, 'test-sns-sqs', props);
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmkforqueue4E093476",
+        "Arn"
+      ]
     }
   });
 });

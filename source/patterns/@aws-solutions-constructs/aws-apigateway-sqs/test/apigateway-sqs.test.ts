@@ -16,6 +16,7 @@ import { Stack } from "aws-cdk-lib";
 import { ApiGatewayToSqs } from '../lib';
 import '@aws-cdk/assert/jest';
 import * as api from "aws-cdk-lib/aws-apigateway";
+import * as kms from 'aws-cdk-lib/aws-kms';
 import * as sqs from "aws-cdk-lib/aws-sqs";
 
 test('Test deployment w/o DLQ', () => {
@@ -171,4 +172,93 @@ test('Test deployment with existing queue object', () => {
   });
 
   expect(stack).toCountResources("AWS::SQS::Queue", 1);
+});
+
+test('Queue is encrypted with imported CMK when set on encryptionKey prop', () => {
+  const stack = new Stack();
+  const cmk = new kms.Key(stack, 'cmk');
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    encryptionKey: cmk
+  });
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Queue is encrypted with imported CMK when set on queueProps.encryptionKeyProps prop', () => {
+  const stack = new Stack();
+  const cmk = new kms.Key(stack, 'cmk');
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    queueProps: {
+      encryptionMasterKey: cmk
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Queue is encrypted with provided encrytionKeyProps', () => {
+  const stack = new Stack();
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    encryptionKeyProps: {
+      alias: 'new-key-alias-from-props'
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "apigatewaysqsEncryptionKey4A698F7C",
+        "Arn"
+      ]
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::KMS::Alias', {
+    AliasName: 'alias/new-key-alias-from-props',
+    TargetKeyId: {
+      'Fn::GetAtt': [
+        'apigatewaysqsEncryptionKey4A698F7C',
+        'Arn'
+      ]
+    }
+  });
+});
+
+test('Queue is encrypted by default with AWS-managed KMS key when no other encryption properties are set', () => {
+  const stack = new Stack();
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {});
+
+  expect(stack).toHaveResource('AWS::SQS::Queue', {
+    KmsMasterKeyId: "alias/aws/sqs"
+  });
+});
+
+test('Queue is encrypted with customer managed KMS Key when enable encryption flag is true', () => {
+  const stack = new Stack();
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    enableEncryptionWithCustomerManagedKey: true
+  });
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "apigatewaysqsEncryptionKey4A698F7C",
+        "Arn"
+      ]
+    }
+  });
 });

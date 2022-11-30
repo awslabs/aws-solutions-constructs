@@ -16,6 +16,7 @@ import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as glue from 'aws-cdk-lib/aws-glue';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
+import * as kms from 'aws-cdk-lib/aws-kms';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as mediastore from 'aws-cdk-lib/aws-mediastore';
 import * as s3 from 'aws-cdk-lib/aws-s3';
@@ -90,6 +91,43 @@ test("Test fail SQS Queue check", () => {
 
   // Assertion
   expect(app).toThrowError('Error - Either provide queueProps or existingQueueObj, but not both.\n');
+});
+
+test('Test fail SQS queue check when queueProps.encryptionMasterKey and encryptionKey are both specified', () => {
+  const stack = new Stack();
+
+  const props: defaults.VerifiedProps = {
+    queueProps: {
+      encryptionMasterKey: new kms.Key(stack, 'key')
+    },
+    encryptionKey: new kms.Key(stack, 'otherkey')
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  expect(app).toThrowError('Error - Either provide queueProps.encryptionMasterKey or encryptionKey, but not both.\n');
+});
+
+test('Test fail SQS queue check when queueProps.encryptionMasterKey and encryptionKeyProps are both specified', () => {
+  const stack = new Stack();
+
+  const props: defaults.VerifiedProps = {
+    encryptionKeyProps: {
+      description: 'key description'
+    },
+    queueProps: {
+      encryptionMasterKey: new kms.Key(stack, 'key')
+    }
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide queueProps.encryptionMasterKey or encryptionKeyProps, but not both.\n');
 });
 
 test('Test fail Dead Letter Queue check', () => {
@@ -273,6 +311,60 @@ test('Test fail SNS topic check with bad topic attribute name', () => {
 
   // Assertion
   expect(app).toThrowError('Error - Either provide topicProps or existingTopicObj, but not both.\n');
+});
+
+test('Test fail SNS topic check when both encryptionKey and encryptionKeyProps are specified', () => {
+  const stack = new Stack();
+
+  const props: defaults.VerifiedProps = {
+    encryptionKey: new kms.Key(stack, 'key'),
+    encryptionKeyProps: {
+      description: 'a description'
+    }
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  expect(app).toThrowError('Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n');
+});
+
+test('Test fail SNS topic check when both topicProps.masterKey and encryptionKeyProps are specified', () => {
+  const stack = new Stack();
+
+  const props: defaults.VerifiedProps = {
+    topicProps: {
+      masterKey: new kms.Key(stack, 'key')
+    },
+    encryptionKeyProps: {
+      description: 'a description'
+    }
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  expect(app).toThrowError('Error - Either provide topicProps.masterKey or encryptionKeyProps, but not both.\n');
+});
+
+test('Test fail SNS topic check when both encryptionKey and topicProps.masterKey are specified', () => {
+  const stack = new Stack();
+
+  const props: defaults.VerifiedProps = {
+    encryptionKey: new kms.Key(stack, 'key'),
+    topicProps: {
+      masterKey: new kms.Key(stack, 'otherkey')
+    }
+  };
+
+  const app = () => {
+    defaults.CheckProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide topicProps.masterKey or encryptionKey, but not both.\n');
 });
 
 test('Test fail Glue job check', () => {

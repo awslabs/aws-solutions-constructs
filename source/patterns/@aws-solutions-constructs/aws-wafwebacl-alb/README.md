@@ -65,7 +65,7 @@ existingLoadBalancer = previouslyCreatedLoadBalancer
 # Note - all alb constructs turn on ELB logging by default, so require that an environment including account
 # and region be provided when creating the stack
 #
-# MyStack(app, 'id', env=cdk.Environment(account='679431688440', region='us-east-1'))
+# MyStack(app, 'id', env=cdk.Environment(account='123456789012', region='us-east-1'))
 #
 # This construct can only be attached to a configured Application Load Balancer.
 WafwebaclToAlb(self, 'test_wafwebacl_alb',

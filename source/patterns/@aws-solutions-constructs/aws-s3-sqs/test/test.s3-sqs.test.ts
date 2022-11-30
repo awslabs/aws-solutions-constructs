@@ -283,3 +283,93 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
 
   expect(stack).toCountResources("AWS::S3::Bucket", 1);
 });
+
+test('Queue is encrypted with imported CMK when set on encryptionKey prop', () => {
+  const stack = new Stack();
+  const key = new kms.Key(stack, 'cmk');
+  new S3ToSqs(stack, 'test-s3-sqs', {
+    encryptionKey: key
+  });
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Queue is encrypted with provided encryptionKeyProps', () => {
+  const stack = new Stack();
+  new S3ToSqs(stack, 'test-s3-sqs', {
+    encryptionKeyProps: {
+      alias: 'new-key-alias-from-props'
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "tests3sqsEncryptionKeyFD4D5946",
+        "Arn"
+      ]
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::KMS::Alias', {
+    AliasName: 'alias/new-key-alias-from-props',
+    TargetKeyId: {
+      "Fn::GetAtt": [
+        "tests3sqsEncryptionKeyFD4D5946",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Queue is encrypted with imported CMK when set on queueProps.encryptionMasterKey prop', () => {
+  const stack = new Stack();
+  const key = new kms.Key(stack, 'cmk');
+  new S3ToSqs(stack, 'test-s3-sqs', {
+    queueProps: {
+      encryptionMasterKey: key
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Queue is encrypted by default with Customer-managed KMS key when no other encryption properties are set', () => {
+  const stack = new Stack();
+  new S3ToSqs(stack, 'test-s3-sqs', {
+  });
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "tests3sqsEncryptionKeyFD4D5946",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Queue is encrypted with SQS-managed KMS Key when enable encryption flag is false', () => {
+  const stack = new Stack();
+  new S3ToSqs(stack, 'test-s3-sqs', {
+    enableEncryptionWithCustomerManagedKey: false
+  });
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: "alias/aws/sqs"
+  });
+});

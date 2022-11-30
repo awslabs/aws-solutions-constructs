@@ -91,6 +91,9 @@ new FargateToSqs(this, "test_construct", new FargateToSqsProps.Builder()
 |queueUrlEnvironmentVariableName?|string|Optional Name for the container environment variable set to the URL of the queue. Default: SQS_QUEUE_URL |
 |queueArnEnvironmentVariableName?|string|Optional Name for the container environment variable set to the arn of the queue. Default: SQS_QUEUE_ARN |
 |queuePermissions?|`string[]`|Optional queue permissions to grant to the Fargate service. One or more of the following may be specified: `Read`,`Write`. Default is `Write`|
+|enableEncryptionWithCustomerManagedKey?|`boolean`|If no key is provided, this flag determines whether the queue is encrypted with a new CMK or an AWS managed key. This flag is ignored if any of the following are defined: queueProps.encryptionMasterKey, encryptionKey or encryptionKeyProps.|
+|encryptionKey?|[`kms.Key`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kms.Key.html)|An optional, imported encryption key to encrypt the SQS Queue with.|
+|encryptionKeyProps?|[`kms.KeyProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kms.Key.html#construct-props)|Optional user provided properties to override the default properties for the KMS encryption key used to encrypt the SQS queue with.|
 
 
 ## Pattern Properties

@@ -324,3 +324,198 @@ test('check custom event bus resource with props when deploy:true', () => {
     Name: 'testcustomeventbus'
   });
 });
+
+test('Queue is encrypted when key is provided on queueProps.encryptionMasterKey prop', () => {
+  const stack = new cdk.Stack();
+  const key = defaults.buildEncryptionKey(stack, {
+    description: 'my-key'
+  });
+
+  const props: EventbridgeToSqsProps = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    queueProps: {
+      encryptionMasterKey: key
+    }
+  };
+
+  new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+
+  expect(stack).toHaveResource('AWS::SQS::Queue', {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "EncryptionKey1B843E66",
+        "Arn"
+      ]
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::KMS::Key', {
+    Description: "my-key",
+    EnableKeyRotation: true
+  });
+});
+
+test('Queue is encrypted when key keyProps are provided', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToSqsProps = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    encryptionKeyProps: {
+      description: 'my-key'
+    }
+  };
+
+  new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+
+  expect(stack).toHaveResource('AWS::SQS::Queue', {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "testeventbridgesqsEncryptionKey811BDC23",
+        "Arn"
+      ]
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::KMS::Key', {
+    Description: "my-key",
+    EnableKeyRotation: true
+  });
+});
+
+test('Queue is encrypted with SQS-managed KMS key when enableEncryptionWithCustomerManagedKey property is false', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToSqsProps = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    enableEncryptionWithCustomerManagedKey: false
+  };
+
+  new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+
+  expect(stack).toHaveResource('AWS::SQS::Queue', {
+    KmsMasterKeyId: "alias/aws/sqs"
+  });
+});
+
+test('Queue purging flag grants correct permissions', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToSqsProps = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    enableQueuePurging: true,
+    deployDeadLetterQueue: false
+  };
+
+  new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+
+  expect(stack).toHaveResource('AWS::SQS::QueuePolicy', {
+    PolicyDocument:  {
+      Statement: [
+        {
+          Action: [
+            "sqs:DeleteMessage",
+            "sqs:ReceiveMessage",
+            "sqs:SendMessage",
+            "sqs:GetQueueAttributes",
+            "sqs:RemovePermission",
+            "sqs:AddPermission",
+            "sqs:SetQueueAttributes",
+          ],
+          Effect: "Allow",
+          Principal:  {
+            AWS:  {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    Ref: "AWS::Partition",
+                  },
+                  ":iam::",
+                  {
+                    Ref: "AWS::AccountId",
+                  },
+                  ":root"
+                ],
+              ],
+            },
+          },
+          Resource:  {
+            "Fn::GetAtt": [
+              "testeventbridgesqsqueue21FF6EBA",
+              "Arn",
+            ],
+          },
+          Sid: "QueueOwnerOnlyAccess",
+        },
+        {
+          Action: "SQS:*",
+          Condition:  {
+            Bool:  {
+              "aws:SecureTransport": "false",
+            },
+          },
+          Effect: "Deny",
+          Principal: {
+            AWS: "*"
+          },
+          Resource:  {
+            "Fn::GetAtt": [
+              "testeventbridgesqsqueue21FF6EBA",
+              "Arn",
+            ],
+          },
+          Sid: "HttpsOnly",
+        },
+        {
+          Action: [
+            "sqs:PurgeQueue",
+            "sqs:GetQueueAttributes",
+            "sqs:GetQueueUrl"
+          ],
+          Effect: "Allow",
+          Principal: {
+            Service: "events.amazonaws.com"
+          },
+          Resource: {
+            "Fn::GetAtt": [
+              "testeventbridgesqsqueue21FF6EBA",
+              "Arn"
+            ]
+          }
+        },
+        {
+          Action: [
+            "sqs:SendMessage",
+            "sqs:GetQueueAttributes",
+            "sqs:GetQueueUrl"
+          ],
+          Effect: "Allow",
+          Principal: {
+            Service: "events.amazonaws.com"
+          },
+          Resource: {
+            "Fn::GetAtt": [
+              "testeventbridgesqsqueue21FF6EBA",
+              "Arn"
+            ]
+          }
+        }
+      ],
+      Version: "2012-10-17"
+    },
+    Queues: [
+      {
+        Ref: "testeventbridgesqsqueue21FF6EBA",
+      }
+    ]
+  });
+});
