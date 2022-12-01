@@ -79,7 +79,7 @@ export interface VerifiedProps {
   readonly loggingBucketProps?: s3.BucketProps;
   readonly logS3AccessLogs?: boolean;
 
-  readonly httpSecurityHeaders?: boolean;
+  readonly insertHttpSecurityHeaders?: boolean;
   readonly responseHeadersPolicyProps?: ResponseHeadersPolicyProps;
   readonly openSearchDomainProps?: opensearch.CfnDomainProps;
 }
@@ -228,7 +228,7 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
-  if (propsObject.httpSecurityHeaders !== false && propsObject.responseHeadersPolicyProps?.securityHeadersBehavior) {
+  if (propsObject.insertHttpSecurityHeaders !== false && propsObject.responseHeadersPolicyProps?.securityHeadersBehavior) {
     errorMessages += 'responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.';
     errorFound = true;
   }
