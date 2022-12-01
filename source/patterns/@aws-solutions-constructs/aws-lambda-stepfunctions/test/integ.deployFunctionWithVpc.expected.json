@@ -679,7 +679,6 @@
           "Ref": "Vpc8378EB38"
         },
         "ResourceType": "VPC",
-        "TrafficType": "ALL",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "VpcFlowLogIAMRole6A475D41",
@@ -695,7 +694,8 @@
             "Key": "Name",
             "Value": "deployFunctionWithVpc/Vpc"
           }
-        ]
+        ],
+        "TrafficType": "ALL"
       }
     },
     "VpcSTEPFUNCTIONS550F8CB6": {
@@ -856,6 +856,9 @@
       },
       "eu-west-3": {
         "states": "states.eu-west-3.amazonaws.com"
+      },
+      "me-central-1": {
+        "states": "states.me-central-1.amazonaws.com"
       },
       "me-south-1": {
         "states": "states.me-south-1.amazonaws.com"

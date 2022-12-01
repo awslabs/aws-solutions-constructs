@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.28.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.27.0...v2.28.0) (2022-11-30)
+
+Built on CDK 2.53.0
+
+### Chores
+
+* Standardize how encryption properties are used for SNS/SQS constructs ([#846](https://github.com/awslabs/aws-solutions-constructs/pull/846)) 
+* Lots of housekeeping, documentation edits
+
 ## [2.27.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.26.0...v2.27.0) (2022-11-02)
 
 Built on CDK 2.50.0
