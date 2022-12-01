@@ -81,7 +81,6 @@ export interface VerifiedProps {
 
   readonly httpSecurityHeaders?: boolean;
   readonly responseHeadersPolicyProps?: ResponseHeadersPolicyProps;
-  
   readonly openSearchDomainProps?: opensearch.CfnDomainProps;
 }
 
@@ -232,7 +231,8 @@ export function CheckProps(propsObject: VerifiedProps | any) {
   if (propsObject.httpSecurityHeaders !== false && propsObject.responseHeadersPolicyProps?.securityHeadersBehavior) {
     errorMessages += 'responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.';
     errorFound = true;
-    
+  }
+
   if (propsObject.openSearchDomainProps?.vpcOptions) {
     throw new Error("Error - Define VPC using construct parameters not the OpenSearch Service props");
   }
