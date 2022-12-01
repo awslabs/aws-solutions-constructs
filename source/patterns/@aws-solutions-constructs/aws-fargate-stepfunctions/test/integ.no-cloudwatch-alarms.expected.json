@@ -651,7 +651,6 @@
           "Ref": "Vpc8378EB38"
         },
         "ResourceType": "VPC",
-        "TrafficType": "ALL",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "VpcFlowLogIAMRole6A475D41",
@@ -667,7 +666,8 @@
             "Key": "Name",
             "Value": "no-cloudwatch-alarms/Vpc"
           }
-        ]
+        ],
+        "TrafficType": "ALL"
       }
     },
     "VpcECRAPI9A3B6A2B": {
