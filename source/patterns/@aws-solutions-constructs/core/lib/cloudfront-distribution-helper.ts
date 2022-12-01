@@ -78,7 +78,7 @@ export function CloudFrontDistributionForApiGateway(scope: Construct,
     loggingBucket,
     httpSecurityHeaders,
     cloudfrontFunction,
-    responseHeadersPolicyProps ? undefined : new cloudfront.ResponseHeadersPolicy(scope, 'ResponseHeadersPolicy', responseHeadersPolicyProps)
+    responseHeadersPolicyProps ? new cloudfront.ResponseHeadersPolicy(scope, 'ResponseHeadersPolicy', responseHeadersPolicyProps) : undefined
   );
 
   const cfprops = consolidateProps(defaultprops, cloudFrontDistributionProps);
@@ -107,7 +107,7 @@ export function CloudFrontDistributionForS3(
     httpSecurityHeaders,
     originPath,
     cloudfrontFunction,
-    responseHeadersPolicyProps && new cloudfront.ResponseHeadersPolicy(scope, 'ResponseHeadersPolicy', responseHeadersPolicyProps)
+    responseHeadersPolicyProps ?  new cloudfront.ResponseHeadersPolicy(scope, 'ResponseHeadersPolicy', responseHeadersPolicyProps) : undefined
   );
 
   const cfprops = consolidateProps(defaultprops, cloudFrontDistributionProps);
@@ -179,7 +179,7 @@ export function CloudFrontDistributionForMediaStore(scope: Construct,
     httpSecurityHeaders,
     cloudFrontDistributionProps?.customHeaders,
     cloudfrontFunction,
-    responseHeadersPolicyProps && new cloudfront.ResponseHeadersPolicy(scope, 'ResponseHeadersPolicy', responseHeadersPolicyProps)
+    responseHeadersPolicyProps ? new cloudfront.ResponseHeadersPolicy(scope, 'ResponseHeadersPolicy', responseHeadersPolicyProps) : undefined
   );
 
   let cfprops: cloudfront.DistributionProps;
