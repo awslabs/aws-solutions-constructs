@@ -92,9 +92,9 @@ test('Test DLQ when existing Queue Provided', () => {
     existingQueueObj: existingQueue,
   };
 
-  const returnedQueueu = defaults.buildDeadLetterQueue(stack, buildDlqProps);
+  const returnedQueue = defaults.buildDeadLetterQueue(stack, buildDlqProps);
 
-  expect(returnedQueueu).toBeUndefined();
+  expect(returnedQueue).toBeUndefined();
   expect(stack).toCountResources("AWS::SQS::Queue", 1);
 });
 

@@ -25,6 +25,7 @@ import * as sagemaker from 'aws-cdk-lib/aws-sagemaker';
 import * as secretsmanager from "aws-cdk-lib/aws-secretsmanager";
 import * as kms from "aws-cdk-lib/aws-kms";
 import {ResponseHeadersPolicyProps} from "aws-cdk-lib/aws-cloudfront";
+import * as opensearch from "aws-cdk-lib/aws-opensearchservice";
 
 export interface VerifiedProps {
   readonly dynamoTableProps?: dynamodb.TableProps,
@@ -80,6 +81,8 @@ export interface VerifiedProps {
 
   readonly httpSecurityHeaders?: boolean;
   readonly responseHeadersPolicyProps?: ResponseHeadersPolicyProps;
+  
+  readonly openSearchDomainProps?: opensearch.CfnDomainProps;
 }
 
 export function CheckProps(propsObject: VerifiedProps | any) {
@@ -116,6 +119,16 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
+  if (propsObject.queueProps?.encryptionMasterKey && propsObject.encryptionKey) {
+    errorMessages += 'Error - Either provide queueProps.encryptionMasterKey or encryptionKey, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.queueProps?.encryptionMasterKey && propsObject.encryptionKeyProps) {
+    errorMessages += 'Error - Either provide queueProps.encryptionMasterKey or encryptionKeyProps, but not both.\n';
+    errorFound = true;
+  }
+
   if ((propsObject?.deployDeadLetterQueue === false) && propsObject.deadLetterQueueProps) {
     errorMessages += 'Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n';
     errorFound = true;
@@ -146,8 +159,18 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
-  if ((propsObject.topicProps) && propsObject.existingTopicObj) {
+  if (propsObject.topicProps && propsObject.existingTopicObj) {
     errorMessages += 'Error - Either provide topicProps or existingTopicObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.topicProps?.masterKey && propsObject.encryptionKey) {
+    errorMessages += 'Error - Either provide topicProps.masterKey or encryptionKey, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.topicProps?.masterKey && propsObject.encryptionKeyProps) {
+    errorMessages += 'Error - Either provide topicProps.masterKey or encryptionKeyProps, but not both.\n';
     errorFound = true;
   }
 
@@ -209,6 +232,9 @@ export function CheckProps(propsObject: VerifiedProps | any) {
   if (propsObject.httpSecurityHeaders !== false && propsObject.responseHeadersPolicyProps?.securityHeadersBehavior) {
     errorMessages += 'responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.';
     errorFound = true;
+    
+  if (propsObject.openSearchDomainProps?.vpcOptions) {
+    throw new Error("Error - Define VPC using construct parameters not the OpenSearch Service props");
   }
 
   if (errorFound) {
