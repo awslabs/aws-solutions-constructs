@@ -52,11 +52,25 @@ export interface CloudFrontToApiGatewayToLambdaProps {
   readonly cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
   /**
    * Optional user provided props to turn on/off the automatic injection of best practice HTTP
-   * security headers in all responses from cloudfront
+   * security headers in all responses from cloudfront.
+   * Turning this on will inject default headers and is mutually exclusive with passing custom security headers
+   * via the responseHeadersPolicyProps parameter.
    *
    * @default - true
    */
   readonly insertHttpSecurityHeaders?: boolean,
+  /**
+   * Optional user provided configuration that cloudfront applies to all http responses.
+   * Can be used to pass a custom ResponseSecurityHeadersBehavior, ResponseCustomHeadersBehavior or
+   * ResponseHeadersCorsBehavior to the cloudfront distribution.
+   *
+   * Passing a custom ResponseSecurityHeadersBehavior is mutually exclusive with turning on the default security headers
+   * via `insertHttpSecurityHeaders` prop. Will throw an error if both `insertHttpSecurityHeaders` is set to `true`
+   * and ResponseSecurityHeadersBehavior is passed.
+   *
+   * @default - undefined
+   */
+  readonly responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
   /**
    * Optional user provided props to override the default props for the CloudWatchLogs LogGroup.
    *
@@ -82,7 +96,7 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
 
   /**
    * @summary Constructs a new instance of the CloudFrontToApiGatewayToLambda class.
-   * @param {cdk.App} scope - represents the scope for all the resources.
+   * @param {Construct} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {CloudFrontToApiGatewayToLambdaProps} props - user provided props for the construct
    * @since 0.8.0
@@ -120,7 +134,8 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
       existingApiGatewayObj: this.apiGateway,
       cloudFrontDistributionProps: props.cloudFrontDistributionProps,
       insertHttpSecurityHeaders: props.insertHttpSecurityHeaders,
-      cloudFrontLoggingBucketProps: props.cloudFrontLoggingBucketProps
+      cloudFrontLoggingBucketProps: props.cloudFrontLoggingBucketProps,
+      responseHeadersPolicyProps: props.responseHeadersPolicyProps
     });
 
     this.cloudFrontWebDistribution = apiCloudfront.cloudFrontWebDistribution;
