@@ -18,7 +18,7 @@ import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import * as kms from 'aws-cdk-lib/aws-kms';
 import * as sns from 'aws-cdk-lib/aws-sns';
-import { getResourceLogicalIdFromDescription } from "../";
+import { expectKmsKeyAttachedToCorrectResource } from "../";
 
 // --------------------------------------------------------------
 // Test deployment with no properties using AWS Managed KMS Key
@@ -276,18 +276,23 @@ test('existing topic encrypted with CMK is not overridden by defaults', () => {
     existingTopicEncryptionKey: cmk
   });
 
-  const kmsKeyLogicalId = getResourceLogicalIdFromDescription(stack, 'AWS::KMS::Key', 'new-key-description');
-
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
-    KmsMasterKeyId: {
-      "Fn::GetAtt": [
-        kmsKeyLogicalId,
-        "Arn"
-      ]
-    }
-  });
+  expectKmsKeyAttachedToCorrectResource(stack, 'AWS::SNS::Topic', 'new-key-description');
 
   // Make sure the construct did not create any other topics or keys created
   expect(stack).toCountResources('AWS::KMS::Key', 1);
+  expect(stack).toCountResources('AWS::SNS::Topic', 1);
+});
+
+test('existing unencrypted topic is not overridden with defaults', () => {
+  const stack = new Stack();
+
+  const topic = new sns.Topic(stack, 'Topic');
+
+  defaults.buildTopic(stack, {
+    existingTopicObj: topic,
+  });
+
+  // Make sure the construct did not create any other topics and that no keys exist
+  expect(stack).toCountResources('AWS::KMS::Key', 0);
   expect(stack).toCountResources('AWS::SNS::Topic', 1);
 });

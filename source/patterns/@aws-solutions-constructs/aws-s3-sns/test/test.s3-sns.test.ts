@@ -16,7 +16,8 @@ import { S3ToSns } from "../lib";
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as s3 from 'aws-cdk-lib/aws-s3';
-import { getResourceLogicalIdFromDescription } from "@aws-solutions-constructs/core";
+import * as sns from 'aws-cdk-lib/aws-sns';
+import { expectKmsKeyAttachedToCorrectResource } from "@aws-solutions-constructs/core";
 
 test('All get methods return non-null objects', () => {
   const stack = new Stack();
@@ -145,16 +146,7 @@ test('Topic is encrypted with imported CMK when set on encryptionKey prop', () =
     encryptionKey: cmk
   });
 
-  const kmsKeyLogicalId = getResourceLogicalIdFromDescription(stack, 'AWS::KMS::Key', 'existing-key-description');
-
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
-    KmsMasterKeyId: {
-      "Fn::GetAtt": [
-        kmsKeyLogicalId,
-        "Arn"
-      ]
-    }
-  });
+  expectKmsKeyAttachedToCorrectResource(stack, 'AWS::SNS::Topic', 'existing-key-description');
 });
 
 test('Topic is encrypted with provided encryptionKeyProps', () => {
@@ -165,16 +157,7 @@ test('Topic is encrypted with provided encryptionKeyProps', () => {
     }
   });
 
-  const kmsKeyLogicalId = getResourceLogicalIdFromDescription(stack, 'AWS::KMS::Key', 'existing-key-description');
-
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
-    KmsMasterKeyId: {
-      "Fn::GetAtt": [
-        kmsKeyLogicalId,
-        "Arn"
-      ]
-    }
-  });
+  expectKmsKeyAttachedToCorrectResource(stack, 'AWS::SNS::Topic', 'existing-key-description');
 });
 
 test('Topic is encrypted with imported CMK when set on topicProps.masterKey prop', () => {
@@ -188,16 +171,7 @@ test('Topic is encrypted with imported CMK when set on topicProps.masterKey prop
     }
   });
 
-  const kmsKeyLogicalId = getResourceLogicalIdFromDescription(stack, 'AWS::KMS::Key', 'existing-key-description');
-
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
-    KmsMasterKeyId: {
-      "Fn::GetAtt": [
-        kmsKeyLogicalId,
-        "Arn"
-      ]
-    }
-  });
+  expectKmsKeyAttachedToCorrectResource(stack, 'AWS::SNS::Topic', 'existing-key-description');
 });
 
 test('Topic is encrypted by default with Customer-managed KMS key when no other encryption properties are set', () => {
@@ -249,4 +223,23 @@ test('Topic is encrypted with SQS-managed KMS Key when enable encryption flag is
 
   expect(stack).toCountResources('AWS::KMS::Key', 0);
   expect(stack).toCountResources('AWS::SNS::Topic', 1);
+});
+
+test('Construct does not override unencrypted topic when passed in existingTopicObj prop', () => {
+  const stack = new Stack();
+
+  const existingTopicObj = new sns.Topic(stack, 'Topic', {
+    topicName: 'existing-topic-name'
+  });
+
+  new S3ToSns(stack, 'test-s3-sns', {
+    existingTopicObj
+  });
+
+  expect(stack).toCountResources('AWS::KMS::Key', 0);
+  expect(stack).toCountResources('AWS::SNS::Topic', 1);
+
+  expect(stack).toHaveResource("AWS::SNS::Topic", {
+    TopicName: 'existing-topic-name'
+  });
 });

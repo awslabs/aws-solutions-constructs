@@ -149,21 +149,27 @@ export function CreateTestCache(scope: Construct, id: string, vpc: ec2.IVpc, por
 }
 
 /**
- * Returns the Logical ID for the resource with a matching description.
+ * Asserts that a KMS key with a specific description exists on a resource
  *
- * @param stack The CloudFormation Stack that contains the resource to get.
- * @param resourceType The type of CloudFormation Resource, e.g., `AWS::KMS::Key`, `AWS::SNS::Topic`
- * @param description The value of the Description property on the CloudFormation Resource
- * @returns The Logical ID of the found resource
+ * @param stack The CloudFormation Stack that contains the to validate.
+ * @param parentResourceType The type of CloudFormation Resource that should have the key set on it, e.g., `AWS::SNS::Topic`, etc...
+ * @param description The value of the Description property on the KMS Key
  */
-export function getResourceLogicalIdFromDescription(stack: Stack, resourceType: string, description: string): string {
+export function expectKmsKeyAttachedToCorrectResource(stack: Stack, parentResourceType: string, keyDescription: string) {
   const template = Template.fromStack(stack);
-  const resource = template.findResources(resourceType, {
+  const resource = template.findResources('AWS::KMS::Key', {
     Properties: {
-      Description: Match.exact(description)
+      Description: Match.exact(keyDescription)
     }
   });
 
   const [ logicalId ] = Object.keys(resource);
-  return logicalId;
+  expect(stack).toHaveResource(parentResourceType, {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        logicalId,
+        "Arn"
+      ]
+    }
+  });
 }
