@@ -66,14 +66,20 @@ export function CloudFrontDistributionForApiGateway(scope: Construct,
   apiEndPoint: api.RestApi,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
   httpSecurityHeaders: boolean = true,
-  cloudFrontLoggingBucketProps?: s3.BucketProps
+  cloudFrontLoggingBucketProps?: s3.BucketProps,
+  responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
 ): [cloudfront.Distribution, cloudfront.Function?, s3.Bucket?] {
 
   const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
   const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope, cloudFrontLoggingBucketProps);
 
-  const defaultprops = DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint, loggingBucket, httpSecurityHeaders, cloudfrontFunction);
+  const defaultprops = DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint,
+    loggingBucket,
+    httpSecurityHeaders,
+    cloudfrontFunction,
+    responseHeadersPolicyProps ? new cloudfront.ResponseHeadersPolicy(scope, 'ResponseHeadersPolicy', responseHeadersPolicyProps) : undefined
+  );
 
   const cfprops = consolidateProps(defaultprops, cloudFrontDistributionProps);
   // Create the Cloudfront Distribution
@@ -83,19 +89,26 @@ export function CloudFrontDistributionForApiGateway(scope: Construct,
   return [cfDistribution, cloudfrontFunction, loggingBucket];
 }
 
-export function CloudFrontDistributionForS3(scope: Construct,
+export function CloudFrontDistributionForS3(
+  scope: Construct,
   sourceBucket: s3.IBucket,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
   httpSecurityHeaders: boolean = true,
   originPath?: string,
-  cloudFrontLoggingBucketProps?: s3.BucketProps): [cloudfront.Distribution,
-    cloudfront.Function?, s3.Bucket?] {
-
+  cloudFrontLoggingBucketProps?: s3.BucketProps,
+  responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
+): [cloudfront.Distribution, cloudfront.Function?, s3.Bucket?] {
   const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
   const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope, cloudFrontLoggingBucketProps);
 
-  const defaultprops = DefaultCloudFrontWebDistributionForS3Props(sourceBucket, loggingBucket, httpSecurityHeaders, originPath, cloudfrontFunction);
+  const defaultprops = DefaultCloudFrontWebDistributionForS3Props(sourceBucket,
+    loggingBucket,
+    httpSecurityHeaders,
+    originPath,
+    cloudfrontFunction,
+    responseHeadersPolicyProps ?  new cloudfront.ResponseHeadersPolicy(scope, 'ResponseHeadersPolicy', responseHeadersPolicyProps) : undefined
+  );
 
   const cfprops = consolidateProps(defaultprops, cloudFrontDistributionProps);
   // Create the Cloudfront Distribution
@@ -120,7 +133,9 @@ export function CloudFrontDistributionForMediaStore(scope: Construct,
   mediaStoreContainer: mediastore.CfnContainer,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
   httpSecurityHeaders: boolean = true,
-  cloudFrontLoggingBucketProps?: s3.BucketProps): [cloudfront.Distribution,
+  cloudFrontLoggingBucketProps?: s3.BucketProps,
+  responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
+): [cloudfront.Distribution,
     s3.Bucket | undefined, cloudfront.OriginRequestPolicy, cloudfront.Function?] {
 
   let originRequestPolicy: cloudfront.OriginRequestPolicy;
@@ -163,7 +178,8 @@ export function CloudFrontDistributionForMediaStore(scope: Construct,
     originRequestPolicy,
     httpSecurityHeaders,
     cloudFrontDistributionProps?.customHeaders,
-    cloudfrontFunction
+    cloudfrontFunction,
+    responseHeadersPolicyProps ? new cloudfront.ResponseHeadersPolicy(scope, 'ResponseHeadersPolicy', responseHeadersPolicyProps) : undefined
   );
 
   let cfprops: cloudfront.DistributionProps;

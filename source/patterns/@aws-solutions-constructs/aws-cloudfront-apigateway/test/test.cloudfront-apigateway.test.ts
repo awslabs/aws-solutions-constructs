@@ -18,6 +18,7 @@ import * as s3 from "aws-cdk-lib/aws-s3";
 import * as defaults from '@aws-solutions-constructs/core';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import '@aws-cdk/assert/jest';
+import {Duration} from "aws-cdk-lib";
 
 function deploy(stack: cdk.Stack) {
   const inProps: lambda.FunctionProps = {
@@ -28,10 +29,10 @@ function deploy(stack: cdk.Stack) {
 
   const func = defaults.deployLambdaFunction(stack, inProps);
 
-  const [_api] = defaults.RegionalLambdaRestApi(stack, func);
+  const [api] = defaults.RegionalLambdaRestApi(stack, func);
 
   return new CloudFrontToApiGateway(stack, 'test-cloudfront-apigateway', {
-    existingApiGatewayObj: _api
+    existingApiGatewayObj: api
   });
 }
 
@@ -160,10 +161,7 @@ test('test api gateway lambda service role', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Cloudfront logging bucket with destroy removal policy and auto delete objects
-// --------------------------------------------------------------
-test('Cloudfront logging bucket with destroy removal policy and auto delete objects', () => {
+function createApi() {
   const stack = new cdk.Stack();
 
   const inProps: lambda.FunctionProps = {
@@ -174,10 +172,18 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
 
   const func = defaults.deployLambdaFunction(stack, inProps);
 
-  const [_api] = defaults.RegionalLambdaRestApi(stack, func);
+  const [api] = defaults.RegionalLambdaRestApi(stack, func);
+  return {stack, api};
+}
+
+// --------------------------------------------------------------
+// Cloudfront logging bucket with destroy removal policy and auto delete objects
+// --------------------------------------------------------------
+test('Cloudfront logging bucket with destroy removal policy and auto delete objects', () => {
+  const {stack, api} = createApi();
 
   new CloudFrontToApiGateway(stack, 'cloudfront-apigateway', {
-    existingApiGatewayObj: _api,
+    existingApiGatewayObj: api,
     cloudFrontLoggingBucketProps: {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true
@@ -205,22 +211,12 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
 // Cloudfront logging bucket error providing existing log bucket and logBucketProps
 // --------------------------------------------------------------
 test('Cloudfront logging bucket error when providing existing log bucket and logBucketProps', () => {
-  const stack = new cdk.Stack();
-
-  const inProps: lambda.FunctionProps = {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
-    handler: 'index.handler'
-  };
-
-  const func = defaults.deployLambdaFunction(stack, inProps);
-
-  const [_api] = defaults.RegionalLambdaRestApi(stack, func);
+  const {stack, api} = createApi();
 
   const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});
 
   const app = () => { new CloudFrontToApiGateway(stack, 'cloudfront-apigateway', {
-    existingApiGatewayObj: _api,
+    existingApiGatewayObj: api,
     cloudFrontDistributionProps: {
       logBucket
     },
@@ -232,4 +228,67 @@ test('Cloudfront logging bucket error when providing existing log bucket and log
   };
 
   expect(app).toThrowError();
+});
+
+test('Test the deployment with securityHeadersBehavior instead of HTTP security headers', () => {
+  // Initial setup
+  const {stack, api} = createApi();
+  const cloudFrontToS3 = new CloudFrontToApiGateway(stack, 'test-cloudfront-apigateway', {
+    existingApiGatewayObj: api,
+    insertHttpSecurityHeaders: false,
+    responseHeadersPolicyProps: {
+      securityHeadersBehavior: {
+        strictTransportSecurity: {
+          accessControlMaxAge: Duration.seconds(63072),
+          includeSubdomains: true,
+          override: true,
+          preload: true
+        },
+        contentSecurityPolicy: {
+          contentSecurityPolicy: "upgrade-insecure-requests; default-src 'none';",
+          override: true
+        },
+      }
+    }
+  });
+
+  // Assertion
+  expect(stack).toHaveResourceLike("AWS::CloudFront::ResponseHeadersPolicy", {
+    ResponseHeadersPolicyConfig: {
+      SecurityHeadersConfig: {
+        ContentSecurityPolicy: {
+          ContentSecurityPolicy: "upgrade-insecure-requests; default-src 'none';",
+          Override: true
+        },
+        StrictTransportSecurity: {
+          AccessControlMaxAgeSec: 63072,
+          IncludeSubdomains: true,
+          Override: true,
+          Preload: true
+        }
+      }
+    }
+  });
+  expect(cloudFrontToS3.cloudFrontFunction).toEqual(undefined);
+});
+
+test("throw exception if insertHttpSecurityHeaders and responseHeadersPolicyProps are provided", () => {
+  const {stack, api} = createApi();
+
+  expect(() => {
+    new CloudFrontToApiGateway(stack, "test-cloudfront-apigateway", {
+      existingApiGatewayObj: api,
+      insertHttpSecurityHeaders: true,
+      responseHeadersPolicyProps: {
+        securityHeadersBehavior: {
+          strictTransportSecurity: {
+            accessControlMaxAge: Duration.seconds(63072),
+            includeSubdomains: true,
+            override: false,
+            preload: true
+          }
+        }
+      }
+    });
+  }).toThrowError();
 });
