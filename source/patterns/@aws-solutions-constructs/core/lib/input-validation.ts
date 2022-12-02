@@ -25,6 +25,7 @@ import * as sagemaker from 'aws-cdk-lib/aws-sagemaker';
 import * as secretsmanager from "aws-cdk-lib/aws-secretsmanager";
 import * as kms from "aws-cdk-lib/aws-kms";
 import {ResponseHeadersPolicyProps} from "aws-cdk-lib/aws-cloudfront";
+import * as opensearch from "aws-cdk-lib/aws-opensearchservice";
 
 export interface VerifiedProps {
   readonly dynamoTableProps?: dynamodb.TableProps,
