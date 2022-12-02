@@ -1,7 +1,17 @@
 {
   "Resources": {
     "TopicBFC7AF6E": {
-      "Type": "AWS::SNS::Topic"
+      "Type": "AWS::SNS::Topic",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W47",
+              "reason": "This test intentionally leaves the topic unencrypted"
+            }
+          ]
+        }
+      }
     },
     "TopicPolicyA1747468": {
       "Type": "AWS::SNS::TopicPolicy",
