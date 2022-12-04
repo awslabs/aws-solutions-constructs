@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.29.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.28.0...v2.29.0) (2022-12-04)
 
+### Features
+
+* **aws-s3-sns:** created new construct ([#849](https://github.com/awslabs/aws-solutions-constructs/pull/849))
+* **aws-cloudfront-*:** Add optional parameter cloudfront.ResponseHeadersPolicyProps ([#852](https://github.com/awslabs/aws-solutions-constructs/pull/852))
+* Standardize how encryption properties are used for SNS/SQS construct ([#846](https://github.com/awslabs/aws-solutions-constructs/pull/846))
+
 ## [2.28.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.27.0...v2.28.0) (2022-11-30)
 
 Built on CDK 2.53.0
