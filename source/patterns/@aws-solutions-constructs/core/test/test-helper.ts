@@ -25,6 +25,7 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import { CfnFunction } from "aws-cdk-lib/aws-lambda";
 import { GetDefaultCachePort } from "../lib/elasticache-defaults";
+import { Match, Template } from 'aws-cdk-lib/assertions';
 
 export const fakeEcrRepoArn = 'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo';
 
@@ -145,4 +146,30 @@ export function CreateTestCache(scope: Construct, id: string, vpc: ec2.IVpc, por
   );
   newCache.addDependsOn(subnetGroup);
   return newCache;
+}
+
+/**
+ * Asserts that a KMS key with a specific description exists on a resource
+ *
+ * @param stack The CloudFormation Stack that contains the to validate.
+ * @param parentResourceType The type of CloudFormation Resource that should have the key set on it, e.g., `AWS::SNS::Topic`, etc...
+ * @param description The value of the Description property on the KMS Key
+ */
+export function expectKmsKeyAttachedToCorrectResource(stack: Stack, parentResourceType: string, keyDescription: string) {
+  const template = Template.fromStack(stack);
+  const resource = template.findResources('AWS::KMS::Key', {
+    Properties: {
+      Description: Match.exact(keyDescription)
+    }
+  });
+
+  const [ logicalId ] = Object.keys(resource);
+  expect(stack).toHaveResource(parentResourceType, {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        logicalId,
+        "Arn"
+      ]
+    }
+  });
 }

@@ -24,11 +24,20 @@ import { Construct } from 'constructs';
 
 export interface BuildTopicProps {
     /**
-     * Existing instance of SNS Topic object, providing both this and `topicProps` will cause an error.
+     * Existing SNS topic to be used instead of the default topic. Providing both this and `topicProps` will cause an error.
+     * If the SNS Topic is encrypted with a Customer-Managed managed KMS key, the key must be specified in the
+     * `existingTopicEncryptionKey` property.
      *
-     * @default - None.
+     * @default - Default props are used
      */
     readonly existingTopicObj?: sns.Topic;
+     /**
+      * If an existing topic is provided in the `existingTopicObj` property, and that topic is encrypted with a customer managed KMS key,
+      * this property also needs to be set with same CMK.
+      *
+      * @default - None
+      */
+    readonly existingTopicEncryptionKey?: kms.Key;
     /**
      * Optional user provided props to override the default props for the SNS topic.
      *
@@ -144,6 +153,6 @@ export function buildTopic(scope: Construct, props: BuildTopicProps): [sns.Topic
 
     return [topic, snsTopicProps.masterKey];
   } else {
-    return [props.existingTopicObj];
+    return [props.existingTopicObj, props.existingTopicEncryptionKey];
   }
 }
