@@ -19,7 +19,7 @@
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.lambdakinesisstream`|
 
 ## Overview
-This AWS Solutions Construct deploys an AWS Lambda Function that can send messages to an Amazon Kinesis Data Stream.
+This AWS Solutions Construct deploys an AWS Lambda Function that can put records on an Amazon Kinesis Data Stream.
 
 Here is a minimal deployable pattern definition:
 
