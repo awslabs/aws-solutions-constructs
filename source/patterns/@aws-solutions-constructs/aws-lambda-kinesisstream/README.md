@@ -56,7 +56,6 @@ LambdaToKinesisStream(self, 'LambdaToKinesisStream',
                           code=_lambda.Code.from_asset('lambda')
                         )
                       )
-
 ```
 
 Java
@@ -102,13 +101,12 @@ new LambdaToKinesisStream(this, "LambdaToKinesisStream", new LambdaToKinesisStre
 Out of the box implementation of the Construct without any overrides will set the following defaults:
 
 ### AWS Lambda Function
-* Configure limited privilege access IAM role for the Lambda Function to put records on the Kinesis Data Stream
+* Minimally-permissive IAM role for the Lambda Function to put records on the Kinesis Data Stream
 * Enable X-Ray Tracing
 
 ### Amazon Kinesis Stream
-* Configure least privilege access IAM role for Kinesis Stream
-* Enable server-side encryption for Kinesis Stream using AWS Managed KMS Key
-* Deploy best practices CloudWatch Alarms for the Kinesis Stream
+* Enable server-side encryption for the Kinesis Data Stream using AWS Managed CMK
+* Deploy best practices CloudWatch Alarms for the Kinesis Data Stream
 
 ## Architecture
 ![Architecture Diagram](architecture.png)
