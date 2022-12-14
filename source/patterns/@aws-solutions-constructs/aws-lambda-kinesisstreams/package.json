@@ -53,14 +53,19 @@
     }
   },
   "dependencies": {
-    "@aws-solutions-constructs/core": "2.29.0"
+    "@aws-cdk/aws-cloudwatch": "0.0.0",
+    "@aws-cdk/aws-iam": "0.0.0",
+    "@aws-cdk/aws-kinesis": "0.0.0",
+    "@aws-cdk/aws-kms": "0.0.0",
+    "@aws-cdk/aws-lambda": "0.0.0",
+    "@aws-cdk/core": "0.0.0",
+    "@aws-solutions-constructs/core": "0.0.0",
+    "constructs": "^3.2.0"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "2.53.0",
+    "@aws-cdk/assert": "0.0.0",
     "@types/jest": "^27.4.0",
-    "@types/node": "^10.3.0",
-    "aws-cdk-lib": "2.53.0",
-    "constructs": "^10.0.0"
+    "@types/node": "^10.3.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -77,9 +82,14 @@
     ]
   },
   "peerDependencies": {
-    "@aws-solutions-constructs/core": "2.29.0",
-    "aws-cdk-lib": "^2.53.0",
-    "constructs": "^10.0.0"
+    "@aws-cdk/aws-cloudwatch": "0.0.0",
+    "@aws-cdk/aws-iam": "0.0.0",
+    "@aws-cdk/aws-kinesis": "0.0.0",
+    "@aws-cdk/aws-kms": "0.0.0",
+    "@aws-cdk/aws-lambda": "0.0.0",
+    "@aws-cdk/core": "0.0.0",
+    "@aws-solutions-constructs/core": "0.0.0",
+    "constructs": "^3.2.0"
   },
   "keywords": [
     "aws",
