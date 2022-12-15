@@ -1,4 +1,4 @@
-# aws-lambda-s3 module
+# aws-lambda-kinesisfirehose module
 <!--BEGIN STABILITY BANNER-->
 
 ---
