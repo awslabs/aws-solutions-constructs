@@ -31,7 +31,7 @@ import { FargateToKinesisStreamsProps } from '@aws-solutions-constructs/aws-farg
 import * as fargate from 'aws-cdk-lib/aws-fargate';
 
 new FargateToKinesisStreams(this, 'FargateToKinesisStreams', {
-  publicApi: true,
+  defaultVpcIsIsolated: true,
   ecrRepositoryArn: "arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo",
 });
 ```
@@ -47,7 +47,7 @@ from aws_cdk import (
 from constructs import Construct
 
 FargateToKinesisStreams(self, 'FargateToKinesisStreams',
-                          public_api=True,
+                          defaultVpcIsIsolated=True,
                           ecr_repository_arn="arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo"
                        )
 ```
@@ -64,7 +64,7 @@ import software.amazon.awscdk.services.fargate.Runtime;
 import software.amazon.awsconstructs.services.fargatekinesisstreams.*;
 
 new FargateToKinesisStreams(this, "FargateToKinesisStreams", new FargateToKinesisStreamsProps.Builder()
-        .publicApi(true)
+        .defaultVpcIsIsolated(true)
         .ecrRepositoryArn("arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo")
         .build());
 ```
