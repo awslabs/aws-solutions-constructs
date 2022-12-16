@@ -47,7 +47,7 @@ from aws_cdk import (
 from constructs import Construct
 
 FargateToKinesisStreams(self, 'FargateToKinesisStreams',
-                          defaultVpcIsIsolated=True,
+                          default_vpc_is_isolated=True,
                           ecr_repository_arn="arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo"
                        )
 ```
