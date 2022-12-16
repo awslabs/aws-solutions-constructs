@@ -294,6 +294,58 @@ test('Construct uses existing Kinesis Stream', () => {
   expect(stack).toCountResources('AWS::Kinesis::Stream', 1);
 });
 
+test('Construct uses unencrypted existing stream', () => {
+  const stack = new Stack();
+
+  const existingStreamObj = new kinesis.Stream(stack, 'test-stream', {
+    streamName: 'my-stream',
+    encryption: kinesis.StreamEncryption.UNENCRYPTED
+  });
+
+  new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.handler'
+    },
+    existingStreamObj
+  });
+
+  expect(stack).not.toHaveResourceLike('AWS::Kinesis::Stream', {
+    StreamEncryption: {
+      EncryptionType: 'KMS',
+      KeyId: 'alias/aws/kinesis'
+    }
+  });
+
+  expect(stack).toCountResources('AWS::Kinesis::Stream', 1);
+});
+
+test('Construct uses unencrypted streams from stream props', () => {
+  const stack = new Stack();
+
+  new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.handler'
+    },
+    kinesisStreamProps: {
+      streamName: 'my-stream',
+      encryption: kinesis.StreamEncryption.UNENCRYPTED
+    }
+  });
+
+  expect(stack).not.toHaveResourceLike('AWS::Kinesis::Stream', {
+    StreamEncryption: {
+      EncryptionType: 'KMS',
+      KeyId: 'alias/aws/kinesis'
+    }
+  });
+
+  expect(stack).toCountResources('AWS::Kinesis::Stream', 1);
+});
+
 test('Construct grants PutRecord permission for the Lambda Function to write to the Kinesis Stream', () => {
   const stack = new Stack();
 
