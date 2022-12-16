@@ -1,7 +1,7 @@
 import { KinesisClient, PutRecordCommand } from "@aws-sdk/client-kinesis";
 
 const kinesis = new KinesisClient({ region: process.env.REGION });
-const streamName = process.env.KINESIS_DATA_STREAM_NAME;
+const streamName = process.env.KINESIS_DATASTREAM_NAME;
 
 export const handler = async(event) => {
     

@@ -90,7 +90,7 @@ new LambdaToKinesisStreams(this, "LambdaToKinesisStreams", new LambdaToKinesisSt
 |existingVpc?|[`ec2.IVpc`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html)|An optional, existing VPC into which this pattern should be deployed. When deployed in a VPC, the Lambda function will use ENIs in the VPC to access network resources and an Interface Endpoint will be created in the VPC for Amazon Kinesis Streams. If an existing VPC is provided, the `deployVpc` property cannot be `true`. This uses `ec2.IVpc` to allow clients to supply VPCs that exist outside the stack using the [`ec2.Vpc.fromLookup()`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.Vpc.html#static-fromwbrlookupscope-id-options) method.|
 |vpcProps?|[`ec2.VpcProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.VpcProps.html)|Optional user-provided properties to override the default properties for the new VPC. `enableDnsHostnames`, `enableDnsSupport`, `natGateways` and `subnetConfiguration` are set by the pattern, so any values for those properties supplied here will be overrriden. If `deployVpc` is not `true` then this property will be ignored.|
 |deployVpc?|`boolean`|Whether to create a new VPC based on `vpcProps` into which to deploy this pattern. Setting this to true will deploy the minimal, most private VPC to run the pattern:<ul><li> One isolated subnet in each Availability Zone used by the CDK program</li><li>`enableDnsHostnames` and `enableDnsSupport` will both be set to true</li></ul>If this property is `true` then `existingVpc` cannot be specified. Defaults to `false`.|
-|streamEnvironmentVariableName?|`string`|Optional Name to override the Lambda Function default environment variable name that holds the Kinesis Data Stream name value. Default: KINESIS_DATA_STREAM_NAME |
+|streamEnvironmentVariableName?|`string`|Optional Name to override the Lambda Function default environment variable name that holds the Kinesis Data Stream name value. Default: KINESIS_DATASTREAM_NAME |
 
 ## Pattern Properties
 
@@ -108,7 +108,7 @@ Out of the box implementation of the Construct without any overrides will set th
 ### AWS Lambda Function
 * Minimally-permissive IAM role for the Lambda Function to put records on the Kinesis Data Stream
 * Enable X-Ray Tracing
-* Sets an Environment Variable named KINESIS_DATA_STREAM_NAME that holds the Kinesis Data Stream Name, which is a required property Kinesis Data Streams SDK when making calls to it
+* Sets an Environment Variable named KINESIS_DATASTREAM_NAME that holds the Kinesis Data Stream Name, which is a required property Kinesis Data Streams SDK when making calls to it
 
 ### Amazon Kinesis Stream
 * Enable server-side encryption for the Kinesis Data Stream using AWS Managed CMK

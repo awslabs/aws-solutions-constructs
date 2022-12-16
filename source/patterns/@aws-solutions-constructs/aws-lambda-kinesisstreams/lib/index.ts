@@ -71,7 +71,7 @@ export interface LambdaToKinesisStreamsProps {
     /**
      * Optional Name to override the Lambda Function default environment variable name that holds the Kinesis Data Stream name value
      *
-     * @default - KINESIS_DATA_STREAM_NAME
+     * @default - KINESIS_DATASTREAM_NAME
      */
     readonly streamEnvironmentVariableName?: string;
 }
@@ -126,7 +126,7 @@ export class LambdaToKinesisStreams extends Construct {
       });
 
       // Configure Lambda Function environment variables
-      const streamNameEnvironmentVariableName = props.streamEnvironmentVariableName || 'KINESIS_DATA_STREAM_NAME';
+      const streamNameEnvironmentVariableName = props.streamEnvironmentVariableName || 'KINESIS_DATASTREAM_NAME';
       this.lambdaFunction.addEnvironment(streamNameEnvironmentVariableName, this.kinesisStream.streamName);
 
       // Grant the Lambda Function permission to write to the Kinesis Stream

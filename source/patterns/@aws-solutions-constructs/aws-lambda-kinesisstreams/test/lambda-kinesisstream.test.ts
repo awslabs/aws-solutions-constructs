@@ -138,7 +138,7 @@ test('Lambda Function has default stream environment variable', () => {
   expect(stack).toHaveResourceLike('AWS::Lambda::Function', {
     Environment: {
       Variables: {
-        KINESIS_DATA_STREAM_NAME: {
+        KINESIS_DATASTREAM_NAME: {
           Ref: kinesisStreamId
         }
       }
@@ -290,6 +290,8 @@ test('Construct uses existing Kinesis Stream', () => {
   expect(stack).toHaveResourceLike('AWS::Kinesis::Stream', {
     Name: 'my-stream'
   });
+
+  expect(stack).toCountResources('AWS::Kinesis::Stream', 1);
 });
 
 test('Construct grants PutRecord permission for the Lambda Function to write to the Kinesis Stream', () => {
