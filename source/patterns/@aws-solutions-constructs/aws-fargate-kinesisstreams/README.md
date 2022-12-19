@@ -31,7 +31,7 @@ import { FargateToKinesisStreamsProps } from '@aws-solutions-constructs/aws-farg
 import * as fargate from 'aws-cdk-lib/aws-fargate';
 
 new FargateToKinesisStreams(this, 'FargateToKinesisStreams', {
-  defaultVpcIsIsolated: true,
+  publicApi: true,
   ecrRepositoryArn: "arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo",
 });
 ```
@@ -47,7 +47,7 @@ from aws_cdk import (
 from constructs import Construct
 
 FargateToKinesisStreams(self, 'FargateToKinesisStreams',
-                          default_vpc_is_isolated=True,
+                          public_api=True,
                           ecr_repository_arn="arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo"
                        )
 ```
@@ -64,7 +64,7 @@ import software.amazon.awscdk.services.fargate.Runtime;
 import software.amazon.awsconstructs.services.fargatekinesisstreams.*;
 
 new FargateToKinesisStreams(this, "FargateToKinesisStreams", new FargateToKinesisStreamsProps.Builder()
-        .defaultVpcIsIsolated(true)
+        .publicApi(true)
         .ecrRepositoryArn("arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo")
         .build());
 ```
@@ -73,7 +73,7 @@ new FargateToKinesisStreams(this, "FargateToKinesisStreams", new FargateToKinesi
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
-| defaultVpcIsIsolated | `boolean` | True if the VPC provisioned by this construct should contain only Isolated Subnets, otherwise False for the provisioned VPC to contain Public/Private Subnets. Note this property is ignored if an existing VPC is specified in the `existingVpc` property. |
+| publicApi | `boolean` | True if the VPC provisioned by this construct should contain only Isolated Subnets, otherwise False for the provisioned VPC to contain Public/Private Subnets. Note this property is ignored if an existing VPC is specified in the `existingVpc` property. |
 | vpcProps? | [`ec2.VpcProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.VpcProps.html) | Optional custom properties for a new VPC the construct will create. Providing both this and `existingVpc` is an error. An Amazon Kinesis Streams Interface Endpoint will be added to this VPC. |
 | existingVpc? | [`ec2.IVpc`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html) | An existing VPC in which to deploy the Fargate Service. Providing both this and `vpcProps` is an error. If the client provides an existing Fargate Service in the `existingFargateServiceObject` property, this value must be the VPC where the service is running. An Amazon Kinesis Streams Interface Endpoint will be added to this VPC. |
 | clusterProps? | [`ecs.ClusterProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs.ClusterProps.html) | Optional properties to create a new ECS cluster. To provide an existing cluster, use the cluster attribute of fargateServiceProps. |
