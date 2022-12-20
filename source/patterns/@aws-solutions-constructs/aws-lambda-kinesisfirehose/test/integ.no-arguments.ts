@@ -17,6 +17,8 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import {LambdaToKinesisFirehose } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { KinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-kinesisfirehose-s3';
+import * as defaults from '@aws-solutions-constructs/core';
+
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
@@ -41,6 +43,8 @@ new LambdaToKinesisFirehose(stack, 'test-construct', {
   },
   existingKinesisFirehose: destination.kinesisFirehose
 });
+
+defaults.suppressAutoDeleteHandlerWarnings(stack);
 
 // Synth
 app.synth();

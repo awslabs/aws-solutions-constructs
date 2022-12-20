@@ -47,5 +47,7 @@ new LambdaToKinesisFirehose(stack, 'test-construct', {
   existingVpc: myVpc
 });
 
+defaults.suppressAutoDeleteHandlerWarnings(stack);
+
 // Synth
 app.synth();
