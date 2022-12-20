@@ -192,6 +192,7 @@
     "testexistingbucketfirehoses3stackKinesisFirehoseToS3KinesisFirehose46614BF6": {
       "Type": "AWS::KinesisFirehose::DeliveryStream",
       "Properties": {
+        "DeliveryStreamName": "KinesisFirehoseexistingbuckettesstackKinesisFirehoseToS3E85D23B4",
         "DeliveryStreamType": "KinesisStreamAsSource",
         "ExtendedS3DestinationConfiguration": {
           "BucketARN": {

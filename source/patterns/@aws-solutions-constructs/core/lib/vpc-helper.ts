@@ -68,7 +68,8 @@ export enum ServiceEndpointTypes {
   SSM = "SSM",
   ECR_API = "ECR_API",
   ECR_DKR = "ECR_DKR",
-  EVENTS = "CLOUDWATCH_EVENTS"
+  EVENTS = "CLOUDWATCH_EVENTS",
+  KINESIS_FIREHOSE = "KINESIS_FIREHOSE"
 }
 
 enum EndpointTypes {
@@ -138,6 +139,11 @@ const endpointSettings: EndpointDefinition[] = [
     endpointName: ServiceEndpointTypes.EVENTS,
     endpointType: EndpointTypes.INTERFACE,
     endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.CLOUDWATCH_EVENTS
+  },
+  {
+    endpointName: ServiceEndpointTypes.KINESIS_FIREHOSE,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.KINESIS_FIREHOSE
   }
 ];
 

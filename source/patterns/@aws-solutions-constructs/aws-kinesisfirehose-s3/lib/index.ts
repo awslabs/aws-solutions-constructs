@@ -91,6 +91,8 @@ export class KinesisFirehoseToS3 extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
 
+    const firehoseId = 'KinesisFirehose';
+
     let bucket: s3.IBucket;
 
     // Setup S3 Bucket
@@ -161,14 +163,18 @@ export class KinesisFirehoseToS3 extends Construct {
       "alias/aws/s3"
     );
 
+    const deliveryStreamName = defaults.generateName(this, firehoseId);
+
     // Setup the default Kinesis Firehose props
     let defaultKinesisFirehoseProps: kinesisfirehose.CfnDeliveryStreamProps = defaults.DefaultCfnDeliveryStreamProps(
       bucket.bucketArn,
       this.kinesisFirehoseRole.roleArn,
       this.kinesisFirehoseLogGroup.logGroupName,
       cwLogStream.logStreamName,
-      awsManagedKey
+      awsManagedKey,
+      deliveryStreamName
     );
+    defaults.printWarning(`*OUTPUT* defaultKinesisFirehoseProps Name = ${defaultKinesisFirehoseProps.deliveryStreamName}`);
 
     // if the client didn't explicity say it was a Kinesis client, then turn on encryption
     if (!props.kinesisFirehoseProps ||
@@ -187,9 +193,10 @@ export class KinesisFirehoseToS3 extends Construct {
 
     const kinesisFirehoseProps = consolidateProps(defaultKinesisFirehoseProps, props.kinesisFirehoseProps);
 
+    defaults.printWarning(`*OUTPUT* Stream Name = ${kinesisFirehoseProps.deliveryStreamName}`);
     this.kinesisFirehose = new kinesisfirehose.CfnDeliveryStream(
       this,
-      "KinesisFirehose",
+      firehoseId,
       kinesisFirehoseProps
     );
   }
