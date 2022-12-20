@@ -640,19 +640,9 @@
               ],
               "Effect": "Allow",
               "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:aws:firehose:",
-                    {
-                      "Ref": "AWS::Region"
-                    },
-                    ":",
-                    {
-                      "Ref": "AWS::AccountId"
-                    },
-                    ":deliverystream/KinesisFirehosenoargumentsdestinationfirehose5454CC08"
-                  ]
+                "Fn::GetAtt": [
+                  "destinationfirehoseKinesisFirehoseE8EB5D91",
+                  "Arn"
                 ]
               }
             }
