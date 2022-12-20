@@ -163,6 +163,9 @@ export class KinesisFirehoseToS3 extends Construct {
       "alias/aws/s3"
     );
 
+    // We need a stream name to set an enviroment variable, as this is an L1 construct
+    // accessing the name as a token doesn't work for environment variable contents, so
+    // we take explicit control of the stream name (but will be overridden by a client provided name)
     const deliveryStreamName = defaults.generateName(this, firehoseId);
 
     // Setup the default Kinesis Firehose props
@@ -174,7 +177,6 @@ export class KinesisFirehoseToS3 extends Construct {
       awsManagedKey,
       deliveryStreamName
     );
-    defaults.printWarning(`*OUTPUT* defaultKinesisFirehoseProps Name = ${defaultKinesisFirehoseProps.deliveryStreamName}`);
 
     // if the client didn't explicity say it was a Kinesis client, then turn on encryption
     if (!props.kinesisFirehoseProps ||
@@ -193,7 +195,6 @@ export class KinesisFirehoseToS3 extends Construct {
 
     const kinesisFirehoseProps = consolidateProps(defaultKinesisFirehoseProps, props.kinesisFirehoseProps);
 
-    defaults.printWarning(`*OUTPUT* Stream Name = ${kinesisFirehoseProps.deliveryStreamName}`);
     this.kinesisFirehose = new kinesisfirehose.CfnDeliveryStream(
       this,
       firehoseId,

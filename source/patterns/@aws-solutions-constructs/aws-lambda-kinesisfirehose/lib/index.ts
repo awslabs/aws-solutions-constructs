@@ -17,7 +17,7 @@ import * as firehose from 'aws-cdk-lib/aws-kinesisfirehose';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as cdk from 'aws-cdk-lib';
+
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 
@@ -52,11 +52,16 @@ export interface LambdaToKinesisFirehoseProps {
    */
   readonly deployVpc?: boolean;
   /**
-   * Optional Name for the Lambda function environment variable set to the name of the bucket.
+   * Optional Name for the Lambda function environment variable set to the name of the Firehose Delivery Stream.
    *
-   * @default - S3_BUCKET_NAME
+   * @default - FIREHOSE_DELIVERYSTREAM_NAME
    */
   readonly firehoseEnvironmentVariableName?: string;
+  /**
+   * An existing Kinesis Firehose Delivery Stream to which the Lambda function can put data. Note - the delivery stream
+   * construct must have already been created and have the deliveryStreamName set. This construct will *not* create a
+   * new Delivery Stream.
+   */
   readonly existingKinesisFirehose: firehose.CfnDeliveryStream;
 }
 
@@ -115,7 +120,7 @@ export class LambdaToKinesisFirehose extends Construct {
         "firehose:PutRecordBatch",
         "firehose:UpdateDestination"
       ],
-      resources: [`arn:aws:firehose:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account}:deliverystream/${this.kinesisFirehose.deliveryStreamName}`],
+      resources: [this.kinesisFirehose.attrArn],
     }));
 
     // Configure environment variables
