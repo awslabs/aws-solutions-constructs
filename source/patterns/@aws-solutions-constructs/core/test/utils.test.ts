@@ -145,25 +145,26 @@ test('Test consolidate props with one arg', () => {
 
 });
 
-test('Test generateName sunny day for current construct with unefined name argument', () => {
+test('Test generateName sunny day for current construct with undefined name argument', () => {
   const stack = new cdk.Stack(undefined, "some-new-id");
 
   const newName = defaults.generateName(stack);
-  expect(newName.length).toBeGreaterThan(5);
+  // 13 is not specific, just checking the name is several characters longer than just the region
+  expect(newName.length).toBeGreaterThan(13);
 });
 
 test('Test generateName sunny day for current construct', () => {
   const stack = new cdk.Stack(undefined, "some-new-id");
 
   const newName = defaults.generateName(stack, "");
-  expect(newName.length).toBeGreaterThan(5);
+  expect(newName.length).toBeGreaterThan(13);
 });
 
 test('Test generateName sunny day for child construct', () => {
   const stack = new cdk.Stack(undefined, "some-new-id");
 
   const newName = defaults.generateName(stack, "child");
-  expect(newName.length).toBeGreaterThan(5);
+  expect(newName.length).toBeGreaterThan(13);
   expect(newName.includes(newName)).toBe(true);
 });
 

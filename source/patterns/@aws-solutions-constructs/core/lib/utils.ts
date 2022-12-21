@@ -188,7 +188,7 @@ export function consolidateProps(defaultProps: object, clientProps?: object, con
  * @returns a unique name
  */
 export function generateName(scope: Construct, resourceId: string = ""): string {
-  const name = /*cdk.Stack.of(scope).region +*/ resourceId + cdk.Names.uniqueId(scope);
+  const name = cdk.Stack.of(scope).region + resourceId + cdk.Names.uniqueId(scope);
   if (name.length > 64) {
     return name.substring(0, 32) + name.substring(name.length - 32);
   }

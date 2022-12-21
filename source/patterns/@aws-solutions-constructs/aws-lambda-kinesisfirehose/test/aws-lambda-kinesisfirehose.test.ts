@@ -206,3 +206,48 @@ function GetTestDestination(scope: Construct, id: string): KinesisFirehoseToS3 {
     }
   });
 }
+
+test('Test fail Vpc check with vpcProps yet deployVpc is false', () => {
+  const stack = new cdk.Stack();
+  const destination = GetTestDestination(stack, 'test-destination');
+
+  const app = () => {
+    new LambdaToKinesisFirehose(stack, 'test-target', {
+      existingKinesisFirehose: destination.kinesisFirehose,
+      lambdaFunctionProps: {
+        runtime: lambda.Runtime.NODEJS_18_X,
+        handler: "index.handler",
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      },
+      deployVpc: false,
+      vpcProps: {
+        cidr: "10.0.0.0/16",
+      },
+    });
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If deployVpc is not true, then vpcProps is ignored');
+});
+
+test('Test fail Vpc check with vpcProps yet deployVpc is undefined', () => {
+  const stack = new cdk.Stack();
+  const destination = GetTestDestination(stack, 'test-destination');
+
+  const app = () => {
+    new LambdaToKinesisFirehose(stack, 'test-target', {
+      existingKinesisFirehose: destination.kinesisFirehose,
+      lambdaFunctionProps: {
+        runtime: lambda.Runtime.NODEJS_18_X,
+        handler: "index.handler",
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      },
+      vpcProps: {
+        cidr: "10.0.0.0/16",
+      },
+    });
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If deployVpc is not true, then vpcProps is ignored');
+});

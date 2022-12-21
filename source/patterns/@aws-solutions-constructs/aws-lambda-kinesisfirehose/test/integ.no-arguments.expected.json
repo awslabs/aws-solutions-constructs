@@ -431,7 +431,17 @@
         "DeliveryStreamEncryptionConfigurationInput": {
           "KeyType": "AWS_OWNED_CMK"
         },
-        "DeliveryStreamName": "KinesisFirehosenoargumentsdestinationfirehose5454CC08",
+        "DeliveryStreamName": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "AWS::Region"
+              },
+              "KinesisFirmentsdestinationfirehose5454CC08"
+            ]
+          ]
+        },
         "ExtendedS3DestinationConfiguration": {
           "BucketARN": {
             "Fn::GetAtt": [
@@ -683,7 +693,17 @@
         },
         "Environment": {
           "Variables": {
-            "FIREHOSE_DELIVERYSTREAM_NAME": "KinesisFirehosenoargumentsdestinationfirehose5454CC08"
+            "FIREHOSE_DELIVERYSTREAM_NAME": {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  "KinesisFirmentsdestinationfirehose5454CC08"
+                ]
+              ]
+            }
           }
         },
         "Handler": "index.handler",

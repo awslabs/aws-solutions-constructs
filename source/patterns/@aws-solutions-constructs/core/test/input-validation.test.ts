@@ -463,39 +463,6 @@ test('Test fail encryption key check', () => {
   expect(app).toThrowError('Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n');
 });
 
-test('Test fail Vpc check with vpcProps yet deployVpc is false', () => {
-
-  const props: defaults.VerifiedProps = {
-    deployVpc: false,
-    vpcProps:   {
-      cidr: "10.0.0.0/16",
-    },
-  };
-
-  const app = () => {
-    defaults.CheckProps(props);
-  };
-
-  // Assertion
-  expect(app).toThrowError('Error - If deployVpc is not true, then vpcProps is ignored');
-});
-
-test('Test fail Vpc check with vpcProps yet deployVpc is undefined', () => {
-
-  const props: defaults.VerifiedProps = {
-    vpcProps:   {
-      cidr: "10.0.0.0/16",
-    },
-  };
-
-  const app = () => {
-    defaults.CheckProps(props);
-  };
-
-  // Assertion
-  expect(app).toThrowError('Error - If deployVpc is not true, then vpcProps is ignored');
-});
-
 test('Test fail Vpc check with deployVpc', () => {
   const stack = new Stack();
 

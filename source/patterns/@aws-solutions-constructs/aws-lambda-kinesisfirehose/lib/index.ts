@@ -84,6 +84,13 @@ export class LambdaToKinesisFirehose extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
 
+    if (!props.deployVpc && props.vpcProps) {
+      throw new Error('Error - If deployVpc is not true, then vpcProps is ignored');
+    }
+    if (!props.existingKinesisFirehose.deliveryStreamName) {
+      throw new Error('existingKinesisFirehose must have a defined deliveryStreamName');
+    }
+
     if (props.deployVpc || props.existingVpc) {
       this.vpc = defaults.buildVpc(scope, {
         defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
@@ -108,10 +115,6 @@ export class LambdaToKinesisFirehose extends Construct {
     // Setup the firehose
     this.kinesisFirehose = props.existingKinesisFirehose;
 
-    if (!this.kinesisFirehose.deliveryStreamName) {
-      throw new Error('existingKinesisFirehose must have a defined deliveryStreamName');
-    }
-
     this.lambdaFunction.addToRolePolicy(new iam.PolicyStatement({
       actions: [
         "firehose:DeleteDeliveryStream",
@@ -124,7 +127,8 @@ export class LambdaToKinesisFirehose extends Construct {
 
     // Configure environment variables
     const deliveryStreamEnvironmentVariableName = props.firehoseEnvironmentVariableName || 'FIREHOSE_DELIVERYSTREAM_NAME';
-    this.lambdaFunction.addEnvironment(deliveryStreamEnvironmentVariableName, this.kinesisFirehose!.deliveryStreamName);
+    // We can use ! because we checked for a stream name on props.existingKinesisFirehose at the top of this function
+    this.lambdaFunction.addEnvironment(deliveryStreamEnvironmentVariableName, this.kinesisFirehose!.deliveryStreamName!);
 
   }
 }
