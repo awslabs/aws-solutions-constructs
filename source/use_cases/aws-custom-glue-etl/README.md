@@ -63,4 +63,4 @@ Once triggered, the ETL transform in AWS Glue writes the data into an S3 bucket 
 
 ![Glue CloudWatch Metrics](metrics.png)
 
-&copy; Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+&copy; Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
