@@ -261,7 +261,17 @@
         "DeliveryStreamEncryptionConfigurationInput": {
           "KeyType": "AWS_OWNED_CMK"
         },
-        "DeliveryStreamName": "KinesisFirehosepreexistinglogginistingloggingbucketstack932A73CD",
+        "DeliveryStreamName": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "AWS::Region"
+              },
+              "KinesisFiristingloggingbucketstack932A73CD"
+            ]
+          ]
+        },
         "ExtendedS3DestinationConfiguration": {
           "BucketARN": {
             "Fn::GetAtt": [

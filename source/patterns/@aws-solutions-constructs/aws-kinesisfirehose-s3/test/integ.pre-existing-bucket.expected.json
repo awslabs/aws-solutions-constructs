@@ -181,7 +181,17 @@
         "DeliveryStreamEncryptionConfigurationInput": {
           "KeyType": "AWS_OWNED_CMK"
         },
-        "DeliveryStreamName": "KinesisFirehosepreexistingbuckets3preexistingbucketstack85DF91B4",
+        "DeliveryStreamName": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "AWS::Region"
+              },
+              "KinesisFirs3preexistingbucketstack85DF91B4"
+            ]
+          ]
+        },
         "ExtendedS3DestinationConfiguration": {
           "BucketARN": {
             "Fn::Join": [

@@ -325,6 +325,16 @@ test('check DeliveryStreamName is populated', () => {
 
   deploy(stack);
   expect(stack).toHaveResourceLike("AWS::KinesisFirehose::DeliveryStream", {
-    DeliveryStreamName: 'KinesisFirehoseteststacktestfirehoses3F50DF0E1'
+    DeliveryStreamName: {
+      "Fn::Join": [
+        "",
+        [
+          {
+            Ref: "AWS::Region"
+          },
+          "KinesisFieteststacktestfirehoses3F50DF0E1"
+        ]
+      ]
+    }
   });
 });
