@@ -22,7 +22,6 @@ import * as defaults from '@aws-solutions-constructs/core';
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
-stack.templateOptions.description = 'Integration Test for aws-cdk-apl-kinesisfirehose-s3';
 
 const destination = new KinesisFirehoseToS3(stack, 'destination-firehose', {
   bucketProps: {

@@ -39,7 +39,7 @@ test('Test that properties are set correctly', () => {
   expect(construct.vpc).not.toBeDefined();
 });
 
-test('Test existing function is utilzed correctly', () => {
+test('Test existing function is utilized correctly', () => {
   // Stack
   const stack = new cdk.Stack();
   const destination = GetTestDestination(stack, 'test-destination');

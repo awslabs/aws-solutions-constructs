@@ -193,6 +193,11 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
+  if (!propsObject.deployVpc && propsObject.vpcProps) {
+    errorMessages += 'Error - If deployVpc is not true, then vpcProps is ignored';
+    errorFound = true;
+  }
+
   if (propsObject.encryptionKey && propsObject.encryptionKeyProps) {
     errorMessages += 'Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n';
     errorFound = true;

@@ -78,7 +78,6 @@ export class LambdaToKinesisFirehose extends Construct {
    * @param {cdk.App} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {LambdaToKinesisFirehoseProps} props - user provided props for the construct.
-   * @since 0.8.0
    * @access public
    */
   constructor(scope: Construct, id: string, props: LambdaToKinesisFirehoseProps) {
@@ -124,8 +123,8 @@ export class LambdaToKinesisFirehose extends Construct {
     }));
 
     // Configure environment variables
-    const deliverystreamEnvironmentVariableName = props.firehoseEnvironmentVariableName || 'FIREHOSE_DELIVERYSTREAM_NAME';
-    this.lambdaFunction.addEnvironment(deliverystreamEnvironmentVariableName, this.kinesisFirehose!.deliveryStreamName);
+    const deliveryStreamEnvironmentVariableName = props.firehoseEnvironmentVariableName || 'FIREHOSE_DELIVERYSTREAM_NAME';
+    this.lambdaFunction.addEnvironment(deliveryStreamEnvironmentVariableName, this.kinesisFirehose!.deliveryStreamName);
 
   }
 }
