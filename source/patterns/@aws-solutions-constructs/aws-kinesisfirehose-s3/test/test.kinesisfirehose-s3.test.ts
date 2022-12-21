@@ -332,7 +332,7 @@ test('check DeliveryStreamName is populated', () => {
           {
             Ref: "AWS::Region"
           },
-          "KinesisFieteststacktestfirehoses3F50DF0E1"
+          "KinesisFireteststacktestfirehoses3F50DF0E1"
         ]
       ]
     }
