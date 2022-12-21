@@ -113,4 +113,4 @@ Below is a description of the different resources and methods exposed by the API
 
 
 ***
-&copy; Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+&copy; Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
