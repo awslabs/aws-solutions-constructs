@@ -46,7 +46,6 @@ Python
 from aws_solutions_constructs.aws_fargate_kinesisfirehose import FargateToKinesisFirehose
 from aws_cdk import (
     aws_fargate as _fargate,
-    aws_kinesis as kinesis,
     Stack
 )
 from constructs import Construct
