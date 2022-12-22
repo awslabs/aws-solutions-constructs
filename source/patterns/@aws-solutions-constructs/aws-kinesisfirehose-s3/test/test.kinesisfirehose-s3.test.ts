@@ -305,3 +305,26 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
 
   expect(stack).toCountResources("AWS::S3::Bucket", 1);
 });
+
+test('check client provided name overrides default DeliveryStreamName', () => {
+  const stack = new cdk.Stack();
+  const testName = 'client-name';
+
+  deploy(stack, {
+    kinesisFirehoseProps: {
+      deliveryStreamName: testName
+    }
+  });
+  expect(stack).toHaveResourceLike("AWS::KinesisFirehose::DeliveryStream", {
+    DeliveryStreamName: testName
+  });
+});
+
+test('check DeliveryStreamName is populated', () => {
+  const stack = new cdk.Stack(undefined, 'test-stack');
+
+  deploy(stack);
+  expect(stack).toHaveResourceLike("AWS::KinesisFirehose::DeliveryStream", {
+    DeliveryStreamName: "KinesisFirehoseteststacktestfirehoses3F50DF0E1"
+  });
+});
