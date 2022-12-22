@@ -186,9 +186,13 @@ export function consolidateProps(defaultProps: object, clientProps?: object, con
  * @param scope the construct within to create the name
  * @param resourceId an id for the construct about to be created under scope (empty string if name is for scoep)
  * @returns a unique name
+ *
+ * Note: This appears to overlap with GenerateResourceName above (I wrote it before noticing that
+ * function). As this offloads the logic to the CDK, I'm leaving this here but someone may want to
+ * blend these routines in the future.
  */
 export function generateName(scope: Construct, resourceId: string = ""): string {
-  const name = cdk.Stack.of(scope).region + resourceId + cdk.Names.uniqueId(scope);
+  const name = resourceId + cdk.Names.uniqueId(scope);
   if (name.length > 64) {
     return name.substring(0, 32) + name.substring(name.length - 32);
   }

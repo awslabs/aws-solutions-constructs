@@ -149,22 +149,22 @@ test('Test generateName sunny day for current construct with undefined name argu
   const stack = new cdk.Stack(undefined, "some-new-id");
 
   const newName = defaults.generateName(stack);
-  // 13 is not specific, just checking the name is several characters longer than just the region
-  expect(newName.length).toBeGreaterThan(13);
+  // 5 is not specific, just checking the name is several characters longer than just a CR/LF
+  expect(newName.length).toBeGreaterThan(5);
 });
 
 test('Test generateName sunny day for current construct', () => {
   const stack = new cdk.Stack(undefined, "some-new-id");
 
   const newName = defaults.generateName(stack, "");
-  expect(newName.length).toBeGreaterThan(13);
+  expect(newName.length).toBeGreaterThan(5);
 });
 
 test('Test generateName sunny day for child construct', () => {
   const stack = new cdk.Stack(undefined, "some-new-id");
 
   const newName = defaults.generateName(stack, "child");
-  expect(newName.length).toBeGreaterThan(13);
+  expect(newName.length).toBeGreaterThan(5);
   expect(newName.includes(newName)).toBe(true);
 });
 
