@@ -317,6 +317,7 @@
     "teststreamfirehoses3KinesisFirehoseToS3KinesisFirehose7303FF77": {
       "Type": "AWS::KinesisFirehose::DeliveryStream",
       "Properties": {
+        "DeliveryStreamName": "KinesisFirehosenoargumentsteststoses3KinesisFirehoseToS3288D7D36",
         "DeliveryStreamType": "KinesisStreamAsSource",
         "ExtendedS3DestinationConfiguration": {
           "BucketARN": {
