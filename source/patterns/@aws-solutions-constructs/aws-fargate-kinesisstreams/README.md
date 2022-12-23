@@ -14,7 +14,7 @@
 
 | **Language**     | **Package**        |
 |:-------------|-----------------|
-|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_fargate_kinesis_stream`|
+|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_fargate_kinesisstreams`|
 |![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-fargate-kinesisstreams`|
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.fargatekinesisstreams`|
 
@@ -38,7 +38,7 @@ new FargateToKinesisStreams(this, 'FargateToKinesisStreams', {
 
 Python
 ``` python
-from aws_solutions_constructs.aws_fargate_kinesis_stream import FargateToKinesisStreams
+from aws_solutions_constructs.aws_fargate_kinesisstreams import FargateToKinesisStreams
 from aws_cdk import (
     aws_fargate as _fargate,
     Stack
@@ -116,4 +116,4 @@ Out of the box implementation of the Construct without any overrides will set th
 ![Architecture Diagram](architecture.png)
 
 ***
-&copy; Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+&copy; Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
