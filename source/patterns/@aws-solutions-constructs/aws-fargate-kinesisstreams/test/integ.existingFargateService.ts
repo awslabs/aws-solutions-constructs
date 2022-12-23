@@ -22,7 +22,7 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 
 const existingVpc = getTestVpc(stack);
 
-const image = ecs.ContainerImage.fromRegistry('nginx')
+const image = ecs.ContainerImage.fromRegistry('nginx');
 
 const [existingFargateServiceObject, existingContainerDefinitionObject] = CreateFargateService(stack,
   'test',

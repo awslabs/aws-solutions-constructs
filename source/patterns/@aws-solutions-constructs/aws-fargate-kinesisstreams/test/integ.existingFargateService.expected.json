@@ -1013,18 +1013,7 @@
               }
             ],
             "Essential": true,
-            "Image": {
-              "Fn::Join": [
-                "",
-                [
-                  "581677916928.dkr.ecr.us-west-2.",
-                  {
-                    "Ref": "AWS::URLSuffix"
-                  },
-                  "/test-container:latest"
-                ]
-              ]
-            },
+            "Image": "nginx",
             "MemoryReservation": 512,
             "Name": "test-container",
             "PortMappings": [
@@ -1036,12 +1025,6 @@
           }
         ],
         "Cpu": "256",
-        "ExecutionRoleArn": {
-          "Fn::GetAtt": [
-            "testtaskdefExecutionRole7C3B732C",
-            "Arn"
-          ]
-        },
         "Family": "existingFargateServicetesttaskdef55189A31",
         "Memory": "512",
         "NetworkMode": "awsvpc",
@@ -1054,53 +1037,6 @@
             "Arn"
           ]
         }
-      }
-    },
-    "testtaskdefExecutionRole7C3B732C": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "ecs-tasks.amazonaws.com"
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      }
-    },
-    "testtaskdefExecutionRoleDefaultPolicy423803C8": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "ecr:BatchCheckLayerAvailability",
-                "ecr:GetDownloadUrlForLayer",
-                "ecr:BatchGetImage"
-              ],
-              "Effect": "Allow",
-              "Resource": "arn:aws:ecr:us-west-2:581677916928:repository/test-container"
-            },
-            {
-              "Action": "ecr:GetAuthorizationToken",
-              "Effect": "Allow",
-              "Resource": "*"
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "testtaskdefExecutionRoleDefaultPolicy423803C8",
-        "Roles": [
-          {
-            "Ref": "testtaskdefExecutionRole7C3B732C"
-          }
-        ]
       }
     },
     "testsg872EB48A": {
