@@ -25,14 +25,12 @@ import { Construct } from 'constructs';
  */
 export interface FargateToKinesisStreamsProps {
   /**
-   * True if the VPC provisioned by this construct should contain only Isolated Subnets,
-   * otherwise False for the provisioned VPC to contain Public/Private Subnets.
+   * True if the VPC provisioned by this construct should contain Public/Private Subnets,
+   * otherwise False for the VPC to contain Isolated Subnets only.
    *
    * Note this property is ignored if an existing VPC is specified in the `existingVpc` property.
-   *
-   * @default - False
    */
-    readonly publicApi: boolean;
+  readonly publicApi: boolean;
   /**
    * Optional custom properties for a new VPC the construct will create. Providing both this and `existingVpc` is an error.
    *
