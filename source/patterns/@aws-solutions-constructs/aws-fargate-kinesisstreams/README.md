@@ -41,7 +41,6 @@ Python
 from aws_solutions_constructs.aws_fargate_kinesis_stream import FargateToKinesisStreams
 from aws_cdk import (
     aws_fargate as _fargate,
-    aws_kinesis as kinesis,
     Stack
 )
 from constructs import Construct
@@ -94,7 +93,7 @@ new FargateToKinesisStreams(this, "FargateToKinesisStreams", new FargateToKinesi
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
 | vpc | [`ec2.IVpc`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html) | The new or existing VPC used by the construct. |
-| fargateService | [`ecs.FargateService`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs.FargateService.html) | The new or existing AWS Fargate service used by this construct. |
+| service | [`ecs.FargateService`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs.FargateService.html) | The new or existing AWS Fargate service used by this construct. |
 | container | [`ecs.ContainerDefinition`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs.ContainerDefinition.html) | The container associated with the AWS Fargate service in the service property. |
 | kinesisStream | [`kinesis.Stream`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kinesis.Stream.html) | The new or existing Kinesis Data Stream used by this construct. |
 | cloudwatchAlarms? | [`cloudwatch.Alarm[]`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch.Alarm.html) | Returns the CloudWatch Alarms created to monitor the Kinesis Data Stream.|
@@ -109,7 +108,7 @@ Out of the box implementation of the Construct without any overrides will set th
 * Sets an Environment Variable named KINESIS_DATASTREAM_NAME that holds the Kinesis Data Stream Name, which is a required property of the Kinesis Data Streams SDK when making calls to it
 
 ### Amazon Kinesis Stream
-* Enable server-side encryption for the Kinesis Data Stream using AWS Managed CMK
+* Enable server-side encryption for the Kinesis Data Stream using an AWS Managed CMK
 * Deploy best practices CloudWatch Alarms for the Kinesis Data Stream
 * An Interface Endpoint on the VPC for private communication between the Fargate Service and the Kinesis Data Stream
 

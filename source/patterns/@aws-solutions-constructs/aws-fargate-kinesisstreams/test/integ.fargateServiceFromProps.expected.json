@@ -1,0 +1,913 @@
+{
+  "Resources": {
+    "testfargatekinesisstreamsKinesisStreamD31BD614": {
+      "Type": "AWS::Kinesis::Stream",
+      "Properties": {
+        "RetentionPeriodHours": 24,
+        "ShardCount": 1,
+        "StreamEncryption": {
+          "EncryptionType": "KMS",
+          "KeyId": "alias/aws/kinesis"
+        },
+        "StreamModeDetails": {
+          "StreamMode": "PROVISIONED"
+        }
+      }
+    },
+    "testfargatekinesisstreamsKinesisStreamGetRecordsIteratorAgeAlarm60755E90": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
+        "MetricName": "GetRecords.IteratorAgeMilliseconds",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 43200000
+      }
+    },
+    "testfargatekinesisstreamsKinesisStreamReadProvisionedThroughputExceededAlarmDE16A9F2": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanThreshold",
+        "EvaluationPeriods": 1,
+        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
+        "MetricName": "ReadProvisionedThroughputExceeded",
+        "Namespace": "AWS/Kinesis",
+        "Period": 300,
+        "Statistic": "Average",
+        "Threshold": 0
+      }
+    },
+    "Vpc8378EB38": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "fargateServiceFromProps/Vpc"
+          }
+        ]
+      }
+    },
+    "VpcisolatedSubnet1SubnetE62B1B9B": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "AvailabilityZone": "test-region-1a",
+        "CidrBlock": "10.0.0.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "isolated"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "fargateServiceFromProps/Vpc/isolatedSubnet1"
+          }
+        ]
+      }
+    },
+    "VpcisolatedSubnet1RouteTableE442650B": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "fargateServiceFromProps/Vpc/isolatedSubnet1"
+          }
+        ]
+      }
+    },
+    "VpcisolatedSubnet1RouteTableAssociationD259E31A": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "VpcisolatedSubnet1RouteTableE442650B"
+        },
+        "SubnetId": {
+          "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
+        }
+      }
+    },
+    "VpcisolatedSubnet2Subnet39217055": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "AvailabilityZone": "test-region-1b",
+        "CidrBlock": "10.0.64.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "isolated"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "fargateServiceFromProps/Vpc/isolatedSubnet2"
+          }
+        ]
+      }
+    },
+    "VpcisolatedSubnet2RouteTable334F9764": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "fargateServiceFromProps/Vpc/isolatedSubnet2"
+          }
+        ]
+      }
+    },
+    "VpcisolatedSubnet2RouteTableAssociation25A4716F": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "VpcisolatedSubnet2RouteTable334F9764"
+        },
+        "SubnetId": {
+          "Ref": "VpcisolatedSubnet2Subnet39217055"
+        }
+      }
+    },
+    "VpcisolatedSubnet3Subnet44F2537D": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "AvailabilityZone": "test-region-1c",
+        "CidrBlock": "10.0.128.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "isolated"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "fargateServiceFromProps/Vpc/isolatedSubnet3"
+          }
+        ]
+      }
+    },
+    "VpcisolatedSubnet3RouteTableA2F6BBC0": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "fargateServiceFromProps/Vpc/isolatedSubnet3"
+          }
+        ]
+      }
+    },
+    "VpcisolatedSubnet3RouteTableAssociationDC010BEB": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "VpcisolatedSubnet3RouteTableA2F6BBC0"
+        },
+        "SubnetId": {
+          "Ref": "VpcisolatedSubnet3Subnet44F2537D"
+        }
+      }
+    },
+    "VpcFlowLogIAMRole6A475D41": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "vpc-flow-logs.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "fargateServiceFromProps/Vpc"
+          }
+        ]
+      }
+    },
+    "VpcFlowLogIAMRoleDefaultPolicy406FB995": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:DescribeLogStreams"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "VpcFlowLogLogGroup7B5C56B9",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "iam:PassRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "VpcFlowLogIAMRole6A475D41",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "VpcFlowLogIAMRoleDefaultPolicy406FB995",
+        "Roles": [
+          {
+            "Ref": "VpcFlowLogIAMRole6A475D41"
+          }
+        ]
+      }
+    },
+    "VpcFlowLogLogGroup7B5C56B9": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "RetentionInDays": 731,
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "fargateServiceFromProps/Vpc"
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+            }
+          ]
+        }
+      }
+    },
+    "VpcFlowLog8FF33A73": {
+      "Type": "AWS::EC2::FlowLog",
+      "Properties": {
+        "ResourceId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "ResourceType": "VPC",
+        "DeliverLogsPermissionArn": {
+          "Fn::GetAtt": [
+            "VpcFlowLogIAMRole6A475D41",
+            "Arn"
+          ]
+        },
+        "LogDestinationType": "cloud-watch-logs",
+        "LogGroupName": {
+          "Ref": "VpcFlowLogLogGroup7B5C56B9"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "fargateServiceFromProps/Vpc"
+          }
+        ],
+        "TrafficType": "ALL"
+      }
+    },
+    "VpcKINESISSTREAMSC07D91B5": {
+      "Type": "AWS::EC2::VPCEndpoint",
+      "Properties": {
+        "ServiceName": {
+          "Fn::Join": [
+            "",
+            [
+              "com.amazonaws.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".kinesis-streams"
+            ]
+          ]
+        },
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "PrivateDnsEnabled": true,
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "fargateServiceFromPropsKINESISSTREAMSsecuritygroup6FD7F225",
+              "GroupId"
+            ]
+          }
+        ],
+        "SubnetIds": [
+          {
+            "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
+          },
+          {
+            "Ref": "VpcisolatedSubnet2Subnet39217055"
+          },
+          {
+            "Ref": "VpcisolatedSubnet3Subnet44F2537D"
+          }
+        ],
+        "VpcEndpointType": "Interface"
+      }
+    },
+    "VpcECRAPI9A3B6A2B": {
+      "Type": "AWS::EC2::VPCEndpoint",
+      "Properties": {
+        "ServiceName": {
+          "Fn::Join": [
+            "",
+            [
+              "com.amazonaws.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".ecr.api"
+            ]
+          ]
+        },
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "PrivateDnsEnabled": true,
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "fargateServiceFromPropsECRAPIsecuritygroup5784F80B",
+              "GroupId"
+            ]
+          }
+        ],
+        "SubnetIds": [
+          {
+            "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
+          },
+          {
+            "Ref": "VpcisolatedSubnet2Subnet39217055"
+          },
+          {
+            "Ref": "VpcisolatedSubnet3Subnet44F2537D"
+          }
+        ],
+        "VpcEndpointType": "Interface"
+      }
+    },
+    "VpcECRDKR604E039F": {
+      "Type": "AWS::EC2::VPCEndpoint",
+      "Properties": {
+        "ServiceName": {
+          "Fn::Join": [
+            "",
+            [
+              "com.amazonaws.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".ecr.dkr"
+            ]
+          ]
+        },
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "PrivateDnsEnabled": true,
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "fargateServiceFromPropsECRDKRsecuritygroup9E1C301F",
+              "GroupId"
+            ]
+          }
+        ],
+        "SubnetIds": [
+          {
+            "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
+          },
+          {
+            "Ref": "VpcisolatedSubnet2Subnet39217055"
+          },
+          {
+            "Ref": "VpcisolatedSubnet3Subnet44F2537D"
+          }
+        ],
+        "VpcEndpointType": "Interface"
+      }
+    },
+    "VpcS3A5408339": {
+      "Type": "AWS::EC2::VPCEndpoint",
+      "Properties": {
+        "ServiceName": {
+          "Fn::Join": [
+            "",
+            [
+              "com.amazonaws.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".s3"
+            ]
+          ]
+        },
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "RouteTableIds": [
+          {
+            "Ref": "VpcisolatedSubnet1RouteTableE442650B"
+          },
+          {
+            "Ref": "VpcisolatedSubnet2RouteTable334F9764"
+          },
+          {
+            "Ref": "VpcisolatedSubnet3RouteTableA2F6BBC0"
+          }
+        ],
+        "VpcEndpointType": "Gateway"
+      }
+    },
+    "fargateServiceFromPropsKINESISSTREAMSsecuritygroup6FD7F225": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "fargateServiceFromProps/fargateServiceFromProps-KINESIS_STREAMS-security-group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": {
+              "Fn::GetAtt": [
+                "Vpc8378EB38",
+                "CidrBlock"
+              ]
+            },
+            "Description": {
+              "Fn::Join": [
+                "",
+                [
+                  "from ",
+                  {
+                    "Fn::GetAtt": [
+                      "Vpc8378EB38",
+                      "CidrBlock"
+                    ]
+                  },
+                  ":443"
+                ]
+              ]
+            },
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443
+          }
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W5",
+              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK"
+            },
+            {
+              "id": "W40",
+              "reason": "Egress IPProtocol of -1 is default and generally considered OK"
+            }
+          ]
+        }
+      }
+    },
+    "fargateServiceFromPropsECRAPIsecuritygroup5784F80B": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "fargateServiceFromProps/fargateServiceFromProps-ECR_API-security-group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": {
+              "Fn::GetAtt": [
+                "Vpc8378EB38",
+                "CidrBlock"
+              ]
+            },
+            "Description": {
+              "Fn::Join": [
+                "",
+                [
+                  "from ",
+                  {
+                    "Fn::GetAtt": [
+                      "Vpc8378EB38",
+                      "CidrBlock"
+                    ]
+                  },
+                  ":443"
+                ]
+              ]
+            },
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443
+          }
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W5",
+              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK"
+            },
+            {
+              "id": "W40",
+              "reason": "Egress IPProtocol of -1 is default and generally considered OK"
+            }
+          ]
+        }
+      }
+    },
+    "fargateServiceFromPropsECRDKRsecuritygroup9E1C301F": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "fargateServiceFromProps/fargateServiceFromProps-ECR_DKR-security-group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": {
+              "Fn::GetAtt": [
+                "Vpc8378EB38",
+                "CidrBlock"
+              ]
+            },
+            "Description": {
+              "Fn::Join": [
+                "",
+                [
+                  "from ",
+                  {
+                    "Fn::GetAtt": [
+                      "Vpc8378EB38",
+                      "CidrBlock"
+                    ]
+                  },
+                  ":443"
+                ]
+              ]
+            },
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443
+          }
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W5",
+              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK"
+            },
+            {
+              "id": "W40",
+              "reason": "Egress IPProtocol of -1 is default and generally considered OK"
+            }
+          ]
+        }
+      }
+    },
+    "testfargatekinesisstreamsclusterEA5A2AD7": {
+      "Type": "AWS::ECS::Cluster"
+    },
+    "testfargatekinesisstreamstaskdefTaskRole9811F3BE": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ecs-tasks.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "testfargatekinesisstreamstaskdefTaskRoleDefaultPolicyAE7EF3E4": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "kinesis:ListShards",
+                "kinesis:PutRecord",
+                "kinesis:PutRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testfargatekinesisstreamsKinesisStreamD31BD614",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testfargatekinesisstreamstaskdefTaskRoleDefaultPolicyAE7EF3E4",
+        "Roles": [
+          {
+            "Ref": "testfargatekinesisstreamstaskdefTaskRole9811F3BE"
+          }
+        ]
+      }
+    },
+    "testfargatekinesisstreamstaskdef402FE0B3": {
+      "Type": "AWS::ECS::TaskDefinition",
+      "Properties": {
+        "ContainerDefinitions": [
+          {
+            "Environment": [
+              {
+                "Name": "KINESIS_DATASTREAM_NAME",
+                "Value": {
+                  "Ref": "testfargatekinesisstreamsKinesisStreamD31BD614"
+                }
+              }
+            ],
+            "Essential": true,
+            "Image": {
+              "Fn::Join": [
+                "",
+                [
+                  "581677916928.dkr.ecr.us-west-2.",
+                  {
+                    "Ref": "AWS::URLSuffix"
+                  },
+                  "/test-container:latest"
+                ]
+              ]
+            },
+            "MemoryReservation": 512,
+            "Name": "test-fargate-kinesisstreams-container",
+            "PortMappings": [
+              {
+                "ContainerPort": 8080,
+                "Protocol": "tcp"
+              }
+            ]
+          }
+        ],
+        "Cpu": "256",
+        "ExecutionRoleArn": {
+          "Fn::GetAtt": [
+            "testfargatekinesisstreamstaskdefExecutionRoleB65DC81E",
+            "Arn"
+          ]
+        },
+        "Family": "fargateServiceFromPropstestfargatekinesisstreamstaskdef00ED69EC",
+        "Memory": "512",
+        "NetworkMode": "awsvpc",
+        "RequiresCompatibilities": [
+          "FARGATE"
+        ],
+        "TaskRoleArn": {
+          "Fn::GetAtt": [
+            "testfargatekinesisstreamstaskdefTaskRole9811F3BE",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "testfargatekinesisstreamstaskdefExecutionRoleB65DC81E": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ecs-tasks.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "testfargatekinesisstreamstaskdefExecutionRoleDefaultPolicyF7BE2C60": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+              ],
+              "Effect": "Allow",
+              "Resource": "arn:aws:ecr:us-west-2:581677916928:repository/test-container"
+            },
+            {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testfargatekinesisstreamstaskdefExecutionRoleDefaultPolicyF7BE2C60",
+        "Roles": [
+          {
+            "Ref": "testfargatekinesisstreamstaskdefExecutionRoleB65DC81E"
+          }
+        ]
+      }
+    },
+    "testfargatekinesisstreamssgBA506AC6": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Construct created security group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W5",
+              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK"
+            },
+            {
+              "id": "W40",
+              "reason": "Egress IPProtocol of -1 is default and generally considered OK"
+            }
+          ]
+        }
+      }
+    },
+    "testfargatekinesisstreamsserviceService5AE7AADF": {
+      "Type": "AWS::ECS::Service",
+      "Properties": {
+        "Cluster": {
+          "Ref": "testfargatekinesisstreamsclusterEA5A2AD7"
+        },
+        "DeploymentConfiguration": {
+          "MaximumPercent": 150,
+          "MinimumHealthyPercent": 75
+        },
+        "DesiredCount": 7,
+        "EnableECSManagedTags": false,
+        "LaunchType": "FARGATE",
+        "NetworkConfiguration": {
+          "AwsvpcConfiguration": {
+            "AssignPublicIp": "DISABLED",
+            "SecurityGroups": [
+              {
+                "Fn::GetAtt": [
+                  "testfargatekinesisstreamssgBA506AC6",
+                  "GroupId"
+                ]
+              }
+            ],
+            "Subnets": [
+              {
+                "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
+              },
+              {
+                "Ref": "VpcisolatedSubnet2Subnet39217055"
+              },
+              {
+                "Ref": "VpcisolatedSubnet3Subnet44F2537D"
+              }
+            ]
+          }
+        },
+        "PlatformVersion": "LATEST",
+        "ServiceName": "my-service",
+        "TaskDefinition": {
+          "Ref": "testfargatekinesisstreamstaskdef402FE0B3"
+        }
+      }
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
+    }
+  }
+}
