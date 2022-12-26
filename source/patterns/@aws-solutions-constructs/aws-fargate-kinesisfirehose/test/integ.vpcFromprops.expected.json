@@ -1614,18 +1614,7 @@
               }
             ],
             "Essential": true,
-            "Image": {
-              "Fn::Join": [
-                "",
-                [
-                  "515290864834.dkr.ecr.us-east-1.",
-                  {
-                    "Ref": "AWS::URLSuffix"
-                  },
-                  "/firehose:latest"
-                ]
-              ]
-            },
+            "Image": "nginx",
             "MemoryReservation": 512,
             "Name": "test-fargate-kinesisstreams-container",
             "PortMappings": [
@@ -1637,12 +1626,6 @@
           }
         ],
         "Cpu": "256",
-        "ExecutionRoleArn": {
-          "Fn::GetAtt": [
-            "testfargatekinesisstreamstaskdefExecutionRoleB65DC81E",
-            "Arn"
-          ]
-        },
         "Family": "vpcFrompropstestfargatekinesisstreamstaskdefA9FE914A",
         "Memory": "512",
         "NetworkMode": "awsvpc",
@@ -1655,53 +1638,6 @@
             "Arn"
           ]
         }
-      }
-    },
-    "testfargatekinesisstreamstaskdefExecutionRoleB65DC81E": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "ecs-tasks.amazonaws.com"
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      }
-    },
-    "testfargatekinesisstreamstaskdefExecutionRoleDefaultPolicyF7BE2C60": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "ecr:BatchCheckLayerAvailability",
-                "ecr:GetDownloadUrlForLayer",
-                "ecr:BatchGetImage"
-              ],
-              "Effect": "Allow",
-              "Resource": "arn:aws:ecr:us-east-1:515290864834:repository/firehose"
-            },
-            {
-              "Action": "ecr:GetAuthorizationToken",
-              "Effect": "Allow",
-              "Resource": "*"
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "testfargatekinesisstreamstaskdefExecutionRoleDefaultPolicyF7BE2C60",
-        "Roles": [
-          {
-            "Ref": "testfargatekinesisstreamstaskdefExecutionRoleB65DC81E"
-          }
-        ]
       }
     },
     "testfargatekinesisstreamssgBA506AC6": {
