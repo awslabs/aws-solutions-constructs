@@ -14,7 +14,7 @@
 /// !cdk-integ *
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { FargateToKinesisFirehose } from "../lib";
-import { buildVpc, DefaultPublicPrivateVpcProps, generateIntegStackName } from '@aws-solutions-constructs/core';
+import { buildVpc, DefaultPublicPrivateVpcProps, generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 import { KinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-kinesisfirehose-s3';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 
@@ -45,4 +45,5 @@ new FargateToKinesisFirehose(stack, 'test-fargate-kinesisstreams', {
   existingKinesisFirehose: destination.kinesisFirehose
 });
 
+suppressAutoDeleteHandlerWarnings(stack);
 app.synth();
