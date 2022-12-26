@@ -32,7 +32,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 // The construct requires an existing Firehose Delivery Stream, this can be created in raw CDK or extracted
 // from a previously instantiated construct that created an Firehose Delivery Stream
-const existingFirehoseDeliveryStream = previoslyCreatedKinesisFirehoseToS3Construct.kinesisFirehose;
+const existingFirehoseDeliveryStream = previouslyCreatedKinesisFirehoseToS3Construct.kinesisFirehose;
 
 new LambdaToKinesisFirehose(this, 'LambdaToFirehosePattern', {
     lambdaFunctionProps: {
@@ -55,7 +55,7 @@ from constructs import Construct
 
 # The construct requires an existing Firehose Delivery Stream, this can be created in raw CDK or extracted
 # from a previously instantiated construct that created an Firehose Delivery Stream
-const existingFirehoseDeliveryStream = previoslyCreatedKinesisFirehoseToS3Construct.kinesisFirehose;
+const existingFirehoseDeliveryStream = previouslyCreatedKinesisFirehoseToS3Construct.kinesisFirehose;
 
 LambdaToKinesisFirehose(self, 'LambdaToFirehosePattern',
         existingKinesisFirehose=existingFirehoseDeliveryStream,
@@ -79,7 +79,7 @@ import software.amazon.awsconstructs.services.lambdakinesisfirehose.*;
 
 // The construct requires an existing Firehose Delivery Stream, this can be created in raw CDK or extracted
 // from a previously instantiated construct that created an Firehose Delivery Stream
-const existingFirehoseDeliveryStream = previoslyCreatedKinesisFirehoseToS3Construct.kinesisFirehose;
+const existingFirehoseDeliveryStream = previouslyCreatedKinesisFirehoseToS3Construct.kinesisFirehose;
 
 new LambdaToKinesisFirehose(this, "LambdaToFirehosePattern", new LambdaToKinesisFirehoseProps.Builder()
         .existingKinesisFirehose(existingFirehoseDeliveryStream)

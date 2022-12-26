@@ -32,7 +32,7 @@ import * as fargate from 'aws-cdk-lib/aws-fargate';
 
 // The construct requires an existing Firehose Delivery Stream, this can be created in raw CDK or extracted
 // from a previously instantiated construct that created an Firehose Delivery Stream
-const existingFirehoseDeliveryStream = previoslyCreatedKinesisFirehoseToS3Construct.kinesisFirehose;
+const existingFirehoseDeliveryStream = previouslyCreatedKinesisFirehoseToS3Construct.kinesisFirehose;
 
 new FargateToKinesisFirehose(this, 'FargateToKinesisFirehose', {
   publicApi: true,
@@ -52,7 +52,7 @@ from constructs import Construct
 
 # The construct requires an existing Firehose Delivery Stream, this can be created in raw CDK or extracted
 # from a previously instantiated construct that created an Firehose Delivery Stream
-const existingFirehoseDeliveryStream = previoslyCreatedKinesisFirehoseToS3Construct.kinesisFirehose;
+const existingFirehoseDeliveryStream = previouslyCreatedKinesisFirehoseToS3Construct.kinesisFirehose;
 
 FargateToKinesisFirehose(self, 'FargateToKinesisFirehose',
                           public_api=True,
@@ -73,7 +73,7 @@ import software.amazon.awsconstructs.services.fargatekinesisfirehose.*;
 
 // The construct requires an existing Firehose Delivery Stream, this can be created in raw CDK or extracted
 // from a previously instantiated construct that created an Firehose Delivery Stream
-const existingFirehoseDeliveryStream = previoslyCreatedKinesisFirehoseToS3Construct.kinesisFirehose;
+const existingFirehoseDeliveryStream = previouslyCreatedKinesisFirehoseToS3Construct.kinesisFirehose;
 
 new FargateToKinesisFirehose(this, "FargateToKinesisFirehose", new FargateToKinesisFirehoseProps.Builder()
         .publicApi(true)
