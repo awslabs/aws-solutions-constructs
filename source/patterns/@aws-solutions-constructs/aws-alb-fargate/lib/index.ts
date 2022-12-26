@@ -96,8 +96,6 @@ export interface AlbToFargateProps {
   readonly albLoggingBucketProps?: s3.BucketProps;
   /**
    * Whether the construct is deploying a private or public API. This has implications for the VPC and ALB.
-   *
-   * @default - none
    */
   readonly publicApi: boolean;
   /**
