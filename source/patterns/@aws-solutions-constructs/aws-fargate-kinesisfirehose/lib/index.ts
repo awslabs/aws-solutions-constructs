@@ -24,7 +24,7 @@ export interface FargateToKinesisFirehoseProps {
    * Optional custom properties for a VPC the construct will create. This VPC will
    * be used by the new Fargate service the construct creates (that's
    * why targetGroupProps can't include a VPC). Providing
-   * both this and existingVpc is an error. An S3 Interface
+   * both this and existingVpc is an error. A Kinesis Firehose Interface
    * endpoint will be included in this VPC.
    *
    * @default - none
@@ -33,15 +33,18 @@ export interface FargateToKinesisFirehoseProps {
   /**
    * An existing VPC in which to deploy the construct. Providing both this and
    * vpcProps is an error. If the client provides an existing Fargate service,
-   * this value must be the VPC where the service is running. An S3 Interface
+   * this value must be the VPC where the service is running. A Kinesis Interface
    * endpoint will be added to this VPC.
    *
    * @default - none
    */
   readonly existingVpc?: ec2.IVpc;
   /**
-   * Whether the construct is deploying a private or public API. This has implications for the VPC deployed
-   * by this construct.
+   * True if the VPC provisioned by this construct should contain Public/Private Subnets,
+   * otherwise False for the VPC to contain Isolated Subnets only. Note this property is
+   * ignored if an existing VPC is specified in the existingVpc property. If you are getting
+   * a container from a public repo, this must be true so the repo can be accessed from the
+   * network.
    *
    * @default - none
    */
@@ -160,7 +163,6 @@ export class FargateToKinesisFirehose extends Construct {
 
     this.kinesisFirehose = props.existingKinesisFirehose;
 
-    // TODO: Need to set the role for the container with access to the firehose
     const taskPolicyStatement = new iam.PolicyStatement({
       actions: [
         "firehose:DeleteDeliveryStream",

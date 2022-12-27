@@ -12,11 +12,11 @@
  */
 
 /// !cdk-integ *
-import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
+import { App, Stack } from "aws-cdk-lib";
 import { FargateToKinesisFirehose } from "../lib";
 import { CreateFargateService, generateIntegStackName, getTestVpc, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
-import { KinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-kinesisfirehose-s3';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
+import { GetTestDestination } from './test-helper';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
@@ -25,16 +25,7 @@ const existingVpc = getTestVpc(stack);
 
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
-const destination = new KinesisFirehoseToS3(stack, 'destination-firehose', {
-  bucketProps: {
-    removalPolicy: RemovalPolicy.DESTROY,
-    autoDeleteObjects: true,
-  },
-  loggingBucketProps: {
-    removalPolicy: RemovalPolicy.DESTROY,
-    autoDeleteObjects: true,
-  }
-});
+const destination = GetTestDestination(stack, 'test-destination');
 
 const [existingFargateServiceObject, existingContainerDefinitionObject] = CreateFargateService(stack,
   'test',

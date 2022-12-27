@@ -14,29 +14,12 @@
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
-import { Construct } from "constructs";
-import { KinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-kinesisfirehose-s3';
 import { FargateToKinesisFirehose } from "../lib";
 import * as ecs from 'aws-cdk-lib/aws-ecs';
-// import * as kinesisfirehose from 'aws-cdk-lib/aws-kinesisfirehose';
 import { Match, Template } from "aws-cdk-lib/assertions";
-// import { getDefaultSettings } from 'http2';
-
-function GetTestDestination(scope: Construct, id: string): KinesisFirehoseToS3 {
-  return new KinesisFirehoseToS3(scope, id, {
-    bucketProps: {
-      autoDeleteObjects: true,
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-    },
-    loggingBucketProps: {
-      autoDeleteObjects: true,
-      removalPolicy: cdk.RemovalPolicy.DESTROY
-    }
-  });
-}
+import { GetTestDestination } from './test-helper';
 
 test('New service/new bucket, public API, new VPC', () => {
-  // An environment with region is required to enable logging on an ALB
   const stack = new cdk.Stack();
   const publicApi = true;
   const clusterName = "custom-cluster-name";
@@ -151,23 +134,15 @@ test('New service/new bucket, public API, new VPC', () => {
 
 test('New service/new bucket, private API, new VPC', () => {
 
-  // An environment with region is required to enable logging on an ALB
   const stack = new cdk.Stack();
   const publicApi = false;
-  // const clusterName = "custom-cluster-name";
-  // const containerName = "custom-container-name";
-  // const serviceName = "custom-service-name";
-  // const familyName = "family-name";
+
   const destination = GetTestDestination(stack, 'test-destination');
 
   new FargateToKinesisFirehose(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
     vpcProps: { cidr: '172.0.0.0/16' },
-    //    clusterProps: { clusterName },
-    //    containerDefinitionProps: { containerName },
-    //    fargateTaskDefinitionProps: { family: familyName },
-    //    fargateServiceProps: { serviceName },
     existingKinesisFirehose: destination.kinesisFirehose
   });
 
@@ -220,9 +195,6 @@ test('New service/new bucket, private API, new VPC', () => {
   expect(stack).toCountResources('AWS::S3::Bucket', 2);
   expect(stack).toCountResources('AWS::ECS::Service', 1);
 });
-
-// TODO: change test-fargate-kinesistreams id to firehose
-// TODO: Make sure all integration tests us public repo
 
 test('Default construct has all expected properties', () => {
   const stack = new cdk.Stack();

@@ -35,11 +35,11 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 const existingFirehoseDeliveryStream = previouslyCreatedKinesisFirehoseToS3Construct.kinesisFirehose;
 
 new LambdaToKinesisFirehose(this, 'LambdaToFirehosePattern', {
-    lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`lambda`)
-    },
+  lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`lambda`)
+  },
   existingKinesisFirehose: existingFirehoseDeliveryStream
 });
 ```
