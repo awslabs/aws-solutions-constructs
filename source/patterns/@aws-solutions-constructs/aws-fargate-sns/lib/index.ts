@@ -42,8 +42,6 @@ export interface FargateToSnsProps {
   /**
    * Whether the construct is deploying a private or public API. This has implications for the VPC deployed
    * by this construct.
-   *
-   * @default - none
    */
   readonly publicApi: boolean;
   /**

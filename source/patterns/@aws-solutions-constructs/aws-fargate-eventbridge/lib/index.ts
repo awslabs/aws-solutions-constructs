@@ -22,8 +22,6 @@ export interface FargateToEventbridgeProps {
   /**
    * Whether the construct is deploying a private or public API. This has implications for the VPC deployed
    * by this construct.
-   *
-   * @default - None
    */
   readonly publicApi: boolean;
   /**

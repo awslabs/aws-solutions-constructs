@@ -28,8 +28,6 @@ export interface Route53ToApiGatewayProps {
   /**
    * Whether to create a public or private API. This value has implications
    * for the VPC, the type of Hosted Zone and the Application Load Balancer
-   *
-   * @default - None
    */
   readonly publicApi: boolean
   /**
