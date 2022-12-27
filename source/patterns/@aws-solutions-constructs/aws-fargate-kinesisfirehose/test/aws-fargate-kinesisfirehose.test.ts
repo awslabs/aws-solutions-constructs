@@ -17,7 +17,7 @@ import * as cdk from "aws-cdk-lib";
 import { FargateToKinesisFirehose } from "../lib";
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import { Match, Template } from "aws-cdk-lib/assertions";
-import { GetTestDestination } from './test-helper';
+import { GetTestFirehoseDestination } from './test-helper';
 
 test('New service/new bucket, public API, new VPC', () => {
   const stack = new cdk.Stack();
@@ -26,7 +26,7 @@ test('New service/new bucket, public API, new VPC', () => {
   const containerName = "custom-container-name";
   const serviceName = "custom-service-name";
   const familyName = "family-name";
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
 
   const construct = new FargateToKinesisFirehose(stack, 'test-construct', {
     publicApi,
@@ -137,7 +137,7 @@ test('New service/new bucket, private API, new VPC', () => {
   const stack = new cdk.Stack();
   const publicApi = false;
 
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
 
   new FargateToKinesisFirehose(stack, 'test-construct', {
     publicApi,
@@ -199,7 +199,7 @@ test('New service/new bucket, private API, new VPC', () => {
 test('Default construct has all expected properties', () => {
   const stack = new cdk.Stack();
 
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
   const construct = new FargateToKinesisFirehose(stack, 'test-fargate-kinesisfirehose', {
     publicApi: false,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
@@ -215,7 +215,7 @@ test('Default construct has all expected properties', () => {
 test('Construct deploys Fargate Service in isolated subnets when publicApi is set to false', () => {
   const stack = new cdk.Stack();
 
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
   new FargateToKinesisFirehose(stack, 'test-fargate-kinesisfirehose', {
     publicApi: false,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
@@ -280,7 +280,7 @@ test('Construct deploys Fargate Service in isolated subnets when publicApi is se
 
 test('Construct deploys Fargate Service in private subnets when publicApi is set to true', () => {
   const stack = new cdk.Stack();
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
 
   new FargateToKinesisFirehose(stack, 'test-fargate-kinesisfirehose', {
     publicApi: true,
@@ -347,7 +347,7 @@ test('Construct deploys Fargate Service in private subnets when publicApi is set
 
 test('Construct uses vpcProps when provided', () => {
   const stack = new cdk.Stack();
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
 
   new FargateToKinesisFirehose(stack, 'test-fargate-kinesisfirehose', {
     publicApi: false,
@@ -371,7 +371,7 @@ test('Construct uses vpcProps when provided', () => {
 
 test('Construct uses existingVpc when provided', () => {
   const stack = new cdk.Stack();
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
 
   const existingVpc = defaults.getTestVpc(stack, false, {
     vpcName: 'my-vpc'
@@ -397,7 +397,7 @@ test('Construct uses existingVpc when provided', () => {
 
 test('Construct creates VPC Interface Endpoints for ECR and Kinesis Streams', () => {
   const stack = new cdk.Stack();
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
 
   new FargateToKinesisFirehose(stack, 'test-fargate-kinesisfirehose', {
     publicApi: false,
@@ -438,7 +438,7 @@ test('Construct creates VPC Interface Endpoints for ECR and Kinesis Streams', ()
 
 test('Container has default stream name environment variable', () => {
   const stack = new cdk.Stack();
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
 
   new FargateToKinesisFirehose(stack, 'test-fargate-kinesisfirehose', {
     publicApi: false,
@@ -462,7 +462,7 @@ test('Container has default stream name environment variable', () => {
 
 test('Container stream name environment variable can be overridden', () => {
   const stack = new cdk.Stack();
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
 
   new FargateToKinesisFirehose(stack, 'test-fargate-kinesisfirehose', {
     publicApi: false,
@@ -487,7 +487,7 @@ test('Container stream name environment variable can be overridden', () => {
 
 test('Construct grants PutRecord permission for the Fargate Service to write to the Kinesis Stream', () => {
   const stack = new cdk.Stack();
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
 
   new FargateToKinesisFirehose(stack, 'test-fargate-kinesisfirehose', {
     publicApi: false,
@@ -520,7 +520,7 @@ test('Construct grants PutRecord permission for the Fargate Service to write to 
 
 test('Construct defaults to the latest version of the ECR image', () => {
   const stack = new cdk.Stack();
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
 
   new FargateToKinesisFirehose(stack, 'test-fargate-kinesisfirehose', {
     publicApi: false,
@@ -550,7 +550,7 @@ test('Construct defaults to the latest version of the ECR image', () => {
 
 test('Construct uses ecrImageVersion when provided', () => {
   const stack = new cdk.Stack();
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
 
   new FargateToKinesisFirehose(stack, 'test-fargate-kinesisfirehose', {
     publicApi: false,
@@ -581,7 +581,7 @@ test('Construct uses ecrImageVersion when provided', () => {
 
 test('Construct uses clusterProps when provided', () => {
   const stack = new cdk.Stack();
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
 
   new FargateToKinesisFirehose(stack, 'test-fargate-kinesisfirehose', {
     publicApi: false,
@@ -600,7 +600,7 @@ test('Construct uses clusterProps when provided', () => {
 
 test('Construct uses containerDefinitionProps when provided', () => {
   const stack = new cdk.Stack();
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
 
   new FargateToKinesisFirehose(stack, 'test-fargate-kinesisfirehose', {
     publicApi: false,
@@ -623,7 +623,7 @@ test('Construct uses containerDefinitionProps when provided', () => {
 
 test('Construct uses fargateTaskDefinitionProps when provided', () => {
   const stack = new cdk.Stack();
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
 
   new FargateToKinesisFirehose(stack, 'test-fargate-kinesisfirehose', {
     publicApi: false,
@@ -642,7 +642,7 @@ test('Construct uses fargateTaskDefinitionProps when provided', () => {
 
 test('Construct uses fargateServiceProps when provided', () => {
   const stack = new cdk.Stack();
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
 
   new FargateToKinesisFirehose(stack, 'test-fargate-kinesisfirehose', {
     publicApi: false,
@@ -663,7 +663,7 @@ test('Construct uses fargateServiceProps when provided', () => {
 
 test('Construct uses existingFargateServiceObject when provided', () => {
   const stack = new cdk.Stack();
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
 
   const existingVpc = defaults.getTestVpc(stack);
 
@@ -709,7 +709,7 @@ test('Construct uses existingFargateServiceObject when provided', () => {
 test('Test fail if existingFirehose does not have a stream name', () => {
   // Stack
   const stack = new cdk.Stack();
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
 
   const mutatedFirehose = defaults.overrideProps(destination.kinesisFirehose, {});
   mutatedFirehose.deliveryStreamName = undefined;

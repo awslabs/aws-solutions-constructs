@@ -13,17 +13,16 @@
 
 // Imports
 import '@aws-cdk/assert/jest';
-import { Construct } from 'constructs';
 import * as cdk from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { KinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-kinesisfirehose-s3';
 import { LambdaToKinesisFirehose } from '../lib';
 import * as defaults from '@aws-solutions-constructs/core';
+import { GetTestFirehoseDestination } from './test-helper';
 
 test('Test that properties are set correctly', () => {
   // Stack
   const stack = new cdk.Stack();
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
 
   const construct = new LambdaToKinesisFirehose(stack, 'test-target', {
     existingKinesisFirehose: destination.kinesisFirehose,
@@ -42,7 +41,7 @@ test('Test that properties are set correctly', () => {
 test('Test existing function is utilized correctly', () => {
   // Stack
   const stack = new cdk.Stack();
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
   const testName = 'test-name';
   const existingFunction = new lambda.Function(stack, 'test-function', {
     runtime: lambda.Runtime.NODEJS_18_X,
@@ -68,7 +67,7 @@ test('Test existing function is utilized correctly', () => {
 test('Test that lambda function props are incorporated', () => {
   // Stack
   const stack = new cdk.Stack();
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
   const testName = 'test-name';
 
   new LambdaToKinesisFirehose(stack, 'test-target', {
@@ -91,7 +90,7 @@ test('Test that new VPC is created', () => {
   const stack = new cdk.Stack();
   const cidrRange = '172.0.0.0/16';
 
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
 
   const construct = new LambdaToKinesisFirehose(stack, 'test-target', {
     existingKinesisFirehose: destination.kinesisFirehose,
@@ -133,7 +132,7 @@ test('Test that existing VPC is used', () => {
   const stack = new cdk.Stack();
   const cidrInGetTestVpc = '172.168.0.0/16';
 
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
   const myVpc = defaults.getTestVpc(stack, false);
   const construct = new LambdaToKinesisFirehose(stack, 'test-target', {
     existingKinesisFirehose: destination.kinesisFirehose,
@@ -173,7 +172,7 @@ test('Test that existing VPC is used', () => {
 test('Test fail if existingFirehose does not have a stream name', () => {
   // Stack
   const stack = new cdk.Stack();
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
   const testName = 'test-name';
 
   const mutatedFirehose = defaults.overrideProps(destination.kinesisFirehose, {});
@@ -194,22 +193,9 @@ test('Test fail if existingFirehose does not have a stream name', () => {
   expect(app).toThrowError(/existingKinesisFirehose must have a defined deliveryStreamName/);
 });
 
-function GetTestDestination(scope: Construct, id: string): KinesisFirehoseToS3 {
-  return new KinesisFirehoseToS3(scope, id, {
-    bucketProps: {
-      autoDeleteObjects: true,
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-    },
-    loggingBucketProps: {
-      autoDeleteObjects: true,
-      removalPolicy: cdk.RemovalPolicy.DESTROY
-    }
-  });
-}
-
 test('Test fail Vpc check with vpcProps yet deployVpc is false', () => {
   const stack = new cdk.Stack();
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
 
   const app = () => {
     new LambdaToKinesisFirehose(stack, 'test-target', {
@@ -232,7 +218,7 @@ test('Test fail Vpc check with vpcProps yet deployVpc is false', () => {
 
 test('Test fail Vpc check with vpcProps yet deployVpc is undefined', () => {
   const stack = new cdk.Stack();
-  const destination = GetTestDestination(stack, 'test-destination');
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
 
   const app = () => {
     new LambdaToKinesisFirehose(stack, 'test-target', {

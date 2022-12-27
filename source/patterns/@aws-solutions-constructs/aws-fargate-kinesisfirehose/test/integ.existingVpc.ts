@@ -16,7 +16,7 @@ import { App, Stack } from "aws-cdk-lib";
 import { FargateToKinesisFirehose } from "../lib";
 import { buildVpc, DefaultPublicPrivateVpcProps, generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
-import { GetTestDestination } from './test-helper';
+import { GetTestFirehoseDestination } from './test-helper';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
@@ -25,7 +25,7 @@ const existingVpc = buildVpc(stack, {
   defaultVpcProps: DefaultPublicPrivateVpcProps()
 });
 
-const destination = GetTestDestination(stack, 'test-destination');
+const destination = GetTestFirehoseDestination(stack, 'destination-firehose');
 
 new FargateToKinesisFirehose(stack, 'test-fargate-kinesisstreams', {
   publicApi: true,

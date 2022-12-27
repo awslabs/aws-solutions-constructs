@@ -16,7 +16,7 @@ import { Aws, App, Stack } from "aws-cdk-lib";
 import { FargateToKinesisFirehose, FargateToKinesisFirehoseProps } from "../lib";
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
-import { GetTestDestination } from './test-helper';
+import { GetTestFirehoseDestination } from './test-helper';
 
 // Setup
 const app = new App();
@@ -26,7 +26,7 @@ const stack = new Stack(app, generateIntegStackName(__filename), {
 
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
-const destination = GetTestDestination(stack, 'test-destination');
+const destination = GetTestFirehoseDestination(stack, 'destination-firehose');
 
 const testProps: FargateToKinesisFirehoseProps = {
   publicApi: true,
