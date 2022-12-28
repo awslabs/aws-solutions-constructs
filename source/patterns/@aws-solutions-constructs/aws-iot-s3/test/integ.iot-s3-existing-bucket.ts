@@ -27,7 +27,6 @@ let existingBucketObj;
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
     encryption: BucketEncryption.KMS_MANAGED,
-    serverAccessLogsPrefix: 'logs'
   },
   logS3AccessLogs: false
 });
