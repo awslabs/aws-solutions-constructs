@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.30.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.29.0...v2.30.0) (2022-12-28)
+
+
+### Features
+
+* **aws-lambda-kinesisstream:** created new construct  ([#873](https://github.com/awslabs/aws-solutions-constructs/issues/873)) ([81592de](https://github.com/awslabs/aws-solutions-constructs/commit/81592de3b14a9d6f01a7e61519be6c6b90695cff))
+* **new construct:** aws-fargate-kinesisfirehose ([#881](https://github.com/awslabs/aws-solutions-constructs/issues/881)) ([3a74a27](https://github.com/awslabs/aws-solutions-constructs/commit/3a74a27f9c3e895a44b485ee1bb8fe9adc50a80e))
+* **new construct:** aws-fargate-kinesisstreams ([#877](https://github.com/awslabs/aws-solutions-constructs/issues/877)) ([08b7975](https://github.com/awslabs/aws-solutions-constructs/commit/08b79756743e4a3f9930128e8318670666e01367)), closes [#875](https://github.com/awslabs/aws-solutions-constructs/issues/875)
+* **new construct:** aws-lambda-kinesisfirehose ([#875](https://github.com/awslabs/aws-solutions-constructs/issues/875)) ([aef3efa](https://github.com/awslabs/aws-solutions-constructs/commit/aef3efab4b4658f12ed82937683d08997162d9bc))
+
 ## [2.29.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.28.0...v2.29.0) (2022-12-04)
 
 ### Features
