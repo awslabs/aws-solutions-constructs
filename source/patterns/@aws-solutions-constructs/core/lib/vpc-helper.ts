@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -68,7 +68,9 @@ export enum ServiceEndpointTypes {
   SSM = "SSM",
   ECR_API = "ECR_API",
   ECR_DKR = "ECR_DKR",
-  EVENTS = "CLOUDWATCH_EVENTS"
+  EVENTS = "CLOUDWATCH_EVENTS",
+  KINESIS_FIREHOSE = "KINESIS_FIREHOSE",
+  KINESIS_STREAMS = "KINESIS_STREAMS"
 }
 
 enum EndpointTypes {
@@ -138,6 +140,16 @@ const endpointSettings: EndpointDefinition[] = [
     endpointName: ServiceEndpointTypes.EVENTS,
     endpointType: EndpointTypes.INTERFACE,
     endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.CLOUDWATCH_EVENTS
+  },
+  {
+    endpointName: ServiceEndpointTypes.KINESIS_FIREHOSE,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.KINESIS_FIREHOSE
+  },
+  {
+    endpointName: ServiceEndpointTypes.KINESIS_STREAMS,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.KINESIS_STREAMS
   }
 ];
 

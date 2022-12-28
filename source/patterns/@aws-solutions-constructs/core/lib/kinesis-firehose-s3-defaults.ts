@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -15,9 +15,10 @@ import { CfnDeliveryStreamProps } from 'aws-cdk-lib/aws-kinesisfirehose';
 import { IKey } from 'aws-cdk-lib/aws-kms';
 
 export function DefaultCfnDeliveryStreamProps(_bucketArn: string, _roleArn: string,
-  _logGroupName: string, _logStreamName: string, _kms: IKey): CfnDeliveryStreamProps {
+  _logGroupName: string, _logStreamName: string, _kms: IKey, deliveryStreamName?: string): CfnDeliveryStreamProps {
 
   return {
+    deliveryStreamName,
     extendedS3DestinationConfiguration : {
       bucketArn: _bucketArn,
       bufferingHints: {

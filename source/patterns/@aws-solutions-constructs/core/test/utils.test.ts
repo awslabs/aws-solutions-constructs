@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -13,6 +13,7 @@
 
 // Imports
 import * as defaults from '../';
+import * as cdk from 'aws-cdk-lib';
 
 // Need 2 parts, but they can't overlap
 // so we can explicitly find them in the results.
@@ -142,4 +143,43 @@ test('Test consolidate props with one arg', () => {
 
   expect(result).toEqual(arg1);
 
+});
+
+test('Test generateName sunny day for current construct with undefined name argument', () => {
+  const stack = new cdk.Stack(undefined, "some-new-id");
+
+  const newName = defaults.generateName(stack);
+  // 5 is not specific, just checking the name is several characters longer than just a CR/LF
+  expect(newName.length).toBeGreaterThan(5);
+});
+
+test('Test generateName sunny day for current construct', () => {
+  const stack = new cdk.Stack(undefined, "some-new-id");
+
+  const newName = defaults.generateName(stack, "");
+  expect(newName.length).toBeGreaterThan(5);
+});
+
+test('Test generateName sunny day for child construct', () => {
+  const stack = new cdk.Stack(undefined, "some-new-id");
+
+  const newName = defaults.generateName(stack, "child");
+  expect(newName.length).toBeGreaterThan(5);
+  expect(newName.includes(newName)).toBe(true);
+});
+
+test('Test generateName longer than 64 characters', () => {
+  const stack = new cdk.Stack(undefined, "some-new-id");
+  const seventyCharacterName = '123456789-123456789-123456789-123456789-123456789-123456789-123456789-';
+  const newName = defaults.generateName(stack, seventyCharacterName);
+  expect(newName.length).toEqual(64);
+});
+
+test('Test generateName uniqueness', () => {
+  const stackOne = new cdk.Stack(undefined, "some-new-id");
+  const stackTwo = new cdk.Stack(undefined, "other-id");
+
+  const nameOne = defaults.generateName(stackOne, "");
+  const nameTwo = defaults.generateName(stackTwo, "");
+  expect(nameOne === nameTwo).toBe(false);
 });

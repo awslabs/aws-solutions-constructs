@@ -1,0 +1,94 @@
+{
+  "name": "@aws-solutions-constructs/aws-fargate-kinesisfirehose",
+  "version": "0.0.0",
+  "description": "CDK Constructs for AWS Fargate to Amazon Kinesis Firehose integration",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/awslabs/aws-solutions-constructs.git",
+    "directory": "source/patterns/@aws-solutions-constructs/aws-fargate-kinesisfirehose"
+  },
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com",
+    "organization": true
+  },
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc -b .",
+    "lint": "eslint -c ../eslintrc.yml --ext=.js,.ts . && tslint --project .",
+    "lint-fix": "eslint -c ../eslintrc.yml --ext=.js,.ts --fix .",
+    "test": "jest --coverage",
+    "clean": "tsc -b --clean",
+    "watch": "tsc -b -w",
+    "integ": "cdk-integ",
+    "integ-no-clean": "cdk-integ --no-clean",
+    "integ-assert": "cdk-integ-assert-v2",
+    "jsii": "jsii",
+    "jsii-pacmak": "jsii-pacmak",
+    "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
+    "snapshot-update": "npm run jsii && npm test -- -u && npm run integ-assert"
+  },
+  "jsii": {
+    "outdir": "dist",
+    "targets": {
+      "java": {
+        "package": "software.amazon.awsconstructs.services.fargatekinesisfirehose",
+        "maven": {
+          "groupId": "software.amazon.awsconstructs",
+          "artifactId": "fargatekinesisfirehose"
+        }
+      },
+      "dotnet": {
+        "namespace": "Amazon.SolutionsConstructs.AWS.FargateKinesisFirehose",
+        "packageId": "Amazon.SolutionsConstructs.AWS.FargateKinesisFirehose",
+        "signAssembly": true,
+        "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
+      },
+      "python": {
+        "distName": "aws-solutions-constructs.aws-fargate-kinesisfirehose",
+        "module": "aws_solutions_constructs.aws_fargate_kinesisfirehose"
+      }
+    }
+  },
+  "dependencies": {
+    "@aws-solutions-constructs/core": "0.0.0",
+    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "0.0.0"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "0.0.0",
+    "@types/jest": "^26.0.22",
+    "@aws-solutions-constructs/core": "0.0.0",
+    "@types/node": "^10.3.0",
+    "aws-cdk-lib": "0.0.0",
+    "constructs": "^10.0.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "coverageReporters": [
+      "text",
+      [
+        "lcov",
+        {
+          "projectRoot": "../../../../"
+        }
+      ]
+    ]
+  },
+  "peerDependencies": {
+    "@aws-solutions-constructs/core": "0.0.0",
+    "aws-cdk-lib": "^0.0.0",
+    "constructs": "^10.0.0"
+  },
+  "keywords": [
+    "aws",
+    "cdk",
+    "awscdk",
+    "AWS Solutions Constructs",
+    "Amazon Kinesis Firehose",
+    "AWS Fargate"
+  ]
+}

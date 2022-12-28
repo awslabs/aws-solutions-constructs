@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -16,6 +16,7 @@ import { flagOverriddenDefaults } from './override-warning-service';
 import * as log from 'npmlog';
 import * as crypto from 'crypto';
 import * as cdk from 'aws-cdk-lib';
+import { Construct } from "constructs";
 
 function isObject(val: object) {
   return val != null && typeof val === 'object'
@@ -176,4 +177,24 @@ export function consolidateProps(defaultProps: object, clientProps?: object, con
   }
 
   return result;
+}
+
+/**
+ * Generates a name unique to this location in this stack with this stackname. Truncates to under 64 characters if needed.
+ * (will allow 2 copies of the stack with different stack names, but will collide if both stacks have the same name)
+ *
+ * @param scope the construct within to create the name
+ * @param resourceId an id for the construct about to be created under scope (empty string if name is for scoep)
+ * @returns a unique name
+ *
+ * Note: This appears to overlap with GenerateResourceName above (I wrote it before noticing that
+ * function). As this offloads the logic to the CDK, I'm leaving this here but someone may want to
+ * blend these routines in the future.
+ */
+export function generateName(scope: Construct, resourceId: string = ""): string {
+  const name = resourceId + cdk.Names.uniqueId(scope);
+  if (name.length > 64) {
+    return name.substring(0, 32) + name.substring(name.length - 32);
+  }
+  return name;
 }
