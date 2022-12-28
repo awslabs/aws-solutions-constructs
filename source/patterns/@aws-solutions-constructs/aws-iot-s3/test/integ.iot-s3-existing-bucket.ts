@@ -43,6 +43,11 @@ const props: IotToS3Props = {
   s3Key: 'test/${timestamp()}'
 };
 
+defaults.addCfnSuppressRules(existingBucketObj, [
+  { id: 'W35',
+    reason: 'This S3 bucket is created for unit/ integration testing purposes only.' },
+]);
+
 new IotToS3(stack, 'test-iot-s3-integration', props);
 
 app.synth();
