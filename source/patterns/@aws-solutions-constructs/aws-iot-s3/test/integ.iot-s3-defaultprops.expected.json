@@ -25,9 +25,6 @@
             }
           ]
         },
-        "LoggingConfiguration": {
-          "LogFilePrefix": "logs"
-        },
         "PublicAccessBlockConfiguration": {
           "BlockPublicAcls": true,
           "BlockPublicPolicy": true,
@@ -39,7 +36,17 @@
         }
       },
       "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W35",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only."
+            }
+          ]
+        }
+      }
     },
     "testiots3integrationS3BucketPolicy18905375": {
       "Type": "AWS::S3::BucketPolicy",

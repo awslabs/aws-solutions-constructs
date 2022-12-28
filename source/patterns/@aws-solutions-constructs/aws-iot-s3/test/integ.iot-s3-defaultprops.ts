@@ -15,6 +15,7 @@
 import { App, RemovalPolicy, Stack } from "aws-cdk-lib";
 import { IotToS3, IotToS3Props } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import * as defaults from '@aws-solutions-constructs/core';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
@@ -31,8 +32,14 @@ const props: IotToS3Props = {
   logS3AccessLogs: false,
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-    serverAccessLogsPrefix: 'logs'
   }
 };
-new IotToS3(stack, 'test-iot-s3-integration', props);
+
+const testConstruct = new IotToS3(stack, 'test-iot-s3-integration', props);
+
+defaults.addCfnSuppressRules(testConstruct.s3Bucket!, [
+  { id: 'W35',
+    reason: 'This S3 bucket is created for unit/ integration testing purposes only.' },
+]);
+
 app.synth();
