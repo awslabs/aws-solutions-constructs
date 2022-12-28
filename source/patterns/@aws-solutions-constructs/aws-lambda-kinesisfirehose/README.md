@@ -30,12 +30,17 @@ import { Stack, StackProps } from 'aws-cdk-lib';
 import { LambdaToS3 } from '@aws-solutions-constructs/aws-lambda-kinesisfirehose';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 
+// The construct requires an existing Firehose Delivery Stream, this can be created in raw CDK or extracted
+// from a previously instantiated construct that created an Firehose Delivery Stream
+const existingFirehoseDeliveryStream = previouslyCreatedKinesisFirehoseToS3Construct.kinesisFirehose;
+
 new LambdaToKinesisFirehose(this, 'LambdaToFirehosePattern', {
-    lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`lambda`)
-    }
+  lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`lambda`)
+  },
+  existingKinesisFirehose: existingFirehoseDeliveryStream
 });
 ```
 
@@ -48,7 +53,12 @@ from aws_cdk import (
 )
 from constructs import Construct
 
+# The construct requires an existing Firehose Delivery Stream, this can be created in raw CDK or extracted
+# from a previously instantiated construct that created an Firehose Delivery Stream
+existingFirehoseDeliveryStream = previouslyCreatedKinesisFirehoseToS3Construct.kinesisFirehose;
+
 LambdaToKinesisFirehose(self, 'LambdaToFirehosePattern',
+        existingKinesisFirehose=existingFirehoseDeliveryStream,
         lambda_function_props=_lambda.FunctionProps(
             code=_lambda.Code.from_asset('lambda'),
             runtime=_lambda.Runtime.PYTHON_3_9,
@@ -67,7 +77,12 @@ import software.amazon.awscdk.services.lambda.*;
 import software.amazon.awscdk.services.lambda.Runtime;
 import software.amazon.awsconstructs.services.lambdakinesisfirehose.*;
 
+// The construct requires an existing Firehose Delivery Stream, this can be created in raw CDK or extracted
+// from a previously instantiated construct that created an Firehose Delivery Stream
+existingFirehoseDeliveryStream = previouslyCreatedKinesisFirehoseToS3Construct.kinesisFirehose;
+
 new LambdaToKinesisFirehose(this, "LambdaToFirehosePattern", new LambdaToKinesisFirehoseProps.Builder()
+        .existingKinesisFirehose(existingFirehoseDeliveryStream)
         .lambdaFunctionProps(new FunctionProps.Builder()
                 .runtime(Runtime.NODEJS_14_X)
                 .code(Code.fromAsset("lambda"))

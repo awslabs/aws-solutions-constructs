@@ -11,33 +11,39 @@
  *  and limitations under the License.
  */
 
-// Imports
+/// !cdk-integ *
 import { App, Stack } from "aws-cdk-lib";
-import * as lambda from 'aws-cdk-lib/aws-lambda';
-import {LambdaToKinesisFirehose } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import * as defaults from '@aws-solutions-constructs/core';
+import { FargateToKinesisFirehose } from "../lib";
+import { CreateFargateService, generateIntegStackName, getTestVpc, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
 import { GetTestFirehoseDestination } from './test-helper';
 
-// Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
+const existingVpc = getTestVpc(stack);
+
+const image = ecs.ContainerImage.fromRegistry('nginx');
+
 const destination = GetTestFirehoseDestination(stack, 'destination-firehose');
 
-const myVpc = defaults.getTestVpc(stack);
+const [existingFargateServiceObject, existingContainerDefinitionObject] = CreateFargateService(stack,
+  'test',
+  existingVpc,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  { image },
+);
 
-new LambdaToKinesisFirehose(stack, 'test-construct', {
-  lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_18_X,
-    handler: "index.handler",
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-  },
-  existingKinesisFirehose: destination.kinesisFirehose,
-  existingVpc: myVpc
+new FargateToKinesisFirehose(stack, 'test-fargate-kinesisstreams', {
+  publicApi: true,
+  existingVpc,
+  existingFargateServiceObject,
+  existingContainerDefinitionObject,
+  existingKinesisFirehose: destination.kinesisFirehose
 });
 
-defaults.suppressAutoDeleteHandlerWarnings(stack);
-
-// Synth
+suppressAutoDeleteHandlerWarnings(stack);
 app.synth();

@@ -12,27 +12,18 @@
  */
 
 // Imports
-import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
+import { App, Stack } from "aws-cdk-lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import {LambdaToKinesisFirehose } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import { KinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-kinesisfirehose-s3';
 import * as defaults from '@aws-solutions-constructs/core';
+import { GetTestFirehoseDestination } from './test-helper';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const destination = new KinesisFirehoseToS3(stack, 'destination-firehose', {
-  bucketProps: {
-    autoDeleteObjects: true,
-    removalPolicy: RemovalPolicy.DESTROY,
-  },
-  loggingBucketProps: {
-    autoDeleteObjects: true,
-    removalPolicy: RemovalPolicy.DESTROY
-  }
-});
+const destination = GetTestFirehoseDestination(stack, 'destination-firehose');
 
 new LambdaToKinesisFirehose(stack, 'test-construct', {
   lambdaFunctionProps: {
