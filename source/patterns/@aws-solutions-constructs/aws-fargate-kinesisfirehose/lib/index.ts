@@ -45,8 +45,6 @@ export interface FargateToKinesisFirehoseProps {
    * ignored if an existing VPC is specified in the existingVpc property. If you are getting
    * a container from a public repo, this must be true so the repo can be accessed from the
    * network.
-   *
-   * @default - none
    */
   readonly publicApi: boolean;
   /**
@@ -99,7 +97,7 @@ export interface FargateToKinesisFirehoseProps {
    */
   readonly existingFargateServiceObject?: ecs.FargateService;
   /**
-   * An existing Kinesis Firehose Delivery Stream to which the Lambda function can put data. Note - the delivery stream
+   * An existing Kinesis Firehose Delivery Stream to which the Fargate container can put data. Note - the delivery stream
    * construct must have already been created and have the deliveryStreamName set. This construct will *not* create a
    * new Delivery Stream.
    */
