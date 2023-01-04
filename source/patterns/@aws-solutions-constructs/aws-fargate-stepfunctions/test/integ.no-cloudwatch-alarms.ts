@@ -23,7 +23,7 @@ const app = new App();
 const stack = new Stack(app, defaults.generateIntegStackName(__filename), {
   env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
-stack.templateOptions.description = 'Integration Test with new VPC, Service and a state machine with no CloudWatch alarms';
+stack.templateOptions.description = 'Integration Test with existing VPC and Service and a new state machine with no CloudWatch alarms';
 
 const existingVpc = defaults.getTestVpc(stack);
 const startState = new stepfunctions.Pass(stack, 'StartState');
