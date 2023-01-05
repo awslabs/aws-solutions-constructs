@@ -23,7 +23,7 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename), {
   env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
-stack.templateOptions.description = 'Integration Test with new VPC, Service and Queue';
+stack.templateOptions.description = 'Integration Test with existing VPC, Service and Queue';
 
 const existingVpc = getTestVpc(stack);
 const existingQueue = new sqs.Queue(stack, 'test-queue', {

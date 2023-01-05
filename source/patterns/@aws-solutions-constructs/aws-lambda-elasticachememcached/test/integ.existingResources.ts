@@ -21,16 +21,10 @@ import { generateIntegStackName, getTestVpc, CreateTestCache, addCfnSuppressRule
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
-stack.templateOptions.description = 'Integration Test with new resourcesfor aws-lambda-elasticachememcached';
+stack.templateOptions.description = 'Integration Test with existing vpc, Lambda function and cache';
 
 const testVpc = getTestVpc(stack, false);
 
-// const testSG = new ec2.SecurityGroup(stack, 'test-sg', {
-//   vpc: testVpc,
-// });
-// addCfnSuppressRules(testSG, [{ id: "W40", reason: "Test Resource" }]);
-// addCfnSuppressRules(testSG, [{ id: "W5", reason: "Test Resource" }]);
-// addCfnSuppressRules(testSG, [{ id: "W36", reason: "Test Resource" }]);
 const testSG = buildSecurityGroup(stack, 'test-sg', { vpc: testVpc }, [], []);
 
 const testFunction = new lambda.Function(stack, 'test-function', {
