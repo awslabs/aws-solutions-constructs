@@ -240,6 +240,7 @@ export interface AddProxyMethodToApiResourceInputParams {
   readonly apiMethod: string,
   readonly apiGatewayRole: IRole,
   readonly requestTemplate: string,
+  readonly additionalRequestTemplates?: { [contentType: string]: string; },
   readonly contentType?: string,
   readonly requestValidator?: api.IRequestValidator,
   readonly requestModel?: { [contentType: string]: api.IModel; },
@@ -248,6 +249,11 @@ export interface AddProxyMethodToApiResourceInputParams {
 }
 
 export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceInputParams): api.Method {
+  const requestTemplates = {
+    "application/json": params.requestTemplate,
+    ...params.additionalRequestTemplates
+  };
+
   let baseProps: api.AwsIntegrationProps = {
     service: params.service,
     integrationHttpMethod: "POST",
@@ -257,9 +263,7 @@ export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceI
       requestParameters: {
         "integration.request.header.Content-Type": params.contentType ? params.contentType : "'application/json'"
       },
-      requestTemplates: {
-        "application/json": params.requestTemplate
-      },
+      requestTemplates,
       integrationResponses: [
         {
           statusCode: "200"

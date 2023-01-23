@@ -262,3 +262,66 @@ test('Queue is encrypted with customer managed KMS Key when enable encryption fl
     }
   });
 });
+
+test('Construct accepts additional read request templates', () => {
+  const stack = new Stack();
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    enableEncryptionWithCustomerManagedKey: true,
+    additionalReadRequestTemplates: {
+      'text/plain': 'Hello'
+    }
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'GET',
+    Integration: {
+      RequestTemplates: {
+        'application/json': 'Action=ReceiveMessage',
+        'text/plain': 'Hello'
+      }
+    }
+  });
+});
+
+test('Construct accepts additional create request templates', () => {
+  const stack = new Stack();
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    enableEncryptionWithCustomerManagedKey: true,
+    allowCreateOperation: true,
+    additionalCreateRequestTemplates: {
+      'text/plain': 'Hello'
+    }
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'POST',
+    Integration: {
+      RequestTemplates: {
+        'application/json': 'Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")',
+        'text/plain': 'Hello'
+      }
+    }
+  });
+});
+
+test('Construct can override default create request template type', () => {
+  const stack = new Stack();
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    enableEncryptionWithCustomerManagedKey: true,
+    allowCreateOperation: true,
+    createRequestTemplate: 'Hello',
+    additionalCreateRequestTemplates: {
+      'text/plain': 'Goodbye'
+    }
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'POST',
+    Integration: {
+      RequestTemplates: {
+        'application/json': 'Hello',
+        'text/plain': 'Goodbye'
+      }
+    }
+  });
+});

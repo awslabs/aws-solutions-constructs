@@ -69,11 +69,19 @@ export interface ApiGatewayToSqsProps {
    */
   readonly allowCreateOperation?: boolean;
   /**
-   * API Gateway Request template for Create method, if allowCreateOperation set to true
+   * API Gateway Request template for Create method for the default `application/json` content-type,
+   * if the `allowCreateOperation` property is set to true
+   *
+   * @default - 'Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")'
+   */
+  readonly createRequestTemplate?: string;
+  /**
+   * Optional Create request templates for content-types other than `application/json`.
+   * Use the `createRequestTemplate` property to set the request template for the `application/json` content-type.
    *
    * @default - None
    */
-  readonly createRequestTemplate?: string;
+  readonly additionalCreateRequestTemplates?: { [contentType: string]: string; };
   /**
    * Whether to deploy an API Gateway Method for Read operations on the queue (i.e. sqs:ReceiveMessage).
    *
@@ -87,6 +95,13 @@ export interface ApiGatewayToSqsProps {
    */
   readonly readRequestTemplate?: string;
   /**
+   * Optional Read request templates for content-types other than `application/json`.
+   * Use the `readRequestTemplate` property to set the request template for the `application/json` content-type.
+   *
+   * @default - None
+   */
+  readonly additionalReadRequestTemplates?: { [contentType: string]: string; };
+  /**
    * Whether to deploy an API Gateway Method for Delete operations on the queue (i.e. sqs:DeleteMessage).
    *
    * @default - false
@@ -98,6 +113,13 @@ export interface ApiGatewayToSqsProps {
    * @default - "Action=DeleteMessage&ReceiptHandle=$util.urlEncode($input.params('receiptHandle'))"
    */
   readonly deleteRequestTemplate?: string;
+  /**
+   * Optional Delete request templates for content-types other than `application/json`.
+   * Use the `deleteRequestTemplate` property to set the request template for the `application/json` content-type.
+   *
+   * @default - None
+   */
+  readonly additionalDeleteRequestTemplates?: { [contentType: string]: string; };
   /**
    * User provided props to override the default props for the CloudWatchLogs LogGroup.
    *
@@ -179,12 +201,7 @@ export class ApiGatewayToSqs extends Construct {
     const apiGatewayResource = this.apiGateway.root.addResource('message');
 
     // Create
-    let createRequestTemplate = "Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")";
-
-    if (props.createRequestTemplate) {
-      createRequestTemplate = props.createRequestTemplate;
-    }
-
+    const createRequestTemplate = props.createRequestTemplate ?? 'Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")';
     if (props.allowCreateOperation && props.allowCreateOperation === true) {
       this.addActionToPolicy("sqs:SendMessage");
       defaults.addProxyMethodToApiResource({
@@ -194,17 +211,13 @@ export class ApiGatewayToSqs extends Construct {
         apiMethod: "POST",
         apiResource: this.apiGateway.root,
         requestTemplate: createRequestTemplate,
+        additionalRequestTemplates: props.additionalCreateRequestTemplates,
         contentType: "'application/x-www-form-urlencoded'"
       });
     }
 
     // Read
-    let readRequestTemplate = "Action=ReceiveMessage";
-
-    if (props.readRequestTemplate) {
-      readRequestTemplate = props.readRequestTemplate;
-    }
-
+    const readRequestTemplate = props.readRequestTemplate ?? "Action=ReceiveMessage";
     if (props.allowReadOperation === undefined || props.allowReadOperation === true) {
       this.addActionToPolicy("sqs:ReceiveMessage");
       defaults.addProxyMethodToApiResource({
@@ -214,17 +227,13 @@ export class ApiGatewayToSqs extends Construct {
         apiMethod: "GET",
         apiResource: this.apiGateway.root,
         requestTemplate: readRequestTemplate,
+        additionalRequestTemplates: props.additionalReadRequestTemplates,
         contentType: "'application/x-www-form-urlencoded'"
       });
     }
 
     // Delete
-    let deleteRequestTemplate = "Action=DeleteMessage&ReceiptHandle=$util.urlEncode($input.params('receiptHandle'))";
-
-    if (props.deleteRequestTemplate) {
-      deleteRequestTemplate = props.deleteRequestTemplate;
-    }
-
+    const deleteRequestTemplate = props.deleteRequestTemplate ?? "Action=DeleteMessage&ReceiptHandle=$util.urlEncode($input.params('receiptHandle'))";
     if (props.allowDeleteOperation && props.allowDeleteOperation === true) {
       this.addActionToPolicy("sqs:DeleteMessage");
       defaults.addProxyMethodToApiResource({
@@ -234,6 +243,7 @@ export class ApiGatewayToSqs extends Construct {
         apiMethod: "DELETE",
         apiResource: apiGatewayResource,
         requestTemplate: deleteRequestTemplate,
+        additionalRequestTemplates: props.additionalDeleteRequestTemplates,
         contentType: "'application/x-www-form-urlencoded'"
       });
     }
