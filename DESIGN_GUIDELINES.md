@@ -351,6 +351,7 @@ Existing Inconsistencies would not be published, thatâ€™s for our internal use â
 | Name    | Type     | Description | Notes    |
 | --- | --- | --- |--- |
 | stateMachineProps	|[`sfn.StateMachineProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions.StateMachineProps.html)|Optional user provided props to override the default props for `sfn.StateMachine`|
+| logGroupProps? | [`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html)|Optional user provided props to override the default props for for the CloudWatchLogs LogGroup.|
 | createCloudWatchAlarms? | `boolean`|Whether to create recommended CloudWatch alarms.|
 
 **Required Construct Properties**
