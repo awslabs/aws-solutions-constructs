@@ -63,52 +63,54 @@ export interface ApiGatewayToSqsProps {
    */
   readonly maxReceiveCount?: number;
   /**
-   * Whether to deploy an API Gateway Method for Create operations on the queue (i.e. sqs:SendMessage).
+   * Whether to deploy an API Gateway Method for POST HTTP operations on the queue (i.e. sqs:SendMessage).
    *
    * @default - false
    */
   readonly allowCreateOperation?: boolean;
   /**
-   * API Gateway Request template for Create method for the default `application/json` content-type,
-   * if the `allowCreateOperation` property is set to true
+   * API Gateway Request Template for the create method for the default `application/json` content-type,
+   * if the `allowCreateOperation` property is set to true.
    *
    * @default - 'Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")'
    */
   readonly createRequestTemplate?: string;
   /**
-   * Optional Create request templates for content-types other than `application/json`.
+   * Optional Create Request Templates for content-types other than `application/json`.
    * Use the `createRequestTemplate` property to set the request template for the `application/json` content-type.
    *
    * @default - None
    */
   readonly additionalCreateRequestTemplates?: { [contentType: string]: string; };
   /**
-   * Whether to deploy an API Gateway Method for Read operations on the queue (i.e. sqs:ReceiveMessage).
+   * Whether to deploy an API Gateway Method for GET HTTP operations on the queue (i.e. sqs:ReceiveMessage).
    *
-   * @default - "Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")"
+   * @default - false
    */
   readonly allowReadOperation?: boolean;
   /**
-   * API Gateway Request template for Get method, if allowReadOperation set to true
+   * API Gateway Request Template for the read method for the default `application/json` content-type,
+   * if the `allowReadOperation` property is set to true.
    *
    * @default - "Action=ReceiveMessage"
    */
   readonly readRequestTemplate?: string;
   /**
-   * Optional Read request templates for content-types other than `application/json`.
+   * Optional Read Request Templates for content-types other than `application/json`.
    * Use the `readRequestTemplate` property to set the request template for the `application/json` content-type.
    *
    * @default - None
    */
   readonly additionalReadRequestTemplates?: { [contentType: string]: string; };
   /**
-   * Whether to deploy an API Gateway Method for Delete operations on the queue (i.e. sqs:DeleteMessage).
+   * Whether to deploy an API Gateway Method for HTTP DELETE operations on the queue (i.e. sqs:DeleteMessage).
    *
    * @default - false
    */
   readonly allowDeleteOperation?: boolean;
   /**
-   * API Gateway Request template for Delete method, if allowDeleteOperation set to true
+   * API Gateway Request Template for THE delete method for the default `application/json` content-type,
+   * if the `allowDeleteOperation` property is set to true.
    *
    * @default - "Action=DeleteMessage&ReceiptHandle=$util.urlEncode($input.params('receiptHandle'))"
    */

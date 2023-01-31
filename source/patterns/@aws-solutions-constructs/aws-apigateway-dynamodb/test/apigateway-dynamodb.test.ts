@@ -251,3 +251,82 @@ test("check setting allowReadOperation=false for dynamodb", () => {
   // Expect only one APIG Method (DELETE) for allowDeleteOperation
   expect(stack2).toCountResources("AWS::ApiGateway::Method", 1);
 });
+
+test('Construct accepts additional create request templates', () => {
+  const stack = new Stack();
+  new ApiGatewayToDynamoDB(stack, 'api-gateway-dynamodb', {
+    allowCreateOperation: true,
+    createRequestTemplate: 'create-me',
+    additionalCreateRequestTemplates: {
+      'text/plain': 'Hello'
+    }
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'POST',
+    Integration: {
+      RequestTemplates: {
+        'application/json': 'create-me',
+        'text/plain': 'Hello'
+      }
+    }
+  });
+});
+
+test('Construct accepts additional read request templates', () => {
+  const stack = new Stack();
+  new ApiGatewayToDynamoDB(stack, 'api-gateway-dynamodb', {
+    additionalReadRequestTemplates: {
+      'text/plain': 'Hello'
+    }
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'GET',
+    Integration: {
+      RequestTemplates: {
+        'text/plain': 'Hello'
+      }
+    }
+  });
+});
+
+test('Construct accepts additional update request templates', () => {
+  const stack = new Stack();
+  new ApiGatewayToDynamoDB(stack, 'api-gateway-dynamodb', {
+    allowUpdateOperation: true,
+    updateRequestTemplate: 'default-update-template',
+    additionalUpdateRequestTemplates: {
+      'text/plain': 'additional-update-template'
+    }
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'PUT',
+    Integration: {
+      RequestTemplates: {
+        'application/json': 'default-update-template',
+        'text/plain': 'additional-update-template'
+      }
+    }
+  });
+});
+
+test('Construct accepts additional delete request templates', () => {
+  const stack = new Stack();
+  new ApiGatewayToDynamoDB(stack, 'api-gateway-dynamodb', {
+    allowDeleteOperation: true,
+    additionalDeleteRequestTemplates: {
+      'text/plain': 'DeleteMe'
+    }
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'DELETE',
+    Integration: {
+      RequestTemplates: {
+        'text/plain': 'DeleteMe'
+      }
+    }
+  });
+});

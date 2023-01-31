@@ -40,6 +40,13 @@ export interface ApiGatewayToKinesisStreamsProps {
    */
   readonly putRecordRequestTemplate?: string;
   /**
+   * Optional PutRecord Request Templates for content-types other than `application/json`.
+   * Use the `putRecordRequestTemplate` property to set the request template for the `application/json` content-type.
+   *
+   * @default - None
+   */
+    readonly additionalPutRecordRequestTemplates?: { [contentType: string]: string; };
+  /**
    * API Gateway request model for the PutRecord action.
    * If not provided, a default one will be created.
    *
@@ -48,13 +55,20 @@ export interface ApiGatewayToKinesisStreamsProps {
    */
   readonly putRecordRequestModel?: api.ModelOptions;
   /**
-   * API Gateway request template for the PutRecords action.
+   * API Gateway request template for the PutRecords action for the default `application/json` content-type.
    * If not provided, a default one will be used.
    *
    * @default - { "StreamName": "${this.kinesisStream.streamName}", "Records": [ #foreach($elem in $input.path('$.records'))
    *  { "Data": "$util.base64Encode($elem.data)", "PartitionKey": "$elem.partitionKey"}#if($foreach.hasNext),#end #end ] }
    */
   readonly putRecordsRequestTemplate?: string;
+  /**
+   * Optional PutRecords Request Templates for content-types other than `application/json`.
+   * Use the `putRecordsRequestTemplate` property to set the request template for the `application/json` content-type.
+   *
+   * @default - None
+   */
+  readonly additionalPutRecordsRequestTemplates?: { [contentType: string]: string; };
   /**
    * API Gateway request model for the PutRecords action.
    * If not provided, a default one will be created.
@@ -144,6 +158,7 @@ export class ApiGatewayToKinesisStreams extends Construct {
       apiMethod: 'POST',
       apiResource: putRecordResource,
       requestTemplate: this.getPutRecordTemplate(props.putRecordRequestTemplate),
+      additionalRequestTemplates: this.getAdditionalPutRecordTemplates(props.additionalPutRecordRequestTemplates),
       contentType: "'x-amz-json-1.1'",
       requestValidator,
       requestModel: { 'application/json': this.getPutRecordModel(props.putRecordRequestModel) }
@@ -158,6 +173,7 @@ export class ApiGatewayToKinesisStreams extends Construct {
       apiMethod: 'POST',
       apiResource: putRecordsResource,
       requestTemplate: this.getPutRecordsTemplate(props.putRecordsRequestTemplate),
+      additionalRequestTemplates: this.getAdditionalPutRecordTemplates(props.additionalPutRecordsRequestTemplates),
       contentType: "'x-amz-json-1.1'",
       requestValidator,
       requestModel: { 'application/json': this.getPutRecordsModel(props.putRecordsRequestModel) }
@@ -167,6 +183,25 @@ export class ApiGatewayToKinesisStreams extends Construct {
       // Deploy best practices CW Alarms for Kinesis Stream
       this.cloudwatchAlarms = defaults.buildKinesisStreamCWAlarms(this);
     }
+  }
+
+  /**
+   * This method transforms the value of each request template by replacing the stream name placeholder value with the
+   * actual name of the stream resource
+   *
+   * @param templates The additional request templates to transform.
+   */
+  private getAdditionalPutRecordTemplates(templates?: { [contentType: string]: string; }): { [contentType: string]: string; } {
+
+    const transformedTemplates: { [contentType: string]: string; } = {};
+
+    for (const key in templates) {
+      if (templates[key] !== undefined) {
+        transformedTemplates[key] = templates[key].replace("${StreamName}", this.kinesisStream.streamName);
+      }
+    }
+
+    return transformedTemplates;
   }
 
   private getPutRecordTemplate(putRecordTemplate?: string): string {

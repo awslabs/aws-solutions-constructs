@@ -311,7 +311,7 @@ test('Construct can override default create request template type', () => {
     allowCreateOperation: true,
     createRequestTemplate: 'Hello',
     additionalCreateRequestTemplates: {
-      'text/plain': 'Goodbye'
+      'text/plain': 'Goodbye',
     }
   });
 
@@ -321,6 +321,27 @@ test('Construct can override default create request template type', () => {
       RequestTemplates: {
         'application/json': 'Hello',
         'text/plain': 'Goodbye'
+      }
+    }
+  });
+});
+
+test('Construct accepts additional delete request templates', () => {
+  const stack = new Stack();
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    enableEncryptionWithCustomerManagedKey: true,
+    allowDeleteOperation: true,
+    additionalDeleteRequestTemplates: {
+      'text/plain': 'DeleteMe'
+    }
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'DELETE',
+    Integration: {
+      RequestTemplates: {
+        'application/json': `Action=DeleteMessage&ReceiptHandle=$util.urlEncode($input.params('receiptHandle'))`,
+        'text/plain': 'DeleteMe'
       }
     }
   });

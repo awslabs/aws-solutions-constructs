@@ -111,3 +111,39 @@ test('Test deployment w/ existing stream', () => {
   // Since createCloudWatchAlars is set to false, no Alarm should exist
   expect(stack).not.toHaveResource('AWS::CloudWatch::Alarm');
 });
+
+test('Construct accepts additional PutRecord request templates', () => {
+  const stack = new Stack();
+  new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis-streams ', {
+    additionalPutRecordRequestTemplates: {
+      'text/plain': 'custom-template'
+    }
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'POST',
+    Integration: {
+      RequestTemplates: {
+        'text/plain': 'custom-template'
+      }
+    }
+  });
+});
+
+test('Construct accepts additional PutRecords request templates', () => {
+  const stack = new Stack();
+  new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis-streams ', {
+    additionalPutRecordsRequestTemplates: {
+      'text/plain': 'custom-template'
+    }
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'POST',
+    Integration: {
+      RequestTemplates: {
+        'text/plain': 'custom-template'
+      }
+    }
+  });
+});

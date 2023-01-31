@@ -54,11 +54,19 @@ export interface ApiGatewayToSageMakerEndpointProps {
    */
   readonly resourcePath: string,
   /**
-   * Mapping template to convert GET requests received on the REST API to POST requests expected by the SageMaker endpoint.
+   * Mapping template to convert GET requests for the default `application/json` content-type received
+   * on the REST API to POST requests expected by the SageMaker endpoint.
    *
    * @default - None.
    */
   readonly requestMappingTemplate: string,
+  /**
+   * Optional Create Request Templates for content-types other than `application/json`.
+   * Use the `requestMappingTemplate` property to set the request template for the `application/json` content-type.
+   *
+   * @default - None
+   */
+  readonly additionalRequestTemplates?: { [contentType: string]: string; };
   /**
    * Optional mapping template to convert responses received from the SageMaker endpoint.
    *
@@ -170,6 +178,7 @@ export class ApiGatewayToSageMakerEndpoint extends Construct {
       apiResource,
       requestValidator,
       requestTemplate: props.requestMappingTemplate,
+      additionalRequestTemplates: props.additionalRequestTemplates,
       awsIntegrationProps: {
         options: { integrationResponses: integResponses }
       },
