@@ -22,8 +22,7 @@
         },
         "SSESpecification": {
           "SSEEnabled": true
-        },
-        "TableName": "test-table"
+        }
       },
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
@@ -58,7 +57,7 @@
         "Name": "RestApi"
       }
     },
-    "testapigatewaydynamodbadditionalrequesttemplatesRestApiDeployment0AE7C47748f8e2ffb1e74060b1bf8f54a7cd2009": {
+    "testapigatewaydynamodbadditionalrequesttemplatesRestApiDeployment0AE7C47741477f52c0bb6da128d2999e75c543fc": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -97,7 +96,7 @@
           "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "testapigatewaydynamodbadditionalrequesttemplatesRestApiDeployment0AE7C47748f8e2ffb1e74060b1bf8f54a7cd2009"
+          "Ref": "testapigatewaydynamodbadditionalrequesttemplatesRestApiDeployment0AE7C47741477f52c0bb6da128d2999e75c543fc"
         },
         "MethodSettings": [
           {
@@ -174,7 +173,18 @@
                 ]
               ]
             },
-            "text/plain": "{       \"TableName\": \"test-table\",       \"KeyConditionExpression\": \"id = :v1\",       \"ExpressionAttributeValues\": {         \":v1\": {           \"S\": \"$input.params('id')\"         }       }     }"
+            "text/plain": {
+              "Fn::Join": [
+                "",
+                [
+                  "{       \"TableName\": \"",
+                  {
+                    "Ref": "existingtableE51CCC93"
+                  },
+                  "\",       \"KeyConditionExpression\": \"id = :v1\",       \"ExpressionAttributeValues\": {         \":v1\": {           \"S\": \"$input.params('id')\"         }       }     }"
+                ]
+              ]
+            }
           },
           "Type": "AWS",
           "Uri": {

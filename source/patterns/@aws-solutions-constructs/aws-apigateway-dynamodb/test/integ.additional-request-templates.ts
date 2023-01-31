@@ -22,11 +22,9 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-apigateway-dynamodb';
 
-const tableName = 'test-table';
 const partitionKeyName = 'id';
 
 const existingTableObj = new dynamodb.Table(stack, 'existing-table', {
-  tableName,
   partitionKey: {
     name: partitionKeyName,
     type: dynamodb.AttributeType.STRING,
@@ -40,7 +38,7 @@ new ApiGatewayToDynamoDB(stack, 'test-api-gateway-dynamodb-additional-request-te
   existingTableObj,
   additionalReadRequestTemplates: {
     'text/plain': `{ \
-      "TableName": "${tableName}", \
+      "TableName": "${existingTableObj.tableName}", \
       "KeyConditionExpression": "${partitionKeyName} = :v1", \
       "ExpressionAttributeValues": { \
         ":v1": { \

@@ -61,7 +61,7 @@ export interface ApiGatewayToSageMakerEndpointProps {
    */
   readonly requestMappingTemplate: string,
   /**
-   * Optional Create Request Templates for content-types other than `application/json`.
+   * Optional Request Templates for content-types other than `application/json`.
    * Use the `requestMappingTemplate` property to set the request template for the `application/json` content-type.
    *
    * @default - None
