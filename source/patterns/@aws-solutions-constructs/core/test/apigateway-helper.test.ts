@@ -689,3 +689,90 @@ test('Test addMethodToApiResource with action', () => {
     }
   });
 });
+
+test('Default integration responses are used on addMethodToApiResource method', () => {
+  const stack = new Stack();
+  const [ restApi ] = defaults.GlobalRestApi(stack);
+
+  // Setup the API Gateway role
+  const apiGatewayRole = new iam.Role(stack, 'api-gateway-role', {
+    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
+  });
+
+  // Setup the API Gateway resource
+  const apiGatewayResource = restApi.root.addResource('api-gateway-resource');
+
+  // Add Method
+  defaults.addProxyMethodToApiResource({
+    action: 'Query',
+    service: 'dynamodb',
+    apiResource: apiGatewayResource,
+    apiGatewayRole,
+    apiMethod: 'GET',
+    requestTemplate: '{}',
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'GET',
+    Integration: {
+      IntegrationResponses: [
+        {
+          StatusCode: '200'
+        },
+        {
+          ResponseTemplates: {
+            'text/html': 'Error'
+          },
+          SelectionPattern: '500',
+          StatusCode: '500'
+        }
+      ]
+    }
+  });
+});
+
+test('Can override integration responses on addMethodToApiResource method', () => {
+  const stack = new Stack();
+  const [ restApi ] = defaults.GlobalRestApi(stack);
+
+  // Setup the API Gateway role
+  const apiGatewayRole = new iam.Role(stack, 'api-gateway-role', {
+    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
+  });
+
+  // Setup the API Gateway resource
+  const apiGatewayResource = restApi.root.addResource('api-gateway-resource');
+
+  // Add Method
+  defaults.addProxyMethodToApiResource({
+    action: 'Query',
+    service: 'dynamodb',
+    apiResource: apiGatewayResource,
+    apiGatewayRole,
+    apiMethod: 'GET',
+    requestTemplate: '{}',
+    integrationResponses: [
+      {
+        statusCode: "200",
+        responseTemplates: {
+          "text/html": "OK"
+        }
+      }
+    ]
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'GET',
+    Integration: {
+      IntegrationResponses: [
+        {
+          ResponseTemplates: {
+            'text/html': 'OK'
+          },
+          SelectionPattern: '200',
+          StatusCode: '200'
+        }
+      ],
+    }
+  });
+});

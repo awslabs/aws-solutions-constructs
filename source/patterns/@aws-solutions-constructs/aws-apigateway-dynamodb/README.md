@@ -68,16 +68,19 @@ new ApiGatewayToDynamoDB(this, "test-api-gateway-dynamodb-default", new ApiGatew
 |allowCreateOperation?|`boolean`|Whether to deploy an API Gateway Method for POST HTTP operations on the DynamoDB table (i.e. dynamodb:PutItem).|
 |createRequestTemplate?|`string`|API Gateway Request Template for the create method for the default `application/json` content-type. This property is required if the `allowCreateOperation` property is set to true.|
 |additionalCreateRequestTemplates?|`{ [contentType: string]: string; }`|Optional Create Request Templates for content-types other than `application/json`. Use the `createRequestTemplate` property to set the request template for the `application/json` content-type.|
+|createIntegrationResponses?|[`api.IntegrationResponses[]`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html)|Optional, custom API Gateway Integration Response for the create method, if the `allowCreateOperation` property is set to true.|
 |allowReadOperation?|`boolean`|Whether to deploy an API Gateway Method for GET HTTP operations on DynamoDB table (i.e. dynamodb:Query).|
 |readRequestTemplate?|`string`|API Gateway Request Template for the read method for the default `application/json` content-type, if the `allowReadOperation` property is set to true. The default template only supports a partition key and not partition + sort keys.|
 |additionalReadRequestTemplates?|`{ [contentType: string]: string; }`|Optional Read Request Templates for content-types other than `application/json`. Use the `readRequestTemplate` property to set the request template for the `application/json` content-type.|
+|readIntegrationResponses?|[`api.IntegrationResponses[]`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html)|Optional, custom API Gateway Integration Response for the read method, if the `allowReadOperation` property is set to true.|
 |allowUpdateOperation?|`boolean`|Whether to deploy API Gateway Method for PUT HTTP operations on DynamoDB table (i.e. dynamodb:UpdateItem).|
 |updateRequestTemplate?|`string`|API Gateway Request Template for the update method, required if the `allowUpdateOperation` property is set to true.|
 |additionalUpdateRequestTemplates?|`{ [contentType: string]: string; }`|Optional Update Request Templates for content-types other than `application/json`. Use the `updateRequestTemplate` property to set the request template for the `application/json` content-type.|
+|updateIntegrationResponses?|[`api.IntegrationResponses[]`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html)|Optional, custom API Gateway Integration Response for the update method, if the `allowUpdateOperation` property is set to true.|
 |allowDeleteOperation?|`boolean`|Whether to deploy API Gateway Method for DELETE HTTP operations on DynamoDB table (i.e. dynamodb:DeleteItem).|
 |deleteRequestTemplate?|`string`|API Gateway Request Template for the delete method for the default `application/json` content-type, if the `allowDeleteOperation` property is set to true.|
 |additionalDeleteRequestTemplates?|`{ [contentType: string]: string; }`|Optional Delete request templates for content-types other than `application/json`. Use the `deleteRequestTemplate` property to set the request template for the `application/json` content-type.|
-
+|deleteIntegrationResponses?|[`api.IntegrationResponses[]`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html)|Optional, custom API Gateway Integration Response for the delete method, if the `allowDeleteOperation` property is set to true.|
 |logGroupProps?|[`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html)|User provided props to override the default props for for the CloudWatchLogs LogGroup.|
 
 ## Pattern Properties

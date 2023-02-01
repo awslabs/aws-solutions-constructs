@@ -241,6 +241,7 @@ export interface AddProxyMethodToApiResourceInputParams {
   readonly apiGatewayRole: IRole,
   readonly requestTemplate: string,
   readonly additionalRequestTemplates?: { [contentType: string]: string; },
+  readonly integrationResponses?: cdk.aws_apigateway.IntegrationResponse[],
   readonly contentType?: string,
   readonly requestValidator?: api.IRequestValidator,
   readonly requestModel?: { [contentType: string]: api.IModel; },
@@ -254,6 +255,20 @@ export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceI
     ...params.additionalRequestTemplates
   };
 
+  // Use user-provided integration responses, otherwise fallback to the default ones we provide.
+  const integrationResponses = params.integrationResponses ?? [
+    {
+      statusCode: "200"
+    },
+    {
+      statusCode: "500",
+      responseTemplates: {
+        "text/html": "Error"
+      },
+      selectionPattern: "500"
+    }
+  ];
+
   let baseProps: api.AwsIntegrationProps = {
     service: params.service,
     integrationHttpMethod: "POST",
@@ -264,18 +279,7 @@ export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceI
         "integration.request.header.Content-Type": params.contentType ? params.contentType : "'application/json'"
       },
       requestTemplates,
-      integrationResponses: [
-        {
-          statusCode: "200"
-        },
-        {
-          statusCode: "500",
-          responseTemplates: {
-            "text/html": "Error"
-          },
-          selectionPattern: "500"
-        }
-      ]
+      integrationResponses
     }
   };
 

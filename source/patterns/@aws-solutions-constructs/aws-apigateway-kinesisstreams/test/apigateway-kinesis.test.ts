@@ -147,3 +147,82 @@ test('Construct accepts additional PutRecords request templates', () => {
     }
   });
 });
+
+test('Construct uses default integration responses', () => {
+  const stack = new Stack();
+  new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis-streams ', {});
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'POST',
+    Integration: {
+      IntegrationResponses: [
+        {
+          StatusCode: '200'
+        },
+        {
+          ResponseTemplates: {
+            'text/html': 'Error'
+          },
+          SelectionPattern: '500',
+          StatusCode: '500'
+        }
+      ]
+    }
+  });
+});
+
+test('Construct uses custom putRecordIntegrationResponses property', () => {
+  const stack = new Stack();
+  new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis-streams ', {
+    putRecordIntegrationResponses: [
+      {
+        statusCode: '200',
+        responseTemplates: {
+          'text/html': 'OK'
+        }
+      }
+    ]
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'POST',
+    Integration: {
+      IntegrationResponses: [
+        {
+          ResponseTemplates: {
+            'text/html': 'OK'
+          },
+          StatusCode: '200'
+        }
+      ]
+    }
+  });
+});
+
+test('Construct uses custom putRecordsIntegrationResponses property', () => {
+  const stack = new Stack();
+  new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis-streams ', {
+    putRecordsIntegrationResponses: [
+      {
+        statusCode: '200',
+        responseTemplates: {
+          'text/html': 'OK'
+        }
+      }
+    ]
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'POST',
+    Integration: {
+      IntegrationResponses: [
+        {
+          ResponseTemplates: {
+            'text/html': 'OK'
+          },
+          StatusCode: '200'
+        }
+      ]
+    }
+  });
+});

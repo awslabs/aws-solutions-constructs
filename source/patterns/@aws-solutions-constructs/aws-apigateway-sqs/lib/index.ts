@@ -83,6 +83,12 @@ export interface ApiGatewayToSqsProps {
    */
   readonly additionalCreateRequestTemplates?: { [contentType: string]: string; };
   /**
+   * Optional, custom API Gateway Integration Response for the create method, if the `allowCreateOperation` property is set to true.
+   *
+   * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
+   */
+  readonly createIntegrationResponses?: api.IntegrationResponse[];
+  /**
    * Whether to deploy an API Gateway Method for GET HTTP operations on the queue (i.e. sqs:ReceiveMessage).
    *
    * @default - false
@@ -103,6 +109,12 @@ export interface ApiGatewayToSqsProps {
    */
   readonly additionalReadRequestTemplates?: { [contentType: string]: string; };
   /**
+   * Optional, custom API Gateway Integration Response for the read method, if the `allowReadOperation` property is set to true.
+   *
+   * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
+   */
+  readonly readIntegrationResponses?: api.IntegrationResponse[];
+  /**
    * Whether to deploy an API Gateway Method for HTTP DELETE operations on the queue (i.e. sqs:DeleteMessage).
    *
    * @default - false
@@ -122,6 +134,12 @@ export interface ApiGatewayToSqsProps {
    * @default - None
    */
   readonly additionalDeleteRequestTemplates?: { [contentType: string]: string; };
+  /**
+   * Optional, custom API Gateway Integration Response for the delete method, if the `allowDeleteOperation` property is set to true.
+   *
+   * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
+   */
+  readonly deleteIntegrationResponses?: api.IntegrationResponse[];
   /**
    * User provided props to override the default props for the CloudWatchLogs LogGroup.
    *
@@ -214,7 +232,8 @@ export class ApiGatewayToSqs extends Construct {
         apiResource: this.apiGateway.root,
         requestTemplate: createRequestTemplate,
         additionalRequestTemplates: props.additionalCreateRequestTemplates,
-        contentType: "'application/x-www-form-urlencoded'"
+        contentType: "'application/x-www-form-urlencoded'",
+        integrationResponses: props.createIntegrationResponses
       });
     }
 
@@ -230,7 +249,8 @@ export class ApiGatewayToSqs extends Construct {
         apiResource: this.apiGateway.root,
         requestTemplate: readRequestTemplate,
         additionalRequestTemplates: props.additionalReadRequestTemplates,
-        contentType: "'application/x-www-form-urlencoded'"
+        contentType: "'application/x-www-form-urlencoded'",
+        integrationResponses: props.readIntegrationResponses
       });
     }
 
@@ -246,7 +266,8 @@ export class ApiGatewayToSqs extends Construct {
         apiResource: apiGatewayResource,
         requestTemplate: deleteRequestTemplate,
         additionalRequestTemplates: props.additionalDeleteRequestTemplates,
-        contentType: "'application/x-www-form-urlencoded'"
+        contentType: "'application/x-www-form-urlencoded'",
+        integrationResponses: props.deleteIntegrationResponses
       });
     }
   }

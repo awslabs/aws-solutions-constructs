@@ -16,6 +16,7 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import { getPartitionKeyNameFromTable } from '@aws-solutions-constructs/core';
 import * as logs from 'aws-cdk-lib/aws-logs';
@@ -63,6 +64,12 @@ export interface ApiGatewayToDynamoDBProps {
    */
   readonly additionalCreateRequestTemplates?: { [contentType: string]: string; };
   /**
+   * Optional, custom API Gateway Integration Response for the create method, if the `allowCreateOperation` property is set to true.
+   *
+   * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
+   */
+  readonly createIntegrationResponses?: apigateway.IntegrationResponse[];
+  /**
    * Whether to deploy an API Gateway Method for GET HTTP operations on DynamoDB table (i.e. dynamodb:Query).
    *
    * @default - true
@@ -93,6 +100,12 @@ export interface ApiGatewayToDynamoDBProps {
    */
   readonly additionalReadRequestTemplates?: { [contentType: string]: string; };
   /**
+   * Optional, custom API Gateway Integration Response for the read method, if the `allowReadOperation` property is set to true.
+   *
+   * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
+   */
+  readonly readIntegrationResponses?: apigateway.IntegrationResponse[];
+  /**
    * Whether to deploy API Gateway Method for PUT HTTP operations on DynamoDB table (i.e. dynamodb:UpdateItem).
    *
    * @default - false
@@ -111,6 +124,12 @@ export interface ApiGatewayToDynamoDBProps {
    * @default - None
    */
   readonly additionalUpdateRequestTemplates?: { [contentType: string]: string; };
+  /**
+   * Optional, custom API Gateway Integration Response for the update method, if the `allowUpdateOperation` property is set to true.
+   *
+   * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
+   */
+  readonly updateIntegrationResponses?: apigateway.IntegrationResponse[];
   /**
    * Whether to deploy API Gateway Method for DELETE HTTP operations on DynamoDB table (i.e. dynamodb:DeleteItem).
    *
@@ -139,6 +158,12 @@ export interface ApiGatewayToDynamoDBProps {
    * @default - None
    */
   readonly additionalDeleteRequestTemplates?: { [contentType: string]: string; };
+  /**
+   * Optional, custom API Gateway Integration Response for the delete method, if the `allowDeleteOperation` property is set to true.
+   *
+   * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
+   */
+  readonly deleteIntegrationResponses?: apigateway.IntegrationResponse[];
   /**
    * User provided props to override the default props for the CloudWatchLogs LogGroup.
    *
@@ -208,7 +233,8 @@ export class ApiGatewayToDynamoDB extends Construct {
         apiMethod: "POST",
         apiResource: this.apiGateway.root,
         requestTemplate: createRequestTemplate,
-        additionalRequestTemplates: props.additionalCreateRequestTemplates
+        additionalRequestTemplates: props.additionalCreateRequestTemplates,
+        integrationResponses: props.createIntegrationResponses
       });
     }
     // Read
@@ -232,7 +258,8 @@ export class ApiGatewayToDynamoDB extends Construct {
         apiMethod: "GET",
         apiResource: apiGatewayResource,
         requestTemplate: readRequestTemplate,
-        additionalRequestTemplates: props.additionalReadRequestTemplates
+        additionalRequestTemplates: props.additionalReadRequestTemplates,
+        integrationResponses: props.readIntegrationResponses
       });
     }
     // Update
@@ -246,7 +273,8 @@ export class ApiGatewayToDynamoDB extends Construct {
         apiMethod: "PUT",
         apiResource: apiGatewayResource,
         requestTemplate: updateRequestTemplate,
-        additionalRequestTemplates: props.additionalUpdateRequestTemplates
+        additionalRequestTemplates: props.additionalUpdateRequestTemplates,
+        integrationResponses: props.updateIntegrationResponses
       });
     }
     // Delete
@@ -270,7 +298,8 @@ export class ApiGatewayToDynamoDB extends Construct {
         apiMethod: "DELETE",
         apiResource: apiGatewayResource,
         requestTemplate: deleteRequestTemplate,
-        additionalRequestTemplates: props.additionalDeleteRequestTemplates
+        additionalRequestTemplates: props.additionalDeleteRequestTemplates,
+        integrationResponses: props.deleteIntegrationResponses
       });
     }
   }

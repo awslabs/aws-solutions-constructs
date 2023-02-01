@@ -55,6 +55,12 @@ export interface ApiGatewayToKinesisStreamsProps {
    */
   readonly putRecordRequestModel?: api.ModelOptions;
   /**
+   * Optional, custom API Gateway Integration Response for the PutRecord action.
+   *
+   * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
+   */
+  readonly putRecordIntegrationResponses?: api.IntegrationResponse[];
+  /**
    * API Gateway request template for the PutRecords action for the default `application/json` content-type.
    * If not provided, a default one will be used.
    *
@@ -78,6 +84,12 @@ export interface ApiGatewayToKinesisStreamsProps {
    * "required":["data","partitionKey"],"properties":{"data":{"type":"string"},"partitionKey":{"type":"string"}}}}}}
    */
   readonly putRecordsRequestModel?: api.ModelOptions;
+  /**
+   * Optional, custom API Gateway Integration Response for the PutRecord action.
+   *
+   * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
+   */
+  readonly putRecordsIntegrationResponses?: api.IntegrationResponse[];
   /**
    * Existing instance of Kinesis Stream, providing both this and `kinesisStreamProps` will cause an error.
    *
@@ -161,7 +173,8 @@ export class ApiGatewayToKinesisStreams extends Construct {
       additionalRequestTemplates: this.getAdditionalPutRecordTemplates(props.additionalPutRecordRequestTemplates),
       contentType: "'x-amz-json-1.1'",
       requestValidator,
-      requestModel: { 'application/json': this.getPutRecordModel(props.putRecordRequestModel) }
+      requestModel: { 'application/json': this.getPutRecordModel(props.putRecordRequestModel) },
+      integrationResponses: props.putRecordIntegrationResponses
     });
 
     // PutRecords
@@ -176,7 +189,8 @@ export class ApiGatewayToKinesisStreams extends Construct {
       additionalRequestTemplates: this.getAdditionalPutRecordTemplates(props.additionalPutRecordsRequestTemplates),
       contentType: "'x-amz-json-1.1'",
       requestValidator,
-      requestModel: { 'application/json': this.getPutRecordsModel(props.putRecordsRequestModel) }
+      requestModel: { 'application/json': this.getPutRecordsModel(props.putRecordsRequestModel) },
+      integrationResponses: props.putRecordsIntegrationResponses
     });
 
     if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {

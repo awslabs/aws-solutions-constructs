@@ -346,3 +346,153 @@ test('Construct accepts additional delete request templates', () => {
     }
   });
 });
+
+test('Construct uses default integration responses', () => {
+  const stack = new Stack();
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    allowCreateOperation: true,
+    allowReadOperation: true,
+    allowDeleteOperation: true,
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'POST',
+    Integration: {
+      IntegrationResponses: [
+        {
+          StatusCode: '200'
+        },
+        {
+          ResponseTemplates: {
+            'text/html': 'Error'
+          },
+          SelectionPattern: '500',
+          StatusCode: '500'
+        }
+      ]
+    }
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'GET',
+    Integration: {
+      IntegrationResponses: [
+        {
+          StatusCode: '200'
+        },
+        {
+          ResponseTemplates: {
+            'text/html': 'Error'
+          },
+          SelectionPattern: '500',
+          StatusCode: '500'
+        }
+      ]
+    }
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'DELETE',
+    Integration: {
+      IntegrationResponses: [
+        {
+          StatusCode: '200'
+        },
+        {
+          ResponseTemplates: {
+            'text/html': 'Error'
+          },
+          SelectionPattern: '500',
+          StatusCode: '500'
+        }
+      ]
+    }
+  });
+});
+
+test('Construct uses custom createIntegrationResponses property', () => {
+  const stack = new Stack();
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    allowCreateOperation: true,
+    createIntegrationResponses: [
+      {
+        statusCode: '200',
+        responseTemplates: {
+          'text/html': 'OK'
+        }
+      }
+    ]
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'POST',
+    Integration: {
+      IntegrationResponses: [
+        {
+          ResponseTemplates: {
+            'text/html': 'OK'
+          },
+          StatusCode: '200'
+        }
+      ]
+    }
+  });
+});
+
+test('Construct uses custom readIntegrationResponses property', () => {
+  const stack = new Stack();
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    allowCreateOperation: true,
+    readIntegrationResponses: [
+      {
+        statusCode: '200',
+        responseTemplates: {
+          'text/html': 'OK'
+        }
+      }
+    ]
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'GET',
+    Integration: {
+      IntegrationResponses: [
+        {
+          ResponseTemplates: {
+            'text/html': 'OK'
+          },
+          StatusCode: '200'
+        }
+      ]
+    }
+  });
+});
+
+test('Construct uses custom deleteIntegrationResponses property', () => {
+  const stack = new Stack();
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    allowDeleteOperation: true,
+    deleteIntegrationResponses: [
+      {
+        statusCode: '200',
+        responseTemplates: {
+          'text/html': 'OK'
+        }
+      }
+    ]
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'DELETE',
+    Integration: {
+      IntegrationResponses: [
+        {
+          ResponseTemplates: {
+            'text/html': 'OK'
+          },
+          StatusCode: '200'
+        }
+      ]
+    }
+  });
+});
