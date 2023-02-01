@@ -769,7 +769,6 @@ test('Can override integration responses on addMethodToApiResource method', () =
           ResponseTemplates: {
             'text/html': 'OK'
           },
-          SelectionPattern: '200',
           StatusCode: '200'
         }
       ],
