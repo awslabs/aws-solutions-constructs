@@ -651,3 +651,41 @@ test('Test for ApiKey creation using lambdaApiProps', () => {
     KeyType: "API_KEY"
   });
 });
+
+test('Test addMethodToApiResource with action', () => {
+  const stack = new Stack();
+  const [ restApi ] = defaults.GlobalRestApi(stack);
+
+  // Setup the API Gateway role
+  const apiGatewayRole = new iam.Role(stack, 'api-gateway-role', {
+    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
+  });
+
+  // Setup the API Gateway resource
+  const apiGatewayResource = restApi.root.addResource('api-gateway-resource');
+  const requestTemplate = '{}';
+  const additionalRequestTemplates = {
+    'text/plain': 'additional-request-template'
+  };
+
+  // Add Method
+  defaults.addProxyMethodToApiResource({
+    action: "Query",
+    service: "dynamodb",
+    apiResource: apiGatewayResource,
+    apiGatewayRole,
+    apiMethod: "GET",
+    requestTemplate,
+    additionalRequestTemplates
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'GET',
+    Integration: {
+      RequestTemplates: {
+        'application/json': `{}`,
+        'text/plain': 'additional-request-template'
+      }
+    }
+  });
+});
