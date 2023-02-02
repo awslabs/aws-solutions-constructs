@@ -169,11 +169,11 @@ export class ApiGatewayToKinesisStreams extends Construct {
       apiGatewayRole: this.apiGatewayRole,
       apiMethod: 'POST',
       apiResource: putRecordResource,
-      requestTemplate: this.getPutRecordTemplate(props.putRecordRequestTemplate),
-      additionalRequestTemplates: this.getAdditionalPutRecordTemplates(props.additionalPutRecordRequestTemplates),
+      requestTemplate: this.buildPutRecordTemplate(props.putRecordRequestTemplate),
+      additionalRequestTemplates: this.buildAdditionalPutRecordTemplates(props.additionalPutRecordRequestTemplates),
       contentType: "'x-amz-json-1.1'",
       requestValidator,
-      requestModel: { 'application/json': this.getPutRecordModel(props.putRecordRequestModel) },
+      requestModel: { 'application/json': this.buildPutRecordModel(props.putRecordRequestModel) },
       integrationResponses: props.putRecordIntegrationResponses
     });
 
@@ -185,11 +185,11 @@ export class ApiGatewayToKinesisStreams extends Construct {
       apiGatewayRole: this.apiGatewayRole,
       apiMethod: 'POST',
       apiResource: putRecordsResource,
-      requestTemplate: this.getPutRecordsTemplate(props.putRecordsRequestTemplate),
-      additionalRequestTemplates: this.getAdditionalPutRecordTemplates(props.additionalPutRecordsRequestTemplates),
+      requestTemplate: this.buildPutRecordsTemplate(props.putRecordsRequestTemplate),
+      additionalRequestTemplates: this.buildAdditionalPutRecordTemplates(props.additionalPutRecordsRequestTemplates),
       contentType: "'x-amz-json-1.1'",
       requestValidator,
-      requestModel: { 'application/json': this.getPutRecordsModel(props.putRecordsRequestModel) },
+      requestModel: { 'application/json': this.buildPutRecordsModel(props.putRecordsRequestModel) },
       integrationResponses: props.putRecordsIntegrationResponses
     });
 
@@ -205,7 +205,7 @@ export class ApiGatewayToKinesisStreams extends Construct {
    *
    * @param templates The additional request templates to transform.
    */
-  private getAdditionalPutRecordTemplates(templates?: { [contentType: string]: string; }): { [contentType: string]: string; } {
+  private buildAdditionalPutRecordTemplates(templates?: { [contentType: string]: string; }): { [contentType: string]: string; } {
 
     const transformedTemplates: { [contentType: string]: string; } = {};
 
@@ -218,7 +218,7 @@ export class ApiGatewayToKinesisStreams extends Construct {
     return transformedTemplates;
   }
 
-  private getPutRecordTemplate(putRecordTemplate?: string): string {
+  private buildPutRecordTemplate(putRecordTemplate?: string): string {
     if (putRecordTemplate !== undefined) {
       return putRecordTemplate.replace("${StreamName}", this.kinesisStream.streamName);
     }
@@ -226,7 +226,7 @@ export class ApiGatewayToKinesisStreams extends Construct {
     return `{ "StreamName": "${this.kinesisStream.streamName}", "Data": "$util.base64Encode($input.json('$.data'))", "PartitionKey": "$input.path('$.partitionKey')" }`;
   }
 
-  private getPutRecordModel(putRecordModel?: api.ModelOptions): api.IModel {
+  private buildPutRecordModel(putRecordModel?: api.ModelOptions): api.IModel {
     let modelProps: api.ModelOptions;
 
     if (putRecordModel !== undefined) {
@@ -252,7 +252,7 @@ export class ApiGatewayToKinesisStreams extends Construct {
     return this.apiGateway.addModel('PutRecordModel', modelProps);
   }
 
-  private getPutRecordsTemplate(putRecordsTemplate?: string): string {
+  private buildPutRecordsTemplate(putRecordsTemplate?: string): string {
     if (putRecordsTemplate !== undefined) {
       return putRecordsTemplate.replace("${StreamName}", this.kinesisStream.streamName);
     }
@@ -260,7 +260,7 @@ export class ApiGatewayToKinesisStreams extends Construct {
     return `{ "StreamName": "${this.kinesisStream.streamName}", "Records": [ #foreach($elem in $input.path('$.records')) { "Data": "$util.base64Encode($elem.data)", "PartitionKey": "$elem.partitionKey"}#if($foreach.hasNext),#end #end ] }`;
   }
 
-  private getPutRecordsModel(putRecordsModel?: api.ModelOptions): api.IModel {
+  private buildPutRecordsModel(putRecordsModel?: api.ModelOptions): api.IModel {
     let modelProps: api.ModelOptions;
 
     if (putRecordsModel !== undefined) {

@@ -57,7 +57,7 @@
         "Name": "RestApi"
       }
     },
-    "testapigatewaydynamodbadditionalrequesttemplatesRestApiDeployment0AE7C477ebd2134b237add637a36f3483536b1fd": {
+    "testapigatewaydynamodbadditionalrequesttemplatesRestApiDeployment0AE7C47761b8949a9247c12493c939f05e630c9d": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -96,7 +96,7 @@
           "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "testapigatewaydynamodbadditionalrequesttemplatesRestApiDeployment0AE7C477ebd2134b237add637a36f3483536b1fd"
+          "Ref": "testapigatewaydynamodbadditionalrequesttemplatesRestApiDeployment0AE7C47761b8949a9247c12493c939f05e630c9d"
         },
         "MethodSettings": [
           {
@@ -146,10 +146,14 @@
           "IntegrationHttpMethod": "POST",
           "IntegrationResponses": [
             {
-              "ResponseTemplates": {
-                "text/html": "OK"
-              },
               "StatusCode": "200"
+            },
+            {
+              "ResponseTemplates": {
+                "text/html": "Error"
+              },
+              "SelectionPattern": "500",
+              "StatusCode": "500"
             }
           ],
           "PassthroughBehavior": "NEVER",

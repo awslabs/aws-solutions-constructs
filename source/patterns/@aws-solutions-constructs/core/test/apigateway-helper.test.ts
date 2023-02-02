@@ -652,7 +652,7 @@ test('Test for ApiKey creation using lambdaApiProps', () => {
   });
 });
 
-test('Test addMethodToApiResource with action', () => {
+test('Additional request templates can be specified on addMethodToApiResource method', () => {
   const stack = new Stack();
   const [ restApi ] = defaults.GlobalRestApi(stack);
 

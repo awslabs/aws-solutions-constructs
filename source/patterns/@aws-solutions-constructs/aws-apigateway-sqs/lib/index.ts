@@ -69,8 +69,8 @@ export interface ApiGatewayToSqsProps {
    */
   readonly allowCreateOperation?: boolean;
   /**
-   * API Gateway Request Template for the create method for the default `application/json` content-type,
-   * if the `allowCreateOperation` property is set to true.
+   * API Gateway Request Template for the create method for the default `application/json` content-type.
+   * This property can only be specified if the `allowCreateOperation` property is set to true.
    *
    * @default - 'Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")'
    */
@@ -83,7 +83,8 @@ export interface ApiGatewayToSqsProps {
    */
   readonly additionalCreateRequestTemplates?: { [contentType: string]: string; };
   /**
-   * Optional, custom API Gateway Integration Response for the create method, if the `allowCreateOperation` property is set to true.
+   * Optional, custom API Gateway Integration Response for the create method.
+   * This property can only be specified if the `allowCreateOperation` property is set to true.
    *
    * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
    */
@@ -91,12 +92,12 @@ export interface ApiGatewayToSqsProps {
   /**
    * Whether to deploy an API Gateway Method for GET HTTP operations on the queue (i.e. sqs:ReceiveMessage).
    *
-   * @default - false
+   * @default - true
    */
   readonly allowReadOperation?: boolean;
   /**
-   * API Gateway Request Template for the read method for the default `application/json` content-type,
-   * if the `allowReadOperation` property is set to true.
+   * API Gateway Request Template for the read method for the default `application/json` content-type.
+   * This property can only be specified if the `allowReadOperation` property is not set to false.
    *
    * @default - "Action=ReceiveMessage"
    */
@@ -104,12 +105,14 @@ export interface ApiGatewayToSqsProps {
   /**
    * Optional Read Request Templates for content-types other than `application/json`.
    * Use the `readRequestTemplate` property to set the request template for the `application/json` content-type.
+   * This property can only be specified if the `allowReadOperation` property is not set to false.
    *
    * @default - None
    */
   readonly additionalReadRequestTemplates?: { [contentType: string]: string; };
   /**
-   * Optional, custom API Gateway Integration Response for the read method, if the `allowReadOperation` property is set to true.
+   * Optional, custom API Gateway Integration Response for the read method.
+   * This property can only be specified if the `allowReadOperation` property is not set to false.
    *
    * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
    */
@@ -121,8 +124,8 @@ export interface ApiGatewayToSqsProps {
    */
   readonly allowDeleteOperation?: boolean;
   /**
-   * API Gateway Request Template for THE delete method for the default `application/json` content-type,
-   * if the `allowDeleteOperation` property is set to true.
+   * API Gateway Request Template for THE delete method for the default `application/json` content-type.
+   * This property can only be specified if the `allowDeleteOperation` property is set to true.
    *
    * @default - "Action=DeleteMessage&ReceiptHandle=$util.urlEncode($input.params('receiptHandle'))"
    */
@@ -135,7 +138,8 @@ export interface ApiGatewayToSqsProps {
    */
   readonly additionalDeleteRequestTemplates?: { [contentType: string]: string; };
   /**
-   * Optional, custom API Gateway Integration Response for the delete method, if the `allowDeleteOperation` property is set to true.
+   * Optional, custom API Gateway Integration Response for the delete method.
+   * This property can only be specified if the `allowDeleteOperation` property is set to true.
    *
    * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
    */
@@ -178,6 +182,10 @@ export class ApiGatewayToSqs extends Construct {
   public readonly sqsQueue: sqs.Queue;
   public readonly deadLetterQueue?: sqs.DeadLetterQueue;
 
+  private readonly defaultCreateRequestTemplate = 'Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")';
+  private readonly defaultReadRequestTemplate = 'Action=ReceiveMessage';
+  private readonly defaultDeleteRequestTemplate = "Action=DeleteMessage&ReceiptHandle=$util.urlEncode($input.params('receiptHandle'))";
+
   /**
    * @summary Constructs a new instance of the ApiGatewayToSqs class.
    * @param {cdk.App} scope - represents the scope for all the resources.
@@ -189,6 +197,22 @@ export class ApiGatewayToSqs extends Construct {
   constructor(scope: Construct, id: string, props: ApiGatewayToSqsProps) {
     super(scope, id);
     defaults.CheckProps(props);
+
+    if ((props.createRequestTemplate || props.additionalCreateRequestTemplates || props.createIntegrationResponses)
+        && props.allowCreateOperation !== true) {
+      throw new Error(`The 'allowCreateOperation' property must be set to true when setting any of the following: ` +
+        `'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses'`);
+    }
+    if ((props.readRequestTemplate || props.additionalReadRequestTemplates || props.readIntegrationResponses)
+        && props.allowReadOperation === false) {
+      throw new Error(`The 'allowReadOperation' property must be set to true or undefined when setting any of the following: ` +
+        `'readRequestTemplate', 'additionalReadRequestTemplates', 'readIntegrationResponses'`);
+    }
+    if ((props.deleteRequestTemplate || props.additionalDeleteRequestTemplates || props.deleteIntegrationResponses)
+        && props.allowDeleteOperation !== true) {
+      throw new Error(`The 'allowDeleteOperation' property must be set to true when setting any of the following: ` +
+      `'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'`);
+    }
 
     // Setup the dead letter queue, if applicable
     this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
@@ -221,7 +245,7 @@ export class ApiGatewayToSqs extends Construct {
     const apiGatewayResource = this.apiGateway.root.addResource('message');
 
     // Create
-    const createRequestTemplate = props.createRequestTemplate ?? 'Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")';
+    const createRequestTemplate = props.createRequestTemplate ?? this.defaultCreateRequestTemplate;
     if (props.allowCreateOperation && props.allowCreateOperation === true) {
       this.addActionToPolicy("sqs:SendMessage");
       defaults.addProxyMethodToApiResource({
@@ -238,7 +262,7 @@ export class ApiGatewayToSqs extends Construct {
     }
 
     // Read
-    const readRequestTemplate = props.readRequestTemplate ?? "Action=ReceiveMessage";
+    const readRequestTemplate = props.readRequestTemplate ?? this.defaultReadRequestTemplate;
     if (props.allowReadOperation === undefined || props.allowReadOperation === true) {
       this.addActionToPolicy("sqs:ReceiveMessage");
       defaults.addProxyMethodToApiResource({
@@ -255,7 +279,7 @@ export class ApiGatewayToSqs extends Construct {
     }
 
     // Delete
-    const deleteRequestTemplate = props.deleteRequestTemplate ?? "Action=DeleteMessage&ReceiptHandle=$util.urlEncode($input.params('receiptHandle'))";
+    const deleteRequestTemplate = props.deleteRequestTemplate ?? this.defaultDeleteRequestTemplate;
     if (props.allowDeleteOperation && props.allowDeleteOperation === true) {
       this.addActionToPolicy("sqs:DeleteMessage");
       defaults.addProxyMethodToApiResource({

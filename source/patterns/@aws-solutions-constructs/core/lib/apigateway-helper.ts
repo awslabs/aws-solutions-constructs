@@ -256,18 +256,7 @@ export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceI
   };
 
   // Use user-provided integration responses, otherwise fallback to the default ones we provide.
-  const integrationResponses = params.integrationResponses ?? [
-    {
-      statusCode: "200"
-    },
-    {
-      statusCode: "500",
-      responseTemplates: {
-        "text/html": "Error"
-      },
-      selectionPattern: "500"
-    }
-  ];
+  const integrationResponses = params.integrationResponses ?? apiDefaults.DefaultIntegrationResponses();
 
   let baseProps: api.AwsIntegrationProps = {
     service: params.service,

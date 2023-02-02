@@ -36,7 +36,8 @@ const existingTableObj = new dynamodb.Table(stack, 'existing-table', {
 
 new ApiGatewayToDynamoDB(stack, 'test-api-gateway-dynamodb-additional-request-templates', {
   existingTableObj,
-  readIntegrationResponses: [
+  allowCreateOperation: true,
+  createIntegrationResponses: [
     {
       statusCode: '200',
       responseTemplates: {
