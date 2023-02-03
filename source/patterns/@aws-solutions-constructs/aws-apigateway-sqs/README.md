@@ -99,11 +99,13 @@ new ApiGatewayToSqs(this, "ApiGatewayToSqsPattern", new ApiGatewayToSqsProps.Bui
 |DELETE|`/message?receiptHandle=[value]`||`sqs::DeleteMessage`|Deletes a specified message from the queue|
 
 # API Gateway Request/Response Template Properties Overview
-There are sets of properties corresponding to the various API operations this construct supports (CREATE/READ/UPDATE/DELETE). Each API operation has a property to enable it, followed by a set of properties used to specify request templates and integration responses. Taking the **CREATE** operation as an example:
-* The API method is enabled by setting the `allowCreateOperation` property to true. 
-* Once set, the request template for the `application/json` content-type can be set using the `createRequestTemplate` property.
-* Additional request templates for content-types other than `application/json` can be specified in the `additionalCreateRequestTemplates` property.
-* Non-default integration responses can be specified in the `createIntegrationResponses` property.
+This construct allows you to implement four DynamoDB API operations, CREATE/READ/DELETE (corresponding the HTTP POST/GET/DELETE requests respectively). They are completely independent and each follows the same pattern:
+* Setting `allowCreateOperation` to true will implement the `application/json` content-type with default request and response templates
+* The request template for `application/json` requests can be customized using the `createRequestTemplate` prop value
+* *Additional* request templates can be specified using the `additionalCreateRequestTemplates` prop value. Note - these DO NOT replace the `application/json` content-type
+* Customized integration responses can be specified for any content type in the `createIntegrationResponses` prop value.
+
+Supplying any of these values without setting allowCreateOperation to true will result in an error. This pattern is the same for all four API operations.
 
 ## Default settings
 

@@ -250,6 +250,11 @@ export interface AddProxyMethodToApiResourceInputParams {
 }
 
 export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceInputParams): api.Method {
+  // Make sure the user hasn't also specified the application/json content-type in the additionalRequestTemplates optional property
+  if (params.additionalRequestTemplates && 'application/json' in params.additionalRequestTemplates) {
+    throw new Error(`Request Template for the application/json content-type must be specified in the requestTemplate property and not in the additionalRequestTemplates property `);
+  }
+
   const requestTemplates = {
     "application/json": params.requestTemplate,
     ...params.additionalRequestTemplates

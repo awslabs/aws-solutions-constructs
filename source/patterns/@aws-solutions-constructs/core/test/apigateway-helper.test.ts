@@ -775,3 +775,30 @@ test('Can override integration responses on addMethodToApiResource method', () =
     }
   });
 });
+
+test('Specifying application/json content-type in additionalRequestTemplates property throws an error', () => {
+  const stack = new Stack();
+  const [ restApi ] = defaults.GlobalRestApi(stack);
+
+  const apiGatewayRole = new iam.Role(stack, 'api-gateway-role', {
+    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
+  });
+
+  const apiGatewayResource = restApi.root.addResource('api-gateway-resource');
+
+  const app = () => {
+    defaults.addProxyMethodToApiResource({
+      action: 'Query',
+      service: 'dynamodb',
+      apiResource: apiGatewayResource,
+      apiGatewayRole,
+      apiMethod: 'GET',
+      requestTemplate: '{}',
+      additionalRequestTemplates: {
+        'application/json': '{}'
+      }
+    });
+  };
+
+  expect(app).toThrowError('Request Template for the application/json content-type must be specified in the requestTemplate property and not in the additionalRequestTemplates property');
+});
