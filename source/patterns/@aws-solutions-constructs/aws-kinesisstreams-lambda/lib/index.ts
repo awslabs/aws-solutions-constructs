@@ -38,7 +38,15 @@ export interface KinesisStreamsToLambdaProps {
      */
     readonly lambdaFunctionProps?: lambda.FunctionProps,
     /**
-     * Existing instance of Kinesis Stream, providing both this and `kinesisStreamProps` will cause an error.
+     * Interface for an existing instance of Kinesis Stream, providing both
+     * this and kinesisStreamProps or existingStreamObj will cause an error.
+     *
+     * @default - None
+     */
+    readonly existingStreamInterface?: kinesis.IStream;
+    /**
+     * Existing instance of Kinesis Stream, providing both this and kinesisStreamProps
+     * or existingStreamInterface will cause an error.
      *
      * @default - None
      */
@@ -80,7 +88,8 @@ export interface KinesisStreamsToLambdaProps {
  * @summary The KinesisStreamsToLambda class.
  */
 export class KinesisStreamsToLambda extends Construct {
-    public readonly kinesisStream: kinesis.Stream;
+    public readonly kinesisStream?: kinesis.Stream;
+    public readonly kinesisStreamInterface: kinesis.IStream;
     public readonly lambdaFunction: lambda.Function;
     public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
 
@@ -96,11 +105,22 @@ export class KinesisStreamsToLambda extends Construct {
       super(scope, id);
       defaults.CheckProps(props);
 
+      if ((props.existingStreamInterface && props.existingStreamObj) ||
+        (props.existingStreamInterface && props.kinesisStreamProps) ||
+        (props.existingStreamObj && props.kinesisStreamProps)) {
+        throw new Error('Supply no more than 1 of existingStreamInterface, existingStreamObject and kinesisStreamProps');
+      }
+
       // Setup the Kinesis Stream
       this.kinesisStream = defaults.buildKinesisStream(this, {
         existingStreamObj: props.existingStreamObj,
-        kinesisStreamProps: props.kinesisStreamProps
+        kinesisStreamProps: props.kinesisStreamProps,
+        existingStreamInterface: props.existingStreamInterface
       });
+
+      // If we received or created a Stream object, we need to set the interface property
+      // (if we didn't then we must have received an interface)
+      this.kinesisStreamInterface = this.kinesisStream ?? props.existingStreamInterface!;
 
       // Setup the Lambda function
       this.lambdaFunction = defaults.buildLambdaFunction(this, {
@@ -109,7 +129,7 @@ export class KinesisStreamsToLambda extends Construct {
       });
 
       // Grant Kinesis Stream read perimssion for lambda function
-      this.kinesisStream.grantRead(this.lambdaFunction.grantPrincipal);
+      this.kinesisStreamInterface!.grantRead(this.lambdaFunction.grantPrincipal);
 
       // Add the Lambda event source mapping
       const eventSourceProps = defaults.KinesisEventSourceProps(this, {
@@ -117,7 +137,7 @@ export class KinesisStreamsToLambda extends Construct {
         deploySqsDlqQueue: props.deploySqsDlqQueue,
         sqsDlqQueueProps: props.sqsDlqQueueProps
       });
-      this.lambdaFunction.addEventSource(new KinesisEventSource(this.kinesisStream, eventSourceProps));
+      this.lambdaFunction.addEventSource(new KinesisEventSource(this.kinesisStreamInterface!, eventSourceProps));
 
       if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
         // Deploy best practices CW Alarms for Kinesis Stream

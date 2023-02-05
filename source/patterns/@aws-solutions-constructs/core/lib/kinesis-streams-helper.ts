@@ -27,7 +27,12 @@ export interface BuildKinesisStreamProps {
    * @default - None
    */
   readonly existingStreamObj?: kinesis.Stream;
-
+  /**
+   * Existing instance of Kinesis Stream, providing both this and `kinesisStreamProps` will cause an error.
+   *
+   * @default - None
+   */
+  readonly existingStreamInterface?: kinesis.IStream;
   /**
    * Optional user provided props to override the default props for the Kinesis stream.
    *
@@ -36,10 +41,13 @@ export interface BuildKinesisStreamProps {
   readonly kinesisStreamProps?: kinesis.StreamProps
 }
 
-export function buildKinesisStream(scope: Construct, props: BuildKinesisStreamProps): kinesis.Stream {
+export function buildKinesisStream(scope: Construct, props: BuildKinesisStreamProps): kinesis.Stream | undefined {
 
   if (props.existingStreamObj) {
     return props.existingStreamObj;
+  }
+  if (props.existingStreamInterface) {
+    return;
   }
 
   // Setup the stream properties

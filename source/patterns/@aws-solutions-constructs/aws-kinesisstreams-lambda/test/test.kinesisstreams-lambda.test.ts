@@ -32,18 +32,16 @@ test('Test properties', () => {
     }
   };
   const app = new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);
-  // Assertion 1
-  expect(app.lambdaFunction !== null);
-  // Assertion 2
-  expect(app.kinesisStream !== null);
-  // Assertion 3
-  expect(app.cloudwatchAlarms !== null);
+  expect(app.lambdaFunction).toBeDefined();
+  expect(app.kinesisStream ).toBeDefined();
+  expect(app.kinesisStreamInterface).toBeDefined();
+  expect(app.cloudwatchAlarms).toBeDefined();
 });
 
 // --------------------------------------------------------------
 // Test existing resources
 // --------------------------------------------------------------
-test('Test existing resources', () => {
+test('Test existing resources (existing Stream)', () => {
   // Initial Setup
   const stack = new Stack();
 
@@ -123,4 +121,149 @@ test('Test properties with no CW Alarms', () => {
   expect(app.kinesisStream !== null);
   // Assertion 3
   expect(app.cloudwatchAlarms === null);
+});
+
+test('Test properties when provided IStream', () => {
+  // Initial Setup
+  const stack = new Stack();
+
+  const stream = new kinesis.Stream(stack, 'test-stream', {
+    streamName: 'existing-stream',
+    shardCount: 5,
+    retentionPeriod: Duration.hours(48),
+    encryption: kinesis.StreamEncryption.UNENCRYPTED
+  });
+
+  const props: KinesisStreamsToLambdaProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    existingStreamInterface: stream,
+  };
+  const app = new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);
+  expect(app.lambdaFunction).toBeDefined();
+  expect(app.kinesisStream).not.toBeDefined();
+  expect(app.kinesisStreamInterface).toBeDefined();
+  expect(app.cloudwatchAlarms).toBeDefined();
+});
+
+test('Test properties when provided Existing Stream', () => {
+  // Initial Setup
+  const stack = new Stack();
+
+  const stream = new kinesis.Stream(stack, 'test-stream', {
+    streamName: 'existing-stream',
+    shardCount: 5,
+    retentionPeriod: Duration.hours(48),
+    encryption: kinesis.StreamEncryption.UNENCRYPTED
+  });
+
+  const props: KinesisStreamsToLambdaProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    existingStreamObj: stream,
+  };
+  const app = new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);
+  expect(app.lambdaFunction).toBeDefined();
+  expect(app.kinesisStream).toBeDefined();
+  expect(app.kinesisStreamInterface).toBeDefined();
+  expect(app.cloudwatchAlarms).toBeDefined();
+});
+
+test('Test construct when provided existing IStream', () => {
+  // Initial Setup
+  const stack = new Stack();
+
+  const fn = new lambda.Function(stack, 'test-fn', {
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+  });
+
+  const stream = new kinesis.Stream(stack, 'test-stream', {
+    streamName: 'existing-stream',
+    shardCount: 5,
+    retentionPeriod: Duration.hours(48),
+    encryption: kinesis.StreamEncryption.UNENCRYPTED
+  });
+
+  new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', {
+    existingLambdaObj: fn,
+    existingStreamInterface: stream,
+  });
+
+  expect(stack).toHaveResource('AWS::Kinesis::Stream', {
+    Name: 'existing-stream',
+    ShardCount: 5,
+    RetentionPeriodHours: 48,
+  });
+
+  // Make sure we used it and didn't create another
+  expect(stack).toCountResources('AWS::Kinesis::Stream', 1);
+
+  expect(stack).toHaveResource('AWS::Lambda::Function', {
+    Handler: 'index.handler',
+    Runtime: 'nodejs14.x',
+  });
+});
+
+test('Test error when provided existing IStream and Stream', () => {
+  // Initial Setup
+  const stack = new Stack();
+
+  const fn = new lambda.Function(stack, 'test-fn', {
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+  });
+
+  const stream = new kinesis.Stream(stack, 'test-stream', {
+    streamName: 'existing-stream',
+    shardCount: 5,
+    retentionPeriod: Duration.hours(48),
+    encryption: kinesis.StreamEncryption.UNENCRYPTED
+  });
+
+  const app = () => {
+    new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', {
+      existingLambdaObj: fn,
+      existingStreamInterface: stream,
+      existingStreamObj: stream
+    });
+  };
+  expect(app).toThrowError();
+});
+
+test('Test error when provided existing IStream and Stream Props', () => {
+  // Initial Setup
+  const stack = new Stack();
+
+  const fn = new lambda.Function(stack, 'test-fn', {
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+  });
+
+  const stream = new kinesis.Stream(stack, 'test-stream', {
+    streamName: 'existing-stream',
+    shardCount: 5,
+    retentionPeriod: Duration.hours(48),
+    encryption: kinesis.StreamEncryption.UNENCRYPTED
+  });
+
+  const app = () => {
+    new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', {
+      existingLambdaObj: fn,
+      existingStreamInterface: stream,
+      kinesisStreamProps: {
+        streamName: 'some name'
+      }
+    });
+  };
+  expect(app).toThrowError();
 });

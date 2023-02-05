@@ -89,6 +89,36 @@ test('Test deployment w/ existing stream', () => {
     ShardCount: 2,
     RetentionPeriodHours: 72
   });
+  expect(stack).toCountResources('AWS::Kinesis::Stream', 1);
+});
+
+// --------------------------------------------------------------
+// Test deployment w/ existing stream interface
+// --------------------------------------------------------------
+test('Test deployment w/ existing stream', () => {
+  // Stack
+  const stack = new Stack();
+  // Helper setup
+  const stream = new kinesis.Stream(stack, 'existing-stream', {
+    shardCount: 2,
+    retentionPeriod: Duration.days(3)
+  });
+  // Helper declaration
+  defaults.buildKinesisStream(stack, {
+    existingStreamInterface: stream,
+
+    // These props will be ignored as an existing stream was provided
+    kinesisStreamProps: {
+      shardCount: 1,
+      retentionPeriod: Duration.days(1)
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::Kinesis::Stream', {
+    ShardCount: 2,
+    RetentionPeriodHours: 72
+  });
+  expect(stack).toCountResources('AWS::Kinesis::Stream', 1);
 });
 
 test('Count Kinesis CW Alarms', () => {
