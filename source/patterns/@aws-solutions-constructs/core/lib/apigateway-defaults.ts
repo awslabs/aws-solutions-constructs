@@ -12,6 +12,7 @@
  */
 
 import * as api from 'aws-cdk-lib/aws-apigateway';
+import { IntegrationResponse } from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { LogGroup } from 'aws-cdk-lib/aws-logs';
 
@@ -88,4 +89,22 @@ export function DefaultGlobalRestApiProps(_logGroup: LogGroup) {
  */
 export function DefaultRegionalRestApiProps(_logGroup: LogGroup) {
   return DefaultRestApiProps([api.EndpointType.REGIONAL], _logGroup);
+}
+
+/**
+ * @returns The set of default integration responses for status codes 200 and 500.
+ */
+export function DefaultIntegrationResponses(): IntegrationResponse[] {
+  return [
+    {
+      statusCode: "200"
+    },
+    {
+      statusCode: "500",
+      responseTemplates: {
+        "text/html": "Error"
+      },
+      selectionPattern: "500"
+    }
+  ];
 }

@@ -240,6 +240,8 @@ export interface AddProxyMethodToApiResourceInputParams {
   readonly apiMethod: string,
   readonly apiGatewayRole: IRole,
   readonly requestTemplate: string,
+  readonly additionalRequestTemplates?: { [contentType: string]: string; },
+  readonly integrationResponses?: cdk.aws_apigateway.IntegrationResponse[],
   readonly contentType?: string,
   readonly requestValidator?: api.IRequestValidator,
   readonly requestModel?: { [contentType: string]: api.IModel; },
@@ -248,6 +250,19 @@ export interface AddProxyMethodToApiResourceInputParams {
 }
 
 export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceInputParams): api.Method {
+  // Make sure the user hasn't also specified the application/json content-type in the additionalRequestTemplates optional property
+  if (params.additionalRequestTemplates && 'application/json' in params.additionalRequestTemplates) {
+    throw new Error(`Request Template for the application/json content-type must be specified in the requestTemplate property and not in the additionalRequestTemplates property `);
+  }
+
+  const requestTemplates = {
+    "application/json": params.requestTemplate,
+    ...params.additionalRequestTemplates
+  };
+
+  // Use user-provided integration responses, otherwise fallback to the default ones we provide.
+  const integrationResponses = params.integrationResponses ?? apiDefaults.DefaultIntegrationResponses();
+
   let baseProps: api.AwsIntegrationProps = {
     service: params.service,
     integrationHttpMethod: "POST",
@@ -257,21 +272,8 @@ export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceI
       requestParameters: {
         "integration.request.header.Content-Type": params.contentType ? params.contentType : "'application/json'"
       },
-      requestTemplates: {
-        "application/json": params.requestTemplate
-      },
-      integrationResponses: [
-        {
-          statusCode: "200"
-        },
-        {
-          statusCode: "500",
-          responseTemplates: {
-            "text/html": "Error"
-          },
-          selectionPattern: "500"
-        }
-      ]
+      requestTemplates,
+      integrationResponses
     }
   };
 

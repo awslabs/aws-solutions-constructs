@@ -16,6 +16,7 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import { getPartitionKeyNameFromTable } from '@aws-solutions-constructs/core';
 import * as logs from 'aws-cdk-lib/aws-logs';
@@ -29,77 +30,152 @@ export interface ApiGatewayToDynamoDBProps {
    *
    * @default - Default props are used
    */
-  readonly dynamoTableProps?: dynamodb.TableProps,
+  readonly dynamoTableProps?: dynamodb.TableProps;
   /**
    * Existing instance of DynamoDB table object, providing both this and `dynamoTableProps` will cause an error.
    *
    * @default - None
    */
-  readonly existingTableObj?: dynamodb.Table,
+  readonly existingTableObj?: dynamodb.Table;
   /**
    * Optional user-provided props to override the default props for the API Gateway.
    *
    * @default - Default properties are used.
    */
-  readonly apiGatewayProps?: api.RestApiProps,
+  readonly apiGatewayProps?: api.RestApiProps;
   /**
-   * Whether to deploy API Gateway Method for Create operation on DynamoDB table.
+   * Whether to deploy an API Gateway Method for POST HTTP operations on the DynamoDB table (i.e. dynamodb:PutItem).
    *
    * @default - false
    */
-  readonly allowCreateOperation?: boolean,
+  readonly allowCreateOperation?: boolean;
   /**
-   * API Gateway Request template for Create method, required if allowCreateOperation set to true
+   * API Gateway Request Template for the create method for the default `application/json` content-type.
+   * This property is required if the `allowCreateOperation` property is set to true.
    *
    * @default - None
    */
-  readonly createRequestTemplate?: string,
+  readonly createRequestTemplate?: string;
   /**
-   * Whether to deploy API Gateway Method for Read operation on DynamoDB table.
+   * Optional Create Request Templates for content-types other than `application/json`.
+   * Use the `createRequestTemplate` property to set the request template for the `application/json` content-type.
+   * This property can only be specified if the `allowCreateOperation` property is set to true.
+   *
+   * @default - None
+   */
+  readonly additionalCreateRequestTemplates?: { [contentType: string]: string; };
+  /**
+   * Optional, custom API Gateway Integration Response for the create method.
+   * This property can only be specified if the `allowCreateOperation` property is set to true.
+   *
+   * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
+   */
+  readonly createIntegrationResponses?: apigateway.IntegrationResponse[];
+  /**
+   * Whether to deploy an API Gateway Method for GET HTTP operations on DynamoDB table (i.e. dynamodb:Query).
    *
    * @default - true
    */
-  readonly allowReadOperation?: boolean,
+  readonly allowReadOperation?: boolean;
   /**
-   * Optional API Gateway Request template for Read method, it will use the default template if
-   * allowReadOperation is true and readRequestTemplate is not provided.
+   * API Gateway Request Template for the read method for the default `application/json` content-type.
+   *
    * The default template only supports a partition key and not partition + sort keys.
+   *
+   * @default - `{ \
+   *       "TableName": "DYNAMODB_TABLE_NAME", \
+   *       "KeyConditionExpression": "PARTITION_KEY_NAME = :v1", \
+   *       "ExpressionAttributeValues": { \
+   *         ":v1": { \
+   *           "S": "$input.params('PARTITION_KEY_NAME')" \
+   *         } \
+   *       } \
+   *     }`
+   */
+  readonly readRequestTemplate?: string;
+  /**
+   * Optional Read Request Templates for content-types other than `application/json`.
+   * Use the `readRequestTemplate` property to set the request template for the `application/json` content-type.
    *
    * @default - None
    */
-  readonly readRequestTemplate?: string,
+  readonly additionalReadRequestTemplates?: { [contentType: string]: string; };
   /**
-   * Whether to deploy API Gateway Method for Update operation on DynamoDB table.
+   * Optional, custom API Gateway Integration Response for the read method.
+   *
+   * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
+   */
+  readonly readIntegrationResponses?: apigateway.IntegrationResponse[];
+  /**
+   * Whether to deploy API Gateway Method for PUT HTTP operations on DynamoDB table (i.e. dynamodb:UpdateItem).
    *
    * @default - false
    */
-  readonly allowUpdateOperation?: boolean,
+  readonly allowUpdateOperation?: boolean;
   /**
-   * API Gateway Request template for Update method, required if allowUpdateOperation set to true
+   * API Gateway Request Template for the update method.
+   * This property is required if the `allowUpdateOperation` property is set to true.
    *
    * @default - None
    */
-  readonly updateRequestTemplate?: string,
+  readonly updateRequestTemplate?: string;
   /**
-   * Whether to deploy API Gateway Method for Delete operation on DynamoDB table.
+   * Optional Update Request Templates for content-types other than `application/json`.
+   * Use the `updateRequestTemplate` property to set the request template for the `application/json` content-type.
+   * This property can only be specified if the `allowUpdateOperation` property is set to true.
+   *
+   * @default - None
+   */
+  readonly additionalUpdateRequestTemplates?: { [contentType: string]: string; };
+  /**
+   * Optional, custom API Gateway Integration Response for the update method.
+   * This property can only be specified if the `allowUpdateOperation` property is set to true.
+   *
+   * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
+   */
+  readonly updateIntegrationResponses?: apigateway.IntegrationResponse[];
+  /**
+   * Whether to deploy API Gateway Method for DELETE HTTP operations on DynamoDB table (i.e. dynamodb:DeleteItem).
    *
    * @default - false
    */
-  readonly allowDeleteOperation?: boolean,
+  readonly allowDeleteOperation?: boolean;
   /**
-   * Optional API Gateway Request template for Delete method, it will use the default template if
-   * allowDeleteOperation is true and deleteRequestTemplate is not provided.
-   * The default template only supports a partition key and not partition + sort keys.
+   * API Gateway Request Template for the delete method for the default `application/json` content-type.
+   * This property can only be specified if the `allowDeleteOperation` property is set to true.
+   *
+   * @default - `{ \
+   *       "TableName": "DYNAMODB_TABLE_NAME", \
+   *       "Key": { \
+   *         "${partitionKeyName}": { \
+   *           "S": "$input.params('PARTITION_KEY_NAME')" \
+   *           } \
+   *         }, \
+   *       "ReturnValues": "ALL_OLD" \
+   *     }`
+   */
+  readonly deleteRequestTemplate?: string;
+  /**
+   * Optional Delete request templates for content-types other than `application/json`.
+   * Use the `deleteRequestTemplate` property to set the request template for the `application/json` content-type.
+   * This property can only be specified if the `allowDeleteOperation` property is set to true.
    *
    * @default - None
    */
-  readonly deleteRequestTemplate?: string,
+  readonly additionalDeleteRequestTemplates?: { [contentType: string]: string; };
+  /**
+   * Optional, custom API Gateway Integration Response for the delete method.
+   * This property can only be specified if the `allowDeleteOperation` property is set to true.
+   *
+   * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
+   */
+  readonly deleteIntegrationResponses?: apigateway.IntegrationResponse[];
   /**
    * User provided props to override the default props for the CloudWatchLogs LogGroup.
    *
    * @default - Default props are used
    */
-  readonly logGroupProps?: logs.LogGroupProps
+  readonly logGroupProps?: logs.LogGroupProps;
 }
 
 /**
@@ -122,6 +198,27 @@ export class ApiGatewayToDynamoDB extends Construct {
   constructor(scope: Construct, id: string, props: ApiGatewayToDynamoDBProps) {
     super(scope, id);
     defaults.CheckProps(props);
+
+    if ((props.createRequestTemplate || props.additionalCreateRequestTemplates || props.createIntegrationResponses)
+        && props.allowCreateOperation !== true) {
+      throw new Error(`The 'allowCreateOperation' property must be set to true when setting any of the following: ` +
+        `'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses'`);
+    }
+    if ((props.readRequestTemplate || props.additionalReadRequestTemplates || props.readIntegrationResponses)
+        && props.allowReadOperation === false) {
+      throw new Error(`The 'allowReadOperation' property must be set to true or undefined when setting any of the following: ` +
+        `'readRequestTemplate', 'additionalReadRequestTemplates', 'readIntegrationResponses'`);
+    }
+    if ((props.updateRequestTemplate || props.additionalUpdateRequestTemplates || props.updateIntegrationResponses)
+        && props.allowUpdateOperation !== true) {
+      throw new Error(`The 'allowUpdateOperation' property must be set to true when setting any of the following: ` +
+        `'updateRequestTemplate', 'additionalUpdateRequestTemplates', 'updateIntegrationResponses'`);
+    }
+    if ((props.deleteRequestTemplate || props.additionalDeleteRequestTemplates || props.deleteIntegrationResponses)
+        && props.allowDeleteOperation !== true) {
+      throw new Error(`The 'allowDeleteOperation' property must be set to true when setting any of the following: ` +
+        `'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'`);
+    }
 
     // Set the default props for DynamoDB table
     const dynamoTableProps: dynamodb.TableProps = defaults.consolidateProps(defaults.DefaultTableProps, props.dynamoTableProps);
@@ -162,18 +259,15 @@ export class ApiGatewayToDynamoDB extends Construct {
         apiGatewayRole: this.apiGatewayRole,
         apiMethod: "POST",
         apiResource: this.apiGateway.root,
-        requestTemplate: createRequestTemplate
+        requestTemplate: createRequestTemplate,
+        additionalRequestTemplates: props.additionalCreateRequestTemplates,
+        integrationResponses: props.createIntegrationResponses
       });
     }
     // Read
     if (props.allowReadOperation === undefined || props.allowReadOperation === true) {
-      let readRequestTemplate;
-
-      if (props.readRequestTemplate) {
-        readRequestTemplate = props.readRequestTemplate;
-      } else {
-        readRequestTemplate =
-          `{ \
+      const readRequestTemplate = props.readRequestTemplate ??
+        `{ \
           "TableName": "${this.dynamoTable.tableName}", \
           "KeyConditionExpression": "${partitionKeyName} = :v1", \
           "ExpressionAttributeValues": { \
@@ -182,7 +276,6 @@ export class ApiGatewayToDynamoDB extends Construct {
             } \
           } \
         }`;
-      }
 
       this.addActionToPolicy("dynamodb:Query");
       defaults.addProxyMethodToApiResource({
@@ -191,7 +284,9 @@ export class ApiGatewayToDynamoDB extends Construct {
         apiGatewayRole: this.apiGatewayRole,
         apiMethod: "GET",
         apiResource: apiGatewayResource,
-        requestTemplate: readRequestTemplate
+        requestTemplate: readRequestTemplate,
+        additionalRequestTemplates: props.additionalReadRequestTemplates,
+        integrationResponses: props.readIntegrationResponses
       });
     }
     // Update
@@ -204,18 +299,15 @@ export class ApiGatewayToDynamoDB extends Construct {
         apiGatewayRole: this.apiGatewayRole,
         apiMethod: "PUT",
         apiResource: apiGatewayResource,
-        requestTemplate: updateRequestTemplate
+        requestTemplate: updateRequestTemplate,
+        additionalRequestTemplates: props.additionalUpdateRequestTemplates,
+        integrationResponses: props.updateIntegrationResponses
       });
     }
     // Delete
     if (props.allowDeleteOperation && props.allowDeleteOperation === true) {
-      let deleteRequestTemplate;
-
-      if (props.deleteRequestTemplate) {
-        deleteRequestTemplate = props.deleteRequestTemplate;
-      } else {
-        deleteRequestTemplate =
-          `{ \
+      const deleteRequestTemplate = props.deleteRequestTemplate ??
+        `{ \
           "TableName": "${this.dynamoTable.tableName}", \
           "Key": { \
             "${partitionKeyName}": { \
@@ -224,7 +316,6 @@ export class ApiGatewayToDynamoDB extends Construct {
             }, \
           "ReturnValues": "ALL_OLD" \
         }`;
-      }
 
       this.addActionToPolicy("dynamodb:DeleteItem");
       defaults.addProxyMethodToApiResource({
@@ -233,7 +324,9 @@ export class ApiGatewayToDynamoDB extends Construct {
         apiGatewayRole: this.apiGatewayRole,
         apiMethod: "DELETE",
         apiResource: apiGatewayResource,
-        requestTemplate: deleteRequestTemplate
+        requestTemplate: deleteRequestTemplate,
+        additionalRequestTemplates: props.additionalDeleteRequestTemplates,
+        integrationResponses: props.deleteIntegrationResponses
       });
     }
   }

@@ -123,7 +123,8 @@ new ApiGatewayToSageMakerEndpoint(this, "ApiGatewayToSageMakerEndpointPattern",
 |endpointName|`string`|Name of the deployed SageMaker inference endpoint.|
 |resourceName?|`string`|Optional resource name where the GET method will be available.|
 |resourcePath|`string`|Resource path for the GET method. The variable defined here can be referenced in `requestMappingTemplate`.|
-|requestMappingTemplate|`string`|Mapping template to convert GET requests received on the REST API to POST requests expected by the SageMaker endpoint.|
+|requestMappingTemplate|`string`|Mapping template to convert GET requests for the default `application/json` content-type received on the REST API to POST requests expected by the SageMaker endpoint.|
+|additionalRequestTemplates|`{ [contentType: string]: string; }`|Optional Request Templates for content-types other than `application/json`. Use the `requestMappingTemplate` property to set the request template for the `application/json` content-type.|
 |responseMappingTemplate?|`string`|Optional mapping template to convert responses received from the SageMaker endpoint.|
 |logGroupProps?|[`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html)|User provided props to override the default props for for the CloudWatchLogs LogGroup.|
 
