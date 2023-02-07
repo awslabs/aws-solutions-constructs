@@ -144,7 +144,7 @@ export function CreateTestCache(scope: Construct, id: string, vpc: ec2.IVpc, por
     `${id}-cluster`,
     cacheProps
   );
-  newCache.addDependsOn(subnetGroup);
+  newCache.addDependency(subnetGroup);
   return newCache;
 }
 

@@ -66,7 +66,7 @@ export function buildKinesisAnalyticsApp(scope: Construct, props: BuildKinesisAn
 
   // Setup the Kinesis application and add dependencies
   const kinesisAnalyticsApp = new kinesisAnalytics.CfnApplication(scope, 'KinesisAnalytics', kinesisAnalyticsProps);
-  kinesisAnalyticsApp.addDependsOn(analyticsPolicy.node.findChild('Resource') as iam.CfnPolicy);
+  kinesisAnalyticsApp.addDependency(analyticsPolicy.node.findChild('Resource') as iam.CfnPolicy);
 
   // Create the application and return
   return kinesisAnalyticsApp;
