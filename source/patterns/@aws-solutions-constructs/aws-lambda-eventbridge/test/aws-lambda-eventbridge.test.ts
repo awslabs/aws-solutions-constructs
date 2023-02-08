@@ -18,7 +18,6 @@ import * as events from "aws-cdk-lib/aws-events";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { LambdaToEventbridge, LambdaToEventbridgeProps } from '../lib';
 import '@aws-cdk/assert/jest';
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 const xrayPolicyStatement = {
   Action: [

@@ -19,7 +19,6 @@ import { LambdaToSsmstringparameter } from '../lib';
 import '@aws-cdk/assert/jest';
 import { StringParameter } from "aws-cdk-lib/aws-ssm";
 import * as defaults from "@aws-solutions-constructs/core";
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 // --------------------------------------------------------------
 // Test lambda function custom environment variable

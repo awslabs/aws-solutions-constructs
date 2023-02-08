@@ -20,7 +20,6 @@ import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { LambdaToSns, LambdaToSnsProps } from '../lib';
 import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 // --------------------------------------------------------------
 // Test deployment with new Lambda function

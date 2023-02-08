@@ -19,7 +19,6 @@ import * as s3 from "aws-cdk-lib/aws-s3";
 import { LambdaToS3 } from '../lib';
 import { CreateScrapBucket } from '@aws-solutions-constructs/core';
 import '@aws-cdk/assert/jest';
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 // --------------------------------------------------------------
 // Test the getter methods

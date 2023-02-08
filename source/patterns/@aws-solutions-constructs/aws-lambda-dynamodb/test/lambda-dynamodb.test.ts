@@ -18,7 +18,6 @@ import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as cdk from "aws-cdk-lib";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import '@aws-cdk/assert/jest';
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 function deployNewFunc(stack: cdk.Stack) {
   const props: LambdaToDynamoDBProps = {

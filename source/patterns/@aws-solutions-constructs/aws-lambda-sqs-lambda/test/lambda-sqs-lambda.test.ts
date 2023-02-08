@@ -19,7 +19,6 @@ import * as defaults from '@aws-solutions-constructs/core';
 import { LambdaToSqsToLambda, LambdaToSqsToLambdaProps } from '../lib';
 import { haveResourceLike } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 // --------------------------------------------------------------
 // Test minimal deployment
