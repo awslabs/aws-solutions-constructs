@@ -18,6 +18,7 @@ import { FargateToSns } from "../lib";
 import * as kms from 'aws-cdk-lib/aws-kms';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 test('New service/new topic, public API, new VPC', () => {
 
@@ -34,7 +35,7 @@ test('New service/new topic, public API, new VPC', () => {
   new FargateToSns(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: 'family-name' },
@@ -116,7 +117,7 @@ test('New service/new topic, private API, new VPC', () => {
   new FargateToSns(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' }
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') }
   });
 
   expect(stack).toHaveResourceLike("AWS::ECS::Service", {

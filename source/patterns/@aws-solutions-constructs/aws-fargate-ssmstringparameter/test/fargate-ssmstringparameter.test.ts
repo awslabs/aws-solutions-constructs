@@ -17,6 +17,7 @@ import * as cdk from "aws-cdk-lib";
 import { FargateToSsmstringparameter } from "../lib";
 import * as ssm from 'aws-cdk-lib/aws-ssm';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 const allowedPattern = '.*';
 const description = 'The value Foo';
@@ -35,7 +36,7 @@ test('New service/new parameter store, public API, new VPC', () => {
   const construct = new FargateToSsmstringparameter(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -172,7 +173,7 @@ test('New service/new parameter store, private API, new VPC', () => {
   new FargateToSsmstringparameter(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     stringParameterProps: {
       parameterName,
       stringValue

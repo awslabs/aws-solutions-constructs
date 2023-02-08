@@ -16,6 +16,7 @@ import { App, Stack } from "aws-cdk-lib";
 import { FargateToKinesisStreams } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import * as ecs from "aws-cdk-lib/aws-ecs";
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
@@ -26,7 +27,7 @@ new FargateToKinesisStreams(stack, 'test-fargate-kinesisstreams', {
     image: ecs.ContainerImage.fromRegistry('nginx')
   },
   vpcProps: {
-    cidr: '10.100.0.0/16'
+    ipAddresses: ec2.IpAddresses.cidr('10.100.0.0/16')
   }
 });
 

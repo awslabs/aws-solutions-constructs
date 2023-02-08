@@ -380,11 +380,11 @@ export function deploySagemakerEndpoint(
     // Create Sagemaker EndpointConfig
     endpointConfig = createSagemakerEndpointConfig(scope, model.attrModelName, props.endpointConfigProps);
     // Add dependency on model
-    endpointConfig.addDependsOn(model);
+    endpointConfig.addDependency(model);
     // Create Sagemaker Endpoint
     endpoint = createSagemakerEndpoint(scope, endpointConfig.attrEndpointConfigName, props.endpointProps);
     // Add dependency on EndpointConfig
-    endpoint.addDependsOn(endpointConfig);
+    endpoint.addDependency(endpointConfig);
 
     return [endpoint, endpointConfig, model];
   } else {
