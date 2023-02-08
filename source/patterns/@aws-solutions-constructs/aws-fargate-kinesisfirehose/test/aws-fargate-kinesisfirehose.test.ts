@@ -18,6 +18,7 @@ import { FargateToKinesisFirehose } from "../lib";
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import { Match, Template } from "aws-cdk-lib/assertions";
 import { GetTestFirehoseDestination } from './test-helper';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 test('New service/new bucket, public API, new VPC', () => {
   const stack = new cdk.Stack();
@@ -31,7 +32,7 @@ test('New service/new bucket, public API, new VPC', () => {
   const construct = new FargateToKinesisFirehose(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -142,7 +143,7 @@ test('New service/new bucket, private API, new VPC', () => {
   new FargateToKinesisFirehose(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     existingKinesisFirehose: destination.kinesisFirehose
   });
 

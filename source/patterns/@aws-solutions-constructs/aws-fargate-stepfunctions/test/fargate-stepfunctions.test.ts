@@ -17,6 +17,7 @@ import * as cdk from "aws-cdk-lib";
 import { FargateToStepfunctions } from "../lib";
 import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 const clusterName = "custom-cluster-name";
 const containerName = "custom-container-name";
@@ -184,7 +185,7 @@ test('Check for custom ARN resource', () => {
   new FargateToStepfunctions(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: testCidr },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(testCidr) },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -238,7 +239,7 @@ test('Check for no cloudwatch creation', () => {
   const construct = new FargateToStepfunctions(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: testCidr },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(testCidr) },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -276,7 +277,7 @@ test('Check for custom log group props', () => {
   new FargateToStepfunctions(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: testCidr },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(testCidr) },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -296,7 +297,7 @@ function createFargateConstructWithNewResources(stack: cdk.Stack, publicApi: boo
   return new FargateToStepfunctions(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: testCidr },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(testCidr) },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },

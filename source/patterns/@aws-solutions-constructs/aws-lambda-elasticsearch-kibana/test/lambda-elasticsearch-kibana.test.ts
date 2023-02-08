@@ -392,7 +392,7 @@ test('Test minimal deployment with an existing private VPC', () => {
       {
         cidrMask: 24,
         name: 'application',
-        subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
       },
       {
         cidrMask: 24,

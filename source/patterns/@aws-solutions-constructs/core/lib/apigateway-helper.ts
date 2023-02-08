@@ -55,7 +55,7 @@ function configureCloudwatchRoleForApi(scope: Construct, _api: api.RestApi): iam
   const cfnAccount: api.CfnAccount = new api.CfnAccount(scope, 'LambdaRestApiAccount', {
     cloudWatchRoleArn: restApiCloudwatchRole.roleArn
   });
-  cfnAccount.addDependsOn(CfnApi);
+  cfnAccount.addDependency(CfnApi);
 
   // Suppress Cfn Nag warning for APIG
   const deployment: api.CfnDeployment = _api.latestDeployment?.node.findChild('Resource') as api.CfnDeployment;

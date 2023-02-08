@@ -17,6 +17,7 @@ import * as cdk from "aws-cdk-lib";
 import { FargateToSecretsmanager } from "../lib";
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import { buildSecretsManagerSecret } from '@aws-solutions-constructs/core';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 const clusterName = "custom-cluster-name";
 const containerName = "custom-container-name";
@@ -33,7 +34,7 @@ test('New service/new secret, public API, new VPC', () => {
   const construct = new FargateToSecretsmanager(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(cidr) },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -146,7 +147,7 @@ test('New service/new secret, private API, new VPC', () => {
   new FargateToSecretsmanager(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(cidr) },
     secretProps: {
       secretName
     },

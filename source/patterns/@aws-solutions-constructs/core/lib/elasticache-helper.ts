@@ -59,7 +59,7 @@ export function obtainMemcachedCluster(
       `${id}-cluster`,
       consolidatedProps
     );
-    newCache.addDependsOn(subnetGroup);
+    newCache.addDependency(subnetGroup);
     return newCache;
   }
 
