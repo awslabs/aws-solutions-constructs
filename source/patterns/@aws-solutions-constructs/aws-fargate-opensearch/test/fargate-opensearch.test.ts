@@ -16,6 +16,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
 import { FargateToOpenSearch } from "../lib";
 import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 const DOMAIN_NAME = "solutions-construct-domain";
 const COGNITO_DOMAIN_NAME = "cogn-solutions-construct-domain";
@@ -29,7 +30,7 @@ const deployStackWithNewResources = (stack: cdk.Stack, publicApi: boolean) => {
   return new FargateToOpenSearch(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     clusterProps: { clusterName: CLUSTER_NAME },
     containerDefinitionProps: { CONTAINER_NAME },
     fargateTaskDefinitionProps: { family: FAMILY_NAME },
@@ -45,7 +46,7 @@ test('Test domain and cognito domain name', () => {
   new FargateToOpenSearch(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     clusterProps: { clusterName: CLUSTER_NAME },
     containerDefinitionProps: { CONTAINER_NAME },
     fargateTaskDefinitionProps: { family: FAMILY_NAME },
@@ -177,7 +178,7 @@ test('Test custom environment variable name', () => {
   new FargateToOpenSearch(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     clusterProps: { clusterName: CLUSTER_NAME },
     containerDefinitionProps: { CONTAINER_NAME },
     fargateTaskDefinitionProps: { family: FAMILY_NAME },

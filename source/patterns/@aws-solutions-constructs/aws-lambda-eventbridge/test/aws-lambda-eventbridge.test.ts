@@ -18,6 +18,7 @@ import * as events from "aws-cdk-lib/aws-events";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { LambdaToEventbridge, LambdaToEventbridgeProps } from '../lib';
 import '@aws-cdk/assert/jest';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 const xrayPolicyStatement = {
   Action: [
@@ -258,7 +259,7 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     vpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
-      cidr: "192.68.0.0/16",
+      ipAddresses: ec2.IpAddresses.cidr("192.68.0.0/16"),
     },
     deployVpc: true,
   });

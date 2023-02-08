@@ -18,6 +18,7 @@ import { FargateToSqs } from "../lib";
 import * as kms from 'aws-cdk-lib/aws-kms';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 test('New service/new queue, dlq, public API, new VPC', () => {
 
@@ -34,7 +35,7 @@ test('New service/new queue, dlq, public API, new VPC', () => {
   const construct = new FargateToSqs(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -166,7 +167,7 @@ test('New service/new queue, private API, new VPC', () => {
   new FargateToSqs(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     deployDeadLetterQueue: false,
     queuePermissions: ['Read']
   });
@@ -494,7 +495,7 @@ test('Test bad queuePermissions', () => {
   const props = {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     deployDeadLetterQueue: false,
     queuePermissions: ['Reed'],
   };

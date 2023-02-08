@@ -20,6 +20,7 @@ import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { LambdaToSns, LambdaToSnsProps } from '../lib';
 import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 // --------------------------------------------------------------
 // Test deployment with new Lambda function
@@ -220,7 +221,7 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     vpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
-      cidr: "192.68.0.0/16",
+      ipAddresses: ec2.IpAddresses.cidr("192.68.0.0/16"),
     },
     deployVpc: true,
   });

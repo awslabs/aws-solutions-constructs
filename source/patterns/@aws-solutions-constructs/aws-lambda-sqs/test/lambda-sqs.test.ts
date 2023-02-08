@@ -18,6 +18,7 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { LambdaToSqs } from '../lib';
 import '@aws-cdk/assert/jest';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 // --------------------------------------------------------------
 // Test the getter methods
@@ -110,7 +111,7 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     vpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
-      cidr: "192.68.0.0/16",
+      ipAddresses: ec2.IpAddresses.cidr("192.68.0.0/16"),
     },
     deployVpc: true,
   });

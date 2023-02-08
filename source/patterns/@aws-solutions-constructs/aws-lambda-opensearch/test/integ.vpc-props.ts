@@ -15,6 +15,7 @@ import { App, Stack } from "aws-cdk-lib";
 import { LambdaToOpenSearch } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 // Setup
 const app = new App();
@@ -36,7 +37,7 @@ new LambdaToOpenSearch(stack, 'test-lambda-opensearch', {
   openSearchDomainName: "deploytestwithvpcprops",
   deployVpc: true,
   vpcProps: {
-    cidr: '172.168.0.0/16',
+    ipAddresses: ec2.IpAddresses.cidr('172.168.0.0/16'),
   }
 });
 

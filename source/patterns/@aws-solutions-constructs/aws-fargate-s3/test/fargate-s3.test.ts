@@ -17,6 +17,7 @@ import * as cdk from "aws-cdk-lib";
 import { FargateToS3 } from "../lib";
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 test('New service/new bucket, public API, new VPC', () => {
   // An environment with region is required to enable logging on an ALB
@@ -31,7 +32,7 @@ test('New service/new bucket, public API, new VPC', () => {
   const construct = new FargateToS3(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -207,7 +208,7 @@ test('New service/new bucket, private API, new VPC', () => {
   new FargateToS3(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     bucketProps: {
       bucketName
     },
@@ -319,7 +320,7 @@ test('Specify bad bucket permission', () => {
   const props = {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     bucketProps: {
       bucketName
     },

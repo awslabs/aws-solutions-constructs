@@ -89,7 +89,7 @@ export function getTestVpc(stack: Stack, publicFacing: boolean = true, userVpcPr
     constructVpcProps: {
       enableDnsHostnames: true,
       enableDnsSupport: true,
-      cidr: '172.168.0.0/16',
+      ipAddresses: ec2.IpAddresses.cidr('172.168.0.0/16'),
     },
     userVpcProps
   });
