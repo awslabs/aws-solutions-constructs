@@ -19,7 +19,6 @@ import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { LambdaToSecretsmanager } from '../lib';
 import '@aws-cdk/assert/jest';
 import * as defaults from "@aws-solutions-constructs/core";
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 // --------------------------------------------------------------
 // Test the getter methods
