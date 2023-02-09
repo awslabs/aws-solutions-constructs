@@ -184,7 +184,7 @@ export class AlbToLambda extends Construct {
     if (newListener && this.listener) {
       const levelOneListener = this.listener.node.defaultChild as CfnListener;
       const cfnTargetGroup = newTargetGroup.node.defaultChild as CfnTargetGroup;
-      levelOneListener.addDependsOn(cfnTargetGroup);
+      levelOneListener.addDependency(cfnTargetGroup);
     }
 
   }

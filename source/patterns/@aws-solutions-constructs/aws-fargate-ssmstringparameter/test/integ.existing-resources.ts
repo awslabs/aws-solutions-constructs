@@ -23,7 +23,7 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename), {
   env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
-stack.templateOptions.description = 'Integration Test with new VPC, Service and SSM String Parameter';
+stack.templateOptions.description = 'Integration Test with existing VPC, Service and SSM String Parameter';
 
 const existingVpc = getTestVpc(stack);
 const existingStringParameterObj = new ssm.StringParameter(stack, 'Parameter', {

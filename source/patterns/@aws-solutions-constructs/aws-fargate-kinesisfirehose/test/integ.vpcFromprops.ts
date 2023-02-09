@@ -17,6 +17,7 @@ import { FargateToKinesisFirehose } from "../lib";
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 import * as ecs from "aws-cdk-lib/aws-ecs";
 import { GetTestFirehoseDestination } from './test-helper';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
@@ -29,7 +30,7 @@ new FargateToKinesisFirehose(stack, 'test-fargate-kinesisstreams', {
     image: ecs.ContainerImage.fromRegistry('nginx')
   },
   vpcProps: {
-    cidr: '10.100.0.0/16'
+    ipAddresses: ec2.IpAddresses.cidr('10.100.0.0/16')
   },
   existingKinesisFirehose: destination.kinesisFirehose
 });

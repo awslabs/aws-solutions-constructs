@@ -116,7 +116,7 @@ export class CloudFrontToMediaStore extends Construct {
               Resource: `arn:${Aws.PARTITION}:mediastore:${Aws.REGION}:${Aws.ACCOUNT_ID}:container/${Aws.STACK_NAME}/*`,
               Condition: {
                 StringEquals: {
-                  'aws:UserAgent': this.cloudFrontOriginAccessIdentity.originAccessIdentityName
+                  'aws:UserAgent': this.cloudFrontOriginAccessIdentity.originAccessIdentityId
                 },
                 Bool: {
                   'aws:SecureTransport': 'true'
@@ -127,7 +127,7 @@ export class CloudFrontToMediaStore extends Construct {
         };
 
         const userAgentHeader: Record<string, string> = {
-          'User-Agent': this.cloudFrontOriginAccessIdentity.originAccessIdentityName
+          'User-Agent': this.cloudFrontOriginAccessIdentity.originAccessIdentityId
         };
 
         if (cloudFrontDistributionProps) {

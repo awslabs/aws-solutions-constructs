@@ -125,3 +125,25 @@ test('Test deployment w/ overwritten properties', () => {
     Description: 'existing role for SageMaker integration'
   });
 });
+
+test('Construct accepts additional read request templates', () => {
+  const stack = new Stack();
+  new ApiGatewayToSageMakerEndpoint(stack, 'api-gateway-sagemaker-endpoint', {
+    endpointName: 'my-endpoint',
+    resourcePath: '{my_param}',
+    requestMappingTemplate: 'my-request-vtl-template',
+    additionalRequestTemplates: {
+      'text/plain': 'additional-request-template'
+    }
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'GET',
+    Integration: {
+      RequestTemplates: {
+        'application/json': 'my-request-vtl-template',
+        'text/plain': 'additional-request-template'
+      }
+    }
+  });
+});

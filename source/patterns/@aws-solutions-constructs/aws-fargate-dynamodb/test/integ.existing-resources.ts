@@ -23,7 +23,7 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename), {
   env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
-stack.templateOptions.description = 'Integration Test with new VPC, Service and Table';
+stack.templateOptions.description = 'Integration Test with existing VPC and Service and Table';
 
 const existingVpc = getTestVpc(stack);
 const [ existingTable ] = defaults.buildDynamoDBTable(stack, {});

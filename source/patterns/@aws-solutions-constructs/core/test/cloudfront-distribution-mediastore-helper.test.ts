@@ -242,7 +242,7 @@ test('CloudFront distribution for MediaStore with user provided custom headers w
   const cloudfrontOriginAccessIdentity = CloudFrontOriginAccessIdentity(stack);
   const cfProps = {
     customHeaders: {
-      'User-Agent': cloudfrontOriginAccessIdentity.originAccessIdentityName
+      'User-Agent': cloudfrontOriginAccessIdentity.originAccessIdentityId
     }
   };
 

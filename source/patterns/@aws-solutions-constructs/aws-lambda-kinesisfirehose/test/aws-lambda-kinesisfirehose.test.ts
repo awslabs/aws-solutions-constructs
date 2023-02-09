@@ -18,6 +18,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { LambdaToKinesisFirehose } from '../lib';
 import * as defaults from '@aws-solutions-constructs/core';
 import { GetTestFirehoseDestination } from './test-helper';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 test('Test that properties are set correctly', () => {
   // Stack
@@ -101,7 +102,7 @@ test('Test that new VPC is created', () => {
     },
     deployVpc: true,
     vpcProps: {
-      cidr: cidrRange
+      ipAddresses: ec2.IpAddresses.cidr(cidrRange)
     }
   });
 
@@ -207,7 +208,7 @@ test('Test fail Vpc check with vpcProps yet deployVpc is false', () => {
       },
       deployVpc: false,
       vpcProps: {
-        cidr: "10.0.0.0/16",
+        ipAddresses: ec2.IpAddresses.cidr("10.0.0.0/16"),
       },
     });
   };
@@ -229,7 +230,7 @@ test('Test fail Vpc check with vpcProps yet deployVpc is undefined', () => {
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       },
       vpcProps: {
-        cidr: "10.0.0.0/16",
+        ipAddresses: ec2.IpAddresses.cidr("10.0.0.0/16"),
       },
     });
   };

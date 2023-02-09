@@ -111,3 +111,118 @@ test('Test deployment w/ existing stream', () => {
   // Since createCloudWatchAlars is set to false, no Alarm should exist
   expect(stack).not.toHaveResource('AWS::CloudWatch::Alarm');
 });
+
+test('Construct accepts additional PutRecord request templates', () => {
+  const stack = new Stack();
+  new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis-streams ', {
+    additionalPutRecordRequestTemplates: {
+      'text/plain': 'custom-template'
+    }
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'POST',
+    Integration: {
+      RequestTemplates: {
+        'text/plain': 'custom-template'
+      }
+    }
+  });
+});
+
+test('Construct accepts additional PutRecords request templates', () => {
+  const stack = new Stack();
+  new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis-streams ', {
+    additionalPutRecordsRequestTemplates: {
+      'text/plain': 'custom-template'
+    }
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'POST',
+    Integration: {
+      RequestTemplates: {
+        'text/plain': 'custom-template'
+      }
+    }
+  });
+});
+
+test('Construct uses default integration responses', () => {
+  const stack = new Stack();
+  new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis-streams ', {});
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'POST',
+    Integration: {
+      IntegrationResponses: [
+        {
+          StatusCode: '200'
+        },
+        {
+          ResponseTemplates: {
+            'text/html': 'Error'
+          },
+          SelectionPattern: '500',
+          StatusCode: '500'
+        }
+      ]
+    }
+  });
+});
+
+test('Construct uses custom putRecordIntegrationResponses property', () => {
+  const stack = new Stack();
+  new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis-streams ', {
+    putRecordIntegrationResponses: [
+      {
+        statusCode: '200',
+        responseTemplates: {
+          'text/html': 'OK'
+        }
+      }
+    ]
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'POST',
+    Integration: {
+      IntegrationResponses: [
+        {
+          ResponseTemplates: {
+            'text/html': 'OK'
+          },
+          StatusCode: '200'
+        }
+      ]
+    }
+  });
+});
+
+test('Construct uses custom putRecordsIntegrationResponses property', () => {
+  const stack = new Stack();
+  new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis-streams ', {
+    putRecordsIntegrationResponses: [
+      {
+        statusCode: '200',
+        responseTemplates: {
+          'text/html': 'OK'
+        }
+      }
+    ]
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'POST',
+    Integration: {
+      IntegrationResponses: [
+        {
+          ResponseTemplates: {
+            'text/html': 'OK'
+          },
+          StatusCode: '200'
+        }
+      ]
+    }
+  });
+});

@@ -17,6 +17,7 @@ import * as cdk from "aws-cdk-lib";
 import { FargateToDynamoDB } from "../lib";
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 test('New service/new table, public API, new VPC', () => {
   const stack = new cdk.Stack();
@@ -30,7 +31,7 @@ test('New service/new table, public API, new VPC', () => {
   const construct = new FargateToDynamoDB(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -168,7 +169,7 @@ test('New service/new table, private API, new VPC', () => {
   new FargateToDynamoDB(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     dynamoTableProps: {
       tableName,
       partitionKey: {

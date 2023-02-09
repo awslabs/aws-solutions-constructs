@@ -84,7 +84,7 @@ export function setupCognitoForSearchService(scope: Construct, domainName: strin
     domain: domainName,
     userPoolId: options.userpool.userPoolId
   });
-  userpooldomain.addDependsOn(options.userpool.node.findChild('Resource') as cognito.CfnUserPool);
+  userpooldomain.addDependency(options.userpool.node.findChild('Resource') as cognito.CfnUserPool);
 
   // Setup the IAM Role for Cognito Authorized Users
   const cognitoPrincipal = new iam.FederatedPrincipal(

@@ -47,7 +47,7 @@ export function DefaultPrivateVpcProps(): ec2.VpcProps {
       {
         cidrMask: 18,
         name: "private",
-        subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
       },
       {
         cidrMask: 24,

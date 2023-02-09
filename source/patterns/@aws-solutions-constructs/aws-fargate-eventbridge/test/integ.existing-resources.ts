@@ -23,7 +23,7 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename), {
   env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
-stack.templateOptions.description = 'Integration Test with new VPC, Service and Existing Bucket';
+stack.templateOptions.description = 'Integration Test with existing VPC, Service and Event Bus';
 
 const existingVpc = getTestVpc(stack);
 const image = ecs.ContainerImage.fromRegistry('nginx');

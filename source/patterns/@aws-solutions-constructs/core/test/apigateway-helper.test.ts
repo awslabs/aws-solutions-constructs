@@ -651,3 +651,154 @@ test('Test for ApiKey creation using lambdaApiProps', () => {
     KeyType: "API_KEY"
   });
 });
+
+test('Additional request templates can be specified on addMethodToApiResource method', () => {
+  const stack = new Stack();
+  const [ restApi ] = defaults.GlobalRestApi(stack);
+
+  // Setup the API Gateway role
+  const apiGatewayRole = new iam.Role(stack, 'api-gateway-role', {
+    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
+  });
+
+  // Setup the API Gateway resource
+  const apiGatewayResource = restApi.root.addResource('api-gateway-resource');
+  const requestTemplate = '{}';
+  const additionalRequestTemplates = {
+    'text/plain': 'additional-request-template'
+  };
+
+  // Add Method
+  defaults.addProxyMethodToApiResource({
+    action: "Query",
+    service: "dynamodb",
+    apiResource: apiGatewayResource,
+    apiGatewayRole,
+    apiMethod: "GET",
+    requestTemplate,
+    additionalRequestTemplates
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'GET',
+    Integration: {
+      RequestTemplates: {
+        'application/json': `{}`,
+        'text/plain': 'additional-request-template'
+      }
+    }
+  });
+});
+
+test('Default integration responses are used on addMethodToApiResource method', () => {
+  const stack = new Stack();
+  const [ restApi ] = defaults.GlobalRestApi(stack);
+
+  // Setup the API Gateway role
+  const apiGatewayRole = new iam.Role(stack, 'api-gateway-role', {
+    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
+  });
+
+  // Setup the API Gateway resource
+  const apiGatewayResource = restApi.root.addResource('api-gateway-resource');
+
+  // Add Method
+  defaults.addProxyMethodToApiResource({
+    action: 'Query',
+    service: 'dynamodb',
+    apiResource: apiGatewayResource,
+    apiGatewayRole,
+    apiMethod: 'GET',
+    requestTemplate: '{}',
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'GET',
+    Integration: {
+      IntegrationResponses: [
+        {
+          StatusCode: '200'
+        },
+        {
+          ResponseTemplates: {
+            'text/html': 'Error'
+          },
+          SelectionPattern: '500',
+          StatusCode: '500'
+        }
+      ]
+    }
+  });
+});
+
+test('Can override integration responses on addMethodToApiResource method', () => {
+  const stack = new Stack();
+  const [ restApi ] = defaults.GlobalRestApi(stack);
+
+  // Setup the API Gateway role
+  const apiGatewayRole = new iam.Role(stack, 'api-gateway-role', {
+    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
+  });
+
+  // Setup the API Gateway resource
+  const apiGatewayResource = restApi.root.addResource('api-gateway-resource');
+
+  // Add Method
+  defaults.addProxyMethodToApiResource({
+    action: 'Query',
+    service: 'dynamodb',
+    apiResource: apiGatewayResource,
+    apiGatewayRole,
+    apiMethod: 'GET',
+    requestTemplate: '{}',
+    integrationResponses: [
+      {
+        statusCode: "200",
+        responseTemplates: {
+          "text/html": "OK"
+        }
+      }
+    ]
+  });
+
+  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+    HttpMethod: 'GET',
+    Integration: {
+      IntegrationResponses: [
+        {
+          ResponseTemplates: {
+            'text/html': 'OK'
+          },
+          StatusCode: '200'
+        }
+      ],
+    }
+  });
+});
+
+test('Specifying application/json content-type in additionalRequestTemplates property throws an error', () => {
+  const stack = new Stack();
+  const [ restApi ] = defaults.GlobalRestApi(stack);
+
+  const apiGatewayRole = new iam.Role(stack, 'api-gateway-role', {
+    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
+  });
+
+  const apiGatewayResource = restApi.root.addResource('api-gateway-resource');
+
+  const app = () => {
+    defaults.addProxyMethodToApiResource({
+      action: 'Query',
+      service: 'dynamodb',
+      apiResource: apiGatewayResource,
+      apiGatewayRole,
+      apiMethod: 'GET',
+      requestTemplate: '{}',
+      additionalRequestTemplates: {
+        'application/json': '{}'
+      }
+    });
+  };
+
+  expect(app).toThrowError('Request Template for the application/json content-type must be specified in the requestTemplate property and not in the additionalRequestTemplates property');
+});

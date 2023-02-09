@@ -18,6 +18,7 @@ import * as route53 from "aws-cdk-lib/aws-route53";
 import * as defaults from "@aws-solutions-constructs/core";
 import * as acm from "aws-cdk-lib/aws-certificatemanager";
 import "@aws-cdk/assert/jest";
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 // Deploying Public/Private Existing Hosted Zones
 function deployApi(
@@ -41,7 +42,7 @@ function deployApi(
       constructVpcProps: {
         enableDnsHostnames: true,
         enableDnsSupport: true,
-        cidr: "172.168.0.0/16",
+        ipAddresses: ec2.IpAddresses.cidr("172.168.0.0/16"),
       },
     });
 
@@ -97,7 +98,7 @@ test("Test for errors when creating a private hosted zone", () => {
     constructVpcProps: {
       enableDnsHostnames: true,
       enableDnsSupport: true,
-      cidr: "172.168.0.0/16",
+      ipAddresses: ec2.IpAddresses.cidr("172.168.0.0/16"),
     },
   });
 
@@ -228,7 +229,7 @@ test("Test for providing private hosted zone props", () => {
     constructVpcProps: {
       enableDnsHostnames: true,
       enableDnsSupport: true,
-      cidr: "172.168.0.0/16",
+      ipAddresses: ec2.IpAddresses.cidr("172.168.0.0/16"),
     },
   });
 
