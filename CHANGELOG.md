@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.31.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.30.0...v2.31.0) (2023-02-09)
+
+
+### Features
+
+* **aws-apigateway-*:** add optional request templates for non-default content-types. ([#888](https://github.com/awslabs/aws-solutions-constructs/issues/888)) ([ace70f0](https://github.com/awslabs/aws-solutions-constructs/commit/ace70f0ff9efed0cd1cdf46cabd8fa2e9f0e1bcc))
+* **aws-iot-lambda-dynamodb:** add vpc and environment variable name to construct interface ([#894](https://github.com/awslabs/aws-solutions-constructs/issues/894)) ([8ee687a](https://github.com/awslabs/aws-solutions-constructs/commit/8ee687a8d644be8c7db8f905a55e5fced5a70bfc))
+
 ## [2.30.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.29.0...v2.30.0) (2022-12-28)
 
 Built on CDK 2.57.0
