@@ -13,6 +13,7 @@
 
 import { IotToLambdaToDynamoDB, IotToLambdaToDynamoDBProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as cdk from "aws-cdk-lib";
 import '@aws-cdk/assert/jest';
 
@@ -45,7 +46,7 @@ test('check lambda function properties', () => {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": [
-        "testiotlambdadynamodbstackIotToLambdaLambdaFunctionServiceRoleC57F7FDA",
+        "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionServiceRole31915E05",
         "Arn"
       ]
     },
@@ -70,7 +71,7 @@ test('check lambda function permission', () => {
     Action: "lambda:InvokeFunction",
     FunctionName: {
       "Fn::GetAtt": [
-        "testiotlambdadynamodbstackIotToLambdaLambdaFunctionDFEAF894",
+        "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunction5165A7EE",
         "Arn"
       ]
     },
@@ -155,7 +156,7 @@ test('check iot topic rule properties', () => {
           Lambda: {
             FunctionArn: {
               "Fn::GetAtt": [
-                "testiotlambdadynamodbstackIotToLambdaLambdaFunctionDFEAF894",
+                "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunction5165A7EE",
                 "Arn"
               ]
             }
@@ -249,11 +250,29 @@ test('check lambda function policy ', () => {
 test('check properties', () => {
   const stack = new cdk.Stack();
 
-  const construct: IotToLambdaToDynamoDB = deployStack(stack);
+  const props: IotToLambdaToDynamoDBProps = {
+    deployVpc: true,
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler'
+    },
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+        sql: "SELECT * FROM 'connectedcar/dtc/#'",
+        actions: []
+      }
+    }
+  };
 
-  expect(construct.lambdaFunction !== null);
-  expect(construct.dynamoTable !== null);
-  expect(construct.iotTopicRule !== null);
+  const construct = new IotToLambdaToDynamoDB(stack, 'test-iot-lambda-dynamodb-stack', props);
+
+  expect(construct.lambdaFunction).toBeDefined();
+  expect(construct.dynamoTable).toBeDefined();
+  expect(construct.iotTopicRule).toBeDefined();
+  expect(construct.vpc).toBeDefined();
 });
 
 test('check exception for Missing existingObj from props for deploy = false', () => {
@@ -303,4 +322,287 @@ test('Check incorrect table permission', () => {
 
   // Assertion
   expect(app).toThrowError(/Invalid table permission submitted - Reed/);
+});
+
+test('check lambda function custom environment variable', () => {
+  const stack = new cdk.Stack();
+  const props: IotToLambdaToDynamoDBProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler'
+    },
+    tableEnvironmentVariableName: 'CUSTOM_DYNAMODB_TABLE',
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+        sql: "SELECT * FROM 'connectedcar/dtc/#'",
+        actions: []
+      }
+    }
+  };
+
+  new IotToLambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', props);
+
+  expect(stack).toHaveResourceLike('AWS::Lambda::Function', {
+    Handler: 'index.handler',
+    Runtime: 'nodejs14.x',
+    Environment: {
+      Variables: {
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+        CUSTOM_DYNAMODB_TABLE: {
+          Ref: 'testlambdadynamodbstackLambdaToDynamoDBDynamoTable7E730A23'
+        }
+      }
+    }
+  });
+});
+
+// --------------------------------------------------------------
+// Test minimal deployment that deploys a VPC without vpcProps
+// --------------------------------------------------------------
+test("Test minimal deployment that deploys a VPC without vpcProps", () => {
+  // Stack
+  const stack = new cdk.Stack();
+  // Helper declaration
+  new IotToLambdaToDynamoDB(stack, "lambda-to-dynamodb-stack", {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: "index.handler",
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    deployVpc: true,
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+        sql: "SELECT * FROM 'connectedcar/dtc/#'",
+        actions: []
+      }
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::Lambda::Function", {
+    VpcConfig: {
+      SecurityGroupIds: [
+        {
+          "Fn::GetAtt": [
+            "lambdatodynamodbstackLambdaToDynamoDBReplaceDefaultSecurityGroupsecuritygroup04A024BF",
+            "GroupId",
+          ],
+        },
+      ],
+      SubnetIds: [
+        {
+          Ref: "lambdatodynamodbstackVpcisolatedSubnet1Subnet90CC3593",
+        },
+        {
+          Ref: "lambdatodynamodbstackVpcisolatedSubnet2Subnet4693DAE3",
+        },
+      ],
+    },
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPC", {
+    EnableDnsHostnames: true,
+    EnableDnsSupport: true,
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+    VpcEndpointType: "Gateway",
+  });
+
+  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
+  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+});
+
+// --------------------------------------------------------------
+// Test minimal deployment that deploys a VPC w/vpcProps
+// --------------------------------------------------------------
+test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
+  // Stack
+  const stack = new cdk.Stack();
+  // Helper declaration
+  new IotToLambdaToDynamoDB(stack, "lambda-to-dynamodb-stack", {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: "index.handler",
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    vpcProps: {
+      enableDnsHostnames: false,
+      enableDnsSupport: false,
+      ipAddresses: ec2.IpAddresses.cidr("192.68.0.0/16"),
+    },
+    deployVpc: true,
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+        sql: "SELECT * FROM 'connectedcar/dtc/#'",
+        actions: []
+      }
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::Lambda::Function", {
+    VpcConfig: {
+      SecurityGroupIds: [
+        {
+          "Fn::GetAtt": [
+            "lambdatodynamodbstackLambdaToDynamoDBReplaceDefaultSecurityGroupsecuritygroup04A024BF",
+            "GroupId",
+          ],
+        },
+      ],
+      SubnetIds: [
+        {
+          Ref: "lambdatodynamodbstackVpcisolatedSubnet1Subnet90CC3593",
+        },
+        {
+          Ref: "lambdatodynamodbstackVpcisolatedSubnet2Subnet4693DAE3",
+        },
+      ],
+    },
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPC", {
+    CidrBlock: "192.68.0.0/16",
+    EnableDnsHostnames: true,
+    EnableDnsSupport: true,
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+    VpcEndpointType: "Gateway",
+  });
+
+  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
+  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+});
+
+// --------------------------------------------------------------
+// Test minimal deployment with an existing VPC
+// --------------------------------------------------------------
+test("Test minimal deployment with an existing VPC", () => {
+  // Stack
+  const stack = new cdk.Stack();
+
+  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
+
+  // Helper declaration
+  new IotToLambdaToDynamoDB(stack, "lambda-to-dynamodb-stack", {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: "index.handler",
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingVpc: testVpc,
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+        sql: "SELECT * FROM 'connectedcar/dtc/#'",
+        actions: []
+      }
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::Lambda::Function", {
+    VpcConfig: {
+      SecurityGroupIds: [
+        {
+          "Fn::GetAtt": [
+            "lambdatodynamodbstackLambdaToDynamoDBReplaceDefaultSecurityGroupsecuritygroup04A024BF",
+            "GroupId",
+          ],
+        },
+      ],
+      SubnetIds: [
+        {
+          Ref: "testvpcPrivateSubnet1Subnet865FB50A",
+        },
+        {
+          Ref: "testvpcPrivateSubnet2Subnet23D3396F",
+        },
+      ],
+    },
+  });
+
+  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+    VpcEndpointType: "Gateway",
+  });
+});
+
+// --------------------------------------------------------------
+// Test minimal deployment with an existing VPC and existing Lambda function not in a VPC
+//
+// buildLambdaFunction should throw an error if the Lambda function is not
+// attached to a VPC
+// --------------------------------------------------------------
+test("Test minimal deployment with an existing VPC and existing Lambda function not in a VPC", () => {
+  // Stack
+  const stack = new cdk.Stack();
+
+  const testLambdaFunction = new lambda.Function(stack, 'test-lambda', {
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: "index.handler",
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
+
+  // Helper declaration
+  const app = () => {
+    // Helper declaration
+    new IotToLambdaToDynamoDB(stack, "lambda-to-dynamodb-stack", {
+      existingLambdaObj: testLambdaFunction,
+      existingVpc: testVpc,
+      iotTopicRuleProps: {
+        topicRulePayload: {
+          ruleDisabled: false,
+          description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+          sql: "SELECT * FROM 'connectedcar/dtc/#'",
+          actions: []
+        }
+      }
+    });
+  };
+
+  // Assertion
+  expect(app).toThrowError();
+
+});
+
+// --------------------------------------------------------------
+// Test bad call with existingVpc and deployVpc
+// --------------------------------------------------------------
+test("Test bad call with existingVpc and deployVpc", () => {
+  // Stack
+  const stack = new cdk.Stack();
+
+  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
+
+  const app = () => {
+    // Helper declaration
+    new IotToLambdaToDynamoDB(stack, "lambda-to-dynamodb-stack", {
+      lambdaFunctionProps: {
+        runtime: lambda.Runtime.NODEJS_14_X,
+        handler: "index.handler",
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      },
+      existingVpc: testVpc,
+      deployVpc: true,
+      iotTopicRuleProps: {
+        topicRulePayload: {
+          ruleDisabled: false,
+          description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+          sql: "SELECT * FROM 'connectedcar/dtc/#'",
+          actions: []
+        }
+      }
+    });
+  };
+  // Assertion
+  expect(app).toThrowError();
 });
