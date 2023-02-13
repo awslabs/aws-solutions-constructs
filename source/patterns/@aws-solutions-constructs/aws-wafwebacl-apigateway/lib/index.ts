@@ -17,7 +17,7 @@ import * as api from 'aws-cdk-lib/aws-apigateway';
 import * as waf from 'aws-cdk-lib/aws-wafv2';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Aws, Stack } from 'aws-cdk-lib';
+import { Aws } from 'aws-cdk-lib';
 
 /**
  * @summary The properties for the WafwebaclToApiGateway class.
