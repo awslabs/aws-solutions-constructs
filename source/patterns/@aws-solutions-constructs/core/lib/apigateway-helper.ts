@@ -70,6 +70,11 @@ function configureCloudwatchRoleForApi(scope: Construct, _api: api.RestApi): iam
   return restApiCloudwatchRole;
 }
 
+interface ConfigureLambdaRestApiResponse {
+  api: api.RestApi,
+  role?: iam.Role
+}
+
 /**
  * Creates and configures an api.LambdaRestApi.
  * @param scope - the construct to which the LambdaRestApi should be attached to.
@@ -77,7 +82,7 @@ function configureCloudwatchRoleForApi(scope: Construct, _api: api.RestApi): iam
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 function configureLambdaRestApi(scope: Construct, defaultApiGatewayProps: api.LambdaRestApiProps,
-  apiGatewayProps?: api.LambdaRestApiProps): [api.RestApi, iam.Role | undefined] {
+  apiGatewayProps?: api.LambdaRestApiProps): ConfigureLambdaRestApiResponse {
 
   // API Gateway doesn't allow both endpointTypes and endpointConfiguration, check whether endPointTypes exists
   if (apiGatewayProps?.endpointTypes) {
@@ -119,7 +124,7 @@ function configureLambdaRestApi(scope: Construct, defaultApiGatewayProps: api.La
   }
 
   // Return the API and CW Role
-  return [_api, cwRole];
+  return { api: _api, role: cwRole};
 }
 
 /**
@@ -170,6 +175,12 @@ function configureRestApi(scope: Construct, defaultApiGatewayProps: api.RestApiP
   return [_api, cwRole];
 }
 
+export interface GlobalLambdaRestApiResponse {
+  readonly api: api.RestApi,
+  readonly role?: iam.Role,
+  readonly group: logs.LogGroup
+}
+
 /**
  * Builds and returns a global api.RestApi designed to be used with an AWS Lambda function.
  * @param scope - the construct to which the RestApi should be attached to.
@@ -177,13 +188,19 @@ function configureRestApi(scope: Construct, defaultApiGatewayProps: api.RestApiP
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 export function GlobalLambdaRestApi(scope: Construct, _existingLambdaObj: lambda.Function,
-  apiGatewayProps?: api.LambdaRestApiProps, logGroupProps?: logs.LogGroupProps): [api.RestApi, iam.Role | undefined, logs.LogGroup] {
+  apiGatewayProps?: api.LambdaRestApiProps, logGroupProps?: logs.LogGroupProps): GlobalLambdaRestApiResponse {
   // Configure log group for API Gateway AccessLogging
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
 
   const defaultProps = apiDefaults.DefaultGlobalLambdaRestApiProps(_existingLambdaObj, logGroup);
-  const [restApi, apiCWRole] = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
-  return [restApi, apiCWRole, logGroup];
+  const restApi = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
+  return { api: restApi.api, role: restApi.role, group: logGroup};
+}
+
+export interface RegionalLambdaRestApiResponse {
+  readonly api: api.RestApi,
+  readonly role?: iam.Role,
+  readonly group: logs.LogGroup,
 }
 
 /**
@@ -193,13 +210,13 @@ export function GlobalLambdaRestApi(scope: Construct, _existingLambdaObj: lambda
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 export function RegionalLambdaRestApi(scope: Construct, _existingLambdaObj: lambda.Function,
-  apiGatewayProps?: api.LambdaRestApiProps, logGroupProps?: logs.LogGroupProps): [api.RestApi, iam.Role | undefined, logs.LogGroup] {
+  apiGatewayProps?: api.LambdaRestApiProps, logGroupProps?: logs.LogGroupProps): RegionalLambdaRestApiResponse {
   // Configure log group for API Gateway AccessLogging
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
 
   const defaultProps = apiDefaults.DefaultRegionalLambdaRestApiProps(_existingLambdaObj, logGroup);
-  const [restApi, apiCWRole] = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
-  return [restApi, apiCWRole, logGroup];
+  const restApi = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
+  return { api: restApi.api, role: restApi.role, group: logGroup};
 }
 
 /**
