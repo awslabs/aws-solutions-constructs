@@ -98,7 +98,7 @@ new ApiGatewayToSqs(this, "ApiGatewayToSqsPattern", new ApiGatewayToSqsProps.Bui
 |POST|`/`| `{ "data": "Hello World!" }` |`sqs::SendMessage`|Delivers a message to the queue.|
 |DELETE|`/message?receiptHandle=[value]`||`sqs::DeleteMessage`|Deletes a specified message from the queue|
 
-# API Gateway Request/Response Template Properties Overview
+## API Gateway Request/Response Template Properties Overview
 This construct allows you to implement four DynamoDB API operations, CREATE/READ/DELETE (corresponding the HTTP POST/GET/DELETE requests respectively). They are completely independent and each follows the same pattern:
 * Setting `allowCreateOperation` to true will implement the `application/json` content-type with default request and response templates
 * The request template for `application/json` requests can be customized using the `createRequestTemplate` prop value

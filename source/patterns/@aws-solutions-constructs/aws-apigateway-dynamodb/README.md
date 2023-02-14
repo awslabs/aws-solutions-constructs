@@ -93,7 +93,7 @@ new ApiGatewayToDynamoDB(this, "test-api-gateway-dynamodb-default", new ApiGatew
 |apiGatewayCloudWatchRole?|[`iam.Role`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html)|Returns an instance of the iam.Role created by the construct for API Gateway for CloudWatch access.|
 |apiGatewayLogGroup|[`logs.LogGroup`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroup.html)|Returns an instance of the LogGroup created by the construct for API Gateway access logging to CloudWatch.|
 
-# API Gateway Request/Response Template Properties Overview
+## API Gateway Request/Response Template Properties Overview
 This construct allows you to implement four DynamoDB API operations, CREATE/READ/UPDATE/DELETE (corresponding the HTTP POST/GET/PUT/DELETE requests respectively). They are completely independent and each follows the same pattern:
 * Setting `allowCreateOperation` to true will implement the `application/json` content-type with default request and response templates
 * The request template for `application/json` requests can be customized using the `createRequestTemplate` prop value
