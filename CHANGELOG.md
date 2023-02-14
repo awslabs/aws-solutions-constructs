@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.32.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.31.0...v2.32.0) (2023-02-14)
+
+Build on CDK 2.64.0
+
+### Features
+
+* **aws-wafwebacl-agigateway:** enable govcloud ([#900](https://github.com/awslabs/aws-solutions-constructs/issues/900)) ([dd19d93](https://github.com/awslabs/aws-solutions-constructs/commit/dd19d9363fa6c33b0c616a1a5392c26369bc02b2))
+
 ## [2.31.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.30.0...v2.31.0) (2023-02-09)
 
 Build on CDK 2.64.0
