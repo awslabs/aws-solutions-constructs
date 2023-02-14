@@ -17,7 +17,7 @@ import * as api from 'aws-cdk-lib/aws-apigateway';
 import * as waf from 'aws-cdk-lib/aws-wafv2';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Stack } from 'aws-cdk-lib';
+import { Aws } from 'aws-cdk-lib';
 
 /**
  * @summary The properties for the WafwebaclToApiGateway class.
@@ -62,7 +62,7 @@ export class WafwebaclToApiGateway extends Construct {
       webaclProps: props.webaclProps,
     });
 
-    const resourceArn = `arn:aws:apigateway:${Stack.of(scope).region}::/restapis/${props.existingApiGatewayInterface.restApiId}/stages/${props.existingApiGatewayInterface.deploymentStage.stageName}`;
+    const resourceArn = `arn:${Aws.PARTITION}:apigateway:${Aws.REGION}::/restapis/${props.existingApiGatewayInterface.restApiId}/stages/${props.existingApiGatewayInterface.deploymentStage.stageName}`;
 
     // Setup the Web ACL Association
     new waf.CfnWebACLAssociation(scope, `${id}-WebACLAssociation`, {
