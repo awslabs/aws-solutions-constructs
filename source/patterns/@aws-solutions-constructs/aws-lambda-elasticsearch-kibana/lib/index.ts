@@ -162,7 +162,9 @@ export class LambdaToElasticSearchAndKibana extends Construct {
       buildElasticSearchProps.securityGroupIds = securityGroupIds;
     }
 
-    [this.elasticsearchDomain, this.elasticsearchRole] = defaults.buildElasticSearch(this, buildElasticSearchProps);
+    const buildElasticSearchResponse = defaults.buildElasticSearch(this, buildElasticSearchProps);
+    this.elasticsearchDomain = buildElasticSearchResponse.domain;
+    this.elasticsearchRole = buildElasticSearchResponse.role;
 
     // Add ES Domain to lambda environment variable
     const domainEndpointEnvironmentVariableName = props.domainEndpointEnvironmentVariableName || 'DOMAIN_ENDPOINT';
