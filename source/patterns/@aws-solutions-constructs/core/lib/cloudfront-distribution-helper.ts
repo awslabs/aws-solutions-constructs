@@ -62,13 +62,19 @@ function defaultCloudfrontFunction(scope: Construct): cloudfront.Function {
   });
 }
 
+export interface CloudFrontDistributionForApiGatewayResponse {
+  readonly distribution: cloudfront.Distribution,
+  readonly cloudfrontFunction?: cloudfront.Function,
+  readonly loggingBucket?: s3.Bucket
+}
+
 export function CloudFrontDistributionForApiGateway(scope: Construct,
   apiEndPoint: api.RestApi,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
   httpSecurityHeaders: boolean = true,
   cloudFrontLoggingBucketProps?: s3.BucketProps,
   responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
-): [cloudfront.Distribution, cloudfront.Function?, s3.Bucket?] {
+): CloudFrontDistributionForApiGatewayResponse {
 
   const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
@@ -86,7 +92,13 @@ export function CloudFrontDistributionForApiGateway(scope: Construct,
   const cfDistribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
   updateSecurityPolicy(cfDistribution);
 
-  return [cfDistribution, cloudfrontFunction, loggingBucket];
+  return { distribution: cfDistribution, cloudfrontFunction, loggingBucket};
+}
+
+export interface CloudFrontDistributionForS3Response {
+  readonly distribution: cloudfront.Distribution,
+  readonly loggingBucket?: s3.Bucket,
+  readonly cloudfrontFunction?: cloudfront.Function,
 }
 
 export function CloudFrontDistributionForS3(
@@ -97,7 +109,7 @@ export function CloudFrontDistributionForS3(
   originPath?: string,
   cloudFrontLoggingBucketProps?: s3.BucketProps,
   responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
-): [cloudfront.Distribution, cloudfront.Function?, s3.Bucket?] {
+): CloudFrontDistributionForS3Response {
   const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
   const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope, cloudFrontLoggingBucketProps);
@@ -126,7 +138,14 @@ export function CloudFrontDistributionForS3(
       }
     ]);
   }
-  return [cfDistribution, cloudfrontFunction, loggingBucket];
+  return { distribution: cfDistribution, cloudfrontFunction, loggingBucket};
+}
+
+export interface CloudFrontDistributionForMediaStoreResponse {
+  readonly distribution: cloudfront.Distribution,
+  readonly loggingBucket?: s3.Bucket,
+  readonly requestPolicy: cloudfront.OriginRequestPolicy,
+  readonly cloudfrontFunction?: cloudfront.Function
 }
 
 export function CloudFrontDistributionForMediaStore(scope: Construct,
@@ -135,8 +154,7 @@ export function CloudFrontDistributionForMediaStore(scope: Construct,
   httpSecurityHeaders: boolean = true,
   cloudFrontLoggingBucketProps?: s3.BucketProps,
   responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
-): [cloudfront.Distribution,
-    s3.Bucket | undefined, cloudfront.OriginRequestPolicy, cloudfront.Function?] {
+): CloudFrontDistributionForMediaStoreResponse {
 
   let originRequestPolicy: cloudfront.OriginRequestPolicy;
 
@@ -190,7 +208,7 @@ export function CloudFrontDistributionForMediaStore(scope: Construct,
   const cfDistribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
   updateSecurityPolicy(cfDistribution);
 
-  return [cfDistribution, loggingBucket, originRequestPolicy, cloudfrontFunction];
+  return { distribution: cfDistribution, loggingBucket, requestPolicy: originRequestPolicy, cloudfrontFunction};
 }
 
 export function CloudFrontOriginAccessIdentity(scope: Construct, comment?: string) {

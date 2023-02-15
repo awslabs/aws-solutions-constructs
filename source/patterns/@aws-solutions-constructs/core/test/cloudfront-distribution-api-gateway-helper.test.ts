@@ -29,7 +29,7 @@ test('test cloudfront for Api Gateway with user provided logging bucket', () => 
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda-test`),
-    runtime: lambda.Runtime.PYTHON_3_6,
+    runtime: lambda.Runtime.PYTHON_3_9,
     handler: 'index.handler'
   };
 
@@ -147,7 +147,7 @@ test('test cloudfront for Api Gateway override properties', () => {
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda-test`),
-    runtime: lambda.Runtime.PYTHON_3_6,
+    runtime: lambda.Runtime.PYTHON_3_9,
     handler: 'index.handler'
   };
 

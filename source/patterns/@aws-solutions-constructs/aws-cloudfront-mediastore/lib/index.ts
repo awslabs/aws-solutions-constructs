@@ -142,14 +142,17 @@ export class CloudFrontToMediaStore extends Construct {
       this.mediaStoreContainer = defaults.MediaStoreContainer(this, mediaStoreProps);
     }
 
-    [this.cloudFrontWebDistribution, this.cloudFrontLoggingBucket, this.cloudFrontOriginRequestPolicy, this.cloudFrontFunction]
-      = defaults.CloudFrontDistributionForMediaStore(
-        this,
-        this.mediaStoreContainer,
-        cloudFrontDistributionProps,
-        props.insertHttpSecurityHeaders,
-        props.cloudFrontLoggingBucketProps,
-        props.responseHeadersPolicyProps
-      );
+    const DistributionResponse = defaults.CloudFrontDistributionForMediaStore(
+      this,
+      this.mediaStoreContainer,
+      cloudFrontDistributionProps,
+      props.insertHttpSecurityHeaders,
+      props.cloudFrontLoggingBucketProps,
+      props.responseHeadersPolicyProps
+    );
+    this.cloudFrontWebDistribution = DistributionResponse.distribution;
+    this.cloudFrontLoggingBucket = DistributionResponse.loggingBucket;
+    this.cloudFrontOriginRequestPolicy = DistributionResponse.requestPolicy;
+    this.cloudFrontFunction = DistributionResponse.cloudfrontFunction;
   }
 }
