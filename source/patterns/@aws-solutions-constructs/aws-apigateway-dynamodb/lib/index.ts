@@ -230,11 +230,12 @@ export class ApiGatewayToDynamoDB extends Construct {
 
     // Since we are only invoking this function with an existing Table or tableProps,
     // (not a table interface), we know that the implementation will always return
-    // a Table object and we can safely cast away the optional aspect of the type.
-    this.dynamoTable = defaults.buildDynamoDBTable(this, {
+    // a Table object and we can force assignment to the dynamoTable property.
+    const tableResponse = defaults.buildDynamoDBTable(this, {
       existingTableObj: props.existingTableObj,
       dynamoTableProps: props.dynamoTableProps
-    })[1] as dynamodb.Table;
+    });
+    this.dynamoTable = tableResponse.tableObject!;
 
     // Setup the API Gateway
     [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] = defaults.GlobalRestApi(this,

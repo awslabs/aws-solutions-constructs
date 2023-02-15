@@ -177,10 +177,12 @@ export class FargateToDynamoDB extends Construct {
       );
     }
 
-    [this.dynamoTableInterface, this.dynamoTable] = defaults.buildDynamoDBTable(this, {
+    const response = defaults.buildDynamoDBTable(this, {
       dynamoTableProps: props.dynamoTableProps,
       existingTableInterface: props.existingTableInterface
     });
+    this.dynamoTableInterface = response.tableInterface;
+    this.dynamoTable = response.tableObject;
 
     // Add the requested or default table permissions
     if (props.tablePermissions) {

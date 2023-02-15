@@ -56,18 +56,23 @@ export interface BuildDynamoDBTableWithStreamProps {
   readonly existingTableInterface?: dynamodb.ITable
 }
 
-export function buildDynamoDBTable(scope: Construct, props: BuildDynamoDBTableProps): [dynamodb.ITable, dynamodb.Table?] {
+export interface BuildDynamoDBTableResponse {
+  readonly tableInterface: dynamodb.ITable,
+  readonly tableObject?: dynamodb.Table,
+}
+
+export function buildDynamoDBTable(scope: Construct, props: BuildDynamoDBTableProps): BuildDynamoDBTableResponse {
   checkTableProps(props);
 
   // Conditional DynamoDB Table creation
   if (props.existingTableObj) {
-    return [props.existingTableObj, props.existingTableObj];
+    return { tableInterface: props.existingTableObj, tableObject: props.existingTableObj };
   } else if (props.existingTableInterface) {
-    return [props.existingTableInterface, undefined];
+    return { tableInterface: props.existingTableInterface };
   } else {
     const consolidatedTableProps = consolidateProps(DefaultTableProps, props.dynamoTableProps);
     const newTable = new dynamodb.Table(scope, 'DynamoTable', consolidatedTableProps);
-    return [newTable, newTable];
+    return { tableInterface: newTable, tableObject: newTable };
   }
 }
 
@@ -95,15 +100,20 @@ export function checkTableProps(props: BuildDynamoDBTableProps) {
   }
 }
 
-export function buildDynamoDBTableWithStream(scope: Construct, props: BuildDynamoDBTableWithStreamProps): [dynamodb.ITable, dynamodb.Table?] {
+export interface BuildDynamoDBTableWithStreamResponse {
+  readonly tableInterface: dynamodb.ITable,
+  readonly tableObject?: dynamodb.Table,
+}
+
+export function buildDynamoDBTableWithStream(scope: Construct, props: BuildDynamoDBTableWithStreamProps): BuildDynamoDBTableWithStreamResponse {
   // Conditional DynamoDB Table creation
   if (!props.existingTableInterface) {
     // Set the default props for DynamoDB table
     const dynamoTableProps = consolidateProps(DefaultTableWithStreamProps, props.dynamoTableProps);
     const dynamoTable: dynamodb.Table = new dynamodb.Table(scope, 'DynamoTable', dynamoTableProps);
-    return [dynamoTable as dynamodb.ITable, dynamoTable];
+    return { tableInterface: dynamoTable, tableObject: dynamoTable };
   } else {
-    return [props.existingTableInterface, undefined];
+    return { tableInterface: props.existingTableInterface };
   }
 }
 

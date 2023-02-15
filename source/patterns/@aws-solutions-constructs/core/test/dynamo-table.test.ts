@@ -159,9 +159,12 @@ test('test buildDynamoDBTable with existingTableObj', () => {
 
   const existingTableObj = new dynamodb.Table(stack, 'DynamoTable', tableProps);
 
-  defaults.buildDynamoDBTable(stack, {
+  const response = defaults.buildDynamoDBTable(stack, {
     existingTableObj
   });
+
+  expect(response.tableInterface).toBeDefined();
+  expect(response.tableObject).toBeDefined();
 
   expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
     KeySchema: [
@@ -183,7 +186,10 @@ test('test buildDynamoDBTable with existingTableObj', () => {
 test('test buildDynamoDBTable without any arguments', () => {
   const stack = new Stack();
 
-  defaults.buildDynamoDBTable(stack, {});
+  const response = defaults.buildDynamoDBTable(stack, {});
+
+  expect(response.tableInterface).toBeDefined();
+  expect(response.tableObject).toBeDefined();
 
   expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
     KeySchema: [
@@ -216,9 +222,12 @@ test('test buildDynamoDBTable with TableProps', () => {
     }
   };
 
-  defaults.buildDynamoDBTable(stack, {
+  const response = defaults.buildDynamoDBTable(stack, {
     dynamoTableProps
   });
+
+  expect(response.tableInterface).toBeDefined();
+  expect(response.tableObject).toBeDefined();
 
   expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
     KeySchema: [
@@ -248,9 +257,12 @@ test('test buildDynamoDBTableWithStream with TableProps', () => {
     stream: dynamodb.StreamViewType.NEW_IMAGE
   };
 
-  defaults.buildDynamoDBTableWithStream(stack, {
+  const response = defaults.buildDynamoDBTableWithStream(stack, {
     dynamoTableProps
   });
+
+  expect(response.tableInterface).toBeDefined();
+  expect(response.tableObject).toBeDefined();
 
   expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
     KeySchema: [
@@ -271,7 +283,10 @@ test('test buildDynamoDBTableWithStream with TableProps', () => {
 test('test buildDynamoDBTableWithStream without any arguments', () => {
   const stack = new Stack();
 
-  defaults.buildDynamoDBTableWithStream(stack, {});
+  const response = defaults.buildDynamoDBTableWithStream(stack, {});
+
+  expect(response.tableInterface).toBeDefined();
+  expect(response.tableObject).toBeDefined();
 
   expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
     KeySchema: [
@@ -312,9 +327,12 @@ test('test buildDynamoDBTableWithStream with existingTableObj', () => {
 
   const existingTableInterface = new dynamodb.Table(stack, 'DynamoTable', tableProps);
 
-  defaults.buildDynamoDBTableWithStream(stack, {
+  const response = defaults.buildDynamoDBTableWithStream(stack, {
     existingTableInterface
   });
+
+  expect(response.tableInterface).toBeDefined();
+  expect(response.tableObject).not.toBeDefined();
 
   expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
     KeySchema: [
@@ -345,9 +363,12 @@ test('test buildDynamoDBTable with existingTableInterface', () => {
 
   const existingTableInterface = new dynamodb.Table(stack, 'DynamoTable', tableProps);
 
-  defaults.buildDynamoDBTable(stack, {
+  const response = defaults.buildDynamoDBTable(stack, {
     existingTableInterface
   });
+
+  expect(response.tableInterface).toBeDefined();
+  expect(response.tableObject).not.toBeDefined();
 
   expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
     KeySchema: [
