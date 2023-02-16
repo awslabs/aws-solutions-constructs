@@ -111,11 +111,12 @@ export class CloudFrontToS3 extends Construct {
     let bucket: s3.IBucket;
 
     if (!props.existingBucketObj) {
-      [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
+      const BuildS3BucketResponse = defaults.buildS3Bucket(this, {
         bucketProps: props.bucketProps,
         loggingBucketProps: props.loggingBucketProps,
         logS3AccessLogs: props.logS3AccessLogs
       });
+      this.s3Bucket = BuildS3BucketResponse.bucket;
       bucket = this.s3Bucket;
     } else {
       bucket = props.existingBucketObj;

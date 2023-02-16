@@ -103,8 +103,10 @@ export class ApiGatewayToSageMakerEndpoint extends Construct {
     defaults.CheckProps(props);
 
     // Setup the API Gateway
-    [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] = defaults.GlobalRestApi(this,
-      props.apiGatewayProps, props.logGroupProps);
+    const globalRestApiResponse = defaults.GlobalRestApi(this, props.apiGatewayProps, props.logGroupProps);
+    this.apiGateway = globalRestApiResponse.api;
+    this.apiGatewayCloudWatchRole = globalRestApiResponse.role;
+    this.apiGatewayLogGroup =  globalRestApiResponse.logGroup;
 
     // Setup the API Gateway role
     if (props.apiGatewayExecutionRole !== undefined) {

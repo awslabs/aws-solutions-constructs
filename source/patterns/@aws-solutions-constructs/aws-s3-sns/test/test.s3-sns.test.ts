@@ -51,13 +51,13 @@ test('construct creates default event notification', () => {
 
 test('construct uses existingBucketObj property', () => {
   const stack = new Stack();
-  const [ existingBucketObj ] = defaults.buildS3Bucket(stack, {
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {
     bucketProps: {
       bucketName: 'existing-bucket-name'
     }
   });
   new S3ToSns(stack, 'test-s3-sns', {
-    existingBucketObj
+    existingBucketObj: buildS3BucketResponse.bucket
   });
 
   expect(stack).toHaveResourceLike("AWS::S3::Bucket", {
