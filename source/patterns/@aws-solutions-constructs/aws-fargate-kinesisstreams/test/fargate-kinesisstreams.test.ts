@@ -573,7 +573,7 @@ test('Construct uses existingFargateServiceObject when provided', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const [existingFargateServiceObject, existingContainerDefinitionObject] = defaults.CreateFargateService(stack, 'test-existing-fargate-service',
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test-existing-fargate-service',
     existingVpc,
     { clusterName: 'my-cluster' },
     defaults.fakeEcrRepoArn,
@@ -586,8 +586,8 @@ test('Construct uses existingFargateServiceObject when provided', () => {
   new FargateToKinesisStreams(stack, 'test-fargate-kinesisstreams', {
     publicApi: false,
     existingVpc,
-    existingFargateServiceObject,
-    existingContainerDefinitionObject
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition
   });
 
   expect(stack).toCountResources('AWS::ECS::Cluster', 1);
