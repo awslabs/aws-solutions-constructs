@@ -43,8 +43,8 @@ const testProps: FargateToOpenSearchProps = {
   existingVpc,
   openSearchDomainName: 'solution-constructs',
   cognitoDomainName: 'cogn-solution-constructs',
-  existingContainerDefinitionObject: testContainer,
-  existingFargateServiceObject: testService,
+  existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
+  existingFargateServiceObject: createFargateServiceResponse.service,
   domainEndpointEnvironmentVariableName: 'CUSTOM_NAME',
 };
 

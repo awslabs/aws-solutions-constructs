@@ -196,7 +196,7 @@ test('Existing service/new topic, public API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -208,8 +208,8 @@ test('Existing service/new topic, public API, existing VPC', () => {
 
   new FargateToSns(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     topicArnEnvironmentVariableName: 'CUSTOM_ARN',
     topicNameEnvironmentVariableName: 'CUSTOM_NAME',
@@ -285,7 +285,7 @@ test('Existing service/existing topic, private API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -301,8 +301,8 @@ test('Existing service/existing topic, private API, existing VPC', () => {
 
   new FargateToSns(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     existingTopicObject: existingTopic
   });

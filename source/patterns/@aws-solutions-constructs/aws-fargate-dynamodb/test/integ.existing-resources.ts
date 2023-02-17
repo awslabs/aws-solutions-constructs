@@ -44,8 +44,8 @@ const constructProps: FargateToDynamoDBProps = {
   publicApi: true,
   existingVpc,
   existingTableInterface: buildTableResponse.tableObject,
-  existingContainerDefinitionObject: testContainer,
-  existingFargateServiceObject: testService,
+  existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
+  existingFargateServiceObject: createFargateServiceResponse.service,
   tableArnEnvironmentVariableName: 'CUSTOM_ARN',
   tableEnvironmentVariableName: 'CUSTOM_NAME'
 };

@@ -130,7 +130,7 @@ test('Test existing load balancer, vpc, service', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -145,8 +145,8 @@ test('Test existing load balancer, vpc, service', () => {
   const testProps: AlbToFargateProps = {
     existingVpc,
     publicApi: true,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingLoadBalancerObj: existingAlb,
     listenerProps: {
       protocol: 'HTTP'

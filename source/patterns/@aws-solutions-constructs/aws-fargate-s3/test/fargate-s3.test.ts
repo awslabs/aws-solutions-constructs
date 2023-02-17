@@ -434,7 +434,7 @@ test('Existing service/new bucket, public API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -446,8 +446,8 @@ test('Existing service/new bucket, public API, existing VPC', () => {
 
   new FargateToS3(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     bucketArnEnvironmentVariableName: customArn,
     bucketEnvironmentVariableName: customName,
@@ -577,7 +577,7 @@ test('Existing service/existing bucket, private API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -593,8 +593,8 @@ test('Existing service/existing bucket, private API, existing VPC', () => {
 
   new FargateToS3(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     existingBucketObj: existingBucket,
     bucketPermissions: ['Write']

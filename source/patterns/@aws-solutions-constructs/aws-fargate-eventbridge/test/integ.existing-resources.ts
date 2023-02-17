@@ -44,8 +44,8 @@ const testProps: FargateToEventbridgeProps = {
   publicApi: true,
   existingVpc,
   existingEventBusInterface: existingEventBus,
-  existingContainerDefinitionObject: testContainer,
-  existingFargateServiceObject: testService,
+  existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
+  existingFargateServiceObject: createFargateServiceResponse.service,
   eventBusEnvironmentVariableName: 'CUSTOM_ARN',
 };
 

@@ -23,11 +23,14 @@ test('Test with all defaults', () => {
   const stack = new Stack();
 
   const testVpc = defaults.getTestVpc(stack);
-  CreateFargateService(stack,
+  const response = CreateFargateService(stack,
     'test',
     testVpc,
     undefined,
     defaults.fakeEcrRepoArn);
+
+  expect(response.containerDefinition).toBeDefined();
+  expect(response.service).toBeDefined();
 
   expect(stack).toHaveResource("AWS::ECS::Service", {
     Cluster: {

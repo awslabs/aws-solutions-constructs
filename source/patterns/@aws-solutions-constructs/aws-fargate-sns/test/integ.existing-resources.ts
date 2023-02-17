@@ -45,8 +45,8 @@ const testProps: FargateToSnsProps = {
   publicApi: true,
   existingVpc,
   existingTopicObject: existingTopic,
-  existingContainerDefinitionObject: testContainer,
-  existingFargateServiceObject: testService,
+  existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
+  existingFargateServiceObject: createFargateServiceResponse.service,
   topicArnEnvironmentVariableName: 'CUSTOM_ARN',
   topicNameEnvironmentVariableName: 'CUSTOM_NAME',
 };

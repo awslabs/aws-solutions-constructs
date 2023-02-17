@@ -44,8 +44,8 @@ const constructProps: FargateToSecretsmanagerProps = {
   publicApi: true,
   existingVpc,
   existingSecretObj,
-  existingContainerDefinitionObject: testContainer,
-  existingFargateServiceObject: testService,
+  existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
+  existingFargateServiceObject: createFargateServiceResponse.service,
 };
 
 new FargateToSecretsmanager(stack, 'test-construct', constructProps);
