@@ -31,7 +31,7 @@ addCfnSuppressRules(existingTopic, [ { id: "W47", reason: "Stub topic for placeh
 
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
-const [testService, testContainer] = CreateFargateService(stack,
+const createFargateServiceResponse = CreateFargateService(stack,
   'test',
   existingVpc,
   undefined,
