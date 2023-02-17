@@ -70,18 +70,20 @@ test('construct uses existing topic and key', () => {
   const cmk = defaults.buildEncryptionKey(stack, {
     description: 'existing-key-description'
   });
-  const [ existingTopicObj ] = defaults.buildTopic(stack, {
+  const buildTopicResponse = defaults.buildTopic(stack, {
     encryptionKey: cmk,
     topicProps: {
       topicName: 'existing-topic-name'
     }
   });
 
-  new S3ToSns(stack, 'test-s3-sns', {
-    existingTopicObj,
+  const testConstruct = new S3ToSns(stack, 'test-s3-sns', {
+    existingTopicObj: buildTopicResponse.topic,
     existingTopicEncryptionKey: cmk
   });
 
+  expect(testConstruct.snsTopic).toBeDefined();
+  expect(testConstruct.encryptionKey).toBeDefined();
   expect(stack).toHaveResourceLike("AWS::SNS::Topic", {
     TopicName: 'existing-topic-name'
   });
@@ -232,10 +234,12 @@ test('Construct does not override unencrypted topic when passed in existingTopic
     topicName: 'existing-topic-name'
   });
 
-  new S3ToSns(stack, 'test-s3-sns', {
+  const testConstruct = new S3ToSns(stack, 'test-s3-sns', {
     existingTopicObj
   });
 
+  expect(testConstruct.snsTopic).toBeDefined();
+  expect(testConstruct.encryptionKey).not.toBeDefined();
   expect(stack).toCountResources('AWS::KMS::Key', 0);
   expect(stack).toCountResources('AWS::SNS::Topic', 1);
 

@@ -96,7 +96,7 @@ export class EventbridgeToSns extends Construct {
       }
 
       // Setup the sns topic.
-      [this.snsTopic, this.encryptionKey] = defaults.buildTopic(this, {
+      const buildTopicResponse = defaults.buildTopic(this, {
         existingTopicObj: props.existingTopicObj,
         topicProps: props.topicProps,
         enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
@@ -104,6 +104,8 @@ export class EventbridgeToSns extends Construct {
         encryptionKeyProps: props.encryptionKeyProps
       });
 
+      this.snsTopic = buildTopicResponse.topic;
+      this.encryptionKey = buildTopicResponse.key;
       // Setup the event rule target as sns topic.
       const topicEventTarget: events.IRuleTarget = {
         bind: () => ({

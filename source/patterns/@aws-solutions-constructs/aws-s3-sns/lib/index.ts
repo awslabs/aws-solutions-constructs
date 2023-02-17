@@ -145,7 +145,7 @@ export class S3ToSns extends Construct {
       }
 
       // Setup the topic
-      [this.snsTopic, this.encryptionKey] = defaults.buildTopic(this, {
+      const buildTopicResponse = defaults.buildTopic(this, {
         existingTopicObj: props.existingTopicObj,
         existingTopicEncryptionKey: props.existingTopicEncryptionKey,
         topicProps: props.topicProps,
@@ -154,6 +154,8 @@ export class S3ToSns extends Construct {
         encryptionKeyProps: props.encryptionKeyProps
       });
 
+      this.snsTopic = buildTopicResponse.topic;
+      this.encryptionKey = buildTopicResponse.key;
       // Setup the S3 bucket event types
       const s3EventTypes = props.s3EventTypes ?? defaults.defaultS3NotificationEventTypes;
 

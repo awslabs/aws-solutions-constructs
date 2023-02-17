@@ -32,7 +32,7 @@ test('New service/new topic, public API, new VPC', () => {
   const serviceName = "custom-service-name";
   const topicName = "custom-topic-name";
 
-  new FargateToSns(stack, 'test-construct', {
+  const testConstruct = new FargateToSns(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
     vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
@@ -43,6 +43,7 @@ test('New service/new topic, public API, new VPC', () => {
     topicProps: { topicName },
   });
 
+  expect(testConstruct.snsTopic).toBeDefined();
   expect(stack).toHaveResourceLike("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     DesiredCount: 2,

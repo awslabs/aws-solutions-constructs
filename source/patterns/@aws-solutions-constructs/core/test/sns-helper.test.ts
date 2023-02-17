@@ -27,8 +27,10 @@ test('Test deployment with no properties using AWS Managed KMS Key', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  defaults.buildTopic(stack, {});
+  const buildTopicResponse = defaults.buildTopic(stack, {});
 
+  expect(buildTopicResponse.topic).toBeDefined();
+  expect(buildTopicResponse.key).toBeDefined();
   expect(stack).toHaveResource("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::Join": [
@@ -85,13 +87,16 @@ test('Test deployment w/ imported encryption key', () => {
   // Generate KMS Key
   const key = defaults.buildEncryptionKey(stack);
   // Helper declaration
-  defaults.buildTopic(stack, {
+  const buildTopicResponse = defaults.buildTopic(stack, {
     topicProps: {
       topicName: "custom-topic"
     },
     enableEncryptionWithCustomerManagedKey: true,
     encryptionKey: key
   });
+
+  expect(buildTopicResponse.topic).toBeDefined();
+  expect(buildTopicResponse.key).toBeDefined();
 
   expect(stack).toHaveResource("AWS::SNS::Topic", {
     KmsMasterKeyId: {
@@ -288,10 +293,12 @@ test('existing unencrypted topic is not overridden with defaults', () => {
 
   const topic = new sns.Topic(stack, 'Topic');
 
-  defaults.buildTopic(stack, {
+  const buildBuildTopicResponse = defaults.buildTopic(stack, {
     existingTopicObj: topic,
   });
 
+  expect(buildBuildTopicResponse.topic).toBeDefined();
+  expect(buildBuildTopicResponse.key).not.toBeDefined();
   // Make sure the construct did not create any other topics and that no keys exist
   expect(stack).toCountResources('AWS::KMS::Key', 0);
   expect(stack).toCountResources('AWS::SNS::Topic', 1);

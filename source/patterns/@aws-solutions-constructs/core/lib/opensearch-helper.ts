@@ -36,7 +36,12 @@ export interface BuildOpenSearchProps {
   readonly securityGroupIds?: string[]
 }
 
-export function buildOpenSearch(scope: Construct, props: BuildOpenSearchProps): [opensearch.CfnDomain, iam.Role] {
+export interface BuildOpenSearchResponse {
+  readonly domain: opensearch.CfnDomain,
+  readonly role: iam.Role
+}
+
+export function buildOpenSearch(scope: Construct, props: BuildOpenSearchProps): BuildOpenSearchResponse {
   let subnetIds: string[] = [];
   const constructDrivenProps: any = {};
 
@@ -82,7 +87,7 @@ export function buildOpenSearch(scope: Construct, props: BuildOpenSearchProps): 
     },
   ]);
 
-  return [opensearchDomain, cognitoDashboardConfigureRole];
+  return  { domain: opensearchDomain, role: cognitoDashboardConfigureRole };
 }
 
 export function buildOpenSearchCWAlarms(scope: Construct): cloudwatch.Alarm[] {

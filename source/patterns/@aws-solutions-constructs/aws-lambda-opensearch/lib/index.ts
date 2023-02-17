@@ -160,7 +160,9 @@ export class LambdaToOpenSearch extends Construct {
       securityGroupIds
     };
 
-    [this.openSearchDomain, this.openSearchRole] = defaults.buildOpenSearch(this, buildOpenSearchProps);
+    const buildOpenSearchResponse = defaults.buildOpenSearch(this, buildOpenSearchProps);
+    this.openSearchDomain = buildOpenSearchResponse.domain;
+    this.openSearchRole = buildOpenSearchResponse.role;
 
     if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
       this.cloudWatchAlarms = defaults.buildOpenSearchCWAlarms(this);

@@ -126,7 +126,12 @@ function applySecureTopicPolicy(topic: sns.Topic): void {
   );
 }
 
-export function buildTopic(scope: Construct, props: BuildTopicProps): [sns.Topic, kms.Key?] {
+export interface BuildTopicResponse {
+  readonly topic: sns.Topic,
+  readonly key?: kms.Key
+}
+
+export function buildTopic(scope: Construct, props: BuildTopicProps): BuildTopicResponse {
   if (!props.existingTopicObj) {
     // Setup the topic properties
     const snsTopicProps = consolidateProps(DefaultSnsTopicProps, props.topicProps);
@@ -151,8 +156,8 @@ export function buildTopic(scope: Construct, props: BuildTopicProps): [sns.Topic
 
     applySecureTopicPolicy(topic);
 
-    return [topic, snsTopicProps.masterKey];
+    return { topic, key: snsTopicProps.masterKey };
   } else {
-    return [props.existingTopicObj, props.existingTopicEncryptionKey];
+    return { topic: props.existingTopicObj, key: props.existingTopicEncryptionKey };
   }
 }

@@ -15,11 +15,11 @@ import { Stack } from 'aws-cdk-lib';
 import * as opensearch from 'aws-cdk-lib/aws-opensearchservice';
 import * as defaults from '../index';
 import '@aws-cdk/assert/jest';
-import * as iam from 'aws-cdk-lib/aws-iam';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import { BuildOpenSearchResponse } from '../index';
 
 function deployOpenSearch(stack: Stack, openSearchDomainName: string, clientDomainProps?: opensearch.CfnDomainProps,
-  lambdaRoleARN?: string, vpc?: ec2.IVpc): [opensearch.CfnDomain, iam.Role] {
+  lambdaRoleARN?: string, vpc?: ec2.IVpc): BuildOpenSearchResponse {
   const userpool = defaults.buildUserPool(stack);
   const userpoolclient = defaults.buildUserPoolClient(stack, userpool, {
     userPoolClientName: 'test',
@@ -53,12 +53,14 @@ function deployStack() {
 test('Test override SnapshotOptions for buildOpenSearch', () => {
   const stack = deployStack();
 
-  deployOpenSearch(stack, 'test-domain', {
+  const buildOpenSearchResponse = deployOpenSearch(stack, 'test-domain', {
     snapshotOptions: {
       automatedSnapshotStartHour: 5
     }
   });
 
+  expect(buildOpenSearchResponse.domain).toBeDefined();
+  expect(buildOpenSearchResponse.role).toBeDefined();
   expect(stack).toHaveResource('AWS::OpenSearchService::Domain', {
     AccessPolicies: {
       Statement: [
@@ -167,8 +169,10 @@ test('Test VPC with 2 AZ, Zone Awareness Enabled', () => {
 
   const vpc: ec2.IVpc = defaults.getTestVpc(stack, false);
 
-  deployOpenSearch(stack, 'test-domain', {}, undefined, vpc);
+  const buildOpenSearchResponse = deployOpenSearch(stack, 'test-domain', {}, undefined, vpc);
 
+  expect(buildOpenSearchResponse.domain).toBeDefined();
+  expect(buildOpenSearchResponse.role).toBeDefined();
   expect(stack).toHaveResourceLike('AWS::OpenSearchService::Domain', {
     DomainName: "test-domain",
     ClusterConfig: {
@@ -341,8 +345,10 @@ test('Test engine version override for buildOpenSearch', () => {
 test('Test deployment with lambdaRoleARN', () => {
   const stack = deployStack();
 
-  deployOpenSearch(stack, 'test-domain', {}, 'arn:aws:us-east-1:mylambdaRoleARN');
+  const buildOpenSearchResponse = deployOpenSearch(stack, 'test-domain', {}, 'arn:aws:us-east-1:mylambdaRoleARN');
 
+  expect(buildOpenSearchResponse.domain).toBeDefined();
+  expect(buildOpenSearchResponse.role).toBeDefined();
   expect(stack).toHaveResource('AWS::OpenSearchService::Domain', {
     AccessPolicies: {
       Statement: [

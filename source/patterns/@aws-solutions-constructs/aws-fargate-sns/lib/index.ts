@@ -186,7 +186,7 @@ export class FargateToSns extends Construct {
     }
 
     // Setup the SNS topic
-    [this.snsTopic] = defaults.buildTopic(this, {
+    const buildTopicResponse = defaults.buildTopic(this, {
       existingTopicObj: props.existingTopicObject,
       topicProps: props.topicProps,
       enableEncryptionWithCustomerManagedKey: props.enableEncryptionWithCustomerManagedKey,
@@ -194,6 +194,7 @@ export class FargateToSns extends Construct {
       encryptionKeyProps: props.encryptionKeyProps
     });
 
+    this.snsTopic = buildTopicResponse.topic;
     this.snsTopic.grantPublish(this.service.taskDefinition.taskRole);
 
     const topicArnEnvironmentVariableName = props.topicArnEnvironmentVariableName || 'SNS_TOPIC_ARN';

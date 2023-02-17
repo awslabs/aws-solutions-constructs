@@ -139,11 +139,13 @@ export class SnsToSqs extends Construct {
       // Setup the SNS topic
       if (!props.existingTopicObj) {
         // If an existingTopicObj was not specified create new topic
-        [this.snsTopic, this.encryptionKey] = defaults.buildTopic(this, {
+        const buildTopicResponse = defaults.buildTopic(this, {
           topicProps: props.topicProps,
           enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
           encryptionKey: encryptionKeyParam
         });
+        this.snsTopic = buildTopicResponse.topic;
+        this.encryptionKey = buildTopicResponse.key;
       } else {
         // If an existingTopicObj was specified utilize the provided topic
         this.snsTopic = props.existingTopicObj;

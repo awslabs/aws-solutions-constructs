@@ -27,8 +27,10 @@ test('Pattern deployment w/ new Topic, new Queue and default props', () => {
   // Initial Setup
   const stack = new Stack();
   const props: SnsToSqsProps = {};
-  new SnsToSqs(stack, 'test-sns-sqs', props);
+  const testConstruct = new SnsToSqs(stack, 'test-sns-sqs', props);
 
+  expect(testConstruct.snsTopic).toBeDefined();
+  expect(testConstruct.encryptionKey).toBeDefined();
   // Assertion 2
   expect(stack).toHaveResource("AWS::SNS::Topic", {
     KmsMasterKeyId: {
@@ -467,4 +469,21 @@ test('Construct uses queueProps.encryptionMasterKey when specified', () => {
       ]
     }
   });
+});
+
+test('Construct does not override unencrypted topic when passed in existingTopicObj prop', () => {
+  const stack = new Stack();
+
+  const existingTopicObj = new sns.Topic(stack, 'Topic', {
+    topicName: 'existing-topic-name'
+  });
+
+  const props: SnsToSqsProps = {
+    existingTopicObj,
+  };
+
+  const testConstruct = new SnsToSqs(stack, 'test-sns-sqs', props);
+
+  expect(testConstruct.snsTopic).toBeDefined();
+  expect(testConstruct.encryptionKey).not.toBeDefined();
 });
