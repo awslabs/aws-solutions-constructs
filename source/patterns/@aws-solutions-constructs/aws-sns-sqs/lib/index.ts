@@ -152,13 +152,14 @@ export class SnsToSqs extends Construct {
       }
 
       // Setup the queue
-      [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
+      const buildQueueResponse = defaults.buildQueue(this, 'queue', {
         existingQueueObj: props.existingQueueObj,
         queueProps: props.queueProps,
         deadLetterQueue: this.deadLetterQueue,
         enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
         encryptionKey: encryptionKeyParam
       });
+      this.sqsQueue = buildQueueResponse.queue;
 
       // Setup the SQS queue subscription to the SNS topic
       this.snsTopic.addSubscription(new subscriptions.SqsSubscription(this.sqsQueue, props.sqsSubscriptionProps));

@@ -119,7 +119,7 @@ export class IotToSqs extends Construct {
     }
 
     // Setup the queue
-    [this.sqsQueue, this.encryptionKey] = defaults.buildQueue(this, 'queue', {
+    const buildQueueResponse = defaults.buildQueue(this, 'queue', {
       existingQueueObj: props.existingQueueObj,
       queueProps: props.queueProps,
       deadLetterQueue: this.deadLetterQueue,
@@ -127,6 +127,8 @@ export class IotToSqs extends Construct {
       encryptionKey: props.encryptionKey,
       encryptionKeyProps: props.encryptionKeyProps
     });
+    this.sqsQueue = buildQueueResponse.queue;
+    this.encryptionKey = buildQueueResponse.key;
 
     if (this.sqsQueue.fifo) {
       throw new Error('The IoT SQS action doesn\'t support Amazon SQS FIFO (First-In-First-Out) queues');

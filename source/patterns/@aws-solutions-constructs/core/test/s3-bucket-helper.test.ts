@@ -15,7 +15,6 @@ import { expect as expectCDK, haveResource, ResourcePart } from '@aws-cdk/assert
 import { Duration, Stack, RemovalPolicy } from 'aws-cdk-lib';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
-import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as defaults from '../index';
 import '@aws-cdk/assert/jest';
 import { Bucket, StorageClass } from 'aws-cdk-lib/aws-s3';
@@ -377,10 +376,9 @@ test('s3 bucket versioning turned on', () => {
 
 test('Suppress cfn-nag warning for s3 bucket notification', () => {
   const stack = new Stack();
-  let queue: sqs.Queue;
   const response = defaults.buildS3Bucket(stack, {});
-  [queue] = defaults.buildQueue(stack, "S3BucketNotificationQueue", {});
-  response.bucket.addEventNotification(s3.EventType.OBJECT_CREATED, new s3n.SqsDestination(queue));
+  const buildQueueResponse = defaults.buildQueue(stack, "S3BucketNotificationQueue", {});
+  response.bucket.addEventNotification(s3.EventType.OBJECT_CREATED, new s3n.SqsDestination(buildQueueResponse.queue));
   defaults.addCfnNagS3BucketNotificationRulesToSuppress(stack, "BucketNotificationsHandler050a0587b7544547bf325f094a3db834");
 
   expectCDK(stack).to(haveResource("AWS::Lambda::Function", {

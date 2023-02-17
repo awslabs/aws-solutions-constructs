@@ -21,10 +21,10 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-apigateway-sqs';
 
-const [existingQueueObj] = buildQueue(stack, 'existing-queue', {});
+const buildQueueResponse = buildQueue(stack, 'existing-queue', {});
 
 new ApiGatewayToSqs(stack, 'test-api-gateway-sqs-existing-queue', {
-  existingQueueObj
+  existingQueueObj: buildQueueResponse.queue
 });
 
 // Synth

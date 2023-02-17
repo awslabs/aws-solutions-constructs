@@ -62,7 +62,12 @@ export interface BuildQueueProps {
      readonly encryptionKeyProps?: kms.KeyProps;
 }
 
-export function buildQueue(scope: Construct, id: string, props: BuildQueueProps): [sqs.Queue, kms.IKey?] {
+export interface BuildQueueResponse {
+  readonly queue: sqs.Queue,
+  readonly key?: kms.IKey
+}
+
+export function buildQueue(scope: Construct, id: string, props: BuildQueueProps): BuildQueueResponse {
 
   if ((props.queueProps?.encryptionMasterKey || props.encryptionKey || props.encryptionKeyProps)
   && props.enableEncryptionWithCustomerManagedKey === true) {
@@ -103,10 +108,10 @@ export function buildQueue(scope: Construct, id: string, props: BuildQueueProps)
     applySecureQueuePolicy(queue);
 
     // Return the queue
-    return [queue, queue.encryptionMasterKey];
+    return { queue, key: queue.encryptionMasterKey };
   } else {
     // If an existingQueueObj is specified, return that object as the queue to be used
-    return [props.existingQueueObj];
+    return { queue: props.existingQueueObj };
   }
 }
 
@@ -140,7 +145,7 @@ export interface BuildDeadLetterQueueProps {
 export function buildDeadLetterQueue(scope: Construct, props: BuildDeadLetterQueueProps): sqs.DeadLetterQueue | undefined {
   if (!props.existingQueueObj && (props.deployDeadLetterQueue || props.deployDeadLetterQueue === undefined)) {
     // Create the Dead Letter Queue
-    const [dlq] = buildQueue(scope, 'deadLetterQueue', {
+    const buildQueueResponse = buildQueue(scope, 'deadLetterQueue', {
       queueProps: props.deadLetterQueueProps
     });
 
@@ -149,7 +154,7 @@ export function buildDeadLetterQueue(scope: Construct, props: BuildDeadLetterQue
     // Setup the Dead Letter Queue interface
     const dlqInterface: sqs.DeadLetterQueue = {
       maxReceiveCount: mrc,
-      queue: dlq
+      queue: buildQueueResponse.queue
     };
 
     // Return the dead letter queue interface

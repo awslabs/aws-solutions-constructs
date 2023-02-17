@@ -22,12 +22,12 @@ const app = new App();
 
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const [myQueue] = defaults.buildQueue(stack, 'test-existing-queue', {
+const buildQueueResponse = defaults.buildQueue(stack, 'test-existing-queue', {
   enableEncryptionWithCustomerManagedKey: true
 });
 
 const props: S3ToSqsProps = {
-  existingQueueObj: myQueue,
+  existingQueueObj: buildQueueResponse.queue,
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
   },

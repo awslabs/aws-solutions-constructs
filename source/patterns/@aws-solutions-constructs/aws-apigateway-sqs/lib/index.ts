@@ -223,7 +223,7 @@ export class ApiGatewayToSqs extends Construct {
     });
 
     // Setup the queue
-    [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
+    const buildQueueResponse = defaults.buildQueue(this, 'queue', {
       existingQueueObj: props.existingQueueObj,
       queueProps: props.queueProps,
       deadLetterQueue: this.deadLetterQueue,
@@ -231,6 +231,7 @@ export class ApiGatewayToSqs extends Construct {
       encryptionKey: props.encryptionKey,
       encryptionKeyProps: props.encryptionKeyProps
     });
+    this.sqsQueue = buildQueueResponse.queue;
 
     // Setup the API Gateway
     const globalRestApiResponse = defaults.GlobalRestApi(this, props.apiGatewayProps, props.logGroupProps);

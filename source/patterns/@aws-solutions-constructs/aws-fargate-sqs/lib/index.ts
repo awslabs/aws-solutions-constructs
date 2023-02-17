@@ -223,7 +223,7 @@ export class FargateToSqs extends Construct {
     });
 
     // Setup the SQS Queue
-    [this.sqsQueue] = defaults.buildQueue(this, `${id}-queue`, {
+    const buildQueueResponse = defaults.buildQueue(this, `${id}-queue`, {
       queueProps: props.queueProps,
       deadLetterQueue: this.deadLetterQueue,
       existingQueueObj: props.existingQueueObj,
@@ -231,6 +231,7 @@ export class FargateToSqs extends Construct {
       encryptionKey: props.encryptionKey,
       encryptionKeyProps: props.encryptionKeyProps
     });
+    this.sqsQueue = buildQueueResponse.queue;
 
     // Enable message send and receive permissions for Fargate service by default
     if (props.queuePermissions) {

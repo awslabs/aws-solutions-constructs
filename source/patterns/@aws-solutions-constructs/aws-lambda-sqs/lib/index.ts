@@ -163,7 +163,7 @@ export class LambdaToSqs extends Construct {
       });
 
       // Setup the queue
-      [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
+      const buildQueueResponse = defaults.buildQueue(this, 'queue', {
         existingQueueObj: props.existingQueueObj,
         queueProps: props.queueProps,
         deadLetterQueue: this.deadLetterQueue,
@@ -171,6 +171,7 @@ export class LambdaToSqs extends Construct {
         encryptionKey: props.encryptionKey,
         encryptionKeyProps: props.encryptionKeyProps
       });
+      this.sqsQueue = buildQueueResponse.queue;
 
       // Configure environment variables
       const queueEnvironmentVariableName = props.queueEnvironmentVariableName || 'SQS_QUEUE_URL';
