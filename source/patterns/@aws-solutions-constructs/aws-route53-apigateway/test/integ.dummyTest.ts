@@ -29,8 +29,8 @@ stack.templateOptions.description = 'Dummy Integration Test for aws-route53-apig
 // and will need to be regenerated.
 
 // Create dummy integ with at least one resource to pass CFN scan
-const [restApi] = defaults.RegionalRestApi(stack);
-restApi.root.addMethod('GET');
+const regionalRestApiResponse = defaults.RegionalRestApi(stack);
+regionalRestApiResponse.api.root.addMethod('GET');
 
 // Synth
 app.synth();

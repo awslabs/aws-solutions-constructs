@@ -25,8 +25,8 @@ function deployApi(
   stack: cdk.Stack,
   publicApi: boolean
 ) {
-  const [restApi] = defaults.RegionalRestApi(stack);
-  restApi.root.addMethod('GET');
+  const regionalRestApiResponse = defaults.RegionalRestApi(stack);
+  regionalRestApiResponse.api.root.addMethod('GET');
 
   const domainName = "www.test-example.com";
 
@@ -62,7 +62,7 @@ function deployApi(
   const props: Route53ToApiGatewayProps = {
     publicApi,
     existingHostedZoneInterface: newZone,
-    existingApiGatewayInterface: restApi,
+    existingApiGatewayInterface: regionalRestApiResponse.api,
     existingCertificateInterface: certificate,
   };
 
@@ -90,7 +90,7 @@ test("Test for default params construct props", () => {
 test("Test for errors when creating a private hosted zone", () => {
   // Initial Setup
   const stack = new cdk.Stack();
-  const [restApi] = defaults.RegionalRestApi(stack);
+  const regionalRestApiResponse = defaults.RegionalRestApi(stack);
   const domainName = "www.test-example.com";
 
   const vpc = defaults.buildVpc(stack, {
@@ -116,7 +116,7 @@ test("Test for errors when creating a private hosted zone", () => {
   let app = () =>
     new Route53ToApiGateway(stack, "api-stack1", {
       publicApi: true,
-      existingApiGatewayInterface: restApi,
+      existingApiGatewayInterface: regionalRestApiResponse.api,
       existingCertificateInterface: certificate
     });
   // Assertion 1
@@ -127,7 +127,7 @@ test("Test for errors when creating a private hosted zone", () => {
   app = () =>
     new Route53ToApiGateway(stack, "api-stack2", {
       publicApi: false,
-      existingApiGatewayInterface: restApi,
+      existingApiGatewayInterface: regionalRestApiResponse.api,
       existingCertificateInterface: certificate
     });
 
@@ -143,7 +143,7 @@ test("Test for errors when creating a private hosted zone", () => {
         zoneName: "test-example.com",
         vpc,
       },
-      existingApiGatewayInterface: restApi,
+      existingApiGatewayInterface: regionalRestApiResponse.api,
       existingCertificateInterface: certificate
     });
 
@@ -157,7 +157,7 @@ test("Test for errors when creating a private hosted zone", () => {
       publicApi: false,
       existingHostedZoneInterface: newZone,
       existingVpc: vpc,
-      existingApiGatewayInterface: restApi,
+      existingApiGatewayInterface: regionalRestApiResponse.api,
       existingCertificateInterface: certificate
     });
 
@@ -170,7 +170,7 @@ test("Test for errors when creating a private hosted zone", () => {
     new Route53ToApiGateway(stack, "api-stack5", {
       publicApi: false,
       existingHostedZoneInterface: newZone,
-      existingApiGatewayInterface: restApi,
+      existingApiGatewayInterface: regionalRestApiResponse.api,
       privateHostedZoneProps: {
         domainName: "test-example.com"
       },
@@ -188,7 +188,7 @@ test("Test for errors when creating a private hosted zone", () => {
       privateHostedZoneProps: {
         domainName: "test.example.com"
       },
-      existingApiGatewayInterface: restApi,
+      existingApiGatewayInterface: regionalRestApiResponse.api,
       existingCertificateInterface: certificate
     });
 
@@ -203,7 +203,7 @@ test("Test for errors when creating a private hosted zone", () => {
       privateHostedZoneProps: {
         zoneName: "test.example.com"
       },
-      existingApiGatewayInterface: restApi,
+      existingApiGatewayInterface: regionalRestApiResponse.api,
       existingCertificateInterface: certificate
     });
 
@@ -219,8 +219,8 @@ test("Test for errors when creating a private hosted zone", () => {
 test("Test for providing private hosted zone props", () => {
   // Initial Setup
   const stack = new cdk.Stack();
-  const [restApi] = defaults.RegionalRestApi(stack);
-  restApi.root.addMethod('GET');
+  const regionalRestApiResponse = defaults.RegionalRestApi(stack);
+  regionalRestApiResponse.api.root.addMethod('GET');
 
   const domainName = "www.private-zone.com";
 
@@ -241,7 +241,7 @@ test("Test for providing private hosted zone props", () => {
 
   new Route53ToApiGateway(stack, "api-stack1", {
     publicApi: false,
-    existingApiGatewayInterface: restApi,
+    existingApiGatewayInterface: regionalRestApiResponse.api,
     privateHostedZoneProps: {
       zoneName: domainName,
     },
