@@ -38,7 +38,7 @@ new FargateToKinesisStreams(stack, 'test-fargate-kinesisstreams', {
   publicApi: true,
   existingVpc,
   existingFargateServiceObject: createFargateServiceResponse.service,
-  existingContainerDefinitionObject:createFargateServiceResponse.containerDefinition
+  existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition
 });
 
 app.synth();
