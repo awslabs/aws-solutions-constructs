@@ -23,21 +23,25 @@ import { buildLogGroup } from './cloudwatch-log-group-helper';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 
+export interface BuildStateMachineResponse {
+  readonly stateMachine: sfn.StateMachine,
+  readonly logGroup: logs.ILogGroup
+}
 /**
  * Builds and returns a StateMachine.
  * @param scope - the construct to which the StateMachine should be attached to.
  * @param stateMachineProps - user-specified properties to override the default properties.
  */
 export function buildStateMachine(scope: Construct, stateMachineProps: sfn.StateMachineProps,
-  logGroupProps?: logs.LogGroupProps): [sfn.StateMachine, logs.ILogGroup] {
+  logGroupProps?: logs.LogGroupProps): BuildStateMachineResponse {
 
   let logGroup: logs.ILogGroup;
-  let _smProps;
+  let consolidatedStateMachineProps;
 
   // If they sent a logGroup in stateMachineProps
   if (stateMachineProps.logs?.destination) {
     logGroup = stateMachineProps.logs?.destination;
-    _smProps = stateMachineProps;
+    consolidatedStateMachineProps = stateMachineProps;
   } else {
     // Three possibilities
     // 1) logGroupProps not provided - create logGroupProps with just logGroupName
@@ -65,12 +69,12 @@ export function buildStateMachine(scope: Construct, stateMachineProps: sfn.State
     logGroup = buildLogGroup(scope, 'StateMachineLogGroup', consolidatedLogGroupProps);
 
     // Override the defaults with the user provided props
-    _smProps = overrideProps(smDefaults.DefaultStateMachineProps(logGroup), stateMachineProps);
+    consolidatedStateMachineProps = overrideProps(smDefaults.DefaultStateMachineProps(logGroup), stateMachineProps);
   }
 
   // Override the Cloudwatch permissions to make it more fine grained
-  const _sm = new sfn.StateMachine(scope, 'StateMachine', _smProps);
-  const role = _sm.node.findChild('Role') as iam.Role;
+  const newStateMachine = new sfn.StateMachine(scope, 'StateMachine', consolidatedStateMachineProps);
+  const role = newStateMachine.node.findChild('Role') as iam.Role;
   const cfnDefaultPolicy = role.node.findChild('DefaultPolicy').node.defaultChild as iam.CfnPolicy;
 
   // Reduce the scope of actions for the existing DefaultPolicy
@@ -92,7 +96,7 @@ export function buildStateMachine(scope: Construct, stateMachineProps: sfn.State
   ]);
 
   // Add a new policy with logging permissions for the given cloudwatch log group
-  _sm.addToRolePolicy(new iam.PolicyStatement({
+  newStateMachine.addToRolePolicy(new iam.PolicyStatement({
     actions: [
       'logs:PutResourcePolicy',
       'logs:DescribeResourcePolicies',
@@ -101,7 +105,7 @@ export function buildStateMachine(scope: Construct, stateMachineProps: sfn.State
     resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:*`]
   }));
 
-  return [_sm, logGroup];
+  return { stateMachine: newStateMachine, logGroup };
 }
 
 export function buildStepFunctionCWAlarms(scope: Construct, sm: sfn.StateMachine): cloudwatch.Alarm[] {
