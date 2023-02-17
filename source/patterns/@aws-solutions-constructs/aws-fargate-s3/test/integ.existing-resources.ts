@@ -33,7 +33,7 @@ const existingBucket = defaults.CreateScrapBucket(stack, {
 
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
-const [testService, testContainer] = CreateFargateService(stack,
+const createFargateServiceResponse = CreateFargateService(stack,
   'test',
   existingVpc,
   undefined,
