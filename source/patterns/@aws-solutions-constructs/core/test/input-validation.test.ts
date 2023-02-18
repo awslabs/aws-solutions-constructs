@@ -410,10 +410,10 @@ test('Test fail SageMaker endpoint check', () => {
     },
   };
 
-  const [endpoint] = BuildSagemakerEndpoint(stack, { modelProps });
+  const buildSagemakerEndpointResponse = BuildSagemakerEndpoint(stack, { modelProps });
 
   const props: defaults.VerifiedProps = {
-    existingSagemakerEndpointObj: endpoint,
+    existingSagemakerEndpointObj: buildSagemakerEndpointResponse.endpoint,
     endpointProps: {
       endpointConfigName: 'placeholder'
     }

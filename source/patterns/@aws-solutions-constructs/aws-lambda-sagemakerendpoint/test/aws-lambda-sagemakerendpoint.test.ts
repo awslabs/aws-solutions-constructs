@@ -474,7 +474,7 @@ test('Test getter methods: new Lambda function, existingSagemakerendpointObj (no
   // Initial Setup
   const stack = new Stack();
 
-  const [sagemakerEndpoint] = defaults.deploySagemakerEndpoint(stack, {
+  const deploySagemakerEndpointResponse = defaults.deploySagemakerEndpoint(stack, {
     modelProps: {
       primaryContainer: {
         image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
@@ -484,7 +484,7 @@ test('Test getter methods: new Lambda function, existingSagemakerendpointObj (no
   });
 
   const constructProps: LambdaToSagemakerEndpointProps = {
-    existingSagemakerEndpointObj: sagemakerEndpoint,
+    existingSagemakerEndpointObj: deploySagemakerEndpointResponse.endpoint,
     lambdaFunctionProps: {
       runtime: lambda.Runtime.PYTHON_3_8,
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
@@ -509,7 +509,7 @@ test('Test getter methods: new Lambda function, existingSagemakerendpointObj and
   // Initial Setup
   const stack = new Stack();
 
-  const [sagemakerEndpoint] = defaults.deploySagemakerEndpoint(stack, {
+  const deploySagemakerEndpointResponse = defaults.deploySagemakerEndpoint(stack, {
     modelProps: {
       primaryContainer: {
         image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
@@ -519,7 +519,7 @@ test('Test getter methods: new Lambda function, existingSagemakerendpointObj and
   });
 
   const constructProps: LambdaToSagemakerEndpointProps = {
-    existingSagemakerEndpointObj: sagemakerEndpoint,
+    existingSagemakerEndpointObj: deploySagemakerEndpointResponse.endpoint,
     lambdaFunctionProps: {
       runtime: lambda.Runtime.PYTHON_3_8,
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
@@ -546,7 +546,7 @@ test('Test lambda function custom environment variable', () => {
   const stack = new Stack();
 
   // Helper declaration
-  const [sagemakerEndpoint] = defaults.deploySagemakerEndpoint(stack, {
+  const deploySagemakerEndpointResponse = defaults.deploySagemakerEndpoint(stack, {
     modelProps: {
       primaryContainer: {
         image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
@@ -555,7 +555,7 @@ test('Test lambda function custom environment variable', () => {
     },
   });
   new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', {
-    existingSagemakerEndpointObj: sagemakerEndpoint,
+    existingSagemakerEndpointObj: deploySagemakerEndpointResponse.endpoint,
     lambdaFunctionProps: {
       runtime: lambda.Runtime.PYTHON_3_8,
       handler: 'index.handler',
