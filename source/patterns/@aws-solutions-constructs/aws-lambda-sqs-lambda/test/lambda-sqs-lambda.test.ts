@@ -20,6 +20,9 @@ import { LambdaToSqsToLambda, LambdaToSqsToLambdaProps } from '../lib';
 import { haveResourceLike } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 
+// --------------------------------------------------------------
+// Test minimal deployment
+// --------------------------------------------------------------
 test('Test minimal deployment', () => {
   // Stack
   const stack = new Stack();
@@ -114,6 +117,9 @@ test('Test minimal deployment', () => {
   });
 });
 
+// --------------------------------------------------------------
+// Test deployment w/ existing producer function
+// --------------------------------------------------------------
 test('Test deployment w/ existing producer function', () => {
   // Stack
   const stack = new Stack();
@@ -148,6 +154,9 @@ test('Test deployment w/ existing producer function', () => {
   });
 });
 
+// --------------------------------------------------------------
+// Test deployment w/ existing consumer function
+// --------------------------------------------------------------
 test('Test deployment w/ existing consumer function', () => {
   // Stack
   const stack = new Stack();
@@ -182,16 +191,18 @@ test('Test deployment w/ existing consumer function', () => {
   });
 });
 
+// --------------------------------------------------------------
+// Test deployment w/ existing queue
+// --------------------------------------------------------------
 test('Test deployment w/ existing queue', () => {
   // Stack
   const stack = new Stack();
   // Define existing resources
-  const buildQueueResponse = defaults.buildQueue(stack, 'existing-queue', {
+  const response = defaults.buildQueue(stack, 'existing-queue', {
     queueProps: {
       queueName: 'existing-queue'
     }
   });
-
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
@@ -206,7 +217,7 @@ test('Test deployment w/ existing queue', () => {
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
     },
-    existingQueueObj: buildQueueResponse.queue,
+    existingQueueObj: response.queue
   };
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
 
@@ -216,6 +227,9 @@ test('Test deployment w/ existing queue', () => {
   });
 });
 
+// --------------------------------------------------------------
+// Test deployment w/ DLQ explicitly disabled
+// --------------------------------------------------------------
 test('Test deployment w/ DLQ explicitly disabled', () => {
   // Stack
   const stack = new Stack();
@@ -243,6 +257,9 @@ test('Test deployment w/ DLQ explicitly disabled', () => {
   }));
 });
 
+// --------------------------------------------------------------
+// Test deployment w/ DLQ explicitly enabled and w/ MRC override
+// --------------------------------------------------------------
 test('Test deployment w/ DLQ explicitly enabled and w/ MRC override', () => {
   // Stack
   const stack = new Stack();
@@ -277,6 +294,9 @@ test('Test deployment w/ DLQ explicitly enabled and w/ MRC override', () => {
   }));
 });
 
+// --------------------------------------------------------------
+// Test overrides for producer and consumer functions
+// --------------------------------------------------------------
 test('Test overrides for producer and consumer functions', () => {
   // Stack
   const stack = new Stack();
@@ -307,6 +327,9 @@ test('Test overrides for producer and consumer functions', () => {
   });
 });
 
+// --------------------------------------------------------------
+// Test the public pattern props
+// --------------------------------------------------------------
 test('Test the public pattern props', () => {
   // Stack
   const stack = new Stack();
@@ -336,6 +359,9 @@ test('Test the public pattern props', () => {
   expect(pattern.consumerLambdaFunction).toBeDefined();
 });
 
+// --------------------------------------------------------------
+// Test lambda function custom environment variable
+// --------------------------------------------------------------
 test('Test lambda function custom environment variable', () => {
   // Stack
   const stack = new Stack();
@@ -372,6 +398,9 @@ test('Test lambda function custom environment variable', () => {
   });
 });
 
+// --------------------------------------------------------------
+// Pattern deployment w/ batch size
+// --------------------------------------------------------------
 test('Pattern deployment w/ batch size', () => {
   const stack = new Stack();
   const props: LambdaToSqsToLambdaProps = {
@@ -398,6 +427,9 @@ test('Pattern deployment w/ batch size', () => {
   });
 });
 
+// --------------------------------------------------------------
+// Test minimal deployment that deploys a VPC without vpcProps
+// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Stack
   const stack = new Stack();
@@ -452,6 +484,9 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
 });
 
+// --------------------------------------------------------------
+// Test minimal deployment that deploys a VPC w/vpcProps
+// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Stack
   const stack = new Stack();
@@ -512,6 +547,9 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
 });
 
+// --------------------------------------------------------------
+// Test minimal deployment with an existing VPC
+// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC", () => {
   // Stack
   const stack = new Stack();
@@ -561,6 +599,9 @@ test("Test minimal deployment with an existing VPC", () => {
   });
 });
 
+// --------------------------------------------------------------
+// Test bad call with existingVpc and deployVpc
+// --------------------------------------------------------------
 test("Test bad call with existingVpc and deployVpc", () => {
   // Stack
   const stack = new Stack();
