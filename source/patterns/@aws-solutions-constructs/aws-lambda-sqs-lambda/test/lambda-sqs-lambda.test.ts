@@ -198,7 +198,7 @@ test('Test deployment w/ existing queue', () => {
   // Stack
   const stack = new Stack();
   // Define existing resources
-  const response = defaults.buildQueue(stack, 'existing-queue', {
+  const buildQueueResponse = defaults.buildQueue(stack, 'existing-queue', {
     queueProps: {
       queueName: 'existing-queue'
     }
@@ -217,7 +217,7 @@ test('Test deployment w/ existing queue', () => {
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
     },
-    existingQueueObj: response.queue
+    existingQueueObj: buildQueueResponse.queue
   };
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
 

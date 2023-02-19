@@ -59,14 +59,14 @@ test('Test override SnapshotOptions for buildElasticSearch', () => {
     env: { account: "123456789012", region: 'us-east-1' },
   });
 
-  const response = deployES(stack, 'test-domain', {
+  const buildElasticSearchResponse = deployES(stack, 'test-domain', {
     snapshotOptions: {
       automatedSnapshotStartHour: 5
     }
   });
 
-  expect(response.domain).toBeDefined();
-  expect(response.role).toBeDefined();
+  expect(buildElasticSearchResponse.domain).toBeDefined();
+  expect(buildElasticSearchResponse.role).toBeDefined();
 
   expect(stack).toHaveResource('AWS::Elasticsearch::Domain', {
     AccessPolicies: {
@@ -151,7 +151,7 @@ test('Test VPC with 1 AZ, Zone Awareness Disabled', () => {
 
   const vpc = defaults.getTestVpc(stack, false);
 
-  const response = deployES(stack, 'test-domain', {
+  const buildElasticSearchResponse = deployES(stack, 'test-domain', {
     elasticsearchClusterConfig: {
       dedicatedMasterEnabled: true,
       dedicatedMasterCount: 3,
@@ -160,8 +160,8 @@ test('Test VPC with 1 AZ, Zone Awareness Disabled', () => {
     }
   }, undefined, vpc);
 
-  expect(response.domain).toBeDefined();
-  expect(response.role).toBeDefined();
+  expect(buildElasticSearchResponse.domain).toBeDefined();
+  expect(buildElasticSearchResponse.role).toBeDefined();
 
   expect(stack).toHaveResourceLike('AWS::Elasticsearch::Domain', {
     DomainName: "test-domain",
@@ -181,10 +181,10 @@ test('Test VPC with 2 AZ, Zone Awareness Enabled', () => {
 
   const vpc: ec2.IVpc = defaults.getTestVpc(stack, false);
 
-  const response = deployES(stack, 'test-domain', {}, undefined, vpc);
+  const buildElasticSearchResponse = deployES(stack, 'test-domain', {}, undefined, vpc);
 
-  expect(response.domain).toBeDefined();
-  expect(response.role).toBeDefined();
+  expect(buildElasticSearchResponse.domain).toBeDefined();
+  expect(buildElasticSearchResponse.role).toBeDefined();
 
   expect(stack).toHaveResourceLike('AWS::Elasticsearch::Domain', {
     DomainName: "test-domain",
@@ -206,10 +206,10 @@ test('Test VPC with 3 AZ, Zone Awareness Enabled', () => {
 
   const vpc: ec2.IVpc = defaults.getTestVpc(stack);
 
-  const response = deployES(stack, 'test-domain', {}, undefined, vpc);
+  const buildElasticSearchResponse = deployES(stack, 'test-domain', {}, undefined, vpc);
 
-  expect(response.domain).toBeDefined();
-  expect(response.role).toBeDefined();
+  expect(buildElasticSearchResponse.domain).toBeDefined();
+  expect(buildElasticSearchResponse.role).toBeDefined();
 
   expect(stack).toHaveResourceLike('AWS::Elasticsearch::Domain', {
     DomainName: "test-domain",
@@ -243,10 +243,10 @@ test('Test deployment with an existing private VPC', () => {
     ]
   });
 
-  const response = deployES(stack, 'test-domain', {}, undefined, vpc);
+  const buildElasticSearchResponse = deployES(stack, 'test-domain', {}, undefined, vpc);
 
-  expect(response.domain).toBeDefined();
-  expect(response.role).toBeDefined();
+  expect(buildElasticSearchResponse.domain).toBeDefined();
+  expect(buildElasticSearchResponse.role).toBeDefined();
 
   expect(stack).toHaveResourceLike('AWS::Elasticsearch::Domain', {
     DomainName: "test-domain",
@@ -377,10 +377,10 @@ test('Test ES with lambdaRoleARN', () => {
     env: { account: "123456789012", region: 'us-east-1' },
   });
 
-  const response = deployES(stack, 'test-domain', {}, 'arn:aws:us-east-1:mylambdaRoleARN');
+  const buildElasticSearchResponse = deployES(stack, 'test-domain', {}, 'arn:aws:us-east-1:mylambdaRoleARN');
 
-  expect(response.domain).toBeDefined();
-  expect(response.role).toBeDefined();
+  expect(buildElasticSearchResponse.domain).toBeDefined();
+  expect(buildElasticSearchResponse.role).toBeDefined();
 
   expect(stack).toHaveResource('AWS::Elasticsearch::Domain', {
     AccessPolicies: {
@@ -464,9 +464,9 @@ test('Test ES with lambdaRoleARN', () => {
 
 test('Count ES CW Alarms', () => {
   const stack = new Stack();
-  const response = deployES(stack, 'test-domain');
-  expect(response.domain).toBeDefined();
-  expect(response.role).toBeDefined();
+  const buildElasticSearchResponse = deployES(stack, 'test-domain');
+  expect(buildElasticSearchResponse.domain).toBeDefined();
+  expect(buildElasticSearchResponse.role).toBeDefined();
 
   const cwList = defaults.buildElasticSearchCWAlarms(stack);
 

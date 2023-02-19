@@ -191,8 +191,8 @@ export function GlobalLambdaRestApi(scope: Construct, _existingLambdaObj: lambda
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
 
   const defaultProps = apiDefaults.DefaultGlobalLambdaRestApiProps(_existingLambdaObj, logGroup);
-  const restApi = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
-  return { api: restApi.api, role: restApi.role, group: logGroup};
+  const configureLambdaRestApiResponse = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
+  return { api: configureLambdaRestApiResponse.api, role: configureLambdaRestApiResponse.role, group: logGroup};
 }
 
 export interface RegionalLambdaRestApiResponse {
@@ -213,8 +213,8 @@ export function RegionalLambdaRestApi(scope: Construct, existingLambdaObj: lambd
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
 
   const defaultProps = apiDefaults.DefaultRegionalLambdaRestApiProps(existingLambdaObj, logGroup);
-  const restApi = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
-  return { api: restApi.api, role: restApi.role, group: logGroup};
+  const configureLambdaRestApiResponse = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
+  return { api: configureLambdaRestApiResponse.api, role: configureLambdaRestApiResponse.role, group: logGroup};
 }
 
 export interface GlobalRestApiResponse {

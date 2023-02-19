@@ -33,13 +33,13 @@ const fn = defaults.deployLambdaFunction(stack, {
   memorySize: 128,
 });
 
-const model = getSagemakerModel(stack);
+const getSagemakerModelResponse = getSagemakerModel(stack);
 
 const constructProps: LambdaToSagemakerEndpointProps = {
   modelProps: {
     primaryContainer: {
-      image: model.mapping.findInMap(Stack.of(stack).region, "containerArn"),
-      modelDataUrl: model.asset.s3ObjectUrl
+      image: getSagemakerModelResponse.mapping.findInMap(Stack.of(stack).region, "containerArn"),
+      modelDataUrl: getSagemakerModelResponse.asset.s3ObjectUrl
     },
   },
   existingLambdaObj: fn,
@@ -48,7 +48,7 @@ const constructProps: LambdaToSagemakerEndpointProps = {
 //   Fix names and construct IDs
 const lambdaToSagemakerConstruct = new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
 
-lambdaToSagemakerConstruct.node.addDependency(model.asset);
+lambdaToSagemakerConstruct.node.addDependency(getSagemakerModelResponse.asset);
 
 // Synth
 app.synth();

@@ -29,10 +29,10 @@ function deploy(stack: cdk.Stack) {
 
   const func = defaults.deployLambdaFunction(stack, inProps);
 
-  const restApi = defaults.RegionalLambdaRestApi(stack, func);
+  const regionalLambdaRestApiResponse = defaults.RegionalLambdaRestApi(stack, func);
 
   return new CloudFrontToApiGateway(stack, 'test-cloudfront-apigateway', {
-    existingApiGatewayObj: restApi.api
+    existingApiGatewayObj: regionalLambdaRestApiResponse.api
   });
 }
 
@@ -172,8 +172,8 @@ function createApi() {
 
   const func = defaults.deployLambdaFunction(stack, inProps);
 
-  const restApi = defaults.RegionalLambdaRestApi(stack, func);
-  return {stack, api: restApi.api};
+  const regionalLambdaRestApiResponse = defaults.RegionalLambdaRestApi(stack, func);
+  return {stack, api: regionalLambdaRestApiResponse.api};
 }
 
 // --------------------------------------------------------------

@@ -18,7 +18,7 @@ import '@aws-cdk/assert/jest';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import { BuildOpenSearchResponse } from '../index';
 
-function deployOpenSearch(stack: Stack, openSearchDomainName: string, clientDomainProps?: opensearch.CfnDomainProps,
+function buildTestOpenSearchDomain(stack: Stack, openSearchDomainName: string, clientDomainProps?: opensearch.CfnDomainProps,
   lambdaRoleARN?: string, vpc?: ec2.IVpc): BuildOpenSearchResponse {
   const userpool = defaults.buildUserPool(stack);
   const userpoolclient = defaults.buildUserPoolClient(stack, userpool, {
@@ -53,7 +53,7 @@ function deployStack() {
 test('Test override SnapshotOptions for buildOpenSearch', () => {
   const stack = deployStack();
 
-  const buildOpenSearchResponse = deployOpenSearch(stack, 'test-domain', {
+  const buildOpenSearchResponse = buildTestOpenSearchDomain(stack, 'test-domain', {
     snapshotOptions: {
       automatedSnapshotStartHour: 5
     }
@@ -142,7 +142,7 @@ test('Test VPC with 1 AZ, Zone Awareness Disabled', () => {
 
   const vpc = defaults.getTestVpc(stack, false);
 
-  deployOpenSearch(stack, 'test-domain', {
+  buildTestOpenSearchDomain(stack, 'test-domain', {
     clusterConfig: {
       dedicatedMasterEnabled: true,
       dedicatedMasterCount: 3,
@@ -169,7 +169,7 @@ test('Test VPC with 2 AZ, Zone Awareness Enabled', () => {
 
   const vpc: ec2.IVpc = defaults.getTestVpc(stack, false);
 
-  const buildOpenSearchResponse = deployOpenSearch(stack, 'test-domain', {}, undefined, vpc);
+  const buildOpenSearchResponse = buildTestOpenSearchDomain(stack, 'test-domain', {}, undefined, vpc);
 
   expect(buildOpenSearchResponse.domain).toBeDefined();
   expect(buildOpenSearchResponse.role).toBeDefined();
@@ -191,7 +191,7 @@ test('Test VPC with 3 AZ, Zone Awareness Enabled', () => {
 
   const vpc: ec2.IVpc = defaults.getTestVpc(stack);
 
-  deployOpenSearch(stack, 'test-domain', {}, undefined, vpc);
+  buildTestOpenSearchDomain(stack, 'test-domain', {}, undefined, vpc);
 
   expect(stack).toHaveResourceLike('AWS::OpenSearchService::Domain', {
     DomainName: "test-domain",
@@ -223,7 +223,7 @@ test('Test deployment with an existing private VPC', () => {
     ]
   });
 
-  deployOpenSearch(stack, 'test-domain', {}, undefined, vpc);
+  buildTestOpenSearchDomain(stack, 'test-domain', {}, undefined, vpc);
 
   expect(stack).toHaveResourceLike('AWS::OpenSearchService::Domain', {
     DomainName: "test-domain",
@@ -252,7 +252,7 @@ test('Test error thrown with no private subnet configurations', () => {
   });
 
   const app = () => {
-    deployOpenSearch(stack, 'test-domain', {}, undefined, vpc);
+    buildTestOpenSearchDomain(stack, 'test-domain', {}, undefined, vpc);
   };
 
   expect(app).toThrowError('Error - No isolated or private subnets available in VPC');
@@ -261,7 +261,7 @@ test('Test error thrown with no private subnet configurations', () => {
 test('Test engine version override for buildOpenSearch', () => {
   const stack = deployStack();
 
-  deployOpenSearch(stack, 'test-domain', {
+  buildTestOpenSearchDomain(stack, 'test-domain', {
     engineVersion: 'OpenSearch_1.0'
   });
 
@@ -345,7 +345,7 @@ test('Test engine version override for buildOpenSearch', () => {
 test('Test deployment with lambdaRoleARN', () => {
   const stack = deployStack();
 
-  const buildOpenSearchResponse = deployOpenSearch(stack, 'test-domain', {}, 'arn:aws:us-east-1:mylambdaRoleARN');
+  const buildOpenSearchResponse = buildTestOpenSearchDomain(stack, 'test-domain', {}, 'arn:aws:us-east-1:mylambdaRoleARN');
 
   expect(buildOpenSearchResponse.domain).toBeDefined();
   expect(buildOpenSearchResponse.role).toBeDefined();
@@ -431,7 +431,7 @@ test('Test deployment with lambdaRoleARN', () => {
 
 test('Count OpenSearch CloudWatch alarms', () => {
   const stack = new Stack();
-  deployOpenSearch(stack, 'test-domain');
+  buildTestOpenSearchDomain(stack, 'test-domain');
   const cwList = defaults.buildOpenSearchCWAlarms(stack);
 
   expect(cwList.length).toEqual(9);

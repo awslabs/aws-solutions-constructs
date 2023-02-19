@@ -18,8 +18,6 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as defaults from '../';
 import '@aws-cdk/assert/jest';
 
-// TODO: Test that the optional values are returned and NOT returned correctly
-
 test('Test deployment with VPC', () => {
   // Stack
   const stack = new Stack();

@@ -159,12 +159,12 @@ test('test buildDynamoDBTable with existingTableObj', () => {
 
   const existingTableObj = new dynamodb.Table(stack, 'DynamoTable', tableProps);
 
-  const response = defaults.buildDynamoDBTable(stack, {
+  const buildDynamoDBTableResponse = defaults.buildDynamoDBTable(stack, {
     existingTableObj
   });
 
-  expect(response.tableInterface).toBeDefined();
-  expect(response.tableObject).toBeDefined();
+  expect(buildDynamoDBTableResponse.tableInterface).toBeDefined();
+  expect(buildDynamoDBTableResponse.tableObject).toBeDefined();
 
   expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
     KeySchema: [
@@ -186,10 +186,10 @@ test('test buildDynamoDBTable with existingTableObj', () => {
 test('test buildDynamoDBTable without any arguments', () => {
   const stack = new Stack();
 
-  const response = defaults.buildDynamoDBTable(stack, {});
+  const buildDynamoDBTableResponse = defaults.buildDynamoDBTable(stack, {});
 
-  expect(response.tableInterface).toBeDefined();
-  expect(response.tableObject).toBeDefined();
+  expect(buildDynamoDBTableResponse.tableInterface).toBeDefined();
+  expect(buildDynamoDBTableResponse.tableObject).toBeDefined();
 
   expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
     KeySchema: [
@@ -222,12 +222,12 @@ test('test buildDynamoDBTable with TableProps', () => {
     }
   };
 
-  const response = defaults.buildDynamoDBTable(stack, {
+  const buildDynamoDBTableResponse = defaults.buildDynamoDBTable(stack, {
     dynamoTableProps
   });
 
-  expect(response.tableInterface).toBeDefined();
-  expect(response.tableObject).toBeDefined();
+  expect(buildDynamoDBTableResponse.tableInterface).toBeDefined();
+  expect(buildDynamoDBTableResponse.tableObject).toBeDefined();
 
   expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
     KeySchema: [
@@ -363,12 +363,12 @@ test('test buildDynamoDBTable with existingTableInterface', () => {
 
   const existingTableInterface = new dynamodb.Table(stack, 'DynamoTable', tableProps);
 
-  const response = defaults.buildDynamoDBTable(stack, {
+  const buildDynamoDBTableResponse = defaults.buildDynamoDBTable(stack, {
     existingTableInterface
   });
 
-  expect(response.tableInterface).toBeDefined();
-  expect(response.tableObject).not.toBeDefined();
+  expect(buildDynamoDBTableResponse.tableInterface).toBeDefined();
+  expect(buildDynamoDBTableResponse.tableObject).not.toBeDefined();
 
   expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
     KeySchema: [

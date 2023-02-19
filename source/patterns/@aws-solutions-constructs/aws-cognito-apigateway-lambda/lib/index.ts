@@ -105,10 +105,10 @@ export class CognitoToApiGatewayToLambda extends Construct {
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps
     });
-    const restApi = defaults.GlobalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps, props.logGroupProps);
-    this.apiGateway = restApi.api;
-    this.apiGatewayCloudWatchRole = restApi.role;
-    this.apiGatewayLogGroup = restApi.group;
+    const globalLambdaRestApiResponse = defaults.GlobalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps, props.logGroupProps);
+    this.apiGateway = globalLambdaRestApiResponse.api;
+    this.apiGatewayCloudWatchRole = globalLambdaRestApiResponse.role;
+    this.apiGatewayLogGroup = globalLambdaRestApiResponse.group;
 
     this.userPool = defaults.buildUserPool(this, props.cognitoUserPoolProps);
     this.userPoolClient = defaults.buildUserPoolClient(this, this.userPool, props.cognitoUserPoolClientProps);

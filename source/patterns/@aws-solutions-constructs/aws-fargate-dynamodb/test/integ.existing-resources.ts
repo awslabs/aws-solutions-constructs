@@ -26,7 +26,7 @@ const stack = new Stack(app, generateIntegStackName(__filename), {
 stack.templateOptions.description = 'Integration Test with existing VPC and Service and Table';
 
 const existingVpc = getTestVpc(stack);
-const buildTableResponse = defaults.buildDynamoDBTable(stack, {});
+const buildDynamoDBTableResponse = defaults.buildDynamoDBTable(stack, {});
 
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
@@ -43,7 +43,7 @@ const createFargateServiceResponse = CreateFargateService(stack,
 const constructProps: FargateToDynamoDBProps = {
   publicApi: true,
   existingVpc,
-  existingTableInterface: buildTableResponse.tableObject,
+  existingTableInterface: buildDynamoDBTableResponse.tableObject,
   existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
   existingFargateServiceObject: createFargateServiceResponse.service,
   tableArnEnvironmentVariableName: 'CUSTOM_ARN',

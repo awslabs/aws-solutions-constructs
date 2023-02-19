@@ -32,10 +32,10 @@ test('check exception for Missing existingBucketObj from props for deploy = fals
 test('s3 bucket with bucketId', () => {
   const stack = new Stack();
 
-  const response = defaults.buildS3Bucket(stack, {}, 'my');
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {}, 'my');
 
-  expect(response.bucket).toBeDefined();
-  expect(response.loggingBucket).toBeDefined();
+  expect(buildS3BucketResponse.bucket).toBeDefined();
+  expect(buildS3BucketResponse.loggingBucket).toBeDefined();
 
   expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
     LoggingConfiguration: {
@@ -49,14 +49,14 @@ test('s3 bucket with bucketId', () => {
 test('s3 bucket with bucketProps', () => {
   const stack = new Stack();
 
-  const response = defaults.buildS3Bucket(stack, {
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {
     bucketProps: {
       bucketName: 'mybucket'
     }
   });
 
-  expect(response.bucket).toBeDefined();
-  expect(response.loggingBucket).toBeDefined();
+  expect(buildS3BucketResponse.bucket).toBeDefined();
+  expect(buildS3BucketResponse.loggingBucket).toBeDefined();
 
   expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
     BucketName: "mybucket"
@@ -66,10 +66,10 @@ test('s3 bucket with bucketProps', () => {
 test('s3 bucket with default props', () => {
   const stack = new Stack();
 
-  const response = defaults.buildS3Bucket(stack, {});
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {});
 
-  expect(response.bucket).toBeDefined();
-  expect(response.loggingBucket).toBeDefined();
+  expect(buildS3BucketResponse.bucket).toBeDefined();
+  expect(buildS3BucketResponse.loggingBucket).toBeDefined();
 
   expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
     BucketEncryption: {
@@ -96,7 +96,7 @@ test('s3 bucket with default props', () => {
 test('s3 bucket with life cycle policy', () => {
   const stack = new Stack();
 
-  const response = defaults.buildS3Bucket(stack, {
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {
     bucketProps: {
       lifecycleRules: [{
         expiration: Duration.days(365),
@@ -111,8 +111,8 @@ test('s3 bucket with life cycle policy', () => {
     }
   });
 
-  expect(response.bucket).toBeDefined();
-  expect(response.loggingBucket).toBeDefined();
+  expect(buildS3BucketResponse.bucket).toBeDefined();
+  expect(buildS3BucketResponse.loggingBucket).toBeDefined();
 
   expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
     LifecycleConfiguration: {
@@ -142,13 +142,13 @@ test('s3 bucket with access logging configured', () => {
     serverAccessLogsBucket: new Bucket(stack, 'myaccesslogbucket', {})
   });
 
-  const response = defaults.buildS3Bucket(stack, {
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {
     bucketProps: {
       serverAccessLogsBucket: mybucket
     }
   });
 
-  expect(response.bucket).toBeDefined();
+  expect(buildS3BucketResponse.bucket).toBeDefined();
   // This value should be populated, entered Issue 907
   // expect(response.loggingBucket).toBeDefined();
 
@@ -216,7 +216,7 @@ test('s3 bucket with LoggingBucket and versioning turned off', () => {
     serverAccessLogsBucket: new Bucket(stack, 'myaccesslogbucket', {})
   });
 
-  const response = defaults.buildS3Bucket(stack, {
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {
     bucketProps: {
       serverAccessLogsBucket: mybucket,
       serverAccessLogsPrefix: 'access-logs',
@@ -224,7 +224,7 @@ test('s3 bucket with LoggingBucket and versioning turned off', () => {
     }
   });
 
-  expect(response.bucket).toBeDefined();
+  expect(buildS3BucketResponse.bucket).toBeDefined();
   // The line below fails, this appears to be a bug. Entered Issue 906
   //  expect(response.loggingBucket).toBeDefined();
 
@@ -256,15 +256,15 @@ test('s3 bucket with LoggingBucket and versioning turned off', () => {
 test('s3 bucket versioning turned off', () => {
   const stack = new Stack();
 
-  const response = defaults.buildS3Bucket(stack, {
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {
     bucketProps: {
       serverAccessLogsPrefix: 'access-logs',
       versioned: false
     }
   });
 
-  expect(response.bucket).toBeDefined();
-  expect(response.loggingBucket).toBeDefined();
+  expect(buildS3BucketResponse.bucket).toBeDefined();
+  expect(buildS3BucketResponse.loggingBucket).toBeDefined();
 
   expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
     BucketEncryption: {
@@ -294,15 +294,15 @@ test('s3 bucket versioning turned off', () => {
 test('s3 bucket with LoggingBucket and auto delete objects', () => {
   const stack = new Stack();
 
-  const response = defaults.buildS3Bucket(stack, {
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {
     loggingBucketProps: {
       removalPolicy: RemovalPolicy.DESTROY,
       autoDeleteObjects: true
     }
   });
 
-  expect(response.bucket).toBeDefined();
-  expect(response.loggingBucket).toBeDefined();
+  expect(buildS3BucketResponse.bucket).toBeDefined();
+  expect(buildS3BucketResponse.loggingBucket).toBeDefined();
 
   expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
     AccessControl: "LogDeliveryWrite"
@@ -324,14 +324,14 @@ test('s3 bucket with LoggingBucket and auto delete objects', () => {
 test('s3 bucket versioning turned on', () => {
   const stack = new Stack();
 
-  const response = defaults.buildS3Bucket(stack, {
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {
     bucketProps: {
       serverAccessLogsPrefix: 'access-logs',
     }
   });
 
-  expect(response.bucket).toBeDefined();
-  expect(response.loggingBucket).toBeDefined();
+  expect(buildS3BucketResponse.bucket).toBeDefined();
+  expect(buildS3BucketResponse.loggingBucket).toBeDefined();
 
   expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
     BucketEncryption: {
@@ -376,9 +376,9 @@ test('s3 bucket versioning turned on', () => {
 
 test('Suppress cfn-nag warning for s3 bucket notification', () => {
   const stack = new Stack();
-  const response = defaults.buildS3Bucket(stack, {});
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {});
   const buildQueueResponse = defaults.buildQueue(stack, "S3BucketNotificationQueue", {});
-  response.bucket.addEventNotification(s3.EventType.OBJECT_CREATED, new s3n.SqsDestination(buildQueueResponse.queue));
+  buildS3BucketResponse.bucket.addEventNotification(s3.EventType.OBJECT_CREATED, new s3n.SqsDestination(buildQueueResponse.queue));
   defaults.addCfnNagS3BucketNotificationRulesToSuppress(stack, "BucketNotificationsHandler050a0587b7544547bf325f094a3db834");
 
   expectCDK(stack).to(haveResource("AWS::Lambda::Function", {
@@ -438,12 +438,12 @@ test('test s3Bucket removalPolicy override', () => {
 test('s3 bucket with logging turned off', () => {
   const stack = new Stack();
 
-  const response = defaults.buildS3Bucket(stack, {
+  const respbuildS3BucketResponsense = defaults.buildS3Bucket(stack, {
     logS3AccessLogs: false,
   });
 
-  expect(response.bucket).toBeDefined();
-  expect(response.loggingBucket).not.toBeDefined();
+  expect(respbuildS3BucketResponsense.bucket).toBeDefined();
+  expect(respbuildS3BucketResponsense.loggingBucket).not.toBeDefined();
 
   expect(stack).not.toHaveResourceLike("AWS::S3::Bucket", {
     LoggingConfiguration: {

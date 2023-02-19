@@ -89,12 +89,12 @@ export class DynamoDBStreamsToLambda extends Construct {
       lambdaFunctionProps: props.lambdaFunctionProps
     });
 
-    const ddbTableStreamResponse = defaults.buildDynamoDBTableWithStream(this, {
+    const buildDynamoDBTableWithStreamResponse = defaults.buildDynamoDBTableWithStream(this, {
       dynamoTableProps: props.dynamoTableProps,
       existingTableInterface: props.existingTableInterface
     });
-    this.dynamoTableInterface = ddbTableStreamResponse.tableInterface;
-    this.dynamoTable = ddbTableStreamResponse.tableObject;
+    this.dynamoTableInterface = buildDynamoDBTableWithStreamResponse.tableInterface;
+    this.dynamoTable = buildDynamoDBTableWithStreamResponse.tableObject;
 
     // Grant DynamoDB Stream read perimssion for lambda function
     this.dynamoTableInterface.grantStreamRead(this.lambdaFunction.grantPrincipal);
