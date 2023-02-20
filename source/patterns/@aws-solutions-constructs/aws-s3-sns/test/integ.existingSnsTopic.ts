@@ -21,12 +21,12 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
 const existingTopicEncryptionKey = defaults.buildEncryptionKey(stack, {});
-const buildTopicRepsponse = defaults.buildTopic(stack, {
+const buildTopicResponse = defaults.buildTopic(stack, {
   encryptionKey: existingTopicEncryptionKey
 });
 
 new S3ToSns(stack, 'test-s3-sns', {
-  existingTopicObj: buildTopicRepsponse.topic,
+  existingTopicObj: buildTopicResponse.topic,
   existingTopicEncryptionKey,
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY

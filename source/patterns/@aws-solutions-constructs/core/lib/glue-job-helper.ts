@@ -131,7 +131,6 @@ export interface DeployGlueJobResponse {
 
 export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, database: glue.CfnDatabase, table: glue.CfnTable,
   outputDataStore: SinkDataStoreProps, etlCodeAsset?: s3assets.Asset): DeployGlueJobResponse {
-  // TODO - replicate [glue.CfnJob, IRole, [Bucket, (Bucket | undefined)?]]
 
   let glueSecurityConfigName: string;
 
@@ -165,12 +164,9 @@ export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, 
     ]
   });
 
-  let jobRole: IRole;
-  if (glueJobProps.role) {
-    jobRole = Role.fromRoleArn(scope, 'JobRole', glueJobProps.role);
-  } else {
-    jobRole = defaults.createGlueJobRole(scope);
-  }
+  const jobRole = glueJobProps.role ?
+    Role.fromRoleArn(scope, 'JobRole', glueJobProps.role) :
+    defaults.createGlueJobRole(scope);
 
   glueJobPolicy.attachToRole(jobRole);
 

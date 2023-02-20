@@ -15,7 +15,7 @@
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as cdk from 'aws-cdk-lib';
-import * as apig from 'aws-cdk-lib/aws-apigateway';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as apiDefaults from './apigateway-defaults';
 import { buildLogGroup } from './cloudwatch-log-group-helper';
@@ -29,7 +29,7 @@ import { Construct } from 'constructs';
  * @param scope - the construct to which the access logging capabilities should be attached to.
  * @param api - an existing api.RestApi or api.LambdaRestApi.
  */
-function configureCloudwatchRoleForApi(scope: Construct, api: apig.RestApi): iam.Role {
+function configureCloudwatchRoleForApi(scope: Construct, api: apigateway.RestApi): iam.Role {
   // Setup the IAM Role for API Gateway CloudWatch access
   const restApiCloudwatchRole = new iam.Role(scope, 'LambdaRestApiCloudWatchRole', {
     assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
@@ -51,14 +51,14 @@ function configureCloudwatchRoleForApi(scope: Construct, api: apig.RestApi): iam
     }
   });
   // Create and configure AWS::ApiGateway::Account with CloudWatch Role for ApiGateway
-  const CfnApi = api.node.findChild('Resource') as apig.CfnRestApi;
-  const cfnAccount: apig.CfnAccount = new apig.CfnAccount(scope, 'LambdaRestApiAccount', {
+  const CfnApi = api.node.findChild('Resource') as apigateway.CfnRestApi;
+  const cfnAccount: apigateway.CfnAccount = new apigateway.CfnAccount(scope, 'LambdaRestApiAccount', {
     cloudWatchRoleArn: restApiCloudwatchRole.roleArn
   });
   cfnAccount.addDependency(CfnApi);
 
   // Suppress Cfn Nag warning for APIG
-  const deployment: apig.CfnDeployment = api.latestDeployment?.node.findChild('Resource') as apig.CfnDeployment;
+  const deployment: apigateway.CfnDeployment = api.latestDeployment?.node.findChild('Resource') as apigateway.CfnDeployment;
   addCfnSuppressRules(deployment, [
     {
       id: 'W45',
@@ -71,7 +71,7 @@ function configureCloudwatchRoleForApi(scope: Construct, api: apig.RestApi): iam
 }
 
 interface ConfigureLambdaRestApiResponse {
-  api: apig.RestApi,
+  api: apigateway.RestApi,
   role?: iam.Role
 }
 
@@ -81,8 +81,8 @@ interface ConfigureLambdaRestApiResponse {
  * @param defaultApiGatewayProps - the default properties for the LambdaRestApi.
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
-function configureLambdaRestApi(scope: Construct, defaultApiGatewayProps: apig.LambdaRestApiProps,
-  apiGatewayProps?: apig.LambdaRestApiProps): ConfigureLambdaRestApiResponse {
+function configureLambdaRestApi(scope: Construct, defaultApiGatewayProps: apigateway.LambdaRestApiProps,
+  apiGatewayProps?: apigateway.LambdaRestApiProps): ConfigureLambdaRestApiResponse {
 
   // API Gateway doesn't allow both endpointTypes and endpointConfiguration, check whether endPointTypes exists
   if (apiGatewayProps?.endpointTypes) {
@@ -90,20 +90,20 @@ function configureLambdaRestApi(scope: Construct, defaultApiGatewayProps: apig.L
   }
 
   // Define the API object
-  let api: apig.RestApi;
+  let api: apigateway.RestApi;
   if (apiGatewayProps) {
     // If property overrides have been provided, incorporate them and deploy
     const consolidatedApiGatewayProps = consolidateProps(defaultApiGatewayProps, apiGatewayProps, { cloudWatchRole: false });
-    api = new apig.LambdaRestApi(scope, 'LambdaRestApi', consolidatedApiGatewayProps);
+    api = new apigateway.LambdaRestApi(scope, 'LambdaRestApi', consolidatedApiGatewayProps);
   } else {
     // If no property overrides, deploy using the default configuration
-    api = new apig.LambdaRestApi(scope, 'LambdaRestApi', defaultApiGatewayProps);
+    api = new apigateway.LambdaRestApi(scope, 'LambdaRestApi', defaultApiGatewayProps);
   }
   // Configure API access logging
   const cwRole = (apiGatewayProps?.cloudWatchRole !== false) ? configureCloudwatchRoleForApi(scope, api) : undefined;
 
   // Configure Usage Plan
-  const usagePlanProps: apig.UsagePlanProps = {
+  const usagePlanProps: apigateway.UsagePlanProps = {
     apiStages: [{
       api,
       stage: api.deploymentStage
@@ -124,7 +124,7 @@ function configureLambdaRestApi(scope: Construct, defaultApiGatewayProps: apig.L
 }
 
 interface ConfigureRestApiResponse {
-  api: apig.RestApi,
+  api: apigateway.RestApi,
   role?: iam.Role
 }
 
@@ -134,8 +134,8 @@ interface ConfigureRestApiResponse {
  * @param defaultApiGatewayProps - the default properties for the RestApi.
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
-function configureRestApi(scope: Construct, defaultApiGatewayProps: apig.RestApiProps,
-  apiGatewayProps?: apig.RestApiProps): ConfigureRestApiResponse {
+function configureRestApi(scope: Construct, defaultApiGatewayProps: apigateway.RestApiProps,
+  apiGatewayProps?: apigateway.RestApiProps): ConfigureRestApiResponse {
 
   // API Gateway doesn't allow both endpointTypes and endpointConfiguration, check whether endPointTypes exists
   if (apiGatewayProps?.endpointTypes) {
@@ -143,7 +143,7 @@ function configureRestApi(scope: Construct, defaultApiGatewayProps: apig.RestApi
   }
 
   const consolidatedApiGatewayProps = consolidateProps(defaultApiGatewayProps, apiGatewayProps, { cloudWatchRole: false });
-  const api = new apig.RestApi(scope, 'RestApi', consolidatedApiGatewayProps);
+  const api = new apigateway.RestApi(scope, 'RestApi', consolidatedApiGatewayProps);
 
   let cwRole;
 
@@ -153,7 +153,7 @@ function configureRestApi(scope: Construct, defaultApiGatewayProps: apig.RestApi
   }
 
   // Configure Usage Plan
-  const usagePlanProps: apig.UsagePlanProps = {
+  const usagePlanProps: apigateway.UsagePlanProps = {
     apiStages: [{
       api,
       stage: api.deploymentStage
@@ -174,7 +174,7 @@ function configureRestApi(scope: Construct, defaultApiGatewayProps: apig.RestApi
 }
 
 export interface GlobalLambdaRestApiResponse {
-  readonly api: apig.RestApi,
+  readonly api: apigateway.RestApi,
   readonly role?: iam.Role,
   readonly group: logs.LogGroup
 }
@@ -186,7 +186,7 @@ export interface GlobalLambdaRestApiResponse {
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 export function GlobalLambdaRestApi(scope: Construct, _existingLambdaObj: lambda.Function,
-  apiGatewayProps?: apig.LambdaRestApiProps, logGroupProps?: logs.LogGroupProps): GlobalLambdaRestApiResponse {
+  apiGatewayProps?: apigateway.LambdaRestApiProps, logGroupProps?: logs.LogGroupProps): GlobalLambdaRestApiResponse {
   // Configure log group for API Gateway AccessLogging
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
 
@@ -196,7 +196,7 @@ export function GlobalLambdaRestApi(scope: Construct, _existingLambdaObj: lambda
 }
 
 export interface RegionalLambdaRestApiResponse {
-  readonly api: apig.RestApi,
+  readonly api: apigateway.RestApi,
   readonly role?: iam.Role,
   readonly group: logs.LogGroup,
 }
@@ -208,7 +208,7 @@ export interface RegionalLambdaRestApiResponse {
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 export function RegionalLambdaRestApi(scope: Construct, existingLambdaObj: lambda.Function,
-  apiGatewayProps?: apig.LambdaRestApiProps, logGroupProps?: logs.LogGroupProps): RegionalLambdaRestApiResponse {
+  apiGatewayProps?: apigateway.LambdaRestApiProps, logGroupProps?: logs.LogGroupProps): RegionalLambdaRestApiResponse {
   // Configure log group for API Gateway AccessLogging
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
 
@@ -218,7 +218,7 @@ export function RegionalLambdaRestApi(scope: Construct, existingLambdaObj: lambd
 }
 
 export interface GlobalRestApiResponse {
-  readonly api: apig.RestApi,
+  readonly api: apigateway.RestApi,
   readonly role?: iam.Role,
   readonly logGroup: logs.LogGroup,
 }
@@ -228,7 +228,7 @@ export interface GlobalRestApiResponse {
  * @param scope - the construct to which the RestApi should be attached to.
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
-export function GlobalRestApi(scope: Construct, apiGatewayProps?: apig.RestApiProps,
+export function GlobalRestApi(scope: Construct, apiGatewayProps?: apigateway.RestApiProps,
   logGroupProps?: logs.LogGroupProps): GlobalRestApiResponse {
   // Configure log group for API Gateway AccessLogging
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
@@ -239,7 +239,7 @@ export function GlobalRestApi(scope: Construct, apiGatewayProps?: apig.RestApiPr
 }
 
 export interface RegionalRestApiResponse {
-  readonly api: apig.RestApi,
+  readonly api: apigateway.RestApi,
   readonly role?: iam.Role,
   readonly logGroup: logs.LogGroup,
 }
@@ -249,7 +249,7 @@ export interface RegionalRestApiResponse {
  * @param scope - the construct to which the RestApi should be attached to.
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
-export function RegionalRestApi(scope: Construct, apiGatewayProps?: apig.RestApiProps,
+export function RegionalRestApi(scope: Construct, apiGatewayProps?: apigateway.RestApiProps,
   logGroupProps?: logs.LogGroupProps): RegionalRestApiResponse {
   // Configure log group for API Gateway AccessLogging
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
@@ -263,20 +263,20 @@ export interface AddProxyMethodToApiResourceInputParams {
   readonly service: string,
   readonly action?: string,
   readonly path?: string,
-  readonly apiResource: apig.IResource,
+  readonly apiResource: apigateway.IResource,
   readonly apiMethod: string,
   readonly apiGatewayRole: IRole,
   readonly requestTemplate: string,
   readonly additionalRequestTemplates?: { [contentType: string]: string; },
   readonly integrationResponses?: cdk.aws_apigateway.IntegrationResponse[],
   readonly contentType?: string,
-  readonly requestValidator?: apig.IRequestValidator,
-  readonly requestModel?: { [contentType: string]: apig.IModel; },
-  readonly awsIntegrationProps?: apig.AwsIntegrationProps | any,
-  readonly methodOptions?: apig.MethodOptions
+  readonly requestValidator?: apigateway.IRequestValidator,
+  readonly requestModel?: { [contentType: string]: apigateway.IModel; },
+  readonly awsIntegrationProps?: apigateway.AwsIntegrationProps | any,
+  readonly methodOptions?: apigateway.MethodOptions
 }
 
-export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceInputParams): apig.Method {
+export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceInputParams): apigateway.Method {
   // Make sure the user hasn't also specified the application/json content-type in the additionalRequestTemplates optional property
   if (params.additionalRequestTemplates && 'application/json' in params.additionalRequestTemplates) {
     throw new Error(`Request Template for the application/json content-type must be specified in the requestTemplate property and not in the additionalRequestTemplates property `);
@@ -290,11 +290,11 @@ export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceI
   // Use user-provided integration responses, otherwise fallback to the default ones we provide.
   const integrationResponses = params.integrationResponses ?? apiDefaults.DefaultIntegrationResponses();
 
-  let baseProps: apig.AwsIntegrationProps = {
+  let baseProps: apigateway.AwsIntegrationProps = {
     service: params.service,
     integrationHttpMethod: "POST",
     options: {
-      passthroughBehavior: apig.PassthroughBehavior.NEVER,
+      passthroughBehavior: apigateway.PassthroughBehavior.NEVER,
       credentialsRole: params.apiGatewayRole,
       requestParameters: {
         "integration.request.header.Content-Type": params.contentType ? params.contentType : "'application/json'"
@@ -324,7 +324,7 @@ export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceI
   let apiGatewayIntegration;
   const newProps = consolidateProps(baseProps, params.awsIntegrationProps);
 
-  apiGatewayIntegration = new apig.AwsIntegration(newProps);
+  apiGatewayIntegration = new apigateway.AwsIntegration(newProps);
 
   const defaultMethodOptions = {
     methodResponses: [

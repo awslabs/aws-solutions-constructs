@@ -208,7 +208,7 @@ export function CloudFrontDistributionForMediaStore(scope: Construct,
   const cfDistribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
   updateSecurityPolicy(cfDistribution);
 
-  return { distribution: cfDistribution, loggingBucket, requestPolicy: originRequestPolicy, cloudfrontFunction};
+  return { distribution: cfDistribution, loggingBucket, requestPolicy: originRequestPolicy, cloudfrontFunction };
 }
 
 export function CloudFrontOriginAccessIdentity(scope: Construct, comment?: string) {
