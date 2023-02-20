@@ -157,7 +157,7 @@ export class FargateToSsmstringparameter extends Construct {
       // CheckFargateProps confirms that the container is provided
       this.container = props.existingContainerDefinitionObject!;
     } else {
-      [this.service, this.container] = defaults.CreateFargateService(
+      const createFargateServiceResponse = defaults.CreateFargateService(
         scope,
         id,
         this.vpc,
@@ -168,6 +168,8 @@ export class FargateToSsmstringparameter extends Construct {
         props.containerDefinitionProps,
         props.fargateServiceProps
       );
+      this.service = createFargateServiceResponse.service;
+      this.container = createFargateServiceResponse.containerDefinition;
     }
 
     // Setup the SSM String parameter

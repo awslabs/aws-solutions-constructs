@@ -39,12 +39,12 @@ export function DynamoEventSourceProps(scope: Construct, _dynamoEventSourceProps
 
   if (_dynamoEventSourceProps === undefined || _dynamoEventSourceProps?.deploySqsDlqQueue === undefined
     || _dynamoEventSourceProps.deploySqsDlqQueue) {
-    const [sqsQueue] = buildQueue(scope, 'SqsDlqQueue', {
+    const buildQueueResponse = buildQueue(scope, 'SqsDlqQueue', {
       queueProps: _dynamoEventSourceProps?.sqsDlqQueueProps
     });
 
     extraProps = {
-      onFailure: new SqsDlq(sqsQueue),
+      onFailure: new SqsDlq(buildQueueResponse.queue),
     };
   }
 
@@ -74,12 +74,12 @@ export function KinesisEventSourceProps(scope: Construct, _kinesisEventSourcePro
 
   if (_kinesisEventSourceProps === undefined || _kinesisEventSourceProps?.deploySqsDlqQueue === undefined
     || _kinesisEventSourceProps.deploySqsDlqQueue) {
-    const [sqsQueue] = buildQueue(scope, 'SqsDlqQueue', {
+    const buildQueueResponse = buildQueue(scope, 'SqsDlqQueue', {
       queueProps: _kinesisEventSourceProps?.sqsDlqQueueProps
     });
 
     extraProps = {
-      onFailure: new SqsDlq(sqsQueue),
+      onFailure: new SqsDlq(buildQueueResponse.queue),
     };
   }
 

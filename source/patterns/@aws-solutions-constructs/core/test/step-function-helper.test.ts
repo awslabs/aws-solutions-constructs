@@ -27,11 +27,13 @@ test('Test deployment w/ custom properties', () => {
   // Step function definition
   const startState = new sfn.Pass(stack, 'StartState');
   // Build state machine
-  defaults.buildStateMachine(stack, {
+  const buildStateMachineResponse = defaults.buildStateMachine(stack, {
     definition: startState,
     stateMachineName: 'myStateMachine'
   });
   // Assertion
+  expect(buildStateMachineResponse.stateMachine).toBeDefined();
+  expect(buildStateMachineResponse.stateMachine).toBeDefined();
   expect(stack).toCountResources("AWS::Logs::LogGroup", 1);
 
   expect(stack).toHaveResource("AWS::StepFunctions::StateMachine", {
@@ -52,7 +54,7 @@ test('Test deployment w/ logging enabled', () => {
   const logGroup = buildLogGroup(stack, 'StateMachineLogGroup');
 
   // Build state machine
-  defaults.buildStateMachine(stack, {
+  const buildStateMachineResponse = defaults.buildStateMachine(stack, {
     definition: startState,
     logs: {
       destination: logGroup,
@@ -61,6 +63,8 @@ test('Test deployment w/ logging enabled', () => {
   });
   // Assertion
   expect(stack).toCountResources("AWS::Logs::LogGroup", 1);
+  expect(buildStateMachineResponse.stateMachine).toBeDefined();
+  expect(buildStateMachineResponse.stateMachine).toBeDefined();
 
   expect(stack).toHaveResource("AWS::StepFunctions::StateMachine", {
     LoggingConfiguration: {
@@ -88,10 +92,12 @@ test('Check default Cloudwatch permissions', () => {
   // Step function definition
   const startState = new sfn.Pass(stack, 'StartState');
   // Build state machine
-  defaults.buildStateMachine(stack, {
+  const buildStateMachineResponse = defaults.buildStateMachine(stack, {
     definition: startState
   });
   // Assertion
+  expect(buildStateMachineResponse.stateMachine).toBeDefined();
+  expect(buildStateMachineResponse.stateMachine).toBeDefined();
   expect(stack).toHaveResource("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
@@ -149,10 +155,12 @@ test('Count State Machine CW Alarms', () => {
   // Step function definition
   const startState = new sfn.Pass(stack, 'StartState');
   // Build state machine
-  const [sm] = defaults.buildStateMachine(stack, {
+  const buildStateMachineResponse = defaults.buildStateMachine(stack, {
     definition: startState
   });
-  const cwList = defaults.buildStepFunctionCWAlarms(stack, sm);
+  const cwList = defaults.buildStepFunctionCWAlarms(stack, buildStateMachineResponse.stateMachine);
+  expect(buildStateMachineResponse.stateMachine).toBeDefined();
+  expect(buildStateMachineResponse.stateMachine).toBeDefined();
 
   expect(cwList.length).toEqual(3);
 });

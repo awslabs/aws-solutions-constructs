@@ -119,8 +119,10 @@ export class LambdaToStepfunctions extends Construct {
     }
 
     // Setup the state machine
-    [this.stateMachine, this.stateMachineLogGroup] = defaults.buildStateMachine(this, props.stateMachineProps,
+    const buildStateMachineResponse = defaults.buildStateMachine(this, props.stateMachineProps,
       props.logGroupProps);
+    this.stateMachine = buildStateMachineResponse.stateMachine;
+    this.stateMachineLogGroup = buildStateMachineResponse.logGroup;
 
     // Setup the Lambda function
     this.lambdaFunction = defaults.buildLambdaFunction(this, {

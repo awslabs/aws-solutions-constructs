@@ -177,7 +177,7 @@ export class FargateToS3 extends Construct {
       // CheckFargateProps confirms that the container is provided
       this.container = props.existingContainerDefinitionObject!;
     } else {
-      [this.service, this.container] = defaults.CreateFargateService(
+      const createFargateServiceResponse = defaults.CreateFargateService(
         scope,
         id,
         this.vpc,
@@ -188,17 +188,21 @@ export class FargateToS3 extends Construct {
         props.containerDefinitionProps,
         props.fargateServiceProps
       );
+      this.service = createFargateServiceResponse.service;
+      this.container = createFargateServiceResponse.containerDefinition;
     }
 
     // Setup the S3 Bucket
     let bucket: s3.IBucket;
 
     if (!props.existingBucketObj) {
-      [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
+      const buildS3BucketResponse = defaults.buildS3Bucket(this, {
         bucketProps: props.bucketProps,
         loggingBucketProps: props.loggingBucketProps,
         logS3AccessLogs: props.logS3AccessLogs
       });
+      this.s3Bucket = buildS3BucketResponse.bucket;
+      this.s3LoggingBucket = buildS3BucketResponse.loggingBucket;
       bucket = this.s3Bucket;
     } else {
       bucket = props.existingBucketObj;

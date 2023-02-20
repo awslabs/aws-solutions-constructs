@@ -58,9 +58,9 @@ export interface BuildSagemakerNotebookProps {
   readonly role: iam.Role;
 }
 
-function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
+function addPermissions(role: iam.Role, props?: BuildSagemakerEndpointProps) {
   // Grant permissions to NoteBookInstance for creating and training the model
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
       resources: [`arn:${Aws.PARTITION}:sagemaker:${Aws.REGION}:${Aws.ACCOUNT_ID}:*`],
       actions: [
@@ -81,7 +81,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   );
 
   // Grant CloudWatch Logging permissions
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
       resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:log-group:/aws/sagemaker/*`],
       actions: [
@@ -96,7 +96,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
 
   // To place the Sagemaker endpoint in a VPC
   if (props && props.vpc) {
-    _role.addToPolicy(
+    role.addToPolicy(
       new iam.PolicyStatement({
         resources: ['*'],
         actions: [
@@ -118,7 +118,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
 
   // To create a Sagemaker model using Bring-Your-Own-Model (BYOM) algorith image
   // The image URL is specified in the modelProps
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
       resources: [`arn:${cdk.Aws.PARTITION}:ecr:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:repository/*`],
       actions: [
@@ -132,7 +132,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   );
 
   // Add GetAuthorizationToken (it can not be bound to resources other than *)
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
       resources: ['*'],
       actions: ['ecr:GetAuthorizationToken'],
@@ -145,7 +145,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
     const acceleratorType = (props.endpointConfigProps
       ?.productionVariants as sagemaker.CfnEndpointConfig.ProductionVariantProperty[])[0].acceleratorType;
     if (acceleratorType !== undefined) {
-      _role.addToPolicy(
+      role.addToPolicy(
         new iam.PolicyStatement({
           resources: ['*'],
           actions: ['elastic-inference:Connect'],
@@ -155,7 +155,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   }
 
   // add kms permissions
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
       // the kmsKeyId in the endpointConfigProps can be any of the following formats:
       // Key ID: 1234abcd-12ab-34cd-56ef-1234567890ab
@@ -172,7 +172,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   );
 
   // Add S3 permissions to get Model artifact, put data capture files, etc.
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
       actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject', 's3:ListBucket'],
       resources: ['arn:aws:s3:::*'],
@@ -180,17 +180,17 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   );
 
   // Grant GetRole permissions to the Sagemaker service
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
-      resources: [_role.roleArn],
+      resources: [role.roleArn],
       actions: ['iam:GetRole'],
     })
   );
 
   // Grant PassRole permissions to the Sagemaker service
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
-      resources: [_role.roleArn],
+      resources: [role.roleArn],
       actions: ['iam:PassRole'],
       conditions: {
         StringLike: { 'iam:PassedToService': 'sagemaker.amazonaws.com' },
@@ -201,7 +201,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   // Add CFN NAG uppress to allow for "Resource": "*" for ENI access in VPC,
   // ECR authorization token for custom model images, and elastic inference
   // Add CFN NAG for Complex Role because Sagmaker needs permissions to access several services
-  const roleDefaultPolicy = _role.node.tryFindChild('DefaultPolicy')?.node.findChild('Resource') as iam.CfnPolicy;
+  const roleDefaultPolicy = role.node.tryFindChild('DefaultPolicy')?.node.findChild('Resource') as iam.CfnPolicy;
   addCfnSuppressRules(roleDefaultPolicy, [
     {
       id: 'W12',
@@ -214,10 +214,16 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   ]);
 }
 
+export interface BuildSagemakerNotebookResponse {
+  readonly notebook: sagemaker.CfnNotebookInstance,
+  readonly vpc?: ec2.IVpc,
+  readonly securityGroup?: ec2.SecurityGroup
+}
+
 export function buildSagemakerNotebook(
   scope: Construct,
   props: BuildSagemakerNotebookProps
-): [sagemaker.CfnNotebookInstance, ec2.IVpc?, ec2.SecurityGroup?] {
+): BuildSagemakerNotebookResponse {
   // Setup the notebook properties
   let sagemakerNotebookProps;
   let vpcInstance;
@@ -287,13 +293,13 @@ export function buildSagemakerNotebook(
       sagemakerNotebookProps
     );
     if (vpcInstance) {
-      return [sagemakerInstance, vpcInstance, securityGroup];
+      return { notebook: sagemakerInstance, vpc: vpcInstance, securityGroup };
     } else {
-      return [sagemakerInstance];
+      return { notebook: sagemakerInstance };
     }
   } else {
     // Return existing notebook object
-    return [props.existingNotebookObj];
+    return { notebook: props.existingNotebookObj };
   }
 }
 
@@ -330,28 +336,40 @@ export interface BuildSagemakerEndpointProps {
   readonly vpc?: ec2.IVpc;
 }
 
+export interface BuildSagemakerEndpointResponse {
+  readonly endpoint: sagemaker.CfnEndpoint,
+  readonly endpointConfig?: sagemaker.CfnEndpointConfig,
+  readonly model?: sagemaker.CfnModel
+}
+
 export function BuildSagemakerEndpoint(
   scope: Construct,
   props: BuildSagemakerEndpointProps
-): [sagemaker.CfnEndpoint, sagemaker.CfnEndpointConfig?, sagemaker.CfnModel?] {
+): BuildSagemakerEndpointResponse {
   /** Conditional Sagemaker endpoint creation */
   if (!props.existingSagemakerEndpointObj) {
     if (props.modelProps) {
-      /** return [endpoint, endpointConfig, model] */
-      return deploySagemakerEndpoint(scope, props);
+      const deploySagemakerEndpointResponse = deploySagemakerEndpoint(scope, props);
+      return { ...deploySagemakerEndpointResponse };
     } else {
       throw Error('Either existingSagemakerEndpointObj or at least modelProps is required');
     }
   } else {
     /** Otherwise, return [endpoint] */
-    return [props.existingSagemakerEndpointObj];
+    return { endpoint: props.existingSagemakerEndpointObj };
   }
+}
+
+export interface DeploySagemakerEndpointResponse {
+  readonly endpoint: sagemaker.CfnEndpoint,
+  readonly endpointConfig?: sagemaker.CfnEndpointConfig,
+  readonly model?: sagemaker.CfnModel
 }
 
 export function deploySagemakerEndpoint(
   scope: Construct,
   props: BuildSagemakerEndpointProps
-): [sagemaker.CfnEndpoint, sagemaker.CfnEndpointConfig?, sagemaker.CfnModel?] {
+): DeploySagemakerEndpointResponse {
   let model: sagemaker.CfnModel;
   let endpointConfig: sagemaker.CfnEndpointConfig;
   let endpoint: sagemaker.CfnEndpoint;
@@ -386,7 +404,7 @@ export function deploySagemakerEndpoint(
     // Add dependency on EndpointConfig
     endpoint.addDependency(endpointConfig);
 
-    return [endpoint, endpointConfig, model];
+    return { endpoint, endpointConfig, model };
   } else {
     throw Error('You need to provide at least modelProps to create Sagemaker Endpoint');
   }

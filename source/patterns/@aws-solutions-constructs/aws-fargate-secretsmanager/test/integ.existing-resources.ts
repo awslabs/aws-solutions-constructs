@@ -30,7 +30,7 @@ const existingSecretObj = defaults.buildSecretsManagerSecret(stack, 'secret', {}
 
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
-const [testService, testContainer] = CreateFargateService(stack,
+const createFargateServiceResponse = CreateFargateService(stack,
   'test',
   existingVpc,
   undefined,
@@ -44,8 +44,8 @@ const constructProps: FargateToSecretsmanagerProps = {
   publicApi: true,
   existingVpc,
   existingSecretObj,
-  existingContainerDefinitionObject: testContainer,
-  existingFargateServiceObject: testService,
+  existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
+  existingFargateServiceObject: createFargateServiceResponse.service,
 };
 
 new FargateToSecretsmanager(stack, 'test-construct', constructProps);

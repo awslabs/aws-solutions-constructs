@@ -144,8 +144,10 @@ export class ApiGatewayToIot extends Construct {
     }
 
     // Setup the API Gateway
-    [this.apiGateway, this.apiGatewayCloudWatchRole,
-      this.apiGatewayLogGroup] = defaults.GlobalRestApi(this, extraApiGwProps, props.logGroupProps);
+    const globalRestApiResponse = defaults.GlobalRestApi(this, extraApiGwProps, props.logGroupProps);
+    this.apiGateway = globalRestApiResponse.api;
+    this.apiGatewayCloudWatchRole = globalRestApiResponse.role;
+    this.apiGatewayLogGroup = globalRestApiResponse.logGroup;
 
     // Validate the Query Params
     const requestValidatorProps: api.RequestValidatorProps = {

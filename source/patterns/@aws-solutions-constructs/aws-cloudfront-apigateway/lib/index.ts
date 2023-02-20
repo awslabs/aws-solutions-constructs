@@ -83,14 +83,16 @@ export class CloudFrontToApiGateway extends Construct {
 
     this.apiGateway = props.existingApiGatewayObj;
 
-    [this.cloudFrontWebDistribution, this.cloudFrontFunction, this.cloudFrontLoggingBucket] =
-      defaults.CloudFrontDistributionForApiGateway(
-        this,
-        props.existingApiGatewayObj,
-        props.cloudFrontDistributionProps,
-        props.insertHttpSecurityHeaders,
-        props.cloudFrontLoggingBucketProps,
-        props.responseHeadersPolicyProps
-      );
+    const cloudFrontDistributionForApiGatewayResponse = defaults.CloudFrontDistributionForApiGateway(
+      this,
+      props.existingApiGatewayObj,
+      props.cloudFrontDistributionProps,
+      props.insertHttpSecurityHeaders,
+      props.cloudFrontLoggingBucketProps,
+      props.responseHeadersPolicyProps
+    );
+    this.cloudFrontWebDistribution = cloudFrontDistributionForApiGatewayResponse.distribution;
+    this.cloudFrontFunction = cloudFrontDistributionForApiGatewayResponse.cloudfrontFunction;
+    this.cloudFrontLoggingBucket = cloudFrontDistributionForApiGatewayResponse.loggingBucket;
   }
 }

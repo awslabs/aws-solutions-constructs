@@ -373,7 +373,7 @@ test('Existing service/new secret, public API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -385,8 +385,8 @@ test('Existing service/new secret, public API, existing VPC', () => {
 
   new FargateToSecretsmanager(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     secretEnvironmentVariableName: envName,
     secretProps: {
@@ -499,7 +499,7 @@ test('Existing service/existing secret, private API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -515,8 +515,8 @@ test('Existing service/existing secret, private API, existing VPC', () => {
 
   new FargateToSecretsmanager(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     existingSecretObj
   });
@@ -614,7 +614,7 @@ test('Test error invalid secret permission', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -629,8 +629,8 @@ test('Test error invalid secret permission', () => {
   const app = () => {
     new FargateToSecretsmanager(stack, 'test-construct', {
       publicApi,
-      existingFargateServiceObject: testService,
-      existingContainerDefinitionObject: testContainer,
+      existingFargateServiceObject: createFargateServiceResponse.service,
+      existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
       existingVpc,
       grantWriteAccess: 'reed',
       existingSecretObj

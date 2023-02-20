@@ -18,33 +18,42 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as defaults from '../';
 import '@aws-cdk/assert/jest';
 
-// --------------------------------------------------------------
-// Test deployment with VPC
-// --------------------------------------------------------------
 test('Test deployment with VPC', () => {
   // Stack
   const stack = new Stack();
   const sagemakerRole = new iam.Role(stack, 'SagemakerRole', {
     assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
   });
-  let sagemaker;
-  let vpc;
-  let sg;
 
   // Build Sagemaker Notebook Instance
-  [sagemaker, vpc, sg] = defaults.buildSagemakerNotebook(stack, {
+  const buildSagemakerNotebookResponse = defaults.buildSagemakerNotebook(stack, {
     role: sagemakerRole,
   });
   // Assertion
-  expect(vpc?.privateSubnets.length).toEqual(2);
-  expect(vpc?.publicSubnets.length).toEqual(2);
-  expect(sagemaker.instanceType).toEqual('ml.t2.medium');
-  expect(sg).toBeInstanceOf(ec2.SecurityGroup);
+  expect(buildSagemakerNotebookResponse.vpc?.privateSubnets.length).toEqual(2);
+  expect(buildSagemakerNotebookResponse.vpc?.publicSubnets.length).toEqual(2);
+  expect(buildSagemakerNotebookResponse.notebook.instanceType).toEqual('ml.t2.medium');
+  expect(buildSagemakerNotebookResponse.securityGroup).toBeInstanceOf(ec2.SecurityGroup);
 });
 
-// --------------------------------------------------------------
-// Test deployment in existing VPC
-// --------------------------------------------------------------
+test('Test deployment without VPC', () => {
+  // Stack
+  const stack = new Stack();
+  const sagemakerRole = new iam.Role(stack, 'SagemakerRole', {
+    assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
+  });
+
+  // Build Sagemaker Notebook Instance
+  const buildSagemakerNotebookResponse = defaults.buildSagemakerNotebook(stack, {
+    role: sagemakerRole,
+    deployInsideVpc: false,
+  });
+  // Assertion
+  expect(buildSagemakerNotebookResponse.vpc).not.toBeDefined();
+  expect(buildSagemakerNotebookResponse.notebook).toBeDefined();
+  expect(buildSagemakerNotebookResponse.securityGroup).not.toBeDefined();
+});
+
 test('Test deployment w/ existing VPC', () => {
   // Stack
   const stack = new Stack();
@@ -52,7 +61,7 @@ test('Test deployment w/ existing VPC', () => {
     assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
   });
   // Build Sagemaker Notebook Instance
-  defaults.buildSagemakerNotebook(stack, {
+  const buildSagemakerNotebookResponse = defaults.buildSagemakerNotebook(stack, {
     role: sagemakerRole,
     deployInsideVpc: true,
     sagemakerNotebookProps: {
@@ -60,6 +69,11 @@ test('Test deployment w/ existing VPC', () => {
       securityGroupIds: ['sg-deadbeef'],
     },
   });
+
+  expect(buildSagemakerNotebookResponse.notebook).toBeDefined();
+  expect(buildSagemakerNotebookResponse.vpc).not.toBeDefined();
+  expect(buildSagemakerNotebookResponse.securityGroup).not.toBeDefined();
+
   expect(stack).toHaveResource('AWS::SageMaker::NotebookInstance', {
     DirectInternetAccess: 'Disabled',
     SecurityGroupIds: ['sg-deadbeef'],
@@ -67,9 +81,6 @@ test('Test deployment w/ existing VPC', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment with override
-// --------------------------------------------------------------
 test('Test deployment w/ override', () => {
   // Stack
   const stack = new Stack();
@@ -94,9 +105,6 @@ test('Test deployment w/ override', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test exception
-// --------------------------------------------------------------
 test('Test exception', () => {
   // Stack
   const stack = new Stack();
@@ -116,9 +124,6 @@ test('Test exception', () => {
   }).toThrowError();
 });
 
-// ---------------------------------------------------------------
-// Test exception for not providing primaryContainer in modelProps
-// ---------------------------------------------------------------
 test('Test exception for not providing primaryContainer in modelProps', () => {
   // Stack
   const stack = new Stack();
@@ -133,9 +138,6 @@ test('Test exception for not providing primaryContainer in modelProps', () => {
   expect(app).toThrowError();
 });
 
-// -------------------------------------------------------------------------
-// Test exception for not providing modelProps
-// -------------------------------------------------------------------------
 test('Test exception for not providing modelProps', () => {
   // Stack
   const stack = new Stack();
@@ -156,9 +158,6 @@ test('Test exception for not providing modelProps', () => {
   expect(app).toThrowError();
 });
 
-// -------------------------------------------------------------------------
-// Test exception for not providing modelProps or existingSagemkaerObj
-// -------------------------------------------------------------------------
 test('Test exception for not providing modelProps or existingSagemkaerObj', () => {
   // Stack
   const stack = new Stack();
@@ -179,9 +178,6 @@ test('Test exception for not providing modelProps or existingSagemkaerObj', () =
   expect(app).toThrowError();
 });
 
-// -----------------------------------------------------------------------------------------
-// Test exception for not providing private or isolated subnets in an existing vpc
-// -----------------------------------------------------------------------------------------
 test('Test exception for not providing private or isolated subnets in an existing vpc', () => {
   // Stack
   const stack = new Stack();

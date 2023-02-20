@@ -40,7 +40,11 @@ function deployStackWithNewEventBus(stack: cdk.Stack) {
 
 test('check the sqs queue properties', () => {
   const stack = new cdk.Stack();
-  deployNewStack(stack);
+  const buildQueueResponse = deployNewStack(stack);
+
+  expect(buildQueueResponse.sqsQueue).toBeDefined();
+  expect(buildQueueResponse.encryptionKey).toBeDefined();
+
   expect(stack).toHaveResource('AWS::SQS::Queue', {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
@@ -73,7 +77,10 @@ test('check the sqs queue properties with existing KMS key', () => {
     encryptionKey: key
   };
 
-  new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+  const buildQueueResponse = new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+
+  expect(buildQueueResponse.sqsQueue).toBeDefined();
+  expect(buildQueueResponse.encryptionKey).toBeDefined();
 
   expect(stack).toHaveResource('AWS::SQS::Queue', {
     KmsMasterKeyId: {

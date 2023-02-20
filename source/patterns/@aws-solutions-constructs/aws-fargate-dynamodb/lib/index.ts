@@ -164,7 +164,7 @@ export class FargateToDynamoDB extends Construct {
       // CheckFargateProps confirms that the container is provided
       this.container = props.existingContainerDefinitionObject!;
     } else {
-      [this.service, this.container] = defaults.CreateFargateService(
+      const createFargateServiceResponse = defaults.CreateFargateService(
         scope,
         id,
         this.vpc,
@@ -175,12 +175,16 @@ export class FargateToDynamoDB extends Construct {
         props.containerDefinitionProps,
         props.fargateServiceProps
       );
+      this.service = createFargateServiceResponse.service;
+      this.container = createFargateServiceResponse.containerDefinition;
     }
 
-    [this.dynamoTableInterface, this.dynamoTable] = defaults.buildDynamoDBTable(this, {
+    const response = defaults.buildDynamoDBTable(this, {
       dynamoTableProps: props.dynamoTableProps,
       existingTableInterface: props.existingTableInterface
     });
+    this.dynamoTableInterface = response.tableInterface;
+    this.dynamoTable = response.tableObject;
 
     // Add the requested or default table permissions
     if (props.tablePermissions) {

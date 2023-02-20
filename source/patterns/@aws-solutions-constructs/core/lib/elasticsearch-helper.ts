@@ -36,7 +36,12 @@ export interface BuildElasticSearchProps {
   readonly securityGroupIds?: string[]
 }
 
-export function buildElasticSearch(scope: Construct, props: BuildElasticSearchProps): [elasticsearch.CfnDomain, iam.Role] {
+export interface BuildElasticSearchResponse {
+  readonly domain: elasticsearch.CfnDomain,
+  readonly role: iam.Role
+}
+
+export function buildElasticSearch(scope: Construct, props: BuildElasticSearchProps): BuildElasticSearchResponse {
 
   let subnetIds: string[] = [];
   const constructDrivenProps: any = {};
@@ -83,7 +88,7 @@ export function buildElasticSearch(scope: Construct, props: BuildElasticSearchPr
     },
   ]);
 
-  return [esDomain, cognitoKibanaConfigureRole];
+  return { domain: esDomain, role: cognitoKibanaConfigureRole };
 }
 
 export function buildElasticSearchCWAlarms(scope: Construct): cloudwatch.Alarm[] {

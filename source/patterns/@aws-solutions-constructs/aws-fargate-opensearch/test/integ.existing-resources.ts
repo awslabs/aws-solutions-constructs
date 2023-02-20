@@ -28,7 +28,7 @@ stack.templateOptions.description = 'Integration Test with existing VPC, Service
 const existingVpc = getTestVpc(stack);
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
-const [testService, testContainer] = CreateFargateService(stack,
+const createFargateServiceResponse = CreateFargateService(stack,
   'test',
   existingVpc,
   undefined,
@@ -43,8 +43,8 @@ const testProps: FargateToOpenSearchProps = {
   existingVpc,
   openSearchDomainName: 'solution-constructs',
   cognitoDomainName: 'cogn-solution-constructs',
-  existingContainerDefinitionObject: testContainer,
-  existingFargateServiceObject: testService,
+  existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
+  existingFargateServiceObject: createFargateServiceResponse.service,
   domainEndpointEnvironmentVariableName: 'CUSTOM_NAME',
 };
 

@@ -543,13 +543,13 @@ function CreateTestFunction(stack: Stack, id: string): lambda.Function {
 }
 
 function CreateTestFargateService(stack: Stack, id: string, vpc: ec2.IVpc): ecs.FargateService {
-  const [svc] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     `${id}-fg-svc`,
     vpc,
     undefined,
     'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo',
     'latest');
-  return svc;
+  return createFargateServiceResponse.service;
 }
 
 function CreateTestListener(stack: Stack, id: string, alb: elb.ApplicationLoadBalancer) {

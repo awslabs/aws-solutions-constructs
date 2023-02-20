@@ -32,7 +32,7 @@ test('New service/new topic, public API, new VPC', () => {
   const serviceName = "custom-service-name";
   const topicName = "custom-topic-name";
 
-  new FargateToSns(stack, 'test-construct', {
+  const testConstruct = new FargateToSns(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
     vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
@@ -43,6 +43,7 @@ test('New service/new topic, public API, new VPC', () => {
     topicProps: { topicName },
   });
 
+  expect(testConstruct.snsTopic).toBeDefined();
   expect(stack).toHaveResourceLike("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     DesiredCount: 2,
@@ -196,7 +197,7 @@ test('Existing service/new topic, public API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -208,8 +209,8 @@ test('Existing service/new topic, public API, existing VPC', () => {
 
   new FargateToSns(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     topicArnEnvironmentVariableName: 'CUSTOM_ARN',
     topicNameEnvironmentVariableName: 'CUSTOM_NAME',
@@ -285,7 +286,7 @@ test('Existing service/existing topic, private API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -301,8 +302,8 @@ test('Existing service/existing topic, private API, existing VPC', () => {
 
   new FargateToSns(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     existingTopicObject: existingTopic
   });

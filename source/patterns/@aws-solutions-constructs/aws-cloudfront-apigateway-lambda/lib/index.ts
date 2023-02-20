@@ -111,8 +111,10 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
       lambdaFunctionProps: props.lambdaFunctionProps
     });
 
-    [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] =
-      defaults.RegionalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps, props.logGroupProps);
+    const regionalLambdaRestApiResponse = defaults.RegionalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps, props.logGroupProps);
+    this.apiGateway = regionalLambdaRestApiResponse.api;
+    this.apiGatewayCloudWatchRole = regionalLambdaRestApiResponse.role;
+    this.apiGatewayLogGroup = regionalLambdaRestApiResponse.group;
 
     this.apiGateway.methods.forEach((apiMethod) => {
       // Override the API Gateway Authorization Type from AWS_IAM to NONE

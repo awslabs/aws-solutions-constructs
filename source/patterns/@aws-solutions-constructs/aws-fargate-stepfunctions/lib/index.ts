@@ -155,7 +155,7 @@ export class FargateToStepfunctions extends Construct {
       // CheckFargateProps confirms that the container is provided
       this.container = props.existingContainerDefinitionObject!;
     } else {
-      [this.service, this.container] = defaults.CreateFargateService(
+      const createFargateServiceResponse = defaults.CreateFargateService(
         scope,
         id,
         this.vpc,
@@ -166,10 +166,14 @@ export class FargateToStepfunctions extends Construct {
         props.containerDefinitionProps,
         props.fargateServiceProps
       );
+      this.service = createFargateServiceResponse.service;
+      this.container = createFargateServiceResponse.containerDefinition;
     }
 
-    [this.stateMachine, this.stateMachineLogGroup] = defaults.buildStateMachine(this, props.stateMachineProps,
+    const buildStateMachineResponse = defaults.buildStateMachine(this, props.stateMachineProps,
       props.logGroupProps);
+    this.stateMachine = buildStateMachineResponse.stateMachine;
+    this.stateMachineLogGroup = buildStateMachineResponse.logGroup;
 
     this.stateMachine.grantStartExecution(this.service.taskDefinition.taskRole);
 

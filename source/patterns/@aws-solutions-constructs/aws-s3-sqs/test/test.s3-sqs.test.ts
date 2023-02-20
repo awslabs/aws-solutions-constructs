@@ -84,9 +84,9 @@ test('Test deployment w/ existing Bucket', () => {
   const stack = new Stack();
   // Helper declaration
 
-  const [myBucket] = defaults.buildS3Bucket(stack, {});
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {});
   new S3ToSqs(stack, 'test-s3-sqs', {
-    existingBucketObj: myBucket
+    existingBucketObj: buildS3BucketResponse.bucket
   });
   // Assertion 1
   expect(stack).toHaveResource("Custom::S3BucketNotifications", {

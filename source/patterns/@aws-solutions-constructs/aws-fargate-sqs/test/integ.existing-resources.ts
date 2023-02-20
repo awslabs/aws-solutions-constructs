@@ -33,7 +33,7 @@ const existingQueue = new sqs.Queue(stack, 'test-queue', {
 
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
-const [testService, testContainer] = CreateFargateService(stack,
+const createFargateServiceResponse = CreateFargateService(stack,
   'test',
   existingVpc,
   undefined,
@@ -47,8 +47,8 @@ const testProps: FargateToSqsProps = {
   publicApi: true,
   existingVpc,
   existingQueueObj: existingQueue,
-  existingContainerDefinitionObject: testContainer,
-  existingFargateServiceObject: testService,
+  existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
+  existingFargateServiceObject: createFargateServiceResponse.service,
   queueUrlEnvironmentVariableName: 'CUSTOM_NAME',
   queuePermissions: ['Write', 'Read']
 };

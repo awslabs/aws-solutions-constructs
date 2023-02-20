@@ -137,7 +137,7 @@ export class LambdaToSns extends Construct {
       });
 
       // Setup the SNS topic
-      [this.snsTopic] = defaults.buildTopic(this, {
+      const buildTopicResponse = defaults.buildTopic(this, {
         existingTopicObj: props.existingTopicObj,
         topicProps: props.topicProps,
         enableEncryptionWithCustomerManagedKey: props.enableEncryptionWithCustomerManagedKey,
@@ -145,6 +145,7 @@ export class LambdaToSns extends Construct {
         encryptionKeyProps: props.encryptionKeyProps
       });
 
+      this.snsTopic = buildTopicResponse.topic;
       // Configure environment variables
       const topicArnEnvironmentVariableName = props.topicArnEnvironmentVariableName || 'SNS_TOPIC_ARN';
       this.lambdaFunction.addEnvironment(topicArnEnvironmentVariableName, this.snsTopic.topicArn);

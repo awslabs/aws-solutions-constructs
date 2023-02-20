@@ -13,6 +13,7 @@
 
 import * as cdk from "aws-cdk-lib";
 import * as events from "aws-cdk-lib/aws-events";
+import * as sns from "aws-cdk-lib/aws-sns";
 import * as defaults from '@aws-solutions-constructs/core';
 import '@aws-cdk/assert/jest';
 import { EventbridgeToSns, EventbridgeToSnsProps } from "../lib";
@@ -40,7 +41,10 @@ function deployStackWithNewEventBus(stack: cdk.Stack) {
 
 test('check if the event rule has permission/policy in place in sns for it to be able to publish to the topic', () => {
   const stack = new cdk.Stack();
-  deployNewStack(stack);
+  const testConstruct = deployNewStack(stack);
+
+  expect(testConstruct.snsTopic).toBeDefined();
+  expect(testConstruct.encryptionKey).toBeDefined();
   expect(stack).toHaveResource('AWS::SNS::TopicPolicy', {
     PolicyDocument: {
       Statement: [
@@ -359,4 +363,22 @@ test('Topic is encrypted with AWS-managed KMS key when enableEncryptionWithCusto
       ]
     }
   });
+});
+
+test('Properties correctly set when unencrypted existing topic is provided', () => {
+  const stack = new cdk.Stack();
+  const existingTopicObj = new sns.Topic(stack, 'Topic', {
+    topicName: 'existing-topic-name'
+  });
+
+  const props: EventbridgeToSnsProps = {
+    existingTopicObj,
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    }
+  };
+  const testConstruct = new EventbridgeToSns(stack, 'test', props);
+
+  expect(testConstruct.snsTopic).toBeDefined();
+  expect(testConstruct.encryptionKey).not.toBeDefined();
 });
