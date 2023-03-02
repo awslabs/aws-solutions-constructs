@@ -47,7 +47,7 @@ export function buildLambdaFunction(scope: Construct, props: BuildLambdaFunction
   // Conditional lambda function creation
   if (!props.existingLambdaObj) {
     if (props.lambdaFunctionProps) {
-      return deployLambdaFunction(scope, props.lambdaFunctionProps, undefined, props.vpc);
+      return deployLambdaFunction(scope, props.lambdaFunctionProps, props.lambdaFunctionProps.functionName, props.vpc);
     } else {
       throw Error('Either existingLambdaObj or lambdaFunctionProps is required');
     }
