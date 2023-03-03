@@ -4,10 +4,15 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.33.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.32.0...v2.33.0) (2023-03-03)
 
+Build on CDK v2.67.0
 
 ### Features
 
 * **aws-apigateway-dynamodb:** add optional resourceName parameter ([#898](https://github.com/awslabs/aws-solutions-constructs/issues/898)) ([09e54ec](https://github.com/awslabs/aws-solutions-constructs/commit/09e54ec2150257be3e2c1cb1aa42124aa4e8f55e))
+
+### Bug Fixes
+
+* **core:** id conflict with multiple buildLambdaFunction() ([#910](https://github.com/awslabs/aws-solutions-constructs/pull/910))
 
 ## [2.32.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.31.0...v2.32.0) (2023-02-14)
 
