@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.33.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.32.0...v2.33.0) (2023-03-03)
+
+
+### Features
+
+* **aws-apigateway-dynamodb:** add optional resourceName parameter ([#898](https://github.com/awslabs/aws-solutions-constructs/issues/898)) ([09e54ec](https://github.com/awslabs/aws-solutions-constructs/commit/09e54ec2150257be3e2c1cb1aa42124aa4e8f55e))
+
 ## [2.32.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.31.0...v2.32.0) (2023-02-14)
 
 Build on CDK 2.64.0
