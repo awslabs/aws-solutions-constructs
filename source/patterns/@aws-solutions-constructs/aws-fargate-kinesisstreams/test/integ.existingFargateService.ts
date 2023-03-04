@@ -24,7 +24,7 @@ const existingVpc = getTestVpc(stack);
 
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
-const [existingFargateServiceObject, existingContainerDefinitionObject] = CreateFargateService(stack,
+const createFargateServiceResponse = CreateFargateService(stack,
   'test',
   existingVpc,
   undefined,
@@ -37,8 +37,8 @@ const [existingFargateServiceObject, existingContainerDefinitionObject] = Create
 new FargateToKinesisStreams(stack, 'test-fargate-kinesisstreams', {
   publicApi: true,
   existingVpc,
-  existingFargateServiceObject,
-  existingContainerDefinitionObject
+  existingFargateServiceObject: createFargateServiceResponse.service,
+  existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition
 });
 
 app.synth();

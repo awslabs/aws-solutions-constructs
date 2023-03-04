@@ -81,11 +81,13 @@ export class IotToS3 extends Construct {
 
     // Setup S3 Bucket
     if (!props.existingBucketInterface) {
-      [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
+      const buildS3BucketResponse = defaults.buildS3Bucket(this, {
         bucketProps: props.bucketProps,
         loggingBucketProps: props.loggingBucketProps,
         logS3AccessLogs: props.logS3AccessLogs
       });
+      this.s3Bucket = buildS3BucketResponse.bucket;
+      this.s3LoggingBucket = buildS3BucketResponse.loggingBucket;
       this.s3BucketInterface = this.s3Bucket;
     } else {
       this.s3BucketInterface = props.existingBucketInterface;

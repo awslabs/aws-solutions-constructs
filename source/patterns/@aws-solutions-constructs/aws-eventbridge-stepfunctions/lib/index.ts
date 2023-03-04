@@ -81,8 +81,10 @@ export class EventbridgeToStepfunctions extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
 
-    [this.stateMachine, this.stateMachineLogGroup] = defaults.buildStateMachine(this, props.stateMachineProps,
+    const buildStateMachineResponse = defaults.buildStateMachine(this, props.stateMachineProps,
       props.logGroupProps);
+    this.stateMachine = buildStateMachineResponse.stateMachine;
+    this.stateMachineLogGroup = buildStateMachineResponse.logGroup;
 
     // Create an IAM role for Events to start the State Machine
     const eventsRole = new iam.Role(this, 'EventsRuleRole', {

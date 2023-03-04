@@ -63,7 +63,7 @@ test('Check for an existing service', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     { clusterName },
@@ -75,8 +75,8 @@ test('Check for an existing service', () => {
 
   new FargateToStepfunctions(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     stateMachineProps: testStateMachineProps(stack)
   });

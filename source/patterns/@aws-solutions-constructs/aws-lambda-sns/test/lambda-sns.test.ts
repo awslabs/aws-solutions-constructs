@@ -28,7 +28,7 @@ test('Test deployment with new Lambda function', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  new LambdaToSns(stack, 'lambda-to-sns-stack', {
+  const testConstruct = new LambdaToSns(stack, 'lambda-to-sns-stack', {
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
@@ -39,6 +39,7 @@ test('Test deployment with new Lambda function', () => {
     }
   });
 
+  expect(testConstruct.snsTopic).toBeDefined();
   expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
     Environment: {
       Variables: {

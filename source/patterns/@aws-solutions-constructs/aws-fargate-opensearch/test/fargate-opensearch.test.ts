@@ -549,7 +549,7 @@ test('Existing service/new domain, public API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -561,8 +561,8 @@ test('Existing service/new domain, public API, existing VPC', () => {
 
   new FargateToOpenSearch(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     openSearchDomainName: DOMAIN_NAME
   });
@@ -631,7 +631,7 @@ test('Existing service/new domain, private API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -643,8 +643,8 @@ test('Existing service/new domain, private API, existing VPC', () => {
 
   new FargateToOpenSearch(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     openSearchDomainName: DOMAIN_NAME
   });

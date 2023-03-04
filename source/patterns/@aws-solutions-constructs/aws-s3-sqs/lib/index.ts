@@ -146,11 +146,14 @@ export class S3ToSqs extends Construct {
 
       // Setup the S3 bucket
       if (!props.existingBucketObj) {
-        [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
+        const buildS3BucketResponse = defaults.buildS3Bucket(this, {
           bucketProps: props.bucketProps,
           loggingBucketProps: props.loggingBucketProps,
           logS3AccessLogs: props.logS3AccessLogs
         });
+        this.s3Bucket = buildS3BucketResponse.bucket;
+        this.s3LoggingBucket = buildS3BucketResponse.loggingBucket;
+
         bucket = this.s3Bucket;
       } else {
         bucket = props.existingBucketObj;
@@ -166,7 +169,7 @@ export class S3ToSqs extends Construct {
         maxReceiveCount: props.maxReceiveCount
       });
       // Setup the queue
-      [this.sqsQueue, this.encryptionKey] = defaults.buildQueue(this, 'queue', {
+      const buildQueueResponse = defaults.buildQueue(this, 'queue', {
         existingQueueObj: props.existingQueueObj,
         queueProps: props.queueProps,
         deadLetterQueue: this.deadLetterQueue,
@@ -174,6 +177,8 @@ export class S3ToSqs extends Construct {
         encryptionKey: props.encryptionKey,
         encryptionKeyProps: props.encryptionKeyProps
       });
+      this.sqsQueue = buildQueueResponse.queue;
+      this.encryptionKey = buildQueueResponse.key;
 
       // Setup the S3 bucket event types
       let s3EventTypes;

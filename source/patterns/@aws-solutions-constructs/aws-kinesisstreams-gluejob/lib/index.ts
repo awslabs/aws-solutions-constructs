@@ -211,7 +211,7 @@ export class KinesisstreamsToGluejob extends Construct {
       });
     }
 
-    [this.glueJob, this.glueJobRole, this.outputBucket] = defaults.buildGlueJob(this, {
+    const buildGlueJobResponse = defaults.buildGlueJob(this, {
       existingCfnJob: props.existingGlueJob,
       glueJobProps: props.glueJobProps,
       table: this.table!,
@@ -219,6 +219,11 @@ export class KinesisstreamsToGluejob extends Construct {
       outputDataStore: props.outputDataStore!,
       etlCodeAsset: props.etlCodeAsset
     });
+    this.glueJob = buildGlueJobResponse.job;
+    this.glueJobRole = buildGlueJobResponse.role;
+    // We refactored the array of anonymous values out of the helper functions, but it was exposed in the
+    // construct interface, so we need to recreate it.
+    this.outputBucket = buildGlueJobResponse.bucket ? [ buildGlueJobResponse.bucket, buildGlueJobResponse.loggingBucket] : undefined;
 
     this.glueJobRole = this.buildRolePolicy(scope, id, this.database, this.table, this.glueJob, this.glueJobRole);
 

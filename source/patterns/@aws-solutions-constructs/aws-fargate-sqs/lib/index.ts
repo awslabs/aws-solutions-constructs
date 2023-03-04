@@ -199,7 +199,7 @@ export class FargateToSqs extends Construct {
       // CheckFargateProps confirms that the container is provided
       this.container = props.existingContainerDefinitionObject!;
     } else {
-      [this.service, this.container] = defaults.CreateFargateService(
+      const createFargateServiceResponse = defaults.CreateFargateService(
         scope,
         id,
         this.vpc,
@@ -210,6 +210,8 @@ export class FargateToSqs extends Construct {
         props.containerDefinitionProps,
         props.fargateServiceProps
       );
+      this.service = createFargateServiceResponse.service;
+      this.container = createFargateServiceResponse.containerDefinition;
     }
 
     // Setup the dead letter queue, if applicable
@@ -221,7 +223,7 @@ export class FargateToSqs extends Construct {
     });
 
     // Setup the SQS Queue
-    [this.sqsQueue] = defaults.buildQueue(this, `${id}-queue`, {
+    const buildQueueResponse = defaults.buildQueue(this, `${id}-queue`, {
       queueProps: props.queueProps,
       deadLetterQueue: this.deadLetterQueue,
       existingQueueObj: props.existingQueueObj,
@@ -229,6 +231,7 @@ export class FargateToSqs extends Construct {
       encryptionKey: props.encryptionKey,
       encryptionKeyProps: props.encryptionKeyProps
     });
+    this.sqsQueue = buildQueueResponse.queue;
 
     // Enable message send and receive permissions for Fargate service by default
     if (props.queuePermissions) {

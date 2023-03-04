@@ -78,7 +78,9 @@ export class ApiGatewayToLambda extends Construct {
     });
 
     // Setup the API Gateway
-    [this.apiGateway, this.apiGatewayCloudWatchRole,
-      this.apiGatewayLogGroup] = defaults.GlobalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps, props.logGroupProps);
+    const globalRestApiResponse = defaults.GlobalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps, props.logGroupProps);
+    this.apiGateway = globalRestApiResponse.api;
+    this.apiGatewayCloudWatchRole = globalRestApiResponse.role;
+    this.apiGatewayLogGroup = globalRestApiResponse.group;
   }
 }

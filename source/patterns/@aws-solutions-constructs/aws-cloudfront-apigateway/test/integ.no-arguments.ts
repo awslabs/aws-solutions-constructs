@@ -32,9 +32,9 @@ const inProps: lambda.FunctionProps = {
 
 const func = defaults.deployLambdaFunction(stack, inProps);
 
-const [_api] = defaults.RegionalLambdaRestApi(stack, func);
+const regionalLambdaRestApiResponse = defaults.RegionalLambdaRestApi(stack, func);
 
-_api.methods.forEach((apiMethod) => {
+regionalLambdaRestApiResponse.api.methods.forEach((apiMethod) => {
   // Override the API Gateway Authorization Type from AWS_IAM to NONE
   const child = apiMethod.node.findChild('Resource') as api.CfnMethod;
   if (child.authorizationType === 'AWS_IAM') {
@@ -51,7 +51,7 @@ _api.methods.forEach((apiMethod) => {
 });
 
 new CloudFrontToApiGateway(stack, 'test-cloudfront-apigateway', {
-  existingApiGatewayObj: _api,
+  existingApiGatewayObj: regionalLambdaRestApiResponse.api,
   cloudFrontLoggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true

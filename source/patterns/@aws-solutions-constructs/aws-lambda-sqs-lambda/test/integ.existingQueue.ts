@@ -24,7 +24,7 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-lambda-sqs-lambda';
 
 // Definitions
-const [existingQueue] = defaults.buildQueue(stack, 'existing-sqs-queue', {});
+const buildQueueResponse = defaults.buildQueue(stack, 'existing-sqs-queue', {});
 
 const props: LambdaToSqsToLambdaProps = {
   producerLambdaFunctionProps: {
@@ -32,7 +32,7 @@ const props: LambdaToSqsToLambdaProps = {
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`)
   },
-  existingQueueObj: existingQueue,
+  existingQueueObj: buildQueueResponse.queue,
   consumerLambdaFunctionProps: {
     runtime: lambda.Runtime.NODEJS_14_X,
     handler: 'index.handler',

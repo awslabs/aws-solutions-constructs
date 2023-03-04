@@ -33,7 +33,7 @@ const existingBucket = defaults.CreateScrapBucket(stack, {
 
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
-const [testService, testContainer] = CreateFargateService(stack,
+const createFargateServiceResponse = CreateFargateService(stack,
   'test',
   existingVpc,
   undefined,
@@ -47,8 +47,8 @@ const testProps: FargateToS3Props = {
   publicApi: true,
   existingVpc,
   existingBucketObj: existingBucket,
-  existingContainerDefinitionObject: testContainer,
-  existingFargateServiceObject: testService,
+  existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
+  existingFargateServiceObject: createFargateServiceResponse.service,
   bucketArnEnvironmentVariableName: 'CUSTOM_ARN',
   bucketEnvironmentVariableName: 'CUSTOM_NAME',
   bucketPermissions: ['Read', 'Write', 'Delete'],

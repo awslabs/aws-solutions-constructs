@@ -14,9 +14,14 @@
 import * as s3a from 'aws-cdk-lib/aws-s3-assets';
 import { Stack, CfnMapping } from 'aws-cdk-lib';
 
+export interface GetSagemakerModelResponse {
+  readonly mapping: CfnMapping,
+  readonly asset: s3a.Asset,
+}
+
 // linear learner ECR images can be found here:
 // https://github.com/awsdocs/amazon-sagemaker-developer-guide/blob/master/doc_source/sagemaker-algo-docker-registry-paths.md
-export function getSagemakerModel(stack: Stack): [CfnMapping, s3a.Asset ] {
+export function getSagemakerModel(stack: Stack): GetSagemakerModelResponse {
 
   const containerMap = new CfnMapping(stack, 'mappings', {
     mapping: {
@@ -90,6 +95,6 @@ export function getSagemakerModel(stack: Stack): [CfnMapping, s3a.Asset ] {
     path: 'model/model.tar.gz',
   });
 
-  return [containerMap, modelAsset];
+  return { mapping: containerMap, asset: modelAsset };
 
 }

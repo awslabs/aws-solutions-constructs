@@ -128,7 +128,7 @@ export class SqsToLambda extends Construct {
       });
 
       // Setup the queue
-      [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
+      const buildQueueResponse = defaults.buildQueue(this, 'queue', {
         existingQueueObj: props.existingQueueObj,
         queueProps: props.queueProps,
         deadLetterQueue: this.deadLetterQueue,
@@ -136,6 +136,7 @@ export class SqsToLambda extends Construct {
         encryptionKey: props.encryptionKey,
         encryptionKeyProps: props.encryptionKeyProps
       });
+      this.sqsQueue = buildQueueResponse.queue;
 
       // Setup the event source mapping
       this.lambdaFunction.addEventSource(new SqsEventSource(this.sqsQueue, props.sqsEventSourceProps));

@@ -111,11 +111,12 @@ export class CloudFrontToS3 extends Construct {
     let bucket: s3.IBucket;
 
     if (!props.existingBucketObj) {
-      [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
+      const buildS3BucketResponse = defaults.buildS3Bucket(this, {
         bucketProps: props.bucketProps,
         loggingBucketProps: props.loggingBucketProps,
         logS3AccessLogs: props.logS3AccessLogs
       });
+      this.s3Bucket = buildS3BucketResponse.bucket;
       bucket = this.s3Bucket;
     } else {
       bucket = props.existingBucketObj;
@@ -123,16 +124,18 @@ export class CloudFrontToS3 extends Construct {
 
     this.s3BucketInterface = bucket;
 
-    [this.cloudFrontWebDistribution, this.cloudFrontFunction, this.cloudFrontLoggingBucket] =
-      defaults.CloudFrontDistributionForS3(
-        this,
-        this.s3BucketInterface,
-        props.cloudFrontDistributionProps,
-        props.insertHttpSecurityHeaders,
-        props.originPath,
-        props.cloudFrontLoggingBucketProps,
-        props.responseHeadersPolicyProps
-      );
+    const cloudFrontDistributionForS3Response = defaults.CloudFrontDistributionForS3(
+      this,
+      this.s3BucketInterface,
+      props.cloudFrontDistributionProps,
+      props.insertHttpSecurityHeaders,
+      props.originPath,
+      props.cloudFrontLoggingBucketProps,
+      props.responseHeadersPolicyProps
+    );
+    this.cloudFrontWebDistribution = cloudFrontDistributionForS3Response.distribution;
+    this.cloudFrontFunction = cloudFrontDistributionForS3Response.cloudfrontFunction;
+    this.cloudFrontLoggingBucket = cloudFrontDistributionForS3Response.loggingBucket;
   }
 
 }

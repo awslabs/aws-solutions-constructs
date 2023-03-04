@@ -96,9 +96,14 @@ export function createAlbLoggingBucket(scope: Construct,
   return loggingBucket;
 }
 
+export interface BuildS3BucketResponse {
+  readonly bucket: s3.Bucket,
+  readonly loggingBucket?: s3.Bucket
+}
+
 export function buildS3Bucket(scope: Construct,
   props: BuildS3BucketProps,
-  bucketId?: string): [s3.Bucket, s3.Bucket?] {
+  bucketId?: string): BuildS3BucketResponse {
 
   /** Default Life Cycle policy to transition older versions to Glacier after 90 days */
   const lifecycleRules: s3.LifecycleRule[] = [{
@@ -141,7 +146,7 @@ export function buildS3Bucket(scope: Construct,
 
   const s3Bucket: s3.Bucket = new s3.Bucket(scope, _bucketId, customBucketProps );
 
-  return [s3Bucket, loggingBucket];
+  return { bucket: s3Bucket, loggingBucket };
 }
 
 export function addCfnNagS3BucketNotificationRulesToSuppress(stackRoot: cdk.Stack, logicalId: string) {

@@ -400,6 +400,17 @@ test('Construct accepts additional delete request templates', () => {
   });
 });
 
+test('Construct can customize the api resourceName', () => {
+  const stack = new Stack();
+  new ApiGatewayToDynamoDB(stack, 'api-gateway-dynamodb', {
+    resourceName: 'my-resource-name',
+  });
+
+  expect(stack).toHaveResource("AWS::ApiGateway::Resource", {
+    PathPart: "{my-resource-name}",
+  });
+});
+
 test('Construct uses default integration responses', () => {
   const stack = new Stack();
   new ApiGatewayToDynamoDB(stack, 'api-gateway-dynamodb', {

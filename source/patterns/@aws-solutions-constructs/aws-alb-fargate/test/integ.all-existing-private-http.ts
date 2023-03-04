@@ -30,7 +30,7 @@ const image = ecs.ContainerImage.fromRegistry('nginx');
 
 const testExistingVpc = defaults.getTestVpc(stack);
 
-const [testService, testContainer] = defaults.CreateFargateService(stack,
+const createFargateServiceResponse = defaults.CreateFargateService(stack,
   'test',
   testExistingVpc,
   undefined,
@@ -48,8 +48,8 @@ const existingAlb = new elb.ApplicationLoadBalancer(stack, 'test-alb', {
 const testProps: AlbToFargateProps = {
   existingVpc: testExistingVpc,
   publicApi: true,
-  existingFargateServiceObject: testService,
-  existingContainerDefinitionObject: testContainer,
+  existingFargateServiceObject: createFargateServiceResponse.service,
+  existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
   existingLoadBalancerObj: existingAlb,
   listenerProps: {
     protocol: 'HTTP'

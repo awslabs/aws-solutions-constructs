@@ -160,7 +160,7 @@ export class FargateToOpenSearch extends Construct {
       // CheckFargateProps confirms that the container is provided
       this.container = props.existingContainerDefinitionObject!;
     } else {
-      [this.service, this.container] = defaults.CreateFargateService(
+      const createFargateServiceResponse = defaults.CreateFargateService(
         scope,
         id,
         this.vpc,
@@ -171,6 +171,8 @@ export class FargateToOpenSearch extends Construct {
         props.containerDefinitionProps,
         props.fargateServiceProps
       );
+      this.service = createFargateServiceResponse.service;
+      this.container = createFargateServiceResponse.containerDefinition;
     }
 
     let cognitoAuthorizedRole: iam.Role;
@@ -194,7 +196,9 @@ export class FargateToOpenSearch extends Construct {
       securityGroupIds
     };
 
-    [this.openSearchDomain, this.openSearchRole] = defaults.buildOpenSearch(this, buildOpenSearchProps);
+    const buildOpenSearchResponse = defaults.buildOpenSearch(this, buildOpenSearchProps);
+    this.openSearchDomain = buildOpenSearchResponse.domain;
+    this.openSearchRole = buildOpenSearchResponse.role;
 
     if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
       this.cloudWatchAlarms = defaults.buildOpenSearchCWAlarms(this);

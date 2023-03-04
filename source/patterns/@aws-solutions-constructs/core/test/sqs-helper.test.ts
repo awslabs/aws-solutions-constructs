@@ -20,9 +20,6 @@ import { buildDeadLetterQueue, buildQueue } from "../lib/sqs-helper";
 import * as kms from 'aws-cdk-lib/aws-kms';
 import { expectKmsKeyAttachedToCorrectResource } from "../";
 
-// --------------------------------------------------------------
-// Test deployment w/ imported encryption key
-// --------------------------------------------------------------
 test('Test deployment w/ encryptionMasterKey set on queueProps', () => {
   const stack = new Stack();
 
@@ -39,9 +36,6 @@ test('Test deployment w/ encryptionMasterKey set on queueProps', () => {
   expectKmsKeyAttachedToCorrectResource(stack, 'AWS::SQS::Queue', 'kms-key-description');
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ imported encryption key
-// --------------------------------------------------------------
 test('Test deployment w/ imported encryption key', () => {
   // Stack
   const stack = new Stack();
@@ -62,9 +56,6 @@ test('Test deployment w/ imported encryption key', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment without imported encryption key
-// --------------------------------------------------------------
 test('Test deployment without imported encryption key', () => {
   // Stack
   const stack = new Stack();
@@ -81,14 +72,11 @@ test('Test deployment without imported encryption key', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ construct created encryption key
-// --------------------------------------------------------------
 test('Test deployment w/ construct created encryption key', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  const [queue, key] = defaults.buildQueue(stack, 'existing-queue', {
+  const buildQueueResponse = defaults.buildQueue(stack, 'existing-queue', {
     queueProps: {
       queueName: 'existing-queue'
     },
@@ -101,8 +89,8 @@ test('Test deployment w/ construct created encryption key', () => {
   expect(stack).toHaveResource("AWS::KMS::Key", {
     EnableKeyRotation: true
   });
-  expect(queue).toBeDefined();
-  expect(key).toBeDefined();
+  expect(buildQueueResponse.queue).toBeDefined();
+  expect(buildQueueResponse.key).toBeDefined();
 });
 
 test('Test DLQ when existing Queue Provided', () => {
@@ -161,14 +149,15 @@ test('Test returning an existing Queue', () => {
     queueName: testQueueName
   });
 
-  const [returnedQueue] = defaults.buildQueue(stack, 'newQueue', {
+  const buildQueueResponse = defaults.buildQueue(stack, 'newQueue', {
     existingQueueObj: existingQueue
   });
 
   expect(stack).toHaveResourceLike("AWS::SQS::Queue", {
     QueueName: testQueueName,
   });
-  expect(existingQueue.queueName).toEqual(returnedQueue.queueName);
+  expect(existingQueue.queueName).toEqual(buildQueueResponse.queue.queueName);
+  expect(buildQueueResponse.key).not.toBeDefined();
 });
 
 test('Test creating a queue with a DLQ', () => {
@@ -176,19 +165,19 @@ test('Test creating a queue with a DLQ', () => {
 
   const dlqInterface = buildDeadLetterQueue(stack, {});
 
-  const [newQueue] = buildQueue(stack, 'new-queue', {
+  const buildQueueResponse = buildQueue(stack, 'new-queue', {
     deadLetterQueue: dlqInterface
   });
 
   expect(stack).toCountResources("AWS::SQS::Queue", 2);
-  expect(newQueue).toBeDefined();
-  expect(newQueue.deadLetterQueue).toBeDefined();
+  expect(buildQueueResponse.queue).toBeDefined();
+  expect(buildQueueResponse.queue.deadLetterQueue).toBeDefined();
 });
 
 test('Test creating a FIFO queue', () => {
   const stack = new Stack();
 
-  const [newFifoQueue] = buildQueue(stack, 'new-queue', {
+  const buildQueueResponse = buildQueue(stack, 'new-queue', {
     queueProps: {
       fifo: true
     }
@@ -197,5 +186,5 @@ test('Test creating a FIFO queue', () => {
   expect(stack).toHaveResourceLike("AWS::SQS::Queue", {
     FifoQueue: true
   });
-  expect(newFifoQueue.fifo).toBe(true);
+  expect(buildQueueResponse.queue.fifo).toBe(true);
 });

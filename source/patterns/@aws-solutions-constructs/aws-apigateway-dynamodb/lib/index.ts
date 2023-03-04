@@ -44,6 +44,13 @@ export interface ApiGatewayToDynamoDBProps {
    */
   readonly apiGatewayProps?: api.RestApiProps;
   /**
+   * Optional resource name on the API
+   * This property is useful if your integration does not directly use the partition key name
+   *
+   * @default - partition key name, retrieved from the DynamoDB table object
+   */
+  readonly resourceName?: string;
+  /**
    * Whether to deploy an API Gateway Method for POST HTTP operations on the DynamoDB table (i.e. dynamodb:PutItem).
    *
    * @default - false
@@ -228,17 +235,22 @@ export class ApiGatewayToDynamoDB extends Construct {
       partitionKeyName = getPartitionKeyNameFromTable(props.existingTableObj);
     }
 
+    const resourceName = props.resourceName ?? partitionKeyName;
+
     // Since we are only invoking this function with an existing Table or tableProps,
     // (not a table interface), we know that the implementation will always return
-    // a Table object and we can safely cast away the optional aspect of the type.
-    this.dynamoTable = defaults.buildDynamoDBTable(this, {
+    // a Table object and we can force assignment to the dynamoTable property.
+    const buildDynamoDBTableResponse = defaults.buildDynamoDBTable(this, {
       existingTableObj: props.existingTableObj,
       dynamoTableProps: props.dynamoTableProps
-    })[1] as dynamodb.Table;
+    });
+    this.dynamoTable = buildDynamoDBTableResponse.tableObject!;
 
     // Setup the API Gateway
-    [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] = defaults.GlobalRestApi(this,
-      props.apiGatewayProps, props.logGroupProps);
+    const globalRestApiResponse = defaults.GlobalRestApi(this, props.apiGatewayProps, props.logGroupProps);
+    this.apiGateway = globalRestApiResponse.api;
+    this.apiGatewayCloudWatchRole = globalRestApiResponse.role;
+    this.apiGatewayLogGroup = globalRestApiResponse.logGroup;
 
     // Setup the API Gateway role
     this.apiGatewayRole = new iam.Role(this, 'api-gateway-role', {
@@ -246,7 +258,7 @@ export class ApiGatewayToDynamoDB extends Construct {
     });
 
     // Setup the API Gateway Resource
-    const apiGatewayResource: api.Resource = this.apiGateway.root.addResource("{" + partitionKeyName + "}");
+    const apiGatewayResource: api.Resource = this.apiGateway.root.addResource("{" + resourceName + "}");
 
     // Setup API Gateway Method
     // Create
@@ -272,7 +284,7 @@ export class ApiGatewayToDynamoDB extends Construct {
           "KeyConditionExpression": "${partitionKeyName} = :v1", \
           "ExpressionAttributeValues": { \
             ":v1": { \
-              "S": "$input.params('${partitionKeyName}')" \
+              "S": "$input.params('${resourceName}')" \
             } \
           } \
         }`;
@@ -311,7 +323,7 @@ export class ApiGatewayToDynamoDB extends Construct {
           "TableName": "${this.dynamoTable.tableName}", \
           "Key": { \
             "${partitionKeyName}": { \
-              "S": "$input.params('${partitionKeyName}')" \
+              "S": "$input.params('${resourceName}')" \
               } \
             }, \
           "ReturnValues": "ALL_OLD" \

@@ -24,23 +24,23 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-lambda-sagemakerendpoint';
 
-const [containerMap, modelAsset ] = getSagemakerModel(stack);
+const getSagemakerModelResponse = getSagemakerModel(stack);
 
-const [sagemakerEndpoint, endpointConfig, model] = defaults.deploySagemakerEndpoint(stack, {
+const deploySagemakerEndpointResponse = defaults.deploySagemakerEndpoint(stack, {
   modelProps: {
     primaryContainer: {
-      image: containerMap.findInMap(Stack.of(stack).region, "containerArn"),
-      modelDataUrl: modelAsset.s3ObjectUrl
+      image: getSagemakerModelResponse.mapping.findInMap(Stack.of(stack).region, "containerArn"),
+      modelDataUrl: getSagemakerModelResponse.asset.s3ObjectUrl
     },
   },
 });
 
-sagemakerEndpoint.node.addDependency(modelAsset);
-endpointConfig?.node.addDependency(modelAsset);
-model?.node.addDependency(modelAsset);
+deploySagemakerEndpointResponse.endpoint.node.addDependency(getSagemakerModelResponse.asset);
+deploySagemakerEndpointResponse.endpointConfig?.node.addDependency(getSagemakerModelResponse.asset);
+deploySagemakerEndpointResponse.model?.node.addDependency(getSagemakerModelResponse.asset);
 
 const constructProps: LambdaToSagemakerEndpointProps = {
-  existingSagemakerEndpointObj: sagemakerEndpoint,
+  existingSagemakerEndpointObj: deploySagemakerEndpointResponse.endpoint,
   lambdaFunctionProps: {
     runtime: lambda.Runtime.PYTHON_3_8,
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
@@ -52,7 +52,7 @@ const constructProps: LambdaToSagemakerEndpointProps = {
 
 const lambdaToSagemakerConstruct = new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
 
-lambdaToSagemakerConstruct.node.addDependency(modelAsset);
+lambdaToSagemakerConstruct.node.addDependency(getSagemakerModelResponse.asset);
 
 // Synth
 app.synth();

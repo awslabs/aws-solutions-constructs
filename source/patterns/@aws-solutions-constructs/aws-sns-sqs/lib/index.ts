@@ -139,24 +139,27 @@ export class SnsToSqs extends Construct {
       // Setup the SNS topic
       if (!props.existingTopicObj) {
         // If an existingTopicObj was not specified create new topic
-        [this.snsTopic, this.encryptionKey] = defaults.buildTopic(this, {
+        const buildTopicResponse = defaults.buildTopic(this, {
           topicProps: props.topicProps,
           enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
           encryptionKey: encryptionKeyParam
         });
+        this.snsTopic = buildTopicResponse.topic;
+        this.encryptionKey = buildTopicResponse.key;
       } else {
         // If an existingTopicObj was specified utilize the provided topic
         this.snsTopic = props.existingTopicObj;
       }
 
       // Setup the queue
-      [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
+      const buildQueueResponse = defaults.buildQueue(this, 'queue', {
         existingQueueObj: props.existingQueueObj,
         queueProps: props.queueProps,
         deadLetterQueue: this.deadLetterQueue,
         enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
         encryptionKey: encryptionKeyParam
       });
+      this.sqsQueue = buildQueueResponse.queue;
 
       // Setup the SQS queue subscription to the SNS topic
       this.snsTopic.addSubscription(new subscriptions.SqsSubscription(this.sqsQueue, props.sqsSubscriptionProps));
