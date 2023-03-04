@@ -142,7 +142,9 @@
       "DependsOn": [
         "testlambdastepfunctionsStateMachineRoleDefaultPolicyA0E50803",
         "testlambdastepfunctionsStateMachineRoleAC728CE7"
-      ]
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "testlambdastepfunctionsLambdaFunctionServiceRoleA33E2E9C": {
       "Type": "AWS::IAM::Role",
@@ -841,6 +843,9 @@
       },
       "eu-central-1": {
         "states": "states.eu-central-1.amazonaws.com"
+      },
+      "eu-central-2": {
+        "states": "states.eu-central-2.amazonaws.com"
       },
       "eu-north-1": {
         "states": "states.eu-north-1.amazonaws.com"
