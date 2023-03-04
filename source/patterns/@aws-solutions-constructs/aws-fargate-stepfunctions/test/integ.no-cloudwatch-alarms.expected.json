@@ -1206,7 +1206,9 @@
       "DependsOn": [
         "testconstructStateMachineRoleDefaultPolicyF10A684E",
         "testconstructStateMachineRoleA396E5D3"
-      ]
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "nocloudwatchalarmsSTEPFUNCTIONSsecuritygroupE67433DC": {
       "Type": "AWS::EC2::SecurityGroup",
