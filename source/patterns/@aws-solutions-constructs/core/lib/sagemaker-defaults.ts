@@ -12,7 +12,7 @@
  */
 
 /*
- *  The functions found here in the core library are for internal use and can be changed 
+ *  The functions found here in the core library are for internal use and can be changed
  *  or removed outside of a major release. We recommend against calling them directly from client code.
  */
 
@@ -24,6 +24,9 @@ import {
   CfnEndpointProps,
 } from 'aws-cdk-lib/aws-sagemaker';
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function DefaultSagemakerNotebookProps(
   roleArn: string,
   kmsKeyId: string,
@@ -39,6 +42,9 @@ export function DefaultSagemakerNotebookProps(
   } as CfnNotebookInstanceProps;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function DefaultSagemakerModelProps(
   executionRoleArn: string,
   primaryContainer: CfnModel.ContainerDefinitionProperty,
@@ -51,6 +57,9 @@ export function DefaultSagemakerModelProps(
   } as CfnModelProps;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function DefaultSagemakerEndpointConfigProps(modelName: string, kmsKeyId?: string): CfnEndpointConfigProps {
   return {
     productionVariants: [
@@ -66,6 +75,9 @@ export function DefaultSagemakerEndpointConfigProps(modelName: string, kmsKeyId?
   } as CfnEndpointConfigProps;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function DefaultSagemakerEndpointProps(endpointConfigName: string): CfnEndpointProps {
   return {
     endpointConfigName,

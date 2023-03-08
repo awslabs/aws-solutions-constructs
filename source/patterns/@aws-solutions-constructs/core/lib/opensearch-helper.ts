@@ -12,7 +12,7 @@
  */
 
 /*
- *  The functions found here in the core library are for internal use and can be changed 
+ *  The functions found here in the core library are for internal use and can be changed
  *  or removed outside of a major release. We recommend against calling them directly from client code.
  */
 
@@ -46,6 +46,9 @@ export interface BuildOpenSearchResponse {
   readonly role: iam.Role
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildOpenSearch(scope: Construct, props: BuildOpenSearchProps): BuildOpenSearchResponse {
   let subnetIds: string[] = [];
   const constructDrivenProps: any = {};
@@ -95,6 +98,9 @@ export function buildOpenSearch(scope: Construct, props: BuildOpenSearchProps): 
   return  { domain: opensearchDomain, role: cognitoDashboardConfigureRole };
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildOpenSearchCWAlarms(scope: Construct): cloudwatch.Alarm[] {
   const alarms: cloudwatch.Alarm[] = new Array();
 

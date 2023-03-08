@@ -12,7 +12,7 @@
  */
 
 /*
- *  The functions found here in the core library are for internal use and can be changed 
+ *  The functions found here in the core library are for internal use and can be changed
  *  or removed outside of a major release. We recommend against calling them directly from client code.
  */
 
@@ -28,6 +28,9 @@ export interface SecurityGroupRuleDefinition {
   readonly remoteRule?: boolean
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildSecurityGroup(
   scope: Construct,
   name: string,
@@ -61,6 +64,9 @@ export function buildSecurityGroup(
   return newSecurityGroup;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function CreateSelfReferencingSecurityGroup(scope: Construct, id: string, vpc: ec2.IVpc, cachePort: any) {
   const newCacheSG = new ec2.SecurityGroup(scope, `${id}-cachesg`, {
     vpc,

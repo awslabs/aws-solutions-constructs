@@ -12,7 +12,7 @@
  */
 
 /*
- *  The functions found here in the core library are for internal use and can be changed 
+ *  The functions found here in the core library are for internal use and can be changed
  *  or removed outside of a major release. We recommend against calling them directly from client code.
  */
 
@@ -73,6 +73,9 @@ export interface CloudFrontDistributionForApiGatewayResponse {
   readonly loggingBucket?: s3.Bucket
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function CloudFrontDistributionForApiGateway(scope: Construct,
   apiEndPoint: api.RestApi,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
@@ -106,6 +109,9 @@ export interface CloudFrontDistributionForS3Response {
   readonly cloudfrontFunction?: cloudfront.Function,
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function CloudFrontDistributionForS3(
   scope: Construct,
   sourceBucket: s3.IBucket,
@@ -153,6 +159,9 @@ export interface CloudFrontDistributionForMediaStoreResponse {
   readonly cloudfrontFunction?: cloudfront.Function
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function CloudFrontDistributionForMediaStore(scope: Construct,
   mediaStoreContainer: mediastore.CfnContainer,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
@@ -216,6 +225,9 @@ export function CloudFrontDistributionForMediaStore(scope: Construct,
   return { distribution: cfDistribution, loggingBucket, requestPolicy: originRequestPolicy, cloudfrontFunction };
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function CloudFrontOriginAccessIdentity(scope: Construct, comment?: string) {
   return new cloudfront.OriginAccessIdentity(scope, 'CloudFrontOriginAccessIdentity', {
     comment: comment ? comment : `access-identity-${cdk.Aws.REGION}-${cdk.Aws.STACK_NAME}`

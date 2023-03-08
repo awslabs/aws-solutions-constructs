@@ -12,7 +12,7 @@
  */
 
 /*
- *  The functions found here in the core library are for internal use and can be changed 
+ *  The functions found here in the core library are for internal use and can be changed
  *  or removed outside of a major release. We recommend against calling them directly from client code.
  */
 
@@ -42,6 +42,9 @@ export interface BuildVpcProps {
   readonly constructVpcProps?: ec2.VpcProps;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildVpc(scope: Construct, props: BuildVpcProps): ec2.IVpc {
   if (props?.existingVpc) {
     return props?.existingVpc;
@@ -158,6 +161,9 @@ const endpointSettings: EndpointDefinition[] = [
   }
 ];
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function AddAwsServiceEndpoint(
   scope: Construct,
   vpc: ec2.IVpc,
@@ -237,6 +243,9 @@ function AddGatewayEndpoint(vpc: ec2.IVpc, service: EndpointDefinition, interfac
   });
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function retrievePrivateSubnetIds(vpc: ec2.IVpc) {
   let targetSubnetType;
 

@@ -12,7 +12,7 @@
  */
 
 /*
- *  The functions found here in the core library are for internal use and can be changed 
+ *  The functions found here in the core library are for internal use and can be changed
  *  or removed outside of a major release. We recommend against calling them directly from client code.
  */
 
@@ -99,6 +99,9 @@ export interface BuildGlueJobResponse {
   readonly loggingBucket?: Bucket,
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): BuildGlueJobResponse {
   if (!props.existingCfnJob) {
     if (props.glueJobProps) {
@@ -134,6 +137,9 @@ export interface DeployGlueJobResponse {
   readonly loggingBucket?: Bucket,
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, database: glue.CfnDatabase, table: glue.CfnTable,
   outputDataStore: SinkDataStoreProps, etlCodeAsset?: s3assets.Asset): DeployGlueJobResponse {
 
@@ -220,6 +226,8 @@ export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, 
 }
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * This is a helper method to create the Role required for the Glue Job. If a role is already created then this
  * method is not required to be called.
  *
@@ -233,6 +241,8 @@ export function createGlueJobRole(scope: Construct): Role {
 }
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * This method creates an AWS Glue table. The method is called when an existing Glue table is not provided
  */
 export function createGlueTable(scope: Construct, database: glue.CfnDatabase, tableProps?: glue.CfnTableProps,
@@ -242,6 +252,8 @@ export function createGlueTable(scope: Construct, database: glue.CfnDatabase, ta
 }
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * This method creates an AWS Glue database. The method is only called with an existing Glue database type is not provided.
  * The method uses the user provided props to override the defaul props for the Glue database
  *

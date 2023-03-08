@@ -12,7 +12,7 @@
  */
 
 /*
- *  The functions found here in the core library are for internal use and can be changed 
+ *  The functions found here in the core library are for internal use and can be changed
  *  or removed outside of a major release. We recommend against calling them directly from client code.
  */
 
@@ -28,6 +28,9 @@ export interface CreateFargateServiceResponse {
   readonly containerDefinition: ecs.ContainerDefinition
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function CreateFargateService(
   scope: Construct,
   id: string,
@@ -210,6 +213,9 @@ function CreateTaskDefinition(
   return { taskDefinition, containerDefinition };
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function CheckFargateProps(props: any) {
   let errorMessages = "";
   let errorFound = false;
@@ -280,6 +286,9 @@ export function CheckFargateProps(props: any) {
   }
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function getServiceVpcSecurityGroupIds(service: ecs.FargateService): string[] {
   const securityGroupIds: string[] = [];
 

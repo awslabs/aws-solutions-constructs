@@ -12,7 +12,7 @@
  */
 
 /*
- *  The functions found here in the core library are for internal use and can be changed 
+ *  The functions found here in the core library are for internal use and can be changed
  *  or removed outside of a major release. We recommend against calling them directly from client code.
  */
 
@@ -20,6 +20,8 @@ import { CfnTable, CfnTableProps } from "aws-cdk-lib/aws-glue";
 import { Construct } from "constructs";
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * Method to build the default table props
  *
  * @param scope
@@ -28,6 +30,9 @@ import { Construct } from "constructs";
  * @param sourceType
  * @param parameters - Key value pairs of parameters. If source type is 'Kinesis', pass Kinesis Data Stream name with key
  *  as 'STREAM_NAME'. Example: {STREAM_NAME: 'KinesisStreamConstrct.streamName'}
+ */
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function DefaultGlueTable(scope: Construct, tableProps: CfnTableProps): CfnTable {
   return new CfnTable(scope, 'GlueTable', tableProps);

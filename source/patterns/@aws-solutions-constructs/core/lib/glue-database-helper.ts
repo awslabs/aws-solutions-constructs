@@ -12,7 +12,7 @@
  */
 
 /*
- *  The functions found here in the core library are for internal use and can be changed 
+ *  The functions found here in the core library are for internal use and can be changed
  *  or removed outside of a major release. We recommend against calling them directly from client code.
  */
 
@@ -20,6 +20,8 @@ import { CfnDatabase, CfnDatabaseProps } from "aws-cdk-lib/aws-glue";
 import { Construct } from "constructs";
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * Create an AWS Glue database with the properties provided
  *
  * @param scope

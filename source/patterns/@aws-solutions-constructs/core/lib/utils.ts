@@ -12,7 +12,7 @@
  */
 
 /*
- *  The functions found here in the core library are for internal use and can be changed 
+ *  The functions found here in the core library are for internal use and can be changed
  *  or removed outside of a major release. We recommend against calling them directly from client code.
  */
 
@@ -67,6 +67,9 @@ function overwriteMerge(target: any[], source: any[]) {
   return target;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function overrideProps(DefaultProps: object, userProps: object, concatArray: boolean = false): any {
   // Notify the user via console output if defaults are overridden
   const overrideWarningsEnabled = (process.env.overrideWarningsEnabled !== 'false');
@@ -87,6 +90,9 @@ export function overrideProps(DefaultProps: object, userProps: object, concatArr
   }
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function printWarning(message: string) {
   // Style the log output
   log.prefixStyle.bold = true;
@@ -96,6 +102,8 @@ export function printWarning(message: string) {
 }
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * @summary Creates a resource name in the style of the CDK (string+hash)
  * @param {string[]} parts - the various string components of the name (eg - stackName, solutions construct ID, L2 construct ID)
  * @param {number} maxLength - the longest string that can be returned
@@ -141,6 +149,8 @@ export interface CfnNagSuppressRule {
 }
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * Adds CFN NAG suppress rules to the CDK resource.
  * @param resource The CDK resource
  * @param rules The CFN NAG suppress rules
@@ -160,6 +170,8 @@ export function addCfnSuppressRules(resource: cdk.Resource | cdk.CfnResource, ru
 }
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * Creates the props to be used to instantiate a CDK L2 construct within a Solutions Construct
  *
  * @param defaultProps The default props to be used by the construct
@@ -185,6 +197,8 @@ export function consolidateProps(defaultProps: object, clientProps?: object, con
 }
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * Generates a name unique to this location in this stack with this stackname. Truncates to under 64 characters if needed.
  * (will allow 2 copies of the stack with different stack names, but will collide if both stacks have the same name)
  *

@@ -12,7 +12,7 @@
  */
 
 /*
- *  The functions found here in the core library are for internal use and can be changed 
+ *  The functions found here in the core library are for internal use and can be changed
  *  or removed outside of a major release. We recommend against calling them directly from client code.
  */
 
@@ -23,11 +23,16 @@ import { DefaultSecretProps } from './secretsmanager-defaults';
 import { consolidateProps, addCfnSuppressRules } from './utils';
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * Method to build the default AWS Secrets Manager Secret
  *
  * @param scope
  * @param id
  * @param secretProps
+ */
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function buildSecretsManagerSecret(scope: Construct, id: string, secretProps?: SecretProps): Secret {
   let secret: Secret;

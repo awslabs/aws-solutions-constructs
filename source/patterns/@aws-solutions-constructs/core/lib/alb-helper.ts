@@ -12,7 +12,7 @@
  */
 
 /*
- *  The functions found here in the core library are for internal use and can be changed 
+ *  The functions found here in the core library are for internal use and can be changed
  *  or removed outside of a major release. We recommend against calling them directly from client code.
  */
 
@@ -29,8 +29,12 @@ import { DefaultListenerProps } from "./alb-defaults";
 import { createAlbLoggingBucket } from "./s3-bucket-helper";
 import { DefaultLoggingBucketProps } from "./s3-bucket-defaults";
 
-//  Returns the correct ALB Load Balancer to use in this construct, either an existing
-//  one provided as an argument or create  new one otherwise.
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
+ * Returns the correct ALB Load Balancer to use in this construct, either an existing
+ * one provided as an argument or create  new one otherwise.
+ */
 export function ObtainAlb(
   scope: Construct,
   id: string,
@@ -61,6 +65,9 @@ export function ObtainAlb(
   return loadBalancer;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function AddListener(
   scope: Construct,
   id: string,
@@ -116,9 +123,13 @@ export function AddListener(
   return listener;
 }
 
-// Creates a Target Group for Lambda functions and adds the
-// provided functions as a target to that group. Then adds
-// the new Target Group to the provided Listener.
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
+ * Creates a Target Group for Lambda functions and adds the
+ * provided functions as a target to that group. Then adds
+ * the new Target Group to the provided Listener.
+ */
 export function AddLambdaTarget(
   scope: Construct,
   id: string,
@@ -145,6 +156,9 @@ export function AddLambdaTarget(
   return newTargetGroup;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function AddFargateTarget(
   scope: Construct,
   id: string,
@@ -170,9 +184,13 @@ export function AddFargateTarget(
   return newTargetGroup;
 }
 
-// Looks for the listener associated with Target Groups
-// If there is a single listener, this returns it whether it is HTTP or HTTPS
-// If there are 2 listeners, it finds the HTTPS listener (we assume the HTTP listener redirects to HTTPS)
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
+ * Looks for the listener associated with Target Groups
+ * If there is a single listener, this returns it whether it is HTTP or HTTPS
+ * If there are 2 listeners, it finds the HTTPS listener (we assume the HTTP listener redirects to HTTPS)
+ */
 export function GetActiveListener(listeners: elb.ApplicationListener[]): elb.ApplicationListener {
   let listener: elb.ApplicationListener;
 
@@ -187,6 +205,9 @@ export function GetActiveListener(listeners: elb.ApplicationListener[]): elb.App
   return listener;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function CheckAlbProps(props: any) {
   let errorMessages = '';
   let errorFound = false;
