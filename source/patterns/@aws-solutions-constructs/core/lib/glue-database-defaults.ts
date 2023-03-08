@@ -11,6 +11,11 @@
  *  and limitations under the License.
  */
 
+/*
+ *  The functions found here in the core library are for internal use and can be changed 
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
 import { CfnDatabaseProps } from "aws-cdk-lib/aws-glue";
 import { Aws } from "aws-cdk-lib";
 

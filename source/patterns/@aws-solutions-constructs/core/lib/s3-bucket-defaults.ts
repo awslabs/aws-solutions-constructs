@@ -11,6 +11,11 @@
  *  and limitations under the License.
  */
 
+/*
+ *  The functions found here in the core library are for internal use and can be changed 
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { Bucket, BucketProps } from 'aws-cdk-lib/aws-s3';

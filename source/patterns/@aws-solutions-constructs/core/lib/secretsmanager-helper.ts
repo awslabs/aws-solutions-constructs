@@ -11,6 +11,11 @@
  *  and limitations under the License.
  */
 
+/*
+ *  The functions found here in the core library are for internal use and can be changed 
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
 import { Secret, SecretProps } from 'aws-cdk-lib/aws-secretsmanager';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
