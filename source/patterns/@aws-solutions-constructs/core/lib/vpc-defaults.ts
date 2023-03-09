@@ -19,9 +19,6 @@
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 
 /**
- * Default VPC with public and private subnets
- */
-/**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function DefaultPublicPrivateVpcProps(): ec2.VpcProps {

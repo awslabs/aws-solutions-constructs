@@ -31,9 +31,6 @@ import { consolidateProps, addCfnSuppressRules } from './utils';
  * @param id
  * @param secretProps
  */
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function buildSecretsManagerSecret(scope: Construct, id: string, secretProps?: SecretProps): Secret {
   let secret: Secret;
 
