@@ -10,7 +10,7 @@ const findVersion = process.argv[2];
 const replaceVersion = process.argv[3];
 
 // these versions need to be sourced from a config file
-const awsCdkLibVersion = '2.67.0';
+const awsCdkLibVersion = '2.68.0';
 const constructsVersion = '10.0.0';
 const MODULE_EXEMPTIONS = new Set([
   '@aws-cdk/cloudformation-diff',

@@ -11,6 +11,11 @@
  *  and limitations under the License.
  */
 
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
 // Imports
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
@@ -180,6 +185,8 @@ export interface GlobalLambdaRestApiResponse {
 }
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * Builds and returns a global api.RestApi designed to be used with an AWS Lambda function.
  * @param scope - the construct to which the RestApi should be attached to.
  * @param _existingLambdaObj - an existing AWS Lambda function.
@@ -202,6 +209,8 @@ export interface RegionalLambdaRestApiResponse {
 }
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * Builds and returns a regional api.RestApi designed to be used with an AWS Lambda function.
  * @param scope - the construct to which the RestApi should be attached to.
  * @param existingLambdaObj - an existing AWS Lambda function.
@@ -224,6 +233,8 @@ export interface GlobalRestApiResponse {
 }
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * Builds and returns a standard api.RestApi.
  * @param scope - the construct to which the RestApi should be attached to.
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
@@ -245,6 +256,8 @@ export interface RegionalRestApiResponse {
 }
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * Builds and returns a Regional api.RestApi.
  * @param scope - the construct to which the RestApi should be attached to.
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
@@ -276,6 +289,9 @@ export interface AddProxyMethodToApiResourceInputParams {
   readonly methodOptions?: apigateway.MethodOptions
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceInputParams): apigateway.Method {
   // Make sure the user hasn't also specified the application/json content-type in the additionalRequestTemplates optional property
   if (params.additionalRequestTemplates && 'application/json' in params.additionalRequestTemplates) {

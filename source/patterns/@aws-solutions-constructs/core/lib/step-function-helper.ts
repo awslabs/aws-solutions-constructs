@@ -11,6 +11,11 @@
  *  and limitations under the License.
  */
 
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
 // Imports
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as cdk from 'aws-cdk-lib';
@@ -28,6 +33,8 @@ export interface BuildStateMachineResponse {
   readonly logGroup: logs.ILogGroup
 }
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * Builds and returns a StateMachine.
  * @param scope - the construct to which the StateMachine should be attached to.
  * @param stateMachineProps - user-specified properties to override the default properties.
@@ -108,6 +115,9 @@ export function buildStateMachine(scope: Construct, stateMachineProps: sfn.State
   return { stateMachine: newStateMachine, logGroup };
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildStepFunctionCWAlarms(scope: Construct, sm: sfn.StateMachine): cloudwatch.Alarm[] {
   // Setup CW Alarms for State Machine
   const alarms: cloudwatch.Alarm[] = new Array();

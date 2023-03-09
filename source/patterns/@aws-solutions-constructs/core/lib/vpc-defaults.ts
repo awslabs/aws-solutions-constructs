@@ -11,10 +11,15 @@
  *  and limitations under the License.
  */
 
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 
 /**
- * Default VPC with public and private subnets
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function DefaultPublicPrivateVpcProps(): ec2.VpcProps {
   return {
@@ -22,7 +27,7 @@ export function DefaultPublicPrivateVpcProps(): ec2.VpcProps {
 }
 
 /**
- * Default VPC with isolated subnets
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function DefaultIsolatedVpcProps(): ec2.VpcProps {
   return {
@@ -38,7 +43,7 @@ export function DefaultIsolatedVpcProps(): ec2.VpcProps {
 }
 
 /**
- * Default VPC with private subnets w/NAT
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function DefaultPrivateVpcProps(): ec2.VpcProps {
   return {
