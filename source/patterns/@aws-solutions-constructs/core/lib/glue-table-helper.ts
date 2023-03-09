@@ -31,9 +31,6 @@ import { Construct } from "constructs";
  * @param parameters - Key value pairs of parameters. If source type is 'Kinesis', pass Kinesis Data Stream name with key
  *  as 'STREAM_NAME'. Example: {STREAM_NAME: 'KinesisStreamConstrct.streamName'}
  */
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function DefaultGlueTable(scope: Construct, tableProps: CfnTableProps): CfnTable {
   return new CfnTable(scope, 'GlueTable', tableProps);
 }
