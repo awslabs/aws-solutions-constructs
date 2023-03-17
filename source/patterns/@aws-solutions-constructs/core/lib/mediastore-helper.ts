@@ -11,11 +11,6 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 import * as cdk from 'aws-cdk-lib';
 import * as mediastore from 'aws-cdk-lib/aws-mediastore';
 import { MediaStoreContainerProps } from './mediastore-defaults';
@@ -23,9 +18,6 @@ import { consolidateProps } from './utils';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function MediaStoreContainer(scope: Construct, mediaStoreContainerProps?: mediastore.CfnContainerProps): mediastore.CfnContainer {
   const defaultprops: mediastore.CfnContainerProps = MediaStoreContainerProps();
   let mediaStoreProps: mediastore.CfnContainerProps;

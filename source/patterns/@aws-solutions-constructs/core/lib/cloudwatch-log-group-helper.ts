@@ -11,34 +11,26 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 import { DefaultLogGroupProps } from './cloudwatch-log-group-defaults';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import { addCfnSuppressRules, consolidateProps } from './utils';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function buildLogGroup(scope: Construct, logGroupId?: string, logGroupProps?: logs.LogGroupProps): logs.LogGroup {
-  let consolidatedLogGroupProps: logs.LogGroupProps;
+  let _logGroupProps: logs.LogGroupProps;
 
   // Override user provided CW LogGroup props with the DefaultLogGroupProps
-  consolidatedLogGroupProps = consolidateProps(DefaultLogGroupProps(), logGroupProps);
+  _logGroupProps = consolidateProps(DefaultLogGroupProps(), logGroupProps);
 
   // Set the LogGroup Id
-  const adjustedLogGroupId = logGroupId ? logGroupId : 'CloudWatchLogGroup';
+  const _logGroupId = logGroupId ? logGroupId : 'CloudWatchLogGroup';
 
   // Create the CW Log Group
-  const logGroup = new logs.LogGroup(scope, adjustedLogGroupId, consolidatedLogGroupProps);
+  const logGroup = new logs.LogGroup(scope, _logGroupId, _logGroupProps);
 
   // If required, suppress the Cfn Nag WARNINGS
-  if (consolidatedLogGroupProps.retention === logs.RetentionDays.INFINITE) {
+  if (_logGroupProps.retention === logs.RetentionDays.INFINITE) {
     addCfnSuppressRules( logGroup, [
       {
         id: 'W86',
@@ -47,7 +39,7 @@ export function buildLogGroup(scope: Construct, logGroupId?: string, logGroupPro
     ]);
   }
 
-  if (!consolidatedLogGroupProps.encryptionKey) {
+  if (!_logGroupProps.encryptionKey) {
     addCfnSuppressRules( logGroup, [
       {
         id: 'W84',

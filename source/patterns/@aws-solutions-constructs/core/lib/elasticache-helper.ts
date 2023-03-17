@@ -11,11 +11,6 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as cache from "aws-cdk-lib/aws-elasticache";
 import { Construct } from "constructs";
@@ -30,9 +25,6 @@ export interface ObtainMemcachedClusterProps {
   readonly vpc?: ec2.IVpc,
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function obtainMemcachedCluster(
   scope: Construct,
   id: string,
@@ -73,9 +65,6 @@ export function obtainMemcachedCluster(
 
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function createCacheSubnetGroup(
   construct: Construct,
   vpc: ec2.IVpc,
@@ -97,9 +86,6 @@ export function createCacheSubnetGroup(
   });
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function getCachePort(
   clientCacheProps?: cache.CfnCacheClusterProps | any,
   existingCache?: cache.CfnCacheCluster

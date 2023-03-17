@@ -11,11 +11,6 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 import * as cognito from 'aws-cdk-lib/aws-cognito';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as cdk from 'aws-cdk-lib';
@@ -30,9 +25,6 @@ export interface CognitoOptions {
   readonly userpoolclient: cognito.UserPoolClient
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function buildUserPool(scope: Construct, userPoolProps?: cognito.UserPoolProps): cognito.UserPool {
   let cognitoUserPoolProps: cognito.UserPoolProps;
 
@@ -62,9 +54,6 @@ export function buildUserPool(scope: Construct, userPoolProps?: cognito.UserPool
   return userPool;
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function buildUserPoolClient(scope: Construct, userPool: cognito.UserPool,
   cognitoUserPoolClientProps?: cognito.UserPoolClientProps): cognito.UserPoolClient {
 
@@ -75,9 +64,6 @@ export function buildUserPoolClient(scope: Construct, userPool: cognito.UserPool
   return new cognito.UserPoolClient(scope, 'CognitoUserPoolClient', userPoolClientProps);
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function buildIdentityPool(scope: Construct, userpool: cognito.UserPool, userpoolclient: cognito.UserPoolClient,
   identityPoolProps?: cognito.CfnIdentityPoolProps): cognito.CfnIdentityPool {
 
@@ -91,9 +77,6 @@ export function buildIdentityPool(scope: Construct, userpool: cognito.UserPool, 
   return idPool;
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function setupCognitoForSearchService(scope: Construct, domainName: string, options: CognitoOptions): iam.Role {
 
   // Create the domain for Cognito UserPool
@@ -138,9 +121,6 @@ export function setupCognitoForSearchService(scope: Construct, domainName: strin
   return cognitoAuthorizedRole;
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function buildCognitoForSearchService(scope: Construct, domainName: string):
   [cognito.UserPool, cognito.UserPoolClient, cognito.CfnIdentityPool, iam.Role] {
   const userPool = buildUserPool(scope);

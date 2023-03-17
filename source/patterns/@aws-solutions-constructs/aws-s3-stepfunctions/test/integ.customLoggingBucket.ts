@@ -39,8 +39,7 @@ new S3ToStepfunctions(stack, 'test-s3-stepfunctions', {
     versioned: true
   },
   logGroupProps: {
-    removalPolicy: RemovalPolicy.DESTROY,
-    logGroupName: "with-lambda"
+    removalPolicy: RemovalPolicy.DESTROY
   }
 });
 

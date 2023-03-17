@@ -11,16 +11,8 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 import * as waf from "aws-cdk-lib/aws-wafv2";
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function DefaultWafRules(): waf.CfnRuleGroup.RuleProperty[] {
   return [
     wrapManagedRuleSet("AWSManagedRulesBotControlRuleSet", "AWS", 0),
@@ -33,9 +25,6 @@ export function DefaultWafRules(): waf.CfnRuleGroup.RuleProperty[] {
   ] as waf.CfnWebACL.RuleProperty[];
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function wrapManagedRuleSet(managedGroupName: string, vendorName: string, priority: number) {
   return {
     name: `${vendorName}-${managedGroupName}`,
@@ -55,9 +44,6 @@ export function wrapManagedRuleSet(managedGroupName: string, vendorName: string,
   } as waf.CfnRuleGroup.RuleProperty;
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function DefaultWafwebaclProps(webaclScope: string) {
   return {
     defaultAction: {

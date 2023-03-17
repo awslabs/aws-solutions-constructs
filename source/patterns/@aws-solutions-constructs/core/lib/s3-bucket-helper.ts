@@ -11,11 +11,6 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
@@ -49,9 +44,6 @@ export interface BuildS3BucketProps {
   readonly logS3AccessLogs?: boolean;
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function createLoggingBucket(scope: Construct,
   bucketId: string,
   loggingBucketProps: s3.BucketProps): s3.Bucket {
@@ -84,9 +76,6 @@ export function createLoggingBucket(scope: Construct,
   return loggingBucket;
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function createAlbLoggingBucket(scope: Construct,
   bucketId: string,
   loggingBucketProps: s3.BucketProps): s3.Bucket {
@@ -112,9 +101,6 @@ export interface BuildS3BucketResponse {
   readonly loggingBucket?: s3.Bucket
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function buildS3Bucket(scope: Construct,
   props: BuildS3BucketProps,
   bucketId?: string): BuildS3BucketResponse {
@@ -163,9 +149,6 @@ export function buildS3Bucket(scope: Construct,
   return { bucket: s3Bucket, loggingBucket };
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function addCfnNagS3BucketNotificationRulesToSuppress(stackRoot: cdk.Stack, logicalId: string) {
   const notificationsResourceHandler = stackRoot.node.tryFindChild(logicalId) as lambda.Function;
   const notificationsResourceHandlerRoleRole = notificationsResourceHandler.node.findChild('Role') as iam.Role;
