@@ -36,10 +36,11 @@ const props: LambdaToStepfunctionsProps = {
   stateMachineProps: {
     definition: startState
   },
-  logGroupProps: {
-    removalPolicy: RemovalPolicy.DESTROY
-  },
   deployVpc: true,
+  logGroupProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    logGroupName: "with-lambda"
+  }
 };
 
 new LambdaToStepfunctions(stack, "test-lambda-stepfunctions", props);
