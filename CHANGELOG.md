@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 
 ### Features
+Test Relelase
 
 * **aws-apigateway-*:** add optional request templates for non-default content-types. ([#888](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/888)) ([ace70f0](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/ace70f0ff9efed0cd1cdf46cabd8fa2e9f0e1bcc))
 * **aws-apigateway-dynamodb:** add optional resourceName parameter ([#898](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/898)) ([09e54ec](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/09e54ec2150257be3e2c1cb1aa42124aa4e8f55e))
