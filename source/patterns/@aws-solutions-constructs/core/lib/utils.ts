@@ -113,11 +113,13 @@ export function printWarning(message: string) {
  */
 export function generateResourceName(
   parts: string[],
-  maxLength: number
+  maxLength: number,
+  randomize: boolean = false
 ): string {
   const hashLength = 12;
+  const randomizor: string = randomize ? (new Date()).getTime().toString() : "";
 
-  const maxPartLength = Math.floor( (maxLength -  hashLength) / parts.length);
+  const maxPartLength = Math.floor( (maxLength -  hashLength - randomizor.length) / parts.length);
 
   const sha256 = crypto.createHash("sha256");
   let finalName: string = '';
@@ -129,6 +131,7 @@ export function generateResourceName(
 
   const hash = sha256.digest("hex").slice(0, hashLength);
   finalName += hash;
+  finalName += randomizor;
   return finalName.toLowerCase();
 }
 

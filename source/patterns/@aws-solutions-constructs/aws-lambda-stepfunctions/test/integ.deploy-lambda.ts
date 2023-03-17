@@ -36,8 +36,9 @@ const props: LambdaToStepfunctionsProps = {
     definition: startState
   },
   logGroupProps: {
-    removalPolicy: RemovalPolicy.DESTROY
-  },
+    removalPolicy: RemovalPolicy.DESTROY,
+    logGroupName: "with-lambda"
+  }
 };
 
 // Add the pattern
