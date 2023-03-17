@@ -11,27 +11,16 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as ecs from "aws-cdk-lib/aws-ecs";
 import * as elb from "aws-cdk-lib/aws-elasticloadbalancingv2";
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function DefaultClusterProps() {
   return {
 
   };
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function DefaultFargateServiceProps(
 ) {
   return {
@@ -43,9 +32,6 @@ export function DefaultFargateServiceProps(
   };
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function DefaultFargateTaskDefinitionProps(): ecs.FargateTaskDefinitionProps {
   return {
     cpu: 256,
@@ -53,9 +39,6 @@ export function DefaultFargateTaskDefinitionProps(): ecs.FargateTaskDefinitionPr
   };
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function DefaultApplicationTargetGroupProps(vpc: ec2.IVpc): elb.ApplicationTargetGroupProps {
   return {
     port: 8080,
@@ -67,9 +50,6 @@ export function DefaultApplicationTargetGroupProps(vpc: ec2.IVpc): elb.Applicati
   };
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function DefaultContainerDefinitionProps(): ecs.ContainerDefinitionOptions | any {
   return {
     memoryReservationMiB: 512,

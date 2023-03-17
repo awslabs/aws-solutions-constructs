@@ -16,7 +16,6 @@ import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import '@aws-cdk/assert/jest';
 import * as cdk from 'aws-cdk-lib';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
-import { Template } from 'aws-cdk-lib/assertions';
 
 function deployNewStateMachine(stack: cdk.Stack) {
 
@@ -188,27 +187,3 @@ test('s3 bucket with no logging bucket', () => {
   expect(stack).toHaveResource("Custom::S3BucketNotifications", {});
   expect(construct.s3LoggingBucket).toEqual(undefined);
 });
-
-test('check LogGroup name', () => {
-  const stack = new cdk.Stack();
-
-  deployNewStateMachine(stack);
-
-  // Perform some fancy stuff to examine the specifics of the LogGroupName
-  const expectedPrefix = '/aws/vendedlogs/states/constructs/';
-  const lengthOfDatetimeSuffix = 13;
-
-  const LogGroup = Template.fromStack(stack).findResources("AWS::Logs::LogGroup");
-
-  const logName = LogGroup.tests3stepfunctionstests3stepfunctionseventrulestepfunctionconstructStateMachineLogGroupB4555776.Properties.LogGroupName;
-  const suffix = logName.slice(-lengthOfDatetimeSuffix);
-
-  // Look for the expected Prefix and the 13 digit time suffix
-  expect(logName.slice(0, expectedPrefix.length)).toEqual(expectedPrefix);
-  expect(IsWholeNumber(suffix)).not.toBe(false);
-});
-
-function IsWholeNumber(target: string): boolean {
-  const numberPattern = /[0-9]{13}/;
-  return target.match(numberPattern) !== null;
-}

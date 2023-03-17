@@ -11,18 +11,10 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 import { CfnJobProps } from 'aws-cdk-lib/aws-glue';
 import { IRole } from 'aws-cdk-lib/aws-iam';
 import * as s3assets from "aws-cdk-lib/aws-s3-assets";
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function DefaultGlueJobProps(jobRole: IRole, userProvidedGlueJobProps: CfnJobProps | any,
   glueSecurityConfigName: string, defaultArguments: {}, etlCodeAsset?: s3assets.Asset): CfnJobProps {
   const glueVersion: string | undefined = userProvidedGlueJobProps.glueVersion;

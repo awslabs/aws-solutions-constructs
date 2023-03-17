@@ -11,17 +11,9 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 import * as glue from "aws-cdk-lib/aws-glue";
 import { Aws } from "aws-cdk-lib";
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function DefaultGlueTableProps(database: glue.CfnDatabase, fieldSchema: glue.CfnTable.ColumnProperty[],
   sourceType?: string, parameters?: any): glue.CfnTableProps | any {
   let _tableProps: glue.CfnTableProps;

@@ -11,17 +11,10 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 import {StringParameter, StringParameterProps} from 'aws-cdk-lib/aws-ssm';
 import {Construct} from 'constructs';
 
 /**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- *
  * Method to build the default AWS SSM Parameter Store
  *
  * @param scope

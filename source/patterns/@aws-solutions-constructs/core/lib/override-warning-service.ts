@@ -11,17 +11,10 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 import * as deepdiff from 'deep-diff';
 import { printWarning } from './utils';
 
 /**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- *
  * Emits a warning to the console when a prescriptive default value is overridden by the user.
  * @param {object} defaultProps the prescriptive defaults for the pattern.
  * @param {object} userProps the properties provided by the user, to be compared against the defaultProps.

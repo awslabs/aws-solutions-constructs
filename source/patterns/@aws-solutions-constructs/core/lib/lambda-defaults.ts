@@ -11,17 +11,9 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as iam from 'aws-cdk-lib/aws-iam';
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function DefaultLambdaFunctionProps(lambdaServiceRole: iam.Role): lambda.FunctionProps | any {
 
   const lambdaFunctionProps: lambda.FunctionProps | any = {

@@ -11,11 +11,6 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 import { Construct } from "constructs";
 import * as waf from "aws-cdk-lib/aws-wafv2";
 import { DefaultWafwebaclProps } from "./waf-defaults";
@@ -32,9 +27,6 @@ export interface BuildWebaclProps {
   readonly webaclProps?: waf.CfnWebACLProps;
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function buildWebacl(scope: Construct, webaclScope: string, props: BuildWebaclProps): waf.CfnWebACL {
   let webAcl;
 

@@ -11,11 +11,6 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as ec2 from "aws-cdk-lib/aws-ec2";
@@ -48,9 +43,6 @@ export interface BuildLambdaFunctionProps {
   readonly vpc?: ec2.IVpc;
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function buildLambdaFunction(scope: Construct, props: BuildLambdaFunctionProps): lambda.Function {
   // Conditional lambda function creation
   if (!props.existingLambdaObj) {
@@ -77,9 +69,6 @@ export function buildLambdaFunction(scope: Construct, props: BuildLambdaFunction
   }
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function deployLambdaFunction(scope: Construct,
   lambdaFunctionProps: lambda.FunctionProps,
   functionId?: string,
@@ -191,13 +180,9 @@ export function deployLambdaFunction(scope: Construct,
   return lambdafunction;
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- *
- * A wrapper above Function.addPermision that
- * prevents two different calls to addPermission using
- * the same construct id.
- */
+// A wrapper above Function.addPermision that
+// prevents two different calls to addPermission using
+// the same construct id.
 export function addPermission(targetFunction: lambda.Function, name: string, permission: lambda.Permission): any {
   targetFunction.addPermission(GetNextId(targetFunction.permissionsNode.children, name), permission);
 }
@@ -227,9 +212,6 @@ function GetNextId(children: IConstruct[], coreName: string): string {
   return `${coreName}-${lastSuffix + 1}`;
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function getLambdaVpcSecurityGroupIds(lambdaFunction: lambda.Function): string[] {
   const securityGroupIds: string[] = [];
 

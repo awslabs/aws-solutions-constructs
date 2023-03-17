@@ -11,11 +11,6 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 // Imports
 import * as kinesisAnalytics from 'aws-cdk-lib/aws-kinesisanalytics';
 import * as kinesisFirehose from 'aws-cdk-lib/aws-kinesisfirehose';
@@ -40,9 +35,6 @@ export interface BuildKinesisAnalyticsAppProps {
    readonly kinesisAnalyticsProps?: kinesisAnalytics.CfnApplicationProps | any
  }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function buildKinesisAnalyticsApp(scope: Construct, props: BuildKinesisAnalyticsAppProps): kinesisAnalytics.CfnApplication {
 
   // Setup the IAM role for Kinesis Analytics

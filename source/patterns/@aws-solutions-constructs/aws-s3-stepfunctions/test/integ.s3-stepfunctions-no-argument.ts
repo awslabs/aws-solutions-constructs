@@ -32,8 +32,7 @@ const props: S3ToStepfunctionsProps = {
     removalPolicy: RemovalPolicy.DESTROY,
   },
   logGroupProps: {
-    removalPolicy: RemovalPolicy.DESTROY,
-    logGroupName: "with-lambda"
+    removalPolicy: RemovalPolicy.DESTROY
   },
   logS3AccessLogs: false
 };

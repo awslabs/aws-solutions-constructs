@@ -11,11 +11,6 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 import * as events from 'aws-cdk-lib/aws-events';
@@ -35,9 +30,6 @@ export interface BuildEventBusProps {
   readonly eventBusProps?: events.EventBusProps;
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function buildEventBus(scope: Construct, props: BuildEventBusProps): events.IEventBus | undefined {
   // Check whether existing EventBus is provided
   if (props.existingEventBusInterface) {

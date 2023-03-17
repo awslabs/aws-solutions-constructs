@@ -20,7 +20,10 @@ import * as cdk from 'aws-cdk-lib';
 const parts = [ 'firstportionislong', 'secondsection'];
 const nonAlphaParts = [ 'part-one', 'part-two'];
 
-test('Test generateResourceName with a truncated part', () => {
+// --------------------------------------------------------------
+// Test with a truncated part
+// --------------------------------------------------------------
+test('Test with a truncated part', () => {
   const result = defaults.generateResourceName(parts, 38);
 
   expect(result).toContain(parts[1]);
@@ -29,7 +32,10 @@ test('Test generateResourceName with a truncated part', () => {
 
 });
 
-test('Test generateResourceName with no truncated parts', () => {
+// --------------------------------------------------------------
+// Test with no truncated parts
+// --------------------------------------------------------------
+test('Test with no truncated parts', () => {
   const result = defaults.generateResourceName(parts, 100);
 
   expect(result).toContain(parts[1]);
@@ -37,33 +43,18 @@ test('Test generateResourceName with no truncated parts', () => {
   expect(result.length).toEqual(parts[0].length + parts[1].length + 12);
 });
 
-test('Test generateResourceName with non Aphanumeric', () => {
+// --------------------------------------------------------------
+// Test with non Aphanumeric
+// --------------------------------------------------------------
+test('Test with non Aphanumeric', () => {
   const result = defaults.generateResourceName(nonAlphaParts, 100);
 
   expect(result).toContain('partoneparttwo');
 });
 
-test('Test generateResourceName with randomized extension', () => {
-  const resultOne = defaults.generateResourceName(parts, 512, true);
-  const startTime = (new Date()).getTime();
-
-  // We need to ensure the time value appended changes between callls
-  let currTime = startTime;
-  while (currTime  === startTime) {
-    currTime = (new Date()).getTime();
-  }
-
-  const resultTwo = defaults.generateResourceName(parts, 512, true);
-
-  expect(resultOne).toContain(parts[1]);
-  expect(resultOne).toContain(parts[0]);
-  expect(resultTwo).toContain(parts[1]);
-  expect(resultTwo).toContain(parts[0]);
-  expect(resultOne).not.toEqual(resultTwo);
-  expect(resultOne.slice(0, -13)).toEqual(resultTwo.slice(0, -13));
-
-});
-
+// --------------------------------------------------------------
+// Test generateIntegStackName
+// --------------------------------------------------------------
 test('Test generateIntegStackName', () => {
   const result = defaults.generateIntegStackName('integ.apigateway-dynamodb-CRUD.js');
   expect(result).toContain('apigateway-dynamodb-CRUD');

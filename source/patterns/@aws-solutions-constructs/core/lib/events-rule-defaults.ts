@@ -11,16 +11,8 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 import * as events from 'aws-cdk-lib/aws-events';
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function DefaultEventsRuleProps(_targets: events.IRuleTarget[], _eventBus?: events.IEventBus) {
   const defaultEventsRuleProps: events.RuleProps = {
     targets: _targets,
