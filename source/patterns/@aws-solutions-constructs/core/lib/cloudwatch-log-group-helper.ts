@@ -26,19 +26,19 @@ import { Construct } from 'constructs';
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function buildLogGroup(scope: Construct, logGroupId?: string, logGroupProps?: logs.LogGroupProps): logs.LogGroup {
-  let _logGroupProps: logs.LogGroupProps;
+  let consolidatedLogGroupProps: logs.LogGroupProps;
 
   // Override user provided CW LogGroup props with the DefaultLogGroupProps
-  _logGroupProps = consolidateProps(DefaultLogGroupProps(), logGroupProps);
+  consolidatedLogGroupProps = consolidateProps(DefaultLogGroupProps(), logGroupProps);
 
   // Set the LogGroup Id
-  const _logGroupId = logGroupId ? logGroupId : 'CloudWatchLogGroup';
+  const adjustedLogGroupId = logGroupId ? logGroupId : 'CloudWatchLogGroup';
 
   // Create the CW Log Group
-  const logGroup = new logs.LogGroup(scope, _logGroupId, _logGroupProps);
+  const logGroup = new logs.LogGroup(scope, adjustedLogGroupId, consolidatedLogGroupProps);
 
   // If required, suppress the Cfn Nag WARNINGS
-  if (_logGroupProps.retention === logs.RetentionDays.INFINITE) {
+  if (consolidatedLogGroupProps.retention === logs.RetentionDays.INFINITE) {
     addCfnSuppressRules( logGroup, [
       {
         id: 'W86',
@@ -47,7 +47,7 @@ export function buildLogGroup(scope: Construct, logGroupId?: string, logGroupPro
     ]);
   }
 
-  if (!_logGroupProps.encryptionKey) {
+  if (!consolidatedLogGroupProps.encryptionKey) {
     addCfnSuppressRules( logGroup, [
       {
         id: 'W84',
