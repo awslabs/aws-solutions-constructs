@@ -11,6 +11,11 @@
  *  and limitations under the License.
  */
 
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
 import * as elasticsearch from 'aws-cdk-lib/aws-elasticsearch';
 import { DefaultCfnDomainProps } from './elasticsearch-defaults';
 import { retrievePrivateSubnetIds } from './vpc-helper';
@@ -41,6 +46,9 @@ export interface BuildElasticSearchResponse {
   readonly role: iam.Role
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildElasticSearch(scope: Construct, props: BuildElasticSearchProps): BuildElasticSearchResponse {
 
   let subnetIds: string[] = [];
@@ -91,6 +99,9 @@ export function buildElasticSearch(scope: Construct, props: BuildElasticSearchPr
   return { domain: esDomain, role: cognitoKibanaConfigureRole };
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildElasticSearchCWAlarms(scope: Construct): cloudwatch.Alarm[] {
   // Setup CW Alarms for ES
   const alarms: cloudwatch.Alarm[] = new Array();
