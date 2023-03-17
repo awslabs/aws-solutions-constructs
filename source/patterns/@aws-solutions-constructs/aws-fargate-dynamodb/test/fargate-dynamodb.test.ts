@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -17,6 +17,7 @@ import * as cdk from "aws-cdk-lib";
 import { FargateToDynamoDB } from "../lib";
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 test('New service/new table, public API, new VPC', () => {
   const stack = new cdk.Stack();
@@ -30,7 +31,7 @@ test('New service/new table, public API, new VPC', () => {
   const construct = new FargateToDynamoDB(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -168,7 +169,7 @@ test('New service/new table, private API, new VPC', () => {
   new FargateToDynamoDB(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     dynamoTableProps: {
       tableName,
       partitionKey: {
@@ -346,7 +347,7 @@ test('Existing service/new table, public API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -358,8 +359,8 @@ test('Existing service/new table, public API, existing VPC', () => {
 
   const construct = new FargateToDynamoDB(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     tableArnEnvironmentVariableName: customArn,
     tableEnvironmentVariableName: customName,
@@ -496,7 +497,7 @@ test('Existing service/existing table, private API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -516,8 +517,8 @@ test('Existing service/existing table, private API, existing VPC', () => {
 
   const construct = new FargateToDynamoDB(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     tablePermissions: 'Write',
     existingTableInterface: existingTable
@@ -639,7 +640,7 @@ test('test error invalid table permission', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -660,8 +661,8 @@ test('test error invalid table permission', () => {
   const app = () => {
     new FargateToDynamoDB(stack, 'test-construct', {
       publicApi,
-      existingFargateServiceObject: testService,
-      existingContainerDefinitionObject: testContainer,
+      existingFargateServiceObject: createFargateServiceResponse.service,
+      existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
       existingVpc,
       tablePermissions: 'reed',
       existingTableInterface: existingTable

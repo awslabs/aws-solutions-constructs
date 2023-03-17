@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import { ResourcePart } from '@aws-cdk/assert';
+import {ResourcePart} from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cdk from "aws-cdk-lib";
-import { RemovalPolicy } from 'aws-cdk-lib';
-import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
+import {Duration, RemovalPolicy, Stack} from "aws-cdk-lib";
+import {CloudFrontToS3, CloudFrontToS3Props} from "../lib";
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 
 function deploy(stack: cdk.Stack, props?: CloudFrontToS3Props) {
@@ -370,4 +370,65 @@ test('CloudFront origin path should not be present if not provided', () => {
       ]
     }
   });
+});
+
+test('Test the deployment with securityHeadersBehavior instead of HTTP security headers', () => {
+  // Initial setup
+  const stack = new Stack();
+  const cloudFrontToS3 = new CloudFrontToS3(stack, 'test-cloudfront-s3', {
+    insertHttpSecurityHeaders: false,
+    responseHeadersPolicyProps: {
+      securityHeadersBehavior: {
+        strictTransportSecurity: {
+          accessControlMaxAge: Duration.seconds(63072),
+          includeSubdomains: true,
+          override: true,
+          preload: true
+        },
+        contentSecurityPolicy: {
+          contentSecurityPolicy: "upgrade-insecure-requests; default-src 'none';",
+          override: true
+        },
+      }
+    }
+  });
+
+  // Assertion
+  expect(stack).toHaveResourceLike("AWS::CloudFront::ResponseHeadersPolicy", {
+    ResponseHeadersPolicyConfig: {
+      SecurityHeadersConfig: {
+        ContentSecurityPolicy: {
+          ContentSecurityPolicy: "upgrade-insecure-requests; default-src 'none';",
+          Override: true
+        },
+        StrictTransportSecurity: {
+          AccessControlMaxAgeSec: 63072,
+          IncludeSubdomains: true,
+          Override: true,
+          Preload: true
+        }
+      }
+    }
+  });
+  expect(cloudFrontToS3.cloudFrontFunction).toEqual(undefined);
+});
+
+test("throw exception if insertHttpSecurityHeaders and responseHeadersPolicyProps are provided", () => {
+  const stack = new cdk.Stack();
+
+  expect(() => {
+    new CloudFrontToS3(stack, "test-cloudfront-s3", {
+      insertHttpSecurityHeaders: true,
+      responseHeadersPolicyProps: {
+        securityHeadersBehavior: {
+          strictTransportSecurity: {
+            accessControlMaxAge: Duration.seconds(63072),
+            includeSubdomains: true,
+            override: false,
+            preload: true
+          }
+        }
+      }
+    });
+  }).toThrowError();
 });

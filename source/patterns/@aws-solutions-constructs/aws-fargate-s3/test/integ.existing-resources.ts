@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -23,7 +23,7 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename), {
   env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
-stack.templateOptions.description = 'Integration Test with new VPC, Service and Bucket';
+stack.templateOptions.description = 'Integration Test with existing VPC, Service and Bucket';
 
 const existingVpc = getTestVpc(stack);
 const existingBucket = defaults.CreateScrapBucket(stack, {
@@ -33,7 +33,7 @@ const existingBucket = defaults.CreateScrapBucket(stack, {
 
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
-const [testService, testContainer] = CreateFargateService(stack,
+const createFargateServiceResponse = CreateFargateService(stack,
   'test',
   existingVpc,
   undefined,
@@ -47,8 +47,8 @@ const testProps: FargateToS3Props = {
   publicApi: true,
   existingVpc,
   existingBucketObj: existingBucket,
-  existingContainerDefinitionObject: testContainer,
-  existingFargateServiceObject: testService,
+  existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
+  existingFargateServiceObject: createFargateServiceResponse.service,
   bucketArnEnvironmentVariableName: 'CUSTOM_ARN',
   bucketEnvironmentVariableName: 'CUSTOM_NAME',
   bucketPermissions: ['Read', 'Write', 'Delete'],

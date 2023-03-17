@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -17,6 +17,7 @@ import * as cdk from "aws-cdk-lib";
 import { FargateToEventbridge } from "../lib";
 import * as events from 'aws-cdk-lib/aws-events';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 const clusterName = "custom-cluster-name";
 const containerName = "custom-container-name";
@@ -75,7 +76,7 @@ test('Check for an existing service', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     { clusterName },
@@ -87,8 +88,8 @@ test('Check for an existing service', () => {
 
   new FargateToEventbridge(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
   });
 
@@ -159,7 +160,7 @@ test('Check for IAM put events policy for default event bus', () => {
   new FargateToEventbridge(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: testCidr },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(testCidr) },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -268,7 +269,7 @@ test('Check for custom ARN resource', () => {
   new FargateToEventbridge(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: testCidr },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(testCidr) },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -323,7 +324,7 @@ test('Check for an existing event bus', () => {
   const construct = new FargateToEventbridge(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: testCidr },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(testCidr) },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -353,7 +354,7 @@ function createFargateConstructWithNewResources(stack: cdk.Stack, publicApi: boo
   return new FargateToEventbridge(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: testCidr },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(testCidr) },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },

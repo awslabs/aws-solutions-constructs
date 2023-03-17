@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -17,6 +17,7 @@ import * as cdk from "aws-cdk-lib";
 import { FargateToSecretsmanager } from "../lib";
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import { buildSecretsManagerSecret } from '@aws-solutions-constructs/core';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 const clusterName = "custom-cluster-name";
 const containerName = "custom-container-name";
@@ -33,7 +34,7 @@ test('New service/new secret, public API, new VPC', () => {
   const construct = new FargateToSecretsmanager(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(cidr) },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -146,7 +147,7 @@ test('New service/new secret, private API, new VPC', () => {
   new FargateToSecretsmanager(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(cidr) },
     secretProps: {
       secretName
     },
@@ -372,7 +373,7 @@ test('Existing service/new secret, public API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -384,8 +385,8 @@ test('Existing service/new secret, public API, existing VPC', () => {
 
   new FargateToSecretsmanager(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     secretEnvironmentVariableName: envName,
     secretProps: {
@@ -498,7 +499,7 @@ test('Existing service/existing secret, private API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -514,8 +515,8 @@ test('Existing service/existing secret, private API, existing VPC', () => {
 
   new FargateToSecretsmanager(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     existingSecretObj
   });
@@ -613,7 +614,7 @@ test('Test error invalid secret permission', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -628,8 +629,8 @@ test('Test error invalid secret permission', () => {
   const app = () => {
     new FargateToSecretsmanager(stack, 'test-construct', {
       publicApi,
-      existingFargateServiceObject: testService,
-      existingContainerDefinitionObject: testContainer,
+      existingFargateServiceObject: createFargateServiceResponse.service,
+      existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
       existingVpc,
       grantWriteAccess: 'reed',
       existingSecretObj

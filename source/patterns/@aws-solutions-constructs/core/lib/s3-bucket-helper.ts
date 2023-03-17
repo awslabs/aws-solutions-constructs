@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -9,6 +9,11 @@
  *  or in the 'license' file accompanying this file. This file is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES
  *  OR CONDITIONS OF ANY KIND, express or implied. See the License for the specific language governing permissions
  *  and limitations under the License.
+ */
+
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
  */
 
 import * as iam from 'aws-cdk-lib/aws-iam';
@@ -44,6 +49,9 @@ export interface BuildS3BucketProps {
   readonly logS3AccessLogs?: boolean;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function createLoggingBucket(scope: Construct,
   bucketId: string,
   loggingBucketProps: s3.BucketProps): s3.Bucket {
@@ -76,6 +84,9 @@ export function createLoggingBucket(scope: Construct,
   return loggingBucket;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function createAlbLoggingBucket(scope: Construct,
   bucketId: string,
   loggingBucketProps: s3.BucketProps): s3.Bucket {
@@ -96,9 +107,17 @@ export function createAlbLoggingBucket(scope: Construct,
   return loggingBucket;
 }
 
+export interface BuildS3BucketResponse {
+  readonly bucket: s3.Bucket,
+  readonly loggingBucket?: s3.Bucket
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildS3Bucket(scope: Construct,
   props: BuildS3BucketProps,
-  bucketId?: string): [s3.Bucket, s3.Bucket?] {
+  bucketId?: string): BuildS3BucketResponse {
 
   /** Default Life Cycle policy to transition older versions to Glacier after 90 days */
   const lifecycleRules: s3.LifecycleRule[] = [{
@@ -141,9 +160,12 @@ export function buildS3Bucket(scope: Construct,
 
   const s3Bucket: s3.Bucket = new s3.Bucket(scope, _bucketId, customBucketProps );
 
-  return [s3Bucket, loggingBucket];
+  return { bucket: s3Bucket, loggingBucket };
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function addCfnNagS3BucketNotificationRulesToSuppress(stackRoot: cdk.Stack, logicalId: string) {
   const notificationsResourceHandler = stackRoot.node.tryFindChild(logicalId) as lambda.Function;
   const notificationsResourceHandlerRoleRole = notificationsResourceHandler.node.findChild('Role') as iam.Role;

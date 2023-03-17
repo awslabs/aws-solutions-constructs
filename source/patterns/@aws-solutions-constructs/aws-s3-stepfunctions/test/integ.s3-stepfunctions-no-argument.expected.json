@@ -116,7 +116,7 @@
     "tests3stepfunctionsconstructtests3stepfunctionsconstructeventrulestepfunctionconstructStateMachineLogGroupE86C2CF5": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/vendedlogs/states/s3stepfunctionsnoargumenttests3stepfunctionsconstructeventrulestepfunctionconstructstatemachinelogf07752992857"
+        "LogGroupName": "with-lambda"
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
@@ -254,7 +254,9 @@
       "DependsOn": [
         "tests3stepfunctionsconstructtests3stepfunctionsconstructeventrulestepfunctionconstructStateMachineRoleDefaultPolicy0E2A1A34",
         "tests3stepfunctionsconstructtests3stepfunctionsconstructeventrulestepfunctionconstructStateMachineRole29FAFE92"
-      ]
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "tests3stepfunctionsconstructtests3stepfunctionsconstructeventrulestepfunctionconstructEventsRuleRoleF724FFA6": {
       "Type": "AWS::IAM::Role",
@@ -472,7 +474,7 @@
             "Arn"
           ]
         },
-        "Runtime": "python3.7",
+        "Runtime": "python3.9",
         "Timeout": 300
       },
       "DependsOn": [
@@ -519,6 +521,9 @@
       "ap-south-1": {
         "states": "states.ap-south-1.amazonaws.com"
       },
+      "ap-south-2": {
+        "states": "states.ap-south-2.amazonaws.com"
+      },
       "ap-southeast-1": {
         "states": "states.ap-southeast-1.amazonaws.com"
       },
@@ -540,6 +545,9 @@
       "eu-central-1": {
         "states": "states.eu-central-1.amazonaws.com"
       },
+      "eu-central-2": {
+        "states": "states.eu-central-2.amazonaws.com"
+      },
       "eu-north-1": {
         "states": "states.eu-north-1.amazonaws.com"
       },
@@ -557,6 +565,9 @@
       },
       "eu-west-3": {
         "states": "states.eu-west-3.amazonaws.com"
+      },
+      "me-central-1": {
+        "states": "states.me-central-1.amazonaws.com"
       },
       "me-south-1": {
         "states": "states.me-south-1.amazonaws.com"

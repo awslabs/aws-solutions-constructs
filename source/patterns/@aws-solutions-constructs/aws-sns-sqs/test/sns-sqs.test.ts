@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -27,8 +27,10 @@ test('Pattern deployment w/ new Topic, new Queue and default props', () => {
   // Initial Setup
   const stack = new Stack();
   const props: SnsToSqsProps = {};
-  new SnsToSqs(stack, 'test-sns-sqs', props);
+  const testConstruct = new SnsToSqs(stack, 'test-sns-sqs', props);
 
+  expect(testConstruct.snsTopic).toBeDefined();
+  expect(testConstruct.encryptionKey).toBeDefined();
   // Assertion 2
   expect(stack).toHaveResource("AWS::SNS::Topic", {
     KmsMasterKeyId: {
@@ -238,6 +240,30 @@ test('Test deployment with SNS managed KMS key', () => {
 });
 
 // --------------------------------------------------------------
+// Test deployment with CMK encrypted SNS Topic
+// --------------------------------------------------------------
+test('Test deployment with CMK encrypted SNS Topic', () => {
+  // Stack
+  const stack = new Stack();
+  const cmk = new kms.Key(stack, 'cmk');
+  // Helper declaration
+  new SnsToSqs(stack, 'sns-to-sqs-stack', {
+    topicProps: {
+      masterKey: cmk
+    }
+  });
+  // Assertion 1
+  expect(stack).toHaveResource("AWS::SNS::Topic", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+// --------------------------------------------------------------
 // Pattern deployment with existing Topic and FIFO queues
 // --------------------------------------------------------------
 test('Pattern deployment w/ existing topic and FIFO queue', () => {
@@ -399,4 +425,65 @@ test('Check SNS dead letter queue', () => {
       }
     }
   });
+});
+
+test('Construct uses topicProps.masterKey when specified', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const cmk = new kms.Key(stack, 'cmkfortopic');
+  const props: SnsToSqsProps = {
+    topicProps: {
+      masterKey: cmk
+    }
+  };
+
+  new SnsToSqs(stack, 'test-sns-sqs', props);
+
+  expect(stack).toHaveResource("AWS::SNS::Topic", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmkfortopic0904647B",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Construct uses queueProps.encryptionMasterKey when specified', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const cmk = new kms.Key(stack, 'cmkforqueue');
+  const props: SnsToSqsProps = {
+    queueProps: {
+      encryptionMasterKey: cmk
+    }
+  };
+
+  new SnsToSqs(stack, 'test-sns-sqs', props);
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmkforqueue4E093476",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Construct does not override unencrypted topic when passed in existingTopicObj prop', () => {
+  const stack = new Stack();
+
+  const existingTopicObj = new sns.Topic(stack, 'Topic', {
+    topicName: 'existing-topic-name'
+  });
+
+  const props: SnsToSqsProps = {
+    existingTopicObj,
+  };
+
+  const testConstruct = new SnsToSqs(stack, 'test-sns-sqs', props);
+
+  expect(testConstruct.snsTopic).toBeDefined();
+  expect(testConstruct.encryptionKey).not.toBeDefined();
 });

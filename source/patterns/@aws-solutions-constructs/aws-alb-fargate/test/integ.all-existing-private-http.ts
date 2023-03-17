@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -30,7 +30,7 @@ const image = ecs.ContainerImage.fromRegistry('nginx');
 
 const testExistingVpc = defaults.getTestVpc(stack);
 
-const [testService, testContainer] = defaults.CreateFargateService(stack,
+const createFargateServiceResponse = defaults.CreateFargateService(stack,
   'test',
   testExistingVpc,
   undefined,
@@ -48,8 +48,8 @@ const existingAlb = new elb.ApplicationLoadBalancer(stack, 'test-alb', {
 const testProps: AlbToFargateProps = {
   existingVpc: testExistingVpc,
   publicApi: true,
-  existingFargateServiceObject: testService,
-  existingContainerDefinitionObject: testContainer,
+  existingFargateServiceObject: createFargateServiceResponse.service,
+  existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
   existingLoadBalancerObj: existingAlb,
   listenerProps: {
     protocol: 'HTTP'

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -91,6 +91,8 @@ export class KinesisFirehoseToS3 extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
 
+    const firehoseId = 'KinesisFirehose';
+
     let bucket: s3.IBucket;
 
     // Setup S3 Bucket
@@ -101,11 +103,13 @@ export class KinesisFirehoseToS3 extends Construct {
         bucketProps;
 
       // Setup logging S3 Bucket
-      [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
+      const buildS3BucketResponse = defaults.buildS3Bucket(this, {
         bucketProps,
         loggingBucketProps: props.loggingBucketProps,
         logS3AccessLogs: props.logS3AccessLogs,
       });
+      this.s3Bucket = buildS3BucketResponse.bucket;
+      this.s3LoggingBucket = buildS3BucketResponse.loggingBucket;
 
       bucket = this.s3Bucket;
     } else {
@@ -161,13 +165,19 @@ export class KinesisFirehoseToS3 extends Construct {
       "alias/aws/s3"
     );
 
+    // We need a stream name to set an enviroment variable, as this is an L1 construct
+    // accessing the name as a token doesn't work for environment variable contents, so
+    // we take explicit control of the stream name (but will be overridden by a client provided name)
+    const deliveryStreamName = defaults.generateName(this, firehoseId);
+
     // Setup the default Kinesis Firehose props
     let defaultKinesisFirehoseProps: kinesisfirehose.CfnDeliveryStreamProps = defaults.DefaultCfnDeliveryStreamProps(
       bucket.bucketArn,
       this.kinesisFirehoseRole.roleArn,
       this.kinesisFirehoseLogGroup.logGroupName,
       cwLogStream.logStreamName,
-      awsManagedKey
+      awsManagedKey,
+      deliveryStreamName
     );
 
     // if the client didn't explicity say it was a Kinesis client, then turn on encryption
@@ -189,7 +199,7 @@ export class KinesisFirehoseToS3 extends Construct {
 
     this.kinesisFirehose = new kinesisfirehose.CfnDeliveryStream(
       this,
-      "KinesisFirehose",
+      firehoseId,
       kinesisFirehoseProps
     );
   }

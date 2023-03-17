@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -89,10 +89,12 @@ export class DynamoDBStreamsToLambda extends Construct {
       lambdaFunctionProps: props.lambdaFunctionProps
     });
 
-    [this.dynamoTableInterface, this.dynamoTable] = defaults.buildDynamoDBTableWithStream(this, {
+    const buildDynamoDBTableWithStreamResponse = defaults.buildDynamoDBTableWithStream(this, {
       dynamoTableProps: props.dynamoTableProps,
       existingTableInterface: props.existingTableInterface
     });
+    this.dynamoTableInterface = buildDynamoDBTableWithStreamResponse.tableInterface;
+    this.dynamoTable = buildDynamoDBTableWithStreamResponse.tableObject;
 
     // Grant DynamoDB Stream read perimssion for lambda function
     this.dynamoTableInterface.grantStreamRead(this.lambdaFunction.grantPrincipal);

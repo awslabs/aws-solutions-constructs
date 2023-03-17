@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -33,13 +33,13 @@ const fn = defaults.deployLambdaFunction(stack, {
   memorySize: 128,
 });
 
-const [containerMap, modelAsset ] = getSagemakerModel(stack);
+const getSagemakerModelResponse = getSagemakerModel(stack);
 
 const constructProps: LambdaToSagemakerEndpointProps = {
   modelProps: {
     primaryContainer: {
-      image: containerMap.findInMap(Stack.of(stack).region, "containerArn"),
-      modelDataUrl: modelAsset.s3ObjectUrl
+      image: getSagemakerModelResponse.mapping.findInMap(Stack.of(stack).region, "containerArn"),
+      modelDataUrl: getSagemakerModelResponse.asset.s3ObjectUrl
     },
   },
   existingLambdaObj: fn,
@@ -48,7 +48,7 @@ const constructProps: LambdaToSagemakerEndpointProps = {
 //   Fix names and construct IDs
 const lambdaToSagemakerConstruct = new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
 
-lambdaToSagemakerConstruct.node.addDependency(modelAsset);
+lambdaToSagemakerConstruct.node.addDependency(getSagemakerModelResponse.asset);
 
 // Synth
 app.synth();

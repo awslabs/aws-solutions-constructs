@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,6 +12,7 @@
  */
 
 import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as kms from 'aws-cdk-lib/aws-kms';
 import * as sns from "aws-cdk-lib/aws-sns";
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from "constructs";
@@ -41,8 +42,6 @@ export interface FargateToSnsProps {
   /**
    * Whether the construct is deploying a private or public API. This has implications for the VPC deployed
    * by this construct.
-   *
-   * @default - none
    */
   readonly publicApi: boolean;
   /**
@@ -125,6 +124,25 @@ export interface FargateToSnsProps {
    * @default - None
    */
   readonly existingContainerDefinitionObject?: ecs.ContainerDefinition;
+  /**
+   * If no key is provided, this flag determines whether the SNS Topic is encrypted with a new CMK or an AWS managed key.
+   * This flag is ignored if any of the following are defined: topicProps.masterKey, encryptionKey or encryptionKeyProps.
+   *
+   * @default - False if topicProps.masterKey, encryptionKey, and encryptionKeyProps are all undefined.
+   */
+  readonly enableEncryptionWithCustomerManagedKey?: boolean;
+  /**
+   * An optional, imported encryption key to encrypt the SNS Topic with.
+   *
+   * @default - None
+   */
+  readonly encryptionKey?: kms.Key;
+  /**
+   * Optional user provided properties to override the default properties for the KMS encryption key used to  encrypt the SNS Topic with.
+   *
+   * @default - None
+   */
+  readonly encryptionKeyProps?: kms.KeyProps;
 }
 
 export class FargateToSns extends Construct {
@@ -152,7 +170,7 @@ export class FargateToSns extends Construct {
       // CheckFargateProps confirms that the container is provided
       this.container = props.existingContainerDefinitionObject!;
     } else {
-      [this.service, this.container] = defaults.CreateFargateService(
+      const createFargateServiceResponse = defaults.CreateFargateService(
         scope,
         id,
         this.vpc,
@@ -163,14 +181,20 @@ export class FargateToSns extends Construct {
         props.containerDefinitionProps,
         props.fargateServiceProps
       );
+      this.service = createFargateServiceResponse.service;
+      this.container = createFargateServiceResponse.containerDefinition;
     }
 
     // Setup the SNS topic
-    [this.snsTopic] = defaults.buildTopic(this, {
+    const buildTopicResponse = defaults.buildTopic(this, {
       existingTopicObj: props.existingTopicObject,
       topicProps: props.topicProps,
+      enableEncryptionWithCustomerManagedKey: props.enableEncryptionWithCustomerManagedKey,
+      encryptionKey: props.encryptionKey,
+      encryptionKeyProps: props.encryptionKeyProps
     });
 
+    this.snsTopic = buildTopicResponse.topic;
     this.snsTopic.grantPublish(this.service.taskDefinition.taskRole);
 
     const topicArnEnvironmentVariableName = props.topicArnEnvironmentVariableName || 'SNS_TOPIC_ARN';

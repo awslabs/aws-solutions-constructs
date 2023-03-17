@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -198,7 +198,7 @@ test('Test deployment w/ existing queue', () => {
   // Stack
   const stack = new Stack();
   // Define existing resources
-  const [existingQueue] = defaults.buildQueue(stack, 'existing-queue', {
+  const buildQueueResponse = defaults.buildQueue(stack, 'existing-queue', {
     queueProps: {
       queueName: 'existing-queue'
     }
@@ -217,7 +217,7 @@ test('Test deployment w/ existing queue', () => {
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
     },
-    existingQueueObj: existingQueue
+    existingQueueObj: buildQueueResponse.queue
   };
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
 
@@ -507,7 +507,7 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     vpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
-      cidr: "192.68.0.0/16",
+      ipAddresses: ec2.IpAddresses.cidr("192.68.0.0/16"),
     },
     deployVpc: true,
   });

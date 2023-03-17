@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -23,7 +23,7 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename), {
   env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
-stack.templateOptions.description = 'Integration Test with new VPC, Service and SSM String Parameter';
+stack.templateOptions.description = 'Integration Test with existing VPC, Service and SSM String Parameter';
 
 const existingVpc = getTestVpc(stack);
 const existingStringParameterObj = new ssm.StringParameter(stack, 'Parameter', {
@@ -35,7 +35,7 @@ const existingStringParameterObj = new ssm.StringParameter(stack, 'Parameter', {
 
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
-const [testService, testContainer] = CreateFargateService(stack,
+const createFargateServiceResponse = CreateFargateService(stack,
   'test',
   existingVpc,
   undefined,
@@ -49,8 +49,8 @@ const constructProps: FargateToSsmstringparameterProps = {
   publicApi: true,
   existingVpc,
   existingStringParameterObj,
-  existingContainerDefinitionObject: testContainer,
-  existingFargateServiceObject: testService,
+  existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
+  existingFargateServiceObject: createFargateServiceResponse.service,
   stringParameterEnvironmentVariableName: 'CUSTOM_NAME',
   stringParameterPermissions: "readwrite"
 };

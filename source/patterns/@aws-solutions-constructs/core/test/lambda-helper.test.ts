@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -447,4 +447,41 @@ test("Test retrieving lambda vpc security group ids", () => {
 
   expect(securityGroups).toContain(securityGroup1.securityGroupId);
   expect(securityGroups).toContain(securityGroup2.securityGroupId);
+});
+
+test('test buildLambdaFunction with lambdaFunctionProps default id', () => {
+  const stack = new Stack();
+
+  defaults.buildLambdaFunction(stack, {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    }
+  });
+
+  expect(stack).toHaveResourceLike('AWS::Lambda::Function', {
+    Role: {
+      'Fn::GetAtt': ['LambdaFunctionServiceRole0C4CDE0B', 'Arn'],
+    },
+  });
+});
+
+test('test buildLambdaFunction with lambdaFunctionProps custom id', () => {
+  const stack = new Stack();
+
+  defaults.buildLambdaFunction(stack, {
+    lambdaFunctionProps: {
+      functionName: 'MyTestFunction',
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    }
+  });
+
+  expect(stack).toHaveResourceLike('AWS::Lambda::Function', {
+    Role: {
+      'Fn::GetAtt': ['MyTestFunctionServiceRole37517223', 'Arn'],
+    },
+  });
 });

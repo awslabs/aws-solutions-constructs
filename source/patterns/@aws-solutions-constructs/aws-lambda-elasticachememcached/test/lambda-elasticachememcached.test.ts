@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -21,6 +21,7 @@ import * as defaults from "@aws-solutions-constructs/core";
 import * as cdk from "aws-cdk-lib";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import { LambdaToElasticachememcached } from "../lib";
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 const testPort = 12321;
 const testFunctionName = "something-unique";
@@ -176,7 +177,7 @@ test("Test setting custom VPC properties", () => {
       handler: ".handler",
     },
     vpcProps: {
-      cidr: testCidrBlock,
+      ipAddresses: ec2.IpAddresses.cidr(testCidrBlock),
     },
   });
 

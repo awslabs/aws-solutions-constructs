@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -29,7 +29,7 @@ const existingVpc = defaults.getTestVpc(stack);
 const startState = new stepfunctions.Pass(stack, 'StartState');
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
-const [testService, testContainer] = defaults.CreateFargateService(stack,
+const createFargateServiceResponse = defaults.CreateFargateService(stack,
   'test',
   existingVpc,
   undefined,
@@ -45,11 +45,12 @@ const constructProps: FargateToStepfunctionsProps = {
   stateMachineProps: {
     definition: startState
   },
-  existingContainerDefinitionObject: testContainer,
-  existingFargateServiceObject: testService,
+  existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
+  existingFargateServiceObject: createFargateServiceResponse.service,
   stateMachineEnvironmentVariableName: 'CUSTOM_NAME',
   logGroupProps: {
-    removalPolicy: RemovalPolicy.DESTROY
+    removalPolicy: RemovalPolicy.DESTROY,
+    logGroupName: "with-lambda"
   }
 };
 

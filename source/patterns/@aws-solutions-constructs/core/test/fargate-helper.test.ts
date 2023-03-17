@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -23,11 +23,14 @@ test('Test with all defaults', () => {
   const stack = new Stack();
 
   const testVpc = defaults.getTestVpc(stack);
-  CreateFargateService(stack,
+  const createFargateServiceResponse = CreateFargateService(stack,
     'test',
     testVpc,
     undefined,
     defaults.fakeEcrRepoArn);
+
+  expect(createFargateServiceResponse.containerDefinition).toBeDefined();
+  expect(createFargateServiceResponse.service).toBeDefined();
 
   expect(stack).toHaveResource("AWS::ECS::Service", {
     Cluster: {

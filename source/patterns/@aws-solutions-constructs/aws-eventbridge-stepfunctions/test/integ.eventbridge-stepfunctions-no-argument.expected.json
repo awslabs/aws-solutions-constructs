@@ -3,7 +3,7 @@
     "testeventbridgestepfunctionsconstructStateMachineLogGroup3098B32C": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/vendedlogs/states/eventbridgestepfunctionsnoargumenttesteventbridgestepfunctionsconstructstatemachinelog56559569213c"
+        "LogGroupName": "integ-test-no-arguments"
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
@@ -141,7 +141,9 @@
       "DependsOn": [
         "testeventbridgestepfunctionsconstructStateMachineRoleDefaultPolicyBA8BB0B3",
         "testeventbridgestepfunctionsconstructStateMachineRoleED595422"
-      ]
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "testeventbridgestepfunctionsconstructEventsRuleRole18E9101A": {
       "Type": "AWS::IAM::Role",
@@ -288,6 +290,9 @@
       "ap-south-1": {
         "states": "states.ap-south-1.amazonaws.com"
       },
+      "ap-south-2": {
+        "states": "states.ap-south-2.amazonaws.com"
+      },
       "ap-southeast-1": {
         "states": "states.ap-southeast-1.amazonaws.com"
       },
@@ -309,6 +314,9 @@
       "eu-central-1": {
         "states": "states.eu-central-1.amazonaws.com"
       },
+      "eu-central-2": {
+        "states": "states.eu-central-2.amazonaws.com"
+      },
       "eu-north-1": {
         "states": "states.eu-north-1.amazonaws.com"
       },
@@ -326,6 +334,9 @@
       },
       "eu-west-3": {
         "states": "states.eu-west-3.amazonaws.com"
+      },
+      "me-central-1": {
+        "states": "states.me-central-1.amazonaws.com"
       },
       "me-south-1": {
         "states": "states.me-south-1.amazonaws.com"

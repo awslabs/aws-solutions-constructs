@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -9,6 +9,11 @@
  *  or in the 'license' file accompanying this file. This file is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES
  *  OR CONDITIONS OF ANY KIND, express or implied. See the License for the specific language governing permissions
  *  and limitations under the License.
+ */
+
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
  */
 
 // Imports
@@ -23,21 +28,27 @@ import { buildLogGroup } from './cloudwatch-log-group-helper';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 
+export interface BuildStateMachineResponse {
+  readonly stateMachine: sfn.StateMachine,
+  readonly logGroup: logs.ILogGroup
+}
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * Builds and returns a StateMachine.
  * @param scope - the construct to which the StateMachine should be attached to.
  * @param stateMachineProps - user-specified properties to override the default properties.
  */
 export function buildStateMachine(scope: Construct, stateMachineProps: sfn.StateMachineProps,
-  logGroupProps?: logs.LogGroupProps): [sfn.StateMachine, logs.ILogGroup] {
+  logGroupProps?: logs.LogGroupProps): BuildStateMachineResponse {
 
   let logGroup: logs.ILogGroup;
-  let _smProps;
+  let consolidatedStateMachineProps;
 
   // If they sent a logGroup in stateMachineProps
   if (stateMachineProps.logs?.destination) {
     logGroup = stateMachineProps.logs?.destination;
-    _smProps = stateMachineProps;
+    consolidatedStateMachineProps = stateMachineProps;
   } else {
     // Three possibilities
     // 1) logGroupProps not provided - create logGroupProps with just logGroupName
@@ -49,7 +60,7 @@ export function buildStateMachine(scope: Construct, stateMachineProps: sfn.State
       consolidatedLogGroupProps = {};
     }
     if (!consolidatedLogGroupProps?.logGroupName) {
-      const logGroupPrefix = '/aws/vendedlogs/states/';
+      const logGroupPrefix = '/aws/vendedlogs/states/constructs/';
       const maxResourceNameLength = 255 - logGroupPrefix.length;
       const nameParts: string[] = [
         cdk.Stack.of(scope).stackName, // Name of the stack
@@ -57,7 +68,7 @@ export function buildStateMachine(scope: Construct, stateMachineProps: sfn.State
         'StateMachineLog'              // Literal string for log group name portion
       ];
 
-      const logGroupName = logGroupPrefix + generateResourceName(nameParts, maxResourceNameLength);
+      const logGroupName = logGroupPrefix + generateResourceName(nameParts, maxResourceNameLength, true);
       consolidatedLogGroupProps = overrideProps(consolidatedLogGroupProps, { logGroupName });
     }
 
@@ -65,45 +76,51 @@ export function buildStateMachine(scope: Construct, stateMachineProps: sfn.State
     logGroup = buildLogGroup(scope, 'StateMachineLogGroup', consolidatedLogGroupProps);
 
     // Override the defaults with the user provided props
-    _smProps = overrideProps(smDefaults.DefaultStateMachineProps(logGroup), stateMachineProps);
+    consolidatedStateMachineProps = overrideProps(smDefaults.DefaultStateMachineProps(logGroup), stateMachineProps);
   }
 
   // Override the Cloudwatch permissions to make it more fine grained
-  const _sm = new sfn.StateMachine(scope, 'StateMachine', _smProps);
-  const role = _sm.node.findChild('Role') as iam.Role;
-  const cfnDefaultPolicy = role.node.findChild('DefaultPolicy').node.defaultChild as iam.CfnPolicy;
+  const newStateMachine = new sfn.StateMachine(scope, 'StateMachine', consolidatedStateMachineProps);
 
-  // Reduce the scope of actions for the existing DefaultPolicy
-  cfnDefaultPolicy.addPropertyOverride('PolicyDocument.Statement.0.Action',
-    [
-      "logs:CreateLogDelivery",
-      'logs:GetLogDelivery',
-      'logs:UpdateLogDelivery',
-      'logs:DeleteLogDelivery',
-      'logs:ListLogDeliveries'
+  // If the client did not pass a role we got the default role and will trim the privileges
+  if (!stateMachineProps.role) {
+    const role = newStateMachine.node.findChild('Role') as iam.Role;
+    const cfnDefaultPolicy = role.node.findChild('DefaultPolicy').node.defaultChild as iam.CfnPolicy;
+
+    // Reduce the scope of actions for the existing DefaultPolicy
+    cfnDefaultPolicy.addPropertyOverride('PolicyDocument.Statement.0.Action',
+      [
+        "logs:CreateLogDelivery",
+        'logs:GetLogDelivery',
+        'logs:UpdateLogDelivery',
+        'logs:DeleteLogDelivery',
+        'logs:ListLogDeliveries'
+      ]);
+
+    // Override Cfn Nag warning W12: IAM policy should not allow * resource
+    addCfnSuppressRules(cfnDefaultPolicy, [
+      {
+        id: 'W12',
+        reason: `The 'LogDelivery' actions do not support resource-level authorizations`
+      }
     ]);
 
-  // Override Cfn Nag warning W12: IAM policy should not allow * resource
-  addCfnSuppressRules(cfnDefaultPolicy, [
-    {
-      id: 'W12',
-      reason: `The 'LogDelivery' actions do not support resource-level authorizations`
-    }
-  ]);
-
-  // Add a new policy with logging permissions for the given cloudwatch log group
-  _sm.addToRolePolicy(new iam.PolicyStatement({
-    actions: [
-      'logs:PutResourcePolicy',
-      'logs:DescribeResourcePolicies',
-      'logs:DescribeLogGroups'
-    ],
-    resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:*`]
-  }));
-
-  return [_sm, logGroup];
+    // Add a new policy with logging permissions for the given cloudwatch log group
+    newStateMachine.addToRolePolicy(new iam.PolicyStatement({
+      actions: [
+        'logs:PutResourcePolicy',
+        'logs:DescribeResourcePolicies',
+        'logs:DescribeLogGroups'
+      ],
+      resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:*`]
+    }));
+  }
+  return { stateMachine: newStateMachine, logGroup };
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildStepFunctionCWAlarms(scope: Construct, sm: sfn.StateMachine): cloudwatch.Alarm[] {
   // Setup CW Alarms for State Machine
   const alarms: cloudwatch.Alarm[] = new Array();

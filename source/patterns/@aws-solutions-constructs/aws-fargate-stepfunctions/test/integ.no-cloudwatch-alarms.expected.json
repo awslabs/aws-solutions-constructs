@@ -1,5 +1,5 @@
 {
-  "Description": "Integration Test with new VPC, Service and a state machine with no CloudWatch alarms",
+  "Description": "Integration Test with existing VPC and Service and a new state machine with no CloudWatch alarms",
   "Resources": {
     "Vpc8378EB38": {
       "Type": "AWS::EC2::VPC",
@@ -121,7 +121,11 @@
             "Value": "no-cloudwatch-alarms/Vpc/PublicSubnet1"
           }
         ]
-      }
+      },
+      "DependsOn": [
+        "VpcPublicSubnet1DefaultRoute3DA9E72A",
+        "VpcPublicSubnet1RouteTableAssociation97140677"
+      ]
     },
     "VpcPublicSubnet2Subnet691E08A3": {
       "Type": "AWS::EC2::Subnet",
@@ -228,7 +232,11 @@
             "Value": "no-cloudwatch-alarms/Vpc/PublicSubnet2"
           }
         ]
-      }
+      },
+      "DependsOn": [
+        "VpcPublicSubnet2DefaultRoute97F91067",
+        "VpcPublicSubnet2RouteTableAssociationDD5762D8"
+      ]
     },
     "VpcPublicSubnet3SubnetBE12F0B6": {
       "Type": "AWS::EC2::Subnet",
@@ -335,7 +343,11 @@
             "Value": "no-cloudwatch-alarms/Vpc/PublicSubnet3"
           }
         ]
-      }
+      },
+      "DependsOn": [
+        "VpcPublicSubnet3DefaultRoute4697774F",
+        "VpcPublicSubnet3RouteTableAssociation1F1EDF02"
+      ]
     },
     "VpcPrivateSubnet1Subnet536B997A": {
       "Type": "AWS::EC2::Subnet",
@@ -639,7 +651,6 @@
           "Ref": "Vpc8378EB38"
         },
         "ResourceType": "VPC",
-        "TrafficType": "ALL",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "VpcFlowLogIAMRole6A475D41",
@@ -655,7 +666,8 @@
             "Key": "Name",
             "Value": "no-cloudwatch-alarms/Vpc"
           }
-        ]
+        ],
+        "TrafficType": "ALL"
       }
     },
     "VpcECRAPI9A3B6A2B": {
@@ -1064,7 +1076,7 @@
     "testconstructStateMachineLogGroup2EB4F48B": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/vendedlogs/states/nocloudwatchalarmstestconstructstatemachinelogdbb9902b27ea"
+        "LogGroupName": "with-lambda"
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
@@ -1194,7 +1206,9 @@
       "DependsOn": [
         "testconstructStateMachineRoleDefaultPolicyF10A684E",
         "testconstructStateMachineRoleA396E5D3"
-      ]
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "nocloudwatchalarmsSTEPFUNCTIONSsecuritygroupE67433DC": {
       "Type": "AWS::EC2::SecurityGroup",

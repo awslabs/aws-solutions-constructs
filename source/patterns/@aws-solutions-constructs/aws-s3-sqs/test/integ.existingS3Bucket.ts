@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -21,12 +21,12 @@ const app = new App();
 
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const [myBucket] = defaults.buildS3Bucket(stack, { bucketProps: { removalPolicy: RemovalPolicy.DESTROY }, });
+const buildS3BucketResponse = defaults.buildS3Bucket(stack, { bucketProps: { removalPolicy: RemovalPolicy.DESTROY }, });
 
 // Currently there is no way to customize the logging bucket, so this
 // test will leave a bucket behind
 const props: S3ToSqsProps = {
-  existingBucketObj: myBucket,
+  existingBucketObj: buildS3BucketResponse.bucket,
 };
 
 new S3ToSqs(stack, 'test-s3-sqs', props);

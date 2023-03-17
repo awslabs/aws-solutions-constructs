@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -130,13 +130,16 @@ export class LambdaToSagemakerEndpoint extends Construct {
     }
 
     // Build SageMaker Endpoint (inclduing SageMaker's Endpoint Configuration and Model)
-    [this.sagemakerEndpoint, this.sagemakerEndpointConfig, this.sagemakerModel] = defaults.BuildSagemakerEndpoint(
+    const buildSagemakerEndpointResponse = defaults.BuildSagemakerEndpoint(
       this,
       {
         ...props,
         vpc: this.vpc,
       }
     );
+    this.sagemakerEndpoint = buildSagemakerEndpointResponse.endpoint;
+    this.sagemakerEndpointConfig = buildSagemakerEndpointResponse.endpointConfig;
+    this.sagemakerModel = buildSagemakerEndpointResponse.model;
 
     // Setup the Lambda function
     this.lambdaFunction = defaults.buildLambdaFunction(this, {

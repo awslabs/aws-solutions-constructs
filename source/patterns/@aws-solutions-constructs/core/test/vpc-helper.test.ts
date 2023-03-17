@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -51,7 +51,7 @@ test('Test deployment w/ user provided custom properties', () => {
     userVpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
-      cidr: '172.168.0.0/19',
+      ipAddresses: ec2.IpAddresses.cidr('172.168.0.0/19'),
     },
   });
   expect(stack).toHaveResource('AWS::EC2::VPC', {
@@ -73,7 +73,7 @@ test('Test deployment w/ construct provided custom properties', () => {
     constructVpcProps: {
       enableDnsHostnames: true,
       enableDnsSupport: true,
-      cidr: '172.168.0.0/19',
+      ipAddresses: ec2.IpAddresses.cidr('172.168.0.0/19'),
     },
   });
   expect(stack).toHaveResource('AWS::EC2::VPC', {
@@ -95,12 +95,12 @@ test('Test deployment w/ construct and user provided custom properties', () => {
     userVpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
-      cidr: '10.0.0.0/16',
+      ipAddresses: ec2.IpAddresses.cidr('10.0.0.0/16'),
     },
     constructVpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
-      cidr: '172.168.0.0/19',
+      ipAddresses: ec2.IpAddresses.cidr('172.168.0.0/19'),
     },
   });
   expect(stack).toHaveResource('AWS::EC2::VPC', {
@@ -122,7 +122,7 @@ test('Test deployment w/ construct and user provided custom properties', () => {
     userVpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
-      cidr: '10.0.0.0/16',
+      ipAddresses: ec2.IpAddresses.cidr('10.0.0.0/16'),
     },
     constructVpcProps: {
       enableDnsHostnames: true,

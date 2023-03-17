@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -25,6 +25,7 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import { CfnFunction } from "aws-cdk-lib/aws-lambda";
 import { GetDefaultCachePort } from "../lib/elasticache-defaults";
+import { Match, Template } from 'aws-cdk-lib/assertions';
 
 export const fakeEcrRepoArn = 'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo';
 
@@ -88,7 +89,7 @@ export function getTestVpc(stack: Stack, publicFacing: boolean = true, userVpcPr
     constructVpcProps: {
       enableDnsHostnames: true,
       enableDnsSupport: true,
-      cidr: '172.168.0.0/16',
+      ipAddresses: ec2.IpAddresses.cidr('172.168.0.0/16'),
     },
     userVpcProps
   });
@@ -143,6 +144,32 @@ export function CreateTestCache(scope: Construct, id: string, vpc: ec2.IVpc, por
     `${id}-cluster`,
     cacheProps
   );
-  newCache.addDependsOn(subnetGroup);
+  newCache.addDependency(subnetGroup);
   return newCache;
+}
+
+/**
+ * Asserts that a KMS key with a specific description exists on a resource
+ *
+ * @param stack The CloudFormation Stack that contains the to validate.
+ * @param parentResourceType The type of CloudFormation Resource that should have the key set on it, e.g., `AWS::SNS::Topic`, etc...
+ * @param description The value of the Description property on the KMS Key
+ */
+export function expectKmsKeyAttachedToCorrectResource(stack: Stack, parentResourceType: string, keyDescription: string) {
+  const template = Template.fromStack(stack);
+  const resource = template.findResources('AWS::KMS::Key', {
+    Properties: {
+      Description: Match.exact(keyDescription)
+    }
+  });
+
+  const [ logicalId ] = Object.keys(resource);
+  expect(stack).toHaveResource(parentResourceType, {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        logicalId,
+        "Arn"
+      ]
+    }
+  });
 }

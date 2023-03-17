@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -17,6 +17,7 @@ import * as cdk from "aws-cdk-lib";
 import { FargateToSsmstringparameter } from "../lib";
 import * as ssm from 'aws-cdk-lib/aws-ssm';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 const allowedPattern = '.*';
 const description = 'The value Foo';
@@ -35,7 +36,7 @@ test('New service/new parameter store, public API, new VPC', () => {
   const construct = new FargateToSsmstringparameter(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -172,7 +173,7 @@ test('New service/new parameter store, private API, new VPC', () => {
   new FargateToSsmstringparameter(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     stringParameterProps: {
       parameterName,
       stringValue
@@ -460,7 +461,7 @@ test('Existing service/new parameter store, public API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -472,8 +473,8 @@ test('Existing service/new parameter store, public API, existing VPC', () => {
 
   new FargateToSsmstringparameter(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     stringParameterEnvironmentVariableName: customName,
     stringParameterProps: {
@@ -627,7 +628,7 @@ test('Existing service/existing parameter store, private API, existing VPC', () 
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -641,8 +642,8 @@ test('Existing service/existing parameter store, private API, existing VPC', () 
 
   new FargateToSsmstringparameter(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     existingStringParameterObj: existingParameterStore
   });
@@ -762,7 +763,7 @@ test('Test error invalid string parameter permission', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -777,8 +778,8 @@ test('Test error invalid string parameter permission', () => {
   const app = () => {
     new FargateToSsmstringparameter(stack, 'test-construct', {
       publicApi,
-      existingFargateServiceObject: testService,
-      existingContainerDefinitionObject: testContainer,
+      existingFargateServiceObject: createFargateServiceResponse.service,
+      existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
       existingVpc,
       stringParameterPermissions: 'reed',
       existingStringParameterObj
@@ -794,7 +795,7 @@ test('Test error no existing object or prop provided', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -807,8 +808,8 @@ test('Test error no existing object or prop provided', () => {
   const app = () => {
     new FargateToSsmstringparameter(stack, 'test-construct', {
       publicApi,
-      existingFargateServiceObject: testService,
-      existingContainerDefinitionObject: testContainer,
+      existingFargateServiceObject: createFargateServiceResponse.service,
+      existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
       existingVpc,
     });
   };

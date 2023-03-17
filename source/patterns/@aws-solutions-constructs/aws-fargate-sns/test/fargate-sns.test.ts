@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -15,8 +15,10 @@ import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
 import { FargateToSns } from "../lib";
+import * as kms from 'aws-cdk-lib/aws-kms';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 test('New service/new topic, public API, new VPC', () => {
 
@@ -30,10 +32,10 @@ test('New service/new topic, public API, new VPC', () => {
   const serviceName = "custom-service-name";
   const topicName = "custom-topic-name";
 
-  new FargateToSns(stack, 'test-construct', {
+  const testConstruct = new FargateToSns(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: 'family-name' },
@@ -41,6 +43,7 @@ test('New service/new topic, public API, new VPC', () => {
     topicProps: { topicName },
   });
 
+  expect(testConstruct.snsTopic).toBeDefined();
   expect(stack).toHaveResourceLike("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     DesiredCount: 2,
@@ -115,7 +118,7 @@ test('New service/new topic, private API, new VPC', () => {
   new FargateToSns(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' }
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') }
   });
 
   expect(stack).toHaveResourceLike("AWS::ECS::Service", {
@@ -194,7 +197,7 @@ test('Existing service/new topic, public API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -206,8 +209,8 @@ test('Existing service/new topic, public API, existing VPC', () => {
 
   new FargateToSns(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     topicArnEnvironmentVariableName: 'CUSTOM_ARN',
     topicNameEnvironmentVariableName: 'CUSTOM_NAME',
@@ -283,7 +286,7 @@ test('Existing service/existing topic, private API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -299,8 +302,8 @@ test('Existing service/existing topic, private API, existing VPC', () => {
 
   new FargateToSns(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     existingTopicObject: existingTopic
   });
@@ -363,4 +366,130 @@ test('Existing service/existing topic, private API, existing VPC', () => {
   expect(stack).toCountResources('AWS::EC2::VPC', 1);
   expect(stack).toCountResources('AWS::SNS::Topic', 1);
   expect(stack).toCountResources('AWS::ECS::Service', 1);
+});
+
+test('Topic is encrypted with imported CMK when set on encryptionKey prop', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  const cmk = new kms.Key(stack, 'cmk');
+  new FargateToSns(stack, 'test-construct', {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    encryptionKey: cmk
+  });
+
+  expect(stack).toHaveResource("AWS::SNS::Topic", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Topic is encrypted with imported CMK when set on topicProps.masterKey prop', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  const cmk = new kms.Key(stack, 'cmk');
+  new FargateToSns(stack, 'test-construct', {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    topicProps: {
+      masterKey: cmk
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::SNS::Topic", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Topic is encrypted with provided encrytionKeyProps', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  new FargateToSns(stack, 'test-construct', {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    encryptionKeyProps: {
+      alias: 'new-key-alias-from-props'
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::SNS::Topic', {
+    KmsMasterKeyId: {
+      'Fn::GetAtt': [
+        'testconstructEncryptionKey6153B053',
+        'Arn'
+      ]
+    },
+  });
+
+  expect(stack).toHaveResource('AWS::KMS::Alias', {
+    AliasName: 'alias/new-key-alias-from-props',
+    TargetKeyId: {
+      'Fn::GetAtt': [
+        'testconstructEncryptionKey6153B053',
+        'Arn'
+      ]
+    }
+  });
+});
+
+test('Topic is encrypted by default with AWS-managed KMS key when no other encryption properties are set', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  new FargateToSns(stack, 'test-construct', {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+  });
+
+  expect(stack).toHaveResource('AWS::SNS::Topic', {
+    KmsMasterKeyId: {
+      'Fn::Join': [
+        "",
+        [
+          "arn:",
+          {
+            Ref: "AWS::Partition"
+          },
+          ":kms:us-east-1:123456789012:alias/aws/sns"
+        ]
+      ]
+    },
+  });
+});
+
+test('Topic is encrypted with customer managed KMS Key when enable encryption flag is true', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  new FargateToSns(stack, 'test-construct', {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    enableEncryptionWithCustomerManagedKey: true
+  });
+
+  expect(stack).toHaveResource('AWS::SNS::Topic', {
+    KmsMasterKeyId: {
+      'Fn::GetAtt': [
+        'testconstructEncryptionKey6153B053',
+        'Arn'
+      ]
+    },
+  });
 });

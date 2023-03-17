@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -13,6 +13,7 @@
 
 // Imports
 import { Stack } from "aws-cdk-lib";
+import * as kms from 'aws-cdk-lib/aws-kms';
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { LambdaToSqs } from '../lib';
@@ -109,7 +110,7 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     vpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
-      cidr: "192.68.0.0/16",
+      ipAddresses: ec2.IpAddresses.cidr("192.68.0.0/16"),
     },
     deployVpc: true,
   });
@@ -280,5 +281,236 @@ test('Test lambda function custom environment variable', () => {
         }
       }
     }
+  });
+});
+
+test('Queue is encrypted with imported CMK when set on encryptionKey prop', () => {
+  const stack = new Stack();
+
+  const cmk = new kms.Key(stack, 'cmk');
+  new LambdaToSqs(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    },
+    encryptionKey: cmk
+  });
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Queue is encrypted with imported CMK when set on queueProps.encryptionMasterKey prop', () => {
+  const stack = new Stack();
+
+  const cmk = new kms.Key(stack, 'cmk');
+  new LambdaToSqs(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    },
+    queueProps: {
+      encryptionMasterKey: cmk
+    }
+  });
+
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Queue is encrypted with provided encrytionKeyProps', () => {
+  const stack = new Stack();
+
+  new LambdaToSqs(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    },
+    encryptionKeyProps: {
+      alias: 'new-key-alias-from-props'
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::SQS::Queue', {
+    KmsMasterKeyId: {
+      'Fn::GetAtt': [
+        'testconstructEncryptionKey6153B053',
+        'Arn'
+      ]
+    },
+  });
+
+  expect(stack).toHaveResource('AWS::KMS::Alias', {
+    AliasName: 'alias/new-key-alias-from-props',
+    TargetKeyId: {
+      'Fn::GetAtt': [
+        'testconstructEncryptionKey6153B053',
+        'Arn'
+      ]
+    }
+  });
+});
+
+test('Queue is encrypted by default with SQS-managed KMS key when no other encryption properties are set', () => {
+  const stack = new Stack();
+
+  new LambdaToSqs(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    },
+  });
+
+  expect(stack).toHaveResource('AWS::SQS::Queue', {
+    KmsMasterKeyId: "alias/aws/sqs"
+  });
+});
+
+test('Queue is encrypted with customer managed KMS Key when enable encryption flag is true', () => {
+  const stack = new Stack();
+
+  new LambdaToSqs(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    },
+    enableEncryptionWithCustomerManagedKey: true
+  });
+
+  expect(stack).toHaveResource('AWS::SQS::Queue', {
+    KmsMasterKeyId: {
+      'Fn::GetAtt': [
+        'testconstructEncryptionKey6153B053',
+        'Arn'
+      ]
+    },
+  });
+});
+
+test('Error is thrown when conflicting VPC information is provided', () => {
+  const stack = new Stack();
+
+  const app = () => {
+    new LambdaToSqs(stack, 'test-construct', {
+      existingVpc: new ec2.Vpc(stack, "test-vpc", {}),
+      deployVpc: true
+    });
+  };
+
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.');
+});
+
+test('Queue purging flag grants correct permissions', () => {
+  const stack = new Stack();
+
+  new LambdaToSqs(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    enableQueuePurging: true,
+    deployDeadLetterQueue: false
+  });
+
+  expect(stack).toHaveResource('AWS::SQS::QueuePolicy', {
+    PolicyDocument:  {
+      Statement: [
+        {
+          Action: [
+            "sqs:DeleteMessage",
+            "sqs:ReceiveMessage",
+            "sqs:SendMessage",
+            "sqs:GetQueueAttributes",
+            "sqs:RemovePermission",
+            "sqs:AddPermission",
+            "sqs:SetQueueAttributes",
+          ],
+          Effect: "Allow",
+          Principal:  {
+            AWS:  {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    Ref: "AWS::Partition",
+                  },
+                  ":iam::",
+                  {
+                    Ref: "AWS::AccountId",
+                  },
+                  ":root"
+                ],
+              ],
+            },
+          },
+          Resource:  {
+            "Fn::GetAtt": [
+              "testconstructqueue56588B31",
+              "Arn",
+            ],
+          },
+          Sid: "QueueOwnerOnlyAccess",
+        },
+        {
+          Action: "SQS:*",
+          Condition:  {
+            Bool:  {
+              "aws:SecureTransport": "false",
+            },
+          },
+          Effect: "Deny",
+          Principal: {
+            AWS: "*"
+          },
+          Resource:  {
+            "Fn::GetAtt": [
+              "testconstructqueue56588B31",
+              "Arn",
+            ],
+          },
+          Sid: "HttpsOnly",
+        }
+      ],
+      Version: "2012-10-17"
+    },
+    Queues: [
+      {
+        Ref: "testconstructqueue56588B31",
+      }
+    ]
   });
 });

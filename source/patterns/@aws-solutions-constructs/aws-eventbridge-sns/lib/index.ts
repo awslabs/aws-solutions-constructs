@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -52,22 +52,22 @@ export interface EventbridgeToSnsProps {
      */
     readonly existingTopicObj?: sns.Topic;
     /**
-     * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
-     * the encryptionKey property for this construct.
+     * If no key is provided, this flag determines whether the topic is encrypted with a new CMK or an AWS managed key.
+     * This flag is ignored if any of the following are defined: topicProps.masterKey, encryptionKey or encryptionKeyProps.
      *
-     * @default - true (encryption enabled, managed by this CDK app).
+     * @default - True if topicProps.masterKey, encryptionKey, and encryptionKeyProps are all undefined.
      */
     readonly enableEncryptionWithCustomerManagedKey?: boolean;
     /**
-     * An optional, imported encryption key to encrypt the SQS queue, and SNS Topic.
+     * An optional, imported encryption key to encrypt the SNS topic with.
      *
-     * @default - not specified.
+     * @default - None.
      */
     readonly encryptionKey?: kms.Key;
     /**
-     * Optional user-provided props to override the default props for the encryption key.
+     * Optional user provided properties to override the default properties for the KMS encryption key used to  encrypt the SNS topic with.
      *
-     * @default - Default props are used.
+     * @default - None
      */
     readonly encryptionKeyProps?: kms.KeyProps;
 }
@@ -96,7 +96,7 @@ export class EventbridgeToSns extends Construct {
       }
 
       // Setup the sns topic.
-      [this.snsTopic, this.encryptionKey] = defaults.buildTopic(this, {
+      const buildTopicResponse = defaults.buildTopic(this, {
         existingTopicObj: props.existingTopicObj,
         topicProps: props.topicProps,
         enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
@@ -104,6 +104,8 @@ export class EventbridgeToSns extends Construct {
         encryptionKeyProps: props.encryptionKeyProps
       });
 
+      this.snsTopic = buildTopicResponse.topic;
+      this.encryptionKey = buildTopicResponse.key;
       // Setup the event rule target as sns topic.
       const topicEventTarget: events.IRuleTarget = {
         bind: () => ({

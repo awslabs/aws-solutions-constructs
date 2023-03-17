@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,6 +11,11 @@
  *  and limitations under the License.
  */
 
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
 import { Construct } from "constructs";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as ecs from "aws-cdk-lib/aws-ecs";
@@ -18,6 +23,14 @@ import * as ecr from "aws-cdk-lib/aws-ecr";
 import * as defaults from "..";
 import { overrideProps } from "..";
 
+export interface CreateFargateServiceResponse {
+  readonly service: ecs.FargateService,
+  readonly containerDefinition: ecs.ContainerDefinition
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function CreateFargateService(
   scope: Construct,
   id: string,
@@ -28,7 +41,7 @@ export function CreateFargateService(
   clientFargateTaskDefinitionProps?: ecs.FargateTaskDefinitionProps | any,
   clientContainerDefinitionProps?: ecs.ContainerDefinitionProps | any,
   clientFargateServiceProps?: ecs.FargateServiceProps | any
-): [ecs.FargateService, ecs.ContainerDefinition] {
+): CreateFargateServiceResponse {
   defaults.AddAwsServiceEndpoint(
     scope,
     constructVpc,
@@ -70,13 +83,15 @@ export function CreateFargateService(
 
   // Create the Fargate Service
   let newContainerDefinition;
-  [constructFargateServiceDefinitionProps.taskDefinition, newContainerDefinition] = CreateTaskDefinition(
+  const createTaskDefinitionResponse = CreateTaskDefinition(
     scope,
     id,
     clientFargateTaskDefinitionProps,
     clientContainerDefinitionProps,
     constructContainerDefintionProps
   );
+  constructFargateServiceDefinitionProps.taskDefinition = createTaskDefinitionResponse.taskDefinition;
+  newContainerDefinition = createTaskDefinitionResponse.containerDefinition;
 
   if (!clientFargateServiceProps?.vpcSubnets) {
     if (constructVpc.isolatedSubnets.length) {
@@ -127,7 +142,7 @@ export function CreateFargateService(
     fargateServiceProps,
   );
 
-  return [newService, newContainerDefinition];
+  return { service: newService, containerDefinition: newContainerDefinition };
 }
 
 function CreateCluster(
@@ -164,13 +179,18 @@ function CreateImage(
   }
 }
 
+interface CreateTaskDefinitionResponse {
+  taskDefinition: ecs.FargateTaskDefinition
+  containerDefinition: ecs.ContainerDefinition
+}
+
 function CreateTaskDefinition(
   scope: Construct,
   id: string,
   clientFargateTaskDefinitionProps?: ecs.FargateTaskDefinitionProps,
   clientContainerDefinitionProps?: ecs.ContainerDefinitionProps,
   constructContainerDefinitionProps?: ecs.ContainerDefinitionProps
-): [ecs.FargateTaskDefinition, ecs.ContainerDefinition] {
+): CreateTaskDefinitionResponse {
   const taskDefinitionProps = defaults.consolidateProps(
     defaults.DefaultFargateTaskDefinitionProps(),
     clientFargateTaskDefinitionProps
@@ -190,9 +210,12 @@ function CreateTaskDefinition(
     constructContainerDefinitionProps,
   );
   const containerDefinition = taskDefinition.addContainer(`${id}-container`, containerDefinitionProps);
-  return [taskDefinition, containerDefinition];
+  return { taskDefinition, containerDefinition };
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function CheckFargateProps(props: any) {
   let errorMessages = "";
   let errorFound = false;
@@ -261,4 +284,15 @@ export function CheckFargateProps(props: any) {
   if (errorFound) {
     throw new Error(errorMessages);
   }
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function getServiceVpcSecurityGroupIds(service: ecs.FargateService): string[] {
+  const securityGroupIds: string[] = [];
+
+  service.connections.securityGroups.forEach(element => securityGroupIds.push(element.securityGroupId));
+
+  return securityGroupIds;
 }

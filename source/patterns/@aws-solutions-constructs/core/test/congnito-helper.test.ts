@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -89,7 +89,7 @@ test('Test override for buildIdentityPool', () => {
   });
 });
 
-test('Test setupCognitoForElasticSearch', () => {
+test('Test setupCognitoForSearchService', () => {
   const stack = new Stack();
 
   const userpool = defaults.buildUserPool(stack);
@@ -99,7 +99,7 @@ test('Test setupCognitoForElasticSearch', () => {
   });
   const identitypool = defaults.buildIdentityPool(stack, userpool, userpoolclient);
 
-  defaults.setupCognitoForElasticSearch(stack, 'test-domain', {
+  defaults.setupCognitoForSearchService(stack, 'test-domain', {
     userpool,
     userpoolclient,
     identitypool

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -22,12 +22,12 @@ const app = new App();
 
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const [myQueue] = defaults.buildQueue(stack, 'test-existing-queue', {
+const buildQueueResponse = defaults.buildQueue(stack, 'test-existing-queue', {
   enableEncryptionWithCustomerManagedKey: true
 });
 
 const props: S3ToSqsProps = {
-  existingQueueObj: myQueue,
+  existingQueueObj: buildQueueResponse.queue,
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
   },

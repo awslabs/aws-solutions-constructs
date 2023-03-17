@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -29,7 +29,7 @@ test('test cloudfront for Api Gateway with user provided logging bucket', () => 
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda-test`),
-    runtime: lambda.Runtime.PYTHON_3_6,
+    runtime: lambda.Runtime.PYTHON_3_9,
     handler: 'index.handler'
   };
 
@@ -147,7 +147,7 @@ test('test cloudfront for Api Gateway override properties', () => {
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda-test`),
-    runtime: lambda.Runtime.PYTHON_3_6,
+    runtime: lambda.Runtime.PYTHON_3_9,
     handler: 'index.handler'
   };
 

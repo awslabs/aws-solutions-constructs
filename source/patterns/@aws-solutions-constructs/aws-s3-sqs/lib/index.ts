@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -30,13 +30,13 @@ export interface S3ToSqsProps {
      *
      * @default - None
      */
-    readonly existingBucketObj?: s3.Bucket,
+    readonly existingBucketObj?: s3.Bucket;
     /**
      * Optional user provided props to override the default props for the S3 Bucket.
      *
      * @default - Default props are used
      */
-    readonly bucketProps?: s3.BucketProps,
+    readonly bucketProps?: s3.BucketProps;
     /**
      * The S3 event types that will trigger the notification.
      *
@@ -48,62 +48,62 @@ export interface S3ToSqsProps {
      *
      * @default - If not specified no filter rules will be applied.
      */
-    readonly s3EventFilters?: s3.NotificationKeyFilter[]
+    readonly s3EventFilters?: s3.NotificationKeyFilter[];
     /**
      * Existing instance of SQS queue object, Providing both this and queueProps will cause an error.
      *
      * @default - Default props are used
      */
-    readonly existingQueueObj?: sqs.Queue,
+    readonly existingQueueObj?: sqs.Queue;
     /**
      * Optional user provided properties
      *
      * @default - Default props are used
      */
-    readonly queueProps?: sqs.QueueProps,
+    readonly queueProps?: sqs.QueueProps;
     /**
      * Optional user provided properties for the dead letter queue
      *
      * @default - Default props are used
      */
-    readonly deadLetterQueueProps?: sqs.QueueProps,
+    readonly deadLetterQueueProps?: sqs.QueueProps;
     /**
      * Whether to deploy a secondary queue to be used as a dead letter queue.
      *
      * @default - true.
      */
-    readonly deployDeadLetterQueue?: boolean,
+    readonly deployDeadLetterQueue?: boolean;
     /**
      * The number of times a message can be unsuccessfully dequeued before being moved to the dead-letter queue.
      *
      * @default - required field if deployDeadLetterQueue=true.
      */
-    readonly maxReceiveCount?: number
+    readonly maxReceiveCount?: number;
     /**
-     * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
-     * the encryptionKey property for this construct.
+     * If no key is provided, this flag determines whether the queue is encrypted with a new CMK or an AWS managed key.
+     * This flag is ignored if any of the following are defined: queueProps.encryptionMasterKey, encryptionKey or encryptionKeyProps.
      *
-     * @default - true (encryption enabled, managed by this CDK app).
+     * @default - False if queueProps.encryptionMasterKey, encryptionKey, and encryptionKeyProps are all undefined.
      */
-    readonly enableEncryptionWithCustomerManagedKey?: boolean
+    readonly enableEncryptionWithCustomerManagedKey?: boolean;
     /**
-     * Optional imported encryption key to encrypt the SQS queue.
+     * An optional, imported encryption key to encrypt the SQS Queue with.
      *
-     * @default - not specified.
+     * @default - None
      */
-    readonly encryptionKey?: kms.Key,
+    readonly encryptionKey?: kms.Key;
     /**
-     * Optional user provided props to override the default props for the encryption key.
+     * Optional user provided properties to override the default properties for the KMS encryption key used to encrypt the SQS Queue with.
      *
-     * @default - Default props are used.
+     * @default - None
      */
-    readonly encryptionKeyProps?: kms.KeyProps
+    readonly encryptionKeyProps?: kms.KeyProps;
     /**
      * Optional user provided props to override the default props for the S3 Logging Bucket.
      *
      * @default - Default props are used
      */
-    readonly loggingBucketProps?: s3.BucketProps
+    readonly loggingBucketProps?: s3.BucketProps;
     /**
      * Whether to turn on Access Logs for the S3 bucket with the associated storage costs.
      * Enabling Access Logging is a best practice.
@@ -146,11 +146,14 @@ export class S3ToSqs extends Construct {
 
       // Setup the S3 bucket
       if (!props.existingBucketObj) {
-        [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
+        const buildS3BucketResponse = defaults.buildS3Bucket(this, {
           bucketProps: props.bucketProps,
           loggingBucketProps: props.loggingBucketProps,
           logS3AccessLogs: props.logS3AccessLogs
         });
+        this.s3Bucket = buildS3BucketResponse.bucket;
+        this.s3LoggingBucket = buildS3BucketResponse.loggingBucket;
+
         bucket = this.s3Bucket;
       } else {
         bucket = props.existingBucketObj;
@@ -166,13 +169,16 @@ export class S3ToSqs extends Construct {
         maxReceiveCount: props.maxReceiveCount
       });
       // Setup the queue
-      [this.sqsQueue, this.encryptionKey] = defaults.buildQueue(this, 'queue', {
+      const buildQueueResponse = defaults.buildQueue(this, 'queue', {
         existingQueueObj: props.existingQueueObj,
         queueProps: props.queueProps,
         deadLetterQueue: this.deadLetterQueue,
         enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
-        encryptionKey: props.encryptionKey
+        encryptionKey: props.encryptionKey,
+        encryptionKeyProps: props.encryptionKeyProps
       });
+      this.sqsQueue = buildQueueResponse.queue;
+      this.encryptionKey = buildQueueResponse.key;
 
       // Setup the S3 bucket event types
       let s3EventTypes;

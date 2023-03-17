@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -304,4 +304,27 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
   });
 
   expect(stack).toCountResources("AWS::S3::Bucket", 1);
+});
+
+test('check client provided name overrides default DeliveryStreamName', () => {
+  const stack = new cdk.Stack();
+  const testName = 'client-name';
+
+  deploy(stack, {
+    kinesisFirehoseProps: {
+      deliveryStreamName: testName
+    }
+  });
+  expect(stack).toHaveResourceLike("AWS::KinesisFirehose::DeliveryStream", {
+    DeliveryStreamName: testName
+  });
+});
+
+test('check DeliveryStreamName is populated', () => {
+  const stack = new cdk.Stack(undefined, 'test-stack');
+
+  deploy(stack);
+  expect(stack).toHaveResourceLike("AWS::KinesisFirehose::DeliveryStream", {
+    DeliveryStreamName: "KinesisFirehoseteststacktestfirehoses3F50DF0E1"
+  });
 });

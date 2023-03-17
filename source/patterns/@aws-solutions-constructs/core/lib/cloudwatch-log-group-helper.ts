@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,26 +11,34 @@
  *  and limitations under the License.
  */
 
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
 import { DefaultLogGroupProps } from './cloudwatch-log-group-defaults';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import { addCfnSuppressRules, consolidateProps } from './utils';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildLogGroup(scope: Construct, logGroupId?: string, logGroupProps?: logs.LogGroupProps): logs.LogGroup {
-  let _logGroupProps: logs.LogGroupProps;
+  let consolidatedLogGroupProps: logs.LogGroupProps;
 
   // Override user provided CW LogGroup props with the DefaultLogGroupProps
-  _logGroupProps = consolidateProps(DefaultLogGroupProps(), logGroupProps);
+  consolidatedLogGroupProps = consolidateProps(DefaultLogGroupProps(), logGroupProps);
 
   // Set the LogGroup Id
-  const _logGroupId = logGroupId ? logGroupId : 'CloudWatchLogGroup';
+  const adjustedLogGroupId = logGroupId ? logGroupId : 'CloudWatchLogGroup';
 
   // Create the CW Log Group
-  const logGroup = new logs.LogGroup(scope, _logGroupId, _logGroupProps);
+  const logGroup = new logs.LogGroup(scope, adjustedLogGroupId, consolidatedLogGroupProps);
 
   // If required, suppress the Cfn Nag WARNINGS
-  if (_logGroupProps.retention === logs.RetentionDays.INFINITE) {
+  if (consolidatedLogGroupProps.retention === logs.RetentionDays.INFINITE) {
     addCfnSuppressRules( logGroup, [
       {
         id: 'W86',
@@ -39,7 +47,7 @@ export function buildLogGroup(scope: Construct, logGroupId?: string, logGroupPro
     ]);
   }
 
-  if (!_logGroupProps.encryptionKey) {
+  if (!consolidatedLogGroupProps.encryptionKey) {
     addCfnSuppressRules( logGroup, [
       {
         id: 'W84',

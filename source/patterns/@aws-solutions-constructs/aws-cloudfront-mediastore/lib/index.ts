@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -42,11 +42,25 @@ export interface CloudFrontToMediaStoreProps {
   readonly cloudFrontDistributionProps?: cloudfront.DistributionProps | any;
   /**
    * Optional user provided props to turn on/off the automatic injection of best practice HTTP
-   * security headers in all responses from cloudfront
+   * security headers in all responses from cloudfront.
+   * Turning this on will inject default headers and is mutually exclusive with passing custom security headers
+   * via the responseHeadersPolicyProps parameter.
    *
    * @default - true
    */
   readonly insertHttpSecurityHeaders?: boolean;
+  /**
+   * Optional user provided configuration that cloudfront applies to all http responses.
+   * Can be used to pass a custom ResponseSecurityHeadersBehavior, ResponseCustomHeadersBehavior or
+   * ResponseHeadersCorsBehavior to the cloudfront distribution.
+   *
+   * Passing a custom ResponseSecurityHeadersBehavior is mutually exclusive with turning on the default security headers
+   * via `insertHttpSecurityHeaders` prop. Will throw an error if both `insertHttpSecurityHeaders` is set to `true`
+   * and ResponseSecurityHeadersBehavior is passed.
+   *
+   * @default - undefined
+   */
+  readonly responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
   /**
    * Optional user provided props to override the default props for the CloudFront Logging Bucket.
    *
@@ -65,7 +79,7 @@ export class CloudFrontToMediaStore extends Construct {
 
   /**
    * @summary Constructs a new instance of CloudFrontToMediaStore class.
-   * @param {cdk.App} scope - represents the scope for all the resources.
+   * @param {Construct} scope - represents the scope for all the resources.
    * @param {string} id - this is a scope-unique id.
    * @param {CloudFrontToMediaStoreProps} props - user provided props for the construct
    * @since 1.76.0
@@ -102,7 +116,7 @@ export class CloudFrontToMediaStore extends Construct {
               Resource: `arn:${Aws.PARTITION}:mediastore:${Aws.REGION}:${Aws.ACCOUNT_ID}:container/${Aws.STACK_NAME}/*`,
               Condition: {
                 StringEquals: {
-                  'aws:UserAgent': this.cloudFrontOriginAccessIdentity.originAccessIdentityName
+                  'aws:UserAgent': this.cloudFrontOriginAccessIdentity.originAccessIdentityId
                 },
                 Bool: {
                   'aws:SecureTransport': 'true'
@@ -113,7 +127,7 @@ export class CloudFrontToMediaStore extends Construct {
         };
 
         const userAgentHeader: Record<string, string> = {
-          'User-Agent': this.cloudFrontOriginAccessIdentity.originAccessIdentityName
+          'User-Agent': this.cloudFrontOriginAccessIdentity.originAccessIdentityId
         };
 
         if (cloudFrontDistributionProps) {
@@ -128,12 +142,17 @@ export class CloudFrontToMediaStore extends Construct {
       this.mediaStoreContainer = defaults.MediaStoreContainer(this, mediaStoreProps);
     }
 
-    [this.cloudFrontWebDistribution, this.cloudFrontLoggingBucket, this.cloudFrontOriginRequestPolicy, this.cloudFrontFunction]
-      = defaults.CloudFrontDistributionForMediaStore(
-        this, this.mediaStoreContainer,
-        cloudFrontDistributionProps,
-        props.insertHttpSecurityHeaders,
-        props.cloudFrontLoggingBucketProps
-      );
+    const DistributionResponse = defaults.CloudFrontDistributionForMediaStore(
+      this,
+      this.mediaStoreContainer,
+      cloudFrontDistributionProps,
+      props.insertHttpSecurityHeaders,
+      props.cloudFrontLoggingBucketProps,
+      props.responseHeadersPolicyProps
+    );
+    this.cloudFrontWebDistribution = DistributionResponse.distribution;
+    this.cloudFrontLoggingBucket = DistributionResponse.loggingBucket;
+    this.cloudFrontOriginRequestPolicy = DistributionResponse.requestPolicy;
+    this.cloudFrontFunction = DistributionResponse.cloudfrontFunction;
   }
 }

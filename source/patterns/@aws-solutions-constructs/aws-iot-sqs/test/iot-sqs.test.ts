@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -300,6 +300,76 @@ test('Pattern deployment with existing KMS key', () => {
 
   const props: IotToSqsProps = {
     encryptionKey: kmsKey,
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "Processing messages from IoT devices or factory machines",
+        sql: "SELECT * FROM 'test/topic/#'",
+        actions: []
+      }
+    }
+  };
+  new IotToSqs(stack, 'test-iot-sqs', props);
+
+  // Creates a default sqs queue
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "existingkey205DFC01",
+        "Arn"
+      ]
+    }
+  });
+
+  // Creates a dead letter queue
+  expect(stack).toHaveResource("AWS::SQS::Queue", {
+    KmsMasterKeyId: "alias/aws/sqs"
+  });
+
+  // Creates an IoT Topic Rule
+  expect(stack).toHaveResource("AWS::IoT::TopicRule", {
+    TopicRulePayload: {
+      Actions: [
+        {
+          Sqs: {
+            QueueUrl: { Ref: "testiotsqsqueue630B4C1F" },
+            RoleArn: {
+              "Fn::GetAtt": [
+                "testiotsqsiotactionsrole93B1D327",
+                "Arn"
+              ]
+            }
+          }
+        }
+      ],
+      Description: "Processing messages from IoT devices or factory machines",
+      RuleDisabled: false,
+      Sql: "SELECT * FROM 'test/topic/#'"
+    }
+  });
+
+  // Uses the provided key
+  expect(stack).toHaveResource("AWS::KMS::Key", {
+    EnableKeyRotation: false
+  });
+});
+
+// ---------------------------------------------------------------
+// Testing with existing KMS key on queueProps.encryptionMasterKey
+// ---------------------------------------------------------------
+test('Pattern deployment with existing KMS key', () => {
+  // Initial Setup
+  const stack = new Stack();
+
+  const kmsKey = new kms.Key(stack, 'existing-key', {
+    enableKeyRotation: false,
+    alias: 'existing-key-alias'
+  });
+
+  const props: IotToSqsProps = {
+    queueProps: {
+      encryptionMasterKey: kmsKey
+    },
     iotTopicRuleProps: {
       topicRulePayload: {
         ruleDisabled: false,

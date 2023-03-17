@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -17,6 +17,8 @@ import * as cdk from "aws-cdk-lib";
 import { FargateToStepfunctions } from "../lib";
 import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import { Template } from 'aws-cdk-lib/assertions';
 
 const clusterName = "custom-cluster-name";
 const containerName = "custom-container-name";
@@ -62,7 +64,7 @@ test('Check for an existing service', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     { clusterName },
@@ -74,8 +76,8 @@ test('Check for an existing service', () => {
 
   new FargateToStepfunctions(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     stateMachineProps: testStateMachineProps(stack)
   });
@@ -184,7 +186,7 @@ test('Check for custom ARN resource', () => {
   new FargateToStepfunctions(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: testCidr },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(testCidr) },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -238,7 +240,7 @@ test('Check for no cloudwatch creation', () => {
   const construct = new FargateToStepfunctions(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: testCidr },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(testCidr) },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -276,7 +278,7 @@ test('Check for custom log group props', () => {
   new FargateToStepfunctions(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: testCidr },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(testCidr) },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -296,7 +298,7 @@ function createFargateConstructWithNewResources(stack: cdk.Stack, publicApi: boo
   return new FargateToStepfunctions(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: testCidr },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(testCidr) },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -310,4 +312,29 @@ function testStateMachineProps(stack: cdk.Stack, userProps?: stepfunctions.State
   const defaultTestProp = { definition: new stepfunctions.Pass(stack, 'StartState') };
 
   return defaults.consolidateProps(defaultTestProp, userProps);
+}
+
+test('check LogGroup name', () => {
+  const stack = new cdk.Stack();
+  const publicApi = true;
+
+  createFargateConstructWithNewResources(stack, publicApi);
+
+  // Perform some fancy stuff to examine the specifics of the LogGroupName
+  const expectedPrefix = '/aws/vendedlogs/states/constructs/';
+  const lengthOfDatetimeSuffix = 13;
+
+  const LogGroup = Template.fromStack(stack).findResources("AWS::Logs::LogGroup");
+
+  const logName = LogGroup.testconstructStateMachineLogGroup2EB4F48B.Properties.LogGroupName;
+  const suffix = logName.slice(-lengthOfDatetimeSuffix);
+
+  // Look for the expected Prefix and the 13 digit time suffix
+  expect(logName.slice(0, expectedPrefix.length)).toEqual(expectedPrefix);
+  expect(IsWholeNumber(suffix)).not.toBe(false);
+});
+
+function IsWholeNumber(target: string): boolean {
+  const numberPattern = /[0-9]{13}/;
+  return target.match(numberPattern) !== null;
 }

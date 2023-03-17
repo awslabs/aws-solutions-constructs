@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -9,6 +9,11 @@
  *  or in the 'license' file accompanying this file. This file is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES
  *  OR CONDITIONS OF ANY KIND, express or implied. See the License for the specific language governing permissions
  *  and limitations under the License.
+ */
+
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
  */
 
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
@@ -24,6 +29,8 @@ import * as glue from 'aws-cdk-lib/aws-glue';
 import * as sagemaker from 'aws-cdk-lib/aws-sagemaker';
 import * as secretsmanager from "aws-cdk-lib/aws-secretsmanager";
 import * as kms from "aws-cdk-lib/aws-kms";
+import {ResponseHeadersPolicyProps} from "aws-cdk-lib/aws-cloudfront";
+import * as opensearch from "aws-cdk-lib/aws-opensearchservice";
 
 export interface VerifiedProps {
   readonly dynamoTableProps?: dynamodb.TableProps,
@@ -76,8 +83,15 @@ export interface VerifiedProps {
   readonly existingLoggingBucketObj?: s3.IBucket;
   readonly loggingBucketProps?: s3.BucketProps;
   readonly logS3AccessLogs?: boolean;
+
+  readonly insertHttpSecurityHeaders?: boolean;
+  readonly responseHeadersPolicyProps?: ResponseHeadersPolicyProps;
+  readonly openSearchDomainProps?: opensearch.CfnDomainProps;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function CheckProps(propsObject: VerifiedProps | any) {
   let errorMessages = '';
   let errorFound = false;
@@ -112,6 +126,16 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
+  if (propsObject.queueProps?.encryptionMasterKey && propsObject.encryptionKey) {
+    errorMessages += 'Error - Either provide queueProps.encryptionMasterKey or encryptionKey, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.queueProps?.encryptionMasterKey && propsObject.encryptionKeyProps) {
+    errorMessages += 'Error - Either provide queueProps.encryptionMasterKey or encryptionKeyProps, but not both.\n';
+    errorFound = true;
+  }
+
   if ((propsObject?.deployDeadLetterQueue === false) && propsObject.deadLetterQueueProps) {
     errorMessages += 'Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n';
     errorFound = true;
@@ -142,8 +166,18 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
-  if ((propsObject.topicProps) && propsObject.existingTopicObj) {
+  if (propsObject.topicProps && propsObject.existingTopicObj) {
     errorMessages += 'Error - Either provide topicProps or existingTopicObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.topicProps?.masterKey && propsObject.encryptionKey) {
+    errorMessages += 'Error - Either provide topicProps.masterKey or encryptionKey, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.topicProps?.masterKey && propsObject.encryptionKeyProps) {
+    errorMessages += 'Error - Either provide topicProps.masterKey or encryptionKeyProps, but not both.\n';
     errorFound = true;
   }
 
@@ -202,11 +236,23 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
+  if (propsObject.insertHttpSecurityHeaders !== false && propsObject.responseHeadersPolicyProps?.securityHeadersBehavior) {
+    errorMessages += 'responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.';
+    errorFound = true;
+  }
+
+  if (propsObject.openSearchDomainProps?.vpcOptions) {
+    throw new Error("Error - Define VPC using construct parameters not the OpenSearch Service props");
+  }
+
   if (errorFound) {
     throw new Error(errorMessages);
   }
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function CheckListValues(allowedPermissions: string[], submittedValues: string[], valueType: string) {
   submittedValues.forEach((submittedValue) => {
     if (!allowedPermissions.includes(submittedValue)) {

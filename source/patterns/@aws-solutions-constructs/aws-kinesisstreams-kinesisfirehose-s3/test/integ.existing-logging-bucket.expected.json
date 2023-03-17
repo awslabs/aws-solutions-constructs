@@ -272,6 +272,7 @@
     "testexistingloggingbucketstreamsfirehoses3stackKinesisFirehoseToS3KinesisFirehose5F6EDEF6": {
       "Type": "AWS::KinesisFirehose::DeliveryStream",
       "Properties": {
+        "DeliveryStreamName": "KinesisFirehoseexistingloggingbustackKinesisFirehoseToS316B2A519",
         "DeliveryStreamType": "KinesisStreamAsSource",
         "ExtendedS3DestinationConfiguration": {
           "BucketARN": {
@@ -351,7 +352,7 @@
         "Namespace": "AWS/Kinesis",
         "Period": 300,
         "Statistic": "Maximum",
-        "Threshold": 43200
+        "Threshold": 43200000
       }
     },
     "testexistingloggingbucketstreamsfirehoses3stackKinesisStreamReadProvisionedThroughputExceededAlarmCF515815": {

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,11 +11,17 @@
  *  and limitations under the License.
  */
 
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
 import * as deepmerge from 'deepmerge';
 import { flagOverriddenDefaults } from './override-warning-service';
 import * as log from 'npmlog';
 import * as crypto from 'crypto';
 import * as cdk from 'aws-cdk-lib';
+import { Construct } from "constructs";
 
 function isObject(val: object) {
   return val != null && typeof val === 'object'
@@ -61,6 +67,9 @@ function overwriteMerge(target: any[], source: any[]) {
   return target;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function overrideProps(DefaultProps: object, userProps: object, concatArray: boolean = false): any {
   // Notify the user via console output if defaults are overridden
   const overrideWarningsEnabled = (process.env.overrideWarningsEnabled !== 'false');
@@ -81,6 +90,9 @@ export function overrideProps(DefaultProps: object, userProps: object, concatArr
   }
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function printWarning(message: string) {
   // Style the log output
   log.prefixStyle.bold = true;
@@ -90,6 +102,8 @@ export function printWarning(message: string) {
 }
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * @summary Creates a resource name in the style of the CDK (string+hash)
  * @param {string[]} parts - the various string components of the name (eg - stackName, solutions construct ID, L2 construct ID)
  * @param {number} maxLength - the longest string that can be returned
@@ -99,11 +113,13 @@ export function printWarning(message: string) {
  */
 export function generateResourceName(
   parts: string[],
-  maxLength: number
+  maxLength: number,
+  randomize: boolean = false
 ): string {
   const hashLength = 12;
+  const randomizor: string = randomize ? (new Date()).getTime().toString() : "";
 
-  const maxPartLength = Math.floor( (maxLength -  hashLength) / parts.length);
+  const maxPartLength = Math.floor( (maxLength -  hashLength - randomizor.length) / parts.length);
 
   const sha256 = crypto.createHash("sha256");
   let finalName: string = '';
@@ -115,6 +131,7 @@ export function generateResourceName(
 
   const hash = sha256.digest("hex").slice(0, hashLength);
   finalName += hash;
+  finalName += randomizor;
   return finalName.toLowerCase();
 }
 
@@ -135,6 +152,8 @@ export interface CfnNagSuppressRule {
 }
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * Adds CFN NAG suppress rules to the CDK resource.
  * @param resource The CDK resource
  * @param rules The CFN NAG suppress rules
@@ -154,6 +173,8 @@ export function addCfnSuppressRules(resource: cdk.Resource | cdk.CfnResource, ru
 }
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * Creates the props to be used to instantiate a CDK L2 construct within a Solutions Construct
  *
  * @param defaultProps The default props to be used by the construct
@@ -176,4 +197,26 @@ export function consolidateProps(defaultProps: object, clientProps?: object, con
   }
 
   return result;
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
+ * Generates a name unique to this location in this stack with this stackname. Truncates to under 64 characters if needed.
+ * (will allow 2 copies of the stack with different stack names, but will collide if both stacks have the same name)
+ *
+ * @param scope the construct within to create the name
+ * @param resourceId an id for the construct about to be created under scope (empty string if name is for scoep)
+ * @returns a unique name
+ *
+ * Note: This appears to overlap with GenerateResourceName above (I wrote it before noticing that
+ * function). As this offloads the logic to the CDK, I'm leaving this here but someone may want to
+ * blend these routines in the future.
+ */
+export function generateName(scope: Construct, resourceId: string = ""): string {
+  const name = resourceId + cdk.Names.uniqueId(scope);
+  if (name.length > 64) {
+    return name.substring(0, 32) + name.substring(name.length - 32);
+  }
+  return name;
 }

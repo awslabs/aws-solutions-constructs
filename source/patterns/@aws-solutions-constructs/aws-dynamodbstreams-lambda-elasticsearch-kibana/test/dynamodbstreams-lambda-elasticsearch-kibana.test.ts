@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -14,19 +14,25 @@
 import { DynamoDBStreamsToLambdaToElasticSearchAndKibana, DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as cdk from "aws-cdk-lib";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as defaults from '@aws-solutions-constructs/core';
 import '@aws-cdk/assert/jest';
 
 function deployNewFunc(stack: cdk.Stack) {
   const props: DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps = {
-    lambdaFunctionProps: {
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
-      handler: 'index.handler'
-    },
+    lambdaFunctionProps: getDefaultTestLambdaProps(),
     domainName: 'test-domain'
   };
 
   return new DynamoDBStreamsToLambdaToElasticSearchAndKibana(stack, 'test-dynamodb-stream-lambda-elasticsearch-stack', props);
+}
+
+function getDefaultTestLambdaProps(): lambda.FunctionProps {
+  return {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_14_X,
+    handler: 'index.handler',
+  };
 }
 
 test('check domain names', () => {
@@ -73,4 +79,147 @@ test('check exception for Missing existingObj from props for deploy = false', ()
   } catch (e) {
     expect(e).toBeInstanceOf(Error);
   }
+});
+
+test('Test minimal deployment with VPC construct props', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  const construct = new DynamoDBStreamsToLambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
+    lambdaFunctionProps: getDefaultTestLambdaProps(),
+    domainName: "test",
+    deployVpc: true,
+    vpcProps: {
+      vpcName: "vpc-props-test"
+    }
+  });
+
+  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+    Tags: [
+      {
+        Key: "Name",
+        Value: "vpc-props-test"
+      }
+    ]
+  });
+
+  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
+    VPCOptions: {
+      SubnetIds: [
+        {
+          Ref: "testlambdaelasticsearchkibanaVpcisolatedSubnet1Subnet70A13487"
+        },
+        {
+          Ref: "testlambdaelasticsearchkibanaVpcisolatedSubnet2Subnet26B35F4A"
+        },
+        {
+          Ref: "testlambdaelasticsearchkibanaVpcisolatedSubnet3SubnetB4A5AAE6"
+        }
+      ]
+    }
+  });
+
+  expect(stack).toCountResources("AWS::EC2::VPC", 1);
+  expect(construct.vpc).toBeDefined();
+});
+
+test('Test minimal deployment with an existing private VPC', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  const vpc = new ec2.Vpc(stack, 'existing-private-vpc-test', {
+    natGateways: 1,
+    subnetConfiguration: [
+      {
+        cidrMask: 24,
+        name: 'application',
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+      },
+      {
+        cidrMask: 24,
+        name: "public",
+        subnetType: ec2.SubnetType.PUBLIC,
+      }
+    ]
+  });
+
+  const construct = new DynamoDBStreamsToLambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
+    lambdaFunctionProps: getDefaultTestLambdaProps(),
+    domainName: "test",
+    existingVpc: vpc
+  });
+
+  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+    Tags: [
+      {
+        Key: "Name",
+        Value: "Default/existing-private-vpc-test"
+      }
+    ]
+  });
+
+  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
+    VPCOptions: {
+      SubnetIds: [
+        {
+          Ref: "existingprivatevpctestapplicationSubnet1Subnet1F7744F0"
+        },
+        {
+          Ref: "existingprivatevpctestapplicationSubnet2SubnetF7B713AD"
+        },
+        {
+          Ref: "existingprivatevpctestapplicationSubnet3SubnetA519E038"
+        }
+      ]
+    }
+  });
+
+  expect(stack).toCountResources("AWS::EC2::VPC", 1);
+  expect(construct.vpc).toBeDefined();
+});
+
+test('Test minimal deployment with an existing isolated VPC', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  const vpc = defaults.getTestVpc(stack, false, {
+    vpcName: "existing-isolated-vpc-test"
+  });
+
+  const construct = new DynamoDBStreamsToLambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
+    lambdaFunctionProps: getDefaultTestLambdaProps(),
+    domainName: "test",
+    existingVpc: vpc
+  });
+
+  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+    Tags: [
+      {
+        Key: "Name",
+        Value: "existing-isolated-vpc-test"
+      }
+    ]
+  });
+
+  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
+    VPCOptions: {
+      SubnetIds: [
+        {
+          Ref: "VpcisolatedSubnet1SubnetE62B1B9B"
+        },
+        {
+          Ref: "VpcisolatedSubnet2Subnet39217055"
+        },
+        {
+          Ref: "VpcisolatedSubnet3Subnet44F2537D"
+        }
+      ]
+    }
+  });
+
+  expect(stack).toCountResources("AWS::EC2::VPC", 1);
+  expect(construct.vpc).toBeDefined();
 });

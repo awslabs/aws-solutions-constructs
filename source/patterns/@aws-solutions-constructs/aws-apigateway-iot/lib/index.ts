@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -26,6 +26,7 @@ import { Construct } from 'constructs';
 export interface ApiGatewayToIotProps {
   /**
    * The AWS IoT endpoint subdomain to integrate the API Gateway with (e.g ab123cdefghij4l-ats). Added as AWS Subdomain to the Integration Request.
+   * Note that this must reference the ATS endpoint to avoid SSL certificate trust issues.
    *
    * @default - None.
    */
@@ -143,8 +144,10 @@ export class ApiGatewayToIot extends Construct {
     }
 
     // Setup the API Gateway
-    [this.apiGateway, this.apiGatewayCloudWatchRole,
-      this.apiGatewayLogGroup] = defaults.GlobalRestApi(this, extraApiGwProps, props.logGroupProps);
+    const globalRestApiResponse = defaults.GlobalRestApi(this, extraApiGwProps, props.logGroupProps);
+    this.apiGateway = globalRestApiResponse.api;
+    this.apiGatewayCloudWatchRole = globalRestApiResponse.role;
+    this.apiGatewayLogGroup = globalRestApiResponse.logGroup;
 
     // Validate the Query Params
     const requestValidatorProps: api.RequestValidatorProps = {

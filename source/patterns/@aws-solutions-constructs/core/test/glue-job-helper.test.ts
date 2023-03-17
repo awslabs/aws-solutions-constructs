@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -27,33 +27,33 @@ test('Test deployment with role creation', () => {
   // Stack
   const stack = new Stack();
 
-  const _jobRole = new Role(stack, 'CustomETLJobRole', {
+  const jobRole = new Role(stack, 'CustomETLJobRole', {
     assumedBy: new ServicePrincipal('glue.amazonaws.com')
   });
 
-  const cfnJobProps: CfnJobProps = defaults.DefaultGlueJobProps(_jobRole, {
+  const cfnJobProps: CfnJobProps = defaults.DefaultGlueJobProps(jobRole, {
     command: {
       name: 'glueetl',
       pythonVersion: '3',
       scriptLocation: 's3://fakescriptlocation/fakebucket',
     },
-    role: _jobRole.roleArn
+    role: jobRole.roleArn
   }, 'testETLJob', {});
 
-  const _database = defaults.createGlueDatabase(stack, defaults.DefaultGlueDatabaseProps());
+  const database = defaults.createGlueDatabase(stack, defaults.DefaultGlueDatabaseProps());
 
-  const _glueJob = defaults.buildGlueJob(stack, {
+  const glueJob = defaults.buildGlueJob(stack, {
     glueJobProps: cfnJobProps,
-    database: _database,
-    table: defaults.createGlueTable(stack, _database, undefined, [{
+    database,
+    table: defaults.createGlueTable(stack, database, undefined, [{
       name: "id",
       type: "int",
       comment: ""
     }], 'kinesis', {STREAM_NAME: 'testStream'})
   });
 
-  expect(_glueJob[2]?.[0]).toBeDefined();
-  expect(_glueJob[2]?.[0]).toBeInstanceOf(Bucket);
+  expect(glueJob.bucket).toBeDefined();
+  expect(glueJob.bucket).toBeInstanceOf(Bucket);
   expect(stack).toHaveResourceLike('AWS::Glue::Job', {
     Type: "AWS::Glue::Job",
     Properties: {
@@ -82,7 +82,7 @@ test('Test deployment with role creation', () => {
 test('Create a Glue Job outside the construct', () => {
   // Stack
   const stack = new Stack();
-  const _existingCfnJob = new CfnJob(stack, 'ExistingJob', {
+  const existingCfnJob = new CfnJob(stack, 'ExistingJob', {
     command: {
       name: 'pythonshell',
       pythonVersion: '2',
@@ -99,22 +99,23 @@ test('Create a Glue Job outside the construct', () => {
     workerType: 'Standard'
   });
 
-  const _database = defaults.createGlueDatabase(stack, defaults.DefaultGlueDatabaseProps());
+  const database = defaults.createGlueDatabase(stack, defaults.DefaultGlueDatabaseProps());
 
-  const _glueJob = defaults.buildGlueJob(stack, {
-    existingCfnJob: _existingCfnJob,
+  const glueJob = defaults.buildGlueJob(stack, {
+    existingCfnJob,
     outputDataStore: {
       datastoreType: defaults.SinkStoreType.S3
     },
-    database: _database,
-    table: defaults.createGlueTable(stack, _database, undefined, [{
+    database,
+    table: defaults.createGlueTable(stack, database, undefined, [{
       name: "id",
       type: "int",
       comment: ""
     }], 'kinesis', {STREAM_NAME: 'testStream'})
   });
 
-  expect(_glueJob[2]).not.toBeDefined();
+  expect(glueJob.bucket).not.toBeDefined();
+  expect(glueJob.loggingBucket).not.toBeDefined();
   expect(stack).toHaveResourceLike('AWS::Glue::Job', {
     Type: "AWS::Glue::Job",
     Properties: {
@@ -144,11 +145,11 @@ test('Create a Glue Job outside the construct', () => {
 test('Test custom deployment properties', () => {
   // Stack
   const stack = new Stack();
-  const _commandName = 'glueetl';
+  const commandName = 'glueetl';
 
   const cfnJobProps: CfnJobProps = {
     command: {
-      name: _commandName,
+      name: commandName,
       pythonVersion: '3',
       scriptLocation: 's3://existingfakelocation/existingScript'
     },
@@ -161,15 +162,15 @@ test('Test custom deployment properties', () => {
     workerType: 'Standard'
   };
 
-  const _database = defaults.createGlueDatabase(stack);
+  const database = defaults.createGlueDatabase(stack);
 
   defaults.buildGlueJob(stack, {
     glueJobProps: cfnJobProps,
     outputDataStore: {
       datastoreType: defaults.SinkStoreType.S3
     },
-    database: _database,
-    table: defaults.createGlueTable(stack, _database, undefined, [{
+    database,
+    table: defaults.createGlueTable(stack, database, undefined, [{
       name: "id",
       type: "int",
       comment: ""
@@ -257,13 +258,13 @@ test('Test custom deployment properties', () => {
 test('Do no supply glueJobProps or existingCfnJob and error out', () => {
   const stack = new Stack();
   try {
-    const _database = defaults.createGlueDatabase(stack);
+    const database = defaults.createGlueDatabase(stack);
     defaults.buildGlueJob(stack, {
       outputDataStore: {
         datastoreType: defaults.SinkStoreType.S3
       },
-      database: _database,
-      table: defaults.createGlueTable(stack, _database, defaults.DefaultGlueTableProps(_database, [{
+      database,
+      table: defaults.createGlueTable(stack, database, defaults.DefaultGlueTableProps(database, [{
         name: "id",
         type: "int",
         comment: ""
@@ -280,25 +281,25 @@ test('Do no supply glueJobProps or existingCfnJob and error out', () => {
 test('Test deployment with role creation', () => {
   // Stack
   const stack = new Stack();
-  const _jobID = 'glueetl';
+  const jobID = 'glueetl';
 
   const cfnJobProps = {
     command: {
-      name: _jobID,
+      name: jobID,
       pythonVersion: '3',
       scriptLocation: 's3://fakelocation/script'
     }
   };
 
-  const _database = defaults.createGlueDatabase(stack);
+  const database = defaults.createGlueDatabase(stack);
 
   defaults.buildGlueJob(stack, {
     glueJobProps: cfnJobProps,
     outputDataStore: {
       datastoreType: defaults.SinkStoreType.S3
     },
-    database: _database,
-    table: defaults.createGlueTable(stack, _database, undefined, [{
+    database,
+    table: defaults.createGlueTable(stack, database, undefined, [{
       name: "id",
       type: "int",
       comment: ""
@@ -328,17 +329,17 @@ test('Test deployment with role creation', () => {
 test('Test deployment with role creation', () => {
   // Stack
   const stack = new Stack();
-  const _jobID = 'glueetl';
+  const jobID = 'glueetl';
 
   const cfnJobProps = {
     command: {
-      name: _jobID,
+      name: jobID,
       pythonVersion: '3',
       scriptLocation: 's3://fakelocation/script'
     }
   };
 
-  const _database = defaults.createGlueDatabase(stack);
+  const database = defaults.createGlueDatabase(stack);
 
   defaults.buildGlueJob(stack, {
     glueJobProps: cfnJobProps,
@@ -351,8 +352,8 @@ test('Test deployment with role creation', () => {
         removalPolicy: RemovalPolicy.DESTROY
       })
     },
-    database: _database,
-    table: defaults.createGlueTable(stack, _database, undefined, [{
+    database,
+    table: defaults.createGlueTable(stack, database, undefined, [{
       name: "id",
       type: "int",
       comment: ""
@@ -381,16 +382,16 @@ test('Test deployment with role creation', () => {
 test('Test deployment with role creation', () => {
   // Stack
   const stack = new Stack();
-  const _jobID = 'glueetl';
+  const jobID = 'glueetl';
 
   const cfnJobProps = {
     command: {
-      name: _jobID,
+      name: jobID,
       pythonVersion: '3'
     }
   };
 
-  const _database = defaults.createGlueDatabase(stack);
+  const database = defaults.createGlueDatabase(stack);
   try {
     defaults.buildGlueJob(stack, {
       glueJobProps: cfnJobProps,
@@ -400,8 +401,8 @@ test('Test deployment with role creation', () => {
           versioned: false
         })
       },
-      database: _database,
-      table: defaults.createGlueTable(stack, _database, undefined, [{
+      database,
+      table: defaults.createGlueTable(stack, database, undefined, [{
         name: "id",
         type: "int",
         comment: ""
@@ -421,11 +422,11 @@ test('Test deployment with role creation', () => {
 test('Test for incorrect Job Command property', () => {
   const stack = new Stack();
   try {
-    const _database = defaults.createGlueDatabase(stack);
+    const database = defaults.createGlueDatabase(stack);
     defaults.buildGlueJob(stack, {
       glueJobProps: {},
-      database: _database,
-      table: defaults.createGlueTable(stack, _database, undefined, [{
+      database,
+      table: defaults.createGlueTable(stack, database, undefined, [{
         name: "id",
         type: "int",
         comment: ""
@@ -442,15 +443,15 @@ test('Test for incorrect Job Command property', () => {
 test('check for JobCommandProperty type', () => {
   const stack = new Stack();
   try {
-    const _database = defaults.createGlueDatabase(stack);
+    const database = defaults.createGlueDatabase(stack);
     defaults.buildGlueJob(stack, {
       glueJobProps: {
         command: {
           fakekey: 'fakevalue'
         }
       },
-      database: _database,
-      table: defaults.createGlueTable(stack, _database, undefined, [{
+      database,
+      table: defaults.createGlueTable(stack, database, undefined, [{
         name: "id",
         type: "int",
         comment: ""
@@ -467,13 +468,13 @@ test('check for JobCommandProperty type', () => {
 test('GlueJob configuration with glueVersion 2.0 should not support maxCapacity and error out', () => {
   const stack = new Stack();
   try {
-    const _database = defaults.createGlueDatabase(stack);
+    const database = defaults.createGlueDatabase(stack);
     defaults.buildGlueJob(stack, {
       outputDataStore: {
         datastoreType: defaults.SinkStoreType.S3
       },
-      database: _database,
-      table: defaults.createGlueTable(stack, _database, defaults.DefaultGlueTableProps(_database, [{
+      database,
+      table: defaults.createGlueTable(stack, database, defaults.DefaultGlueTableProps(database, [{
         name: "id",
         type: "int",
         comment: ""
@@ -494,13 +495,13 @@ test('GlueJob configuration with glueVersion 2.0 should not support maxCapacity 
 test('Cannot use maxCapacity and WorkerType, so error out', () => {
   const stack = new Stack();
   try {
-    const _database = defaults.createGlueDatabase(stack);
+    const database = defaults.createGlueDatabase(stack);
     defaults.buildGlueJob(stack, {
       outputDataStore: {
         datastoreType: defaults.SinkStoreType.S3
       },
-      database: _database,
-      table: defaults.createGlueTable(stack, _database, defaults.DefaultGlueTableProps(_database, [{
+      database,
+      table: defaults.createGlueTable(stack, database, defaults.DefaultGlueTableProps(database, [{
         name: "id",
         type: "int",
         comment: ""
@@ -523,13 +524,13 @@ test('Cannot use maxCapacity and WorkerType, so error out', () => {
 test('Cannot use maxCapacity and WorkerType, so error out', () => {
   const stack = new Stack();
   try {
-    const _database = defaults.createGlueDatabase(stack);
+    const database = defaults.createGlueDatabase(stack);
     defaults.buildGlueJob(stack, {
       outputDataStore: {
         datastoreType: defaults.SinkStoreType.S3
       },
-      database: _database,
-      table: defaults.createGlueTable(stack, _database, defaults.DefaultGlueTableProps(_database, [{
+      database,
+      table: defaults.createGlueTable(stack, database, defaults.DefaultGlueTableProps(database, [{
         name: "id",
         type: "int",
         comment: ""
@@ -552,13 +553,13 @@ test('Cannot use maxCapacity and WorkerType, so error out', () => {
 test('Cannot use maxCapacity and WorkerType, so error out', () => {
   const stack = new Stack();
   try {
-    const _database = defaults.createGlueDatabase(stack);
+    const database = defaults.createGlueDatabase(stack);
     defaults.buildGlueJob(stack, {
       outputDataStore: {
         datastoreType: defaults.SinkStoreType.S3
       },
-      database: _database,
-      table: defaults.createGlueTable(stack, _database, defaults.DefaultGlueTableProps(_database, [{
+      database,
+      table: defaults.createGlueTable(stack, database, defaults.DefaultGlueTableProps(database, [{
         name: "id",
         type: "int",
         comment: ""

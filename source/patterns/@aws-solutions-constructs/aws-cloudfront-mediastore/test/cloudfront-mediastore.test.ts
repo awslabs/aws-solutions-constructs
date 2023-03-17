@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -13,11 +13,12 @@
 
 // Imports
 import '@aws-cdk/assert/jest';
-import { Stack, RemovalPolicy } from 'aws-cdk-lib';
+import {Stack, RemovalPolicy, Duration} from 'aws-cdk-lib';
 import * as mediastore from 'aws-cdk-lib/aws-mediastore';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { CloudFrontToMediaStore } from '../lib';
+import * as cdk from "aws-cdk-lib";
 
 // --------------------------------------------------------------
 // Test the default deployment pattern variables
@@ -124,6 +125,67 @@ test('Test the deployment without HTTP security headers', () => {
     }
   });
   expect(cloudFrontToMediaStore.cloudFrontFunction).toEqual(undefined);
+});
+
+test('Test the deployment with securityHeadersBehavior instead of HTTP security headers', () => {
+  // Initial setup
+  const stack = new Stack();
+  const cloudFrontToMediaStore = new CloudFrontToMediaStore(stack, 'test-cloudfront-mediastore', {
+    insertHttpSecurityHeaders: false,
+    responseHeadersPolicyProps: {
+      securityHeadersBehavior: {
+        strictTransportSecurity: {
+          accessControlMaxAge: Duration.seconds(63072),
+          includeSubdomains: true,
+          override: true,
+          preload: true
+        },
+        contentSecurityPolicy: {
+          contentSecurityPolicy: "upgrade-insecure-requests; default-src 'none';",
+          override: true
+        },
+      }
+    }
+  });
+
+  // Assertion
+  expect(stack).toHaveResourceLike("AWS::CloudFront::ResponseHeadersPolicy", {
+    ResponseHeadersPolicyConfig: {
+      SecurityHeadersConfig: {
+        ContentSecurityPolicy: {
+          ContentSecurityPolicy: "upgrade-insecure-requests; default-src 'none';",
+          Override: true
+        },
+        StrictTransportSecurity: {
+          AccessControlMaxAgeSec: 63072,
+          IncludeSubdomains: true,
+          Override: true,
+          Preload: true
+        }
+      }
+    }
+  });
+  expect(cloudFrontToMediaStore.cloudFrontFunction).toEqual(undefined);
+});
+
+test("throw exception if insertHttpSecurityHeaders and responseHeadersPolicyProps are provided", () => {
+  const stack = new cdk.Stack();
+
+  expect(() => {
+    new CloudFrontToMediaStore(stack, "test-cloudfront-mediastore", {
+      insertHttpSecurityHeaders: true,
+      responseHeadersPolicyProps: {
+        securityHeadersBehavior: {
+          strictTransportSecurity: {
+            accessControlMaxAge: Duration.seconds(63072),
+            includeSubdomains: true,
+            override: false,
+            preload: true
+          }
+        }
+      }
+    });
+  }).toThrowError();
 });
 
 // --------------------------------------------------------------

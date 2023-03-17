@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -15,11 +15,10 @@ import { Stack } from 'aws-cdk-lib';
 import * as elasticsearch from 'aws-cdk-lib/aws-elasticsearch';
 import * as defaults from '../index';
 import '@aws-cdk/assert/jest';
-import * as iam from 'aws-cdk-lib/aws-iam';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 function deployES(stack: Stack, domainName: string, clientDomainProps?: elasticsearch.CfnDomainProps,
-  lambdaRoleARN?: string, vpc?: ec2.IVpc): [elasticsearch.CfnDomain, iam.Role] {
+  lambdaRoleARN?: string, vpc?: ec2.IVpc): defaults.BuildElasticSearchResponse {
   const userpool = defaults.buildUserPool(stack);
   const userpoolclient = defaults.buildUserPoolClient(stack, userpool, {
     userPoolClientName: 'test',
@@ -27,7 +26,7 @@ function deployES(stack: Stack, domainName: string, clientDomainProps?: elastics
   });
   const identitypool = defaults.buildIdentityPool(stack, userpool, userpoolclient);
 
-  const cognitoAuthorizedRole = defaults.setupCognitoForElasticSearch(stack, 'test-domain', {
+  const cognitoAuthorizedRole = defaults.setupCognitoForSearchService(stack, 'test-domain', {
     userpool,
     userpoolclient,
     identitypool
@@ -60,11 +59,14 @@ test('Test override SnapshotOptions for buildElasticSearch', () => {
     env: { account: "123456789012", region: 'us-east-1' },
   });
 
-  deployES(stack, 'test-domain', {
+  const buildElasticSearchResponse = deployES(stack, 'test-domain', {
     snapshotOptions: {
       automatedSnapshotStartHour: 5
     }
   });
+
+  expect(buildElasticSearchResponse.domain).toBeDefined();
+  expect(buildElasticSearchResponse.role).toBeDefined();
 
   expect(stack).toHaveResource('AWS::Elasticsearch::Domain', {
     AccessPolicies: {
@@ -149,7 +151,7 @@ test('Test VPC with 1 AZ, Zone Awareness Disabled', () => {
 
   const vpc = defaults.getTestVpc(stack, false);
 
-  deployES(stack, 'test-domain', {
+  const buildElasticSearchResponse = deployES(stack, 'test-domain', {
     elasticsearchClusterConfig: {
       dedicatedMasterEnabled: true,
       dedicatedMasterCount: 3,
@@ -157,6 +159,9 @@ test('Test VPC with 1 AZ, Zone Awareness Disabled', () => {
       zoneAwarenessEnabled: false
     }
   }, undefined, vpc);
+
+  expect(buildElasticSearchResponse.domain).toBeDefined();
+  expect(buildElasticSearchResponse.role).toBeDefined();
 
   expect(stack).toHaveResourceLike('AWS::Elasticsearch::Domain', {
     DomainName: "test-domain",
@@ -176,7 +181,10 @@ test('Test VPC with 2 AZ, Zone Awareness Enabled', () => {
 
   const vpc: ec2.IVpc = defaults.getTestVpc(stack, false);
 
-  deployES(stack, 'test-domain', {}, undefined, vpc);
+  const buildElasticSearchResponse = deployES(stack, 'test-domain', {}, undefined, vpc);
+
+  expect(buildElasticSearchResponse.domain).toBeDefined();
+  expect(buildElasticSearchResponse.role).toBeDefined();
 
   expect(stack).toHaveResourceLike('AWS::Elasticsearch::Domain', {
     DomainName: "test-domain",
@@ -198,7 +206,10 @@ test('Test VPC with 3 AZ, Zone Awareness Enabled', () => {
 
   const vpc: ec2.IVpc = defaults.getTestVpc(stack);
 
-  deployES(stack, 'test-domain', {}, undefined, vpc);
+  const buildElasticSearchResponse = deployES(stack, 'test-domain', {}, undefined, vpc);
+
+  expect(buildElasticSearchResponse.domain).toBeDefined();
+  expect(buildElasticSearchResponse.role).toBeDefined();
 
   expect(stack).toHaveResourceLike('AWS::Elasticsearch::Domain', {
     DomainName: "test-domain",
@@ -222,7 +233,7 @@ test('Test deployment with an existing private VPC', () => {
       {
         cidrMask: 24,
         name: 'application',
-        subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
       },
       {
         cidrMask: 24,
@@ -232,7 +243,10 @@ test('Test deployment with an existing private VPC', () => {
     ]
   });
 
-  deployES(stack, 'test-domain', {}, undefined, vpc);
+  const buildElasticSearchResponse = deployES(stack, 'test-domain', {}, undefined, vpc);
+
+  expect(buildElasticSearchResponse.domain).toBeDefined();
+  expect(buildElasticSearchResponse.role).toBeDefined();
 
   expect(stack).toHaveResourceLike('AWS::Elasticsearch::Domain', {
     DomainName: "test-domain",
@@ -266,7 +280,7 @@ test('Test error thrown with no private subnet configurations', () => {
     deployES(stack, 'test-domain', {}, undefined, vpc);
   };
 
-  expect(app).toThrowError('Error - ElasticSearch Domains can only be deployed in Isolated or Private subnets');
+  expect(app).toThrowError('Error - No isolated or private subnets available in VPC');
 });
 
 test('Test override ES version for buildElasticSearch', () => {
@@ -274,9 +288,12 @@ test('Test override ES version for buildElasticSearch', () => {
     env: { account: "123456789012", region: 'us-east-1' },
   });
 
-  deployES(stack, 'test-domain', {
+  const response = deployES(stack, 'test-domain', {
     elasticsearchVersion: '7.0'
   });
+
+  expect(response.domain).toBeDefined();
+  expect(response.role).toBeDefined();
 
   expect(stack).toHaveResource('AWS::Elasticsearch::Domain', {
     AccessPolicies: {
@@ -360,7 +377,10 @@ test('Test ES with lambdaRoleARN', () => {
     env: { account: "123456789012", region: 'us-east-1' },
   });
 
-  deployES(stack, 'test-domain', {}, 'arn:aws:us-east-1:mylambdaRoleARN');
+  const buildElasticSearchResponse = deployES(stack, 'test-domain', {}, 'arn:aws:us-east-1:mylambdaRoleARN');
+
+  expect(buildElasticSearchResponse.domain).toBeDefined();
+  expect(buildElasticSearchResponse.role).toBeDefined();
 
   expect(stack).toHaveResource('AWS::Elasticsearch::Domain', {
     AccessPolicies: {
@@ -444,7 +464,10 @@ test('Test ES with lambdaRoleARN', () => {
 
 test('Count ES CW Alarms', () => {
   const stack = new Stack();
-  deployES(stack, 'test-domain');
+  const buildElasticSearchResponse = deployES(stack, 'test-domain');
+  expect(buildElasticSearchResponse.domain).toBeDefined();
+  expect(buildElasticSearchResponse.role).toBeDefined();
+
   const cwList = defaults.buildElasticSearchCWAlarms(stack);
 
   expect(cwList.length).toEqual(9);

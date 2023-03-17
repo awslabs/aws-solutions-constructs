@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -21,13 +21,10 @@ import { BucketEncryption } from "aws-cdk-lib/aws-s3";
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-let existingBucketObj;
-
-[existingBucketObj] = defaults.buildS3Bucket(stack, {
+const buildS3BucketResponse = defaults.buildS3Bucket(stack, {
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
     encryption: BucketEncryption.KMS_MANAGED,
-    serverAccessLogsPrefix: 'logs'
   },
   logS3AccessLogs: false
 });
@@ -40,9 +37,14 @@ const props: IotToS3Props = {
       actions: []
     }
   },
-  existingBucketInterface: existingBucketObj,
+  existingBucketInterface: buildS3BucketResponse.bucket,
   s3Key: 'test/${timestamp()}'
 };
+
+defaults.addCfnSuppressRules(buildS3BucketResponse.bucket, [
+  { id: 'W35',
+    reason: 'This S3 bucket is created for unit/ integration testing purposes only.' },
+]);
 
 new IotToS3(stack, 'test-iot-s3-integration', props);
 

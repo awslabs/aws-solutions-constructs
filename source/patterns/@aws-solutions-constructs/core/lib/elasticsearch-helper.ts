@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,8 +11,14 @@
  *  and limitations under the License.
  */
 
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
 import * as elasticsearch from 'aws-cdk-lib/aws-elasticsearch';
 import { DefaultCfnDomainProps } from './elasticsearch-defaults';
+import { retrievePrivateSubnetIds } from './vpc-helper';
 import { consolidateProps, addCfnSuppressRules } from './utils';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as cdk from 'aws-cdk-lib';
@@ -35,7 +41,15 @@ export interface BuildElasticSearchProps {
   readonly securityGroupIds?: string[]
 }
 
-export function buildElasticSearch(scope: Construct, props: BuildElasticSearchProps): [elasticsearch.CfnDomain, iam.Role] {
+export interface BuildElasticSearchResponse {
+  readonly domain: elasticsearch.CfnDomain,
+  readonly role: iam.Role
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function buildElasticSearch(scope: Construct, props: BuildElasticSearchProps): BuildElasticSearchResponse {
 
   let subnetIds: string[] = [];
   const constructDrivenProps: any = {};
@@ -82,9 +96,12 @@ export function buildElasticSearch(scope: Construct, props: BuildElasticSearchPr
     },
   ]);
 
-  return [esDomain, cognitoKibanaConfigureRole];
+  return { domain: esDomain, role: cognitoKibanaConfigureRole };
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildElasticSearchCWAlarms(scope: Construct): cloudwatch.Alarm[] {
   // Setup CW Alarms for ES
   const alarms: cloudwatch.Alarm[] = new Array();
@@ -216,25 +233,6 @@ export function buildElasticSearchCWAlarms(scope: Construct): cloudwatch.Alarm[]
   }));
 
   return alarms;
-}
-
-function retrievePrivateSubnetIds(vpc: ec2.IVpc) {
-  let targetSubnetType;
-
-  if (vpc.isolatedSubnets.length) {
-    targetSubnetType = ec2.SubnetType.PRIVATE_ISOLATED;
-  } else if (vpc.privateSubnets.length) {
-    targetSubnetType = ec2.SubnetType.PRIVATE_WITH_NAT;
-  } else {
-    throw new Error('Error - ElasticSearch Domains can only be deployed in Isolated or Private subnets');
-  }
-
-  const subnetSelector = {
-    onePerAz: true,
-    subnetType: targetSubnetType
-  };
-
-  return vpc.selectSubnets(subnetSelector).subnetIds;
 }
 
 function createClusterConfiguration(numberOfAzs?: number): elasticsearch.CfnDomain.ElasticsearchClusterConfigProperty {

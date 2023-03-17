@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -9,6 +9,11 @@
  *  or in the 'license' file accompanying this file. This file is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES
  *  OR CONDITIONS OF ANY KIND, express or implied. See the License for the specific language governing permissions
  *  and limitations under the License.
+ */
+
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
  */
 
 import * as sagemaker from 'aws-cdk-lib/aws-sagemaker';
@@ -58,9 +63,9 @@ export interface BuildSagemakerNotebookProps {
   readonly role: iam.Role;
 }
 
-function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
+function addPermissions(role: iam.Role, props?: BuildSagemakerEndpointProps) {
   // Grant permissions to NoteBookInstance for creating and training the model
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
       resources: [`arn:${Aws.PARTITION}:sagemaker:${Aws.REGION}:${Aws.ACCOUNT_ID}:*`],
       actions: [
@@ -81,7 +86,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   );
 
   // Grant CloudWatch Logging permissions
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
       resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:log-group:/aws/sagemaker/*`],
       actions: [
@@ -96,7 +101,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
 
   // To place the Sagemaker endpoint in a VPC
   if (props && props.vpc) {
-    _role.addToPolicy(
+    role.addToPolicy(
       new iam.PolicyStatement({
         resources: ['*'],
         actions: [
@@ -118,7 +123,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
 
   // To create a Sagemaker model using Bring-Your-Own-Model (BYOM) algorith image
   // The image URL is specified in the modelProps
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
       resources: [`arn:${cdk.Aws.PARTITION}:ecr:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:repository/*`],
       actions: [
@@ -132,7 +137,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   );
 
   // Add GetAuthorizationToken (it can not be bound to resources other than *)
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
       resources: ['*'],
       actions: ['ecr:GetAuthorizationToken'],
@@ -145,7 +150,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
     const acceleratorType = (props.endpointConfigProps
       ?.productionVariants as sagemaker.CfnEndpointConfig.ProductionVariantProperty[])[0].acceleratorType;
     if (acceleratorType !== undefined) {
-      _role.addToPolicy(
+      role.addToPolicy(
         new iam.PolicyStatement({
           resources: ['*'],
           actions: ['elastic-inference:Connect'],
@@ -155,7 +160,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   }
 
   // add kms permissions
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
       // the kmsKeyId in the endpointConfigProps can be any of the following formats:
       // Key ID: 1234abcd-12ab-34cd-56ef-1234567890ab
@@ -172,7 +177,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   );
 
   // Add S3 permissions to get Model artifact, put data capture files, etc.
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
       actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject', 's3:ListBucket'],
       resources: ['arn:aws:s3:::*'],
@@ -180,17 +185,17 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   );
 
   // Grant GetRole permissions to the Sagemaker service
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
-      resources: [_role.roleArn],
+      resources: [role.roleArn],
       actions: ['iam:GetRole'],
     })
   );
 
   // Grant PassRole permissions to the Sagemaker service
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
-      resources: [_role.roleArn],
+      resources: [role.roleArn],
       actions: ['iam:PassRole'],
       conditions: {
         StringLike: { 'iam:PassedToService': 'sagemaker.amazonaws.com' },
@@ -201,7 +206,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   // Add CFN NAG uppress to allow for "Resource": "*" for ENI access in VPC,
   // ECR authorization token for custom model images, and elastic inference
   // Add CFN NAG for Complex Role because Sagmaker needs permissions to access several services
-  const roleDefaultPolicy = _role.node.tryFindChild('DefaultPolicy')?.node.findChild('Resource') as iam.CfnPolicy;
+  const roleDefaultPolicy = role.node.tryFindChild('DefaultPolicy')?.node.findChild('Resource') as iam.CfnPolicy;
   addCfnSuppressRules(roleDefaultPolicy, [
     {
       id: 'W12',
@@ -214,10 +219,19 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   ]);
 }
 
+export interface BuildSagemakerNotebookResponse {
+  readonly notebook: sagemaker.CfnNotebookInstance,
+  readonly vpc?: ec2.IVpc,
+  readonly securityGroup?: ec2.SecurityGroup
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildSagemakerNotebook(
   scope: Construct,
   props: BuildSagemakerNotebookProps
-): [sagemaker.CfnNotebookInstance, ec2.IVpc?, ec2.SecurityGroup?] {
+): BuildSagemakerNotebookResponse {
   // Setup the notebook properties
   let sagemakerNotebookProps;
   let vpcInstance;
@@ -287,13 +301,13 @@ export function buildSagemakerNotebook(
       sagemakerNotebookProps
     );
     if (vpcInstance) {
-      return [sagemakerInstance, vpcInstance, securityGroup];
+      return { notebook: sagemakerInstance, vpc: vpcInstance, securityGroup };
     } else {
-      return [sagemakerInstance];
+      return { notebook: sagemakerInstance };
     }
   } else {
     // Return existing notebook object
-    return [props.existingNotebookObj];
+    return { notebook: props.existingNotebookObj };
   }
 }
 
@@ -330,28 +344,46 @@ export interface BuildSagemakerEndpointProps {
   readonly vpc?: ec2.IVpc;
 }
 
+export interface BuildSagemakerEndpointResponse {
+  readonly endpoint: sagemaker.CfnEndpoint,
+  readonly endpointConfig?: sagemaker.CfnEndpointConfig,
+  readonly model?: sagemaker.CfnModel
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function BuildSagemakerEndpoint(
   scope: Construct,
   props: BuildSagemakerEndpointProps
-): [sagemaker.CfnEndpoint, sagemaker.CfnEndpointConfig?, sagemaker.CfnModel?] {
+): BuildSagemakerEndpointResponse {
   /** Conditional Sagemaker endpoint creation */
   if (!props.existingSagemakerEndpointObj) {
     if (props.modelProps) {
-      /** return [endpoint, endpointConfig, model] */
-      return deploySagemakerEndpoint(scope, props);
+      const deploySagemakerEndpointResponse = deploySagemakerEndpoint(scope, props);
+      return { ...deploySagemakerEndpointResponse };
     } else {
       throw Error('Either existingSagemakerEndpointObj or at least modelProps is required');
     }
   } else {
     /** Otherwise, return [endpoint] */
-    return [props.existingSagemakerEndpointObj];
+    return { endpoint: props.existingSagemakerEndpointObj };
   }
 }
 
+export interface DeploySagemakerEndpointResponse {
+  readonly endpoint: sagemaker.CfnEndpoint,
+  readonly endpointConfig?: sagemaker.CfnEndpointConfig,
+  readonly model?: sagemaker.CfnModel
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function deploySagemakerEndpoint(
   scope: Construct,
   props: BuildSagemakerEndpointProps
-): [sagemaker.CfnEndpoint, sagemaker.CfnEndpointConfig?, sagemaker.CfnModel?] {
+): DeploySagemakerEndpointResponse {
   let model: sagemaker.CfnModel;
   let endpointConfig: sagemaker.CfnEndpointConfig;
   let endpoint: sagemaker.CfnEndpoint;
@@ -380,18 +412,21 @@ export function deploySagemakerEndpoint(
     // Create Sagemaker EndpointConfig
     endpointConfig = createSagemakerEndpointConfig(scope, model.attrModelName, props.endpointConfigProps);
     // Add dependency on model
-    endpointConfig.addDependsOn(model);
+    endpointConfig.addDependency(model);
     // Create Sagemaker Endpoint
     endpoint = createSagemakerEndpoint(scope, endpointConfig.attrEndpointConfigName, props.endpointProps);
     // Add dependency on EndpointConfig
-    endpoint.addDependsOn(endpointConfig);
+    endpoint.addDependency(endpointConfig);
 
-    return [endpoint, endpointConfig, model];
+    return { endpoint, endpointConfig, model };
   } else {
     throw Error('You need to provide at least modelProps to create Sagemaker Endpoint');
   }
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function createSagemakerModel(
   scope: Construct,
   modelProps: sagemaker.CfnModelProps,
@@ -456,6 +491,9 @@ export function createSagemakerModel(
   }
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function createSagemakerEndpointConfig(
   scope: Construct,
   modelName: string,
@@ -481,6 +519,9 @@ export function createSagemakerEndpointConfig(
   return endpointConfig;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function createSagemakerEndpoint(
   scope: Construct,
   endpointConfigName: string,

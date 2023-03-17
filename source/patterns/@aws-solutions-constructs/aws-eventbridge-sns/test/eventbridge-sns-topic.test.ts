@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -13,6 +13,7 @@
 
 import * as cdk from "aws-cdk-lib";
 import * as events from "aws-cdk-lib/aws-events";
+import * as sns from "aws-cdk-lib/aws-sns";
 import * as defaults from '@aws-solutions-constructs/core';
 import '@aws-cdk/assert/jest';
 import { EventbridgeToSns, EventbridgeToSnsProps } from "../lib";
@@ -40,7 +41,10 @@ function deployStackWithNewEventBus(stack: cdk.Stack) {
 
 test('check if the event rule has permission/policy in place in sns for it to be able to publish to the topic', () => {
   const stack = new cdk.Stack();
-  deployNewStack(stack);
+  const testConstruct = deployNewStack(stack);
+
+  expect(testConstruct.snsTopic).toBeDefined();
+  expect(testConstruct.encryptionKey).toBeDefined();
   expect(stack).toHaveResource('AWS::SNS::TopicPolicy', {
     PolicyDocument: {
       Statement: [
@@ -262,4 +266,119 @@ test('check custom event bus resource with props when deploy:true', () => {
   expect(stack).toHaveResource('AWS::Events::EventBus', {
     Name: 'testcustomeventbus'
   });
+});
+
+test('Topic is encrypted when key is provided on topicProps.masterKey prop', () => {
+  const stack = new cdk.Stack();
+  const key = defaults.buildEncryptionKey(stack, {
+    description: 'my-key'
+  });
+
+  const props: EventbridgeToSnsProps = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    topicProps: {
+      masterKey: key
+    }
+  };
+
+  new EventbridgeToSns(stack, 'test-events-rule-sqs', props);
+
+  expect(stack).toHaveResource('AWS::SNS::Topic', {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "EncryptionKey1B843E66",
+        "Arn"
+      ]
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::KMS::Key', {
+    Description: "my-key",
+    EnableKeyRotation: true
+  });
+});
+
+test('Topic is encrypted when keyProps are provided', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToSnsProps = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    encryptionKeyProps: {
+      description: 'my-key'
+    }
+  };
+
+  new EventbridgeToSns(stack, 'test-events-rule-sqs', props);
+
+  expect(stack).toHaveResource('AWS::SNS::Topic', {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "testeventsrulesqsEncryptionKey19AB0C02",
+        "Arn"
+      ]
+    }
+  });
+
+  expect(stack).toHaveResource('AWS::KMS::Key', {
+    Description: "my-key",
+    EnableKeyRotation: true
+  });
+});
+
+test('Topic is encrypted with AWS-managed KMS key when enableEncryptionWithCustomerManagedKey property is false', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToSnsProps = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    enableEncryptionWithCustomerManagedKey: false
+  };
+
+  new EventbridgeToSns(stack, 'test-events-rule-sqs', props);
+
+  expect(stack).toHaveResource('AWS::SNS::Topic', {
+    KmsMasterKeyId: {
+      "Fn::Join": [
+        "",
+        [
+          "arn:",
+          {
+            Ref: "AWS::Partition"
+          },
+          ":kms:",
+          {
+            Ref: "AWS::Region"
+          },
+          ":",
+          {
+            Ref: "AWS::AccountId"
+          },
+          ":alias/aws/sns"
+        ]
+      ]
+    }
+  });
+});
+
+test('Properties correctly set when unencrypted existing topic is provided', () => {
+  const stack = new cdk.Stack();
+  const existingTopicObj = new sns.Topic(stack, 'Topic', {
+    topicName: 'existing-topic-name'
+  });
+
+  const props: EventbridgeToSnsProps = {
+    existingTopicObj,
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    }
+  };
+  const testConstruct = new EventbridgeToSns(stack, 'test', props);
+
+  expect(testConstruct.snsTopic).toBeDefined();
+  expect(testConstruct.encryptionKey).not.toBeDefined();
 });

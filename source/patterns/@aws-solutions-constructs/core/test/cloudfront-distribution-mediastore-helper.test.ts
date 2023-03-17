@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -242,7 +242,7 @@ test('CloudFront distribution for MediaStore with user provided custom headers w
   const cloudfrontOriginAccessIdentity = CloudFrontOriginAccessIdentity(stack);
   const cfProps = {
     customHeaders: {
-      'User-Agent': cloudfrontOriginAccessIdentity.originAccessIdentityName
+      'User-Agent': cloudfrontOriginAccessIdentity.originAccessIdentityId
     }
   };
 

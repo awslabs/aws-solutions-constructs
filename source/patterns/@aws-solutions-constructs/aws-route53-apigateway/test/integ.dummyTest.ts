@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -29,8 +29,8 @@ stack.templateOptions.description = 'Dummy Integration Test for aws-route53-apig
 // and will need to be regenerated.
 
 // Create dummy integ with at least one resource to pass CFN scan
-const [restApi] = defaults.RegionalRestApi(stack);
-restApi.root.addMethod('GET');
+const regionalRestApiResponse = defaults.RegionalRestApi(stack);
+regionalRestApiResponse.api.root.addMethod('GET');
 
 // Synth
 app.synth();

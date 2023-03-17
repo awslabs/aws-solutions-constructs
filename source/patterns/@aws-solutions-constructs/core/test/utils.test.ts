@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -13,16 +13,14 @@
 
 // Imports
 import * as defaults from '../';
+import * as cdk from 'aws-cdk-lib';
 
 // Need 2 parts, but they can't overlap
 // so we can explicitly find them in the results.
 const parts = [ 'firstportionislong', 'secondsection'];
 const nonAlphaParts = [ 'part-one', 'part-two'];
 
-// --------------------------------------------------------------
-// Test with a truncated part
-// --------------------------------------------------------------
-test('Test with a truncated part', () => {
+test('Test generateResourceName with a truncated part', () => {
   const result = defaults.generateResourceName(parts, 38);
 
   expect(result).toContain(parts[1]);
@@ -31,10 +29,7 @@ test('Test with a truncated part', () => {
 
 });
 
-// --------------------------------------------------------------
-// Test with no truncated parts
-// --------------------------------------------------------------
-test('Test with no truncated parts', () => {
+test('Test generateResourceName with no truncated parts', () => {
   const result = defaults.generateResourceName(parts, 100);
 
   expect(result).toContain(parts[1]);
@@ -42,18 +37,33 @@ test('Test with no truncated parts', () => {
   expect(result.length).toEqual(parts[0].length + parts[1].length + 12);
 });
 
-// --------------------------------------------------------------
-// Test with non Aphanumeric
-// --------------------------------------------------------------
-test('Test with non Aphanumeric', () => {
+test('Test generateResourceName with non Aphanumeric', () => {
   const result = defaults.generateResourceName(nonAlphaParts, 100);
 
   expect(result).toContain('partoneparttwo');
 });
 
-// --------------------------------------------------------------
-// Test generateIntegStackName
-// --------------------------------------------------------------
+test('Test generateResourceName with randomized extension', () => {
+  const resultOne = defaults.generateResourceName(parts, 512, true);
+  const startTime = (new Date()).getTime();
+
+  // We need to ensure the time value appended changes between callls
+  let currTime = startTime;
+  while (currTime  === startTime) {
+    currTime = (new Date()).getTime();
+  }
+
+  const resultTwo = defaults.generateResourceName(parts, 512, true);
+
+  expect(resultOne).toContain(parts[1]);
+  expect(resultOne).toContain(parts[0]);
+  expect(resultTwo).toContain(parts[1]);
+  expect(resultTwo).toContain(parts[0]);
+  expect(resultOne).not.toEqual(resultTwo);
+  expect(resultOne.slice(0, -13)).toEqual(resultTwo.slice(0, -13));
+
+});
+
 test('Test generateIntegStackName', () => {
   const result = defaults.generateIntegStackName('integ.apigateway-dynamodb-CRUD.js');
   expect(result).toContain('apigateway-dynamodb-CRUD');
@@ -142,4 +152,43 @@ test('Test consolidate props with one arg', () => {
 
   expect(result).toEqual(arg1);
 
+});
+
+test('Test generateName sunny day for current construct with undefined name argument', () => {
+  const stack = new cdk.Stack(undefined, "some-new-id");
+
+  const newName = defaults.generateName(stack);
+  // 5 is not specific, just checking the name is several characters longer than just a CR/LF
+  expect(newName.length).toBeGreaterThan(5);
+});
+
+test('Test generateName sunny day for current construct', () => {
+  const stack = new cdk.Stack(undefined, "some-new-id");
+
+  const newName = defaults.generateName(stack, "");
+  expect(newName.length).toBeGreaterThan(5);
+});
+
+test('Test generateName sunny day for child construct', () => {
+  const stack = new cdk.Stack(undefined, "some-new-id");
+
+  const newName = defaults.generateName(stack, "child");
+  expect(newName.length).toBeGreaterThan(5);
+  expect(newName.includes(newName)).toBe(true);
+});
+
+test('Test generateName longer than 64 characters', () => {
+  const stack = new cdk.Stack(undefined, "some-new-id");
+  const seventyCharacterName = '123456789-123456789-123456789-123456789-123456789-123456789-123456789-';
+  const newName = defaults.generateName(stack, seventyCharacterName);
+  expect(newName.length).toEqual(64);
+});
+
+test('Test generateName uniqueness', () => {
+  const stackOne = new cdk.Stack(undefined, "some-new-id");
+  const stackTwo = new cdk.Stack(undefined, "other-id");
+
+  const nameOne = defaults.generateName(stackOne, "");
+  const nameTwo = defaults.generateName(stackTwo, "");
+  expect(nameOne === nameTwo).toBe(false);
 });

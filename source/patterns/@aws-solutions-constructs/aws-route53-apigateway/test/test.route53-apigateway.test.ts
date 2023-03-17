@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -18,14 +18,15 @@ import * as route53 from "aws-cdk-lib/aws-route53";
 import * as defaults from "@aws-solutions-constructs/core";
 import * as acm from "aws-cdk-lib/aws-certificatemanager";
 import "@aws-cdk/assert/jest";
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 // Deploying Public/Private Existing Hosted Zones
 function deployApi(
   stack: cdk.Stack,
   publicApi: boolean
 ) {
-  const [restApi] = defaults.RegionalRestApi(stack);
-  restApi.root.addMethod('GET');
+  const regionalRestApiResponse = defaults.RegionalRestApi(stack);
+  regionalRestApiResponse.api.root.addMethod('GET');
 
   const domainName = "www.test-example.com";
 
@@ -41,7 +42,7 @@ function deployApi(
       constructVpcProps: {
         enableDnsHostnames: true,
         enableDnsSupport: true,
-        cidr: "172.168.0.0/16",
+        ipAddresses: ec2.IpAddresses.cidr("172.168.0.0/16"),
       },
     });
 
@@ -61,7 +62,7 @@ function deployApi(
   const props: Route53ToApiGatewayProps = {
     publicApi,
     existingHostedZoneInterface: newZone,
-    existingApiGatewayInterface: restApi,
+    existingApiGatewayInterface: regionalRestApiResponse.api,
     existingCertificateInterface: certificate,
   };
 
@@ -89,7 +90,7 @@ test("Test for default params construct props", () => {
 test("Test for errors when creating a private hosted zone", () => {
   // Initial Setup
   const stack = new cdk.Stack();
-  const [restApi] = defaults.RegionalRestApi(stack);
+  const regionalRestApiResponse = defaults.RegionalRestApi(stack);
   const domainName = "www.test-example.com";
 
   const vpc = defaults.buildVpc(stack, {
@@ -97,7 +98,7 @@ test("Test for errors when creating a private hosted zone", () => {
     constructVpcProps: {
       enableDnsHostnames: true,
       enableDnsSupport: true,
-      cidr: "172.168.0.0/16",
+      ipAddresses: ec2.IpAddresses.cidr("172.168.0.0/16"),
     },
   });
 
@@ -115,7 +116,7 @@ test("Test for errors when creating a private hosted zone", () => {
   let app = () =>
     new Route53ToApiGateway(stack, "api-stack1", {
       publicApi: true,
-      existingApiGatewayInterface: restApi,
+      existingApiGatewayInterface: regionalRestApiResponse.api,
       existingCertificateInterface: certificate
     });
   // Assertion 1
@@ -126,7 +127,7 @@ test("Test for errors when creating a private hosted zone", () => {
   app = () =>
     new Route53ToApiGateway(stack, "api-stack2", {
       publicApi: false,
-      existingApiGatewayInterface: restApi,
+      existingApiGatewayInterface: regionalRestApiResponse.api,
       existingCertificateInterface: certificate
     });
 
@@ -142,7 +143,7 @@ test("Test for errors when creating a private hosted zone", () => {
         zoneName: "test-example.com",
         vpc,
       },
-      existingApiGatewayInterface: restApi,
+      existingApiGatewayInterface: regionalRestApiResponse.api,
       existingCertificateInterface: certificate
     });
 
@@ -156,7 +157,7 @@ test("Test for errors when creating a private hosted zone", () => {
       publicApi: false,
       existingHostedZoneInterface: newZone,
       existingVpc: vpc,
-      existingApiGatewayInterface: restApi,
+      existingApiGatewayInterface: regionalRestApiResponse.api,
       existingCertificateInterface: certificate
     });
 
@@ -169,7 +170,7 @@ test("Test for errors when creating a private hosted zone", () => {
     new Route53ToApiGateway(stack, "api-stack5", {
       publicApi: false,
       existingHostedZoneInterface: newZone,
-      existingApiGatewayInterface: restApi,
+      existingApiGatewayInterface: regionalRestApiResponse.api,
       privateHostedZoneProps: {
         domainName: "test-example.com"
       },
@@ -187,7 +188,7 @@ test("Test for errors when creating a private hosted zone", () => {
       privateHostedZoneProps: {
         domainName: "test.example.com"
       },
-      existingApiGatewayInterface: restApi,
+      existingApiGatewayInterface: regionalRestApiResponse.api,
       existingCertificateInterface: certificate
     });
 
@@ -202,7 +203,7 @@ test("Test for errors when creating a private hosted zone", () => {
       privateHostedZoneProps: {
         zoneName: "test.example.com"
       },
-      existingApiGatewayInterface: restApi,
+      existingApiGatewayInterface: regionalRestApiResponse.api,
       existingCertificateInterface: certificate
     });
 
@@ -218,8 +219,8 @@ test("Test for errors when creating a private hosted zone", () => {
 test("Test for providing private hosted zone props", () => {
   // Initial Setup
   const stack = new cdk.Stack();
-  const [restApi] = defaults.RegionalRestApi(stack);
-  restApi.root.addMethod('GET');
+  const regionalRestApiResponse = defaults.RegionalRestApi(stack);
+  regionalRestApiResponse.api.root.addMethod('GET');
 
   const domainName = "www.private-zone.com";
 
@@ -228,7 +229,7 @@ test("Test for providing private hosted zone props", () => {
     constructVpcProps: {
       enableDnsHostnames: true,
       enableDnsSupport: true,
-      cidr: "172.168.0.0/16",
+      ipAddresses: ec2.IpAddresses.cidr("172.168.0.0/16"),
     },
   });
 
@@ -240,7 +241,7 @@ test("Test for providing private hosted zone props", () => {
 
   new Route53ToApiGateway(stack, "api-stack1", {
     publicApi: false,
-    existingApiGatewayInterface: restApi,
+    existingApiGatewayInterface: regionalRestApiResponse.api,
     privateHostedZoneProps: {
       zoneName: domainName,
     },

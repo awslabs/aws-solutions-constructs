@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -25,8 +25,8 @@ import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 
 test('check bucket policy metadata', () => {
   const stack = new Stack();
-  const [sourceBucket] = buildS3Bucket(stack, {});
-  CloudFrontDistributionForS3(stack, sourceBucket);
+  const buildS3BucketResponse = buildS3Bucket(stack, {});
+  CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket);
   expect(stack).toHaveResource('AWS::S3::BucketPolicy', {
     Metadata: {
       cfn_nag: {
@@ -43,8 +43,8 @@ test('check bucket policy metadata', () => {
 
 test('check bucket metadata', () => {
   const stack = new Stack();
-  const [sourceBucket] = buildS3Bucket(stack, {});
-  CloudFrontDistributionForS3(stack, sourceBucket);
+  const buildS3BucketResponse = buildS3Bucket(stack, {});
+  CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket);
   expect(stack).toHaveResource('AWS::S3::Bucket', {
     Metadata: {
       cfn_nag: {
@@ -61,8 +61,8 @@ test('check bucket metadata', () => {
 
 test('test cloudfront check bucket policy', () => {
   const stack = new Stack();
-  const [sourceBucket] = buildS3Bucket(stack, {});
-  CloudFrontDistributionForS3(stack, sourceBucket);
+  const buildS3BucketResponse = buildS3Bucket(stack, {});
+  CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket);
 
   expect(stack).toHaveResourceLike("AWS::S3::BucketPolicy", {
     PolicyDocument: {
@@ -135,9 +135,9 @@ test('test cloudfront check bucket policy', () => {
 
 test('test cloudfront with no security headers ', () => {
   const stack = new Stack();
-  const [sourceBucket] = buildS3Bucket(stack, {});
+  const buildS3BucketResponse = buildS3Bucket(stack, {});
 
-  CloudFrontDistributionForS3(stack, sourceBucket, {}, false);
+  CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, {}, false);
 
   expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
     DistributionConfig: {
@@ -189,7 +189,7 @@ test('test cloudfront with no security headers ', () => {
 
 test('test cloudfront override cloudfront logging bucket ', () => {
   const stack = new Stack();
-  const [sourceBucket] = buildS3Bucket(stack, {});
+  const buildS3BucketResponse = buildS3Bucket(stack, {});
   const logBucket = new Bucket(stack, 'loggingbucket');
 
   const myprops = {
@@ -197,7 +197,7 @@ test('test cloudfront override cloudfront logging bucket ', () => {
     logBucket
   };
 
-  CloudFrontDistributionForS3(stack, sourceBucket, myprops);
+  CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, myprops);
 
   expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
     DistributionConfig: {
@@ -260,17 +260,17 @@ test('test cloudfront override cloudfront logging bucket ', () => {
 
 test('test cloudfront override properties', () => {
   const stack = new Stack();
-  const [sourceBucket] = buildS3Bucket(stack, {});
+  const buildS3BucketResponse = buildS3Bucket(stack, {});
   const props: cloudfront.DistributionProps = {
     defaultBehavior: {
-      origin: new origins.S3Origin(sourceBucket, { originPath: '/testPath' }),
+      origin: new origins.S3Origin(buildS3BucketResponse.bucket, { originPath: '/testPath' }),
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
       cachedMethods: cloudfront.CachedMethods.CACHE_GET_HEAD_OPTIONS
     },
   };
 
-  CloudFrontDistributionForS3(stack, sourceBucket, props);
+  CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, props);
 
   expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
     DistributionConfig: {
@@ -348,14 +348,14 @@ test('test cloudfront override properties', () => {
 
 test('test override cloudfront with custom cloudfront function', () => {
   const stack = new Stack();
-  const [sourceBucket] = buildS3Bucket(stack, {});
+  const buildS3BucketResponse = buildS3Bucket(stack, {});
 
   // custom cloudfront function
   const cloudfrontFunction = new cloudfront.Function(stack, "MyFunction", {
     code: cloudfront.FunctionCode.fromInline("exports.handler = (event, context, callback) => {}")
   });
 
-  CloudFrontDistributionForS3(stack, sourceBucket, {
+  CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, {
     defaultBehavior: {
       functionAssociations: [
         {
@@ -427,7 +427,7 @@ test('test override cloudfront with custom cloudfront function', () => {
 
 test('test override cloudfront replace custom lambda@edge', () => {
   const stack = new Stack();
-  const [sourceBucket] = buildS3Bucket(stack, {});
+  const buildS3BucketResponse = buildS3Bucket(stack, {});
 
   // custom lambda@edg function
   const handler = new lambda.Function(stack, 'SomeHandler', {
@@ -441,7 +441,7 @@ test('test override cloudfront replace custom lambda@edge', () => {
     lambda: handler,
   });
 
-  CloudFrontDistributionForS3(stack, sourceBucket, {
+  CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, {
     defaultBehavior: {
       edgeLambdas: [
         {
@@ -513,7 +513,7 @@ test('test override cloudfront replace custom lambda@edge', () => {
 
 test('test cloudfront override cloudfront custom domain names ', () => {
   const stack = new Stack();
-  const [sourceBucket] = buildS3Bucket(stack, {});
+  const buildS3BucketResponse = buildS3Bucket(stack, {});
   const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012');
 
   const myprops = {
@@ -521,7 +521,7 @@ test('test cloudfront override cloudfront custom domain names ', () => {
     certificate
   };
 
-  CloudFrontDistributionForS3(stack, sourceBucket, myprops);
+  CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, myprops);
 
   expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
     DistributionConfig: {

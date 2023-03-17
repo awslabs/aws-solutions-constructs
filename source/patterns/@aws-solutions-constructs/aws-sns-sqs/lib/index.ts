@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -31,68 +31,69 @@ export interface SnsToSqsProps {
      *
      * @default - Default props are used
      */
-    readonly existingTopicObj?: sns.Topic,
+    readonly existingTopicObj?: sns.Topic;
     /**
      * Optional user provided properties to override the default properties for the SNS topic.
      *
      * @default - Default properties are used.
      */
-    readonly topicProps?: sns.TopicProps,
+    readonly topicProps?: sns.TopicProps;
     /**
      * Existing instance of SQS queue object, Providing both this and queueProps will cause an error.
      *
      * @default - Default props are used
      */
-    readonly existingQueueObj?: sqs.Queue,
+    readonly existingQueueObj?: sqs.Queue;
     /**
      * Optional user provided properties
      *
      * @default - Default props are used
      */
-    readonly queueProps?: sqs.QueueProps,
+    readonly queueProps?: sqs.QueueProps;
     /**
      * Optional user provided properties for the dead letter queue
      *
      * @default - Default props are used
      */
-    readonly deadLetterQueueProps?: sqs.QueueProps,
+    readonly deadLetterQueueProps?: sqs.QueueProps;
     /**
      * Whether to deploy a secondary queue to be used as a dead letter queue.
      *
      * @default - true.
      */
-    readonly deployDeadLetterQueue?: boolean,
+    readonly deployDeadLetterQueue?: boolean;
     /**
      * The number of times a message can be unsuccessfully dequeued before being moved to the dead-letter queue.
      *
      * @default - required field if deployDeadLetterQueue=true.
      */
-    readonly maxReceiveCount?: number
+    readonly maxReceiveCount?: number;
     /**
-     * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
-     * the encryptionKey property for this construct.
+     * If no keys are provided, this flag determines whether both the topic and queue are encrypted with a new CMK or an AWS managed key.
+     * This flag is ignored if any of the following are defined:
+     * topicProps.masterKey, queueProps.encryptionMasterKey, encryptionKey or encryptionKeyProps.
      *
-     * @default - true (encryption enabled, managed by this CDK app).
+     * @default - True if topicProps.masterKey, queueProps.encryptionMasterKey, encryptionKey, and encryptionKeyProps are all undefined.
      */
-    readonly enableEncryptionWithCustomerManagedKey?: boolean
+    readonly enableEncryptionWithCustomerManagedKey?: boolean;
     /**
-     * An optional, imported encryption key to encrypt the SQS queue, and SNS Topic.
+     * An optional, imported encryption key to encrypt the SQS Queue and SNS Topic with.
      *
-     * @default - not specified.
+     * @default - None
      */
-    readonly encryptionKey?: kms.Key
+    readonly encryptionKey?: kms.Key;
     /**
      * Optional user-provided props to override the default props for the encryption key.
      *
-     * @default - Default props are used.
+     * @default - None
      */
-    readonly encryptionKeyProps?: kms.KeyProps
+    readonly encryptionKeyProps?: kms.KeyProps;
     /**
      * Optional user-provided props to override the default props for sqsSubscriptionProps.
      *
      * @default - Default props are used.
      */
-     readonly sqsSubscriptionProps?: subscriptions.SqsSubscriptionProps
+    readonly sqsSubscriptionProps?: subscriptions.SqsSubscriptionProps;
 }
 
 /**
@@ -138,24 +139,27 @@ export class SnsToSqs extends Construct {
       // Setup the SNS topic
       if (!props.existingTopicObj) {
         // If an existingTopicObj was not specified create new topic
-        [this.snsTopic, this.encryptionKey] = defaults.buildTopic(this, {
+        const buildTopicResponse = defaults.buildTopic(this, {
           topicProps: props.topicProps,
           enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
           encryptionKey: encryptionKeyParam
         });
+        this.snsTopic = buildTopicResponse.topic;
+        this.encryptionKey = buildTopicResponse.key;
       } else {
         // If an existingTopicObj was specified utilize the provided topic
         this.snsTopic = props.existingTopicObj;
       }
 
       // Setup the queue
-      [this.sqsQueue] = defaults.buildQueue(this, 'queue', {
+      const buildQueueResponse = defaults.buildQueue(this, 'queue', {
         existingQueueObj: props.existingQueueObj,
         queueProps: props.queueProps,
         deadLetterQueue: this.deadLetterQueue,
         enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
         encryptionKey: encryptionKeyParam
       });
+      this.sqsQueue = buildQueueResponse.queue;
 
       // Setup the SQS queue subscription to the SNS topic
       this.snsTopic.addSubscription(new subscriptions.SqsSubscription(this.sqsQueue, props.sqsSubscriptionProps));

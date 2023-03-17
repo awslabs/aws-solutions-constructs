@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -54,11 +54,19 @@ export interface ApiGatewayToSageMakerEndpointProps {
    */
   readonly resourcePath: string,
   /**
-   * Mapping template to convert GET requests received on the REST API to POST requests expected by the SageMaker endpoint.
+   * Mapping template to convert GET requests for the default `application/json` content-type received
+   * on the REST API to POST requests expected by the SageMaker endpoint.
    *
    * @default - None.
    */
   readonly requestMappingTemplate: string,
+  /**
+   * Optional Request Templates for content-types other than `application/json`.
+   * Use the `requestMappingTemplate` property to set the request template for the `application/json` content-type.
+   *
+   * @default - None
+   */
+  readonly additionalRequestTemplates?: { [contentType: string]: string; };
   /**
    * Optional mapping template to convert responses received from the SageMaker endpoint.
    *
@@ -95,8 +103,10 @@ export class ApiGatewayToSageMakerEndpoint extends Construct {
     defaults.CheckProps(props);
 
     // Setup the API Gateway
-    [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] = defaults.GlobalRestApi(this,
-      props.apiGatewayProps, props.logGroupProps);
+    const globalRestApiResponse = defaults.GlobalRestApi(this, props.apiGatewayProps, props.logGroupProps);
+    this.apiGateway = globalRestApiResponse.api;
+    this.apiGatewayCloudWatchRole = globalRestApiResponse.role;
+    this.apiGatewayLogGroup =  globalRestApiResponse.logGroup;
 
     // Setup the API Gateway role
     if (props.apiGatewayExecutionRole !== undefined) {
@@ -170,6 +180,7 @@ export class ApiGatewayToSageMakerEndpoint extends Construct {
       apiResource,
       requestValidator,
       requestTemplate: props.requestMappingTemplate,
+      additionalRequestTemplates: props.additionalRequestTemplates,
       awsIntegrationProps: {
         options: { integrationResponses: integResponses }
       },

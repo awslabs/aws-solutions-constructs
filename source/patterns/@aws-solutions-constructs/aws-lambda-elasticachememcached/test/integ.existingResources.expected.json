@@ -1,5 +1,5 @@
 {
-  "Description": "Integration Test with new resourcesfor aws-lambda-elasticachememcached",
+  "Description": "Integration Test with existing vpc, Lambda function and cache",
   "Resources": {
     "Vpc8378EB38": {
       "Type": "AWS::EC2::VPC",
@@ -350,7 +350,12 @@
             ]
           }
         ]
-      }
+      },
+      "DependsOn": [
+        "VpcisolatedSubnet1RouteTableAssociationD259E31A",
+        "VpcisolatedSubnet2RouteTableAssociation25A4716F",
+        "VpcisolatedSubnet3RouteTableAssociationDC010BEB"
+      ]
     },
     "testfunction5B23D3B0": {
       "Type": "AWS::Lambda::Function",
@@ -422,7 +427,10 @@
         }
       },
       "DependsOn": [
-        "testfunctionServiceRoleFB85AD63"
+        "testfunctionServiceRoleFB85AD63",
+        "VpcisolatedSubnet1RouteTableAssociationD259E31A",
+        "VpcisolatedSubnet2RouteTableAssociation25A4716F",
+        "VpcisolatedSubnet3RouteTableAssociationDC010BEB"
       ],
       "Metadata": {
         "cfn_nag": {

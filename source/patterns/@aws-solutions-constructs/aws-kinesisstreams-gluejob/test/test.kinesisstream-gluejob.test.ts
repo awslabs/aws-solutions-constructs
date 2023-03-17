@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -13,6 +13,7 @@
 
 import * as path from "path";
 import * as s3assets from "aws-cdk-lib/aws-s3-assets";
+import * as s3 from "aws-cdk-lib/aws-s3";
 import { ResourcePart } from '@aws-cdk/assert';
 import '@aws-cdk/assert/jest';
 import { CfnDatabase, CfnJob } from 'aws-cdk-lib/aws-glue';
@@ -22,9 +23,6 @@ import * as defaults from '@aws-solutions-constructs/core';
 import { SinkStoreType } from '@aws-solutions-constructs/core';
 import { KinesisstreamsToGluejob, KinesisstreamsToGluejobProps } from '../lib';
 
-// --------------------------------------------------------------
-// Pattern minimal deployment
-// --------------------------------------------------------------
 test('Pattern minimal deployment', () => {
   // Initial setup
   const stack = new Stack();
@@ -58,6 +56,10 @@ test('Pattern minimal deployment', () => {
   const id = 'test-kinesisstreams-lambda';
 
   const construct = new KinesisstreamsToGluejob(stack, id, props);
+
+  expect(construct.outputBucket).toBeDefined();
+  expect(construct.outputBucket![0]).toBeDefined();
+  expect(construct.outputBucket![1]).toBeDefined();
 
   // check for role creation
   expect(stack).toHaveResourceLike('AWS::IAM::Role', {
@@ -268,9 +270,6 @@ test('Pattern minimal deployment', () => {
   expect(construct.cloudwatchAlarms).toBeDefined();
 });
 
-// --------------------------------------------------------------
-// Test if existing Glue Job is provided
-// --------------------------------------------------------------
 test('Test if existing Glue Job is provided', () => {
   // Initial setup
   const stack = new Stack();
@@ -285,7 +284,7 @@ test('Test if existing Glue Job is provided', () => {
     securityConfiguration: 'testSecConfig'
   });
 
-  new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', {
+  const construct = new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', {
     existingGlueJob: existingCfnJob,
     fieldSchema: [{
       name: "id",
@@ -306,6 +305,8 @@ test('Test if existing Glue Job is provided', () => {
     }],
   });
 
+  expect(construct.outputBucket).not.toBeDefined();
+
   // check for Kinesis Stream
   expect(stack).toHaveResourceLike('AWS::Kinesis::Stream', {
     Properties: {
@@ -320,9 +321,6 @@ test('Test if existing Glue Job is provided', () => {
   }, ResourcePart.CompleteDefinition);
 });
 
-// --------------------------------------------------------------
-// Test if existing S3 bucket location for script is provided
-// --------------------------------------------------------------
 test('When S3 bucket location for script exists', () => {
   // Initial setup
   const stack = new Stack();
@@ -356,7 +354,12 @@ test('When S3 bucket location for script exists', () => {
       datastoreType: SinkStoreType.S3
     }
   };
-  new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', props);
+  const construct = new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', props);
+
+  expect(construct.outputBucket).toBeDefined();
+  expect(construct.outputBucket![0]).toBeDefined();
+  expect(construct.outputBucket![1]).toBeDefined();
+
   expect(stack).toHaveResourceLike('AWS::Glue::Job', {
     Type: 'AWS::Glue::Job',
     Properties: {
@@ -369,9 +372,6 @@ test('When S3 bucket location for script exists', () => {
   }, ResourcePart.CompleteDefinition);
 });
 
-// --------------------------------------------------------------
-// Test when the construct is supplied with an existing stream
-// --------------------------------------------------------------
 test('create glue job with existing kinesis stream', () => {
   const stack = new Stack();
   const _kinesisStream = new Stream(stack, 'FakeStream', {
@@ -422,9 +422,6 @@ test('create glue job with existing kinesis stream', () => {
   }, ResourcePart.CompleteDefinition);
 });
 
-// --------------------------------------------------------------
-// Test if no script loocation is provided
-// --------------------------------------------------------------
 test('Do not pass s3ObjectUrlForScript or scriptLocationPath, error out', () => {
   const stack = new Stack();
   try {
@@ -463,9 +460,6 @@ test('Do not pass s3ObjectUrlForScript or scriptLocationPath, error out', () => 
   }
 });
 
-// --------------------------------------------------------------
-// Test when neither CfnTable nor Table schem structure is provided
-// --------------------------------------------------------------
 test('Do not pass fieldSchame or table (CfnTable), error out', () => {
   const stack = new Stack();
 
@@ -488,9 +482,6 @@ test('Do not pass fieldSchame or table (CfnTable), error out', () => {
   }
 });
 
-// --------------------------------------------------------------
-// Provide a database and table
-// --------------------------------------------------------------
 test('When database and table are provided', () => {
   // Initial setup
   const stack = new Stack();
@@ -527,7 +518,12 @@ test('When database and table are provided', () => {
       comment: "Some value associated with the record"
     }], 'kinesis', { STREAM_NAME: 'testStream' })
   };
-  new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', props);
+  const construct = new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', props);
+
+  expect(construct.outputBucket).toBeDefined();
+  expect(construct.outputBucket![0]).toBeDefined();
+  expect(construct.outputBucket![1]).toBeDefined();
+
   expect(stack).toHaveResourceLike('AWS::Glue::Database', {
     Type: "AWS::Glue::Database",
     Properties: {
@@ -539,9 +535,6 @@ test('When database and table are provided', () => {
   }, ResourcePart.CompleteDefinition);
 });
 
-// --------------------------------------------------------------
-// When database and table are not provided & cloudwatch alarms set to false
-// --------------------------------------------------------------
 test('When database and table are not provided & cloudwatch alarms set to false', () => {
   // Initial setup
   const stack = new Stack();
@@ -573,6 +566,11 @@ test('When database and table are not provided & cloudwatch alarms set to false'
     }]
   };
   const construct = new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', props);
+
+  expect(construct.outputBucket).toBeDefined();
+  expect(construct.outputBucket![0]).toBeDefined();
+  expect(construct.outputBucket![1]).toBeDefined();
+
   expect(stack).toHaveResourceLike('AWS::Glue::Database', {
     Type: "AWS::Glue::Database",
     Properties: {
@@ -713,6 +711,10 @@ test('When Asset for local file is defined', () => {
   const id = 'test-kinesisstreams-lambda';
   const construct = new KinesisstreamsToGluejob(stack, id, props);
 
+  expect(construct.outputBucket).toBeDefined();
+  expect(construct.outputBucket![0]).toBeDefined();
+  expect(construct.outputBucket![1]).toBeDefined();
+
   // Check for properties
   expect(construct.database).toBeDefined();
   expect(construct.glueJob).toBeDefined();
@@ -812,4 +814,50 @@ test('When Asset for local file is defined', () => {
       WorkerType: "G.1X"
     }
   }, ResourcePart.CompleteDefinition);
+});
+
+test('Check properties when output bucket is provided', () => {
+  // Initial setup
+  const stack = new Stack();
+
+  const outputBucket = new s3.Bucket(stack, 'output-bucket');
+
+  const props: KinesisstreamsToGluejobProps = {
+    glueJobProps: {
+      command: {
+        name: 'glueetl',
+        pythonVersion: '3',
+        scriptLocation: 's3://fakebucket/fakefolder/fakefolder/fakefile.py'
+      }
+    },
+    fieldSchema: [{
+      name: "id",
+      type: "int",
+      comment: "Identifier for the record"
+    }, {
+      name: "name",
+      type: "string",
+      comment: "The name of the record"
+    }, {
+      name: "type",
+      type: "string",
+      comment: "The type of the record"
+    }, {
+      name: "numericvalue",
+      type: "int",
+      comment: "Some value associated with the record"
+    }],
+    outputDataStore: {
+      existingS3OutputBucket: outputBucket,
+      datastoreType: SinkStoreType.S3
+    }
+  };
+
+  const id = 'test-kinesisstreams-lambda';
+
+  const construct = new KinesisstreamsToGluejob(stack, id, props);
+
+  expect(construct.outputBucket).toBeDefined();
+  expect(construct.outputBucket![0]).toBeDefined();
+  expect(construct.outputBucket![1]).not.toBeDefined();
 });

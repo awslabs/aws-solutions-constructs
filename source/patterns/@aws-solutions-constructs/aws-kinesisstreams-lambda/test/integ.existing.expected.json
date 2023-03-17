@@ -69,7 +69,8 @@
                 "kinesis:ListShards",
                 "kinesis:SubscribeToShard",
                 "kinesis:DescribeStream",
-                "kinesis:ListStreams"
+                "kinesis:ListStreams",
+                "kinesis:DescribeStreamConsumer"
               ],
               "Effect": "Allow",
               "Resource": {
@@ -121,7 +122,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "dfe828a7d00b0da7a6e92dc1decf39ec907e4edc6006faea8631d4dabd7f4fcd.zip"
+          "S3Key": "26cf7db64552331215006953bf73e5adfb49b5bf0eb2298bfe04547b76c08b88.zip"
         },
         "Role": {
           "Fn::GetAtt": [
@@ -283,7 +284,7 @@
         "Namespace": "AWS/Kinesis",
         "Period": 300,
         "Statistic": "Maximum",
-        "Threshold": 43200
+        "Threshold": 43200000
       }
     },
     "testkslambdaKinesisStreamReadProvisionedThroughputExceededAlarmFAEF1236": {

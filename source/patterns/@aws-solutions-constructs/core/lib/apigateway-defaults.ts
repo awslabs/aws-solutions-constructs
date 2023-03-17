@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,7 +11,13 @@
  *  and limitations under the License.
  */
 
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
 import * as api from 'aws-cdk-lib/aws-apigateway';
+import { IntegrationResponse } from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { LogGroup } from 'aws-cdk-lib/aws-logs';
 
@@ -43,6 +49,8 @@ function DefaultRestApiProps(_endpointType: api.EndpointType[], _logGroup: LogGr
 }
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * Provides the default set of properties for Edge/Global Lambda backed RestApi
  * @param scope - the construct to which the RestApi should be attached to.
  * @param _endpointType - endpoint type for Api Gateway e.g. Regional, Global, Private
@@ -59,6 +67,8 @@ export function DefaultGlobalLambdaRestApiProps(_existingLambdaObj: lambda.Funct
 }
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * Provides the default set of properties for Regional Lambda backed RestApi
  * @param scope - the construct to which the RestApi should be attached to.
  * @param _endpointType - endpoint type for Api Gateway e.g. Regional, Global, Private
@@ -75,6 +85,8 @@ export function DefaultRegionalLambdaRestApiProps(_existingLambdaObj: lambda.Fun
 }
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * Provides the default set of properties for Edge/Global RestApi
  * @param _logGroup - CW Log group for Api Gateway access logging
  */
@@ -83,9 +95,31 @@ export function DefaultGlobalRestApiProps(_logGroup: LogGroup) {
 }
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * Provides the default set of properties for Regional RestApi
  * @param _logGroup - CW Log group for Api Gateway access logging
  */
 export function DefaultRegionalRestApiProps(_logGroup: LogGroup) {
   return DefaultRestApiProps([api.EndpointType.REGIONAL], _logGroup);
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
+ * @returns The set of default integration responses for status codes 200 and 500.
+ */
+export function DefaultIntegrationResponses(): IntegrationResponse[] {
+  return [
+    {
+      statusCode: "200"
+    },
+    {
+      statusCode: "500",
+      responseTemplates: {
+        "text/html": "Error"
+      },
+      selectionPattern: "500"
+    }
+  ];
 }

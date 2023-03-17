@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -105,8 +105,11 @@ export class CognitoToApiGatewayToLambda extends Construct {
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps
     });
-    [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] =
-      defaults.GlobalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps, props.logGroupProps);
+    const globalLambdaRestApiResponse = defaults.GlobalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps, props.logGroupProps);
+    this.apiGateway = globalLambdaRestApiResponse.api;
+    this.apiGatewayCloudWatchRole = globalLambdaRestApiResponse.role;
+    this.apiGatewayLogGroup = globalLambdaRestApiResponse.group;
+
     this.userPool = defaults.buildUserPool(this, props.cognitoUserPoolProps);
     this.userPoolClient = defaults.buildUserPoolClient(this, this.userPool, props.cognitoUserPoolClientProps);
 

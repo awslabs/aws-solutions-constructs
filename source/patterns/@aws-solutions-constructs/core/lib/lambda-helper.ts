@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -9,6 +9,11 @@
  *  or in the 'license' file accompanying this file. This file is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES
  *  OR CONDITIONS OF ANY KIND, express or implied. See the License for the specific language governing permissions
  *  and limitations under the License.
+ */
+
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
  */
 
 import * as lambda from 'aws-cdk-lib/aws-lambda';
@@ -43,11 +48,14 @@ export interface BuildLambdaFunctionProps {
   readonly vpc?: ec2.IVpc;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildLambdaFunction(scope: Construct, props: BuildLambdaFunctionProps): lambda.Function {
   // Conditional lambda function creation
   if (!props.existingLambdaObj) {
     if (props.lambdaFunctionProps) {
-      return deployLambdaFunction(scope, props.lambdaFunctionProps, undefined, props.vpc);
+      return deployLambdaFunction(scope, props.lambdaFunctionProps, props.lambdaFunctionProps.functionName, props.vpc);
     } else {
       throw Error('Either existingLambdaObj or lambdaFunctionProps is required');
     }
@@ -69,6 +77,9 @@ export function buildLambdaFunction(scope: Construct, props: BuildLambdaFunction
   }
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function deployLambdaFunction(scope: Construct,
   lambdaFunctionProps: lambda.FunctionProps,
   functionId?: string,
@@ -180,9 +191,13 @@ export function deployLambdaFunction(scope: Construct,
   return lambdafunction;
 }
 
-// A wrapper above Function.addPermision that
-// prevents two different calls to addPermission using
-// the same construct id.
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
+ * A wrapper above Function.addPermision that
+ * prevents two different calls to addPermission using
+ * the same construct id.
+ */
 export function addPermission(targetFunction: lambda.Function, name: string, permission: lambda.Permission): any {
   targetFunction.addPermission(GetNextId(targetFunction.permissionsNode.children, name), permission);
 }
@@ -212,6 +227,9 @@ function GetNextId(children: IConstruct[], coreName: string): string {
   return `${coreName}-${lastSuffix + 1}`;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function getLambdaVpcSecurityGroupIds(lambdaFunction: lambda.Function): string[] {
   const securityGroupIds: string[] = [];
 

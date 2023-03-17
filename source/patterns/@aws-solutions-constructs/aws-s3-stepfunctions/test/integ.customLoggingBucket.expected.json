@@ -195,7 +195,7 @@
     "tests3stepfunctionstests3stepfunctionseventrulestepfunctionconstructStateMachineLogGroupB4555776": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/vendedlogs/states/customloggingbuckettests3stepfunctionseventrulestepfunctionconstructstatemachineloga4e9bc58c9e9"
+        "LogGroupName": "with-lambda"
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
@@ -333,7 +333,9 @@
       "DependsOn": [
         "tests3stepfunctionstests3stepfunctionseventrulestepfunctionconstructStateMachineRoleDefaultPolicy2A86AA4F",
         "tests3stepfunctionstests3stepfunctionseventrulestepfunctionconstructStateMachineRoleEAF485A9"
-      ]
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "tests3stepfunctionstests3stepfunctionseventrulestepfunctionconstructEventsRuleRoleE7CAD359": {
       "Type": "AWS::IAM::Role",
@@ -551,7 +553,7 @@
             "Arn"
           ]
         },
-        "Runtime": "python3.7",
+        "Runtime": "python3.9",
         "Timeout": 300
       },
       "DependsOn": [
@@ -598,6 +600,9 @@
       "ap-south-1": {
         "states": "states.ap-south-1.amazonaws.com"
       },
+      "ap-south-2": {
+        "states": "states.ap-south-2.amazonaws.com"
+      },
       "ap-southeast-1": {
         "states": "states.ap-southeast-1.amazonaws.com"
       },
@@ -619,6 +624,9 @@
       "eu-central-1": {
         "states": "states.eu-central-1.amazonaws.com"
       },
+      "eu-central-2": {
+        "states": "states.eu-central-2.amazonaws.com"
+      },
       "eu-north-1": {
         "states": "states.eu-north-1.amazonaws.com"
       },
@@ -636,6 +644,9 @@
       },
       "eu-west-3": {
         "states": "states.eu-west-3.amazonaws.com"
+      },
+      "me-central-1": {
+        "states": "states.me-central-1.amazonaws.com"
       },
       "me-south-1": {
         "states": "states.me-south-1.amazonaws.com"

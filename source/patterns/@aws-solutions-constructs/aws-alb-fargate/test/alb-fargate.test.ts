@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -17,6 +17,7 @@ import * as elb from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import * as cdk from "aws-cdk-lib";
 import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 test('Test new vpc, load balancer, service', () => {
   // An environment with region is required to enable logging on an ALB
@@ -129,7 +130,7 @@ test('Test existing load balancer, vpc, service', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
+  const createFargateServiceResponse = defaults.CreateFargateService(stack,
     'test',
     existingVpc,
     undefined,
@@ -144,8 +145,8 @@ test('Test existing load balancer, vpc, service', () => {
   const testProps: AlbToFargateProps = {
     existingVpc,
     publicApi: true,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingLoadBalancerObj: existingAlb,
     listenerProps: {
       protocol: 'HTTP'
@@ -275,7 +276,7 @@ test('Test new vpc, load balancer, service - custom VPC Props', () => {
     listenerProps: {
       protocol: 'HTTP'
     },
-    vpcProps: { cidr: testCidr },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(testCidr) },
   };
 
   new AlbToFargate(stack, 'test-construct', testProps);
