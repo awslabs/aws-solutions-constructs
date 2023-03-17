@@ -43,9 +43,6 @@ test('Test generateResourceName with non Aphanumeric', () => {
   expect(result).toContain('partoneparttwo');
 });
 
-// --------------------------------------------------------------
-// Test with no truncated parts
-// --------------------------------------------------------------
 test('Test generateResourceName with randomized extension', () => {
   const resultOne = defaults.generateResourceName(parts, 512, true);
   const startTime = (new Date()).getTime();
@@ -67,9 +64,6 @@ test('Test generateResourceName with randomized extension', () => {
 
 });
 
-// --------------------------------------------------------------
-// Test generateIntegStackName
-// --------------------------------------------------------------
 test('Test generateIntegStackName', () => {
   const result = defaults.generateIntegStackName('integ.apigateway-dynamodb-CRUD.js');
   expect(result).toContain('apigateway-dynamodb-CRUD');
