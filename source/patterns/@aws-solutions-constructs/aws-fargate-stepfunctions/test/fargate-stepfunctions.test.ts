@@ -18,7 +18,6 @@ import { FargateToStepfunctions } from "../lib";
 import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
-import { Template } from 'aws-cdk-lib/assertions';
 
 const clusterName = "custom-cluster-name";
 const containerName = "custom-container-name";
@@ -312,29 +311,4 @@ function testStateMachineProps(stack: cdk.Stack, userProps?: stepfunctions.State
   const defaultTestProp = { definition: new stepfunctions.Pass(stack, 'StartState') };
 
   return defaults.consolidateProps(defaultTestProp, userProps);
-}
-
-test('check LogGroup name', () => {
-  const stack = new cdk.Stack();
-  const publicApi = true;
-
-  createFargateConstructWithNewResources(stack, publicApi);
-
-  // Perform some fancy stuff to examine the specifics of the LogGroupName
-  const expectedPrefix = '/aws/vendedlogs/states/constructs/';
-  const lengthOfDatetimeSuffix = 13;
-
-  const LogGroup = Template.fromStack(stack).findResources("AWS::Logs::LogGroup");
-
-  const logName = LogGroup.testconstructStateMachineLogGroup2EB4F48B.Properties.LogGroupName;
-  const suffix = logName.slice(-lengthOfDatetimeSuffix);
-
-  // Look for the expected Prefix and the 13 digit time suffix
-  expect(logName.slice(0, expectedPrefix.length)).toEqual(expectedPrefix);
-  expect(IsWholeNumber(suffix)).not.toBe(false);
-});
-
-function IsWholeNumber(target: string): boolean {
-  const numberPattern = /[0-9]{13}/;
-  return target.match(numberPattern) !== null;
 }

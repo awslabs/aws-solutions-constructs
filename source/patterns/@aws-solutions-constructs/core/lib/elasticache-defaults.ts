@@ -11,22 +11,11 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function GetDefaultCachePort() {
   // Best practice not to use default port 11211
   return 11222;
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function GetMemcachedDefaults(id: string, port: number) {
   return {
     clusterName: `${id}-cdk-cluster`,

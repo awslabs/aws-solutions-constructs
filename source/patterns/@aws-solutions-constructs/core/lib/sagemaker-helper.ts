@@ -11,11 +11,6 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 import * as sagemaker from 'aws-cdk-lib/aws-sagemaker';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import { buildEncryptionKey } from './kms-helper';
@@ -225,9 +220,6 @@ export interface BuildSagemakerNotebookResponse {
   readonly securityGroup?: ec2.SecurityGroup
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function buildSagemakerNotebook(
   scope: Construct,
   props: BuildSagemakerNotebookProps
@@ -350,9 +342,6 @@ export interface BuildSagemakerEndpointResponse {
   readonly model?: sagemaker.CfnModel
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function BuildSagemakerEndpoint(
   scope: Construct,
   props: BuildSagemakerEndpointProps
@@ -377,9 +366,6 @@ export interface DeploySagemakerEndpointResponse {
   readonly model?: sagemaker.CfnModel
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function deploySagemakerEndpoint(
   scope: Construct,
   props: BuildSagemakerEndpointProps
@@ -424,9 +410,6 @@ export function deploySagemakerEndpoint(
   }
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function createSagemakerModel(
   scope: Construct,
   modelProps: sagemaker.CfnModelProps,
@@ -491,9 +474,6 @@ export function createSagemakerModel(
   }
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function createSagemakerEndpointConfig(
   scope: Construct,
   modelName: string,
@@ -519,9 +499,6 @@ export function createSagemakerEndpointConfig(
   return endpointConfig;
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function createSagemakerEndpoint(
   scope: Construct,
   endpointConfigName: string,

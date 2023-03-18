@@ -12,14 +12,15 @@
  */
 
 // Imports
-import { Stack, Aws } from "aws-cdk-lib";
+import { Stack } from "aws-cdk-lib";
 import * as defaults from '../';
 import '@aws-cdk/assert/jest';
 import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import { buildLogGroup } from '../lib/cloudwatch-log-group-helper';
-import * as iam from 'aws-cdk-lib/aws-iam';
-import { Template } from 'aws-cdk-lib/assertions';
 
+// --------------------------------------------------------------
+// Test deployment w/ custom properties
+// --------------------------------------------------------------
 test('Test deployment w/ custom properties', () => {
   // Stack
   const stack = new Stack();
@@ -32,6 +33,7 @@ test('Test deployment w/ custom properties', () => {
   });
   // Assertion
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
+  expect(buildStateMachineResponse.stateMachine).toBeDefined();
   expect(stack).toCountResources("AWS::Logs::LogGroup", 1);
 
   expect(stack).toHaveResource("AWS::StepFunctions::StateMachine", {
@@ -39,6 +41,9 @@ test('Test deployment w/ custom properties', () => {
   });
 });
 
+// --------------------------------------------------------------
+// Test deployment w/ logging enabled
+// --------------------------------------------------------------
 test('Test deployment w/ logging enabled', () => {
   // Stack
   const stack = new Stack();
@@ -78,6 +83,9 @@ test('Test deployment w/ logging enabled', () => {
   });
 });
 
+// --------------------------------------------------------------
+// Check default Cloudwatch permissions
+// --------------------------------------------------------------
 test('Check default Cloudwatch permissions', () => {
   // Stack
   const stack = new Stack();
@@ -138,6 +146,9 @@ test('Check default Cloudwatch permissions', () => {
   });
 });
 
+// --------------------------------------------------------------
+// Check CW Alarms
+// --------------------------------------------------------------
 test('Count State Machine CW Alarms', () => {
   // Stack
   const stack = new Stack();
@@ -153,74 +164,3 @@ test('Count State Machine CW Alarms', () => {
 
   expect(cwList.length).toEqual(3);
 });
-
-test('Test deployment with custom role', () => {
-  const descriptionText = 'Custom role for State Machine';
-
-  // Stack
-  const stack = new Stack();
-  // Step function definition
-  const startState = new sfn.Pass(stack, 'StartState');
-
-  const customRole = new iam.Role(stack, 'custom-role', {
-    assumedBy: new iam.ServicePrincipal('states.amazonaws.com'),
-    description: descriptionText,
-    inlinePolicies: {
-      InvokePolicy: new iam.PolicyDocument({
-        statements: [new iam.PolicyStatement({
-          resources: [`arn:${Aws.PARTITION}:s3:${Aws.REGION}:${Aws.ACCOUNT_ID}:*`],
-          actions: ['s3:ListBucket']
-        })]
-      })
-    }
-  });
-
-  // Build state machine
-  const buildStateMachineResponse = defaults.buildStateMachine(stack, {
-    definition: startState,
-    role: customRole
-  });
-
-  // Assertion
-  expect(stack).toCountResources("AWS::IAM::Role", 1);
-  expect(buildStateMachineResponse.stateMachine).toBeDefined();
-
-  expect(stack).toHaveResource("AWS::IAM::Role", {
-    Description: descriptionText
-  });
-});
-
-test('Confirm format of name', () => {
-  // Stack
-  const stack = new Stack();
-  // Step function definition
-  const startState = new sfn.Pass(stack, 'StartState');
-  // Build state machine
-  const buildStateMachineResponse = defaults.buildStateMachine(stack, {
-    stateMachineName: 'myStateMachine',
-    definition: startState,
-  });
-  // Assertion
-  expect(buildStateMachineResponse.stateMachine).toBeDefined();
-
-  expect(stack).toHaveResource("AWS::StepFunctions::StateMachine", {
-    StateMachineName: "myStateMachine"
-  });
-
-  // Perform some fancy stuff to examine the specifics of the LogGroupName
-  const expectedPrefix = '/aws/vendedlogs/states/constructs/';
-  const lengthOfDatetimeSuffix = 13;
-
-  const LogGroup = Template.fromStack(stack).findResources("AWS::Logs::LogGroup");
-  const logName = LogGroup.StateMachineLogGroup15B91BCB.Properties.LogGroupName;
-  const suffix = logName.slice(-lengthOfDatetimeSuffix);
-
-  // Look for the expected Prefix and the 13 digit time suffix
-  expect(logName.slice(0, expectedPrefix.length)).toEqual(expectedPrefix);
-  expect(IsWholeNumber(suffix)).not.toBe(false);
-});
-
-function IsWholeNumber(target: string): boolean {
-  const numberPattern = /[0-9]{13}/;
-  return target.match(numberPattern) !== null;
-}

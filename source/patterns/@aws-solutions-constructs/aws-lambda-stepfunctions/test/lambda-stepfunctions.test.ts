@@ -19,7 +19,6 @@ import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { LambdaToStepfunctions } from '../lib';
 import '@aws-cdk/assert/jest';
-import { Template } from "aws-cdk-lib/assertions";
 
 // --------------------------------------------------------------
 // Test deployment with new Lambda function
@@ -463,40 +462,3 @@ test("Test bad call with existingVpc and deployVpc", () => {
   // Assertion
   expect(app).toThrowError();
 });
-
-test('check LogGroup name', () => {
-  // Stack
-  const stack = new Stack();
-  // Helper declaration
-  const startState = new stepfunctions.Pass(stack, 'StartState');
-  new LambdaToStepfunctions(stack, 'lambda-to-step-function-stack', {
-    lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      environment: {
-        LAMBDA_NAME: 'existing-function'
-      }
-    },
-    stateMachineProps: {
-      definition: startState
-    }
-  });
-  // Perform some fancy stuff to examine the specifics of the LogGroupName
-  const expectedPrefix = '/aws/vendedlogs/states/constructs/';
-  const lengthOfDatetimeSuffix = 13;
-
-  const LogGroup = Template.fromStack(stack).findResources("AWS::Logs::LogGroup");
-
-  const logName = LogGroup.lambdatostepfunctionstackStateMachineLogGroupEAD4854E.Properties.LogGroupName;
-  const suffix = logName.slice(-lengthOfDatetimeSuffix);
-
-  // Look for the expected Prefix and the 13 digit time suffix
-  expect(logName.slice(0, expectedPrefix.length)).toEqual(expectedPrefix);
-  expect(IsWholeNumber(suffix)).not.toBe(false);
-});
-
-function IsWholeNumber(target: string): boolean {
-  const numberPattern = /[0-9]{13}/;
-  return target.match(numberPattern) !== null;
-}

@@ -49,8 +49,7 @@ const constructProps: FargateToStepfunctionsProps = {
   existingFargateServiceObject: createFargateServiceResponse.service,
   createCloudWatchAlarms: false,
   logGroupProps: {
-    removalPolicy: RemovalPolicy.DESTROY,
-    logGroupName: "with-lambda"
+    removalPolicy: RemovalPolicy.DESTROY
   }
 };
 

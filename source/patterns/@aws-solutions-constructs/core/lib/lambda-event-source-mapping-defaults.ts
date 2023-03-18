@@ -11,11 +11,6 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 import { Construct } from 'constructs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { consolidateProps } from './utils';
@@ -31,9 +26,6 @@ export interface EventSourceProps {
   readonly sqsDlqQueueProps?: sqs.QueueProps
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function DynamoEventSourceProps(scope: Construct, _dynamoEventSourceProps?: EventSourceProps): DynamoEventSourceProps {
 
   const baseProps: DynamoEventSourceProps = {
@@ -61,9 +53,6 @@ export function DynamoEventSourceProps(scope: Construct, _dynamoEventSourceProps
   return consolidateProps(defaultDynamoEventSourceProps, _dynamoEventSourceProps?.eventSourceProps);
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function S3EventSourceProps(_s3EventSourceProps?: S3EventSourceProps) {
 
   const defaultS3EventSourceProps: S3EventSourceProps = {
@@ -73,9 +62,6 @@ export function S3EventSourceProps(_s3EventSourceProps?: S3EventSourceProps) {
   return consolidateProps(defaultS3EventSourceProps, _s3EventSourceProps);
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function KinesisEventSourceProps(scope: Construct, _kinesisEventSourceProps?: EventSourceProps): KinesisEventSourceProps {
   const baseProps: KinesisEventSourceProps = {
     startingPosition: lambda.StartingPosition.TRIM_HORIZON,

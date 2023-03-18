@@ -49,8 +49,7 @@ const constructProps: FargateToStepfunctionsProps = {
   existingFargateServiceObject: createFargateServiceResponse.service,
   stateMachineEnvironmentVariableName: 'CUSTOM_NAME',
   logGroupProps: {
-    removalPolicy: RemovalPolicy.DESTROY,
-    logGroupName: "with-lambda"
+    removalPolicy: RemovalPolicy.DESTROY
   }
 };
 

@@ -11,11 +11,6 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 import * as api from 'aws-cdk-lib/aws-apigateway';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import { FunctionEventType, IOrigin } from 'aws-cdk-lib/aws-cloudfront';
@@ -25,9 +20,6 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cdk from 'aws-cdk-lib';
 import {BehaviorOptions} from "aws-cdk-lib/aws-cloudfront/lib/distribution";
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint: api.RestApi,
   loggingBucket: s3.Bucket | undefined,
   setHttpSecurityHeaders: boolean,
@@ -55,9 +47,6 @@ export function DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint: 
   };
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function DefaultCloudFrontWebDistributionForS3Props(
   sourceBucket: s3.IBucket,
   loggingBucket: s3.Bucket | undefined,
@@ -91,9 +80,6 @@ export function DefaultCloudFrontWebDistributionForS3Props(
   };
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function DefaultCloudFrontDisributionForMediaStoreProps(mediastoreContainer: mediastore.CfnContainer,
   loggingBucket: s3.Bucket | undefined,
   originRequestPolicy: cloudfront.OriginRequestPolicy,

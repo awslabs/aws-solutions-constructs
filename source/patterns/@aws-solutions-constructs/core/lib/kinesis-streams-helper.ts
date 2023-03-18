@@ -11,11 +11,6 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 // Imports
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import { DefaultStreamProps } from './kinesis-streams-defaults';
@@ -41,9 +36,6 @@ export interface BuildKinesisStreamProps {
   readonly kinesisStreamProps?: kinesis.StreamProps
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function buildKinesisStream(scope: Construct, props: BuildKinesisStreamProps): kinesis.Stream {
 
   if (props.existingStreamObj) {
@@ -59,9 +51,6 @@ export function buildKinesisStream(scope: Construct, props: BuildKinesisStreamPr
   return new kinesis.Stream(scope, 'KinesisStream', kinesisStreamProps);
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function buildKinesisStreamCWAlarms(scope: Construct): cloudwatch.Alarm[] {
   // Setup CW Alarms for KinesisStream
   const alarms: cloudwatch.Alarm[] = new Array();

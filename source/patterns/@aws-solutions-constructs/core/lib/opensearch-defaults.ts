@@ -11,19 +11,11 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 import * as opensearch from 'aws-cdk-lib/aws-opensearchservice';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as cdk from 'aws-cdk-lib';
 import { BuildOpenSearchProps } from './opensearch-helper';
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
 export function DefaultOpenSearchCfnDomainProps(domainName: string, cognitoConfigureRole: iam.Role, props: BuildOpenSearchProps):
   opensearch.CfnDomainProps {
   const roleARNs: iam.IPrincipal[] = [];

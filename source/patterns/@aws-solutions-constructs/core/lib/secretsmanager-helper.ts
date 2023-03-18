@@ -11,11 +11,6 @@
  *  and limitations under the License.
  */
 
-/*
- *  The functions found here in the core library are for internal use and can be changed
- *  or removed outside of a major release. We recommend against calling them directly from client code.
- */
-
 import { Secret, SecretProps } from 'aws-cdk-lib/aws-secretsmanager';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
@@ -23,8 +18,6 @@ import { DefaultSecretProps } from './secretsmanager-defaults';
 import { consolidateProps, addCfnSuppressRules } from './utils';
 
 /**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- *
  * Method to build the default AWS Secrets Manager Secret
  *
  * @param scope
