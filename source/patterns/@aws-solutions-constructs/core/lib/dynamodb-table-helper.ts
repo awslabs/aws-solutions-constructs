@@ -11,6 +11,11 @@
  *  and limitations under the License.
  */
 
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import { DefaultTableProps, DefaultTableWithStreamProps } from './dynamodb-table-defaults';
 import { consolidateProps } from './utils';
@@ -61,6 +66,9 @@ export interface BuildDynamoDBTableResponse {
   readonly tableObject?: dynamodb.Table,
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildDynamoDBTable(scope: Construct, props: BuildDynamoDBTableProps): BuildDynamoDBTableResponse {
   checkTableProps(props);
 
@@ -76,6 +84,9 @@ export function buildDynamoDBTable(scope: Construct, props: BuildDynamoDBTablePr
   }
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function checkTableProps(props: BuildDynamoDBTableProps) {
   let errorMessages = '';
   let errorFound = false;
@@ -105,6 +116,9 @@ export interface BuildDynamoDBTableWithStreamResponse {
   readonly tableObject?: dynamodb.Table,
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildDynamoDBTableWithStream(scope: Construct, props: BuildDynamoDBTableWithStreamProps): BuildDynamoDBTableWithStreamResponse {
   // Conditional DynamoDB Table creation
   if (!props.existingTableInterface) {
@@ -117,6 +131,9 @@ export function buildDynamoDBTableWithStream(scope: Construct, props: BuildDynam
   }
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function getPartitionKeyNameFromTable(table: dynamodb.Table): string {
   const cfnTable = table.node.findChild('Resource') as dynamodb.CfnTable;
   const keySchema = cfnTable.keySchema as dynamodb.CfnTable.KeySchemaProperty[];

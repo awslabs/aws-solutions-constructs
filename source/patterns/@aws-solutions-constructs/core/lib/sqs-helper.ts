@@ -11,6 +11,11 @@
  *  and limitations under the License.
  */
 
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
 // Imports
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as defaults from './sqs-defaults';
@@ -67,6 +72,9 @@ export interface BuildQueueResponse {
   readonly key?: kms.IKey
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildQueue(scope: Construct, id: string, props: BuildQueueProps): BuildQueueResponse {
 
   if ((props.queueProps?.encryptionMasterKey || props.encryptionKey || props.encryptionKeyProps)
@@ -142,6 +150,9 @@ export interface BuildDeadLetterQueueProps {
   readonly maxReceiveCount?: number
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildDeadLetterQueue(scope: Construct, props: BuildDeadLetterQueueProps): sqs.DeadLetterQueue | undefined {
   if (!props.existingQueueObj && (props.deployDeadLetterQueue || props.deployDeadLetterQueue === undefined)) {
     // Create the Dead Letter Queue

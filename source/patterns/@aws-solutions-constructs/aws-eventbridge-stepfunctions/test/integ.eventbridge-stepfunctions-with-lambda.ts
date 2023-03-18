@@ -46,7 +46,8 @@ const props: EventbridgeToStepfunctionsProps = {
     schedule: events.Schedule.rate(Duration.minutes(5))
   },
   logGroupProps: {
-    removalPolicy: RemovalPolicy.DESTROY
+    removalPolicy: RemovalPolicy.DESTROY,
+    logGroupName: "with-lambda"
   },
 };
 

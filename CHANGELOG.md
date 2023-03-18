@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.34.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.33.0...v2.34.0) (2023-03-18)
+
+Built on CDK v2.68.0
+
+### Bug Fixes
+
+* **StepFunctions:** Address LogGroup behavior problems ([#922](https://github.com/awslabs/aws-solutions-constructs/issues/922)) ([84e581c](https://github.com/awslabs/aws-solutions-constructs/commit/84e581cad10f59daf827fb6e8f8101e1ec6b11f3))
+
 ## [2.33.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.32.0...v2.33.0) (2023-03-03)
 
 Build on CDK v2.67.0
