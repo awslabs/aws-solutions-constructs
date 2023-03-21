@@ -16,7 +16,6 @@ import { Stack, Duration } from "aws-cdk-lib";
 import * as defaults from '../';
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import { Template } from 'aws-cdk-lib/assertions';
-import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------
 // Test minimal deployment with no properties
