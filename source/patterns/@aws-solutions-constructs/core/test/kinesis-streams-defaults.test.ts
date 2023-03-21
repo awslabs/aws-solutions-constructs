@@ -15,7 +15,7 @@ import { Stack, Duration } from 'aws-cdk-lib';
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 test('test kinesisstream override RetentionPeriodHours', () => {
   const stack = new Stack();
@@ -30,7 +30,7 @@ test('test kinesisstream override RetentionPeriodHours', () => {
 
   new kinesis.Stream(stack, 'KinesisStream', outProps);
 
-  expect(stack).toHaveResource("AWS::Kinesis::Stream", {
+  Template.fromStack(stack).hasResourceProperties("AWS::Kinesis::Stream", {
     RetentionPeriodHours: 48
   });
 });

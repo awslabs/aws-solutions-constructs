@@ -17,7 +17,8 @@ import { CreateFargateService } from "..";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as ecs from "aws-cdk-lib/aws-ecs";
 import * as ecr from "aws-cdk-lib/aws-ecr";
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
+import { expectNonexistence } from './test-helper';
 
 test('Test with all defaults', () => {
   const stack = new Stack();
@@ -32,7 +33,8 @@ test('Test with all defaults', () => {
   expect(createFargateServiceResponse.containerDefinition).toBeDefined();
   expect(createFargateServiceResponse.service).toBeDefined();
 
-  expect(stack).toHaveResource("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     Cluster: {
       Ref: "testclusterDF8B0D19"
     },
@@ -69,7 +71,7 @@ test('Test with all defaults', () => {
       Ref: "testtaskdefF924AD58"
     }
   });
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Image: {
@@ -87,15 +89,15 @@ test('Test with all defaults', () => {
       }
     ],
   });
-  expect(stack).toHaveResourceLike("AWS::EC2::SecurityGroup", {
+  template.hasResourceProperties("AWS::EC2::SecurityGroup", {
     GroupDescription: 'Construct created security group'
   });
 
-  expect(stack).toCountResources("AWS::EC2::VPCEndpoint", 3);
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.resourceCountIs("AWS::EC2::VPCEndpoint", 3);
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Gateway",
   });
 
@@ -111,7 +113,8 @@ test('Test with all defaults in isolated VPC', () => {
     undefined,
     defaults.fakeEcrRepoArn);
 
-  expect(stack).toHaveResource("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     Cluster: {
       Ref: "testclusterDF8B0D19"
     },
@@ -148,7 +151,7 @@ test('Test with all defaults in isolated VPC', () => {
       Ref: "testtaskdefF924AD58"
     }
   });
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Image: {
@@ -167,11 +170,11 @@ test('Test with all defaults in isolated VPC', () => {
     ],
   });
 
-  expect(stack).toCountResources("AWS::EC2::VPCEndpoint", 3);
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.resourceCountIs("AWS::EC2::VPCEndpoint", 3);
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Gateway",
   });
 
@@ -193,7 +196,7 @@ test('Test with custom task definition', () => {
     }
   );
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  Template.fromStack(stack).hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Image: {
@@ -226,7 +229,7 @@ test('Test with custom container definition', () => {
     { cpu: 256, memoryLimitMiB: 512  }
   );
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  Template.fromStack(stack).hasResourceProperties("AWS::ECS::TaskDefinition", {
     Cpu: '256',
     Memory: '512'
   });
@@ -245,7 +248,7 @@ test('Test with custom cluster props', () => {
     undefined,
   );
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Cluster", {
+  Template.fromStack(stack).hasResourceProperties("AWS::ECS::Cluster", {
     ClusterName: clusterName,
   });
 });
@@ -266,7 +269,7 @@ test('Test with custom Fargate Service props', () => {
     { serviceName  }
   );
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  Template.fromStack(stack).hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName,
   });
 });
@@ -295,10 +298,11 @@ test('Test with custom security group', () => {
     { securityGroups: [ customSg ]  }
   );
 
-  expect(stack).toHaveResource("AWS::EC2::SecurityGroup", {
+  Template.fromStack(stack).hasResourceProperties("AWS::EC2::SecurityGroup", {
     GroupDescription: groupDescription,
   });
-  expect(stack).not.toHaveResource("AWS::EC2::SecurityGroup", {
+
+  expectNonexistence(stack, "AWS::EC2::SecurityGroup", {
     GroupDescription: 'Construct created security group',
   });
 });

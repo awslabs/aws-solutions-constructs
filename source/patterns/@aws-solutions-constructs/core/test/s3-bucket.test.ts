@@ -16,7 +16,8 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as kms from 'aws-cdk-lib/aws-kms';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
+import { expectNonexistence } from "./test-helper";
 
 test('test s3Bucket override versioningConfiguration', () => {
   const stack = new Stack();
@@ -29,7 +30,7 @@ test('test s3Bucket override versioningConfiguration', () => {
   const outProps = overrideProps(defaultProps, inProps);
   new s3.Bucket(stack, 'test-s3-verioning', outProps);
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::Bucket", {
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [
         {
@@ -60,7 +61,7 @@ test('test s3Bucket override bucketEncryption', () => {
   const outProps = overrideProps(defaultProps, inProps);
   new s3.Bucket(stack, 'test-s3-encryption', outProps);
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::Bucket", {
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [
         {
@@ -90,7 +91,7 @@ test('test s3Bucket override publicAccessBlockConfiguration', () => {
   const outProps = overrideProps(defaultProps, inProps);
   new s3.Bucket(stack, 'test-s3-publicAccessBlock', outProps);
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::Bucket", {
     PublicAccessBlockConfiguration: {
       BlockPublicAcls: true,
       IgnorePublicAcls: true
@@ -111,7 +112,7 @@ test('test s3Bucket add lifecycleConfiguration', () => {
   const outProps = overrideProps(defaultProps, inProps);
   new s3.Bucket(stack, 'test-s3-lifecycle', outProps);
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::Bucket", {
     LifecycleConfiguration: {
       Rules: [
         {
@@ -134,7 +135,7 @@ test('test s3Bucket override serverAccessLogsBucket', () => {
     bucketProps: myS3Props
   });
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::Bucket", {
     LoggingConfiguration: {
       DestinationBucketName: {
         Ref: "MyS3LoggingBucket119BE896"
@@ -150,7 +151,7 @@ test('test createAlbLoggingBucket()', () => {
     bucketName: 'test-name'
   });
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::Bucket", {
     BucketName: 'test-name'
   });
 });
@@ -164,7 +165,7 @@ test('Test bucket policy that only accepts SSL requests only', () => {
     }
   }, 'test-bucket');
 
-  expect(stack).toHaveResource("AWS::S3::BucketPolicy", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::BucketPolicy", {
     PolicyDocument: {
       Statement: [
         {
@@ -216,7 +217,7 @@ test('Test bucket policy that accepts any requests', () => {
     }
   }, 'test-bucket');
 
-  expect(stack).not.toHaveResource("AWS::S3::BucketPolicy", {
+  expectNonexistence(stack, "AWS::S3::BucketPolicy", {
     PolicyDocument: {
       Statement: [
         {
@@ -264,7 +265,7 @@ test('Test enforcing SSL when bucketProps is not provided', () => {
 
   defaults.buildS3Bucket(stack, {}, 'test-bucket');
 
-  expect(stack).toHaveResource("AWS::S3::BucketPolicy", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::BucketPolicy", {
     PolicyDocument: {
       Statement: [
         {
@@ -317,7 +318,7 @@ test('Test enforcing SSL when bucketProps is provided and enforceSSL is not set'
     }
   }, 'test-bucket');
 
-  expect(stack).toHaveResource("AWS::S3::BucketPolicy", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::BucketPolicy", {
     PolicyDocument: {
       Statement: [
         {

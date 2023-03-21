@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import '@aws-cdk/assert/jest';
 import * as log from 'npmlog';
 import * as process from 'process';
 import { flagOverriddenDefaults } from '../lib/override-warning-service';

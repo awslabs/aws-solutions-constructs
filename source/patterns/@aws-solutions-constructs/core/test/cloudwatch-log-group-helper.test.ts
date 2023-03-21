@@ -11,9 +11,8 @@
  *  and limitations under the License.
  */
 
-import { ResourcePart } from '@aws-cdk/assert';
+import { Template } from 'aws-cdk-lib/assertions';
 import { Stack } from 'aws-cdk-lib';
-import '@aws-cdk/assert/jest';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import { buildLogGroup } from '../lib/cloudwatch-log-group-helper';
 import * as kms from 'aws-cdk-lib/aws-kms';
@@ -27,7 +26,7 @@ test('override cw log group props with encryptionKey only', () => {
     encryptionKey: key
   });
 
-  expect(stack).toHaveResource('AWS::Logs::LogGroup', {
+  Template.fromStack(stack).hasResource('AWS::Logs::LogGroup', {
     Metadata: {
       cfn_nag: {
         rules_to_suppress: [
@@ -38,7 +37,7 @@ test('override cw log group props with encryptionKey only', () => {
         ]
       }
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 test('override cw log group props with retention period only', () => {
@@ -48,7 +47,7 @@ test('override cw log group props with retention period only', () => {
     retention: logs.RetentionDays.FIVE_DAYS
   });
 
-  expect(stack).toHaveResource('AWS::Logs::LogGroup', {
+  Template.fromStack(stack).hasResource('AWS::Logs::LogGroup', {
     Metadata: {
       cfn_nag: {
         rules_to_suppress: [
@@ -59,5 +58,5 @@ test('override cw log group props with retention period only', () => {
         ]
       }
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });

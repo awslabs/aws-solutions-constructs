@@ -14,7 +14,7 @@
 import { Stack } from 'aws-cdk-lib';
 import * as events from 'aws-cdk-lib/aws-events';
 import * as defaults from '../index';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 // --------------------------------------------------------------
 // Test deployment with no properties
@@ -29,7 +29,7 @@ test('Test deployment with no properties', () => {
     }
   });
 
-  expect(stack).not.toHaveResource("AWS::EventBridge::EventBus");
+  Template.fromStack(stack).resourceCountIs("AWS::EventBridge::EventBus", 0);
 });
 
 // --------------------------------------------------------------
@@ -43,7 +43,7 @@ test('Test deployment with existing EventBus', () => {
     existingEventBusInterface: new events.EventBus(stack, `existing-event-bus`, { eventBusName: 'test-bus' })
   });
 
-  expect(stack).toHaveResource('AWS::Events::EventBus');
+  Template.fromStack(stack).resourceCountIs('AWS::Events::EventBus', 1);
 });
 
 // --------------------------------------------------------------
@@ -59,7 +59,7 @@ test('Test deployment with new EventBus with props', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::Events::EventBus', {
+  Template.fromStack(stack).hasResourceProperties('AWS::Events::EventBus', {
     Name: 'testneweventbus'
   });
 });
