@@ -14,7 +14,7 @@
 import { Stack } from 'aws-cdk-lib';
 import * as cognito from 'aws-cdk-lib/aws-cognito';
 import * as defaults from '../index';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 test('Test override for buildUserPool', () => {
   const stack = new Stack();
@@ -26,7 +26,7 @@ test('Test override for buildUserPool', () => {
 
   defaults.buildUserPool(stack, userpoolProps);
 
-  expect(stack).toHaveResource('AWS::Cognito::UserPool', {
+  Template.fromStack(stack).hasResourceProperties('AWS::Cognito::UserPool', {
     UsernameAttributes: [
       "email",
       "phone_number"
@@ -50,7 +50,7 @@ test('Test override for buildUserPoolClient', () => {
 
   defaults.buildUserPoolClient(stack, userpool, userpoolclientProps);
 
-  expect(stack).toHaveResource('AWS::Cognito::UserPoolClient', {
+  Template.fromStack(stack).hasResourceProperties('AWS::Cognito::UserPoolClient', {
     UserPoolId: {
       Ref: "CognitoUserPool53E37E69"
     },
@@ -70,7 +70,7 @@ test('Test override for buildIdentityPool', () => {
     allowUnauthenticatedIdentities: true
   });
 
-  expect(stack).toHaveResource('AWS::Cognito::IdentityPool', {
+  Template.fromStack(stack).hasResourceProperties('AWS::Cognito::IdentityPool', {
     AllowUnauthenticatedIdentities: true,
     CognitoIdentityProviders: [
       {
@@ -105,11 +105,12 @@ test('Test setupCognitoForSearchService', () => {
     identitypool
   });
 
-  expect(stack).toHaveResource('AWS::Cognito::UserPoolDomain', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Cognito::UserPoolDomain', {
     Domain: "test-domain"
   });
 
-  expect(stack).toHaveResource('AWS::Cognito::IdentityPoolRoleAttachment', {
+  template.hasResourceProperties('AWS::Cognito::IdentityPoolRoleAttachment', {
     IdentityPoolId: {
       Ref: "CognitoIdentityPool"
     },
@@ -123,7 +124,7 @@ test('Test setupCognitoForSearchService', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::IAM::Role', {
+  template.hasResourceProperties('AWS::IAM::Role', {
     AssumeRolePolicyDocument: {
       Statement: [
         {

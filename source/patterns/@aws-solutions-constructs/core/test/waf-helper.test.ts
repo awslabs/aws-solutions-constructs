@@ -14,8 +14,7 @@
 import { Stack } from 'aws-cdk-lib';
 import * as waf from "aws-cdk-lib/aws-wafv2";
 import * as defaults from '..';
-import { SynthUtils } from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import { buildWebacl } from '..';
 
 // --------------------------------------------------------------
@@ -27,7 +26,8 @@ test('Test construct with default props', () => {
   // Build WAF web ACL
   defaults.buildWebacl(stack, 'REGIONAL', {});
 
-  expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::WAFv2::WebACL", {
     Scope: "REGIONAL",
     VisibilityConfig: {
       CloudWatchMetricsEnabled: true,
@@ -164,8 +164,8 @@ test('Test construct with default props', () => {
     ]
   });
 
-  expect(SynthUtils.toCloudFormation(stack)).toCountResources('AWS::WAFv2::WebACL', 1);
-  expect(SynthUtils.toCloudFormation(stack)).toCountResources('AWS::WAFv2::WebACLAssociation', 0);
+  template.resourceCountIs('AWS::WAFv2::WebACL', 1);
+  template.resourceCountIs('AWS::WAFv2::WebACLAssociation', 0);
 });
 
 // --------------------------------------------------------------
@@ -196,7 +196,7 @@ test('Test deployment w/ user provided custom properties', () => {
     webaclProps: props
   });
 
-  expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
+  Template.fromStack(stack).hasResourceProperties("AWS::WAFv2::WebACL", {
     Scope: "CLOUDFRONT",
     VisibilityConfig: {
       CloudWatchMetricsEnabled: false,

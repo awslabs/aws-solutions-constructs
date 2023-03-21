@@ -15,7 +15,7 @@ import { Stack } from 'aws-cdk-lib';
 import * as kinesisfirehose from 'aws-cdk-lib/aws-kinesisfirehose';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as kms from 'aws-cdk-lib/aws-kms';
 
 test('test kinesisanalytics override buffer conditions', () => {
@@ -37,7 +37,7 @@ test('test kinesisanalytics override buffer conditions', () => {
 
   new kinesisfirehose.CfnDeliveryStream(stack, 'KinesisFirehose', outProps);
 
-  expect(stack).toHaveResource("AWS::KinesisFirehose::DeliveryStream", {
+  Template.fromStack(stack).hasResourceProperties("AWS::KinesisFirehose::DeliveryStream", {
     ExtendedS3DestinationConfiguration: {
       BucketARN: "bucket_arn",
       BufferingHints: {

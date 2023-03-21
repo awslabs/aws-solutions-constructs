@@ -16,7 +16,7 @@ import { Stack } from 'aws-cdk-lib';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import { getPartitionKeyNameFromTable } from '../lib/dynamodb-table-helper';
 
 test('test TableProps change billing mode', () => {
@@ -37,7 +37,7 @@ test('test TableProps change billing mode', () => {
   const outProps = overrideProps(defaultProps, inProps);
   new dynamodb.Table(stack, 'test-dynamo-override', outProps);
 
-  expect(stack).toHaveResource("AWS::DynamoDB::Table", {
+  Template.fromStack(stack).hasResourceProperties("AWS::DynamoDB::Table", {
     KeySchema: [
       {
         AttributeName: "id",
@@ -79,7 +79,7 @@ test('test TableProps override add sort key', () => {
   const outProps = overrideProps(defaultProps, inProps);
   new dynamodb.Table(stack, 'test-dynamo-override', outProps);
 
-  expect(stack).toHaveResource("AWS::DynamoDB::Table", {
+  Template.fromStack(stack).hasResourceProperties("AWS::DynamoDB::Table", {
     KeySchema: [
       {
         AttributeName: "id",
@@ -123,7 +123,7 @@ test('test TableWithStreamProps override stream view type', () => {
   const outProps = overrideProps(defaultProps, inProps);
   new dynamodb.Table(stack, 'test-dynamo-override', outProps);
 
-  expect(stack).toHaveResource("AWS::DynamoDB::Table", {
+  Template.fromStack(stack).hasResourceProperties("AWS::DynamoDB::Table", {
     KeySchema: [
       {
         AttributeName: "id",

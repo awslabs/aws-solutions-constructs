@@ -14,8 +14,7 @@
 // Imports
 import { Stack } from "aws-cdk-lib";
 import * as defaults from '../';
-import { ResourcePart } from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 // --------------------------------------------------------------
 // Test minimal deployment with no properties
@@ -26,12 +25,12 @@ test('Test minimal deployment with no properties', () => {
   // Helper declaration
   defaults.buildEncryptionKey(stack);
 
-  expect(stack).toHaveResourceLike('AWS::KMS::Key', {
+  Template.fromStack(stack).hasResource('AWS::KMS::Key', {
     Type: "AWS::KMS::Key",
     Properties: {
       EnableKeyRotation: true
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 // --------------------------------------------------------------
@@ -45,10 +44,10 @@ test('Test minimal deployment with custom properties', () => {
     enableKeyRotation: false
   });
 
-  expect(stack).toHaveResourceLike('AWS::KMS::Key', {
+  Template.fromStack(stack).hasResource('AWS::KMS::Key', {
     Type: "AWS::KMS::Key",
     Properties: {
       EnableKeyRotation: false
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });

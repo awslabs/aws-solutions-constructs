@@ -13,7 +13,7 @@
 
 import {Stack} from 'aws-cdk-lib';
 import * as defaults from '../';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 // --------------------------------------------------------------
 // Test minimal deployment with no properties
@@ -25,7 +25,7 @@ test('Test minimal deployment with required properties', () => {
   const parameterValue = "test-val";
   defaults.buildSsmStringParameter(stack, 'parameterName', {stringValue: parameterValue});
 
-  expect(stack).toHaveResourceLike('AWS::SSM::Parameter', {
+  Template.fromStack(stack).hasResourceProperties('AWS::SSM::Parameter', {
     Type: 'String',
     Value: parameterValue
   });

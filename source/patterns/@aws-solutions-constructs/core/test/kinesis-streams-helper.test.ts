@@ -15,7 +15,7 @@
 import { Stack, Duration } from "aws-cdk-lib";
 import * as defaults from '../';
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
-import { ResourcePart } from '@aws-cdk/assert';
+import { Template } from 'aws-cdk-lib/assertions';
 import '@aws-cdk/assert/jest';
 
 // --------------------------------------------------------------
@@ -27,14 +27,14 @@ test('Test minimal deployment with no properties', () => {
   // Helper declaration
   defaults.buildKinesisStream(stack, {});
 
-  expect(stack).toHaveResourceLike('AWS::Kinesis::Stream', {
+  Template.fromStack(stack).hasResource('AWS::Kinesis::Stream', {
     Type: "AWS::Kinesis::Stream",
     Properties: {
       StreamEncryption: {
         EncryptionType: "KMS"
       }
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 // --------------------------------------------------------------
@@ -54,11 +54,12 @@ test('Test deployment w/ custom properties', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::Kinesis::Stream', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Kinesis::Stream', {
     Name: 'myCustomKinesisStream'
   });
   // Assertion 3
-  expect(stack).toHaveResource('AWS::KMS::Key', {
+  template.hasResourceProperties('AWS::KMS::Key', {
     EnableKeyRotation: true
   });
 });
@@ -85,7 +86,7 @@ test('Test deployment w/ existing stream', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::Kinesis::Stream', {
+  Template.fromStack(stack).hasResourceProperties('AWS::Kinesis::Stream', {
     ShardCount: 2,
     RetentionPeriodHours: 72
   });

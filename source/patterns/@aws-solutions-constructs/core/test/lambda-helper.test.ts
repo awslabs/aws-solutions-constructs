@@ -15,7 +15,7 @@ import { Stack } from "aws-cdk-lib";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as defaults from "../index";
-import "@aws-cdk/assert/jest";
+import { Template } from 'aws-cdk-lib/assertions';
 import { Duration } from "aws-cdk-lib";
 import * as iam from 'aws-cdk-lib/aws-iam';
 
@@ -30,7 +30,7 @@ test("test FunctionProps override code and runtime", () => {
 
   defaults.deployLambdaFunction(stack, inProps);
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  Template.fromStack(stack).hasResourceProperties("AWS::Lambda::Function", {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
@@ -51,7 +51,7 @@ test("test FunctionProps override timeout", () => {
 
   defaults.deployLambdaFunction(stack, inProps);
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  Template.fromStack(stack).hasResourceProperties("AWS::Lambda::Function", {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
@@ -72,7 +72,7 @@ test("test FunctionProps for environment variable when runtime = NODEJS", () => 
 
   defaults.deployLambdaFunction(stack, inProps);
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  Template.fromStack(stack).hasResourceProperties("AWS::Lambda::Function", {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
@@ -97,7 +97,7 @@ test("test FunctionProps when runtime = PYTHON", () => {
 
   defaults.deployLambdaFunction(stack, inProps);
 
-  expect(stack).toHaveResource(
+  Template.fromStack(stack).hasResourceProperties(
     "AWS::Lambda::Function",
     {
       Handler: "index.handler",
@@ -125,7 +125,7 @@ test("test buildLambdaFunction with deploy = true", () => {
     lambdaFunctionProps: inProps,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  Template.fromStack(stack).hasResourceProperties("AWS::Lambda::Function", {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
@@ -164,7 +164,7 @@ test("test buildLambdaFunction with FunctionProps", () => {
 
   defaults.deployLambdaFunction(stack, inProps);
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  Template.fromStack(stack).hasResourceProperties("AWS::Lambda::Function", {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
@@ -195,7 +195,7 @@ test("test buildLambdaFunction with Tracing Disabled", () => {
 
   defaults.deployLambdaFunction(stack, inProps);
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  Template.fromStack(stack).hasResourceProperties("AWS::Lambda::Function", {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
@@ -218,7 +218,7 @@ test("test buildLambdaFunction when Lambda properties includes a VPC", () => {
 
   defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 
-  expect(stack).toHaveResource("AWS::IAM::Policy", {
+  Template.fromStack(stack).hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -379,7 +379,7 @@ test('Test environment variable for NodeJS 14.x', () => {
   defaults.deployLambdaFunction(stack, inProps);
 
   // Assertion
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
     Role: {
       'Fn::GetAtt': ['LambdaFunctionServiceRole0C4CDE0B', 'Arn']
@@ -406,7 +406,7 @@ test('Test minimum deployment with an existing VPC as a vpc parameter in deployL
   defaults.deployLambdaFunction(stack, inProps, undefined, fakeVpc);
 
   // Assertion
-  expect(stack).toHaveResourceLike('AWS::Lambda::Function', {
+  Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -460,7 +460,7 @@ test('test buildLambdaFunction with lambdaFunctionProps default id', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike('AWS::Lambda::Function', {
+  Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
     Role: {
       'Fn::GetAtt': ['LambdaFunctionServiceRole0C4CDE0B', 'Arn'],
     },
@@ -479,7 +479,7 @@ test('test buildLambdaFunction with lambdaFunctionProps custom id', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike('AWS::Lambda::Function', {
+  Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
     Role: {
       'Fn::GetAtt': ['MyTestFunctionServiceRole37517223', 'Arn'],
     },

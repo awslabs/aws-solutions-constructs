@@ -406,8 +406,7 @@ test('Test for Exception while overriding LambdaRestApiProps using endPointTypes
 // -----------------------------------------------------------------------
 // Test for Integration Request Props Override
 // -----------------------------------------------------------------------
-// TODO: Remove Skip!
-test.skip('Test for Integration Request Props Override', () => {
+test('Test for Integration Request Props Override', () => {
   const stack = new Stack();
 
   const regionalRestApiResponse = defaults.RegionalRestApi(stack);
@@ -492,6 +491,12 @@ test.skip('Test for Integration Request Props Override', () => {
     MethodResponses: [
       {
         StatusCode: "200",
+        ResponseParameters: {
+          "method.response.header.Content-Type": true
+        }
+      },
+      {
+        StatusCode: "500",
         ResponseParameters: {
           "method.response.header.Content-Type": true
         }

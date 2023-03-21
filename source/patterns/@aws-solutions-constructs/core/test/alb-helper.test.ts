@@ -404,20 +404,6 @@ test('Test adding a HTTP listener', () => {
   template.resourceCountIs('AWS::ElasticLoadBalancingV2::Listener', 1);
 });
 
-test('Test sending custom logging bucket props', () => {
-  const stack = new Stack();
-
-  // Set up test framework independent of our code for unit testing
-  const testVpc = defaults.getTestVpc(stack);
-  const testAlb = CreateTestLoadBalancer(stack, testVpc);
-
-  const listener = defaults.AddListener(stack, 'test', testAlb, { protocol: 'HTTP' });
-
-  //  Need to add a target because a listener is not allowed to exist without a target or action
-  defaults.AddLambdaTarget(stack, 'dummy-target', listener, CreateTestFunction(stack, 'dummy-function'));
-  // TODO: add verification here
-});
-
 test('Test GetActiveListener with 0 listeners', () => {
   const stack = new Stack();
 
