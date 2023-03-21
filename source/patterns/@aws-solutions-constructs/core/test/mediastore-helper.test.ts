@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import { Stack } from 'aws-cdk-lib';
 import * as mediastore from 'aws-cdk-lib/aws-mediastore';
 import { MediaStoreContainer } from '../lib/mediastore-helper';
@@ -28,7 +28,7 @@ test('MediaStore container override params', () => {
   };
 
   MediaStoreContainer(stack, mediaStoreContainerProps);
-  expect(stack).toHaveResourceLike('AWS::MediaStore::Container', {
+  Template.fromStack(stack).hasResourceProperties('AWS::MediaStore::Container', {
     AccessLoggingEnabled: true,
     CorsPolicy: [
       {

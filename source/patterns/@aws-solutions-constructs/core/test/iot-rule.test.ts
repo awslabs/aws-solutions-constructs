@@ -15,7 +15,7 @@ import { Stack } from 'aws-cdk-lib';
 import * as iot from 'aws-cdk-lib/aws-iot';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 test('test TopicRuleProps override sql and description', () => {
   const stack = new Stack();
@@ -41,7 +41,7 @@ test('test TopicRuleProps override sql and description', () => {
 
   new iot.CfnTopicRule(stack, 'IotTopic', outProps);
 
-  expect(stack).toHaveResource('AWS::IoT::TopicRule', {
+  Template.fromStack(stack).hasResourceProperties('AWS::IoT::TopicRule', {
     TopicRulePayload: {
       Actions: [
         {
@@ -80,7 +80,7 @@ test('test TopicRuleProps override actions', () => {
 
   new iot.CfnTopicRule(stack, 'IotTopic', outProps);
 
-  expect(stack).toHaveResource('AWS::IoT::TopicRule', {
+  Template.fromStack(stack).hasResourceProperties('AWS::IoT::TopicRule', {
     TopicRulePayload: {
       Actions: [
         {

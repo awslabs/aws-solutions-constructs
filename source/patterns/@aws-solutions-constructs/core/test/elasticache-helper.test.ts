@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import "@aws-cdk/assert/jest";
+import { Template } from 'aws-cdk-lib/assertions';
 import { CreateTestCache, getTestVpc } from "./test-helper";
 import * as cdk from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
@@ -49,7 +49,7 @@ test("Test create cache with no client props", () => {
     cachePort: 11111,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ElastiCache::CacheCluster", {
+  Template.fromStack(stack).hasResourceProperties("AWS::ElastiCache::CacheCluster", {
     Port: 11111,
     AZMode: 'cross-az',
     Engine: 'memcached',
@@ -74,7 +74,7 @@ test("Test create cache with client props", () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::ElastiCache::CacheCluster", {
+  Template.fromStack(stack).hasResourceProperties("AWS::ElastiCache::CacheCluster", {
     Port: 12321,
     AZMode: 'single-az',
     Engine: 'memcached',

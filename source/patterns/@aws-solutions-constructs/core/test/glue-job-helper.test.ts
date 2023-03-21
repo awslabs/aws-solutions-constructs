@@ -12,8 +12,7 @@
  */
 
 // Imports
-import { ResourcePart } from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import { CfnJob, CfnJobProps } from 'aws-cdk-lib/aws-glue';
 import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
@@ -54,7 +53,7 @@ test('Test deployment with role creation', () => {
 
   expect(glueJob.bucket).toBeDefined();
   expect(glueJob.bucket).toBeInstanceOf(Bucket);
-  expect(stack).toHaveResourceLike('AWS::Glue::Job', {
+  Template.fromStack(stack).hasResource('AWS::Glue::Job', {
     Type: "AWS::Glue::Job",
     Properties: {
       Command: {
@@ -73,7 +72,7 @@ test('Test deployment with role creation', () => {
       SecurityConfiguration: "testETLJob",
       WorkerType: "G.1X"
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 // --------------------------------------------------------------
@@ -116,7 +115,7 @@ test('Create a Glue Job outside the construct', () => {
 
   expect(glueJob.bucket).not.toBeDefined();
   expect(glueJob.loggingBucket).not.toBeDefined();
-  expect(stack).toHaveResourceLike('AWS::Glue::Job', {
+  Template.fromStack(stack).hasResource('AWS::Glue::Job', {
     Type: "AWS::Glue::Job",
     Properties: {
       AllocatedCapacity: 2,
@@ -136,7 +135,7 @@ test('Create a Glue Job outside the construct', () => {
       },
       WorkerType: "Standard",
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 // --------------------------------------------------------------
@@ -177,8 +176,9 @@ test('Test custom deployment properties', () => {
     }], 'kinesis', {STREAM_NAME: 'testStream'})
   });
 
+  const template = Template.fromStack(stack);
   // check if Glue Job Resource was created correctly
-  expect(stack).toHaveResourceLike('AWS::Glue::Job', {
+  template.hasResource('AWS::Glue::Job', {
     Properties: {
       Command: {
         Name: "glueetl",
@@ -197,10 +197,10 @@ test('Test custom deployment properties', () => {
       WorkerType: "Standard",
     },
     Type: "AWS::Glue::Job"
-  }, ResourcePart.CompleteDefinition);
+  });
 
   // check if the role is created
-  expect(stack).toHaveResourceLike('AWS::IAM::Role',         {
+  template.hasResource('AWS::IAM::Role',         {
     Type: "AWS::IAM::Role",
     Properties: {
       AssumeRolePolicyDocument: {
@@ -217,10 +217,10 @@ test('Test custom deployment properties', () => {
       },
       Description: "Existing role"
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 
   // check if the security config is created
-  expect(stack).toHaveResourceLike('AWS::Glue::SecurityConfiguration', {
+  template.hasResource('AWS::Glue::SecurityConfiguration', {
     Properties: {
       EncryptionConfiguration: {
         JobBookmarksEncryption: {
@@ -249,7 +249,7 @@ test('Test custom deployment properties', () => {
       Name: "ETLJobSecurityConfig",
     },
     Type: "AWS::Glue::SecurityConfiguration",
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 // --------------------------------------------------------------
@@ -305,7 +305,7 @@ test('Test deployment with role creation', () => {
       comment: ""
     }], 'kinesis', {STREAM_NAME: 'testStream'})
   });
-  expect(stack).toHaveResourceLike('AWS::IAM::Role', {
+  Template.fromStack(stack).hasResource('AWS::IAM::Role', {
     Type: "AWS::IAM::Role",
     Properties: {
       AssumeRolePolicyDocument: {
@@ -320,7 +320,7 @@ test('Test deployment with role creation', () => {
       },
       Description: "Service role that Glue custom ETL jobs will assume for exeuction"
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 // --------------------------------------------------------------
@@ -359,7 +359,7 @@ test('Test deployment with role creation', () => {
       comment: ""
     }], 'kinesis', {STREAM_NAME: 'testStream'})
   });
-  expect(stack).toHaveResourceLike('AWS::S3::Bucket', {
+  Template.fromStack(stack).hasResource('AWS::S3::Bucket', {
     Type: 'AWS::S3::Bucket',
     Properties: {
       BucketEncryption: {
@@ -373,7 +373,7 @@ test('Test deployment with role creation', () => {
     },
     UpdateReplacePolicy: "Delete",
     DeletionPolicy: "Delete"
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 // --------------------------------------------------------------

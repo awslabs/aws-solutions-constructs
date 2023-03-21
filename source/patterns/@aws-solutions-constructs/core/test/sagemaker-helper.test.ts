@@ -16,7 +16,7 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 import * as kms from 'aws-cdk-lib/aws-kms';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as defaults from '../';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 test('Test deployment with VPC', () => {
   // Stack
@@ -74,7 +74,7 @@ test('Test deployment w/ existing VPC', () => {
   expect(buildSagemakerNotebookResponse.vpc).not.toBeDefined();
   expect(buildSagemakerNotebookResponse.securityGroup).not.toBeDefined();
 
-  expect(stack).toHaveResource('AWS::SageMaker::NotebookInstance', {
+  Template.fromStack(stack).hasResourceProperties('AWS::SageMaker::NotebookInstance', {
     DirectInternetAccess: 'Disabled',
     SecurityGroupIds: ['sg-deadbeef'],
     SubnetId: 'subnet-deadbeef',
@@ -96,7 +96,7 @@ test('Test deployment w/ override', () => {
       kmsKeyId: key.keyArn,
     },
   });
-  expect(stack).toHaveResource('AWS::SageMaker::NotebookInstance', {
+  Template.fromStack(stack).hasResourceProperties('AWS::SageMaker::NotebookInstance', {
     DirectInternetAccess: 'Disabled',
     InstanceType: 'ml.c4.2xlarge',
     KmsKeyId: {

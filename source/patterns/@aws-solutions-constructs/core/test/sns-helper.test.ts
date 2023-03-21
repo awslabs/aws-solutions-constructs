@@ -14,8 +14,7 @@
 // Imports
 import { Stack } from "aws-cdk-lib";
 import * as defaults from '../';
-import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as kms from 'aws-cdk-lib/aws-kms';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import { expectKmsKeyAttachedToCorrectResource } from "../";
@@ -31,7 +30,7 @@ test('Test deployment with no properties using AWS Managed KMS Key', () => {
 
   expect(buildTopicResponse.topic).toBeDefined();
   expect(buildTopicResponse.key).toBeDefined();
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  Template.fromStack(stack).hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::Join": [
         "",
@@ -69,11 +68,12 @@ test('Test deployment without imported encryption key', () => {
     enableEncryptionWithCustomerManagedKey: true
   });
 
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     TopicName: "custom-topic"
   });
   // Assertion 3
-  expect(stack).toHaveResource("AWS::KMS::Key", {
+  template.hasResourceProperties("AWS::KMS::Key", {
     EnableKeyRotation: true
   });
 });
@@ -98,7 +98,7 @@ test('Test deployment w/ imported encryption key', () => {
   expect(buildTopicResponse.topic).toBeDefined();
   expect(buildTopicResponse.key).toBeDefined();
 
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  Template.fromStack(stack).hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "EncryptionKey1B843E66",
@@ -116,7 +116,7 @@ test('enableEncryptionWithCustomerManagedKey flag is ignored when encryptionKey 
     encryptionKey: defaults.buildEncryptionKey(stack)
   });
 
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  Template.fromStack(stack).hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "EncryptionKey1B843E66",
@@ -135,7 +135,7 @@ test('enableEncryptionWithCustomerManagedKey flag is ignored when topicProps.mas
     }
   });
 
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  Template.fromStack(stack).hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "EncryptionKey1B843E66",
@@ -155,7 +155,8 @@ test('enableEncryptionWithCustomerManagedKey flag is ignored when encryptionKeyP
     },
   });
 
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "EncryptionKey1B843E66",
@@ -164,7 +165,7 @@ test('enableEncryptionWithCustomerManagedKey flag is ignored when encryptionKeyP
     }
   });
 
-  expect(stack).toHaveResource("AWS::KMS::Key", {
+  template.hasResourceProperties("AWS::KMS::Key", {
     Description: description
   });
 });
@@ -178,7 +179,7 @@ test('encryptionProps are set correctly on the SNS Topic', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::KMS::Key", {
+  Template.fromStack(stack).hasResourceProperties("AWS::KMS::Key", {
     Description: description
   });
 });
@@ -187,7 +188,8 @@ test('Check SNS Topic policy', () => {
   const stack = new Stack();
   defaults.buildTopic(stack, {});
 
-  expectCDK(stack).to(haveResource("AWS::SNS::TopicPolicy", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::TopicPolicy", {
     PolicyDocument: {
       Statement: [
         {
@@ -262,7 +264,7 @@ test('Check SNS Topic policy', () => {
       ],
       Version: "2012-10-17"
     },
-  }));
+  });
 });
 
 test('existing topic encrypted with CMK is not overridden by defaults', () => {
@@ -284,8 +286,9 @@ test('existing topic encrypted with CMK is not overridden by defaults', () => {
   expectKmsKeyAttachedToCorrectResource(stack, 'AWS::SNS::Topic', 'new-key-description');
 
   // Make sure the construct did not create any other topics or keys created
-  expect(stack).toCountResources('AWS::KMS::Key', 1);
-  expect(stack).toCountResources('AWS::SNS::Topic', 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::KMS::Key', 1);
+  template.resourceCountIs('AWS::SNS::Topic', 1);
 });
 
 test('existing unencrypted topic is not overridden with defaults', () => {
@@ -300,6 +303,7 @@ test('existing unencrypted topic is not overridden with defaults', () => {
   expect(buildBuildTopicResponse.topic).toBeDefined();
   expect(buildBuildTopicResponse.key).not.toBeDefined();
   // Make sure the construct did not create any other topics and that no keys exist
-  expect(stack).toCountResources('AWS::KMS::Key', 0);
-  expect(stack).toCountResources('AWS::SNS::Topic', 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::KMS::Key', 0);
+  template.resourceCountIs('AWS::SNS::Topic', 1);
 });

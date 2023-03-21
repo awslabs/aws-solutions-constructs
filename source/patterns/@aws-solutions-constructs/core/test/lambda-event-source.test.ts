@@ -15,7 +15,7 @@ import * as defaults from '../index';
 import { DynamoEventSourceProps, KinesisEventSourceProps, SqsDlq } from 'aws-cdk-lib/aws-lambda-event-sources';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import { Duration, Stack } from 'aws-cdk-lib';
 
 test('test DynamoEventSourceProps with defaults', () => {
@@ -141,7 +141,7 @@ test('test sqsDlqQueueProps override', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  Template.fromStack(stack).hasResourceProperties("AWS::SQS::Queue", {
     QueueName: "hello-world",
     VisibilityTimeout: 50
   });
