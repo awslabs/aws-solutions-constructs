@@ -117,6 +117,7 @@ export class CloudFrontToS3 extends Construct {
         logS3AccessLogs: props.logS3AccessLogs
       });
       this.s3Bucket = buildS3BucketResponse.bucket;
+      this.s3LoggingBucket = buildS3BucketResponse.loggingBucket;
       bucket = this.s3Bucket;
     } else {
       bucket = props.existingBucketObj;
