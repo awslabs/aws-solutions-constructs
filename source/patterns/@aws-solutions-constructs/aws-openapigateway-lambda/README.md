@@ -90,11 +90,10 @@ new ApiGatewayToLambda(this, "ApiGatewayToLambdaPattern", new ApiGatewayToLambda
 |existingLambdaObj?|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html)|Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.|
 |lambdaFunctionProps?|[`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html)|User provided props to override the default props for the Lambda function.|
 |apiGatewayProps?|[`apigateway.RestApiBaseProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.RestApiBaseProps.html)|Optional user-provided props to override the default props for the API.|
-|openApiSpecInputBucket|`string`|S3 Bucket that holds the input OpenAPI spec file.|
-|openApiSpecInputKey|`string`|S3 Object Key of the input OpenAPI spec file.|
-|openApiSpecOutputBucket?|`string`|Optional S3 Bucket that holds the output (transformed) OpenAPI spec file that will be the input to the SpecRestApi. Defaults to the bucket specified in the `openApiSpecInputBucket` required property.|
-|openApiSpecOutputKey|`string`|Optional S3 object key of the output OpenAPI spec file. Defaults to `openapi.spec`.|
-|openApiSpecUriPlaceholder|`string`|Optional placeholder string that will be overwritten with the actual uri at deploy time. Defaults to `URI_PLACEHOLDER`. For example, if the openapi spec uses the `URI_PLACEHOLDER` string, it will be automatically transformed to: `arn:${partition}:apigateway:${region}:lambda:path/2015-03-31/functions/${lambdaProxyArn}/invocations`.|
+|openApiSpecBucket?|`string`|S3 Bucket where the open-api spec file is located. When specifying this property, `openApiSpecKey` must also be specified.|
+|openApiSpecKey?|`string`|S3 Object name of the open-api spec file. When specifying this property, `openApiSpecBucket` must also be specified.|
+|openApiSpecAsset?|[`aws_s3_assets.Asset`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3_assets.Asset.html)|Local file asset of the open-api spec file.|
+|openApiSpecUriPlaceholder?|`string`|Optional placeholder string that will be overwritten with the actual uri at deploy time. Defaults to `URI_PLACEHOLDER`. For example, if the openapi spec uses the `URI_PLACEHOLDER` string, it will be automatically transformed to: `arn:${partition}:apigateway:${region}:lambda:path/2015-03-31/functions/${lambdaProxyArn}/invocations`.|
 |logGroupProps?|[`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html)|User provided props to override the default props for for the CloudWatchLogs LogGroup.|
 
 ## Pattern Properties
@@ -105,6 +104,32 @@ new ApiGatewayToLambda(this, "ApiGatewayToLambdaPattern", new ApiGatewayToLambda
 |apiGateway|[`api.LambdaRestApi`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_openapigateway.LambdaRestApi.html)|Returns an instance of the API Gateway REST API created by the pattern.|
 |apiGatewayCloudWatchRole?|[`iam.Role`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html)|Returns an instance of the iam.Role created by the construct for API Gateway for CloudWatch access.|
 |apiGatewayLogGroup|[`logs.LogGroup`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroup.html)|Returns an instance of the LogGroup created by the construct for API Gateway access logging to CloudWatch.|
+
+## Overview of how the OpenAPI file transformation works
+This construct automatically transforms an incoming OpenAPI specification by auto-populating the `uri` fields of the `x-amazon-apigateway-integration` integrations with the resolved value of the backing lambda function. 
+
+Consider the following spec that creates `GET` and `POST` methods on a `/messages` resource. The construct will transform the `URI_PLACEHOLDER` string to the fully resolved lambda proxy uri, e.g., `arn:${partition}:apigateway:${region}:lambda:path/2015-03-31/functions/${lambdaProxyArn}/invocations`, resulting in a valid OpenAPI spec file that is then passed to the `SpecRestApi` construct.
+
+```
+openapi: "3.0.1"
+info:
+  title: "api"
+  version: "2023-02-20T20:46:08Z"
+paths:
+  /messages:
+    get:
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: URI_PLACEHOLDER
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+    post:
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: URI_PLACEHOLDER
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+```
 
 ## Default settings
 
