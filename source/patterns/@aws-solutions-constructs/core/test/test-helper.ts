@@ -164,7 +164,7 @@ export function expectKmsKeyAttachedToCorrectResource(stack: Stack, parentResour
   });
 
   const [ logicalId ] = Object.keys(resource);
-  expect(stack).toHaveResource(parentResourceType, {
+  Template.fromStack(stack).hasResourceProperties(parentResourceType, {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         logicalId,
@@ -172,4 +172,9 @@ export function expectKmsKeyAttachedToCorrectResource(stack: Stack, parentResour
       ]
     }
   });
+}
+
+export function expectNonexistence(stack: Stack, type: string, props: object) {
+  const shouldFindNothing = Template.fromStack(stack).findResources(type, props);
+  expect(Object.keys(shouldFindNothing).length).toEqual(0);
 }

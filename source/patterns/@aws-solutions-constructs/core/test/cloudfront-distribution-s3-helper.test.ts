@@ -11,13 +11,12 @@
  *  and limitations under the License.
  */
 
-import { ResourcePart } from '@aws-cdk/assert';
+import { Template } from 'aws-cdk-lib/assertions';
 import { Stack } from 'aws-cdk-lib';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { CloudFrontDistributionForS3 } from '../lib/cloudfront-distribution-helper';
 import { buildS3Bucket } from '../lib/s3-bucket-helper';
-import '@aws-cdk/assert/jest';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import { LambdaEdgeEventType } from 'aws-cdk-lib/aws-cloudfront';
@@ -27,7 +26,7 @@ test('check bucket policy metadata', () => {
   const stack = new Stack();
   const buildS3BucketResponse = buildS3Bucket(stack, {});
   CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket);
-  expect(stack).toHaveResource('AWS::S3::BucketPolicy', {
+  Template.fromStack(stack).hasResource('AWS::S3::BucketPolicy', {
     Metadata: {
       cfn_nag: {
         rules_to_suppress: [
@@ -38,14 +37,14 @@ test('check bucket policy metadata', () => {
         ]
       }
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 test('check bucket metadata', () => {
   const stack = new Stack();
   const buildS3BucketResponse = buildS3Bucket(stack, {});
   CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket);
-  expect(stack).toHaveResource('AWS::S3::Bucket', {
+  Template.fromStack(stack).hasResource('AWS::S3::Bucket', {
     Metadata: {
       cfn_nag: {
         rules_to_suppress: [
@@ -56,7 +55,7 @@ test('check bucket metadata', () => {
         ]
       }
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 test('test cloudfront check bucket policy', () => {
@@ -64,7 +63,7 @@ test('test cloudfront check bucket policy', () => {
   const buildS3BucketResponse = buildS3Bucket(stack, {});
   CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket);
 
-  expect(stack).toHaveResourceLike("AWS::S3::BucketPolicy", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::BucketPolicy", {
     PolicyDocument: {
       Statement: [
         {
@@ -139,7 +138,7 @@ test('test cloudfront with no security headers ', () => {
 
   CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, {}, false);
 
-  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+  Template.fromStack(stack).hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
@@ -199,7 +198,7 @@ test('test cloudfront override cloudfront logging bucket ', () => {
 
   CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, myprops);
 
-  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+  Template.fromStack(stack).hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
@@ -272,7 +271,7 @@ test('test cloudfront override properties', () => {
 
   CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, props);
 
-  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+  Template.fromStack(stack).hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [
@@ -366,7 +365,7 @@ test('test override cloudfront with custom cloudfront function', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::CloudFront::Distribution", {
+  Template.fromStack(stack).hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
@@ -454,7 +453,7 @@ test('test override cloudfront replace custom lambda@edge', () => {
   },
   false);
 
-  expect(stack).toHaveResource("AWS::CloudFront::Distribution", {
+  Template.fromStack(stack).hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
@@ -523,7 +522,7 @@ test('test cloudfront override cloudfront custom domain names ', () => {
 
   CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, myprops);
 
-  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+  Template.fromStack(stack).hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       Aliases: [
         "mydomains"

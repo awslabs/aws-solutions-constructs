@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import "@aws-cdk/assert/jest";
 import { GetDefaultCachePort, GetMemcachedDefaults } from "../lib/elasticache-defaults";
 
 test("Test GetDefaultCachePort()", () => {

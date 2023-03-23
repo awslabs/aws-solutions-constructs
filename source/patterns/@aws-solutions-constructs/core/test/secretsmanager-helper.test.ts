@@ -13,8 +13,7 @@
 
 import {RemovalPolicy, Stack} from 'aws-cdk-lib';
 import * as defaults from '../';
-import {ResourcePart} from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 const DESCRIPTION = 'test secret description';
 const SECRET_NAME = 'test secret name';
@@ -28,11 +27,11 @@ test('Test minimal deployment with no properties', () => {
   // Helper declaration
   defaults.buildSecretsManagerSecret(stack, 'secret', {});
 
-  expect(stack).toHaveResourceLike('AWS::SecretsManager::Secret', {
+  Template.fromStack(stack).hasResource('AWS::SecretsManager::Secret', {
     Type: 'AWS::SecretsManager::Secret',
     UpdateReplacePolicy: 'Retain',
     DeletionPolicy: 'Retain'
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 // --------------------------------------------------------------
@@ -48,7 +47,7 @@ test('Test deployment with custom properties', () => {
     removalPolicy: RemovalPolicy.DESTROY,
   });
   // Assertion 1
-  expect(stack).toHaveResourceLike('AWS::SecretsManager::Secret', {
+  Template.fromStack(stack).hasResource('AWS::SecretsManager::Secret', {
     Type: 'AWS::SecretsManager::Secret',
     UpdateReplacePolicy: 'Delete',
     DeletionPolicy: 'Delete',
@@ -56,5 +55,5 @@ test('Test deployment with custom properties', () => {
       Name: SECRET_NAME,
       Description: DESCRIPTION
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });

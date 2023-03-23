@@ -20,7 +20,7 @@ import * as kms from "aws-cdk-lib/aws-kms";
 import * as logs from "aws-cdk-lib/aws-logs";
 import * as defaults from "../index";
 import { overrideProps } from "../lib/utils";
-import "@aws-cdk/assert/jest";
+import { Template } from 'aws-cdk-lib/assertions';
 
 test("test kinesisanalytics override inputProperty", () => {
   const stack = new Stack();
@@ -44,7 +44,7 @@ test("test kinesisanalytics override inputProperty", () => {
 
   new kinesisanalytics.CfnApplication(stack, "KinesisAnalytics", outProps);
 
-  expect(stack).toHaveResource("AWS::KinesisAnalytics::Application", {
+  Template.fromStack(stack).hasResourceProperties("AWS::KinesisAnalytics::Application", {
     Inputs: [
       {
         InputSchema: {
@@ -94,7 +94,7 @@ test("Test default implementation", () => {
 
   defaults.buildKinesisAnalyticsApp(stack, kinesisProps);
 
-  expect(stack).toHaveResourceLike("AWS::KinesisAnalytics::Application", {
+  Template.fromStack(stack).hasResourceProperties("AWS::KinesisAnalytics::Application", {
     Inputs: [{
       InputSchema: {
         RecordColumns: [{

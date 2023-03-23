@@ -18,9 +18,9 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '../index';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { CloudFrontDistributionForApiGateway } from '../lib/cloudfront-distribution-helper';
-import '@aws-cdk/assert/jest';
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import { LambdaEdgeEventType } from 'aws-cdk-lib/aws-cloudfront';
+import { Template } from 'aws-cdk-lib/assertions';
 
 test('test cloudfront for Api Gateway with user provided logging bucket', () => {
   const stack = new Stack();
@@ -45,7 +45,7 @@ test('test cloudfront for Api Gateway with user provided logging bucket', () => 
   });
 
   CloudFrontDistributionForApiGateway(stack, _api, cfdProps);
-  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+  Template.fromStack(stack).hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
@@ -169,7 +169,7 @@ test('test cloudfront for Api Gateway override properties', () => {
 
   CloudFrontDistributionForApiGateway(stack, _api, props);
 
-  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+  Template.fromStack(stack).hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [
@@ -280,7 +280,7 @@ test('test override cloudfront add custom cloudfront function', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::CloudFront::Distribution", {
+  Template.fromStack(stack).hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
@@ -419,7 +419,7 @@ test('test override cloudfront replace custom lambda@edge', () => {
   },
   false);
 
-  expect(stack).toHaveResource("AWS::CloudFront::Distribution", {
+  Template.fromStack(stack).hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",

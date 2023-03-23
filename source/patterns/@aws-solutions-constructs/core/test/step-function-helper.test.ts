@@ -14,7 +14,6 @@
 // Imports
 import { Stack, Aws } from "aws-cdk-lib";
 import * as defaults from '../';
-import '@aws-cdk/assert/jest';
 import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import { buildLogGroup } from '../lib/cloudwatch-log-group-helper';
 import * as iam from 'aws-cdk-lib/aws-iam';
@@ -32,9 +31,10 @@ test('Test deployment w/ custom properties', () => {
   });
   // Assertion
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
-  expect(stack).toCountResources("AWS::Logs::LogGroup", 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::Logs::LogGroup", 1);
 
-  expect(stack).toHaveResource("AWS::StepFunctions::StateMachine", {
+  template.hasResourceProperties("AWS::StepFunctions::StateMachine", {
     StateMachineName: "myStateMachine"
   });
 });
@@ -57,11 +57,12 @@ test('Test deployment w/ logging enabled', () => {
     }
   });
   // Assertion
-  expect(stack).toCountResources("AWS::Logs::LogGroup", 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::Logs::LogGroup", 1);
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
 
-  expect(stack).toHaveResource("AWS::StepFunctions::StateMachine", {
+  template.hasResourceProperties("AWS::StepFunctions::StateMachine", {
     LoggingConfiguration: {
       Destinations: [{
         CloudWatchLogsLogGroup: {
@@ -90,7 +91,7 @@ test('Check default Cloudwatch permissions', () => {
   // Assertion
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
-  expect(stack).toHaveResource("AWS::IAM::Policy", {
+  Template.fromStack(stack).hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -182,10 +183,11 @@ test('Test deployment with custom role', () => {
   });
 
   // Assertion
-  expect(stack).toCountResources("AWS::IAM::Role", 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::IAM::Role", 1);
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
 
-  expect(stack).toHaveResource("AWS::IAM::Role", {
+  template.hasResourceProperties("AWS::IAM::Role", {
     Description: descriptionText
   });
 });
@@ -203,7 +205,8 @@ test('Confirm format of name', () => {
   // Assertion
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
 
-  expect(stack).toHaveResource("AWS::StepFunctions::StateMachine", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::StepFunctions::StateMachine", {
     StateMachineName: "myStateMachine"
   });
 
@@ -211,7 +214,7 @@ test('Confirm format of name', () => {
   const expectedPrefix = '/aws/vendedlogs/states/constructs/';
   const lengthOfDatetimeSuffix = 13;
 
-  const LogGroup = Template.fromStack(stack).findResources("AWS::Logs::LogGroup");
+  const LogGroup = template.findResources("AWS::Logs::LogGroup");
   const logName = LogGroup.StateMachineLogGroup15B91BCB.Properties.LogGroupName;
   const suffix = logName.slice(-lengthOfDatetimeSuffix);
 

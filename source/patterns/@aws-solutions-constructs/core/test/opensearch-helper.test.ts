@@ -14,7 +14,7 @@
 import { Stack } from 'aws-cdk-lib';
 import * as opensearch from 'aws-cdk-lib/aws-opensearchservice';
 import * as defaults from '../index';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import { BuildOpenSearchResponse } from '../index';
 
@@ -61,7 +61,7 @@ test('Test override SnapshotOptions for buildOpenSearch', () => {
 
   expect(buildOpenSearchResponse.domain).toBeDefined();
   expect(buildOpenSearchResponse.role).toBeDefined();
-  expect(stack).toHaveResource('AWS::OpenSearchService::Domain', {
+  Template.fromStack(stack).hasResourceProperties('AWS::OpenSearchService::Domain', {
     AccessPolicies: {
       Statement: [
         {
@@ -151,7 +151,7 @@ test('Test VPC with 1 AZ, Zone Awareness Disabled', () => {
     }
   }, undefined, vpc);
 
-  expect(stack).toHaveResourceLike('AWS::OpenSearchService::Domain', {
+  Template.fromStack(stack).hasResourceProperties('AWS::OpenSearchService::Domain', {
     DomainName: "test-domain",
     ClusterConfig: {
       DedicatedMasterCount: 3,
@@ -173,7 +173,7 @@ test('Test VPC with 2 AZ, Zone Awareness Enabled', () => {
 
   expect(buildOpenSearchResponse.domain).toBeDefined();
   expect(buildOpenSearchResponse.role).toBeDefined();
-  expect(stack).toHaveResourceLike('AWS::OpenSearchService::Domain', {
+  Template.fromStack(stack).hasResourceProperties('AWS::OpenSearchService::Domain', {
     DomainName: "test-domain",
     ClusterConfig: {
       DedicatedMasterCount: 3,
@@ -193,7 +193,7 @@ test('Test VPC with 3 AZ, Zone Awareness Enabled', () => {
 
   buildTestOpenSearchDomain(stack, 'test-domain', {}, undefined, vpc);
 
-  expect(stack).toHaveResourceLike('AWS::OpenSearchService::Domain', {
+  Template.fromStack(stack).hasResourceProperties('AWS::OpenSearchService::Domain', {
     DomainName: "test-domain",
     ClusterConfig: {
       DedicatedMasterCount: 3,
@@ -225,7 +225,7 @@ test('Test deployment with an existing private VPC', () => {
 
   buildTestOpenSearchDomain(stack, 'test-domain', {}, undefined, vpc);
 
-  expect(stack).toHaveResourceLike('AWS::OpenSearchService::Domain', {
+  Template.fromStack(stack).hasResourceProperties('AWS::OpenSearchService::Domain', {
     DomainName: "test-domain",
     ClusterConfig: {
       DedicatedMasterCount: 3,
@@ -265,7 +265,7 @@ test('Test engine version override for buildOpenSearch', () => {
     engineVersion: 'OpenSearch_1.0'
   });
 
-  expect(stack).toHaveResource('AWS::OpenSearchService::Domain', {
+  Template.fromStack(stack).hasResourceProperties('AWS::OpenSearchService::Domain', {
     AccessPolicies: {
       Statement: [
         {
@@ -349,7 +349,7 @@ test('Test deployment with lambdaRoleARN', () => {
 
   expect(buildOpenSearchResponse.domain).toBeDefined();
   expect(buildOpenSearchResponse.role).toBeDefined();
-  expect(stack).toHaveResource('AWS::OpenSearchService::Domain', {
+  Template.fromStack(stack).hasResourceProperties('AWS::OpenSearchService::Domain', {
     AccessPolicies: {
       Statement: [
         {
