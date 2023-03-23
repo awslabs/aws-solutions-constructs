@@ -16,7 +16,8 @@ import { Stack } from "aws-cdk-lib";
 import { ApiGatewayToLambda, ApiGatewayToLambdaProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as api from 'aws-cdk-lib/aws-apigateway';
-import '@aws-cdk/assert/jest';
+import { Template } from "aws-cdk-lib/assertions";
+import * as defaults from '@aws-solutions-constructs/core';
 
 // --------------------------------------------------------------
 // Test for error with existingLambdaObj=undefined (not supplied by user).
@@ -54,7 +55,8 @@ test('Test with lambdaFunctionProps', () => {
   };
   new ApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
 
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Environment: {
       Variables: {
         OVERRIDE_STATUS: "true",
@@ -121,7 +123,8 @@ test('Test deployment ApiGateway AuthorizationType override', () => {
     }
   });
   // Assertion 1
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     HttpMethod: "ANY",
     AuthorizationType: "NONE"
   });
@@ -145,5 +148,5 @@ test('Test deployment ApiGateway override cloudWatchRole = false', () => {
     }
   });
   // Assertion 1
-  expect(stack).not.toHaveResource("AWS::ApiGateway::Account", {});
+  defaults.expectNonexistence(stack, "AWS::ApiGateway::Account", {});
 });

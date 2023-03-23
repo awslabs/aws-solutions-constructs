@@ -435,7 +435,7 @@ test('test s3Bucket removalPolicy override', () => {
     },
   }, 'test-bucket');
 
-  Template.fromStack(stack).hasResource("AWS::S3::Bucket", {
+  template.hasResource("AWS::S3::Bucket", {
     Type: 'AWS::S3::Bucket',
     Properties: {
       AccessControl: "LogDeliveryWrite"

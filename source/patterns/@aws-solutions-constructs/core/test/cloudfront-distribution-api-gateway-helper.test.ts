@@ -45,7 +45,7 @@ test('test cloudfront for Api Gateway with user provided logging bucket', () => 
   });
 
   CloudFrontDistributionForApiGateway(stack, _api, cfdProps);
-  Template.fromStack(stack).hasResourceProperties("AWS::CloudFront::Distribution", {
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
@@ -169,7 +169,7 @@ test('test cloudfront for Api Gateway override properties', () => {
 
   CloudFrontDistributionForApiGateway(stack, _api, props);
 
-  Template.fromStack(stack).hasResourceProperties("AWS::CloudFront::Distribution", {
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [
@@ -280,7 +280,7 @@ test('test override cloudfront add custom cloudfront function', () => {
     }
   });
 
-  Template.fromStack(stack).hasResourceProperties("AWS::CloudFront::Distribution", {
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
@@ -419,7 +419,7 @@ test('test override cloudfront replace custom lambda@edge', () => {
   },
   false);
 
-  Template.fromStack(stack).hasResourceProperties("AWS::CloudFront::Distribution", {
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",

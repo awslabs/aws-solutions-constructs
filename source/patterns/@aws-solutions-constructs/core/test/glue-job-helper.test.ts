@@ -53,7 +53,7 @@ test('Test deployment with role creation', () => {
 
   expect(glueJob.bucket).toBeDefined();
   expect(glueJob.bucket).toBeInstanceOf(Bucket);
-  Template.fromStack(stack).hasResource('AWS::Glue::Job', {
+  template.hasResource('AWS::Glue::Job', {
     Type: "AWS::Glue::Job",
     Properties: {
       Command: {
@@ -115,7 +115,7 @@ test('Create a Glue Job outside the construct', () => {
 
   expect(glueJob.bucket).not.toBeDefined();
   expect(glueJob.loggingBucket).not.toBeDefined();
-  Template.fromStack(stack).hasResource('AWS::Glue::Job', {
+  template.hasResource('AWS::Glue::Job', {
     Type: "AWS::Glue::Job",
     Properties: {
       AllocatedCapacity: 2,
@@ -305,7 +305,7 @@ test('Test deployment with role creation', () => {
       comment: ""
     }], 'kinesis', {STREAM_NAME: 'testStream'})
   });
-  Template.fromStack(stack).hasResource('AWS::IAM::Role', {
+  template.hasResource('AWS::IAM::Role', {
     Type: "AWS::IAM::Role",
     Properties: {
       AssumeRolePolicyDocument: {
@@ -359,7 +359,7 @@ test('Test deployment with role creation', () => {
       comment: ""
     }], 'kinesis', {STREAM_NAME: 'testStream'})
   });
-  Template.fromStack(stack).hasResource('AWS::S3::Bucket', {
+  template.hasResource('AWS::S3::Bucket', {
     Type: 'AWS::S3::Bucket',
     Properties: {
       BucketEncryption: {

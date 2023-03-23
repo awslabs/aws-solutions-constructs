@@ -12,13 +12,13 @@
  */
 
 // Imports
-import '@aws-cdk/assert/jest';
 import {Stack, RemovalPolicy, Duration} from 'aws-cdk-lib';
 import * as mediastore from 'aws-cdk-lib/aws-mediastore';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { CloudFrontToMediaStore } from '../lib';
 import * as cdk from "aws-cdk-lib";
+import { Template } from 'aws-cdk-lib/assertions';
 
 // --------------------------------------------------------------
 // Test the default deployment pattern variables
@@ -48,7 +48,8 @@ test('Test the deployment without HTTP security headers', () => {
   });
 
   // Assertion
-  expect(stack).toHaveResourceLike('AWS::CloudFront::Distribution', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::CloudFront::Distribution', {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [
@@ -149,7 +150,8 @@ test('Test the deployment with securityHeadersBehavior instead of HTTP security 
   });
 
   // Assertion
-  expect(stack).toHaveResourceLike("AWS::CloudFront::ResponseHeadersPolicy", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::ResponseHeadersPolicy", {
     ResponseHeadersPolicyConfig: {
       SecurityHeadersConfig: {
         ContentSecurityPolicy: {
@@ -202,7 +204,8 @@ test('Test the deployment with existing MediaStore container', () => {
   });
 
   // Assertion
-  expect(stack).toHaveResourceLike('AWS::CloudFront::Distribution', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::CloudFront::Distribution', {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [
@@ -281,10 +284,10 @@ test('Test the deployment with existing MediaStore container', () => {
       ]
     }
   });
-  expect(stack).toHaveResourceLike('AWS::MediaStore::Container', {
+  template.hasResourceProperties('AWS::MediaStore::Container', {
     ContainerName: 'MyMediaStoreContainer'
   });
-  expect(stack).toHaveResourceLike('AWS::CloudFront::OriginRequestPolicy', {
+  template.hasResourceProperties('AWS::CloudFront::OriginRequestPolicy', {
     OriginRequestPolicyConfig: {
       Comment: 'Policy for Constructs CloudFrontDistributionForMediaStore',
       CookiesConfig: {
@@ -341,7 +344,8 @@ test('Test the deployment with the user provided MediaStore properties', () => {
   });
 
   // Assertion
-  expect(stack).toHaveResourceLike('AWS::CloudFront::Distribution', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::CloudFront::Distribution', {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [
@@ -420,7 +424,7 @@ test('Test the deployment with the user provided MediaStore properties', () => {
       ]
     }
   });
-  expect(stack).toHaveResourceLike('AWS::MediaStore::Container', {
+  template.hasResourceProperties('AWS::MediaStore::Container', {
     ContainerName: 'MyMediaStoreContainer',
     Policy: '{}',
     LifecyclePolicy: '{}',
@@ -429,7 +433,7 @@ test('Test the deployment with the user provided MediaStore properties', () => {
       ContainerLevelMetrics: 'DISABLED'
     }
   });
-  expect(stack).toHaveResourceLike('AWS::CloudFront::OriginRequestPolicy', {
+  template.hasResourceProperties('AWS::CloudFront::OriginRequestPolicy', {
     OriginRequestPolicyConfig: {
       Comment: 'Policy for Constructs CloudFrontDistributionForMediaStore',
       CookiesConfig: {
@@ -484,7 +488,8 @@ test('Test the deployment with the user provided CloudFront properties', () => {
   });
 
   // Assertion
-  expect(stack).toHaveResourceLike('AWS::CloudFront::Distribution', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::CloudFront::Distribution', {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [
@@ -574,7 +579,7 @@ test('Test the deployment with the user provided CloudFront properties', () => {
       ]
     }
   });
-  expect(stack).toHaveResourceLike('AWS::MediaStore::Container', {
+  template.hasResourceProperties('AWS::MediaStore::Container', {
     AccessLoggingEnabled: true,
     ContainerName: {
       Ref: 'AWS::StackName'
@@ -589,7 +594,7 @@ test('Test the deployment with the user provided CloudFront properties', () => {
       }
     ]
   });
-  expect(stack).toHaveResourceLike('AWS::CloudFront::OriginRequestPolicy', {
+  template.hasResourceProperties('AWS::CloudFront::OriginRequestPolicy', {
     OriginRequestPolicyConfig: {
       Comment: 'Policy for Constructs CloudFrontDistributionForMediaStore',
       CookiesConfig: {
@@ -624,7 +629,7 @@ test('Test the deployment with the user provided CloudFront properties', () => {
       }
     }
   });
-  expect(stack).toHaveResourceLike('AWS::CloudFront::CloudFrontOriginAccessIdentity', {
+  template.hasResourceProperties('AWS::CloudFront::CloudFrontOriginAccessIdentity', {
     CloudFrontOriginAccessIdentityConfig: {
       Comment: {
         'Fn::Join': [
@@ -658,11 +663,12 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
     }
   });
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     AccessControl: "LogDeliveryWrite"
   });
 
-  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+  template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
       "Fn::GetAtt": [
         "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",

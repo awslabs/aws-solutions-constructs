@@ -32,7 +32,7 @@ test('CloudFront distribution for MediaStore with user provided log bucket', () 
   };
 
   CloudFrontDistributionForMediaStore(stack, mediaStoreContainer, cfProps);
-  Template.fromStack(stack).hasResourceProperties('AWS::CloudFront::Distribution', {
+  template.hasResourceProperties('AWS::CloudFront::Distribution', {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [
@@ -365,7 +365,7 @@ test('CloudFront distribution without HTTP security headers for MediaStore', () 
   const mediaStoreContainer = new mediastore.CfnContainer(stack, 'MediaStoreContainer', mediaStoreContainerProps);
 
   CloudFrontDistributionForMediaStore(stack, mediaStoreContainer, {}, false);
-  Template.fromStack(stack).hasResourceProperties('AWS::CloudFront::Distribution', {
+  template.hasResourceProperties('AWS::CloudFront::Distribution', {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [
@@ -453,7 +453,7 @@ test('CloudFront distribution for MediaStore override params', () => {
   };
 
   CloudFrontDistributionForMediaStore(stack, mediaStoreContainer, cfProps);
-  Template.fromStack(stack).hasResourceProperties('AWS::CloudFront::Distribution', {
+  template.hasResourceProperties('AWS::CloudFront::Distribution', {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [
@@ -529,7 +529,7 @@ test('test override cloudfront with custom cloudfront function', () => {
     }
   });
 
-  Template.fromStack(stack).hasResourceProperties("AWS::CloudFront::Distribution", {
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [

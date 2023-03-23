@@ -14,9 +14,10 @@
 // Imports
 import { Stack } from "aws-cdk-lib";
 import { IotToSqs, IotToSqsProps } from "../lib";
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as kms from 'aws-cdk-lib/aws-kms';
+import * as defaults from '@aws-solutions-constructs/core';
 
 // --------------------------------------------------------------
 // Pattern deployment with default props
@@ -37,7 +38,8 @@ test('Pattern deployment with default props', () => {
   new IotToSqs(stack, 'test-iot-sqs', props);
 
   // Creates a default sqs queue
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "testiotsqsEncryptionKey64EE64B1",
@@ -47,12 +49,12 @@ test('Pattern deployment with default props', () => {
   });
 
   // Creates a dead letter queue
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: "alias/aws/sqs"
   });
 
   // Creates an IoT Topic Rule
-  expect(stack).toHaveResource("AWS::IoT::TopicRule", {
+  template.hasResourceProperties("AWS::IoT::TopicRule", {
     TopicRulePayload: {
       Actions: [
         {
@@ -74,7 +76,7 @@ test('Pattern deployment with default props', () => {
   });
 
   // Creates an encryption key
-  expect(stack).toHaveResource("AWS::KMS::Key", {
+  template.hasResourceProperties("AWS::KMS::Key", {
     EnableKeyRotation: true
   });
 });
@@ -104,7 +106,8 @@ test('Pattern deployment with existing queue', () => {
   new IotToSqs(stack, 'test-iot-sqs', props);
 
   // Creates a default sqs queue
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     QueueName: "existing-queue-obj"
   });
 });
@@ -135,7 +138,8 @@ test('Pattern deployment with queue and dead letter queue props', () => {
   new IotToSqs(stack, 'test-iot-sqs', props);
 
   // Creates a queue using the provided props
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     QueueName: "queue-name",
     RedrivePolicy: {
       deadLetterTargetArn: {
@@ -149,7 +153,7 @@ test('Pattern deployment with queue and dead letter queue props', () => {
   });
 
   // Creates a dead letter queue using the provided props
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  template.hasResourceProperties("AWS::SQS::Queue", {
     QueueName: "dlq-name"
   });
 });
@@ -178,12 +182,13 @@ test('Pattern deployment with dead letter queue turned off', () => {
   new IotToSqs(stack, 'test-iot-sqs', props);
 
   // Creates a queue using the provided props
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     QueueName: "queue-name"
   });
 
   // Does not create the default dead letter queue
-  expect(stack).not.toHaveResource("AWS::SQS::Queue", {
+  defaults.expectNonexistence(stack, "AWS::SQS::Queue", {
     KmsMasterKeyId: "alias/aws/sqs"
   });
 });
@@ -216,7 +221,8 @@ test('Pattern deployment with custom maxReceiveCount', () => {
   new IotToSqs(stack, 'test-iot-sqs', props);
 
   // Creates a queue using the provided props
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     QueueName: "queue-name",
     RedrivePolicy: {
       deadLetterTargetArn: {
@@ -251,17 +257,18 @@ test('Pattern deployment without creating a KMS key', () => {
   new IotToSqs(stack, 'test-iot-sqs', props);
 
   // Creates a default sqs queue
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: "alias/aws/sqs"
   });
 
   // Creates a dead letter queue
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: "alias/aws/sqs"
   });
 
   // Creates an IoT Topic Rule
-  expect(stack).toHaveResource("AWS::IoT::TopicRule", {
+  template.hasResourceProperties("AWS::IoT::TopicRule", {
     TopicRulePayload: {
       Actions: [
         {
@@ -283,7 +290,7 @@ test('Pattern deployment without creating a KMS key', () => {
   });
 
   // Does not create an encryption key
-  expect(stack).not.toHaveResource("AWS::KMS::Key");
+  template.resourceCountIs("AWS::KMS::Key", 0);
 });
 
 // --------------------------------------------------------------
@@ -312,7 +319,8 @@ test('Pattern deployment with existing KMS key', () => {
   new IotToSqs(stack, 'test-iot-sqs', props);
 
   // Creates a default sqs queue
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "existingkey205DFC01",
@@ -322,12 +330,12 @@ test('Pattern deployment with existing KMS key', () => {
   });
 
   // Creates a dead letter queue
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: "alias/aws/sqs"
   });
 
   // Creates an IoT Topic Rule
-  expect(stack).toHaveResource("AWS::IoT::TopicRule", {
+  template.hasResourceProperties("AWS::IoT::TopicRule", {
     TopicRulePayload: {
       Actions: [
         {
@@ -349,7 +357,7 @@ test('Pattern deployment with existing KMS key', () => {
   });
 
   // Uses the provided key
-  expect(stack).toHaveResource("AWS::KMS::Key", {
+  template.hasResourceProperties("AWS::KMS::Key", {
     EnableKeyRotation: false
   });
 });
@@ -382,7 +390,8 @@ test('Pattern deployment with existing KMS key', () => {
   new IotToSqs(stack, 'test-iot-sqs', props);
 
   // Creates a default sqs queue
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "existingkey205DFC01",
@@ -392,12 +401,12 @@ test('Pattern deployment with existing KMS key', () => {
   });
 
   // Creates a dead letter queue
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: "alias/aws/sqs"
   });
 
   // Creates an IoT Topic Rule
-  expect(stack).toHaveResource("AWS::IoT::TopicRule", {
+  template.hasResourceProperties("AWS::IoT::TopicRule", {
     TopicRulePayload: {
       Actions: [
         {
@@ -419,7 +428,7 @@ test('Pattern deployment with existing KMS key', () => {
   });
 
   // Uses the provided key
-  expect(stack).toHaveResource("AWS::KMS::Key", {
+  template.hasResourceProperties("AWS::KMS::Key", {
     EnableKeyRotation: false
   });
 });
@@ -448,7 +457,8 @@ test('Pattern deployment passing KMS key props', () => {
   new IotToSqs(stack, 'test-iot-sqs', props);
 
   // Creates a default sqs queue
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "testiotsqsEncryptionKey64EE64B1",
@@ -458,12 +468,12 @@ test('Pattern deployment passing KMS key props', () => {
   });
 
   // Creates a dead letter queue
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: "alias/aws/sqs"
   });
 
   // Creates an IoT Topic Rule
-  expect(stack).toHaveResource("AWS::IoT::TopicRule", {
+  template.hasResourceProperties("AWS::IoT::TopicRule", {
     TopicRulePayload: {
       Actions: [
         {
@@ -485,11 +495,11 @@ test('Pattern deployment passing KMS key props', () => {
   });
 
   // Uses the props to create the key
-  expect(stack).toHaveResource("AWS::KMS::Key", {
+  template.hasResourceProperties("AWS::KMS::Key", {
     EnableKeyRotation: false
   });
 
-  expect(stack).toHaveResource("AWS::KMS::Alias", {
+  template.hasResourceProperties("AWS::KMS::Alias", {
     AliasName: "alias/new-key-alias-from-props",
     TargetKeyId: {
       "Fn::GetAtt": [

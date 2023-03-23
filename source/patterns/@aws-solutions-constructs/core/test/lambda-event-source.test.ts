@@ -141,7 +141,7 @@ test('test sqsDlqQueueProps override', () => {
     }
   });
 
-  Template.fromStack(stack).hasResourceProperties("AWS::SQS::Queue", {
+  template.hasResourceProperties("AWS::SQS::Queue", {
     QueueName: "hello-world",
     VisibilityTimeout: 50
   });

@@ -54,7 +54,7 @@ test('Test deployment w/ user provided custom properties', () => {
       ipAddresses: ec2.IpAddresses.cidr('172.168.0.0/19'),
     },
   });
-  Template.fromStack(stack).hasResourceProperties('AWS::EC2::VPC', {
+  template.hasResourceProperties('AWS::EC2::VPC', {
     CidrBlock: '172.168.0.0/19',
     EnableDnsHostnames: false,
     EnableDnsSupport: false,
@@ -76,7 +76,7 @@ test('Test deployment w/ construct provided custom properties', () => {
       ipAddresses: ec2.IpAddresses.cidr('172.168.0.0/19'),
     },
   });
-  Template.fromStack(stack).hasResourceProperties('AWS::EC2::VPC', {
+  template.hasResourceProperties('AWS::EC2::VPC', {
     CidrBlock: '172.168.0.0/19',
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
@@ -103,7 +103,7 @@ test('Test deployment w/ construct and user provided custom properties', () => {
       ipAddresses: ec2.IpAddresses.cidr('172.168.0.0/19'),
     },
   });
-  Template.fromStack(stack).hasResourceProperties('AWS::EC2::VPC', {
+  template.hasResourceProperties('AWS::EC2::VPC', {
     CidrBlock: '172.168.0.0/19',
     EnableDnsHostnames: false,
     EnableDnsSupport: false,
@@ -202,7 +202,7 @@ test('Test adding Interface Endpoint', () => {
   AddAwsServiceEndpoint(stack, testVpc, ServiceEndpointTypes.SNS);
 
   // Assertion
-  Template.fromStack(stack).hasResourceProperties('AWS::EC2::VPCEndpoint', {
+  template.hasResourceProperties('AWS::EC2::VPCEndpoint', {
     VpcEndpointType: 'Interface',
   });
 });
@@ -221,7 +221,7 @@ test('Test adding SAGEMAKER_RUNTIME Interface Endpoint', () => {
   AddAwsServiceEndpoint(stack, testVpc, ServiceEndpointTypes.SAGEMAKER_RUNTIME);
 
   // Assertion
-  Template.fromStack(stack).hasResourceProperties('AWS::EC2::VPCEndpoint', {
+  template.hasResourceProperties('AWS::EC2::VPCEndpoint', {
     VpcEndpointType: 'Interface',
   });
 });
@@ -241,7 +241,7 @@ test('Test adding a second Endpoint of same service', () => {
   AddAwsServiceEndpoint(stack, testVpc, ServiceEndpointTypes.SNS);
 
   // Assertion
-  Template.fromStack(stack).resourceCountIs('AWS::EC2::VPCEndpoint', 1);
+  template.resourceCountIs('AWS::EC2::VPCEndpoint', 1);
 });
 
 // --------------------------------------------------------------
@@ -276,7 +276,7 @@ test('Test adding Events Interface Endpoint', () => {
   AddAwsServiceEndpoint(stack, testVpc, ServiceEndpointTypes.EVENTS);
 
   // Assertion
-  Template.fromStack(stack).hasResourceProperties('AWS::EC2::VPCEndpoint', {
+  template.hasResourceProperties('AWS::EC2::VPCEndpoint', {
     VpcEndpointType: 'Interface',
   });
 });

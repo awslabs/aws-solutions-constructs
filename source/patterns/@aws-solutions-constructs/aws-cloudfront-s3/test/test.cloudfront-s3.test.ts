@@ -11,13 +11,13 @@
  *  and limitations under the License.
  */
 
-import {ResourcePart} from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
+import { Template } from "aws-cdk-lib/assertions";
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cdk from "aws-cdk-lib";
 import {Duration, RemovalPolicy, Stack} from "aws-cdk-lib";
 import {CloudFrontToS3, CloudFrontToS3Props} from "../lib";
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
+import * as defaults from '@aws-solutions-constructs/core';
 
 function deploy(stack: cdk.Stack, props?: CloudFrontToS3Props) {
   return new CloudFrontToS3(stack, 'test-cloudfront-s3', {
@@ -31,7 +31,8 @@ function deploy(stack: cdk.Stack, props?: CloudFrontToS3Props) {
 test('check s3Bucket default encryption', () => {
   const stack = new cdk.Stack();
   deploy(stack);
-  expect(stack).toHaveResource('AWS::S3::Bucket', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::S3::Bucket', {
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [{
         ServerSideEncryptionByDefault: {
@@ -45,7 +46,8 @@ test('check s3Bucket default encryption', () => {
 test('check s3Bucket public access block configuration', () => {
   const stack = new cdk.Stack();
   deploy(stack);
-  expect(stack).toHaveResource('AWS::S3::Bucket', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::S3::Bucket', {
     PublicAccessBlockConfiguration: {
       BlockPublicAcls: true,
       BlockPublicPolicy: true,
@@ -71,7 +73,8 @@ test('test s3Bucket override publicAccessBlockConfiguration', () => {
 
   new CloudFrontToS3(stack, 'test-cloudfront-s3', props);
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     PublicAccessBlockConfiguration: {
       BlockPublicAcls: false,
       BlockPublicPolicy: true,
@@ -94,11 +97,12 @@ test('check existing bucket', () => {
 
   new CloudFrontToS3(stack, 'test-cloudfront-s3', props);
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     BucketName: "my-bucket"
   });
 
-  expect(stack).toHaveResource("AWS::S3::BucketPolicy", {
+  template.hasResource("AWS::S3::BucketPolicy", {
     Metadata: {
       cfn_nag: {
         rules_to_suppress: [
@@ -109,7 +113,7 @@ test('check existing bucket', () => {
         ]
       }
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 test('check exception for Missing existingObj from props for deploy = false', () => {
@@ -161,7 +165,8 @@ test("Test existingBucketObj", () => {
   });
   // Assertion
   expect(construct.cloudFrontWebDistribution !== null);
-  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       Origins: [
         {
@@ -222,7 +227,8 @@ test('test cloudfront with custom domain names', () => {
 
   new CloudFrontToS3(stack, 'test-cloudfront-s3', props);
 
-  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       Aliases: [
         "mydomains"
@@ -247,11 +253,12 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     AccessControl: "LogDeliveryWrite"
   });
 
-  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+  template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
       "Fn::GetAtt": [
         "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
@@ -277,11 +284,12 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
     }
   });
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     AccessControl: "LogDeliveryWrite"
   });
 
-  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+  template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
       "Fn::GetAtt": [
         "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
@@ -329,7 +337,8 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
     logS3AccessLogs: false
   });
 
-  expect(stack).toCountResources("AWS::S3::Bucket", 2);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::S3::Bucket", 2);
   expect(construct.s3LoggingBucket).toEqual(undefined);
 });
 
@@ -343,7 +352,8 @@ test('CloudFront origin path present when provided', () => {
     originPath: '/testPath'
   });
 
-  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig:
     {
       Origins: [
@@ -360,7 +370,7 @@ test('CloudFront origin path should not be present if not provided', () => {
 
   new CloudFrontToS3(stack, 'cloudfront-s3', {});
 
-  expect(stack).not.toHaveResourceLike("AWS::CloudFront::Distribution", {
+  defaults.expectNonexistence(stack, "AWS::CloudFront::Distribution", {
     DistributionConfig:
     {
       Origins: [
@@ -394,7 +404,8 @@ test('Test the deployment with securityHeadersBehavior instead of HTTP security 
   });
 
   // Assertion
-  expect(stack).toHaveResourceLike("AWS::CloudFront::ResponseHeadersPolicy", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::ResponseHeadersPolicy", {
     ResponseHeadersPolicyConfig: {
       SecurityHeadersConfig: {
         ContentSecurityPolicy: {

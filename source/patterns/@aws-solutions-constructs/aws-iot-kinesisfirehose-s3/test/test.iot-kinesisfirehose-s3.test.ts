@@ -14,7 +14,7 @@
 import { IotToKinesisFirehoseToS3, IotToKinesisFirehoseToS3Props } from "../lib";
 import * as cdk from "aws-cdk-lib";
 import * as s3 from "aws-cdk-lib/aws-s3";
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 function deploy(stack: cdk.Stack) {
   const props: IotToKinesisFirehoseToS3Props = {
@@ -39,7 +39,8 @@ test('check iot topic rule properties', () => {
 
   deploy(stack);
 
-  expect(stack).toHaveResource('AWS::IoT::TopicRule', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IoT::TopicRule', {
     TopicRulePayload: {
       Actions: [
         {
@@ -94,7 +95,8 @@ test('check firehose and s3 overrides', () => {
   };
   new IotToKinesisFirehoseToS3(stack, 'test-iot-firehose-s3', props);
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     PublicAccessBlockConfiguration: {
       BlockPublicAcls: false,
       BlockPublicPolicy: true,
@@ -103,7 +105,7 @@ test('check firehose and s3 overrides', () => {
     },
   });
 
-  expect(stack).toHaveResourceLike("AWS::KinesisFirehose::DeliveryStream", {
+  template.hasResourceProperties("AWS::KinesisFirehose::DeliveryStream", {
     ExtendedS3DestinationConfiguration: {
       BufferingHints: {
         IntervalInSeconds: 600,
@@ -179,11 +181,12 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     AccessControl: "LogDeliveryWrite"
   });
 
-  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+  template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
       "Fn::GetAtt": [
         "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
@@ -245,5 +248,6 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
     logS3AccessLogs: false
   });
 
-  expect(stack).toCountResources("AWS::S3::Bucket", 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::S3::Bucket", 1);
 });

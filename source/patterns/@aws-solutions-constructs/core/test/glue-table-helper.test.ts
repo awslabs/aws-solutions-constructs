@@ -55,7 +55,7 @@ test('create default CfnTable with default props', () => {
     }
   });
 
-  Template.fromStack(stack).hasResource('AWS::Glue::Table', {
+  template.hasResource('AWS::Glue::Table', {
     Type: "AWS::Glue::Table",
     Properties: {
       CatalogId: "fakecatalogfortest",

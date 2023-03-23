@@ -30,7 +30,7 @@ test('Test deployment with no properties using AWS Managed KMS Key', () => {
 
   expect(buildTopicResponse.topic).toBeDefined();
   expect(buildTopicResponse.key).toBeDefined();
-  Template.fromStack(stack).hasResourceProperties("AWS::SNS::Topic", {
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::Join": [
         "",
@@ -98,7 +98,7 @@ test('Test deployment w/ imported encryption key', () => {
   expect(buildTopicResponse.topic).toBeDefined();
   expect(buildTopicResponse.key).toBeDefined();
 
-  Template.fromStack(stack).hasResourceProperties("AWS::SNS::Topic", {
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "EncryptionKey1B843E66",
@@ -116,7 +116,7 @@ test('enableEncryptionWithCustomerManagedKey flag is ignored when encryptionKey 
     encryptionKey: defaults.buildEncryptionKey(stack)
   });
 
-  Template.fromStack(stack).hasResourceProperties("AWS::SNS::Topic", {
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "EncryptionKey1B843E66",
@@ -135,7 +135,7 @@ test('enableEncryptionWithCustomerManagedKey flag is ignored when topicProps.mas
     }
   });
 
-  Template.fromStack(stack).hasResourceProperties("AWS::SNS::Topic", {
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "EncryptionKey1B843E66",
@@ -179,7 +179,7 @@ test('encryptionProps are set correctly on the SNS Topic', () => {
     }
   });
 
-  Template.fromStack(stack).hasResourceProperties("AWS::KMS::Key", {
+  template.hasResourceProperties("AWS::KMS::Key", {
     Description: description
   });
 });

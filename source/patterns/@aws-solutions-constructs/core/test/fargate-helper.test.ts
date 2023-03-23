@@ -196,7 +196,7 @@ test('Test with custom task definition', () => {
     }
   );
 
-  Template.fromStack(stack).hasResourceProperties("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Image: {
@@ -229,7 +229,7 @@ test('Test with custom container definition', () => {
     { cpu: 256, memoryLimitMiB: 512  }
   );
 
-  Template.fromStack(stack).hasResourceProperties("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     Cpu: '256',
     Memory: '512'
   });
@@ -248,7 +248,7 @@ test('Test with custom cluster props', () => {
     undefined,
   );
 
-  Template.fromStack(stack).hasResourceProperties("AWS::ECS::Cluster", {
+  template.hasResourceProperties("AWS::ECS::Cluster", {
     ClusterName: clusterName,
   });
 });
@@ -269,7 +269,7 @@ test('Test with custom Fargate Service props', () => {
     { serviceName  }
   );
 
-  Template.fromStack(stack).hasResourceProperties("AWS::ECS::Service", {
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName,
   });
 });
@@ -298,7 +298,7 @@ test('Test with custom security group', () => {
     { securityGroups: [ customSg ]  }
   );
 
-  Template.fromStack(stack).hasResourceProperties("AWS::EC2::SecurityGroup", {
+  template.hasResourceProperties("AWS::EC2::SecurityGroup", {
     GroupDescription: groupDescription,
   });
 

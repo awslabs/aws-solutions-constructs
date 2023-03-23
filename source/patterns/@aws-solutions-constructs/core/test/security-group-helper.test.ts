@@ -37,7 +37,7 @@ test("Test minimal deployment with no properties", () => {
     []
   );
 
-  Template.fromStack(stack).hasResourceProperties("AWS::EC2::SecurityGroup", {
+  template.hasResourceProperties("AWS::EC2::SecurityGroup", {
     SecurityGroupEgress: [
       {
         CidrIp: "0.0.0.0/0",
@@ -66,7 +66,7 @@ test("Test deployment with ingress rules", () => {
     []
   );
 
-  Template.fromStack(stack).hasResourceProperties("AWS::EC2::SecurityGroup", {
+  template.hasResourceProperties("AWS::EC2::SecurityGroup", {
     SecurityGroupIngress: [
       {
         CidrIp: "1.1.1.1/16",
@@ -100,7 +100,7 @@ test("Test deployment with egress rule", () => {
     ]
   );
 
-  Template.fromStack(stack).hasResourceProperties("AWS::EC2::SecurityGroup", {
+  template.hasResourceProperties("AWS::EC2::SecurityGroup", {
     SecurityGroupEgress: [
       {
         CidrIp: "1.1.1.1/16",
@@ -135,7 +135,7 @@ test("Test self referencing security group", () => {
     testPort,
   );
 
-  Template.fromStack(stack).hasResourceProperties("AWS::EC2::SecurityGroupIngress", {
+  template.hasResourceProperties("AWS::EC2::SecurityGroupIngress", {
     IpProtocol: "TCP",
     FromPort: testPort,
     ToPort: testPort,

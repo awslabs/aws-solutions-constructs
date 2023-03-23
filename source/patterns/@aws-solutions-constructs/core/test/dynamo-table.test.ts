@@ -36,7 +36,7 @@ test('test TableProps change billing mode', () => {
   const outProps = overrideProps(defaultProps, inProps);
   new dynamodb.Table(stack, 'test-dynamo-override', outProps);
 
-  Template.fromStack(stack).hasResourceProperties("AWS::DynamoDB::Table", {
+  template.hasResourceProperties("AWS::DynamoDB::Table", {
     KeySchema: [
       {
         AttributeName: "id",
@@ -78,7 +78,7 @@ test('test TableProps override add sort key', () => {
   const outProps = overrideProps(defaultProps, inProps);
   new dynamodb.Table(stack, 'test-dynamo-override', outProps);
 
-  Template.fromStack(stack).hasResourceProperties("AWS::DynamoDB::Table", {
+  template.hasResourceProperties("AWS::DynamoDB::Table", {
     KeySchema: [
       {
         AttributeName: "id",
@@ -122,7 +122,7 @@ test('test TableWithStreamProps override stream view type', () => {
   const outProps = overrideProps(defaultProps, inProps);
   new dynamodb.Table(stack, 'test-dynamo-override', outProps);
 
-  Template.fromStack(stack).hasResourceProperties("AWS::DynamoDB::Table", {
+  template.hasResourceProperties("AWS::DynamoDB::Table", {
     KeySchema: [
       {
         AttributeName: "id",

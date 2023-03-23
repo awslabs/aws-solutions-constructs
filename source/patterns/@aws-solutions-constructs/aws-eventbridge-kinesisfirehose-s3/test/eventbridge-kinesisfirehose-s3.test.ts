@@ -14,7 +14,7 @@
 import * as cdk from "aws-cdk-lib";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as events from "aws-cdk-lib/aws-events";
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import { EventbridgeToKinesisFirehoseToS3, EventbridgeToKinesisFirehoseToS3Props } from '../lib';
 
 // --------------------------------------------------------------
@@ -55,7 +55,8 @@ test('Test default server side s3 bucket encryption', () => {
   deployNewStack(stack);
 
   // Assertions
-  expect(stack).toHaveResource('AWS::S3::Bucket', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::S3::Bucket', {
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [
         {
@@ -99,7 +100,8 @@ test('Test property override', () => {
   };
   new EventbridgeToKinesisFirehoseToS3(stack, 'test-eventbridge-firehose-s3', props);
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     PublicAccessBlockConfiguration: {
       BlockPublicAcls: false,
       BlockPublicPolicy: true,
@@ -108,7 +110,7 @@ test('Test property override', () => {
     },
   });
 
-  expect(stack).toHaveResourceLike("AWS::KinesisFirehose::DeliveryStream", {
+  template.hasResourceProperties("AWS::KinesisFirehose::DeliveryStream", {
     ExtendedS3DestinationConfiguration: {
       BufferingHints: {
         IntervalInSeconds: 600,
@@ -165,7 +167,8 @@ test('check eventbus property, snapshot & eventbus exists', () => {
   expect(construct.s3LoggingBucket !== null);
   expect(construct.eventBus !== null);
   // Check whether eventbus exists
-  expect(stack).toHaveResource('AWS::Events::EventBus');
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::Events::EventBus', 1);
 });
 
 test('check exception while passing existingEventBus & eventBusProps', () => {
@@ -202,7 +205,8 @@ test('check custom event bus resource with props when deploy:true', () => {
   };
   new EventbridgeToKinesisFirehoseToS3(stack, 'test-new-eventbridge-with-props-kinsesisfirehose', props);
 
-  expect(stack).toHaveResource('AWS::Events::EventBus', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Events::EventBus', {
     Name: `testeventbus`
   });
 });
@@ -227,11 +231,12 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     AccessControl: "LogDeliveryWrite"
   });
 
-  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+  template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
       "Fn::GetAtt": [
         "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
@@ -261,5 +266,6 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
     logS3AccessLogs: false
   });
 
-  expect(stack).toCountResources("AWS::S3::Bucket", 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::S3::Bucket", 1);
 });

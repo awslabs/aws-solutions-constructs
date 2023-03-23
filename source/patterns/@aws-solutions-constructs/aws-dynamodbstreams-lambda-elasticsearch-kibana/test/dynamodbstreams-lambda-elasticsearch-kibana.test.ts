@@ -16,7 +16,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as cdk from "aws-cdk-lib";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as defaults from '@aws-solutions-constructs/core';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 function deployNewFunc(stack: cdk.Stack) {
   const props: DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps = {
@@ -40,14 +40,14 @@ test('check domain names', () => {
 
   deployNewFunc(stack);
 
-  expect(stack).toHaveResource('AWS::Cognito::UserPoolDomain', {
+  template.hasResourceProperties('AWS::Cognito::UserPoolDomain', {
     Domain: "test-domain",
     UserPoolId: {
       Ref: "testdynamodbstreamlambdaelasticsearchstackLambdaToElasticSearchCognitoUserPoolF99F93E5"
     }
   });
 
-  expect(stack).toHaveResource('AWS::Elasticsearch::Domain', {
+  template.hasResourceProperties('AWS::Elasticsearch::Domain', {
     DomainName: "test-domain",
   });
 });
@@ -95,7 +95,7 @@ test('Test minimal deployment with VPC construct props', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     Tags: [
       {
         Key: "Name",
@@ -104,7 +104,7 @@ test('Test minimal deployment with VPC construct props', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
+  template.hasResourceProperties("AWS::Elasticsearch::Domain", {
     VPCOptions: {
       SubnetIds: [
         {
@@ -120,7 +120,7 @@ test('Test minimal deployment with VPC construct props', () => {
     }
   });
 
-  expect(stack).toCountResources("AWS::EC2::VPC", 1);
+  template.resourceCountIs("AWS::EC2::VPC", 1);
   expect(construct.vpc).toBeDefined();
 });
 
@@ -151,7 +151,7 @@ test('Test minimal deployment with an existing private VPC', () => {
     existingVpc: vpc
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     Tags: [
       {
         Key: "Name",
@@ -160,7 +160,7 @@ test('Test minimal deployment with an existing private VPC', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
+  template.hasResourceProperties("AWS::Elasticsearch::Domain", {
     VPCOptions: {
       SubnetIds: [
         {
@@ -176,7 +176,7 @@ test('Test minimal deployment with an existing private VPC', () => {
     }
   });
 
-  expect(stack).toCountResources("AWS::EC2::VPC", 1);
+  template.resourceCountIs("AWS::EC2::VPC", 1);
   expect(construct.vpc).toBeDefined();
 });
 
@@ -195,7 +195,7 @@ test('Test minimal deployment with an existing isolated VPC', () => {
     existingVpc: vpc
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     Tags: [
       {
         Key: "Name",
@@ -204,7 +204,7 @@ test('Test minimal deployment with an existing isolated VPC', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
+  template.hasResourceProperties("AWS::Elasticsearch::Domain", {
     VPCOptions: {
       SubnetIds: [
         {
@@ -220,6 +220,6 @@ test('Test minimal deployment with an existing isolated VPC', () => {
     }
   });
 
-  expect(stack).toCountResources("AWS::EC2::VPC", 1);
+  template.resourceCountIs("AWS::EC2::VPC", 1);
   expect(construct.vpc).toBeDefined();
 });

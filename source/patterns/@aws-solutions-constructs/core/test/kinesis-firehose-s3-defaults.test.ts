@@ -37,7 +37,7 @@ test('test kinesisanalytics override buffer conditions', () => {
 
   new kinesisfirehose.CfnDeliveryStream(stack, 'KinesisFirehose', outProps);
 
-  Template.fromStack(stack).hasResourceProperties("AWS::KinesisFirehose::DeliveryStream", {
+  template.hasResourceProperties("AWS::KinesisFirehose::DeliveryStream", {
     ExtendedS3DestinationConfiguration: {
       BucketARN: "bucket_arn",
       BufferingHints: {

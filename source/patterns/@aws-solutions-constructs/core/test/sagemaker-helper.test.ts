@@ -74,7 +74,7 @@ test('Test deployment w/ existing VPC', () => {
   expect(buildSagemakerNotebookResponse.vpc).not.toBeDefined();
   expect(buildSagemakerNotebookResponse.securityGroup).not.toBeDefined();
 
-  Template.fromStack(stack).hasResourceProperties('AWS::SageMaker::NotebookInstance', {
+  template.hasResourceProperties('AWS::SageMaker::NotebookInstance', {
     DirectInternetAccess: 'Disabled',
     SecurityGroupIds: ['sg-deadbeef'],
     SubnetId: 'subnet-deadbeef',
@@ -96,7 +96,7 @@ test('Test deployment w/ override', () => {
       kmsKeyId: key.keyArn,
     },
   });
-  Template.fromStack(stack).hasResourceProperties('AWS::SageMaker::NotebookInstance', {
+  template.hasResourceProperties('AWS::SageMaker::NotebookInstance', {
     DirectInternetAccess: 'Disabled',
     InstanceType: 'ml.c4.2xlarge',
     KmsKeyId: {

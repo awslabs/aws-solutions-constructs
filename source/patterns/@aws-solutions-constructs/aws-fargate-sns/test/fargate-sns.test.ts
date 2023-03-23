@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
 import { FargateToSns } from "../lib";
@@ -44,7 +44,8 @@ test('New service/new topic, public API, new VPC', () => {
   });
 
   expect(testConstruct.snsTopic).toBeDefined();
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     DesiredCount: 2,
     DeploymentConfiguration: {
@@ -54,22 +55,22 @@ test('New service/new topic, public API, new VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName
   });
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     Family: 'family-name'
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Cluster", {
+  template.hasResourceProperties("AWS::ECS::Cluster", {
     ClusterName: clusterName
   });
 
-  expect(stack).toHaveResourceLike("AWS::SNS::Topic", {
+  template.hasResourceProperties("AWS::SNS::Topic", {
     TopicName: topicName
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Essential: true,
@@ -97,14 +98,14 @@ test('New service/new topic, public API, new VPC', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.0.0.0/16'
   });
   // Confirm we created a Public/Private VPC
-  expect(stack).toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::SNS::Topic', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
+  template.hasResourceProperties('AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::SNS::Topic', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
 
 test('New service/new topic, private API, new VPC', () => {
@@ -121,7 +122,8 @@ test('New service/new topic, private API, new VPC', () => {
     vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') }
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     DesiredCount: 2,
     DeploymentConfiguration: {
@@ -131,18 +133,18 @@ test('New service/new topic, private API, new VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(stack).toHaveResourceLike("AWS::SNS::Topic", {
+  template.hasResourceProperties("AWS::SNS::Topic", {
 
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.0.0.0/16'
   });
   // Confirm we created an Isolated VPC
-  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::SNS::Topic', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
+  defaults.expectNonexistence(stack, 'AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::SNS::Topic', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
 
 test('New service/existing topic, private API, existing VPC', () => {
@@ -166,7 +168,8 @@ test('New service/existing topic, private API, existing VPC', () => {
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     DesiredCount: 2,
     DeploymentConfiguration: {
@@ -176,15 +179,15 @@ test('New service/existing topic, private API, existing VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(stack).toHaveResourceLike("AWS::SNS::Topic", {
+  template.hasResourceProperties("AWS::SNS::Topic", {
     TopicName: topicName
   });
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::SNS::Topic', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::SNS::Topic', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
 
 test('Existing service/new topic, public API, existing VPC', () => {
@@ -216,11 +219,12 @@ test('Existing service/new topic, public API, existing VPC', () => {
     topicNameEnvironmentVariableName: 'CUSTOM_NAME',
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Environment: [
@@ -264,14 +268,14 @@ test('Existing service/new topic, public API, existing VPC', () => {
       }
     ]
   });
-  expect(stack).toHaveResourceLike("AWS::SNS::Topic", {
+  template.hasResourceProperties("AWS::SNS::Topic", {
   });
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::SNS::Topic', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::SNS::Topic', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
 
 // Test existing service/existing topic, private API, new VPC
@@ -308,11 +312,12 @@ test('Existing service/existing topic, private API, existing VPC', () => {
     existingTopicObject: existingTopic
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Environment: [
@@ -357,15 +362,15 @@ test('Existing service/existing topic, private API, existing VPC', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::SNS::Topic", {
+  template.hasResourceProperties("AWS::SNS::Topic", {
     TopicName: topicName
   });
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::SNS::Topic', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::SNS::Topic', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
 
 test('Topic is encrypted with imported CMK when set on encryptionKey prop', () => {
@@ -380,7 +385,8 @@ test('Topic is encrypted with imported CMK when set on encryptionKey prop', () =
     encryptionKey: cmk
   });
 
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "cmk01DE03DA",
@@ -404,7 +410,8 @@ test('Topic is encrypted with imported CMK when set on topicProps.masterKey prop
     }
   });
 
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "cmk01DE03DA",
@@ -427,7 +434,8 @@ test('Topic is encrypted with provided encrytionKeyProps', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::SNS::Topic', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       'Fn::GetAtt': [
         'testconstructEncryptionKey6153B053',
@@ -436,7 +444,7 @@ test('Topic is encrypted with provided encrytionKeyProps', () => {
     },
   });
 
-  expect(stack).toHaveResource('AWS::KMS::Alias', {
+  template.hasResourceProperties('AWS::KMS::Alias', {
     AliasName: 'alias/new-key-alias-from-props',
     TargetKeyId: {
       'Fn::GetAtt': [
@@ -457,7 +465,8 @@ test('Topic is encrypted by default with AWS-managed KMS key when no other encry
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
   });
 
-  expect(stack).toHaveResource('AWS::SNS::Topic', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       'Fn::Join': [
         "",
@@ -484,7 +493,8 @@ test('Topic is encrypted with customer managed KMS Key when enable encryption fl
     enableEncryptionWithCustomerManagedKey: true
   });
 
-  expect(stack).toHaveResource('AWS::SNS::Topic', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       'Fn::GetAtt': [
         'testconstructEncryptionKey6153B053',

@@ -68,7 +68,7 @@ test('Test override SnapshotOptions for buildElasticSearch', () => {
   expect(buildElasticSearchResponse.domain).toBeDefined();
   expect(buildElasticSearchResponse.role).toBeDefined();
 
-  Template.fromStack(stack).hasResourceProperties('AWS::Elasticsearch::Domain', {
+  template.hasResourceProperties('AWS::Elasticsearch::Domain', {
     AccessPolicies: {
       Statement: [
         {
@@ -163,7 +163,7 @@ test('Test VPC with 1 AZ, Zone Awareness Disabled', () => {
   expect(buildElasticSearchResponse.domain).toBeDefined();
   expect(buildElasticSearchResponse.role).toBeDefined();
 
-  Template.fromStack(stack).hasResourceProperties('AWS::Elasticsearch::Domain', {
+  template.hasResourceProperties('AWS::Elasticsearch::Domain', {
     DomainName: "test-domain",
     ElasticsearchClusterConfig: {
       DedicatedMasterCount: 3,
@@ -186,7 +186,7 @@ test('Test VPC with 2 AZ, Zone Awareness Enabled', () => {
   expect(buildElasticSearchResponse.domain).toBeDefined();
   expect(buildElasticSearchResponse.role).toBeDefined();
 
-  Template.fromStack(stack).hasResourceProperties('AWS::Elasticsearch::Domain', {
+  template.hasResourceProperties('AWS::Elasticsearch::Domain', {
     DomainName: "test-domain",
     ElasticsearchClusterConfig: {
       DedicatedMasterCount: 3,
@@ -211,7 +211,7 @@ test('Test VPC with 3 AZ, Zone Awareness Enabled', () => {
   expect(buildElasticSearchResponse.domain).toBeDefined();
   expect(buildElasticSearchResponse.role).toBeDefined();
 
-  Template.fromStack(stack).hasResourceProperties('AWS::Elasticsearch::Domain', {
+  template.hasResourceProperties('AWS::Elasticsearch::Domain', {
     DomainName: "test-domain",
     ElasticsearchClusterConfig: {
       DedicatedMasterCount: 3,
@@ -248,7 +248,7 @@ test('Test deployment with an existing private VPC', () => {
   expect(buildElasticSearchResponse.domain).toBeDefined();
   expect(buildElasticSearchResponse.role).toBeDefined();
 
-  Template.fromStack(stack).hasResourceProperties('AWS::Elasticsearch::Domain', {
+  template.hasResourceProperties('AWS::Elasticsearch::Domain', {
     DomainName: "test-domain",
     ElasticsearchClusterConfig: {
       DedicatedMasterCount: 3,
@@ -295,7 +295,7 @@ test('Test override ES version for buildElasticSearch', () => {
   expect(response.domain).toBeDefined();
   expect(response.role).toBeDefined();
 
-  Template.fromStack(stack).hasResourceProperties('AWS::Elasticsearch::Domain', {
+  template.hasResourceProperties('AWS::Elasticsearch::Domain', {
     AccessPolicies: {
       Statement: [
         {
@@ -382,7 +382,7 @@ test('Test ES with lambdaRoleARN', () => {
   expect(buildElasticSearchResponse.domain).toBeDefined();
   expect(buildElasticSearchResponse.role).toBeDefined();
 
-  Template.fromStack(stack).hasResourceProperties('AWS::Elasticsearch::Domain', {
+  template.hasResourceProperties('AWS::Elasticsearch::Domain', {
     AccessPolicies: {
       Statement: [
         {

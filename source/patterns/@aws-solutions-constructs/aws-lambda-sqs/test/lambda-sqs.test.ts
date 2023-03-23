@@ -17,7 +17,7 @@ import * as kms from 'aws-cdk-lib/aws-kms';
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { LambdaToSqs } from '../lib';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 // --------------------------------------------------------------
 // Test the getter methods
@@ -60,7 +60,8 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -81,17 +82,17 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
 // --------------------------------------------------------------
@@ -115,7 +116,8 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -136,18 +138,18 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: "192.68.0.0/16",
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
 // --------------------------------------------------------------
@@ -169,7 +171,8 @@ test("Test minimal deployment with an existing VPC", () => {
     existingVpc: testVpc,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -190,7 +193,7 @@ test("Test minimal deployment with an existing VPC", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 });
@@ -270,7 +273,8 @@ test('Test lambda function custom environment variable', () => {
   });
 
   // Assertion
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
     Runtime: 'nodejs14.x',
     Environment: {
@@ -300,7 +304,8 @@ test('Queue is encrypted with imported CMK when set on encryptionKey prop', () =
     encryptionKey: cmk
   });
 
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "cmk01DE03DA",
@@ -328,7 +333,8 @@ test('Queue is encrypted with imported CMK when set on queueProps.encryptionMast
     }
   });
 
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "cmk01DE03DA",
@@ -355,7 +361,8 @@ test('Queue is encrypted with provided encrytionKeyProps', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::SQS::Queue', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SQS::Queue', {
     KmsMasterKeyId: {
       'Fn::GetAtt': [
         'testconstructEncryptionKey6153B053',
@@ -364,7 +371,7 @@ test('Queue is encrypted with provided encrytionKeyProps', () => {
     },
   });
 
-  expect(stack).toHaveResource('AWS::KMS::Alias', {
+  template.hasResourceProperties('AWS::KMS::Alias', {
     AliasName: 'alias/new-key-alias-from-props',
     TargetKeyId: {
       'Fn::GetAtt': [
@@ -389,7 +396,8 @@ test('Queue is encrypted by default with SQS-managed KMS key when no other encry
     },
   });
 
-  expect(stack).toHaveResource('AWS::SQS::Queue', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SQS::Queue', {
     KmsMasterKeyId: "alias/aws/sqs"
   });
 });
@@ -409,7 +417,8 @@ test('Queue is encrypted with customer managed KMS Key when enable encryption fl
     enableEncryptionWithCustomerManagedKey: true
   });
 
-  expect(stack).toHaveResource('AWS::SQS::Queue', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SQS::Queue', {
     KmsMasterKeyId: {
       'Fn::GetAtt': [
         'testconstructEncryptionKey6153B053',
@@ -445,7 +454,8 @@ test('Queue purging flag grants correct permissions', () => {
     deployDeadLetterQueue: false
   });
 
-  expect(stack).toHaveResource('AWS::SQS::QueuePolicy', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SQS::QueuePolicy', {
     PolicyDocument:  {
       Statement: [
         {

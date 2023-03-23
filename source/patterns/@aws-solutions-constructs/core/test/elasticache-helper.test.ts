@@ -49,7 +49,7 @@ test("Test create cache with no client props", () => {
     cachePort: 11111,
   });
 
-  Template.fromStack(stack).hasResourceProperties("AWS::ElastiCache::CacheCluster", {
+  template.hasResourceProperties("AWS::ElastiCache::CacheCluster", {
     Port: 11111,
     AZMode: 'cross-az',
     Engine: 'memcached',
@@ -74,7 +74,7 @@ test("Test create cache with client props", () => {
     }
   });
 
-  Template.fromStack(stack).hasResourceProperties("AWS::ElastiCache::CacheCluster", {
+  template.hasResourceProperties("AWS::ElastiCache::CacheCluster", {
     Port: 12321,
     AZMode: 'single-az',
     Engine: 'memcached',

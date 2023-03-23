@@ -19,7 +19,7 @@ import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as waf from "aws-cdk-lib/aws-wafv2";
 import * as defaults from '@aws-solutions-constructs/core';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 function deployConstruct(stack: cdk.Stack, constructProps?: waf.CfnWebACLProps) {
   const myBucket = new s3.Bucket(stack, 'myBucket', {
@@ -79,7 +79,8 @@ test('Test default deployment', () => {
   expect(construct.webacl !== null);
   expect(construct.cloudFrontWebDistribution !== null);
 
-  expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::WAFv2::WebACL", {
     Rules: [
       {
         Name: "AWS-AWSManagedRulesBotControlRuleSet",
@@ -234,7 +235,8 @@ test('Test user provided acl props', () => {
 
   deployConstruct(stack, webaclProps);
 
-  expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::WAFv2::WebACL", {
     VisibilityConfig: {
       CloudWatchMetricsEnabled: false,
       MetricName: "webACL",
@@ -308,7 +310,8 @@ test('Test existing web ACL', () => {
     existingCloudFrontWebDistribution: testCloudfrontDistribution
   });
 
-  expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::WAFv2::WebACL", {
     VisibilityConfig: {
       CloudWatchMetricsEnabled: true,
       MetricName: "webACL",
@@ -316,5 +319,5 @@ test('Test existing web ACL', () => {
     }
   });
 
-  expect(stack).toCountResources("AWS::WAFv2::WebACL", 1);
+  template.resourceCountIs("AWS::WAFv2::WebACL", 1);
 });

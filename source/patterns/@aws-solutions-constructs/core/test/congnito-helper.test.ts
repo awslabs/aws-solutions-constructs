@@ -26,7 +26,7 @@ test('Test override for buildUserPool', () => {
 
   defaults.buildUserPool(stack, userpoolProps);
 
-  Template.fromStack(stack).hasResourceProperties('AWS::Cognito::UserPool', {
+  template.hasResourceProperties('AWS::Cognito::UserPool', {
     UsernameAttributes: [
       "email",
       "phone_number"
@@ -50,7 +50,7 @@ test('Test override for buildUserPoolClient', () => {
 
   defaults.buildUserPoolClient(stack, userpool, userpoolclientProps);
 
-  Template.fromStack(stack).hasResourceProperties('AWS::Cognito::UserPoolClient', {
+  template.hasResourceProperties('AWS::Cognito::UserPoolClient', {
     UserPoolId: {
       Ref: "CognitoUserPool53E37E69"
     },
@@ -70,7 +70,7 @@ test('Test override for buildIdentityPool', () => {
     allowUnauthenticatedIdentities: true
   });
 
-  Template.fromStack(stack).hasResourceProperties('AWS::Cognito::IdentityPool', {
+  template.hasResourceProperties('AWS::Cognito::IdentityPool', {
     AllowUnauthenticatedIdentities: true,
     CognitoIdentityProviders: [
       {

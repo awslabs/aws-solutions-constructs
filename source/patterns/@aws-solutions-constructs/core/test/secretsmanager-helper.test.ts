@@ -27,7 +27,7 @@ test('Test minimal deployment with no properties', () => {
   // Helper declaration
   defaults.buildSecretsManagerSecret(stack, 'secret', {});
 
-  Template.fromStack(stack).hasResource('AWS::SecretsManager::Secret', {
+  template.hasResource('AWS::SecretsManager::Secret', {
     Type: 'AWS::SecretsManager::Secret',
     UpdateReplacePolicy: 'Retain',
     DeletionPolicy: 'Retain'
@@ -47,7 +47,7 @@ test('Test deployment with custom properties', () => {
     removalPolicy: RemovalPolicy.DESTROY,
   });
   // Assertion 1
-  Template.fromStack(stack).hasResource('AWS::SecretsManager::Secret', {
+  template.hasResource('AWS::SecretsManager::Secret', {
     Type: 'AWS::SecretsManager::Secret',
     UpdateReplacePolicy: 'Delete',
     DeletionPolicy: 'Delete',

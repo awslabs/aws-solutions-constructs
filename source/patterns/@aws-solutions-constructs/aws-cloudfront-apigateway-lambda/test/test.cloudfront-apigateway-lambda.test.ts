@@ -16,7 +16,7 @@ import * as cdk from "aws-cdk-lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as api from 'aws-cdk-lib/aws-apigateway';
 import * as s3 from "aws-cdk-lib/aws-s3";
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 function deployNewFunc(stack: cdk.Stack) {
   const lambdaFunctionProps: lambda.FunctionProps = {
@@ -61,7 +61,7 @@ test('check lambda function properties for deploy: true', () => {
 
   deployNewFunc(stack);
 
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": [
@@ -83,7 +83,7 @@ test('check lambda function role for deploy: false', () => {
 
   useExistingFunc(stack);
 
-  expect(stack).toHaveResource('AWS::IAM::Role', {
+  template.hasResourceProperties('AWS::IAM::Role', {
     AssumeRolePolicyDocument: {
       Statement: [
         {
@@ -157,7 +157,7 @@ test('override api gateway properties with existingLambdaObj', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::ApiGateway::RestApi',
+  template.hasResourceProperties('AWS::ApiGateway::RestApi',
     {
       Description: "Override description",
       EndpointConfiguration: {
@@ -186,7 +186,7 @@ test('override api gateway properties without existingLambdaObj', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::ApiGateway::RestApi',
+  template.hasResourceProperties('AWS::ApiGateway::RestApi',
     {
       Description: "Override description",
       EndpointConfiguration: {
@@ -221,11 +221,11 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
     }
   });
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  template.hasResourceProperties("AWS::S3::Bucket", {
     AccessControl: "LogDeliveryWrite"
   });
 
-  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+  template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
       "Fn::GetAtt": [
         "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",

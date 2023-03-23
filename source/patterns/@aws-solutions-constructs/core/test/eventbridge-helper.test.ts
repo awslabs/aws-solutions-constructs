@@ -29,7 +29,7 @@ test('Test deployment with no properties', () => {
     }
   });
 
-  Template.fromStack(stack).resourceCountIs("AWS::EventBridge::EventBus", 0);
+  template.resourceCountIs("AWS::EventBridge::EventBus", 0);
 });
 
 // --------------------------------------------------------------
@@ -43,7 +43,7 @@ test('Test deployment with existing EventBus', () => {
     existingEventBusInterface: new events.EventBus(stack, `existing-event-bus`, { eventBusName: 'test-bus' })
   });
 
-  Template.fromStack(stack).resourceCountIs('AWS::Events::EventBus', 1);
+  template.resourceCountIs('AWS::Events::EventBus', 1);
 });
 
 // --------------------------------------------------------------
@@ -59,7 +59,7 @@ test('Test deployment with new EventBus with props', () => {
     }
   });
 
-  Template.fromStack(stack).hasResourceProperties('AWS::Events::EventBus', {
+  template.hasResourceProperties('AWS::Events::EventBus', {
     Name: 'testneweventbus'
   });
 });

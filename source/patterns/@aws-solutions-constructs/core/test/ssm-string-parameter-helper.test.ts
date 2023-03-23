@@ -25,7 +25,7 @@ test('Test minimal deployment with required properties', () => {
   const parameterValue = "test-val";
   defaults.buildSsmStringParameter(stack, 'parameterName', {stringValue: parameterValue});
 
-  Template.fromStack(stack).hasResourceProperties('AWS::SSM::Parameter', {
+  template.hasResourceProperties('AWS::SSM::Parameter', {
     Type: 'String',
     Value: parameterValue
   });

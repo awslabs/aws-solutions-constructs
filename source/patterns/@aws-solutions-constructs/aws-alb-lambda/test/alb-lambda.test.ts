@@ -15,8 +15,8 @@ import { AlbToLambda, AlbToLambdaProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as elb from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import * as cdk from "aws-cdk-lib";
-import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
+import { Template } from 'aws-cdk-lib/assertions';
 
 test('Test new load balancer and new lambda function', () => {
   const stack = new cdk.Stack(undefined, undefined, {
@@ -36,7 +36,8 @@ test('Test new load balancer and new lambda function', () => {
   };
   new AlbToLambda(stack, 'test-one', props);
 
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Scheme: 'internet-facing',
     LoadBalancerAttributes: [
       {
@@ -60,19 +61,19 @@ test('Test new load balancer and new lambda function', () => {
     ],
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTPS'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::TargetGroup', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
     TargetType: 'lambda'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::ListenerCertificate', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::ListenerCertificate', {
   });
 
 });
@@ -95,26 +96,27 @@ test('Test new load balancer and new lambda function for HTTP api', () => {
   };
   new AlbToLambda(stack, 'test-one', props);
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Scheme: 'internet-facing'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP'
   });
 
-  expect(stack).not.toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  defaults.expectNonexistence(stack, 'AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTPS'
   });
 
-  expect(stack).not.toHaveResource('AWS::ElasticLoadBalancingV2::ListenerCertificate', {
+  defaults.expectNonexistence(stack, 'AWS::ElasticLoadBalancingV2::ListenerCertificate', {
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::TargetGroup', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
     TargetType: 'lambda'
   });
 
-  expect(stack).toCountResources('AWS::Lambda::Function', 1);
+  template.resourceCountIs('AWS::Lambda::Function', 1);
 
 });
 
@@ -145,23 +147,24 @@ test('Test existing load balancer and new lambda function', () => {
   };
   new AlbToLambda(stack, 'test-one', props);
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP'
   });
 
-  expect(stack).not.toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  defaults.expectNonexistence(stack, 'AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTPS'
   });
 
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::EC2::VPC', 1);
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::TargetGroup', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
     TargetType: 'lambda'
   });
 
-  expect(stack).toCountResources('AWS::Lambda::Function', 1);
+  template.resourceCountIs('AWS::Lambda::Function', 1);
 
-  expect(stack).toHaveResource("AWS::ElasticLoadBalancingV2::LoadBalancer", {
+  template.hasResourceProperties("AWS::ElasticLoadBalancingV2::LoadBalancer", {
     Scheme: "internet-facing",
   });
 });
@@ -193,26 +196,27 @@ test('Test new load balancer and existing lambda function', () => {
   };
   new AlbToLambda(stack, 'test-one', props);
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Scheme: 'internet-facing'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP'
   });
 
-  expect(stack).not.toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  defaults.expectNonexistence(stack, 'AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTPS'
   });
 
-  expect(stack).not.toHaveResource('AWS::ElasticLoadBalancingV2::ListenerCertificate', {
+  defaults.expectNonexistence(stack, 'AWS::ElasticLoadBalancingV2::ListenerCertificate', {
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::TargetGroup', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
     TargetType: 'lambda'
   });
 
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  template.hasResourceProperties('AWS::Lambda::Function', {
     FunctionName: testFunctionName
   });
 
@@ -250,28 +254,29 @@ test("Test existing load balancer and existing lambda function", () => {
   };
   new AlbToLambda(stack, "test-one", props);
 
-  expect(stack).toHaveResource("AWS::ElasticLoadBalancingV2::LoadBalancer", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ElasticLoadBalancingV2::LoadBalancer", {
     Scheme: "internal",
   });
 
-  expect(stack).toHaveResource("AWS::ElasticLoadBalancingV2::Listener", {
+  template.hasResourceProperties("AWS::ElasticLoadBalancingV2::Listener", {
     Protocol: "HTTP",
   });
 
-  expect(stack).toHaveResource("AWS::ElasticLoadBalancingV2::Listener", {
+  template.hasResourceProperties("AWS::ElasticLoadBalancingV2::Listener", {
     Protocol: "HTTPS",
   });
 
-  expect(stack).toHaveResource(
+  template.hasResourceProperties(
     "AWS::ElasticLoadBalancingV2::ListenerCertificate",
     {}
   );
 
-  expect(stack).toHaveResource("AWS::ElasticLoadBalancingV2::TargetGroup", {
+  template.hasResourceProperties("AWS::ElasticLoadBalancingV2::TargetGroup", {
     TargetType: "lambda",
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  template.hasResourceProperties("AWS::Lambda::Function", {
     FunctionName: testFunctionName,
   });
 });
@@ -297,30 +302,31 @@ test('Test new load balancer and new lambda function', () => {
   };
   new AlbToLambda(stack, 'test-one', props);
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Scheme: 'internet-facing'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTPS'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::ListenerCertificate', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::ListenerCertificate', {
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::TargetGroup', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
     TargetType: 'lambda'
   });
 
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  template.hasResourceProperties('AWS::Lambda::Function', {
     FunctionName: testFunctionName
   });
 
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::EC2::VPC', 1);
 
 });
 
@@ -358,28 +364,29 @@ test('Test HTTPS adding 2 lambda targets, second with rules', () => {
   };
   new AlbToLambda(stack, 'test-two', secondProps);
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Scheme: 'internet-facing'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTPS'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::TargetGroup', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
     TargetType: 'lambda'
   });
 
-  expect(stack).toCountResources('AWS::ElasticLoadBalancingV2::TargetGroup', 2);
+  template.resourceCountIs('AWS::ElasticLoadBalancingV2::TargetGroup', 2);
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::ListenerCertificate', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::ListenerCertificate', {
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::ListenerRule', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::ListenerRule', {
     Conditions: [
       {
         Field: "path-pattern",
@@ -427,28 +434,29 @@ test('Test HTTP adding 2 lambda targets, second with rules', () => {
   };
   new AlbToLambda(stack, 'test-two', secondProps);
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Scheme: 'internet-facing'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP'
   });
 
-  expect(stack).not.toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  defaults.expectNonexistence(stack, 'AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTPS'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::TargetGroup', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
     TargetType: 'lambda'
   });
 
-  expect(stack).toCountResources('AWS::ElasticLoadBalancingV2::TargetGroup', 2);
+  template.resourceCountIs('AWS::ElasticLoadBalancingV2::TargetGroup', 2);
 
-  expect(stack).not.toHaveResource('AWS::ElasticLoadBalancingV2::ListenerCertificate', {
+  defaults.expectNonexistence(stack, 'AWS::ElasticLoadBalancingV2::ListenerCertificate', {
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::ListenerRule', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::ListenerRule', {
     Conditions: [
       {
         Field: "path-pattern",
@@ -483,24 +491,25 @@ test('Test new load balancer and new lambda function', () => {
   };
   new AlbToLambda(stack, 'test-one', props);
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Scheme: 'internet-facing'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTPS'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::TargetGroup', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
     TargetType: 'lambda',
     Name: 'different-name'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::ListenerCertificate', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::ListenerCertificate', {
   });
 });
 
@@ -526,7 +535,8 @@ test('Test logging turned off', () => {
   };
   new AlbToLambda(stack, 'test-one', props);
 
-  expect(stack).not.toHaveResource('AWS::S3::Bucket', {});
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::S3::Bucket', 0);
 
 });
 
@@ -576,24 +586,25 @@ test('Test custom ALB properties', () => {
   };
   new AlbToLambda(stack, 'test-one', props);
 
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Scheme: 'internet-facing',
     Name: 'custom-name',
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTPS'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::TargetGroup', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
     TargetType: 'lambda'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::ListenerCertificate', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::ListenerCertificate', {
   });
 
 });
@@ -619,26 +630,27 @@ test('Test custom logging bucket', () => {
   };
   new AlbToLambda(stack, 'test-one', props);
 
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Scheme: 'internet-facing',
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTPS'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::TargetGroup', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
     TargetType: 'lambda'
   });
 
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::ListenerCertificate', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::ListenerCertificate', {
   });
 
-  expect(stack).toHaveResource('AWS::S3::Bucket', {
+  template.hasResourceProperties('AWS::S3::Bucket', {
     BucketName: 'custom-name'
   });
 

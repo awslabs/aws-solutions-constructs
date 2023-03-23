@@ -17,7 +17,7 @@ import { S3ToSqs, S3ToSqsProps } from "../lib";
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as kms from 'aws-cdk-lib/aws-kms';
 import * as s3 from 'aws-cdk-lib/aws-s3';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 
 // --------------------------------------------------------------
@@ -59,7 +59,8 @@ test('Test deployment w/ existing queue', () => {
     existingQueueObj: queue
   });
   // Assertion 1
-  expect(stack).toHaveResource("Custom::S3BucketNotifications", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("Custom::S3BucketNotifications", {
     NotificationConfiguration: {
       QueueConfigurations: [
         {
@@ -89,7 +90,8 @@ test('Test deployment w/ existing Bucket', () => {
     existingBucketObj: buildS3BucketResponse.bucket
   });
   // Assertion 1
-  expect(stack).toHaveResource("Custom::S3BucketNotifications", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("Custom::S3BucketNotifications", {
     NotificationConfiguration: {
       QueueConfigurations: [
         {
@@ -122,7 +124,8 @@ test('Pattern deployment w/ bucket versioning turned off', () => {
     }
   };
   new S3ToSqs(stack, 'test-s3-sqs', props);
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     PublicAccessBlockConfiguration: {
       BlockPublicAcls: false,
       BlockPublicPolicy: true,
@@ -152,7 +155,8 @@ test('Test deployment w/ s3 event types and filters', () => {
   };
   new S3ToSqs(stack, 'test-s3-sqs', props);
   // Assertion 1
-  expect(stack).toHaveResource("Custom::S3BucketNotifications", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("Custom::S3BucketNotifications", {
     NotificationConfiguration: {
       QueueConfigurations: [
         {
@@ -195,10 +199,11 @@ test('Test deployment w/ SSE encryption enabled using customer managed KMS CMK',
   });
 
   // Assertion 1
-  expect(stack).toHaveResource("Custom::S3BucketNotifications");
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("Custom::S3BucketNotifications", 1);
 
   // Assertion 2
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "tests3sqsEncryptionKeyFD4D5946",
@@ -208,7 +213,7 @@ test('Test deployment w/ SSE encryption enabled using customer managed KMS CMK',
   });
 
   // Assertion 3
-  expect(stack).toHaveResource('AWS::KMS::Key', {
+  template.hasResourceProperties('AWS::KMS::Key', {
     EnableKeyRotation: true
   });
 });
@@ -251,11 +256,12 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     AccessControl: "LogDeliveryWrite"
   });
 
-  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+  template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
       "Fn::GetAtt": [
         "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
@@ -281,7 +287,8 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
     logS3AccessLogs: false
   });
 
-  expect(stack).toCountResources("AWS::S3::Bucket", 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::S3::Bucket", 1);
 });
 
 test('Queue is encrypted with imported CMK when set on encryptionKey prop', () => {
@@ -291,7 +298,8 @@ test('Queue is encrypted with imported CMK when set on encryptionKey prop', () =
     encryptionKey: key
   });
 
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "cmk01DE03DA",
@@ -309,7 +317,8 @@ test('Queue is encrypted with provided encryptionKeyProps', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "tests3sqsEncryptionKeyFD4D5946",
@@ -318,7 +327,7 @@ test('Queue is encrypted with provided encryptionKeyProps', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::KMS::Alias', {
+  template.hasResourceProperties('AWS::KMS::Alias', {
     AliasName: 'alias/new-key-alias-from-props',
     TargetKeyId: {
       "Fn::GetAtt": [
@@ -338,7 +347,8 @@ test('Queue is encrypted with imported CMK when set on queueProps.encryptionMast
     }
   });
 
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "cmk01DE03DA",
@@ -353,7 +363,8 @@ test('Queue is encrypted by default with Customer-managed KMS key when no other 
   new S3ToSqs(stack, 'test-s3-sqs', {
   });
 
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "tests3sqsEncryptionKeyFD4D5946",
@@ -369,7 +380,8 @@ test('Queue is encrypted with SQS-managed KMS Key when enable encryption flag is
     enableEncryptionWithCustomerManagedKey: false
   });
 
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: "alias/aws/sqs"
   });
 });

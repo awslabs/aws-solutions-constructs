@@ -18,7 +18,6 @@ import * as defaults from '@aws-solutions-constructs/core';
 import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { LambdaToStepfunctions } from '../lib';
-import '@aws-cdk/assert/jest';
 import { Template } from "aws-cdk-lib/assertions";
 
 // --------------------------------------------------------------
@@ -43,7 +42,8 @@ test('Test deployment with new Lambda function', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     Environment: {
       Variables: {
         LAMBDA_NAME: 'deploy-function',
@@ -80,7 +80,8 @@ test('Test deployment with existing Lambda function', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     Environment: {
       Variables: {
         LAMBDA_NAME: 'existing-function'
@@ -114,7 +115,8 @@ test('Test invocation permissions', () => {
     }
   });
   // Assertion 1
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -224,7 +226,8 @@ test('Test lambda function custom environment variable', () => {
   });
 
   // Assertion
-  expect(stack).toHaveResourceLike('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
     Runtime: 'nodejs14.x',
     Environment: {
@@ -258,7 +261,8 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     deployVpc: true
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -279,17 +283,17 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
 // --------------------------------------------------------------
@@ -317,7 +321,8 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -338,18 +343,18 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: "192.68.0.0/16",
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
 // --------------------------------------------------------------
@@ -374,7 +379,8 @@ test("Test minimal deployment with an existing VPC", () => {
     existingVpc: testVpc,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -395,7 +401,7 @@ test("Test minimal deployment with an existing VPC", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 });
@@ -486,7 +492,8 @@ test('check LogGroup name', () => {
   const expectedPrefix = '/aws/vendedlogs/states/constructs/';
   const lengthOfDatetimeSuffix = 13;
 
-  const LogGroup = Template.fromStack(stack).findResources("AWS::Logs::LogGroup");
+  const template = Template.fromStack(stack);
+  const LogGroup = template.findResources("AWS::Logs::LogGroup");
 
   const logName = LogGroup.lambdatostepfunctionstackStateMachineLogGroupEAD4854E.Properties.LogGroupName;
   const suffix = logName.slice(-lengthOfDatetimeSuffix);
