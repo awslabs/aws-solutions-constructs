@@ -13,9 +13,10 @@
 
 import { IotToS3, IotToS3Props } from "../lib";
 import * as cdk from "aws-cdk-lib";
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as s3 from "aws-cdk-lib/aws-s3";
 import { RemovalPolicy } from "aws-cdk-lib";
+import * as defaults from '@aws-solutions-constructs/core';
 
 test('check for default props', () => {
   const stack = new cdk.Stack();
@@ -32,11 +33,12 @@ test('check for default props', () => {
   };
   const construct = new IotToS3(stack, 'test-iot-s3-integration', props);
 
+  const template = Template.fromStack(stack);
   // Check whether construct has two s3 buckets for storing msgs and logging
-  expect(stack).toCountResources('AWS::S3::Bucket', 2);
+  template.resourceCountIs('AWS::S3::Bucket', 2);
 
   // Check for IoT Topic Rule Definition
-  expect(stack).toHaveResource('AWS::IoT::TopicRule', {
+  template.hasResourceProperties('AWS::IoT::TopicRule', {
     TopicRulePayload: {
       Actions: [
         {
@@ -64,7 +66,7 @@ test('check for default props', () => {
   /**
    * Due to difference in CDK V1 and V2 Synth, the policy documents doesn't match, hence checking only for number of policies
    */
-  expect(stack).toCountResources('AWS::IAM::Policy', 1);
+  template.resourceCountIs('AWS::IAM::Policy', 1);
 
   // Check for properties
   expect(construct.s3Bucket).toBeDefined();
@@ -96,10 +98,11 @@ test('check for overriden props', () => {
   const construct = new IotToS3(stack, 'test-iot-s3-integration', props);
 
   // Check whether construct has two s3 buckets for storing msgs and logging
-  expect(stack).toCountResources('AWS::S3::Bucket', 2);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::S3::Bucket', 2);
 
   // Check logging bucket encryption type to be KMS_Managed
-  expect(stack).toHaveResourceLike('AWS::S3::Bucket', {
+  template.hasResourceProperties('AWS::S3::Bucket', {
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [
         {
@@ -112,7 +115,7 @@ test('check for overriden props', () => {
   });
 
   // Check for bucket to have KMS CMK Encryption
-  expect(stack).toHaveResourceLike('AWS::S3::Bucket', {
+  template.hasResourceProperties('AWS::S3::Bucket', {
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [
         {
@@ -131,7 +134,7 @@ test('check for overriden props', () => {
   });
 
   // Check for IoT Topic Rule Definition
-  expect(stack).toHaveResource('AWS::IoT::TopicRule', {
+  template.hasResourceProperties('AWS::IoT::TopicRule', {
     TopicRulePayload: {
       Actions: [
         {
@@ -159,10 +162,10 @@ test('check for overriden props', () => {
    * Due to difference in CDK V1 and V2 Synth, the policy documents doesn't match, hence checking only for number of policies
    */
   // Check for automatically created CMK KMS Key
-  expect(stack).toCountResources('AWS::KMS::Key', 1);
+  template.resourceCountIs('AWS::KMS::Key', 1);
 
   // Check for IoT Topic Rule permissions to KMS key to store msgs to S3 Bucket and access to put data to s3 bucket
-  expect(stack).toCountResources('AWS::IAM::Policy', 1);
+  template.resourceCountIs('AWS::IAM::Policy', 1);
 
   // Check for properties
   expect(construct.s3Bucket).toBeDefined();
@@ -190,10 +193,11 @@ test('check for existing bucket', () => {
   const construct = new IotToS3(stack, 'test-iot-s3-integration', props);
 
   // Check whether construct has a single s3 bucket, no logging bucket should exist since existing bucket is supplied
-  expect(stack).toCountResources('AWS::S3::Bucket', 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::S3::Bucket', 1);
 
   // Check for IoT Topic Rule Definition with existing Bucket Ref
-  expect(stack).toHaveResource('AWS::IoT::TopicRule', {
+  template.hasResourceProperties('AWS::IoT::TopicRule', {
     TopicRulePayload: {
       Actions: [
         {
@@ -221,13 +225,13 @@ test('check for existing bucket', () => {
    * Due to difference in CDK V1 and V2 Synth, the policy documents doesn't match, hence checking only for number of policies
    */
   // Check for IAM policy to have access to s3 bucket
-  expect(stack).toCountResources('AWS::IAM::Policy', 1);
+  template.resourceCountIs('AWS::IAM::Policy', 1);
 
   // since existing bucket is supplied, no key should exist
-  expect(stack).not.toHaveResource('AWS::KMS::Key', {});
+  defaults.expectNonexistence(stack, 'AWS::KMS::Key', {});
 
   // Check for IoT Topic Rule permissions to KMS key to store msgs to S3 Bucket
-  expect(stack).toCountResources("AWS::IAM::Policy", 1);
+  template.resourceCountIs("AWS::IAM::Policy", 1);
 
   // Check for properties
   expect(construct.s3Bucket).toBeUndefined();
@@ -284,8 +288,9 @@ test('check for name collision', () => {
   new IotToS3(stack, 'test-iot-s3-integration', props);
   new IotToS3(stack, 'test-iot-s3-integration1', props);
 
-  expect(stack).toCountResources('AWS::IoT::TopicRule', 2);
-  expect(stack).toCountResources('AWS::S3::Bucket', 4);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::IoT::TopicRule', 2);
+  template.resourceCountIs('AWS::S3::Bucket', 4);
 });
 
 test('check for chaining of resource', () => {
@@ -317,6 +322,7 @@ test('check for chaining of resource', () => {
   };
   new IotToS3(stack, 'test-iot-s3-integration1', props1);
 
-  expect(stack).toCountResources('AWS::IoT::TopicRule', 2);
-  expect(stack).toCountResources('AWS::S3::Bucket', 2);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::IoT::TopicRule', 2);
+  template.resourceCountIs('AWS::S3::Bucket', 2);
 });

@@ -17,7 +17,7 @@ import { SnsToSqs, SnsToSqsProps } from "../lib";
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import * as kms from 'aws-cdk-lib/aws-kms';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 // --------------------------------------------------------------
 // Pattern deployment with new Topic, new Queue and
@@ -32,7 +32,8 @@ test('Pattern deployment w/ new Topic, new Queue and default props', () => {
   expect(testConstruct.snsTopic).toBeDefined();
   expect(testConstruct.encryptionKey).toBeDefined();
   // Assertion 2
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "EncryptionKey1B843E66",
@@ -41,7 +42,7 @@ test('Pattern deployment w/ new Topic, new Queue and default props', () => {
     }
   });
   // Assertion 3
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "EncryptionKey1B843E66",
@@ -50,7 +51,7 @@ test('Pattern deployment w/ new Topic, new Queue and default props', () => {
     }
   });
   // Assertion 4
-  expect(stack).toHaveResource("AWS::SNS::Subscription", {
+  template.hasResourceProperties("AWS::SNS::Subscription", {
     Protocol: "sqs",
     TopicArn: {
       Ref: "testsnssqsSnsTopic2CD0065B"
@@ -88,7 +89,8 @@ test('Pattern deployment w/ new topic, new queue, and overridden props', () => {
   };
   new SnsToSqs(stack, 'test-sns-sqs', props);
   // Assertion 1
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     TopicName: "new-topic",
     KmsMasterKeyId: {
       "Fn::GetAtt": [
@@ -98,12 +100,12 @@ test('Pattern deployment w/ new topic, new queue, and overridden props', () => {
     }
   });
   // Assertion 2
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  template.hasResourceProperties("AWS::SQS::Queue", {
     QueueName: "new-queue.fifo",
     FifoQueue: true
   });
   // Assertion 3
-  expect(stack).toHaveResource("AWS::KMS::Key", {
+  template.hasResourceProperties("AWS::KMS::Key", {
     EnableKeyRotation: false
   });
 });
@@ -150,11 +152,12 @@ test('Test deployment w/ existing queue, and topic', () => {
   // Assertion 2
   expect(app.snsTopic !== null);
   // Assertion 3
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     TopicName: "existing-topic-obj"
   });
   // Assertion 4
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  template.hasResourceProperties("AWS::SQS::Queue", {
     QueueName: "existing-queue-obj"
   });
 });
@@ -175,11 +178,12 @@ test('Test deployment with imported encryption key', () => {
     encryptionKey: kmsKey
   });
   // Assertion 2
-  expect(stack).toHaveResource("AWS::KMS::Key", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::KMS::Key", {
     EnableKeyRotation: false
   });
   // Assertion 3
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "importedkey38675D68",
@@ -206,7 +210,8 @@ test('Test deployment with SNS managed KMS key', () => {
     enableEncryptionWithCustomerManagedKey: false
   });
   // Assertion 2
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::Join": [
         "",
@@ -229,7 +234,7 @@ test('Test deployment with SNS managed KMS key', () => {
     }
   });
   // Assertion 3
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "snstosqsstackqueueKey743636E7",
@@ -253,7 +258,8 @@ test('Test deployment with CMK encrypted SNS Topic', () => {
     }
   });
   // Assertion 1
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "cmk01DE03DA",
@@ -293,7 +299,8 @@ test('Pattern deployment w/ existing topic and FIFO queue', () => {
   new SnsToSqs(stack, 'test-sns-sqs', props);
 
   // Assertion 1
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     FifoQueue: true,
     RedrivePolicy: {
       deadLetterTargetArn: {
@@ -336,7 +343,8 @@ test('Pattern deployment w/ existing topic and Standard queue', () => {
   new SnsToSqs(stack, 'test-sns-sqs', props);
 
   // Assertion 1
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     RedrivePolicy: {
       deadLetterTargetArn: {
         "Fn::GetAtt": [
@@ -359,7 +367,8 @@ test('Check raw message delivery is true', () => {
   };
   new SnsToSqs(stack, 'test-sns-sqs', props);
 
-  expect(stack).toHaveResource("AWS::SNS::Subscription", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Subscription", {
     Protocol: "sqs",
     TopicArn: {
       Ref: "testsnssqsSnsTopic2CD0065B"
@@ -390,7 +399,8 @@ test('Check for filter policy', () => {
 
   new SnsToSqs(stack, 'test-sns-sqs', props);
 
-  expect(stack).toHaveResource("AWS::SNS::Subscription", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Subscription", {
     FilterPolicy: {
       color: [
         "red",
@@ -415,7 +425,8 @@ test('Check SNS dead letter queue', () => {
 
   new SnsToSqs(stack, 'test-sns-sqs', props);
 
-  expect(stack).toHaveResource("AWS::SNS::Subscription", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Subscription", {
     RedrivePolicy: {
       deadLetterTargetArn: {
         "Fn::GetAtt": [
@@ -439,7 +450,8 @@ test('Construct uses topicProps.masterKey when specified', () => {
 
   new SnsToSqs(stack, 'test-sns-sqs', props);
 
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "cmkfortopic0904647B",
@@ -461,7 +473,8 @@ test('Construct uses queueProps.encryptionMasterKey when specified', () => {
 
   new SnsToSqs(stack, 'test-sns-sqs', props);
 
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "cmkforqueue4E093476",

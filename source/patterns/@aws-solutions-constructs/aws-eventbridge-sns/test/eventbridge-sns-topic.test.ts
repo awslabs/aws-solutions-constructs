@@ -15,7 +15,7 @@ import * as cdk from "aws-cdk-lib";
 import * as events from "aws-cdk-lib/aws-events";
 import * as sns from "aws-cdk-lib/aws-sns";
 import * as defaults from '@aws-solutions-constructs/core';
-import '@aws-cdk/assert/jest';
+import { Template } from "aws-cdk-lib/assertions";
 import { EventbridgeToSns, EventbridgeToSnsProps } from "../lib";
 
 function deployNewStack(stack: cdk.Stack) {
@@ -45,7 +45,8 @@ test('check if the event rule has permission/policy in place in sns for it to be
 
   expect(testConstruct.snsTopic).toBeDefined();
   expect(testConstruct.encryptionKey).toBeDefined();
-  expect(stack).toHaveResource('AWS::SNS::TopicPolicy', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SNS::TopicPolicy', {
     PolicyDocument: {
       Statement: [
         {
@@ -144,7 +145,8 @@ test('check events rule properties', () => {
   const stack = new cdk.Stack();
   deployNewStack(stack);
 
-  expect(stack).toHaveResource('AWS::Events::Rule', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Events::Rule', {
     ScheduleExpression: "rate(5 minutes)",
     State: "ENABLED",
     Targets: [
@@ -175,7 +177,8 @@ test('check properties', () => {
 test('check the sns topic properties', () => {
   const stack = new cdk.Stack();
   deployNewStack(stack);
-  expect(stack).toHaveResource('AWS::SNS::Topic', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "testEncryptionKeyB55BFDBC",
@@ -200,7 +203,8 @@ test('check the sns topic properties with existing KMS key', () => {
 
   new EventbridgeToSns(stack, 'test-events-rule-sqs', props);
 
-  expect(stack).toHaveResource('AWS::SNS::Topic', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "EncryptionKey1B843E66",
@@ -209,7 +213,7 @@ test('check the sns topic properties with existing KMS key', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::KMS::Key', {
+  template.hasResourceProperties('AWS::KMS::Key', {
     Description: "my-key",
     EnableKeyRotation: true
   });
@@ -226,7 +230,8 @@ test('check eventbus property, snapshot & eventbus exists', () => {
   expect(construct.eventBus !== null);
 
   // Check whether eventbus exists
-  expect(stack).toHaveResource('AWS::Events::EventBus');
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::Events::EventBus', 1);
 });
 
 test('check exception while passing existingEventBus & eventBusProps', () => {
@@ -263,7 +268,8 @@ test('check custom event bus resource with props when deploy:true', () => {
   };
   new EventbridgeToSns(stack, 'test-new-eventbridge-sns', props);
 
-  expect(stack).toHaveResource('AWS::Events::EventBus', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Events::EventBus', {
     Name: 'testcustomeventbus'
   });
 });
@@ -285,7 +291,8 @@ test('Topic is encrypted when key is provided on topicProps.masterKey prop', () 
 
   new EventbridgeToSns(stack, 'test-events-rule-sqs', props);
 
-  expect(stack).toHaveResource('AWS::SNS::Topic', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "EncryptionKey1B843E66",
@@ -294,7 +301,7 @@ test('Topic is encrypted when key is provided on topicProps.masterKey prop', () 
     }
   });
 
-  expect(stack).toHaveResource('AWS::KMS::Key', {
+  template.hasResourceProperties('AWS::KMS::Key', {
     Description: "my-key",
     EnableKeyRotation: true
   });
@@ -314,7 +321,8 @@ test('Topic is encrypted when keyProps are provided', () => {
 
   new EventbridgeToSns(stack, 'test-events-rule-sqs', props);
 
-  expect(stack).toHaveResource('AWS::SNS::Topic', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "testeventsrulesqsEncryptionKey19AB0C02",
@@ -323,7 +331,7 @@ test('Topic is encrypted when keyProps are provided', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::KMS::Key', {
+  template.hasResourceProperties('AWS::KMS::Key', {
     Description: "my-key",
     EnableKeyRotation: true
   });
@@ -341,7 +349,8 @@ test('Topic is encrypted with AWS-managed KMS key when enableEncryptionWithCusto
 
   new EventbridgeToSns(stack, 'test-events-rule-sqs', props);
 
-  expect(stack).toHaveResource('AWS::SNS::Topic', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       "Fn::Join": [
         "",

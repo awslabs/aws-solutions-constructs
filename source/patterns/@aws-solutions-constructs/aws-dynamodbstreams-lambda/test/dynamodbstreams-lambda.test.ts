@@ -15,7 +15,7 @@ import { DynamoDBStreamsToLambda, DynamoDBStreamsToLambdaProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as cdk from "aws-cdk-lib";
-import '@aws-cdk/assert/jest';
+import { Template } from "aws-cdk-lib/assertions";
 
 function deployNewFunc(stack: cdk.Stack) {
   const props: DynamoDBStreamsToLambdaProps = {
@@ -33,7 +33,8 @@ test('check lambda EventSourceMapping', () => {
   const stack = new cdk.Stack();
   deployNewFunc(stack);
 
-  expect(stack).toHaveResource('AWS::Lambda::EventSourceMapping', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::EventSourceMapping', {
     EventSourceArn: {
       "Fn::GetAtt": [
         "testlambdadynamodbstackDynamoTable8138E93B",
@@ -67,7 +68,8 @@ test('check DynamoEventSourceProps override', () => {
 
   new DynamoDBStreamsToLambda(stack, 'test-lambda-dynamodb-stack', props);
 
-  expect(stack).toHaveResource('AWS::Lambda::EventSourceMapping', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::EventSourceMapping', {
     EventSourceArn: {
       "Fn::GetAtt": [
         "testlambdadynamodbstackDynamoTable8138E93B",
@@ -86,7 +88,8 @@ test('check lambda permission to read dynamodb stream', () => {
   const stack = new cdk.Stack();
   deployNewFunc(stack);
 
-  expect(stack).toHaveResource('AWS::IAM::Policy', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
         {
@@ -154,7 +157,8 @@ test('check dynamodb table stream override', () => {
   };
 
   new DynamoDBStreamsToLambda(stack, 'test-lambda-dynamodb-stack', props);
-  expect(stack).toHaveResource('AWS::DynamoDB::Table', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
     KeySchema: [
       {
         AttributeName: "id",
@@ -241,11 +245,12 @@ test('check dynamodb table stream override with ITable', () => {
 
   new DynamoDBStreamsToLambda(stack, 'test-lambda-dynamodb-stack', props);
 
-  expect(stack).toHaveResource('AWS::Lambda::EventSourceMapping', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::EventSourceMapping', {
     EventSourceArn: "arn:aws:dynamodb:us-east-1:xxxxxxxxxxxxx:table/existing-table/stream/2020-06-22T18:34:05.824",
   });
 
-  expect(stack).toHaveResource('AWS::IAM::Policy', {
+  template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
         {

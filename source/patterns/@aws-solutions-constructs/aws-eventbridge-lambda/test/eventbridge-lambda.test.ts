@@ -14,7 +14,7 @@
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as events from 'aws-cdk-lib/aws-events';
 import { EventbridgeToLambdaProps, EventbridgeToLambda } from '../lib/index';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as cdk from 'aws-cdk-lib';
 
 function deployNewFunc(stack: cdk.Stack) {
@@ -54,7 +54,8 @@ test('check lambda function properties for deploy: true', () => {
 
   deployNewFunc(stack);
 
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": [
@@ -76,7 +77,8 @@ test('check lambda function permission for deploy: true', () => {
 
   deployNewFunc(stack);
 
-  expect(stack).toHaveResource('AWS::Lambda::Permission', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Permission', {
     Action: "lambda:InvokeFunction",
     FunctionName: {
       "Fn::GetAtt": [
@@ -99,7 +101,8 @@ test('check lambda function role for deploy: true', () => {
 
   deployNewFunc(stack);
 
-  expect(stack).toHaveResource('AWS::IAM::Role', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IAM::Role', {
     AssumeRolePolicyDocument: {
       Statement: [
         {
@@ -158,7 +161,8 @@ test('check events rule properties for deploy: true', () => {
 
   deployNewFunc(stack);
 
-  expect(stack).toHaveResource('AWS::Events::Rule', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Events::Rule', {
     ScheduleExpression: "rate(5 minutes)",
     State: "ENABLED",
     Targets: [
@@ -209,7 +213,8 @@ test('check eventbus property, snapshot & eventbus exists', () => {
   expect(construct.lambdaFunction !== null);
   expect(construct.eventBus !== null);
   // Check whether eventbus exists
-  expect(stack).toHaveResource('AWS::Events::EventBus');
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::Events::EventBus', 1);
 });
 
 test('check exception while passing existingEventBus & eventBusProps', () => {
@@ -256,7 +261,8 @@ test('check custom event bus resource with props when deploy:true', () => {
   };
   new EventbridgeToLambda(stack, 'test-new-eventbridge-with-props-lambda', props);
 
-  expect(stack).toHaveResource('AWS::Events::EventBus', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Events::EventBus', {
     Name: `testeventbus`
   });
 });

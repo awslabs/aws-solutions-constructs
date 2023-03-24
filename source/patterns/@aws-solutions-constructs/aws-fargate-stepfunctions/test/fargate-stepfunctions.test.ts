@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
 import { FargateToStepfunctions } from "../lib";
@@ -46,7 +45,8 @@ test('Check for new service', () => {
 
   createFargateConstructWithNewResources(stack, publicApi);
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName,
     LaunchType: 'FARGATE',
     DesiredCount: 2,
@@ -82,7 +82,8 @@ test('Check for an existing service', () => {
     stateMachineProps: testStateMachineProps(stack)
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName,
     LaunchType: 'FARGATE',
     DesiredCount: 2,
@@ -100,7 +101,8 @@ test('Check for IAM startExecution policy', () => {
 
   createFargateConstructWithNewResources(stack, publicApi);
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -128,14 +130,15 @@ test('Check for public/private VPC', () => {
 
   createFargateConstructWithNewResources(stack, publicApi);
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: testCidr
   });
 
-  expect(stack).toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::StepFunctions::StateMachine', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
+  template.hasResourceProperties('AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::StepFunctions::StateMachine', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
 
 test('Check for isolated VPC', () => {
@@ -144,14 +147,15 @@ test('Check for isolated VPC', () => {
 
   createFargateConstructWithNewResources(stack, publicApi);
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: testCidr
   });
 
-  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::StepFunctions::StateMachine', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
+  defaults.expectNonexistence(stack, 'AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::StepFunctions::StateMachine', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
 
 test('Check for an existing VPC', () => {
@@ -171,11 +175,12 @@ test('Check for an existing VPC', () => {
     stateMachineProps: testStateMachineProps(stack)
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: "172.168.0.0/16"
   });
 
-  expect(stack).toCountResources("AWS::EC2::VPC", 1);
+  template.resourceCountIs("AWS::EC2::VPC", 1);
 });
 
 test('Check for custom ARN resource', () => {
@@ -195,7 +200,8 @@ test('Check for custom ARN resource', () => {
     stateMachineEnvironmentVariableName: customEnvName
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     Family: familyName,
     ContainerDefinitions: [
       {
@@ -250,7 +256,8 @@ test('Check for no cloudwatch creation', () => {
   });
 
   expect(construct.cloudwatchAlarms).not.toBeDefined();
-  expect(stack).not.toHaveResource("AWS::CloudWatch::Alarm", {
+
+  defaults.expectNonexistence(stack, "AWS::CloudWatch::Alarm", {
     ComparisonOperator: "GreaterThanOrEqualToThreshold",
     EvaluationPeriods: 1,
     AlarmDescription: "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
@@ -289,7 +296,8 @@ test('Check for custom log group props', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::Logs::LogGroup", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Logs::LogGroup", {
     LogGroupName: logGroupName
   });
 });
@@ -324,7 +332,8 @@ test('check LogGroup name', () => {
   const expectedPrefix = '/aws/vendedlogs/states/constructs/';
   const lengthOfDatetimeSuffix = 13;
 
-  const LogGroup = Template.fromStack(stack).findResources("AWS::Logs::LogGroup");
+  const template = Template.fromStack(stack);
+  const LogGroup = template.findResources("AWS::Logs::LogGroup");
 
   const logName = LogGroup.testconstructStateMachineLogGroup2EB4F48B.Properties.LogGroupName;
   const suffix = logName.slice(-lengthOfDatetimeSuffix);

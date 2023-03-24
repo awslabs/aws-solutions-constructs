@@ -15,7 +15,7 @@ import { IotToLambdaToDynamoDB, IotToLambdaToDynamoDBProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as cdk from "aws-cdk-lib";
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 function deployStack(stack: cdk.Stack) {
   const props: IotToLambdaToDynamoDBProps = {
@@ -42,7 +42,8 @@ test('check lambda function properties', () => {
 
   deployStack(stack);
 
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": [
@@ -67,7 +68,8 @@ test('check lambda function permission', () => {
 
   deployStack(stack);
 
-  expect(stack).toHaveResource('AWS::Lambda::Permission', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Permission', {
     Action: "lambda:InvokeFunction",
     FunctionName: {
       "Fn::GetAtt": [
@@ -90,7 +92,8 @@ test('check iot lambda function role', () => {
 
   deployStack(stack);
 
-  expect(stack).toHaveResource('AWS::IAM::Role', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IAM::Role', {
     AssumeRolePolicyDocument: {
       Statement: [
         {
@@ -149,7 +152,8 @@ test('check iot topic rule properties', () => {
 
   deployStack(stack);
 
-  expect(stack).toHaveResource('AWS::IoT::TopicRule', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IoT::TopicRule', {
     TopicRulePayload: {
       Actions: [
         {
@@ -176,7 +180,8 @@ test('check dynamo table properties', () => {
 
   deployStack(stack);
 
-  expect(stack).toHaveResource('AWS::DynamoDB::Table', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
     KeySchema: [
       {
         AttributeName: "id",
@@ -201,7 +206,8 @@ test('check lambda function policy ', () => {
 
   deployStack(stack);
 
-  expect(stack).toHaveResource('AWS::IAM::Policy', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
         {
@@ -345,7 +351,8 @@ test('check lambda function custom environment variable', () => {
 
   new IotToLambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', props);
 
-  expect(stack).toHaveResourceLike('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
     Runtime: 'nodejs14.x',
     Environment: {
@@ -383,7 +390,8 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -404,17 +412,17 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Gateway",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
 // --------------------------------------------------------------
@@ -446,7 +454,8 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -467,18 +476,18 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: "192.68.0.0/16",
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Gateway",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
 // --------------------------------------------------------------
@@ -508,7 +517,8 @@ test("Test minimal deployment with an existing VPC", () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -529,7 +539,7 @@ test("Test minimal deployment with an existing VPC", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Gateway",
   });
 });

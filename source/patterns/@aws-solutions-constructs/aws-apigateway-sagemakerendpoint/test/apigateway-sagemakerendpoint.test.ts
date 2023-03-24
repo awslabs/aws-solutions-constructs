@@ -15,7 +15,7 @@
 import { Stack, Aws } from 'aws-cdk-lib';
 import { ApiGatewayToSageMakerEndpoint } from '../lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 // --------------------------------------------------------------
 // Test construct properties
@@ -74,7 +74,8 @@ test('Test deployment w/ overwritten properties', () => {
     responseMappingTemplate: 'my-response-vtl-template'
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Stage', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Stage', {
     MethodSettings: [
       {
         DataTraceEnabled: false,
@@ -91,11 +92,11 @@ test('Test deployment w/ overwritten properties', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Resource', {
+  template.hasResourceProperties('AWS::ApiGateway::Resource', {
     PathPart: 'my-resource'
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     Integration: {
       IntegrationResponses: [
         {
@@ -121,7 +122,7 @@ test('Test deployment w/ overwritten properties', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike('AWS::IAM::Role', {
+  template.hasResourceProperties('AWS::IAM::Role', {
     Description: 'existing role for SageMaker integration'
   });
 });
@@ -137,7 +138,8 @@ test('Construct accepts additional read request templates', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'GET',
     Integration: {
       RequestTemplates: {

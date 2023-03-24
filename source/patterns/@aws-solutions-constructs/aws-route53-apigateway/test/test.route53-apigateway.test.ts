@@ -17,7 +17,7 @@ import { Route53ToApiGateway, Route53ToApiGatewayProps } from "../lib";
 import * as route53 from "aws-cdk-lib/aws-route53";
 import * as defaults from "@aws-solutions-constructs/core";
 import * as acm from "aws-cdk-lib/aws-certificatemanager";
-import "@aws-cdk/assert/jest";
+import { Template } from 'aws-cdk-lib/assertions';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 // Deploying Public/Private Existing Hosted Zones
@@ -249,7 +249,8 @@ test("Test for providing private hosted zone props", () => {
     existingCertificateInterface: certificate
   });
 
-  expect(stack).toHaveResource("AWS::Route53::HostedZone", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Route53::HostedZone", {
     Name: "www.private-zone.com.",
     VPCs: [
       {
@@ -273,7 +274,8 @@ test("Integration test for A record creation in Public Hosted Zone ", () => {
   deployApi(stack, true);
 
   // Assertions
-  expect(stack).toHaveResource("AWS::Route53::RecordSet", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Route53::RecordSet", {
     Name: "www.test-example.com.",
     Type: "A",
     AliasTarget: {
@@ -295,7 +297,7 @@ test("Integration test for A record creation in Public Hosted Zone ", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::ApiGateway::RestApi", {
+  template.hasResourceProperties("AWS::ApiGateway::RestApi", {
     EndpointConfiguration: {
       Types: [
         "REGIONAL"
@@ -314,7 +316,8 @@ test("Integration test for A record creation in Private Hosted Zone ", () => {
   deployApi(stack, false);
 
   // Assertions
-  expect(stack).toHaveResource("AWS::Route53::RecordSet", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Route53::RecordSet", {
     Name: "www.test-example.com.",
     Type: "A",
     AliasTarget: {
@@ -336,7 +339,7 @@ test("Integration test for A record creation in Private Hosted Zone ", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::Route53::HostedZone", {
+  template.hasResourceProperties("AWS::Route53::HostedZone", {
     Name: "www.test-example.com.",
     VPCs: [
       {
@@ -350,7 +353,7 @@ test("Integration test for A record creation in Private Hosted Zone ", () => {
     ],
   });
 
-  expect(stack).toHaveResource("AWS::ApiGateway::RestApi", {
+  template.hasResourceProperties("AWS::ApiGateway::RestApi", {
     EndpointConfiguration: {
       Types: [
         "REGIONAL"

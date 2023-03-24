@@ -17,7 +17,7 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as events from "aws-cdk-lib/aws-events";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { LambdaToEventbridge, LambdaToEventbridgeProps } from '../lib';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 const xrayPolicyStatement = {
   Action: [
@@ -97,7 +97,8 @@ test('Test minimal deployment with new Lambda function', () => {
   expect(eventBus).toBeUndefined();
 
   // Check EVENTBUS_NAME Env variable
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
@@ -107,10 +108,10 @@ test('Test minimal deployment with new Lambda function', () => {
   });
 
   // Since using default event bus, there shouldn't be any eventbus
-  expect(stack).not.toHaveResource('AWS::Events::EventBus');
+  template.resourceCountIs('AWS::Events::EventBus', 0);
 
   // Check Lambda Function permissions to access default Event Bridge
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         xrayPolicyStatement,
@@ -189,7 +190,8 @@ test('Test deployment w/ existing eventbus', () => {
   });
 
   // Check Lambda Permissions
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         xrayPolicyStatement,
@@ -206,7 +208,7 @@ test('Test deployment w/ existing eventbus', () => {
       ]
     }
   });
-  expect(stack).toHaveResource('AWS::Events::EventBus', {
+  template.hasResourceProperties('AWS::Events::EventBus', {
     Name: `customeventbus`
   });
 });
@@ -227,19 +229,20 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", vpcConfig);
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", vpcConfig);
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
 // --------------------------------------------------------------
@@ -263,20 +266,21 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", vpcConfig);
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", vpcConfig);
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: "192.68.0.0/16",
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
 // --------------------------------------------------------------
@@ -298,7 +302,8 @@ test("Test minimal deployment with an existing VPC", () => {
     existingVpc: testVpc,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -319,12 +324,12 @@ test("Test minimal deployment with an existing VPC", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 
   // Check Lambda Function permissions to access default Event Bridge
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -396,7 +401,8 @@ test('Test lambda function custom environment variable', () => {
   });
 
   // Check environment variables
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
     Runtime: 'nodejs14.x',
     Environment: {
@@ -409,12 +415,12 @@ test('Test lambda function custom environment variable', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::Events::EventBus', {
+  template.hasResourceProperties('AWS::Events::EventBus', {
     Name: `customeventbus`
   });
 
   // Check lambda permissions to custom event bus
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         xrayPolicyStatement,
@@ -446,7 +452,8 @@ test('check multiple constructs in a single stack', () => {
   };
   new LambdaToEventbridge(stack, 'test-new-lambda-eventbridge1', props);
   new LambdaToEventbridge(stack, 'test-new-lambda-eventbridge2', props);
-  expect(stack).toCountResources('AWS::Events::EventBus', 2);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::Events::EventBus', 2);
 });
 
 test('check multiple lambda functions publishing to single event bus', () => {
@@ -473,13 +480,14 @@ test('check multiple lambda functions publishing to single event bus', () => {
   new LambdaToEventbridge(stack, 'test-new-lambda-eventbridge2', props2);
 
   // Make sure only single event bus exists
-  expect(stack).toCountResources('AWS::Events::EventBus', 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::Events::EventBus', 1);
 
   // Make sure 2 lambda functions exist
-  expect(stack).toCountResources('AWS::Lambda::Function', 2);
+  template.resourceCountIs('AWS::Lambda::Function', 2);
 
   // Check whether lambdas have permisison to publish to the event bus
-  expect(stack).toHaveResourceLike('AWS::IAM::Policy', {
+  template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
         xrayPolicyStatement,
@@ -498,7 +506,7 @@ test('check multiple lambda functions publishing to single event bus', () => {
   });
 
   // Check environment variables
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
     Runtime: 'nodejs14.x',
     Environment: {

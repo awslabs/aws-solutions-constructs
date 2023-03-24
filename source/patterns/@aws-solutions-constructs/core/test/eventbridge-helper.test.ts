@@ -29,7 +29,8 @@ test('Test deployment with no properties', () => {
     }
   });
 
-  Template.fromStack(stack).resourceCountIs("AWS::EventBridge::EventBus", 0);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::EventBridge::EventBus", 0);
 });
 
 // --------------------------------------------------------------

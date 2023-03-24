@@ -14,8 +14,8 @@
 // Imports
 import { Stack, Duration } from 'aws-cdk-lib';
 import { ApiGatewayToKinesisStreams } from '../lib';
-import '@aws-cdk/assert/jest';
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
+import { Template } from 'aws-cdk-lib/assertions';
 
 // --------------------------------------------------------------
 // Test construct properties
@@ -60,7 +60,8 @@ test('Test deployment w/ overwritten properties', () => {
     putRecordsRequestModel: { schema: {} }
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Stage', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Stage', {
     MethodSettings: [
       {
         DataTraceEnabled: false,
@@ -77,13 +78,13 @@ test('Test deployment w/ overwritten properties', () => {
     ]
   });
 
-  expect(stack).toHaveResource('AWS::Kinesis::Stream', {
+  template.hasResourceProperties('AWS::Kinesis::Stream', {
     ShardCount: 1,
     Name: 'my-stream'
   });
 
   // Test for Cloudwatch Alarms
-  expect(stack).toCountResources('AWS::CloudWatch::Alarm', 2);
+  template.resourceCountIs('AWS::CloudWatch::Alarm', 2);
 });
 
 // --------------------------------------------------------------
@@ -101,7 +102,8 @@ test('Test deployment w/ existing stream', () => {
     createCloudWatchAlarms: false
   });
 
-  expect(stack).toHaveResource('AWS::Kinesis::Stream', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Kinesis::Stream', {
     ShardCount: 5,
     RetentionPeriodHours: 96
   });
@@ -109,7 +111,7 @@ test('Test deployment w/ existing stream', () => {
   expect(construct.cloudwatchAlarms == null);
 
   // Since createCloudWatchAlars is set to false, no Alarm should exist
-  expect(stack).not.toHaveResource('AWS::CloudWatch::Alarm');
+  template.resourceCountIs('AWS::CloudWatch::Alarm', 0);
 });
 
 test('Construct accepts additional PutRecord request templates', () => {
@@ -120,7 +122,8 @@ test('Construct accepts additional PutRecord request templates', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'POST',
     Integration: {
       RequestTemplates: {
@@ -138,7 +141,8 @@ test('Construct accepts additional PutRecords request templates', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'POST',
     Integration: {
       RequestTemplates: {
@@ -152,7 +156,8 @@ test('Construct uses default integration responses', () => {
   const stack = new Stack();
   new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis-streams ', {});
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'POST',
     Integration: {
       IntegrationResponses: [
@@ -184,7 +189,8 @@ test('Construct uses custom putRecordIntegrationResponses property', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'POST',
     Integration: {
       IntegrationResponses: [
@@ -212,7 +218,8 @@ test('Construct uses custom putRecordsIntegrationResponses property', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'POST',
     Integration: {
       IntegrationResponses: [

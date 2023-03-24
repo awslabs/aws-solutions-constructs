@@ -16,7 +16,7 @@ import { Stack, Duration } from "aws-cdk-lib";
 import { KinesisStreamsToLambda, KinesisStreamsToLambdaProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 // --------------------------------------------------------------
 // Test properties
@@ -66,13 +66,14 @@ test('Test existing resources', () => {
 
   });
 
-  expect(stack).toHaveResource('AWS::Kinesis::Stream', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Kinesis::Stream', {
     Name: 'existing-stream',
     ShardCount: 5,
     RetentionPeriodHours: 48,
   });
 
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
     Runtime: 'nodejs14.x',
   });
@@ -96,7 +97,8 @@ test('test sqsDlqQueueProps override', () => {
   };
   new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);
 
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     QueueName: "hello-world",
     VisibilityTimeout: 50
   });

@@ -17,9 +17,9 @@ import * as cdk from "aws-cdk-lib";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import * as kms from 'aws-cdk-lib/aws-kms';
-import '@aws-cdk/assert/jest';
 import { Match, Template } from "aws-cdk-lib/assertions";
 import { Stack } from "aws-cdk-lib";
+import * as defaults from '@aws-solutions-constructs/core';
 
 test('Default construct has all expected properties', () => {
   const stack = new cdk.Stack();
@@ -55,18 +55,17 @@ test('New VPC is created when deployVpc flag is true', () => {
   const template = Template.fromStack(stack);
 
   // Get the VPC created by the construct
+  template.resourceCountIs('AWS::EC2::VPC', 1);
   const vpcResource = template.findResources('AWS::EC2::VPC');
   const [ vpcId ] = Object.keys(vpcResource);
 
-  verifyLambdaFunctionVpcProps(stack, template, vpcId);
+  verifyLambdaFunctionVpcProps(template, vpcId, "Isolated");
 });
 
 test('Existing VPC is used when specified', () => {
   const stack = new cdk.Stack();
 
-  const existingVpc = new ec2.Vpc(stack, 'test-vpc', {
-    vpcName: 'my-vpc-name'
-  });
+  const existingVpc = new ec2.Vpc(stack, 'test-vpc', { vpcName: 'my-vpc-name' });
 
   new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
     lambdaFunctionProps: {
@@ -80,14 +79,11 @@ test('Existing VPC is used when specified', () => {
   const template = Template.fromStack(stack);
 
   // Get the VPC by its name
-  const vpcResource = template.findResources('AWS::EC2::VPC', {
-    Properties: {
-      Name: 'my-vpc-name'
-    }
-  });
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  const vpcResource = template.findResources('AWS::EC2::VPC');
   const [ vpcId ] = Object.keys(vpcResource);
 
-  verifyLambdaFunctionVpcProps(stack, template, vpcId);
+  verifyLambdaFunctionVpcProps(template, vpcId, "Private");
 });
 
 test('New VPC is created from user-provided vpcProps', () => {
@@ -108,14 +104,11 @@ test('New VPC is created from user-provided vpcProps', () => {
   const template = Template.fromStack(stack);
 
   // Get the VPC by its name
-  const vpcResource = template.findResources('AWS::EC2::VPC', {
-    Properties: {
-      Name: 'my-vpc-name'
-    }
-  });
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  const vpcResource = template.findResources('AWS::EC2::VPC');
   const [ vpcId ] = Object.keys(vpcResource);
 
-  verifyLambdaFunctionVpcProps(stack, template, vpcId);
+  verifyLambdaFunctionVpcProps(template, vpcId, "Isolated");
 });
 
 test('Lambda Function has default stream environment variable', () => {
@@ -135,7 +128,7 @@ test('Lambda Function has default stream environment variable', () => {
   const kinesisStream = template.findResources('AWS::Kinesis::Stream');
   const [ kinesisStreamId ] = Object.keys(kinesisStream);
 
-  expect(stack).toHaveResourceLike('AWS::Lambda::Function', {
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Environment: {
       Variables: {
         KINESIS_DATASTREAM_NAME: {
@@ -164,7 +157,7 @@ test('Lambda Function stream name environment variable can be overridden', () =>
   const kinesisStream = template.findResources('AWS::Kinesis::Stream');
   const [ kinesisStreamId ] = Object.keys(kinesisStream);
 
-  expect(stack).toHaveResourceLike('AWS::Lambda::Function', {
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Environment: {
       Variables: {
         CUSTOM_ENV_VAR_NAME: {
@@ -186,7 +179,8 @@ test('Kinesis Stream is encrypted with AWS-managed CMK by default', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike('AWS::Kinesis::Stream', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Kinesis::Stream', {
     StreamEncryption: {
       EncryptionType: 'KMS',
       KeyId: 'alias/aws/kinesis'
@@ -205,12 +199,13 @@ test('CloudWatch Alarms are created for Kinesis Stream by default', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike('AWS::CloudWatch::Alarm', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::CloudWatch::Alarm', {
     Namespace: 'AWS/Kinesis',
     MetricName: 'GetRecords.IteratorAgeMilliseconds'
   });
 
-  expect(stack).toHaveResourceLike('AWS::CloudWatch::Alarm', {
+  template.hasResourceProperties('AWS::CloudWatch::Alarm', {
     Namespace: 'AWS/Kinesis',
     MetricName: 'ReadProvisionedThroughputExceeded'
   });
@@ -228,7 +223,8 @@ test('CloudWatch Alarms are not created when createCloudWatchAlarms property is 
     createCloudWatchAlarms: false
   });
 
-  expect(stack).toCountResources('AWS::CloudWatch::Alarm', 0);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::CloudWatch::Alarm', 0);
 });
 
 test('Error is thrown when vpc is specified and existing lambda function is not associated with it', () => {
@@ -266,7 +262,8 @@ test('Construct uses existing Lambda Function', () => {
     existingLambdaObj
   });
 
-  expect(stack).toHaveResourceLike('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     FunctionName: 'my-lambda-function'
   });
 });
@@ -287,11 +284,12 @@ test('Construct uses existing Kinesis Stream', () => {
     existingStreamObj
   });
 
-  expect(stack).toHaveResourceLike('AWS::Kinesis::Stream', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Kinesis::Stream', {
     Name: 'my-stream'
   });
 
-  expect(stack).toCountResources('AWS::Kinesis::Stream', 1);
+  template.resourceCountIs('AWS::Kinesis::Stream', 1);
 });
 
 test('Construct uses unencrypted existing stream', () => {
@@ -311,14 +309,15 @@ test('Construct uses unencrypted existing stream', () => {
     existingStreamObj
   });
 
-  expect(stack).not.toHaveResourceLike('AWS::Kinesis::Stream', {
+  const template = Template.fromStack(stack);
+  defaults.expectNonexistence(stack, 'AWS::Kinesis::Stream', {
     StreamEncryption: {
       EncryptionType: 'KMS',
       KeyId: 'alias/aws/kinesis'
     }
   });
 
-  expect(stack).toCountResources('AWS::Kinesis::Stream', 1);
+  template.resourceCountIs('AWS::Kinesis::Stream', 1);
 });
 
 test('Construct uses unencrypted streams from stream props', () => {
@@ -336,14 +335,15 @@ test('Construct uses unencrypted streams from stream props', () => {
     }
   });
 
-  expect(stack).not.toHaveResourceLike('AWS::Kinesis::Stream', {
+  const template = Template.fromStack(stack);
+  defaults.expectNonexistence(stack, 'AWS::Kinesis::Stream', {
     StreamEncryption: {
       EncryptionType: 'KMS',
       KeyId: 'alias/aws/kinesis'
     }
   });
 
-  expect(stack).toCountResources('AWS::Kinesis::Stream', 1);
+  template.resourceCountIs('AWS::Kinesis::Stream', 1);
 });
 
 test('Construct grants PutRecord permission for the Lambda Function to write to the Kinesis Stream', () => {
@@ -363,7 +363,7 @@ test('Construct grants PutRecord permission for the Lambda Function to write to 
   const kinesisStream = template.findResources('AWS::Kinesis::Stream');
   const [ kinesisStreamId ] = Object.keys(kinesisStream);
 
-  expect(stack).toHaveResourceLike('AWS::IAM::Policy', {
+  template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
         {
@@ -422,7 +422,7 @@ test('When a Customer-manged CMK is used on an existing stream, construct grants
   });
   const [ kmsKey ] = Object.keys(resource);
 
-  expect(stack).toHaveResourceLike('AWS::IAM::Policy', {
+  template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
         {
@@ -479,7 +479,7 @@ test('When a Customer-manged CMK is used on an existing stream, construct grants
   });
 });
 
-function verifyLambdaFunctionVpcProps(stack: Stack, template: Template, vpcId: string) {
+function verifyLambdaFunctionVpcProps(template: Template, vpcId: string, subnetType: string) {
   // Get the Security Group associated with the VPC
   const securityGroupResource = template.findResources('AWS::EC2::SecurityGroup', {
     Properties: {
@@ -490,18 +490,21 @@ function verifyLambdaFunctionVpcProps(stack: Stack, template: Template, vpcId: s
   });
   const [ securityGroupId ] = Object.keys(securityGroupResource);
 
-  // Get the Subnets associated with the VPC
+  // Get the Private or Isolated Subnets associated with the VPC
   const subnetResources = template.findResources('AWS::EC2::Subnet', {
     Properties: {
-      VpcId: {
-        Ref: Match.exact(vpcId)
-      }
+      Tags: Match.arrayWith([
+        {
+          Key: "aws-cdk:subnet-type",
+          Value: subnetType
+        }
+      ])
     }
   });
   const [subnet1, subnet2] = Object.keys(subnetResources);
 
   // Verify the Lambda Function has the same Security Group
-  expect(stack).toHaveResourceLike('AWS::Lambda::Function', {
+  template.hasResourceProperties('AWS::Lambda::Function', {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -523,7 +526,7 @@ function verifyLambdaFunctionVpcProps(stack: Stack, template: Template, vpcId: s
   });
 
   // Verify the VPC has an interface endpoint for Kinesis Streams
-  expect(stack).toHaveResourceLike('AWS::EC2::VPCEndpoint', {
+  template.hasResourceProperties('AWS::EC2::VPCEndpoint', {
     ServiceName: {
       'Fn::Join': [
         '',
@@ -542,7 +545,7 @@ function verifyLambdaFunctionVpcProps(stack: Stack, template: Template, vpcId: s
   });
 
   // Verify the VPC has dns hostnames and support enabled
-  expect(stack).toHaveResource('AWS::EC2::VPC', {
+  template.hasResourceProperties('AWS::EC2::VPC', {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });

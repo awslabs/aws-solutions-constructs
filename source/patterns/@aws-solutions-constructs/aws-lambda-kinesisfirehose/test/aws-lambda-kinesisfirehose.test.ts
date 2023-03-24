@@ -12,7 +12,7 @@
  */
 
 // Imports
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as cdk from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { LambdaToKinesisFirehose } from '../lib';
@@ -56,13 +56,14 @@ test('Test existing function is utilized correctly', () => {
     existingLambdaObj: existingFunction
   });
 
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     FunctionName: testName
   });
 
   // This is 2 because there's a lambda function in the custom resource to
   // delete all the objects when cleaning up the s3 bucket in kinesisfirehose-s3
-  expect(stack).toCountResources('AWS::Lambda::Function', 2);
+  template.resourceCountIs('AWS::Lambda::Function', 2);
 });
 
 test('Test that lambda function props are incorporated', () => {
@@ -81,7 +82,8 @@ test('Test that lambda function props are incorporated', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     FunctionName: testName
   });
 });
@@ -108,11 +110,12 @@ test('Test that new VPC is created', () => {
 
   expect(construct.vpc !== null);
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: cidrRange
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     ServiceName: {
       "Fn::Join": [
         "",
@@ -148,13 +151,14 @@ test('Test that existing VPC is used', () => {
   expect(construct.vpc !== null);
 
   // Make sure we didn't deploy a new one anyway
-  expect(stack).toCountResources("AWS::EC2::VPC", 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::EC2::VPC", 1);
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: cidrInGetTestVpc
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     ServiceName: {
       "Fn::Join": [
         "",
