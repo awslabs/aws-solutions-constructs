@@ -92,13 +92,11 @@ new ApiGatewayToLambda(this, "ApiGatewayToLambdaPattern", new ApiGatewayToLambda
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
-|existingLambdaObj?|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html)|Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.|
-|lambdaFunctionProps?|[`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html)|User provided props to override the default props for the Lambda function.|
 |apiGatewayProps?|[`apigateway.RestApiBaseProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.RestApiBaseProps.html)|Optional user-provided props to override the default props for the API.|
 |apiDefinitionBucket?|`string`|S3 Bucket where the open-api spec file is located. When specifying this property, `apiDefinitionKey` must also be specified.|
 |apiDefinitionKey?|`string`|S3 Object name of the open-api spec file. When specifying this property, `apiDefinitionBucket` must also be specified.|
 |apiDefinitionAsset?|[`aws_s3_assets.Asset`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3_assets.Asset.html)|Local file asset of the open-api spec file.|
-|openApiSpecUriPlaceholder?|`string`|Optional placeholder string that will be overwritten with the actual uri at deploy time. Defaults to `URI_PLACEHOLDER`. For example, if the openapi spec uses the `URI_PLACEHOLDER` string, it will be automatically transformed to: `arn:${partition}:apigateway:${region}:lambda:path/2015-03-31/functions/${lambdaProxyArn}/invocations`.|
+|apiIntegrations|`ApiIntegration`|One or more key-value pairs that contain an id for the api integration and either an existing lambda function or an instance of the LambdaProps. Please see the `Overview of how the OpenAPI file transformation works` section below for more usage details.|
 |logGroupProps?|[`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html)|User provided props to override the default props for for the CloudWatchLogs LogGroup.|
 
 ## Pattern Properties
@@ -111,9 +109,32 @@ new ApiGatewayToLambda(this, "ApiGatewayToLambdaPattern", new ApiGatewayToLambda
 |apiGatewayLogGroup|[`logs.LogGroup`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroup.html)|Returns an instance of the LogGroup created by the construct for API Gateway access logging to CloudWatch.|
 
 ## Overview of how the OpenAPI file transformation works
-This construct automatically transforms an incoming OpenAPI Definition by auto-populating the `uri` fields of the `x-amazon-apigateway-integration` integrations with the resolved value of the backing lambda function. 
+This construct automatically transforms an incoming OpenAPI Definition (residing locally or in S3) by auto-populating the `uri` fields of the `x-amazon-apigateway-integration` integrations with the resolved value of the backing lambda functions. It does so by allowing the user to specify the `apiIntegrations` property and then correlates it with the api definition. 
 
-Consider the following spec that creates `GET` and `POST` methods on a `/messages` resource. The construct will transform the `URI_PLACEHOLDER` string to the fully resolved lambda proxy uri, e.g., `arn:${partition}:apigateway:${region}:lambda:path/2015-03-31/functions/${lambdaProxyArn}/invocations`, resulting in a valid OpenAPI spec file that is then passed to the `SpecRestApi` construct.
+Looking at an example - a user creates an instantiation of `apiIntegrations` that specifies one integration named `MessagesHandler` that passes in a set of `lambda.FunctionProps` and a second integration named `PhotosHandler` that passes in an existing `lambda.Function`: 
+
+```typescript
+const apiIntegrations: ApiIntegration[] = [
+  {
+    id: 'MessagesHandler',
+    lambdaFunctionOrProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+    }
+  },
+  {
+    id: 'PhotosHandler',
+    lambdaFunctionOrProps: new lambda.Function(this, 'PhotosLambda', {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/photos-lambda`),
+    })
+  }
+]
+```
+
+And a corresponding api definition with `GET` and `POST` methods on a `/messages` resource and a `GET` method on a `/photos` resource. 
 
 ```
 openapi: "3.0.1"
@@ -125,16 +146,25 @@ paths:
     get:
       x-amazon-apigateway-integration:
         httpMethod: "POST"
-        uri: URI_PLACEHOLDER
+        uri: MessagesHandler
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
     post:
       x-amazon-apigateway-integration:
         httpMethod: "POST"
-        uri: URI_PLACEHOLDER
+        uri: MessagesHandler
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /photos:
+    get:
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: PhotosHandler
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
 ```
+
+When the construct is created or updated, it will overwrite the `MessagesHandler` string with the fully resolved lambda proxy uri of the `MessagesHandlerLambdaFunction`, e.g., `arn:${Aws.PARTITION}:apigateway:${Aws.REGION}:lambda:path/2015-03-31/functions/${messagesLambda.functionArn}/invocations`, and similarly for the `PhotosHandler` string and `PhotosHandlerLambdaFunction`, resulting in a valid OpenAPI spec file that is then passed to the `SpecRestApi` construct.
 
 ## Default settings
 
