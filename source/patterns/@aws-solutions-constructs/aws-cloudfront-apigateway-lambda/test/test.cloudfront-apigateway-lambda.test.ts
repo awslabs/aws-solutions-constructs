@@ -61,6 +61,7 @@ test('check lambda function properties for deploy: true', () => {
 
   deployNewFunc(stack);
 
+  const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: "index.handler",
     Role: {
@@ -83,6 +84,7 @@ test('check lambda function role for deploy: false', () => {
 
   useExistingFunc(stack);
 
+  const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::IAM::Role', {
     AssumeRolePolicyDocument: {
       Statement: [
@@ -157,6 +159,7 @@ test('override api gateway properties with existingLambdaObj', () => {
     }
   });
 
+  const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::ApiGateway::RestApi',
     {
       Description: "Override description",
@@ -186,6 +189,7 @@ test('override api gateway properties without existingLambdaObj', () => {
     }
   });
 
+  const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::ApiGateway::RestApi',
     {
       Description: "Override description",
@@ -221,6 +225,7 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
     }
   });
 
+  const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::S3::Bucket", {
     AccessControl: "LogDeliveryWrite"
   });
