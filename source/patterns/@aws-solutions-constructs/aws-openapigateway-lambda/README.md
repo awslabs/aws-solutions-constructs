@@ -39,11 +39,16 @@ const apiDefinitionAsset = new Asset(this, 'ApiDefinitionAsset', {
 
 new OpenApiGatewayToLambda(this, 'OpenApiGatewayToLambda', {
   apiDefinitionAsset,
-  lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_18_X,
-    handler: 'index.handler',
-    code: lambda.Code.fromAsset(`lambda`)
-  }
+  apiIntegrations: [
+    {
+      id: 'MessagesHandler',
+      lambdaFunctionProps: {
+        runtime: lambda.Runtime.NODEJS_18_X,
+        handler: 'index.handler',
+        code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+      }
+    }
+  ]
 });
 ```
 
@@ -56,14 +61,17 @@ from aws_cdk import (
 )
 from constructs import Construct
 
-ApiGatewayToLambda(self, 'ApiGatewayToLambdaPattern',
+ApiGatewayToLambda(self, 'OpenApiGatewayToLambdaPattern',
   api_definition_bucket='s3-bucket-that-holds-openapi-spec-file',
   api_definition_key='s3-object-key-of-openapi-spec-file',
-  lambda_function_props=_lambda.FunctionProps(
+  api_integrations=[(
+    id='MessagesHandler',
+    lambda_function_props=_lambda.FunctionProps(
       runtime=_lambda.Runtime.PYTHON_3_9,
       handler='index.handler',
       code=_lambda.Code.from_asset('lambda')
-  )
+    )
+  )]
 )
 ```
 
@@ -77,15 +85,18 @@ import software.amazon.awscdk.services.lambda.*;
 import software.amazon.awscdk.services.lambda.Runtime;
 import software.amazon.awsconstructs.services.openapigatewaylambda.*;
 
-new ApiGatewayToLambda(this, "ApiGatewayToLambdaPattern", new ApiGatewayToLambdaProps.Builder()
+new ApiGatewayToLambda(this, "OpenApiGatewayToLambdaPattern", new ApiGatewayToLambdaProps.Builder()
         .apiDefinitionBucket("s3-bucket-that-holds-openapi-spec-file")
         .apiDefinitionKey("s3-object-key-of-openapi-spec-file")
-        .lambdaFunctionProps(new FunctionProps.Builder()
-          .runtime(Runtime.NODEJS_18_X)
-          .code(Code.fromAsset("lambda"))
-          .handler("index.handler")
-          .build())
-        .build());
+        .apiIntegrations(ApiIntegration.Builder()
+          .id('MessagesHandler')
+          .lambdaFunctionProps(new FunctionProps.Builder()
+            .runtime(Runtime.NODEJS_18_X)
+            .code(Code.fromAsset("lambda"))
+            .handler("index.handler")
+            .build())
+          .build()
+        ).build());
 ```
 
 ## Pattern Construct Props
@@ -103,7 +114,7 @@ new ApiGatewayToLambda(this, "ApiGatewayToLambdaPattern", new ApiGatewayToLambda
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
-|lambdaFunction|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html)|Returns an instance of the Lambda function created by the pattern.|
+|lambdaFunctions|[`lambda.Function`[]](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html)|Returns the list of Lambda functions created by the pattern.|
 |apiGateway|[`api.SpecRestApi`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.SpecRestApi.html)|Returns an instance of the API Gateway REST API created by the pattern.|
 |apiGatewayCloudWatchRole?|[`iam.Role`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html)|Returns an instance of the iam.Role created by the construct for API Gateway for CloudWatch access.|
 |apiGatewayLogGroup|[`logs.LogGroup`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroup.html)|Returns an instance of the LogGroup created by the construct for API Gateway access logging to CloudWatch.|
@@ -178,8 +189,8 @@ Out of the box implementation of the Construct without any override will set the
 * Enable X-Ray Tracing
 
 ### AWS Lambda Function
-* Configure limited privilege access IAM role for Lambda function
-* Enable reusing connections with Keep-Alive for NodeJs Lambda function
+* Configure limited privilege access IAM roles for Lambda functions
+* Enable reusing connections with Keep-Alive for NodeJs Lambda functions
 * Enable X-Ray Tracing
 * Set Environment Variables
   * AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x and higher functions)
