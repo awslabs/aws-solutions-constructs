@@ -26,14 +26,19 @@ Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
-import { Construct } from 'constructs';
 import { Stack, StackProps } from 'aws-cdk-lib';
-import { ApiGatewayToLambda } from '@aws-solutions-constructs/aws-openapigateway-lambda';
+import { Construct } from 'constructs';
+import { OpenApiApiGatewayToLambda } from './construct';
+import { Asset } from 'aws-cdk-lib/aws-s3-assets';
+import * as path from 'path';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 
+const apiDefinitionAsset = new Asset(this, 'ApiDefinitionAsset', {
+  path: path.join(__dirname, 'openapispec.yaml')
+});
+
 new OpenApiGatewayToLambda(this, 'OpenApiGatewayToLambda', {
-  openApiSpecInputBucket: 's3-bucket-that-holds-openapi-spec-file',
-  openApiSpecInputKey: 's3-object-key-of-openapi-spec-file',
+  apiDefinitionAsset,
   lambdaFunctionProps: {
     runtime: lambda.Runtime.NODEJS_18_X,
     handler: 'index.handler',
@@ -52,8 +57,8 @@ from aws_cdk import (
 from constructs import Construct
 
 ApiGatewayToLambda(self, 'ApiGatewayToLambdaPattern',
-  open_api_spec_input_bucket='s3-bucket-that-holds-openapi-spec-file',
-  open_api_spec_input_key='s3-object-key-of-openapi-spec-file',
+  api_definition_bucket='s3-bucket-that-holds-openapi-spec-file',
+  api_definition_key='s3-object-key-of-openapi-spec-file',
   lambda_function_props=_lambda.FunctionProps(
       runtime=_lambda.Runtime.PYTHON_3_9,
       handler='index.handler',
@@ -73,8 +78,8 @@ import software.amazon.awscdk.services.lambda.Runtime;
 import software.amazon.awsconstructs.services.openapigatewaylambda.*;
 
 new ApiGatewayToLambda(this, "ApiGatewayToLambdaPattern", new ApiGatewayToLambdaProps.Builder()
-        .openApiSpecInputBucket("s3-bucket-that-holds-openapi-spec-file")
-        .openApiSpecInputKey("s3-object-key-of-openapi-spec-file")
+        .apiDefinitionBucket("s3-bucket-that-holds-openapi-spec-file")
+        .apiDefinitionKey("s3-object-key-of-openapi-spec-file")
         .lambdaFunctionProps(new FunctionProps.Builder()
           .runtime(Runtime.NODEJS_18_X)
           .code(Code.fromAsset("lambda"))
@@ -90,9 +95,9 @@ new ApiGatewayToLambda(this, "ApiGatewayToLambdaPattern", new ApiGatewayToLambda
 |existingLambdaObj?|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html)|Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.|
 |lambdaFunctionProps?|[`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html)|User provided props to override the default props for the Lambda function.|
 |apiGatewayProps?|[`apigateway.RestApiBaseProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.RestApiBaseProps.html)|Optional user-provided props to override the default props for the API.|
-|openApiSpecBucket?|`string`|S3 Bucket where the open-api spec file is located. When specifying this property, `openApiSpecKey` must also be specified.|
-|openApiSpecKey?|`string`|S3 Object name of the open-api spec file. When specifying this property, `openApiSpecBucket` must also be specified.|
-|openApiSpecAsset?|[`aws_s3_assets.Asset`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3_assets.Asset.html)|Local file asset of the open-api spec file.|
+|apiDefinitionBucket?|`string`|S3 Bucket where the open-api spec file is located. When specifying this property, `apiDefinitionKey` must also be specified.|
+|apiDefinitionKey?|`string`|S3 Object name of the open-api spec file. When specifying this property, `apiDefinitionBucket` must also be specified.|
+|apiDefinitionAsset?|[`aws_s3_assets.Asset`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3_assets.Asset.html)|Local file asset of the open-api spec file.|
 |openApiSpecUriPlaceholder?|`string`|Optional placeholder string that will be overwritten with the actual uri at deploy time. Defaults to `URI_PLACEHOLDER`. For example, if the openapi spec uses the `URI_PLACEHOLDER` string, it will be automatically transformed to: `arn:${partition}:apigateway:${region}:lambda:path/2015-03-31/functions/${lambdaProxyArn}/invocations`.|
 |logGroupProps?|[`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html)|User provided props to override the default props for for the CloudWatchLogs LogGroup.|
 
@@ -101,12 +106,12 @@ new ApiGatewayToLambda(this, "ApiGatewayToLambdaPattern", new ApiGatewayToLambda
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
 |lambdaFunction|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html)|Returns an instance of the Lambda function created by the pattern.|
-|apiGateway|[`api.LambdaRestApi`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_openapigateway.LambdaRestApi.html)|Returns an instance of the API Gateway REST API created by the pattern.|
+|apiGateway|[`api.SpecRestApi`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.SpecRestApi.html)|Returns an instance of the API Gateway REST API created by the pattern.|
 |apiGatewayCloudWatchRole?|[`iam.Role`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html)|Returns an instance of the iam.Role created by the construct for API Gateway for CloudWatch access.|
 |apiGatewayLogGroup|[`logs.LogGroup`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroup.html)|Returns an instance of the LogGroup created by the construct for API Gateway access logging to CloudWatch.|
 
 ## Overview of how the OpenAPI file transformation works
-This construct automatically transforms an incoming OpenAPI specification by auto-populating the `uri` fields of the `x-amazon-apigateway-integration` integrations with the resolved value of the backing lambda function. 
+This construct automatically transforms an incoming OpenAPI Definition by auto-populating the `uri` fields of the `x-amazon-apigateway-integration` integrations with the resolved value of the backing lambda function. 
 
 Consider the following spec that creates `GET` and `POST` methods on a `/messages` resource. The construct will transform the `URI_PLACEHOLDER` string to the fully resolved lambda proxy uri, e.g., `arn:${partition}:apigateway:${region}:lambda:path/2015-03-31/functions/${lambdaProxyArn}/invocations`, resulting in a valid OpenAPI spec file that is then passed to the `SpecRestApi` construct.
 
