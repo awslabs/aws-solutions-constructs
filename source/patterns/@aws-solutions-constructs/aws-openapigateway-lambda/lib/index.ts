@@ -22,7 +22,6 @@ import * as defaults from '@aws-solutions-constructs/core';
 import { Provider } from 'aws-cdk-lib/custom-resources';
 import { RestApiBaseProps } from 'aws-cdk-lib/aws-apigateway';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
-import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 
 export interface ApiIntegration {
   /**
@@ -135,8 +134,10 @@ export class OpenApiGatewayToLambda extends Construct {
       path: path.join(__dirname, 'placeholder')
     });
 
-    const apiTemplateWriterLambda = new NodejsFunction(this, 'custom-resource', {
+    const apiTemplateWriterLambda = new lambda.Function(this, 'ApiTemplateWriterLambda', {
       runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/custom-resource`),
       role: new iam.Role(this, 'ApiTemplateWriterLambdaRole', {
         assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         description: 'Role used by the ApiTemplateWriterLambda to update the open api spec with resolved lambda proxy arn',

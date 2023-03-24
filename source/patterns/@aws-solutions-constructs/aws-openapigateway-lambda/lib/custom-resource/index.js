@@ -12,17 +12,11 @@
  */
 
 import { S3Client, GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
-import {
-  CloudFormationCustomResourceDeleteEvent,
-  CloudFormationCustomResourceEvent,
-  CloudFormationCustomResourceUpdateEvent,
-  Context
-} from "aws-lambda";
 import * as crypto from 'crypto';
 
 const s3Client = new S3Client({ region: process.env.REGION });
 
-export const handler = async (event: CloudFormationCustomResourceEvent, context: Context) => {
+export const handler = async (event, context) => {
   // tslint:disable-next-line:no-console
   console.log(`Recieved: ${JSON.stringify(event, null, 2)}`);
 
@@ -70,21 +64,10 @@ export const handler = async (event: CloudFormationCustomResourceEvent, context:
   return {
     Status: status,
     Reason: JSON.stringify(responseData),
-    PhysicalResourceId: getPhysicalResourceIdFromEvent(event, context),
+    PhysicalResourceId: event.PhysicalResourceId ?? context.logStreamName,
     StackId: event.StackId,
     RequestId: event.RequestId,
     LogicalResourceId: event.LogicalResourceId,
     Data: responseData,
   };
 };
-
-function getPhysicalResourceIdFromEvent(event: CloudFormationCustomResourceEvent, context: Context): string {
-  switch (event.RequestType) {
-  case 'Create':
-    return context.logStreamName;
-  case 'Update':
-    return (event as CloudFormationCustomResourceUpdateEvent).PhysicalResourceId;
-  case 'Delete':
-    return (event as CloudFormationCustomResourceDeleteEvent).PhysicalResourceId;
-  }
-}
