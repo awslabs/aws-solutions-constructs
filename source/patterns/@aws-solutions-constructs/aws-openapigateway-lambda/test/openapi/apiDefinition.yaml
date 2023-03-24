@@ -1,0 +1,31 @@
+openapi: "3.0.1"
+info:
+  title: "api"
+  version: "2023-02-20T20:46:08Z"
+paths:
+  /messages:
+    get:
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: MessagesHandler
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+    post:
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: MessagesHandler
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /photos:
+    get:
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: PhotosHandler
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+    post:
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: PhotosHandler
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
