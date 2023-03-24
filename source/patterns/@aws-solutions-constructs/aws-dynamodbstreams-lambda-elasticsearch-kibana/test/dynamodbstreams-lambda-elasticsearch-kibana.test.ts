@@ -40,6 +40,7 @@ test('check domain names', () => {
 
   deployNewFunc(stack);
 
+  const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::Cognito::UserPoolDomain', {
     Domain: "test-domain",
     UserPoolId: {
@@ -95,6 +96,7 @@ test('Test minimal deployment with VPC construct props', () => {
     }
   });
 
+  const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::EC2::VPC", {
     Tags: [
       {
@@ -151,6 +153,7 @@ test('Test minimal deployment with an existing private VPC', () => {
     existingVpc: vpc
   });
 
+  const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::EC2::VPC", {
     Tags: [
       {
@@ -195,6 +198,7 @@ test('Test minimal deployment with an existing isolated VPC', () => {
     existingVpc: vpc
   });
 
+  const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::EC2::VPC", {
     Tags: [
       {
