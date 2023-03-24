@@ -32,6 +32,7 @@ test('CloudFront distribution for MediaStore with user provided log bucket', () 
   };
 
   CloudFrontDistributionForMediaStore(stack, mediaStoreContainer, cfProps);
+  const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::CloudFront::Distribution', {
     DistributionConfig: {
       DefaultCacheBehavior: {
@@ -365,6 +366,7 @@ test('CloudFront distribution without HTTP security headers for MediaStore', () 
   const mediaStoreContainer = new mediastore.CfnContainer(stack, 'MediaStoreContainer', mediaStoreContainerProps);
 
   CloudFrontDistributionForMediaStore(stack, mediaStoreContainer, {}, false);
+  const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::CloudFront::Distribution', {
     DistributionConfig: {
       DefaultCacheBehavior: {
@@ -453,6 +455,7 @@ test('CloudFront distribution for MediaStore override params', () => {
   };
 
   CloudFrontDistributionForMediaStore(stack, mediaStoreContainer, cfProps);
+  const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::CloudFront::Distribution', {
     DistributionConfig: {
       DefaultCacheBehavior: {
@@ -529,6 +532,7 @@ test('test override cloudfront with custom cloudfront function', () => {
     }
   });
 
+  const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {

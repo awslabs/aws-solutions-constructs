@@ -28,7 +28,7 @@ test('MediaStore container override params', () => {
   };
 
   MediaStoreContainer(stack, mediaStoreContainerProps);
-  template.hasResourceProperties('AWS::MediaStore::Container', {
+  Template.fromStack(stack).hasResourceProperties('AWS::MediaStore::Container', {
     AccessLoggingEnabled: true,
     CorsPolicy: [
       {

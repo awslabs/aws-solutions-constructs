@@ -38,7 +38,7 @@ test('test EventsRuleProps override ruleName and description', () => {
 
   new events.Rule(stack, 'Events', eventsRuleProps);
 
-  template.hasResourceProperties('AWS::Events::Rule', {
+  Template.fromStack(stack).hasResourceProperties('AWS::Events::Rule', {
     Description: "hello world",
     Name: "test",
     ScheduleExpression: "rate(5 minutes)",
@@ -78,7 +78,7 @@ test('test EventsRuleProps add more event targets', () => {
 
   new events.Rule(stack, 'Events', eventsRuleProps);
 
-  template.hasResourceProperties('AWS::Events::Rule', {
+  Template.fromStack(stack).hasResourceProperties('AWS::Events::Rule', {
     ScheduleExpression: "rate(5 minutes)",
     State: "ENABLED",
     Targets: [

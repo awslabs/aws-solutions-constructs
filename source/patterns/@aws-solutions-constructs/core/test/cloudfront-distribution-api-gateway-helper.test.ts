@@ -45,6 +45,7 @@ test('test cloudfront for Api Gateway with user provided logging bucket', () => 
   });
 
   CloudFrontDistributionForApiGateway(stack, _api, cfdProps);
+  const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
@@ -169,6 +170,7 @@ test('test cloudfront for Api Gateway override properties', () => {
 
   CloudFrontDistributionForApiGateway(stack, _api, props);
 
+  const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
@@ -280,6 +282,7 @@ test('test override cloudfront add custom cloudfront function', () => {
     }
   });
 
+  const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
@@ -419,6 +422,7 @@ test('test override cloudfront replace custom lambda@edge', () => {
   },
   false);
 
+  const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {

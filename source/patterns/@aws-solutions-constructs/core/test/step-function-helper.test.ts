@@ -91,7 +91,7 @@ test('Check default Cloudwatch permissions', () => {
   // Assertion
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
-  template.hasResourceProperties("AWS::IAM::Policy", {
+  Template.fromStack(stack).hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {

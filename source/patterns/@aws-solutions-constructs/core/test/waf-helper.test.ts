@@ -196,7 +196,7 @@ test('Test deployment w/ user provided custom properties', () => {
     webaclProps: props
   });
 
-  template.hasResourceProperties("AWS::WAFv2::WebACL", {
+  Template.fromStack(stack).hasResourceProperties("AWS::WAFv2::WebACL", {
     Scope: "CLOUDFRONT",
     VisibilityConfig: {
       CloudWatchMetricsEnabled: false,

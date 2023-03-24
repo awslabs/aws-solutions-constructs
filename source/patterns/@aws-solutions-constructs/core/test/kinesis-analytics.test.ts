@@ -44,7 +44,7 @@ test("test kinesisanalytics override inputProperty", () => {
 
   new kinesisanalytics.CfnApplication(stack, "KinesisAnalytics", outProps);
 
-  template.hasResourceProperties("AWS::KinesisAnalytics::Application", {
+  Template.fromStack(stack).hasResourceProperties("AWS::KinesisAnalytics::Application", {
     Inputs: [
       {
         InputSchema: {
@@ -94,7 +94,7 @@ test("Test default implementation", () => {
 
   defaults.buildKinesisAnalyticsApp(stack, kinesisProps);
 
-  template.hasResourceProperties("AWS::KinesisAnalytics::Application", {
+  Template.fromStack(stack).hasResourceProperties("AWS::KinesisAnalytics::Application", {
     Inputs: [{
       InputSchema: {
         RecordColumns: [{

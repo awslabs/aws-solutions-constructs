@@ -41,7 +41,7 @@ test('test TopicRuleProps override sql and description', () => {
 
   new iot.CfnTopicRule(stack, 'IotTopic', outProps);
 
-  template.hasResourceProperties('AWS::IoT::TopicRule', {
+  Template.fromStack(stack).hasResourceProperties('AWS::IoT::TopicRule', {
     TopicRulePayload: {
       Actions: [
         {
@@ -80,7 +80,7 @@ test('test TopicRuleProps override actions', () => {
 
   new iot.CfnTopicRule(stack, 'IotTopic', outProps);
 
-  template.hasResourceProperties('AWS::IoT::TopicRule', {
+  Template.fromStack(stack).hasResourceProperties('AWS::IoT::TopicRule', {
     TopicRulePayload: {
       Actions: [
         {

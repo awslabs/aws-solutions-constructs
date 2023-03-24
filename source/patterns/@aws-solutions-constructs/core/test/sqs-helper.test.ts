@@ -67,7 +67,7 @@ test('Test deployment without imported encryption key', () => {
     }
   });
 
-  template.hasResourceProperties("AWS::SQS::Queue", {
+  Template.fromStack(stack).hasResourceProperties("AWS::SQS::Queue", {
     QueueName: "existing-queue",
     KmsMasterKeyId: "alias/aws/sqs"
   });
@@ -106,14 +106,14 @@ test('Test DLQ when existing Queue Provided', () => {
   const returnedQueue = defaults.buildDeadLetterQueue(stack, buildDlqProps);
 
   expect(returnedQueue).toBeUndefined();
-  template.resourceCountIs("AWS::SQS::Queue", 1);
+  Template.fromStack(stack).resourceCountIs("AWS::SQS::Queue", 1);
 });
 
 test('Test DLQ with all defaults', () => {
   const stack = new Stack();
 
   buildDeadLetterQueue(stack, {});
-  template.hasResourceProperties("AWS::SQS::Queue", {
+  Template.fromStack(stack).hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: "alias/aws/sqs"
   });
 });
@@ -127,7 +127,7 @@ test("Test DLQ with a provided properties", () => {
       queueName: testQueueName,
     },
   });
-  template.hasResourceProperties("AWS::SQS::Queue", {
+  Template.fromStack(stack).hasResourceProperties("AWS::SQS::Queue", {
     QueueName: testQueueName,
   });
   expect(returnedQueue).toBeDefined();
@@ -155,7 +155,7 @@ test('Test returning an existing Queue', () => {
     existingQueueObj: existingQueue
   });
 
-  template.hasResourceProperties("AWS::SQS::Queue", {
+  Template.fromStack(stack).hasResourceProperties("AWS::SQS::Queue", {
     QueueName: testQueueName,
   });
   expect(existingQueue.queueName).toEqual(buildQueueResponse.queue.queueName);
@@ -171,7 +171,7 @@ test('Test creating a queue with a DLQ', () => {
     deadLetterQueue: dlqInterface
   });
 
-  template.resourceCountIs("AWS::SQS::Queue", 2);
+  Template.fromStack(stack).resourceCountIs("AWS::SQS::Queue", 2);
   expect(buildQueueResponse.queue).toBeDefined();
   expect(buildQueueResponse.queue.deadLetterQueue).toBeDefined();
 });
@@ -185,7 +185,7 @@ test('Test creating a FIFO queue', () => {
     }
   });
 
-  template.hasResourceProperties("AWS::SQS::Queue", {
+  Template.fromStack(stack).hasResourceProperties("AWS::SQS::Queue", {
     FifoQueue: true
   });
   expect(buildQueueResponse.queue.fifo).toBe(true);

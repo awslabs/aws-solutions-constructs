@@ -30,7 +30,7 @@ test("test FunctionProps override code and runtime", () => {
 
   defaults.deployLambdaFunction(stack, inProps);
 
-  template.hasResourceProperties("AWS::Lambda::Function", {
+  Template.fromStack(stack).hasResourceProperties("AWS::Lambda::Function", {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
@@ -51,7 +51,7 @@ test("test FunctionProps override timeout", () => {
 
   defaults.deployLambdaFunction(stack, inProps);
 
-  template.hasResourceProperties("AWS::Lambda::Function", {
+  Template.fromStack(stack).hasResourceProperties("AWS::Lambda::Function", {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
@@ -72,7 +72,7 @@ test("test FunctionProps for environment variable when runtime = NODEJS", () => 
 
   defaults.deployLambdaFunction(stack, inProps);
 
-  template.hasResourceProperties("AWS::Lambda::Function", {
+  Template.fromStack(stack).hasResourceProperties("AWS::Lambda::Function", {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
@@ -97,7 +97,7 @@ test("test FunctionProps when runtime = PYTHON", () => {
 
   defaults.deployLambdaFunction(stack, inProps);
 
-  template.hasResourceProperties(
+  Template.fromStack(stack).hasResourceProperties(
     "AWS::Lambda::Function",
     {
       Handler: "index.handler",
@@ -125,7 +125,7 @@ test("test buildLambdaFunction with deploy = true", () => {
     lambdaFunctionProps: inProps,
   });
 
-  template.hasResourceProperties("AWS::Lambda::Function", {
+  Template.fromStack(stack).hasResourceProperties("AWS::Lambda::Function", {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
@@ -164,7 +164,7 @@ test("test buildLambdaFunction with FunctionProps", () => {
 
   defaults.deployLambdaFunction(stack, inProps);
 
-  template.hasResourceProperties("AWS::Lambda::Function", {
+  Template.fromStack(stack).hasResourceProperties("AWS::Lambda::Function", {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
@@ -195,7 +195,7 @@ test("test buildLambdaFunction with Tracing Disabled", () => {
 
   defaults.deployLambdaFunction(stack, inProps);
 
-  template.hasResourceProperties("AWS::Lambda::Function", {
+  Template.fromStack(stack).hasResourceProperties("AWS::Lambda::Function", {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
@@ -218,7 +218,7 @@ test("test buildLambdaFunction when Lambda properties includes a VPC", () => {
 
   defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 
-  template.hasResourceProperties("AWS::IAM::Policy", {
+  Template.fromStack(stack).hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -379,7 +379,7 @@ test('Test environment variable for NodeJS 14.x', () => {
   defaults.deployLambdaFunction(stack, inProps);
 
   // Assertion
-  template.hasResourceProperties('AWS::Lambda::Function', {
+  Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
     Role: {
       'Fn::GetAtt': ['LambdaFunctionServiceRole0C4CDE0B', 'Arn']
@@ -406,7 +406,7 @@ test('Test minimum deployment with an existing VPC as a vpc parameter in deployL
   defaults.deployLambdaFunction(stack, inProps, undefined, fakeVpc);
 
   // Assertion
-  template.hasResourceProperties('AWS::Lambda::Function', {
+  Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -460,7 +460,7 @@ test('test buildLambdaFunction with lambdaFunctionProps default id', () => {
     }
   });
 
-  template.hasResourceProperties('AWS::Lambda::Function', {
+  Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
     Role: {
       'Fn::GetAtt': ['LambdaFunctionServiceRole0C4CDE0B', 'Arn'],
     },
@@ -479,7 +479,7 @@ test('test buildLambdaFunction with lambdaFunctionProps custom id', () => {
     }
   });
 
-  template.hasResourceProperties('AWS::Lambda::Function', {
+  Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
     Role: {
       'Fn::GetAtt': ['MyTestFunctionServiceRole37517223', 'Arn'],
     },

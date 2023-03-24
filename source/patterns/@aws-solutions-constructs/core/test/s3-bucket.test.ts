@@ -30,7 +30,7 @@ test('test s3Bucket override versioningConfiguration', () => {
   const outProps = overrideProps(defaultProps, inProps);
   new s3.Bucket(stack, 'test-s3-verioning', outProps);
 
-  template.hasResourceProperties("AWS::S3::Bucket", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::Bucket", {
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [
         {
@@ -61,7 +61,7 @@ test('test s3Bucket override bucketEncryption', () => {
   const outProps = overrideProps(defaultProps, inProps);
   new s3.Bucket(stack, 'test-s3-encryption', outProps);
 
-  template.hasResourceProperties("AWS::S3::Bucket", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::Bucket", {
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [
         {
@@ -91,7 +91,7 @@ test('test s3Bucket override publicAccessBlockConfiguration', () => {
   const outProps = overrideProps(defaultProps, inProps);
   new s3.Bucket(stack, 'test-s3-publicAccessBlock', outProps);
 
-  template.hasResourceProperties("AWS::S3::Bucket", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::Bucket", {
     PublicAccessBlockConfiguration: {
       BlockPublicAcls: true,
       IgnorePublicAcls: true
@@ -112,7 +112,7 @@ test('test s3Bucket add lifecycleConfiguration', () => {
   const outProps = overrideProps(defaultProps, inProps);
   new s3.Bucket(stack, 'test-s3-lifecycle', outProps);
 
-  template.hasResourceProperties("AWS::S3::Bucket", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::Bucket", {
     LifecycleConfiguration: {
       Rules: [
         {
@@ -135,7 +135,7 @@ test('test s3Bucket override serverAccessLogsBucket', () => {
     bucketProps: myS3Props
   });
 
-  template.hasResourceProperties("AWS::S3::Bucket", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::Bucket", {
     LoggingConfiguration: {
       DestinationBucketName: {
         Ref: "MyS3LoggingBucket119BE896"
@@ -151,7 +151,7 @@ test('test createAlbLoggingBucket()', () => {
     bucketName: 'test-name'
   });
 
-  template.hasResourceProperties("AWS::S3::Bucket", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::Bucket", {
     BucketName: 'test-name'
   });
 });
@@ -165,7 +165,7 @@ test('Test bucket policy that only accepts SSL requests only', () => {
     }
   }, 'test-bucket');
 
-  template.hasResourceProperties("AWS::S3::BucketPolicy", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::BucketPolicy", {
     PolicyDocument: {
       Statement: [
         {
@@ -265,7 +265,7 @@ test('Test enforcing SSL when bucketProps is not provided', () => {
 
   defaults.buildS3Bucket(stack, {}, 'test-bucket');
 
-  template.hasResourceProperties("AWS::S3::BucketPolicy", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::BucketPolicy", {
     PolicyDocument: {
       Statement: [
         {
@@ -318,7 +318,7 @@ test('Test enforcing SSL when bucketProps is provided and enforceSSL is not set'
     }
   }, 'test-bucket');
 
-  template.hasResourceProperties("AWS::S3::BucketPolicy", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::BucketPolicy", {
     PolicyDocument: {
       Statement: [
         {

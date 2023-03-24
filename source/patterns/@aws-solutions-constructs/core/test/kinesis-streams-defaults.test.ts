@@ -30,7 +30,7 @@ test('test kinesisstream override RetentionPeriodHours', () => {
 
   new kinesis.Stream(stack, 'KinesisStream', outProps);
 
-  template.hasResourceProperties("AWS::Kinesis::Stream", {
+  Template.fromStack(stack).hasResourceProperties("AWS::Kinesis::Stream", {
     RetentionPeriodHours: 48
   });
 });

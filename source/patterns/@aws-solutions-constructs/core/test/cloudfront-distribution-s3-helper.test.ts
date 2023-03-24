@@ -26,6 +26,7 @@ test('check bucket policy metadata', () => {
   const stack = new Stack();
   const buildS3BucketResponse = buildS3Bucket(stack, {});
   CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket);
+  const template = Template.fromStack(stack);
   template.hasResource('AWS::S3::BucketPolicy', {
     Metadata: {
       cfn_nag: {
@@ -44,6 +45,7 @@ test('check bucket metadata', () => {
   const stack = new Stack();
   const buildS3BucketResponse = buildS3Bucket(stack, {});
   CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket);
+  const template = Template.fromStack(stack);
   template.hasResource('AWS::S3::Bucket', {
     Metadata: {
       cfn_nag: {
@@ -63,6 +65,7 @@ test('test cloudfront check bucket policy', () => {
   const buildS3BucketResponse = buildS3Bucket(stack, {});
   CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket);
 
+  const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::S3::BucketPolicy", {
     PolicyDocument: {
       Statement: [
@@ -138,6 +141,7 @@ test('test cloudfront with no security headers ', () => {
 
   CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, {}, false);
 
+  const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
@@ -198,6 +202,7 @@ test('test cloudfront override cloudfront logging bucket ', () => {
 
   CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, myprops);
 
+  const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
@@ -271,6 +276,7 @@ test('test cloudfront override properties', () => {
 
   CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, props);
 
+  const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
@@ -365,6 +371,7 @@ test('test override cloudfront with custom cloudfront function', () => {
     }
   });
 
+  const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
@@ -453,6 +460,7 @@ test('test override cloudfront replace custom lambda@edge', () => {
   },
   false);
 
+  const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
@@ -522,6 +530,7 @@ test('test cloudfront override cloudfront custom domain names ', () => {
 
   CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, myprops);
 
+  const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       Aliases: [

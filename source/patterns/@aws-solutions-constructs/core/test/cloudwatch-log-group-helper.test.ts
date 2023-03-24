@@ -26,6 +26,7 @@ test('override cw log group props with encryptionKey only', () => {
     encryptionKey: key
   });
 
+  const template = Template.fromStack(stack);
   template.hasResource('AWS::Logs::LogGroup', {
     Metadata: {
       cfn_nag: {
@@ -47,6 +48,7 @@ test('override cw log group props with retention period only', () => {
     retention: logs.RetentionDays.FIVE_DAYS
   });
 
+  const template = Template.fromStack(stack);
   template.hasResource('AWS::Logs::LogGroup', {
     Metadata: {
       cfn_nag: {

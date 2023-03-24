@@ -26,7 +26,7 @@ test('Test minimal deployment with no properties', () => {
   // Helper declaration
   defaults.buildKinesisStream(stack, {});
 
-  template.hasResource('AWS::Kinesis::Stream', {
+  Template.fromStack(stack).hasResource('AWS::Kinesis::Stream', {
     Type: "AWS::Kinesis::Stream",
     Properties: {
       StreamEncryption: {
@@ -85,7 +85,7 @@ test('Test deployment w/ existing stream', () => {
     }
   });
 
-  template.hasResourceProperties('AWS::Kinesis::Stream', {
+  Template.fromStack(stack).hasResourceProperties('AWS::Kinesis::Stream', {
     ShardCount: 2,
     RetentionPeriodHours: 72
   });

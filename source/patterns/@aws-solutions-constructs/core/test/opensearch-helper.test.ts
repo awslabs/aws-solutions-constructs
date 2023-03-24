@@ -61,7 +61,7 @@ test('Test override SnapshotOptions for buildOpenSearch', () => {
 
   expect(buildOpenSearchResponse.domain).toBeDefined();
   expect(buildOpenSearchResponse.role).toBeDefined();
-  template.hasResourceProperties('AWS::OpenSearchService::Domain', {
+  Template.fromStack(stack).hasResourceProperties('AWS::OpenSearchService::Domain', {
     AccessPolicies: {
       Statement: [
         {
@@ -151,7 +151,7 @@ test('Test VPC with 1 AZ, Zone Awareness Disabled', () => {
     }
   }, undefined, vpc);
 
-  template.hasResourceProperties('AWS::OpenSearchService::Domain', {
+  Template.fromStack(stack).hasResourceProperties('AWS::OpenSearchService::Domain', {
     DomainName: "test-domain",
     ClusterConfig: {
       DedicatedMasterCount: 3,
@@ -173,7 +173,7 @@ test('Test VPC with 2 AZ, Zone Awareness Enabled', () => {
 
   expect(buildOpenSearchResponse.domain).toBeDefined();
   expect(buildOpenSearchResponse.role).toBeDefined();
-  template.hasResourceProperties('AWS::OpenSearchService::Domain', {
+  Template.fromStack(stack).hasResourceProperties('AWS::OpenSearchService::Domain', {
     DomainName: "test-domain",
     ClusterConfig: {
       DedicatedMasterCount: 3,
@@ -193,7 +193,7 @@ test('Test VPC with 3 AZ, Zone Awareness Enabled', () => {
 
   buildTestOpenSearchDomain(stack, 'test-domain', {}, undefined, vpc);
 
-  template.hasResourceProperties('AWS::OpenSearchService::Domain', {
+  Template.fromStack(stack).hasResourceProperties('AWS::OpenSearchService::Domain', {
     DomainName: "test-domain",
     ClusterConfig: {
       DedicatedMasterCount: 3,
@@ -225,7 +225,7 @@ test('Test deployment with an existing private VPC', () => {
 
   buildTestOpenSearchDomain(stack, 'test-domain', {}, undefined, vpc);
 
-  template.hasResourceProperties('AWS::OpenSearchService::Domain', {
+  Template.fromStack(stack).hasResourceProperties('AWS::OpenSearchService::Domain', {
     DomainName: "test-domain",
     ClusterConfig: {
       DedicatedMasterCount: 3,
@@ -265,7 +265,7 @@ test('Test engine version override for buildOpenSearch', () => {
     engineVersion: 'OpenSearch_1.0'
   });
 
-  template.hasResourceProperties('AWS::OpenSearchService::Domain', {
+  Template.fromStack(stack).hasResourceProperties('AWS::OpenSearchService::Domain', {
     AccessPolicies: {
       Statement: [
         {
@@ -349,7 +349,7 @@ test('Test deployment with lambdaRoleARN', () => {
 
   expect(buildOpenSearchResponse.domain).toBeDefined();
   expect(buildOpenSearchResponse.role).toBeDefined();
-  template.hasResourceProperties('AWS::OpenSearchService::Domain', {
+  Template.fromStack(stack).hasResourceProperties('AWS::OpenSearchService::Domain', {
     AccessPolicies: {
       Statement: [
         {

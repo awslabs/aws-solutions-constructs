@@ -25,7 +25,7 @@ test('Test minimal deployment with no properties', () => {
   // Helper declaration
   defaults.buildEncryptionKey(stack);
 
-  template.hasResource('AWS::KMS::Key', {
+  Template.fromStack(stack).hasResource('AWS::KMS::Key', {
     Type: "AWS::KMS::Key",
     Properties: {
       EnableKeyRotation: true
@@ -44,7 +44,7 @@ test('Test minimal deployment with custom properties', () => {
     enableKeyRotation: false
   });
 
-  template.hasResource('AWS::KMS::Key', {
+  Template.fromStack(stack).hasResource('AWS::KMS::Key', {
     Type: "AWS::KMS::Key",
     Properties: {
       EnableKeyRotation: false
