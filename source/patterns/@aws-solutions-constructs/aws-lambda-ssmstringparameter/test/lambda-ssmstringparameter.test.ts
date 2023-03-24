@@ -152,7 +152,7 @@ test('Test minimal deployment write access to String Parameter ', () => {
     stringParameterPermissions: 'ReadWrite'
   });
   // Assertion 1
-  const template = Template.fromJSON(stack);
+  const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::SSM::Parameter", {
     Type: "String",
     Value: "test-string-value"
