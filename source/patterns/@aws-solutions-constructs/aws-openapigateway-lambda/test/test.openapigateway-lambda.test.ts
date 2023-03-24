@@ -15,7 +15,6 @@
 import { Stack } from "aws-cdk-lib";
 import { OpenApiGatewayToLambda } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import '@aws-cdk/assert/jest';
 import { Asset } from "aws-cdk-lib/aws-s3-assets";
 import * as path from 'path';
 
@@ -26,7 +25,7 @@ test('Simple deployment works', () => {
     path: path.join(__dirname, 'openapi/apiDefinition.yaml')
   });
 
-  new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
+  const construct = new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
     apiDefinitionAsset,
     apiIntegrations: [
       {
@@ -39,6 +38,8 @@ test('Simple deployment works', () => {
       }
     ]
   });
+
+  expect(construct).toBeDefined();
 });
 
 test('Throws error when both api definition asset and s3 object are specified', () => {
