@@ -28,6 +28,18 @@ function deploy(stack: cdk.Stack, props?: CloudFrontToS3Props) {
   });
 }
 
+test('construct defaults set properties correctly', () => {
+  const stack = new cdk.Stack();
+  const construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {});
+
+  expect(construct.cloudFrontWebDistribution).toBeDefined();
+  expect(construct.cloudFrontFunction).toBeDefined();
+  expect(construct.cloudFrontLoggingBucket).toBeDefined();
+  expect(construct.s3Bucket).toBeDefined();
+  expect(construct.s3LoggingBucket).toBeDefined();
+  expect(construct.s3BucketInterface).toBeDefined();
+});
+
 test('check s3Bucket default encryption', () => {
   const stack = new cdk.Stack();
   deploy(stack);
