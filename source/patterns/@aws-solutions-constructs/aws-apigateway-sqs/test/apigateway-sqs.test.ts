@@ -14,10 +14,10 @@
 // Imports
 import { Stack } from "aws-cdk-lib";
 import { ApiGatewayToSqs } from '../lib';
-import '@aws-cdk/assert/jest';
 import * as api from "aws-cdk-lib/aws-apigateway";
 import * as kms from 'aws-cdk-lib/aws-kms';
 import * as sqs from "aws-cdk-lib/aws-sqs";
+import { Template } from "aws-cdk-lib/assertions";
 
 test('Test deployment w/o DLQ', () => {
   const stack = new Stack();
@@ -26,7 +26,8 @@ test('Test deployment w/o DLQ', () => {
     deployDeadLetterQueue: false
   });
 
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     HttpMethod: "GET",
     AuthorizationType: "AWS_IAM"
   });
@@ -40,7 +41,8 @@ test('Test deployment w/o allowReadOperation', () => {
     allowReadOperation: false,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     HttpMethod: "POST",
     AuthorizationType: "AWS_IAM"
   });
@@ -53,7 +55,8 @@ test('Test deployment w/ allowReadOperation', () => {
     allowReadOperation: true,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     HttpMethod: "GET",
     AuthorizationType: "AWS_IAM"
   });
@@ -94,12 +97,13 @@ test('Test deployment ApiGateway AuthorizationType override', () => {
     deployDeadLetterQueue: false
   });
   // Assertion 1
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     HttpMethod: "POST",
     AuthorizationType: "NONE"
   });
   // Assertion 2
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     HttpMethod: "DELETE",
     AuthorizationType: "NONE"
   });
@@ -112,7 +116,8 @@ test('Test deployment for override ApiGateway createRequestTemplate', () => {
     createRequestTemplate:  "Action=SendMessage&MessageBody=$util.urlEncode(\"HelloWorld\")",
     allowCreateOperation: true
   });
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     HttpMethod: "POST",
     Integration: {
       RequestTemplates: {
@@ -129,7 +134,8 @@ test('Test deployment for override ApiGateway getRequestTemplate', () => {
     readRequestTemplate:  "Action=HelloWorld",
     allowReadOperation: true
   });
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     HttpMethod: "GET",
     Integration: {
       RequestTemplates: {
@@ -146,7 +152,8 @@ test('Test deployment for override ApiGateway deleteRequestTemplate', () => {
     deleteRequestTemplate:  "Action=HelloWorld",
     allowDeleteOperation: true
   });
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     HttpMethod: "DELETE",
     Integration: {
       RequestTemplates: {
@@ -167,11 +174,12 @@ test('Test deployment with existing queue object', () => {
     existingQueueObj
   });
 
-  expect(stack).toHaveResourceLike("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     FifoQueue: true
   });
 
-  expect(stack).toCountResources("AWS::SQS::Queue", 1);
+  template.resourceCountIs("AWS::SQS::Queue", 1);
 });
 
 test('Queue is encrypted with imported CMK when set on encryptionKey prop', () => {
@@ -181,7 +189,8 @@ test('Queue is encrypted with imported CMK when set on encryptionKey prop', () =
     encryptionKey: cmk
   });
 
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "cmk01DE03DA",
@@ -200,7 +209,8 @@ test('Queue is encrypted with imported CMK when set on queueProps.encryptionKeyP
     }
   });
 
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "cmk01DE03DA",
@@ -218,7 +228,8 @@ test('Queue is encrypted with provided encrytionKeyProps', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "apigatewaysqsEncryptionKey4A698F7C",
@@ -227,7 +238,7 @@ test('Queue is encrypted with provided encrytionKeyProps', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::KMS::Alias', {
+  template.hasResourceProperties('AWS::KMS::Alias', {
     AliasName: 'alias/new-key-alias-from-props',
     TargetKeyId: {
       'Fn::GetAtt': [
@@ -242,7 +253,8 @@ test('Queue is encrypted by default with AWS-managed KMS key when no other encry
   const stack = new Stack();
   new ApiGatewayToSqs(stack, 'api-gateway-sqs', {});
 
-  expect(stack).toHaveResource('AWS::SQS::Queue', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SQS::Queue', {
     KmsMasterKeyId: "alias/aws/sqs"
   });
 });
@@ -253,7 +265,8 @@ test('Queue is encrypted with customer managed KMS Key when enable encryption fl
     enableEncryptionWithCustomerManagedKey: true
   });
 
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "apigatewaysqsEncryptionKey4A698F7C",
@@ -272,7 +285,8 @@ test('Construct accepts additional read request templates', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'GET',
     Integration: {
       RequestTemplates: {
@@ -293,7 +307,8 @@ test('Construct accepts additional create request templates', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'POST',
     Integration: {
       RequestTemplates: {
@@ -314,7 +329,8 @@ test('Construct accepts additional delete request templates', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'DELETE',
     Integration: {
       RequestTemplates: {
@@ -333,7 +349,8 @@ test('Construct can override default create request template type', () => {
     createRequestTemplate: 'Hello'
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'POST',
     Integration: {
       RequestTemplates: {
@@ -351,7 +368,8 @@ test('Construct can override default read request template type', () => {
     readRequestTemplate: 'Hello'
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'GET',
     Integration: {
       RequestTemplates: {
@@ -369,7 +387,8 @@ test('Construct can override default delete request template type', () => {
     deleteRequestTemplate: 'Hello'
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'DELETE',
     Integration: {
       RequestTemplates: {
@@ -387,7 +406,8 @@ test('Construct uses default integration responses', () => {
     allowDeleteOperation: true,
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'POST',
     Integration: {
       IntegrationResponses: [
@@ -405,7 +425,7 @@ test('Construct uses default integration responses', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'GET',
     Integration: {
       IntegrationResponses: [
@@ -423,7 +443,7 @@ test('Construct uses default integration responses', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'DELETE',
     Integration: {
       IntegrationResponses: [
@@ -456,7 +476,8 @@ test('Construct uses custom createIntegrationResponses property', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'POST',
     Integration: {
       IntegrationResponses: [
@@ -485,7 +506,8 @@ test('Construct uses custom readIntegrationResponses property', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'GET',
     Integration: {
       IntegrationResponses: [
@@ -514,7 +536,8 @@ test('Construct uses custom deleteIntegrationResponses property', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'DELETE',
     Integration: {
       IntegrationResponses: [

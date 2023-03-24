@@ -11,13 +11,12 @@
  *  and limitations under the License.
  */
 
-import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
 import { SnsToLambda, SnsToLambdaProps } from "../lib";
 import * as kms from 'aws-cdk-lib/aws-kms';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import * as cdk from "aws-cdk-lib";
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 function deployNewFunc(stack: cdk.Stack) {
   const props: SnsToLambdaProps = {
@@ -56,9 +55,10 @@ test('override topicProps', () => {
 
   new SnsToLambda(stack, 'test-sns-lambda', props);
 
-  expectCDK(stack).to(haveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     TopicName: "custom-topic"
-  }));
+  });
 });
 
 test('provide existingTopicObj', () => {
@@ -79,9 +79,10 @@ test('provide existingTopicObj', () => {
 
   new SnsToLambda(stack, 'test-sns-lambda', props);
 
-  expectCDK(stack).to(haveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     TopicName: "custom-topic"
-  }));
+  });
 });
 
 test('Topic is encrypted with imported CMK when set on encryptionKey prop', () => {
@@ -98,7 +99,8 @@ test('Topic is encrypted with imported CMK when set on encryptionKey prop', () =
 
   new SnsToLambda(stack, 'test-sns-lambda', props);
 
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "cmk01DE03DA",
@@ -124,7 +126,8 @@ test('Topic is encrypted with imported CMK when set on topicProps.masterKey prop
 
   new SnsToLambda(stack, 'test-sns-lambda', props);
 
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "cmk01DE03DA",
@@ -150,7 +153,8 @@ test('Topic is encrypted with provided encrytionKeyProps', () => {
 
   new SnsToLambda(stack, 'test-sns-lambda', props);
 
-  expect(stack).toHaveResource('AWS::SNS::Topic', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       'Fn::GetAtt': [
         'testsnslambdaEncryptionKeyDDDF040B',
@@ -159,7 +163,7 @@ test('Topic is encrypted with provided encrytionKeyProps', () => {
     },
   });
 
-  expect(stack).toHaveResource('AWS::KMS::Alias', {
+  template.hasResourceProperties('AWS::KMS::Alias', {
     AliasName: 'alias/new-key-alias-from-props',
     TargetKeyId: {
       'Fn::GetAtt': [
@@ -183,7 +187,8 @@ test('Topic is encrypted by default with AWS-managed KMS key when no other encry
 
   new SnsToLambda(stack, 'test-sns-lambda', props);
 
-  expect(stack).toHaveResource('AWS::SNS::Topic', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       "Fn::Join": [
         "",
@@ -221,7 +226,8 @@ test('Topic is encrypted with customer managed KMS Key when enable encryption fl
 
   new SnsToLambda(stack, 'test-sns-lambda', props);
 
-  expect(stack).toHaveResource('AWS::SNS::Topic', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       'Fn::GetAtt': [
         'testsnslambdaEncryptionKeyDDDF040B',

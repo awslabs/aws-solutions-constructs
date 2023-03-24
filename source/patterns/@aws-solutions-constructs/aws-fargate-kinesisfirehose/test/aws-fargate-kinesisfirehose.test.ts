@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
 import { FargateToKinesisFirehose } from "../lib";
@@ -45,7 +44,8 @@ test('New service/new bucket, public API, new VPC', () => {
   expect(construct.container !== null);
   expect(construct.kinesisFirehose !== null);
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     DesiredCount: 2,
     DeploymentConfiguration: {
@@ -55,18 +55,18 @@ test('New service/new bucket, public API, new VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName
   });
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     Family: familyName
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Cluster", {
+  template.hasResourceProperties("AWS::ECS::Cluster", {
     ClusterName: clusterName
   });
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -95,7 +95,7 @@ test('New service/new bucket, public API, new VPC', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Essential: true,
@@ -123,14 +123,14 @@ test('New service/new bucket, public API, new VPC', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.0.0.0/16'
   });
 
   // Confirm we created a Public/Private VPC
-  expect(stack).toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
+  template.hasResourceProperties('AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
 
 test('New service/new bucket, private API, new VPC', () => {
@@ -147,7 +147,8 @@ test('New service/new bucket, private API, new VPC', () => {
     existingKinesisFirehose: destination.kinesisFirehose
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     DesiredCount: 2,
     DeploymentConfiguration: {
@@ -157,11 +158,11 @@ test('New service/new bucket, private API, new VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.0.0.0/16'
   });
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -191,10 +192,10 @@ test('New service/new bucket, private API, new VPC', () => {
   });
 
   // Confirm we created an Isolated VPC
-  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::S3::Bucket', 2);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
+  defaults.expectNonexistence(stack, 'AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::S3::Bucket', 2);
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
 
 test('Default construct has all expected properties', () => {
@@ -226,43 +227,27 @@ test('Construct deploys Fargate Service in isolated subnets when publicApi is se
   const template = Template.fromStack(stack);
 
   // The default isolated VPC should have two subnets, 2 route tables, and no nat/internet gateway, or routes
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::EC2::Subnet', 2);
-  expect(stack).toCountResources('AWS::EC2::RouteTable', 2);
-  expect(stack).toCountResources('AWS::EC2::Route', 0);
-  expect(stack).toCountResources('AWS::EC2::NatGateway', 0);
-  expect(stack).toCountResources('AWS::EC2::InternetGateway', 0);
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::EC2::Subnet', 2);
+  template.resourceCountIs('AWS::EC2::RouteTable', 2);
+  template.resourceCountIs('AWS::EC2::Route', 0);
+  template.resourceCountIs('AWS::EC2::NatGateway', 0);
+  template.resourceCountIs('AWS::EC2::InternetGateway', 0);
 
-  // Get the first isolated subnet
-  const subnet1Resource = template.findResources('AWS::EC2::Subnet', {
+  const subnet1Resources = template.findResources('AWS::EC2::Subnet', {
     Properties: {
-      MapPublicIpOnLaunch: false,
-      Tags: [
+      Tags: Match.arrayWith([
         {
-          Key: Match.exact("Name"),
-          Value: Match.exact("Default/Vpc/IsolatedSubnet1")
+          Key: "aws-cdk:subnet-type",
+          Value: "Isolated"
         }
-      ]
+      ])
     }
   });
-  const [ subnet1 ] = Object.keys(subnet1Resource);
-
-  // Get the second isolated subnet
-  const subnet2Resource = template.findResources('AWS::EC2::Subnet', {
-    Properties: {
-      MapPublicIpOnLaunch: false,
-      Tags: [
-        {
-          Key: Match.exact("Name"),
-          Value: Match.exact("Default/Vpc/IsolatedSubnet2")
-        }
-      ]
-    }
-  });
-  const [ subnet2 ] = Object.keys(subnet2Resource);
+  const [ subnet1, subnet2 ] = Object.keys(subnet1Resources);
 
   // Verify the Fargate Service is deployed into the two isolated subnets
-  expect(stack).toHaveResourceLike('AWS::ECS::Service', {
+  template.hasResourceProperties('AWS::ECS::Service', {
     NetworkConfiguration: {
       AwsvpcConfiguration: {
         AssignPublicIp: "DISABLED",
@@ -291,45 +276,28 @@ test('Construct deploys Fargate Service in private subnets when publicApi is set
 
   // The default public/private VPC should have 4 subnets (two public, two private)
   // 4 route tables, 4 routes, 2 NAT Gateways and 1 Internet Gateway
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::EC2::Subnet', 4);
-  expect(stack).toCountResources('AWS::EC2::RouteTable', 4);
-  expect(stack).toCountResources('AWS::EC2::Route', 4);
-  expect(stack).toCountResources('AWS::EC2::NatGateway', 2);
-  expect(stack).toCountResources('AWS::EC2::InternetGateway', 1);
-
   const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::EC2::Subnet', 4);
+  template.resourceCountIs('AWS::EC2::RouteTable', 4);
+  template.resourceCountIs('AWS::EC2::Route', 4);
+  template.resourceCountIs('AWS::EC2::NatGateway', 2);
+  template.resourceCountIs('AWS::EC2::InternetGateway', 1);
 
-  // Get the first private subnet
-  const privateSubnet1Resource = template.findResources('AWS::EC2::Subnet', {
+  const subnet1Resources = template.findResources('AWS::EC2::Subnet', {
     Properties: {
-      MapPublicIpOnLaunch: false,
-      Tags: [
+      Tags: Match.arrayWith([
         {
-          Key: Match.exact("Name"),
-          Value: Match.exact("Default/Vpc/PrivateSubnet1")
+          Key: "aws-cdk:subnet-type",
+          Value: "Private"
         }
-      ]
+      ])
     }
   });
-  const [ privateSubnet1 ] = Object.keys(privateSubnet1Resource);
-
-  // Get the second private subnet
-  const privateSubnet2Resource = template.findResources('AWS::EC2::Subnet', {
-    Properties: {
-      MapPublicIpOnLaunch: false,
-      Tags: [
-        {
-          Key: Match.exact("Name"),
-          Value: Match.exact("Default/Vpc/PrivateSubnet2")
-        }
-      ]
-    }
-  });
-  const [ privateSubnet2 ] = Object.keys(privateSubnet2Resource);
+  const [ privateSubnet1, privateSubnet2 ] = Object.keys(subnet1Resources);
 
   // Verify the Fargate Service is deployed into the two private subnets
-  expect(stack).toHaveResourceLike('AWS::ECS::Service', {
+  template.hasResourceProperties('AWS::ECS::Service', {
     NetworkConfiguration: {
       AwsvpcConfiguration: {
         AssignPublicIp: "DISABLED",
@@ -359,8 +327,9 @@ test('Construct uses vpcProps when provided', () => {
     }
   });
 
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toHaveResourceLike('AWS::EC2::VPC', {
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.hasResourceProperties('AWS::EC2::VPC', {
     Tags: [
       {
         Key: 'Name',
@@ -385,8 +354,9 @@ test('Construct uses existingVpc when provided', () => {
     existingVpc
   });
 
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toHaveResourceLike('AWS::EC2::VPC', {
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.hasResourceProperties('AWS::EC2::VPC', {
     Tags: [
       {
         Key: 'Name',
@@ -406,7 +376,8 @@ test('Construct creates VPC Interface Endpoints for ECR and Kinesis Streams', ()
     ecrRepositoryArn: defaults.fakeEcrRepoArn
   });
 
-  expect(stack).toHaveResource('AWS::EC2::VPCEndpoint', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::EC2::VPCEndpoint', {
     ServiceName: {
       'Fn::Join': [
         '',
@@ -421,7 +392,7 @@ test('Construct creates VPC Interface Endpoints for ECR and Kinesis Streams', ()
     },
   });
 
-  expect(stack).toHaveResource('AWS::EC2::VPCEndpoint', {
+  template.hasResourceProperties('AWS::EC2::VPCEndpoint', {
     ServiceName: {
       'Fn::Join': [
         '',
@@ -447,7 +418,8 @@ test('Container has default stream name environment variable', () => {
     ecrRepositoryArn: defaults.fakeEcrRepoArn
   });
 
-  expect(stack).toHaveResourceLike('AWS::ECS::TaskDefinition', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ECS::TaskDefinition', {
     ContainerDefinitions: [
       {
         Environment: [
@@ -472,7 +444,8 @@ test('Container stream name environment variable can be overridden', () => {
     firehoseEnvironmentVariableName: 'my-stream-name'
   });
 
-  expect(stack).toHaveResourceLike('AWS::ECS::TaskDefinition', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ECS::TaskDefinition', {
     ContainerDefinitions: [
       {
         Environment: [
@@ -496,7 +469,8 @@ test('Construct grants PutRecord permission for the Fargate Service to write to 
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
   });
 
-  expect(stack).toHaveResourceLike('AWS::IAM::Policy', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
         {
@@ -529,7 +503,8 @@ test('Construct defaults to the latest version of the ECR image', () => {
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
   });
 
-  expect(stack).toHaveResourceLike('AWS::ECS::TaskDefinition', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ECS::TaskDefinition', {
     ContainerDefinitions: [
       {
         Image: {
@@ -560,7 +535,8 @@ test('Construct uses ecrImageVersion when provided', () => {
     ecrImageVersion: 'my-version'
   });
 
-  expect(stack).toHaveResourceLike('AWS::ECS::TaskDefinition', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ECS::TaskDefinition', {
     ContainerDefinitions: [
       {
         Image: {
@@ -593,8 +569,9 @@ test('Construct uses clusterProps when provided', () => {
     }
   });
 
-  expect(stack).toCountResources('AWS::ECS::Cluster', 1);
-  expect(stack).toHaveResourceLike("AWS::ECS::Cluster", {
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::ECS::Cluster', 1);
+  template.hasResourceProperties("AWS::ECS::Cluster", {
     ClusterName: 'my-cluster'
   });
 });
@@ -612,8 +589,9 @@ test('Construct uses containerDefinitionProps when provided', () => {
     }
   });
 
-  expect(stack).toCountResources('AWS::ECS::TaskDefinition', 1);
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::ECS::TaskDefinition', 1);
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Name: 'my-container'
@@ -635,8 +613,9 @@ test('Construct uses fargateTaskDefinitionProps when provided', () => {
     }
   });
 
-  expect(stack).toCountResources('AWS::ECS::TaskDefinition', 1);
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::ECS::TaskDefinition', 1);
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     Family: 'my-family'
   });
 });
@@ -655,8 +634,9 @@ test('Construct uses fargateServiceProps when provided', () => {
     }
   });
 
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::ECS::Service', 1);
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: 'my-service',
     DesiredCount: 7
   });
@@ -686,13 +666,14 @@ test('Construct uses existingFargateServiceObject when provided', () => {
     existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition
   });
 
-  expect(stack).toCountResources('AWS::ECS::Cluster', 1);
-  expect(stack).toHaveResourceLike("AWS::ECS::Cluster", {
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::ECS::Cluster', 1);
+  template.hasResourceProperties("AWS::ECS::Cluster", {
     ClusterName: 'my-cluster'
   });
 
-  expect(stack).toCountResources('AWS::ECS::TaskDefinition', 1);
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.resourceCountIs('AWS::ECS::TaskDefinition', 1);
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     Family: 'my-family',
     ContainerDefinitions: [
       {
@@ -701,8 +682,8 @@ test('Construct uses existingFargateServiceObject when provided', () => {
     ]
   });
 
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  template.resourceCountIs('AWS::ECS::Service', 1);
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: 'my-service',
   });
 });

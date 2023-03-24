@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
 import { FargateToEventbridge } from "../lib";
@@ -43,7 +43,8 @@ test('Check for new service', () => {
 
   createFargateConstructWithNewResources(stack, publicApi);
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName,
     LaunchType: 'FARGATE',
     DesiredCount: 2,
@@ -54,7 +55,7 @@ test('Check for new service', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     ServiceName: {
       "Fn::Join": [
         "",
@@ -93,7 +94,8 @@ test('Check for an existing service', () => {
     existingVpc,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName,
     LaunchType: 'FARGATE',
     DesiredCount: 2,
@@ -104,7 +106,7 @@ test('Check for an existing service', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     ServiceName: {
       "Fn::Join": [
         "",
@@ -119,7 +121,7 @@ test('Check for an existing service', () => {
     }
   });
 
-  expect(stack).toCountResources("AWS::ECS::Service", 1);
+  template.resourceCountIs("AWS::ECS::Service", 1);
 });
 
 test('Check for IAM put events policy for created bus', () => {
@@ -128,7 +130,8 @@ test('Check for IAM put events policy for created bus', () => {
 
   createFargateConstructWithNewResources(stack, publicApi);
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -167,7 +170,8 @@ test('Check for IAM put events policy for default event bus', () => {
     fargateServiceProps: { serviceName },
   });
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -212,14 +216,15 @@ test('Check for public/private VPC', () => {
 
   createFargateConstructWithNewResources(stack, publicApi);
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: testCidr
   });
 
-  expect(stack).toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::Events::EventBus', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
+  template.resourceCountIs('AWS::EC2::InternetGateway', 1);
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::Events::EventBus', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
 
 test('Check for isolated VPC', () => {
@@ -228,14 +233,15 @@ test('Check for isolated VPC', () => {
 
   createFargateConstructWithNewResources(stack, publicApi);
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: testCidr
   });
 
-  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::Events::EventBus', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
+  defaults.expectNonexistence(stack, 'AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::Events::EventBus', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
 
 test('Check for an existing VPC', () => {
@@ -254,11 +260,12 @@ test('Check for an existing VPC', () => {
     existingVpc,
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: "172.168.0.0/16"
   });
 
-  expect(stack).toCountResources("AWS::EC2::VPC", 1);
+  template.resourceCountIs("AWS::EC2::VPC", 1);
 });
 
 test('Check for custom ARN resource', () => {
@@ -277,7 +284,8 @@ test('Check for custom ARN resource', () => {
     eventBusEnvironmentVariableName: customEnvName
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     Family: familyName,
     ContainerDefinitions: [
       {
@@ -333,7 +341,8 @@ test('Check for an existing event bus', () => {
   });
 
   expect(construct.eventBus).toBeDefined();
-  expect(stack).toHaveResource("AWS::Events::EventBus", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Events::EventBus", {
     Name: customName
   });
 });
@@ -345,7 +354,8 @@ test('Check for custom event bus props', () => {
 
   createFargateConstructWithNewResources(stack, publicApi);
 
-  expect(stack).toHaveResourceLike("AWS::Events::EventBus", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Events::EventBus", {
     Name: eventBusName
   });
 });

@@ -14,7 +14,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { EventbridgeToSqs, EventbridgeToSqsProps } from '../lib';
 import * as events from "aws-cdk-lib/aws-events";
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 
 function deployNewStack(stack: cdk.Stack) {
@@ -45,7 +45,8 @@ test('check the sqs queue properties', () => {
   expect(buildQueueResponse.sqsQueue).toBeDefined();
   expect(buildQueueResponse.encryptionKey).toBeDefined();
 
-  expect(stack).toHaveResource('AWS::SQS::Queue', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SQS::Queue', {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "testeventbridgesqsEncryptionKey811BDC23",
@@ -82,7 +83,8 @@ test('check the sqs queue properties with existing KMS key', () => {
   expect(buildQueueResponse.sqsQueue).toBeDefined();
   expect(buildQueueResponse.encryptionKey).toBeDefined();
 
-  expect(stack).toHaveResource('AWS::SQS::Queue', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SQS::Queue', {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "EncryptionKey1B843E66",
@@ -100,7 +102,7 @@ test('check the sqs queue properties with existing KMS key', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::KMS::Key', {
+  template.hasResourceProperties('AWS::KMS::Key', {
     Description: "my-key",
     EnableKeyRotation: true
   });
@@ -109,7 +111,8 @@ test('check the sqs queue properties with existing KMS key', () => {
 test('check if the event rule has permission/policy in place in sqs queue for it to be able to send messages to the queue.', () => {
   const stack = new cdk.Stack();
   deployNewStack(stack);
-  expect(stack).toHaveResource('AWS::SQS::QueuePolicy', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SQS::QueuePolicy', {
     PolicyDocument:  {
       Statement: [
         {
@@ -199,7 +202,8 @@ test('check if the event rule has permission/policy in place in sqs queue for it
 test('check if the dead letter queue policy is setup', () => {
   const stack = new cdk.Stack();
   deployNewStack(stack);
-  expect(stack).toHaveResource('AWS::SQS::QueuePolicy', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SQS::QueuePolicy', {
     PolicyDocument:  {
       Statement: [
         {
@@ -290,7 +294,8 @@ test('check eventbus property, snapshot & eventbus exists', () => {
   expect(construct.eventBus !== null);
 
   // Check whether eventbus exists
-  expect(stack).toHaveResource('AWS::Events::EventBus');
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::Events::EventBus', 1);
 });
 
 test('check exception while passing existingEventBus & eventBusProps', () => {
@@ -327,7 +332,8 @@ test('check custom event bus resource with props when deploy:true', () => {
   };
   new EventbridgeToSqs(stack, 'test-new-eventbridge-sqs', props);
 
-  expect(stack).toHaveResource('AWS::Events::EventBus', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Events::EventBus', {
     Name: 'testcustomeventbus'
   });
 });
@@ -349,7 +355,8 @@ test('Queue is encrypted when key is provided on queueProps.encryptionMasterKey 
 
   new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
 
-  expect(stack).toHaveResource('AWS::SQS::Queue', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SQS::Queue', {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "EncryptionKey1B843E66",
@@ -358,7 +365,7 @@ test('Queue is encrypted when key is provided on queueProps.encryptionMasterKey 
     }
   });
 
-  expect(stack).toHaveResource('AWS::KMS::Key', {
+  template.hasResourceProperties('AWS::KMS::Key', {
     Description: "my-key",
     EnableKeyRotation: true
   });
@@ -378,7 +385,8 @@ test('Queue is encrypted when key keyProps are provided', () => {
 
   new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
 
-  expect(stack).toHaveResource('AWS::SQS::Queue', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SQS::Queue', {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "testeventbridgesqsEncryptionKey811BDC23",
@@ -387,7 +395,7 @@ test('Queue is encrypted when key keyProps are provided', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::KMS::Key', {
+  template.hasResourceProperties('AWS::KMS::Key', {
     Description: "my-key",
     EnableKeyRotation: true
   });
@@ -405,7 +413,8 @@ test('Queue is encrypted with SQS-managed KMS key when enableEncryptionWithCusto
 
   new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
 
-  expect(stack).toHaveResource('AWS::SQS::Queue', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SQS::Queue', {
     KmsMasterKeyId: "alias/aws/sqs"
   });
 });
@@ -423,7 +432,8 @@ test('Queue purging flag grants correct permissions', () => {
 
   new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
 
-  expect(stack).toHaveResource('AWS::SQS::QueuePolicy', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SQS::QueuePolicy', {
     PolicyDocument:  {
       Statement: [
         {

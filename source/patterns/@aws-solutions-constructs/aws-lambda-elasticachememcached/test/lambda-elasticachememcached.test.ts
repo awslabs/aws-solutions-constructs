@@ -12,16 +12,13 @@
  */
 
 // Imports
-// import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
-// import { LambdaToElasticachememcached, LambdaToElasticachememcachedProps } from "../lib";
-// import * as lambda from '@aws-cdk/aws-lambda';
-// import * as cdk from "@aws-cdk/core";
 import "@aws-cdk/assert/jest";
 import * as defaults from "@aws-solutions-constructs/core";
 import * as cdk from "aws-cdk-lib";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import { LambdaToElasticachememcached } from "../lib";
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import { Template } from "aws-cdk-lib/assertions";
 
 const testPort = 12321;
 const testFunctionName = "something-unique";
@@ -40,7 +37,8 @@ test("When provided a VPC, does not create a second VPC", () => {
     },
   });
 
-  expect(stack).toCountResources("AWS::EC2::VPC", 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::EC2::VPC", 1);
 });
 
 test("When provided an existingCache, does not create a second cache", () => {
@@ -59,8 +57,9 @@ test("When provided an existingCache, does not create a second cache", () => {
     },
   });
 
-  expect(stack).toCountResources("AWS::ElastiCache::CacheCluster", 1);
-  expect(stack).toHaveResourceLike("AWS::ElastiCache::CacheCluster", {
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::ElastiCache::CacheCluster", 1);
+  template.hasResourceProperties("AWS::ElastiCache::CacheCluster", {
     Port: testPort,
   });
 });
@@ -82,8 +81,9 @@ test("When provided an existingFunction, does not create a second function", () 
     existingLambdaObj: existingFunction,
   });
 
-  expect(stack).toCountResources("AWS::Lambda::Function", 1);
-  expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::Lambda::Function", 1);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     FunctionName: testFunctionName,
   });
 });
@@ -102,7 +102,8 @@ test("Test custom environment variable name", () => {
     cacheEndpointEnvironmentVariableName: testEnvironmentVariableName,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
@@ -143,7 +144,8 @@ test("Test setting custom function properties", () => {
     },
   });
 
-  expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     FunctionName: testFunctionName,
   });
 });
@@ -162,7 +164,8 @@ test("Test setting custom cache properties", () => {
     },
   });
 
-  expect(stack).toHaveResourceLike("AWS::ElastiCache::CacheCluster", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ElastiCache::CacheCluster", {
     ClusterName: testClusterName,
   });
 });
@@ -181,7 +184,8 @@ test("Test setting custom VPC properties", () => {
     },
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: testCidrBlock,
   });
 });
@@ -196,11 +200,12 @@ test("Test all default values", () => {
     },
   });
 
-  expect(stack).toCountResources("AWS::Lambda::Function", 1);
-  expect(stack).toCountResources("AWS::ElastiCache::CacheCluster", 1);
-  expect(stack).toCountResources("AWS::EC2::VPC", 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::Lambda::Function", 1);
+  template.resourceCountIs("AWS::ElastiCache::CacheCluster", 1);
+  template.resourceCountIs("AWS::EC2::VPC", 1);
 
-  expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
+  template.hasResourceProperties("AWS::Lambda::Function", {
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
@@ -231,7 +236,7 @@ test("Test all default values", () => {
   });
 
   // All values taken from elasticache-defaults.ts
-  expect(stack).toHaveResourceLike("AWS::ElastiCache::CacheCluster", {
+  template.hasResourceProperties("AWS::ElastiCache::CacheCluster", {
     CacheNodeType: "cache.t3.medium",
     Engine: "memcached",
     NumCacheNodes: 2,
@@ -239,7 +244,7 @@ test("Test all default values", () => {
     AZMode: "cross-az",
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
@@ -259,7 +264,8 @@ test('Test for the proper self referencing security group', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::SecurityGroupIngress", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::EC2::SecurityGroupIngress", {
     IpProtocol: "TCP",
     FromPort: 22223,
     ToPort: 22223,

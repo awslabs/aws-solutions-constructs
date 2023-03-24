@@ -17,7 +17,7 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { LambdaToSecretsmanager } from '../lib';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from "@aws-solutions-constructs/core";
 
 // --------------------------------------------------------------
@@ -60,7 +60,8 @@ test('Test deployment w/ existing secret', () => {
     existingSecretObj: existingSecret
   });
   // Assertion 1
-  expect(stack).toHaveResource("AWS::SecretsManager::Secret", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SecretsManager::Secret", {
     GenerateSecretString: {},
   });
   // Assertion 2
@@ -86,7 +87,8 @@ test('Test deployment w/ existing function', () => {
     secretProps: { removalPolicy: RemovalPolicy.DESTROY },
   });
   // Assertion 1
-  expect(stack).toHaveResource("AWS::SecretsManager::Secret", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SecretsManager::Secret", {
     GenerateSecretString: {},
   });
   // Assertion 2
@@ -110,7 +112,8 @@ test('Test minimal deployment write access to Secret', () => {
     grantWriteAccess: 'ReadWrite'
   });
   // Assertion 1
-  expect(stack).toHaveResource("AWS::SecretsManager::Secret", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SecretsManager::Secret", {
     GenerateSecretString: {},
   });
 
@@ -133,7 +136,8 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -154,17 +158,17 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
 // --------------------------------------------------------------
@@ -189,7 +193,8 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -210,18 +215,18 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: "192.68.0.0/16",
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
 // --------------------------------------------------------------
@@ -244,7 +249,8 @@ test("Test minimal deployment with an existing VPC", () => {
     existingVpc: testVpc,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -265,7 +271,7 @@ test("Test minimal deployment with an existing VPC", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 });
@@ -351,7 +357,8 @@ test('Test lambda function custom environment variable', () => {
   });
 
   // Assertion
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
     Runtime: 'nodejs14.x',
     Environment: {
@@ -392,7 +399,8 @@ test('Test overriding secretProps to pass a customer provided CMK', () => {
   });
 
   // Assertion 1
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
     Runtime: 'nodejs14.x',
     Environment: {
@@ -406,7 +414,7 @@ test('Test overriding secretProps to pass a customer provided CMK', () => {
   });
 
   // Assertion 2
-  expect(stack).toHaveResource("AWS::SecretsManager::Secret", {
+  template.hasResourceProperties("AWS::SecretsManager::Secret", {
     GenerateSecretString: {},
     KmsKeyId: {
       "Fn::GetAtt": [
@@ -417,7 +425,7 @@ test('Test overriding secretProps to pass a customer provided CMK', () => {
   });
 
   // Assertion 3
-  expect(stack).toHaveResource('AWS::KMS::Key', {
+  template.hasResourceProperties('AWS::KMS::Key', {
     Description: "secret-key",
     EnableKeyRotation: true
   });

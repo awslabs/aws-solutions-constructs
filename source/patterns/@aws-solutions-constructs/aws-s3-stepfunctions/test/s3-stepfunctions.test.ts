@@ -13,7 +13,6 @@
 
 import { S3ToStepfunctions, S3ToStepfunctionsProps } from '../lib/index';
 import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
-import '@aws-cdk/assert/jest';
 import * as cdk from 'aws-cdk-lib';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { Template } from 'aws-cdk-lib/assertions';
@@ -58,7 +57,8 @@ test('override eventRuleProps', () => {
 
   new S3ToStepfunctions(stack, 'test-s3-stepfunctions', props);
 
-  expect(stack).toHaveResource('AWS::Events::Rule', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Events::Rule', {
     EventPattern: {
       "source": [
         "aws.s3"
@@ -153,9 +153,10 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
 
   new S3ToStepfunctions(stack, 'test-s3-stepfunctions', testProps);
 
-  expect(stack).toHaveResource("Custom::S3BucketNotifications", {});
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("Custom::S3BucketNotifications", {});
 
-  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+  template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
       "Fn::GetAtt": [
         "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
@@ -185,7 +186,8 @@ test('s3 bucket with no logging bucket', () => {
     logS3AccessLogs: false
   });
 
-  expect(stack).toHaveResource("Custom::S3BucketNotifications", {});
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("Custom::S3BucketNotifications", {});
   expect(construct.s3LoggingBucket).toEqual(undefined);
 });
 
@@ -198,7 +200,8 @@ test('check LogGroup name', () => {
   const expectedPrefix = '/aws/vendedlogs/states/constructs/';
   const lengthOfDatetimeSuffix = 13;
 
-  const LogGroup = Template.fromStack(stack).findResources("AWS::Logs::LogGroup");
+  const template = Template.fromStack(stack);
+  const LogGroup = template.findResources("AWS::Logs::LogGroup");
 
   const logName = LogGroup.tests3stepfunctionstests3stepfunctionseventrulestepfunctionconstructStateMachineLogGroupB4555776.Properties.LogGroupName;
   const suffix = logName.slice(-lengthOfDatetimeSuffix);

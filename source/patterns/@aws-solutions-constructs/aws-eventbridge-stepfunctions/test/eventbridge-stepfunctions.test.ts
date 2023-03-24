@@ -15,7 +15,6 @@ import * as events from 'aws-cdk-lib/aws-events';
 import { EventbridgeToStepfunctions, EventbridgeToStepfunctionsProps } from '../lib/index';
 import { Duration } from 'aws-cdk-lib';
 import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
-import '@aws-cdk/assert/jest';
 import * as cdk from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
 
@@ -59,7 +58,8 @@ test('check events rule role policy permissions', () => {
 
   deployNewStateMachine(stack);
 
-  expect(stack).toHaveResource("AWS::IAM::Policy", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -80,7 +80,8 @@ test('check events rule properties', () => {
 
   deployNewStateMachine(stack);
 
-  expect(stack).toHaveResource('AWS::Events::Rule', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Events::Rule', {
     ScheduleExpression: "rate(5 minutes)",
     State: "ENABLED",
     Targets: [
@@ -145,7 +146,8 @@ test('check eventbus property, snapshot & eventbus exists', () => {
   expect(construct.eventBus !== null);
 
   // Check whether eventbus exists
-  expect(stack).toHaveResource('AWS::Events::EventBus');
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::Events::EventBus', 1);
 });
 
 test('check exception while passing existingEventBus & eventBusProps', () => {
@@ -190,7 +192,8 @@ test('check custom event bus resource with props when deploy:true', () => {
   };
   new EventbridgeToStepfunctions(stack, 'test-new-eventbridge-stepfunctions', props);
 
-  expect(stack).toHaveResource('AWS::Events::EventBus', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Events::EventBus', {
     Name: 'testcustomeventbus'
   });
 });
@@ -204,7 +207,8 @@ test('check LogGroup name', () => {
   const expectedPrefix = '/aws/vendedlogs/states/constructs/';
   const lengthOfDatetimeSuffix = 13;
 
-  const LogGroup = Template.fromStack(stack).findResources("AWS::Logs::LogGroup");
+  const template = Template.fromStack(stack);
+  const LogGroup = template.findResources("AWS::Logs::LogGroup");
 
   const logName = LogGroup.testeventbridgestepfunctionsStateMachineLogGroup826A5B74.Properties.LogGroupName;
   const suffix = logName.slice(-lengthOfDatetimeSuffix);
