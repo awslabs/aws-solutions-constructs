@@ -148,7 +148,10 @@ export function buildS3Bucket(scope: Construct,
     }
 
     loggingBucket = createLoggingBucket(scope, _loggingBucketId, loggingBucketProps);
+  } else if (props.bucketProps?.serverAccessLogsBucket) {
+    loggingBucket = props.bucketProps?.serverAccessLogsBucket as s3.Bucket;
   }
+
   // Attach the Default Life Cycle policy ONLY IF the versioning is ENABLED
   if (props.bucketProps?.versioned === undefined || props.bucketProps.versioned) {
     customBucketProps = DefaultS3Props(loggingBucket, lifecycleRules);
