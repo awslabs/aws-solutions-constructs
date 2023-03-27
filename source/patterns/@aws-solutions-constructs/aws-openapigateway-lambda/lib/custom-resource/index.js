@@ -18,7 +18,7 @@ const s3Client = new S3Client({ region: process.env.REGION });
 
 export const handler = async (event, context) => {
   // tslint:disable-next-line:no-console
-  console.log(`Recieved: ${JSON.stringify(event, null, 2)}`);
+  console.log(`Received: ${JSON.stringify(event, null, 2)}`);
 
   let status = 'SUCCESS';
   let responseData = {};

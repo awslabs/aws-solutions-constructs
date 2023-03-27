@@ -107,7 +107,7 @@ new ApiGatewayToLambda(this, "OpenApiGatewayToLambdaPattern", new ApiGatewayToLa
 |apiDefinitionBucket?|`string`|S3 Bucket where the open-api spec file is located. When specifying this property, `apiDefinitionKey` must also be specified.|
 |apiDefinitionKey?|`string`|S3 Object name of the open-api spec file. When specifying this property, `apiDefinitionBucket` must also be specified.|
 |apiDefinitionAsset?|[`aws_s3_assets.Asset`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3_assets.Asset.html)|Local file asset of the open-api spec file.|
-|apiIntegrations|`ApiIntegration`|One or more key-value pairs that contain an id for the api integration and either an existing lambda function or an instance of the LambdaProps. Please see the `Overview of how the OpenAPI file transformation works` section below for more usage details.|
+|apiIntegrations|`ApiIntegration[]`|One or more key-value pairs that contain an id for the api integration and either an existing lambda function or an instance of the LambdaProps. Please see the `Overview of how the OpenAPI file transformation works` section below for more usage details.|
 |logGroupProps?|[`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html)|User provided props to override the default props for for the CloudWatchLogs LogGroup.|
 
 ## Pattern Properties
@@ -128,7 +128,7 @@ Looking at an example - a user creates an instantiation of `apiIntegrations` tha
 const apiIntegrations: ApiIntegration[] = [
   {
     id: 'MessagesHandler',
-    lambdaFunctionOrProps: {
+    lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
@@ -136,7 +136,7 @@ const apiIntegrations: ApiIntegration[] = [
   },
   {
     id: 'PhotosHandler',
-    lambdaFunctionOrProps: new lambda.Function(this, 'PhotosLambda', {
+    existingLambdaObj: new lambda.Function(this, 'PhotosLambda', {
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/photos-lambda`),
