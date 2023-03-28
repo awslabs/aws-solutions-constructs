@@ -291,7 +291,7 @@ test('Test deployment w/ DLQ explicitly enabled and w/ MRC override', () => {
     }
   });
   // Assertion 3: test for the overridden max receive count
- template.hasResourceProperties('AWS::SQS::Queue', {
+  template.hasResourceProperties('AWS::SQS::Queue', {
     RedrivePolicy: {
       maxReceiveCount: 6
     }
