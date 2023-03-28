@@ -14,7 +14,7 @@
 // Imports
 import { Stack } from "aws-cdk-lib";
 import { ApiGatewayToDynamoDB, ApiGatewayToDynamoDBProps } from "../lib";
-1import * as ddb from "aws-cdk-lib/aws-dynamodb";
+import * as ddb from "aws-cdk-lib/aws-dynamodb";
 import * as api from "aws-cdk-lib/aws-apigateway";
 import { Template } from "aws-cdk-lib/assertions";
 
