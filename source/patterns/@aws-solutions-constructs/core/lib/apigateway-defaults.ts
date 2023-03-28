@@ -107,6 +107,25 @@ export function DefaultRegionalRestApiProps(_logGroup: LogGroup) {
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  *
+ * Provides the default set of properties for SpecRestApi
+ * @param logGroup - CloudWatch Log Group for Api Gateway Access Logging
+ */
+export function DefaultSpecRestApiProps(logGroup: LogGroup): api.RestApiBaseProps {
+  return {
+    cloudWatchRole: false,
+    deployOptions: {
+      accessLogDestination: new api.LogGroupLogDestination(logGroup),
+      accessLogFormat: api.AccessLogFormat.jsonWithStandardFields(),
+      loggingLevel: api.MethodLoggingLevel.INFO,
+      dataTraceEnabled: false,
+      tracingEnabled: true
+    }
+  };
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * @returns The set of default integration responses for status codes 200 and 500.
  */
 export function DefaultIntegrationResponses(): IntegrationResponse[] {

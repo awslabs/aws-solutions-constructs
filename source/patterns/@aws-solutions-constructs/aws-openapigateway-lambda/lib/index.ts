@@ -100,6 +100,10 @@ export interface OpenApiGatewayToLambdaProps {
 }
 
 export class OpenApiGatewayToLambda extends Construct {
+  public readonly apiGateway: apigateway.SpecRestApi;
+  public readonly apiGatewayCloudWatchRole?: iam.Role;
+  public readonly apiGatewayLogGroup: logs.LogGroup;
+  public readonly lambdaFunctions: lambda.Function[];
 
   constructor(scope: Construct, id: string, props: OpenApiGatewayToLambdaProps) {
     super(scope, id);
@@ -119,7 +123,8 @@ export class OpenApiGatewayToLambda extends Construct {
       throw new Error('At least one ApiIntegration must be specified in the apiIntegrations property');
     }
 
-    // transform the incoming lambda function/lambda function props into a single group of lambda functions
+    // transform the incoming lambda function/lambda function props into a single group of lambda functions,
+    // preserving the handler id to be used later in the custom resource
     const lambdaHandlers: InternalApiIntegration[] = props.apiIntegrations.map(apiIntegration => {
       return {
         id: apiIntegration.id,
@@ -129,6 +134,8 @@ export class OpenApiGatewayToLambda extends Construct {
         })
       };
     });
+
+    this.lambdaFunctions = lambdaHandlers.map(handler => handler.lambdaFunction);
 
     const outputApiDefinitionAsset = new Asset(this, 'OutputApiDefinitionAsset', {
       path: path.join(__dirname, 'placeholder')
@@ -198,21 +205,24 @@ export class OpenApiGatewayToLambda extends Construct {
       },
     });
 
-    // this will most likely get moved to a core/defaults helper before the PR is finished
-    const api = new apigateway.SpecRestApi(this, 'Api', {
+    const specRestApiResponse = defaults.CreateSpecRestApi(this, {
       ...props.apiGatewayProps,
       apiDefinition: apigateway.ApiDefinition.fromBucket(
         outputApiDefinitionAsset.bucket,
         apiTemplateWriter.getAttString('ApiDefinitionOutputKey')
       )
-    });
+    }, props.logGroupProps);
 
-    api.latestDeployment?.addToLogicalId(specKey); // trigger deployment any time the openapi spec file changes
+    this.apiGateway = specRestApiResponse.api;
+    this.apiGatewayCloudWatchRole = specRestApiResponse.role;
+    this.apiGatewayLogGroup = specRestApiResponse.logGroup;
+
+    this.apiGateway.latestDeployment?.addToLogicalId(specKey); // trigger deployment any time the api definition changes
 
     lambdaHandlers.map(lambdaHandler => {
       lambdaHandler.lambdaFunction.addPermission('PermitAPIGInvocation', {
         principal: new iam.ServicePrincipal('apigateway.amazonaws.com'),
-        sourceArn: api.arnForExecuteApi('*')
+        sourceArn: this.apiGateway.arnForExecuteApi('*')
       });
     });
   }
