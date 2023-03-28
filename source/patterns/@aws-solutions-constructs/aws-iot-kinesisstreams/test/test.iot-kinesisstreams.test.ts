@@ -16,8 +16,7 @@ import * as cdk from "aws-cdk-lib";
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import * as iot from 'aws-cdk-lib/aws-iot';
 import * as iam from 'aws-cdk-lib/aws-iam';
-// import * as defaults from '@aws-solutions-constructs/core';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 const iotTopicRuleProps: iot.CfnTopicRuleProps = {
   topicRulePayload: {
@@ -35,7 +34,8 @@ test('check iot topic rule properties', () => {
   };
   const construct = new IotToKinesisStreams(stack, 'test-iot-kinesisstreams', props);
 
-  expect(stack).toHaveResource('AWS::IoT::TopicRule', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IoT::TopicRule', {
     TopicRulePayload: {
       Actions: [
         {
@@ -58,7 +58,7 @@ test('check iot topic rule properties', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::Kinesis::Stream', {
+  template.hasResourceProperties('AWS::Kinesis::Stream', {
     ShardCount: 1,
     RetentionPeriodHours: 24,
     StreamEncryption: {
@@ -89,13 +89,14 @@ test('check existing kinesis stream', () => {
   };
   const construct = new IotToKinesisStreams(stack, 'test-iot-kinesisstreams', props);
 
-  expect(stack).toHaveResourceLike('AWS::Kinesis::Stream', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Kinesis::Stream', {
     ShardCount: 2,
     RetentionPeriodHours: 25,
     Name: 'testexistingstream'
   });
 
-  expect(stack).not.toHaveResource('AWS::CloudWatch::Alarm');
+  template.resourceCountIs('AWS::CloudWatch::Alarm', 0);
 
   expect(construct.iotTopicRule).toBeDefined();
   expect(construct.iotActionsRole).toBeDefined();
@@ -117,7 +118,8 @@ test('check new kinesis stream with override props', () => {
   };
   const construct = new IotToKinesisStreams(stack, 'test-iot-kinesisstreams', props);
 
-  expect(stack).toHaveResourceLike('AWS::Kinesis::Stream', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Kinesis::Stream', {
     ShardCount: 5,
     RetentionPeriodHours: 30,
     Name: 'testnewstream'
@@ -162,7 +164,8 @@ test('check existing action in topic rule props', () => {
   new IotToKinesisStreams(stack, 'test-iot-kinesisstreams', props);
 
   // Check multiple actions in the Topic Rule
-  expect(stack).toHaveResource('AWS::IoT::TopicRule', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IoT::TopicRule', {
     TopicRulePayload: {
       Actions: [
         {
@@ -198,13 +201,13 @@ test('check existing action in topic rule props', () => {
     RuleName: "testiotrulename"
   });
 
-  expect(stack).toHaveResourceLike('AWS::Kinesis::Stream', {
+  template.hasResourceProperties('AWS::Kinesis::Stream', {
     ShardCount: 5,
     RetentionPeriodHours: 30,
     Name: 'testnewstream'
   });
 
-  expect(stack).toCountResources('AWS::Kinesis::Stream', 2);
+  template.resourceCountIs('AWS::Kinesis::Stream', 2);
 });
 
 test('check name confict', () => {
@@ -216,7 +219,8 @@ test('check name confict', () => {
   new IotToKinesisStreams(stack, 'test-iot-kinesisstreams1', props);
   new IotToKinesisStreams(stack, 'test-iot-kinesisstreams2', props);
 
-  expect(stack).toCountResources('AWS::Kinesis::Stream', 2);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::Kinesis::Stream', 2);
 });
 
 test('check construct chaining', () => {
@@ -233,7 +237,8 @@ test('check construct chaining', () => {
   };
   new IotToKinesisStreams(stack, 'test-iot-kinesisstreams2', props2);
 
-  expect(stack).toCountResources('AWS::Kinesis::Stream', 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::Kinesis::Stream', 1);
 });
 
 test('check error when stream props and existing stream is supplied', () => {

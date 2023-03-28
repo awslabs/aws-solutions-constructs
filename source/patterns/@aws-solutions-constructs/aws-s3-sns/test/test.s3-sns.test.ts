@@ -13,7 +13,7 @@
 
 import { Stack } from "aws-cdk-lib";
 import { S3ToSns } from "../lib";
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as sns from 'aws-cdk-lib/aws-sns';
@@ -35,7 +35,8 @@ test('construct creates default event notification', () => {
   const stack = new Stack();
   new S3ToSns(stack, 'test-s3-sns', {});
 
-  expect(stack).toHaveResource("Custom::S3BucketNotifications", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("Custom::S3BucketNotifications", {
     NotificationConfiguration: {
       TopicConfigurations: [
         {
@@ -60,7 +61,8 @@ test('construct uses existingBucketObj property', () => {
     existingBucketObj: buildS3BucketResponse.bucket
   });
 
-  expect(stack).toHaveResourceLike("AWS::S3::Bucket", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     BucketName: 'existing-bucket-name'
   });
 });
@@ -84,17 +86,18 @@ test('construct uses existing topic and key', () => {
 
   expect(testConstruct.snsTopic).toBeDefined();
   expect(testConstruct.encryptionKey).toBeDefined();
-  expect(stack).toHaveResourceLike("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     TopicName: 'existing-topic-name'
   });
 
-  expect(stack).toHaveResourceLike("AWS::KMS::Key", {
+  template.hasResourceProperties("AWS::KMS::Key", {
     Description: 'existing-key-description'
   });
 
   // Make sure the construct did not create any other topics or keys created
-  expect(stack).toCountResources('AWS::KMS::Key', 1);
-  expect(stack).toCountResources('AWS::SNS::Topic', 1);
+  template.resourceCountIs('AWS::KMS::Key', 1);
+  template.resourceCountIs('AWS::SNS::Topic', 1);
 });
 
 test('construct uses specific event types and filters', () => {
@@ -109,7 +112,8 @@ test('construct uses specific event types and filters', () => {
     ]
   });
 
-  expect(stack).toHaveResource("Custom::S3BucketNotifications", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("Custom::S3BucketNotifications", {
     NotificationConfiguration: {
       TopicConfigurations: [
         {
@@ -181,7 +185,8 @@ test('Topic is encrypted by default with Customer-managed KMS key when no other 
   new S3ToSns(stack, 'test-s3-sns', {
   });
 
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "tests3snsEncryptionKey6C553584",
@@ -190,8 +195,8 @@ test('Topic is encrypted by default with Customer-managed KMS key when no other 
     }
   });
 
-  expect(stack).toCountResources('AWS::KMS::Key', 1);
-  expect(stack).toCountResources('AWS::SNS::Topic', 1);
+  template.resourceCountIs('AWS::KMS::Key', 1);
+  template.resourceCountIs('AWS::SNS::Topic', 1);
 });
 
 test('Topic is encrypted with SQS-managed KMS Key when enable encryption flag is false', () => {
@@ -200,7 +205,8 @@ test('Topic is encrypted with SQS-managed KMS Key when enable encryption flag is
     enableEncryptionWithCustomerManagedKey: false
   });
 
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::Join": [
         "",
@@ -223,8 +229,8 @@ test('Topic is encrypted with SQS-managed KMS Key when enable encryption flag is
     }
   });
 
-  expect(stack).toCountResources('AWS::KMS::Key', 0);
-  expect(stack).toCountResources('AWS::SNS::Topic', 1);
+  template.resourceCountIs('AWS::KMS::Key', 0);
+  template.resourceCountIs('AWS::SNS::Topic', 1);
 });
 
 test('Construct does not override unencrypted topic when passed in existingTopicObj prop', () => {
@@ -240,10 +246,11 @@ test('Construct does not override unencrypted topic when passed in existingTopic
 
   expect(testConstruct.snsTopic).toBeDefined();
   expect(testConstruct.encryptionKey).not.toBeDefined();
-  expect(stack).toCountResources('AWS::KMS::Key', 0);
-  expect(stack).toCountResources('AWS::SNS::Topic', 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::KMS::Key', 0);
+  template.resourceCountIs('AWS::SNS::Topic', 1);
 
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  template.hasResourceProperties("AWS::SNS::Topic", {
     TopicName: 'existing-topic-name'
   });
 });

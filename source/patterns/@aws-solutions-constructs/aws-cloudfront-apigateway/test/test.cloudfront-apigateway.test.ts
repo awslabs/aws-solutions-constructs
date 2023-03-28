@@ -11,16 +11,15 @@
  *  and limitations under the License.
  */
 
-import { ResourcePart } from '@aws-cdk/assert';
 import { CloudFrontToApiGateway } from "../lib";
 import * as cdk from "aws-cdk-lib";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as defaults from '@aws-solutions-constructs/core';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import '@aws-cdk/assert/jest';
 import {Duration} from "aws-cdk-lib";
-
+import { Template } from 'aws-cdk-lib/assertions';
 function deploy(stack: cdk.Stack) {
+
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     runtime: lambda.Runtime.NODEJS_14_X,
@@ -50,7 +49,8 @@ test('check getter methods', () => {
 test('test cloudfront DomainName', () => {
   const stack = new cdk.Stack();
   deploy(stack);
-  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       Origins: [
         {
@@ -101,13 +101,14 @@ test('test cloudfront DomainName', () => {
         }
       ]
     }
-  }, ResourcePart.Properties);
+  });
 });
 
 test('test api gateway lambda service role', () => {
   const stack = new cdk.Stack();
   deploy(stack);
-  expect(stack).toHaveResource("AWS::IAM::Role", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::IAM::Role", {
     AssumeRolePolicyDocument: {
       Statement: [
         {
@@ -190,11 +191,12 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
     }
   });
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     AccessControl: "LogDeliveryWrite"
   });
 
-  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+  template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
       "Fn::GetAtt": [
         "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
@@ -253,7 +255,8 @@ test('Test the deployment with securityHeadersBehavior instead of HTTP security 
   });
 
   // Assertion
-  expect(stack).toHaveResourceLike("AWS::CloudFront::ResponseHeadersPolicy", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::ResponseHeadersPolicy", {
     ResponseHeadersPolicyConfig: {
       SecurityHeadersConfig: {
         ContentSecurityPolicy: {

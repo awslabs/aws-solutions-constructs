@@ -13,7 +13,7 @@
 
 import { KinesisStreamsToKinesisFirehoseToS3, KinesisStreamsToKinesisFirehoseToS3Props } from '../lib';
 import * as cdk from 'aws-cdk-lib';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import * as s3 from 'aws-cdk-lib/aws-s3';
@@ -38,7 +38,8 @@ test('test kinesisFirehose override ', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::KinesisFirehose::DeliveryStream", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::KinesisFirehose::DeliveryStream", {
     ExtendedS3DestinationConfiguration: {
       BufferingHints: {
         IntervalInSeconds: 600,
@@ -55,7 +56,8 @@ test('test kinesisFirehose.deliveryStreamType override ', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::KinesisFirehose::DeliveryStream", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::KinesisFirehose::DeliveryStream", {
     DeliveryStreamType: 'KinesisStreamAsSource'
   });
 });
@@ -79,7 +81,8 @@ test('test kinesisFirehose.kinesisStreamSourceConfiguration override ', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::KinesisFirehose::DeliveryStream", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::KinesisFirehose::DeliveryStream", {
     KinesisStreamSourceConfiguration: {
       KinesisStreamARN: {
         "Fn::GetAtt": [
@@ -106,7 +109,8 @@ test('test kinesisStreamProps override ', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::Kinesis::Stream", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Kinesis::Stream", {
     ShardCount: 3
   });
 });
@@ -199,11 +203,12 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     AccessControl: "LogDeliveryWrite"
   });
 
-  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+  template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
       "Fn::GetAtt": [
         "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
@@ -232,5 +237,6 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
     logS3AccessLogs: false
   });
 
-  expect(stack).toCountResources("AWS::S3::Bucket", 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::S3::Bucket", 1);
 });

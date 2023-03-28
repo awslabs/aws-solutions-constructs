@@ -18,7 +18,7 @@ import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as defaults from '@aws-solutions-constructs/core';
 import { LambdaToSqsToLambda, LambdaToSqsToLambdaProps } from '../lib';
 import { haveResourceLike } from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 // --------------------------------------------------------------
 // Test minimal deployment
@@ -44,17 +44,18 @@ test('Test minimal deployment', () => {
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
 
   // Assertion 2: test for an producer function
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     FunctionName: 'producer-function'
   });
   // Assertion 3: test for a consumer function
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  template.hasResourceProperties('AWS::Lambda::Function', {
     FunctionName: 'consumer-function'
   });
-  // Assertion 4: test for a queue
-  expect(stack).toHaveResource('AWS::SQS::Queue');
+  // Assertion 4: test for a queue (queue and DLQ)
+  template.resourceCountIs('AWS::SQS::Queue', 2);
   // Assertion 5: test for send-message permissions (only) on the producer function
-  expect(stack).toHaveResourceLike('AWS::IAM::Policy', {
+  template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
         {
@@ -84,7 +85,7 @@ test('Test minimal deployment', () => {
     }
   });
   // Assertion 6: test for consume-message permissions (only) on the consumer function
-  expect(stack).toHaveResourceLike('AWS::IAM::Policy', {
+  template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
         {
@@ -145,11 +146,12 @@ test('Test deployment w/ existing producer function', () => {
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
 
   // Assertion 2: test for the existing producer function
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     FunctionName: 'existing-producer-function'
   });
   // Assertion 3: test for the deployed consumer function
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  template.hasResourceProperties('AWS::Lambda::Function', {
     FunctionName: 'deployed-consumer-function'
   });
 });
@@ -182,11 +184,12 @@ test('Test deployment w/ existing consumer function', () => {
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
 
   // Assertion 2: test for the deployed producer function
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     FunctionName: 'deployed-producer-function'
   });
   // Assertion 3: test for the existing consumer function
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  template.hasResourceProperties('AWS::Lambda::Function', {
     FunctionName: 'existing-consumer-function'
   });
 });
@@ -222,7 +225,8 @@ test('Test deployment w/ existing queue', () => {
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
 
   // Assertion 2: test for the existing queue
-  expect(stack).toHaveResource('AWS::SQS::Queue', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SQS::Queue', {
     QueueName: 'existing-queue'
   });
 });
@@ -318,11 +322,12 @@ test('Test overrides for producer and consumer functions', () => {
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
 
   // Assertion 2: test for updated runtime on producer function
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Runtime: "nodejs14.x"
   });
   // Assertion 3: test for updated runtime on consumer function
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Runtime: "nodejs14.x"
   });
 });
@@ -385,7 +390,8 @@ test('Test lambda function custom environment variable', () => {
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
 
   // Assertion
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     FunctionName: 'producer-function',
     Environment: {
       Variables: {
@@ -422,7 +428,8 @@ test('Pattern deployment w/ batch size', () => {
   };
   new LambdaToSqsToLambda(stack, 'test-lambda-sqs-lambda', props);
 
-  expect(stack).toHaveResource('AWS::Lambda::EventSourceMapping', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::EventSourceMapping', {
     BatchSize: 5
   });
 });
@@ -450,7 +457,8 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -471,17 +479,17 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
 // --------------------------------------------------------------
@@ -512,7 +520,8 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -533,18 +542,18 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: "192.68.0.0/16",
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
 // --------------------------------------------------------------
@@ -573,7 +582,8 @@ test("Test minimal deployment with an existing VPC", () => {
     existingVpc: testVpc,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -594,7 +604,7 @@ test("Test minimal deployment with an existing VPC", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 });

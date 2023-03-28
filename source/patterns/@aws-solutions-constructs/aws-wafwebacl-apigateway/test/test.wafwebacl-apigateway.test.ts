@@ -17,7 +17,7 @@ import { WafwebaclToApiGateway } from "../lib";
 import * as api from 'aws-cdk-lib/aws-apigateway';
 import * as waf from "aws-cdk-lib/aws-wafv2";
 import * as defaults from '@aws-solutions-constructs/core';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 function deployConstruct(stack: cdk.Stack, constructProps?: waf.CfnWebACLProps) {
   const restApi = new api.RestApi(stack, 'test-api', {});
@@ -69,7 +69,8 @@ test('Test default deployment', () => {
   expect(construct.webacl !== null);
   expect(construct.apiGateway !== null);
 
-  expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::WAFv2::WebACL", {
     Rules: [
       {
         Name: "AWS-AWSManagedRulesBotControlRuleSet",
@@ -224,7 +225,8 @@ test('Test user provided acl props', () => {
 
   deployConstruct(stack, webaclProps);
 
-  expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::WAFv2::WebACL", {
     VisibilityConfig: {
       CloudWatchMetricsEnabled: false,
       MetricName: "webACL",
@@ -296,7 +298,8 @@ test('Test existing web ACL', () => {
     existingApiGatewayInterface: restApi
   });
 
-  expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::WAFv2::WebACL", {
     VisibilityConfig: {
       CloudWatchMetricsEnabled: true,
       MetricName: "webACL",
@@ -304,5 +307,5 @@ test('Test existing web ACL', () => {
     }
   });
 
-  expect(stack).toCountResources("AWS::WAFv2::WebACL", 1);
+  template.resourceCountIs("AWS::WAFv2::WebACL", 1);
 });

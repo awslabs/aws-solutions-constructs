@@ -16,8 +16,7 @@ import * as cdk from "aws-cdk-lib";
 import { ApiGatewayToIot, ApiGatewayToIotProps } from "../lib";
 import * as api from 'aws-cdk-lib/aws-apigateway';
 import * as iam from 'aws-cdk-lib/aws-iam';
-import { ResourcePart } from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
+import { Template } from "aws-cdk-lib/assertions";
 
 // --------------------------------------------------------------
 // Check for ApiGateway params
@@ -47,7 +46,8 @@ test('Test for default IAM Role', () => {
   };
   new ApiGatewayToIot(stack, 'test-apigateway-iot-default-iam-role', props);
   // Check whether default IAM role is creted to access IoT core
-  expect(stack).toHaveResource("AWS::IAM::Role", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::IAM::Role", {
     AssumeRolePolicyDocument: {
       Statement: [
         {
@@ -125,7 +125,8 @@ test('Test for default Params request validator', () => {
   };
   new ApiGatewayToIot(stack, 'test-apigateway-iot-request-validator', props);
   // Assertion
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::RequestValidator", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::RequestValidator", {
     ValidateRequestBody: false,
     ValidateRequestParameters: true,
   });
@@ -144,7 +145,8 @@ test('Test for default Params Integ Props and Method Props', () => {
 
   // Assertion for {topic-level-7} to ensure all Integration Request Params, Integration Responses,
   // Method Request Params and Method Reponses are intact
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     HttpMethod: "POST",
     AuthorizationType: "AWS_IAM",
     Integration: {
@@ -254,7 +256,8 @@ test('Test for Binary Media types', () => {
   }
   );
   // Assertion 1
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::RestApi", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::RestApi", {
     BinaryMediaTypes: [
       "application/octet-stream",
     ],
@@ -278,7 +281,8 @@ test('Test for Api Name and Desc', () => {
   }
   );
   // Assertion 1
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::RestApi", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::RestApi", {
     Name: 'RestApi-Regional',
     Description: 'Description for the Regional Rest Api'
   });
@@ -327,7 +331,8 @@ test('Test for overriden IAM Role', () => {
 
   new ApiGatewayToIot(stack, 'test-apigateway-iot-overriden-iam-role', props);
   // Check whether default IAM role is creted to access IoT core
-  expect(stack).toHaveResource("AWS::IAM::Role", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::IAM::Role", {
     AssumeRolePolicyDocument: {
       Statement: [
         {
@@ -411,7 +416,8 @@ test('Test for APi Key Source', () => {
   }
   );
   // Assertion 1
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::RestApi", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::RestApi", {
     ApiKeySourceType: "AUTHORIZER"
   });
 });
@@ -429,7 +435,8 @@ test('Test for Api Key Creation', () => {
   new ApiGatewayToIot(stack, 'test-apigateway-iot-api-key', props);
 
   // Assertion to check for ApiKey
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+  const template = Template.fromStack(stack);
+  template.hasResource("AWS::ApiGateway::Method", {
     Properties : {
       ApiKeyRequired: true
     },
@@ -442,12 +449,12 @@ test('Test for Api Key Creation', () => {
         ]
       }
     }
-  }, ResourcePart.CompleteDefinition);
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::ApiKey", {
+  });
+  template.hasResourceProperties("AWS::ApiGateway::ApiKey", {
     Enabled: true
   });
   // Assertion to check for UsagePlan Api Key Mapping
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::UsagePlanKey", {
+  template.hasResourceProperties("AWS::ApiGateway::UsagePlanKey", {
     KeyType: "API_KEY"
   });
 });
@@ -468,7 +475,8 @@ test('Test for deployment ApiGateway AuthorizationType override', () => {
     }
   });
   // Assertion 1
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::RestApi", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::RestApi", {
     EndpointConfiguration: {
       Types: ["REGIONAL"]
     }
@@ -491,7 +499,8 @@ test('Test for deployment ApiGateway AuthorizationType override', () => {
     }
   });
   // Assertion 1
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     HttpMethod: "POST",
     AuthorizationType: "NONE"
   });
@@ -513,7 +522,8 @@ test('Test for handling fully qualified iotEndpoint', () => {
     }
   });
   // Assertion 1
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     Integration: {
       Uri: {
         "Fn::Join": [

@@ -15,7 +15,7 @@ import { LambdaToElasticSearchAndKibana, LambdaToElasticSearchAndKibanaProps } f
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as cdk from "aws-cdk-lib";
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 
 function deployNewFunc(stack: cdk.Stack) {
@@ -32,14 +32,15 @@ test('check domain names', () => {
 
   deployNewFunc(stack);
 
-  expect(stack).toHaveResource('AWS::Cognito::UserPoolDomain', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Cognito::UserPoolDomain', {
     Domain: "test-domain",
     UserPoolId: {
       Ref: "testlambdaelasticsearchstackCognitoUserPool05D1387E"
     }
   });
 
-  expect(stack).toHaveResource('AWS::Elasticsearch::Domain', {
+  template.hasResourceProperties('AWS::Elasticsearch::Domain', {
     DomainName: "test-domain",
   });
 });
@@ -102,7 +103,8 @@ test('check lambda function custom environment variable', () => {
 
   new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-stack', props);
 
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
     Runtime: 'nodejs14.x',
     Environment: {
@@ -129,7 +131,8 @@ test('check override cognito domain name with provided cognito domain name', () 
 
   new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-stack', props);
 
-  expect(stack).toHaveResource('AWS::Cognito::UserPoolDomain', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Cognito::UserPoolDomain', {
     Domain: 'test-cognito-domain'
   });
 });
@@ -143,7 +146,8 @@ test("Test minimal deployment that deploys a VPC in 2 AZ without vpcProps", () =
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -164,7 +168,7 @@ test("Test minimal deployment that deploys a VPC in 2 AZ without vpcProps", () =
     },
   });
 
-  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
+  template.hasResourceProperties("AWS::Elasticsearch::Domain", {
     VPCOptions: {
       SubnetIds: [
         {
@@ -177,7 +181,7 @@ test("Test minimal deployment that deploys a VPC in 2 AZ without vpcProps", () =
     }
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
@@ -194,7 +198,8 @@ test("Test minimal deployment that deploys a VPC in 3 AZ without vpcProps", () =
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -218,7 +223,7 @@ test("Test minimal deployment that deploys a VPC in 3 AZ without vpcProps", () =
     },
   });
 
-  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
+  template.hasResourceProperties("AWS::Elasticsearch::Domain", {
     VPCOptions: {
       SubnetIds: [
         {
@@ -234,7 +239,7 @@ test("Test minimal deployment that deploys a VPC in 3 AZ without vpcProps", () =
     }
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
@@ -264,7 +269,8 @@ test("Test ES cluster deploy to 1 AZ when user set zoneAwarenessEnabled to false
     }
   });
 
-  expect(stack).toHaveResource("AWS::Elasticsearch::Domain", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Elasticsearch::Domain", {
     ElasticsearchClusterConfig: {
       DedicatedMasterCount: 3,
       DedicatedMasterEnabled: true,
@@ -273,7 +279,7 @@ test("Test ES cluster deploy to 1 AZ when user set zoneAwarenessEnabled to false
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
+  template.hasResourceProperties("AWS::Elasticsearch::Domain", {
     VPCOptions: {
       SubnetIds: [
         {
@@ -311,7 +317,8 @@ test("Test ES cluster deploy to 2 AZ when user set availabilityZoneCount to 2", 
     }
   });
 
-  expect(stack).toHaveResource("AWS::Elasticsearch::Domain", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Elasticsearch::Domain", {
     ElasticsearchClusterConfig: {
       DedicatedMasterCount: 3,
       DedicatedMasterEnabled: true,
@@ -323,7 +330,7 @@ test("Test ES cluster deploy to 2 AZ when user set availabilityZoneCount to 2", 
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
+  template.hasResourceProperties("AWS::Elasticsearch::Domain", {
     VPCOptions: {
       SubnetIds: [
         {
@@ -352,7 +359,8 @@ test('Test minimal deployment with an existing isolated VPC', () => {
     existingVpc: vpc
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::EC2::VPC", {
     Tags: [
       {
         Key: "Name",
@@ -361,7 +369,7 @@ test('Test minimal deployment with an existing isolated VPC', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
+  template.hasResourceProperties("AWS::Elasticsearch::Domain", {
     VPCOptions: {
       SubnetIds: [
         {
@@ -377,7 +385,7 @@ test('Test minimal deployment with an existing isolated VPC', () => {
     }
   });
 
-  expect(stack).toCountResources("AWS::EC2::VPC", 1);
+  template.resourceCountIs("AWS::EC2::VPC", 1);
   expect(construct.vpc).toBeDefined();
 });
 
@@ -408,7 +416,8 @@ test('Test minimal deployment with an existing private VPC', () => {
     existingVpc: vpc
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::EC2::VPC", {
     Tags: [
       {
         Key: "Name",
@@ -417,7 +426,7 @@ test('Test minimal deployment with an existing private VPC', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
+  template.hasResourceProperties("AWS::Elasticsearch::Domain", {
     VPCOptions: {
       SubnetIds: [
         {
@@ -433,7 +442,7 @@ test('Test minimal deployment with an existing private VPC', () => {
     }
   });
 
-  expect(stack).toCountResources("AWS::EC2::VPC", 1);
+  template.resourceCountIs("AWS::EC2::VPC", 1);
   expect(construct.vpc).toBeDefined();
 });
 
@@ -451,7 +460,8 @@ test('Test minimal deployment with VPC construct props', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::EC2::VPC", {
     Tags: [
       {
         Key: "Name",
@@ -460,7 +470,7 @@ test('Test minimal deployment with VPC construct props', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::Elasticsearch::Domain", {
+  template.hasResourceProperties("AWS::Elasticsearch::Domain", {
     VPCOptions: {
       SubnetIds: [
         {
@@ -476,7 +486,7 @@ test('Test minimal deployment with VPC construct props', () => {
     }
   });
 
-  expect(stack).toCountResources("AWS::EC2::VPC", 1);
+  template.resourceCountIs("AWS::EC2::VPC", 1);
   expect(construct.vpc).toBeDefined();
 });
 

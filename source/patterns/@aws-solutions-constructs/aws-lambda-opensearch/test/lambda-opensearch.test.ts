@@ -14,7 +14,7 @@
 import { LambdaToOpenSearch, LambdaToOpenSearchProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as cdk from "aws-cdk-lib";
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 import { getTestVpc } from "@aws-solutions-constructs/core";
 
@@ -88,7 +88,8 @@ test('Check for an existing Lambda object', () => {
 
   new LambdaToOpenSearch(stack, 'test-lambda-opensearch-stack', props);
 
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     FunctionName: 'test-function'
   });
 
@@ -104,7 +105,8 @@ test('Check Lambda function custom environment variable', () => {
 
   new LambdaToOpenSearch(stack, 'test-lambda-opensearch-stack', props);
 
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
     Runtime: 'nodejs14.x',
     Environment: {
@@ -126,14 +128,15 @@ test('Check domain name', () => {
 
   deployLambdaToOpenSearch(stack);
 
-  expect(stack).toHaveResource('AWS::Cognito::UserPoolDomain', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Cognito::UserPoolDomain', {
     Domain: "test-domain",
     UserPoolId: {
       Ref: "testlambdaopensearchstackCognitoUserPoolF5169460"
     }
   });
 
-  expect(stack).toHaveResource('AWS::OpenSearchService::Domain', {
+  template.hasResourceProperties('AWS::OpenSearchService::Domain', {
     DomainName: "test-domain",
   });
 });
@@ -148,7 +151,8 @@ test('Check cognito domain name override', () => {
 
   new LambdaToOpenSearch(stack, 'test-lambda-opensearch-stack', props);
 
-  expect(stack).toHaveResource('AWS::Cognito::UserPoolDomain', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Cognito::UserPoolDomain', {
     Domain: 'test-cogn-domain'
   });
 });
@@ -165,7 +169,8 @@ test('Check engine version override', () => {
 
   new LambdaToOpenSearch(stack, 'test-lambda-opensearch-stack', props);
 
-  expect(stack).toHaveResource('AWS::OpenSearchService::Domain', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::OpenSearchService::Domain', {
     EngineVersion: 'OpenSearch_1.0'
   });
 });
@@ -179,7 +184,8 @@ test("Test minimal deployment that deploys a VPC in 2 AZ without vpcProps", () =
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -200,7 +206,7 @@ test("Test minimal deployment that deploys a VPC in 2 AZ without vpcProps", () =
     },
   });
 
-  expect(stack).toHaveResourceLike("AWS::OpenSearchService::Domain", {
+  template.hasResourceProperties("AWS::OpenSearchService::Domain", {
     VPCOptions: {
       SubnetIds: [
         {
@@ -213,7 +219,7 @@ test("Test minimal deployment that deploys a VPC in 2 AZ without vpcProps", () =
     }
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
@@ -230,7 +236,8 @@ test("Test minimal deployment that deploys a VPC in 3 AZ without vpcProps", () =
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -254,7 +261,7 @@ test("Test minimal deployment that deploys a VPC in 3 AZ without vpcProps", () =
     },
   });
 
-  expect(stack).toHaveResourceLike("AWS::OpenSearchService::Domain", {
+  template.hasResourceProperties("AWS::OpenSearchService::Domain", {
     VPCOptions: {
       SubnetIds: [
         {
@@ -270,7 +277,7 @@ test("Test minimal deployment that deploys a VPC in 3 AZ without vpcProps", () =
     }
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
@@ -300,7 +307,8 @@ test("Test cluster deploy to 1 AZ when user set zoneAwarenessEnabled to false", 
     }
   });
 
-  expect(stack).toHaveResource("AWS::OpenSearchService::Domain", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::OpenSearchService::Domain", {
     ClusterConfig: {
       DedicatedMasterCount: 3,
       DedicatedMasterEnabled: true,
@@ -309,7 +317,7 @@ test("Test cluster deploy to 1 AZ when user set zoneAwarenessEnabled to false", 
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::OpenSearchService::Domain", {
+  template.hasResourceProperties("AWS::OpenSearchService::Domain", {
     VPCOptions: {
       SubnetIds: [
         {
@@ -347,7 +355,8 @@ test("Test cluster deploy to 2 AZ when user set availabilityZoneCount to 2", () 
     }
   });
 
-  expect(stack).toHaveResource("AWS::OpenSearchService::Domain", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::OpenSearchService::Domain", {
     ClusterConfig: {
       DedicatedMasterCount: 3,
       DedicatedMasterEnabled: true,
@@ -359,7 +368,7 @@ test("Test cluster deploy to 2 AZ when user set availabilityZoneCount to 2", () 
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::OpenSearchService::Domain", {
+  template.hasResourceProperties("AWS::OpenSearchService::Domain", {
     VPCOptions: {
       SubnetIds: [
         {
@@ -388,7 +397,8 @@ test('Test minimal deployment with an existing isolated VPC', () => {
     existingVpc: vpc
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::EC2::VPC", {
     Tags: [
       {
         Key: "Name",
@@ -397,7 +407,7 @@ test('Test minimal deployment with an existing isolated VPC', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::OpenSearchService::Domain", {
+  template.hasResourceProperties("AWS::OpenSearchService::Domain", {
     VPCOptions: {
       SubnetIds: [
         {
@@ -413,7 +423,7 @@ test('Test minimal deployment with an existing isolated VPC', () => {
     }
   });
 
-  expect(stack).toCountResources("AWS::EC2::VPC", 1);
+  template.resourceCountIs("AWS::EC2::VPC", 1);
   expect(construct.vpc).toBeDefined();
 });
 
@@ -432,7 +442,8 @@ test('Test minimal deployment with an existing private VPC', () => {
     existingVpc: vpc
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::EC2::VPC", {
     Tags: [
       {
         Key: "Name",
@@ -441,7 +452,7 @@ test('Test minimal deployment with an existing private VPC', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::OpenSearchService::Domain", {
+  template.hasResourceProperties("AWS::OpenSearchService::Domain", {
     VPCOptions: {
       SubnetIds: [
         {
@@ -457,7 +468,7 @@ test('Test minimal deployment with an existing private VPC', () => {
     }
   });
 
-  expect(stack).toCountResources("AWS::EC2::VPC", 1);
+  template.resourceCountIs("AWS::EC2::VPC", 1);
   expect(construct.vpc).toBeDefined();
 });
 
@@ -475,7 +486,8 @@ test('Test minimal deployment with VPC construct props', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::EC2::VPC", {
     Tags: [
       {
         Key: "Name",
@@ -484,7 +496,7 @@ test('Test minimal deployment with VPC construct props', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::OpenSearchService::Domain", {
+  template.hasResourceProperties("AWS::OpenSearchService::Domain", {
     VPCOptions: {
       SubnetIds: [
         {
@@ -500,7 +512,7 @@ test('Test minimal deployment with VPC construct props', () => {
     }
   });
 
-  expect(stack).toCountResources("AWS::EC2::VPC", 1);
+  template.resourceCountIs("AWS::EC2::VPC", 1);
   expect(construct.vpc).toBeDefined();
 });
 
