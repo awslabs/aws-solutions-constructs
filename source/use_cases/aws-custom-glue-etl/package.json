@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-cust0m-glue-etl",
-  "version": "0.0.0",
+  "version": "2.36.0",
   "description": "Use case pattern for creating a custom ETL job in AWS Glue.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -24,27 +24,27 @@
     "watch": "tsc -b -w",
     "integ": "cdk-integ",
     "integ-no-clean": "cdk-integ --no-clean",
-    "integ-assert": "cdk-integ-assert",
+    "integ-assert": "cdk-integ-assert-v2",
     "build+lint+test": "npm run build && npm run lint && npm test && npm run integ-assert"
   },
   "dependencies": {
-    "@aws-cdk/aws-kinesis": "0.0.0",
-    "@aws-cdk/core": "0.0.0",
-    "@aws-solutions-constructs/aws-kinesisstreams-gluejob": "0.0.0",
-    "@aws-cdk/aws-logs": "0.0.0",
-    "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-cdk/aws-glue": "0.0.0",
-    "@aws-cdk/aws-iam": "0.0.0",
-    "@aws-cdk/aws-s3-assets": "0.0.0",
+    "@aws-solutions-constructs/aws-kinesisstreams-gluejob": "2.36.0",
+    "@aws-solutions-constructs/core": "2.36.0",
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {
     "@types/jest": "^24.9.1",
-    "@types/node": "^10.3.0"
+    "@types/node": "^10.3.0",
+    "aws-cdk-lib": "2.68.0",
+    "constructs": "^10.0.0"
   },
   "jest": {
     "moduleFileExtensions": [
       "js"
     ]
+  },
+  "peerDependencies": {
+    "aws-cdk-lib": "^2.68.0",
+    "constructs": "^10.0.0"
   }
 }

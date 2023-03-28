@@ -12,7 +12,6 @@
  */
 
 // Imports
-import "@aws-cdk/assert/jest";
 import * as defaults from "@aws-solutions-constructs/core";
 import * as cdk from "aws-cdk-lib";
 import * as lambda from "aws-cdk-lib/aws-lambda";

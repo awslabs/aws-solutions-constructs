@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-restaurant-management-demo",
-  "version": "0.0.0",
+  "version": "2.36.0",
   "description": "Use case pattern for deploying a complex business system and reference architecture.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -25,12 +25,14 @@
     "watch": "tsc -b -w",
     "integ": "cdk-integ",
     "integ-no-clean": "cdk-integ --no-clean",
-    "integ-assert": "cdk-integ-assert",
+    "integ-assert": "cdk-integ-assert-v2",
     "build+lint+test": "npm run build && npm run lint && npm test && npm run integ-assert"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
-    "@types/node": "^10.3.0"
+    "@types/node": "^10.3.0",
+    "aws-cdk-lib": "2.68.0",
+    "constructs": "^10.0.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -38,25 +40,17 @@
     ]
   },
   "dependencies": {
-    "@aws-cdk/aws-apigateway": "0.0.0",
-    "@aws-cdk/aws-dynamodb": "0.0.0",
-    "@aws-cdk/aws-ec2": "0.0.0",
-    "@aws-cdk/aws-events": "0.0.0",
-    "@aws-cdk/aws-iam": "0.0.0",
-    "@aws-cdk/aws-s3": "0.0.0",
-    "@aws-cdk/aws-lambda": "0.0.0",
-    "@aws-cdk/aws-ssm": "0.0.0",
-    "@aws-cdk/aws-redshift": "0.0.0",
-    "@aws-cdk/aws-stepfunctions": "0.0.0",
-    "@aws-cdk/aws-stepfunctions-tasks": "0.0.0",
-    "@aws-cdk/core": "0.0.0",
-    "@aws-solutions-constructs/aws-cognito-apigateway-lambda": "0.0.0",
-    "@aws-solutions-constructs/aws-eventbridge-lambda": "0.0.0",
-    "@aws-solutions-constructs/aws-lambda-dynamodb": "0.0.0",
-    "@aws-solutions-constructs/aws-lambda-s3": "0.0.0",
-    "@aws-solutions-constructs/aws-lambda-sns": "0.0.0",
-    "@aws-solutions-constructs/aws-lambda-stepfunctions": "0.0.0",
+    "@aws-solutions-constructs/aws-cognito-apigateway-lambda": "2.36.0",
+    "@aws-solutions-constructs/aws-eventbridge-lambda": "2.36.0",
+    "@aws-solutions-constructs/aws-lambda-dynamodb": "2.36.0",
+    "@aws-solutions-constructs/aws-lambda-s3": "2.36.0",
+    "@aws-solutions-constructs/aws-lambda-sns": "2.36.0",
+    "@aws-solutions-constructs/aws-lambda-stepfunctions": "2.36.0",
     "source-map-support": "^0.5.16",
     "typescript": "^4.2.4"
+  },
+  "peerDependencies": {
+    "aws-cdk-lib": "^2.68.0",
+    "constructs": "^10.0.0"
   }
 }

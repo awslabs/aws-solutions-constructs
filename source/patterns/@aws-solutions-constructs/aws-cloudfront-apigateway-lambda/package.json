@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-cloudfront-apigateway-lambda",
-  "version": "0.0.0",
+  "version": "2.36.0",
   "description": "CDK Constructs for AWS Cloudfront to AWS API Gateway to AWS Lambda integration.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -24,7 +24,7 @@
     "watch": "tsc -b -w",
     "integ": "cdk-integ",
     "integ-no-clean": "cdk-integ --no-clean",
-    "integ-assert": "cdk-integ-assert",
+    "integ-assert": "cdk-integ-assert-v2",
     "jsii": "jsii",
     "jsii-pacmak": "jsii-pacmak",
     "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
@@ -53,22 +53,14 @@
     }
   },
   "dependencies": {
-    "@aws-cdk/core": "0.0.0",
-    "@aws-cdk/aws-cloudfront": "0.0.0",
-    "@aws-cdk/aws-apigateway": "0.0.0",
-    "@aws-cdk/aws-lambda": "0.0.0",
-    "@aws-cdk/aws-logs": "0.0.0",
-    "@aws-cdk/aws-s3": "0.0.0",
-    "@aws-cdk/aws-iam": "0.0.0",
-    "@aws-solutions-constructs/aws-cloudfront-apigateway": "0.0.0",
-    "@aws-cdk/aws-cloudfront-origins": "0.0.0",
-    "@aws-solutions-constructs/core": "0.0.0",
-    "constructs": "^3.2.0"
+    "@aws-solutions-constructs/aws-cloudfront-apigateway": "2.36.0",
+    "@aws-solutions-constructs/core": "2.36.0"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "0.0.0",
     "@types/jest": "^27.4.0",
-    "@types/node": "^10.3.0"
+    "@types/node": "^10.3.0",
+    "aws-cdk-lib": "2.68.0",
+    "constructs": "^10.0.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -85,17 +77,10 @@
     ]
   },
   "peerDependencies": {
-    "@aws-cdk/core": "0.0.0",
-    "@aws-cdk/aws-cloudfront": "0.0.0",
-    "@aws-cdk/aws-apigateway": "0.0.0",
-    "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-cdk/aws-lambda": "0.0.0",
-    "@aws-cdk/aws-logs": "0.0.0",
-    "@aws-solutions-constructs/aws-cloudfront-apigateway": "0.0.0",
-    "constructs": "^3.2.0",
-    "@aws-cdk/aws-s3": "0.0.0",
-    "@aws-cdk/aws-iam": "0.0.0",
-    "@aws-cdk/aws-cloudfront-origins": "0.0.0"
+    "@aws-solutions-constructs/core": "2.36.0",
+    "@aws-solutions-constructs/aws-cloudfront-apigateway": "2.36.0",
+    "aws-cdk-lib": "^2.68.0",
+    "constructs": "^10.0.0"
   },
   "keywords": [
     "aws",

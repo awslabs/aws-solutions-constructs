@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-lambda-sqs-lambda",
-  "version": "0.0.0",
+  "version": "2.36.0",
   "description": "CDK construct that provisions (1) an AWS Lambda function that is configured to send messages to a queue; (2) an Amazon SQS queue; and (3) an AWS Lambda function configured to consume messages from the queue.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -23,7 +23,7 @@
     "clean": "tsc -b --clean",
     "watch": "tsc -b -w",
     "integ": "cdk-integ",
-    "integ-assert": "cdk-integ-assert",
+    "integ-assert": "cdk-integ-assert-v2",
     "integ-no-clean": "cdk-integ --no-clean",
     "jsii": "jsii",
     "jsii-pacmak": "jsii-pacmak",
@@ -53,20 +53,15 @@
     }
   },
   "dependencies": {
-    "@aws-cdk/aws-lambda": "0.0.0",
-    "@aws-cdk/aws-sqs": "0.0.0",
-    "@aws-cdk/aws-ec2": "0.0.0",
-    "@aws-cdk/core": "0.0.0",
-    "@aws-cdk/aws-lambda-event-sources": "0.0.0",
-    "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-lambda-sqs": "0.0.0",
-    "@aws-solutions-constructs/aws-sqs-lambda": "0.0.0",
-    "constructs": "^3.2.0"
+    "@aws-solutions-constructs/core": "2.36.0",
+    "@aws-solutions-constructs/aws-lambda-sqs": "2.36.0",
+    "@aws-solutions-constructs/aws-sqs-lambda": "2.36.0"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "0.0.0",
     "@types/jest": "^27.4.0",
-    "@types/node": "^10.3.0"
+    "@types/node": "^10.3.0",
+    "aws-cdk-lib": "2.68.0",
+    "constructs": "^10.0.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -83,15 +78,11 @@
     ]
   },
   "peerDependencies": {
-    "@aws-cdk/aws-lambda": "0.0.0",
-    "@aws-cdk/aws-sqs": "0.0.0",
-    "@aws-cdk/aws-ec2": "0.0.0",
-    "@aws-cdk/core": "0.0.0",
-    "@aws-cdk/aws-lambda-event-sources": "0.0.0",
-    "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-lambda-sqs": "0.0.0",
-    "@aws-solutions-constructs/aws-sqs-lambda": "0.0.0",
-    "constructs": "^3.2.0"
+    "@aws-solutions-constructs/core": "2.36.0",
+    "@aws-solutions-constructs/aws-lambda-sqs": "2.36.0",
+    "@aws-solutions-constructs/aws-sqs-lambda": "2.36.0",
+    "aws-cdk-lib": "^2.68.0",
+    "constructs": "^10.0.0"
   },
   "keywords": [
     "aws",

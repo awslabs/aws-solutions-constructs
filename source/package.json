@@ -1,6 +1,6 @@
 {
   "name": "aws-solutions-constructs",
-  "version": "0.0.0",
+  "version": "2.36.0",
   "description": "AWS Solutions Constructs Library",
   "repository": {
     "type": "git",
@@ -30,7 +30,9 @@
     "aws-cdk-migration": "^1.135.0"
   },
   "devDependencies": {
-    "lerna": "^3.22.1"
+    "lerna": "^3.22.1",
+    "aws-cdk-lib": "2.68.0",
+    "constructs": "^10.0.0"
   },
   "workspaces": {
     "packages": [
@@ -53,5 +55,9 @@
     "@types/babel__traverse": "7.18.2",
     "**/@typescript-eslint/eslint-plugin": "^4.1.1",
     "**/@typescript-eslint/parser": "^4.1.1"
+  },
+  "peerDependencies": {
+    "aws-cdk-lib": "^2.68.0",
+    "constructs": "^10.0.0"
   }
 }

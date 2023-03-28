@@ -1,13 +1,22 @@
 {
   "name": "create-order",
-  "version": "0.0.0",
+  "version": "2.36.0",
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "integ-assert": "cdk-integ-assert-v2"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "uuid": "^8.3.2"
+  },
+  "peerDependencies": {
+    "aws-cdk-lib": "^2.68.0",
+    "constructs": "^10.0.0"
+  },
+  "devDependencies": {
+    "aws-cdk-lib": "2.68.0",
+    "constructs": "^10.0.0"
   }
 }
