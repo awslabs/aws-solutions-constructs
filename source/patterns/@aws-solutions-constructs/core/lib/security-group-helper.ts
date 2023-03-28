@@ -16,7 +16,6 @@
  *  or removed outside of a major release. We recommend against calling them directly from client code.
  */
 
-// import { countResources } from "@aws-cdk/assert";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { Construct } from "constructs";
 import { addCfnSuppressRules } from './utils';
