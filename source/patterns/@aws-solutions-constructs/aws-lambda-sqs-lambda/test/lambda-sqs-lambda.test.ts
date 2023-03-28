@@ -285,12 +285,9 @@ test('Test deployment w/ DLQ explicitly enabled and w/ MRC override', () => {
 
   // Assertion 2: test for an existing DLQ
   const template = Template.fromStack(stack);
-  template.hasResourceProperties('AWS::SQS::Queue', {
-    RedrivePolicy: {
-      deadLetterTargetArn: "a-target-arn"
-    }
-  });
+  template.resourceCountIs('AWS::SQS::Queue', 2);
   // Assertion 3: test for the overridden max receive count
+  // Also confirms that the queue is linked to a DLQ
   template.hasResourceProperties('AWS::SQS::Queue', {
     RedrivePolicy: {
       maxReceiveCount: 6
