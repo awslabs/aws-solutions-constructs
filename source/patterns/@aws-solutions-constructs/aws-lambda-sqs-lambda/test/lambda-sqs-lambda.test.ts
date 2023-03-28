@@ -253,7 +253,6 @@ test('Test deployment w/ DLQ explicitly disabled', () => {
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
 
   // Assertion 2: test for a non-existing DLQ
-  const template = Template.fromStack(stack);
   defaults.expectNonexistence(stack, 'AWS::SQS::Queue', {
     RedrivePolicy: {
       deadLetterTargetArn: "a-target-arn"
